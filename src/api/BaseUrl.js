@@ -1,3 +1,5 @@
-let baseUrl = 'http://localhost:9090';
+import apiEnvironment from './ApiEnvironment';
+
+let baseUrl = apiEnvironment.getCurrentHostUrl();
 
 export default baseUrl;

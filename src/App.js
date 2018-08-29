@@ -6,63 +6,103 @@
 
 import React, {Component} from 'react';
 import {
-    Platform,
     StyleSheet,
     Text,
     View
 } from 'react-native';
-import API from './api/index';
+import {NavigationActions, StackNavigator} from 'react-navigation';
+import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
+import JsonUtil from './utils/JsonUtil';
+import ScreenUtils from './utils/ScreenUtils';
 
-const instructions = Platform.select({
-    ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-    android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import Router from './Router';
+import DebugButton from './components/debug/DebugButton';
+import apiEnvironment from './api/ApiEnvironment';
 
 type Props = {};
 export default class App extends Component<Props> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            load: false
+        };
+    }
+    async componentDidMount() {
+        await apiEnvironment.loadLastApiSettingFromDiskCache();
+        this.setState({load: true});
+    }
     render() {
+        let params = ScreenUtils.isIOS ? this.props.params : JsonUtil.strToJson(this.props.params);
+        // 适配IPhone X 刘海
+        if (ScreenUtils.isIOS && params) {
+            ScreenUtils.statusBarHeight = Number(params.statusBarHeight);
+            ScreenUtils.headerHeight = Number(params.statusBarHeight) + 44;
+        }
+        const Navigator = StackNavigator(Router,
+            {
+                initialRouteName: 'Tab',
+                initialRouteParams: params,
+                headerMode: 'none',
+                transitionConfig: () => ({
+                    screenInterpolator: CardStackStyleInterpolator.forHorizontal
+                }),
+                navigationOptions: {
+                    gesturesEnabled: true,
+                },
+            }
+        );
+
+
+        // todo for what?
+        const defaultStateAction = Navigator.router.getStateForAction;
+        Navigator.router.getStateForAction = (action, state) => {
+            if (state && action.type === NavigationActions.BACK && state.routes.length === 1) {
+                console.log("退出RN页面");
+                const routes = [...state.routes];
+                return {
+                    ...state,
+                    ...state.routes,
+                    index: routes.length - 1,
+                };
+            }
+            return defaultStateAction(action, state);
+        };
+
+
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>
-                    Welcome to React Native!1122
-                </Text>
-                <Text style={styles.instructions}>
-                    To get started, edit App.js
-                </Text>
-                <Text style={styles.instructions}>
-                    {instructions}
-                </Text>
+                <Navigator screenProps={this.props.params} ref='Navigator'/>
+                {
+                    true ? <DebugButton onPress={this.showDebugPage}><Text style={{color: 'white'}}>调试页</Text></DebugButton> : null
+                }
+
             </View>
         );
     }
-    componentDidMount (){
 
-        API.loginWithWX({aaa:1}).then(result=>{
-            console.log('ook2',result)
-        }).catch(error=>{
-            console.warn(error)
+    showDebugPage = () => {
+        const navigationAction = NavigationActions.navigate({
+            routeName: 'debug/DebugPanelPage',
+            params: {},
+
+            // navigate can have a nested navigate action that will be run inside the child router
+            action: NavigationActions.navigate({routeName: 'debug/DebugPanelPage'})
         });
-    }
+        this.refs.Navigator.dispatch(navigationAction);
+    };
 
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        backgroundColor: '#FFFFFF'
+    },
+    debugBtn: {
+        width: 60,
+        height: 35,
+        borderRadius: 10,
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
+        justifyContent: 'center',
     },
 });
