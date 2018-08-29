@@ -1,4 +1,3 @@
 module.exports = {
-    '/test':'/test',
-    '/api/user/test': '/user_test'
+    '/api/test/data': '/test_data'
 };

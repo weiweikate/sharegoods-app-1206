@@ -11,6 +11,7 @@ import {
     Text,
     View
 } from 'react-native';
+import API from './api/index';
 
 const instructions = Platform.select({
     ios: 'Press Cmd+R to reload,\n' +
@@ -25,7 +26,7 @@ export default class App extends Component<Props> {
         return (
             <View style={styles.container}>
                 <Text style={styles.welcome}>
-                    Welcome to React Native!11
+                    Welcome to React Native!1122
                 </Text>
                 <Text style={styles.instructions}>
                     To get started, edit App.js
@@ -36,6 +37,15 @@ export default class App extends Component<Props> {
             </View>
         );
     }
+    componentDidMount (){
+
+        API.loginWithWX({aaa:1}).then(result=>{
+            console.log('ook2',result)
+        }).catch(error=>{
+            console.warn(error)
+        });
+    }
+
 }
 
 const styles = StyleSheet.create({

@@ -1,6 +1,6 @@
 module.exports = {
     test: require('./data/test.json'),
-    user_test: {
+    test_data: {
         name: 'jack',
         age: 10
     }
