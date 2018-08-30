@@ -12,8 +12,9 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import BackIcon from './source/icon_header_back.png';
-const MAX_SCREENT = Math.max(Dimensions.get('window').width,Dimensions.get('window').height);
-const MIN_SCREENT = Math.min(Dimensions.get('window').width,Dimensions.get('window').height);
+
+const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
+const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
 const IPHONEX = (MIN_SCREENT === 375.00 && MAX_SCREENT === 812.0);
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -88,12 +89,12 @@ export default class NavigatorBar extends Component {
         };
     }
 
-    componentWillReceiveProps(props){
-        if(props.title !== this.state.title  ||
+    componentWillReceiveProps(props) {
+        if (props.title !== this.state.title ||
             props.leftNavItemHidden !== this.state.leftNavItemHidden ||
             props.hideNavBar !== this.state.hideNavBar ||
             props.rightNavTitle !== this.state.rightNavTitle ||
-            props.rightNavItemHidden !== this.state.rightNavItemHidden){
+            props.rightNavItemHidden !== this.state.rightNavItemHidden) {
             this.setState({
                 title: props.title || this.state.title || '',
                 hideNavBar: !!props.hideNavBar,
@@ -111,7 +112,7 @@ export default class NavigatorBar extends Component {
     };
 
     //修改右上角title
-    changeRightTitle = (rightNavTitle, callBack)=>{
+    changeRightTitle = (rightNavTitle, callBack) => {
         const title = (rightNavTitle && typeof rightNavTitle === 'string') ? rightNavTitle : '';
         this.setState({rightNavTitle: title}, callBack);
     };
@@ -128,12 +129,12 @@ export default class NavigatorBar extends Component {
 
 
     _onLeftPressed = () => {
-        if(this.props.leftPressed){
+        if (this.props.leftPressed) {
             this.props.leftPressed();
         } else {
             try {
                 this.props.navigation.goBack();
-            }catch (e) {
+            } catch (e) {
                 console.warn('make sure you set leftPressed func~ or whether set navigation props' + e.toString());
             }
         }
@@ -154,7 +155,7 @@ export default class NavigatorBar extends Component {
             return null;
         }
         // 文案
-        if (leftNavTitle && typeof leftNavTitle === 'string'){
+        if (leftNavTitle && typeof leftNavTitle === 'string') {
             return <TouchableOpacity style={styles.left} onPress={this._onLeftPressed}>
                 <Text numberOfLines={1}
                       allowFontScaling={false}
@@ -164,12 +165,12 @@ export default class NavigatorBar extends Component {
             </TouchableOpacity>;
         }
         // 图片
-        if(leftNavImage){
-            return <TouchableOpacity style={[styles.left, { paddingLeft: 15 }]} onPress={this._onLeftPressed}>
+        if (leftNavImage) {
+            return <TouchableOpacity style={[styles.left, {paddingLeft: 15}]} onPress={this._onLeftPressed}>
                 <Image
                     source={leftNavImage}
                     resizeMode={'stretch'}
-                    style={{ height: 15, width: 15 }}
+                    style={{height: 15, width: 15}}
                 />
             </TouchableOpacity>;
         }
@@ -179,9 +180,11 @@ export default class NavigatorBar extends Component {
     //右边item
     _renderRightItem = () => {
 
-        if(this.state.rightNavItemHidden)return null;
+        if (this.state.rightNavItemHidden) {
+            return null;
+        }
 
-        if(this.props.renderRight){
+        if (this.props.renderRight) {
             return <View style={styles.right}>
                 {this.props.renderRight()}
             </View>;
@@ -192,16 +195,16 @@ export default class NavigatorBar extends Component {
         if (!rightNavImage && !rightNavTitle) {
             return null;
         }
-        if(rightNavImage){
+        if (rightNavImage) {
             return <TouchableOpacity style={styles.right} onPress={this._onRightPressed}>
                 <View>
                     <Image source={rightNavImage}/>
                 </View>
             </TouchableOpacity>;
         }
-        if(rightNavTitle && typeof rightNavTitle === 'string'){
+        if (rightNavTitle && typeof rightNavTitle === 'string') {
             return <TouchableOpacity style={styles.right} onPress={this._onRightPressed}>
-                <Text style={[styles.button,this.props.rightTitleStyle]}>{rightNavTitle || ''}</Text>
+                <Text style={[styles.button, this.props.rightTitleStyle]}>{rightNavTitle || ''}</Text>
             </TouchableOpacity>;
         }
         return null;
@@ -231,7 +234,7 @@ export default class NavigatorBar extends Component {
         } = this.props;
 
         return (
-            <View style={[styles.navBar,headerStyle]}>
+            <View style={[styles.navBar, headerStyle]}>
                 {this._renderStatusBar()}
                 {this._renderLeftItem()}
                 {this._renderTitle()}

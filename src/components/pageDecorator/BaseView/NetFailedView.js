@@ -56,7 +56,7 @@ export default class NetFailedView extends Component {
     };
 
     // 解析失败原因
-    _getErrorInfo = ()=>{
+    _getErrorInfo = () => {
         const netFailedInfo = this.props.netFailedInfo || {};
         if (netFailedInfo instanceof Error) {
             return {
@@ -73,8 +73,8 @@ export default class NetFailedView extends Component {
 
 
     // 获取需要展示的图片资源,如果是网络问题，展示断网图片，否则返回外部设置的，或者默认的错误图片
-    _getImgSource = (source,code)=>{
-        if (Platform.OS === 'ios'){
+    _getImgSource = (source, code) => {
+        if (Platform.OS === 'ios') {
             // ios -1001 连接超时 -1005 tcp断开 -1009 网络无连接
             return (code === BugErrorCode || code === -1001 || code === -1005 || code === -1009) ? NetNotConnectImage : (source || ServerErrorImage);
         } else {
@@ -105,7 +105,7 @@ export default class NetFailedView extends Component {
             buttonText,
             showReloadBtn
         } = this.props;
-        const imgS = [styles.img,imageStyle];
+        const imgS = [styles.img, imageStyle];
 
         const {
             code,
@@ -115,13 +115,13 @@ export default class NetFailedView extends Component {
         return (<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={[styles.container, style]}>
 
-                <Image source={this._getImgSource(source,code)} style={imgS}/>
+                <Image source={this._getImgSource(source, code)} style={imgS}/>
 
                 <Text style={styles.titleStyle}>
                     {BugErrorCode === code ? '' : `（${code}）`}{msg}
                 </Text>
 
-                {showReloadBtn ? this._renderReloadButton(buttonText) :null}
+                {showReloadBtn ? this._renderReloadButton(buttonText) : null}
 
             </View>
         </TouchableWithoutFeedback>);

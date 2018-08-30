@@ -16,6 +16,7 @@ import {
     Dimensions,
     StyleSheet,
 } from 'react-native';
+
 const AnimatedDuration = 150;// 默认的动画持续时间
 const ShowTimeDuration = 2.0;// 弹框展示时间，单位S秒,默认2.0S
 
@@ -85,7 +86,7 @@ export default class ToastView extends Component {
             this.__timer__ = setInterval(() => {
                 this.state.opacity.setValue(0);
                 this.state.bounceValue.setValue(0.7);
-                this.setState({isShow: false},()=>{
+                this.setState({isShow: false}, () => {
                     this.toastHiddenCallBack && this.toastHiddenCallBack();
                     this._clearTimer();
                 });
@@ -132,10 +133,10 @@ export default class ToastView extends Component {
             <View pointerEvents="none" style={styles.container}>
                 <Animated.View style={[styles.sheetBlackPanel, {
                     opacity: this.state.opacity,
-                    transform: [{ scale: this.state.bounceValue }],
+                    transform: [{scale: this.state.bounceValue}],
                     paddingHorizontal
-            }
-        ]}>
+                }
+                ]}>
                     <Text allowFontScaling={false}
                           style={[styles.title]}
                           numberOfLines={2}>

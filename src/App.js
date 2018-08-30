@@ -29,7 +29,6 @@ export default class App extends Component<Props> {
     }
     async componentDidMount() {
         await apiEnvironment.loadLastApiSettingFromDiskCache();
-        this.setState({load: true});
     }
     render() {
 

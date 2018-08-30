@@ -16,6 +16,7 @@ import {
     StyleSheet,
 } from 'react-native';
 import LoadingImg from './source/toast_loading.png';
+
 const LOADING_WIDTH = 75;
 const LOADING_HEIGHT = 70;
 
@@ -62,7 +63,7 @@ export default class LoadingHub extends Component {
             titleText: titleText || null,
             bgColor: bgColor || null,
             isShow: true,
-        },this.startLoading);
+        }, this.startLoading);
 
         if (this.timeout) {
             this.timer = setTimeout(() => {
@@ -76,9 +77,11 @@ export default class LoadingHub extends Component {
     }
 
     // 开始动画
-    startLoading = ()=>{
+    startLoading = () => {
         const {loadingHubGif} = {};
-        if(loadingHubGif)return;
+        if (loadingHubGif) {
+            return;
+        }
         this.state.rotateValue.setValue(0);//首先至为0位置
         Animated.parallel([
             Animated.timing(this.state.rotateValue, {
@@ -90,7 +93,7 @@ export default class LoadingHub extends Component {
     };
 
     // 判断是否继续动画
-    judgeWhetherReload = ()=>{
+    judgeWhetherReload = () => {
         if (this.state.isShow) {
             this.startLoading();
         } else {
@@ -124,7 +127,7 @@ export default class LoadingHub extends Component {
         }
     };
 
-    _renderGif = (loadingHubGif)=>{
+    _renderGif = (loadingHubGif) => {
         return (<Image style={{
             width: 60,
             height: 57,
@@ -135,11 +138,12 @@ export default class LoadingHub extends Component {
     _renderCircleProgress = () => {
         return (<Animated.Image style={{
             transform: [{
-            rotateZ: this.state.rotateValue.interpolate({
-                inputRange: [0,1],
-                outputRange: ['0deg','360deg']
-            })
-        }]}} source={LoadingImg}/>);
+                rotateZ: this.state.rotateValue.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ['0deg', '360deg']
+                })
+            }]
+        }} source={LoadingImg}/>);
     };
 
     //文字部分
@@ -162,7 +166,7 @@ export default class LoadingHub extends Component {
         const backgroundColor = this.state.bgColor || 'transparent';
         const style = styles.loadingBody;
         return (
-            <View style={[styles.container,{backgroundColor}]}>
+            <View style={[styles.container, {backgroundColor}]}>
                 <View pointerEvents={'none'} style={style}>
                     {this._renderCircleProgress()}
                     {this._renderTextContent()}
