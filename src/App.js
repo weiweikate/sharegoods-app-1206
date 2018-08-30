@@ -14,10 +14,12 @@ import {NavigationActions, StackNavigator} from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 import JsonUtil from './utils/JsonUtil';
 import ScreenUtils from './utils/ScreenUtils';
+import RouterMap from './RouterMap';
 
 import Router from './Router';
 import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
+import CONFIG from '../config';
 
 type Props = {};
 export default class App extends Component<Props> {
@@ -73,7 +75,7 @@ export default class App extends Component<Props> {
             <View style={styles.container}>
                 <Navigator screenProps={this.props.params} ref='Navigator'/>
                 {
-                    true ? <DebugButton onPress={this.showDebugPage}><Text style={{color: 'white'}}>调试页</Text></DebugButton> : null
+                    CONFIG.showDebugPanel ? <DebugButton onPress={this.showDebugPage}><Text style={{color: 'white'}}>调试页</Text></DebugButton> : null
                 }
 
             </View>
@@ -82,11 +84,11 @@ export default class App extends Component<Props> {
 
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
-            routeName: 'debug/DebugPanelPage',
+            routeName: RouterMap.DebugPanelPage,
             params: {},
 
             // navigate can have a nested navigate action that will be run inside the child router
-            action: NavigationActions.navigate({routeName: 'debug/DebugPanelPage'})
+            action: NavigationActions.navigate({routeName: RouterMap.DebugPanelPage})
         });
         this.refs.Navigator.dispatch(navigationAction);
     };

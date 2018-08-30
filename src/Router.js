@@ -15,7 +15,7 @@ const Router = {
     }
 };
 
-//添加模块内子路由配置
+// 添加模块内子路由配置
 function addSubModule(module) {
     if (!module.moduleName || typeof module.moduleName !== 'string' || !module.childRoutes) {
         __DEV__ && console.error('module maybe wrong format, please checkout');
@@ -26,6 +26,7 @@ function addSubModule(module) {
 
     Object.keys(module.childRoutes).map((pageName) => {
         const item = module.childRoutes[pageName];
+        // 路由跳转 this.props.navigation.navigate('debug/DebugPanelPage');
         const path = `${moduleName}/${pageName}`;
         Router[path] = {screen: PageDecorator(item)};
     });
