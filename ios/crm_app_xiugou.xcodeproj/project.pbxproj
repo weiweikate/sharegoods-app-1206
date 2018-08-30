@@ -34,6 +34,60 @@
 		2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E991DF850E9000B6D8A /* libRCTWebSocket-tvOS.a */; };
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* crm_app_xiugouTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* crm_app_xiugouTests.m */; };
+		5068360E21379B78001AB175 /* JRBaseNavVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068356D21379B78001AB175 /* JRBaseNavVC.m */; };
+		5068360F21379B78001AB175 /* JRBaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068356F21379B78001AB175 /* JRBaseVC.m */; };
+		5068361021379B78001AB175 /* AppDelegate+ConfigLib.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068357321379B78001AB175 /* AppDelegate+ConfigLib.m */; };
+		5068361121379B78001AB175 /* AppDelegate+ConfigVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068357521379B78001AB175 /* AppDelegate+ConfigVC.m */; };
+		5068361221379B78001AB175 /* UIView+captureSceen.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068357821379B78001AB175 /* UIView+captureSceen.m */; };
+		5068361321379B78001AB175 /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5068357B21379B78001AB175 /* AlipaySDK.bundle */; };
+		5068361421379B78001AB175 /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5068357C21379B78001AB175 /* AlipaySDK.framework */; };
+		5068361521379B78001AB175 /* EasyAlertConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358021379B78001AB175 /* EasyAlertConfig.m */; };
+		5068361621379B78001AB175 /* EasyAlertGlobalConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358221379B78001AB175 /* EasyAlertGlobalConfig.m */; };
+		5068361721379B78001AB175 /* EasyAlertItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358421379B78001AB175 /* EasyAlertItem.m */; };
+		5068361821379B78001AB175 /* EasyAlertPart.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358621379B78001AB175 /* EasyAlertPart.m */; };
+		5068361921379B78001AB175 /* EasyAlertTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358821379B78001AB175 /* EasyAlertTypes.m */; };
+		5068361A21379B78001AB175 /* EasyAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358A21379B78001AB175 /* EasyAlertView.m */; };
+		5068361B21379B78001AB175 /* EasyEmptyConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358D21379B78001AB175 /* EasyEmptyConfig.m */; };
+		5068361C21379B78001AB175 /* EasyEmptyGlobalConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068358F21379B78001AB175 /* EasyEmptyGlobalConfig.m */; };
+		5068361D21379B78001AB175 /* EasyEmptyPart.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068359121379B78001AB175 /* EasyEmptyPart.m */; };
+		5068361E21379B78001AB175 /* EasyEmptyTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068359321379B78001AB175 /* EasyEmptyTypes.m */; };
+		5068361F21379B78001AB175 /* EasyEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068359521379B78001AB175 /* EasyEmptyView.m */; };
+		5068362021379B78001AB175 /* EasyLoadingConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068359821379B78001AB175 /* EasyLoadingConfig.m */; };
+		5068362121379B78001AB175 /* EasyLoadingGlobalConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068359A21379B78001AB175 /* EasyLoadingGlobalConfig.m */; };
+		5068362221379B78001AB175 /* EasyLoadingTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068359C21379B78001AB175 /* EasyLoadingTypes.m */; };
+		5068362321379B78001AB175 /* EasyLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068359E21379B78001AB175 /* EasyLoadingView.m */; };
+		5068362421379B78001AB175 /* EasyShowLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835A121379B78001AB175 /* EasyShowLabel.m */; };
+		5068362521379B78001AB175 /* EasyShowUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835A321379B78001AB175 /* EasyShowUtils.m */; };
+		5068362621379B78001AB175 /* UIView+EasyShowExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835A521379B78001AB175 /* UIView+EasyShowExt.m */; };
+		5068362721379B78001AB175 /* EasyTextBgView.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835A921379B78001AB175 /* EasyTextBgView.m */; };
+		5068362821379B78001AB175 /* EasyTextConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835AB21379B78001AB175 /* EasyTextConfig.m */; };
+		5068362921379B78001AB175 /* EasyTextGlobalConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835AD21379B78001AB175 /* EasyTextGlobalConfig.m */; };
+		5068362A21379B78001AB175 /* EasyTextTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835AF21379B78001AB175 /* EasyTextTypes.m */; };
+		5068362B21379B78001AB175 /* EasyTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835B121379B78001AB175 /* EasyTextView.m */; };
+		5068362C21379B78001AB175 /* JRCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835BA21379B78001AB175 /* JRCacheManager.m */; };
+		5068362D21379B78001AB175 /* JRServiceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835BD21379B78001AB175 /* JRServiceManager.m */; };
+		5068362E21379B78001AB175 /* JRLoadingAndToastTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835C021379B78001AB175 /* JRLoadingAndToastTool.m */; };
+		5068362F21379B78001AB175 /* JRShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835C321379B78001AB175 /* JRShareManager.m */; };
+		5068363021379B78001AB175 /* CachesModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835C621379B78001AB175 /* CachesModule.m */; };
+		5068363121379B78001AB175 /* commModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835C821379B78001AB175 /* commModule.m */; };
+		5068363221379B78001AB175 /* JRDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835CA21379B78001AB175 /* JRDeviceInfo.m */; };
+		5068363321379B78001AB175 /* LoginAndShareModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835CC21379B78001AB175 /* LoginAndShareModule.m */; };
+		5068363421379B78001AB175 /* JRPay.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835CF21379B78001AB175 /* JRPay.m */; };
+		5068363521379B78001AB175 /* RCTPayTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835D121379B78001AB175 /* RCTPayTool.m */; };
+		5068363621379B78001AB175 /* JRAddressPickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835D421379B78001AB175 /* JRAddressPickView.m */; };
+		5068363721379B78001AB175 /* PickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835D621379B78001AB175 /* PickerManager.m */; };
+		5068363821379B78001AB175 /* SGQRCodeHelperTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835DB21379B78001AB175 /* SGQRCodeHelperTool.m */; };
+		5068363921379B78001AB175 /* SGQRCodeScanManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835DD21379B78001AB175 /* SGQRCodeScanManager.m */; };
+		5068363A21379B78001AB175 /* SGQRCodeScanningView.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835DF21379B78001AB175 /* SGQRCodeScanningView.m */; };
+		5068363B21379B78001AB175 /* WCQRCodeScanningVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835E121379B78001AB175 /* WCQRCodeScanningVC.m */; };
+		5068363C21379B78001AB175 /* QRCodeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835E421379B78001AB175 /* QRCodeModule.m */; };
+		5068363D21379B78001AB175 /* SGQRCode.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 506835E621379B78001AB175 /* SGQRCode.bundle */; };
+		5068363E21379B78001AB175 /* QYChatModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 506835E821379B78001AB175 /* QYChatModule.m */; };
+		5068364021379DEC001AB175 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5068363F21379DEB001AB175 /* Security.framework */; };
+		5068364221379DFA001AB175 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5068364121379DFA001AB175 /* libsqlite3.0.tbd */; };
+		5068364421379E0B001AB175 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5068364321379E0B001AB175 /* CoreMotion.framework */; };
+		5068364621379E1D001AB175 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5068364521379E1D001AB175 /* CoreFoundation.framework */; };
+		5068364821379E2B001AB175 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5068364721379E2B001AB175 /* Foundation.framework */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8FEF9F2832D98C9091C3A80D /* libPods-crm_app_xiugou.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2067021C430F882483438A36 /* libPods-crm_app_xiugou.a */; };
@@ -317,7 +371,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
 		00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTGeolocation.xcodeproj; path = "../node_modules/react-native/Libraries/Geolocation/RCTGeolocation.xcodeproj"; sourceTree = "<group>"; };
 		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
@@ -342,6 +395,112 @@
 		2D02E47B1E0B4A5D006451C7 /* crm_app_xiugou-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "crm_app_xiugou-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* crm_app_xiugou-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "crm_app_xiugou-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5068356C21379B78001AB175 /* JRBaseNavVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRBaseNavVC.h; sourceTree = "<group>"; };
+		5068356D21379B78001AB175 /* JRBaseNavVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRBaseNavVC.m; sourceTree = "<group>"; };
+		5068356E21379B78001AB175 /* JRBaseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRBaseVC.h; sourceTree = "<group>"; };
+		5068356F21379B78001AB175 /* JRBaseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRBaseVC.m; sourceTree = "<group>"; };
+		5068357221379B78001AB175 /* AppDelegate+ConfigLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+ConfigLib.h"; sourceTree = "<group>"; };
+		5068357321379B78001AB175 /* AppDelegate+ConfigLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+ConfigLib.m"; sourceTree = "<group>"; };
+		5068357421379B78001AB175 /* AppDelegate+ConfigVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+ConfigVC.h"; sourceTree = "<group>"; };
+		5068357521379B78001AB175 /* AppDelegate+ConfigVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+ConfigVC.m"; sourceTree = "<group>"; };
+		5068357721379B78001AB175 /* UIView+captureSceen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+captureSceen.h"; sourceTree = "<group>"; };
+		5068357821379B78001AB175 /* UIView+captureSceen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+captureSceen.m"; sourceTree = "<group>"; };
+		5068357B21379B78001AB175 /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
+		5068357C21379B78001AB175 /* AlipaySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlipaySDK.framework; sourceTree = "<group>"; };
+		5068357F21379B78001AB175 /* EasyAlertConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyAlertConfig.h; sourceTree = "<group>"; };
+		5068358021379B78001AB175 /* EasyAlertConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyAlertConfig.m; sourceTree = "<group>"; };
+		5068358121379B78001AB175 /* EasyAlertGlobalConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyAlertGlobalConfig.h; sourceTree = "<group>"; };
+		5068358221379B78001AB175 /* EasyAlertGlobalConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyAlertGlobalConfig.m; sourceTree = "<group>"; };
+		5068358321379B78001AB175 /* EasyAlertItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyAlertItem.h; sourceTree = "<group>"; };
+		5068358421379B78001AB175 /* EasyAlertItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyAlertItem.m; sourceTree = "<group>"; };
+		5068358521379B78001AB175 /* EasyAlertPart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyAlertPart.h; sourceTree = "<group>"; };
+		5068358621379B78001AB175 /* EasyAlertPart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyAlertPart.m; sourceTree = "<group>"; };
+		5068358721379B78001AB175 /* EasyAlertTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyAlertTypes.h; sourceTree = "<group>"; };
+		5068358821379B78001AB175 /* EasyAlertTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyAlertTypes.m; sourceTree = "<group>"; };
+		5068358921379B78001AB175 /* EasyAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyAlertView.h; sourceTree = "<group>"; };
+		5068358A21379B78001AB175 /* EasyAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyAlertView.m; sourceTree = "<group>"; };
+		5068358C21379B78001AB175 /* EasyEmptyConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyEmptyConfig.h; sourceTree = "<group>"; };
+		5068358D21379B78001AB175 /* EasyEmptyConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyEmptyConfig.m; sourceTree = "<group>"; };
+		5068358E21379B78001AB175 /* EasyEmptyGlobalConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyEmptyGlobalConfig.h; sourceTree = "<group>"; };
+		5068358F21379B78001AB175 /* EasyEmptyGlobalConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyEmptyGlobalConfig.m; sourceTree = "<group>"; };
+		5068359021379B78001AB175 /* EasyEmptyPart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyEmptyPart.h; sourceTree = "<group>"; };
+		5068359121379B78001AB175 /* EasyEmptyPart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyEmptyPart.m; sourceTree = "<group>"; };
+		5068359221379B78001AB175 /* EasyEmptyTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyEmptyTypes.h; sourceTree = "<group>"; };
+		5068359321379B78001AB175 /* EasyEmptyTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyEmptyTypes.m; sourceTree = "<group>"; };
+		5068359421379B78001AB175 /* EasyEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyEmptyView.h; sourceTree = "<group>"; };
+		5068359521379B78001AB175 /* EasyEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyEmptyView.m; sourceTree = "<group>"; };
+		5068359721379B78001AB175 /* EasyLoadingConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyLoadingConfig.h; sourceTree = "<group>"; };
+		5068359821379B78001AB175 /* EasyLoadingConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyLoadingConfig.m; sourceTree = "<group>"; };
+		5068359921379B78001AB175 /* EasyLoadingGlobalConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyLoadingGlobalConfig.h; sourceTree = "<group>"; };
+		5068359A21379B78001AB175 /* EasyLoadingGlobalConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyLoadingGlobalConfig.m; sourceTree = "<group>"; };
+		5068359B21379B78001AB175 /* EasyLoadingTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyLoadingTypes.h; sourceTree = "<group>"; };
+		5068359C21379B78001AB175 /* EasyLoadingTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyLoadingTypes.m; sourceTree = "<group>"; };
+		5068359D21379B78001AB175 /* EasyLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyLoadingView.h; sourceTree = "<group>"; };
+		5068359E21379B78001AB175 /* EasyLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyLoadingView.m; sourceTree = "<group>"; };
+		506835A021379B78001AB175 /* EasyShowLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyShowLabel.h; sourceTree = "<group>"; };
+		506835A121379B78001AB175 /* EasyShowLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyShowLabel.m; sourceTree = "<group>"; };
+		506835A221379B78001AB175 /* EasyShowUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyShowUtils.h; sourceTree = "<group>"; };
+		506835A321379B78001AB175 /* EasyShowUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyShowUtils.m; sourceTree = "<group>"; };
+		506835A421379B78001AB175 /* UIView+EasyShowExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+EasyShowExt.h"; sourceTree = "<group>"; };
+		506835A521379B78001AB175 /* UIView+EasyShowExt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+EasyShowExt.m"; sourceTree = "<group>"; };
+		506835A621379B78001AB175 /* EasyShowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyShowView.h; sourceTree = "<group>"; };
+		506835A821379B78001AB175 /* EasyTextBgView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyTextBgView.h; sourceTree = "<group>"; };
+		506835A921379B78001AB175 /* EasyTextBgView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyTextBgView.m; sourceTree = "<group>"; };
+		506835AA21379B78001AB175 /* EasyTextConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyTextConfig.h; sourceTree = "<group>"; };
+		506835AB21379B78001AB175 /* EasyTextConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyTextConfig.m; sourceTree = "<group>"; };
+		506835AC21379B78001AB175 /* EasyTextGlobalConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyTextGlobalConfig.h; sourceTree = "<group>"; };
+		506835AD21379B78001AB175 /* EasyTextGlobalConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyTextGlobalConfig.m; sourceTree = "<group>"; };
+		506835AE21379B78001AB175 /* EasyTextTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyTextTypes.h; sourceTree = "<group>"; };
+		506835AF21379B78001AB175 /* EasyTextTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyTextTypes.m; sourceTree = "<group>"; };
+		506835B021379B78001AB175 /* EasyTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EasyTextView.h; sourceTree = "<group>"; };
+		506835B121379B78001AB175 /* EasyTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EasyTextView.m; sourceTree = "<group>"; };
+		506835B321379B78001AB175 /* JRCommDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRCommDefine.h; sourceTree = "<group>"; };
+		506835B421379B78001AB175 /* JRLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRLib.h; sourceTree = "<group>"; };
+		506835B521379B78001AB175 /* JRNotiOrKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRNotiOrKey.h; sourceTree = "<group>"; };
+		506835B621379B78001AB175 /* Jure.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Jure.pch; sourceTree = "<group>"; };
+		506835B921379B78001AB175 /* JRCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRCacheManager.h; sourceTree = "<group>"; };
+		506835BA21379B78001AB175 /* JRCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRCacheManager.m; sourceTree = "<group>"; };
+		506835BC21379B78001AB175 /* JRServiceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRServiceManager.h; sourceTree = "<group>"; };
+		506835BD21379B78001AB175 /* JRServiceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRServiceManager.m; sourceTree = "<group>"; };
+		506835BF21379B78001AB175 /* JRLoadingAndToastTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRLoadingAndToastTool.h; sourceTree = "<group>"; };
+		506835C021379B78001AB175 /* JRLoadingAndToastTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRLoadingAndToastTool.m; sourceTree = "<group>"; };
+		506835C221379B78001AB175 /* JRShareManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRShareManager.h; sourceTree = "<group>"; };
+		506835C321379B78001AB175 /* JRShareManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRShareManager.m; sourceTree = "<group>"; };
+		506835C521379B78001AB175 /* CachesModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CachesModule.h; sourceTree = "<group>"; };
+		506835C621379B78001AB175 /* CachesModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CachesModule.m; sourceTree = "<group>"; };
+		506835C721379B78001AB175 /* commModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = commModule.h; sourceTree = "<group>"; };
+		506835C821379B78001AB175 /* commModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = commModule.m; sourceTree = "<group>"; };
+		506835C921379B78001AB175 /* JRDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRDeviceInfo.h; sourceTree = "<group>"; };
+		506835CA21379B78001AB175 /* JRDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRDeviceInfo.m; sourceTree = "<group>"; };
+		506835CB21379B78001AB175 /* LoginAndShareModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginAndShareModule.h; sourceTree = "<group>"; };
+		506835CC21379B78001AB175 /* LoginAndShareModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginAndShareModule.m; sourceTree = "<group>"; };
+		506835CE21379B78001AB175 /* JRPay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRPay.h; sourceTree = "<group>"; };
+		506835CF21379B78001AB175 /* JRPay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRPay.m; sourceTree = "<group>"; };
+		506835D021379B78001AB175 /* RCTPayTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTPayTool.h; sourceTree = "<group>"; };
+		506835D121379B78001AB175 /* RCTPayTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTPayTool.m; sourceTree = "<group>"; };
+		506835D321379B78001AB175 /* JRAddressPickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRAddressPickView.h; sourceTree = "<group>"; };
+		506835D421379B78001AB175 /* JRAddressPickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRAddressPickView.m; sourceTree = "<group>"; };
+		506835D521379B78001AB175 /* PickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerManager.h; sourceTree = "<group>"; };
+		506835D621379B78001AB175 /* PickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerManager.m; sourceTree = "<group>"; };
+		506835D921379B78001AB175 /* SGQRCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGQRCode.h; sourceTree = "<group>"; };
+		506835DA21379B78001AB175 /* SGQRCodeHelperTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGQRCodeHelperTool.h; sourceTree = "<group>"; };
+		506835DB21379B78001AB175 /* SGQRCodeHelperTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGQRCodeHelperTool.m; sourceTree = "<group>"; };
+		506835DC21379B78001AB175 /* SGQRCodeScanManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGQRCodeScanManager.h; sourceTree = "<group>"; };
+		506835DD21379B78001AB175 /* SGQRCodeScanManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGQRCodeScanManager.m; sourceTree = "<group>"; };
+		506835DE21379B78001AB175 /* SGQRCodeScanningView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGQRCodeScanningView.h; sourceTree = "<group>"; };
+		506835DF21379B78001AB175 /* SGQRCodeScanningView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGQRCodeScanningView.m; sourceTree = "<group>"; };
+		506835E021379B78001AB175 /* WCQRCodeScanningVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WCQRCodeScanningVC.h; sourceTree = "<group>"; };
+		506835E121379B78001AB175 /* WCQRCodeScanningVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WCQRCodeScanningVC.m; sourceTree = "<group>"; };
+		506835E321379B78001AB175 /* QRCodeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRCodeModule.h; sourceTree = "<group>"; };
+		506835E421379B78001AB175 /* QRCodeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRCodeModule.m; sourceTree = "<group>"; };
+		506835E621379B78001AB175 /* SGQRCode.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SGQRCode.bundle; sourceTree = "<group>"; };
+		506835E721379B78001AB175 /* QYChatModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QYChatModule.h; sourceTree = "<group>"; };
+		506835E821379B78001AB175 /* QYChatModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QYChatModule.m; sourceTree = "<group>"; };
+		5068363F21379DEB001AB175 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		5068364121379DFA001AB175 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		5068364321379E0B001AB175 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		5068364521379E1D001AB175 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		5068364721379E2B001AB175 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5AEC9711CAB3D2A4643117DC /* Pods-crm_app_xiugou.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.release.xcconfig"; path = "Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.release.xcconfig"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -364,6 +523,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5068364821379E2B001AB175 /* Foundation.framework in Frameworks */,
+				5068364621379E1D001AB175 /* CoreFoundation.framework in Frameworks */,
+				5068364421379E0B001AB175 /* CoreMotion.framework in Frameworks */,
+				5068364221379DFA001AB175 /* libsqlite3.0.tbd in Frameworks */,
+				5068364021379DEC001AB175 /* Security.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -375,6 +539,7 @@
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
+				5068361421379B78001AB175 /* AlipaySDK.framework in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				8FEF9F2832D98C9091C3A80D /* libPods-crm_app_xiugou.a in Frameworks */,
@@ -488,7 +653,7 @@
 		13B07FAE1A68108700A75B9A /* crm_app_xiugou */ = {
 			isa = PBXGroup;
 			children = (
-				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
+				5068356A21379B78001AB175 /* Class */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -525,6 +690,11 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5068364721379E2B001AB175 /* Foundation.framework */,
+				5068364521379E1D001AB175 /* CoreFoundation.framework */,
+				5068364321379E0B001AB175 /* CoreMotion.framework */,
+				5068364121379DFA001AB175 /* libsqlite3.0.tbd */,
+				5068363F21379DEB001AB175 /* Security.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				2067021C430F882483438A36 /* libPods-crm_app_xiugou.a */,
 				CAB2E4DB260FDFCE4611A647 /* libPods-crm_app_xiugou-tvOS.a */,
@@ -532,6 +702,314 @@
 				2C4C91D58EA7AF8B3CE24FE3 /* libPods-crm_app_xiugouTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5068356A21379B78001AB175 /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				5068356B21379B78001AB175 /* Base */,
+				5068357021379B78001AB175 /* Category */,
+				5068357921379B78001AB175 /* libs */,
+				506835B221379B78001AB175 /* Macros */,
+				506835B721379B78001AB175 /* Modules */,
+				506835C421379B78001AB175 /* NativeBridge */,
+			);
+			path = Class;
+			sourceTree = "<group>";
+		};
+		5068356B21379B78001AB175 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				5068356C21379B78001AB175 /* JRBaseNavVC.h */,
+				5068356D21379B78001AB175 /* JRBaseNavVC.m */,
+				5068356E21379B78001AB175 /* JRBaseVC.h */,
+				5068356F21379B78001AB175 /* JRBaseVC.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		5068357021379B78001AB175 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				5068357121379B78001AB175 /* Delegate */,
+				5068357621379B78001AB175 /* UIView */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		5068357121379B78001AB175 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				5068357221379B78001AB175 /* AppDelegate+ConfigLib.h */,
+				5068357321379B78001AB175 /* AppDelegate+ConfigLib.m */,
+				5068357421379B78001AB175 /* AppDelegate+ConfigVC.h */,
+				5068357521379B78001AB175 /* AppDelegate+ConfigVC.m */,
+			);
+			path = Delegate;
+			sourceTree = "<group>";
+		};
+		5068357621379B78001AB175 /* UIView */ = {
+			isa = PBXGroup;
+			children = (
+				5068357721379B78001AB175 /* UIView+captureSceen.h */,
+				5068357821379B78001AB175 /* UIView+captureSceen.m */,
+			);
+			path = UIView;
+			sourceTree = "<group>";
+		};
+		5068357921379B78001AB175 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				5068357A21379B78001AB175 /* AliPay */,
+				5068357D21379B78001AB175 /* EasyShowView */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		5068357A21379B78001AB175 /* AliPay */ = {
+			isa = PBXGroup;
+			children = (
+				5068357B21379B78001AB175 /* AlipaySDK.bundle */,
+				5068357C21379B78001AB175 /* AlipaySDK.framework */,
+			);
+			path = AliPay;
+			sourceTree = "<group>";
+		};
+		5068357D21379B78001AB175 /* EasyShowView */ = {
+			isa = PBXGroup;
+			children = (
+				5068357E21379B78001AB175 /* EasyAlert */,
+				5068358B21379B78001AB175 /* EasyEmpty */,
+				5068359621379B78001AB175 /* EasyLoading */,
+				5068359F21379B78001AB175 /* EasyShowUtils */,
+				506835A621379B78001AB175 /* EasyShowView.h */,
+				506835A721379B78001AB175 /* EasyText */,
+			);
+			path = EasyShowView;
+			sourceTree = "<group>";
+		};
+		5068357E21379B78001AB175 /* EasyAlert */ = {
+			isa = PBXGroup;
+			children = (
+				5068357F21379B78001AB175 /* EasyAlertConfig.h */,
+				5068358021379B78001AB175 /* EasyAlertConfig.m */,
+				5068358121379B78001AB175 /* EasyAlertGlobalConfig.h */,
+				5068358221379B78001AB175 /* EasyAlertGlobalConfig.m */,
+				5068358321379B78001AB175 /* EasyAlertItem.h */,
+				5068358421379B78001AB175 /* EasyAlertItem.m */,
+				5068358521379B78001AB175 /* EasyAlertPart.h */,
+				5068358621379B78001AB175 /* EasyAlertPart.m */,
+				5068358721379B78001AB175 /* EasyAlertTypes.h */,
+				5068358821379B78001AB175 /* EasyAlertTypes.m */,
+				5068358921379B78001AB175 /* EasyAlertView.h */,
+				5068358A21379B78001AB175 /* EasyAlertView.m */,
+			);
+			path = EasyAlert;
+			sourceTree = "<group>";
+		};
+		5068358B21379B78001AB175 /* EasyEmpty */ = {
+			isa = PBXGroup;
+			children = (
+				5068358C21379B78001AB175 /* EasyEmptyConfig.h */,
+				5068358D21379B78001AB175 /* EasyEmptyConfig.m */,
+				5068358E21379B78001AB175 /* EasyEmptyGlobalConfig.h */,
+				5068358F21379B78001AB175 /* EasyEmptyGlobalConfig.m */,
+				5068359021379B78001AB175 /* EasyEmptyPart.h */,
+				5068359121379B78001AB175 /* EasyEmptyPart.m */,
+				5068359221379B78001AB175 /* EasyEmptyTypes.h */,
+				5068359321379B78001AB175 /* EasyEmptyTypes.m */,
+				5068359421379B78001AB175 /* EasyEmptyView.h */,
+				5068359521379B78001AB175 /* EasyEmptyView.m */,
+			);
+			path = EasyEmpty;
+			sourceTree = "<group>";
+		};
+		5068359621379B78001AB175 /* EasyLoading */ = {
+			isa = PBXGroup;
+			children = (
+				5068359721379B78001AB175 /* EasyLoadingConfig.h */,
+				5068359821379B78001AB175 /* EasyLoadingConfig.m */,
+				5068359921379B78001AB175 /* EasyLoadingGlobalConfig.h */,
+				5068359A21379B78001AB175 /* EasyLoadingGlobalConfig.m */,
+				5068359B21379B78001AB175 /* EasyLoadingTypes.h */,
+				5068359C21379B78001AB175 /* EasyLoadingTypes.m */,
+				5068359D21379B78001AB175 /* EasyLoadingView.h */,
+				5068359E21379B78001AB175 /* EasyLoadingView.m */,
+			);
+			path = EasyLoading;
+			sourceTree = "<group>";
+		};
+		5068359F21379B78001AB175 /* EasyShowUtils */ = {
+			isa = PBXGroup;
+			children = (
+				506835A021379B78001AB175 /* EasyShowLabel.h */,
+				506835A121379B78001AB175 /* EasyShowLabel.m */,
+				506835A221379B78001AB175 /* EasyShowUtils.h */,
+				506835A321379B78001AB175 /* EasyShowUtils.m */,
+				506835A421379B78001AB175 /* UIView+EasyShowExt.h */,
+				506835A521379B78001AB175 /* UIView+EasyShowExt.m */,
+			);
+			path = EasyShowUtils;
+			sourceTree = "<group>";
+		};
+		506835A721379B78001AB175 /* EasyText */ = {
+			isa = PBXGroup;
+			children = (
+				506835A821379B78001AB175 /* EasyTextBgView.h */,
+				506835A921379B78001AB175 /* EasyTextBgView.m */,
+				506835AA21379B78001AB175 /* EasyTextConfig.h */,
+				506835AB21379B78001AB175 /* EasyTextConfig.m */,
+				506835AC21379B78001AB175 /* EasyTextGlobalConfig.h */,
+				506835AD21379B78001AB175 /* EasyTextGlobalConfig.m */,
+				506835AE21379B78001AB175 /* EasyTextTypes.h */,
+				506835AF21379B78001AB175 /* EasyTextTypes.m */,
+				506835B021379B78001AB175 /* EasyTextView.h */,
+				506835B121379B78001AB175 /* EasyTextView.m */,
+			);
+			path = EasyText;
+			sourceTree = "<group>";
+		};
+		506835B221379B78001AB175 /* Macros */ = {
+			isa = PBXGroup;
+			children = (
+				506835B321379B78001AB175 /* JRCommDefine.h */,
+				506835B421379B78001AB175 /* JRLib.h */,
+				506835B521379B78001AB175 /* JRNotiOrKey.h */,
+				506835B621379B78001AB175 /* Jure.pch */,
+			);
+			path = Macros;
+			sourceTree = "<group>";
+		};
+		506835B721379B78001AB175 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				506835B821379B78001AB175 /* Cache-缓存相关 */,
+				506835BB21379B78001AB175 /* CustomService-客服 */,
+				506835BE21379B78001AB175 /* LoadingAndToast */,
+				506835C121379B78001AB175 /* Share-分享 */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		506835B821379B78001AB175 /* Cache-缓存相关 */ = {
+			isa = PBXGroup;
+			children = (
+				506835B921379B78001AB175 /* JRCacheManager.h */,
+				506835BA21379B78001AB175 /* JRCacheManager.m */,
+			);
+			path = "Cache-缓存相关";
+			sourceTree = "<group>";
+		};
+		506835BB21379B78001AB175 /* CustomService-客服 */ = {
+			isa = PBXGroup;
+			children = (
+				506835BC21379B78001AB175 /* JRServiceManager.h */,
+				506835BD21379B78001AB175 /* JRServiceManager.m */,
+			);
+			path = "CustomService-客服";
+			sourceTree = "<group>";
+		};
+		506835BE21379B78001AB175 /* LoadingAndToast */ = {
+			isa = PBXGroup;
+			children = (
+				506835BF21379B78001AB175 /* JRLoadingAndToastTool.h */,
+				506835C021379B78001AB175 /* JRLoadingAndToastTool.m */,
+			);
+			path = LoadingAndToast;
+			sourceTree = "<group>";
+		};
+		506835C121379B78001AB175 /* Share-分享 */ = {
+			isa = PBXGroup;
+			children = (
+				506835C221379B78001AB175 /* JRShareManager.h */,
+				506835C321379B78001AB175 /* JRShareManager.m */,
+			);
+			path = "Share-分享";
+			sourceTree = "<group>";
+		};
+		506835C421379B78001AB175 /* NativeBridge */ = {
+			isa = PBXGroup;
+			children = (
+				506835C521379B78001AB175 /* CachesModule.h */,
+				506835C621379B78001AB175 /* CachesModule.m */,
+				506835C721379B78001AB175 /* commModule.h */,
+				506835C821379B78001AB175 /* commModule.m */,
+				506835C921379B78001AB175 /* JRDeviceInfo.h */,
+				506835CA21379B78001AB175 /* JRDeviceInfo.m */,
+				506835CB21379B78001AB175 /* LoginAndShareModule.h */,
+				506835CC21379B78001AB175 /* LoginAndShareModule.m */,
+				506835CD21379B78001AB175 /* Pay */,
+				506835D221379B78001AB175 /* Picker */,
+				506835D721379B78001AB175 /* QRCode */,
+				506835E721379B78001AB175 /* QYChatModule.h */,
+				506835E821379B78001AB175 /* QYChatModule.m */,
+			);
+			path = NativeBridge;
+			sourceTree = "<group>";
+		};
+		506835CD21379B78001AB175 /* Pay */ = {
+			isa = PBXGroup;
+			children = (
+				506835CE21379B78001AB175 /* JRPay.h */,
+				506835CF21379B78001AB175 /* JRPay.m */,
+				506835D021379B78001AB175 /* RCTPayTool.h */,
+				506835D121379B78001AB175 /* RCTPayTool.m */,
+			);
+			path = Pay;
+			sourceTree = "<group>";
+		};
+		506835D221379B78001AB175 /* Picker */ = {
+			isa = PBXGroup;
+			children = (
+				506835D321379B78001AB175 /* JRAddressPickView.h */,
+				506835D421379B78001AB175 /* JRAddressPickView.m */,
+				506835D521379B78001AB175 /* PickerManager.h */,
+				506835D621379B78001AB175 /* PickerManager.m */,
+			);
+			path = Picker;
+			sourceTree = "<group>";
+		};
+		506835D721379B78001AB175 /* QRCode */ = {
+			isa = PBXGroup;
+			children = (
+				506835D821379B78001AB175 /* Controller */,
+				506835E221379B78001AB175 /* RNBridge */,
+				506835E521379B78001AB175 /* Source */,
+			);
+			path = QRCode;
+			sourceTree = "<group>";
+		};
+		506835D821379B78001AB175 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				506835D921379B78001AB175 /* SGQRCode.h */,
+				506835DA21379B78001AB175 /* SGQRCodeHelperTool.h */,
+				506835DB21379B78001AB175 /* SGQRCodeHelperTool.m */,
+				506835DC21379B78001AB175 /* SGQRCodeScanManager.h */,
+				506835DD21379B78001AB175 /* SGQRCodeScanManager.m */,
+				506835DE21379B78001AB175 /* SGQRCodeScanningView.h */,
+				506835DF21379B78001AB175 /* SGQRCodeScanningView.m */,
+				506835E021379B78001AB175 /* WCQRCodeScanningVC.h */,
+				506835E121379B78001AB175 /* WCQRCodeScanningVC.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		506835E221379B78001AB175 /* RNBridge */ = {
+			isa = PBXGroup;
+			children = (
+				506835E321379B78001AB175 /* QRCodeModule.h */,
+				506835E421379B78001AB175 /* QRCodeModule.m */,
+			);
+			path = RNBridge;
+			sourceTree = "<group>";
+		};
+		506835E521379B78001AB175 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				506835E621379B78001AB175 /* SGQRCode.bundle */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
@@ -1074,8 +1552,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5068361321379B78001AB175 /* AlipaySDK.bundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				5068363D21379B78001AB175 /* SGQRCode.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1188,8 +1668,54 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5068363521379B78001AB175 /* RCTPayTool.m in Sources */,
+				5068362E21379B78001AB175 /* JRLoadingAndToastTool.m in Sources */,
+				5068361221379B78001AB175 /* UIView+captureSceen.m in Sources */,
+				5068363821379B78001AB175 /* SGQRCodeHelperTool.m in Sources */,
+				5068361021379B78001AB175 /* AppDelegate+ConfigLib.m in Sources */,
+				5068362721379B78001AB175 /* EasyTextBgView.m in Sources */,
+				5068361D21379B78001AB175 /* EasyEmptyPart.m in Sources */,
+				5068361921379B78001AB175 /* EasyAlertTypes.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				5068363E21379B78001AB175 /* QYChatModule.m in Sources */,
+				5068363221379B78001AB175 /* JRDeviceInfo.m in Sources */,
+				5068360F21379B78001AB175 /* JRBaseVC.m in Sources */,
+				5068362B21379B78001AB175 /* EasyTextView.m in Sources */,
+				5068362021379B78001AB175 /* EasyLoadingConfig.m in Sources */,
+				5068361E21379B78001AB175 /* EasyEmptyTypes.m in Sources */,
+				5068361521379B78001AB175 /* EasyAlertConfig.m in Sources */,
+				5068361121379B78001AB175 /* AppDelegate+ConfigVC.m in Sources */,
+				5068363621379B78001AB175 /* JRAddressPickView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				5068362821379B78001AB175 /* EasyTextConfig.m in Sources */,
+				5068362621379B78001AB175 /* UIView+EasyShowExt.m in Sources */,
+				5068363921379B78001AB175 /* SGQRCodeScanManager.m in Sources */,
+				5068363321379B78001AB175 /* LoginAndShareModule.m in Sources */,
+				5068362121379B78001AB175 /* EasyLoadingGlobalConfig.m in Sources */,
+				5068363B21379B78001AB175 /* WCQRCodeScanningVC.m in Sources */,
+				5068362421379B78001AB175 /* EasyShowLabel.m in Sources */,
+				5068361A21379B78001AB175 /* EasyAlertView.m in Sources */,
+				5068361B21379B78001AB175 /* EasyEmptyConfig.m in Sources */,
+				5068360E21379B78001AB175 /* JRBaseNavVC.m in Sources */,
+				5068363121379B78001AB175 /* commModule.m in Sources */,
+				5068362F21379B78001AB175 /* JRShareManager.m in Sources */,
+				5068362921379B78001AB175 /* EasyTextGlobalConfig.m in Sources */,
+				5068362D21379B78001AB175 /* JRServiceManager.m in Sources */,
+				5068362321379B78001AB175 /* EasyLoadingView.m in Sources */,
+				5068361C21379B78001AB175 /* EasyEmptyGlobalConfig.m in Sources */,
+				5068361621379B78001AB175 /* EasyAlertGlobalConfig.m in Sources */,
+				5068363421379B78001AB175 /* JRPay.m in Sources */,
+				5068363C21379B78001AB175 /* QRCodeModule.m in Sources */,
+				5068361721379B78001AB175 /* EasyAlertItem.m in Sources */,
+				5068361F21379B78001AB175 /* EasyEmptyView.m in Sources */,
+				5068362221379B78001AB175 /* EasyLoadingTypes.m in Sources */,
+				5068362521379B78001AB175 /* EasyShowUtils.m in Sources */,
+				5068363021379B78001AB175 /* CachesModule.m in Sources */,
+				5068363A21379B78001AB175 /* SGQRCodeScanningView.m in Sources */,
+				5068362C21379B78001AB175 /* JRCacheManager.m in Sources */,
+				5068363721379B78001AB175 /* PickerManager.m in Sources */,
+				5068362A21379B78001AB175 /* EasyTextTypes.m in Sources */,
+				5068361821379B78001AB175 /* EasyAlertPart.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1284,6 +1810,11 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = T586HGP9C9;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Class/libs/AliPay",
+				);
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Class/Macros/Jure.pch";
 				INFOPLIST_FILE = crm_app_xiugou/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -1308,6 +1839,11 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T586HGP9C9;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Class/libs/AliPay",
+				);
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Class/Macros/Jure.pch";
 				INFOPLIST_FILE = crm_app_xiugou/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (

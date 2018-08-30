@@ -32,8 +32,8 @@ pod 'QIYU_iOS_SDK',   '~> 4.2.1'
 
 
 #绘图和icon
-#pod 'RNSVG', :path => '../node_modules/react-native-svg'
-#pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+pod 'RNSVG', :path => '../node_modules/react-native-svg'
+pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
 
 #    暂时未用,先注释已被后期使用
