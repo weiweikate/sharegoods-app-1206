@@ -1,0 +1,56 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'crm_app_xiugou' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for crm_app_xiugou
+
+inhibit_all_warnings!
+
+pod 'YYKit'
+pod 'AFNetworking'
+pod 'CocoaLumberjack', '3.4.1'
+pod 'UICKeyChainStore', '2.1.1'
+pod 'SandBoxPreviewTool'    #用于实时预览沙盒文件目录
+pod 'MBProgressHUD'
+pod 'Bugly', '2.5.0'
+#微信支付
+pod 'WechatOpenSDK'
+#友盟统计
+pod 'UMCCommon', '1.5.0'
+pod 'UMCAnalytics', '5.5.0'
+pod 'UMCSecurityPlugins', '1.0.6'
+#友盟分享
+
+pod 'UMengUShare/Social/ReducedWeChat'
+pod 'UMengUShare/Social/ReducedQQ'
+pod 'WechatOpenSDK'
+#七鱼
+pod 'QIYU_iOS_SDK',   '~> 4.2.1'
+
+
+#绘图和icon
+#pod 'RNSVG', :path => '../node_modules/react-native-svg'
+#pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+
+#    暂时未用,先注释已被后期使用
+#    pod 'UMCShare/Social', '6.9.1'
+#    pod 'UMCShare/Social/QQ', '6.9.1'
+#    pod 'UMCShare/Social/Sina', '6.9.1'
+
+#    pod 'SVProgressHUD'
+#    pod 'Masonry'
+#    pod 'IQKeyboardManager'
+#    pod 'SDWebImage'
+#    pod 'MJRefresh'
+#    pod 'MJExtension'
+#    pod 'ReactiveObjC'
+#    pod 'SDCycleScrollView'
+#    pod 'WZLBadge'
+#    pod 'DZNEmptyDataSet'
+
+ end
+
