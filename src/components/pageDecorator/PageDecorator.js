@@ -28,7 +28,7 @@
  * this.jr_toastDismiss(()=>{alert('隐藏结束')});
  *
  *
- * page rewrite following API
+ * pages rewrite following API
  * jr_NavigationBarLeftPressed:      func,
  * jr_NavigationBarRightPressed:    func,
  * jr_NavigationBarLeftItem          func return react Component
@@ -215,7 +215,7 @@ const PageDecorator = (ComponentClass) => {
             try {
                 controlParams = this.jr_getPageStateOptions();
             } catch (error) {
-                console.warn('when you set true, you need implementation jr_getPageStateOptions function to return your page state');
+                console.warn('when you set true, you need implementation jr_getPageStateOptions function to return your pages state');
             }
         }
 
