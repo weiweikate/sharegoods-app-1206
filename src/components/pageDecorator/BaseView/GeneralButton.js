@@ -50,7 +50,9 @@ export default class GeneralButton extends Component {
     };
 
     static defaultProps = {
-        click: () => {console.warn('Warn: Check whether set click function on GeneralButton~');},
+        click: () => {
+            console.warn('Warn: Check whether set click function on GeneralButton~');
+        },
 
         withoutFeedback: false,
         disabled: false,
@@ -72,7 +74,9 @@ export default class GeneralButton extends Component {
 
     onPress = () => {
         //添加节流500ms   0.5S内仅仅响应第一次点击操作，防止操作过于频繁
-        if (this.__timer__) return;
+        if (this.__timer__) {
+            return;
+        }
         this.__timer__ = setTimeout(() => {
             clearTimeout(this.__timer__);
             this.__timer__ = null;
@@ -97,7 +101,6 @@ export default class GeneralButton extends Component {
 
         // 设置不可用状态样式
         const btnContainer = [styles.btnContainer, styles.btnRadius];
-
 
 
         btnContainer.push(style);
@@ -144,11 +147,11 @@ export default class GeneralButton extends Component {
         btnContainer.push(style);
         // 不可用状态
         disabled && btnContainer.push({
-            backgroundColor: disabledBgColor ||  '#C6E7EA',
+            backgroundColor: disabledBgColor || '#C6E7EA',
         });
         const underlayColor = highlightBgColor || '#C6E7EA';
 
-        const titleTextStyle = [styles.textStyle,textStyle];
+        const titleTextStyle = [styles.textStyle, textStyle];
         // 高亮状态
         this.state.highLight && highlightTitleColor && titleTextStyle.push({
             color: highlightTitleColor,
@@ -161,10 +164,10 @@ export default class GeneralButton extends Component {
         return (<TouchableHighlight underlayColor={underlayColor}
                                     disabled={disabled}
                                     style={btnContainer}
-                                    onShowUnderlay={()=>{
+                                    onShowUnderlay={() => {
                                         this.setState({highLight: true});
                                     }}
-                                    onHideUnderlay={()=>{
+                                    onHideUnderlay={() => {
                                         this.setState({highLight: false});
                                     }}
                                     onPress={this.onPress}>
@@ -183,7 +186,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    btnRadius:{
+    btnRadius: {
         borderRadius: 6,
     },
     textStyle: {
