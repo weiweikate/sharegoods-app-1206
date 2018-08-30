@@ -12,8 +12,6 @@ import {
 } from 'react-native';
 import {NavigationActions, StackNavigator} from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
-import JsonUtil from './utils/JsonUtil';
-import ScreenUtils from './utils/ScreenUtils';
 import RouterMap from './RouterMap';
 
 import Router from './Router';
@@ -34,16 +32,11 @@ export default class App extends Component<Props> {
         this.setState({load: true});
     }
     render() {
-        let params = ScreenUtils.isIOS ? this.props.params : JsonUtil.strToJson(this.props.params);
-        // 适配IPhone X 刘海
-        if (ScreenUtils.isIOS && params) {
-            ScreenUtils.statusBarHeight = Number(params.statusBarHeight);
-            ScreenUtils.headerHeight = Number(params.statusBarHeight) + 44;
-        }
+
         const Navigator = StackNavigator(Router,
             {
                 initialRouteName: 'Tab',
-                initialRouteParams: params,
+                initialRouteParams: {},
                 headerMode: 'none',
                 transitionConfig: () => ({
                     screenInterpolator: CardStackStyleInterpolator.forHorizontal
@@ -53,23 +46,6 @@ export default class App extends Component<Props> {
                 },
             }
         );
-
-
-        // todo for what?
-        const defaultStateAction = Navigator.router.getStateForAction;
-        Navigator.router.getStateForAction = (action, state) => {
-            if (state && action.type === NavigationActions.BACK && state.routes.length === 1) {
-                console.log("退出RN页面");
-                const routes = [...state.routes];
-                return {
-                    ...state,
-                    ...state.routes,
-                    index: routes.length - 1,
-                };
-            }
-            return defaultStateAction(action, state);
-        };
-
 
         return (
             <View style={styles.container}>
