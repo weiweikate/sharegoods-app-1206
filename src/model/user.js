@@ -140,7 +140,9 @@ class User {
     // 设置用户信息
     @action
     saveUserInfo(info, saveToDisk = true) {
-        if (!info) return;
+        if (!info) {
+            return;
+        }
         this.id = info.id;                          //用户id
         this.code = info.code;                      //授权码
         this.openid = info.openid;                  //
@@ -199,7 +201,9 @@ class User {
     // 存储离线购物车信息
     @action
     saveCartDatarInfo(cartData, saveToDisk = true) {
-        if (!cartData) return;
+        if (!cartData) {
+            return;
+        }
         this.cartData = cartData;
         if (saveToDisk) {
             AsyncStorage.setItem(CARTDATA, JSON.stringify(cartData)).catch(e => {
@@ -273,24 +277,28 @@ class User {
         this.realnameStatus = null;   //
         // todo 清空cookie
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
-        return AsyncStorage.removeItem(USERINFOCACHEKEY).catch(e => {});
+        return AsyncStorage.removeItem(USERINFOCACHEKEY).catch(e => {
+        });
     }
 
     // 清空离线购物车信息
     @action
     clearCartDatarInfo() {
         this.cartData = [];
-        return AsyncStorage.removeItem(CARTDATA).catch(e => {});
+        return AsyncStorage.removeItem(CARTDATA).catch(e => {
+        });
     }
 
     /**
      * 如果用户已经登录的话，执行这个函数
      * @param action function 登录情况下需要执行的函数
      */
-    performActionIfHadLogin(action) {
-        if (!action || typeof action !== 'function') return;
+    performActionIfHadLogin(fn) {
+        if (!fn || typeof fn !== 'function') {
+            return;
+        }
         if (this.isLogin) {
-            action();
+            fn();
         } else {
             // TODO 跳转到登录页面，登录成功以后再调用action
         }

@@ -47,11 +47,13 @@ export default class EmptyView extends Component {
         },
     };
 
+    //todo __BARHEIGHT__
     constructor(props) {
         super(props);
         this.state = {
             width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height - __BARHEIGHT__,
+            height: Dimensions.get('window').height - 44
+            //height: Dimensions.get('window').height - __BARHEIGHT__,
         };
     }
 
@@ -72,14 +74,14 @@ export default class EmptyView extends Component {
         return (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={[styles.container, style]}>
-                    <Image source={this._getImgSource()} style={[styles.img,imageStyle]}/>
+                    <Image source={this._getImgSource()} style={[styles.img, imageStyle]}/>
                     <Text style={styles.description}>{description}</Text>
                 </View>
             </TouchableWithoutFeedback>
         );
     };
 
-    _getImgSource = ()=>{
+    _getImgSource = () => {
         const {source} = this.props;
         return source || EmptyImage;
     };
@@ -103,10 +105,10 @@ export default class EmptyView extends Component {
                 style={[styles.scrollViewContainer, style]}
             >
 
-                <View style={[styles.container, { width, height }]}>
+                <View style={[styles.container, {width, height}]}>
                     <Image
                         source={this._getImgSource()}
-                        style={[styles.img,imageStyle]}
+                        style={[styles.img, imageStyle]}
                     />
                     <Text style={styles.description}>
                         {description}
@@ -119,7 +121,9 @@ export default class EmptyView extends Component {
 
     // 刷新组件头
     renderRefreshControl = () => {
-        if(typeof this.props.isRefresh !== 'boolean')return null;
+        if (typeof this.props.isRefresh !== 'boolean') {
+            return null;
+        }
         return <RefreshControl
             refreshing={this.props.isRefresh}
             onRefresh={this.props.onRefresh}

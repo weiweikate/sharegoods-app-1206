@@ -56,14 +56,16 @@ import {NavigationActions} from "react-navigation";
 const PageDecorator = (ComponentClass) => {
 
     // 防止修饰多次
-    if (ComponentClass.hadInstallDecorator) return ComponentClass;
+    if (ComponentClass.hadInstallDecorator) {
+        return ComponentClass;
+    }
 
     const target = ComponentClass;
     if (!ComponentClass.jrPageOptions) {
-
         // 项目中大部分都未按照此种开发方式配置。因此，对于未配置的，先不进行修改。
-        return ComponentClass;
         __DEV__ && console.warn('Error: YOU MAY MISS static jrPageOptions-->' + ComponentClass.name);
+        return ComponentClass;
+
     }
     const jrPageOptions = ComponentClass.jrPageOptions || {};
 
@@ -75,27 +77,37 @@ const PageDecorator = (ComponentClass) => {
         this.jr_toast.showToast(title, params || {});
     };
     target.prototype.jr_toastDismiss = function (callBack) {
-        if (!this.jr_toast) return;
+        if (!this.jr_toast) {
+            return;
+        }
         this.jr_toast.dismiss(typeof callBack === 'function' ? callBack : null);
     };
     target.prototype.jr_isToastShow = function () {
-        if (!this.jr_toast) return false;
+        if (!this.jr_toast) {
+            return false;
+        }
         return this.jr_toast.isToastShow();
     };
 
 
     /* -------------loading----------  */
     target.prototype.jr_loadingShow = function (msg, params) {
-        if (!this.jr_loadingHub) return;
+        if (!this.jr_loadingHub) {
+            return;
+        }
         this.jr_toastDismiss();
         this.jr_loadingHub.loadingShow(msg, params || {});
     };
     target.prototype.jr_loadingDismiss = function (callBack) {
-        if (!this.jr_loadingHub) return;
+        if (!this.jr_loadingHub) {
+            return;
+        }
         this.jr_loadingHub.dismiss(typeof callBack === 'function' ? callBack : null);
     };
     target.prototype.jr_isLoadingShow = function () {
-        if (!this.jr_loadingHub) return false;
+        if (!this.jr_loadingHub) {
+            return false;
+        }
         return this.jr_loadingHub.isLoadingShow();
     };
 
@@ -103,22 +115,30 @@ const PageDecorator = (ComponentClass) => {
     /* -------------NavigatorBar-------------  */
     target.prototype.jr_NavigationBarHiddenLeftItem = function (hidden, callBack) {
         //隐藏左边item
-        if (!this.jr_navigatorBar) return;
+        if (!this.jr_navigatorBar) {
+            return;
+        }
         this.jr_navigatorBar.hiddenLeftItem(hidden, callBack);
     };
     target.prototype.jr_NavigationBarHiddenRightItem = function (hidden, callBack) {
         //隐藏右边item
-        if (!this.jr_navigatorBar) return;
+        if (!this.jr_navigatorBar) {
+            return;
+        }
         this.jr_navigatorBar.hiddenRightItem(hidden, callBack);
     };
     target.prototype.jr_NavigationBarResetRightTitle = function (newTitle, callBack) {
         //隐藏右边item
-        if (!this.jr_navigatorBar) return;
+        if (!this.jr_navigatorBar) {
+            return;
+        }
         this.jr_navigatorBar.changeRightTitle(newTitle, callBack);
     };
     target.prototype.jr_NavigationBarResetTitle = function (newTitle, callBack) {
         //更换title
-        if (!this.jr_navigatorBar) return;
+        if (!this.jr_navigatorBar) {
+            return;
+        }
         this.jr_navigatorBar.changeTitle(newTitle, callBack);
     };
 
@@ -126,7 +146,9 @@ const PageDecorator = (ComponentClass) => {
     //跳转
     target.prototype.jr_navigate = function (routeName, params) {
         try {
-            if (!routeName) return;
+            if (!routeName) {
+                return;
+            }
             params = params || {};
             if (this.props.screenProps) {
                 this.props.screenProps.rootNavigation.navigate(routeName, {
