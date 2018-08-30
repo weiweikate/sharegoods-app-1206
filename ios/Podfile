@@ -30,7 +30,6 @@ pod 'WechatOpenSDK'
 #七鱼
 pod 'QIYU_iOS_SDK',   '~> 4.2.1'
 
-
 #绘图和icon
 pod 'RNSVG', :path => '../node_modules/react-native-svg'
 pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
