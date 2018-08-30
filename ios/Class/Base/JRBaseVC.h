@@ -10,4 +10,5 @@
 
 @interface JRBaseVC : UIViewController
 
+
 @end
