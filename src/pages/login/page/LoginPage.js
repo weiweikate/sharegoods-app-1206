@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 
 
-export default class LoginPage extends Component<Props>{
+export default class LoginPage extends Component{
     render(){
         return(
             <View>
