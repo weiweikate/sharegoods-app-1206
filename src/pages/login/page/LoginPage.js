@@ -1,15 +1,29 @@
 import React, {Component} from 'react'
 import {
+    View,
     Text,
+    TouchableOpacity,
 } from 'react-native'
-export  default class LoginPage extends Component{
 
 
+export default class LoginPage extends Component<Props>{
     render(){
         return(
-            <Text style={{flex:1,justifyContent:'center',paddingTop:100}}>
-                login
-            </Text>
+            <View>
+
+                <TouchableOpacity onPress={this.back}>
+                    <Text>
+                        返回
+                    </Text>
+                </TouchableOpacity>
+
+            </View>
         )
     }
+
+        back=()=>{
+                   this.props.navigation.goBack();
+                   }
+
+
 }

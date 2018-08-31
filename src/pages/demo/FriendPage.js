@@ -30,7 +30,7 @@ export default class FriendPage extends Component {
     }
 
     redirect = () => {
-        this.props.navigation.navigate('Demo1', {info: '传值过去1'});
+        this.props.navigation.navigate('login/page/LoginPage', {info: '传值过去1'});
     };
 }
 const styles = StyleSheet.create({
