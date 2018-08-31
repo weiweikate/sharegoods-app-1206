@@ -1,21 +1,91 @@
 import {TabNavigator} from 'react-navigation';
-
-import FriendPage from './pages/demo/FriendPage';
-import Home from './pages/demo/Home';
+// import FriendPage from './pages/demo/FriendPage';
+// import Home from './pages/demo/Home';
+import React from 'react'
+import Home from './pages/home/page/HomePage'
+import Mine  from './pages/mine/page/MinePage'
+import ShopCart from './pages/shopCart/page/ShopCartPage'
+import SpellShop from './pages/spellShop/page/SpellShopPage'
+import {
+    StyleSheet,
+    Image
+} from "react-native";
+import CommTabImag  from './comm/res/CommTabImag'
+import ColorUtil from "./utils/ColorUtil";
 
 export const TabNav = TabNavigator(
     {
-        FriendPage: {
-            screen: FriendPage,
+        HomePage:{
+            screen:Home,
+            navigationOptions : {
+                tabBarLabel: '主页',
+                tabBarIcon: ({focused}) => {
+                    if (focused) {
+                        return (
+                            <Image style={styles.tabBarIcon} source={CommTabImag.home_Tab_img.img_Sel}/>
+                        );
+                    }
+                    return (
+                        <Image style={styles.tabBarIcon} source={CommTabImag.home_Tab_img.img_Nor}/>
+                    );
+                },
+            },
+
         },
-        Home: {
-            screen: Home,
+        SpellShopPage:{
+            screen:SpellShop,
+            navigationOptions :{
+                tabBarLabel: '拼店',
+                tabBarIcon: ({focused}) => {
+                    if (focused) {
+                        return (
+                            <Image style={styles.tabBarIcon} source={CommTabImag.spellShop_Tab_img.img_Sel}/>
+                        );
+                    }
+                    return (
+                           <Image style={styles.tabBarIcon} source={CommTabImag.spellShop_Tab_img.img_Nor}/>
+                    );
+                },
+            }
         },
+        ShopCartPage:{
+            screen:ShopCart,
+            navigationOptions :{
+                tabBarLabel: '购物车',
+                tabBarIcon: ({focused}) => {
+                    if (focused) {
+                        return (
+                            <Image style={styles.tabBarIcon} source={CommTabImag.shopCart_Tab_img.img_Sel}/>
+                        );
+                    }
+                    return (
+                        <Image style={styles.tabBarIcon} source={CommTabImag.shopCart_Tab_img.img_Nor}/>
+                    );
+                },
+            }
+        },
+        MinePage:{
+            screen:Mine,
+            navigationOptions :{
+                tabBarLabel: '我的',
+                tabBarIcon: ({focused}) => {
+                    if (focused) {
+                        return (
+                            <Image style={styles.tabBarIcon} source={CommTabImag.mine_Tab_img.img_Sel}/>
+                        );
+                    }
+                    return (
+                           <Image style={styles.tabBarIcon} source={CommTabImag.mine_Tab_img.img_Nor}/>
+                    );
+                },
+            }
+        },
+
     },
     {
         tabBarOptions: {
             //当前选中的tab bar的文本颜色和图标颜色
-            activeTintColor: '#4BC1D2',
+            activeTintColor: ColorUtil.mainRedColor,
             //当前未选中的tab bar的文本颜色和图标颜色
             inactiveTintColor: '#000',
             //是否显示tab bar的图标，默认是false
@@ -55,3 +125,9 @@ export const TabNav = TabNavigator(
         //返回按钮是否会导致tab切换到初始tab页？ 如果是，则设置为initialRoute，否则为none。 缺省为initialRoute。
         backBehavior: 'none',
     });
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#f6f6f6'
+    }
+});
