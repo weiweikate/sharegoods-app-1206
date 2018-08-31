@@ -1,7 +1,7 @@
 import {TabNavigator} from 'react-navigation';
 
-import FriendPage from './views/demo/FriendPage';
-import Home from './views/demo/Home';
+import FriendPage from './pages/demo/FriendPage';
+import Home from './pages/demo/Home';
 
 export const TabNav = TabNavigator(
     {

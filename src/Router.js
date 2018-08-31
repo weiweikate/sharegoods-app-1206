@@ -3,8 +3,8 @@ import PageDecorator from './components/pageDecorator/PageDecorator';
 // 基础模块
 import {TabNav} from './RootPage';
 // 业务模块
-import demo from './views/demo/index';
-import debug from './views/debug/index';
+import demo from './pages/demo/index';
+import debug from './pages/debug/index';
 
 const Router = {
     Tab: {

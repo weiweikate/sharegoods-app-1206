@@ -30,7 +30,7 @@ const PageLoadingState = {
  */
 function renderViewByLoadingState(loadingStateAndSetting, renderSuccessView) {
     if (!loadingStateAndSetting || typeof loadingStateAndSetting !== 'object') {
-        __DEV__ && console.warn('Please check loadingStateAndSetting params of current page,' +
+        __DEV__ && console.warn('Please check loadingStateAndSetting params of current pages,' +
             'maybe you had set wrong format loadingStateAndSetting');
         return <NullView/>;
     }
