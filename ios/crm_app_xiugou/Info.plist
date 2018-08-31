@@ -38,6 +38,9 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
+<<<<<<< HEAD
+	<string/>
+=======
 	<string>App需要知道您的地理信息,以便更好的为您服务</string>
   <key>NSMicrophoneUsageDescription</key>
   <string>APP需要访问您的麦克风,以便发送语音</string>
@@ -47,6 +50,7 @@
   <string>App需要您的同意,才能访问相册</string>
   <key>NSCameraUsageDescription</key>
   <string>App需要您的同意,才能访问相机</string>
+>>>>>>> 4193a4ef2aa70a1b69a9cfe4a971d840d81dee44
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -59,5 +63,19 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Zocial.ttf</string>
+	</array>
 </dict>
 </plist>
