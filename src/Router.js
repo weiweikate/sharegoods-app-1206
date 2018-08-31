@@ -15,7 +15,7 @@ import {TabNav} from './RootPage';
 // 业务模块
 import demo from './pages/demo/index';
 import debug from './pages/debug/index';
-import login from './pages/login/page'
+
 
 import home from './pages/home/page/index'
 import mine  from './pages/mine/page/index'
