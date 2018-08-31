@@ -5,6 +5,7 @@ import {TabNav} from './RootPage';
 // 业务模块
 import demo from './pages/demo/index';
 import debug from './pages/debug/index';
+import login from './pages/login/page'
 
 const Router = {
     Tab: {
@@ -34,5 +35,6 @@ function addSubModule(module) {
 
 addSubModule(demo);
 addSubModule(debug);
+addSubModule(login)
 
 export default Router;

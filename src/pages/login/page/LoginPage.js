@@ -10,16 +10,18 @@ export default class LoginPage extends Component<Props>{
     render(){
         return(
             <View>
-                   <TouchableOpacity onPress={this.back}>
-                        <Text>
-                            返回
-                        </Text>
-                    <TouchableOpacity/>
+
+                <TouchableOpacity onPress={this.back}>
+                    <Text>
+                        返回
+                    </Text>
+                </TouchableOpacity>
+
             </View>
         )
     }
 
-        back()=()=>{
+        back=()=>{
                    this.props.navigation.goBack();
                    }
 
