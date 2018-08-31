@@ -1,0 +1,93 @@
+PODS:
+  - AFNetworking (3.2.1):
+    - AFNetworking/NSURLSession (= 3.2.1)
+    - AFNetworking/Reachability (= 3.2.1)
+    - AFNetworking/Security (= 3.2.1)
+    - AFNetworking/Serialization (= 3.2.1)
+    - AFNetworking/UIKit (= 3.2.1)
+  - AFNetworking/NSURLSession (3.2.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.2.1)
+  - AFNetworking/Security (3.2.1)
+  - AFNetworking/Serialization (3.2.1)
+  - AFNetworking/UIKit (3.2.1):
+    - AFNetworking/NSURLSession
+  - Bugly (2.5.0)
+  - CocoaLumberjack (3.4.1):
+    - CocoaLumberjack/Default (= 3.4.1)
+    - CocoaLumberjack/Extensions (= 3.4.1)
+  - CocoaLumberjack/Default (3.4.1)
+  - CocoaLumberjack/Extensions (3.4.1):
+    - CocoaLumberjack/Default
+  - MBProgressHUD (1.1.0)
+  - QIYU_iOS_SDK (4.2.1)
+  - SandBoxPreviewTool (1.1)
+  - UICKeyChainStore (2.1.1)
+  - UMCAnalytics (5.5.0):
+    - UMCCommon
+  - UMCCommon (1.5.0)
+  - UMCSecurityPlugins (1.0.6)
+  - UMengUShare/Core (6.4.8.2):
+    - UMengUShare/Network
+  - UMengUShare/Network (6.4.8.2)
+  - UMengUShare/Social/ReducedQQ (6.4.8.2):
+    - UMengUShare/Core
+  - UMengUShare/Social/ReducedWeChat (6.4.8.2):
+    - UMengUShare/Core
+  - WechatOpenSDK (1.8.2)
+  - YYKit (1.0.9):
+    - YYKit/no-arc (= 1.0.9)
+  - YYKit/no-arc (1.0.9)
+
+DEPENDENCIES:
+  - AFNetworking
+  - Bugly (= 2.5.0)
+  - CocoaLumberjack (= 3.4.1)
+  - MBProgressHUD
+  - QIYU_iOS_SDK (~> 4.2.1)
+  - SandBoxPreviewTool
+  - UICKeyChainStore (= 2.1.1)
+  - UMCAnalytics (= 5.5.0)
+  - UMCCommon (= 1.5.0)
+  - UMCSecurityPlugins (= 1.0.6)
+  - UMengUShare/Social/ReducedQQ
+  - UMengUShare/Social/ReducedWeChat
+  - WechatOpenSDK
+  - YYKit
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AFNetworking
+    - Bugly
+    - CocoaLumberjack
+    - MBProgressHUD
+    - QIYU_iOS_SDK
+    - SandBoxPreviewTool
+    - UICKeyChainStore
+    - UMCAnalytics
+    - UMCCommon
+    - UMCSecurityPlugins
+    - UMengUShare
+    - WechatOpenSDK
+    - YYKit
+
+SPEC CHECKSUMS:
+  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
+  CocoaLumberjack: 2e258a064cacc8eb9a2aca318e24d02a0a7fd56d
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
+  QIYU_iOS_SDK: 9dc5cb1dee3abdccca56cc282ecbfc841e366680
+  SandBoxPreviewTool: 2d837db4409c74c9a8047838f5b320c08161fad1
+  UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
+  UMCAnalytics: 4667788559a72f2fa5077117d1b8802a3b6eb6bb
+  UMCCommon: 82d21f4bb9532a5472cc533bbd8ed48aff376a14
+  UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
+  UMengUShare: 370d180101e13ee0227ae657ab119ba97243d2b3
+  WechatOpenSDK: 676feec516a11173eafd1fe64b10d27babf28701
+  YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
+
+PODFILE CHECKSUM: 1f1052cec9bb823269a945394c91776a7d7a89d2
+
+COCOAPODS: 1.5.3
