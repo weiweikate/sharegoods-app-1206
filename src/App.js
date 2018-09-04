@@ -59,11 +59,11 @@ export default class App extends Component<Props> {
 
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
-            routeName: RouterMap.DebugPanelPage,
+            routeName: RouterMap.DebugDemoPage,
             params: {},
 
             // navigate can have a nested navigate action that will be run inside the child router
-            action: NavigationActions.navigate({routeName: RouterMap.DebugPanelPage})
+            action: NavigationActions.navigate({routeName: RouterMap.DebugDemoPage})
         });
         this.refs.Navigator.dispatch(navigationAction);
     };

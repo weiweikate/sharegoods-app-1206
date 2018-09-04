@@ -17,4 +17,13 @@ import App from './src/App';
     }
 })();
 
+if (!__DEV__) {
+    global.console = {
+        info: () => {},
+        log: () => {},
+        warn: () => {},
+        debug: () => {},
+        error: () => {}
+    };
+}
 AppRegistry.registerComponent('crm_app_xiugou', () => App);

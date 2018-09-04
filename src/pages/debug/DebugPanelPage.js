@@ -73,6 +73,9 @@ export default class DebugPanelPage extends Component {
     goToToolDebugging = () => {
         this.props.navigation.navigate('debug/ToolDebugPage');
     };
+    goToDemo = () => {
+        this.props.navigation.navigate('debug/DemoListPage');
+    };
 
 
     // 打开ios沙盒目录预览
@@ -149,6 +152,7 @@ export default class DebugPanelPage extends Component {
         });
 
         const EventArr = [
+            {title: 'demo', onPress: this.goToDemo},
             {title: 'HTTP请求历史记录', onPress: this.goToFetchHistoryPage},
             {title: '查看当前USER信息', onPress: this.goToUserPage},
             {title: '支付调试面板', onPress: this.goToToolDebugging}
