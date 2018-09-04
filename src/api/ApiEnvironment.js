@@ -9,52 +9,7 @@ import config from '../../config';
 const KEY_ApiEnvironment = 'ApiEnvironment';
 const KEY_DefaultFetchTimeout = 'DefaultFetchTimeout';
 // HOST配置
-const ApiConfig = {
-    dev_mock: {
-        name: '开发mock环境',
-        host: 'http://localhost:9090'
-    },
-    dev_wcj: {
-        name: '开发环境—wcj',
-        host: 'http://172.16.10.19'
-    },
-    dev_syx: {
-        name: '开发环境—syx',
-        host: 'http://172.16.10.7'
-    },
-    dev_yxm: {
-        name: '开发环境—yxm',
-        host: 'http://172.16.10.12'
-    },
-    dev_cs: {
-        name: '开发环境-cs',
-        host: 'http://172.16.10.69'
-    },
-    dev_zh: {
-        name: '开发环境-zh',
-        host: 'http://172.16.10.29'
-    },
-    dev_zb: {
-        name: '开发环境-zb',
-        host: 'http://172.16.10.41'
-    },
-    dev: {
-        name: '开发环境',
-        host: 'http://172.16.10.253'
-    },
-    qa: {
-        name: '测试环境',
-        host: 'https://test.dnvhot.tech'
-    },
-    online: {
-        name: '生产环境',
-        host: ''
-    },
-    qa_yx: {
-        name: '测试环境_营销',
-        host: 'https://oper.dnvhot.tech'
-    }
-};
+const ApiConfig = config.env;
 
 class ApiEnvironment {
 

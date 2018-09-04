@@ -60,12 +60,11 @@ export default class DemoListPage extends Component {
     }
 
     loadPageData = () => {
-        let res = API.apiDemoList({}, {navigation: this.props.navigation, auth: true}).then(result => {
+        API.apiDemoList({a:1}).then(result => {
             console.log('result', result);
         }).catch(error => {
             console.log('catch error', error);
         });
-        console.log(res);
     };
 
 }
