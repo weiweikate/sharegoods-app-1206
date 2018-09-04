@@ -44,9 +44,10 @@ export default class HttpUtils {
         }
         return axios.get(url).then(response => {
             let data = response.data;
-
-
             return data;
+        }).catch(error => {
+            console.log(error);
+            return error;
         });
     }
 
@@ -58,6 +59,10 @@ export default class HttpUtils {
 
         return axios.post(url, data, config)
             .then(response => response.data)
-            .catch(error => console.log(error));
+            .catch(error => {
+                console.log('post error',error);
+                return error;
+                //return Promise.reject(error);
+            });
     }
 }
