@@ -27,9 +27,12 @@ export default class App extends Component<Props> {
             load: false
         };
     }
+
     async componentDidMount() {
         await apiEnvironment.loadLastApiSettingFromDiskCache();
+        global.$navigator = this.refs.Navigator;
     }
+
     render() {
 
         const Navigator = StackNavigator(Router,
@@ -45,12 +48,48 @@ export default class App extends Component<Props> {
                 },
             }
         );
+        console.log('Navigator', Navigator.dispatch);
+        // goBack 返回指定的router
+        const defaultStateAction = Navigator.router.getStateForAction;
+        Navigator.router.getStateForAction = (action, state) => {
+            //console.log(action,state)
+            if (state && action.type === NavigationActions.BACK && state.routes.length === 1) {
+                console.log("退出RN页面");
+                const routes = [...state.routes];
+                return {
+                    ...state,
+                    ...state.routes,
+                    index: routes.length - 1,
+                };
+            }
+            return defaultStateAction(action, state);
+        };
+        const getCurrentRouteName = (navigationState) => {
+            if (!navigationState) {
+                return null;
+            }
+            const route = navigationState.routes[navigationState.index];
+            if (route.routes) {
+                return getCurrentRouteName(route);
+            }
+            return route.routeName;
+        };
 
         return (
             <View style={styles.container}>
-                <Navigator screenProps={this.props.params} ref='Navigator'/>
+                <Navigator screenProps={this.props.params} ref='Navigator'
+                           onNavigationStateChange={(prevState, currentState) => {
+                               let curRouteName = getCurrentRouteName(currentState);
+                               console.log(curRouteName);
+                               const currentScreen = getCurrentRouteName(currentState);
+                               const prevScreen = getCurrentRouteName(prevState);
+                               if (prevScreen !== currentScreen) {
+                                   console.log('从页面' + prevScreen + '跳转页面' + currentScreen);
+                               }
+                           }}/>
                 {
-                    CONFIG.showDebugPanel ? <DebugButton onPress={this.showDebugPage}><Text style={{color: 'white'}}>调试页</Text></DebugButton> : null
+                    CONFIG.showDebugPanel ? <DebugButton onPress={this.showDebugPage}><Text
+                        style={{color: 'white'}}>调试页</Text></DebugButton> : null
                 }
 
             </View>
@@ -59,11 +98,7 @@ export default class App extends Component<Props> {
 
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
-            routeName: RouterMap.DebugDemoPage,
-            params: {},
-
-            // navigate can have a nested navigate action that will be run inside the child router
-            action: NavigationActions.navigate({routeName: RouterMap.DebugDemoPage})
+            routeName: RouterMap.DebugPanelPage
         });
         this.refs.Navigator.dispatch(navigationAction);
     };

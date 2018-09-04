@@ -52,9 +52,10 @@ export default class LoadingView extends Component {
 
 const styles = StyleSheet.create({
     container: {
+        paddingTop:20,
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         backgroundColor: '#F7F7F7',
     },
 });

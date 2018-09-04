@@ -10,12 +10,14 @@
 //调试面板
 import DebugPanelPage from './DebugPanelPage';
 import DemoListPage from './DemoListPage';
+import DemoLoginPage from './DemoLoginPage';
 //import ToolDebugPage from './ToolDebugPage';
 
 export default {
     moduleName: 'debug',
     childRoutes: {
         DebugPanelPage,
-        DemoListPage
+        DemoListPage,
+        DemoLoginPage,
     }
 };

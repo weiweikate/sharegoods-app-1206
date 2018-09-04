@@ -21,7 +21,7 @@ import {NavigationActions} from "react-navigation";
 export default class DebugPanelPage extends Component {
 
     // 页面配置
-    static jrPageOptions = {
+    static $PageOptions = {
         navigationBarOptions: {
             title: '环境配置',
         },
@@ -152,7 +152,7 @@ export default class DebugPanelPage extends Component {
         });
 
         const EventArr = [
-            {title: 'demo', onPress: this.goToDemo},
+            {title: 'PageDecorator Demo', onPress: this.goToDemo},
             {title: 'HTTP请求历史记录', onPress: this.goToFetchHistoryPage},
             {title: '查看当前USER信息', onPress: this.goToUserPage},
             {title: '支付调试面板', onPress: this.goToToolDebugging}
