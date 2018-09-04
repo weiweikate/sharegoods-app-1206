@@ -99,6 +99,7 @@ export default class App extends Component<Props> {
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
             routeName: RouterMap.DebugPanelPage
+            //routeName:'shopCart/demo1111/AddressBookPage'
         });
         this.refs.Navigator.dispatch(navigationAction);
     };

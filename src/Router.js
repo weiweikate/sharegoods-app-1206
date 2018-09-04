@@ -13,15 +13,15 @@ import PageDecorator from './components/pageDecorator/PageDecorator';
 // 基础模块
 import {TabNav} from './RootPage';
 // 业务模块
-import demo from './pages/demo/index';
-import debug from './pages/debug/index';
+import demo from './pages/demo';
+import debug from './pages/debug';
 
 
-import home from './pages/home/page/index'
-import mine  from './pages/mine/page/index'
-import shopCart from './pages/shopCart/page/index'
-import spellShop from './pages/spellShop/page/index'
-import login from './pages/login/page/index'
+import home from './pages/home';
+import mine from './pages/mine';
+import shopCart from './pages/shopCart';
+import spellShop from './pages/spellShop';
+import login from './pages/login';
 
 const Router = {
     Tab: {
@@ -31,33 +31,41 @@ const Router = {
         })
     }
 };
+
 // 添加模块内子路由配置
-function addSubModule(module) {
-    if (!module.moduleName || typeof module.moduleName !== 'string' || !module.childRoutes) {
+function addSubModule(module, prefixPath) {
+
+    if (!module || !module.moduleName || typeof module.moduleName !== 'string' || !module.childRoutes || typeof module.childRoutes !== 'object') {
         __DEV__ && console.error('module maybe wrong format, please checkout');
         return;
     }
 
-    const moduleName = module.moduleName;
+    const p = prefixPath ? `${prefixPath}/${module.moduleName}` : module.moduleName;
 
     Object.keys(module.childRoutes).map((pageName) => {
         const item = module.childRoutes[pageName];
-        // 路由跳转 this.props.navigation.navigate('debug/DebugPanelPage');
-        const path = `${moduleName}/${pageName}`;
-        Router[path] = {screen: PageDecorator(item)};
+        console.log(1,pageName)
+        if (item.moduleName) {
+            console.log(2222,item.moduleName)
+            addSubModule(item, p);
+        } else if (typeof item === 'function') {
+            const path = `${p}/${pageName}`;
+            Router[path] = {screen: PageDecorator(item)};
+        }
     });
 }
 
+
 addSubModule(demo);
 addSubModule(debug);
-addSubModule(login)
+addSubModule(login);
 
-addSubModule(home)
-addSubModule(mine)
-addSubModule(shopCart)
-addSubModule(spellShop)
-addSubModule(login)
+addSubModule(home);
+addSubModule(mine);
+addSubModule(shopCart);
+addSubModule(spellShop);
+addSubModule(login);
 
-console.log(Router)
+console.log('Router',Object.keys(Router));
 
 export default Router;
