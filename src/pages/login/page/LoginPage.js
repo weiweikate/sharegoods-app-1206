@@ -1,65 +1,116 @@
-import React, {Component} from 'react'
-import LoginTopView    from '../components/LoginTopView'
+import React, { Component } from 'react';
+import LoginTopView from '../components/LoginTopView';
 import {
     View,
     Text,
-    Alert,
-    StyleSheet
-} from 'react-native'
+    StyleSheet,
+    TouchableOpacity,
+    Image
+} from 'react-native';
+import CommSpaceLine from '../../../comm/components/CommSpaceLine';
+import loginAndRegistRes from '../res/LoginAndRegistRes';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
+export default class LoginPage extends Component {
+    constructor() {
+        super();
+        this.state = {
+            a: 0
+        };
+    }
 
-export default class LoginPage extends Component{
-    // 页面配置
+    /*页面配置*/
     static $PageOptions = {
         navigationBarOptions: {
-            title: null,
+            title: null
             // show: false // 是否显示导航条 默认显示
         },
-        // 是否启动页面状态管理
-        renderByPageState: true,
+        renderByPageState: true
     };
-/*render右上角*/
-    $NavBarRenderRightItem=()=>{
-        return(
+    /*render右上角*/
+    $NavBarRenderRightItem = () => {
+        return (
             <Text style={Styles.rightTopTitleStyle} onPress={this.registBtnClick}>
                 注册
             </Text>
-        )
+        );
+    };
+    registBtnClick = () => {
+        this.props.navigation.navigate('login/login/RegistPage');
+    };
+
+    render() {
+        return (
+            <View style={Styles.contentStyle}>
+                <LoginTopView
+                    oldUserLoginClick={this.oldUserLoginClick.bind(this)}
+                />
+                <View style={Styles.otherLoginBgStyle}>
+                    <View style={Styles.lineBgStyle}>
+                        <CommSpaceLine style={{ marginTop: 7, width: 80, marginLeft: 5 }}/>
+                        <Text>
+                            其他登陆方式
+                        </Text>
+                        <CommSpaceLine style={{ marginTop: 7, width: 80, marginLeft: 5 }}/>
+                    </View>
+                    <View style={{
+                        marginLeft: 0,
+                        marginRight: 0,
+                        justifyContent: 'center',
+                        backgroundColor: '#fff',
+                        alignItems: 'center'
+                    }}>
+                        <TouchableOpacity onPress={this.weChatLoginClick}>
+                            <Image style={{ width: 50, height: 50 }} source={loginAndRegistRes.weixinImage}/>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <Image style={{
+                    width: ScreenUtils.width,
+                    position: 'absolute',
+                    bottom: 0,
+                    height: 80,
+                    backgroundColor: 'red'
+                }} source={loginAndRegistRes.loginBottomImage}/>
+            </View>
+        );
     }
 
-    registBtnClick=()=>{
-        Alert.alert(
-            'Alert Title',
-            'My Alert Msg',
-            [
-                {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ],
-            { cancelable: false }
-        )
-    }
-    render(){
-        return(
-            <View style={Styles.contentStyle}>
-                <LoginTopView/>
-            </View>
-        )
-    }
+    weChatLoginClick = () => {
+
+    };
+    oldUserLoginClick = () => {
+        this.props.navigation.navigate('login/login/OldUserLoginPage');
+    };
 }
 
 const Styles = StyleSheet.create(
     {
-        contentStyle:{
-            flex:1,
-            backgroundColor:'#fff',
+        contentStyle: {
+            flex: 1,
+            margin: 0,
+            marginTop: -2,
+            backgroundColor: '#fff'
+        },
+        rightTopTitleStyle: {
+            fontSize: 15,
+            color: '#666'
+        },
+        otherLoginBgStyle: {
+            left: 30,
+            position: 'absolute',
+            bottom: 10,
+            height: 170
 
         },
-
-        rightTopTitleStyle:{
-            fontSize:15,
-            color:'#666'
+        lineBgStyle: {
+            marginLeft: 30,
+            marginRight: 30,
+            flexDirection: 'row',
+            height: 30,
+            backgroundColor: '#fff',
+            justifyContent: 'center'
         }
     }
-)
+);
 
