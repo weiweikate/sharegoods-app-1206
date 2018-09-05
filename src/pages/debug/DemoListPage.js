@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import API from "../../api/index";
 import {PageLoadingState} from '../../components/pageDecorator/PageState';
+import NetImg from '../../components/pageDecorator/BaseView/source/no_data.png';
 
 export default class DemoListPage extends Component {
 
@@ -28,6 +29,8 @@ export default class DemoListPage extends Component {
             // 网络请求失败配置
             netFailedProps: {
                 netFailedInfo: this.state.netFailedInfo,
+                style: netStyles.container,
+                source: NetImg,
                 reloadBtnClick: () => {
                     console.log('reload');
                     this.setState({
@@ -122,5 +125,11 @@ export default class DemoListPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    }
+});
+const netStyles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#999999',
     }
 });
