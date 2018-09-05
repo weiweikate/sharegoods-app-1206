@@ -7,7 +7,7 @@ import {
     ScrollView,
     RefreshControl
 } from "react-native";
-import { NavigatorBar } from "jr-baseview";
+import NavigatorBar from "../../components/pageDecorator/NavigatorBar";
 import ScreenUtils from "../../utils/ScreenUtils";
 // 图片资源
 import IntroduceImg from "./src/hhk_03.png";
@@ -17,24 +17,22 @@ import { observer } from "mobx-react";
 @observer
 export default class SpellShopPage extends Component {
 
-    // 页面配置
-    static jrPageOptions = {
-        navigationBarOptions: {
-            hideNavBar: true
-        }
-    };
-
     constructor(props) {
         super(props);
     }
+
+    static $PageOptions = {
+        navigationBarOptions: {
+            show: false
+            // show: false // 是否显示导航条 默认显示
+        }
+    };
 
     _onRefresh = () => {
 
     };
 
     _renderContainer = () => {
-
-
         return {
             bar: true,
             cmp: <ScrollView refreshControl={<RefreshControl
