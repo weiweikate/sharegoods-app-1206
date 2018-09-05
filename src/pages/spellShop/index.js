@@ -1,10 +1,7 @@
-import ShopCart from '../shopCart/page/ShopCartPage';
-import demo22 from './demo/index';
-
+import SpellShopPage from "./SpellShopPage";//拼店页面
 export default {
-    moduleName: 'shopCart',
+    moduleName: "spellShop",            //拼店模块
     childRoutes: {
-        ShopCart,
-        demo22,
+        SpellShopPage                  //拼店页面
     }
 };
