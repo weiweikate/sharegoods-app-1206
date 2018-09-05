@@ -1,4 +1,4 @@
-import LoginPage  from './page/LoginPage'
+import LoginPage  from './page'
 
 // 访问路径 'Login/Demo1'
 export default {
