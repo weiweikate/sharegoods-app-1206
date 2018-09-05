@@ -38,9 +38,9 @@ import setting from "../res/homeBaseImg/icon_03.png";
 import service from "../res/homeBaseImg/icon02.png";
 
 export default class MinePage extends Component {
-    static jrPageOptions = {
+    $PageOptions = {
         navigationBarOptions: {
-            hideNavBar: true
+            hideNavBar: true,
         },
         renderByPageState: true
     };
@@ -208,8 +208,8 @@ export default class MinePage extends Component {
                                 <UIText value={"我的订单"} style={[styles.blackText, { marginLeft: 8 }]}/>
                             </View>
                             <View style={{ flexDirection: "row", marginRight: 15, alignItems: "center" }}>
-                                <UIText value={"查看全部"} style={[styles.blackText, { marginLeft: 8 }]}/>
-                                <Image source={arrowRight} style={{ height: 10 }} resizeMode={"contain"}/>
+                                <UIText value={"查看全部"} style={{fontFamily: "PingFang-SC-Medium", fontSize: 12, color: "#999999"}}/>
+                                <Image source={arrowRight} style={{ height: 12,marginLeft:6 }} resizeMode={"contain"}/>
                             </View>
                         </TouchableOpacity>
                         <View style={{ flex: 1, flexDirection: "row" }}>

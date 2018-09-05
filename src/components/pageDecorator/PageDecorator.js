@@ -6,26 +6,26 @@
  * demo examples:
  *
  * loading demo
- * this.jr_loadingShow();    //弹出loading 参数全部可省
- * this.jr_loadingDismiss(); //隐藏loading
- * this.jr_isLoadingShow();  //return loding是否在展示
+ * this.$loadingShow();    //弹出loading 参数全部可省
+ * this.$loadingDismiss(); //隐藏loading
+ * this.$isLoadingShow();  //return loding是否在展示
  *
  * //参数配置 loading时间 背景颜色 超时回调
- * this.jr_loadingShow('加载中...');
- * this.jr_loadingShow('加载中...',{timeout: 1,bgColor: 'rgba(0,0,0,0.5)',loadingTimeout: ()=>{
+ * this.$loadingShow('加载中...');
+ * this.$loadingShow('加载中...',{timeout: 1,bgColor: 'rgba(0,0,0,0.5)',loadingTimeout: ()=>{
  *     alert(1);
  * }});
- * this.jr_loadingDismiss(()=>{alert('隐藏结束')});
+ * this.$loadingDismiss(()=>{alert('隐藏结束')});
  *
  *
  * toast demo  参数：主标题，次标题，详细配置（持续时间，隐藏回调）
- * this.jr_toastShow('网络错误');
- * this.jr_toastShow('网络错误','请重新刷新');
- * this.jr_toastShow('网络错误','请重新刷新',{duration: 2 ,toastHiddenCallBack:()=>{
+ * this.$toastShow('网络错误');
+ * this.$toastShow('网络错误','请重新刷新');
+ * this.$toastShow('网络错误','请重新刷新',{duration: 2 ,toastHiddenCallBack:()=>{
  *     alert(1);
  * }});
- * this.jr_toastDismiss();
- * this.jr_toastDismiss(()=>{alert('隐藏结束')});
+ * this.$toastDismiss();
+ * this.$toastDismiss(()=>{alert('隐藏结束')});
  *
  *
  * pages rewrite following API
@@ -34,8 +34,8 @@
  * jr_NavigationBarLeftItem          func return react Component
  * jr_NavigationBarRightItem         func return react Component
  * jr_NavigationBarHiddenLeftItem()  func
- * jr_NavigationBarHiddenRightItem() func
- * jr_NavigationBarResetTitle('')    func 修改页面标题
+ * $NavigationBarHiddenRightItem() func
+ * $NavigationBarResetTitle('')    func 修改页面标题
  */
 
 import React from 'react';
@@ -48,7 +48,7 @@ import NavigatorBar from './NavigatorBar/index';
 import {
     LoadingHub,
     ToastView,
-} from 'jr-baseview';
+} from './BaseView';
 
 import {renderViewByLoadingState} from './PageState';
 import {NavigationActions} from "react-navigation";
@@ -56,95 +56,95 @@ import {NavigationActions} from "react-navigation";
 const PageDecorator = (ComponentClass) => {
 
     // 防止修饰多次
-    if (ComponentClass.hadInstallDecorator) {
+    if (ComponentClass.$hadInstallDecorator) {
         return ComponentClass;
     }
 
     const target = ComponentClass;
-    if (!ComponentClass.jrPageOptions) {
+    if (!ComponentClass.$PageOptions) {
         // 项目中大部分都未按照此种开发方式配置。因此，对于未配置的，先不进行修改。
-        __DEV__ && console.warn('Error: YOU MAY MISS static jrPageOptions-->' + ComponentClass.name);
+        __DEV__ && console.warn('Error: YOU MAY MISS static $PageOptions-->' + ComponentClass.name);
         return ComponentClass;
 
     }
-    const jrPageOptions = ComponentClass.jrPageOptions || {};
+    const $PageOptions = ComponentClass.$PageOptions || {};
 
     /* -------------toast-------------  */
-    target.prototype.jr_toastShow = function (title, params) {
-        if (!this.jr_toast) {
+    target.prototype.$toastShow = function (title, params) {
+        if (!this.$toast) {
             return;
         }
-        this.jr_toast.showToast(title, params || {});
+        this.$toast.showToast(title, params || {});
     };
-    target.prototype.jr_toastDismiss = function (callBack) {
-        if (!this.jr_toast) {
+    target.prototype.$toastDismiss = function (callBack) {
+        if (!this.$toast) {
             return;
         }
-        this.jr_toast.dismiss(typeof callBack === 'function' ? callBack : null);
+        this.$toast.dismiss(typeof callBack === 'function' ? callBack : null);
     };
-    target.prototype.jr_isToastShow = function () {
-        if (!this.jr_toast) {
+    target.prototype.$isToastShow = function () {
+        if (!this.$toast) {
             return false;
         }
-        return this.jr_toast.isToastShow();
+        return this.$toast.isToastShow();
     };
 
 
     /* -------------loading----------  */
-    target.prototype.jr_loadingShow = function (msg, params) {
-        if (!this.jr_loadingHub) {
+    target.prototype.$loadingShow = function (msg, params) {
+        if (!this.$loadingHub) {
             return;
         }
-        this.jr_toastDismiss();
-        this.jr_loadingHub.loadingShow(msg, params || {});
+        this.$toastDismiss();
+        this.$loadingHub.loadingShow(msg, params || {});
     };
-    target.prototype.jr_loadingDismiss = function (callBack) {
-        if (!this.jr_loadingHub) {
+    target.prototype.$loadingDismiss = function (callBack) {
+        if (!this.$loadingHub) {
             return;
         }
-        this.jr_loadingHub.dismiss(typeof callBack === 'function' ? callBack : null);
+        this.$loadingHub.dismiss(typeof callBack === 'function' ? callBack : null);
     };
-    target.prototype.jr_isLoadingShow = function () {
-        if (!this.jr_loadingHub) {
+    target.prototype.$isLoadingShow = function () {
+        if (!this.$loadingHub) {
             return false;
         }
-        return this.jr_loadingHub.isLoadingShow();
+        return this.$loadingHub.isLoadingShow();
     };
 
 
     /* -------------NavigatorBar-------------  */
-    target.prototype.jr_NavigationBarHiddenLeftItem = function (hidden, callBack) {
+    target.prototype.$NavigationBarHiddenLeftItem = function (hidden, callBack) {
         //隐藏左边item
-        if (!this.jr_navigatorBar) {
+        if (!this.$navigatorBar) {
             return;
         }
-        this.jr_navigatorBar.hiddenLeftItem(hidden, callBack);
+        this.$navigatorBar.hiddenLeftItem(hidden, callBack);
     };
-    target.prototype.jr_NavigationBarHiddenRightItem = function (hidden, callBack) {
+    target.prototype.$NavigationBarHiddenRightItem = function (hidden, callBack) {
         //隐藏右边item
-        if (!this.jr_navigatorBar) {
+        if (!this.$navigatorBar) {
             return;
         }
-        this.jr_navigatorBar.hiddenRightItem(hidden, callBack);
+        this.$navigatorBar.hiddenRightItem(hidden, callBack);
     };
-    target.prototype.jr_NavigationBarResetRightTitle = function (newTitle, callBack) {
+    target.prototype.$NavigationBarResetRightTitle = function (newTitle, callBack) {
         //隐藏右边item
-        if (!this.jr_navigatorBar) {
+        if (!this.$navigatorBar) {
             return;
         }
-        this.jr_navigatorBar.changeRightTitle(newTitle, callBack);
+        this.$navigatorBar.changeRightTitle(newTitle, callBack);
     };
-    target.prototype.jr_NavigationBarResetTitle = function (newTitle, callBack) {
+    target.prototype.$NavigationBarResetTitle = function (newTitle, callBack) {
         //更换title
-        if (!this.jr_navigatorBar) {
+        if (!this.$navigatorBar) {
             return;
         }
-        this.jr_navigatorBar.changeTitle(newTitle, callBack);
+        this.$navigatorBar.changeTitle(newTitle, callBack);
     };
 
     /* -------------Navigation------------- */
     //跳转
-    target.prototype.jr_navigate = function (routeName, params) {
+    target.prototype.$navigate = function (routeName, params) {
         try {
             if (!routeName) {
                 return;
@@ -166,7 +166,7 @@ const PageDecorator = (ComponentClass) => {
         }
     };
     //返回
-    target.prototype.jr_navigateBack = function (routerKey) {
+    target.prototype.$navigateBack = function (routerKey) {
         try {
             if (routerKey) {
                 const backAction = NavigationActions.back({key: routerKey,});
@@ -175,28 +175,24 @@ const PageDecorator = (ComponentClass) => {
                 this.props.navigation.goBack();
             }
         } catch (e) {
-            console.warn(`jr_navigateBack error: ${e.toString()}`);
+            console.warn(`$navigateBack error: ${e.toString()}`);
         }
     };
 
     /*------------------所有函数的封装------------------*/
-    target.prototype.jr_getAllFunc = function () {
+    target.prototype.$getAllFunc = function () {
         return {
-            jr_toastShow: this.jr_toastShow.bind(this),
-            jr_toastDismiss: this.jr_toastDismiss.bind(this),
-            jr_isToastShow: this.jr_isToastShow.bind(this),
+            $toastShow: this.$toastShow.bind(this),
+            $toastDismiss: this.$toastDismiss.bind(this),
+            $isToastShow: this.$isToastShow.bind(this),
 
-            jr_loadingShow: this.jr_loadingShow.bind(this),
-            jr_loadingDismiss: this.jr_loadingDismiss.bind(this),
-            jr_isLoadingShow: this.jr_isLoadingShow.bind(this),
+            $loadingShow: this.$loadingShow.bind(this),
+            $loadingDismiss: this.$loadingDismiss.bind(this),
+            $isLoadingShow: this.$isLoadingShow.bind(this),
 
-            jr_alertShow: this.jr_alertShow.bind(this),
-            jr_alertDismiss: this.jr_alertDismiss.bind(this),
-            jr_isAlertShow: this.jr_isAlertShow.bind(this),
-
-            jr_NavigationBarHiddenLeftItem: this.jr_NavigationBarHiddenLeftItem.bind(this),
-            jr_NavigationBarHiddenRightItem: this.jr_NavigationBarHiddenRightItem.bind(this),
-            jr_NavigationBarResetTitle: this.jr_NavigationBarResetTitle.bind(this),
+            $NavigationBarHiddenLeftItem: this.$NavigationBarHiddenLeftItem.bind(this),
+            $NavigationBarHiddenRightItem: this.$NavigationBarHiddenRightItem.bind(this),
+            $NavigationBarResetTitle: this.$NavigationBarResetTitle.bind(this),
         };
     };
 
@@ -204,70 +200,69 @@ const PageDecorator = (ComponentClass) => {
 
     ComponentClass.prototype.render = function () {
 
-        const {renderByPageState} = jrPageOptions;
+        const {renderByPageState} = $PageOptions;
 
-        const navigationBarOptions = jrPageOptions.navigationBarOptions || {};
-
+        const navigationBarOptions = $PageOptions.navigationBarOptions || {};
+        const isShowBar = navigationBarOptions.show !== undefined ?  navigationBarOptions.show : true;
         let controlParams = null;
 
-        //需要进行页面状态管理
+        // 需要进行页面状态管理
         if (renderByPageState) {
             try {
-                controlParams = this.jr_getPageStateOptions();
+                controlParams = this.$getPageStateOptions();
             } catch (error) {
-                console.warn('when you set true, you need implementation jr_getPageStateOptions function to return your pages state');
+                console.warn('when you set true, you need implementation $getPageStateOptions function to return your pages state');
             }
         }
 
-        const that = this;
 
         return (<View style={styles.container}>
 
             {
-                target.jrPageOptions && <NavigatorBar {...navigationBarOptions}
-                                                      renderRight={this.jr_NavBarRenderRightItem || null}
+                isShowBar && <NavigatorBar {...navigationBarOptions}
+                                                      renderRight={this.$NavBarRenderRightItem || null}
                                                       navigation={this.props.navigation}
-                                                      leftPressed={() => (this.jr_NavBarLeftPressed || jrNavigationBarDefaultLeftPressed).call(this)}
-                                                      rightPressed={() => (this.jr_NavRightPressed || jrNavigationBarDefaultRightPressed).call(this)}
+                                                      leftPressed={() => (this.$NavBarLeftPressed || $NavigationBarDefaultLeftPressed).call(this)}
+                                                      rightPressed={() => (this.$NavBarRightPressed || $NavigationBarDefaultRightPressed).call(this)}
                                                       ref={(bar) => {
-                                                          this.jr_navigatorBar = bar;
+                                                          this.$navigatorBar = bar;
                                                       }}/>
             }
 
             {
                 renderByPageState && controlParams ? renderViewByLoadingState(controlParams, () => {
-                    return targetRender.call(that);
+                    return targetRender.call(this);
                 }) : targetRender.call(this)
             }
 
             {(this.renderModal && typeof this.renderModal === 'function') ? this.renderModal() : null}
 
             <ToastView ref={(toast) => {
-                this.jr_toast = toast;
+                this.$toast = toast;
             }}/>
 
             <LoadingHub ref={(loadingHub) => {
-                this.jr_loadingHub = loadingHub;
+                this.$loadingHub = loadingHub;
             }}/>
 
         </View>);
     };
-    target.hadInstallDecorator = true;
+    target.$hadInstallDecorator = true;
     return target;
 };
 
 // 左右按钮默认的点击效果
-function jrNavigationBarDefaultLeftPressed(callBack) {
+function $NavigationBarDefaultLeftPressed(callBack) {
     try {
         this.props.navigation.goBack();
         callBack && typeof callBack === 'function' && callBack();
     } catch (error) {
-        console.warn('jrNavigationBarDefaultLeftPressed error ' + error.toString());
+        console.warn('$NavigationBarDefaultLeftPressed error ' + error.toString());
     }
 }
 
-function jrNavigationBarDefaultRightPressed() {
-    console.warn('mark sure you had set jrNavigationBarDefaultRightPressed func');
+function $NavigationBarDefaultRightPressed() {
+    console.warn('mark sure you had set $NavigationBarDefaultRightPressed func');
 }
 
 const styles = StyleSheet.create({

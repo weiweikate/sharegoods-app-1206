@@ -3,7 +3,7 @@
  * @providesModule FetchHistory
  */
 
-import { action, observable } from 'mobx';
+import {action, observable} from 'mobx';
 import config from '../../config';
 
 class FetchHistory {
@@ -17,15 +17,19 @@ class FetchHistory {
 
     // 插入一条记录
     @action
-    insertData(fetchProgress){
-        if(!this.showDebugPanel || !fetchProgress){return;}
+    insertData(fetchProgress) {
+        if (!this.showDebugPanel || !fetchProgress) {
+            return;
+        }
         this.history.unshift(fetchProgress);
     }
 
     // 移除一条记录
     @action
-    removeData(fetchProgress){
-        if(!this.showDebugPanel || !fetchProgress){return;}
+    removeData(fetchProgress) {
+        if (!this.showDebugPanel || !fetchProgress) {
+            return;
+        }
         const index = this.history.indexOf(fetchProgress);
         if (index > -1) {
             this.history.splice(index, 1);
