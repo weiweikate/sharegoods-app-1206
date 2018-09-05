@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 /**
  *
  * func: loadingShow(titleText,{timeout,bgColor,timeoutCallBack}) 参数都是可以传递，可不传的
@@ -40,7 +39,7 @@ export default class LoadingHub extends Component {
     }
 
     //加载
-    loadingShow(titleText = '提交中', {timeout, bgColor, timeoutCallBack} = {}) {
+    loadingShow(titleText = '加载中', {timeout, bgColor, timeoutCallBack} = {}) {
 
         if (this.state.isShow) {
             return;
@@ -122,7 +121,7 @@ export default class LoadingHub extends Component {
     //清空定时器
     _clearTimer = () => {
         if (this.__timer__) {
-            clearInterval(this.__timer__);
+            clearTimeout(this.__timer__);
             this.__timer__ = null;
         }
     };

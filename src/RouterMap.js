@@ -6,6 +6,7 @@ export default {
     // base
     Tab:'Tab',
     // debug 调试模块
+    DebugLoginPage: 'debug/DemoLoginPage',
     DebugDemoPage: 'debug/DemoListPage',
     DebugFetchHistoryPage: 'debug/FetchHistoryPage',
     DebugUserInfoPage: 'debug/UserInfoPage',

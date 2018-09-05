@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 
 const AnimatedDuration = 150;// 默认的动画持续时间
-const ShowTimeDuration = 2.0;// 弹框展示时间，单位S秒,默认2.0S
+const ShowTimeDuration = 2.5;// 弹框展示时间，单位S秒,默认2.5S
 
 
 export default class ToastView extends Component {
@@ -83,7 +83,7 @@ export default class ToastView extends Component {
                     }
                 )
             ]).start();
-            this.__timer__ = setInterval(() => {
+            this.__timer__ = setTimeout(() => {
                 this.state.opacity.setValue(0);
                 this.state.bounceValue.setValue(0.7);
                 this.setState({isShow: false}, () => {
@@ -116,7 +116,7 @@ export default class ToastView extends Component {
 
     _clearTimer = () => {
         if (this.__timer__) {
-            clearInterval(this.__timer__);
+            clearTimeout(this.__timer__);
             this.__timer__ = null;
         }
     };
