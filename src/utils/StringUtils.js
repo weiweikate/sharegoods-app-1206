@@ -1,8 +1,8 @@
-let isEmpty = (param) => {
+const isEmpty = (param) => {
     let input = param + '';
     return input == '' || input == 'undefined' || input == 'null' || input == '[]' || input == ' ';
 };
-let checkPhone = (str) => {
+const checkPhone = (str) => {
     let myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
     if (!myreg.test(str)) {
         return false;
@@ -13,7 +13,7 @@ let checkPhone = (str) => {
 /*
  * 密码判断：密码6-18位字母加数字，不含特殊符号
  * */
-let checkPassword = (password) => {
+const checkPassword = (password) => {
     let reg = /^[a-zA-Z0-9]{6,18}$/;
     let hasNum = /[0-9]/i;
     let hasLetter = /[a-zA-Z]/i;
@@ -25,3 +25,5 @@ export default {
     checkPhone,
     checkPassword
 };
+
+
