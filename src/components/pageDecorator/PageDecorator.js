@@ -48,7 +48,7 @@ import NavigatorBar from './NavigatorBar/index';
 import {
     LoadingHub,
     ToastView,
-} from 'jr-baseview';
+} from './BaseView';
 
 import {renderViewByLoadingState} from './PageState';
 import {NavigationActions} from "react-navigation";
