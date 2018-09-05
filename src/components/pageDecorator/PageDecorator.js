@@ -47,7 +47,7 @@ import {
 import NavigatorBar from './NavigatorBar/index';
 import {
     LoadingHub,
-    ToastView
+    ToastView,
 } from './BaseView';
 
 import { renderViewByLoadingState } from './PageState';
