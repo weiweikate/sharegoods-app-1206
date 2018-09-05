@@ -66,6 +66,8 @@ addSubModule(shopCart);
 addSubModule(spellShop);
 addSubModule(login);
 
+
 console.log('Router',Object.keys(Router));
+console.log(Router)
 
 export default Router;

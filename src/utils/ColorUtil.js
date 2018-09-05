@@ -6,7 +6,8 @@
 * */
 
 const ColorUtil ={
-    mainRedColor:'#e60012'
+    mainRedColor:'#d51243',
+    lineColor:'#dddddd'
 }
 
 export default ColorUtil
