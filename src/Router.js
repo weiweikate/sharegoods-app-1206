@@ -9,24 +9,22 @@
 * */
 
 // 所有页面新增修饰器
-import PageDecorator from './components/pageDecorator/PageDecorator';
+import PageDecorator from "./components/pageDecorator/PageDecorator";
 // 基础模块
-import {TabNav} from './RootPage';
+import { TabNav } from "./RootPage";
 // 业务模块
-import demo from './pages/demo';
-import debug from './pages/debug';
-
-
-import home from './pages/home';
-import mine from './pages/mine';
-import shopCart from './pages/shopCart';
-import spellShop from './pages/spellShop';
-import login from './pages/login';
+import demo from "./pages/demo";
+import debug from "./pages/debug";
+import home from "./pages/home";
+import mine from "./pages/mine";
+import shopCart from "./pages/shopCart";
+import spellShop from "./pages/spellShop";
+import login from "./pages/login";
 
 const Router = {
     Tab: {
         screen: TabNav,
-        navigationOptions: ({navigation}) => ({
+        navigationOptions: ({ navigation }) => ({
             header: null
         })
     }
@@ -35,8 +33,8 @@ const Router = {
 // 添加模块内子路由配置
 function addSubModule(module, prefixPath) {
 
-    if (!module || !module.moduleName || typeof module.moduleName !== 'string' || !module.childRoutes || typeof module.childRoutes !== 'object') {
-        __DEV__ && console.error('module maybe wrong format, please checkout');
+    if (!module || !module.moduleName || typeof module.moduleName !== "string" || !module.childRoutes || typeof module.childRoutes !== "object") {
+        __DEV__ && console.error("module maybe wrong format, please checkout");
         return;
     }
 
@@ -44,13 +42,13 @@ function addSubModule(module, prefixPath) {
 
     Object.keys(module.childRoutes).map((pageName) => {
         const item = module.childRoutes[pageName];
-        console.log(1,pageName)
+        console.log(1, pageName);
         if (item.moduleName) {
-            console.log(2222,item.moduleName)
+            console.log(2222, item.moduleName);
             addSubModule(item, p);
-        } else if (typeof item === 'function') {
+        } else if (typeof item === "function") {
             const path = `${p}/${pageName}`;
-            Router[path] = {screen: PageDecorator(item)};
+            Router[path] = { screen: PageDecorator(item) };
         }
     });
 }
@@ -59,13 +57,12 @@ function addSubModule(module, prefixPath) {
 addSubModule(demo);
 addSubModule(debug);
 addSubModule(login);
-
 addSubModule(home);
 addSubModule(mine);
 addSubModule(shopCart);
 addSubModule(spellShop);
 addSubModule(login);
 
-console.log('Router',Object.keys(Router));
+console.log("Router", Object.keys(Router));
 
 export default Router;
