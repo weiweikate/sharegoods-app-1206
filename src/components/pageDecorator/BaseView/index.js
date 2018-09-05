@@ -1,6 +1,5 @@
 /**
  * 基础组件
- * @providesModule jr-baseview
  */
 import LoadingHub from './LoadingHub';
 import ToastView from './ToastView';
