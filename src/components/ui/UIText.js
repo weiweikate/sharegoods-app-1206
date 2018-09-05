@@ -1,6 +1,6 @@
-import React from "react";
-import { Text as RNText } from "react-native";
-import connectStyle from "./connectStyle";
+import React from 'react';
+import { Text as RNText } from 'react-native';
+import connectStyle from './connectStyle';
 
 /**
  *
@@ -16,4 +16,4 @@ const UIText = (props) => {
     return (<RNText {...attributes}>{value}</RNText>);
 };
 
-export default connectStyle("Text")(UIText);
+export default connectStyle('Text')(UIText);

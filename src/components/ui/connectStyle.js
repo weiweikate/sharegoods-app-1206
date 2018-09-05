@@ -1,7 +1,7 @@
-import React from "react";
-import hoistStatics from "hoist-non-react-statics";
-import { ui } from "../../constants/Theme";
-import lodash from "lodash";
+import React from 'react';
+import hoistStatics from 'hoist-non-react-statics';
+import { ui } from '../../constants/Theme';
+import lodash from 'lodash';
 /*
 * 1.只传componentStyleName，样式要在Theme中配置，
 * 2.两个参数都传，使用外部传入的样式
@@ -16,7 +16,7 @@ export default (componentStyleName, componentStyle) => {
             }
 
             render() {
-                let { styleName = "default", style, ...props } = this.props;
+                let { styleName = 'default', style, ...props } = this.props;
                 let themeStyle = componentStyle ? componentStyle : ui[componentStyleName][styleName];
                 let isContainObjectStyle = false;
                 for (let entry of Object.values(themeStyle)) {
