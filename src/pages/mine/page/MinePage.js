@@ -120,14 +120,14 @@ export default class MinePage extends Component {
                         }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <UIText value={'鲍勃'}
-                                        style={{ fontFamily: 'PingFang-SC-Bold', fontSize: 15, color: '#ffffff' }}/>
+                                        style={{ fontSize: 15, color: '#ffffff' }}/>
                                 <Image source={whiteArrowRight}
                                        style={{ height: 14, marginLeft: 12 }}
                                        resizeMode={'contain'}/>
                             </View>
                             <ImageBackground style={{ width: 53, height: 14, alignItems: 'center', marginTop: 2 }}
                                              source={levelBg}>
-                                <Text style={{ fontFamily: 'DFPYaSongW9', fontSize: 9, color: '#ffa351' }}>V3</Text>
+                                <Text style={{ fontSize: 9, color: '#ffa351' }}>V3</Text>
                             </ImageBackground>
                             <UIText value={'已帮你省：1234.85元'} style={{
                                 fontFamily: 'PingFang-SC-Medium',
@@ -290,7 +290,7 @@ export default class MinePage extends Component {
         return (
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}>
-                    <Text style={{ fontFamily: 'PingFang-SC-Bold', fontSize: 14, color: '#212121' }}>234234.45元</Text>
+                    <Text style={{ fontSize: 14, color: '#212121' }}>234234.45元</Text>
                     <Text style={{
                         fontFamily: 'PingFang-SC-Medium',
                         fontSize: 11,
@@ -299,7 +299,7 @@ export default class MinePage extends Component {
                     }}>现金余额</Text>
                 </View>
                 <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}>
-                    <Text style={{ fontFamily: 'PingFang-SC-Bold', fontSize: 14, color: '#212121' }}>234234.45元</Text>
+                    <Text style={{ fontSize: 14, color: '#212121' }}>234234.45元</Text>
                     <Text style={{
                         fontFamily: 'PingFang-SC-Medium',
                         fontSize: 11,
@@ -416,7 +416,8 @@ export default class MinePage extends Component {
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        marginTop: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 0
     },
     whatLeft: {  // 组件定义了一个上边框
         flex: 1,
