@@ -48,7 +48,6 @@ export default class App extends Component<Props> {
                 },
             }
         );
-        console.log('Navigator', Navigator.dispatch);
         // goBack 返回指定的router
         const defaultStateAction = Navigator.router.getStateForAction;
         Navigator.router.getStateForAction = (action, state) => {
