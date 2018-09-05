@@ -79,5 +79,6 @@ export default function configureResponseError(error) {
             code:-1
         };
     }
-    return Promise.reject(result);
+    error.data = result;
+    return Promise.reject(error);
 }

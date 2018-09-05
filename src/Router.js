@@ -42,9 +42,7 @@ function addSubModule(module, prefixPath) {
 
     Object.keys(module.childRoutes).map((pageName) => {
         const item = module.childRoutes[pageName];
-        console.log(1, pageName);
         if (item.moduleName) {
-            console.log(2222, item.moduleName);
             addSubModule(item, p);
         } else if (typeof item === 'function') {
             const path = `${p}/${pageName}`;
