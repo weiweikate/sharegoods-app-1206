@@ -15,7 +15,7 @@ import UIImage from '../../../components/ui/UIImage';
 import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import { PageLoadingState } from 'PageState';
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import user from '../../../model/user';
 import whiteArrowRight from '../res/homeBaseImg/icon3_03.png';
 import arrowRight from '../res/homeBaseImg/icon3_07.png';
