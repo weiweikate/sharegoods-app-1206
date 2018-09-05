@@ -5,7 +5,7 @@ import React from 'react'
 import Home from './pages/home/page/HomePage'
 import Mine  from './pages/mine/page/MinePage'
 import ShopCart from './pages/shopCart/page/ShopCartPage'
-import SpellShop from './pages/spellShop/page/SpellShopPage'
+import SpellShop from './pages/spellShop/SpellShopPage'
 import {
     StyleSheet,
     Image
