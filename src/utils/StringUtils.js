@@ -1,6 +1,6 @@
 const isEmpty = (param) => {
     let input = param + '';
-    return input == '' || input == 'undefined' || input == 'null' || input == '[]' || input == ' ';
+    return input === '' || input === 'undefined' || input === 'null' || input === '[]' || input === ' ';
 };
 const checkPhone = (str) => {
     let myreg = /^[1][3,4,5,7,8][0-9]{9}$/;

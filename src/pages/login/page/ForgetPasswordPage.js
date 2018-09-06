@@ -5,28 +5,43 @@ import {
     TextInput,
     StyleSheet,
     TouchableOpacity,
-    Image
+    Image, Alert
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
 import { observable, action, computed } from 'mobx';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import ColorUtil from '../../../utils/ColorUtil';
+import bridge from '../../../utils/bridge';
+import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 
-class SetPasswordModel {
+class ForgetPasswordModel {
     @observable
     phoneNumber = '';
     @observable
     password = '';
     @observable
+    vertifyCode = '';
+    @observable
     isSecuret = true;
     @observable
-    vertifyCode = '';
+    dowTime = 0;
+
+    @action
+    savePhoneNumber(phoneNmber) {
+        if (!phoneNmber) {
+            phoneNmber = '';
+            return;
+        }
+        this.phoneNumber = phoneNmber;
+    }
 
     @action
     savePassword(password) {
         if (!password) {
+            password = '';
             return;
         }
         this.password = password;
@@ -35,32 +50,30 @@ class SetPasswordModel {
     @action
     saveVertifyCode(vertifyCode) {
         if (!vertifyCode) {
+            vertifyCode = '';
             return;
         }
         this.vertifyCode = vertifyCode;
     }
 
-
     @computed
     get isCanClick() {
-        if (this.phoneNumber.length === 11 && this.vertifyCode.length > 0 && this.password.length >= 6) {
+        if (this.phoneNumber.length < 11 && this.vertifyCode.length > 0 && this.password.length >= 6) {
             return true;
         } else {
             return false;
         }
     }
-
 }
 
 @observer
-export default class SetPasswordPage extends Component {
-    setPasswordModel = new SetPasswordModel();
+export default class ForgetPasswordPage extends Component {
+    forgetPasswordModel = new ForgetPasswordModel();
     // 页面配置
     static $PageOptions = {
         navigationBarOptions: {
-            title: '设置账号及密码',
+            title: '忘记密码',
             show: true
-            // show: false // 是否显示导航条 默认显示
         },
         renderByPageState: false
     };
@@ -75,8 +88,10 @@ export default class SetPasswordPage extends Component {
                         </Text>
                         <TextInput
                             style={Styles.inputTextStyle}
-                            value={this.setPasswordModel.phoneNumber}
-                            // onChangeText={text => {this.oldUserLoginModel.phoneNumber = text}})}
+                            value={this.forgetPasswordModel.phoneNumber}
+                            onChangeText={text => {
+                                this.forgetPasswordModel.savePhoneNumber(text);
+                            }}
                             placeholder='请输入手机号'
                             underlineColorAndroid={'transparent'}
                             keyboardType='default'
@@ -94,19 +109,19 @@ export default class SetPasswordPage extends Component {
                                 </Text>
                                 <TextInput
                                     style={Styles.inputTextStyle}
-                                    value={this.setPasswordModel.phoneNumber}
-                                    // onChangeText={text => {this..phoneNumber = text}})}
-                                    placeholder='请输入密码'
+                                    value={this.forgetPasswordModel.vertifyCode}
+                                    onChangeText={text => {
+                                        this.forgetPasswordModel.saveVertifyCode(text);
+                                    }}
+                                    placeholder='请输入验证码'
                                     underlineColorAndroid={'transparent'}
                                     keyboardType='default'
-                                    secureTextEntry={this.setPasswordModel.isSecuret}
+                                    secureTextEntry={this.forgetPasswordModel.isSecuret}
                                 />
                             </View>
-                            <TouchableOpacity onPress={() => {
-                                this.setPasswordModel.isSecuret = !this.setPasswordModel.isSecuret;
-                            }}>
+                            <TouchableOpacity onPress={this.getVertifyCode}>
                                 <Text style={{ color: ColorUtil.mainRedColor }}>
-                                    获取验证码
+                                    {this.forgetPasswordModel.dowTime > 0 ? `${this.forgetPasswordModel.dowTime}秒后重新获取` : '获取验证码'}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -122,24 +137,26 @@ export default class SetPasswordPage extends Component {
                     justifyContent: 'space-between'
                 }}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={{ marginLeft: 30, marginRight: 30, marginTop: 18 }}>
+                        <Text style={{marginLeft: 30, marginRight: 30, marginTop: 18 }}>
                             新密码
                         </Text>
                         <TextInput
                             style={Styles.inputTextStyle}
-                            value={this.setPasswordModel.phoneNumber}
-                            // onChangeText={text => {this.oldUserLoginModel.phoneNumber = text}})}
-                            placeholder='支持数字,字母,特殊符号'
+                            value={this.forgetPasswordModel.password}
+                            onChangeText={text => {
+                                this.forgetPasswordModel.savePassword(text);
+                            }}
+                            placeholder='支持数字,字母'
                             underlineColorAndroid={'transparent'}
                             keyboardType='default'
                         />
                     </View>
 
                     <TouchableOpacity onPress={() => {
-                        this.setPasswordModel.isSecuret = !this.setPasswordModel.isSecuret;
+                        this.forgetPasswordModel.isSecuret = !this.forgetPasswordModel.isSecuret;
                     }}>
                         <Image
-                            source={this.setPasswordModel.isSecuret ? LoginAndRegistRes.closeEyeImage : LoginAndRegistRes.openEyeImage}
+                            source={this.forgetPasswordModel.isSecuret ? LoginAndRegistRes.closeEyeImage : LoginAndRegistRes.openEyeImage}
                             style={{ marginRight: 30, marginTop: 18 }}/>
 
                     </TouchableOpacity>
@@ -147,20 +164,26 @@ export default class SetPasswordPage extends Component {
                 </View>
 
                 <View style={[{
-                    marginLeft: 30, width: ScreenUtils.width - 60, marginTop: 40, height: 45, borderRadius: 5,
-                    backgroundColor: ColorUtil.mainRedColor
-                }, this.setPasswordModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]}>
+                    marginLeft: 30,
+                    width: ScreenUtils.width - 60,
+                    marginTop: 40,
+                    height: 45,
+                    backgroundColor: ColorUtil.mainRedColor,
+                    borderRadius: 5
+                },
+                    this.forgetPasswordModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }
+                ]}>
                     <TouchableOpacity onPress={this.loginClick}>
                         <Text style={{
                             textAlign: 'center',
                             height: 45,
                             alignItems: 'center',
-                            fontsize: 14,
+                            fontSize: 14,
                             color: '#fff',
                             paddingTop: 15,
                             fontWeight: '600'
                         }}>
-                            下一步
+                            完成
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -171,7 +194,31 @@ export default class SetPasswordPage extends Component {
 
     loginClick = () => {
 
-        this.setPasswordModel.phoneNumber = '333';
+    };
+    /*获取验证码*/
+    getVertifyCode = () => {
+        if (this.forgetPasswordModel.dowTime > 0) {
+            Alert.alert(
+                '提示',
+                '操作过于频繁稍后重试',
+                [
+                    {
+                        text: '确定', onPress: () => {
+                        }
+                    }
+                ],
+                { cancelable: false }
+            );
+            return;
+        }
+        if (StringUtils.checkPhone(this.forgetPasswordModel.phoneNumber)) {
+            (new TimeDownUtils()).startDown((time) => {
+                this.forgetPasswordModel.dowTime = time;
+            });
+            bridge.$toast('验证码已发送请注意查收');
+        } else {
+            bridge.$toast('手机格式不对');
+        }
     };
 
 }
@@ -202,6 +249,9 @@ const Styles = StyleSheet.create(
         },
         lineStyle: {
             marginTop: 5
+        },
+        inputTextStyle: {
+            width: 120
         }
     }
 );

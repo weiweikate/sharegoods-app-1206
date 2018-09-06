@@ -2,6 +2,7 @@ import LoginPage from './LoginPage';
 import OldUserLoginPage from './OldUserLoginPage';
 import SetPasswordPage from './SetPasswordPage';
 import RegistPage from './RegistPage';
+import ForgetPasswordPage from './ForgetPasswordPage';
 
 
 // 访问路径 'Login/Demo1'
@@ -11,7 +12,8 @@ export default {
         LoginPage,
         OldUserLoginPage,
         SetPasswordPage,
-        RegistPage
+        RegistPage,
+        ForgetPasswordPage
     }
 };
 

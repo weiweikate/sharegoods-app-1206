@@ -10,13 +10,11 @@ import {
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import loginAndRegistRes from '../res/LoginAndRegistRes';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import ColorUtil from '../../../utils/ColorUtil';
 
 export default class LoginPage extends Component {
     constructor() {
         super();
-        this.state = {
-            a: 0
-        };
     }
 
     /*页面配置*/
@@ -25,7 +23,7 @@ export default class LoginPage extends Component {
             title: null
             // show: false // 是否显示导航条 默认显示
         },
-        renderByPageState: true
+        renderByPageState: false
     };
     /*render右上角*/
     $NavBarRenderRightItem = () => {
@@ -35,20 +33,18 @@ export default class LoginPage extends Component {
             </Text>
         );
     };
-    registBtnClick = () => {
-        this.props.navigation.navigate('login/login/RegistPage');
-    };
 
     render() {
         return (
             <View style={Styles.contentStyle}>
                 <LoginTopView
                     oldUserLoginClick={this.oldUserLoginClick.bind(this)}
+                    forgetPasswordClick={this.forgetPasswordClick}
                 />
                 <View style={Styles.otherLoginBgStyle}>
                     <View style={Styles.lineBgStyle}>
                         <CommSpaceLine style={{ marginTop: 7, width: 80, marginLeft: 5 }}/>
-                        <Text>
+                        <Text style={Styles.otherLoginTextStyle}>
                             其他登陆方式
                         </Text>
                         <CommSpaceLine style={{ marginTop: 7, width: 80, marginLeft: 5 }}/>
@@ -65,22 +61,34 @@ export default class LoginPage extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <Image style={{
-                    width: ScreenUtils.width,
-                    position: 'absolute',
-                    bottom: 0,
-                    height: 80,
-                    backgroundColor: 'red'
-                }} source={loginAndRegistRes.loginBottomImage}/>
+                <Image
+                    style={{
+                        width: ScreenUtils.width,
+                        position: 'absolute',
+                        bottom: 0,
+                        height: 80
+                    }}
+                    source={loginAndRegistRes.loginBottomImage}
+                    resizeMode='cover'/>
             </View>
         );
     }
 
+    /*忘记密码*/
+    forgetPasswordClick = () => {
+        this.$navigate('login/login/ForgetPasswordPage');
+    };
+    /*微信登陆*/
     weChatLoginClick = () => {
 
     };
+    /*老用户登陆*/
     oldUserLoginClick = () => {
         this.props.navigation.navigate('login/login/OldUserLoginPage');
+    };
+    /*注册*/
+    registBtnClick = () => {
+        this.$navigate('login/login/RegistPage');
     };
 }
 
@@ -110,6 +118,9 @@ const Styles = StyleSheet.create(
             height: 30,
             backgroundColor: '#fff',
             justifyContent: 'center'
+        },
+        otherLoginTextStyle: {
+            color: ColorUtil.Color_666666
         }
     }
 );
