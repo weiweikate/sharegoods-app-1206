@@ -9,6 +9,7 @@ import {
     StyleSheet,
     ScrollView,
     Dimensions,
+    Button,
     TouchableHighlight
 } from 'react-native';
 import GeneralButton from './components/GeneralButton';
@@ -17,7 +18,10 @@ import GeneralButton from './components/GeneralButton';
 import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
 import {NavigationActions} from "react-navigation";
+import {observer} from 'mobx-react';
+import PageDecorator from '../../components/pageDecorator/PageDecorator';
 
+@observer
 export default class DebugPanelPage extends Component {
 
     // 页面配置
@@ -30,6 +34,7 @@ export default class DebugPanelPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            nickName:'test',
             loadingState: 'fail',
             hostName: apiEnvironment.getCurrentHostName(),
             hostUrl: apiEnvironment.getCurrentHostUrl(),
@@ -37,7 +42,11 @@ export default class DebugPanelPage extends Component {
         };
     }
 
-
+    changeState = ()=> {
+        this.setState({
+            nickName:'sssss'
+        })
+    }
     // 点击切换环境
     onClickChange = async envType => {
         const host = apiEnvironment.isHostExistWithEnvType(envType);
@@ -162,6 +171,7 @@ export default class DebugPanelPage extends Component {
                 title: '查看磁盘缓存', onPress: this.openIOSDiskDir
             });
         }
+        console.log(333)
 
         return (
             <View style={{flex: 1}}>
@@ -174,6 +184,9 @@ export default class DebugPanelPage extends Component {
                 >
                     <View style={[styles.rowCell, styles.topDescTextContainer]}>
                         <Text style={styles.topDescText}>{TopTitle}</Text>
+                    </View>
+                    <View>
+                        <Button onPress={this.changeState} title={this.state.nickName}></Button>
                     </View>
                     {this.renderLinks(InfoArr)}
                     {this.renderEventRows(EventArr)}

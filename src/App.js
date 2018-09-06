@@ -83,7 +83,7 @@ export default class App extends Component<Props> {
                                const currentScreen = getCurrentRouteName(currentState);
                                const prevScreen = getCurrentRouteName(prevState);
                                if (prevScreen !== currentScreen) {
-                                   console.log('从页面' + prevScreen + '跳转页面' + currentScreen);
+                                   //console.log('从页面' + prevScreen + '跳转页面' + currentScreen);
                                }
                            }}/>
                 {
@@ -98,7 +98,7 @@ export default class App extends Component<Props> {
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
             routeName: RouterMap.DebugPanelPage
-            //routeName:'shopCart/demo1111/AddressBookPage'
+            //routeName:'debug/DemoLoginPage'
         });
         this.refs.Navigator.dispatch(navigationAction);
     };

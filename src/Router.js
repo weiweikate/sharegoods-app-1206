@@ -46,7 +46,7 @@ function addSubModule(module, prefixPath) {
             addSubModule(item, p);
         } else if (typeof item === 'function') {
             const path = `${p}/${pageName}`;
-            Router[path] = { screen: PageDecorator(item) };
+            Router[path] = { screen: item };
         }
     });
 }

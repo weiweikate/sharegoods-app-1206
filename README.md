@@ -24,8 +24,9 @@ example
 ```javascript
 // 引用设置好的状态对象
 import {PageLoadingState} from '../../components/pageDecorator/PageState';
+import BasePage from '../../BasePage'
 
-export default class DemoListPage extends Component {
+export default class DemoListPage extends BasePage {
     
     constructor(props) {
         super(props);
@@ -35,38 +36,40 @@ export default class DemoListPage extends Component {
             netFailedInfo: null,
         };
     }
-        
-    static $PageOptions = {
-            navigationBarOptions: {
-                title: '导航标题',
-                // show: false // 是否显示导航条 默认显示
-            },
-            // 是否启动页面状态管理
-            renderByPageState: true,
-        };
-        // 与renderByPageState配合使用
-        $getPageStateOptions = () => {
-            return {
-                loadingState: this.state.loadingState,
-                // 页面数据加载失败配置
-                netFailedProps: {
-                    netFailedInfo: this.state.netFailedInfo,
-                    reloadBtnClick: () => {
-                        console.log('reload');
-                        this.setState({
-                            netFailedInfo: null,
-                            loadingState: PageLoadingState.loading,
-                        }, ()=>{
-                            // todo 加载数据函数
-                        });
-                    },
-                },
-                // 页面数据为空配置
-                emptyProps: {},
-            };
-        };
+    // 导航配置
+    $navigationBarOptions = {
+        title:'我是标题',
+        show: false // false则隐藏导航
+    }
+    // 页面状态管理（选填）
+    $getPageStateOptions = () => {
+       return {
+           loadingState: this.state.loadingState,
+           emptyProps: {
+               isScrollViewContainer: true,
+               description: '暂无记录'
+           }
+       };
+    };
 }
 ```
+
+
+自带的方法
+
+```javascript
+this.$loadingShow('i am a message')
+
+```
+- `$loadingShow` 弹出提示信息，默认显示2.5秒
+- `$loadingDismiss` 隐藏提示信息
+- `$navigateBack` 返回上一级
+- `$navigate` 路由跳转 接受routeName
+- `$NavigationBarResetTitle` 重置标题名称
+- `$loadingDismiss` 隐藏提示信息
+- `$NavBarLeftPressed` 左侧点击事件
+- `$NavBarRightPressed` 右侧点击事件
+
 
 #### NetFailedView 网络数据出错组件
 
