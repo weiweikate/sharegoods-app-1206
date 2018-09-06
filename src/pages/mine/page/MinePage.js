@@ -38,7 +38,7 @@ import setting from '../res/homeBaseImg/icon_03.png';
 import service from '../res/homeBaseImg/icon02.png';
 
 export default class MinePage extends Component {
-    $PageOptions = {
+  static  $PageOptions = {
         navigationBarOptions: {
             hideNavBar: true
         },
@@ -50,6 +50,7 @@ export default class MinePage extends Component {
         this.state = {
             total: 0,
             list: [],
+            name:'王五',
             refreshing: false,
             netFailedInfo: null,
             loadingState: PageLoadingState.success
@@ -78,7 +79,13 @@ export default class MinePage extends Component {
             </View>
         );
     }
-
+    jumpToUserInformationPage=()=>{
+        // if (!user.isLogin){
+        //     this.navigate('login/Login')
+        //     return
+        // }
+        this.props.navigation.navigate('mine/UserInformationPage')
+    };
     renderUserHead = () => {
         return (
             <View style={{ height: 442, width: ScreenUtils.width }}>
@@ -91,9 +98,9 @@ export default class MinePage extends Component {
                         height: 44
                     }}>
                         <UIImage source={setting} style={{ height: 18, width: 22, marginRight: 15 }}
-                                 onPress={() => this.jumpToMessagePage()}/>
-                        <UIImage source={service} style={{ height: 18, width: 22 }}
                                  onPress={() => this.jumpToSettingPage()}/>
+                        <UIImage source={service} style={{ height: 18, width: 22 }}
+                                 onPress={() => this.jumpToServicePage()}/>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <ImageBackground style={{
@@ -118,13 +125,13 @@ export default class MinePage extends Component {
                             justifyContent: 'space-between',
                             marginTop: 11
                         }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <UIText value={'鲍勃'}
+                            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={this.jumpToUserInformationPage}>
+                                <UIText value={this.state.name}
                                         style={{ fontSize: 15, color: '#ffffff' }}/>
                                 <Image source={whiteArrowRight}
                                        style={{ height: 14, marginLeft: 12 }}
                                        resizeMode={'contain'}/>
-                            </View>
+                            </TouchableOpacity>
                             <ImageBackground style={{ width: 53, height: 14, alignItems: 'center', marginTop: 2 }}
                                              source={levelBg}>
                                 <Text style={{ fontSize: 9, color: '#ffa351' }}>V3</Text>
@@ -299,19 +306,19 @@ export default class MinePage extends Component {
                     }}>现金余额</Text>
                 </View>
                 <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}>
-                    <Text style={{ fontSize: 14, color: '#212121' }}>234234.45元</Text>
+                    <Text style={{ fontSize: 14, color: '#212121' }}>2342.75元</Text>
                     <Text style={{
                         fontFamily: 'PingFang-SC-Medium',
                         fontSize: 11,
                         color: '#666666',
                         marginTop: 8
-                    }}>现金余额</Text>
+                    }}>代币余额</Text>
                 </View>
 
             </View>
         );
     };
-    //**********************************BusinessPart******************************************
+    //跳转到对应的订单状态页面
     jumpToOrderAccordingStates = (index) => {
         if (!user.isLogin) {
             this.navigate('login/Login');
@@ -333,11 +340,11 @@ export default class MinePage extends Component {
         }
     };
     orderMenuJump = (index) => {
-        if (!user.isLogin) {
-            this.navigate('login/Login');
-            return;
-        }
-        // let leftText=['我的账户','我的优惠劵','我的数据','我的库存','发货订单','我的收藏','收藏店铺','通讯录','邀请好友','帮助与客服',]
+        // if (!user.isLogin) {
+        //     this.navigate('login/Login');
+        //     return;
+        // }
+        // let leftText = ['邀请好友', '活动日历', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹'];
         switch (index) {
             case 0:
                 this.navigate('mine/myAccount/MyAccountPage');
@@ -352,13 +359,15 @@ export default class MinePage extends Component {
                 this.navigate('mine/inventory/AddPage');
                 break;
             case 4:
-                this.navigate('order/order/MyOrdersListPage', { index: 2 });
+                // this.navigate('order/order/MyOrdersListPage', { index: 2 });
+                this.props.navigation.navigate('mine/MyCollectPage');
                 break;
             case 5:
-                this.navigate('mine/MyCollectPage');
+                // this.navigate('mine/MyCollectPage');
+                this.props.navigation.navigate('mine/MyHelperPage');
                 break;
             case 6:
-                this.navigate('spellShop/collect/ShopCollectPage');
+                this.props.navigation.navigate('mine/MyHelperPage');
                 break;
             case 7:
                 this.navigate('mine/MyAddressBookPage');
@@ -397,7 +406,7 @@ export default class MinePage extends Component {
         }
         this.navigate('order/order/MyOrdersListPage');
     };
-    jumpToMessagePage = () => {
+    jumpToServicePage = () => {
         if (!user.isLogin) {
             this.navigate('login/Login');
             return;
@@ -410,7 +419,7 @@ export default class MinePage extends Component {
             this.navigate('login/Login');
             return;
         }
-        this.navigate('setting/SettingPage', { callBack: () => this.loadPageData() });
+        this.props.navigation.navigate('setting/SettingPage', { callBack: () => this.loadPageData() });
 
     };
 }
