@@ -1,7 +1,13 @@
-import SpellShopPage from "./SpellShopPage";//拼店页面
+import SpellShopPage from './SpellShopPage';
+import recommendSearch from './recommendSearch';
+
 export default {
-    moduleName: "spellShop",            //拼店模块
+    //拼店模块
+    moduleName: 'spellShop',
     childRoutes: {
-        SpellShopPage                  //拼店页面
+        //拼店页面
+        SpellShopPage,
+        //推荐搜索模块
+        recommendSearch
     }
 };

@@ -8,8 +8,6 @@
 *
 * */
 
-// 所有页面新增修饰器
-import PageDecorator from './components/pageDecorator/PageDecorator';
 // 基础模块
 import { TabNav } from './RootPage';
 // 业务模块
