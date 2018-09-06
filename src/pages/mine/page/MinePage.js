@@ -38,7 +38,7 @@ import setting from '../res/homeBaseImg/icon_03.png';
 import service from '../res/homeBaseImg/icon02.png';
 
 export default class MinePage extends Component {
-  static  $PageOptions = {
+    static  $PageOptions = {
         navigationBarOptions: {
             hideNavBar: true
         },
@@ -50,7 +50,7 @@ export default class MinePage extends Component {
         this.state = {
             total: 0,
             list: [],
-            name:'王五',
+            name: '王五',
             refreshing: false,
             netFailedInfo: null,
             loadingState: PageLoadingState.success
@@ -79,12 +79,13 @@ export default class MinePage extends Component {
             </View>
         );
     }
-    jumpToUserInformationPage=()=>{
+
+    jumpToUserInformationPage = () => {
         // if (!user.isLogin){
-        //     this.navigate('login/Login')
+        //     this.props.navigation.navigate('login/Login')
         //     return
         // }
-        this.props.navigation.navigate('mine/UserInformationPage')
+        this.props.navigation.navigate('mine/userInformation/UserInformationPage');
     };
     renderUserHead = () => {
         return (
@@ -125,7 +126,8 @@ export default class MinePage extends Component {
                             justifyContent: 'space-between',
                             marginTop: 11
                         }}>
-                            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={this.jumpToUserInformationPage}>
+                            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}
+                                              onPress={this.jumpToUserInformationPage}>
                                 <UIText value={this.state.name}
                                         style={{ fontSize: 15, color: '#ffffff' }}/>
                                 <Image source={whiteArrowRight}
@@ -181,20 +183,11 @@ export default class MinePage extends Component {
                         backgroundColor: color.white,
                         borderRadius: 10
                     }}>
-                        <TouchableOpacity style={{
-                            height: 44,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-between'
-                        }} onPress={() => {
-                            this.jumpToAllOrder();
-                        }}>
-                            <View style={{ flexDirection: 'row', marginLeft: 15, alignItems: 'center' }}>
-                                <View
-                                    style={{ width: 3, height: 12, backgroundColor: color.red }}/>
-                                <UIText value={'我的钱包'} style={[styles.blackText, { marginLeft: 8 }]}/>
-                            </View>
-                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row', marginLeft: 15, height: 44, alignItems: 'center' }}>
+                            <View
+                                style={{ width: 3, height: 12, backgroundColor: color.red }}/>
+                            <UIText value={'我的钱包'} style={[styles.blackText, { marginLeft: 8 }]}/>
+                        </View>
                         {this.renderMyWallet()}
                     </View>
                 </View>
@@ -287,7 +280,7 @@ export default class MinePage extends Component {
                 }} onPress={() => this.orderMenuJump(i)} key={i}>
                     <Image source={leftImage[i]}
                            style={{ height: 24, width: 24, marginBottom: 10 }}/>
-                    <UIText value={leftText[i]} style={styles.blackText}/>
+                    <UIText value={leftText[i]} style={styles.greyText}/>
                 </TouchableOpacity>
             );
         }
@@ -296,24 +289,33 @@ export default class MinePage extends Component {
     renderMyWallet = () => {
         return (
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}>
+                <TouchableOpacity style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}
+                                  onPress={this.go2CashDetailPage(1)}>
                     <Text style={{ fontSize: 14, color: '#212121' }}>234234.45元</Text>
-                    <Text style={{
-                        fontFamily: 'PingFang-SC-Medium',
-                        fontSize: 11,
-                        color: '#666666',
-                        marginTop: 8
-                    }}>现金余额</Text>
-                </View>
-                <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{
+                            fontFamily: 'PingFang-SC-Medium',
+                            fontSize: 11,
+                            color: '#666666',
+                            marginTop: 8
+                        }}>现金余额</Text>
+                        <Image source={arrowRight} style={{ width: 5, height: 8, marginLeft: 4, marginTop: 8 }}/>
+                    </View>
+
+                </TouchableOpacity>
+                <TouchableOpacity style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}
+                                  onPress={() => this.go2CashDetailPage(2)}>
                     <Text style={{ fontSize: 14, color: '#212121' }}>2342.75元</Text>
-                    <Text style={{
-                        fontFamily: 'PingFang-SC-Medium',
-                        fontSize: 11,
-                        color: '#666666',
-                        marginTop: 8
-                    }}>代币余额</Text>
-                </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{
+                            fontFamily: 'PingFang-SC-Medium',
+                            fontSize: 11,
+                            color: '#666666',
+                            marginTop: 8
+                        }}>代币余额</Text>
+                        <Image source={arrowRight} style={{ width: 5, height: 8, marginLeft: 4, marginTop: 8 }}/>
+                    </View>
+                </TouchableOpacity>
 
             </View>
         );
@@ -321,62 +323,65 @@ export default class MinePage extends Component {
     //跳转到对应的订单状态页面
     jumpToOrderAccordingStates = (index) => {
         if (!user.isLogin) {
-            this.navigate('login/Login');
+            this.props.navigation.navigate('login/login/LoginPage');
             return;
         }
         switch (index) {
             case 0:
-                this.navigate('order/order/MyOrdersListPage', { index: 1 });
+                this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 1 });
                 break;
             case 1:
-                this.navigate('order/order/MyOrdersListPage', { index: 2 });
+                this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });
                 break;
             case 2:
-                this.navigate('order/order/MyOrdersListPage', { index: 3 });
+                this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 3 });
                 break;
             case 3:
-                this.navigate('order/order/MyOrdersListPage', { index: 4 });
+                this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 4 });
                 break;
         }
     };
+    go2CashDetailPage = (i) => {
+        this.props.navigation.navigate('login/login/LoginPage');
+    };
     orderMenuJump = (index) => {
         // if (!user.isLogin) {
-        //     this.navigate('login/Login');
+        //     this.props.navigation.navigate('login/login/LoginPage');
         //     return;
         // }
         // let leftText = ['邀请好友', '活动日历', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹'];
         switch (index) {
             case 0:
-                this.navigate('mine/myAccount/MyAccountPage');
+                this.props.navigation.navigate('mine/myAccount/MyAccountPage');
                 break;
             case 1:
-                this.navigate('coupons/CouponsPage');
+                this.props.navigation.navigate('coupons/CouponsPage');
                 break;
             case 2:
-                this.navigate('mine/myData/MyDataPage');
+                this.props.navigation.navigate('mine/coupons/CouponsPage');
                 break;
             case 3:
-                this.navigate('mine/inventory/AddPage');
+                this.props.navigation.navigate('mine/inventory/AddPage');
                 break;
             case 4:
-                // this.navigate('order/order/MyOrdersListPage', { index: 2 });
+                // this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });
                 this.props.navigation.navigate('mine/MyCollectPage');
                 break;
             case 5:
-                // this.navigate('mine/MyCollectPage');
+                // this.props.navigation.navigate('mine/MyCollectPage');
                 this.props.navigation.navigate('mine/MyHelperPage');
                 break;
             case 6:
                 this.props.navigation.navigate('mine/MyHelperPage');
                 break;
             case 7:
-                this.navigate('mine/MyAddressBookPage');
+                this.props.navigation.navigate('mine/MyAddressBookPage');
                 break;
             case 8:
-                this.navigate('mine/myData/InvitationPage');
+                this.props.navigation.navigate('mine/myData/InvitationPage');
                 break;
             case 9:
-                this.navigate('mine/MyHelperPage');
+                this.props.navigation.navigate('mine/MyHelperPage');
                 break;
             //邀请评分
             case 10:
@@ -401,22 +406,22 @@ export default class MinePage extends Component {
 
     jumpToAllOrder = () => {
         if (!user.isLogin) {
-            this.navigate('login/Login');
+            this.props.navigation.navigate('login/login/LoginPage');
             return;
         }
-        this.navigate('order/order/MyOrdersListPage');
+        this.props.navigation.navigate('order/order/MyOrdersListPage');
     };
     jumpToServicePage = () => {
         if (!user.isLogin) {
-            this.navigate('login/Login');
+            this.props.navigation.navigate('login/login/LoginPage');
             return;
         }
-        this.navigate('message/MessageCenterPage');
+        this.props.navigation.navigate('message/MessageCenterPage');
     };
 
     jumpToSettingPage = () => {
         if (!user.isLogin) {
-            this.navigate('login/Login');
+            this.props.navigation.navigate('login/login/LoginPage');
             return;
         }
         this.props.navigation.navigate('setting/SettingPage', { callBack: () => this.loadPageData() });
@@ -437,6 +442,11 @@ const styles = StyleSheet.create({
     whiteText: {
         fontSize: 15,
         color: '#ffffff'
+    },
+    greyText: {
+        fontFamily: 'PingFang-SC-Regular',
+        fontSize: 12,
+        color: '#212121'
     },
     blackText: {
         fontFamily: 'PingFang-SC-Medium',
