@@ -19,7 +19,6 @@ import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
 import {NavigationActions} from "react-navigation";
 import {observer} from 'mobx-react';
-import PageDecorator from '../../components/pageDecorator/PageDecorator';
 
 @observer
 export default class DebugPanelPage extends Component {

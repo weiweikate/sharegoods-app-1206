@@ -51,6 +51,10 @@ export default class DemoListPage extends BasePage {
            }
        };
     };
+    // 请使用下划线render
+    _render() {
+        return (<View></View>)
+    }
 }
 ```
 

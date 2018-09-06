@@ -1,31 +1,21 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
     StyleSheet,
     ScrollView,
 } from 'react-native';
-import API from "../../api/index";
 import BasePage from '../../BasePage'
 import {observer} from 'mobx-react';
 import fetchHistory from '../../model/FetchHistory'
-import { PageLoadingState } from '../../components/pageDecorator/PageState';
 
 
 @observer
 export default class DemoLoginPage extends BasePage {
     $navigationBarOptions = {
-        title:'我是标题'
+        title:'我是标题11'
     }
-    /*$getPageStateOptions = () => {
-        return {
-            loadingState: this.state.loadingState,
-            emptyProps: {
-                isScrollViewContainer: true,
-                description: '暂无记录'
-            }
-        };
-    };*/
+
     constructor(props) {
         super(props);
         this.state = {
