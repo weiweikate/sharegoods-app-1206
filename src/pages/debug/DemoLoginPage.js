@@ -6,36 +6,62 @@ import {
     ScrollView,
 } from 'react-native';
 import API from "../../api/index";
+import BasePage from '../../BasePage'
+import {observer} from 'mobx-react';
+import fetchHistory from '../../model/FetchHistory'
+import { PageLoadingState } from '../../components/pageDecorator/PageState';
 
 
-export default class DemoLoginPage extends Component {
-
-    // 页面配置
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: '登录',
-        }
-    };
-
+@observer
+export default class DemoLoginPage extends BasePage {
+    $navigationBarOptions = {
+        title:'我是标题'
+    }
+    /*$getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            emptyProps: {
+                isScrollViewContainer: true,
+                description: '暂无记录'
+            }
+        };
+    };*/
     constructor(props) {
         super(props);
         this.state = {
-            loadingState: '',
+            name:11,
+            loadingState: 'loading',
             refreshing: false,
             netFailedInfo: null,
         };
     }
 
     componentDidMount() {
-        console.log('DemoLoginPage');
+        console.log('DemoLoginPage',this.state);
+        setTimeout(()=>{
+            this.setState({
+                loadingState:'success'
+            })
+        },2000)
+
     }
 
-    render() {
+    _render() {
         return (
             <ScrollView style={styles.container}>
                 <View>
                     <Text onPress={this.login}>点击登录</Text>
                     <Text onPress={this.goBack}>返回</Text>
+                    <Text>{this.state.name}</Text>
+
+
+                    {
+                        fetchHistory.history.map(function (item,idx) {
+                            return (<Text key={ idx }>{item.time}</Text>)
+                        })
+                    }
+
+
                 </View>
             </ScrollView>
         );
@@ -45,7 +71,13 @@ export default class DemoLoginPage extends Component {
         this.$navigateBack();
     };
     login = () => {
-        API.apiDemoList({a: 1}).then(result => {
+        fetchHistory.insertData({
+            name:1,
+            time:+new Date()
+        });
+
+        console.log(fetchHistory.history.length)
+        /*API.apiDemoList({a: 1}).then(result => {
             console.log('result', result);
         }).catch(error => {
             console.log('catch error', error);
@@ -55,7 +87,7 @@ export default class DemoLoginPage extends Component {
             console.log('result', result);
         }).catch(error => {
             console.log('catch error', error);
-        });
+        });*/
     };
 
 }

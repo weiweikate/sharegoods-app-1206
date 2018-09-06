@@ -49,6 +49,7 @@ export default class DemoListPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            nickName:1111,
             loadingState: PageLoadingState.loading,
             refreshing: false,
             netFailedInfo: null,
@@ -69,9 +70,9 @@ export default class DemoListPage extends Component {
                 <View>
                     <Button onPress={this.hideToast} title={'hide toast'} />
                 </View>
-                {/*<View>
-                    <Button onPress={this.loadData} title={'load data'}></Button>
-                </View>*/}
+                <View>
+                    <Button onPress={this.changeState} title={this.state.nickName}></Button>
+                </View>
             </ScrollView>
         );
     }
@@ -87,6 +88,11 @@ export default class DemoListPage extends Component {
     hideToast = () => {
         this.$toastDismiss();
     };
+    changeState = ()=> {
+        this.setState({
+            nickName:'sssss'
+        })
+    }
     loadPageData = () => {
 
         API.apiDemoList({a: 1}).then(result => {
