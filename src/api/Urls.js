@@ -3,7 +3,7 @@ export default {
     apiDemoAdd:'/api/demo/add',
     apiDemoUpdate:'/api/demo/update',
     apiDemoDelete:'/api/demo/delete',
-    alertDemoData: ['/api/test/data', {method: 'post', loading: true}], // 测试接口
+    alertDemoData: ['/api/test/data', {method: 'post'}], // 测试接口
     loginWithWX: '/user/memberLogin/appWechatLogin',//微信登陆
     sendRegistrationCode: '/user/phoneCode/sendRegistrationCode',//用户注册
     sendUserLoginCode: '/user/phoneCode/sendUserLoginCode',//用户登录

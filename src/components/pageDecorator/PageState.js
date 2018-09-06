@@ -1,7 +1,5 @@
 /**
  * Created by nuomi on 2018/7/30.
- *
- * @providesModule PageState
  */
 
 import React from 'react';

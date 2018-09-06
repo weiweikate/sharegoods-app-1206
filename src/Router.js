@@ -11,12 +11,10 @@
 // 所有页面新增修饰器
 import PageDecorator from './components/pageDecorator/PageDecorator';
 // 基础模块
-import {TabNav} from './RootPage';
+import { TabNav } from './RootPage';
 // 业务模块
 import demo from './pages/demo';
 import debug from './pages/debug';
-
-
 import home from './pages/home';
 import mine from './pages/mine';
 import shopCart from './pages/shopCart';
@@ -26,7 +24,7 @@ import login from './pages/login';
 const Router = {
     Tab: {
         screen: TabNav,
-        navigationOptions: ({navigation}) => ({
+        navigationOptions: ({ navigation }) => ({
             header: null
         })
     }
@@ -44,13 +42,11 @@ function addSubModule(module, prefixPath) {
 
     Object.keys(module.childRoutes).map((pageName) => {
         const item = module.childRoutes[pageName];
-        console.log(1,pageName)
         if (item.moduleName) {
-            console.log(2222,item.moduleName)
             addSubModule(item, p);
         } else if (typeof item === 'function') {
             const path = `${p}/${pageName}`;
-            Router[path] = {screen: PageDecorator(item)};
+            Router[path] = { screen: PageDecorator(item) };
         }
     });
 }
@@ -66,6 +62,8 @@ addSubModule(shopCart);
 addSubModule(spellShop);
 addSubModule(login);
 
-console.log('Router',Object.keys(Router));
+
+console.log('Router', Object.keys(Router));
+console.log(Router);
 
 export default Router;

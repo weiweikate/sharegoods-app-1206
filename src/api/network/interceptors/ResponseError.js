@@ -76,8 +76,9 @@ export default function configureResponseError(error) {
         result = {
             msg: '服务器无返回',
             status: -1,
-            code:-1
+            code: -1
         };
     }
-    return Promise.reject(result);
+    error.data = result;
+    return Promise.reject(error);
 }

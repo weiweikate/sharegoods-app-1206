@@ -64,10 +64,10 @@ export default class DemoListPage extends Component {
             <ScrollView style={styles.container}>
                 <Text>这是个demo</Text>
                 <View>
-                    <Button onPress={this.showToast} title={'show toast'}></Button>
+                    <Button onPress={this.showToast} title={'show toast'} />
                 </View>
                 <View>
-                    <Button onPress={this.hideToast} title={'hide toast'}></Button>
+                    <Button onPress={this.hideToast} title={'hide toast'} />
                 </View>
                 {/*<View>
                     <Button onPress={this.loadData} title={'load data'}></Button>

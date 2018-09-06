@@ -73,7 +73,7 @@ export default class GeneralButton extends Component {
 
     onPress = () => {
         //添加节流500ms   0.5S内仅仅响应第一次点击操作，防止操作过于频繁
-        if (this.__timer__) return;
+        if (this.__timer__) {return;}
         this.__timer__ = setTimeout(() => {
             clearTimeout(this.__timer__);
             this.__timer__ = null;

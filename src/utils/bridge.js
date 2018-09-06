@@ -1,7 +1,10 @@
 // 原生桥接接口函数请使用'$'开头
+import {
+    NativeModules
+} from 'react-native';
+
 export default {
-    $toast() {
-        //todo
-        console.log('todo')
+    $toast(msg) {
+        NativeModules.commModule.toast(msg)
     }
-}
+};

@@ -41,7 +41,7 @@
 import React from 'react';
 import {
     View,
-    StyleSheet,
+    StyleSheet
 } from 'react-native';
 
 import NavigatorBar from './NavigatorBar/index';
@@ -50,8 +50,8 @@ import {
     ToastView,
 } from './BaseView';
 
-import {renderViewByLoadingState} from './PageState';
-import {NavigationActions} from "react-navigation";
+import { renderViewByLoadingState } from './PageState';
+import { NavigationActions } from 'react-navigation';
 
 const PageDecorator = (ComponentClass) => {
 
@@ -70,19 +70,19 @@ const PageDecorator = (ComponentClass) => {
     const $PageOptions = ComponentClass.$PageOptions || {};
 
     /* -------------toast-------------  */
-    target.prototype.$toastShow = function (title, params) {
+    target.prototype.$toastShow = function(title, params) {
         if (!this.$toast) {
             return;
         }
         this.$toast.showToast(title, params || {});
     };
-    target.prototype.$toastDismiss = function (callBack) {
+    target.prototype.$toastDismiss = function(callBack) {
         if (!this.$toast) {
             return;
         }
         this.$toast.dismiss(typeof callBack === 'function' ? callBack : null);
     };
-    target.prototype.$isToastShow = function () {
+    target.prototype.$isToastShow = function() {
         if (!this.$toast) {
             return false;
         }
@@ -91,20 +91,20 @@ const PageDecorator = (ComponentClass) => {
 
 
     /* -------------loading----------  */
-    target.prototype.$loadingShow = function (msg, params) {
+    target.prototype.$loadingShow = function(msg, params) {
         if (!this.$loadingHub) {
             return;
         }
         this.$toastDismiss();
         this.$loadingHub.loadingShow(msg, params || {});
     };
-    target.prototype.$loadingDismiss = function (callBack) {
+    target.prototype.$loadingDismiss = function(callBack) {
         if (!this.$loadingHub) {
             return;
         }
         this.$loadingHub.dismiss(typeof callBack === 'function' ? callBack : null);
     };
-    target.prototype.$isLoadingShow = function () {
+    target.prototype.$isLoadingShow = function() {
         if (!this.$loadingHub) {
             return false;
         }
@@ -113,28 +113,28 @@ const PageDecorator = (ComponentClass) => {
 
 
     /* -------------NavigatorBar-------------  */
-    target.prototype.$NavigationBarHiddenLeftItem = function (hidden, callBack) {
+    target.prototype.$NavigationBarHiddenLeftItem = function(hidden, callBack) {
         //隐藏左边item
         if (!this.$navigatorBar) {
             return;
         }
         this.$navigatorBar.hiddenLeftItem(hidden, callBack);
     };
-    target.prototype.$NavigationBarHiddenRightItem = function (hidden, callBack) {
+    target.prototype.$NavigationBarHiddenRightItem = function(hidden, callBack) {
         //隐藏右边item
         if (!this.$navigatorBar) {
             return;
         }
         this.$navigatorBar.hiddenRightItem(hidden, callBack);
     };
-    target.prototype.$NavigationBarResetRightTitle = function (newTitle, callBack) {
+    target.prototype.$NavigationBarResetRightTitle = function(newTitle, callBack) {
         //隐藏右边item
         if (!this.$navigatorBar) {
             return;
         }
         this.$navigatorBar.changeRightTitle(newTitle, callBack);
     };
-    target.prototype.$NavigationBarResetTitle = function (newTitle, callBack) {
+    target.prototype.$NavigationBarResetTitle = function(newTitle, callBack) {
         //更换title
         if (!this.$navigatorBar) {
             return;
@@ -144,7 +144,7 @@ const PageDecorator = (ComponentClass) => {
 
     /* -------------Navigation------------- */
     //跳转
-    target.prototype.$navigate = function (routeName, params) {
+    target.prototype.$navigate = function(routeName, params) {
         try {
             if (!routeName) {
                 return;
@@ -166,10 +166,10 @@ const PageDecorator = (ComponentClass) => {
         }
     };
     //返回
-    target.prototype.$navigateBack = function (routerKey) {
+    target.prototype.$navigateBack = function(routerKey) {
         try {
             if (routerKey) {
-                const backAction = NavigationActions.back({key: routerKey,});
+                const backAction = NavigationActions.back({ key: routerKey });
                 this.props.navigation.dispatch(backAction);
             } else {
                 this.props.navigation.goBack();
@@ -180,7 +180,7 @@ const PageDecorator = (ComponentClass) => {
     };
 
     /*------------------所有函数的封装------------------*/
-    target.prototype.$getAllFunc = function () {
+    target.prototype.$getAllFunc = function() {
         return {
             $toastShow: this.$toastShow.bind(this),
             $toastDismiss: this.$toastDismiss.bind(this),
@@ -192,18 +192,18 @@ const PageDecorator = (ComponentClass) => {
 
             $NavigationBarHiddenLeftItem: this.$NavigationBarHiddenLeftItem.bind(this),
             $NavigationBarHiddenRightItem: this.$NavigationBarHiddenRightItem.bind(this),
-            $NavigationBarResetTitle: this.$NavigationBarResetTitle.bind(this),
+            $NavigationBarResetTitle: this.$NavigationBarResetTitle.bind(this)
         };
     };
 
     const targetRender = ComponentClass.prototype.render;
 
-    ComponentClass.prototype.render = function () {
+    ComponentClass.prototype.render = function() {
 
-        const {renderByPageState} = $PageOptions;
+        const { renderByPageState } = $PageOptions;
 
         const navigationBarOptions = $PageOptions.navigationBarOptions || {};
-        const isShowBar = navigationBarOptions.show !== undefined ?  navigationBarOptions.show : true;
+        const isShowBar = navigationBarOptions.show !== undefined ? navigationBarOptions.show : true;
         let controlParams = null;
 
         // 需要进行页面状态管理
@@ -220,13 +220,13 @@ const PageDecorator = (ComponentClass) => {
 
             {
                 isShowBar && <NavigatorBar {...navigationBarOptions}
-                                                      renderRight={this.$NavBarRenderRightItem || null}
-                                                      navigation={this.props.navigation}
-                                                      leftPressed={() => (this.$NavBarLeftPressed || $NavigationBarDefaultLeftPressed).call(this)}
-                                                      rightPressed={() => (this.$NavBarRightPressed || $NavigationBarDefaultRightPressed).call(this)}
-                                                      ref={(bar) => {
-                                                          this.$navigatorBar = bar;
-                                                      }}/>
+                                           renderRight={this.$NavBarRenderRightItem || null}
+                                           navigation={this.props.navigation}
+                                           leftPressed={() => (this.$NavBarLeftPressed || $NavigationBarDefaultLeftPressed).call(this)}
+                                           rightPressed={() => (this.$NavBarRightPressed || $NavigationBarDefaultRightPressed).call(this)}
+                                           ref={(bar) => {
+                                               this.$navigatorBar = bar;
+                                           }}/>
             }
 
             {
@@ -268,7 +268,7 @@ function $NavigationBarDefaultRightPressed() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F6F6F6',
+        backgroundColor: '#F6F6F6'
     }
 });
 
