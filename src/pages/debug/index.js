@@ -3,9 +3,9 @@
  * debug 调试模块，用于开发和测试阶段进行异常诊断调试
  */
 
-//import FetchHistoryPage from './FetchHistoryPage';
-//import RequestDetailPage from './RequestDetailPage';
-//import UserInfoPage from './UserInfoPage';
+import FetchHistoryPage from './FetchHistoryPage';
+import RequestDetailPage from './RequestDetailPage';
+import UserInfoPage from './UserInfoPage';
 
 //调试面板
 import DebugPanelPage from './DebugPanelPage';
@@ -17,7 +17,10 @@ export default {
     moduleName: 'debug',
     childRoutes: {
         DebugPanelPage,
+        RequestDetailPage,
+        UserInfoPage,
         DemoListPage,
         DemoLoginPage,
+        FetchHistoryPage,
     }
 };
