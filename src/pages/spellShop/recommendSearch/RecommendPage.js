@@ -1,7 +1,7 @@
 /*
 * 店铺推荐页面
 * */
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View,
     Image,
@@ -20,8 +20,10 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import NavigatorBar from '../../../components/pageDecorator/NavigatorBar';
 import RecommendRow from './components/RecommendRow';
 import SegementHeaderView from './components/RecommendSegmentView';
+import BasePage from '../../../BasePage';
 
-export default class RecommendPage extends Component {
+
+export default class RecommendPage extends BasePage {
 
     constructor(props) {
         super(props);
@@ -31,11 +33,9 @@ export default class RecommendPage extends Component {
         };
     }
 
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: '拼店',
-            show: false
-        }
+    $navigationBarOptions = {
+        title: '所有店铺',
+        show: false
     };
 
     // 点击开启店铺页面
@@ -113,10 +113,10 @@ export default class RecommendPage extends Component {
     };
 
     _renderItem = ({ item }) => {
-        return (<RecommendRow item = {item} clickShopInfoRow={this._clickShopInfoRow}/>);
+        return (<RecommendRow item={item} clickShopInfoRow={this._clickShopInfoRow}/>);
     };
 
-    render() {
+    _render() {
         return (
             <View style={{ flex: 1 }}>
                 <NavigatorBar navigation={this.props.navigation}

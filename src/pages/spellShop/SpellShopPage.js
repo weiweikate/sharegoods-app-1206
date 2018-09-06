@@ -1,5 +1,5 @@
 //拼店tab页面
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View,
     Image,
@@ -9,24 +9,27 @@ import {
     TouchableWithoutFeedback,
     Text
 } from 'react-native';
-import NavigatorBar from '../../components/pageDecorator/NavigatorBar';
-import ScreenUtils from '../../utils/ScreenUtils';
+
 // 图片资源
 import IntroduceImg from './src/hhk_03.png';
 import IntroduceImg1 from './src/hhk_031.png';
+
+import NavigatorBar from '../../components/pageDecorator/NavigatorBar';
+import ScreenUtils from '../../utils/ScreenUtils';
+import BasePage from '../../BasePage';
+
 import { observer } from 'mobx-react';
 
 @observer
-export default class SpellShopPage extends Component {
+export default class SpellShopPage extends BasePage {
 
     constructor(props) {
         super(props);
     }
 
-    static $PageOptions = {
-        navigationBarOptions: {
-            show: false
-        }
+    $navigationBarOptions = {
+        title: '我是标题',
+        show: false
     };
 
     _onRefresh = () => {
@@ -61,7 +64,7 @@ export default class SpellShopPage extends Component {
         </View>;
     };
 
-    render() {
+    _render() {
         const { bar, cmp } = this._renderContainer();
         return (
             <View style={styles.container}>

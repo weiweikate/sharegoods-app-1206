@@ -25,7 +25,7 @@ export default class RecommendRow extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataList: ['', '', '','', '', '','', '', '','', '', '']
+            dataList: ['', '', '', '', '', '', '', '', '', '', '', '']
         };
     }
 
@@ -64,10 +64,10 @@ export default class RecommendRow extends Component {
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                 />
-                <View style = {styles.moneyContainer}>
+                <View style={styles.moneyContainer}>
                     <Text style={styles.moneyText}>店铺本月收入：<Text style={{ color: '#D51243' }}>5888.98元</Text>
                     </Text>
-                    <Text style={[styles.moneyText,{ marginLeft: 16 }]}>
+                    <Text style={[styles.moneyText, { marginLeft: 16 }]}>
                         店铺累计收入：<Text
                         style={{ color: '#D51243' }}>15555.888.98元</Text>
                     </Text>
@@ -146,10 +146,10 @@ const styles = StyleSheet.create({
     },
 
     moneyContainer: {
-        flexDirection:'row',
+        flexDirection: 'row',
         marginTop: 29,
         marginBottom: 16,
-        paddingHorizontal: 15,
+        paddingHorizontal: 15
     },
     moneyText: {
         color: '#999999',

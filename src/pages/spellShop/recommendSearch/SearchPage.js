@@ -1,7 +1,7 @@
 /*
 * 搜索店铺
 * */
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View,
     SectionList,
@@ -12,19 +12,21 @@ import SearchBar from '../../../components/ui/searchBar/SearchBar';
 import SearchSegmentView from './components/SearchSegmentView';
 import SearchRecruitingRow from './components/SearchRecruitingRow';
 import SearchAllRow from './components/SearchAllRow';
+import BasePage from '../../../BasePage';
 
-export default class SearchPage extends Component {
 
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: '所有店铺'
-        }
+export default class SearchPage extends BasePage {
+
+
+    // 导航配置
+    $navigationBarOptions = {
+        title: '我是标题'
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            list: [{},{},{},{}],
+            list: [{}, {}, {}, {}],
             loading: true,
             refreshing: false,
             selIndex: 0,
@@ -39,7 +41,7 @@ export default class SearchPage extends Component {
     _searchKeyWord = () => {
         this.setState({
             loading: true,
-            list: [{},{},{},{}]
+            list: [{}, {}, {}, {}]
         }, () => {
         });
     };
@@ -67,7 +69,7 @@ export default class SearchPage extends Component {
     _renderHeader = ({ section }) => {
         // const { sectionGroup } = section;
         // if (sectionGroup === 0) {
-            return <SearchSegmentView style={{ marginBottom: 10 }} onPressAtIndex={this._onPressAtIndex}/>;
+        return <SearchSegmentView style={{ marginBottom: 10 }} onPressAtIndex={this._onPressAtIndex}/>;
         // } else {
         //     return null;
         // }
@@ -77,11 +79,11 @@ export default class SearchPage extends Component {
     _renderItem = (item, section) => {
         // const { sectionGroup } = section;
         // if (sectionGroup === 1) {
-            if (this.state.selIndex === 0) {
-                return (<SearchAllRow onPress={this._clickShopAtRow} item={item}/>);
-            } else {
-                return (<SearchRecruitingRow onPress={this._clickShopAtRow} item={item}/>);
-            }
+        if (this.state.selIndex === 0) {
+            return (<SearchAllRow onPress={this._clickShopAtRow} item={item}/>);
+        } else {
+            return (<SearchRecruitingRow onPress={this._clickShopAtRow} item={item}/>);
+        }
         // } else {
         //     return null;
         // }
@@ -91,7 +93,7 @@ export default class SearchPage extends Component {
         return (<View style={{ height: StyleSheet.hairlineWidth, marginLeft: 15, backgroundColor: '#eee' }}/>);
     };
 
-    render() {
+    _render() {
         return (
             <View style={styles.container}>
                 <SectionList refreshing={this.state.refreshing}
