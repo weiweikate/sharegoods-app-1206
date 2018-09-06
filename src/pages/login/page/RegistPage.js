@@ -1,61 +1,95 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View,
     Text,
     TextInput,
     StyleSheet,
     TouchableOpacity,
-    Image
+    Image, Alert
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
-import { observable } from 'mobx';
+import { observable, computed, action } from 'mobx';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import ColorUtil from '../../../utils/ColorUtil';
+import BasePage from '../../../BasePage';
+import bridge from '../../../utils/bridge';
+import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+import StringUtils from '../../../utils/StringUtils';
 
 class RegistModel {
     @observable
-    phoneNumber;
+    phoneNumber = '';
     @observable
-    password;
+    vertifyCode = '';
+    @observable
+    password = '';
+    @observable
+    dowTime= 0;
     @observable
     isSecuret = true;
+
+    @action
+    savePhoneNumber(phoneNmber) {
+        if (!phoneNmber) {
+            this.phoneNumber = ''
+            return;
+        }
+        this.phoneNumber = phoneNmber;
+    }
+
+    @action
+    savePassword(password) {
+        if (!password) {
+            this.password = ''
+            return;
+        }
+        this.password = password;
+    }
+
+    @action
+    saveVertifyCode(vertifyCode) {
+        if (!vertifyCode) {
+            this.vertifyCode = ''
+            return;
+        }
+        this.vertifyCode = vertifyCode;
+    }
+
+
+    @computed
+    get isCanClick() {
+        if (this.phoneNumber.length === 11 && this.vertifyCode.length > 0 && this.password.length >= 6) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
 
 @observer
-export default class RegistPage extends Component {
+export default class RegistPage extends BasePage {
     registModel = new RegistModel();
-    // 页面配置
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: '设置账号及密码',
-            show: true
-            // show: false // 是否显示导航条 默认显示
-        },
-        renderByPageState: false
-    };
-    /*render右上角*/
-    $NavBarRenderRightItem = () => {
-        return (
-            <Text style={Styles.rightTopTitleStyle} onPress={this.registBtnClick}>
-                注册
-            </Text>
-        );
+    // 导航配置
+    $navigationBarOptions = {
+        title: '注册'
     };
 
-    render() {
+    _render() {
         return (
-            <View style={{ backgroundColor: '#eee' }}>
+            <View style={{ backgroundColor: ColorUtil.Color_f7f7f7 }}>
                 <View style={{ backgroundColor: '#fff', marginTop: 10 }}>
                     <View style={{ marginLeft: 30, marginRight: 30, marginTop: 60, flexDirection: 'row' }}>
                         <Text style={{ marginRight: 20 }}>
-                            新手机号
+                            手机号
                         </Text>
                         <TextInput
                             style={Styles.inputTextStyle}
                             value={this.registModel.phoneNumber}
-                            // onChangeText={text => {this.oldUserLoginModel.phoneNumber = text}})}
+                            onChangeText={text => {
+                                this.registModel.savePhoneNumber(text);
+                            }}
                             placeholder='请输入手机号'
                             underlineColorAndroid={'transparent'}
                             keyboardType='default'
@@ -73,19 +107,21 @@ export default class RegistPage extends Component {
                                 </Text>
                                 <TextInput
                                     style={Styles.inputTextStyle}
-                                    value={this.registModel.phoneNumber}
-                                    // onChangeText={text => {this..phoneNumber = text}})}
-                                    placeholder='请输入密码'
+                                    value={this.registModel.vertifyCode}
+                                    onChangeText={text => {
+                                        this.registModel.saveVertifyCode(text);
+                                    }}
+                                    placeholder='请输入验证码'
                                     underlineColorAndroid={'transparent'}
                                     keyboardType='default'
-                                    secureTextEntry={this.registModel.isSecuret}
+
                                 />
                             </View>
                             <TouchableOpacity onPress={() => {
-                                this.registModel.isSecuret = !this.registModel.isSecuret;
+                                this.getVertifyCode()
                             }}>
-                                <Text>
-                                    获取验证码
+                                <Text style={{ color: ColorUtil.mainRedColor }}>
+                                    {this.registModel.dowTime > 0 ? `${this.registModel.dowTime}秒后重新获取` : '获取验证码'}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -101,16 +137,19 @@ export default class RegistPage extends Component {
                     justifyContent: 'space-between'
                 }}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={{ marginRight: 20, marginLeft: 30, marginRight: 30, marginTop: 18 }}>
+                        <Text style={{ marginLeft: 30, marginRight: 30, marginTop: 18 }}>
                             新密码
                         </Text>
                         <TextInput
                             style={Styles.inputTextStyle}
-                            value={this.registModel.phoneNumber}
-                            // onChangeText={text => {this.oldUserLoginModel.phoneNumber = text}})}
-                            placeholder='支持数字,字母,特殊符号'
+                            value={this.registModel.password}
+                            onChangeText={text => {
+                                this.registModel.savePassword(text);
+                            }}
+                            placeholder='支持数字,字母'
                             underlineColorAndroid={'transparent'}
                             keyboardType='default'
+                            secureTextEntry={this.registModel.isSecuret}
                         />
                     </View>
 
@@ -125,10 +164,19 @@ export default class RegistPage extends Component {
 
                 </View>
 
-                <View style={{ marginRight: 30, marginLeft: 30, marginTop: 40, height: 45 }}>
+                <View style={
+                    [{
+                        marginRight: 30,
+                        marginLeft: 30,
+                        marginTop: 40,
+                        height: 45,
+                        backgroundColor: ColorUtil.mainRedColor,
+                        borderRadius: 5
+                    },
+                        this.registModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]
+                }>
                     <TouchableOpacity onPress={this.loginClick}>
                         <Text style={{
-                            backgroundColor: ColorUtil.mainRedColor,
                             textAlign: 'center',
                             height: 45,
                             alignItems: 'center',
@@ -136,8 +184,10 @@ export default class RegistPage extends Component {
                             color: '#fff',
                             paddingTop: 15,
                             fontWeight: '600'
+
+
                         }}>
-                            登陆
+                            下一步
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -145,9 +195,33 @@ export default class RegistPage extends Component {
             </View>
         );
     }
+    /*获取验证码*/
+    getVertifyCode = () => {
+        if (this.registModel.dowTime > 0) {
+            Alert.alert(
+                '提示',
+                '操作过于频繁稍后重试',
+                [
+                    {
+                        text: '确定', onPress: () => {
+                        }
+                    }
+                ],
+                { cancelable: false }
+            );
+            return;
+        }
+        if (StringUtils.checkPhone(this.registModel.phoneNumber)) {
+            (new TimeDownUtils()).startDown((time) => {
+                this.registModel.dowTime = time;
+            });
+            bridge.$toast('验证码已发送请注意查收');
+        } else {
+            bridge.$toast('手机格式不对');
+        }
+    };
 
     loginClick = () => {
-
         this.registModel.phoneNumber = '333';
     };
 
@@ -179,6 +253,9 @@ const Styles = StyleSheet.create(
         },
         lineStyle: {
             marginTop: 5
+        },
+        inputTextStyle: {
+            width: 130
         }
     }
 );
