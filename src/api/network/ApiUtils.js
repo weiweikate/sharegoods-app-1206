@@ -1,6 +1,6 @@
-import HttpUtils from '../network/HttpUtils';
-import {NavigationActions} from 'react-navigation';
-import RouterMap from "../RouterMap";
+import HttpUtils from './HttpUtils';
+import { NavigationActions } from 'react-navigation';
+import RouterMap from '../../RouterMap';
 
 const loginAction = NavigationActions.navigate({
     routeName: RouterMap.DebugLoginPage
@@ -25,11 +25,12 @@ export default function ApiUtils(baseUrl, Urls) {
         }
     });
     list.forEach(function (item) {
-        let name = item.name, url = baseUrl + item.uri, method = item.method || 'post';
+        let name = item.name, url = baseUrl + item.uri, method = item.method || 'post',filter = item.filter;
         result[name] = async function (params, config = {}) {
             const response = await HttpUtils[method](url, params);
             // code为0表明请求正常
             if (!response.code || response.code === 0) {
+                filter && filter(response);
                 return Promise.resolve(response);
             } else {
                 // 假如返回未登陆并且当前页面不是登陆页面则进行跳转

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import configureResponseError from './interceptors/ResponseError';
 import configureTimeout from './interceptors/timeout';
-import fetchHistory from '../model/FetchHistory';
+import fetchHistory from '../../model/FetchHistory';
 
 const Qs = require('qs');
 
@@ -15,8 +15,8 @@ export function setToken(data) {
         ...data
     };
 }
-
-//axios.defaults.headers.post['Content-Type'] = "application/x-www-form-urlencoded;charset=UTF-8";
+// 这是默认post
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.interceptors.response.use(null, configureResponseError);
 axios.interceptors.request.use(configureTimeout, err => {
 
