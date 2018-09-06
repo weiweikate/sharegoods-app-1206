@@ -1,5 +1,4 @@
 import axios from 'axios';
-import ErrorCode from '../../constants/ErrorCode';
 
 const DEFAULT_TIMEOUT = 15000;
 
@@ -7,7 +6,7 @@ let requestIndex = 0;
 let cancelRequestMap = {};
 
 export default function configureTimeout(config) {
-    console.log('config',config);
+    console.log('config', config);
     requestIndex += 1;
     const currentRequestIndex = requestIndex;
     config.cancelToken = new axios.CancelToken((cancelExecutor) => {
@@ -17,7 +16,7 @@ export default function configureTimeout(config) {
     let timeout = DEFAULT_TIMEOUT;
     setTimeout(() => {
         if (cancelRequestMap[currentRequestIndex] instanceof Function) {
-            cancelRequestMap[currentRequestIndex](ErrorCode.ConnectTimeOut);
+            cancelRequestMap[currentRequestIndex]('ECONNABORTED');
             cancelRequestMap[currentRequestIndex] = null;
         }
     }, timeout);
