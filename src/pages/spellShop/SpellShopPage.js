@@ -47,7 +47,7 @@ export default class SpellShopPage extends Component {
     };
 
     _clickSearchItem = () => {
-        this.$navigate('spellShop/shopRecommend/ShopRecommendPage');
+        this.$navigate('spellShop/recommendSearch/RecommendPage');
     };
 
     _renderBarRight = () => {

@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 
-export default class SegmentView extends Component {
+export default class RecommendSegmentView extends Component {
 
     static propTypes = {
         onPressAtIndex: PropTypes.func

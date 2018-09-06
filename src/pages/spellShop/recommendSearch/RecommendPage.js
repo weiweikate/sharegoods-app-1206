@@ -1,4 +1,6 @@
-//店铺推荐页面
+/*
+* 店铺推荐页面
+* */
 import React, { Component } from 'react';
 import {
     View,
@@ -14,18 +16,17 @@ import ShopItemLogo from './src/dp_03.png';
 import SearchItemLogo from './src/pdss_03.png';
 
 import Swiper from 'react-native-swiper';
-
 import ScreenUtils from '../../../utils/ScreenUtils';
-import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
+import NavigatorBar from '../../../components/pageDecorator/NavigatorBar';
 import RecommendRow from './components/RecommendRow';
-import SegementHeaderView from './components/SegementHeaderView';
+import SegementHeaderView from './components/RecommendSegmentView';
 
-export default class ShopRecommendPage extends Component {
+export default class RecommendPage extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            dataList: [{}, {}],
+            dataList: [],
             adList: [{}, {}, {}]
         };
     }
@@ -43,6 +44,7 @@ export default class ShopRecommendPage extends Component {
 
     // 点击搜索店铺
     _clickSearchItem = () => {
+        this.$navigate('spellShop/recommendSearch/SearchPage');
     };
 
     // 点击查看某个店铺
