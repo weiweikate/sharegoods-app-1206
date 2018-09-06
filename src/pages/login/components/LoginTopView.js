@@ -19,7 +19,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 
 class LoginTopViewModel {
-    /*0代表验证码登陆 1代表密码登陆*/
+    /*0代表验证码登录 1代表密码登录*/
     @observable
     selectIndex = 0;
     @observable
@@ -95,7 +95,7 @@ export default class LoginTopView extends Component {
                     }}>
                         <Text
                             style={[Styles.switchBtnStyle, this.LoginModel.selectIndex ? { color: ColorUtil.ligtGray } : { color: ColorUtil.mainRedColor }]}>
-                            验证码登陆
+                            验证码登录
                         </Text>
                         <View
                             style={this.LoginModel.selectIndex ? Styles.btnBottomLineNonStyle : Styles.btnBottomLineStyle}/>
@@ -105,7 +105,7 @@ export default class LoginTopView extends Component {
                     }}>
                         <Text
                             style={[Styles.switchBtnStyle, this.LoginModel.selectIndex ? { color: ColorUtil.mainRedColor } : { color: ColorUtil.ligtGray }]}>
-                            密码登陆
+                            密码登录
                         </Text>
                         <View
                             style={this.LoginModel.selectIndex ? Styles.btnBottomLineStyle : Styles.btnBottomLineNonStyle}/>

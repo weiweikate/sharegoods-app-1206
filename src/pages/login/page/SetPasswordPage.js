@@ -1,18 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View,
     Text,
     TextInput,
     StyleSheet,
     TouchableOpacity,
-    Image
+    Image, Alert
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
 import { observable, action, computed } from 'mobx';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import ColorUtil from '../../../utils/ColorUtil';
-import ScreenUtils from '../../../utils/ScreenUtils';
+import BasePage from '../../../BasePage';
+import bridge from '../../../utils/bridge';
+import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+import StringUtils from '../../../utils/StringUtils';
 
 class SetPasswordModel {
     @observable
@@ -20,13 +23,25 @@ class SetPasswordModel {
     @observable
     password = '';
     @observable
+    vertifyCode = '';
+    @observable
     isSecuret = true;
     @observable
-    vertifyCode = '';
+    dowTime = 0;
+
+    @action
+    savePhoneNumber(phoneNmber) {
+        if (!phoneNmber) {
+            phoneNmber = '';
+            return;
+        }
+        this.phoneNumber = phoneNmber;
+    }
 
     @action
     savePassword(password) {
         if (!password) {
+            password = '';
             return;
         }
         this.password = password;
@@ -35,15 +50,15 @@ class SetPasswordModel {
     @action
     saveVertifyCode(vertifyCode) {
         if (!vertifyCode) {
+            vertifyCode = '';
             return;
         }
         this.vertifyCode = vertifyCode;
     }
 
-
     @computed
     get isCanClick() {
-        if (this.phoneNumber.length === 11 && this.vertifyCode.length > 0 && this.password.length >= 6) {
+        if (this.phoneNumber.length < 11 && this.vertifyCode.length > 0 && this.password.length >= 6) {
             return true;
         } else {
             return false;
@@ -53,30 +68,27 @@ class SetPasswordModel {
 }
 
 @observer
-export default class SetPasswordPage extends Component {
+export default class SetPasswordPage extends BasePage {
     setPasswordModel = new SetPasswordModel();
-    // 页面配置
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: '设置账号及密码',
-            show: true
-            // show: false // 是否显示导航条 默认显示
-        },
-        renderByPageState: false
+    // 导航配置
+    $navigationBarOptions = {
+        title: '设置账号及密码'
     };
 
-    render() {
+    _render() {
         return (
-            <View style={{ backgroundColor: '#eee' }}>
+            <View style={{ backgroundColor: ColorUtil.Color_f7f7f7 }}>
                 <View style={{ backgroundColor: '#fff', marginTop: 10 }}>
                     <View style={{ marginLeft: 30, marginRight: 30, marginTop: 60, flexDirection: 'row' }}>
                         <Text style={{ marginRight: 20 }}>
-                            新手机
+                            手机号
                         </Text>
                         <TextInput
                             style={Styles.inputTextStyle}
                             value={this.setPasswordModel.phoneNumber}
-                            // onChangeText={text => {this.oldUserLoginModel.phoneNumber = text}})}
+                            onChangeText={text => {
+                                this.setPasswordModel.savePhoneNumber(text);
+                            }}
                             placeholder='请输入手机号'
                             underlineColorAndroid={'transparent'}
                             keyboardType='default'
@@ -94,19 +106,21 @@ export default class SetPasswordPage extends Component {
                                 </Text>
                                 <TextInput
                                     style={Styles.inputTextStyle}
-                                    value={this.setPasswordModel.phoneNumber}
-                                    // onChangeText={text => {this..phoneNumber = text}})}
-                                    placeholder='请输入密码'
+                                    value={this.setPasswordModel.vertifyCode}
+                                    onChangeText={text => {
+                                        this.setPasswordModel.saveVertifyCode(text);
+                                    }}
+                                    placeholder='请输入验证码'
                                     underlineColorAndroid={'transparent'}
                                     keyboardType='default'
-                                    secureTextEntry={this.setPasswordModel.isSecuret}
+
                                 />
                             </View>
                             <TouchableOpacity onPress={() => {
-                                this.setPasswordModel.isSecuret = !this.setPasswordModel.isSecuret;
+                                this.getVertifyCode();
                             }}>
                                 <Text style={{ color: ColorUtil.mainRedColor }}>
-                                    获取验证码
+                                    {this.setPasswordModel.dowTime > 0 ? `${this.setPasswordModel.dowTime}秒后重新获取` : '获取验证码'}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -127,11 +141,14 @@ export default class SetPasswordPage extends Component {
                         </Text>
                         <TextInput
                             style={Styles.inputTextStyle}
-                            value={this.setPasswordModel.phoneNumber}
-                            // onChangeText={text => {this.oldUserLoginModel.phoneNumber = text}})}
-                            placeholder='支持数字,字母,特殊符号'
+                            value={this.setPasswordModel.password}
+                            onChangeText={text => {
+                                this.setPasswordModel.savePassword(text);
+                            }}
+                            placeholder='支持数字,字母'
                             underlineColorAndroid={'transparent'}
                             keyboardType='default'
+                            secureTextEntry={this.setPasswordModel.isSecuret}
                         />
                     </View>
 
@@ -146,10 +163,17 @@ export default class SetPasswordPage extends Component {
 
                 </View>
 
-                <View style={[{
-                    marginLeft: 30, width: ScreenUtils.width - 60, marginTop: 40, height: 45, borderRadius: 5,
-                    backgroundColor: ColorUtil.mainRedColor
-                }, this.setPasswordModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]}>
+                <View style={
+                    [{
+                        marginRight: 30,
+                        marginLeft: 30,
+                        marginTop: 40,
+                        height: 45,
+                        backgroundColor: ColorUtil.mainRedColor,
+                        borderRadius: 5
+                    },
+                        this.setPasswordModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]
+                }>
                     <TouchableOpacity onPress={this.loginClick}>
                         <Text style={{
                             textAlign: 'center',
@@ -159,6 +183,8 @@ export default class SetPasswordPage extends Component {
                             color: '#fff',
                             paddingTop: 15,
                             fontWeight: '600'
+
+
                         }}>
                             下一步
                         </Text>
@@ -169,12 +195,38 @@ export default class SetPasswordPage extends Component {
         );
     }
 
+    /*获取验证码*/
+    getVertifyCode = () => {
+        if (this.setPasswordModel.dowTime > 0) {
+            Alert.alert(
+                '提示',
+                '操作过于频繁稍后重试',
+                [
+                    {
+                        text: '确定', onPress: () => {
+                        }
+                    }
+                ],
+                { cancelable: false }
+            );
+            return;
+        }
+        if (StringUtils.checkPhone(this.setPasswordModel.phoneNumber)) {
+            (new TimeDownUtils()).startDown((time) => {
+                this.setPasswordModel.dowTime = time;
+            });
+            bridge.$toast('验证码已发送请注意查收');
+        } else {
+            bridge.$toast('手机格式不对');
+        }
+    };
     loginClick = () => {
 
         this.setPasswordModel.phoneNumber = '333';
     };
 
 }
+
 const Styles = StyleSheet.create(
     {
         contentStyle: {
@@ -202,6 +254,9 @@ const Styles = StyleSheet.create(
         },
         lineStyle: {
             marginTop: 5
+        },
+        inputTextStyle: {
+            width: 130
         }
     }
 );

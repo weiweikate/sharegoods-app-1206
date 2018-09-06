@@ -1,17 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View,
     Text,
     TextInput,
     StyleSheet,
     TouchableOpacity,
-    Image
+    Image, Alert
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
 import { observable, computed, action } from 'mobx';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import ColorUtil from '../../../utils/ColorUtil';
+import BasePage from '../../../BasePage';
+import bridge from '../../../utils/bridge';
+import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+import StringUtils from '../../../utils/StringUtils';
 
 class RegistModel {
     @observable
@@ -21,11 +25,14 @@ class RegistModel {
     @observable
     password = '';
     @observable
+    dowTime= 0;
+    @observable
     isSecuret = true;
 
     @action
     savePhoneNumber(phoneNmber) {
         if (!phoneNmber) {
+            this.phoneNumber = ''
             return;
         }
         this.phoneNumber = phoneNmber;
@@ -34,6 +41,7 @@ class RegistModel {
     @action
     savePassword(password) {
         if (!password) {
+            this.password = ''
             return;
         }
         this.password = password;
@@ -42,6 +50,7 @@ class RegistModel {
     @action
     saveVertifyCode(vertifyCode) {
         if (!vertifyCode) {
+            this.vertifyCode = ''
             return;
         }
         this.vertifyCode = vertifyCode;
@@ -60,24 +69,20 @@ class RegistModel {
 }
 
 @observer
-export default class RegistPage extends Component {
+export default class RegistPage extends BasePage {
     registModel = new RegistModel();
-    // 页面配置
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: '注册',
-            show: true
-        },
-        renderByPageState: false
+    // 导航配置
+    $navigationBarOptions = {
+        title: '注册'
     };
 
-    render() {
+    _render() {
         return (
             <View style={{ backgroundColor: ColorUtil.Color_f7f7f7 }}>
                 <View style={{ backgroundColor: '#fff', marginTop: 10 }}>
                     <View style={{ marginLeft: 30, marginRight: 30, marginTop: 60, flexDirection: 'row' }}>
                         <Text style={{ marginRight: 20 }}>
-                            新手机号
+                            手机号
                         </Text>
                         <TextInput
                             style={Styles.inputTextStyle}
@@ -113,10 +118,10 @@ export default class RegistPage extends Component {
                                 />
                             </View>
                             <TouchableOpacity onPress={() => {
-                                this.registModel.isSecuret = !this.registModel.isSecuret;
+                                this.getVertifyCode()
                             }}>
                                 <Text style={{ color: ColorUtil.mainRedColor }}>
-                                    获取验证码
+                                    {this.registModel.dowTime > 0 ? `${this.registModel.dowTime}秒后重新获取` : '获取验证码'}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -190,6 +195,31 @@ export default class RegistPage extends Component {
             </View>
         );
     }
+    /*获取验证码*/
+    getVertifyCode = () => {
+        if (this.registModel.dowTime > 0) {
+            Alert.alert(
+                '提示',
+                '操作过于频繁稍后重试',
+                [
+                    {
+                        text: '确定', onPress: () => {
+                        }
+                    }
+                ],
+                { cancelable: false }
+            );
+            return;
+        }
+        if (StringUtils.checkPhone(this.registModel.phoneNumber)) {
+            (new TimeDownUtils()).startDown((time) => {
+                this.registModel.dowTime = time;
+            });
+            bridge.$toast('验证码已发送请注意查收');
+        } else {
+            bridge.$toast('手机格式不对');
+        }
+    };
 
     loginClick = () => {
         this.registModel.phoneNumber = '333';

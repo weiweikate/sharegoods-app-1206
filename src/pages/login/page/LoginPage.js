@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import LoginTopView from '../components/LoginTopView';
 import {
     View,
@@ -11,19 +11,15 @@ import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import loginAndRegistRes from '../res/LoginAndRegistRes';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ColorUtil from '../../../utils/ColorUtil';
+import BasePage from '../../../BasePage';
 
-export default class LoginPage extends Component {
+export default class LoginPage extends BasePage {
     constructor() {
         super();
     }
-
-    /*页面配置*/
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: null
-            // show: false // 是否显示导航条 默认显示
-        },
-        renderByPageState: false
+    // 导航配置
+    $navigationBarOptions = {
+        title: '登录'
     };
     /*render右上角*/
     $NavBarRenderRightItem = () => {
@@ -34,7 +30,7 @@ export default class LoginPage extends Component {
         );
     };
 
-    render() {
+    _render() {
         return (
             <View style={Styles.contentStyle}>
                 <LoginTopView

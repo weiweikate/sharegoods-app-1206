@@ -20,7 +20,6 @@ export default class testNav extends Component {
         this.state = {
             test: '200'
         };
-
     }
 
     render() {

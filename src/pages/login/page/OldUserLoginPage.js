@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -14,6 +14,7 @@ import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import ColorUtil from '../../../utils/ColorUtil';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import loginAndRegistRes from '../res/LoginAndRegistRes';
+import BasePage from '../../../BasePage';
 
 class OldUserLoginModel {
     @observable
@@ -26,6 +27,7 @@ class OldUserLoginModel {
     @action
     savePhoneNumber(phoneNmber) {
         if (!phoneNmber) {
+            this.phoneNumber = '';
             return;
         }
         this.phoneNumber = phoneNmber;
@@ -34,6 +36,7 @@ class OldUserLoginModel {
     @action
     savePassword(password) {
         if (!password) {
+            this.password = '';
             return;
         }
         this.password = password;
@@ -50,20 +53,16 @@ class OldUserLoginModel {
 }
 
 @observer
-export default class OldUserLoginPage extends Component {
+export default class OldUserLoginPage extends BasePage {
     oldUserLoginModel = new OldUserLoginModel();
 
     constructor(props) {
         super(props);
     }
 
-    // 页面配置
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: '老用户激活',
-            show: true
-        },
-        renderByPageState: true
+    // 导航配置
+    $navigationBarOptions = {
+        title: '老用户激活'
     };
     /*render右上角*/
     $NavBarRenderRightItem = () => {
@@ -79,7 +78,7 @@ export default class OldUserLoginPage extends Component {
 
     };
 
-    render() {
+    _render() {
         return (
             <View style={{ flex: 1 }}>
                 <View style={{ backgroundColor: '#fff' }}>

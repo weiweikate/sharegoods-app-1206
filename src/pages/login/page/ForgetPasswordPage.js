@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -16,6 +16,7 @@ import bridge from '../../../utils/bridge';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import BasePage from '../../../BasePage';
 
 class ForgetPasswordModel {
     @observable
@@ -67,18 +68,13 @@ class ForgetPasswordModel {
 }
 
 @observer
-export default class ForgetPasswordPage extends Component {
+export default class ForgetPasswordPage extends BasePage {
     forgetPasswordModel = new ForgetPasswordModel();
-    // 页面配置
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: '忘记密码',
-            show: true
-        },
-        renderByPageState: false
+    // 导航配置
+    $navigationBarOptions = {
+        title: '忘记密码'
     };
-
-    render() {
+    _render() {
         return (
             <View style={{ backgroundColor: '#eee' }}>
                 <View style={{ backgroundColor: '#fff', marginTop: 10 }}>
