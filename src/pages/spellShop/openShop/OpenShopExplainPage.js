@@ -29,7 +29,7 @@ export default class OpenShopExplainPage extends BasePage {
 
                 <View style={{ marginHorizontal: 15 }}>
 
-                    {index != 0 ?
+                    {index !== 0 ?
                         <View style={{ marginLeft: 8, width: 2, backgroundColor: '#d51243', height: 33 }}/> : null}
 
                     <View style={{ flexDirection: 'row' }}>
@@ -37,7 +37,7 @@ export default class OpenShopExplainPage extends BasePage {
                             <View style={styles.circle}>
                                 <Text style={styles.circleText}>{index + 1}</Text>
                             </View>
-                            {index != maxIndex - 1 ?
+                            {index !== maxIndex - 1 ?
                                 <View style={{ marginLeft: 8, width: 2, backgroundColor: '#d51243', flex: 1 }}/> : null}
                         </View>
 
