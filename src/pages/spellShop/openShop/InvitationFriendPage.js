@@ -53,8 +53,6 @@ export default class InvitationToShopPage extends BasePage {
     };
 
     _render() {
-        const centerHeight = 418 / 296 * ScreenUtils.width - 80;
-
         // 需要分享的参数信息
         const shareInfo = this.state.params.shareInfo || {};
         return (
@@ -62,9 +60,9 @@ export default class InvitationToShopPage extends BasePage {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ alignItems: 'center' }}>
 
-                        <Image style={{ marginTop: 11 }} onLayout={this._onLayoutImg} source={Banner}/>
 
-                        <ImageBackground onLayout={this._onLayout} style={[styles.imgBg, { height: centerHeight }]}
+
+                        <ImageBackground onLayout={this._onLayout} style={[styles.imgBg]}
                                          source={Center}>
                             <View style={styles.topContainer}>
                                 {
@@ -79,15 +77,22 @@ export default class InvitationToShopPage extends BasePage {
                                 </View>
                             </View>
                             <View style={styles.qrContainer}>
-                                    <QRCode
-                                        value={'https://www.baidu.com/'}
-                                        size={140 - 6}
-                                        bgColor='#333'
-                                        fgColor='white'/>
+                                <QRCode
+                                    value={'https://www.baidu.com/'}
+                                    size={140 - 6}
+                                    bgColor='#333'
+                                    fgColor='white'/>
                             </View>
                             <Text style={styles.wxTip}>分享至微信，为您的店铺增添活力</Text>
 
+
+
                         </ImageBackground>
+
+                        <Image style={{
+                            position:'absolute',
+                            top:40,
+                        }} onLayout={this._onLayoutImg} source={Banner}/>
 
                         <View style={{ flexDirection: 'row', marginTop: 50, justifyContent: 'center' }}>
                             <TouchableOpacity style={styles.bottomBtn} onPress={this._saveImg}>
@@ -115,10 +120,12 @@ const styles = StyleSheet.create({
         flex: 1
     },
     imgBg: {
-        width: ScreenUtils.width - 80,
+        marginTop:95,
+        alignItems: 'center',
+        width: ScreenUtils.autoSizeWidth(279),
+        height: ScreenUtils.autoSizeWidth(370),
         borderRadius: 10,
-        overflow: 'hidden',
-        alignItems: 'center'
+        overflow: 'hidden'
     },
     topContainer: {
         flexDirection: 'row',
@@ -145,14 +152,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 25,
         borderWidth: 1,
-        borderColor: '#D51243',
+        borderColor: '#D51243'
     },
 
     wxTip: {
         fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#D51243',
-        marginTop: 15,
+        marginTop: 15
     },
     bottomBtn: {
         height: 42,
