@@ -14,18 +14,18 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(loginWX:(RCTResponseSenderBlock)callback){
   dispatch_async(dispatch_get_main_queue(), ^{
-#ifdef DEBUG
-          NSDictionary * dicData = @{
-                                     @"device":@"iphone 6s",
-                                     @"openid":@"ojoMs1M5csUdHkt8RFu2Ab6l41zM" ,
-                                     @"systemVersion" : @"11.4.1"
-                                     };
-          callback(@[dicData]);
-#else
+//#ifdef DEBUG
+//          NSDictionary * dicData = @{
+//                                     @"device":@"iphone 6s",
+//                                     @"openid":@"ojoMs1M5csUdHkt8RFu2Ab6l41zM" ,
+//                                     @"systemVersion" : @"11.4.1"
+//                                     };
+//          callback(@[dicData]);
+//#else
               [[JRShareManager sharedInstance] getUserInfoForPlatform:UMSocialPlatformType_WechatSession withCallBackBlock:^(id userInfo) {
                 callback(userInfo);
               }];
-#endif
+//#endif
     
   });
 }
