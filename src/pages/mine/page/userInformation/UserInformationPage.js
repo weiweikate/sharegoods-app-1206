@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View,
     StyleSheet
 } from 'react-native';
+import BasePage from '../../../../BasePage';
 import TakePhotoModal from '../../components/TakePhotoModal';
 import { color } from '../../../../constants/Theme';
 import UserSingleItem from '../../components/UserSingleItem';
@@ -12,12 +13,11 @@ import { observer } from 'mobx-react/native';
 const dismissKeyboard = require('dismissKeyboard');
 
 @observer
-export default class UserInformationPage extends Component {
+export default class UserInformationPage extends BasePage {
 
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: '个人资料'
-        }
+    $navigationBarOptions = {
+        title: '个人资料',
+        show: true // false则隐藏导航
     };
 
     constructor(props) {
@@ -54,7 +54,7 @@ export default class UserInformationPage extends Component {
         );
     };
 
-    render() {
+    _render() {
         return (
             <View style={{ backgroundColor: color.white }}>
 

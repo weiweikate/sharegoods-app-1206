@@ -16,8 +16,8 @@ import UIImage from '../../../../components/ui/UIImage';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import AutoExpandingInput from '../../../../components/ui/AutoExpandingInput';
-import arrowup from '../../res/customerservice/icon_06-03.png';
-import arrowdown from '../../res/customerservice/icon_06.png';
+import arrowUp from '../../res/customerservice/icon_06-03.png';
+import arrowDown from '../../res/customerservice/icon_06.png';
 import rightIcon from '../../res/customerservice/icon111_03.png';
 import addPic from '../../res/customerservice/xk1_03.png';
 import deleteImage from '../../res/customerservice/deleteImage.png';
@@ -35,10 +35,14 @@ export default class HelperFeedbackPage extends BasePage {
             CONFIG: [],
             selectIndex: -1,
             imageArr: []
-
         };
 
     }
+
+    $navigationBarOptions = {
+        title: '问题反馈',
+        show: true // false则隐藏导航
+    };
 
     //选择具体的反馈类型
     selCourse(course, i) {
@@ -186,7 +190,7 @@ export default class HelperFeedbackPage extends BasePage {
                         <TouchableOpacity style={styles.modalContainer}
                                           onPress={() => this.setState({ showModal: true })}>
                             <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>请选择问题类型</Text>
-                            <Image source={arrowup} style={{ width: 15, height: 15, marginRight: 10 }}/>
+                            <Image source={arrowUp} style={{ width: 15, height: 15, marginRight: 10 }}/>
                         </TouchableOpacity>
                         <View style={{ height: 148, width: ScreenUtils.width, backgroundColor: 'white' }}>
                             {this.state.CONFIG.map((item, i) => {
@@ -221,7 +225,7 @@ export default class HelperFeedbackPage extends BasePage {
                     justifyContent: 'space-between', alignItems: 'center'
                 }} onPress={() => this.setState({ showModal: true })}>
                     <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>{this.state.course}</Text>
-                    <Image source={arrowdown} style={{ width: 15, height: 15, marginRight: 10 }}/>
+                    <Image source={arrowDown} style={{ width: 15, height: 15, marginRight: 10 }}/>
                 </TouchableOpacity>
                 <View style={styles.containerView1}>
                     <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>详细说明</Text>
