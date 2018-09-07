@@ -369,19 +369,13 @@ export default class MinePage extends Component {
                 break;
             case 5:
                 // this.props.navigation.navigate('mine/MyCollectPage');
-                this.props.navigation.navigate('mine/MyHelperPage');
+                this.props.navigation.navigate('mine/helper/MyHelperPage');
                 break;
             case 6:
                 this.props.navigation.navigate('mine/MyHelperPage');
                 break;
             case 7:
                 this.props.navigation.navigate('mine/MyAddressBookPage');
-                break;
-            case 8:
-                this.props.navigation.navigate('mine/myData/InvitationPage');
-                break;
-            case 9:
-                this.props.navigation.navigate('mine/MyHelperPage');
                 break;
             //邀请评分
             case 10:
