@@ -12,11 +12,13 @@ import loginAndRegistRes from '../res/LoginAndRegistRes';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ColorUtil from '../../../utils/ColorUtil';
 import BasePage from '../../../BasePage';
+import bridge from '../../../utils/bridge';
 
 export default class LoginPage extends BasePage {
     constructor() {
         super();
     }
+
     // 导航配置
     $navigationBarOptions = {
         title: '登录'
@@ -76,7 +78,9 @@ export default class LoginPage extends BasePage {
     };
     /*微信登陆*/
     weChatLoginClick = () => {
+        bridge.$loginWx((data) => {
 
+        });
     };
     /*老用户登陆*/
     oldUserLoginClick = () => {

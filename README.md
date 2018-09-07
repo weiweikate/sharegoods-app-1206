@@ -5,7 +5,7 @@
 
 ##倒计时工具使用 TimeDownUtils
 
-参数1,回调函数,每秒回调一次,回调参数为倒计时到第一秒了
+参数1,回调函数,每秒回调一次,回调参数为倒计时到第几秒了
 参数2,倒计时的秒数,不写默认60
 startDown(callBack, downTime = this.downTime)
 
