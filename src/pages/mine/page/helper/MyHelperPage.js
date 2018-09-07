@@ -3,42 +3,45 @@
  */
 import React,{Component} from 'react'
 import {
-    NativeModules,
     StyleSheet,
     View,
     Image,
     Text,
     TouchableOpacity,
-    ImageBackground,
-    DeviceEventEmitter, InteractionManager, ScrollView
+
+     ScrollView
 } from 'react-native'
+import BasePage from '../../../../BasePage'
 import UIText from '../../../../components/ui/UIText';
 import UIImage from '../../../../components/ui/UIImage';
-import StringUtils from "../../../../utils/StringUtils";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import csperson from '../../res/customerservice/kf_03.png'
 import  backmg from '../../res/customerservice/xwduo.png'
 import kf11 from '../../res/customerservice/kf_11.png'
-import aftersaleIcon from '../../res/customerservice/kf_11-14.png'
 import monenybpg from '../../res/customerservice/kf_20.png'
 import qbcIcon from '../../res/customerservice/kf_22.png'
 import autobcIon from '../../res/customerservice/kf_24.png'
 import phoneIcon from '../../res/customerservice/kf_30.png'
 import  personIcon from  '../../res/customerservice/kf_30-33.png'
 // import QYChatUtil from 'QYChatUtil'
-export default class MyHelperPage extends Component {
+export default class MyHelperPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
             typeList: [],
         }
     }
-   static $PageOptions = {
-        navigationBarOptions: {
-            title:'帮助与客服'
-        },
-        renderByPageState: true
-    };
+    // $PageOptions = {
+    //     navigationBarOptions: {
+    //         title:'帮助与客服',
+    //         show:true
+    //     },
+    //     renderByPageState: true
+    // };
+    $navigationBarOptions = {
+        title:'帮助与客服',
+        show: true // false则隐藏导航
+    }
 
     renderHotQuestionList = ()=> {
         return (
@@ -128,20 +131,22 @@ export default class MyHelperPage extends Component {
         )
     };
     jumpQYIMPage=()=>{
-        QYChatUtil.qiYUChat()
+        // QYChatUtil.qiYUChat()
     }
     jumpTohelpPage() {
         console.log("fankui");
     }
 
     orderListq(typeid) {
+        this.$navigate('mine/helper/HelperQuestionListPage')
         // this.navigate(RouterPaths.HelperQuestionListPage,{typeid:typeid})
     }
 
     questionfeedBack() {
-        // this.navigate(RouterPaths.HelperFeedbackPage)
+        this.$navigate('mine/helper/HelperFeedbackPage')
     }
     gotoquestionDetail(id){
+        this.$navigate('mine/helper/HelperQeustionDetail')
         // this.navigate(RouterPaths.HelperQeustionDetail,{id:id})
     }
 
@@ -173,7 +178,7 @@ export default class MyHelperPage extends Component {
         // );
     }
 
-    render() {
+    _render() {
         return (
             <View style={styles.container}>
                 {this.renderBodyView()}
