@@ -65,7 +65,7 @@ export default class RecommendRow extends Component {
                         <View style={{ flex: 1 }}/>
                         <View style={styles.starContainer}>
                             {
-                                starsArr.map((item, index) => {
+                                starsArr.map((index) => {
                                     return <Image key={index} style={[index ? { marginLeft: 5 } : null]}
                                                   source={StarIcon}/>;
                                 })
@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
         color: '#f7f7f7'
     },
     rowContainer: {
-        backgroundColor: 'red',
         height: 80,
         flexDirection: 'row',
         alignItems: 'center',

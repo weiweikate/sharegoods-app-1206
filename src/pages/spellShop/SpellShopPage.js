@@ -28,12 +28,31 @@ export default class SpellShopPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '我是标题',
         show: false
     };
 
     _onRefresh = () => {
 
+    };
+
+    _clickSearchItem = () => {
+        this.$navigate('spellShop/recommendSearch/RecommendPage');
+    };
+
+    _renderBarRight = () => {
+        return <View style={styles.rightBarItemContainer}>
+            <TouchableWithoutFeedback style={styles.rightItemBtn} onPress={this._clickSearchItem}>
+                <View>
+                    <Text>推荐 </Text>
+                </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback style={styles.rightItemBtn} onPress={this._clickSearchItem}>
+                <View>
+                    <Text> 店铺</Text>
+
+                </View>
+            </TouchableWithoutFeedback>
+        </View>;
     };
 
     _renderContainer = () => {
@@ -47,21 +66,6 @@ export default class SpellShopPage extends BasePage {
                 </View>
             </ScrollView>
         };
-    };
-
-    _clickSearchItem = () => {
-        this.$navigate('spellShop/recommendSearch/RecommendPage');
-    };
-
-    _renderBarRight = () => {
-        return <View style={styles.rightBarItemContainer}>
-
-            <TouchableWithoutFeedback style={styles.rightItemBtn} onPress={this._clickSearchItem}>
-                <View>
-                    <Text>推荐test</Text>
-                </View>
-            </TouchableWithoutFeedback>
-        </View>;
     };
 
     _render() {
@@ -79,6 +83,11 @@ export default class SpellShopPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    rightBarItemContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     levelLow: {
         width: ScreenUtils.width,
