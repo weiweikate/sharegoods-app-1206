@@ -28,7 +28,7 @@ export default class RecommendPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            dataList: [],
+            dataList: [{}, {}, {},{}, {}, {}],
             adList: [{}, {}, {}]
         };
     }
@@ -40,6 +40,7 @@ export default class RecommendPage extends BasePage {
 
     // 点击开启店铺页面
     _clickOpenShopItem = () => {
+        this.$navigate('spellShop/openShop/OpenShopExplainPage');
     };
 
     // 点击搜索店铺
