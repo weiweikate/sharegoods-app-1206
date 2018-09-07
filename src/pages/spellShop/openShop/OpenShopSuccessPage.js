@@ -4,11 +4,9 @@ import {
     View,
     Text,
     Image,
-    Platform,
     Dimensions,
     StyleSheet,
     ScrollView,
-    BackHandler,
     TouchableOpacity
 } from 'react-native';
 import SuccessImg from './src/xz_03.png';
@@ -22,36 +20,13 @@ export default class OpenShopSuccessPage extends BasePage {
         title: '开店成功',
     };
 
-    static navigationOptions = {
-        gesturesEnabled: false
-    };
-
-    componentWillMount() {
-        if (Platform.OS === 'android') {
-            this.backListener = BackHandler.addEventListener('hardwareBackPress', () => {
-                this.jr_NavBarLeftPressed();
-                return true;
-            });
-        }
-    }
-
-    componentWillUnmount() {
-        if (Platform.OS === 'android') {
-            this.backListener && this.backListener.remove();
-        }
-    }
-
-    jr_NavBarLeftPressed = () => {
-        this.props.navigation.popToTop();
-    };
-
     _clickEnterShop = () => {
         this.jr_NavBarLeftPressed();
     };
 
     _clickInvite = () => {
         //邀请好友页面
-        this.props.navigation.navigate('spellShop/openShop/AddressBookPage');
+        this.$navigate('spellShop/openShop/InvitationFriendPage')
     };
 
     _render() {

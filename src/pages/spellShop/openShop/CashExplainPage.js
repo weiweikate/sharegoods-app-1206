@@ -20,7 +20,7 @@ export default class CashExplainPage extends BasePage {
 
 
     _clickOpen = () => {
-        this.$navigate('spellShop/openShop/OpenShopSuccessPage');
+        this.$navigate('spellShop/openShop/SetShopNamePage');
     };
 
     _renderRow = (title, index, maxIndex) => {
