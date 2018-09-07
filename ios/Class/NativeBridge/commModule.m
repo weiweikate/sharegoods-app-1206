@@ -156,7 +156,7 @@ RCT_EXPORT_METHOD(thirdLogin:(NSString *)loginType){
 RCT_EXPORT_METHOD(toast:(NSString*)msg){
     if(msg && [msg isKindOfClass:[NSString class]] && msg.length){
       dispatch_async(dispatch_get_main_queue(), ^{
-        [JRLoadingAndToastTool showToast:msg andDelyTime:2];
+        [JRLoadingAndToastTool showToast:msg andDelyTime:2.5];
       });
     }
 }

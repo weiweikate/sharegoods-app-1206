@@ -20,6 +20,29 @@
 	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Alipay</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>jure</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>weixin</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>wxf5ab8d9143aa38e9</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -37,29 +60,16 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>App需要您的同意,才能访问相机</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-
 	<string>App需要知道您的地理信息,以便更好的为您服务</string>
-  <key>NSMicrophoneUsageDescription</key>
-  <string>APP需要访问您的麦克风,以便发送语音</string>
-  <key>NSPhotoLibraryAddUsageDescription</key>
-  <string>APP需要您的同意,才能添加照片到相册</string>
-  <key>NSPhotoLibraryUsageDescription</key>
-  <string>App需要您的同意,才能访问相册</string>
-  <key>NSCameraUsageDescription</key>
-  <string>App需要您的同意,才能访问相机</string>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>APP需要访问您的麦克风,以便发送语音</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>APP需要您的同意,才能添加照片到相册</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App需要您的同意,才能访问相册</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
@@ -74,5 +84,29 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+<!-- 白名单 -->
+<key>LSApplicationQueriesSchemes</key>
+<array>
+  <!-- 微信 URL Scheme 白名单-->
+  <string>wechat</string>
+  <string>weixin</string>
+  
+  <!-- 支付宝  URL Scheme 白名单-->
+  <string>alipay</string>
+  <string>alipayshare</string>
+  
+</array>
 </dict>
 </plist>
