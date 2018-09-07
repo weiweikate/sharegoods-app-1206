@@ -2,6 +2,7 @@ package com.crm_app_xiugou;
 
 import android.app.Application;
 
+import com.facebook.react.BuildConfig;
 import com.facebook.react.ReactApplication;
 import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
 import com.brentvatne.react.ReactVideoPackage;
