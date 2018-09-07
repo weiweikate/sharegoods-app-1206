@@ -2,13 +2,14 @@
  * Created by xiangchen on 2018/7/10.
  */
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
     StyleSheet,
     View,
     Text,
     TouchableOpacity
 } from 'react-native';
+import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import UIImage from '../../../../components/ui/UIImage';
 import { color } from '../../../../constants/Theme';
@@ -21,7 +22,7 @@ import user from '../../../../model/user';
 import { observer } from 'mobx-react/native';
 
 @observer
-export default class MyCollectPage extends Component {
+export default class MyCollectPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
@@ -34,11 +35,9 @@ export default class MyCollectPage extends Component {
         };
     }
 
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: '店铺收藏'
-        },
-        renderByPageState: true
+    $navigationBarOptions = {
+        title: '店铺收藏',
+        show: true // false则隐藏导航
     };
     //**********************************ViewPart******************************************
     //删除收藏
@@ -224,7 +223,7 @@ export default class MyCollectPage extends Component {
 
     };
 
-    render() {
+    _render() {
         return (
             <View style={styles.container}>
                 {this.renderBodyView()}

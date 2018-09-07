@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     StyleSheet,
     View,
     TextInput as RNTextInput, Button
 } from 'react-native';
-
+import BasePage from '../../../../BasePage';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 
-export default class NickNameModifyPage extends Component {
+export default class NickNameModifyPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,15 +17,13 @@ export default class NickNameModifyPage extends Component {
         };
     }
 
-    static  $PageOptions = {
-        navigationBarOptions: {
-            title: '个人资料'
-        },
-        renderByPageState: true
+    $navigationBarOptions = {
+        title: '个人资料',
+        show: true // false则隐藏导航
     };
 
     //**********************************ViewPart******************************************
-    render() {
+    _render() {
         return (
             <View style={styles.container}>
                 {this.renderWideLine()}
