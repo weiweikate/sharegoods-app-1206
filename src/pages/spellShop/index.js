@@ -1,5 +1,6 @@
 import SpellShopPage from './SpellShopPage';
 import recommendSearch from './recommendSearch';
+import openShop from './openShop';
 
 export default {
     //拼店模块
@@ -8,6 +9,8 @@ export default {
         //拼店页面
         SpellShopPage,
         //推荐搜索模块
-        recommendSearch
+        recommendSearch,
+        //开店模块
+        openShop
     }
 };

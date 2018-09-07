@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View, StyleSheet
 } from 'react-native';
+import BasePage from '../../../../BasePage';
 import ScrollableTabView ,{ScrollableTabBar}from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../../../utils/ScreenUtils'
 import MyCouponsItems from './../../components/MyCouponsItems';
-export default class CouponsPage extends Component {
+export default class CouponsPage extends BasePage {
 
     constructor(props) {
         super(props);
@@ -14,14 +15,12 @@ export default class CouponsPage extends Component {
         }
     }
 
-    static $PageOptions = {
-        navigationBarOptions: {
-            title:'优惠券'
-        },
-        renderByPageState: true
+    $navigationBarOptions = {
+        title: '优惠券',
+        show: true // false则隐藏导航
     };
 
-    render() {
+    _render() {
         return (
             <View style={styles.container}>
                 <ScrollableTabView
