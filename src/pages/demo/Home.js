@@ -40,4 +40,5 @@ const styles = StyleSheet.create({
         width: 21,
         height: 21,
     }
+
 });
