@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -9,31 +9,60 @@ import {
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
-import { observable } from 'mobx';
+import { observable, computed, action } from 'mobx';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import ColorUtil from '../../../utils/ColorUtil';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import loginAndRegistRes from '../res/LoginAndRegistRes';
+import BasePage from '../../../BasePage';
 
 class OldUserLoginModel {
     @observable
-    phoneNumber;
+    phoneNumber = '';
     @observable
-    password;
+    password = '';
     @observable
     isSecuret = true;
 
+    @action
+    savePhoneNumber(phoneNmber) {
+        if (!phoneNmber) {
+            this.phoneNumber = '';
+            return;
+        }
+        this.phoneNumber = phoneNmber;
+    }
+
+    @action
+    savePassword(password) {
+        if (!password) {
+            this.password = '';
+            return;
+        }
+        this.password = password;
+    }
+
+    @computed
+    get isCanClick() {
+        if ((this.phoneNumber.length === 11) && (this.password.length >= 6)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 @observer
-export default class LoginPage extends Component {
+export default class OldUserLoginPage extends BasePage {
     oldUserLoginModel = new OldUserLoginModel();
-    // 页面配置
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: '老用户激活',
-            show: true
-            // show: false // 是否显示导航条 默认显示
-        },
-        renderByPageState: false
+
+    constructor(props) {
+        super(props);
+    }
+
+    // 导航配置
+    $navigationBarOptions = {
+        title: '老用户激活'
     };
     /*render右上角*/
     $NavBarRenderRightItem = () => {
@@ -43,70 +72,89 @@ export default class LoginPage extends Component {
             </Text>
         );
     };
+    /*注册事件*/
+    registBtnClick = () => {
+        this.$navigate('login/login/RegistPage');
 
-    render() {
+    };
+
+    _render() {
         return (
-            <View style={{ backgroundColor: '#fff' }}>
-                <View style={{ marginTop: 30, justifyContent: 'center', alignItems: 'center' }}>
-                    <Image style={{ width: 79, height: 79 }} source={LoginAndRegistRes.logoImage}>
-                    </Image>
-                </View>
+            <View style={{ flex: 1 }}>
+                <View style={{ backgroundColor: '#fff' }}>
+                    <View style={{ marginTop: 30, justifyContent: 'center', alignItems: 'center' }}>
+                        <Image style={{ width: 79, height: 79 }} source={LoginAndRegistRes.logoImage}/>
+                    </View>
 
-                <View style={{ marginLeft: 30, marginRight: 30, marginTop: 60 }}>
-                    <TextInput
-                        style={Styles.inputTextStyle}
-                        value={this.oldUserLoginModel.phoneNumber}
-                        // onChangeText={text => {this.oldUserLoginModel.phoneNumber = text}})}
-                        placeholder='请输入手机号'
-                        underlineColorAndroid={'transparent'}
-                        keyboardType='default'
-                    />
-                    <CommSpaceLine style={Styles.lineStyle}/>
-                </View>
-                <View style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={{ marginLeft: 30, marginRight: 30, marginTop: 60 }}>
                         <TextInput
                             style={Styles.inputTextStyle}
                             value={this.oldUserLoginModel.phoneNumber}
-                            // onChangeText={text => {this.oldUserLoginModel.phoneNumber = text}})}
-                            placeholder='请输入密码'
+                            onChangeText={text => {
+                                this.oldUserLoginModel.savePhoneNumber(text);
+                            }}
+                            placeholder='请输入手机号'
                             underlineColorAndroid={'transparent'}
                             keyboardType='default'
-                            secureTextEntry={this.oldUserLoginModel.isSecuret}
                         />
-                        <TouchableOpacity onPress={() => {
-                            this.oldUserLoginModel.isSecuret = !this.oldUserLoginModel.isSecuret;
-                        }}>
-                            <Image style={Styles.seePasswordImageStyle}
-                                   source={this.oldUserLoginModel.isSecuret ? LoginAndRegistRes.closeEyeImage : LoginAndRegistRes.openEyeImage}/>
+                        <CommSpaceLine style={Styles.lineStyle}/>
+                    </View>
+                    <View style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <TextInput
+                                style={Styles.inputTextStyle}
+                                value={this.oldUserLoginModel.password}
+                                onChangeText={text => {
+                                    this.oldUserLoginModel.savePassword(text);
+                                }}
+                                placeholder='请输入密码'
+                                underlineColorAndroid={'transparent'}
+                                keyboardType='default'
+                                secureTextEntry={this.oldUserLoginModel.isSecuret}
+                            />
+                            <TouchableOpacity onPress={() => {
+                                this.oldUserLoginModel.isSecuret = !this.oldUserLoginModel.isSecuret;
+                            }}>
+                                <Image style={Styles.seePasswordImageStyle}
+                                       source={this.oldUserLoginModel.isSecuret ? LoginAndRegistRes.closeEyeImage : LoginAndRegistRes.openEyeImage}/>
+                            </TouchableOpacity>
+                        </View>
+                        <CommSpaceLine style={Styles.lineStyle}/>
+                    </View>
+                    <View
+                        style={[Styles.oldUserLoginBtnStyle, this.oldUserLoginModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]}>
+                        <TouchableOpacity onPress={this.loginClick}>
+                            <Text style={{
+                                textAlign: 'center',
+                                height: 45,
+                                alignItems: 'center',
+                                color: '#fff',
+                                fontSize: 14,
+                                paddingTop: 15,
+                                fontWeight: '600'
+
+                            }}>
+                                登录
+                            </Text>
                         </TouchableOpacity>
                     </View>
-                    <CommSpaceLine style={Styles.lineStyle}/>
-                </View>
-                <View style={{ marginRight: 30, marginLeft: 30, marginTop: 40, height: 45 }}>
-                    <TouchableOpacity onPress={this.loginClick}>
-                        <Text style={{
-                            backgroundColor: ColorUtil.mainRedColor,
-                            textAlign: 'center',
-                            height: 45,
-                            alignItems: 'center',
-                            fontsize: 14,
-                            color: '#fff',
-                            paddingTop: 15,
-                            fontWeight: '600'
-                        }}>
-                            登陆
-                        </Text>
-                    </TouchableOpacity>
                 </View>
 
+                <Image
+                    style={{
+                        width: ScreenUtils.width,
+                        position: 'absolute',
+                        bottom: 0,
+                        height: 80
+                    }}
+                    source={loginAndRegistRes.loginBottomImage}
+                    resizeMode='cover'/>
             </View>
         );
     }
 
+    /*d点击登录*/
     loginClick = () => {
-
-        // this.oldUserLoginModel.phoneNumber = '333'
         this.$navigate('login/login/SetPasswordPage');
     };
 
@@ -135,6 +183,17 @@ const Styles = StyleSheet.create(
             height: 30,
             backgroundColor: '#fff',
             justifyContent: 'center'
+        },
+        oldUserLoginBtnStyle: {
+            marginLeft: 30,
+            width: ScreenUtils.width - 60,
+            marginTop: 40,
+            height: 45,
+            borderRadius: 5,
+            backgroundColor: ColorUtil.mainRedColor
+        },
+        lineStyle: {
+            marginTop: 10
         }
     }
 );

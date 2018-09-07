@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     StyleSheet,
     TextInput,
-    Image
+    Image,
+    Alert
 } from 'react-native';
 import ColorUtil from '../../../utils/ColorUtil';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
@@ -15,9 +16,10 @@ import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 
 class LoginTopViewModel {
-    /*0代表验证码登陆 1代表密码登陆*/
+    /*0代表验证码登录 1代表密码登录*/
     @observable
     selectIndex = 0;
     @observable
@@ -28,10 +30,13 @@ class LoginTopViewModel {
     password = '';
     @observable
     isSecuret = true;
+    @observable
+    dowTime = 0;
 
     @action
     savePhoneNumber(phoneNmber) {
-        if (StringUtils.isEmpty(phoneNmber)) {
+        if (!phoneNmber) {
+            this.phoneNumber = '';
             return;
         }
         this.phoneNumber = phoneNmber;
@@ -39,7 +44,8 @@ class LoginTopViewModel {
 
     @action
     savePassword(password) {
-        if (StringUtils.isEmpty(password)) {
+        if (!password) {
+            this.password = '';
             return;
         }
         this.password = password;
@@ -47,7 +53,8 @@ class LoginTopViewModel {
 
     @action
     saveVertifyCode(vertifyCode) {
-        if (StringUtils.isEmpty(vertifyCode)) {
+        if (!vertifyCode) {
+            this.vertifyCode = '';
             return;
         }
         this.vertifyCode = vertifyCode;
@@ -86,8 +93,9 @@ export default class LoginTopView extends Component {
                     <TouchableOpacity onPress={() => {
                         this.switchBtnClick(0);
                     }}>
-                        <Text style={Styles.switchBtnStyle}>
-                            验证码登陆
+                        <Text
+                            style={[Styles.switchBtnStyle, this.LoginModel.selectIndex ? { color: ColorUtil.ligtGray } : { color: ColorUtil.mainRedColor }]}>
+                            验证码登录
                         </Text>
                         <View
                             style={this.LoginModel.selectIndex ? Styles.btnBottomLineNonStyle : Styles.btnBottomLineStyle}/>
@@ -95,8 +103,9 @@ export default class LoginTopView extends Component {
                     <TouchableOpacity onPress={() => {
                         this.switchBtnClick(1);
                     }}>
-                        <Text style={Styles.switchBtnStyle}>
-                            密码登陆
+                        <Text
+                            style={[Styles.switchBtnStyle, this.LoginModel.selectIndex ? { color: ColorUtil.mainRedColor } : { color: ColorUtil.ligtGray }]}>
+                            密码登录
                         </Text>
                         <View
                             style={this.LoginModel.selectIndex ? Styles.btnBottomLineStyle : Styles.btnBottomLineNonStyle}/>
@@ -117,8 +126,7 @@ export default class LoginTopView extends Component {
                 {this.LoginModel.selectIndex ? this.renderPasswordLogin() : this.renderCodeLogin()}
                 <View style={[Styles.loginBtnStyle, this.LoginModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]}>
                     <TouchableOpacity onPress={this.clickLoginBtn}>
-                        <Text style={[Styles.loginBtnTextStyle,
-                            this.LoginModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]}>
+                        <Text style={Styles.loginBtnTextStyle}>
                             登录
                         </Text>
                     </TouchableOpacity>
@@ -150,15 +158,39 @@ export default class LoginTopView extends Component {
                         underlineColorAndroid={'transparent'}
                         keyboardType='default'
                     />
-                    <TouchableOpacity>
-                        <Text style={[Styles.codeTextStyle, { marginLeft: 20 }]}>
-                            获取验证码
+                    <TouchableOpacity onPress={this.getVertifyCode}>
+                        <Text style={Styles.codeTextStyle}>
+                            {this.LoginModel.dowTime > 0 ? `${this.LoginModel.dowTime}秒后重新获取` : '获取验证码'}
                         </Text>
                     </TouchableOpacity>
                 </View>
                 <CommSpaceLine style={Styles.lineStyle}/>
             </View>
         );
+    };
+    getVertifyCode = () => {
+        if (this.LoginModel.dowTime > 0) {
+            Alert.alert(
+                '提示',
+                '操作过于频繁稍后重试',
+                [
+                    {
+                        text: '确定', onPress: () => {
+                        }
+                    }
+                ],
+                { cancelable: false }
+            );
+            return;
+        }
+        if (StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
+            (new TimeDownUtils()).startDown((time) => {
+                this.LoginModel.dowTime = time;
+            });
+            bridge.$toast('验证码已发送请注意查收');
+        } else {
+            bridge.$toast('手机格式不对');
+        }
     };
     renderPasswordLogin = () => {
         return (
@@ -180,9 +212,9 @@ export default class LoginTopView extends Component {
                             <Image style={Styles.seePasswordImageStyle}
                                    source={this.LoginModel.isSecuret ? LoginAndRegistRes.closeEyeImage : LoginAndRegistRes.openEyeImage}/>
                         </TouchableOpacity>
-                        <CommSpaceLine style={{ marginLeft: 8, width: 1, marginTop: 33, height: 20 }}/>
-                        <TouchableOpacity>
-                            <Text style={Styles.codeTextStyle}>
+                        <CommSpaceLine style={{ marginLeft: 10, width: 1, marginTop: 35, height: 20 }}/>
+                        <TouchableOpacity onPress={this.props.forgetPasswordClick}>
+                            <Text style={[Styles.codeTextStyle, { width: 90 }]}>
                                 忘记密码
                             </Text>
                         </TouchableOpacity>
@@ -192,11 +224,7 @@ export default class LoginTopView extends Component {
             </View>
         );
     };
-    /*
-    * 获取验证码*/
-    getCodeFun = () => {
 
-    };
     clickLoginBtn = () => {
         if (StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
             if (this.LoginModel.selectIndex === 0) {
@@ -246,7 +274,7 @@ const Styles = StyleSheet.create(
             marginTop: 30,
             marginLeft: 20,
             width: 120,
-            height: 40,
+            height: 35,
             backgroundColor: 'white',
             fontSize: 14,
             fontWeight: '600'
@@ -262,12 +290,12 @@ const Styles = StyleSheet.create(
         },
         codeTextStyle: {
             textAlign: 'center',
-            width: 80,
+            width: 120,
             color: ColorUtil.mainRedColor,
             marginTop: 40
         },
         loginBtnStyle: {
-            marginTop: 10,
+            marginTop: 40,
             marginLeft: 0,
             height: 50,
             width: ScreenUtils.width - 40,
@@ -298,7 +326,7 @@ const Styles = StyleSheet.create(
             width: 20,
             height: 15,
             marginLeft: 5,
-            marginTop: 40
+            marginTop: 42
         }
     }
 );

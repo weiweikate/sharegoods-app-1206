@@ -3,6 +3,18 @@
 ## 依赖包
 所有依赖包必须固定版本
 
+##倒计时工具使用 TimeDownUtils
+
+参数1,回调函数,每秒回调一次,回调参数为倒计时到第一秒了
+参数2,倒计时的秒数,不写默认60
+startDown(callBack, downTime = this.downTime)
+
+使用实例
+ (new TimeDownUtils()).startDown((time) => {
+                this.LoginModel.dowTime = time;
+            },100);
+            
+
 ## 页面修饰器的使用 PageDecorator
 
 
@@ -51,6 +63,10 @@ export default class DemoListPage extends BasePage {
            }
        };
     };
+    // 请使用下划线render
+    _render() {
+        return (<View></View>)
+    }
 }
 ```
 
