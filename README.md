@@ -10,10 +10,33 @@
 startDown(callBack, downTime = this.downTime)
 
 使用实例
- (new TimeDownUtils()).startDown((time) => {
-                this.LoginModel.dowTime = time;
-            },100);
-            
+```javascript
+(new TimeDownUtils()).startDown((time) => {
+    this.LoginModel.dowTime = time;
+},100);
+```
+
+
+
+## API 使用
+
+```javascript
+const api = {
+    login:'/api/user/login',
+    logout:'/api/user/logout',
+}
+import ApiUtils from '../../../network/ApiUtils';
+
+const LoginApi = ApiUtils(api);
+
+LoginApi.login({name:'damon',pwd:'123456'}).then(result => {
+    // 成功处理
+}).catch(error => {
+    // 错误处理
+})
+```
+        
+           
 
 ## 页面修饰器的使用 PageDecorator
 
