@@ -233,7 +233,7 @@ export default class CommRegistView extends Component {
     };
 
     loginClick = () => {
-        this.registModel.phoneNumber = '333';
+        this.props.loginClick(this.registModel.phoneNumber,this.registModel.vertifyCode,this.registModel.password)
     };
 }
 
