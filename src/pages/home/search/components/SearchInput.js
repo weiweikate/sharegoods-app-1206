@@ -9,11 +9,9 @@ import {
 } from 'react-native';
 import CommTabImag from '../../../../comm/res/CommTabImag';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import SearchInputModel from '../../model/SearchInputModel';
 
 
 export default class SearchInput extends Component {
-    searchModel = new SearchInputModel();
 
     constructor(props) {
         super(props);

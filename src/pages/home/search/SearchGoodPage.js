@@ -3,7 +3,7 @@ import {
     View
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import SearchInput from '../components/searchGoodView/SearchInput';
+import SearchInput from './components/SearchInput';
 
 export default class SearchGoodPage extends BasePage {
     constructor(props) {

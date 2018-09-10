@@ -1,6 +1,6 @@
 
-import HomePage from "./page/HomePage";
-import SearchGoodPage from './page/SearchGoodPage'
+import HomePage from "./HomePage";
+import SearchGoodPage from './search/SearchGoodPage'
 
 export default {
     moduleName: 'home',    //模块名称
