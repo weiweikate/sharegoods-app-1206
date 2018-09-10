@@ -77,13 +77,11 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
     compile project(':react-native-autoheight-webview')
     compile project(':react-native-vector-icons')
     compile project(':react-native-svg')
     compile project(':react-native-image-picker')
     compile project(path: ':commonlib')
-
     compile rootProject.ext.dependencies.support
     // From node_modules
     compile(rootProject.ext.dependencies.rn) {
@@ -99,7 +97,6 @@ dependencies {
     compile rootProject.ext.dependencies.multidex
     compile rootProject.ext.dependencies.uapp
     compile rootProject.ext.dependencies.ucommon
-
     implementation files('lib/alipaySdk-20180601.jar')
     implementation files('lib/umeng-share-core-6.9.3.jar')
     implementation files('lib/umeng-sharetool-6.9.3.jar')
