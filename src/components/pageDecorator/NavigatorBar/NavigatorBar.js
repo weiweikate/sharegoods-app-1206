@@ -20,7 +20,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export default class NavigatorBar extends Component {
 
-    static barHeight = Platform.OS === 'ios' ? (IPHONEX ? 88 : 64) : 48;
+    static barHeight = Platform.OS === 'ios' ? (IPHONEX ? 88 : 64) : 64;
 
     static defaultProps = {
 
@@ -248,8 +248,8 @@ export default class NavigatorBar extends Component {
 const styles = StyleSheet.create({
     navBar: { //考虑适配 iPhone X
         width: SCREEN_WIDTH,
-        height: Platform.OS === 'ios' ? (IPHONEX ? 88 : 64) : 44,
-        paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 0,
+        height: Platform.OS === 'ios' ? (IPHONEX ? 88 : 64) : 64,
+        paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     },
     left: {
         position: 'absolute',
-        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 0,
+        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
         left: 0,
         bottom: 0,
         justifyContent: 'center',
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     },
     leftImage: {
         position: 'absolute',
-        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 0,
+        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
         left: 40,
         bottom: 0,
         justifyContent: 'center',
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     },
     right: {
         position: 'absolute',
-        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 0,
+        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
         right: 0,
         bottom: 0,
         justifyContent: 'center',
