@@ -17,20 +17,17 @@ import com.facebook.react.bridge.Promise;
 import com.meeruu.sharegoods.event.CaptureScreenImageEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.ScanQRCodeEvent;
-import com.meeruu.sharegoods.umeng.ShareModule;
 import com.meeruu.sharegoods.utils.AndroidPermission;
 import com.meeruu.sharegoods.utils.CaptureScreenImageUtils;
 import com.meeruu.sharegoods.utils.LoadingDialog;
 import com.meeruu.sharegoods.utils.Utils;
 import com.meeruu.sharegoods.zxing.activity.CaptureActivity;
-import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 public class MainActivity extends ReactActivity {
-
     private LoadingDialog mLoadingDialog;
     private boolean isShowLoadingDialog;
     private Promise promise;
@@ -50,23 +47,6 @@ public class MainActivity extends ReactActivity {
         EventBus.getDefault().register(this);
         Log.e("package", Utils.getAppPackageName(this));
         fullScreen(MainActivity.this);
-        initStatusbar();
-
-        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_DUM_NORMAL);
-        ShareModule.initSocialSDK(this);
-        /**在应用的入口activity加入以下代码，解决首次安装应用，点击应用图标打开应用，点击home健回到桌面，再次点击应用图标，进入应用时多次初始化SplashActivity的问题*/
-        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
-            finish();
-            return;
-        }
-        if (!isTaskRoot()) {
-            finish();
-            return;
-        }
-    }
-
-
-    private void initStatusbar() {
         View decorView = getWindow().getDecorView();
         //重点：SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
@@ -175,5 +155,4 @@ public class MainActivity extends ReactActivity {
             }
         }
     }
-
 }

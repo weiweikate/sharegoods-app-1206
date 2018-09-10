@@ -84,33 +84,35 @@ public class BaseApplication extends MultiDexApplication implements ReactApplica
         return appContext;
     }
 
+    private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+        @Override
+        public boolean getUseDeveloperSupport() {
+            return BuildConfig.DEBUG;
+        }
+
+        @Override
+        protected List<ReactPackage> getPackages() {
+            return Arrays.<ReactPackage>asList(
+                    new RNPackage(),
+                    new MainReactPackage(),
+//                    new ReactVideoPackage(),
+                    new VectorIconsPackage(),
+                    new SvgPackage(),
+                    new ImagePickerPackage(),
+                    new AutoHeightWebViewPackage()
+
+            );
+        }
+
+        @Override
+        protected String getJSMainModuleName() {
+            return "index";
+        }
+    };
+
     @Override
     public ReactNativeHost getReactNativeHost() {
-        return new ReactNativeHost(this) {
-            @Override
-            public boolean getUseDeveloperSupport() {
-                return BuildConfig.DEBUG;
-            }
-
-            @Override
-            protected List<ReactPackage> getPackages() {
-                return Arrays.<ReactPackage>asList(
-                        new RNPackage(),
-                        new MainReactPackage(),
-//                            new ReactVideoPackage(),
-                        new VectorIconsPackage(),
-                        new SvgPackage(),
-                        new ImagePickerPackage(),
-                        new AutoHeightWebViewPackage()
-
-                );
-            }
-
-            @Override
-            protected String getJSMainModuleName() {
-                return "index";
-            }
-        };
+        return mReactNativeHost;
     }
 
     // 如果返回值为null，则全部使用默认参数。
