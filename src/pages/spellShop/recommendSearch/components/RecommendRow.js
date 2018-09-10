@@ -19,7 +19,7 @@ export default class RecommendRow extends Component {
         headUrl: PropTypes.string,   //头像
         name: PropTypes.string,      //店名
         hadUser: PropTypes.number,   //店内目前成员人数
-        clickShopInfoRow: PropTypes.func       //点击回调
+        onPress: PropTypes.func       //点击回调
     };
 
     constructor(props) {
@@ -35,11 +35,11 @@ export default class RecommendRow extends Component {
             <Image style={styles.itemIcon}/>
         </TouchableOpacity>);
     };
-
+    _onPress = () => {
+        this.props.onPress && this.props.onPress();
+    };
     render() {
-        return (<TouchableWithoutFeedback style={styles.container} onPress={() => {
-            this.props.clickShopInfoRow(this.props.id);
-        }}>
+        return (<TouchableWithoutFeedback style={styles.container} onPress={this._onPress}>
 
             <View style={styles.viewContainer}>
 
