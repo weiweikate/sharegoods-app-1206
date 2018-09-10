@@ -17,6 +17,7 @@ import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+const dismissKeyboard = require('dismissKeyboard')
 
 class LoginTopViewModel {
     /*0代表验证码登录 1代表密码登录*/
@@ -144,6 +145,7 @@ export default class LoginTopView extends Component {
     }
 
     switchBtnClick = (index) => {
+        dismissKeyboard();
         this.LoginModel.selectIndex = index;
     };
     renderCodeLogin = () => {
@@ -274,10 +276,9 @@ const Styles = StyleSheet.create(
             marginTop: 30,
             marginLeft: 20,
             width: 120,
-            height: 35,
-            backgroundColor: 'white',
+            height: 40,
             fontSize: 14,
-            fontWeight: '600'
+            fontWeight: '400'
         },
         lineStyle: {
             marginLeft: 20,

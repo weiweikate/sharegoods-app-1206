@@ -7,7 +7,6 @@ export  default class HomePage extends Component{
 
     constructor(){
         super()
-
     }
     render(){
         return(

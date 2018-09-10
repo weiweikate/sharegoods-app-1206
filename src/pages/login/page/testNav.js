@@ -4,6 +4,9 @@ import {
     Text
 } from 'react-native';
 
+import customTouch from '../../../comm/components/CustomTouchableOpacity'
+import HttpUtils from '../../../api/network/HttpUtils';
+
 export default class testNav extends Component {
 
     /*页面配置*/
@@ -25,13 +28,16 @@ export default class testNav extends Component {
     render() {
         return (
             <View>
-                <Text onPress={() => {
-                    this.setState({ test: 300 });
-                }}>
-                    {this.state.test}
-                </Text>
+                    <Text style={{marginTop:200,width:100,height:200}} onPress={this.postRequest}>
+                        {this.state.test}
+                    </Text>
             </View>
         );
+    }
+    postRequest=()=>{
+        HttpUtils.post('https://www.baidu.com',{'xiaoming':'小明'}).then((data)=>{
+            console.log(data);
+        })
     }
 }
 
