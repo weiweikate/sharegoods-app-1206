@@ -149,6 +149,17 @@ export default class OldUserLoginPage extends BasePage {
                     }}
                     source={loginAndRegistRes.loginBottomImage}
                     resizeMode='cover'/>
+                <Text
+                style={{
+                    width:ScreenUtils.width,
+                    position:'absolute',
+                    bottom:90,
+                    fontSize:12,
+                    color:ColorUtil.Color_666666,
+                    textAlign:'center'
+                }}>
+                    客服电话:400-888-8888
+                </Text>
             </View>
         );
     }
