@@ -21,8 +21,7 @@ export default class SearchRecruitingRow extends Component {
     };
 
     _onPress = () => {
-        const { id } = this.props.item || {};
-        id && this.props.onPress && this.props.onPress(id);
+        this.props.onPress && this.props.onPress();
     };
 
     render() {
