@@ -99,7 +99,7 @@ export  default class ShopCartPage extends BasePage{
                         onPress={() => this._toBuyImmediately()}>
                         <UIText
                             // value={this.state.selectGoodsNum == 0 ? '结算' : '结算(' + this.state.selectGoodsNum + ')'}
-                            value= '结算' 
+                            value= '结算'
                             style={{ color: ColorUtil.Color_ffffff, fontSize: 16 }}/>
                     </TouchableOpacity>
                 </View>
