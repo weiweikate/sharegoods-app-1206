@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -10,17 +10,13 @@ import {
 import API from "../../api/index";
 import {PageLoadingState} from '../../components/pageDecorator/PageState';
 import NetImg from '../../components/pageDecorator/BaseView/source/no_data.png';
+import BasePage from '../../BasePage';
 
-export default class DemoListPage extends Component {
+export default class DemoListPage extends BasePage {
 
-    // 页面配置
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: 'demo',
-            // show: false
-        },
-        // 是否启动状态管理
-        renderByPageState: true,
+    $navigationBarOptions = {
+        title: 'demo',
+        // show: false
     };
 
     $getPageStateOptions = () => {
@@ -49,7 +45,7 @@ export default class DemoListPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            nickName:1111,
+            nickName:'adsasda',
             loadingState: PageLoadingState.loading,
             refreshing: false,
             netFailedInfo: null,
@@ -60,7 +56,7 @@ export default class DemoListPage extends Component {
         InteractionManager.runAfterInteractions(this.loadPageData);
     }
 
-    render() {
+    _render() {
         return (
             <ScrollView style={styles.container}>
                 <Text>这是个demo</Text>

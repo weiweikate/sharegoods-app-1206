@@ -6,7 +6,7 @@ const loginAction = NavigationActions.navigate({
     routeName: RouterMap.DebugLoginPage
 });
 
-export default function ApiUtils(baseUrl, Urls) {
+export default function ApiUtils(Urls) {
     let result = {}, list = [];
 
     Object.keys(Urls).forEach(function (name) {
@@ -25,7 +25,7 @@ export default function ApiUtils(baseUrl, Urls) {
         }
     });
     list.forEach(function (item) {
-        let name = item.name, url = baseUrl + item.uri, method = item.method || 'post',filter = item.filter;
+        let name = item.name, url = item.uri, method = item.method || 'post',filter = item.filter;
         result[name] = async function (params, config = {}) {
             const response = await HttpUtils[method](url, params);
             // code为0表明请求正常

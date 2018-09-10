@@ -4,7 +4,6 @@ import {
     Text
 } from 'react-native';
 
-import customTouch from '../../../comm/components/CustomTouchableOpacity'
 import HttpUtils from '../../../api/network/HttpUtils';
 
 export default class testNav extends Component {
