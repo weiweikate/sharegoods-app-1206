@@ -67,14 +67,14 @@ class SettingPage extends BasePage {
                 {this.renderLine()}
                 <TouchableOpacity style={styles.viewStyle}>
                     <UIText value={'消息推送'} style={styles.blackText}/>
-                    <Switch onValueChange={(isCheck) => {
-                        if (isCheck) {
-                            // NativeModules.commModule.toast('on')
-                        } else {
-                            //NativeModules.commModule.toast('off')
-                        }
-                    }}
-                    />
+                    <Switch value={this.state.value} onValueChange={(value)=>{
+                        this.setState({
+                            value:value,
+                            changeTxt:value?'switch 打开了':'switch 关闭了'
+                        });
+
+
+                    }}/>
                 </TouchableOpacity>
                 {this.renderLine()}
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this.clearAllCaches()}>

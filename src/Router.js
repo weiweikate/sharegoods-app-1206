@@ -18,6 +18,7 @@ import mine from './pages/mine';
 import shopCart from './pages/shopCart';
 import spellShop from './pages/spellShop';
 import login from './pages/login';
+import product from './pages/product';
 
 const Router = {
     Tab: {
@@ -53,7 +54,7 @@ function addSubModule(module, prefixPath) {
 addSubModule(demo);
 addSubModule(debug);
 addSubModule(login);
-
+addSubModule(product);
 addSubModule(home);
 addSubModule(mine);
 addSubModule(shopCart);

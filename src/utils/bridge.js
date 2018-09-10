@@ -26,6 +26,21 @@ export default {
             }
 
         });
+    },
+    /**
+     * showLoading      加载中loading
+     * @param message   加载中提示语
+     * @param timeout   加载中最长展示时间(提示语展示时间)。单位秒。默认为0秒，无限loading。
+     * Prompt:          loading是全局的，尽量慎用，在合适的场景中使用。
+     */
+    showLoading(message,timeout){
+        NativeModules.commModule.showLoadingDialog();
+    },
+    /**
+     * hiddenLoading  隐藏全局loading
+     */
+    hiddenLoading(){
+        NativeModules.commModule.hideLoadingDialog();
     }
 }
 ;
