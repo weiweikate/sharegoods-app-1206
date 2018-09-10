@@ -1,0 +1,33 @@
+ext {
+
+    plugins = [
+            application: 'com.android.application',
+            library    : 'com.android.library',
+    ]
+
+    // 全局Android相关配置
+    android = [
+            compileSdkVersion: 27,
+            buildToolsVersion: "27.0.3",
+            applicationId    : "com.meeruu.sharegoods",
+            minSdkVersion    : 16,
+            targetSdkVersion : 27,
+            versionCode      : 100,
+            versionName      : "1.0.0"
+    ]
+
+    dependencies = [
+            //此处是27.+，需要在rn中做排除
+            support : 'com.android.support:appcompat-v7:27.+',
+            rn      : 'com.facebook.react:react-native:+',
+            gson    : 'com.google.code.gson:gson:+',
+            design  : 'com.android.support:design:27.+',
+            eventbus: 'org.greenrobot:eventbus:+',
+            zxing   : 'com.google.zxing:core:3.+',
+            qiyu    : 'com.qiyukf.unicorn:unicorn:+',
+            wechat  : 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+',
+            multidex: 'com.android.support:multidex:+',
+            uapp    : 'com.umeng.sdk:analytics:latest.integration',
+            ucommon : 'com.umeng.sdk:common:latest.integration',
+    ]
+}

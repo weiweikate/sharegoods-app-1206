@@ -54,3 +54,10 @@ buck-out/
 
 yarn.lock
 package-lock.json
+/android/.gradle/
+/android/.idea/
+/android/build/
+/android/gradle/
+/android/keystores/
+/android/gradlew
+/android/gradlew.bat

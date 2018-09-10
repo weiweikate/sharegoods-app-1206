@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.mingrong">
+    package="com.meeruu.sharegoods">
 
     <!-- 权限start -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -37,36 +37,37 @@
     <!--<uses-permission android:name="android.permission.READ_CONTACTS" />-->
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
-      android:name="com.mingrong.MainApplication"
-      android:label="@string/app_name"
-      android:icon="@mipmap/ic_launcher"
-      android:allowBackup="true"
-      android:theme="@style/AppTheme"
-        tools:replace="android:name">
-      <activity
-        android:name="com.mingrong.MainActivity"
+        android:name=".BaseApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-        android:windowSoftInputMode="adjustResize"
-        android:clipToPadding="true"
-        android:fitsSystemWindows="true"
-        android:screenOrientation="portrait">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+        android:theme="@style/AppTheme"
+        tools:replace="android:name">
+        <activity
+            android:name=".MainActivity"
+            android:clipToPadding="true"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:fitsSystemWindows="true"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
-            android:name="com.mingrong.NativeActivity"
+            android:name=".NativeActivity"
             android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name="com.facebook.react.devsupport.DevSettingsActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
-            android:name="com.mingrong.zxing.activity.CaptureActivity"
+            android:name=".zxing.activity.CaptureActivity"
             android:screenOrientation="portrait">
 
         </activity>
@@ -75,17 +76,15 @@
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="com.alipay.sdk.app.H5AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name="com.mingrong.wxapi.WXEntryActivity"
+            android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
