@@ -241,6 +241,11 @@ export default class LoginTopView extends Component {
         } else {
             bridge.$toast('手机格式不对');
         }
+        this.props.loginClick(this.LoginModel.selectIndex,{
+            phoneNumber:this.LoginModel.phoneNumber,
+            code:this.LoginModel.vertifyCode,
+            password:this.LoginModel.password,
+        })
     };
 }
 

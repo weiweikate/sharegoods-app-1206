@@ -1,9 +1,9 @@
-package com.meeruu.sharegoods.utils;
+package com.meeruu.commonlib.utils;
 
 import android.os.Environment;
 import android.os.StatFs;
 
-import com.meeruu.sharegoods.BaseApplication;
+import com.meeruu.commonlib.BaseApplication;
 
 import java.io.File;
 
@@ -82,11 +82,11 @@ public class SDCardUtils {
     //创建用于保存临时存储目录
     public static String getRootCacheDirPath(String filePathName) {
         String DefaultPath = "";
-        if (BaseApplication.getInstance().getContext() != null) {
-            DefaultPath = BaseApplication.getInstance().getContext().getCacheDir().getAbsolutePath();
+        if (BaseApplication.appContext != null) {
+            DefaultPath = BaseApplication.appContext.getCacheDir().getAbsolutePath();
             // 如果有外部存储就用外部存储
             if (isSDCardEnable()) {
-                DefaultPath = BaseApplication.getInstance().getContext().getExternalCacheDir().getAbsolutePath();
+                DefaultPath = BaseApplication.appContext.getExternalCacheDir().getAbsolutePath();
             }
         }
         // 然后再获得一个绝对目录替换为保存目录
@@ -101,7 +101,7 @@ public class SDCardUtils {
     //创建用于长期保存的临时存储目录
     private static String getRootFileDirPath(String filePathName) {
         String DefaultPath = "";
-        DefaultPath = BaseApplication.getInstance().getContext().getFilesDir().getAbsolutePath();
+        DefaultPath = BaseApplication.appContext.getFilesDir().getAbsolutePath();
 
         // 然后再获得一个绝对目录替换为保存目录
         if (DefaultPath.endsWith(File.separator)) {

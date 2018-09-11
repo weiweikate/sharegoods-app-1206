@@ -1,30 +1,33 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react';
 import {
     Text,View
 } from "react-native";
 
-export  default class HomePage extends Component{
 
-    constructor(){
-        super()
+export default class HomePage extends Component {
+
+    constructor() {
+        super();
     }
-    render(){
-        return(
+
+    render() {
+        return (
             <View>
-            <Text style={{justifyContent:'center',paddingTop:100}} onPress={this.gotoLogin}>
-               home
-            </Text>
-                <Text style={{alignItems:'center',paddingTop:150}} onPress={this.gotoProduct}>
+                <Text style={{ justifyContent: 'center', paddingTop: 100 }} onPress={this.gotoLogin}>
+                    home
+                </Text>
+                <Text style={{ alignItems: 'center', paddingTop: 150 }} onPress={this.gotoProduct}>
                     gotoMyOrder
                 </Text>
-                </View>
+            </View>
 
         )
     }
-    gotoLogin=()=>{
+
+    gotoLogin = () => {
         this.props.navigation.navigate('login/login/LoginPage')
     }
-    gotoProduct=()=>{
+    gotoProduct = () => {
         this.props.navigation.navigate('order/order/MyOrdersListPage')
 
     }

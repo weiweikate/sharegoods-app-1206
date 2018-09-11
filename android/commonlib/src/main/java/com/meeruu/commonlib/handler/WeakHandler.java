@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.handler;
+package com.meeruu.commonlib.handler;
 
 import android.os.Handler;
 import android.os.Looper;

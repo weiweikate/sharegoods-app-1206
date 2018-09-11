@@ -1,7 +1,7 @@
 /**
  * Created by nuomi on 2018/7/18.
  */
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -19,17 +19,15 @@ import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
 import {NavigationActions} from "react-navigation";
 import {observer} from 'mobx-react';
+import BasePage from '../../BasePage';
 
 @observer
-export default class DebugPanelPage extends Component {
+export default class DebugPanelPage extends BasePage {
 
     // 页面配置
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: '环境配置',
-        },
+    $navigationBarOptions = {
+        title: '环境配置'
     };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -59,6 +57,10 @@ export default class DebugPanelPage extends Component {
             hostName: apiEnvironment.getCurrentHostName(),
             hostUrl: apiEnvironment.getCurrentHostUrl(),
         });
+        console.log({
+            hostName: apiEnvironment.getCurrentHostName(),
+            hostUrl: apiEnvironment.getCurrentHostUrl(),
+        })
         const resetAction = NavigationActions.reset({
             index: 0,
             actions: [NavigationActions.navigate({routeName: 'Tab'})]
@@ -139,7 +141,7 @@ export default class DebugPanelPage extends Component {
             );
         });
 
-    render() {
+    _render() {
         const TopTitle =
             '不同Host接口下，数据信息可能不同。' +
             '\n切换Host会自动清空必要缓存以及cookie数据。' +

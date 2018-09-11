@@ -109,6 +109,26 @@ export default class UserInformationPage extends BasePage {
     };
     renderGetCityPicker = () => {
         dismissKeyboard();
+        // NativeModules.commModule.cityPicker((data) => {
+        //     let dataJson = __IOS__ ? data : JSON.parse(data);
+        //     let params = {
+        //         areaId: dataJson.districId,
+        //         cityId: dataJson.cityId,
+        //         provinceId: dataJson.provinceId,
+        //     };
+        //     Toast.showLoading();
+        //     MineApi.updateDealerRegionById(params).then((response) => {
+        //         Toast.hiddenLoading();
+        //         if (response.ok) {
+        //             user.saveUserInfo(response.data);
+        //             NativeModules.commModule.toast('修改成功');
+        //         } else {
+        //             NativeModules.commModule.toast(response.msg);
+        //         }
+        //     }).catch(e => {
+        //         Toast.hiddenLoading();
+        //     });
+        // });
     };
 }
 
