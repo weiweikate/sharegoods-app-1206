@@ -9,7 +9,7 @@ import user from '../../../model/user';
 import SingleSelectionModal from './BottomSingleSelectModal';
 import CommonTwoChoiceModal from './CommonTwoChoiceModal';
 import Toast from '../../../utils/bridge';
-import OrderApi from 'OrderApi';
+// import OrderApi from 'OrderApi';
 
 export default class MyOrdersListView extends Component {
 
@@ -17,28 +17,28 @@ export default class MyOrdersListView extends Component {
         super(props);
         this.state = {
             viewData: [
-                // {
-                //     id:49,
-                //     orderNum:'2018070250371039050793800',
-                //     expressNo:'',
-                //     orderCreateTime:1530470345000,
-                //     orderStatus:0,
-                //     freightPrice:2092,
-                //     totalPrice:3000,
-                //     orderProduct:[
-                //         {
-                //             id:52,
-                //             productId:null,
-                //             productName:null,
-                //             spec:'175kg-22cm-狂野',
-                //             specImg:null,
-                //             price:1600,
-                //             num:2,
-                //             status:1,
-                //         },
-                //     ],
-                //     pickedUp:2,//2为自提，1为快递
-                // },
+                {
+                    id:49,
+                    orderNum:'2018070250371039050793800',
+                    expressNo:'',
+                    orderCreateTime:1530470345000,
+                    orderStatus:0,
+                    freightPrice:2092,
+                    totalPrice:3000,
+                    orderProduct:[
+                        {
+                            id:52,
+                            productId:null,
+                            productName:null,
+                            spec:'175kg-22cm-狂野',
+                            specImg:null,
+                            price:1600,
+                            num:2,
+                            status:1,
+                        },
+                    ],
+                    pickedUp:2,//2为自提，1为快递
+                },
             ],
             pageStatus: this.props.pageStatus,
             isEmpty: false,
@@ -81,7 +81,7 @@ export default class MyOrdersListView extends Component {
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
                     emptyIcon={NoMessage}
-                    emptyTip={'暂无数据!'}
+                    emptyTip={'ddd'}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
                     isHideFooter={true}
@@ -104,31 +104,31 @@ export default class MyOrdersListView extends Component {
                         this.setState({ isShowDeleteOrderModal: false });
                         if (this.state.menu.id == 7) {
                             Toast.showLoading();
-                            OrderApi.deleteOrder({ orderId: this.state.viewData[this.state.index].id }).then((response) => {
-                                Toast.hiddenLoading();
-                                if (response.ok) {
-                                    Toast.$toast('订单已删除');
-                                    this.getDataFromNetwork();
-                                } else {
-                                    Toast.$toast(response.msg);
-                                }
-                            }).catch(e => {
-                                Toast.$toast('' + e);
-                            });
+                            // OrderApi.deleteOrder({ orderId: this.state.viewData[this.state.index].id }).then((response) => {
+                            //     Toast.hiddenLoading();
+                            //     if (response.ok) {
+                            //         Toast.$toast('订单已删除');
+                            //         this.getDataFromNetwork();
+                            //     } else {
+                            //         Toast.$toast(response.msg);
+                            //     }
+                            // }).catch(e => {
+                            //     Toast.$toast('' + e);
+                            // });
                         } else if (this.state.menu.id == 9) {
                             Toast.showLoading();
-                            OrderApi.deleteClosedOrder({ orderId: this.state.viewData[this.state.index].id }).then((response) => {
-                                Toast.hiddenLoading();
-                                if (response.ok) {
-                                    Toast.hiddenLoading();
-                                    Toast.$toast('订单已删除');
-                                    this.getDataFromNetwork();
-                                } else {
-                                    Toast.$toast(response.msg);
-                                }
-                            }).catch(e => {
-                                Toast.$toast('' + e);
-                            });
+                            // OrderApi.deleteClosedOrder({ orderId: this.state.viewData[this.state.index].id }).then((response) => {
+                            //     Toast.hiddenLoading();
+                            //     if (response.ok) {
+                            //         Toast.hiddenLoading();
+                            //         Toast.$toast('订单已删除');
+                            //         this.getDataFromNetwork();
+                            //     } else {
+                            //         Toast.$toast(response.msg);
+                            //     }
+                            // }).catch(e => {
+                            //     Toast.$toast('' + e);
+                            // });
                         } else {
                             Toast.$toast('状态值异常，暂停操作');
                         }
@@ -146,17 +146,17 @@ export default class MyOrdersListView extends Component {
                     yes={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
                         Toast.showLoading();
-                        OrderApi.confirmReceipt({ orderId: this.state.viewData[this.state.index].id }).then((response) => {
-                            Toast.hiddenLoading();
-                            if (response.ok) {
-                                Toast.$toast('确认收货成功');
-                                this.getDataFromNetwork();
-                            } else {
-                                Toast.$toast(response.msg);
-                            }
-                        }).catch(e => {
-                            Toast.$toast('' + e);
-                        });
+                        // OrderApi.confirmReceipt({ orderId: this.state.viewData[this.state.index].id }).then((response) => {
+                        //     Toast.hiddenLoading();
+                        //     if (response.ok) {
+                        //         Toast.$toast('确认收货成功');
+                        //         this.getDataFromNetwork();
+                        //     } else {
+                        //         Toast.$toast(response.msg);
+                        //     }
+                        // }).catch(e => {
+                        //     Toast.$toast('' + e);
+                        // });
                     }}
                     no={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
@@ -171,20 +171,20 @@ export default class MyOrdersListView extends Component {
                     commit={(index) => {
                         this.setState({ isShowSingleSelctionModal: false });
                         Toast.showLoading();
-                        OrderApi.cancelOrder({
-                            buyerRemark: ['我不想买了', '信息填写错误，重新拍', '其他原因'][index],
-                            orderNum: this.state.viewData[this.state.index].orderNum
-                        }).then((response) => {
-                            Toast.hiddenLoading();
-                            if (response.ok) {
-                                Toast.$toast('订单已取消');
-                                this.getDataFromNetwork();
-                            } else {
-                                Toast.$toast(response.msg);
-                            }
-                        }).catch(e => {
-                            Toast.$toast('' + e);
-                        });
+                        // OrderApi.cancelOrder({
+                        //     buyerRemark: ['我不想买了', '信息填写错误，重新拍', '其他原因'][index],
+                        //     orderNum: this.state.viewData[this.state.index].orderNum
+                        // }).then((response) => {
+                        //     Toast.hiddenLoading();
+                        //     if (response.ok) {
+                        //         Toast.$toast('订单已取消');
+                        //         this.getDataFromNetwork();
+                        //     } else {
+                        //         Toast.$toast(response.msg);
+                        //     }
+                        // }).catch(e => {
+                        //     Toast.$toast('' + e);
+                        // });
                     }}
                 />
             </View>
@@ -234,101 +234,101 @@ export default class MyOrdersListView extends Component {
     }
 
     getDataFromNetwork = () => {
-        let params = {
-            dealerId: user.id,
-            page: this.state.currentPage,
-            pageSize: constants.PAGESIZE
-        };
+        // let params = {
+        //     dealerId: user.id,
+        //     page: this.state.currentPage,
+        //     pageSize: constants.PAGESIZE
+        // };
         Toast.showLoading();
         switch (this.state.pageStatus) {
             case 0:
-                OrderApi.queryAllOrderPageList(params).then((response) => {
-                    Toast.hiddenLoading();
-                    if (response.ok) {
-                        Toast.hiddenLoading();
-                        this.getList(response.data);
-                        this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.length != 0 });
-                    } else {
-                        Toast.$toast(response.msg);
-                    }
-                }).catch(e => {
-                    Toast.toast(e);
-                });
+                // OrderApi.queryAllOrderPageList(params).then((response) => {
+                //     Toast.hiddenLoading();
+                //     if (response.ok) {
+                //         Toast.hiddenLoading();
+                //         this.getList(response.data);
+                //         this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.length != 0 });
+                //     } else {
+                //         Toast.$toast(response.msg);
+                //     }
+                // }).catch(e => {
+                //     Toast.toast(e);
+                // });
                 break;
             case 1:
-                OrderApi.queryUnPaidOrderPageList(params).then((response) => {
-                    Toast.hiddenLoading();
-                    if (response.ok) {
-                        Toast.hiddenLoading();
-                        this.getList(response.data);
-                        this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.length != 0 });
-                    } else {
-                        Toast.$toast(response.msg);
-                    }
-                }).catch(e => {
-                    Toast.$toast('' + e);
-                });
+                // OrderApi.queryUnPaidOrderPageList(params).then((response) => {
+                //     Toast.hiddenLoading();
+                //     if (response.ok) {
+                //         Toast.hiddenLoading();
+                //         this.getList(response.data);
+                //         this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.length != 0 });
+                //     } else {
+                //         Toast.$toast(response.msg);
+                //     }
+                // }).catch(e => {
+                //     Toast.$toast('' + e);
+                // });
                 break;
             case 2:
-                OrderApi.queryUnSendOutOrderPageList(params).then((response) => {
-                    Toast.hiddenLoading();
-                    if (response.ok) {
-                        Toast.hiddenLoading();
-                        this.getList(response.data);
-                        this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.length != 0 });
-                    } else {
-                        Toast.$toast(response.msg);
-                    }
-                }).catch(e => {
-                    Toast.$toast('' + e);
-                });
+                // OrderApi.queryUnSendOutOrderPageList(params).then((response) => {
+                //     Toast.hiddenLoading();
+                //     if (response.ok) {
+                //         Toast.hiddenLoading();
+                //         this.getList(response.data);
+                //         this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.length != 0 });
+                //     } else {
+                //         Toast.$toast(response.msg);
+                //     }
+                // }).catch(e => {
+                //     Toast.$toast('' + e);
+                // });
                 break;
             case 3:
-                OrderApi.queryWaitReceivingOrderPageList(params).then((response) => {
-                    Toast.hiddenLoading();
-                    if (response.ok) {
-                        Toast.hiddenLoading();
-                        this.getList(response.data);
-                        this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.length != 0 });
-                    } else {
-                        Toast.$toast(response.msg);
-                    }
-                }).catch(e => {
-                    Toast.$toast('' + e);
-                });
+                // OrderApi.queryWaitReceivingOrderPageList(params).then((response) => {
+                //     Toast.hiddenLoading();
+                //     if (response.ok) {
+                //         Toast.hiddenLoading();
+                //         this.getList(response.data);
+                //         this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.length != 0 });
+                //     } else {
+                //         Toast.$toast(response.msg);
+                //     }
+                // }).catch(e => {
+                //     Toast.$toast('' + e);
+                // });
                 break;
             case 4:
-                OrderApi.queryCompletedOrderPageList(params).then((response) => {
-                    Toast.hiddenLoading();
-                    if (response.ok) {
-                        Toast.hiddenLoading();
-                        this.getList(response.data);
-                        this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.length != 0 });
-                    } else {
-                        Toast.$toast(response.msg);
-                    }
-                }).catch(e => {
-                    Toast.$toast(e);
-                });
+                // OrderApi.queryCompletedOrderPageList(params).then((response) => {
+                //     Toast.hiddenLoading();
+                //     if (response.ok) {
+                //         Toast.hiddenLoading();
+                //         this.getList(response.data);
+                //         this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.length != 0 });
+                //     } else {
+                //         Toast.$toast(response.msg);
+                //     }
+                // }).catch(e => {
+                //     Toast.$toast(e);
+                // });
                 break;
             default:
-                let orderNum = this.props.orderNum;
-                OrderApi.queryAllOrderPageList({
-                    dealerId: user.id,
-                    page: this.state.currentPage,
-                    pageSize: constants.PAGESIZE,
-                    condition: orderNum
-                }).then((response) => {
-                    Toast.hiddenLoading();
-                    if (response.ok) {
-                        this.getList(response.data);
-                        this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.length != 0 });
-                    } else {
-                        Toast.$toast(response.msg);
-                    }
-                }).catch(e => {
-                    Toast.$toast('' + e);
-                });
+                // let orderNum = this.props.orderNum;
+                // OrderApi.queryAllOrderPageList({
+                //     dealerId: user.id,
+                //     page: this.state.currentPage,
+                //     pageSize: constants.PAGESIZE,
+                //     condition: orderNum
+                // }).then((response) => {
+                //     Toast.hiddenLoading();
+                //     if (response.ok) {
+                //         this.getList(response.data);
+                //         this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.length != 0 });
+                //     } else {
+                //         Toast.$toast(response.msg);
+                //     }
+                // }).catch(e => {
+                //     Toast.$toast('' + e);
+                // });
                 break;
         }
     };
@@ -422,29 +422,29 @@ export default class MyOrdersListView extends Component {
                 break;
             case 8:
                 Toast.showLoading();
-                OrderApi.orderOneMore({ orderId: this.state.viewData[index].id }).then((response) => {
-                    if (response.ok) {
-                        let cartData = [];
-                        response.data.map((item, index) => {
-                            cartData.push({ sareSpecId: item.id, productNumber: item.num });
-                        });
-                        OrderApi.shoppingCartFormCookieToSession({ jsonString: JSON.stringify(cartData) }).then((response) => {
-                            Toast.hiddenLoading();
-                            if (response.ok) {
-                                Toast.hiddenLoading();
-                                this.props.nav('shopCart/CartPage', { isInnerPage: true });
-                            } else {
-                                Toast.$toast(response.msg);
-                            }
-                        }).catch(e => {
-                            Toast.hiddenLoading();
-                        });
-                    } else {
-                        Toast.$toast(response.msg);
-                    }
-                }).catch(e => {
-                    Toast.hiddenLoading();
-                });
+                // OrderApi.orderOneMore({ orderId: this.state.viewData[index].id }).then((response) => {
+                //     if (response.ok) {
+                //         let cartData = [];
+                //         response.data.map((item, index) => {
+                //             cartData.push({ sareSpecId: item.id, productNumber: item.num });
+                //         });
+                //         OrderApi.shoppingCartFormCookieToSession({ jsonString: JSON.stringify(cartData) }).then((response) => {
+                //             Toast.hiddenLoading();
+                //             if (response.ok) {
+                //                 Toast.hiddenLoading();
+                //                 this.props.nav('shopCart/CartPage', { isInnerPage: true });
+                //             } else {
+                //                 Toast.$toast(response.msg);
+                //             }
+                //         }).catch(e => {
+                //             Toast.hiddenLoading();
+                //         });
+                //     } else {
+                //         Toast.$toast(response.msg);
+                //     }
+                // }).catch(e => {
+                //     Toast.hiddenLoading();
+                // });
                 break;
             case 9:
                 this.setState({ isShowDeleteOrderModal: true });

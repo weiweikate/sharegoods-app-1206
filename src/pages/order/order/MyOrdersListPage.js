@@ -6,7 +6,7 @@ import TabBar from "react-native-underline-tabbar";
 import MyOrdersListView from './../components/MyOrdersListView'
 import ScreenUtils from '../../../utils/ScreenUtils'
 import search from '../res/search.png'
-import {constant, color} from "../../../components/Theme";
+import { color} from "../../../constants/Theme";
 
 class MyOrdersListPage extends BasePage {
     constructor(props) {
@@ -14,7 +14,8 @@ class MyOrdersListPage extends BasePage {
 
         this.state = {
             // index: this.params.pageParams.index,
-            index: this.params.index?this.params.index:0,
+            // index: this.params.index?this.params.index:0,
+            index:0,
             key:1,
             // number: this.params.pageParams.number,
             states: {},
@@ -43,22 +44,22 @@ class MyOrdersListPage extends BasePage {
                         this.renterTabBar()
                     )}>
                     <MyOrdersListView
-                        tabLabel={{label: '全部'}} pageStatus={0} nav={this.navigate} selectTab={this.state.selectTab}/>
+                        tabLabel={{label:'全部'}} pageStatus={0} nav={this.$navigate} selectTab={this.state.selectTab}/>
 
                     <MyOrdersListView
-                        tabLabel={{label:  '待支付', badge: this.state.states.toBePaid}} pageStatus={1}
+                        tabLabel={{label:'待支付', badge: this.state.states.toBePaid}} pageStatus={1}
+                        nav={this.$navigate}
+                        onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
+                    <MyOrdersListView
+                        tabLabel={{label:'待发货', badge: this.state.states.toBePaid}} pageStatus={2}
                         nav={this.navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
                     <MyOrdersListView
-                        tabLabel={{label:  '待发货', badge: this.state.states.toBePaid}} pageStatus={2}
+                        tabLabel={{label:'待收货', badge: this.state.states.toBePaid}} pageStatus={3}
                         nav={this.navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
                     <MyOrdersListView
-                        tabLabel={{label:  '待收货', badge: this.state.states.toBePaid}} pageStatus={3}
-                        nav={this.navigate}
-                        onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
-                    <MyOrdersListView
-                        tabLabel={{label:  '已完成', badge: this.state.states.toBePaid}} pageStatus={4}
+                        tabLabel={{label:'已完成', badge: this.state.states.toBePaid}} pageStatus={4}
                         nav={this.navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
 
@@ -71,14 +72,14 @@ class MyOrdersListPage extends BasePage {
             <TabBar
                 underlineColor='red'
                 backgroundColor='white'
-                tabMargin={constant.dp35}
+                tabMargin='35'
                 style={{alignItems:'center',justifyContent:'center',alignContent:'center'}}/>
 
         )
     }
     renderWideLine=()=>{
         return(
-            <View style={{flex:1,height:constant.dp10,backgroundColor:color.page_background}}/>
+            <View style={{flex:1,height:10,backgroundColor:color.page_background}}/>
         );
     }
     renderModal = () => {

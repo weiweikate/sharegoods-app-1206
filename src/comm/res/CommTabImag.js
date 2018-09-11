@@ -6,21 +6,24 @@
 const CommTabImag = {
 
     home_Tab_img: {
-        img_Nor: require("./home_tab_unselected.png"),
-        img_Sel: require("./home_tab_selected.png")
+        img_Nor: require('./home_tab_unselected.png'),
+        img_Sel: require('./home_tab_selected.png')
     },
     spellShop_Tab_img: {
-        img_Nor: require("./group_tab_unselected.png"),
-        img_Sel: require("./group_tab_selected.png")
+        img_Nor: require('./group_tab_unselected.png'),
+        img_Sel: require('./group_tab_selected.png')
     },
     shopCart_Tab_img: {
-        img_Nor: require("./cart_tab_unselected.png"),
-        img_Sel: require("./cart_tab_selected.png")
+        img_Nor: require('./cart_tab_unselected.png'),
+        img_Sel: require('./cart_tab_selected.png')
     },
     mine_Tab_img: {
-        img_Nor: require("./mine_tab_unselected.png"),
-        img_Sel: require("./mine_tab_selected.png")
-    }
+        img_Nor: require('./mine_tab_unselected.png'),
+        img_Sel: require('./mine_tab_selected.png')
+    },
+    comm_back_img: require('./icon_header_back.png')
+
+
 };
 
 export default CommTabImag;

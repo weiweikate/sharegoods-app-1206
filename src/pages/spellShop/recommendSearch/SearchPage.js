@@ -20,7 +20,7 @@ export default class SearchPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '我是标题'
+        title: '申请店铺'
     };
 
     constructor(props) {
@@ -55,7 +55,11 @@ export default class SearchPage extends BasePage {
     };
 
     _clickShopAtRow = (storeId) => {
-        storeId && this.props.navigation.navigate('spellShop/openShop/ShopDetailPage', { id: storeId });
+        if (this.state.selIndex === 1){
+            this.$navigate('spellShop/shopRecruit/ShopRecruitPage');
+        }else {
+            this.$navigate('spellShop/shopRecruit/ShopRecruitPage');
+        }
     };
 
     _renderListHeader = () => {

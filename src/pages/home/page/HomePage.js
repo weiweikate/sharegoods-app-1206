@@ -25,6 +25,7 @@ export  default class HomePage extends Component{
         this.props.navigation.navigate('login/login/LoginPage')
     }
     gotoProduct=()=>{
-        this.props.navigation.navigate('order/ProductDetailPage')
+        this.props.navigation.navigate('order/order/MyOrdersListPage')
+
     }
 }
