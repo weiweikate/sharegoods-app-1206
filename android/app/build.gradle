@@ -83,24 +83,13 @@ dependencies {
     compile project(':react-native-image-picker')
     compile project(path: ':commonlib')
     compile rootProject.ext.dependencies.support
-    // From node_modules
-    compile(rootProject.ext.dependencies.rn) {
-        exclude group: 'com.android.support'
-    }
+
     compile rootProject.ext.dependencies.gson
     compile rootProject.ext.dependencies.eventbus
     compile rootProject.ext.dependencies.zxing
-    compile(rootProject.ext.dependencies.qiyu) {
-        exclude group: 'com.android.support'
-    }
+
     compile rootProject.ext.dependencies.wechat
-    compile rootProject.ext.dependencies.multidex
-    compile rootProject.ext.dependencies.uapp
-    compile rootProject.ext.dependencies.ucommon
-    implementation files('lib/alipaySdk-20180601.jar')
-    implementation files('lib/umeng-share-core-6.9.3.jar')
-    implementation files('lib/umeng-sharetool-6.9.3.jar')
-    implementation files('lib/umeng-share-wechat-simplify-6.9.3.jar')
+    implementation files('libs/alipaySdk-20180601.jar')
 }
 
 // Run this once to be able to run the application with BUCK

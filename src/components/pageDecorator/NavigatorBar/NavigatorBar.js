@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     Text,
@@ -9,7 +9,7 @@ import {
     PixelRatio,
     Dimensions,
     StyleSheet,
-    TouchableOpacity,
+    TouchableOpacity
 } from 'react-native';
 import BackIcon from './source/icon_header_back.png';
 
@@ -19,8 +19,6 @@ const IPHONEX = (MIN_SCREENT === 375.00 && MAX_SCREENT === 812.0);
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export default class NavigatorBar extends Component {
-
-    static barHeight = Platform.OS === 'ios' ? (IPHONEX ? 88 : 64) : 64;
 
     static defaultProps = {
 
@@ -38,7 +36,7 @@ export default class NavigatorBar extends Component {
         statusBarStyle: 'default',
         rightPressed: () => {
             console.warn('make sure you set rightPressed func~');
-        },
+        }
 
     };
 
@@ -57,7 +55,7 @@ export default class NavigatorBar extends Component {
         rightNavTitle: PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.node,
-            PropTypes.element,
+            PropTypes.element
         ]),
         rightTitleStyle: PropTypes.any,
         rightNavImage: PropTypes.any,
@@ -68,7 +66,7 @@ export default class NavigatorBar extends Component {
         leftPressed: PropTypes.func,
         rightPressed: PropTypes.func,
 
-        renderRight: PropTypes.func,
+        renderRight: PropTypes.func
     };
 
     constructor(props) {
@@ -78,14 +76,14 @@ export default class NavigatorBar extends Component {
             hideNavBar,
             rightNavTitle,
             leftNavItemHidden,
-            rightNavItemHidden,
+            rightNavItemHidden
         } = props;
         this.state = {
             title,
             hideNavBar,
             rightNavTitle,
             leftNavItemHidden,
-            rightNavItemHidden,
+            rightNavItemHidden
         };
     }
 
@@ -100,7 +98,7 @@ export default class NavigatorBar extends Component {
                 hideNavBar: !!props.hideNavBar,
                 rightNavTitle: props.rightNavTitle || this.state.rightNavTitle || '',
                 leftNavItemHidden: !!props.leftNavItemHidden,
-                rightNavItemHidden: !!props.rightNavItemHidden,
+                rightNavItemHidden: !!props.rightNavItemHidden
             });
         }
     }
@@ -108,23 +106,23 @@ export default class NavigatorBar extends Component {
     //修改bar title 然后回调
     changeTitle = (newTitle, callBack) => {
         const title = (newTitle && typeof newTitle === 'string') ? newTitle : '';
-        this.setState({title}, callBack);
+        this.setState({ title }, callBack);
     };
 
     //修改右上角title
     changeRightTitle = (rightNavTitle, callBack) => {
         const title = (rightNavTitle && typeof rightNavTitle === 'string') ? rightNavTitle : '';
-        this.setState({rightNavTitle: title}, callBack);
+        this.setState({ rightNavTitle: title }, callBack);
     };
 
     //修改左item是否隐藏
     hiddenLeftItem = (hidden, callBack) => {
-        this.setState({leftNavItemHidden: !!hidden}, callBack);
+        this.setState({ leftNavItemHidden: !!hidden }, callBack);
     };
 
     //修改右item是否隐藏
     hiddenRightItem = (hidden, callBack) => {
-        this.setState({rightNavItemHidden: !!hidden}, callBack);
+        this.setState({ rightNavItemHidden: !!hidden }, callBack);
     };
 
 
@@ -148,7 +146,7 @@ export default class NavigatorBar extends Component {
     _renderLeftItem = () => {
         const {
             leftNavImage,
-            leftNavTitle,
+            leftNavTitle
         } = this.props;
 
         if (this.state.leftNavItemHidden) {
@@ -166,11 +164,11 @@ export default class NavigatorBar extends Component {
         }
         // 图片
         if (leftNavImage) {
-            return <TouchableOpacity style={[styles.left, {paddingLeft: 15}]} onPress={this._onLeftPressed}>
+            return <TouchableOpacity style={[styles.left, { paddingLeft: 15 }]} onPress={this._onLeftPressed}>
                 <Image
                     source={leftNavImage}
                     resizeMode={'stretch'}
-                    style={{height: 15, width: 15}}
+                    style={{ height: 15, width: 15 }}
                 />
             </TouchableOpacity>;
         }
@@ -190,8 +188,8 @@ export default class NavigatorBar extends Component {
             </View>;
         }
 
-        const {rightNavImage} = this.props;
-        const {rightNavTitle} = this.state;
+        const { rightNavImage } = this.props;
+        const { rightNavTitle } = this.state;
         if (!rightNavImage && !rightNavTitle) {
             return null;
         }
@@ -211,15 +209,15 @@ export default class NavigatorBar extends Component {
     };
 
     _renderTitle = () => {
-        const {title} = this.state;
-        return (<Text style={styles.title} numberOfLines={1}>{title || " "}</Text>);
+        const { title } = this.state;
+        return (<Text style={styles.title} numberOfLines={1}>{title || ' '}</Text>);
     };
 
     _renderStatusBar = () => {
         if (Platform.OS === 'android') {
             return null;
         }
-        const {statusBarStyle} = this.props;
+        const { statusBarStyle } = this.props;
         const _statusBarStyle = (statusBarStyle && ['light-content', 'default'].indexOf(statusBarStyle) >= 0) ? statusBarStyle : 'default';
         return (<StatusBar barStyle={_statusBarStyle}/>);
     };
@@ -230,9 +228,9 @@ export default class NavigatorBar extends Component {
         }
 
         const {
-            headerStyle,
+            headerStyle
         } = this.props;
-
+        console.log(this.props.androidStatusH);
         return (
             <View style={[styles.navBar, headerStyle]}>
                 {this._renderStatusBar()}
@@ -248,14 +246,14 @@ export default class NavigatorBar extends Component {
 const styles = StyleSheet.create({
     navBar: { //考虑适配 iPhone X
         width: SCREEN_WIDTH,
-        height: Platform.OS === 'ios' ? (IPHONEX ? 88 : 64) : 64,
-        paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
+        height: Platform.OS === 'ios' ? (IPHONEX ? 88 : 64) : 44 + global.androidStatusH,
+        paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : global.androidStatusH,
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 60,
         borderBottomWidth: 1.0 / PixelRatio.get(),
-        borderBottomColor: '#DCDCDC',
+        borderBottomColor: '#DCDCDC'
         // shadowColor: "rgba(0, 0, 0, 0.2)",
         // shadowOffset: {
         //     width: 0,
@@ -267,35 +265,35 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 17,
         color: '#222',
-        backgroundColor: 'transparent',
+        backgroundColor: 'transparent'
     },
     left: {
         position: 'absolute',
-        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
+        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : global.androidStatusH,
         left: 0,
         bottom: 0,
         justifyContent: 'center',
-        paddingHorizontal: 15,
+        paddingHorizontal: 15
     },
     leftImage: {
         position: 'absolute',
-        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
+        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : global.androidStatusH,
         left: 40,
         bottom: 0,
         justifyContent: 'center',
-        paddingHorizontal: 15,
+        paddingHorizontal: 15
     },
     right: {
         position: 'absolute',
-        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
+        top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : global.androidStatusH,
         right: 0,
         bottom: 0,
         justifyContent: 'center',
-        paddingHorizontal: 10,
+        paddingHorizontal: 10
     },
     button: {
         color: '#e60012',
-        fontSize: 13,
-    },
+        fontSize: 13
+    }
 });
 

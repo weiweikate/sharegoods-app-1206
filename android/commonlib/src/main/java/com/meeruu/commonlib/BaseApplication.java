@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods;
+package com.meeruu.commonlib;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -8,17 +8,9 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
-import com.facebook.react.ReactApplication;
-import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.horcrux.svg.SvgPackage;
-import com.imagepicker.ImagePickerPackage;
-import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
-import com.meeruu.sharegoods.callback.ForegroundCallbacks;
-import com.meeruu.sharegoods.umeng.RNUMConfigure;
-import com.oblador.vectoricons.VectorIconsPackage;
+import com.meeruu.commonlib.callback.ForegroundCallbacks;
+import com.meeruu.commonlib.umeng.RNUMConfigure;
 import com.qiyukf.unicorn.api.ImageLoaderListener;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
@@ -28,12 +20,13 @@ import com.qiyukf.unicorn.api.YSFOptions;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class BaseApplication extends MultiDexApplication implements ReactApplication {
+public class BaseApplication extends MultiDexApplication {
+
     private static BaseApplication instance;
-    public Context appContext;
+    public static Context appContext;
+
 
     public static BaseApplication getInstance() {
         if (null == instance) {
@@ -49,9 +42,9 @@ public class BaseApplication extends MultiDexApplication implements ReactApplica
     @Override
     public void onCreate() {
         super.onCreate();
+        appContext = this;
         // activity生命周期，onCreate之后
         ForegroundCallbacks.init(this);
-        appContext = this;
         if (getProcessName(this).equals(getPackageName())) {
             // 捕获闪退日志
 //            CrashHandler.getInstance().init(this);
@@ -78,41 +71,6 @@ public class BaseApplication extends MultiDexApplication implements ReactApplica
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
-    }
-
-    public Context getContext() {
-        return appContext;
-    }
-
-    private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-        @Override
-        public boolean getUseDeveloperSupport() {
-            return BuildConfig.DEBUG;
-        }
-
-        @Override
-        protected List<ReactPackage> getPackages() {
-            return Arrays.<ReactPackage>asList(
-                    new RNPackage(),
-                    new MainReactPackage(),
-//                    new ReactVideoPackage(),
-                    new VectorIconsPackage(),
-                    new SvgPackage(),
-                    new ImagePickerPackage(),
-                    new AutoHeightWebViewPackage()
-
-            );
-        }
-
-        @Override
-        protected String getJSMainModuleName() {
-            return "index";
-        }
-    };
-
-    @Override
-    public ReactNativeHost getReactNativeHost() {
-        return mReactNativeHost;
     }
 
     // 如果返回值为null，则全部使用默认参数。

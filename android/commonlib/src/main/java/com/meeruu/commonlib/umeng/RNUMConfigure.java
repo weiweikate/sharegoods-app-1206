@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.umeng;
+package com.meeruu.commonlib.umeng;
 
 import android.annotation.TargetApi;
 import android.content.Context;

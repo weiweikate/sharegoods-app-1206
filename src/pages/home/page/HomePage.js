@@ -1,22 +1,23 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react';
 import {
-    Text,
-} from "react-native";
+    Text
+} from 'react-native';
 
-export  default class HomePage extends Component{
+export default class HomePage extends Component {
 
-    constructor(){
-        super()
+    constructor() {
+        super();
     }
-    render(){
-        return(
-            <Text style={{flex:1,justifyContent:'center',paddingTop:100}} onPress={this.gotoLogin}>
-               home
+
+    render() {
+        return (
+            <Text style={{ flex: 1, justifyContent: 'center', paddingTop: 100 }} onPress={this.gotoLogin}>
+                {global.androidStatusH}
             </Text>
-        )
+        );
     }
-    gotoLogin=()=>{
-        this.props.navigation.navigate('home/SearchGoodPage')
 
-    }
+    gotoLogin = () => {
+        this.props.navigation.navigate('home/SearchGoodPage');
+    };
 }

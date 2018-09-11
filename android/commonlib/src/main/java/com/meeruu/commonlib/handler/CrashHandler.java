@@ -1,5 +1,5 @@
 
-package com.meeruu.sharegoods.handler;
+package com.meeruu.commonlib.handler;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -8,7 +8,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.util.Log;
 
-import com.meeruu.sharegoods.utils.SDCardUtils;
+import com.meeruu.commonlib.utils.SDCardUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;

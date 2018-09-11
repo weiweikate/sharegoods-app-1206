@@ -13,7 +13,10 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.facebook.react.ReactActivity;
+import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.bridge.Promise;
+import com.meeruu.commonlib.utils.DensityUtils;
+import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.event.CaptureScreenImageEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.ScanQRCodeEvent;
@@ -39,6 +42,27 @@ public class MainActivity extends ReactActivity {
     @Override
     protected String getMainComponentName() {
         return "sharegoods";
+    }
+
+    @Override
+    protected ReactActivityDelegate createReactActivityDelegate() {
+        return new MyReactDelegate(this, getMainComponentName());
+    }
+
+    //自定义MyReactDelegate
+    class MyReactDelegate extends ReactActivityDelegate {
+
+        public MyReactDelegate(Activity activity, @javax.annotation.Nullable String mainComponentName) {
+            super(activity, mainComponentName);
+        }
+
+        @javax.annotation.Nullable
+        @Override
+        protected Bundle getLaunchOptions() {
+            Bundle bundle = new Bundle();
+            bundle.putInt("androidStatusH", DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
+            return bundle;
+        }
     }
 
     @Override
