@@ -1,11 +1,11 @@
-package com.meeruu.sharegoods.callback;
+package com.meeruu.commonlib.callback;
 
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.meeruu.sharegoods.handler.WeakHandler;
+import com.meeruu.commonlib.handler.WeakHandler;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

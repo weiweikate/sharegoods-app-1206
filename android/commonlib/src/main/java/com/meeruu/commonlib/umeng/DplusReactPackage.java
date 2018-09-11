@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.umeng;
+package com.meeruu.commonlib.umeng;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;

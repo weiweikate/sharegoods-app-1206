@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.umeng;
+package com.meeruu.commonlib.umeng;
 
 import android.app.Activity;
 import android.os.Handler;

@@ -1,6 +1,6 @@
 {
     "showDebugPanel": true,
-    "envType": "dev_mock",
+    "envType": "吴承骏Login",
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
         "dev_mock": {
@@ -46,6 +46,9 @@
         "qa_yx": {
             "name": "测试环境_营销",
             "host": "https://oper.dnvhot.tech"
+        },"吴承骏Login":{
+            "name": "测试环境_登陆",
+            "host": "http://172.16.10.19:8180/gateway"
         }
     }
 }

@@ -26,4 +26,4 @@ if (!__DEV__) {
         error: () => {}
     };
 }
-AppRegistry.registerComponent('crm_app_xiugou', () => App);
+AppRegistry.registerComponent('sharegoods', () => App);

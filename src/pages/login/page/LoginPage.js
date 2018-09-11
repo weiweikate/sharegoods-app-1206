@@ -1,5 +1,6 @@
 import React from 'react';
 import LoginTopView from '../components/LoginTopView';
+import UserModel from '../../../model/user'
 import {
     View,
     Text,
@@ -13,6 +14,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import ColorUtil from '../../../utils/ColorUtil';
 import BasePage from '../../../BasePage';
 import bridge from '../../../utils/bridge';
+import LoginAPI from '../api/LoginApi';
 
 export default class LoginPage extends BasePage {
     constructor() {
@@ -38,6 +40,7 @@ export default class LoginPage extends BasePage {
                 <LoginTopView
                     oldUserLoginClick={this.oldUserLoginClick.bind(this)}
                     forgetPasswordClick={this.forgetPasswordClick}
+                    loginClick={(loginType, LoginParam) => this.loginClick(loginType, LoginParam)}
                 />
                 <View style={Styles.otherLoginBgStyle}>
                     <View style={Styles.lineBgStyle}>
@@ -89,6 +92,53 @@ export default class LoginPage extends BasePage {
     /*注册*/
     registBtnClick = () => {
         this.$navigate('login/login/RegistPage');
+    };
+    /*登陆*/
+    loginClick = (loginType, LoginParam) => {
+
+        if (loginType === 0) {
+            LoginAPI.codeLogin({
+                authcode: '22',
+                code: '333',
+                device: '44',
+                password: LoginParam.password,
+                phone: LoginParam.phoneNumber,
+                systemVersion: '44',
+                username: '',
+                wechatCode: '',
+                wechatVersion: ''
+            }).then((data) => {
+                console.log(data);
+                UserModel.saveUserInfo(data.data);
+                bridge.$toast('登陆成功')
+                // this.$navigateBack('Tab')
+                this.$navigateBack()
+            }).catch((data) => {
+                console.warn(data);
+                bridge.$toast(data.msg)
+            });
+        } else {
+            LoginAPI.passwordLogin({
+                authcode: '22',
+                code: LoginParam.code,
+                device: '44',
+                password: LoginParam.password,
+                phone: LoginParam.phoneNumber,
+                systemVersion: '44',
+                username: '',
+                wechatCode: '',
+                wechatVersion: ''
+            }).then((data)=>{
+                console.log(data);
+                UserModel.saveUserInfo(data.data);
+                bridge.$toast('登陆成功')
+                this.$navigateBack()
+            }).catch((data)=>{
+                console.warn(data);
+                bridge.$toast(data.msg)
+            });
+
+        }
     };
 }
 
