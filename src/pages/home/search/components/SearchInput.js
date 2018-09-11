@@ -1,109 +1,74 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
-    StyleSheet,
-    Text,
     View,
     TextInput,
-    Image,
-    TouchableOpacity
+    StyleSheet
 } from 'react-native';
-import CommTabImag from '../../../../comm/res/CommTabImag';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 
+export default class SearchBar extends Component {
 
-export default class SearchInput extends Component {
+    static propTypes = {
+        placeholder: PropTypes.string.isRequired,//占位字符
+        onChangeText: PropTypes.func,
+        onSubmitEditing: PropTypes.func,
+        cancel: PropTypes.func
+    };
 
     constructor(props) {
         super(props);
+        this.state = {
+            inputText: ''
+        };
     }
 
-    render() {
 
+    onChangeText = (text) => {
+        if (text === '') {
+            this.setState({
+                inputText: text,
+                isShowInputClear: false
+            });
+        } else {
+            this.setState({
+                inputText: text,
+                isShowInputClear: true
+            });
+        }
+
+        if (this.props.onChangeText) {
+            this.props.onChangeText(text);
+        }
+    };
+
+    onSubmitEditing = (text) => {
+        //把输入框中的文字传给父组件
+        if (this.props.onSubmitEditing) {
+            this.props.onSubmitEditing(text);
+        }
+    };
+
+    render() {
         return (
-            <View style={[styles.container, { paddingTop: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 20 }]}>
-                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => this.props.buttonNavigateBack()}>
-                    <Image source={CommTabImag.comm_back_img} style={{
-                        width: 10,
-                        height: 18
-                    }}/>
-                </TouchableOpacity>
-                <View style={styles.searchBox}>
-                    <Image
-                        style={{ marginLeft: 8, width: 12.5, height: 12.5 }}
-                        // source={search_img}
-                    />
-                    <TextInput style={styles.inputText}
-                        // keyboardType='web-search'
-                        // underlineColorAndroid='transparent'
-                        // placeholder={this.props.placeHolder}
-                        // placeholderTextColor='#6C6F74'
-                        // value={this.searchModel.inputText}
-                        // onChangeText={(text) => this.onChangeText(text)}
-                        // onChangeText={this.onChangeText(text)}
-                        //        onSubmitEditing={(event) => this.onSubmitEditing(event.nativeEvent.text)}
-                               ref={'textInput'}
-                    />
+            <View style={[{ height: ScreenUtils.headerHeight, width: ScreenUtils.width }, this.props.style]}>
+                <View style={{ marginTop: ScreenUtils.statusBarHeight, flex: 1 }}>
+                    <View style={{ height: 30, borderRadius: 15, backgroundColor: '#F7F7F7' }}>
+                        <TextInput style={styles.inputText}
+                                   keyboardType='web-search'
+                                   underlineColorAndroid='transparent'
+                                   placeholder={this.props.placeholder}
+                                   placeholderTextColor='#C8C8C8'
+                                   value={this.state.inputText}
+                                   onChangeText={(text) => this.onChangeText(text)}
+                                   onSubmitEditing={(event) => this.onSubmitEditing(event.nativeEvent.text)}
+                                   ref={'textInput'}/>
+                    </View>
                 </View>
-                <TouchableOpacity onPress={this.finish}>
-                    <Text style={styles.text}>取消</Text>
-                </TouchableOpacity>
-            </View>
-        );
+            </View>);
     }
 
 }
 
-const styles = StyleSheet.create(
-    {
-        //根布局
-        container: {
-            flexDirection: 'row',   // 水平排布
-            paddingLeft: 16,
-            // paddingRight: 16,
+const styles = StyleSheet.create({});
 
-            backgroundColor: '#fff',
-            alignItems: 'center' //元素垂直居中排布
-        },
-
-        searchBox: { //搜索框
-            height: 32,
-            flexDirection: 'row',   // 水平排布,输入文字后有X
-            flex: 1,
-            borderRadius: 4, //设置圆角边
-            backgroundColor: '#F0F0F0',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginTop: 8,
-            marginBottom: 6,
-            marginLeft: 5
-        },
-
-        inputText: {
-            flex: 1,
-            height: 40,
-            fontSize: 12,
-            marginLeft: 12
-        },
-
-        text: {
-            marginLeft: 10,
-            marginRight: 10,
-            marginTop: 5,
-            marginBottom: 5,
-            paddingLeft: 10,
-            paddingRight: 10,
-            paddingTop: 5,
-            paddingBottom: 5,
-            fontSize: 14,
-            color: '#333333',
-            backgroundColor: '#F0F0F0',
-            borderRadius: 15
-        },
-        image: {
-            width: 20,
-            height: 20,
-            marginRight: 3,
-            alignItems: 'flex-end'
-        }
-    }
-);
