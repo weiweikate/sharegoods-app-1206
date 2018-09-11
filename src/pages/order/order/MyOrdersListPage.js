@@ -5,7 +5,6 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import TabBar from "react-native-underline-tabbar";
 import MyOrdersListView from './../components/MyOrdersListView'
 import ScreenUtils from '../../../utils/ScreenUtils'
-import search from '../res/search.png'
 import { color} from "../../../constants/Theme";
 
 class MyOrdersListPage extends BasePage {

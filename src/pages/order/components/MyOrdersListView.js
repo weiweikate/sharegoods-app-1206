@@ -5,7 +5,6 @@ import constants from '../../../constants/constants';
 import StringUtils from '../../../utils/StringUtils';
 import GoodsListItem from './GoodsListItem';
 import NoMessage from '../../../comm/res/empty_list_message.png';
-import user from '../../../model/user';
 import SingleSelectionModal from './BottomSingleSelectModal';
 import CommonTwoChoiceModal from './CommonTwoChoiceModal';
 import Toast from '../../../utils/bridge';

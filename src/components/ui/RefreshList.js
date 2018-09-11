@@ -174,6 +174,6 @@ RefreshList.propTypes = {
     data: PropTypes.array,
     renderItem: PropTypes.func,
     onRefresh: PropTypes.func,
-    onLoadMore: PropTypes.func,
-}
+    onLoadMore: PropTypes.func
+};
 

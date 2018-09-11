@@ -17,7 +17,6 @@ import UIText from '../../../../components/ui/UIText';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import arrow_right from '../../res/homeBaseImg/icon3_07.png';
-import user from '../../../../model/user';
 
 // import Toast from '../../components/Toast'
 
@@ -67,10 +66,10 @@ class SettingPage extends BasePage {
                 {this.renderLine()}
                 <TouchableOpacity style={styles.viewStyle}>
                     <UIText value={'消息推送'} style={styles.blackText}/>
-                    <Switch value={this.state.value} onValueChange={(value)=>{
+                    <Switch value={this.state.value} onValueChange={(value) => {
                         this.setState({
-                            value:value,
-                            changeTxt:value?'switch 打开了':'switch 关闭了'
+                            value: value,
+                            changeTxt: value ? 'switch 打开了' : 'switch 关闭了'
                         });
 
 
