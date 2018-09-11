@@ -20,6 +20,10 @@ export default class RegistPage extends BasePage {
     $navigationBarOptions = {
         title: '注册'
     };
+    constructor(props){
+        super(props);
+        this.params = this.props.navigation.state.params;
+    }
 
     _render() {
         return (
@@ -63,17 +67,19 @@ export default class RegistPage extends BasePage {
 
        LoginApi.findMemberByPhone({
             code:code,
-            device:'22',
+            device:this.params.device?this.params.device:'',
             inviteId:'33',
-            openid:'44',
+            openid:this.params.openid?this.params.openid:'',
             password:password,
             phone:phone,
-            systemVersion:'12',
+            systemVersion:this.params.systemVersion?this.params.systemVersion:'',
             wechatVersion:'meiyou'
         }).then((data)=>{
             console.log(data);
-            if (data.code === 200){
-
+            if (data.code === 10000){
+              this.$navigateBack();
+              bridge.$toast('注册成功');
+              
             } else {
                 bridge.$toast(data.msg);
             }
