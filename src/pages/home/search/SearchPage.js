@@ -2,8 +2,6 @@ import React from 'react';
 import {
     View,
     StyleSheet,
-    TouchableWithoutFeedback,
-    TextInput
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import HotSearchView from './components/HotSearchView';
