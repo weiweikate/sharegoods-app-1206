@@ -34,4 +34,10 @@ public class Utils {
         Log.d("lixx", "当前应用:" + componentInfo.getPackageName());
         return componentInfo.getPackageName();
     }
+
+    /** px转换dip */
+    public static int px2dip(int px,Context context) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (px / scale + 0.5f);
+    }
 }

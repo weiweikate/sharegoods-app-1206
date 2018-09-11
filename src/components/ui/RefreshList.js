@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
     StyleSheet,
     FlatList,
@@ -7,11 +7,11 @@ import {
     ActivityIndicator,
     TouchableOpacity,
     Image
-} from 'react-native'
-import PropTypes from 'prop-types'
-import ScreenUtils from "../../utils/ScreenUtils"
-import { color} from "../../constants/Theme"
-import empty_list_message from '../../comm/res/empty_list_message.png'
+} from 'react-native';
+import PropTypes from 'prop-types';
+import ScreenUtils from '../../utils/ScreenUtils';
+import { color } from '../../constants/Theme';
+import empty_list_message from '../../comm/res/empty_list_message.png';
 
 
 const defaultPageSize = 10;
@@ -20,21 +20,21 @@ export default class RefreshList extends Component {
     static defaultProps = {
         data: [],
         isHideFooter: true
-    }
+    };
 
     static propTypes = {
-        emptyIcon: PropTypes.any,
-    }
+        emptyIcon: PropTypes.any
+    };
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             isError: false,
             isEmpty: false,
             refreshing: false,
             emptyTip: this.props.emptyTip ? this.props.emptyTip : '',//空态文案
             emptyIcon: this.props.emptyIcon ? this.props.emptyIcon : empty_list_message//空态图标,
-        }
+        };
 
     }
 
@@ -42,20 +42,20 @@ export default class RefreshList extends Component {
     }
 
     errorReLoadPress = () => {
-        this.setState({ isError: false })
-        this.onEndReached()
-    }
+        this.setState({ isError: false });
+        this.onEndReached();
+    };
     isEnd = () => {
-        return this.props.data.length % defaultPageSize != 0
-    }
+        return this.props.data.length % defaultPageSize != 0;
+    };
 
     isNoraml = () => {
-        return !this.isEnd()
-    }
+        return !this.isEnd();
+    };
 
     renderFooter = () => {
         if (this.props.isHideFooter) {
-            return <View />
+            return <View/>;
         } else {
             if (this.state.isError) {
                 return (
@@ -65,62 +65,66 @@ export default class RefreshList extends Component {
                         </View>
                     </TouchableOpacity>
 
-                )
+                );
             } else {
                 if (this.isEnd()) {
                     return (
                         <View style={styles.footer_container}>
                             <Text style={styles.footer_text}>No More</Text>
                         </View>
-                    )
+                    );
                 } else {
                     return (
                         <View style={styles.footer_container}>
-                            <ActivityIndicator size="small" color="#888888" />
+                            <ActivityIndicator size="small" color="#888888"/>
                             <Text style={styles.footer_text}>拼命加载中…</Text>
-                        </View>)
+                        </View>);
                 }
             }
         }
 
-    }
+    };
 
     onEndReached = () => {
         if ((!this.state.isError) && this.isNoraml()) {
-            let dataLength = this.props.data.length
-            let curPage = dataLength % defaultPageSize >= 0 ? (parseInt(dataLength / defaultPageSize + 1)) : parseInt((dataLength / defaultPageSize + 2))
-            if(curPage>1) this.props.onLoadMore(curPage)
+            let dataLength = this.props.data.length;
+            let curPage = dataLength % defaultPageSize >= 0 ? (parseInt(dataLength / defaultPageSize + 1)) : parseInt((dataLength / defaultPageSize + 2));
+            if (curPage > 1) {
+                this.props.onLoadMore(curPage);
+            }
         }
-    }
+    };
 
     renderEmpty = () => {
         return (
-            <TouchableOpacity style={{justifyContent:'center',alignItems:'center'}} onPress={()=>this.props.onRefresh()}>
-                <Image style={{height: 140, width: 140,}} source={this.state.emptyIcon}/>
-                <Text style={{marginTop:20,fontSize:14,color:color.black_more_light}}>{this.state.emptyTip}</Text>
-            </TouchableOpacity>)
-    }
+            <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
+                              onPress={() => this.props.onRefresh()}>
+                <Image style={{ height: 140, width: 140 }} source={this.state.emptyIcon}/>
+                <Text
+                    style={{ marginTop: 20, fontSize: 14, color: color.black_more_light }}>{this.state.emptyTip}</Text>
+            </TouchableOpacity>);
+    };
 
     refresh = () => {
-        this.setState({ refreshing: true })
-        this.refreshing = true
+        this.setState({ refreshing: true });
+        this.refreshing = true;
         setTimeout(() => {
-            this.setState({ refreshing: false })
-        }, 1000)
-        this.props.onRefresh()
-    }
+            this.setState({ refreshing: false });
+        }, 1000);
+        this.props.onRefresh();
+    };
 
     scrollToIndex(params) {
-        this.refs.flatlist.scrollToIndex(params)
+        this.refs.flatlist.scrollToIndex(params);
     }
 
 
     render() {
-        const { data,headerData, renderItem, onRefresh, keyExtractor, isEmpty, extraData, ...attributes } = this.props
-        if (data.length > 0||headerData) {
+        const { data, headerData, renderItem, onRefresh, keyExtractor, isEmpty, extraData, ...attributes } = this.props;
+        if (data.length > 0 || headerData) {
             return (
                 <FlatList
-                    style={[{width:ScreenUtils.width,flex:1},this.props.style&&this.props.style]}
+                    style={[{ width: ScreenUtils.width, flex: 1 }, this.props.style && this.props.style]}
                     data={data}
                     showsVerticalScrollIndicator={false}
                     renderItem={renderItem}
@@ -130,20 +134,20 @@ export default class RefreshList extends Component {
                     refreshing={this.state.refreshing}
                     onEndReachedThreshold={0.1}
                     ListFooterComponent={this.renderFooter}
-                    keyExtractor={keyExtractor?keyExtractor:(item, index) => index.toString()}
+                    keyExtractor={keyExtractor ? keyExtractor : (item, index) => index.toString()}
                     ref={'flatlist'}
                     {...attributes}
                 />
-            )
+            );
 
         } else {
             if (isEmpty) {
                 return (
                     <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center', marginTop: 80 }}>
                         {this.renderEmpty()}
-                    </View>)
+                    </View>);
             }
-            return null
+            return null;
         }
 
     }
@@ -161,10 +165,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
-        height: 44,
+        height: 44
     },
-    container: {},
-})
+    container: {}
+});
 
 RefreshList.propTypes = {
     data: PropTypes.array,

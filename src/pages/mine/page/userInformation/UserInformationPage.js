@@ -18,6 +18,7 @@ export default class UserInformationPage extends BasePage {
     $navigationBarOptions = {
         title: '个人资料',
         show: true // false则隐藏导航
+        // hiddenNav:false
     };
 
     constructor(props) {

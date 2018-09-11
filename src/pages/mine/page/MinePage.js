@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     StyleSheet,
     View,
@@ -10,6 +10,7 @@ import {
     Linking,
     Text
 } from 'react-native';
+import BasePage from '../../../BasePage';
 import UIText from '../../../components/ui/UIText';
 import UIImage from '../../../components/ui/UIImage';
 import { color } from '../../../constants/Theme';
@@ -37,13 +38,7 @@ import levelBg from '../res/homeBaseImg/icon3_03-02.png';
 import setting from '../res/homeBaseImg/icon_03.png';
 import service from '../res/homeBaseImg/icon02.png';
 
-export default class MinePage extends Component {
-    static  $PageOptions = {
-        navigationBarOptions: {
-            hideNavBar: true
-        },
-        renderByPageState: true
-    };
+export default class MinePage extends BasePage {
 
     constructor(props) {
         super(props);
@@ -57,6 +52,21 @@ export default class MinePage extends Component {
         };
     }
 
+    // static navigationOptions={
+    //     header:null,
+    //     tabBarOnPress: (obj: any) => {
+    //         // obj.defaultHandler('Mine');
+    //         if (user.isLogin) {
+    //             obj.defaultHandler();
+    //         }
+    //         else {
+    //             this.props.navigation.navigate('login/login/LoginPage');
+    //         }
+    //     }
+    // }
+    $navigationBarOptions = {
+        show: false // false则隐藏导航
+    };
     $getPageStateOptions = () => {
         return {
             loadingState: this.state.loadingState,
@@ -72,7 +82,7 @@ export default class MinePage extends Component {
     }
 
     //**********************************ViewPart******************************************
-    render() {
+    _render() {
         return (
             <View style={styles.container}>
                 {this.renderBodyView()}
@@ -89,14 +99,15 @@ export default class MinePage extends Component {
     };
     renderUserHead = () => {
         return (
-            <View style={{ height: 442, width: ScreenUtils.width }}>
-                <ImageBackground style={{ height: 220, width: ScreenUtils.width }} source={headBg}>
+            <View style={{ height: 462, width: ScreenUtils.width }}>
+                <ImageBackground style={{ height: 240, width: ScreenUtils.width }} source={headBg}>
                     <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',
                         marginRight: 5,
                         justifyContent: 'flex-end',
-                        height: 44
+                        height: 40,
+                        marginTop: 20
                     }}>
                         <UIImage source={setting} style={{ height: 18, width: 22, marginRight: 15 }}
                                  onPress={() => this.jumpToSettingPage()}/>
@@ -108,7 +119,7 @@ export default class MinePage extends Component {
                             height: 60,
                             width: 60,
                             marginLeft: 21,
-                            marginTop: 11,
+                            marginTop: 5,
                             justifyContent: 'center',
                             alignItems: 'center'
                         }} source={leftBg}>
@@ -286,11 +297,12 @@ export default class MinePage extends Component {
         }
         return arr;
     };
-    renderMyWallet = () => {
+
+    renderMyWallet() {
         return (
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <TouchableOpacity style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}
-                                  onPress={this.go2CashDetailPage(1)}>
+                                  onPress={() => this.go2CashDetailPage(1)}>
                     <Text style={{ fontSize: 14, color: '#212121' }}>234234.45元</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{
@@ -320,6 +332,7 @@ export default class MinePage extends Component {
             </View>
         );
     };
+
     //跳转到对应的订单状态页面
     jumpToOrderAccordingStates = (index) => {
         if (!user.isLogin) {
@@ -341,9 +354,11 @@ export default class MinePage extends Component {
                 break;
         }
     };
-    go2CashDetailPage = (i) => {
+
+    go2CashDetailPage(i) {
         this.props.navigation.navigate('login/login/LoginPage');
     };
+
     orderMenuJump = (index) => {
         // if (!user.isLogin) {
         //     this.props.navigation.navigate('login/login/LoginPage');
@@ -414,11 +429,11 @@ export default class MinePage extends Component {
     };
 
     jumpToSettingPage = () => {
-        if (!user.isLogin) {
-            this.props.navigation.navigate('login/login/LoginPage');
-            return;
-        }
-        this.props.navigation.navigate('setting/SettingPage', { callBack: () => this.loadPageData() });
+        // if (!user.isLogin) {
+        //     this.props.navigation.navigate('login/login/LoginPage');
+        //     return;
+        // }
+        this.props.navigation.navigate('mine/setting/SettingPage', { callBack: () => this.loadPageData() });
 
     };
 }

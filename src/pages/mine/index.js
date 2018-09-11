@@ -3,6 +3,7 @@ import MyCollectPage from './page/mycollect/MyCollectPage';
 import userInformation from './page/userInformation';
 import Coupons from './page/coupons';
 import helper from './page/helper';
+import setting from './page/setting';
 export default {
     moduleName: 'mine',    //模块名称
     childRoutes: {          //模块内部子路由
@@ -10,6 +11,7 @@ export default {
         MyCollectPage,
         userInformation,
         Coupons,
-        helper
+        helper,
+        setting
     }
 }
