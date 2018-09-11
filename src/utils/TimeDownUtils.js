@@ -61,4 +61,17 @@ export class TimeDownUtils {
         this.downTime = 0;
         clearInterval(this.interval);
     }
+    /***格式化***/
+    leadingZeros(num, length = null) {
+        let length_ = length;
+        let num_ = num;
+        if (length_ === null) {
+            length_ = 2;
+        }
+        num_ = String(num_);
+        while (num_.length < length_) {
+            num_ = '0' + num_;
+        }
+        return num_;
+    }
 }

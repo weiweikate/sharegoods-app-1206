@@ -160,6 +160,15 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
 
+    private int getStateBar() {
+        int result = 0;
+        int resourceId = mContext.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = mContext.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
     private void handleH5(JSONObject jsonObject) throws JSONException {
 
     }
@@ -390,8 +399,8 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getStatusHeight(Callback callback) {
-        callback.invoke(DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
+    public void getStatusHeight(Promise promise) {
+        promise.resolve(DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
     }
 
     //三方登录

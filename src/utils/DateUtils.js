@@ -4,7 +4,7 @@
  * @param fmt 目标字符串格式，支持的字符有：y,M,d,q,w,H,h,m,S，默认：yyyy-MM-dd HH:mm:ss
  * @returns 返回格式化后的日期字符串
  */
-export function formatDate(date, fmt) {
+ function formatDate(date, fmt) {
     fmt = fmt || 'yyyy-MM-dd HH:mm:ss';
     date = date || new Date();
     date = typeof date === 'number' ? new Date(date) : date;
@@ -32,5 +32,26 @@ export function formatDate(date, fmt) {
         });
     }
     return fmt;
+}
+/**
+ * @param date Date()
+ * @returns  true/false 是否是今天
+ */
+const isToday = (date = new Date()) => {
+    return (new Date().toDateString() === date.toDateString());
+};
+
+
+const isTomorrow = (date = new Date()) =>{
+    let currentDate = new Date();
+    let today1 = new Date(currentDate.getFullYear(),currentDate.getMonth(),currentDate.getDate()).getTime();//'今天凌晨'
+    let today= new Date(today1+24*3600*1000).getTime();
+    let tomorrow = new Date(today + 24*3600*1000-1).getTime();
+    return (date.getTime()>=today&&tomorrow>=date.getTime());
+};
+export {
+    formatDate,
+    isToday,
+    isTomorrow
 }
 

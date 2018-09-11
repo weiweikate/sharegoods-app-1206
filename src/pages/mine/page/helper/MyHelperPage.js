@@ -32,13 +32,6 @@ export default class MyHelperPage extends BasePage {
         };
     }
 
-    // $PageOptions = {
-    //     navigationBarOptions: {
-    //         title:'帮助与客服',
-    //         show:true
-    //     },
-    //     renderByPageState: true
-    // };
     $navigationBarOptions = {
         title: '帮助与客服',
         show: true // false则隐藏导航

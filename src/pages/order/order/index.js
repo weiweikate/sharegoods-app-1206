@@ -1,6 +1,3 @@
-/**
- * Created by zhanglei on 2018/8/8.
- */
 import MyOrdersDetailPage from './MyOrdersDetailPage';
 import MyOrdersListPage from './MyOrdersListPage';
 import OrderSearchResultPage from './OrderSearchResultPage';
