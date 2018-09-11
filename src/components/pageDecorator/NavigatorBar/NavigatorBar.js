@@ -37,7 +37,6 @@ export default class NavigatorBar extends Component {
         rightPressed: () => {
             console.warn('make sure you set rightPressed func~');
         }
-
     };
 
     static propTypes = {
