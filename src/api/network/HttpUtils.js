@@ -2,6 +2,7 @@ import axios from 'axios';
 import configureResponseError from './interceptors/ResponseError';
 import configureTimeout from './interceptors/timeout';
 import fetchHistory from '../../model/FetchHistory';
+import apiEnvironment from '../ApiEnvironment';
 
 const Qs = require('qs');
 
@@ -55,12 +56,14 @@ function createHistory(response,requestStamp) {
         requestBody,
         responseJson
     };
-
+    console.log('history',history);
     return history;
 }
 export default class HttpUtils {
 
-    static get(url, params) {
+    static get(uri, params) {
+        let host = apiEnvironment.getCurrentHostUrl();
+        let url = uri.indexOf('http') > -1 ? uri : (host + uri);
         if (params) {
             if (url.indexOf('?') > -1) {
                 url = url + '&' + Qs.stringify(params);
@@ -76,7 +79,10 @@ export default class HttpUtils {
         });
     }
 
-    static post(url, data, config) {
+    static post(uri, data, config) {
+        let host = apiEnvironment.getCurrentHostUrl();
+        let url = uri.indexOf('http') > -1 ? uri : (host + uri);
+
         data = {
             ...defaultData,
             ...data
@@ -87,14 +93,14 @@ export default class HttpUtils {
                 let history = createHistory(response,timelineStart);
 
                 fetchHistory.insertData(history);
-                console.log('history',history);
+
                 return response.data;
             })
             .catch(response => {
                 let history = createHistory(response,timelineStart);
 
                 fetchHistory.insertData(history);
-                console.log('history',history);
+
                 return response.data;
                 //return Promise.reject(error);
             });

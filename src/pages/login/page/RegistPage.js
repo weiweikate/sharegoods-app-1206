@@ -6,67 +6,16 @@ import {
     Image
 } from 'react-native';
 import { observer } from 'mobx-react';
-import { observable, computed, action } from 'mobx';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import ColorUtil from '../../../utils/ColorUtil';
 import BasePage from '../../../BasePage';
 import CommRegistView from '../components/CommRegistView';
 import ScreenUtils from '../../../utils/ScreenUtils';
-
-class RegistModel {
-    @observable
-    phoneNumber = '';
-    @observable
-    vertifyCode = '';
-    @observable
-    password = '';
-    @observable
-    dowTime = 0;
-    @observable
-    isSecuret = true;
-
-    @action
-    savePhoneNumber(phoneNmber) {
-        if (!phoneNmber) {
-            this.phoneNumber = '';
-            return;
-        }
-        this.phoneNumber = phoneNmber;
-    }
-
-    @action
-    savePassword(password) {
-        if (!password) {
-            this.password = '';
-            return;
-        }
-        this.password = password;
-    }
-
-    @action
-    saveVertifyCode(vertifyCode) {
-        if (!vertifyCode) {
-            this.vertifyCode = '';
-            return;
-        }
-        this.vertifyCode = vertifyCode;
-    }
-
-
-    @computed
-    get isCanClick() {
-        if (this.phoneNumber.length === 11 && this.vertifyCode.length > 0 && this.password.length >= 6) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-}
+import LoginApi from '../api/LoginApi';
+import bridge from '../../../utils/bridge';
 
 @observer
 export default class RegistPage extends BasePage {
-    pageModel = new RegistModel();
     // 导航配置
     $navigationBarOptions = {
         title: '注册'
@@ -78,7 +27,7 @@ export default class RegistPage extends BasePage {
                 <CommRegistView
                     // config={viewType:0}
                     viewType={0}
-                    loginClick={this.clickNext}
+                    loginClick={(phone, code, password)=>this.clickNext(phone, code, password)}
                 />
                 <View style={{
                     alignItems: 'center',
@@ -111,6 +60,27 @@ export default class RegistPage extends BasePage {
     //点击下一步
     clickNext = (phone, code, password) => {
 
+
+       LoginApi.findMemberByPhone({
+            code:code,
+            device:'22',
+            inviteId:'33',
+            openid:'44',
+            password:password,
+            phone:phone,
+            systemVersion:'12',
+            wechatVersion:'meiyou'
+        }).then((data)=>{
+            console.log(data);
+            if (data.code === 200){
+
+            } else {
+                bridge.$toast(data.msg);
+            }
+
+        }).catch((response)=>{
+            console.warn(response);
+        })
 
     };
 }

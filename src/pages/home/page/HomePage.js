@@ -12,12 +12,12 @@ export default class HomePage extends Component {
     render() {
         return (
             <Text style={{ flex: 1, justifyContent: 'center', paddingTop: 100 }} onPress={this.gotoLogin}>
-                {global.androidStatusH}
+                home
             </Text>
         );
     }
 
     gotoLogin = () => {
-        this.props.navigation.navigate('home/SearchGoodPage');
+        this.props.navigation.navigate('login/login/LoginPage');
     };
 }
