@@ -23,6 +23,8 @@ export default class HomePage extends Component {
 
         )
     }
+    // gotoLogin=()=>{
+    //     this.props.navigation.navigate('home/search/SearchPage')
 
     gotoLogin = () => {
         this.props.navigation.navigate('login/login/LoginPage')
