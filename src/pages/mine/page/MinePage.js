@@ -376,7 +376,7 @@ export default class MinePage extends BasePage {
                 this.props.navigation.navigate('mine/coupons/CouponsPage');
                 break;
             case 3:
-                this.props.navigation.navigate('mine/inventory/AddPage');
+                this.props.navigation.navigate('mine/MyData');
                 break;
             case 4:
                 // this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });
@@ -387,7 +387,7 @@ export default class MinePage extends BasePage {
                 this.props.navigation.navigate('mine/helper/MyHelperPage');
                 break;
             case 6:
-                this.props.navigation.navigate('mine/MyHelperPage');
+                this.props.navigation.navigate('mine/MyAddressPage');
                 break;
             case 7:
                 this.props.navigation.navigate('mine/MyAddressBookPage');
@@ -433,7 +433,7 @@ export default class MinePage extends BasePage {
         //     this.props.navigation.navigate('login/login/LoginPage');
         //     return;
         // }
-        this.props.navigation.navigate('mine/setting/SettingPage', { callBack: () => this.loadPageData() });
+        this.props.navigation.navigate('mine/SettingPage', { callBack: () => this.loadPageData() });
 
     };
 }
