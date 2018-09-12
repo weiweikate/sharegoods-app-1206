@@ -39,7 +39,7 @@ export default class HomePage extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.navbar}>
-                    <Image source={require('./res/header_logo.png')} style={styles.logo}/>
+                    <Image source={require('./res/icons/logo.png')} style={styles.logo}/>
                     <View style={styles.searchBox}>
                         <Image source={require('./res/icon_search.png')} style={styles.searchIcon}/>
                         <TextInput
@@ -47,7 +47,7 @@ export default class HomePage extends Component {
                             placeholder='请输入关键词搜索'
                             style={styles.inputText}/>
                     </View>
-                    <Image source={require('./res/icon_msg.png')} style={styles.scanIcon}/>
+                    <Image source={require('./res/icons/msg.png')} style={styles.scanIcon}/>
 
                 </View>
                 <ScrollView>
@@ -173,8 +173,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     logo: {
-        height: 24,
-        width: 64,
+        height: 38,
+        width: 52,
         resizeMode: 'stretch'  // 设置拉伸模式
     },
     searchBox: {
