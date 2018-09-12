@@ -3,7 +3,6 @@ import React from 'react';
 import BasePage from '../../../../BasePage';
 import addrSelectedImg from '../../res/address/addr_default_s.png';
 import addrUnselectedImg from '../../res/address/addr_default_n.png';
-import UIImage from '../../../../components/ui/UIImage';
 
 export default class MyAddressPage extends BasePage {
 
@@ -15,34 +14,51 @@ export default class MyAddressPage extends BasePage {
     };
 
     $NavBarRightPressed = () => {
-        this.props.navigation.navigate('mine/AddAddressPage');
+        this.props.navigation.navigate('mine/AddAddressPage', {
+            refreshing: this.refreshing.bind(this),
+            from: 'add'
+        });
     };
 
     // 构造
     constructor(props) {
         super(props);
         this.state = {
-            selectIndex: 0
+            selectIndex: 0,
+            datas: []
         };
     }
 
-    refreshing() {
-        let timer = setTimeout(() => {
-            clearTimeout(timer);
-            alert('刷新成功');
-        }, 1500);
+    componentDidMount() {
+        // 拿数据
+        this.refreshing();
     }
 
-    _render() {
+    refreshing() {
+        // HttpUtils.get('', {}).then((data) => {
+        //     console.log(data);
+        //     this.setState({
+        //         datas: data
+        //     });
+        // }).catch((data) => {
+        //     console.warn(data);
+        //     bridge.$toast(data.msg);
+        // });
         var datas = [];
         for (var i = 0; i < 100; i++) {
             if (i === 0) {
-                datas.push({ key: i, title: i + '', selected: true });
+                datas.push({ id: i, receiver: i + '', tel: '18038000489', address: '对方就立刻撒娇弗兰克的角色', selected: true });
 
             } else {
-                datas.push({ key: i, title: i + '', selected: false });
+                datas.push({ id: i, receiver: i + '', tel: '18038000489', address: '对方就立刻撒娇弗兰克的角色', selected: false });
             }
         }
+        this.setState({
+            datas: datas
+        });
+    }
+
+    _render() {
         return (
             <View style={{ flex: 1 }}>
                 <FlatList
@@ -53,41 +69,51 @@ export default class MyAddressPage extends BasePage {
                     extraData={this.state}
                     onRefresh={this.refreshing}
                     refreshing={false}
+                    keyExtractor={(item) => item.id + ''}
                     showsVerticalScrollIndicator={false}
                     getItemLayout={(data, index) => (
                         //行高于分割线高，优化
                         { length: 120, offset: (120 + 10) * index, index }
                     )}
-                    data={datas}>
+                    data={this.state.datas}>
                 </FlatList>
             </View>
         );
     }
 
-    _renderItem = (item) => {
+    _renderItem = ({ item }) => {
         return <TouchableOpacity>
             <View style={styles.cell}>
                 <View style={styles.cell_name_tel}>
-                    <Text style={{ flex: 1, fontSize: 13, color: '#333333' }}>张苗苗</Text>
-                    <Text style={{ fontSize: 13, color: '#333333' }}>17816857659</Text>
+                    <Text style={{ flex: 1, fontSize: 13, color: '#333333' }}>{item.receiver}</Text>
+                    <Text style={{ fontSize: 13, color: '#333333' }}>{item.tel}</Text>
                 </View>
-                <Text style={styles.cell_addr}>浙江省杭州市西湖区古墩路675号盛苑小区</Text>
+                <Text style={styles.cell_addr}>{item.address}</Text>
                 <View style={{ height: 0.5, backgroundColor: '#EBEBEB', marginTop: 13 }}/>
                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                    <UIImage style={{ width: 15, height: 15, marginRight: 11, marginLeft: 20 }}
-                             source={item.index === this.state.selectIndex ? addrSelectedImg : addrUnselectedImg}
-                             onPress={() => this._onSelectImgClick(item.index)}/>
-                    <Text style={{
-                        flex: 1,
-                        fontSize: 13,
-                        color: item.index === this.state.selectIndex ? '#D51243' : '#666666'
-                    }}>默认地址</Text>
-                    <Image style={{ width: 16, height: 17, marginRight: 4 }}
-                           source={require('../../res/address/addr_edit.png')}/>
-                    <Text style={{ fontSize: 13, color: '#000000', marginRight: 16 }}>编辑</Text>
-                    <Image style={{ width: 17, height: 15, marginRight: 6 }}
-                           source={require('../../res/address/addr_del.png')}/>
-                    <Text style={{ fontSize: 13, color: '#000000', marginRight: 17 }}>删除</Text>
+                    <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginLeft: 20 }}
+                                      onPress={() => this._onSelectImgClick(item.index)}>
+                        <Image style={{ width: 15, height: 15, marginRight: 11 }}
+                               source={item.index === this.state.selectIndex ? addrSelectedImg : addrUnselectedImg}
+                        />
+                        <Text style={{
+                            flex: 1,
+                            fontSize: 13,
+                            color: item.index === this.state.selectIndex ? '#D51243' : '#666666'
+                        }}>默认地址</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}
+                                      onPress={() => this._onEditAddress(item)}>
+                        <Image style={{ width: 16, height: 17, marginRight: 4 }}
+                               source={require('../../res/address/addr_edit.png')}/>
+                        <Text style={{ fontSize: 13, color: '#000000' }}>编辑</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 17 }}
+                                      onPress={() => this._onDelAddress(item)}>
+                        <Image style={{ width: 17, height: 15, marginRight: 6 }}
+                               source={require('../../res/address/addr_del.png')}/>
+                        <Text style={{ fontSize: 13, color: '#000000' }}>删除</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </TouchableOpacity>;
@@ -98,6 +124,31 @@ export default class MyAddressPage extends BasePage {
         this.setState({
             selectIndex: nowIndex
         });
+    };
+
+    _onEditAddress = (item) => {
+        // 编辑地址页面
+        this.props.navigation.navigate('mine/AddAddressPage', {
+            refreshing: this.refreshing.bind(this),
+            from: 'edit',
+            receiver: item.receiver,
+            tel: item.tel,
+            area: item.area,
+            address: item.address
+        });
+    };
+
+    _onDelAddress = (item) => {
+        // 删除地址,刷新页面
+        // HttpUtils.get('', {}).then((data) => {
+        //     console.log(data);
+        //     this.setState({
+        //         datas: data
+        //     });
+        // }).catch((data) => {
+        //     console.warn(data);
+        //     bridge.$toast(data.msg);
+        // });
     };
 
     _header = () => {
