@@ -167,13 +167,7 @@ const styles = StyleSheet.create({
         padding: 20,
         height: 44
     },
-    container: {}
 });
 
-RefreshList.propTypes = {
-    data: PropTypes.array,
-    renderItem: PropTypes.func,
-    onRefresh: PropTypes.func,
-    onLoadMore: PropTypes.func
-};
+
 

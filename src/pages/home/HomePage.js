@@ -30,7 +30,7 @@ export default class HomePage extends Component {
         this.props.navigation.navigate('login/login/LoginPage')
     }
     gotoProduct = () => {
-        this.props.navigation.navigate('order/order/MyOrdersListPage')
+        this.props.navigation.navigate('order/order/MyOrdersListPage',{index:0})
 
     }
 }

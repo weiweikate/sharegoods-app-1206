@@ -5,7 +5,11 @@ import SearchBar from './searchBar/SearchBar';
 import TabView from './TableView';
 import CountDownReact from './CountdownReact';
 import RefreshList from './RefreshList';
-export default {
+import HotSearch from './HotSearch';
+import RecentSearch from './RecentSearch';
+import SearchInput from './SearchInput';
+
+export {
     UIImage,
     UIText,
     AutoExpandingInput,
@@ -13,4 +17,7 @@ export default {
     TabView,
     CountDownReact,
     RefreshList,
-}
+    HotSearch,
+    RecentSearch,
+    SearchInput
+};
