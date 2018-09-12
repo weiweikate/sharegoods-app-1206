@@ -10,7 +10,7 @@ import {
 import { color } from '../../../constants/Theme';
 import BonusExchangeSucceedBackground from '../../mine/res/userInfoImg/BonusExchangeSucceedBackground.png';
 import bonusClose from '../../mine/res/userInfoImg/bonusClose.png';
-import UIImage from '../../../components/ui';
+import { UIImage } from '../../../components/ui';
 /*
 * usage:
 * renderModal = () => {

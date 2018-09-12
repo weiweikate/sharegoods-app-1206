@@ -248,7 +248,6 @@ export default class NavigatorBar extends Component {
         const {
             headerStyle
         } = this.props;
-        console.log(this.props.androidStatusH);
         return (
             <View style={[styles.navBar, headerStyle, {
                 paddingTop: this.state.statusHeight,
