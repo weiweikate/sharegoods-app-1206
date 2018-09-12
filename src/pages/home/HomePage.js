@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
 import {
-    Text,View
-} from "react-native";
+    Text, View, ScrollView, TouchableHighlight, StyleSheet,
+} from 'react-native';
 
 
+const DemoList = [{
+    title: '登录页面',
+    uri: 'login/login/LoginPage',
+}, {
+    title: '我的订单',
+    uri: 'order/order/MyOrdersListPage',
+    params: {
+        index: 0
+    }
+}];
 export default class HomePage extends Component {
 
     constructor() {
@@ -12,25 +22,53 @@ export default class HomePage extends Component {
 
     render() {
         return (
-            <View>
-                <Text style={{ justifyContent: 'center', paddingTop: 100 }} onPress={this.gotoLogin}>
-                    home
-                </Text>
-                <Text style={{ alignItems: 'center', paddingTop: 150 }} onPress={this.gotoProduct}>
-                    gotoMyOrder
-                </Text>
-            </View>
+            <ScrollView style={styles.container}>
+                <View style={{ height: 80 }}></View>
+                {
+                    DemoList.map(item => {
+                        const { title, uri, params } = item;
+                        return (
+                            <View key={title} style={styles.rowCell}>
+                                <TouchableHighlight
+                                    style={{ flex: 1 }}
+                                    underlayColor="#e6e6e6"
+                                    onPress={() => {
+                                        this.redirect(uri, params);
+                                    }}
+                                >
+                                    <View style={styles.eventRowsContainer}>
+                                        <Text style={{ color: '#474747' }}>{title}</Text>
+                                    </View>
+                                </TouchableHighlight>
+                            </View>
+                        );
+                    })
+                }
+            </ScrollView>
 
-        )
+        );
     }
-    // gotoLogin=()=>{
-    //     this.props.navigation.navigate('home/search/SearchPage')
 
-    gotoLogin = () => {
-        this.props.navigation.navigate('login/login/LoginPage')
-    }
-    gotoProduct = () => {
-        this.props.navigation.navigate('order/order/MyOrdersListPage',{index:0})
 
-    }
+    redirect = (uri, params) => {
+        this.props.navigation.navigate(uri, params || {});
+    };
+
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'white'
+    },
+    // 行样式
+    rowCell: {
+        paddingLeft: 10,
+        minHeight: 50,
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        justifyContent: 'space-between',
+        borderBottomColor: '#dedede'
+    }
+});
