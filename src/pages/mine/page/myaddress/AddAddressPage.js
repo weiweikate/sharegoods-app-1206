@@ -77,7 +77,7 @@ export default class AddAddressPage extends BasePage {
             <TouchableOpacity style={styles.horizontalItem}>
                 <Text style={[styles.itemLeftText, { flex: 1 }]}>所在地区</Text>
                 <Text>{this.state.areaText}</Text>
-                <Image source={IconGoTo}/>
+                <Image source={IconGoTo} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
             </TouchableOpacity>
             <View style={{ height: 0.5, backgroundColor: '#EEEEEE' }}/>
             <TextInput
