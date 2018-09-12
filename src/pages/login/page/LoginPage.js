@@ -1,6 +1,6 @@
 import React from 'react';
 import LoginTopView from '../components/LoginTopView';
-import UserModel from '../../../model/user'
+import UserModel from '../../../model/user';
 import {
     View,
     Text,
@@ -82,7 +82,7 @@ export default class LoginPage extends BasePage {
     /*微信登陆*/
     weChatLoginClick = () => {
         bridge.$loginWx((data) => {
-            this.$navigate('login/login/RegistPage',data);
+            this.$navigate('login/login/RegistPage', data);
         });
     };
     /*老用户登陆*/
@@ -99,8 +99,8 @@ export default class LoginPage extends BasePage {
         if (loginType === 0) {
             LoginAPI.codeLogin({
                 authcode: '22',
-                code: '333',
-                device: '44',
+                code: '微信code',
+                device: '设备名称',
                 password: LoginParam.password,
                 phone: LoginParam.phoneNumber,
                 systemVersion: '44',
@@ -110,12 +110,12 @@ export default class LoginPage extends BasePage {
             }).then((data) => {
                 console.log(data);
                 UserModel.saveUserInfo(data.data);
-                bridge.$toast('登陆成功')
+                bridge.$toast('登陆成功');
                 // this.$navigateBack('Tab')
-                this.$navigateBack()
+                this.$navigateBack();
             }).catch((data) => {
                 console.warn(data);
-                bridge.$toast(data.msg)
+                bridge.$toast(data.msg);
             });
         } else {
             LoginAPI.passwordLogin({
@@ -128,14 +128,14 @@ export default class LoginPage extends BasePage {
                 username: '',
                 wechatCode: '',
                 wechatVersion: ''
-            }).then((data)=>{
+            }).then((data) => {
                 console.log(data);
                 UserModel.saveUserInfo(data.data);
-                bridge.$toast('登陆成功')
-                this.$navigateBack()
-            }).catch((data)=>{
+                bridge.$toast('登陆成功');
+                this.$navigateBack();
+            }).catch((data) => {
                 console.warn(data);
-                bridge.$toast(data.msg)
+                bridge.$toast(data.msg);
             });
 
         }
