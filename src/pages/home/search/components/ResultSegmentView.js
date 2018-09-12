@@ -6,7 +6,6 @@ import {
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
-import ScreenUtils from '../../../../utils/ScreenUtils';
 
 export default class SearchSegmentView extends Component {
 
@@ -14,13 +13,13 @@ export default class SearchSegmentView extends Component {
         onPressAtIndex: PropTypes.func //点击搜索的回调函数
     };
 
-    static defaultProps = {
-        onPressAtIndex: () => {
-            console.warn('SegmentView miss onPressAtIndex func');
-        }
-    };
-
-    state = { selIndex: 0 };
+    constructor(props) {
+        super(props);
+        // this.params = this.props.navigation.state.params || {};
+        this.state = {
+            selIndex: 0
+        };
+    }
 
     _onPress = (index) => {
         if (index === this.state.selIndex) {
@@ -37,7 +36,7 @@ export default class SearchSegmentView extends Component {
         return <TouchableWithoutFeedback onPress={() => {
             this._onPress(index);
         }}>
-            <View style={styles.itemContainer}>
+            <View style={styles.btnContainer}>
                 <Text
                     style={[styles.title, { color: this.state.selIndex === index ? '#e60012' : '#999999' }]}>{title}</Text>
             </View>
@@ -46,9 +45,9 @@ export default class SearchSegmentView extends Component {
 
     render() {
         return (<View style={[styles.container, this.props.style]}>
-            {this._renderItem('所有店铺', 0)}
-            <View style={styles.line}/>
-            {this._renderItem('招募中', 1)}
+            {this._renderItem('综合', 0)}
+            {this._renderItem('销量', 1)}
+            {this._renderItem('价格', 2)}
         </View>);
     }
 
@@ -56,30 +55,18 @@ export default class SearchSegmentView extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        width: ScreenUtils.width,
-        height: 42,
+        height: 49,
         backgroundColor: '#ffffff',
-        borderTopWidth: StyleSheet.hairlineWidth,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderTopColor: '#eeeeee',
-        borderBottomColor: '#eeeeee',
-        flexDirection: 'row',
-        alignItems: 'center'
+        flexDirection: 'row'
     },
-    line: {
-        width: StyleSheet.hairlineWidth,
-        height: 15,
-        backgroundColor: '#ddd'
-    },
-    itemContainer: {
-        width: (ScreenUtils.width - StyleSheet.hairlineWidth) / 2,
-        height: 42,
+    btnContainer: {
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
     },
     title: {
         fontFamily: 'PingFang-SC-Medium',
-        fontSize: 13,
+        fontSize: 15,
         color: '#999999'
     }
 });

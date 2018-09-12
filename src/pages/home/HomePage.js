@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
 import {
-    Text, View, ScrollView, TouchableHighlight, StyleSheet,
+    Text, View, ScrollView, TouchableHighlight, StyleSheet
 } from 'react-native';
 
 
-const DemoList = [{
-    title: '登录页面',
-    uri: 'login/login/LoginPage',
-}, {
-    title: '我的订单',
-    uri: 'order/order/MyOrdersListPage',
-    params: {
-        index: 0
+const DemoList = [
+    {
+        title: '登录页面',
+        uri: 'login/login/LoginPage'
+    },
+    {
+        title: '我的订单',
+        uri: 'order/order/MyOrdersListPage',
+        params: {
+            index: 0
+        }
+    },
+    {
+        title: '搜索页面',
+        uri: 'home/search/SearchPage'
     }
-}];
+];
 export default class HomePage extends Component {
 
     constructor() {
