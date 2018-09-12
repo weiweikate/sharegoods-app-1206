@@ -21,6 +21,7 @@ import arrowDown from '../../res/customerservice/icon_06.png';
 import rightIcon from '../../res/customerservice/icon111_03.png';
 import addPic from '../../res/customerservice/xk1_03.png';
 import deleteImage from '../../res/customerservice/deleteImage.png';
+import BusinessUtils from '../../components/BusinessUtils';
 
 export default class HelperFeedbackPage extends BasePage {
     constructor(props) {
@@ -55,11 +56,11 @@ export default class HelperFeedbackPage extends BasePage {
 
     //选择上传图片
     choosePicker = () => {
-        // let imageArr=this.state.imageArr;
-        // BusinessUtils.getImagePicker(callback=>{
-        //     imageArr.push({imageUrl:callback.imageUrl,imageThumbUrl:callback.imageThumbUrl})
-        //     this.setState({imageArr:imageArr})
-        // })
+        let imageArr = this.state.imageArr;
+        BusinessUtils.getImagePicker(callback => {
+            imageArr.push({ imageUrl: callback.imageUrl, imageThumbUrl: callback.imageThumbUrl });
+            this.setState({ imageArr: imageArr });
+        });
     };
 
     feedback2server() {
@@ -124,7 +125,7 @@ export default class HelperFeedbackPage extends BasePage {
                             height: 40
                         }}>
                             <TouchableOpacity onPress={() => {
-                                this.setState({ isShowFinishModal: false }), this.navigateBack();
+                                this.setState({ isShowFinishModal: false }), this.props.navigation.goBack();
                             }}>
                                 <Text
                                     style={{

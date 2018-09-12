@@ -4,7 +4,7 @@
  * @param fmt 目标字符串格式，支持的字符有：y,M,d,q,w,H,h,m,S，默认：yyyy-MM-dd HH:mm:ss
  * @returns 返回格式化后的日期字符串
  */
-export function formatDate(date, fmt) {
+function formatDate(date, fmt) {
     fmt = fmt || 'yyyy-MM-dd HH:mm:ss';
     date = date || new Date();
     date = typeof date === 'number' ? new Date(date) : date;
@@ -20,17 +20,70 @@ export function formatDate(date, fmt) {
             h: date.getHours() % 12 === 0 ? 12 : date.getHours() % 12, // 12小时制
             m: date.getMinutes(), // 分钟
             s: date.getSeconds(), // 秒
-            S: date.getMilliseconds(), // 毫秒
+            S: date.getMilliseconds() // 毫秒
         };
     const week = ['天', '一', '二', '三', '四', '五', '六'];
     for (const i in obj) {
         fmt = fmt.replace(new RegExp(`${i}+`, 'g'), (m) => {
             let val = `${obj[i]}`;
-            if (i === 'w') { return (m.length > 2 ? '星期' : '周') + week[val]; }
-            for (let j = 0, len = val.length; j < m.length - len; j++) { val = `0${val}`; }
+            if (i === 'w') {
+                return (m.length > 2 ? '星期' : '周') + week[val];
+            }
+            for (let j = 0, len = val.length; j < m.length - len; j++) {
+                val = `0${val}`;
+            }
             return m.length === 1 ? val : val.substring(val.length - m.length);
         });
     }
     return fmt;
 }
+
+/**
+ * @param date Date()
+ * @returns  true/false 是否是今天
+ */
+const isToday = (date = new Date()) => {
+    return (new Date().toDateString() === date.toDateString());
+};
+
+
+const isTomorrow = (date = new Date()) => {
+    let currentDate = new Date();
+    let today1 = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()).getTime();//'今天凌晨'
+    let today = new Date(today1 + 24 * 3600 * 1000).getTime();
+    let tomorrow = new Date(today + 24 * 3600 * 1000 - 1).getTime();
+    return (date.getTime() >= today && tomorrow >= date.getTime());
+};
+const getFormatDate = (timestamp, fmt = 'yyyy-MM-dd hh:mm:ss') => {
+    timestamp = parseInt(timestamp + '000');
+    var newDate = new Date(timestamp);
+    Date.prototype.format = function(format) {
+        var date = {
+            'M+': this.getMonth() + 1,
+            'd+': this.getDate(),
+            'h+': this.getHours(),
+            'm+': this.getMinutes(),
+            's+': this.getSeconds(),
+            'q+': Math.floor((this.getMonth() + 3) / 3),
+            'S+': this.getMilliseconds()
+        };
+        if (/(y+)/i.test(format)) {
+            format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+        }
+        for (var k in date) {
+            if (new RegExp('(' + k + ')').test(format)) {
+                format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                    ? date[k] : ('00' + date[k]).substr(('' + date[k]).length));
+            }
+        }
+        return format;
+    };
+    return newDate.format(fmt);
+};
+export default {
+    formatDate,
+    isToday,
+    isTomorrow,
+    getFormatDate
+};
 

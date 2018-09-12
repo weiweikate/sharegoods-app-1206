@@ -4,12 +4,12 @@
 import React, { Component } from 'react';
 import {
     View,
-    StyleSheet,
+    StyleSheet
 } from 'react-native';
 import NavigatorBar from './components/pageDecorator/NavigatorBar/index';
 import {
     LoadingHub,
-    ToastView,
+    ToastView
 } from './components/pageDecorator/BaseView';
 
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
@@ -42,6 +42,8 @@ export default class BasePage extends Component {
                                                   this.$navigatorBar = bar;
                                               }}/>
             }
+
+
             {
                 controlParams ? renderViewByLoadingState(controlParams, () => {
                     return this._render();

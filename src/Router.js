@@ -18,7 +18,7 @@ import mine from './pages/mine';
 import shopCart from './pages/shopCart';
 import spellShop from './pages/spellShop';
 import login from './pages/login';
-
+import order from './pages/order';
 const Router = {
     Tab: {
         screen: TabNav,
@@ -53,12 +53,12 @@ function addSubModule(module, prefixPath) {
 addSubModule(demo);
 addSubModule(debug);
 addSubModule(login);
-
 addSubModule(home);
 addSubModule(mine);
 addSubModule(shopCart);
 addSubModule(spellShop);
 addSubModule(login);
+addSubModule(order);
 
 
 console.log('Router', Object.keys(Router));

@@ -34,6 +34,7 @@ export default class NickNameModifyPage extends BasePage {
                     value={this.state.nickName}
                     underlineColorAndroid={'transparent'}
                 />
+                {this.renderWideLine()}
                 <Button
                     title='保存'
                     style={{

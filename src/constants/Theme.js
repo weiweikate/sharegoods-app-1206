@@ -1,58 +1,58 @@
-import ScreenUtils from "../utils/ScreenUtils";
+import ScreenUtils from '../utils/ScreenUtils';
 
 const getUIScale = (value) => {
     return ScreenUtils.width / 375 * value;
 };
 const color = {
-    main: "#EB2224",
-    sub_main: "#FD6844",
-    page_background: "#F6F6F6",
-    page_background2: "#F9F9F9",
-    page_background3: "#F1F1F1",
-    line: "#DCDCDC",
-    one_color: "#F34646",
-    red: "#E60012",
-    lightPink: "#FEEEEE",
-    pink: "#EB22245C",
-    little_pink: "#EB222414",
-    black: "#333333",
-    black2: "#121212",
-    black_light: "#666666",
-    black_more_light: "#999999",
-    white: "#ffffff",
-    dark_blue: "#0040F6",
-    yellow: "#ffa900",
-    lightgray: "#e5e5e5",
-    separate: "#ebebeb",
-    gray_df: "#DFDFDF",
-    black_light2: "#63656A",
-    gray_text: "#333333",
-    noBGColor: "#00000080",
-    lightPink2: "#FEF9F4",
-    lightRed: "#FD6844",
-    green: "#00B362",
-    gray_f8f8f8: "#F8F8F8",
-    black_999: "#999999",
-    blue_4a9: "#4A90E2",
-    blue_222: "#222222",
-    black000: "#000000",
+    main: '#EB2224',
+    sub_main: '#FD6844',
+    page_background: '#F6F6F6',
+    page_background2: '#F9F9F9',
+    page_background3: '#F1F1F1',
+    line: '#DCDCDC',
+    one_color: '#F34646',
+    red: '#E60012',
+    lightPink: '#FEEEEE',
+    pink: '#EB22245C',
+    little_pink: '#EB222414',
+    black: '#333333',
+    black2: '#121212',
+    black_light: '#666666',
+    black_more_light: '#999999',
+    white: '#ffffff',
+    dark_blue: '#0040F6',
+    yellow: '#ffa900',
+    lightgray: '#e5e5e5',
+    separate: '#ebebeb',
+    gray_df: '#DFDFDF',
+    black_light2: '#63656A',
+    gray_text: '#333333',
+    noBGColor: '#00000080',
+    lightPink2: '#FEF9F4',
+    lightRed: '#FD6844',
+    green: '#00B362',
+    gray_f8f8f8: '#F8F8F8',
+    black_999: '#999999',
+    blue_4a9: '#4A90E2',
+    blue_222: '#222222',
+    black000: '#000000',
 
-    loginTextBlack: "#222222",
-    otherLoginLine: "#DCDCDC",
-    hintTextColor: "#c8c8c8",
-    deliveryIncludeBlue: "#0186f5",
-    gray_DDD: "#DDDDDD",
-    gray_EEE: "#EEEEEE",
-    gray_FFF: "#FFFFFF",
-    black_222: "#222204",
-    gray_f7f7: "#f7f7f7",
-    yellow_FF7: "#FF7E00",
-    gray_c8c: "#C8C8C8",
-    gray_bbb: "#BBBBBB",
-    green_47c: "#47c546",
-    gray_666: "#666666",
-    gray_c8c: "#C8C8C8",
-    gray_b4b: "#b4b4b4"
+    loginTextBlack: '#222222',
+    otherLoginLine: '#DCDCDC',
+    hintTextColor: '#c8c8c8',
+    deliveryIncludeBlue: '#0186f5',
+    gray_DDD: '#DDDDDD',
+    gray_EEE: '#EEEEEE',
+    gray_FFF: '#FFFFFF',
+    black_222: '#222204',
+    gray_f7f7: '#f7f7f7',
+    yellow_FF7: '#FF7E00',
+    gray_c8c: '#C8C8C8',
+    gray_bbb: '#BBBBBB',
+    green_47c: '#47c546',
+    gray_666: '#666666',
+    gray_c8c: '#C8C8C8',
+    gray_b4b: '#b4b4b4'
 };
 
 
@@ -61,39 +61,39 @@ const ui = {
     Text: {
         default: {
             fontSize: 16,
-            color: "black"
+            color: 'black'
         },
         heading: {
             fontSize: 36,
-            color: "black"
+            color: 'black'
         },
         title: {
             fontSize: 28,
-            color: "black"
+            color: 'black'
         },
         subtitle: {
             fontSize: 24,
-            color: "black"
+            color: 'black'
         },
         caption: {
             fontSize: 12,
-            color: "black"
+            color: 'black'
         },
 
         //-----------------------------Goods List Text------------------------------//
         goodsListTitle: {
             fontSize: 14,
-            color: "#121212"
+            color: '#121212'
         },
         goodsListCurrentPrice: {
             fontSize: 14,
-            color: "#EB2224",
-            fontWeight: "bold"
+            color: '#EB2224',
+            fontWeight: 'bold'
         },
         goodsListOriginalPrice: {
             fontSize: 10,
-            color: "#999999",
-            textDecorationLine: "line-through"
+            color: '#999999',
+            textDecorationLine: 'line-through'
         }
 
     },
@@ -142,12 +142,12 @@ const ui = {
                 marginRight: 10,
                 marginLeft: 10,
                 backgroundColor: color.main,
-                justifyContent: "center",
-                alignItems: "center",
+                justifyContent: 'center',
+                alignItems: 'center',
                 borderRadius: 5
             },
             btn_text: {
-                color: "white",
+                color: 'white',
                 fontSize: 15
             }
         },
@@ -156,16 +156,16 @@ const ui = {
                 height: 50,
                 marginRight: 10,
                 marginLeft: 10,
-                backgroundColor: "white",
-                justifyContent: "center",
-                alignItems: "center",
+                backgroundColor: 'white',
+                justifyContent: 'center',
+                alignItems: 'center',
                 borderWidth: ScreenUtils.onePixel,
                 borderRadius: 5,
                 borderColor: color.main,
-                borderStyle: "dashed"
+                borderStyle: 'dashed'
             },
             btn_text: {
-                color: "black",
+                color: 'black',
                 fontSize: 15
             }
         },
@@ -173,8 +173,8 @@ const ui = {
             btn_container: {
                 height: 30,
                 padding: 5,
-                justifyContent: "center",
-                alignItems: "center",
+                justifyContent: 'center',
+                alignItems: 'center',
                 borderWidth: ScreenUtils.onePixel,
                 borderColor: color.main,
                 borderRadius: 5
@@ -187,37 +187,37 @@ const ui = {
         common_modal_single_btn: {
             btn_container: {
                 height: 40,
-                justifyContent: "center",
-                alignItems: "center",
+                justifyContent: 'center',
+                alignItems: 'center',
                 borderBottomRightRadius: 5,
                 borderBottomLeftRadius: 5
             },
             btn_text: {
-                color: "black",
+                color: 'black',
                 fontSize: 15
             }
         },
         common_modal_two_btn_left: {
             btn_container: {
                 height: 40,
-                justifyContent: "center",
-                alignItems: "center",
+                justifyContent: 'center',
+                alignItems: 'center',
                 borderBottomLeftRadius: 5
             },
             btn_text: {
-                color: "black",
+                color: 'black',
                 fontSize: 15
             }
         },
         common_modal_two_btn_right: {
             btn_container: {
                 height: 40,
-                justifyContent: "center",
-                alignItems: "center",
+                justifyContent: 'center',
+                alignItems: 'center',
                 borderBottomRightRadius: 5
             },
             btn_text: {
-                color: "black",
+                color: 'black',
                 fontSize: 15
             }
         }
@@ -229,16 +229,16 @@ const ui = {
             container: {
                 height: 60,
                 width: 60,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white"
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white'
             },
             icon: {
                 width: 30,
                 height: 30
             },
             text: {
-                color: "black",
+                color: 'black',
                 fontSize: 15
             }
         },
@@ -246,9 +246,9 @@ const ui = {
             container: {
                 height: 60,
                 width: 60,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white"
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white'
             },
             icon: {
                 width: 30,
@@ -256,7 +256,7 @@ const ui = {
                 borderRadius: 30 / 2
             },
             text: {
-                color: "black",
+                color: 'black',
                 fontSize: 15
             }
         }
@@ -265,18 +265,18 @@ const ui = {
     Badge: {
         default: {
             badge: {
-                position: "absolute",
-                backgroundColor: "red",
+                position: 'absolute',
+                backgroundColor: 'red',
                 height: 20,
                 width: 20,
                 borderRadius: 10,
                 borderWidth: ScreenUtils.onePixel * 3,
-                borderColor: "white",
-                justifyContent: "center",
-                alignItems: "center"
+                borderColor: 'white',
+                justifyContent: 'center',
+                alignItems: 'center'
             },
             text: {
-                color: "white"
+                color: 'white'
             }
 
         }
@@ -287,9 +287,9 @@ const ui = {
             container: {
                 height: 56,
                 width: ScreenUtils.width,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white"
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white'
             },
             left_icon: {
                 height: 25,
@@ -302,7 +302,7 @@ const ui = {
             },
             middle_text: {
                 flex: 1,
-                textAlign: "right",
+                textAlign: 'right',
                 marginRight: 10,
                 marginLeft: 10
             },
@@ -316,9 +316,9 @@ const ui = {
             container: {
                 height: 50,
                 width: ScreenUtils.width,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white"
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white'
             },
             left_icon: {
                 height: 25,
@@ -331,7 +331,7 @@ const ui = {
             },
             middle_text: {
                 flex: 1,
-                textAlign: "right",
+                textAlign: 'right',
                 marginRight: 10,
                 marginLeft: 10
             },
@@ -346,9 +346,9 @@ const ui = {
             container: {
                 height: 100,
                 width: ScreenUtils.width,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white"
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white'
             },
             left_icon: {
                 height: 50,
@@ -361,7 +361,7 @@ const ui = {
             },
             middle_text: {
                 flex: 1,
-                textAlign: "right",
+                textAlign: 'right',
                 marginRight: 10,
                 marginLeft: 10
             },
@@ -379,9 +379,9 @@ const ui = {
             container: {
                 height: 80,
                 width: ScreenUtils.width,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "white"
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white'
             },
             left_icon: {
                 height: 40,
@@ -408,11 +408,11 @@ const ui = {
         topicDetail: {
             container: {
                 width: ScreenUtils.width,
-                justifyContent: "center",
-                alignItems: "flex-start",
+                justifyContent: 'center',
+                alignItems: 'flex-start',
                 marginTop: 20,
                 marginBottom: 8,
-                backgroundColor: "white"
+                backgroundColor: 'white'
             },
             left_icon: {
                 height: 32,
@@ -426,11 +426,11 @@ const ui = {
             middle_up_text: {
                 fontSize: 14,
                 marginTop: -4,
-                color: "#333333"
+                color: '#333333'
             },
             middle_bottom_text: {
                 fontSize: 12,
-                color: "#666666"
+                color: '#666666'
             },
             right_container: {
                 flex: 1
@@ -444,7 +444,7 @@ const ui = {
                 paddingTop: 15,
                 height: 84,
                 width: ScreenUtils.width,
-                backgroundColor: "#F9F9F9"
+                backgroundColor: '#F9F9F9'
             },
             left_icon: {
                 height: 56,
@@ -458,7 +458,7 @@ const ui = {
             },
             middle_up_text: {
                 fontSize: 12,
-                color: "#333333",
+                color: '#333333',
                 height: 51
             },
             middle_bottom_text: {
@@ -470,11 +470,11 @@ const ui = {
                 marginRight: 20
             },
             right_up_text: {
-                textAlign: "right",
+                textAlign: 'right',
                 fontSize: 12
             },
             right_bottom_text: {
-                textAlign: "right",
+                textAlign: 'right',
                 fontSize: 12,
                 marginBottom: 8
             }
@@ -487,12 +487,12 @@ const ui = {
     Header: {
         default: {
             container: {
-                flexDirection: "row",
-                backgroundColor: "white"
+                flexDirection: 'row',
+                backgroundColor: 'white'
             },
             header_left: {
                 flex: 1,
-                justifyContent: "center",
+                justifyContent: 'center',
                 marginLeft: 13
             },
             header_back_img: {
@@ -501,22 +501,22 @@ const ui = {
             },
             header_middle: {
                 flex: 4,
-                alignItems: "center",
-                justifyContent: "center"
+                alignItems: 'center',
+                justifyContent: 'center'
             },
             title: {
                 fontSize: 18,
-                color: "black"
+                color: 'black'
             },
             header_right: {
                 flex: 1,
-                justifyContent: "center",
+                justifyContent: 'center',
                 marginRight: 13,
-                alignItems: "flex-end"
+                alignItems: 'flex-end'
             },
             header_right_title: {
                 fontSize: 14,
-                color: "black"
+                color: 'black'
             },
             right_icon: {
                 width: 24,
@@ -525,12 +525,12 @@ const ui = {
         },
         goods: {
             container: {
-                flexDirection: "row",
-                backgroundColor: "white"
+                flexDirection: 'row',
+                backgroundColor: 'white'
             },
             header_left: {
                 flex: 1,
-                justifyContent: "center",
+                justifyContent: 'center',
                 marginLeft: 13
             },
             header_back_img: {
@@ -539,22 +539,22 @@ const ui = {
             },
             header_middle: {
                 flex: 2,
-                alignItems: "center",
-                justifyContent: "center"
+                alignItems: 'center',
+                justifyContent: 'center'
             },
             title: {
                 fontSize: 18,
-                color: "black"
+                color: 'black'
             },
             header_right: {
                 flex: 1.1,
-                justifyContent: "center",
+                justifyContent: 'center',
                 marginRight: 13,
-                alignItems: "flex-end"
+                alignItems: 'flex-end'
             },
             header_right_title: {
                 fontSize: 14,
-                color: "black"
+                color: 'black'
             },
             right_icon: {
                 width: 24,
@@ -566,17 +566,17 @@ const ui = {
     SearchHeader: {
         default: {
             container: {
-                flexDirection: "row",
-                backgroundColor: "white",
+                flexDirection: 'row',
+                backgroundColor: 'white',
                 height: ScreenUtils.headerHeight,
                 paddingTop: ScreenUtils.statusBarHeight,
                 paddingLeft: 15,
                 paddingRight: 15,
-                alignItems: "center",
-                justifyContent: "space-between"
+                alignItems: 'center',
+                justifyContent: 'space-between'
             },
             header_left: {
-                justifyContent: "center",
+                justifyContent: 'center',
                 flex: 1
             },
             header_back_img: {
@@ -584,48 +584,48 @@ const ui = {
                 height: 18
             },
             header_middle: {
-                alignItems: "center",
-                justifyContent: "center"
+                alignItems: 'center',
+                justifyContent: 'center'
             },
             title: {
                 fontSize: 18,
-                color: "black"
+                color: 'black'
             },
             header_right: {
-                justifyContent: "center",
-                alignItems: "flex-end",
+                justifyContent: 'center',
+                alignItems: 'flex-end',
                 flex: 1
             },
             header_right_title: {
                 fontSize: 14,
-                color: "black"
+                color: 'black'
             },
             right_icon: {
                 width: 24,
                 height: 24
             },
             searchView: {
-                flexDirection: "row",
-                alignItems: "center",
-                backgroundColor: "#F0F0F0",
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#F0F0F0',
                 borderRadius: 4,
                 height: 26
             },
             placeHolder_text: {
                 marginLeft: 8,
-                color: "#6C6F74",
+                color: '#6C6F74',
                 fontSize: 14
             },
             title_text: {
                 marginLeft: 8,
-                color: "#333333",
+                color: '#333333',
                 fontSize: 14
             },
             searchView_icon: {
                 height: 17,
                 width: 17,
                 marginLeft: 8,
-                resizeMode: "contain"
+                resizeMode: 'contain'
             },
             searchInput: {
                 flex: 8
@@ -643,8 +643,8 @@ const ui = {
             container: {
                 width: 120,
                 height: 44,
-                justifyContent: "center",
-                alignItems: "center"
+                justifyContent: 'center',
+                alignItems: 'center'
             },
             text: {
                 fontSize: 15
@@ -655,26 +655,26 @@ const ui = {
         default: {
             container: {
                 width: ScreenUtils.width,
-                backgroundColor: "white"
+                backgroundColor: 'white'
             },
             content_container: {
-                flexDirection: "row",
+                flexDirection: 'row',
                 height: 50,
-                backgroundColor: "white",
-                justifyContent: "center",
-                alignItems: "center"
+                backgroundColor: 'white',
+                justifyContent: 'center',
+                alignItems: 'center'
             },
             title: {
                 width: 80,
                 marginLeft: getUIScale(20),
                 fontSize: 15,
-                color: "black"
+                color: 'black'
             },
             input: {
                 marginLeft: 10,
                 flex: 1,
                 fontSize: 15,
-                color: "black"
+                color: 'black'
             },
             close_input_img: {
                 height: 18,
@@ -693,7 +693,7 @@ const ui = {
                 marginRight: 30,
                 backgroundColor: color.white,
                 borderRadius: 5,
-                alignItems: "center"
+                alignItems: 'center'
             },
             title: {
                 marginTop: 15,
@@ -706,7 +706,7 @@ const ui = {
                 marginLeft: 15
             },
             btn_container: {
-                flexDirection: "row",
+                flexDirection: 'row',
                 borderRadius: 5
             },
             line: {
@@ -721,13 +721,13 @@ const ui = {
             container: {
                 width: 316,
                 backgroundColor: color.white,
-                alignItems: "center",
+                alignItems: 'center',
                 borderRadius: 5
             },
             top_container: {
-                flexDirection: "row",
+                flexDirection: 'row',
                 height: 40,
-                alignItems: "center"
+                alignItems: 'center'
             },
             top_left: {
                 flex: 1
@@ -739,14 +739,14 @@ const ui = {
             },
             top_middle: {
                 flex: 2,
-                alignItems: "center"
+                alignItems: 'center'
             },
             top_middle_tx: {
                 color: color.black,
                 fontSize: 14
             },
             top_right: {
-                flex: 1, alignItems: "flex-end"
+                flex: 1, alignItems: 'flex-end'
             },
             top_right_tx: {
                 color: color.black_more_light,
@@ -759,8 +759,8 @@ const ui = {
             },
             bottom_container: {
                 marginTop: 20,
-                flexDirection: "row",
-                alignItems: "center",
+                flexDirection: 'row',
+                alignItems: 'center',
                 marginBottom: 13
             },
             bottom_left_tx: {
@@ -787,7 +787,7 @@ const ui = {
     GoodsListModelView: {
         default: {
             container: {
-                backgroundColor: "#F6F6F6",
+                backgroundColor: '#F6F6F6',
                 paddingLeft: getUIScale(20),
                 paddingRight: getUIScale(20),
                 paddingBottom: 10
@@ -795,26 +795,26 @@ const ui = {
             delete_all: {
                 width: 14,
                 height: 14,
-                resizeMode: "center",
+                resizeMode: 'center',
                 marginTop: 27 - 14 + 2
             },
             delete_item: {
                 width: 14,
                 height: 27,
-                resizeMode: "contain"
+                resizeMode: 'contain'
             },
             itemContainer: {
                 marginRight: 5,
-                flexDirection: "row",
+                flexDirection: 'row',
                 marginTop: 5,
-                alignItems: "flex-end",
+                alignItems: 'flex-end',
                 height: 27
             },
             text_container: {
-                backgroundColor: "#DFDFDF",
+                backgroundColor: '#DFDFDF',
                 height: 20,
                 paddingLeft: 5,
-                justifyContent: "center"
+                justifyContent: 'center'
             },
             text: {
                 lineHeight: 20,
@@ -826,15 +826,15 @@ const ui = {
     SelectAddressCell: {
         default: {
             container_add: {
-                backgroundColor: "#fff",
+                backgroundColor: '#fff',
                 paddingTop: 20,
                 paddingBottom: 12,
-                alignItems: "center"
+                alignItems: 'center'
             },
             no_address: {
                 marginBottom: 10,
                 lineHeight: 14,
-                color: "#666666",
+                color: '#666666',
                 fontSize: 12
             },
             container_addAddress: {
@@ -843,18 +843,18 @@ const ui = {
                 borderRadius: 2,
                 // backgroundColor: 'red',
                 borderWidth: 1,
-                borderColor: "#EB2224",
-                justifyContent: "center",
-                alignItems: "center"
+                borderColor: '#EB2224',
+                justifyContent: 'center',
+                alignItems: 'center'
             },
             addAddressText: {
-                color: "#EB2224",
+                color: '#EB2224',
                 fontSize: 16
             },
             container_select: {
-                backgroundColor: "#fff",
-                flexDirection: "row",
-                alignItems: "center",
+                backgroundColor: '#fff',
+                flexDirection: 'row',
+                alignItems: 'center',
                 paddingLeft: getUIScale(20),
                 paddingRight: getUIScale(20),
                 paddingTop: 12,
@@ -871,22 +871,22 @@ const ui = {
             right_arrow: {
                 width: 6,
                 height: 10,
-                resizeMode: "contain"
+                resizeMode: 'contain'
             },
             address_content: {
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center"
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center'
             },
             address_text: {
                 lineHeight: 20,
                 marginRight: 7,
-                color: "#333333",
+                color: '#333333',
                 fontSize: 12
 
             },
             container_name_phone: {
-                flexDirection: "row"
+                flexDirection: 'row'
             },
             name_title: {
                 fontSize: 12,
@@ -894,10 +894,10 @@ const ui = {
             },
             name_text: {},
             name_text: {
-                fontWeight: "bold"
+                fontWeight: 'bold'
             },
             phone_text: {
-                fontWeight: "bold",
+                fontWeight: 'bold',
                 fontSize: 12,
                 marginLeft: 30,
                 lineHeight: 20
@@ -908,9 +908,9 @@ const ui = {
         default: {
             container: {
                 height: 140,
-                backgroundColor: "#fff",
-                flexDirection: "row",
-                justifyContent: "space-between",
+                backgroundColor: '#fff',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 paddingLeft: getUIScale(20),
                 paddingRight: getUIScale(20),
                 paddingBottom: 20,
@@ -919,23 +919,23 @@ const ui = {
             imageView: {
                 width: 100,
                 height: 100,
-                resizeMode: "cover"
+                resizeMode: 'cover'
             },
             contentView: {
                 marginLeft: 12,
-                justifyContent: "space-between",
+                justifyContent: 'space-between',
                 width: ScreenUtils.width - 100 - getUIScale(40) - 12
             },
             itemNameText: {
-                color: "#666666",
+                color: '#666666',
                 lineHeight: 20,
                 fontSize: 12
             },
             bottomView: {
                 height: 30,
-                justifyContent: "space-between",
-                flexDirection: "row",
-                alignItems: "flex-end"
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                alignItems: 'flex-end'
             },
             priceUnit: {
                 fontSize: 10
@@ -943,23 +943,23 @@ const ui = {
             price: {
                 lineHeight: 20,
                 fontSize: 12,
-                color: "#EB2224"
+                color: '#EB2224'
             },
             selectCount: {
                 height: 30,
                 width: 90,
-                flexDirection: "row"
+                flexDirection: 'row'
             },
             subImage: {
                 height: 30,
                 width: 30,
-                resizeMode: "center"
+                resizeMode: 'center'
             },
             numContent: {
                 height: 30,
                 width: 30,
-                justifyContent: "center",
-                alignItems: "center"
+                justifyContent: 'center',
+                alignItems: 'center'
             },
             numText: {
                 fontSize: 13
@@ -967,7 +967,7 @@ const ui = {
             plusImage: {
                 height: 30,
                 width: 30,
-                resizeMode: "center"
+                resizeMode: 'center'
             },
             line: {
                 marginLeft: getUIScale(20),
