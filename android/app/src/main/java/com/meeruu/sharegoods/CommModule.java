@@ -399,8 +399,8 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getStatusHeight(Callback callback) {
-        callback.invoke(DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
+    public void getStatusHeight(Promise Promise) {
+        Promise.resolve(DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
     }
 
     //三方登录

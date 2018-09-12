@@ -335,10 +335,10 @@ export default class MinePage extends BasePage {
 
     //跳转到对应的订单状态页面
     jumpToOrderAccordingStates = (index) => {
-        if (!user.isLogin) {
-            this.props.navigation.navigate('login/login/LoginPage');
-            return;
-        }
+        // if (!user.isLogin) {
+        //     this.props.navigation.navigate('login/login/LoginPage');
+        //     return;
+        // }
         switch (index) {
             case 0:
                 this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 1 });

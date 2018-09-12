@@ -238,7 +238,6 @@ export default class NavigatorBar extends Component {
         const {
             headerStyle
         } = this.props;
-        console.log(this.props.androidStatusH);
         return (
             <View style={[styles.navBar, headerStyle,{paddingTop:this.state.statusHeight,
                 height:Platform.OS === 'ios' ? (IPHONEX ? 88 : 64) : 44 + this.state.statusHeight}]}>

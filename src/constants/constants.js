@@ -332,7 +332,6 @@ let constants = {
         },
     ]
 };
-export default {
-    constants
-}
+export default constants;
+
 

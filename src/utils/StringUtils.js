@@ -2,7 +2,7 @@ const isEmpty = (param) => {
     let input = param + '';
     return input === '' || input === 'undefined' || input === 'null' || input === '[]' || input === ' ';
 };
-const isNoEmpty = (input) => {
+ const isNoEmpty=(input)=>{
     return !isEmpty(input);
 };
 /*
@@ -10,7 +10,7 @@ const isNoEmpty = (input) => {
 * 12.000->¥12.00
 * */
 const formatMoneyString = (num, needSymbol = true) => {
-    let temp = (this.isNoEmpty(num) ? num : 0) + '';
+    let temp = (isNoEmpty(num) ? num : 0) + '';
     if (temp.indexOf('.') === -1) {
         temp += '.00';
     }
@@ -39,13 +39,23 @@ const checkPassword = (password) => {
     let hasLetter = /[a-zA-Z]/i;
     return reg.test(password) && hasNum.test(password) && hasLetter.test(password);
 };
+//取前面10位，多余补···
+const formatString=(text,length=10)=>{
+    let str=text+'';
+    if (str.length>length){
+        return str.substr(0,length)+'···'
+    }else{
+        return str
+    }
+}
 
 export default {
     isEmpty,
     isNoEmpty,
     formatMoneyString,
     checkPhone,
-    checkPassword
+    checkPassword,
+    formatString
 };
 
 
