@@ -7,8 +7,7 @@
 import React from 'react';
 import {
     View,
-    Text,
-    StyleSheet
+    Text
 } from 'react-native';
 import { color } from '../../constants/Theme';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -44,7 +43,7 @@ const VerticalTableView = props => {
     } = props;
 
 
-    renderListView = () => {
+    this.renderListView = () => {
         let arr = [];
         for (let i = 0; i < tableData[0].value.length + 1; i++) {
             arr.push(
@@ -53,7 +52,7 @@ const VerticalTableView = props => {
         }
         return arr;
     };
-    renderItemListView = (index) => {
+    this.renderItemListView = (index) => {
         let arr = [];
         if (index == 0) {
             for (let i = 0; i < tableData.length; i++) {

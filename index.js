@@ -1,4 +1,4 @@
-import {AppRegistry} from 'react-native';
+import { AppRegistry } from 'react-native';
 import App from './src/App';
 
 
@@ -11,7 +11,7 @@ import App from './src/App';
         Number.parseInt = parseInt;
     }
     if (!Number.isInteger) {
-        Number.isInteger = function (value) {
+        Number.isInteger = function(value) {
             return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
         };
     }
@@ -19,11 +19,16 @@ import App from './src/App';
 
 if (!__DEV__) {
     global.console = {
-        info: () => {},
-        log: () => {},
-        warn: () => {},
-        debug: () => {},
-        error: () => {}
+        info: () => {
+        },
+        log: () => {
+        },
+        warn: () => {
+        },
+        debug: () => {
+        },
+        error: () => {
+        }
     };
 }
 AppRegistry.registerComponent('sharegoods', () => App);

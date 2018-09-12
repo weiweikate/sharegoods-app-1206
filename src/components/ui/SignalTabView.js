@@ -6,7 +6,7 @@
  */
 import React from 'react';
 import {
-    View,
+    View
 } from 'react-native';
 import { color } from '../../constants/Theme';
 import { UIText } from './index';
@@ -38,11 +38,10 @@ const SignalTabView = props => {
         },
         specialTextStyle = {
             color: color.black_222, fontSize: 12
-        },
-        ...attributes
+        }
     } = props;
 
-    renderListView = () => {
+    this.renderListView = () => {
         let arr = [];
         for (let i = 0; i < tableData.length; i++) {
             arr.push(
