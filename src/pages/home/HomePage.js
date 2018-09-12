@@ -16,10 +16,11 @@ export default class HomePage extends Component {
             </Text>
         );
     }
-    // gotoLogin=()=>{
-    //     this.props.navigation.navigate('home/search/SearchPage')
+    gotoLogin=()=> {
+        this.props.navigation.navigate('home/search/SearchPage')
+    }
 
-    gotoLogin = () => {
-        this.props.navigation.navigate('login/login/LoginPage');
-    };
+    // gotoLogin = () => {
+    //     this.props.navigation.navigate('login/login/LoginPage');
+    // };
 }
