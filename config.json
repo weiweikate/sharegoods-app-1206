@@ -37,7 +37,7 @@
         },
         "qa": {
             "name": "测试环境",
-            "host": "https://testapi.sharegoodmall.com/gateway"
+            "host": "https://testapi.sharegoodsmall.com/gateway"
         },
         "online": {
             "name": "生产环境",
