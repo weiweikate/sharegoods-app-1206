@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
     Text, View, ScrollView, TouchableHighlight, StyleSheet, Platform, Image, TextInput, TouchableWithoutFeedback
 } from 'react-native';
+import RouterMap from '../../RouterMap';
 import ViewPager from '../../components/ui/ViewPager';
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIImage from '../../components/ui/UIImage';
@@ -26,7 +27,7 @@ const DemoList = [
     },
     {
         title: '搜索页面',
-        uri: 'home/search/SearchPage'
+        uri: RouterMap.SearchPage,
     }
 ];
 export default class HomePage extends Component {

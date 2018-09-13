@@ -26,7 +26,7 @@ export default class ResultHorizontalRow extends Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress = {this.props.onPressAtIndex}>
                 <View style={[styles.container]}>
                     <Image style={styles.img}/>
                     <Text style={{ color: '#222222', fontSize: 13, paddingHorizontal: 10, marginTop: 9 }}

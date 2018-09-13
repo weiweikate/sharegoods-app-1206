@@ -7,6 +7,7 @@ import BasePage from '../../../BasePage';
 import HotSearchView from './components/HotSearchView';
 import RecentSearchView from './components/RecentSearchView';
 import SearchNav from './components/SearchNav';
+import RouterMap from '../../../RouterMap';
 
 
 export default class SearchPage extends BasePage {
@@ -24,15 +25,15 @@ export default class SearchPage extends BasePage {
         };
     }
 
-    loadPageData() {
-        this.getRecentSearch();
-        this.getHotWordsListActive();
-    }
+    // loadPageData() {
+    //     this.getRecentSearch();
+    //     this.getHotWordsListActive();
+    // }
 
     //从本地拿到最近搜索记录
-    getRecentSearch = () => {
-
-    };
+    // getRecentSearch = () => {
+    //
+    // };
     //清除本地
     _clearHistory = () => {
         this.setState({
@@ -41,9 +42,9 @@ export default class SearchPage extends BasePage {
     };
 
     //热门数据
-    getHotWordsListActive = () => {
-
-    };
+    // getHotWordsListActive = () => {
+    //
+    // };
 
     //取消
     _cancel = () => {
@@ -54,10 +55,9 @@ export default class SearchPage extends BasePage {
         this._clickItemAction(text);
     };
     //跳转
-    _clickItemAction = (text) => {
-        this.$navigate('home/search/SearchResultPage');
+    _clickItemAction = () => {
+        this.$navigate(RouterMap.SearchResultPage);
     };
-
 
     _render() {
         return (
@@ -68,7 +68,7 @@ export default class SearchPage extends BasePage {
                 <HotSearchView listData={this.state.hotData} clickItemAction={this._clickItemAction}/>
             </View>
         );
-    };
+    }
 
 }
 
