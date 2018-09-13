@@ -187,7 +187,7 @@ class SettingPage extends BasePage {
     }
 
     jumpToAddressManagePage = () => {
-        this.$navigate('mine/MyAddressPage');
+        this.$navigate('mine/address/AddressManagerPage');
     };
     jumptToAboutUsPage = () => {
         this.navigate('setting/AboutUsPage');

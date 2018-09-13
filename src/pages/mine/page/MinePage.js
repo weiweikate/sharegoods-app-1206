@@ -388,7 +388,7 @@ export default class MinePage extends BasePage {
                 this.props.navigation.navigate('mine/helper/MyHelperPage');
                 break;
             case 6:
-                this.props.navigation.navigate('mine/MyAddressPage');
+                this.props.navigation.navigate('mine/AddressManagerPage');
                 break;
             case 7:
                 this.props.navigation.navigate('mine/MyAddressBookPage');

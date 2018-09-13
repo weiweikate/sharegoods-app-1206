@@ -3,9 +3,9 @@ import MyCollectPage from './page/mycollect/MyCollectPage';
 import userInformation from './page/userInformation';
 import Coupons from './page/coupons';
 import helper from './page/helper';
-import MyAddressPage from './page/myaddress/MyAddressPage';
-import AddAddressPage from './page/myaddress/AddAddressPage';
+import AddressManagerPage from './page/myaddress/AddressManagerPage';
 import SettingPage from './page/setting/SettingPage';
+import Myaddress from './page/myaddress';
 
 export default {
     moduleName: 'mine',    //模块名称
@@ -15,8 +15,8 @@ export default {
         userInformation,
         Coupons,
         helper,
-        MyAddressPage,
-        AddAddressPage,
-        SettingPage
+        AddressManagerPage,
+        SettingPage,
+        Myaddress
     }
 };

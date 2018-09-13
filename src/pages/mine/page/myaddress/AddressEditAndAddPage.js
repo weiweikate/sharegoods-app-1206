@@ -5,7 +5,7 @@ import React from 'react';
 import BasePage from '../../../../BasePage';
 import IconGoTo from '../../../mine/res/customerservice/icon_06-03.png';
 
-export default class AddAddressPage extends BasePage {
+export default class AddressEditAndAddPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
