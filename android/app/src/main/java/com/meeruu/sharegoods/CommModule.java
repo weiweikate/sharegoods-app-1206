@@ -179,7 +179,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void toast(final String msg) {
         String message = msg + "";
-        Toast.makeText(mContext, message, message.length() > 10 ? Toast.LENGTH_SHORT : Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
     }
 
     /**

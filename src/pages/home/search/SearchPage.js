@@ -1,22 +1,26 @@
 import React from 'react';
 import {
     View,
-    StyleSheet,
+    StyleSheet
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import HotSearchView from './components/HotSearchView';
 import RecentSearchView from './components/RecentSearchView';
-import SearchInput from './components/SearchInput';
+import SearchNav from './components/SearchNav';
 
 
-class SearchPage extends BasePage {
+export default class SearchPage extends BasePage {
+
+    $navigationBarOptions = {
+        show: false
+    };
 
     constructor(props) {
         super(props);
         this.state = {
             inputText: '',
-            recentData: ['1', '1', '1', '1', '1', '1'],
-            hotData: ['1', '1', '1', '1', '1', '1']
+            recentData: ['花盆', '花露水', '置物盒', '秀购超级购物日', '花盆', '花露水', '置物盒', '秀购超级购物日', '花盆', '花露水', '置物盒', '秀购超级购物日'],
+            hotData: ['花盆', '花露水', '置物盒', '秀购超级购物日', '花盆', '花露水', '置物盒', '秀购超级购物日', '花盆', '花露水', '置物盒', '秀购超级购物日']
         };
     }
 
@@ -29,35 +33,42 @@ class SearchPage extends BasePage {
     getRecentSearch = () => {
 
     };
+    //清除本地
+    _clearHistory = () => {
+        this.setState({
+            recentData: []
+        });
+    };
 
+    //热门数据
     getHotWordsListActive = () => {
 
     };
 
-
+    //取消
     _cancel = () => {
         this.$navigateBack();
     };
-
+    //提交搜索
     _onSubmitEditing = (text) => {
-        this.setState({
-            inputText: text
-        });
+        this._clickItemAction(text);
+    };
+    //跳转
+    _clickItemAction = (text) => {
+        this.$navigate('home/search/SearchResultPage');
     };
 
+
     _render() {
-        // console.log("从上个页面传过来的inputText=" + this.params.inputText)
         return (
             <View style={styles.container}>
-                <SearchInput placeholder={'请输入关键词搜索'} onSubmitEditing={this._onSubmitEditing} cancel={this._cancel}/>
-                <RecentSearchView recentData={this.state.recentData} clearHistory={() => {
-                    this.setState({ recentData: [] });
-                }}/>
-                <HotSearchView recentData={this.state.hotData}/>
+                <SearchNav placeholder={'请输入关键词搜索'} onSubmitEditing={this._onSubmitEditing} cancel={this._cancel}/>
+                <RecentSearchView listData={this.state.recentData} clickItemAction={this._clickItemAction}
+                                  clearHistory={this._clearHistory}/>
+                <HotSearchView listData={this.state.hotData} clickItemAction={this._clickItemAction}/>
             </View>
         );
     };
-
 
 }
 
@@ -65,6 +76,5 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     }
-
 });
-export default SearchPage;
+

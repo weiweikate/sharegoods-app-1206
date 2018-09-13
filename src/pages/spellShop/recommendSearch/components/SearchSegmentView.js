@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import {
     View,
     Text,
-    Dimensions,
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
+import ScreenUtils from '../../../../utils/ScreenUtils';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
 export default class SearchSegmentView extends Component {
 
     static propTypes = {
@@ -57,7 +56,7 @@ export default class SearchSegmentView extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        width: SCREEN_WIDTH,
+        width: ScreenUtils.width,
         height: 42,
         backgroundColor: '#ffffff',
         borderTopWidth: StyleSheet.hairlineWidth,
@@ -73,7 +72,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ddd'
     },
     itemContainer: {
-        width: (SCREEN_WIDTH - StyleSheet.hairlineWidth) / 2,
+        width: (ScreenUtils.width - StyleSheet.hairlineWidth) / 2,
         height: 42,
         justifyContent: 'center',
         alignItems: 'center'

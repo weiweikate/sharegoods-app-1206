@@ -39,24 +39,21 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('/Users/zhanglei/WebstormProjects/crm_app2/android/app/jure.keystore')
-            //绝对路径
-            storePassword "jure123456"
-            keyAlias "key0"
-            keyPassword "jure123456"
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+            storeFile file(STORE_FILE)
+            storePassword KEYSTORE_PASSWORD
         }
     }
     buildTypes {
         debug {
-            minifyEnabled false
-            shrinkResources false
-            zipAlignEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         release {
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
