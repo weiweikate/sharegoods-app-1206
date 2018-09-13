@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Text, View, ScrollView, TouchableHighlight, StyleSheet, Platform, Image, TextInput,TouchableWithoutFeedback
+    Text, View, ScrollView, TouchableHighlight, StyleSheet, Platform, Image, TextInput, TouchableWithoutFeedback
 } from 'react-native';
 import ViewPager from '../../components/ui/ViewPager';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -71,68 +71,73 @@ export default class HomePage extends Component {
                     />
 
                     <View style={styles.menuView}>
-                        <TouchableWithoutFeedback onPress={()=>{
+                        <TouchableWithoutFeedback onPress={() => {
 
                         }}>
-                            <View style={{alignItems:'center',flex:1}}>
+                            <View style={{ alignItems: 'center', flex: 1 }}>
                                 <Image style={styles.iconImg} source={require('./res/icons/zq.png')}/>
                                 <Text style={styles.showText}>赚钱</Text>
                             </View>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={()=>{
+                        <TouchableWithoutFeedback onPress={() => {
 
                         }}>
-                            <View style={{alignItems:'center',flex:1}}>
+                            <View style={{ alignItems: 'center', flex: 1 }}>
                                 <Image style={styles.iconImg} source={require('./res/icons/sq.png')}/>
                                 <Text style={styles.showText}>省钱</Text>
                             </View>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={()=>{
+                        <TouchableWithoutFeedback onPress={() => {
 
                         }}>
-                            <View style={{alignItems:'center',flex:1}}>
+                            <View style={{ alignItems: 'center', flex: 1 }}>
                                 <Image style={styles.iconImg} source={require('./res/icons/fx.png')}/>
                                 <Text style={styles.showText}>分享</Text>
                             </View>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={()=>{
+                        <TouchableWithoutFeedback onPress={() => {
 
                         }}>
-                            <View style={{alignItems:'center',flex:1}}>
+                            <View style={{ alignItems: 'center', flex: 1 }}>
                                 <Image style={styles.iconImg} source={require('./res/icons/xy.png')}/>
-                                <Text  style={styles.showText}>学院</Text>
+                                <Text style={styles.showText}>学院</Text>
                             </View>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={()=>{
+                        <TouchableWithoutFeedback onPress={() => {
 
                         }}>
-                            <View style={{alignItems:'center',flex:1}}>
+                            <View style={{ alignItems: 'center', flex: 1 }}>
                                 <Image style={styles.iconImg} source={require('./res/icons/cx.png')}/>
                                 <Text style={styles.showText}>促销</Text>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
 
-                    {
-                        DemoList.map(item => {
-                            const { title, uri, params } = item;
-                            return (
-                                <View key={title} style={styles.rowCell}>
-                                    <TouchableHighlight
-                                        style={{ flex: 1 }}
-                                        underlayColor="#e6e6e6"
-                                        onPress={() => {
-                                            this.redirect(uri, params);
-                                        }}
-                                    >
-                                        <View style={styles.eventRowsContainer}>
-                                            <Text style={{ color: '#474747' }}>{title}</Text>
-                                        </View>
-                                    </TouchableHighlight>
-                                </View>
-                            );
-                        })
-                    }
+                    <View style={[styles.box, styles.box2]}>
+
+                    </View>
+                    <View style={styles.demoBox}>
+                        {
+                            DemoList.map(item => {
+                                const { title, uri, params } = item;
+                                return (
+                                    <View key={title} style={styles.rowCell}>
+                                        <TouchableHighlight
+                                            style={{ flex: 1 }}
+                                            underlayColor="#e6e6e6"
+                                            onPress={() => {
+                                                this.redirect(uri, params);
+                                            }}
+                                        >
+                                            <View style={styles.eventRowsContainer}>
+                                                <Text style={{ color: '#474747' }}>{title}</Text>
+                                            </View>
+                                        </TouchableHighlight>
+                                    </View>
+                                );
+                            })
+                        }
+                    </View>
                 </ScrollView>
             </View>
 
@@ -159,8 +164,19 @@ export default class HomePage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white'
+
     },
+    box: {
+        backgroundColor: '#f7f7f7'
+    },
+    rowBox: {
+        flexDirection: 'row',
+        alignItems:'center'
+    },
+    imgBox:{
+
+    },
+    colBox: {},
 
     // header
     navbar: {
@@ -169,7 +185,7 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingTop: Platform.OS === 'ios' ? 20 : 0,   // 处理iOS状态栏
         height: Platform.OS === 'ios' ? 68 : 48,   // 处理iOS状态栏
-        backgroundColor: '#d74047',
+        backgroundColor: '#d51243',
         alignItems: 'center'
     },
     logo: {
@@ -218,7 +234,10 @@ const styles = StyleSheet.create({
     // menu
     menuView: {
         flexDirection: 'row',
-        marginTop: 10
+        paddingTop: 10,
+        backgroundColor: '#ffffff',
+        paddingBottom: 10,
+        marginBottom: 10,
     },
     iconImg: {
         width: 45,
@@ -227,6 +246,11 @@ const styles = StyleSheet.create({
     },
     showText: {
         fontSize: 12
+    },
+
+    // demoBox
+    demoBox: {
+        backgroundColor: '#ffffff',
     },
     // 行样式
     rowCell: {
