@@ -5,13 +5,17 @@ import {
     StyleSheet,
     Image,
     TouchableOpacity,
-    ListView
+    ListView,TouchableHighlight,
+
 } from 'react-native'
 import { SwipeListView } from 'react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ColorUtil from '../../../utils/ColorUtil';
-import UIText from '../../../comm/components/UIText'
+import {
+UIText,
+UIImage,
+}from'../../../components/ui/index'
 export  default class ShopCartPage extends BasePage{
 
     // 导航配置
@@ -25,6 +29,9 @@ export  default class ShopCartPage extends BasePage{
         this.state={
             viewData:[
                 {a:11},
+                {a:22},
+                {a:22},
+                {a:22},
                 {a:22}
             ]
         }
@@ -34,9 +41,9 @@ export  default class ShopCartPage extends BasePage{
 
     _render(){
         return(
-            <View>
-                <SwipeListView
+            <View style={{flex:1,justifyContent:'space-between',flexDirection:'column'}}>
 
+                <SwipeListView
                     dataSource={this.ds.cloneWithRows(this.state.viewData)}
                     // dataSource={this.state.viewData}
                     disableRightSwipe={true}
@@ -51,7 +58,7 @@ export  default class ShopCartPage extends BasePage{
                             style={styles.standaloneRowBack}
                             onPress={()=>{
                                 rowMap[`${secId}${rowId}`].closeRow()
-                                this._deleteFromShoppingCartByProductId(data.index)
+                                // this._deleteFromShoppingCartByProductId(data.index)
                             }}>
                             <UIText style={styles.backUITextWhite}>删除</UIText>
                         </TouchableOpacity>
@@ -63,21 +70,13 @@ export  default class ShopCartPage extends BasePage{
             </View>
         )
     }
-    _renderValidItem=(data)=> {
-        return(
-            <View >
-                <UIText>
-                    {data.a}
-                </UIText>
-            </View>
-        )
-    }
     _renderShopCartBottomMenu = () => {
         return (
             <View style={styles.CartBottomContainer}>
                 <TouchableOpacity
                     style={{ flexDirection: 'row', paddingLeft: 19 }}
-                    onPress={() => this._selectAll()}>
+                    // onPress={() => this._selectAll()}
+                >
                     <Image
                         // source={this.state.selectAll?circleSelect:circleUnselect}
                         style={{ width: 22, height: 22, backgroundColor: 'red' }}/>
@@ -96,74 +95,78 @@ export  default class ShopCartPage extends BasePage{
                         style={styles.totalPrice}/>
                     <TouchableOpacity
                         style={styles.selectGoodsNum}
-                        onPress={() => this._toBuyImmediately()}>
+                        // onPress={() => this._toBuyImmediately()}
+                    >
                         <UIText
                             // value={this.state.selectGoodsNum == 0 ? '结算' : '结算(' + this.state.selectGoodsNum + ')'}
                             value= '结算'
-                            style={{ color: ColorUtil.Color_ffffff, fontSize: 16 }}/>
+                            style={{ color: ColorUtil.Color_ffffff, fontSize: 16 }}
+                        />
                     </TouchableOpacity>
                 </View>
             </View>
         );
     };
-    // _renderValidItem=(data)=>{
-    //     return(
-    //         <TouchableHighlight
-    //             onPress={()=>this._jumpToProductDetailPage(data.product_id)}
-    //             style={styles.itemContainer}>
-    //             <View style={styles.standaloneRowFront}>
-    //                 <UIImage
-    //                     source={data.select?circleSelect:circleUnselect}
-    //                     style={{width:22,height:22,marginLeft:19,marginBottom:20}}
-    //                     onPress={()=>{this._changeSelectStatus(data.index)}}/>
-    //                 <UIImage
-    //                     source={{uri:data.pictureUrl}}
-    //                     style={styles.validProductImg}/>
-    //                 <View style={styles.validConUITextContainer}>
-    //                     <View>
-    //                         <UIText
-    //                             value={data.name}
-    //                             style={{fontFamily: "PingFang-SC-Medium", fontSize: 13, lineHeight: 18, color: "#222222"}}/>
-    //                         <UIText
-    //                             value={data.conUIText}
-    //                             style={{fontFamily: "PingFang-SC-Medium", fontSize: 13, color: "#999999"}}/>
-    //                     </View>
-    //                     <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-    //                         <UIText/>
-    //                             {/*// value={'￥:'+StringUtils.formatMoneyString(user.isLogin?data.levelPrice:data.original_price,false)}*/}
-    //                             {/*// style={{fontSize: 14, color: "#e60012"}}*/}
-    //                             />
-    //                         <View style={{flexDirection:'row'}}>
-    //                             <TouchableOpacity
-    //                                 style={styles.rectangle}
-    //                                 onPress={()=>{this._reduceProductNum(data.index)}}>
-    //                                 <UIText
-    //                                     value={'—'}
-    //                                     style={{fontSize:15,color:data.num<=1?ColorUtil.Color_dddddd:ColorUtil.Color_222222}}/>
-    //                             </TouchableOpacity>
-    //                             <View style={[styles.rectangle,{width:46,borderLeftWidth:0,borderRightWidth:0}]}>
-    //                                 <RNUITextInput
-    //                                     style={styles.UITextInputStyle}
-    //                                     onChangeUIText={UIText => this._onChangeUIText(UIText,data.index,data)}
-    //                                     underlineColorAndroid={'transparent'}
-    //                                     value={data.disNum+''}
-    //                                     keyboardType='numeric'
-    //                                 />
-    //                             </View>
-    //                             <TouchableOpacity
-    //                                 style={styles.rectangle}
-    //                                 onPress={()=>{this._addProductNum(data.index)}}>
-    //                                 <UIText
-    //                                     // value={'+'}
-    //                                     style={{fontSize:15,color:data.num>=data.stock?color:ColorUtil.Color_222222}}/>
-    //                             </TouchableOpacity>
-    //                         </View>
-    //                     </View>
-    //                 </View>
-    //             </View>
-    //         </TouchableHighlight>
-    //     )
-    // }
+    _renderValidItem=(data)=>{
+        return(
+            <TouchableHighlight
+                // onPress={()=>this._jumpToProductDetailPage(data.product_id)}
+                style={styles.itemContainer}>
+                <View style={styles.standaloneRowFront}>
+                    <UIImage
+                        // source={data.select?circleSelect:circleUnselect}
+                        style={{width:22,height:22,marginLeft:10,marginBottom:20,backgroundColor:'red'}}
+                        // onPress={()=>{this._changeSelectStatus(data.index)}}
+                    />
+                    <UIImage
+                        // source={{uri:data.pictureUrl}}
+                        style={[styles.validProductImg,{backgroundColor:'red'}]}
+                    />
+                    <View style={styles.validContextContainer}>
+                        <View>
+                            <UIText
+                                value={data.name}
+                                style={{fontFamily: "PingFang-SC-Medium", fontSize: 13, lineHeight: 18, color: "#222222"}}
+                            />
+                            <UIText
+                                value={data.context}
+                                style={{fontFamily: "PingFang-SC-Medium", fontSize: 13, color: "#999999"}}/>
+                        </View>
+                        {/*<View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>*/}
+                            {/*<UIText*/}
+                                {/*// value={'￥:'+StringUtils.formatMoneyString(user.isLogin?data.levelPrice:data.original_price,false)}*/}
+                                {/*style={{fontSize: 14, color: "#e60012"}}/>*/}
+                            {/*<View style={{flexDirection:'row'}}>*/}
+                                {/*<TouchableOpacity*/}
+                                    {/*style={styles.rectangle}*/}
+                                    {/*onPress={()=>{this._reduceProductNum(data.index)}}>*/}
+                                    {/*<UIText*/}
+                                        {/*value={'—'}*/}
+                                        {/*style={{fontSize:15,color:data.num<=1?color.gray_DDD:color.black_222}}/>*/}
+                                {/*</TouchableOpacity>*/}
+                                {/*<View style={[styles.rectangle,{width:constant.dp46,borderLeftWidth:0,borderRightWidth:0}]}>*/}
+                                    {/*<RNTextInput*/}
+                                        {/*style={styles.textInputStyle}*/}
+                                        {/*onChangeText={text => this._onChangeText(text,data.index,data)}*/}
+                                        {/*underlineColorAndroid={'transparent'}*/}
+                                        {/*value={data.disNum+''}*/}
+                                        {/*keyboardType='numeric'*/}
+                                    {/*/>*/}
+                                {/*</View>*/}
+                                {/*<TouchableOpacity*/}
+                                    {/*style={styles.rectangle}*/}
+                                    {/*onPress={()=>{this._addProductNum(data.index)}}>*/}
+                                    {/*<UIText*/}
+                                        {/*value={'+'}*/}
+                                        {/*style={{fontSize:15,color:data.num>=data.stock?color.gray_DDD:color.black_222}}/>*/}
+                                {/*</TouchableOpacity>*/}
+                            {/*</View>*/}
+                        {/*</View>*/}
+                    </View>
+                </View>
+            </TouchableHighlight>
+        )
+    }
     //
     // _renderInvalidItem=(data)=>{
     //     return(
@@ -221,7 +224,6 @@ const styles = StyleSheet.create({
     standaloneRowFront: {
         alignItems: 'center',
         backgroundColor: '#fff',
-        justifyContent: 'center',
         height: 130,
         width:ScreenUtils.width,
         flexDirection:'row',
@@ -285,8 +287,8 @@ const styles = StyleSheet.create({
     },
 
     CartBottomContainer:{
-        position:'absolute',
-        marginTop:ScreenUtils.height - ScreenUtils.tabBarHeight - 49 - ScreenUtils.headerHeight,
+        // position:'absolute',
+        // marginTop:ScreenUtils.height - ScreenUtils.tabBarHeight - 49 - ScreenUtils.headerHeight,
         width:ScreenUtils.width,
         height:49,
         backgroundColor:ColorUtil.Color_ffffff,
@@ -315,5 +317,12 @@ const styles = StyleSheet.create({
         height:29,
         width:46,
         paddingVertical:0,
-    }
+    },
+    validContextContainer:{
+        flex:1,
+        height:100,
+        justifyContent:'space-between',
+        marginTop:10,
+        paddingRight:15
+    },
 });
