@@ -12,7 +12,7 @@ class MyOrdersListPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            index: this.props.navigation.state.params.index?this.props.navigation.state.params.index:0,
+            index: this.props.navigation.state.params.index ? this.props.navigation.state.params.index : 0,
             key: 1,
             // number: this.params.pageParams.number,
             states: {},
@@ -23,6 +23,15 @@ class MyOrdersListPage extends BasePage {
     $navigationBarOptions = {
         title: '我的订单',
         show: true// false则隐藏导航
+    };
+    $getPageStateOptions = () => {
+        return {
+            loadingState: 'success',
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: this._reload
+            }
+        };
     };
     $NavBarRenderRightItem = () => {
         return (
@@ -37,7 +46,7 @@ class MyOrdersListPage extends BasePage {
     }
 
     gotoSearchPage = () => {
-        this.$navigate('order/order/SearchPage', { keyWord: 'sdfsdfa' });
+        this.$navigate('order/order/SearchPage', { keyWord: 'kafaka' });
     };
 
     _render() {

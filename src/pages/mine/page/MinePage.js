@@ -37,6 +37,7 @@ import leftBg from '../res/homeBaseImg/bg_03.png';
 import levelBg from '../res/homeBaseImg/icon3_03-02.png';
 import setting from '../res/homeBaseImg/icon_03.png';
 import service from '../res/homeBaseImg/icon02.png';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
 
 export default class MinePage extends BasePage {
 
@@ -137,14 +138,14 @@ export default class MinePage extends BasePage {
                             justifyContent: 'space-between',
                             marginTop: 11
                         }}>
-                            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}
+                            <NoMoreClick style={{ flexDirection: 'row', alignItems: 'center' }}
                                               onPress={this.jumpToUserInformationPage}>
                                 <UIText value={this.state.name}
                                         style={{ fontSize: 15, color: '#ffffff' }}/>
                                 <Image source={whiteArrowRight}
                                        style={{ height: 14, marginLeft: 12 }}
                                        resizeMode={'contain'}/>
-                            </TouchableOpacity>
+                            </NoMoreClick>
                             <ImageBackground style={{ width: 53, height: 14, alignItems: 'center', marginTop: 2 }}
                                              source={levelBg}>
                                 <Text style={{ fontSize: 9, color: '#ffa351' }}>V3</Text>

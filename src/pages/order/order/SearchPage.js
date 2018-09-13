@@ -155,14 +155,14 @@ class SearchPage extends BasePage {
 
     //开始进行搜索要把这次搜索的历史记录保存
     startSearch = (inputText) => {
-        if (inputText.length == 0) {
+        if (inputText.length === 0) {
             NativeModules.commModule.toast('请输入搜索内容');
             return;
         }
 
         //把搜索框里的值存起来
         if (StringUtils.isNoEmpty(inputText)) {
-            if (array.indexOf(inputText) == -1) {//数组去重
+            if (array.indexOf(inputText) === -1) {//数组去重
                 if (array.length < 10) {
                     array.push(inputText);
                 } else {
