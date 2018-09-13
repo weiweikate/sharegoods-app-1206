@@ -37,6 +37,7 @@ import leftBg from '../res/homeBaseImg/bg_03.png';
 import levelBg from '../res/homeBaseImg/icon3_03-02.png';
 import setting from '../res/homeBaseImg/icon_03.png';
 import service from '../res/homeBaseImg/icon02.png';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
 
 export default class MinePage extends BasePage {
 
@@ -282,7 +283,7 @@ export default class MinePage extends BasePage {
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
             arr.push(
-                <TouchableOpacity style={{
+                <NoMoreClick style={{
                     width: '25%',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -292,7 +293,7 @@ export default class MinePage extends BasePage {
                     <Image source={leftImage[i]}
                            style={{ height: 24, width: 24, marginBottom: 10 }}/>
                     <UIText value={leftText[i]} style={styles.greyText}/>
-                </TouchableOpacity>
+                </NoMoreClick>
             );
         }
         return arr;
@@ -376,7 +377,7 @@ export default class MinePage extends BasePage {
                 this.props.navigation.navigate('mine/coupons/CouponsPage');
                 break;
             case 3:
-                this.props.navigation.navigate('mine/inventory/AddPage');
+                this.props.navigation.navigate('mine/MyData');
                 break;
             case 4:
                 // this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });
@@ -387,7 +388,7 @@ export default class MinePage extends BasePage {
                 this.props.navigation.navigate('mine/helper/MyHelperPage');
                 break;
             case 6:
-                this.props.navigation.navigate('mine/MyHelperPage');
+                this.props.navigation.navigate('mine/MyAddressPage');
                 break;
             case 7:
                 this.props.navigation.navigate('mine/MyAddressBookPage');
@@ -433,7 +434,7 @@ export default class MinePage extends BasePage {
         //     this.props.navigation.navigate('login/login/LoginPage');
         //     return;
         // }
-        this.props.navigation.navigate('mine/setting/SettingPage', { callBack: () => this.loadPageData() });
+        this.props.navigation.navigate('mine/SettingPage', { callBack: () => this.loadPageData() });
 
     };
 }
