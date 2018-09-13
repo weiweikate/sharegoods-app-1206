@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Text, View, ScrollView, TouchableHighlight, StyleSheet, Platform, Image, TextInput, TouchableWithoutFeedback
+    Text, View, ScrollView, TouchableHighlight, StyleSheet, Platform, Image, TextInput, TouchableWithoutFeedback,
 } from 'react-native';
 import RouterMap from '../../RouterMap';
 import ViewPager from '../../components/ui/ViewPager';
@@ -114,9 +114,20 @@ export default class HomePage extends Component {
                         </TouchableWithoutFeedback>
                     </View>
 
-                    <View style={[styles.box, styles.box2]}>
-
+                    <View style={styles.box}>
+                        <View style={styles.featureBox}>
+                            <View style={[styles.featureBox1]}>
+                                <Text>1</Text>
+                            </View>
+                            <View style={[styles.featureBox2]}>
+                                <Text>2</Text>
+                            </View>
+                            <View style={[styles.featureBox3]}>
+                                <Text>3</Text>
+                            </View>
+                        </View>
                     </View>
+
                     <View style={styles.demoBox}>
                         {
                             DemoList.map(item => {
@@ -165,19 +176,23 @@ export default class HomePage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
+        backgroundColor: '#f7f7f7',
     },
     box: {
-        backgroundColor: '#f7f7f7'
+        backgroundColor: '#ffffff',
+        marginBottom: 10,
     },
     rowBox: {
         flexDirection: 'row',
-        alignItems:'center'
+        justifyContent: 'space-between',
+        height: 200,
     },
-    imgBox:{
-
+    imgBox: {},
+    colBox: {
+        height: 180,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
     },
-    colBox: {},
 
     // header
     navbar: {
@@ -253,6 +268,40 @@ const styles = StyleSheet.create({
     demoBox: {
         backgroundColor: '#ffffff',
     },
+    featureBox: {
+        position: 'relative',
+        height: ScreenUtils.px2dp(200),
+        marginLeft:ScreenUtils.px2dp(15),
+        marginRight:ScreenUtils.px2dp(15),
+    },
+    featureBox1: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: ScreenUtils.px2dp(185),
+        height: ScreenUtils.px2dp(200),
+        backgroundColor: 'red',
+        borderRadius:5,
+    },
+    featureBox2: {
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        width: ScreenUtils.px2dp(153),
+        height: ScreenUtils.px2dp(96),
+        backgroundColor: '#888888',
+        borderRadius:5,
+    },
+    featureBox3: {
+        position: 'absolute',
+        right: 0,
+        bottom: 0,
+        width: ScreenUtils.px2dp(153),
+        height: ScreenUtils.px2dp(96),
+        backgroundColor: '#888888',
+        borderRadius:5,
+    },
+
     // 行样式
     rowCell: {
         paddingLeft: 10,

@@ -13,7 +13,34 @@ function autoSizeHeight(dp) {
     return PixelRatio.roundToNearestPixel(dp * Dimensions.get('window').height / 750);
 }
 
+
+/**
+ * 屏幕工具类
+ * ui设计基准,iphone 6
+ * width:750
+ * height:1334
+ */
+let screenW = Dimensions.get('window').width;
+const r2 = 2;
+const w2 = 750 / r2;
+
+export const DEFAULT_DENSITY = 1;
+
+/**
+ * 屏幕适配,缩放size
+ * @param size
+ * @returns {Number}
+ * @constructor
+ */
+function px2dp(size) {
+    let scaleWidth = screenW / w2;
+    size = Math.round((size * scaleWidth + 0.5));
+    return size / DEFAULT_DENSITY;
+}
+
+
 export default {
+    px2dp,
     autoSizeWidth: autoSizeWidth,
     autoSizeHeight: autoSizeHeight,
     width: Dimensions.get('window').width,

@@ -1,4 +1,64 @@
 
+
+#基本指令
+-optimizationpasses 5  #指定代码的压缩级别 0 - 7
+-dontskipnonpubliclibraryclassmembers  #如果应用程序引入的有jar包，并且想混淆jar包里面的class
+-printmapping proguardMapping.txt
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*  #混淆时采用的算法
+-keepattributes Signature
+-keepattributes SourceFile,LineNumberTable
+-keepattributes Signature  #过滤泛型（不写可能会出现类型转换错误，一般情况把这个加上就是了）
+-dontpreverify  #预校验
+
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keep public class com.meeruu.sharegoods.R$*{
+public static final int *;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-ignorewarnings
+
+-keep class * {
+    public private *;
+}
+-keep class * {
+    public protected *;
+}
+
+-dontwarn android.webkit.WebView
+-dontwarn android.net.http.SslError
+-dontwarn android.webkit.WebViewClient
+
+# facebook
+-keep class com.facebook.react.cxxbridge.ModuleRegistryHolder { *; }
+-keep class com.facebook.react.cxxbridge.CatalystInstanceImpl { *; }
+-keep class com.facebook.react.cxxbridge.JavaScriptExecutor { *; }
+-keep class com.facebook.react.bridge.queue.NativeRunnable { *; }
+-keep class com.facebook.react.bridge.ExecutorToken { *; }
+-keep class com.facebook.react.bridge.ReadableType { *; }
+-dontwarn com.facebook.react.**
+
+# okhttp
+
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
+
+# okio
+
+-keep class sun.misc.Unsafe { *; }
+-dontwarn java.nio.file.*
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn okio.**
+
+
 # umeng
 -keep class com.umeng.** {*;}
 -keepclassmembers class * {
@@ -99,3 +159,33 @@
 -keep class com.linkedin.** { *; }
 -keep class com.android.dingtalk.share.ddsharemodule.** { *; }
 -keepattributes Signature
+
+# frsco
+# Keep our interfaces so they can be used by other ProGuard rules.
+# See http://sourceforge.net/p/proguard/bugs/466/
+-keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
+-keep,allowobfuscation @interface com.facebook.soloader.DoNotOptimize
+
+# Do not strip any method/class that is annotated with @DoNotStrip
+-keep @com.facebook.common.internal.DoNotStrip class *
+-keepclassmembers class * {
+    @com.facebook.common.internal.DoNotStrip *;
+}
+
+# Do not strip any method/class that is annotated with @DoNotOptimize
+-keep @com.facebook.soloader.DoNotOptimize class *
+-keepclassmembers class * {
+    @com.facebook.soloader.DoNotOptimize *;
+}
+
+# Keep native methods
+-keepclassmembers class * {
+    native <methods>;
+}
+
+-dontwarn okio.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn okhttp3.**
+-dontwarn javax.annotation.**
+-dontwarn com.android.volley.toolbox.**
+-dontwarn com.facebook.infer.**
