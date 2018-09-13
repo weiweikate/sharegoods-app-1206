@@ -36,7 +36,11 @@ export default class ShopCartPage extends BasePage {
                 { a: 22 },
                 { a: 22 },
                 { a: 22 },
-                { a: 22 }
+                { a: 22 },
+                { a: 11 },
+                { a: 22 },
+                { a: 22 },
+                { a: 22 },
             ]
         };
     }
@@ -61,12 +65,11 @@ export default class ShopCartPage extends BasePage {
                             style={styles.standaloneRowBack}
                             onPress={() => {
                                 rowMap[`${secId}${rowId}`].closeRow();
-                                // this._deleteFromShoppingCartByProductId(data.index)
+                                this._deleteFromShoppingCartByProductId(data.index)
                             }}>
-                            <UIText style={styles.backUITextWhite}>删除</UIText>
+                            <UIText style={[styles.backUITextWhite,{color:'#ffffff'}]}>删除</UIText>
                         </TouchableOpacity>
                     )}
-                    leftOpenValue={75}
                     rightOpenValue={-75}
                 />
                 {this._renderShopCartBottomMenu()}
@@ -83,7 +86,8 @@ export default class ShopCartPage extends BasePage {
                 >
                     <Image
                         // source={this.state.selectAll?circleSelect:circleUnselect}
-                        style={{ width: 22, height: 22, backgroundColor: 'red' }}/>
+                        source={ShopCartRes.selectImg}
+                        style={{ width: 22, height: 22 }}/>
 
                     <UIText
                         value={'全选'}
@@ -156,7 +160,7 @@ export default class ShopCartPage extends BasePage {
                             <View style={{ flexDirection: 'row' }}>
                                 <TouchableOpacity
                                     style={styles.rectangle}
-                                    // onPress={()=>{this._reduceProductNum(data.index)}}
+                                    onPress={()=>{this._reduceProductNum(data.index)}}
 
                                 >
                                     <UIText
@@ -172,7 +176,7 @@ export default class ShopCartPage extends BasePage {
                                     alignItems: 'center'
                                 }]}>
                                     <RNTextInput
-                                        style={[styles.textInputStyle, { backgroundColor: 'red' }]}
+                                        style={styles.TextInputStyle}
                                         onChangeText={text => this._onChangeText(text, data.index, data)}
                                         underlineColorAndroid={'transparent'}
                                         // value={data.disNum+''}
@@ -228,6 +232,16 @@ export default class ShopCartPage extends BasePage {
     //         </TouchableHighlight>
     //     )
     // }
+    /*action*/
+    /*减号操作*/
+    _reduceProductNum=(index)=>{
+    }
+    /*加号按钮操作*/
+    _addProductNum = (index) => {
+    };
+    /*删除操作*/
+    _deleteFromShoppingCartByProductId=(index)=>{
+    }
 }
 
 const styles = StyleSheet.create({
@@ -251,7 +265,7 @@ const styles = StyleSheet.create({
     },
     backUITextWhite: {
         color: '#FFF',
-        marginRight: 10
+        marginRight: 0
     },
     standaloneRowFront: {
         alignItems: 'center',
@@ -319,8 +333,6 @@ const styles = StyleSheet.create({
     },
 
     CartBottomContainer: {
-        // position:'absolute',
-        // marginTop:ScreenUtils.height - ScreenUtils.tabBarHeight - 49 - ScreenUtils.headerHeight,
         width: ScreenUtils.width,
         height: 49,
         backgroundColor: ColorUtil.Color_ffffff,
@@ -344,10 +356,9 @@ const styles = StyleSheet.create({
     },
 
     TextInputStyle: {
-        fontSize: 9,
+        fontSize: 11,
         color: ColorUtil.Color_222222,
-        // height:29,
-        // width:46,
+        justifyContent: 'center',
         paddingVertical: 0
     },
     validContextContainer: {
