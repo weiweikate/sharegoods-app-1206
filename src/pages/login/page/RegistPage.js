@@ -64,6 +64,7 @@ export default class RegistPage extends BasePage {
 
     //点击下一步
     clickNext = (phone, code, password) => {
+        this.$loadingShow();
         LoginApi.findMemberByPhone({
             code: code,
             device: this.params.device ? this.params.device : '',
@@ -74,9 +75,11 @@ export default class RegistPage extends BasePage {
             systemVersion: this.params.systemVersion ? this.params.systemVersion : '',
             wechatVersion: ''
         }).then((data) => {
+            this.$loadingDismiss();
             this.$navigateBack();
             bridge.$toast(data.msg);
         }).catch((response) => {
+            this.$loadingDismiss();
             bridge.$toast(response.msg);
         });
 

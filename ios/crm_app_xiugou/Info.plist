@@ -45,6 +45,13 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>wechat</string>
+		<string>weixin</string>
+		<string>alipay</string>
+		<string>alipayshare</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -96,17 +103,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-<!-- 白名单 -->
-<key>LSApplicationQueriesSchemes</key>
-<array>
-  <!-- 微信 URL Scheme 白名单-->
-  <string>wechat</string>
-  <string>weixin</string>
-  
-  <!-- 支付宝  URL Scheme 白名单-->
-  <string>alipay</string>
-  <string>alipayshare</string>
-  
-</array>
 </dict>
 </plist>

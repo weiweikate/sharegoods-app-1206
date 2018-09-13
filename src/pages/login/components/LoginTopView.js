@@ -17,7 +17,8 @@ import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
-const dismissKeyboard = require('dismissKeyboard')
+
+const dismissKeyboard = require('dismissKeyboard');
 
 class LoginTopViewModel {
     /*0代表验证码登录 1代表密码登录*/
@@ -228,24 +229,24 @@ export default class LoginTopView extends Component {
     };
 
     clickLoginBtn = () => {
-        if (!this.LoginModel.isCanClick){
+        if (!this.LoginModel.isCanClick) {
             return;
         }
 
         if (StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
             if (this.LoginModel.selectIndex === 0) {
-                this.props.loginClick(0,{
-                    phoneNumber:this.LoginModel.phoneNumber,
-                    code:this.LoginModel.vertifyCode,
-                    password:this.LoginModel.password,
-                })
+                this.props.loginClick(0, {
+                    phoneNumber: this.LoginModel.phoneNumber,
+                    code: this.LoginModel.vertifyCode,
+                    password: this.LoginModel.password
+                });
             } else {
                 if (StringUtils.checkPassword(this.LoginModel.password)) {
-                    this.props.loginClick(1,{
-                        phoneNumber:this.LoginModel.phoneNumber,
-                        code:this.LoginModel.vertifyCode,
-                        password:this.LoginModel.password,
-                    })
+                    this.props.loginClick(1, {
+                        phoneNumber: this.LoginModel.phoneNumber,
+                        code: this.LoginModel.vertifyCode,
+                        password: this.LoginModel.password
+                    });
                 } else {
                     bridge.$toast('密码格式不对');
                 }
