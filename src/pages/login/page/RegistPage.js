@@ -75,11 +75,11 @@ export default class RegistPage extends BasePage {
             systemVersion: this.params.systemVersion ? this.params.systemVersion : '',
             wechatVersion: ''
         }).then((data) => {
-            this.$loadingDismiss()
+            this.$loadingDismiss();
             this.$navigateBack();
             bridge.$toast(data.msg);
         }).catch((response) => {
-            this.$loadingDismiss()
+            this.$loadingDismiss();
             bridge.$toast(response.msg);
         });
 

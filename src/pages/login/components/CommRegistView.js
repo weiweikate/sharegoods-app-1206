@@ -91,7 +91,13 @@ export default class CommRegistView extends Component {
         return (
             <View style={{ backgroundColor: ColorUtil.Color_f7f7f7 }}>
                 <View style={{ backgroundColor: '#fff', marginTop: 10 }}>
-                    <View style={{ marginLeft: 30, marginRight: 30, marginTop: 60, flexDirection: 'row' }}>
+                    <View style={{
+                        marginLeft: 30,
+                        marginRight: 20,
+                        marginTop: 60,
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}>
                         <Text style={{ marginRight: 20 }}>
                             手机号
                         </Text>
@@ -110,9 +116,9 @@ export default class CommRegistView extends Component {
                     <CommSpaceLine style={[Styles.lineStyle, { marginLeft: 30, marginRight: 30 }]}/>
 
 
-                    <View style={{ marginTop: 40, height: 40, marginLeft: 30, marginRight: 30 }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <View style={{ flexDirection: 'row' }}>
+                    <View style={{ marginTop: 20, height: 40, marginLeft: 30, marginRight: 30 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={{ marginRight: 20 }}>
                                     验证码
                                 </Text>
@@ -147,8 +153,8 @@ export default class CommRegistView extends Component {
                     height: 50,
                     justifyContent: 'space-between'
                 }}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={{ marginLeft: 30, marginRight: 30, marginTop: 18 }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{ marginLeft: 30, marginRight: 30 }}>
                             新密码
                         </Text>
                         <TextInput
@@ -233,7 +239,7 @@ export default class CommRegistView extends Component {
     };
 
     loginClick = () => {
-        this.props.loginClick(this.registModel.phoneNumber,this.registModel.vertifyCode,this.registModel.password)
+        this.props.loginClick(this.registModel.phoneNumber, this.registModel.vertifyCode, this.registModel.password);
     };
 }
 
@@ -264,9 +270,13 @@ const Styles = StyleSheet.create(
         },
         lineStyle: {
             marginTop: 5
+
         },
         inputTextStyle: {
-            width: 130
+            marginLeft: 20,
+            width: 120,
+            fontSize: 14,
+            fontWeight: '400'
         }
     }
 );

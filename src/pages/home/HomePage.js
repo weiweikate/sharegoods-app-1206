@@ -6,6 +6,7 @@ import RouterMap from '../../RouterMap';
 import ViewPager from '../../components/ui/ViewPager';
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIImage from '../../components/ui/UIImage';
+const {px2dp} = ScreenUtils;
 
 const imageUrls = [
     'https://yanxuan.nosdn.127.net/2ac89fb96fe24a2b69cae74a571244cb.jpg?imageView&quality=75&thumbnail=750x0',
@@ -39,7 +40,7 @@ export default class HomePage extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.navbar}>
+                <View style={styles.navBar}>
                     <Image source={require('./res/icons/logo.png')} style={styles.logo}/>
                     <View style={styles.searchBox}>
                         <Image source={require('./res/icon_search.png')} style={styles.searchIcon}/>
@@ -54,20 +55,20 @@ export default class HomePage extends Component {
                 <ScrollView>
 
                     <ViewPager style={{
-                        height: 220,
+                        height: px2dp(220),
                         backgroundColor: 'rgba(255, 255, 255, 0.7)',
                         width: ScreenUtils.width
                     }}
                                arrayData={imageUrls}
                                renderItem={(item) => this.renderViewPageItem(item)}
                                dotStyle={{
-                                   height: 5,
-                                   width: 5,
-                                   borderRadius: 5,
+                                   height: px2dp(5),
+                                   width: px2dp(5),
+                                   borderRadius: px2dp(5),
                                    backgroundColor: '#ffffff',
                                    opacity: 0.4
                                }}
-                               activeDotStyle={{ height: 5, width: 30, borderRadius: 5, backgroundColor: '#ffffff' }}
+                               activeDotStyle={{ height: px2dp(5), width: px2dp(30), borderRadius: px2dp(5), backgroundColor: '#ffffff' }}
                                autoplay={true}
                     />
 
@@ -114,21 +115,21 @@ export default class HomePage extends Component {
                         </TouchableWithoutFeedback>
                     </View>
 
-                    <View style={styles.box}>
+                    <View style={[styles.box,{paddingTop:10,paddingBottom:10}]}>
                         <View style={styles.featureBox}>
                             <View style={[styles.featureBox1]}>
-                                <Text>1</Text>
+                                <Image source={{uri:'https://yanxuan.nosdn.127.net/b72c6486bc681f7b0dcb87d9af0ab1bb.png'}} style={styles.featureBox1Image}></Image>
                             </View>
                             <View style={[styles.featureBox2]}>
-                                <Text>2</Text>
+                                <Image source={{uri:'https://yanxuan.nosdn.127.net/957c8d117473d103b52ff694f372a346.png'}} style={styles.featureBox2Image}></Image>
                             </View>
                             <View style={[styles.featureBox3]}>
-                                <Text>3</Text>
+                                <Image source={{uri:'https://yanxuan.nosdn.127.net/e3bcfdff30c97ba87d510da8d9da5d09.png'}} style={styles.featureBox2Image}></Image>
                             </View>
                         </View>
                     </View>
 
-                    <View style={styles.demoBox}>
+                    <View style={[styles.box]}>
                         {
                             DemoList.map(item => {
                                 const { title, uri, params } = item;
@@ -160,7 +161,7 @@ export default class HomePage extends Component {
         return (
             <UIImage
                 source={{ uri: item }}
-                style={{ height: 220, width: ScreenUtils.width }}
+                style={{ height: px2dp(220), width: ScreenUtils.width }}
                 onPress={() => {
 
                 }}
@@ -182,20 +183,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         marginBottom: 10,
     },
-    rowBox: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        height: 200,
-    },
-    imgBox: {},
-    colBox: {
-        height: 180,
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-    },
-
     // header
-    navbar: {
+    navBar: {
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
@@ -231,13 +220,6 @@ const styles = StyleSheet.create({
         height: 16.7,
         resizeMode: 'stretch'
     },
-    voiceIcon: {
-        marginLeft: 5,
-        marginRight: 8,
-        width: 15,
-        height: 20,
-        resizeMode: 'stretch'
-    },
     inputText: {
         flex: 1,
         backgroundColor: 'transparent',
@@ -250,29 +232,24 @@ const styles = StyleSheet.create({
     // menu
     menuView: {
         flexDirection: 'row',
-        paddingTop: 10,
+        paddingTop: ScreenUtils.px2dp(10),
         backgroundColor: '#ffffff',
-        paddingBottom: 10,
-        marginBottom: 10,
+        paddingBottom: ScreenUtils.px2dp(10),
+        marginBottom: ScreenUtils.px2dp(10),
     },
     iconImg: {
-        width: 45,
-        height: 45,
-        marginBottom: 5
+        width: ScreenUtils.px2dp(48),
+        height: ScreenUtils.px2dp(48),
+        marginBottom: ScreenUtils.px2dp(5),
     },
     showText: {
         fontSize: 12
     },
-
-    // demoBox
-    demoBox: {
-        backgroundColor: '#ffffff',
-    },
     featureBox: {
         position: 'relative',
         height: ScreenUtils.px2dp(200),
-        marginLeft:ScreenUtils.px2dp(15),
-        marginRight:ScreenUtils.px2dp(15),
+        marginLeft:ScreenUtils.px2dp(12),
+        marginRight:ScreenUtils.px2dp(12),
     },
     featureBox1: {
         position: 'absolute',
@@ -280,7 +257,10 @@ const styles = StyleSheet.create({
         top: 0,
         width: ScreenUtils.px2dp(185),
         height: ScreenUtils.px2dp(200),
-        backgroundColor: 'red',
+    },
+    featureBox1Image:{
+        width: ScreenUtils.px2dp(185),
+        height: ScreenUtils.px2dp(200),
         borderRadius:5,
     },
     featureBox2: {
@@ -289,7 +269,10 @@ const styles = StyleSheet.create({
         top: 0,
         width: ScreenUtils.px2dp(153),
         height: ScreenUtils.px2dp(96),
-        backgroundColor: '#888888',
+    },
+    featureBox2Image:{
+        width: ScreenUtils.px2dp(153),
+        height: ScreenUtils.px2dp(96),
         borderRadius:5,
     },
     featureBox3: {
@@ -298,8 +281,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         width: ScreenUtils.px2dp(153),
         height: ScreenUtils.px2dp(96),
-        backgroundColor: '#888888',
-        borderRadius:5,
     },
 
     // 行样式
@@ -310,6 +291,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomWidth: StyleSheet.hairlineWidth,
         justifyContent: 'space-between',
-        borderBottomColor: '#dedede'
-    }
+    },
+    eventRowsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+        marginHorizontal: 15
+    },
 });
