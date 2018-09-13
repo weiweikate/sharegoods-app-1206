@@ -14,6 +14,7 @@ import android.view.WindowManager;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.bridge.Promise;
+import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.sharegoods.event.CaptureScreenImageEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.ScanQRCodeEvent;
@@ -55,6 +56,8 @@ public class MainActivity extends ReactActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
+        // 更改状态栏字体颜色
+        StatusBarUtils.setLightMode(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -55,17 +55,14 @@ export default class AccountSettingPage extends BasePage {
         });
     };
     _toEditPwd = () => {
-        this.$navigate('mine/account/AccountSettingPage');
+        this.$navigate('mine/account/EditPhonePwdPage');
     };
     _toEditPayPwd = () => {
-        this.$navigate('mine/account/AccountSettingPage');
+        this.$navigate('mine/account/EditPayPwdPage');
     };
     _toEditWechat = (wechat) => {
-        this.$navigate('mine/account/AccountSettingPage', {
-            oldWechat: wechat
-        });
-    };
 
+    };
 
 }
 

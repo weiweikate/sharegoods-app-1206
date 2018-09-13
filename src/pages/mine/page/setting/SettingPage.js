@@ -89,10 +89,10 @@ class SettingPage extends BasePage {
                 <TouchableOpacity style={{
                     marginTop: 42,
                     backgroundColor: color.red,
-                    width: ScreenUtils.width - 96,
+                    width: ScreenUtils.width - 84,
                     height: 48,
-                    marginLeft: 48,
-                    marginRight: 48,
+                    marginLeft: 42,
+                    marginRight: 42,
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: 5

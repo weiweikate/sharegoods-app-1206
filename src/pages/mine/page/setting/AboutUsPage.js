@@ -21,7 +21,7 @@ export default class AboutUsPage extends BasePage {
 
     _render() {
         return <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
-            <Image source={Logo} style={{ height: 70, width: 70, marginTop: 40, resizeMethod: 'center' }}/>
+            <Image source={Logo} style={{ height: 70, width: 70, marginTop: 40 }}/>
             <Text style={{ color: '#666666', fontSize: 12, marginTop: 10 }}>当前版本：{this.state.version}</Text>
             <Text style={{ color: '#222222', fontSize: 15, marginTop: 94 }}>公司简介</Text>
             <Text style={{
