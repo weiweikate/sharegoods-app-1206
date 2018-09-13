@@ -187,10 +187,10 @@ class SettingPage extends BasePage {
     }
 
     jumpToAddressManagePage = () => {
-        this.$navigate('mine/MyAddressPage');
+        this.$navigate('mine/address/AddressManagerPage');
     };
     jumptToAboutUsPage = () => {
-        this.navigate('setting/AboutUsPage');
+        this.$navigate('mine/setting/AboutUsPage');
     };
     //账户设置
     jumpToAccountSettingPage = () => {

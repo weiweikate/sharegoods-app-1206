@@ -8,6 +8,9 @@ import RefreshList from './RefreshList';
 import HotSearch from './HotSearch';
 import RecentSearch from './RecentSearch';
 import SearchInput from './SearchInput';
+import TakePhoneModal from './TakePhotoModal';
+import ExchangeTypeModal from './ExchangeTypeModal';
+import AddPhotos from './AddPhotos';
 
 export {
     UIImage,
@@ -19,5 +22,8 @@ export {
     RefreshList,
     HotSearch,
     RecentSearch,
-    SearchInput
+    SearchInput,
+    TakePhoneModal,
+    ExchangeTypeModal,
+    AddPhotos
 };

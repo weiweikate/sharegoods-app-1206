@@ -18,29 +18,38 @@ class NoMoreClick extends Component {
 
     }
 
-    componentWillUnMount() {
+    componentWillUnmount() {
         this.timer && clearTimeout(this.timer)
     }
 
 
-    ToPress = async () => {
-        const {onPress} = this.props;
-        if(onPress){
-            onPress && onPress();
-            await this.setState({isDisable: true})
-            this.timer = setTimeout(async () => {
-                await this.setState({isDisable: false})
-            }, 500)
+    // ToPress = async () => {
+    //     const {onPress} = this.props;
+    //     if(onPress){
+    //         onPress && onPress();
+    //         await this.setState({isDisable: true})
+    //         this.timer = setTimeout(async () => {
+    //             await this.setState({isDisable: false})
+    //         }, 500)
+    //     }
+    // };
+    ToPress =()=>{
+        if(this.timer){
+            return;
         }
+        this.timer=setTimeout(()=>{
+            clearTimeout(this.timer);
+            this.timer=null;
+        },1500);
+        this.props.onPress();
     }
 
     render() {
-        const { ...attributes} = this.props
+        const { ...attributes} = this.props;
         return (
             <TouchableOpacity
-                disabled={this.state.isDisable}
                 onPress={this.ToPress}{...attributes}>
-                {this.props.children}
+                {/*{this.props.children}*/}
             </TouchableOpacity>
         )
     }
