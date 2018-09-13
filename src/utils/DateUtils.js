@@ -4,7 +4,7 @@
  * @param fmt 目标字符串格式，支持的字符有：y,M,d,q,w,H,h,m,S，默认：yyyy-MM-dd HH:mm:ss
  * @returns 返回格式化后的日期字符串
  */
-function formatDate(date, fmt) {
+export function formatDate(date, fmt) {
     fmt = fmt || 'yyyy-MM-dd HH:mm:ss';
     date = date || new Date();
     date = typeof date === 'number' ? new Date(date) : date;
