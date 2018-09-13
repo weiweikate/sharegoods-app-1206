@@ -1,6 +1,6 @@
 {
     "showDebugPanel": true,
-    "envType": "dev_mock",
+    "envType": "测试环境",
     "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
     "env": {
         "dev_mock": {
@@ -37,7 +37,7 @@
         },
         "qa": {
             "name": "测试环境",
-            "host": "https://testapi.sharegoodmall.com/"
+            "host": "https://testapi.sharegoodsmall.com/gateway"
         },
         "online": {
             "name": "生产环境",
