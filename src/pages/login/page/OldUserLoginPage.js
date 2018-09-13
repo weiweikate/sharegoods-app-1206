@@ -86,7 +86,7 @@ export default class OldUserLoginPage extends BasePage {
                         <Image style={{ width: 79, height: 79 }} source={LoginAndRegistRes.logoImage}/>
                     </View>
 
-                    <View style={{ marginLeft: 30, marginRight: 30, marginTop: 60 }}>
+                    <View style={{ marginLeft: 20, marginRight: 30, marginTop: 60 }}>
                         <TextInput
                             style={Styles.inputTextStyle}
                             value={this.oldUserLoginModel.phoneNumber}
@@ -99,8 +99,8 @@ export default class OldUserLoginPage extends BasePage {
                         />
                         <CommSpaceLine style={Styles.lineStyle}/>
                     </View>
-                    <View style={{ marginLeft: 30, marginRight: 30, marginTop: 40 }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <View style={{ marginLeft: 20, marginRight: 30, marginTop: 20 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <TextInput
                                 style={Styles.inputTextStyle}
                                 value={this.oldUserLoginModel.password}
@@ -150,14 +150,14 @@ export default class OldUserLoginPage extends BasePage {
                     source={loginAndRegistRes.loginBottomImage}
                     resizeMode='cover'/>
                 <Text
-                style={{
-                    width:ScreenUtils.width,
-                    position:'absolute',
-                    bottom:90,
-                    fontSize:12,
-                    color:ColorUtil.Color_666666,
-                    textAlign:'center'
-                }}>
+                    style={{
+                        width: ScreenUtils.width,
+                        position: 'absolute',
+                        bottom: 90,
+                        fontSize: 12,
+                        color: ColorUtil.Color_666666,
+                        textAlign: 'center'
+                    }}>
                     客服电话:400-888-8888
                 </Text>
             </View>
@@ -204,7 +204,13 @@ const Styles = StyleSheet.create(
             backgroundColor: ColorUtil.mainRedColor
         },
         lineStyle: {
-            marginTop: 10
+            marginTop: 3,
+            marginLeft: 10
+        }, inputTextStyle: {
+            marginLeft: 20,
+            width: 120,
+            fontSize: 14,
+            fontWeight: '400'
         }
     }
 );
