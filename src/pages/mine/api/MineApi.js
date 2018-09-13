@@ -11,12 +11,10 @@ const api = {
     codeLogin: '/user/userLogin/codeLogin',
     //密码登陆
     passwordLogin: '/user/userLogin/passwordLogin',
-    //app微信登陆
-    appWechatLogin: '/user/userLogin/appWechatLogin'
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 
-const LoginAPI = ApiUtils(api);
+const MineAPI = ApiUtils(api);
 
-export default LoginAPI;
+export default MineAPI;

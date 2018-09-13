@@ -20,7 +20,8 @@ export default class RegistPage extends BasePage {
     $navigationBarOptions = {
         title: '注册'
     };
-    constructor(props){
+
+    constructor(props) {
         super(props);
         this.params = this.props.navigation.state.params;
     }
@@ -31,7 +32,7 @@ export default class RegistPage extends BasePage {
                 <CommRegistView
                     // config={viewType:0}
                     viewType={0}
-                    loginClick={(phone, code, password)=>this.clickNext(phone, code, password)}
+                    loginClick={(phone, code, password) => this.clickNext(phone, code, password)}
                 />
                 <View style={{
                     alignItems: 'center',
@@ -41,10 +42,10 @@ export default class RegistPage extends BasePage {
                     height: 11,
                     width: ScreenUtils.width
                 }}>
-                    <TouchableOpacity/>
-                    <Image source={LoginAndRegistRes.openEyeImage}
-                           style={{ width: 11, height: 11, marginRight: 5 }}/>
-                    <TouchableOpacity/>
+                    <TouchableOpacity>
+                        <Image source={LoginAndRegistRes.openEyeImage}
+                               style={{ width: 11, height: 11, marginRight: 5 }}/>
+                    </TouchableOpacity>
                     <Text style={{ fontSize: 11, color: ColorUtil.Color_666666 }}>
                         阅读并接受
                     </Text>
@@ -63,30 +64,21 @@ export default class RegistPage extends BasePage {
 
     //点击下一步
     clickNext = (phone, code, password) => {
-
-
-       LoginApi.findMemberByPhone({
-            code:code,
-            device:this.params.device?this.params.device:'',
-            inviteId:'33',
-            openid:this.params.openid?this.params.openid:'',
-            password:password,
-            phone:phone,
-            systemVersion:this.params.systemVersion?this.params.systemVersion:'',
-            wechatVersion:'meiyou'
-        }).then((data)=>{
-            console.log(data);
-            if (data.code === 10000){
-              this.$navigateBack();
-              bridge.$toast('注册成功');
-              
-            } else {
-                bridge.$toast(data.msg);
-            }
-
-        }).catch((response)=>{
-            console.warn(response);
-        })
+        LoginApi.findMemberByPhone({
+            code: code,
+            device: this.params.device ? this.params.device : '',
+            inviteId: '',//邀请id
+            openid: this.params.openid ? this.params.openid : '',
+            password: password,
+            phone: phone,
+            systemVersion: this.params.systemVersion ? this.params.systemVersion : '',
+            wechatVersion: ''
+        }).then((data) => {
+            this.$navigateBack();
+            bridge.$toast(data.msg);
+        }).catch((response) => {
+            bridge.$toast(response.msg);
+        });
 
     };
 }

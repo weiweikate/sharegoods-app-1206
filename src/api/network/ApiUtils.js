@@ -9,7 +9,7 @@ const loginAction = NavigationActions.navigate({
 export default function ApiUtils(Urls) {
     let result = {}, list = [];
 
-    Object.keys(Urls).forEach(function (name) {
+    Object.keys(Urls).forEach(function(name) {
         let value = Urls[name];
         if (typeof value === 'string') {
             list.push({
@@ -24,9 +24,9 @@ export default function ApiUtils(Urls) {
             });
         }
     });
-    list.forEach(function (item) {
-        let name = item.name, url = item.uri, method = item.method || 'post',filter = item.filter;
-        result[name] = async function (params, config = {}) {
+    list.forEach(function(item) {
+        let name = item.name, url = item.uri, method = item.method || 'post', filter = item.filter;
+        result[name] = async function(params, config = {}) {
             const response = await HttpUtils[method](url, params);
             // code为0表明请求正常
             if (!response.code || response.code === 10000) {
@@ -39,9 +39,7 @@ export default function ApiUtils(Urls) {
                     global.$navigator && global.$navigator.dispatch(loginAction);
                 }
                 return Promise.reject(response);
-
             }
-
         };
     });
 
