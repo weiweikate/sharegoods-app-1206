@@ -11,6 +11,8 @@ const api = {
     codeLogin: '/user/userLogin/codeLogin',
     //密码登陆
     passwordLogin: '/user/userLogin/passwordLogin',
+    //app微信登陆
+    appWechatLogin: '/user/userLogin/appWechatLogin'
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';

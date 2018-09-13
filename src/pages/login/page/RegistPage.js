@@ -73,9 +73,9 @@ export default class RegistPage extends BasePage {
             phone: phone,
             systemVersion: this.params.systemVersion ? this.params.systemVersion : '',
             wechatVersion: ''
-        }).then(() => {
+        }).then((data) => {
             this.$navigateBack();
-            bridge.$toast('注册成功');
+            bridge.$toast(data.msg);
         }).catch((response) => {
             bridge.$toast(response.msg);
         });

@@ -17,6 +17,8 @@ import UIText from '../../../../components/ui/UIText';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import arrow_right from '../../../mine/res/customerservice/icon_06-03.png';
+import user from '../../../../model/user';
+
 
 class SettingPage extends BasePage {
     constructor(props) {
@@ -151,6 +153,7 @@ class SettingPage extends BasePage {
                     }}
                     yes={() => {
                         this.setState({ isShowLoginOutModal: false });
+                        user.clearUserInfo();
                         // // Toast.showLoading();
                         //  SettingApi.exitLogin({}).then((response)=>{
                         //      Toast.hiddenLoading();
