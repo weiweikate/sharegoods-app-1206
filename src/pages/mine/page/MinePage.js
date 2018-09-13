@@ -138,14 +138,14 @@ export default class MinePage extends BasePage {
                             justifyContent: 'space-between',
                             marginTop: 11
                         }}>
-                            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}
+                            <NoMoreClick style={{ flexDirection: 'row', alignItems: 'center' }}
                                               onPress={this.jumpToUserInformationPage}>
                                 <UIText value={this.state.name}
                                         style={{ fontSize: 15, color: '#ffffff' }}/>
                                 <Image source={whiteArrowRight}
                                        style={{ height: 14, marginLeft: 12 }}
                                        resizeMode={'contain'}/>
-                            </TouchableOpacity>
+                            </NoMoreClick>
                             <ImageBackground style={{ width: 53, height: 14, alignItems: 'center', marginTop: 2 }}
                                              source={levelBg}>
                                 <Text style={{ fontSize: 9, color: '#ffa351' }}>V3</Text>

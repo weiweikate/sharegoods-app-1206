@@ -228,12 +228,24 @@ export default class LoginTopView extends Component {
     };
 
     clickLoginBtn = () => {
+        if (!this.LoginModel.isCanClick){
+            return;
+        }
+
         if (StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
             if (this.LoginModel.selectIndex === 0) {
-
+                this.props.loginClick(0,{
+                    phoneNumber:this.LoginModel.phoneNumber,
+                    code:this.LoginModel.vertifyCode,
+                    password:this.LoginModel.password,
+                })
             } else {
                 if (StringUtils.checkPassword(this.LoginModel.password)) {
-
+                    this.props.loginClick(1,{
+                        phoneNumber:this.LoginModel.phoneNumber,
+                        code:this.LoginModel.vertifyCode,
+                        password:this.LoginModel.password,
+                    })
                 } else {
                     bridge.$toast('密码格式不对');
                 }
@@ -241,11 +253,7 @@ export default class LoginTopView extends Component {
         } else {
             bridge.$toast('手机格式不对');
         }
-        this.props.loginClick(this.LoginModel.selectIndex,{
-            phoneNumber:this.LoginModel.phoneNumber,
-            code:this.LoginModel.vertifyCode,
-            password:this.LoginModel.password,
-        })
+
     };
 }
 

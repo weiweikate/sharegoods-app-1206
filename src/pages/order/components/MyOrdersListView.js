@@ -115,6 +115,15 @@ class MyOrdersListView extends Component {
         };
     }
 
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: this._reload
+            }
+        };
+    };
     renderItem = ({ item, index }) => {
         console.log(item);
         return (
@@ -165,7 +174,7 @@ class MyOrdersListView extends Component {
                     }}
                     // yes={()=>{
                     //     this.setState({isShowDeleteOrderModal:false})
-                    //     if (this.state.menu.id==7){
+                    //     if (this.state.menu.id===7){
                     //         Toast.showLoading()
                     //         OrderApi.deleteOrder({orderId:this.state.viewData[this.state.index].id}).then((response)=>{
                     //             Toast.hiddenLoading()
@@ -178,7 +187,7 @@ class MyOrdersListView extends Component {
                     //         }).catch(e=>{
                     //             NativeModules.commModule.toast(e)
                     //         });
-                    //     }else if(this.state.menu.id==9){
+                    //     }else if(this.state.menu.id===9){
                     //         Toast.showLoading()
                     //         OrderApi.deleteClosedOrder({orderId:this.state.viewData[this.state.index].id}).then((response)=>{
                     //             Toast.hiddenLoading()
@@ -269,7 +278,7 @@ class MyOrdersListView extends Component {
     };
     getList = (data) => {
         if (StringUtils.isNoEmpty(data)) {
-            let arrData = this.state.currentPage == 1 ? [] : this.state.viewData;
+            let arrData = this.state.currentPage === 1 ? [] : this.state.viewData;
             data.data.map((item, index) => {
                 arrData.push({
                     id: item.id,
@@ -299,7 +308,7 @@ class MyOrdersListView extends Component {
         //     page:this.state.currentPage,
         //     pageSize:constants.PAGESIZE
         // }
-        Toast.showLoading();
+        // this.$loadingShow();
         switch (this.state.pageStatus) {
             case 0:
                 // OrderApi.queryAllOrderPageList(params).then((response)=>{
@@ -396,7 +405,7 @@ class MyOrdersListView extends Component {
     //当父组件Tab改变的时候让子组件更新
     componentWillReceiveProps(nextProps) {
         if (nextProps.selectTab < 8) {
-            console.log(nextProps.selectTab + '=======================');
+            console.log(nextProps.selectTab + '==================================');
 
         }
     }

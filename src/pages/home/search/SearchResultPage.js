@@ -1,13 +1,19 @@
 import React from 'react';
 import {
     View,
-    FlatList
+    FlatList,
+    Image,
+    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ResultSearchNav from './components/ResultSearchNav';
 import ResultSegmentView from './components/ResultSegmentView';
 import ResultHorizontalRow from './components/ResultHorizontalRow';
 import ResultVerticalRow from './components/ResultVerticalRow';
+import toGwc from './res/toGwc.png';
+import toTop from './res/toTop.png';
+import RouterMap from '../../../RouterMap';
+
 
 export default class SearchResultPage extends BasePage {
 
@@ -37,13 +43,20 @@ export default class SearchResultPage extends BasePage {
 
     };
     _onPressAtIndex = () => {
-
+        this.$navigate(RouterMap.ProductDetailPage);
     };
     _storeProduct = () => {
 
     };
 
-    _renderItem = (item) => {
+    _onPressToGwc = () => {
+
+    };
+    _onPressToTop = () => {
+        this.refs.FlatListShow.scrollToOffset({ offset: 0 });
+    };
+
+    _renderItem = () => {
         if (this.state.isHorizontal) {
             return (<ResultHorizontalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}/>);
         } else {
@@ -59,13 +72,24 @@ export default class SearchResultPage extends BasePage {
                                  changeLayout={this._changeLayout} isHorizontal={this.state.isHorizontal}/>
                 <ResultSegmentView onPressAtIndex={this._onPressAtIndex}/>
                 <FlatList
+                    ref='FlatListShow'
                     style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
                     renderItem={this._renderItem}
+                    showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => `${index}`}
                     numColumns={this.state.isHorizontal ? 2 : 1}
                     key={this.state.isHorizontal ? 'hShow' : 'vShow'}
-                    data={[{}, {}, {}, {}]}>
+                    data={[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]}>
                 </FlatList>
+
+                <View style={{ position: 'absolute', right: 15, bottom: 15 }}>
+                    <TouchableWithoutFeedback onPress={this._onPressToGwc}>
+                        <Image source={toGwc}/>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={this._onPressToTop}>
+                        <Image style={{ marginTop: 5 }} source={toTop}/>
+                    </TouchableWithoutFeedback>
+                </View>
             </View>
         );
     }
