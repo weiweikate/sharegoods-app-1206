@@ -102,7 +102,51 @@ class MyOrdersListView extends Component {
                         }
                     ],
                     pickedUp: 2//2为自提，1为快递
-                }
+                },
+                {
+                    id: 49,
+                    orderNum: '2018070250371039050793800',
+                    expressNo: '',
+                    orderCreateTime: 1530470345000,
+                    orderStatus: 4,
+                    freightPrice: 2092,
+                    totalPrice: 3000,
+                    orderProduct: [
+                        {
+                            id: 52,
+                            productId: 2,
+                            productName: 'Alixe',
+                            spec: '175kg-22cm-狂野',
+                            imgUrl: 'http://juretest.oss-cn-hangzhou.aliyuncs.com/jure/jure_crm/test/362d0cfb-b195-4005-8d89-4d436e5d75f4_1530869113480.jpg',
+                            price: 1600,
+                            num: 2,
+                            status: 1
+                        }
+                    ],
+                    pickedUp: 2//2为自提，1为快递
+                },
+                {
+                    id: 49,
+                    orderNum: '2018070250371039050793800',
+                    expressNo: '',
+                    orderCreateTime: 1530470345000,
+                    orderStatus: 5,
+                    freightPrice: 2092,
+                    totalPrice: 3000,
+                    orderProduct: [
+                        {
+                            id: 52,
+                            productId: 2,
+                            productName: 'Alixe',
+                            spec: '175kg-22cm-狂野',
+                            imgUrl: 'http://juretest.oss-cn-hangzhou.aliyuncs.com/jure/jure_crm/test/362d0cfb-b195-4005-8d89-4d436e5d75f4_1530869113480.jpg',
+                            price: 1600,
+                            num: 2,
+                            status: 1
+                        }
+                    ],
+                    pickedUp: 2//2为自提，1为快递
+                },
             ],
             pageStatus: this.props.pageStatus,
             isEmpty: false,
@@ -144,7 +188,6 @@ class MyOrdersListView extends Component {
             />
         );
     };
-    _keyExtractor = (item, index) => index;
 
     render() {
         return (
