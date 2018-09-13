@@ -54,35 +54,38 @@ class SettingPage extends BasePage {
             <View style={styles.container}>
                 {this.renderModal()}
                 {this.renderWideLine()}
-                <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAccountSettingPage()}>
-                    <UIText value={'账号与安全'} style={styles.blackText}/>
-                    <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
-                </TouchableOpacity>
-                {this.renderLine()}
-                <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAddressManagePage()}>
-                    <UIText value={'收货地址管理'} style={styles.blackText}/>
-                    <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
-                </TouchableOpacity>
-                {this.renderLine()}
-                <TouchableOpacity style={styles.viewStyle}>
-                    <UIText value={'消息推送'} style={styles.blackText}/>
-                    <Switch value={this.state.value} onValueChange={(value) => {
-                        this.setState({
-                            value: value,
-                            changeTxt: value ? 'switch 打开了' : 'switch 关闭了'
-                        });
-                    }}/>
-                </TouchableOpacity>
-                {this.renderLine()}
-                <TouchableOpacity style={styles.viewStyle} onPress={() => this.clearAllCaches()}>
-                    <UIText value={'清除缓存'} style={styles.blackText}/>
-                    <UIText value={desc} style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#666666' }}/>
-                </TouchableOpacity>
-                {this.renderLine()}
-                <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
-                    <UIText value={'关于我们'} style={styles.blackText}/>
-                    <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
-                </TouchableOpacity>
+                <View style={{ backgroundColor: 'white' }}>
+                    <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAccountSettingPage()}>
+                        <UIText value={'账号与安全'} style={styles.blackText}/>
+                        <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                    </TouchableOpacity>
+                    {this.renderLine()}
+                    <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAddressManagePage()}>
+                        <UIText value={'收货地址管理'} style={styles.blackText}/>
+                        <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                    </TouchableOpacity>
+                    {this.renderLine()}
+                    <TouchableOpacity style={styles.viewStyle}>
+                        <UIText value={'消息推送'} style={styles.blackText}/>
+                        <Switch value={this.state.value} onValueChange={(value) => {
+                            this.setState({
+                                value: value,
+                                changeTxt: value ? 'switch 打开了' : 'switch 关闭了'
+                            });
+                        }}/>
+                    </TouchableOpacity>
+                    {this.renderLine()}
+                    <TouchableOpacity style={styles.viewStyle} onPress={() => this.clearAllCaches()}>
+                        <UIText value={'清除缓存'} style={styles.blackText}/>
+                        <UIText value={desc}
+                                style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#666666' }}/>
+                    </TouchableOpacity>
+                    {this.renderLine()}
+                    <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
+                        <UIText value={'关于我们'} style={styles.blackText}/>
+                        <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                    </TouchableOpacity>
+                </View>
                 <TouchableOpacity style={{
                     marginTop: 42,
                     backgroundColor: color.red,
@@ -136,7 +139,7 @@ class SettingPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 0.5, backgroundColor: '#eeeeee', paddingLeft: 21, paddingRight: 23 }}/>
+            <View style={{ height: 0.5, backgroundColor: '#eeeeee', marginLeft: 15, marginRight: 15 }}/>
         );
     };
     toLoginOut = () => {
