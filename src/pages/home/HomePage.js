@@ -16,6 +16,14 @@ const imageUrls = [
 ];
 const DemoList = [
     {
+        title: '用户协议',
+        uri: 'HtmlPage',
+        params:{
+            title:'用户协议内容',
+            uri:'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
+        }
+    },
+    {
         title: '登录页面',
         uri: 'login/login/LoginPage'
     },

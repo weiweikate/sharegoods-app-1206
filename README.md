@@ -110,6 +110,15 @@ this.$loadingShow('i am a message')
 - `$NavBarRightPressed` 右侧点击事件
 
 
+跳转到某一h5页面
+
+```javascript
+// 注意 调用$navigate 需继承BasePage
+this.$navigate('HtmlPage', {
+    title: '用户协议内容',
+    uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
+});
+```
 #### NetFailedView 网络数据出错组件
 
 netFailedProps

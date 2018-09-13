@@ -16,8 +16,8 @@
 
 #define KQiYuKey         @"db5a6f7eb0a3a8542e8ea36957e9122a" //七鱼key
 
-#define KWechatAppKey    @"wxf5ab8d9143aa38e9"  //微信key
-#define KWechatAppSecret @"3252881956221212770d73a7995d057d"  //微信secret
+#define KWechatAppKey    @"wx401bc973f010eece"  //微信key
+#define KWechatAppSecret @"405dede82bb1c57e0b63056c8d2274c1"  //微信secret
 #define KUmSocialAppkey  @"5b73de76f43e4807ff000024"  //友盟key
 
 

@@ -19,12 +19,17 @@ import shopCart from './pages/shopCart';
 import spellShop from './pages/spellShop';
 import login from './pages/login';
 import order from './pages/order';
+import htmlView from './components/web/HtmlView';
+
 const Router = {
     Tab: {
         screen: TabNav,
         navigationOptions: ({ navigation }) => ({
             header: null
         })
+    },
+    HtmlPage: {
+        screen: htmlView
     }
 };
 
