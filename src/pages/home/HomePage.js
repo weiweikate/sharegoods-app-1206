@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
     Text, View, ScrollView, TouchableHighlight, StyleSheet
 } from 'react-native';
+import RouterMap from '../../RouterMap';
 
 
 const DemoList = [
@@ -18,7 +19,7 @@ const DemoList = [
     },
     {
         title: '搜索页面',
-        uri: 'home/search/SearchPage'
+        uri: RouterMap.SearchPage,
     }
 ];
 export default class HomePage extends Component {

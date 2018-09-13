@@ -28,7 +28,7 @@ export default class SearchBar extends Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress = {this.props.onPressAtIndex}>
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={[styles.container]}>
                         <Image style={styles.img}/>

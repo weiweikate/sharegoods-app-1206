@@ -12,6 +12,7 @@ import ResultHorizontalRow from './components/ResultHorizontalRow';
 import ResultVerticalRow from './components/ResultVerticalRow';
 import toGwc from './res/toGwc.png';
 import toTop from './res/toTop.png';
+import RouterMap from '../../../RouterMap';
 
 
 export default class SearchResultPage extends BasePage {
@@ -42,25 +43,25 @@ export default class SearchResultPage extends BasePage {
 
     };
     _onPressAtIndex = () => {
-
+        this.$navigate(RouterMap.ProductDetailPage);
     };
     _storeProduct = () => {
 
-    };
-
-    _renderItem = (item) => {
-        if (this.state.isHorizontal) {
-            return (<ResultHorizontalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}/>);
-        } else {
-            return (<ResultVerticalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}/>);
-        }
     };
 
     _onPressToGwc = () => {
 
     };
     _onPressToTop = () => {
-        this.refs.FlatListShow.scrollToOffset({offset:0});
+        this.refs.FlatListShow.scrollToOffset({ offset: 0 });
+    };
+
+    _renderItem = () => {
+        if (this.state.isHorizontal) {
+            return (<ResultHorizontalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}/>);
+        } else {
+            return (<ResultVerticalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}/>);
+        }
     };
 
     _render() {
