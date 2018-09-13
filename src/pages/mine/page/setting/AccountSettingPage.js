@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View, Text
 } from 'react-native';
+import BasePage from '../../../../BasePage';
 
-export default class AccountSettingPage extends Component {
+export default class AccountSettingPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,7 +12,7 @@ export default class AccountSettingPage extends Component {
         };
     }
 
-    render() {
+    _render() {
         return (
             <View>
                 <Text>asdfsadfasdfas</Text>

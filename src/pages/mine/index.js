@@ -5,7 +5,8 @@ import Coupons from './page/coupons';
 import helper from './page/helper';
 import AddressManagerPage from './page/myaddress/AddressManagerPage';
 import SettingPage from './page/setting/SettingPage';
-import Myaddress from './page/myaddress';
+import setting from './page/setting';
+import MyAddress from './page/myaddress';
 
 export default {
     moduleName: 'mine',    //模块名称
@@ -17,6 +18,7 @@ export default {
         helper,
         AddressManagerPage,
         SettingPage,
-        Myaddress
+        setting,
+        MyAddress
     }
 };
