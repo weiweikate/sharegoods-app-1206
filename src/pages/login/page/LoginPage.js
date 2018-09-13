@@ -113,6 +113,7 @@ export default class LoginPage extends BasePage {
     };
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
+        this.$loadingShow();
 
         if (loginType === 0) {
             LoginAPI.codeLogin({
@@ -126,12 +127,14 @@ export default class LoginPage extends BasePage {
                 wechatCode: '',
                 wechatVersion: ''
             }).then((data) => {
+                this.$loadingDismiss();
                 console.log(data);
                 UserModel.saveUserInfo(data.data);
                 bridge.$toast('登陆成功');
                 // this.$navigateBack('Tab')
                 this.$navigateBack();
             }).catch((data) => {
+                this.$loadingDismiss();
                 console.warn(data);
                 bridge.$toast(data.msg);
             });
@@ -147,11 +150,13 @@ export default class LoginPage extends BasePage {
                 wechatCode: '',
                 wechatVersion: ''
             }).then((data) => {
+                this.$loadingDismiss();
                 console.log(data);
                 UserModel.saveUserInfo(data.data);
                 bridge.$toast('登陆成功');
                 this.$navigateBack();
             }).catch((data) => {
+                this.$loadingDismiss();
                 console.warn(data);
                 bridge.$toast(data.msg);
             });
