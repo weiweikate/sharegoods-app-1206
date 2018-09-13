@@ -6,6 +6,7 @@ import {
     Image,
     TouchableOpacity,
     ListView,TouchableHighlight,
+    TextInput as RNTextInput,
 
 } from 'react-native'
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -125,43 +126,57 @@ export  default class ShopCartPage extends BasePage{
                     <View style={styles.validContextContainer}>
                         <View>
                             <UIText
-                                value={data.name}
+                                // value={data.name}
+                                value={'测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试'}
+                                numberOfLines={2}
                                 style={{fontFamily: "PingFang-SC-Medium", fontSize: 13, lineHeight: 18, color: "#222222"}}
                             />
+
                             <UIText
-                                value={data.context}
+                                // value={data.context}
+                                value={'测试测试测试测试测试测试测试测试'}
+                                numberOfLines={2}
                                 style={{fontFamily: "PingFang-SC-Medium", fontSize: 13, color: "#999999"}}/>
                         </View>
-                        {/*<View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>*/}
-                            {/*<UIText*/}
-                                {/*// value={'￥:'+StringUtils.formatMoneyString(user.isLogin?data.levelPrice:data.original_price,false)}*/}
-                                {/*style={{fontSize: 14, color: "#e60012"}}/>*/}
-                            {/*<View style={{flexDirection:'row'}}>*/}
-                                {/*<TouchableOpacity*/}
-                                    {/*style={styles.rectangle}*/}
-                                    {/*onPress={()=>{this._reduceProductNum(data.index)}}>*/}
-                                    {/*<UIText*/}
-                                        {/*value={'—'}*/}
-                                        {/*style={{fontSize:15,color:data.num<=1?color.gray_DDD:color.black_222}}/>*/}
-                                {/*</TouchableOpacity>*/}
-                                {/*<View style={[styles.rectangle,{width:constant.dp46,borderLeftWidth:0,borderRightWidth:0}]}>*/}
-                                    {/*<RNTextInput*/}
-                                        {/*style={styles.textInputStyle}*/}
-                                        {/*onChangeText={text => this._onChangeText(text,data.index,data)}*/}
-                                        {/*underlineColorAndroid={'transparent'}*/}
-                                        {/*value={data.disNum+''}*/}
-                                        {/*keyboardType='numeric'*/}
-                                    {/*/>*/}
-                                {/*</View>*/}
-                                {/*<TouchableOpacity*/}
-                                    {/*style={styles.rectangle}*/}
-                                    {/*onPress={()=>{this._addProductNum(data.index)}}>*/}
-                                    {/*<UIText*/}
-                                        {/*value={'+'}*/}
-                                        {/*style={{fontSize:15,color:data.num>=data.stock?color.gray_DDD:color.black_222}}/>*/}
-                                {/*</TouchableOpacity>*/}
-                            {/*</View>*/}
-                        {/*</View>*/}
+                        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+                            <UIText
+                                // value={'￥:'+StringUtils.formatMoneyString(user.isLogin?data.levelPrice:data.original_price,false)}
+                                value={'$100'}
+                                style={{fontSize: 14, color: "#e60012"}}/>
+                            <View style={{flexDirection:'row'}}>
+                                <TouchableOpacity
+                                    style={styles.rectangle}
+                                    // onPress={()=>{this._reduceProductNum(data.index)}}
+
+                                >
+                                    <UIText
+                                        value={'—'}
+                                        // style={{fontSize:15,color:data.num<=1?ColorUtil.Color_dddddd:ColorUtil.Color_222222}}
+                                        style={{fontSize:15,color:ColorUtil.Color_222222}}
+                                    />
+                                </TouchableOpacity>
+                                <View style={[styles.rectangle,{width:46,borderLeftWidth:0,borderRightWidth:0}]}>
+                                    <RNTextInput
+                                        style={styles.textInputStyle}
+                                        onChangeText={text => this._onChangeText(text,data.index,data)}
+                                        underlineColorAndroid={'transparent'}
+                                        // value={data.disNum+''}
+                                        value={'10'}
+                                        keyboardType='numeric'
+                                    />
+                                </View>
+                                <TouchableOpacity
+                                    style={styles.rectangle}
+                                    onPress={()=>{this._addProductNum(data.index)}}>
+                                    <UIText
+                                        value={'+'}
+                                        // style={{fontSize:15,color:data.num>=data.stock?color.gray_DDD:color.black_222}}
+                                        style={{fontSize:15,color:ColorUtil.Color_222222}}
+
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </View>
                 </View>
             </TouchableHighlight>
@@ -311,7 +326,7 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
 
-    UITextInputStyle:{
+    TextInputStyle:{
         fontSize:15,
         color:ColorUtil.Color_222222,
         height:29,
