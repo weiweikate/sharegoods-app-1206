@@ -317,7 +317,6 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width,
         height: 44,
         backgroundColor: '#F6F6F6',
-        marginTop: 5,
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: 55

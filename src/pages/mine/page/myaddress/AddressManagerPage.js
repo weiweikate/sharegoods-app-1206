@@ -4,7 +4,7 @@ import BasePage from '../../../../BasePage';
 import addrSelectedImg from '../../res/address/addr_default_s.png';
 import addrUnselectedImg from '../../res/address/addr_default_n.png';
 
-export default class MyAddressPage extends BasePage {
+export default class AddressManagerPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
@@ -14,7 +14,7 @@ export default class MyAddressPage extends BasePage {
     };
 
     $NavBarRightPressed = () => {
-        this.props.navigation.navigate('mine/AddAddressPage', {
+        this.$navigate('mine/address/AddressEditAndAddPage', {
             refreshing: this.refreshing.bind(this),
             from: 'add'
         });
@@ -128,7 +128,7 @@ export default class MyAddressPage extends BasePage {
 
     _onEditAddress = (item) => {
         // 编辑地址页面
-        this.props.navigation.navigate('mine/AddAddressPage', {
+        this.props.navigation.navigate('mine/address/AddressEditAndAddPage', {
             refreshing: this.refreshing.bind(this),
             from: 'edit',
             receiver: item.receiver,
