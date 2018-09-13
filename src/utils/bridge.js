@@ -42,5 +42,4 @@ export default {
     hiddenLoading(){
         NativeModules.commModule.hideLoadingDialog();
     }
-}
-;
+};
