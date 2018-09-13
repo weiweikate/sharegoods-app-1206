@@ -1,7 +1,7 @@
 /**
  * Created by nuomi on 2018/7/18.
  */
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -10,18 +10,17 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import { formatDate } from '../../utils/DateUtils';
+import BasePage from '../../BasePage';
 
-export default class RequestDetailPage extends Component {
+export default class RequestDetailPage extends BasePage {
 
     // 页面配置
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: '请求详情',
-            rightNavTitle: '收起全部',
-        },
-    };
+    $navigationBarOptions = {
+        title: '请求详情',
+        rightNavTitle: '收起全部',
+    }
 
-    render() {
+    _render() {
 
         /* this.props.request 数据结构
          * url                   请求的url
