@@ -1,7 +1,7 @@
 /**
  * Created by nuomi on 2018/7/18.
  */
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View,
     Text,
@@ -13,16 +13,14 @@ import fetchHistory from '../../model/FetchHistory';
 import { PageLoadingState } from '../../components/pageDecorator/PageState';
 import { observer } from 'mobx-react/native';
 import { formatDate } from '../../utils/DateUtils';
+import BasePage from '../../BasePage';
 
 @observer
-export default class FetchHistoryPage extends Component {
+export default class FetchHistoryPage extends BasePage {
 
     // 页面配置
-    static $PageOptions = {
-        navigationBarOptions: {
-            title: '请求记录',
-        },
-        renderByPageState: true,
+    $navigationBarOptions =  {
+        title: '请求记录',
     };
 
     $getPageStateOptions = () => {
@@ -71,7 +69,7 @@ export default class FetchHistoryPage extends Component {
 
     _keyExtractor = (item, index) => `${index}`;
 
-    render() {
+    _render() {
         return (<FlatList data={fetchHistory.history}
                           keyExtractor={this._keyExtractor}
                           renderItem={this._renderItem}/>);
