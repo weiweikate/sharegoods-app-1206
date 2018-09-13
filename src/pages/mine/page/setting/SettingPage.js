@@ -7,7 +7,7 @@ import {
     View,
     Image,
     NativeModules,
-    TouchableOpacity, Alert, Switch, Button
+    TouchableOpacity, Alert, Switch, Text
 } from 'react-native';
 
 const { CachesModule } = NativeModules;
@@ -16,9 +16,7 @@ import CommonTwoChoiceModal from '../../model/CommonTwoChoiceModal';
 import UIText from '../../../../components/ui/UIText';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import arrow_right from '../../res/homeBaseImg/icon3_07.png';
-
-// import Toast from '../../components/Toast'
+import arrow_right from '../../../mine/res/customerservice/icon_06-03.png';
 
 class SettingPage extends BasePage {
     constructor(props) {
@@ -56,12 +54,12 @@ class SettingPage extends BasePage {
                 {this.renderWideLine()}
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAccountSettingPage()}>
                     <UIText value={'账号与安全'} style={styles.blackText}/>
-                    <Image source={arrow_right} style={{ width: 8, height: 15 }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 {this.renderLine()}
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAddressManagePage()}>
                     <UIText value={'收货地址管理'} style={styles.blackText}/>
-                    <Image source={arrow_right} style={{ width: 8, height: 15 }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 {this.renderLine()}
                 <TouchableOpacity style={styles.viewStyle}>
@@ -71,8 +69,6 @@ class SettingPage extends BasePage {
                             value: value,
                             changeTxt: value ? 'switch 打开了' : 'switch 关闭了'
                         });
-
-
                     }}/>
                 </TouchableOpacity>
                 {this.renderLine()}
@@ -83,20 +79,22 @@ class SettingPage extends BasePage {
                 {this.renderLine()}
                 <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
                     <UIText value={'关于我们'} style={styles.blackText}/>
-                    <Image source={arrow_right} style={{ width: 8, height: 15 }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
-                {this.renderLine()}
-                <Button
-                    title={'退出登录'}
-                    style={{
-                        marginTop: 42,
-                        backgroundColor: color.red,
-                        width: ScreenUtils.width - 96,
-                        height: 48,
-                        marginLeft: 48,
-                        marginRight: 48
-                    }}
-                    onPress={() => this.toLoginOut()}/>
+                <TouchableOpacity style={{
+                    marginTop: 42,
+                    backgroundColor: color.red,
+                    width: ScreenUtils.width - 96,
+                    height: 48,
+                    marginLeft: 48,
+                    marginRight: 48,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 5
+                }} onPress={() => this.toLoginOut()}>
+                    <Text style={{ fontSize: 13, color: 'white' }}
+                          onPress={() => this.toLoginOut()}>退出登录</Text>
+                </TouchableOpacity>
             </View>
         );
     };
@@ -136,7 +134,7 @@ class SettingPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: '#eeeeee', paddingLeft: 21, paddingRight: 23 }}/>
+            <View style={{ height: 0.5, backgroundColor: '#eeeeee', paddingLeft: 21, paddingRight: 23 }}/>
         );
     };
     toLoginOut = () => {
@@ -186,7 +184,7 @@ class SettingPage extends BasePage {
     }
 
     jumpToAddressManagePage = () => {
-        this.navigate('setting/AddressManagePage');
+        this.$navigate('mine/MyAddressPage');
     };
     jumptToAboutUsPage = () => {
         this.navigate('setting/AboutUsPage');
@@ -199,8 +197,10 @@ class SettingPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: color.page_background
-    }, viewStyle: {
+        backgroundColor: color.page_background,
+        flexDirection: 'column'
+    },
+    viewStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingLeft: 21,
@@ -208,10 +208,11 @@ const styles = StyleSheet.create({
         backgroundColor: color.white,
         height: 44,
         alignItems: 'center'
-    }, blackText: {
+    },
+    blackText: {
         fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
-        color: '#000000'
+        color: '#222222'
     }
 });
 
