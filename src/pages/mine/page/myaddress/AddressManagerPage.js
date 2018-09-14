@@ -3,8 +3,12 @@ import React from 'react';
 import BasePage from '../../../../BasePage';
 import addrSelectedImg from '../../res/address/addr_default_s.png';
 import addrUnselectedImg from '../../res/address/addr_default_n.png';
+import MineAPI from '../../api/MineApi';
+import bridge from '../../../../utils/bridge';
 
 export default class AddressManagerPage extends BasePage {
+
+    initIndex = -10;
 
     // 导航配置
     $navigationBarOptions = {
@@ -24,7 +28,7 @@ export default class AddressManagerPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            selectIndex: 0,
+            selectIndex: this.initIndex,
             datas: []
         };
     }
@@ -35,27 +39,93 @@ export default class AddressManagerPage extends BasePage {
     }
 
     refreshing() {
-        // HttpUtils.get('', {}).then((data) => {
-        //     console.log(data);
+        // MineAPI.queryAddrList({}).then((data) => {
+        //     for (let i = 0, len = arr.length; i < len; i++) {
+        //         if (arr[i].defaultStatus === 1) {
+        //             this.setState({
+        //                 selectIndex: i
+        //             });
+        //         }
+        //     }
         //     this.setState({
-        //         datas: data
+        //         datas: data || []
         //     });
         // }).catch((data) => {
         //     console.warn(data);
         //     bridge.$toast(data.msg);
         // });
-        var datas = [];
-        for (var i = 0; i < 10; i++) {
-            if (i === 0) {
-                datas.push({ id: i, receiver: i + '', tel: '18038000489', address: '对方就立刻撒娇弗兰克的角色', selected: true });
-
-            } else {
-                datas.push({ id: i, receiver: i + '', tel: '18038000489', address: '对方就立刻撒娇弗兰克的角色', selected: false });
+        var arr = [
+            {
+                'address': '萧山宁围',
+                'area': 'string',
+                'areaCode': 301010,
+                'city': 'string',
+                'cityCode': 301010,
+                'createTime': '2018-01-01 10:10:10',
+                'defaultStatus': 1,
+                'id': 1,
+                'province': 'string',
+                'provinceCode': 301010,
+                'receiver': '张99',
+                'receiverPhone': 13454739999,
+                'userId': 1
+            },
+            {
+                'address': '萧山宁围',
+                'area': 'string',
+                'areaCode': 301010,
+                'city': 'string',
+                'cityCode': 301010,
+                'createTime': '2018-01-01 10:10:10',
+                'defaultStatus': 2,
+                'id': 1,
+                'province': 'string',
+                'provinceCode': 301010,
+                'receiver': '张99',
+                'receiverPhone': 13454739999,
+                'userId': 1
+            },
+            {
+                'address': '萧山宁围',
+                'area': 'string',
+                'areaCode': 301010,
+                'city': 'string',
+                'cityCode': 301010,
+                'createTime': '2018-01-01 10:10:10',
+                'defaultStatus': 2,
+                'id': 1,
+                'province': 'string',
+                'provinceCode': 301010,
+                'receiver': '张99',
+                'receiverPhone': 13454739999,
+                'userId': 1
+            },
+            {
+                'address': '萧山宁围',
+                'area': 'string',
+                'areaCode': 301010,
+                'city': 'string',
+                'cityCode': 301010,
+                'createTime': '2018-01-01 10:10:10',
+                'defaultStatus': 2,
+                'id': 1,
+                'province': 'string',
+                'provinceCode': 301010,
+                'receiver': '张99',
+                'receiverPhone': 13454739999,
+                'userId': 1
+            }
+        ];
+        this.setState({
+            datas: arr
+        });
+        for (let i = 0, len = arr.length; i < len; i++) {
+            if (arr[i].defaultStatus === 1) {
+                this.setState({
+                    selectIndex: i
+                });
             }
         }
-        this.setState({
-            datas: datas
-        });
     }
 
     _render() {
@@ -86,13 +156,13 @@ export default class AddressManagerPage extends BasePage {
             <View style={styles.cell}>
                 <View style={styles.cell_name_tel}>
                     <Text style={{ flex: 1, fontSize: 13, color: '#333333' }}>{item.item.receiver}</Text>
-                    <Text style={{ fontSize: 13, color: '#333333' }}>{item.item.tel}</Text>
+                    <Text style={{ fontSize: 13, color: '#333333' }}>{item.item.receiverPhone}</Text>
                 </View>
                 <Text style={styles.cell_addr}>{item.item.address}</Text>
                 <View style={{ height: 0.5, backgroundColor: '#EBEBEB', marginTop: 13 }}/>
                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                     <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginLeft: 20 }}
-                                      onPress={() => this._onSelectImgClick(item.index)}>
+                                      onPress={() => this._onSelectImgClick(item.item, item.index)}>
                         <Image style={{ width: 15, height: 15, marginRight: 11 }}
                                source={item.index === this.state.selectIndex ? addrSelectedImg : addrUnselectedImg}
                         />
@@ -119,11 +189,23 @@ export default class AddressManagerPage extends BasePage {
         </TouchableOpacity>;
     };
 
-    _onSelectImgClick = (index) => {
-        let nowIndex = index === this.state.selectIndex ? -10 : index;
+    _onSelectImgClick = (item, index) => {
+
+        let nowIndex = index === this.state.selectIndex ? this.initIndex : index;
         this.setState({
             selectIndex: nowIndex
         });
+        // 设置默认地址
+        // MineAPI.setDefaultAddr({ id: item.id }).then((data) => {
+        //     console.log(data);
+        //     let nowIndex = index === this.state.selectIndex ? this.initIndex : index;
+        //     this.setState({
+        //         selectIndex: nowIndex
+        //     });
+        // }).catch((data) => {
+        //     console.warn(data);
+        //     bridge.$toast(data.msg);
+        // });
     };
 
     _onEditAddress = (item) => {
@@ -132,7 +214,7 @@ export default class AddressManagerPage extends BasePage {
             refreshing: this.refreshing.bind(this),
             from: 'edit',
             receiver: item.receiver,
-            tel: item.tel,
+            tel: item.receiverPhone,
             area: item.area,
             address: item.address
         });
@@ -140,15 +222,12 @@ export default class AddressManagerPage extends BasePage {
 
     _onDelAddress = (item) => {
         // 删除地址,刷新页面
-        // HttpUtils.get('', {}).then((data) => {
-        //     console.log(data);
-        //     this.setState({
-        //         datas: data
-        //     });
-        // }).catch((data) => {
-        //     console.warn(data);
-        //     bridge.$toast(data.msg);
-        // });
+        MineAPI.delAddress({ id: item.id }).then((data) => {
+            this.refreshing();
+        }).catch((data) => {
+            console.warn(data);
+            bridge.$toast(data.msg);
+        });
     };
 
     _header = () => {
