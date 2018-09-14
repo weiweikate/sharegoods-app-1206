@@ -1,12 +1,12 @@
-import {
-    StyleSheet,
-    Text, TextInput, TouchableOpacity, View
-} from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import StringUtils from '../../../../utils/StringUtils';
+import bridge from '../../../../utils/bridge';
+import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 
 export default class SetNewPhoneNumPage extends BasePage {
 
@@ -19,10 +19,10 @@ export default class SetNewPhoneNumPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            telText: '',
             tips: '',
             code: '',
-            codeTxt: '获取验证码',
-            codeTxtColor: '#D85674'
+            vertifyCodeTime: 0
         };
     }
 
@@ -62,9 +62,10 @@ export default class SetNewPhoneNumPage extends BasePage {
                                onChangeText={(text) => this.setState({ code: text })}
                                value={this.state.code}
                                keyboardType={'phone-pad'}/>
-                    <TouchableOpacity onPress={() => this._onGetCode()}>
-                        <UIText value={this.state.codeTxt}
-                                style={{ color: this.state.codeTxtColor, fontSize: 11, marginRight: 15 }}/>
+                    <TouchableOpacity onPress={() => this._onGetCode(this.state.telText)}
+                                      disabled={this.state.vertifyCodeTime > 0 ? true : false}>
+                        <UIText value={this.state.vertifyCodeTime > 0 ? this.state.vertifyCodeTime + '秒后重新获取' : '获取验证码'}
+                                style={{ color: '#D85674', fontSize: 11, marginRight: 15 }}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -85,10 +86,47 @@ export default class SetNewPhoneNumPage extends BasePage {
         </View>);
     }
 
-    _onGetCode = () => {
-        this.setState({
-            tips: '我们将发送验证码到您的新手机上，请注意查收'
-        });
+    _onGetCode = (tel) => {
+        //获取验证码
+        if (StringUtils.checkPhone(tel)) {
+            (new TimeDownUtils()).startDown((time) => {
+                this.setState({
+                    vertifyCodeTime: time
+                });
+            });
+            this.setState({
+                tips: '我们将发送验证码到您的新手机上，请注意查收'
+            });
+            bridge.$toast('验证码已发送请注意查收');
+        } else {
+            bridge.$toast('手机格式不对');
+        }
+    };
+
+    _toNext = () => {
+        let tel = this.state.telText;
+        let code = this.state.code;
+        const { oldNum } = this.props.navigation.state.params;
+        if (StringUtils.isEmpty(tel)) {
+            bridge.$toast('请输入手机号');
+            return;
+        } else {
+            if (oldNum == tel) {
+                bridge.$toast('请输入新的手机号');
+                return;
+            }
+        }
+        if (StringUtils.isEmpty(code)) {
+            bridge.$toast('请输入验证码');
+            return;
+        }
+        if (StringUtils.checkPhone(tel)) {
+            // 绑定
+
+        } else {
+            bridge.$toast('手机格式不对');
+            return;
+        }
     };
 
 }

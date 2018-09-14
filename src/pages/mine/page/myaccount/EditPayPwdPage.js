@@ -7,6 +7,6 @@ import BasePage from '../../../../BasePage';
 export default class EditPayPwdPage extends BasePage {
 
     _render() {
-        return <Text>sjflksjfljs</Text>;
+        return <Text>暂时还没有页面</Text>;
     }
 }

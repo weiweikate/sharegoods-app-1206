@@ -6,6 +6,9 @@ import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import StringUtils from '../../../../utils/StringUtils';
+import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
+import bridge from '../../../../utils/bridge';
 
 export default class EditPhoneNumPage extends BasePage {
 
@@ -19,15 +22,14 @@ export default class EditPhoneNumPage extends BasePage {
         super(props);
         this.state = {
             code: '',
-            codeTxt: '获取验证码',
-            codeTxtColor: '#D85674'
+            vertifyCodeTime: 0
         };
     }
 
     _render() {
         const { oldNum } = this.props.navigation.state.params;
         return (<View style={{ flex: 1 }}>
-            <UIText value={'短信验证码已发送至绑定手机： ' + oldNum}
+            <UIText value={'短信验证码将发送至绑定手机： ' + oldNum}
                     style={{
                         color: '#999999',
                         fontSize: 13,
@@ -48,9 +50,10 @@ export default class EditPhoneNumPage extends BasePage {
                            onChangeText={(text) => this.setState({ code: text })}
                            value={this.state.code}
                            keyboardType={'phone-pad'}/>
-                <TouchableOpacity onPress={() => this._onGetCode()}>
-                    <UIText value={this.state.codeTxt}
-                            style={{ color: this.state.codeTxtColor, fontSize: 11, marginRight: 15 }}/>
+                <TouchableOpacity onPress={() => this._onGetCode(oldNum)}
+                                  disabled={this.state.vertifyCodeTime > 0 ? true : false}>
+                    <UIText value={this.state.vertifyCodeTime > 0 ? this.state.vertifyCodeTime + '秒后重新获取' : '获取验证码'}
+                            style={{ color: '#D85674', fontSize: 11, marginRight: 15 }}/>
                 </TouchableOpacity>
             </View>
 
@@ -64,19 +67,35 @@ export default class EditPhoneNumPage extends BasePage {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 5
-            }} onPress={() => this._toNext()}>
+            }} onPress={() => this._toNext(oldNum)}>
                 <Text style={{ fontSize: 13, color: 'white' }}>下一步</Text>
             </TouchableOpacity>
         </View>);
     }
 
-    _onGetCode = () => {
+    _onGetCode = (oldNum) => {
         //获取验证码
+        if (StringUtils.checkPhone(oldNum)) {
+            (new TimeDownUtils()).startDown((time) => {
+                this.setState({
+                    vertifyCodeTime: time
+                });
+            });
+            bridge.$toast('验证码已发送请注意查收');
+        } else {
+            bridge.$toast('手机格式不对');
+        }
     };
 
-    _toNext = () => {
-        // 验证验证码是否正确，正确next
-        this.$navigate('mine/account/SetNewPhoneNumPage');
+    _toNext = (oldNum) => {
+        // 调用接口验证验证码是否正确，正确next
+        if (StringUtils.isEmpty(this.state.code)) {
+            bridge.$toast('验证码不能为空');
+            return;
+        }
+        this.$navigate('mine/account/SetNewPhoneNumPage', {
+            oldeNum: oldNum
+        });
     };
 
 }

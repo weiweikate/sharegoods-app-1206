@@ -7,7 +7,7 @@ import {
     View,
     Image,
     NativeModules,
-    TouchableOpacity, Alert, Switch, Text
+    TouchableOpacity, Alert, Switch, Text, Platform
 } from 'react-native';
 
 const { CachesModule } = NativeModules;
@@ -67,12 +67,16 @@ class SettingPage extends BasePage {
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle}>
                         <UIText value={'消息推送'} style={styles.blackText}/>
-                        <Switch value={this.state.value} onValueChange={(value) => {
-                            this.setState({
-                                value: value,
-                                changeTxt: value ? 'switch 打开了' : 'switch 关闭了'
-                            });
-                        }}/>
+                        <Switch value={this.state.value}
+                                onTintColor={'#00D914'}
+                                thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
+                                tintColor={'#C8C8C8'}
+                                onValueChange={(value) => {
+                                    this.setState({
+                                        value: value,
+                                        changeTxt: value ? 'switch 打开了' : 'switch 关闭了'
+                                    });
+                                }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.clearAllCaches()}>
