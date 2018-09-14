@@ -46,7 +46,7 @@ export default class MinePage extends BasePage {
         this.state = {
             total: 0,
             list: [],
-            name: '王五',
+            name: '八岐大蛇',
             refreshing: false,
             netFailedInfo: null,
             loadingState: PageLoadingState.success
@@ -139,7 +139,7 @@ export default class MinePage extends BasePage {
                             marginTop: 11
                         }}>
                             <NoMoreClick style={{ flexDirection: 'row', alignItems: 'center' }}
-                                              onPress={this.jumpToUserInformationPage}>
+                                         onPress={this.jumpToUserInformationPage}>
                                 <UIText value={this.state.name}
                                         style={{ fontSize: 15, color: '#ffffff' }}/>
                                 <Image source={whiteArrowRight}
@@ -357,7 +357,7 @@ export default class MinePage extends BasePage {
     };
 
     go2CashDetailPage(i) {
-        this.props.navigation.navigate('login/login/LoginPage');
+        this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
     };
 
     orderMenuJump = (index) => {

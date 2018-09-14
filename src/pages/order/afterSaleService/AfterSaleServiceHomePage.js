@@ -35,6 +35,7 @@ class AfterSaleServiceHomePage extends BasePage {
         title: '售后服务',
         show: true// false则隐藏导航
     };
+
     //**********************************ViewPart******************************************
     _render() {
         return (
@@ -56,6 +57,7 @@ class AfterSaleServiceHomePage extends BasePage {
             </View>
         );
     }
+
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: color.white, justifyContent: 'center' }}>
@@ -86,7 +88,7 @@ class AfterSaleServiceHomePage extends BasePage {
                     alignContent: 'center',
                     marginBottom: 10,
                     backgroundColor: color.white
-                }} onPress={() => this.pageSelect(i)}>
+                }} onPress={() => this.pageSelect(i)} key={i}>
                     <UIImage source={image[i]} style={{ width: 50, height: 50, marginBottom: 10, marginLeft: 21 }}/>
                     <View style={{ marginLeft: 10 }}>
                         <UIText value={title[i]} style={{ fontSize: 16, color: color.black }}/>
@@ -100,21 +102,21 @@ class AfterSaleServiceHomePage extends BasePage {
     pageSelect = (index) => {
         switch (index) {
             case 0:
-                this.navigate('order/afterSaleService/AfterSaleServicePage', {
+                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 0,
                     index: this.params.index ? this.params.index : 0,
                     pageData: this.params.pageData ? this.params.pageData : {}
                 });
                 break;
             case 1:
-                this.navigate('order/afterSaleService/AfterSaleServicePage', {
+                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 1,
                     index: this.params.index ? this.params.index : 0,
                     pageData: this.params.pageData ? this.params.pageData : {}
                 });
                 break;
             case 2:
-                this.navigate('order/afterSaleService/AfterSaleServicePage', {
+                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 2,
                     index: this.params.index ? this.params.index : 0,
                     pageData: this.params.pageData ? this.params.pageData : {}
@@ -145,7 +147,7 @@ class AfterSaleServiceHomePage extends BasePage {
     }
 
     jumpToProductDetailPage = (productId) => {
-        this.navigate('product/ProductDetailPage', { productId: productId });
+        this.$navigate('product/ProductDetailPage', { productId: productId });
     };
 }
 

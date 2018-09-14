@@ -1,6 +1,4 @@
-/**
- * Created by zhanglei on 2018/6/19.
- */
+
 import React from 'react';
 import {
     StyleSheet,
