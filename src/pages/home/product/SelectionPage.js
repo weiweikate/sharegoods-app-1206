@@ -38,7 +38,7 @@ export default class SelectionPage extends Component {
                     <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
                 </TouchableWithoutFeedback>
                 <View style={{ backgroundColor: 'white', flex: 1 }}>
-                    <View style={{ flexDirection: 'row',backgroundColor:'blue' }}>
+                    <View style={{ flexDirection: 'row' }}>
                         <View style={{
                             marginLeft: 10,
                             marginTop: -20,
@@ -50,21 +50,25 @@ export default class SelectionPage extends Component {
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}>
-                            <Image style={{ width: 108, height: 108, backgroundColor: 'red', borderRadius: 5 }}/>
+                            <Image style={{ width: 108, height: 108, borderRadius: 5, backgroundColor: 'red' }}/>
                         </View>
-                        <View style={{ flex: 1, marginLeft: 16}}>
+                        <View style={{ flex: 1, marginLeft: 16 }}>
                             <Text style={{
                                 color: '#D51243',
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontFamily: 'PingFang-SC-Medium',
-                                marginTop: 10,
-                                backgroundColor: 'red'
+                                marginTop: 16
                             }}>￥455.50</Text>
-                            <Text style={{ color: '#222222', fontSize: 15, marginTop: 10 ,backgroundColor: 'yellow'}}>库存454654件</Text>
-                            <Text style={{ color: '#222222', fontSize: 15, marginTop: 10,backgroundColor: 'red' }}>银色</Text>
+                            <Text style={{ color: '#222222', fontSize: 13, marginTop: 8 }}>库存454654件</Text>
+                            <Text style={{ color: '#222222', fontSize: 13, marginTop: 8 }}>银色</Text>
                         </View>
                         <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
-                            <Image style={{ marginRight: 16, marginTop: 19, width: 23, height: 23,backgroundColor:'red' }}/>
+                            <Image style={{
+                                marginRight: 16,
+                                marginTop: 19,
+                                width: 23,
+                                height: 23
+                            }}/>
                         </TouchableWithoutFeedback>
 
                     </View>
@@ -75,6 +79,10 @@ export default class SelectionPage extends Component {
                                               clickItemAction={this._clickItemAction}/>
                         <SelectionSectionView listData={this.state.recentData2}
                                               clickItemAction={this._clickItemAction}/>
+
+                        <View>
+
+                        </View>
                     </ScrollView>
                     <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
                         <View style={{
@@ -86,6 +94,7 @@ export default class SelectionPage extends Component {
                             <Text style={{ fontSize: 16, color: '#FFFFFF' }}>确认</Text>
                         </View>
                     </TouchableWithoutFeedback>
+
                 </View>
 
             </View>

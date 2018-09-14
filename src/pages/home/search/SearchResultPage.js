@@ -13,6 +13,8 @@ import ResultVerticalRow from './components/ResultVerticalRow';
 import toGwc from './res/toGwc.png';
 import toTop from './res/toTop.png';
 import RouterMap from '../../../RouterMap';
+import HomeAPI from '../api/HomeAPI';
+import DateUtils from '../../../utils/DateUtils';
 
 
 export default class SearchResultPage extends BasePage {
@@ -24,10 +26,42 @@ export default class SearchResultPage extends BasePage {
 
     constructor(props) {
         super(props);
+        this.params = this.props.navigation.state.params;
         this.state = {
-            isHorizontal: true
+            isHorizontal: true,
+            productList: []
         };
     }
+
+    componentDidMount() {
+        this.loadPageData();
+    }
+
+    loadPageData() {
+        this._productList();
+    }
+
+    //数据
+    _productList = () => {
+
+        this.$loadingShow();
+        HomeAPI.productList({
+            keyword: this.params.keywords,
+            page: 1,
+            pageSize: 10,
+            sortModel: 1,
+            sortType: 3,
+            time: DateUtils.formatDate(new Date())
+        }).then((data) => {
+            this.$loadingDismiss();
+            this.setState({
+                hotData: data
+            });
+        }).catch((data) => {
+            this.$loadingDismiss();
+            this.$toastShow(data.message);
+        });
+    };
 
     _goBack = () => {
         this.$navigateBack();
@@ -79,7 +113,7 @@ export default class SearchResultPage extends BasePage {
                     keyExtractor={(item, index) => `${index}`}
                     numColumns={this.state.isHorizontal ? 2 : 1}
                     key={this.state.isHorizontal ? 'hShow' : 'vShow'}
-                    data={[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]}>
+                    data={this.state.productList}>
                 </FlatList>
 
                 <View style={{ position: 'absolute', right: 15, bottom: 15 }}>
