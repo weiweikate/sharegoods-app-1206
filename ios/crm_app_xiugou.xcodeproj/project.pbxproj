@@ -409,6 +409,7 @@
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E00CEEA555A4CB28FE001B8 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		4C21E6CAAF624B8198676636 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		501D93E4214B4E6000271BE5 /* crm_app_xiugou.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = crm_app_xiugou.entitlements; path = crm_app_xiugou/crm_app_xiugou.entitlements; sourceTree = "<group>"; };
 		5068356C21379B78001AB175 /* JRBaseNavVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRBaseNavVC.h; sourceTree = "<group>"; };
 		5068356D21379B78001AB175 /* JRBaseNavVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRBaseNavVC.m; sourceTree = "<group>"; };
 		5068356E21379B78001AB175 /* JRBaseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRBaseVC.h; sourceTree = "<group>"; };
@@ -675,6 +676,7 @@
 		13B07FAE1A68108700A75B9A /* crm_app_xiugou */ = {
 			isa = PBXGroup;
 			children = (
+				501D93E4214B4E6000271BE5 /* crm_app_xiugou.entitlements */,
 				5068356A21379B78001AB175 /* Class */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -1236,6 +1238,11 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = T586HGP9C9;
 						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1888,6 +1895,7 @@
 			baseConfigurationReference = 95C99B64C0CED3927CE1EC7C /* Pods-crm_app_xiugou.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = crm_app_xiugou/crm_app_xiugou.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1915,7 +1923,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.meeruu.sharegoods;
 				PRODUCT_NAME = crm_app_xiugou;
-				PROVISIONING_PROFILE = "f9a8a806-c77d-43fc-aa61-7b9e6dde8dd9";
+				PROVISIONING_PROFILE = "97999c4b-9c83-4d50-a64c-1bf5328188e4";
 				PROVISIONING_PROFILE_SPECIFIER = devXiuGou;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1926,6 +1934,7 @@
 			baseConfigurationReference = 5AEC9711CAB3D2A4643117DC /* Pods-crm_app_xiugou.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = crm_app_xiugou/crm_app_xiugou.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
