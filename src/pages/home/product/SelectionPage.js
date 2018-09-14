@@ -38,8 +38,7 @@ export default class SelectionPage extends Component {
                     <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
                 </TouchableWithoutFeedback>
                 <View style={{ backgroundColor: 'white', flex: 1 }}>
-                    <View style={{ height: 110, flexDirection: 'row' }}>
-
+                    <View style={{ flexDirection: 'row',backgroundColor:'blue' }}>
                         <View style={{
                             marginLeft: 10,
                             marginTop: -20,
@@ -53,13 +52,19 @@ export default class SelectionPage extends Component {
                         }}>
                             <Image style={{ width: 108, height: 108, backgroundColor: 'red', borderRadius: 5 }}/>
                         </View>
-                        <View style={{ flex: 1, marginLeft: 16 }}>
-                            <Text style = {{color:'#D51243',fontSize:18,fontFamily:'PingFang-SC-Medium'}}>￥455.50</Text>
-                            <Text style = {{color:'#222222',fontSize:15,fontFamily:'PingFang-SC-Medium'}}>库存454654件</Text>
-                            <Text style = {{color:'#222222',fontSize:15,fontFamily:'PingFang-SC-Medium'}}>银色</Text>
+                        <View style={{ flex: 1, marginLeft: 16}}>
+                            <Text style={{
+                                color: '#D51243',
+                                fontSize: 18,
+                                fontFamily: 'PingFang-SC-Medium',
+                                marginTop: 10,
+                                backgroundColor: 'red'
+                            }}>￥455.50</Text>
+                            <Text style={{ color: '#222222', fontSize: 15, marginTop: 10 ,backgroundColor: 'yellow'}}>库存454654件</Text>
+                            <Text style={{ color: '#222222', fontSize: 15, marginTop: 10,backgroundColor: 'red' }}>银色</Text>
                         </View>
                         <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
-                            <Image style={{ marginRight: 16, marginTop: 19, width: 23, height: 23 }}/>
+                            <Image style={{ marginRight: 16, marginTop: 19, width: 23, height: 23,backgroundColor:'red' }}/>
                         </TouchableWithoutFeedback>
 
                     </View>
