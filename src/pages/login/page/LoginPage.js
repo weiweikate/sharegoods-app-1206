@@ -17,8 +17,8 @@ import bridge from '../../../utils/bridge';
 import LoginAPI from '../api/LoginApi';
 
 export default class LoginPage extends BasePage {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
 
     // 导航配置
@@ -84,18 +84,18 @@ export default class LoginPage extends BasePage {
         bridge.$loginWx((data) => {
 
             LoginAPI.appWechatLogin({
-                device:'',
-                encryptedData:'',
-                headImg:'',
-                iv:'',
-                nickname:'',
-                openid:data.openid,
-                systemVersion:'',
-                wechatVersion:'',
-            }).then((data)=>{
+                device: '',
+                encryptedData: '',
+                headImg: '',
+                iv: '',
+                nickname: '',
+                openid: data.openid,
+                systemVersion: '',
+                wechatVersion: ''
+            }).then((data) => {
                 console.warn(data);
 
-            }).catch((data)=>{
+            }).catch((data) => {
                 console.warn(data);
 
             });

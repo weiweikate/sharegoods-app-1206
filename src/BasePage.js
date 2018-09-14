@@ -19,6 +19,7 @@ import { NavigationActions } from 'react-navigation';
 export default class BasePage extends Component {
     constructor(props) {
         super(props);
+        this.params = this.props.navigation.state.params || {};
     }
 
     $navigationBarOptions = {
