@@ -26,6 +26,8 @@ class NoMoreClick extends Component {
     // ToPress = async () => {
     //     const {onPress} = this.props;
     //     if(onPress){
+
+
     //         onPress && onPress();
     //         await this.setState({isDisable: true})
     //         this.timer = setTimeout(async () => {
@@ -54,9 +56,11 @@ class NoMoreClick extends Component {
     //     )
     // }
     render() {
+        const { ...attributes} = this.props;
         return(
             <TouchableOpacity
-            onPress={this.debouncePress(this.props.onPress)}> {this.props.children}
+            onPress={this.debouncePress(this.props.onPress)}{ ...attributes}>
+                {this.props.children}
         </TouchableOpacity>);
     }
 
@@ -64,9 +68,9 @@ class NoMoreClick extends Component {
     debouncePress = onPress => {
         // return c.throttle(onPress, 500, { leading: true, trailing: false });
         const clickTime = Date.now();
-        if (!this.lastClickTime || Math.abs(this.lastClickTime - clickTime) > 500) {
+        if (!this.lastClickTime || Math.abs(this.lastClickTime - clickTime) > 800) {
             this.lastClickTime = clickTime ;
-            onPress() ;
+            onPress ;
         }
 
 
