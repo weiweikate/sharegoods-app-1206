@@ -24,6 +24,9 @@ export default class RegistPage extends BasePage {
     constructor(props) {
         super(props);
         this.params = this.props.navigation.state.params;
+        this.state = {
+            gouxuan: true
+        };
     }
 
     _render() {
@@ -33,6 +36,7 @@ export default class RegistPage extends BasePage {
                     // config={viewType:0}
                     viewType={0}
                     loginClick={(phone, code, password) => this.clickNext(phone, code, password)}
+                    ref={'topView'}
                 />
                 <View style={{
                     alignItems: 'center',
@@ -42,14 +46,25 @@ export default class RegistPage extends BasePage {
                     height: 11,
                     width: ScreenUtils.width
                 }}>
-                    <TouchableOpacity>
-                        <Image source={LoginAndRegistRes.openEyeImage}
-                               style={{ width: 11, height: 11, marginRight: 5 }}/>
+                    <TouchableOpacity onPress={() => {
+                        this.refs.topView.changeSelectState();
+                        this.setState({
+                            gouxuan: !this.state.gouxuan
+                        });
+                    }}>
+                        <Image
+                            source={this.state.gouxuan ? LoginAndRegistRes.reg_GouXuan : LoginAndRegistRes.reg_WeiXuan}
+                            style={{ width: 11, height: 11, marginRight: 5 }}/>
                     </TouchableOpacity>
                     <Text style={{ fontSize: 11, color: ColorUtil.Color_666666 }}>
                         阅读并接受
                     </Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        this.$navigate('HtmlPage', {
+                            title: '用户协议内容',
+                            uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
+                        });
+                    }}>
                         <Text style={{ color: ColorUtil.mainRedColor, fontSize: 11 }}>
                             《用户协议》
                         </Text>
@@ -64,6 +79,10 @@ export default class RegistPage extends BasePage {
 
     //点击下一步
     clickNext = (phone, code, password) => {
+        if (!this.state.gouxuan) {
+            bridge.$toast('请先勾选用户协议');
+            return;
+        }
         this.$loadingShow();
         LoginApi.findMemberByPhone({
             code: code,

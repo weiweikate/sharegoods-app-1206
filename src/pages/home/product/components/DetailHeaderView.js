@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
 import Swiper from 'react-native-swiper';
 
 import {
@@ -16,9 +15,6 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
  */
 
 export default class DetailHeaderView extends Component {
-    static propTypes = {
-        // clickItemAction: PropTypes.func.isRequired,
-    };
 
     constructor(props) {
         super(props);
@@ -59,28 +55,39 @@ export default class DetailHeaderView extends Component {
                 </Swiper>
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
-                        <Text style={{ marginTop: 14 }}>创意抱枕午睡枕沙发床头靠枕腰靠垫办公室椅子大靠
-                            背汽车车用腰枕 拷贝</Text>
-                        <View style={{ flexDirection: 'row', marginTop: 21 }}>
-                            <Text>￥1889.99起</Text>
-                            <Text style={{ marginLeft: 5 }}>¥2600.00</Text>
-                            <Text style={{ marginLeft: 5, backgroundColor: 'red' }}>拼店价</Text>
+                        <Text style={{ marginTop: 14, color: '#222222', fontSize: 15 }}>创意抱枕午睡枕沙发床头靠枕腰靠垫办公室椅子大靠
+                            背汽车车用腰枕</Text>
+                        <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
+                            <Text style={{ color: '#D51243', fontSize: 18 }}>￥1889.99起</Text>
+                            <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>¥2600.00</Text>
+                            <Text style={{
+                                marginLeft: 5,
+                                backgroundColor: 'red',
+                                color: '#FFFFFF',
+                                fontSize: 10
+                            }}>拼店价</Text>
                         </View>
-                        <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14 }}>
-                            <Text>包邮</Text>
-                            <Text>月销售154335笔</Text>
+                        <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
+                            <Text style={{ color: '#BBBBBB', fontSize: 11 }}>包邮</Text>
+                            <Text style={{
+                                color: '#666666',
+                                fontSize: 13,
+                                marginLeft: ScreenUtils.autoSizeWidth(108)
+                            }}>月销售154335笔</Text>
                         </View>
                     </View>
                 </View>
                 <View style={{ backgroundColor: 'white', marginTop: 10, marginBottom: 12 }}>
                     <View style={{
                         flexDirection: 'row',
+
                         marginLeft: 16,
                         width: ScreenUtils.width - 32,
-                        marginVertical: 13
+                        marginVertical: 13,
+                        alignItems: 'center'
                     }}>
-                        <Text>服务</Text>
-                        <Text style={{ marginLeft: 11 }}>正品保证·急速发货 7天无理由退换</Text>
+                        <Text style={{ color: '#D51243', fontSize: 13 }}>服务</Text>
+                        <Text style={{ marginLeft: 11, color: '#666666', fontSize: 13 }}>正品保证·急速发货 7天无理由退换</Text>
                     </View>
                 </View>
             </View>

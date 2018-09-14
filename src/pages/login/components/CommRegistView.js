@@ -35,6 +35,8 @@ class CommModel {
     dowTime = 0;
     @observable
     isSecuret = true;
+    @observable
+    isSelectProtocl=true;
 
     @action
     savePhoneNumber(phoneNmber) {
@@ -66,7 +68,7 @@ class CommModel {
 
     @computed
     get isCanClick() {
-        if (this.phoneNumber.length === 11 && this.vertifyCode.length > 0 && this.password.length >= 6) {
+        if (this.phoneNumber.length === 11 && this.vertifyCode.length > 0 && this.password.length >= 6 && this.isSelectProtocl) {
             return true;
         } else {
             return false;
@@ -85,8 +87,9 @@ export default class CommRegistView extends Component {
             viewType: props.viewType
         };
     }
-
-
+    changeSelectState(){
+        this.registModel.isSelectProtocl = !this.registModel.isSelectProtocl;
+    }
     render() {
         return (
             <View style={{ backgroundColor: ColorUtil.Color_f7f7f7 }}>
@@ -207,6 +210,8 @@ export default class CommRegistView extends Component {
                         </Text>
                     </TouchableOpacity>
                 </View>
+
+
 
             </View>
         );
