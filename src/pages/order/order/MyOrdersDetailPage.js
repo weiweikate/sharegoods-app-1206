@@ -785,14 +785,14 @@ class MyOrdersDetailPage extends BasePage {
                 this.setState({ isShowSingleSelctionModal: true });
                 break;
             case 2:
-                this.navigate('payment/PaymentMethodPage', {
+                this.$navigate('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
                     amounts: this.state.viewData.totalPrice + this.state.viewData.freightPrice,
                     orderType: this.state.viewData.pickedUp - 1
                 });
                 break;
             case 3:
-                this.navigate('payment/PaymentMethodPage', {
+                this.$navigate('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
                     amounts: this.state.viewData.goodsPrice
                 });
@@ -806,7 +806,7 @@ class MyOrdersDetailPage extends BasePage {
                 NativeModules.commModule.toast('目前仅支持单个商品退款');
                 break;
             case 5:
-                this.navigate('order/logistics/LogisticsDetailsPage', {
+                this.$navigate('order/logistics/LogisticsDetailsPage', {
                     orderNum: this.state.viewData.orderNum,
                     orderId: this.state.orderId,
                     expressNo: this.state.expressNo
