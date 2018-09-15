@@ -38,6 +38,8 @@ import levelBg from '../res/homeBaseImg/icon3_03-02.png';
 import setting from '../res/homeBaseImg/icon_03.png';
 import service from '../res/homeBaseImg/icon02.png';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
+import MineApi from '../api/MineApi';
+import Toast from '../../../utils/bridge';
 
 export default class MinePage extends BasePage {
 
@@ -45,26 +47,17 @@ export default class MinePage extends BasePage {
         super(props);
         this.state = {
             total: 0,
-            list: [],
-            name: '八岐大蛇',
+            nickname: '八岐大蛇',
+            headImg: '',
+            availableBalance: 0,
+            levelId: 0,
+            userScore: 0,
             refreshing: false,
             netFailedInfo: null,
             loadingState: PageLoadingState.success
         };
     }
 
-    // static navigationOptions={
-    //     header:null,
-    //     tabBarOnPress: (obj: any) => {
-    //         // obj.defaultHandler('Mine');
-    //         if (user.isLogin) {
-    //             obj.defaultHandler();
-    //         }
-    //         else {
-    //             this.props.navigation.navigate('login/login/LoginPage');
-    //         }
-    //     }
-    // }
     $navigationBarOptions = {
         show: false // false则隐藏导航
     };
@@ -76,6 +69,46 @@ export default class MinePage extends BasePage {
                 reloadBtnClick: this._reload
             }
         };
+    };
+
+    componentDidMount() {
+        if (!user.isLogin) {
+            this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
+            return;
+        }
+        Toast.showLoading();
+        MineApi.getUser().then(data => {
+            Toast.hiddenLoading();
+            if (data.code == 10000) {
+                let data = data.data;
+                this.setState({
+                    availableBalance: data.availableBalance,
+                    headImg: data.headImg,
+                    levelId: data.levelId,
+                    nickname: data.nickname,
+                    userScore: data.userScore
+                });
+            }
+        });
+    }
+
+    refresh = () => {
+        Toast.showLoading();
+        MineApi.getUser().then(res => {
+            console.log(res);
+            Toast.hiddenLoading();
+            if (res.code == 10000) {
+                let data = res.data;
+                console.log(data.headImg);
+                this.setState({
+                    availableBalance: data.availableBalance,
+                    headImg: data.headImg,
+                    levelId: data.levelId,
+                    nickname: data.nickname,
+                    userScore: data.userScore
+                });
+            }
+        });
     };
 
     _reload() {
@@ -92,10 +125,10 @@ export default class MinePage extends BasePage {
     }
 
     jumpToUserInformationPage = () => {
-        // if (!user.isLogin){
-        //     this.props.navigation.navigate('login/Login')
-        //     return
-        // }
+        if (!user.isLogin) {
+            this.props.navigation.navigate('login/login/LoginPage');
+            return;
+        }
         this.props.navigation.navigate('mine/userInformation/UserInformationPage');
     };
     renderUserHead = () => {
@@ -126,7 +159,7 @@ export default class MinePage extends BasePage {
                         }} source={leftBg}>
                             {
                                 StringUtils.isEmpty('222') ? null :
-                                    <Image source={headBg} style={{
+                                    <Image source={{ uri: this.state.headImg }} style={{
                                         height: 50,
                                         width: 50,
                                         borderRadius: 25
@@ -140,7 +173,7 @@ export default class MinePage extends BasePage {
                         }}>
                             <NoMoreClick style={{ flexDirection: 'row', alignItems: 'center' }}
                                          onPress={this.jumpToUserInformationPage}>
-                                <UIText value={this.state.name}
+                                <UIText value={this.state.nickname}
                                         style={{ fontSize: 15, color: '#ffffff' }}/>
                                 <Image source={whiteArrowRight}
                                        style={{ height: 14, marginLeft: 12 }}
@@ -148,9 +181,9 @@ export default class MinePage extends BasePage {
                             </NoMoreClick>
                             <ImageBackground style={{ width: 53, height: 14, alignItems: 'center', marginTop: 2 }}
                                              source={levelBg}>
-                                <Text style={{ fontSize: 9, color: '#ffa351' }}>V3</Text>
+                                <Text style={{ fontSize: 9, color: '#ffa351' }}>V{this.state.levelId}</Text>
                             </ImageBackground>
-                            <UIText value={'已帮你省：1234.85元'} style={{
+                            <UIText value={'已帮你省：0.00元'} style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 12,
                                 color: '#ffffff',
@@ -177,12 +210,12 @@ export default class MinePage extends BasePage {
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 14,
                                 color: '#ffffff'
-                            }}>0</Text>
+                            }}>{this.state.availableBalance}</Text>
                             <Text style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 11,
                                 color: '#ffffff'
-                            }}>待体现金额(元)</Text>
+                            }}>待提现金额(元)</Text>
                         </View>
                     </View>
                 </ImageBackground>
@@ -304,7 +337,7 @@ export default class MinePage extends BasePage {
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <TouchableOpacity style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}
                                   onPress={() => this.go2CashDetailPage(1)}>
-                    <Text style={{ fontSize: 14, color: '#212121' }}>234234.45元</Text>
+                    <Text style={{ fontSize: 14, color: '#212121' }}>0.00元</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{
                             fontFamily: 'PingFang-SC-Medium',
@@ -318,7 +351,7 @@ export default class MinePage extends BasePage {
                 </TouchableOpacity>
                 <TouchableOpacity style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}
                                   onPress={() => this.go2CashDetailPage(2)}>
-                    <Text style={{ fontSize: 14, color: '#212121' }}>2342.75元</Text>
+                    <Text style={{ fontSize: 14, color: '#212121' }}>0.00元</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{
                             fontFamily: 'PingFang-SC-Medium',
@@ -336,10 +369,10 @@ export default class MinePage extends BasePage {
 
     //跳转到对应的订单状态页面
     jumpToOrderAccordingStates = (index) => {
-        // if (!user.isLogin) {
-        //     this.props.navigation.navigate('login/login/LoginPage');
-        //     return;
-        // }
+        if (!user.isLogin) {
+            this.props.navigation.navigate('login/login/LoginPage');
+            return;
+        }
         switch (index) {
             case 0:
                 this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 1 });
@@ -419,7 +452,7 @@ export default class MinePage extends BasePage {
             this.props.navigation.navigate('login/login/LoginPage');
             return;
         }
-        this.props.navigation.navigate('order/order/MyOrdersListPage');
+        this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 0 });
     };
     jumpToServicePage = () => {
         if (!user.isLogin) {

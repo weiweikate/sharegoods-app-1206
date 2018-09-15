@@ -11,6 +11,8 @@ const api = {
     codeLogin: '/user/userLogin/codeLogin',
     //密码登陆
     passwordLogin: '/user/userLogin/passwordLogin',
+    //获取个人信息
+    getUser: ['/user/getUser',{method:'get'}],
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';
