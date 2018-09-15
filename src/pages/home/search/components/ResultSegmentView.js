@@ -10,12 +10,11 @@ import {
 export default class SearchSegmentView extends Component {
 
     static propTypes = {
-        onPressAtIndex: PropTypes.func //点击搜索的回调函数
+        segmentOnPressAtIndex: PropTypes.func //点击搜索的回调函数
     };
 
     constructor(props) {
         super(props);
-        // this.params = this.props.navigation.state.params || {};
         this.state = {
             selIndex: 0
         };

@@ -71,11 +71,19 @@ export default class HttpUtils {
                 url = url + '?' + Qs.stringify(params);
             }
         }
+        let timeLineStart = +new Date();
         return axios.get(url).then(response => {
             let data = response.data;
+            let history = createHistory(response,timeLineStart);
+
+            fetchHistory.insertData(history);
             return data;
-        }).catch(error => {
-            return error;
+        }).catch(response => {
+            let history = createHistory(response,timeLineStart);
+
+            fetchHistory.insertData(history);
+
+            return response.data;
         });
     }
 
@@ -87,22 +95,21 @@ export default class HttpUtils {
             ...defaultData,
             ...data
         };
-        let timelineStart = +new Date();
+        let timeLineStart = +new Date();
         return axios.post(url, data, config)
             .then(response => {
-                let history = createHistory(response,timelineStart);
+                let history = createHistory(response,timeLineStart);
 
                 fetchHistory.insertData(history);
 
                 return response.data;
             })
             .catch(response => {
-                let history = createHistory(response,timelineStart);
+                let history = createHistory(response,timeLineStart);
 
                 fetchHistory.insertData(history);
 
                 return response.data;
-                //return Promise.reject(error);
             });
     }
 }

@@ -19,9 +19,11 @@ startDown(callBack, downTime = this.downTime)
 
 
 ## API 使用
+默认请求方式为`POST` , 如果需要`GET`则以数组模式配置
 
 ```javascript
 const api = {
+    getList:['/api/data/list',{method:'get'}],
     login:'/api/user/login',
     logout:'/api/user/logout',
 }
