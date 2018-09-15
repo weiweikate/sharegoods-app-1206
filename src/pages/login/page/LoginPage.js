@@ -133,6 +133,7 @@ export default class LoginPage extends BasePage {
                 UserModel.saveUserInfo(data.data);
                 bridge.$toast("登陆成功");
                 // this.$navigateBack('Tab')
+                this.params.callback&&this.params.callback();
                 this.$navigateBack();
             }).catch((data) => {
                 this.$loadingDismiss();
