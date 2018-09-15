@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Swiper from 'react-native-swiper';
+import PropTypes from 'prop-types';
 
 import {
     StyleSheet,
@@ -16,23 +17,26 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 
 export default class DetailHeaderView extends Component {
 
+
+    static propTypes = {
+        data: PropTypes.object.isRequired
+    };
+
     constructor(props) {
         super(props);
-        this.state = {
-            imgList: [{}, {}, {}, {}]
-        };
+        this.state = {};
     }
 
     _renderImageItem = (item, index) => {
-        const { img_url } = item;
+        const { originalImg } = item;
         return (
             <TouchableWithoutFeedback key={index} onPress={() => this._clickItem(item)}>
-                <View style={{ flex: 1, backgroundColor: 'red' }}>
+                <View style={{ flex: 1, backgroundColor: '#eeeeee' }}>
                     {
-                        img_url ? <Image
+                        originalImg ? <Image
                             style={{ flex: 1, width: ScreenUtils.width, height: ScreenUtils.autoSizeWidth(237) }}
                             resizeMode="stretch"
-                            source={{ uri: img_url }}/> : null
+                            source={{ uri: originalImg }}/> : null
                     }
                 </View>
             </TouchableWithoutFeedback>
@@ -40,6 +44,8 @@ export default class DetailHeaderView extends Component {
     };
 
     render() {
+        const { productImgList, freight, monthSaleTotal, price, originalPrice, product } = this.props.data;
+        const { supplierName, brandName, name, firstCategoryName, secCategoryName, thirdCategoryName } = product;
         return (
             <View>
                 <Swiper
@@ -47,19 +53,22 @@ export default class DetailHeaderView extends Component {
                     horizontal
                     autoplayTimeout={3000}
                     height={ScreenUtils.autoSizeWidth(377)}
-                    loop={this.state.imgList.length > 1}
+                    loop={productImgList.length > 1}
                     dot={<View style={styles.dot}/>}
                     activeDot={<View style={styles.activeDot}/>}
                 >
-                    {this.state.imgList.map(this._renderImageItem)}
+                    {productImgList.map(this._renderImageItem)}
                 </Swiper>
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
-                        <Text style={{ marginTop: 14, color: '#222222', fontSize: 15 }}>创意抱枕午睡枕沙发床头靠枕腰靠垫办公室椅子大靠
-                            背汽车车用腰枕</Text>
+                        <Text style={{
+                            marginTop: 14,
+                            color: '#222222',
+                            fontSize: 15
+                        }}>{`${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`}</Text>
                         <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
-                            <Text style={{ color: '#D51243', fontSize: 18 }}>￥1889.99起</Text>
-                            <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>¥2600.00</Text>
+                            <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${price}起`}</Text>
+                            <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${originalPrice}`}</Text>
                             <Text style={{
                                 marginLeft: 5,
                                 backgroundColor: 'red',
@@ -68,12 +77,13 @@ export default class DetailHeaderView extends Component {
                             }}>拼店价</Text>
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
-                            <Text style={{ color: '#BBBBBB', fontSize: 11 }}>包邮</Text>
+                            <Text
+                                style={{ color: '#BBBBBB', fontSize: 11 }}>{freight === 0 ? '包邮' : `${freight}元`}</Text>
                             <Text style={{
                                 color: '#666666',
                                 fontSize: 13,
                                 marginLeft: ScreenUtils.autoSizeWidth(108)
-                            }}>月销售154335笔</Text>
+                            }}>{`月销售${monthSaleTotal}笔`}</Text>
                         </View>
                     </View>
                 </View>

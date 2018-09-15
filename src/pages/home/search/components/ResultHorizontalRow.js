@@ -16,7 +16,8 @@ export default class ResultHorizontalRow extends Component {
 
     static propTypes = {
         onPressAtIndex: PropTypes.func.isRequired,
-        storeProduct: PropTypes.func.isRequired
+        storeProduct: PropTypes.func.isRequired,
+        itemData: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -26,11 +27,13 @@ export default class ResultHorizontalRow extends Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress = {this.props.onPressAtIndex}>
+            <TouchableWithoutFeedback onPress={()=>{
+                this.props.onPressAtIndex(this.props.itemData.product.id);
+            }}>
                 <View style={[styles.container]}>
-                    <Image style={styles.img}/>
+                    <Image style={styles.img} source={{ uri: this.props.itemData.product.imgUrl }}/>
                     <Text style={{ color: '#222222', fontSize: 13, paddingHorizontal: 10, marginTop: 9 }}
-                          numberOfLines={2}>UL2018春夏新款青春女装花朵印花露肩吊带休闲连...身裤YL32S6IN2000</Text>
+                          numberOfLines={2}>{this.props.itemData.product.name}</Text>
                     <View style={{
                         flexDirection: 'row',
                         justifyContent: 'space-between',
@@ -39,9 +42,22 @@ export default class ResultHorizontalRow extends Component {
                         marginBottom: 11,
                         marginTop: 21
                     }}>
-                        <Text style={{ color: '#D51243', fontSize: 17 }}>￥1650.00起</Text>
-                        <Image style={{ width: 15, height: 15 }} source={gwc}/>
+                        <Text
+                            style={{ color: '#D51243', fontSize: 17 }}>{`￥${this.props.itemData.originalPrice}起`}</Text>
                     </View>
+                    <TouchableWithoutFeedback onPress={()=>{this.props.storeProduct(this.props.itemData.product.id)}}>
+                        <View style={{
+                            width: 35,
+                            height: 35,
+                            position: 'absolute',
+                            bottom: 0,
+                            right: 0,
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <Image source={gwc}/>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -57,7 +73,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     img: {
-        backgroundColor: 'red',
+        backgroundColor: '#eeeeee',
         height: 170,
         width: 170
     }
