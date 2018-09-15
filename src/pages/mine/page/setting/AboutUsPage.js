@@ -3,7 +3,7 @@ import {
     Text, View, Image
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import Logo from '../../res/setting/logo.png';
+import Logo from '../../res/setting/launcher.png';
 
 export default class AboutUsPage extends BasePage {
 

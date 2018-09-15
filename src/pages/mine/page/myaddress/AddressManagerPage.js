@@ -57,7 +57,7 @@ export default class AddressManagerPage extends BasePage {
         var arr = [
             {
                 'address': '萧山宁围',
-                'area': 'string',
+                'area': '浙江省杭州市',
                 'areaCode': 301010,
                 'city': 'string',
                 'cityCode': 301010,
@@ -72,7 +72,7 @@ export default class AddressManagerPage extends BasePage {
             },
             {
                 'address': '萧山宁围',
-                'area': 'string',
+                'area': '浙江省杭州市',
                 'areaCode': 301010,
                 'city': 'string',
                 'cityCode': 301010,
@@ -87,7 +87,7 @@ export default class AddressManagerPage extends BasePage {
             },
             {
                 'address': '萧山宁围',
-                'area': 'string',
+                'area': '浙江省杭州市',
                 'areaCode': 301010,
                 'city': 'string',
                 'cityCode': 301010,
@@ -102,7 +102,7 @@ export default class AddressManagerPage extends BasePage {
             },
             {
                 'address': '萧山宁围',
-                'area': 'string',
+                'area': '浙江省杭州市',
                 'areaCode': 301010,
                 'city': 'string',
                 'cityCode': 301010,
@@ -152,7 +152,7 @@ export default class AddressManagerPage extends BasePage {
     }
 
     _renderItem = (item) => {
-        return <TouchableOpacity>
+        return <TouchableOpacity onPress={() => this._onItemClick(item.item)}>
             <View style={styles.cell}>
                 <View style={styles.cell_name_tel}>
                     <Text style={{ flex: 1, fontSize: 13, color: '#333333' }}>{item.item.receiver}</Text>
@@ -189,6 +189,10 @@ export default class AddressManagerPage extends BasePage {
         </TouchableOpacity>;
     };
 
+    _onItemClick = (item) => {
+        // 地址列表点击
+    };
+
     _onSelectImgClick = (item, index) => {
 
         let nowIndex = index === this.state.selectIndex ? this.initIndex : index;
@@ -214,9 +218,10 @@ export default class AddressManagerPage extends BasePage {
             refreshing: this.refreshing.bind(this),
             from: 'edit',
             receiver: item.receiver,
-            tel: item.receiverPhone,
+            tel: item.receiverPhone + '',
             area: item.area,
-            address: item.address
+            address: item.address,
+            id: item.id
         });
     };
 

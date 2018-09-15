@@ -265,39 +265,6 @@ public class CommModule extends ReactContextBaseJavaModule {
     public void getNativeStore(String key, Callback callback) {
         callback.invoke(Utils.getUserData(mContext, key));
     }
-    //Array -> ReadableArray，android使用ReadableArray提供的array与map互转api效率较低易卡顿
-//    @ReactMethod
-//    public void setCityPicker(ReadableArray params) {
-//        CommModule.options1Items.clear();CommModule.options2Items.clear();CommModule.options3Items.clear();
-//        if (params.size()!=0){
-//            for (int i=0;i<params.size();i++){
-//                ArrayList<CityBean> option2Items_temp=new ArrayList<>();option2Items_temp.clear();//添加市缓存
-//                ArrayList<ArrayList<DistricBean>>option3Iteems_temp2=new ArrayList<>();option3Iteems_temp2.clear();//添加区缓存2级
-//                for (int j=0;j<params.getMap(i).getArray("value").size();j++){
-//                    ArrayList<DistricBean>option3Item_temp1=new ArrayList<>();option3Item_temp1.clear();//添加区缓存1级别
-//                    for (int k=0;k<params.getMap(i).getArray("value").getMap(j).getArray("value").size();k++){
-//                        option3Item_temp1.add(new DistricBean(params.getMap(i).getArray("value").getMap(j).getArray("value").getMap(k).getInt("code"), params.getMap(i).getArray("value").getMap(j).getArray("value").getMap(k).getString("name")));
-//                    }
-//                    //如果区为空
-//                    if (params.getMap(i).getArray("value").getMap(j).getArray("value").size()==0){
-//                        option3Item_temp1.add(new DistricBean(-1,""));
-//                    }
-//                    option3Iteems_temp2.add(option3Item_temp1);
-//                    option2Items_temp.add(new CityBean(params.getMap(i).getArray("value").getMap(j).getInt("code"),params.getMap(i).getArray("value").getMap(j).getString("name")));
-//                }
-//                //如果市为空
-//                if (params.getMap(i).getArray("value").size()==0){
-//                    ArrayList<DistricBean>option3Item_temp1=new ArrayList<>();
-//                    option3Item_temp1.add(new DistricBean(-1,""));
-//                    option3Iteems_temp2.add(option3Item_temp1);
-//                    option2Items_temp.add(new CityBean(-1,""));
-//                }
-//                CommModule.options1Items.add(new ProvinceBean(params.getMap(i).getInt("code"),params.getMap(i).getString("name")));//添加省
-//                CommModule.options2Items.add(option2Items_temp);//添加市
-//                CommModule.options3Items.add(option3Iteems_temp2);//添加区
-//            }
-//        }
-//    }
 
     @ReactMethod
     public void setCityPicker(String str) {
@@ -346,9 +313,6 @@ public class CommModule extends ReactContextBaseJavaModule {
         handler.post(new Runnable() {
             public void run() {
                 if (options1Items.size() == 0) {
-//                    ApiManager.getAreaList(mContext.getCurrentActivity(), areaListResponse -> {
-//                        EventBus.getDefault().postSticky(areaListResponse);
-//                    });
                     Toast.makeText(mContext, "commModule", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
@@ -374,12 +338,6 @@ public class CommModule extends ReactContextBaseJavaModule {
             }
         });
     }
-//        HandlerUtils.runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-
-//        });
-//    }
 
     //选取照片Dialog
     @ReactMethod
