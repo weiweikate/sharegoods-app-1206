@@ -83,21 +83,25 @@ export default class LoginPage extends BasePage {
     weChatLoginClick = () => {
         bridge.$loginWx((data) => {
 
+            console.warn(data);
+
             LoginAPI.appWechatLogin({
-                device:'',
+                device:data.device,
                 encryptedData:'',
                 headImg:'',
                 iv:'',
                 nickname:'',
                 openid:data.openid,
-                systemVersion:'',
+                systemVersion:data.systemVersion,
                 wechatVersion:'',
             }).then((data)=>{
-                console.warn(data);
+                if (data===1000){
 
+                } else {
+                    bridge.$toast(data.msg)
+                }
             }).catch((data)=>{
-                console.warn(data);
-
+                bridge.$toast(data.msg)
             });
 
             // this.$navigate('login/login/RegistPage', data);

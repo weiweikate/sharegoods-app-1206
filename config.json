@@ -1,55 +1,55 @@
 {
-    "showDebugPanel": true,
-    "envType": "测试环境",
-    "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
-    "env": {
-        "dev_mock": {
-            "name": "开发mock环境",
-            "host": "http://localhost:9090"
-        },
-        "dev_wcj": {
-            "name": "开发环境—wcj",
-            "host": "http://172.16.10.19"
-        },
-        "dev_syx": {
-            "name": "开发环境—syx",
-            "host": "http://172.16.10.7"
-        },
-        "dev_yxm": {
-            "name": "开发环境—yxm",
-            "host": "http://172.16.10.12"
-        },
-        "dev_cs": {
-            "name": "开发环境-cs",
-            "host": "http://172.16.10.69"
-        },
-        "dev_zh": {
-            "name": "开发环境-zh",
-            "host": "http://172.16.10.29"
-        },
-        "dev_zb": {
-            "name": "开发环境-zb",
-            "host": "http://172.16.10.41"
-        },
-        "dev": {
-            "name": "开发环境",
-            "host": "http://172.16.10.253"
-        },
-        "qa": {
-            "name": "测试环境",
-            "host": "https://testapi.sharegoodsmall.com/gateway"
-        },
-        "online": {
-            "name": "生产环境",
-            "host": ""
-        },
-        "qa_yx": {
-            "name": "测试环境_营销",
-            "host": "https://oper.dnvhot.tech"
-        },
-        "吴承骏Login": {
-            "name": "测试环境_登陆",
-            "host": "http://172.16.10.19:8180/gateway"
-        }
+  "showDebugPanel": true,
+  "envType": "qa",
+  "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
+  "env": {
+    "dev_mock": {
+      "name": "开发mock环境",
+      "host": "http://localhost:9090"
+    },
+    "dev_wcj": {
+      "name": "开发环境—wcj",
+      "host": "http://172.16.10.19"
+    },
+    "dev_syx": {
+      "name": "开发环境—syx",
+      "host": "http://172.16.10.7"
+    },
+    "dev_yxm": {
+      "name": "开发环境—yxm",
+      "host": "http://172.16.10.12"
+    },
+    "dev_cs": {
+      "name": "开发环境-cs",
+      "host": "http://172.16.10.69"
+    },
+    "dev_zh": {
+      "name": "开发环境-zh",
+      "host": "http://172.16.10.29"
+    },
+    "dev_zb": {
+      "name": "开发环境-zb",
+      "host": "http://172.16.10.41"
+    },
+    "dev": {
+      "name": "开发环境",
+      "host": "http://172.16.10.253"
+    },
+    "qa": {
+      "name": "测试环境",
+      "host": "https://testapi.sharegoodsmall.com/gateway"
+    },
+    "online": {
+      "name": "生产环境",
+      "host": ""
+    },
+    "qa_yx": {
+      "name": "测试环境_营销",
+      "host": "https://oper.dnvhot.tech"
+    },
+    "吴承骏Login": {
+      "name": "测试环境_登陆",
+      "host": "http://172.16.10.19:8180/gateway"
     }
+  }
 }
