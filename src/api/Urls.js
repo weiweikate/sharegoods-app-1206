@@ -1,5 +1,5 @@
 export default {
-    apiDemoList:'/api/demo/list',
+    apiDemoList:['/api/demo/list',{method:'get'}],
     apiDemoAdd:'/api/demo/add',
     apiDemoUpdate:'/api/demo/update',
     apiDemoDelete:'/api/demo/delete',
