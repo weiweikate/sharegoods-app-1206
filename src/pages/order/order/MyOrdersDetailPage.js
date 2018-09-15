@@ -43,68 +43,69 @@ class MyOrdersDetailPage extends BasePage {
             orderId: this.props.navigation.state.params.orderId,
             expressNo: '',
             viewData: {
-                // expressNo:'',
-                // orderId:1235,
-                // list:[
-                //     {
-                //         id:1,
-                //         productId:1,
-                //         orderId:1,
-                //         uri:'https://ws2.sinaimg.cn/large/006tNc79gy1fsvlm591zyj30om056dl8.jpg',
-                //         goodsName:'CHEERIOBAN 慵懒随意春装2018新款女毛呢格纹编制流苏小香风外套',
-                //         salePrice:'150',
-                //         category:'通勤通勤: 复古衣长: 中长款袖长: 长袖',
-                //         goodsNum:'1',
-                //         returnProductId:1,
-                //         afterSaleService:[
-                //             {
-                //                 id:0,
-                //                 operation:'退款',
-                //                 isRed:false,
-                //             },{
-                //                 id:1,
-                //                 operation:'退换',
-                //                 isRed:false,
-                //             },{
-                //                 id:2,
-                //                 operation:'退款中',
-                //                 isRed:false,
-                //             },{
-                //                 id:3,
-                //                 operation:'退换中',
-                //                 isRed:false,
-                //             },{
-                //                 id:4,
-                //                 operation:'售后完成',
-                //                 isRed:true,
-                //             },{
-                //                 id:5,
-                //                 operation:'售后失败',
-                //                 isRed:true,
-                //             },
-                //         ],
-                //     },
-                // ],
-                // receiverName:'赵信',
-                // receiverNum:'18254569878',
-                // receiverAddress:'浙江省杭州市萧山区宁围镇鸿宁路望京商务C2-502',
-                // provinceString:'浙江省',
-                // cityString:'金华市',
-                // areaString:'义乌市'
-                // goodsPrice:5292,//商品价格(detail.totalPrice-detail.freightPrice)
-                // freightPrice:5092,//运费（快递）
-                // userScore:0,//积分抵扣
-                // totalPrice:5292,//订单总价
-                // orderTotalPrice:5292,//需付款
-                // orderNum:2018070250371039050793800,//订单编号
-                // createTime:1530499145000,//创建时间
-                // sysPayTime:1530499145000,//平台付款时间
-                // payTime:1530499145000,//三方付款时间
-                // outTradeNo:2018070250371039050793800,//三方交易号
-                // sendTime:1530499145000,//发货时间
-                // finishTime:1530499145000,//成交时间
-                // autoConfirmTime:1533669382000,//自动确认时间
-                //pickedUp:2,
+                expressNo:'',
+                orderId:1235,
+                list:[
+                    {
+                        id:1,
+                        productId:1,
+                        orderId:1,
+                        uri:'https://ws2.sinaimg.cn/large/006tNc79gy1fsvlm591zyj30om056dl8.jpg',
+                        goodsName:'CHEERIOBAN 慵懒随意春装2018新款女毛呢格纹编制流苏小香风外套',
+                        salePrice:'150',
+                        category:'通勤通勤: 复古衣长: 中长款袖长: 长袖',
+                        goodsNum:'1',
+                        returnProductId:1,
+                        afterSaleService:[
+                            {
+                                id:0,
+                                operation:'退款',
+                                isRed:false,
+                            },{
+                                id:1,
+                                operation:'退换',
+                                isRed:false,
+                            },{
+                                id:2,
+                                operation:'退款中',
+                                isRed:false,
+                            },{
+                                id:3,
+                                operation:'退换中',
+                                isRed:false,
+                            },
+                            // {
+                            //     id:4,
+                            //     operation:'售后完成',
+                            //     isRed:true,
+                            // },{
+                            //     id:5,
+                            //     operation:'售后失败',
+                            //     isRed:true,
+                            // },
+                        ],
+                    },
+                ],
+                receiverName:'赵信',
+                receiverNum:'18254569878',
+                receiverAddress:'浙江省杭州市萧山区宁围镇鸿宁路望京商务C2-502',
+                provinceString:'浙江省',
+                cityString:'金华市',
+                areaString:'义乌市',
+                goodsPrice:5292,//商品价格(detail.totalPrice-detail.freightPrice)
+                freightPrice:5092,//运费（快递）
+                userScore:0,//积分抵扣
+                totalPrice:5292,//订单总价
+                orderTotalPrice:5292,//需付款
+                orderNum:2018070250371039050793800,//订单编号
+                createTime:1530499145000,//创建时间
+                sysPayTime:1530499145000,//平台付款时间
+                payTime:1530499145000,//三方付款时间
+                outTradeNo:2018070250371039050793800,//三方交易号
+                sendTime:1530499145000,//发货时间
+                finishTime:1530499145000,//成交时间
+                autoConfirmTime:1533669382000,//自动确认时间
+                pickedUp:2,
             },
             //todo 这里的初始化仅仅为了减少判空处理的代码，后面会删除
             pageState: 1,
@@ -119,7 +120,7 @@ class MyOrdersDetailPage extends BasePage {
     };
     $getPageStateOptions = () => {
         return {
-            loadingState: 'empty',
+            loadingState: 'success',
             netFailedProps: {
                 netFailedInfo: this.state.netFailedInfo,
                 reloadBtnClick: this._reload
@@ -132,7 +133,7 @@ class MyOrdersDetailPage extends BasePage {
             <View>
                 <ImageBackground style={styles.redRectangle} source={productDetailImg}>
                     <UIImage source={buyerHasPay} style={{ height: 25, width: 25, marginTop: 22 }}/>
-                    <View style={{ marginTop: 15 }}>
+                    <View style={{ marginTop: 22 }}>
                         <UIText value={this.state.pageStateString.buyState} style={{
                             color: color.white,
                             fontSize: 18,
@@ -479,12 +480,12 @@ class MyOrdersDetailPage extends BasePage {
 
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line }}></View>
+            <View style={{ height: 1, backgroundColor: color.line }}/>
         );
     };
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, backgroundColor: color.page_background }}></View>
+            <View style={{ height: 10, backgroundColor: color.page_background }}/>
         );
     };
     //28:45:45后自动取消订单
@@ -784,14 +785,14 @@ class MyOrdersDetailPage extends BasePage {
                 this.setState({ isShowSingleSelctionModal: true });
                 break;
             case 2:
-                this.navigate('payment/PaymentMethodPage', {
+                this.$navigate('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
                     amounts: this.state.viewData.totalPrice + this.state.viewData.freightPrice,
                     orderType: this.state.viewData.pickedUp - 1
                 });
                 break;
             case 3:
-                this.navigate('payment/PaymentMethodPage', {
+                this.$navigate('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
                     amounts: this.state.viewData.goodsPrice
                 });
@@ -805,7 +806,7 @@ class MyOrdersDetailPage extends BasePage {
                 NativeModules.commModule.toast('目前仅支持单个商品退款');
                 break;
             case 5:
-                this.navigate('order/logistics/LogisticsDetailsPage', {
+                this.$navigate('order/logistics/LogisticsDetailsPage', {
                     orderNum: this.state.viewData.orderNum,
                     orderId: this.state.orderId,
                     expressNo: this.state.expressNo
@@ -849,6 +850,7 @@ class MyOrdersDetailPage extends BasePage {
         NativeModules.commModule.toast('订单号已经复制到剪切板');
     };
     afterSaleServiceClick = (menu, index) => {
+        console.warn(menu);
         // afterSaleService:[
         //             {
         //                 id:0,
@@ -878,7 +880,7 @@ class MyOrdersDetailPage extends BasePage {
         //         ],
         switch (menu.id) {
             case 0:
-                this.navigate('order/afterSaleService/AfterSaleServicePage', {
+                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 0,
                     pageData: this.state.viewData,
                     index: index,
@@ -886,34 +888,34 @@ class MyOrdersDetailPage extends BasePage {
                 });
                 break;
             case 1:
-                this.navigate('order/afterSaleService/AfterSaleServiceHomePage', {
+                this.$navigate('order/afterSaleService/AfterSaleServiceHomePage', {
                     pageData: this.state.viewData,
                     index: index
                 });
                 break;
             case 2:
-                this.navigate('order/afterSaleService/ApplyRefundNextPage', {
+                this.$navigate('order/afterSaleService/ApplyRefundNextPage', {
                     pageType: 0,
                     pageData: this.state.viewData,
                     index: index
                 });
                 break;
             case 3:
-                this.navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 3,
                     pageData: this.state.viewData,
                     index: index
                 });
                 break;
             case 4:
-                this.navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 6,
                     pageData: this.state.viewData,
                     index: index
                 });
                 break;
             case 5:
-                this.navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 7,
                     pageData: this.state.viewData,
                     index: index
@@ -933,7 +935,7 @@ const styles = StyleSheet.create({
         backgroundColor: color.red,
         flexDirection: 'row',
         paddingLeft: 22,
-        position: 'absolute'
+        position: 'absolute',
     }, whiteRectangle: {
         height: 81,
         marginTop: 69,

@@ -3,7 +3,7 @@
 ## 依赖包
 所有依赖包必须固定版本
 
-##倒计时工具使用 TimeDownUtils
+## 倒计时工具使用 TimeDownUtils
 
 参数1,回调函数,每秒回调一次,回调参数为倒计时到第几秒了
 参数2,倒计时的秒数,不写默认60
@@ -19,9 +19,11 @@ startDown(callBack, downTime = this.downTime)
 
 
 ## API 使用
+默认请求方式为`POST` , 如果需要`GET`则以数组模式配置
 
 ```javascript
 const api = {
+    getList:['/api/data/list',{method:'get'}],
     login:'/api/user/login',
     logout:'/api/user/logout',
 }

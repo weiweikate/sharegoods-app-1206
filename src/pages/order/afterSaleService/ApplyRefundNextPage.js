@@ -22,9 +22,10 @@ import Toast from '../../../utils/bridge';
 // import OrderApi from 'OrderApi'
 // import QYChatUtil from 'QYChatUtil'
 
-class ApplyRefundNextPage extends BasePage {
+export default class ApplyRefundNextPage extends BasePage {
     constructor(props) {
         super(props);
+        console.warn(this.props);
         this.state = {
             phone: '',
             pwd: '',
@@ -55,7 +56,7 @@ class ApplyRefundNextPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: this.state.pageType === 0 ? '申请退款' : '售后服务',
+        title: this.params.pageType == 0 ? '申请退款' : '售后服务',
         show: true// false则隐藏导航
     };
 
@@ -291,4 +292,3 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ApplyRefundNextPage;

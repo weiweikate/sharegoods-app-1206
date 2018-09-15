@@ -5,17 +5,18 @@ import {
     StyleSheet,
     TouchableWithoutFeedback,
     Text,
-    ScrollView,
-    Image
+    ScrollView
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import SelectionSectionView from './components/SelectionSectionView';
+import SelectionHeaderView from './components/SelectionHeaderView';
 
 export default class SelectionPage extends Component {
 
     static propTypes = {
         selectionViewConfirm: PropTypes.func.isRequired,
-        selectionViewClose: PropTypes.func.isRequired
+        selectionViewClose: PropTypes.func.isRequired,
+        selectionData: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -34,35 +35,15 @@ export default class SelectionPage extends Component {
     render() {
         return (
             <View style={styles.container}>
+
                 <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
                     <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
                 </TouchableWithoutFeedback>
+
                 <View style={{ backgroundColor: 'white', flex: 1 }}>
-                    <View style={{ height: 110, flexDirection: 'row' }}>
 
-                        <View style={{
-                            marginLeft: 10,
-                            marginTop: -20,
-                            height: 110,
-                            width: 110,
-                            borderColor: '#EEEEEE',
-                            borderWidth: 1,
-                            borderRadius: 5,
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            <Image style={{ width: 108, height: 108, backgroundColor: 'red', borderRadius: 5 }}/>
-                        </View>
-                        <View style={{ flex: 1, marginLeft: 16 }}>
-                            <Text style = {{color:'#D51243',fontSize:18,fontFamily:'PingFang-SC-Medium'}}>￥455.50</Text>
-                            <Text style = {{color:'#222222',fontSize:15,fontFamily:'PingFang-SC-Medium'}}>库存454654件</Text>
-                            <Text style = {{color:'#222222',fontSize:15,fontFamily:'PingFang-SC-Medium'}}>银色</Text>
-                        </View>
-                        <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
-                            <Image style={{ marginRight: 16, marginTop: 19, width: 23, height: 23 }}/>
-                        </TouchableWithoutFeedback>
+                    <SelectionHeaderView/>
 
-                    </View>
                     <ScrollView contentContainerStyle={styles.contentContainer}>
                         <SelectionSectionView listData={this.state.recentData0}
                                               clickItemAction={this._clickItemAction}/>
@@ -70,7 +51,12 @@ export default class SelectionPage extends Component {
                                               clickItemAction={this._clickItemAction}/>
                         <SelectionSectionView listData={this.state.recentData2}
                                               clickItemAction={this._clickItemAction}/>
+
+                        <View>
+
+                        </View>
                     </ScrollView>
+
                     <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
                         <View style={{
                             height: 49,
@@ -81,6 +67,7 @@ export default class SelectionPage extends Component {
                             <Text style={{ fontSize: 16, color: '#FFFFFF' }}>确认</Text>
                         </View>
                     </TouchableWithoutFeedback>
+
                 </View>
 
             </View>

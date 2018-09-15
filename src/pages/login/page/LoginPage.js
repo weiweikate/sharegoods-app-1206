@@ -1,29 +1,29 @@
-import React from 'react';
-import LoginTopView from '../components/LoginTopView';
-import UserModel from '../../../model/user';
+import React from "react";
+import LoginTopView from "../components/LoginTopView";
+import UserModel from "../../../model/user";
 import {
     View,
     Text,
     StyleSheet,
     TouchableOpacity,
     Image
-} from 'react-native';
-import CommSpaceLine from '../../../comm/components/CommSpaceLine';
-import loginAndRegistRes from '../res/LoginAndRegistRes';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import ColorUtil from '../../../utils/ColorUtil';
-import BasePage from '../../../BasePage';
-import bridge from '../../../utils/bridge';
-import LoginAPI from '../api/LoginApi';
+} from "react-native";
+import CommSpaceLine from "../../../comm/components/CommSpaceLine";
+import loginAndRegistRes from "../res/LoginAndRegistRes";
+import ScreenUtils from "../../../utils/ScreenUtils";
+import ColorUtil from "../../../utils/ColorUtil";
+import BasePage from "../../../BasePage";
+import bridge from "../../../utils/bridge";
+import LoginAPI from "../api/LoginApi";
 
 export default class LoginPage extends BasePage {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
 
     // 导航配置
     $navigationBarOptions = {
-        title: '登录'
+        title: "登录"
     };
     /*render右上角*/
     $NavBarRenderRightItem = () => {
@@ -53,9 +53,9 @@ export default class LoginPage extends BasePage {
                     <View style={{
                         marginLeft: 0,
                         marginRight: 0,
-                        justifyContent: 'center',
-                        backgroundColor: '#fff',
-                        alignItems: 'center'
+                        justifyContent: "center",
+                        backgroundColor: "#fff",
+                        alignItems: "center"
                     }}>
                         <TouchableOpacity onPress={this.weChatLoginClick}>
                             <Image style={{ width: 50, height: 50 }} source={loginAndRegistRes.weixinImage}/>
@@ -65,7 +65,7 @@ export default class LoginPage extends BasePage {
                 <Image
                     style={{
                         width: ScreenUtils.width,
-                        position: 'absolute',
+                        position: "absolute",
                         bottom: 0,
                         height: 80
                     }}
@@ -77,43 +77,40 @@ export default class LoginPage extends BasePage {
 
     /*忘记密码*/
     forgetPasswordClick = () => {
-        this.$navigate('login/login/ForgetPasswordPage');
+        this.$navigate("login/login/ForgetPasswordPage");
     };
     /*微信登陆*/
     weChatLoginClick = () => {
         bridge.$loginWx((data) => {
-
             console.warn(data);
-
             LoginAPI.appWechatLogin({
-                device:data.device,
-                encryptedData:'',
-                headImg:'',
-                iv:'',
-                nickname:'',
-                openid:data.openid,
-                systemVersion:data.systemVersion,
-                wechatVersion:'',
-            }).then((data)=>{
-                if (data===1000){
-
+                device: data.device,
+                encryptedData: "",
+                headImg: "",
+                iv: "",
+                nickname: "",
+                openid: data.openid,
+                systemVersion: data.systemVersion,
+                wechatVersion: ""
+            }).then((data) => {
+                if (data === 1000) {
+                    this.$navigate("login/login/RegistPage", data);
                 } else {
-                    bridge.$toast(data.msg)
+                    bridge.$toast(data.msg);
                 }
-            }).catch((data)=>{
-                bridge.$toast(data.msg)
+            }).catch((data) => {
+                bridge.$toast(data.msg);
             });
-
-            // this.$navigate('login/login/RegistPage', data);
         });
     };
+
     /*老用户登陆*/
     oldUserLoginClick = () => {
-        this.props.navigation.navigate('login/login/OldUserLoginPage');
+        this.props.navigation.navigate("login/login/OldUserLoginPage");
     };
     /*注册*/
     registBtnClick = () => {
-        this.$navigate('login/login/RegistPage');
+        this.$navigate("login/login/RegistPage");
     };
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
@@ -121,20 +118,20 @@ export default class LoginPage extends BasePage {
 
         if (loginType === 0) {
             LoginAPI.codeLogin({
-                authcode: '22',
-                code: '微信code',
-                device: '设备名称',
+                authcode: "22",
+                code: "微信code",
+                device: "设备名称",
                 password: LoginParam.password,
                 phone: LoginParam.phoneNumber,
-                systemVersion: '44',
-                username: '',
-                wechatCode: '',
-                wechatVersion: ''
+                systemVersion: "44",
+                username: "",
+                wechatCode: "",
+                wechatVersion: ""
             }).then((data) => {
                 this.$loadingDismiss();
                 console.log(data);
                 UserModel.saveUserInfo(data.data);
-                bridge.$toast('登陆成功');
+                bridge.$toast("登陆成功");
                 // this.$navigateBack('Tab')
                 this.$navigateBack();
             }).catch((data) => {
@@ -144,20 +141,20 @@ export default class LoginPage extends BasePage {
             });
         } else {
             LoginAPI.passwordLogin({
-                authcode: '22',
+                authcode: "22",
                 code: LoginParam.code,
-                device: '44',
+                device: "44",
                 password: LoginParam.password,
                 phone: LoginParam.phoneNumber,
-                systemVersion: '44',
-                username: '',
-                wechatCode: '',
-                wechatVersion: ''
+                systemVersion: "44",
+                username: "",
+                wechatCode: "",
+                wechatVersion: ""
             }).then((data) => {
                 this.$loadingDismiss();
                 console.log(data);
                 UserModel.saveUserInfo(data.data);
-                bridge.$toast('登陆成功');
+                bridge.$toast("登陆成功");
                 this.$navigateBack();
             }).catch((data) => {
                 this.$loadingDismiss();
@@ -167,7 +164,7 @@ export default class LoginPage extends BasePage {
 
         }
     };
-}
+};
 
 const Styles = StyleSheet.create(
     {
@@ -175,15 +172,15 @@ const Styles = StyleSheet.create(
             flex: 1,
             margin: 0,
             marginTop: -2,
-            backgroundColor: '#fff'
+            backgroundColor: "#fff"
         },
         rightTopTitleStyle: {
             fontSize: 15,
-            color: '#666'
+            color: "#666"
         },
         otherLoginBgStyle: {
             left: 30,
-            position: 'absolute',
+            position: "absolute",
             bottom: 10,
             height: 170
 
@@ -191,10 +188,10 @@ const Styles = StyleSheet.create(
         lineBgStyle: {
             marginLeft: 30,
             marginRight: 30,
-            flexDirection: 'row',
+            flexDirection: "row",
             height: 30,
-            backgroundColor: '#fff',
-            justifyContent: 'center'
+            backgroundColor: "#fff",
+            justifyContent: "center"
         },
         otherLoginTextStyle: {
             color: ColorUtil.Color_666666

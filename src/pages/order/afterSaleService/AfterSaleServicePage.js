@@ -10,7 +10,7 @@ import BasePage from '../../../BasePage';
 import GoodsItem from '../components/GoodsItem';
 import ExchangeTypeModal from '../../../components/ui/ExchangeTypeModal';
 import {
-    UIText, UIImage, AddPhotos, TakePhotoModal
+    UIText, UIImage, AddPhotos, TakePhoneModal
 } from '../../../components/ui';
 import { color } from '../../../constants/Theme';
 import BottomSingleSelectModal from '../components/BottomSingleSelectModal';
@@ -68,7 +68,7 @@ class AfterSaleServicePage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: this.state.pageTitle[this.state.pageType],
+        title: ['申请退款', '售后服务', '申请换货'][this.params.pageType ? this.params.pageType : 0],
         show: true// false则隐藏导航
     };
     //**********************************ViewPart******************************************
@@ -200,11 +200,9 @@ class AfterSaleServicePage extends BasePage {
                         underlineColorAndroid={'transparent'}
                     />
                     <View style={{
-                        flex: 1,
-                        posistion: 'absolute',
-                        justifyContent: 'flex-end',
-                        alignItems: 'flex-end',
-                        marginBottom: 11
+                        position: 'absolute',
+                        right: 5,
+                        bottom: 11
                     }}>
                         <UIText value={this.state.hasInputNum + '/100'}
                                 style={{ color: color.black_222, fontSize: 13, marginLeft: 16, width: 50 }}/>
@@ -273,7 +271,7 @@ class AfterSaleServicePage extends BasePage {
                         this.setState({ actualReason: ['不喜欢/不想要了', '空包裹', '快递/物流一直未送到', '货物破损已拒签'][index] });
                     }}
                 />
-                <TakePhotoModal
+                <TakePhoneModal
                     isShow={this.state.isShowTakePhotoModal}
                     closeWindow={() => {
                         this.setState({ isShowTakePhotoModal: false });
@@ -302,7 +300,8 @@ class AfterSaleServicePage extends BasePage {
 
         );
     };
-    _render(){
+
+    _render() {
         return (
             <View style={styles.container}>
                 <ScrollView>
