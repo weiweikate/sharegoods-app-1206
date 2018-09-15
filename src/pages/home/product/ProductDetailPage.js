@@ -11,6 +11,8 @@ import DetailHeaderView from './components/DetailHeaderView';
 import DetailSegmentView from './components/DetailSegmentView';
 import DetailBottomView from './components/DetailBottomView';
 import SelectionPage from './SelectionPage';
+import DateUtils from '../../../utils/DateUtils';
+import HomeAPI from '../api/HomeAPI';
 
 export default class ProductDetailPage extends BasePage {
 
@@ -21,9 +23,45 @@ export default class ProductDetailPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            modalVisible: false
+            modalVisible: false,
+            data: {},
+
+            product: {},
+            specMap: [],
+            paramList: [],
+            priceList: []
         };
     }
+
+    componentDidMount() {
+        this.loadPageData();
+    }
+
+    loadPageData() {
+        this._productList();
+    }
+
+    //数据
+    _productList = () => {
+        this.$loadingShow();
+        HomeAPI.productList({
+            keyword: this.params.keywords,
+            pageSize: 10,
+            page: this.state.page,
+            sortModel: this.state.sortModel,
+            sortType: this.state.sortType,
+            time: DateUtils.formatDate(new Date())
+        }).then((data) => {
+            console.log(data.data);
+            this.$loadingDismiss();
+            this.setState({
+                productList: data.data.data
+            });
+        }).catch((data) => {
+            this.$loadingDismiss();
+            this.$toastShow(data.message);
+        });
+    };
 
     //segment 详情0 参数1 选项
     _segmentViewOnPressAtIndex = (index) => {
@@ -64,7 +102,7 @@ export default class ProductDetailPage extends BasePage {
 
 
     _renderListHeader = () => {
-        return (<DetailHeaderView/>);
+        return (<DetailHeaderView data={this.state.data}/>);
     };
 
     _renderSectionHeader = () => {
