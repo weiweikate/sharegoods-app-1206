@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    TextInput,
+    Text,
     StyleSheet,
     TouchableOpacity,
     Image
@@ -15,10 +15,8 @@ import horizontalRow from '../res/horizontalRow.png';
 export default class ResultSearchNav extends Component {
 
     static propTypes = {
-        value: PropTypes.string,
-        placeholder: PropTypes.string,
-        onSubmitEditing: PropTypes.func.isRequired,
         goBack: PropTypes.func.isRequired,
+        value: PropTypes.string,
         changeLayout: PropTypes.func.isRequired,
         isHorizontal: PropTypes.bool,
     };
@@ -26,36 +24,10 @@ export default class ResultSearchNav extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: this.props.value || '',
         };
     }
 
-
-    _onChangeText = (text) => {
-        if (text !== '') {
-            this.setState({
-                isShowInputClear: true,
-                inputText: text
-            });
-        } else {
-            this.setState({
-                isShowInputClear: false,
-                inputText: text
-            });
-        }
-
-        if (this.props.onChangeText) {
-            this.props.onChangeText(text);
-        }
-    };
-
-    _onSubmitEditing = (text) => {
-        if (this.props.onSubmitEditing) {
-            this.props.onSubmitEditing(text);
-        }
-    };
-
-    _selectedIndex = () => {
+    _selectedLayoutType = () => {
         if (this.props.changeLayout) {
             this.props.changeLayout();
         }
@@ -69,16 +41,9 @@ export default class ResultSearchNav extends Component {
                         <Image source={navBack}/>
                     </TouchableOpacity>
                     <View style={styles.inputView}>
-                        <TextInput style={{ marginLeft: 24 }}
-                                   keyboardType='web-search'
-                                   underlineColorAndroid='transparent'
-                                   placeholder={this.props.placeholder}
-                                   placeholderTextColor='#C8C8C8'
-                                   value={this.state.value}
-                                   onChangeText={(text) => this._onChangeText(text)}
-                                   onSubmitEditing={(event) => this._onSubmitEditing(event.nativeEvent.text)}/>
+                        <Text style={{ marginLeft: 24 ,color:'#212121'}}>{this.props.value}</Text>
                     </View>
-                    <TouchableOpacity style={styles.styleTypeBtn} onPress={this._selectedIndex}>
+                    <TouchableOpacity style={styles.styleTypeBtn} onPress={this._selectedLayoutType}>
                         <Image source={this.props.isHorizontal ? horizontalRow : verticalRow}/>
                     </TouchableOpacity>
                 </View>

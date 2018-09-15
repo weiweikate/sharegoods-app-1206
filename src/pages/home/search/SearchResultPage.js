@@ -3,7 +3,8 @@ import {
     View,
     FlatList,
     Image,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Modal
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ResultSearchNav from './components/ResultSearchNav';
@@ -15,7 +16,7 @@ import toTop from './res/toTop.png';
 import RouterMap from '../../../RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import DateUtils from '../../../utils/DateUtils';
-
+import SelectionPage from '../product/SelectionPage'
 
 export default class SearchResultPage extends BasePage {
 
@@ -26,10 +27,19 @@ export default class SearchResultPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.params = this.props.navigation.state.params;
         this.state = {
-            isHorizontal: true,
-            productList: []
+            isHorizontal: false,
+            modalVisible:false,
+
+            //排序类型(1.综合 2.销量 3. 价格)
+            sortType: 1,
+            //排序方式 (1.升序 2.降序)
+            sortModel: 1,
+            //页码
+            page: 1,
+
+            productList: [],
+            selectionData:{}
         };
     }
 
@@ -43,23 +53,42 @@ export default class SearchResultPage extends BasePage {
 
     //数据
     _productList = () => {
-
         this.$loadingShow();
         HomeAPI.productList({
             keyword: this.params.keywords,
-            page: 1,
             pageSize: 10,
-            sortModel: 1,
-            sortType: 3,
+            page: this.state.page,
+            sortModel: this.state.sortModel,
+            sortType: this.state.sortType,
             time: DateUtils.formatDate(new Date())
         }).then((data) => {
+            console.log(data.data);
             this.$loadingDismiss();
-            this.setState({
-                hotData: data
+            data.data&&this.setState({
+                productList: data.data.data
             });
         }).catch((data) => {
             this.$loadingDismiss();
             this.$toastShow(data.message);
+        });
+    };
+
+    _storeProduct = (productId) => {
+        this.$loadingShow();
+        HomeAPI.getProductSpec({
+            id:productId
+        }).then((data) => {
+            console.log(data);
+            this.$loadingDismiss();
+            data.data&&this.setState({
+                selectionData: data.data
+            });
+        }).catch((data) => {
+            this.$loadingDismiss();
+            this.$toastShow(data.message);
+        });
+        this.setState({
+            modalVisible: !this.state.modalVisible
         });
     };
 
@@ -73,14 +102,26 @@ export default class SearchResultPage extends BasePage {
         });
     };
 
-    _onSubmitEditing = () => {
+
+    _segmentOnPressAtIndex = () => {
 
     };
-    _onPressAtIndex = () => {
-        this.$navigate(RouterMap.ProductDetailPage);
-    };
-    _storeProduct = () => {
 
+    _onPressAtIndex = (productId) => {
+        this.$navigate(RouterMap.ProductDetailPage,{ id: productId });
+    };
+
+    //选择规格确认
+    _selectionViewConfirm = () => {
+
+    };
+
+    //选择规格关闭
+    _selectionViewClose = () => {
+
+        this.setState({
+            modalVisible: false
+        });
     };
 
     _onPressToGwc = () => {
@@ -90,11 +131,14 @@ export default class SearchResultPage extends BasePage {
         this.refs.FlatListShow.scrollToOffset({ offset: 0 });
     };
 
-    _renderItem = () => {
+
+    _renderItem = ({ item }) => {
         if (this.state.isHorizontal) {
-            return (<ResultHorizontalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}/>);
+            return (<ResultHorizontalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}
+                                         itemData={item}/>);
         } else {
-            return (<ResultVerticalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}/>);
+            return (<ResultVerticalRow onPressAtIndex={this._onPressAtIndex} storeProduct={this._storeProduct}
+                                       itemData={item}/>);
         }
     };
 
@@ -103,8 +147,9 @@ export default class SearchResultPage extends BasePage {
             <View style={{ flex: 1 }}>
                 <ResultSearchNav goBack={this._goBack}
                                  onSubmitEditing={this._onSubmitEditing}
-                                 changeLayout={this._changeLayout} isHorizontal={this.state.isHorizontal}/>
-                <ResultSegmentView onPressAtIndex={this._onPressAtIndex}/>
+                                 changeLayout={this._changeLayout} isHorizontal={this.state.isHorizontal}
+                                 value={this.params.keywords}/>
+                <ResultSegmentView segmentOnPressAtIndex={this._segmentOnPressAtIndex}/>
                 <FlatList
                     ref='FlatListShow'
                     style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
@@ -124,6 +169,15 @@ export default class SearchResultPage extends BasePage {
                         <Image style={{ marginTop: 5 }} source={toTop}/>
                     </TouchableWithoutFeedback>
                 </View>
+
+
+                <Modal
+                    animationType="none"
+                    transparent={true}
+                    visible={this.state.modalVisible}>
+                    <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
+                                   selectionViewClose={this._selectionViewClose} selectionData = {this.state.selectionData}/>
+                </Modal>
             </View>
         );
     }

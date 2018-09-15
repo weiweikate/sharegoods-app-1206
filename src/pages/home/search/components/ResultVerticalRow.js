@@ -17,7 +17,8 @@ export default class SearchBar extends Component {
 
     static propTypes = {
         onPressAtIndex: PropTypes.func.isRequired,
-        storeProduct: PropTypes.func.isRequired
+        storeProduct: PropTypes.func.isRequired,
+        itemData: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -28,18 +29,36 @@ export default class SearchBar extends Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress = {this.props.onPressAtIndex}>
+            <TouchableWithoutFeedback onPress={() => {
+                this.props.onPressAtIndex(this.props.itemData.product.id);
+            }}>
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={[styles.container]}>
-                        <Image style={styles.img}/>
+                        <Image style={styles.img} source={{ uri: this.props.itemData.product.imgUrl }}/>
                         <View style={styles.textContentView}>
                             <Text style={{ color: '#222222', fontSize: 13 }}
-                                  numberOfLines={2}>CHEERIOBAN慵懒随意春装2018新款女毛呢格纹编制流...苏小香风...外套</Text>
+                                  numberOfLines={2}>{this.props.itemData.product.name}</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                <Text style={{ color: '#D51243', fontSize: 17 }}>￥150.00起</Text>
-                                <Image style={{ width: 15, height: 15 }} source={gwc}/>
+                                <Text style={{
+                                    color: '#D51243',
+                                    fontSize: 17
+                                }}>{`￥${this.props.itemData.originalPrice}`}<Text style={{ fontSize: 12 }}>起</Text>
+                                </Text>
                             </View>
                         </View>
+                        <TouchableWithoutFeedback onPress={()=>{this.props.storeProduct(this.props.itemData.product.id)}}>
+                            <View style={{
+                                width: 35,
+                                height: 35,
+                                position: 'absolute',
+                                bottom: 0,
+                                right: 0,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                <Image source={gwc}/>
+                            </View>
+                        </TouchableWithoutFeedback>
                     </View>
                 </View>
             </TouchableWithoutFeedback>
@@ -56,7 +75,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     img: {
-        backgroundColor: 'red',
+        backgroundColor: '#eeeeee',
         height: 120,
         width: 120
     },
