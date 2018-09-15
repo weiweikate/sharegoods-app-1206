@@ -78,6 +78,7 @@ dependencies {
     compile project(':react-native-vector-icons')
     compile project(':react-native-svg')
     compile project(':react-native-image-picker')
+    compile project(':react-native-linear-gradient')
     compile project(path: ':commonlib')
     compile rootProject.ext.dependencies.support
 

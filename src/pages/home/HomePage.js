@@ -15,6 +15,7 @@ import RouterMap from '../../RouterMap';
 import ViewPager from '../../components/ui/ViewPager';
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIImage from '../../components/ui/UIImage';
+import LinearGradient from 'react-native-linear-gradient';
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
@@ -91,7 +92,7 @@ export default class HomePage extends Component {
                 <View ref={(e) => this._refHeader = e}
                       style={[styles.navBarBg, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight },
                           { height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight) + 44 }]}/>
-                <View colors={['#cccccc', '#eeeeee', 'ffffff']}
+                <LinearGradient colors={['#000000', 'transparent']}
                                 style={[styles.navBar, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight },
                                     { height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight) + 44 }]}>
                     <Image source={require('./res/icons/logo.png')} style={styles.logo}/>
@@ -104,7 +105,7 @@ export default class HomePage extends Component {
                             style={styles.inputText}/>
                     </View>
                     <Image source={require('./res/icons/msg.png')} style={styles.scanIcon}/>
-                </View>
+                </LinearGradient>
                 <ScrollView showsVerticalScrollIndicator={false}
                             onScroll={this._onScroll}
                             scrollEventThrottle={10}>
@@ -180,17 +181,17 @@ export default class HomePage extends Component {
                             <View style={[styles.featureBox1]}>
                                 <Image
                                     source={{ uri: 'https://yanxuan.nosdn.127.net/b72c6486bc681f7b0dcb87d9af0ab1bb.png' }}
-                                    style={styles.featureBox1Image} />
+                                    style={styles.featureBox1Image}/>
                             </View>
                             <View style={[styles.featureBox2]}>
                                 <Image
                                     source={{ uri: 'https://yanxuan.nosdn.127.net/957c8d117473d103b52ff694f372a346.png' }}
-                                    style={styles.featureBox2Image} />
+                                    style={styles.featureBox2Image}/>
                             </View>
                             <View style={[styles.featureBox3]}>
                                 <Image
                                     source={{ uri: 'https://yanxuan.nosdn.127.net/e3bcfdff30c97ba87d510da8d9da5d09.png' }}
-                                    style={styles.featureBox2Image} />
+                                    style={styles.featureBox2Image}/>
                             </View>
                         </View>
                     </View>
@@ -272,8 +273,8 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20) + 44,
         paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
-        backgroundColor: 'transparent',
         alignItems: 'center',
+        opacity: 0.8,
         justifyContent: 'center',
         position: 'absolute',
         left: 0,
