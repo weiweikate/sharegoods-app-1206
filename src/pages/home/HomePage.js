@@ -49,6 +49,7 @@ export default class HomePage extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.navBar}>
+                   <View style={{paddingTop:24,height:48,alignItems:'center',flexDirection:'row'}}>
                     <Image source={require('./res/icons/logo.png')} style={styles.logo}/>
                     <View style={styles.searchBox}>
                         <Image source={require('./res/icon_search.png')} style={styles.searchIcon}/>
@@ -58,7 +59,7 @@ export default class HomePage extends Component {
                             style={styles.inputText}/>
                     </View>
                     <Image source={require('./res/icons/msg.png')} style={styles.scanIcon}/>
-
+                    </View>
                 </View>
                 <ScrollView>
 
@@ -193,18 +194,18 @@ const styles = StyleSheet.create({
     },
     // header
     navBar: {
-        flexDirection: 'row',
-        paddingLeft: 10,
-        paddingRight: 10,
+        // flexDirection: 'row',
+        // paddingLeft: 10,
+        // paddingRight: 10,
         paddingTop: Platform.OS === 'ios' ? 20 : 0,   // 处理iOS状态栏
-        height: Platform.OS === 'ios' ? 68 : 48,   // 处理iOS状态栏
+         height: Platform.OS === 'ios' ?78 : 58,   // 处理iOS状态栏
         backgroundColor: '#d51243',
-        alignItems: 'center'
+        // alignItems: 'center'
     },
     logo: {
-        height: 38,
-        width: 52,
-        resizeMode: 'stretch'  // 设置拉伸模式
+        height: 30,
+        width: 30,
+        resizeMode: 'contain'  // 设置拉伸模式    a
     },
     searchBox: {
         height: 30,
@@ -217,21 +218,21 @@ const styles = StyleSheet.create({
         marginRight: 12
     },
     scanIcon: {
-        height: 26.7,
-        width: 26.7,
-        resizeMode: 'stretch'
+        height: 20,
+        width: 20,
+        resizeMode: 'contain'
     },
     searchIcon: {
         marginLeft: 6,
         marginRight: 6,
         width: 16.7,
         height: 16.7,
-        resizeMode: 'stretch'
+        resizeMode: 'contain'
     },
     inputText: {
         flex: 1,
         backgroundColor: 'transparent',
-        fontSize: 14
+        fontSize: 8
     },
 
     // banner
