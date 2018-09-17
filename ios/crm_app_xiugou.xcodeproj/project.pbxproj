@@ -100,6 +100,7 @@
 		8FEF9F2832D98C9091C3A80D /* libPods-crm_app_xiugou.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2067021C430F882483438A36 /* libPods-crm_app_xiugou.a */; };
 		A91F2FFEF0894EB68A6EC16C /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EF0420E07D6F40B080CEAA13 /* Octicons.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
+		BF6EE61B214F8AF3007C1185 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF6EE5F3214F89C2007C1185 /* libBVLinearGradient.a */; };
 		C670FCDB76F54137AAA53057 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FED5F2163DB441AEAFBF1AB2 /* FontAwesome.ttf */; };
 		C77A347B0E47408BA04324B4 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB6EFB6B04564EBAB951820B /* Feather.ttf */; };
 		DF4AABE386544D87A6FBFFD0 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C21E6CAAF624B8198676636 /* MaterialCommunityIcons.ttf */; };
@@ -379,6 +380,20 @@
 			remoteGlobalIDString = 358F4ED71D1E81A9004DF814;
 			remoteInfo = RCTBlob;
 		};
+		BF6EE5F2214F89C2007C1185 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BF6EE5ED214F89C2007C1185 /* BVLinearGradient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = BVLinearGradient;
+		};
+		BF6EE5F4214F89C2007C1185 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BF6EE5ED214F89C2007C1185 /* BVLinearGradient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 64AA15081EF7F30100718508;
+			remoteInfo = "BVLinearGradient-tvOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -525,6 +540,7 @@
 		95C99B64C0CED3927CE1EC7C /* Pods-crm_app_xiugou.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.debug.xcconfig"; path = "Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.debug.xcconfig"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AE4716B854E34520B3C18596 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		BF6EE5ED214F89C2007C1185 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		CAB2E4DB260FDFCE4611A647 /* libPods-crm_app_xiugou-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-crm_app_xiugou-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD70E065E4CA4080A9DF5465 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		EB6EFB6B04564EBAB951820B /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
@@ -546,6 +562,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF6EE61B214F8AF3007C1185 /* libBVLinearGradient.a in Frameworks */,
 				5068364821379E2B001AB175 /* Foundation.framework in Frameworks */,
 				5068364621379E1D001AB175 /* CoreFoundation.framework in Frameworks */,
 				5068364421379E0B001AB175 /* CoreMotion.framework in Frameworks */,
@@ -1057,6 +1074,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				BF6EE5ED214F89C2007C1185 /* BVLinearGradient.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -1114,6 +1132,15 @@
 			children = (
 				ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */,
 				2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BF6EE5EE214F89C2007C1185 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BF6EE5F3214F89C2007C1185 /* libBVLinearGradient.a */,
+				BF6EE5F5214F89C2007C1185 /* libBVLinearGradient.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1267,6 +1294,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = BF6EE5EE214F89C2007C1185 /* Products */;
+					ProjectRef = BF6EE5ED214F89C2007C1185 /* BVLinearGradient.xcodeproj */;
+				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
@@ -1584,6 +1615,20 @@
 			fileType = archive.ar;
 			path = libRCTBlob.a;
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BF6EE5F3214F89C2007C1185 /* libBVLinearGradient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBVLinearGradient.a;
+			remoteRef = BF6EE5F2214F89C2007C1185 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BF6EE5F5214F89C2007C1185 /* libBVLinearGradient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBVLinearGradient.a;
+			remoteRef = BF6EE5F4214F89C2007C1185 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
