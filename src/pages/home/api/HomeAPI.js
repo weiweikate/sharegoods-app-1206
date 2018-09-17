@@ -4,9 +4,9 @@ const api = {
     // 产品列表页
     productList: '/product/productList',
     // 获取产品详情
-    getProductDetail: '/product/getProductDetail',
+    getProductDetail: ['/product/getProductDetail',{method:'get'}],
     // 获取产品规格信息
-    getProductSpec: '/product/getProductSpec',
+    getProductSpec: ['/product/getProductSpec',{method:'get'}],
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 
