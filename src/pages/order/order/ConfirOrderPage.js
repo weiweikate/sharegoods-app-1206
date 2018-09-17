@@ -20,8 +20,6 @@ import colorLine from '../res/addressLine.png';
 import GoodsItem from '../components/GoodsItem';
 import user from '../../../model/user';
 import Toast from '../../../utils/bridge';
-// import OrderApi from 'OrderApi'
-// import HomeApi from './../../../utils/net/HomeApi'
 import BasePage from '../../../BasePage';
 
 let oldViewData, oldPriceList;

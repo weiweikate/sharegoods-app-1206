@@ -1,9 +1,15 @@
 import {
-    Text, View, TextInput, StyleSheet, TouchableOpacity, Image
+    Text, View, TextInput, StyleSheet, TouchableOpacity, Image, NativeModules, Platform
 } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import IconGoTo from '../../../mine/res/customerservice/icon_06-03.png';
+import StringUtils from '../../../../utils/StringUtils';
+import bridge from '../../../../utils/bridge';
+import MineAPI from '../../api/MineApi';
+// import bridge from '../../../../utils/bridge';
+
+const dismissKeyboard = require('dismissKeyboard');
 
 export default class AddressEditAndAddPage extends BasePage {
 
@@ -14,23 +20,52 @@ export default class AddressEditAndAddPage extends BasePage {
     };
 
     $NavBarRightPressed = () => {
-        const { refreshing, from } = this.props.navigation.state.params || {};
-        if (from === 'edit') {
-            //编辑地址
-        } else if (from === 'add') {
-            //保存地址
+        if (StringUtils.isEmpty(this.state.receiver)) {
+            bridge.$toast('请输入收货人');
+            return;
         }
-
-        //保存地址，保存成功后刷新返回
-        // HttpUtils.post('', {}).then((data) => {
-        //     console.log(data);
-        //     this.setState({
-        //         datas: data
+        if (StringUtils.isEmpty(this.state.phone)) {
+            bridge.$toast('请输入手机号');
+            return;
+        }
+        // if (StringUtils.isEmpty(this.state.province)) {
+        //     bridge.$toast('请选择地区');
+        //     return;
+        // }
+        if (StringUtils.isEmpty(this.state.detailAddress)) {
+            bridge.$toast('请填写详细地址');
+            return;
+        }
+        const { refreshing } = this.props.navigation.state.params || {};
+        // const { refreshing, id, from } = this.props.navigation.state.params || {};
+        // if (from === 'edit') {
+        //     //编辑地址
+        //     MineAPI.addOrEditAddr({
+        //         id: id,
+        //         address: this.state.addrText,
+        //         receiver: this.state.receiverText,
+        //         receiverPhone: this.state.telText
+        //     }).then((data) => {
+        //         bridge.$toast('修改成功');
+        //         refreshing && refreshing();
+        //         this.$navigateBack();
+        //     }).catch((data) => {
+        //         bridge.$toast(data.msg);
         //     });
-        // }).catch((data) => {
-        //     console.warn(data);
-        //     bridge.$toast(data.msg);
-        // });
+        // } else if (from === 'add') {
+        //     //保存地址
+        //     MineAPI.addOrEditAddr({
+        //         address: this.state.addrText,
+        //         receiver: this.state.receiverText,
+        //         receiverPhone: this.state.telText
+        //     }).then((data) => {
+        //         bridge.$toast('添加成功');
+        //         refreshing && refreshing();
+        //         this.$navigateBack();
+        //     }).catch((data) => {
+        //         bridge.$toast(data.msg);
+        //     });
+        // }
         refreshing && refreshing();
         this.$navigateBack();
     };
@@ -50,7 +85,21 @@ export default class AddressEditAndAddPage extends BasePage {
             areaText: area || '',
             addrText: address || ''
         };
+        this.loadPageData();
     }
+
+    loadPageData = () => {
+        MineAPI.getAreaList({}).then((response) => {
+            if (Platform.OS === 'ios') {
+                NativeModules.commModule.setCityPicker(response.data);
+            } else {
+                NativeModules.commModule.setCityPicker(JSON.stringify(response.data));
+            }
+            bridge.$toast(response.msg);
+        }).catch(data => {
+            bridge.$toast(data.msg);
+        });
+    };
 
     _render() {
         return <View style={{ flex: 1, flexDirection: 'column' }}>
@@ -74,10 +123,10 @@ export default class AddressEditAndAddPage extends BasePage {
                 />
             </View>
             <View style={{ height: 0.5, backgroundColor: '#EEEEEE' }}/>
-            <TouchableOpacity style={styles.horizontalItem}>
+            <TouchableOpacity style={styles.horizontalItem} onPress={() => this._getCityPicker()}>
                 <Text style={[styles.itemLeftText, { flex: 1 }]}>所在地区</Text>
                 <Text>{this.state.areaText}</Text>
-                <Image source={IconGoTo} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                <Image source={IconGoTo} style={{ width: 12, height: 20, marginLeft: 4 }} resizeMode={'contain'}/>
             </TouchableOpacity>
             <View style={{ height: 0.5, backgroundColor: '#EEEEEE' }}/>
             <TextInput
@@ -102,6 +151,19 @@ export default class AddressEditAndAddPage extends BasePage {
             />
         </View>;
     }
+
+    _getCityPicker = () => {
+        dismissKeyboard();
+        NativeModules.commModule.cityPicker((data) => {
+            let dataJson = Platform.OS === 'ios' ? data : JSON.parse(data);
+            this.setState({
+                areaText: dataJson.province + '-' + dataJson.city + '-' + dataJson.area,
+                province: dataJson.provinceCode,
+                city: dataJson.cityCode,
+                area: dataJson.areaCode
+            });
+        });
+    };
 }
 
 const styles = StyleSheet.create({

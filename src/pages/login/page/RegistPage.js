@@ -65,7 +65,14 @@ export default class RegistPage extends BasePage {
                             uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
                         });
                     }}>
-                        <Text style={{ color: ColorUtil.mainRedColor, fontSize: 11 }}>
+                        <Text style={{ color: ColorUtil.mainRedColor, fontSize: 11 }}
+                        onPress={()=>{
+                            this.$navigate('HtmlPage',{
+                                title:'用户协议内容',
+                                uri:'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
+                            })
+                        }}
+                        >
                             《用户协议》
                         </Text>
                     </TouchableOpacity>

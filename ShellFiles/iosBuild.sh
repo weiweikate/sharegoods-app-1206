@@ -34,6 +34,7 @@ fi
 echo '------编译参数-----'
 echo envType: $envType  method:$method
 
+
 #重置项目根目录下config.json配置文件
 resetConfigJsonFile(){
     configFilePath="../config.json"
@@ -43,8 +44,13 @@ resetConfigJsonFile(){
         cat $configFilePath | jq ".showDebugPanel=false" > tmpConfig.json && mv tmpConfig.json $configFilePath
     else
         cat $configFilePath | jq ".showDebugPanel=true" > tmpConfig.json && mv tmpConfig.json $configFilePath
+
     fi
+
+
 }
+
+
 
 #创建文件夹以及安装ios描述文件
 createDirAndInstallProvision(){

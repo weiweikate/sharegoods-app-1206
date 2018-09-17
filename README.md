@@ -144,3 +144,6 @@ emptyProps
 |source|any|yes||图片文件|
 
 > 各个组件配置使用请查看组件代码 `src/components/pageDecorator/BaseView`
+
+#### Android相关
+* react-native三方库模块gradle文件配置请在android工程目录下找对应的gradle引入即可,例如：apply from: '../../../android/rn-vector-icons.gradle'
