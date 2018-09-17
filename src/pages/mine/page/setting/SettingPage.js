@@ -146,6 +146,7 @@ class SettingPage extends BasePage {
     };
     toLoginOut = () => {
         this.setState({ isShowLoginOutModal: true });
+
     };
     renderModal = () => {
         return (

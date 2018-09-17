@@ -22,6 +22,8 @@ import rightIcon from '../../res/customerservice/icon111_03.png';
 import addPic from '../../res/customerservice/xk1_03.png';
 import deleteImage from '../../res/customerservice/deleteImage.png';
 import BusinessUtils from '../../components/BusinessUtils';
+import StringUtils from '../../../../utils/StringUtils';
+import MineApi from '../../api/MineApi';
 
 export default class HelperFeedbackPage extends BasePage {
     constructor(props) {
@@ -33,7 +35,7 @@ export default class HelperFeedbackPage extends BasePage {
             showModal: false,
             isShowFinishModal: false,
             course: '请选择问题类型',
-            CONFIG: [],
+            CONFIG: [{dValue:'物流问题',dKey:0},{dValue:'客服问题',dKey:1},{dValue:'物流问题',dKey:2},{dValue:'客服问题',dKey:3},{dValue:'物流问题',dKey:4},{dValue:'客服问题',dKey:5}],//dValue, item.dKey
             selectIndex: -1,
             imageArr: []
         };
@@ -44,6 +46,21 @@ export default class HelperFeedbackPage extends BasePage {
         title: '问题反馈',
         show: true // false则隐藏导航
     };
+
+    componentDidMount() {
+        MineApi.queryDictionaryTypeList({ code: 'WTFK' }).then(res => {
+            if (res.code == 10000 && StringUtils.isNoEmpty(res.data)) {
+                this.setState({
+                    CONFIG: res.data
+                });
+            } else {
+                this.$toast(res.msg);
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+
+    }
 
     //选择具体的反馈类型
     selCourse(course, i) {
@@ -71,21 +88,29 @@ export default class HelperFeedbackPage extends BasePage {
             smallImagarr.push(this.state.imageArr[i].imageThumbUrl);
             orignImagarr.push(this.state.imageArr[i].imageUrl);
         }
-        // let smallImgs = smallImagarr.join(";");
+        let smallImgs = smallImagarr.join(';');
         let orignImgs = orignImagarr.join(';');
         if (this.state.selectIndex == -1 || this.state.detailContent == '' || orignImgs.length < 20) {
             ToastAndroid.show('请完善反馈资料!', ToastAndroid.SHORT);
             return;
         }
-        // MineApi.addFeedback({content: this.state.detailContent, type: this.state.selectIndex, smallImg: smallImgs,
-        //     originalImg: orignImgs}).then(res =>{
-        //    if(res.ok){
-        //        this.setState({isShowFinishModal: true})
-        //
-        //    }else{
-        //        this.$toastShow(res.msg);
-        //    }
-        // });
+        MineApi.addFeedback({
+            content: this.state.detailContent, typeKey: this.state.selectIndex || 1, smallImg: smallImgs,
+            originalImg: orignImgs
+        }).then(res => {
+            console.log(res);
+            if (res.code==10000) {
+                this.setState({ isShowFinishModal: true });
+
+            } else {
+                this.$toastShow(res.msg);
+            }
+        }).catch(err=>{
+            if(err.code==10001){
+                this.$navigate('login/login/LoginPage')
+            }
+
+        })
     }
 
     renderFinishModal() {
@@ -101,8 +126,8 @@ export default class HelperFeedbackPage extends BasePage {
                         width: ScreenUtils.width / 5 * 3,
                         height: ScreenUtils.height / 3,
                         marginLeft: ScreenUtils.width / 5,
-                        marginTop: ScreenUtils.height / 3
-                        ,
+                        marginTop: ScreenUtils.height / 3,
+                        borderRadius: 5,
                         backgroundColor: '#fff',
                         justifyContent: 'flex-end',
                         alignItems: 'center'
@@ -110,11 +135,23 @@ export default class HelperFeedbackPage extends BasePage {
                         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <UIImage source={rightIcon} style={{ width: 70, height: 70 }}/>
                             <UIText value={'提交成功！'} style={{ fontSize: 15, color: '#222222', marginTop: 10 }}/>
-                            <UIText value={`已提交给相关客服人员并催促尽快办理！`} style={{
+                            <UIText value={`您的反馈我们会认真查看`} style={{
                                 fontSize: 11,
                                 color: '#c6c6c6',
                                 width: ScreenUtils.width / 3,
                                 marginTop: 10
+                            }}/>
+                            <UIText value={`     并尽量修复及完善`} style={{
+                                fontSize: 11,
+                                color: '#c6c6c6',
+                                width: ScreenUtils.width / 3,
+                                marginTop: 3
+                            }}/>
+                            <UIText value={`感谢您的一如既往的支持`} style={{
+                                fontSize: 11,
+                                color: '#c6c6c6',
+                                width: ScreenUtils.width / 3,
+                                marginTop: 3
                             }}/>
                         </View>
                         <View style={{
@@ -133,7 +170,6 @@ export default class HelperFeedbackPage extends BasePage {
                                         fontSize: 15,
                                         color: '#222222'
                                     }}>确定</Text>
-
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -193,7 +229,7 @@ export default class HelperFeedbackPage extends BasePage {
                             <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>请选择问题类型</Text>
                             <Image source={arrowUp} style={{ width: 15, height: 15, marginRight: 10 }}/>
                         </TouchableOpacity>
-                        <View style={{ height: 148, width: ScreenUtils.width, backgroundColor: 'white' }}>
+                        <View style={{  width: ScreenUtils.width, backgroundColor: 'white' }}>
                             {this.state.CONFIG.map((item, i) => {
                                 return (
                                     <TouchableOpacity key={i} style={{ height: 48, justifyContent: 'center' }}

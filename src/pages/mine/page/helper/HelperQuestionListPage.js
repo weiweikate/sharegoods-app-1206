@@ -22,28 +22,30 @@ export default class HelperQuestionListPage extends BasePage {
             data: [],
         }
     }
+    $navigationBarOptions = {
+        title: this.params.list[0]?this.params.list[0].name:'列表名称',
+        show: true // false则隐藏导航
+    };
 
     renderContentView = ()=> {
         let arr = [];
-        let isBottomLineWide = [false, false, true, false, false, true,];
-        if (this.state.data.length > 0) {
-            for (let i = 0; i < this.state.data.length; i++) {
+        if (this.params.list.length > 0) {
+            for (let i = 0; i < this.params.list.length; i++) {
                 arr.push(
                     <View key={i} style={{width: ScreenUtils.width, height: 48}}>
                         <TouchableOpacity style={styles.containerStyles}
-                                          onPress={()=>this.orderMenuJump(this.state.data[i].id)}>
+                                          onPress={()=>this.orderMenuJump(this.params.list[i].id)}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <UIText value={this.state.data[i].title}
+                                <UIText value={this.params.list[i].title}
                                         style={[styles.blackText, {marginLeft: 5}]}/>
                             </View>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Image source={arrow_right} style={{height: 10,}} resizeMode={'contain'}/>
                             </View>
                         </TouchableOpacity>
-                        {isBottomLineWide[i] ? null :
-                            <View style={{backgroundColor: color.line, height: 1}}/>}
-                        {!isBottomLineWide[i] ? null :
-                            <View style={{backgroundColor: color.page_background, height: 10}}/>}
+
+                            <View style={{backgroundColor: color.line, height: 0.5,marginLeft:21}}/>
+
                     </View>
                 )
             }
@@ -78,16 +80,6 @@ export default class HelperQuestionListPage extends BasePage {
             </View>
         )
 
-    }
-
-    loadPageData() {
-        // MineApi.queryHelpQuestionList({typeid: this.params.typeid}).then(res => {
-        //     if (res.ok&&StringUtils.isNoEmpty(res.data)) {
-        //         this.setState({data: res.data})
-        //     } else {
-        //         $toastShow(res.msg);
-        //     }
-        // });
     }
 }
 

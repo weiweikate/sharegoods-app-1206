@@ -73,19 +73,18 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':react-native-autoheight-webview')
-    compile project(':react-native-vector-icons')
-    compile project(':react-native-svg')
-    compile project(':react-native-image-picker')
-    compile project(':react-native-linear-gradient')
-    compile project(path: ':commonlib')
-    compile rootProject.ext.dependencies.support
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':react-native-autoheight-webview')
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-svg')
+    implementation project(':react-native-image-picker')
+    implementation project(path: ':commonlib')
+    implementation rootProject.ext.dependencies.support
 
-    compile rootProject.ext.dependencies.gson
-    compile rootProject.ext.dependencies.eventbus
-    compile rootProject.ext.dependencies.zxing
+    implementation rootProject.ext.dependencies.gson
+    implementation rootProject.ext.dependencies.eventbus
+    implementation rootProject.ext.dependencies.zxing
 
-    compile rootProject.ext.dependencies.wechat
+    implementation rootProject.ext.dependencies.wechat
     implementation files('libs/alipaySdk-20180601.jar')
 }
