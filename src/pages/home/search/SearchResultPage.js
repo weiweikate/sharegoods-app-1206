@@ -16,7 +16,7 @@ import toTop from './res/toTop.png';
 import RouterMap from '../../../RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import DateUtils from '../../../utils/DateUtils';
-import SelectionPage from '../product/SelectionPage'
+import SelectionPage from '../product/SelectionPage';
 
 export default class SearchResultPage extends BasePage {
 
@@ -29,7 +29,7 @@ export default class SearchResultPage extends BasePage {
         super(props);
         this.state = {
             isHorizontal: false,
-            modalVisible:false,
+            modalVisible: false,
 
             //排序类型(1.综合 2.销量 3. 价格)
             sortType: 1,
@@ -39,7 +39,7 @@ export default class SearchResultPage extends BasePage {
             page: 1,
 
             productList: [],
-            selectionData:{}
+            selectionData: {}
         };
     }
 
@@ -75,7 +75,7 @@ export default class SearchResultPage extends BasePage {
     _storeProduct = (productId) => {
         this.$loadingShow();
         HomeAPI.getProductSpec({
-            id:productId
+            id: productId
         }).then((data) => {
             this.$loadingDismiss();
             this.setState({
@@ -99,12 +99,13 @@ export default class SearchResultPage extends BasePage {
     };
 
 
-    _segmentOnPressAtIndex = () => {
-
+    _segmentOnPressAtIndex = (index) => {
+        this.state.sortType = index + 1;
+        this._productList();
     };
 
     _onPressAtIndex = (productId) => {
-        this.$navigate(RouterMap.ProductDetailPage,{ productId: productId });
+        this.$navigate(RouterMap.ProductDetailPage, { productId: productId });
     };
 
     //选择规格确认
@@ -172,7 +173,7 @@ export default class SearchResultPage extends BasePage {
                     transparent={true}
                     visible={this.state.modalVisible}>
                     <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
-                                   selectionViewClose={this._selectionViewClose} data = {this.state.selectionData}/>
+                                   selectionViewClose={this._selectionViewClose} data={this.state.selectionData}/>
                 </Modal>
             </View>
         );
