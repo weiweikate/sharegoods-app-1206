@@ -7,6 +7,8 @@ import {
 import BasePage from '../../../../BasePage';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import MineAPI from '../../api/MineApi';
+import user from '../../../../model/user';
 
 export default class NickNameModifyPage extends BasePage {
     constructor(props) {
@@ -56,7 +58,12 @@ export default class NickNameModifyPage extends BasePage {
         );
     };
     save = () => {
-        this.$toastShow('啥啥啥');
+        MineAPI.updateUserById({ type: 2, nickname: this.state.nickName }).then(res => {
+            if (res.code === 10000) {
+                user.nickname = this.state.nickName;
+                this.$navigateBack();
+            }
+        });
     };
 }
 

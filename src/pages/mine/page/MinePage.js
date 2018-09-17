@@ -390,7 +390,14 @@ export default class MinePage extends BasePage {
     };
 
     go2CashDetailPage(i) {
-        this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
+        if(i===1){
+            this.$navigate('mine/userInformation/MyCashAccountPage');
+        }else if(i===2){
+           this. $navigate('mine/userInformation/MyIntegralAccountPage');
+        }else{
+            this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
+
+        }
     };
 
     orderMenuJump = (index) => {
