@@ -59,11 +59,11 @@ export default class SearchPage extends BasePage {
     _onChangeText = (text) => {
         this.state.inputText = text;
         HomeAPI.getKeywords({ keyword: text }).then((data) => {
-            data.data&&this.setState({
+            this.setState({
                 keywordsArr: data.data
             });
         }).catch((data) => {
-            this.$toastShow(data.message);
+            this.$toastShow(data.msg);
         });
     };
 

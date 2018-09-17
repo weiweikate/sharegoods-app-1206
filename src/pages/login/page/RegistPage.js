@@ -13,6 +13,7 @@ import CommRegistView from '../components/CommRegistView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LoginApi from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
+import user from "../../../model/user";
 
 @observer
 export default class RegistPage extends BasePage {
@@ -101,8 +102,15 @@ export default class RegistPage extends BasePage {
             systemVersion: this.params.systemVersion ? this.params.systemVersion : '',
             wechatVersion: ''
         }).then((data) => {
+            if (data.code === 10000){
+                user.saveUserInfo(data.data)
+                this.$navigateBack();
+                bridge.$toast('登录成功');
+            } else {
+                bridge.$toast(data.msg)
+            }
             this.$loadingDismiss();
-            this.$navigateBack();
+
             bridge.$toast(data.msg);
         }).catch((response) => {
             this.$loadingDismiss();
