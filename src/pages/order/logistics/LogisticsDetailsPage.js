@@ -108,7 +108,7 @@ class LogisticsDetailsPage extends BasePage {
                 <View style={{ flexDirection: 'row', paddingLeft: 15, height: 60, paddingTop: 5 }}>
                     <UIImage source={logisticsIcon} style={{ width: 20, height: 23, marginLeft: 10, marginTop: 15 }}/>
                     <Text style={{ fontSize: 13, color: color.black_222, marginTop: 15, marginLeft: 15 }}>本数据由</Text>
-                    <Text style={{ fontSize: 13, color: color.deliveryIncludeBlue, marginTop: 15 }}>百世汇s通</Text>
+                    <Text style={{ fontSize: 13, color: color.deliveryIncludeBlue, marginTop: 15 }}>百世汇通</Text>
                     <Text style={{ fontSize: 13, color: color.black_222, marginTop: 15 }}>提供</Text>
                 </View>
 

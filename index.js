@@ -1,5 +1,5 @@
-import { AppRegistry } from 'react-native';
-import App from './src/App';
+import { AppRegistry } from "react-native";
+import App from "./src/App";
 
 
 (function numberPolyfill() {
@@ -12,7 +12,7 @@ import App from './src/App';
     }
     if (!Number.isInteger) {
         Number.isInteger = function(value) {
-            return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
+            return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
         };
     }
 })();
@@ -31,4 +31,4 @@ if (!__DEV__) {
         }
     };
 }
-AppRegistry.registerComponent('sharegoods', () => App);
+AppRegistry.registerComponent("sharegoods", () => App);

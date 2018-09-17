@@ -23,7 +23,8 @@ export default class ShopCartPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '购物车'
+        title: '购物车',
+        leftNavItemHidden:true,
 
     };
 
@@ -47,6 +48,9 @@ export default class ShopCartPage extends BasePage {
 
 
     _render() {
+        {
+            this.$NavigationBarHiddenLeftItem(true);
+        }
         return (
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
 
@@ -67,7 +71,9 @@ export default class ShopCartPage extends BasePage {
                                 rowMap[`${secId}${rowId}`].closeRow();
                                 this._deleteFromShoppingCartByProductId(data.index)
                             }}>
-                            <UIText style={[styles.backUITextWhite,{color:'#ffffff'}]}>删除</UIText>
+                            <UIText style={styles.backUITextWhite} value='删除'></UIText>
+
+
                         </TouchableOpacity>
                     )}
                     rightOpenValue={-75}
@@ -99,7 +105,7 @@ export default class ShopCartPage extends BasePage {
                         style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: ColorUtil.Color_222222 }}/>
                     <UIText
                         // value={StringUtils.formatMoneyString(this.state.totalPrice)}
-                        value={'测试'}
+                        value={'10000000000000'}
                         style={styles.totalPrice}/>
                     <TouchableOpacity
                         style={styles.selectGoodsNum}
@@ -107,7 +113,7 @@ export default class ShopCartPage extends BasePage {
                     >
                         <UIText
                             // value={this.state.selectGoodsNum == 0 ? '结算' : '结算(' + this.state.selectGoodsNum + ')'}
-                            value='结算'
+                            value='结算(10 )'
                             style={{ color: ColorUtil.Color_ffffff, fontSize: 16 }}
                         />
                     </TouchableOpacity>
@@ -142,7 +148,7 @@ export default class ShopCartPage extends BasePage {
                                     fontFamily: 'PingFang-SC-Medium',
                                     fontSize: 13,
                                     lineHeight: 18,
-                                    color: '#222222'
+                                    color: ColorUtil.Color_222222
                                 }}
                             />
 
@@ -150,7 +156,11 @@ export default class ShopCartPage extends BasePage {
                                 // value={data.context}
                                 value={'测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试'}
                                 numberOfLines={2}
-                                style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#999999' }}/>
+                                style={{
+                                    fontFamily: 'PingFang-SC-Medium',
+                                    fontSize: 13,
+                                    color: ColorUtil.Color_999999
+                                }}/>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <UIText
@@ -164,9 +174,9 @@ export default class ShopCartPage extends BasePage {
 
                                 >
                                     <UIText
-                                        value={'—'}
+                                        value={'-'}
                                         // style={{fontSize:15,color:data.num<=1?ColorUtil.Color_dddddd:ColorUtil.Color_222222}}
-                                        style={{ fontSize: 15, color: ColorUtil.Color_222222 }}
+                                        style={{ fontSize: 11, color: ColorUtil.Color_222222 }}
                                     />
                                 </TouchableOpacity>
                                 <View style={[styles.rectangle, {
@@ -192,7 +202,7 @@ export default class ShopCartPage extends BasePage {
                                     <UIText
                                         value={'+'}
                                         // style={{fontSize:15,color:data.num>=data.stock?color.gray_DDD:color.black_222}}
-                                        style={{ fontSize: 15, color: ColorUtil.Color_222222 }}
+                                        style={{ fontSize: 11, color: ColorUtil.Color_222222 }}
 
                                     />
                                 </TouchableOpacity>
@@ -262,10 +272,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         padding: 15
+
     },
     backUITextWhite: {
-        color: '#FFF',
-        marginRight: 0
+        // flex:1,
+        marginRight: 0,
+        color:'#ffffff'
     },
     standaloneRowFront: {
         alignItems: 'center',
