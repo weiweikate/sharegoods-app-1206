@@ -27,7 +27,7 @@ export default class SearchSegmentView extends Component {
         this.setState({
             selIndex: index
         }, () => {
-            this.props.onPressAtIndex(index);
+            this.props.segmentOnPressAtIndex(index);
         });
     };
 

@@ -23,7 +23,7 @@ startDown(callBack, downTime = this.downTime)
 
 ```javascript
 const api = {
-    getList:['/api/data/list',{method:'get'}],
+    getList:['/ai/data/list',{method:'get'}],
     login:'/api/user/login',
     logout:'/api/user/logout',
 }
@@ -120,6 +120,9 @@ this.$navigate('HtmlPage', {
     title: '用户协议内容',
     uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
 });
+
+// A->B->C C返回A
+this.$navigateBack(-2)
 ```
 #### NetFailedView 网络数据出错组件
 

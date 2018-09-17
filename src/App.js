@@ -32,6 +32,7 @@ export default class App extends Component<Props> {
     async componentDidMount() {
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         global.$navigator = this.refs.Navigator;
+        global.$routes = [];
     }
 
     render() {
@@ -78,9 +79,10 @@ export default class App extends Component<Props> {
                 <Navigator screenProps={this.props.params} ref='Navigator'
                            onNavigationStateChange={(prevState, currentState) => {
                                let curRouteName = getCurrentRouteName(currentState);
-                               console.log(curRouteName);
+                               console.log(curRouteName)
                                const currentScreen = getCurrentRouteName(currentState);
                                const prevScreen = getCurrentRouteName(prevState);
+                               global.$routes = currentState.routes;
                                if (prevScreen !== currentScreen) {
                                    //console.log('从页面' + prevScreen + '跳转页面' + currentScreen);
                                }

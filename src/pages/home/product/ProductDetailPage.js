@@ -11,7 +11,6 @@ import DetailHeaderView from './components/DetailHeaderView';
 import DetailSegmentView from './components/DetailSegmentView';
 import DetailBottomView from './components/DetailBottomView';
 import SelectionPage from './SelectionPage';
-import DateUtils from '../../../utils/DateUtils';
 import HomeAPI from '../api/HomeAPI';
 
 export default class ProductDetailPage extends BasePage {
@@ -24,12 +23,7 @@ export default class ProductDetailPage extends BasePage {
         super(props);
         this.state = {
             modalVisible: false,
-            data: {},
-
-            product: {},
-            specMap: [],
-            paramList: [],
-            priceList: []
+            data: {}
         };
     }
 
@@ -44,18 +38,12 @@ export default class ProductDetailPage extends BasePage {
     //数据
     _productList = () => {
         this.$loadingShow();
-        HomeAPI.productList({
-            keyword: this.params.keywords,
-            pageSize: 10,
-            page: this.state.page,
-            sortModel: this.state.sortModel,
-            sortType: this.state.sortType,
-            time: DateUtils.formatDate(new Date())
+        HomeAPI.getProductDetail({
+            id: this.params.productId
         }).then((data) => {
-            console.log(data.data);
             this.$loadingDismiss();
             this.setState({
-                productList: data.data.data
+                data: data.data
             });
         }).catch((data) => {
             this.$loadingDismiss();
@@ -102,7 +90,7 @@ export default class ProductDetailPage extends BasePage {
 
 
     _renderListHeader = () => {
-        return (<DetailHeaderView data={this.state.data}/>);
+        return <DetailHeaderView data={this.state.data}/>;
     };
 
     _renderSectionHeader = () => {
@@ -130,7 +118,7 @@ export default class ProductDetailPage extends BasePage {
                     transparent={true}
                     visible={this.state.modalVisible}>
                     <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
-                                   selectionViewClose={this._selectionViewClose}/>
+                                   selectionViewClose={this._selectionViewClose} data={this.state.data}/>
                 </Modal>
 
             </View>

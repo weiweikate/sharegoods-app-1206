@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import {
     Text,
     View,
@@ -13,12 +13,30 @@ import {
 
 export default class SelectionHeaderView extends Component {
 
+    static propTypes = {
+        product: PropTypes.object.isRequired,
+        price: PropTypes.any.isRequired,
+
+        priceList: PropTypes.array.isRequired,
+        selectList: PropTypes.array.isRequired,
+        selectStrList: PropTypes.array.isRequired
+    };
+
     constructor(props) {
         super(props);
         this.state = {};
     }
 
     render() {
+        const { imgUrl } = this.props.product;
+        const price = this.props.price;
+        let stock = 0;
+        let stockUnit;
+        this.props.priceList.forEach((item) => {
+            stock = stock + item.stock;
+            stockUnit = item.stockUnit;
+        });
+
         return (
             <View style={{ flexDirection: 'row' }}>
                 <View style={{
@@ -32,7 +50,8 @@ export default class SelectionHeaderView extends Component {
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}>
-                    <Image style={{ width: 108, height: 108, borderRadius: 5, backgroundColor: 'red' }}/>
+                    <Image style={{ width: 108, height: 108, borderRadius: 5, backgroundColor: '#eeeeee' }}
+                           source={{ uri: imgUrl }}/>
                 </View>
                 <View style={{ flex: 1, marginLeft: 16 }}>
                     <Text style={{
@@ -40,9 +59,13 @@ export default class SelectionHeaderView extends Component {
                         fontSize: 16,
                         fontFamily: 'PingFang-SC-Medium',
                         marginTop: 16
-                    }}>￥455.50</Text>
-                    <Text style={{ color: '#222222', fontSize: 13, marginTop: 8 }}>库存454654件</Text>
-                    <Text style={{ color: '#222222', fontSize: 13, marginTop: 8 }}>银色</Text>
+                    }}>{`￥${price}`}</Text>
+                    <Text style={{ color: '#222222', fontSize: 13, marginTop: 8 }}>{`库存${stock}${stockUnit}`}</Text>
+                    <Text style={{
+                        color: '#222222',
+                        fontSize: 13,
+                        marginTop: 8
+                    }}>{this.props.selectStrList.join(',')}</Text>
                 </View>
                 <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
                     <Image style={{
