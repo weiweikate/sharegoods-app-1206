@@ -46,13 +46,13 @@ export default class ForgetPasswordPage extends BasePage {
         LoginAPI.resetPassword({
             authcode:'',
             code: code,
-            device: this.params.device ? this.params.device : '',
+            device: this.params.device ? this.params.device : 'eeeeee',
             inviteId: '',//邀请id
             openid: this.params.openid ? this.params.openid : '',
             password: password,
             phone: phone,
-            systemVersion: this.params.systemVersion ? this.params.systemVersion : '',
-            wechatVersion: ''
+            systemVersion: this.params.systemVersion ? this.params.systemVersion : '11',
+            wechatVersion: '11'
         }).then((data) => {
             this.$loadingDismiss()
             this.$navigateBack();

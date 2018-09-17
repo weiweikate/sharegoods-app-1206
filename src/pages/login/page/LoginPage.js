@@ -15,6 +15,7 @@ import ColorUtil from "../../../utils/ColorUtil";
 import BasePage from "../../../BasePage";
 import bridge from "../../../utils/bridge";
 import LoginAPI from "../api/LoginApi";
+import { NavigationActions } from 'react-navigation'
 
 export default class LoginPage extends BasePage {
     constructor(props) {
@@ -33,6 +34,23 @@ export default class LoginPage extends BasePage {
             </Text>
         );
     };
+    $NavBarLeftPressed=()=>{
+
+        if (UserModel.isLogin) {
+            this.$navigateBack();
+        }else {
+            let  resetAction = NavigationActions.reset({
+                index: 0,
+                actions: [
+                    NavigationActions.navigate({routeName:'Tab'})//要跳转到的页面名字
+                ]
+            });
+            this.props.navigation.dispatch(resetAction);
+        }
+
+
+
+    }
 
     _render() {
         return (
@@ -92,13 +110,18 @@ export default class LoginPage extends BasePage {
                 openid: data.openid,
                 systemVersion: data.systemVersion,
                 wechatVersion: ""
-            }).then((data) => {
-                if (data === 1000) {
+            }).then((res) => {
+                if (res.code === 34005) {
                     this.$navigate("login/login/RegistPage", data);
-                } else {
-                    bridge.$toast(data.msg);
+                } else if(res.code === 10000) {
+                   UserModel.saveUserInfo(res.data);
+                   bridge.$toast('登陆成功')
+                    this.$navigateBack();
                 }
-            }).catch((data) => {
+            }).catch((error) => {
+                if (error.code === 34005) {
+                    this.$navigate("login/login/RegistPage", data);
+                }
                 bridge.$toast(data.msg);
             });
         });
@@ -132,13 +155,16 @@ export default class LoginPage extends BasePage {
                 console.log(data);
                 UserModel.saveUserInfo(data.data);
                 bridge.$toast("登陆成功");
-                // this.$navigateBack('Tab')
                 this.params.callback&&this.params.callback();
                 this.$navigateBack();
             }).catch((data) => {
                 this.$loadingDismiss();
                 console.warn(data);
                 bridge.$toast(data.msg);
+                /*未注册*/
+                if (data.code === 34005){
+                    this.registBtnClick();
+                }
             });
         } else {
             LoginAPI.passwordLogin({
