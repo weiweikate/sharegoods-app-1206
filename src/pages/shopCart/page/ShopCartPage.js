@@ -6,7 +6,8 @@ import {
     Image,
     TouchableOpacity,
     ListView, TouchableHighlight,
-    TextInput as RNTextInput
+    TextInput as RNTextInput,
+    Text
 
 } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -18,6 +19,7 @@ import {
     UIImage
 } from '../../../components/ui/index';
 import ShopCartRes from '../res/ShopCartRes';
+import ShopCartAPI from "../api/ShopCartApi";
 
 export default class ShopCartPage extends BasePage {
 
@@ -27,6 +29,37 @@ export default class ShopCartPage extends BasePage {
         leftNavItemHidden:true,
 
     };
+    $NavBarRenderRightItem = () => {
+        return (
+            <Text style={{
+                fontSize: 15,
+                color: "#666"
+            }} onPress={this.addGoods}>
+                添加商品
+            </Text>
+        );
+    };
+    addGoods=()=>{
+
+        ShopCartAPI.addItem({
+            "amount": 10,
+            "priceId": 1000,
+            "productId": 1,
+            "timestamp": 1536633469102
+        }).then((res)=>{
+
+        }).catch((error)=>{
+
+        });
+    }
+
+    componentDidMount(){
+        ShopCartAPI.list().then(res=>{
+            console.warn(res);
+        }).catch(error=>{
+            console.warn(error);
+        });
+    }
 
     constructor(props) {
         super(props);
@@ -48,9 +81,6 @@ export default class ShopCartPage extends BasePage {
 
 
     _render() {
-        {
-            this.$NavigationBarHiddenLeftItem(true);
-        }
         return (
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
 
