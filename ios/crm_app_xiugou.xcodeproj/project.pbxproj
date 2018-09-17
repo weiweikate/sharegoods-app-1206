@@ -2006,7 +2006,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.meeruu.sharegoods;
 				PRODUCT_NAME = crm_app_xiugou;
-				PROVISIONING_PROFILE = "f9a8a806-c77d-43fc-aa61-7b9e6dde8dd9";
+				PROVISIONING_PROFILE = "97999c4b-9c83-4d50-a64c-1bf5328188e4";
 				PROVISIONING_PROFILE_SPECIFIER = devXiuGou;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

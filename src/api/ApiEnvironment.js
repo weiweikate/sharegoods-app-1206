@@ -3,11 +3,11 @@
  * Api HOST配置
  * 支持动态切换
  */
-import {AsyncStorage} from 'react-native';
-import config from '../../config';
+import { AsyncStorage } from "react-native";
+import config from "../../config";
 // 磁盘缓存key
-const KEY_ApiEnvironment = 'ApiEnvironment';
-const KEY_DefaultFetchTimeout = 'DefaultFetchTimeout';
+const KEY_ApiEnvironment = "ApiEnvironment";
+const KEY_DefaultFetchTimeout = "DefaultFetchTimeout";
 // HOST配置
 const ApiConfig = config.env;
 
@@ -15,7 +15,7 @@ class ApiEnvironment {
 
     constructor() {
         const envType = config.envType;
-        this.envType = envType && Object.keys(ApiConfig).indexOf(envType) >= 0 ? envType : 'dev';
+        this.envType = envType && Object.keys(ApiConfig).indexOf(envType) >= 0 ? envType : "dev";
         this.defaultTimeout = 15; // 请求默认超时时间 单位秒
     }
 
@@ -26,7 +26,8 @@ class ApiEnvironment {
 
     // 获取当前主机地址host
     getCurrentHostUrl() {
-        return ApiConfig[this.envType].host;
+        // return ApiConfig[this.envType].host;
+        return "http://172.16.10.41:8180/gateway";
     }
 
 
@@ -85,7 +86,7 @@ class ApiEnvironment {
      * @returns {Promise<void>}
      */
     async setTimeOut(timeout) {
-        if (timeout && typeof timeout === 'number' && timeout <= 60 && timeout > 0) {
+        if (timeout && typeof timeout === "number" && timeout <= 60 && timeout > 0) {
             this.defaultTimeout = timeout;
             // 磁盘缓存超时时间
             timeout && AsyncStorage.setItem(KEY_DefaultFetchTimeout, `${timeout}`).catch((error) => {
