@@ -31,7 +31,16 @@ const api = {
     cancelCollection:'/user/storeCollection/cancel',
     //修改用户个人信息 type:1:修改头像 2:修改名字 3:修改省市区
     updateUserById:'/user/updateUserById',
-
+    // 删除地址
+    delAddress: '/user/userAddress/delete',
+    // 查询地址
+    queryAddrList: '/user/userAddress/query',
+    // 新增/修改地址
+    addOrEditAddr: '/user/userAddress/save',
+    // 设置默认地址
+    setDefaultAddr: '/user/userAddress/setDefault',
+    // 获取省市区列表
+    getAreaList: '/config/sysArea/queryAreaList'
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';

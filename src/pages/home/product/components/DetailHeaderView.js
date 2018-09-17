@@ -27,6 +27,10 @@ export default class DetailHeaderView extends Component {
         this.state = {};
     }
 
+    _clickItem = ()=>{
+
+    }
+
     _renderImageItem = (item, index) => {
         const { originalImg } = item;
         return (
@@ -45,7 +49,7 @@ export default class DetailHeaderView extends Component {
 
     render() {
         const { productImgList, freight, monthSaleTotal, price, originalPrice, product } = this.props.data;
-        const { supplierName, brandName, name, firstCategoryName, secCategoryName, thirdCategoryName } = product;
+        const { supplierName, brandName, name, firstCategoryName, secCategoryName, thirdCategoryName } = product || {};
         return (
             <View>
                 <Swiper
@@ -53,13 +57,13 @@ export default class DetailHeaderView extends Component {
                     horizontal
                     autoplayTimeout={3000}
                     height={ScreenUtils.autoSizeWidth(377)}
-                    loop={productImgList.length > 1}
+                    loop={productImgList && productImgList.length > 1}
                     dot={<View style={styles.dot}/>}
-                    activeDot={<View style={styles.activeDot}/>}
-                >
-                    {productImgList.map(this._renderImageItem)}
+                    activeDot={<View style={styles.activeDot}/>}>
+                    {productImgList? productImgList.map(this._renderImageItem):<View />}
                 </Swiper>
-                <View style={{ backgroundColor: 'white' }}>
+
+                < View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{
                             marginTop: 14,
@@ -90,7 +94,6 @@ export default class DetailHeaderView extends Component {
                 <View style={{ backgroundColor: 'white', marginTop: 10, marginBottom: 12 }}>
                     <View style={{
                         flexDirection: 'row',
-
                         marginLeft: 16,
                         width: ScreenUtils.width - 32,
                         marginVertical: 13,

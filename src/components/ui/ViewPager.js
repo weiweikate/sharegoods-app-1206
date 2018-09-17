@@ -47,7 +47,8 @@ const ViewPager = props => {
                             activeDotStyle={activeDotStyle}
                             dotColor={dotColor}
                             activeDotColor={activeDotColor}
-                            autoplayTimeout={6}>
+                            autoplayTimeout={6}
+                            removeClippedSubviews={false}>
                         {renderItems()}
                     </Swiper>);
             } else {
@@ -60,7 +61,8 @@ const ViewPager = props => {
                             activeDotStyle={activeDotStyle}
                             dotColor={dotColor}
                             activeDotColor={activeDotColor}
-                            autoplayTimeout={6}>
+                            autoplayTimeout={6}
+                            removeClippedSubviews={false}>
                         {renderItems()}
                     </Swiper>);
             }
