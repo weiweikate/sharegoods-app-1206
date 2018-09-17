@@ -12,7 +12,11 @@ const api = {
     //密码登陆
     passwordLogin: '/user/userLogin/passwordLogin',
     //app微信登陆
-    appWechatLogin: '/user/userLogin/appWechatLogin'
+    appWechatLogin: '/user/userLogin/appWechatLogin',
+    //老用户激活注册
+    existedUserLogin: '/user/userLogin/existedUserLogin',
+    //老用户验证
+    existedUserVerify:'/user/userLogin/existedUserVerify'
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';
