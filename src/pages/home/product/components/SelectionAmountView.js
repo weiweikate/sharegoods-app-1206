@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-    StyleSheet,
     Text,
     View,
     TouchableOpacity
@@ -31,14 +30,18 @@ export default class RecentSearchView extends Component {
         }
         this.setState({
             amount: this.state.amount - 1
-        },()=>{this.props.amountClickAction(this.state.amount)});
+        }, () => {
+            this.props.amountClickAction(this.state.amount);
+        });
 
     };
 
     _rightAction = () => {
         this.setState({
             amount: this.state.amount + 1
-        },()=>{this.props.amountClickAction(this.state.amount)});
+        }, () => {
+            this.props.amountClickAction(this.state.amount);
+        });
     };
 
     render() {
@@ -56,20 +59,20 @@ export default class RecentSearchView extends Component {
                     borderWidth: 1,
                     borderRadius: 2,
                     marginRight: 16,
-                    height:30
+                    height: 30
                 }}>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
                                       onPress={this._leftAction}>
-                        <Text style={{ color: '#dddddd', fontSize: 15,paddingHorizontal: 11}}>-</Text>
+                        <Text style={{ color: '#dddddd', fontSize: 15, paddingHorizontal: 11 }}>-</Text>
                     </TouchableOpacity>
-                    <View style = {{height:30,width:1,backgroundColor:'#dddddd'}}/>
+                    <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={{ paddingHorizontal: 15 }}>{this.state.amount}</Text>
                     </View>
-                    <View style = {{height:30,width:1,backgroundColor:'#dddddd'}}/>
+                    <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
                                       onPress={this._rightAction}>
-                        <Text style={{ color: '#222222', fontSize: 15,paddingHorizontal: 11 }}>+</Text>
+                        <Text style={{ color: '#222222', fontSize: 15, paddingHorizontal: 11 }}>+</Text>
                     </TouchableOpacity>
                 </View>
             </View>

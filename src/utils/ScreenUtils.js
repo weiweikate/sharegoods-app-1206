@@ -47,8 +47,8 @@ export default {
     height: Dimensions.get('window').height,
     pixelRatio: PixelRatio.get(),
     onePixel: 1 / PixelRatio.get(),
-    statusBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 44 : 20) : 20,// (Platform.OS === 'ios' ? 20 : 0),
-    headerHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 88 : 64) : 64,
+    statusBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 44 : 20) : 0,// (Platform.OS === 'ios' ? 20 : 0),
+    headerHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 88 : 64) : 48,
     tabBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 83 : 49) : 49,
     isIOS: Platform.OS === 'ios',
     isIOSSmall: Platform.OS === 'ios' && Dimensions.get('window').height === 568,// phoneSE,phone4,phone5,phone5s

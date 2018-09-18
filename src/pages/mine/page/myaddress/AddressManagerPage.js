@@ -39,93 +39,22 @@ export default class AddressManagerPage extends BasePage {
     }
 
     refreshing() {
-        // MineAPI.queryAddrList({}).then((data) => {
-        //     for (let i = 0, len = arr.length; i < len; i++) {
-        //         if (arr[i].defaultStatus === 1) {
-        //             this.setState({
-        //                 selectIndex: i
-        //             });
-        //         }
-        //     }
-        //     this.setState({
-        //         datas: data || []
-        //     });
-        // }).catch((data) => {
-        //     console.warn(data);
-        //     bridge.$toast(data.msg);
-        // });
-        var arr = [
-            {
-                'address': '萧山宁围',
-                'area': '浙江省杭州市',
-                'areaCode': 301010,
-                'city': 'string',
-                'cityCode': 301010,
-                'createTime': '2018-01-01 10:10:10',
-                'defaultStatus': 1,
-                'id': 1,
-                'province': 'string',
-                'provinceCode': 301010,
-                'receiver': '张99',
-                'receiverPhone': 13454739999,
-                'userId': 1
-            },
-            {
-                'address': '萧山宁围',
-                'area': '浙江省杭州市',
-                'areaCode': 301010,
-                'city': 'string',
-                'cityCode': 301010,
-                'createTime': '2018-01-01 10:10:10',
-                'defaultStatus': 2,
-                'id': 1,
-                'province': 'string',
-                'provinceCode': 301010,
-                'receiver': '张99',
-                'receiverPhone': 13454739999,
-                'userId': 1
-            },
-            {
-                'address': '萧山宁围',
-                'area': '浙江省杭州市',
-                'areaCode': 301010,
-                'city': 'string',
-                'cityCode': 301010,
-                'createTime': '2018-01-01 10:10:10',
-                'defaultStatus': 2,
-                'id': 1,
-                'province': 'string',
-                'provinceCode': 301010,
-                'receiver': '张99',
-                'receiverPhone': 13454739999,
-                'userId': 1
-            },
-            {
-                'address': '萧山宁围',
-                'area': '浙江省杭州市',
-                'areaCode': 301010,
-                'city': 'string',
-                'cityCode': 301010,
-                'createTime': '2018-01-01 10:10:10',
-                'defaultStatus': 2,
-                'id': 1,
-                'province': 'string',
-                'provinceCode': 301010,
-                'receiver': '张99',
-                'receiverPhone': 13454739999,
-                'userId': 1
+        MineAPI.queryAddrList({}).then((response) => {
+            if (response.data) {
+                for (let i = 0, len = response.data.length; i < len; i++) {
+                    if (response.data[i].defaultStatus === 1) {
+                        this.setState({
+                            selectIndex: i
+                        });
+                    }
+                }
             }
-        ];
-        this.setState({
-            datas: arr
+            this.setState({
+                datas: response.data || []
+            });
+        }).catch((data) => {
+            bridge.$toast(data.msg);
         });
-        for (let i = 0, len = arr.length; i < len; i++) {
-            if (arr[i].defaultStatus === 1) {
-                this.setState({
-                    selectIndex: i
-                });
-            }
-        }
     }
 
     _render() {
@@ -194,22 +123,15 @@ export default class AddressManagerPage extends BasePage {
     };
 
     _onSelectImgClick = (item, index) => {
-
-        let nowIndex = index === this.state.selectIndex ? this.initIndex : index;
-        this.setState({
-            selectIndex: nowIndex
-        });
         // 设置默认地址
-        // MineAPI.setDefaultAddr({ id: item.id }).then((data) => {
-        //     console.log(data);
-        //     let nowIndex = index === this.state.selectIndex ? this.initIndex : index;
-        //     this.setState({
-        //         selectIndex: nowIndex
-        //     });
-        // }).catch((data) => {
-        //     console.warn(data);
-        //     bridge.$toast(data.msg);
-        // });
+        MineAPI.setDefaultAddr({ id: item.id }).then((response) => {
+            let nowIndex = index === this.state.selectIndex ? this.initIndex : index;
+            this.setState({
+                selectIndex: nowIndex
+            });
+        }).catch((data) => {
+            bridge.$toast(data.msg);
+        });
     };
 
     _onEditAddress = (item) => {
@@ -219,18 +141,21 @@ export default class AddressManagerPage extends BasePage {
             from: 'edit',
             receiver: item.receiver,
             tel: item.receiverPhone + '',
-            area: item.area,
             address: item.address,
-            id: item.id
+            id: item.id,
+            areaText: item.province + item.city + item.area,
+            provinceCode: item.provinceCode,
+            cityCode: item.cityCode,
+            areaCode: item.areaCode,
+            isDefault: item.defaultStatus === 1
         });
     };
 
     _onDelAddress = (item) => {
         // 删除地址,刷新页面
-        MineAPI.delAddress({ id: item.id }).then((data) => {
+        MineAPI.delAddress({ id: item.id }).then((response) => {
             this.refreshing();
         }).catch((data) => {
-            console.warn(data);
             bridge.$toast(data.msg);
         });
     };
