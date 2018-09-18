@@ -71,13 +71,16 @@ export default class MinePage extends BasePage {
             }
         };
     };
+    timeoutCallBack = () => {
+        this.$loadingDismiss();
+    };
 
     componentDidMount() {
         if (!user.isLogin) {
             this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
             return;
         }
-        this.$loadingShow();
+        this.$loadingShow('加载中...', { timeout: 3, timeoutCallBack: () => this.timeoutCallBack });
         MineApi.getUser().then(res => {
             console.log(res);
             this.$loadingDismiss();
@@ -87,7 +90,6 @@ export default class MinePage extends BasePage {
                     availableBalance: data.availableBalance,
                     headImg: data.headImg,
                     levelId: data.levelId,
-                    nickname: data.nickname,
                     userScore: data.userScore,
                     blockedBalance: data.blockedBalance
 
@@ -101,7 +103,7 @@ export default class MinePage extends BasePage {
     }
 
     refresh = () => {
-        this.$loadingShow();
+        this.$loadingShow('加载中...', { timeout: 3, timeoutCallBack: () => this.timeoutCallBack });
         MineApi.getUser().then(res => {
             this.$loadingDismiss();
             if (res.code == 10000) {
@@ -110,10 +112,13 @@ export default class MinePage extends BasePage {
                     availableBalance: data.availableBalance,
                     headImg: data.headImg,
                     levelId: data.levelId,
-                    nickname: data.nickname,
                     userScore: data.userScore,
                     blockedBalance: data.blockedBalance
                 });
+            }
+        }).catch(err => {
+            if (err.code === 10001) {
+                this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
             }
         });
     };
@@ -402,15 +407,20 @@ export default class MinePage extends BasePage {
     };
 
     go2CashDetailPage(i) {
-        if (i === 1) {
-            this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: this.state.availableBalance });
-        } else if (i === 2) {
-            this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: this.state.userScore });
-        } else {
-            this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
-
+        switch (i) {
+            case 1:
+                this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: this.state.availableBalance });
+                break;
+            case 2:
+                this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: this.state.userScore });
+                break;
+            case 3:
+                this.$navigate('mine/userInformation/WithdrawCashPage');
+                break;
+            default:
+                this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
         }
-    };
+    }
 
     orderMenuJump = (index) => {
         // if (!user.isLogin) {

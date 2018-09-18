@@ -3,6 +3,8 @@ import UserInformationPage from './UserInformationPage';
 import NickNameModifyPage from './NickNameModifyPage';
 import MyCashAccountPage from './MyCashAccountPage';
 import MyIntegralAccountPage from './MyIntegralAccountPage';
+import WithdrawCashPage from './WithdrawCashPage';
+import IDVertify2Page from './IDVertify2Page';
 
 export default {
     moduleName: 'userInformation',    //模块名称
@@ -10,6 +12,8 @@ export default {
         UserInformationPage,
         NickNameModifyPage,
         MyCashAccountPage,
-        MyIntegralAccountPage
+        MyIntegralAccountPage,
+        WithdrawCashPage,
+        IDVertify2Page,
     }
 };

@@ -177,7 +177,7 @@ export default class LoadingHub extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        top: 0,
+        top:68,
         left: 0,
         right: 0,
         bottom: 0,
