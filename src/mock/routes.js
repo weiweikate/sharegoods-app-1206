@@ -7,4 +7,5 @@ module.exports = {
 
     '/user/memberLogin/codeLogin': '/codeLogin',
     '/user/memberSign/findMemberByPhone': '/findMemberByPhone',
+    '/user/coupon/list':'/userCouponList',
 };

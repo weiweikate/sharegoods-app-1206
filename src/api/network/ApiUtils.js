@@ -26,13 +26,16 @@ export default function ApiUtils(Urls) {
             // code为0表明请求正常
             if (!response.code || response.code === 10000) {
                 filter && filter(response);
+                //console.log(JSON.stringify(response))
                 return Promise.resolve(response);
             } else {
                 // 假如返回未登陆并且当前页面不是登陆页面则进行跳转
                 if (response.code === 10001) {
                     console.log('未登陆');
                     await User.clearUserInfo();
-                    config.auth && config.nav && config.nav.navigate('login/login/LoginPage');
+                    config.auth && config.nav && config.nav.navigate('login/login/LoginPage', {
+                        callback: config.callback
+                    });
                 }
                 return Promise.reject(response);
             }

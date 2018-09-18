@@ -4,6 +4,7 @@ module.exports = {
     api_demo_add: require('./data/demo/api_demo_add.json'),
     api_demo_update: require('./data/demo/api_demo_update.json'),
     api_demo_delete: require('./data/demo/api_demo_delete.json'),
+    userCouponList: require('./data/userCouponList.json'),
     test_data: {
         code: 0,
         name: 'jack',

@@ -24,7 +24,7 @@ export default class CouponsPage extends BasePage {
 
     componentDidMount() {
         if (!User.isLogin) {
-            this.$navigate('login/login/LoginPage');
+            //this.$navigate('login/login/LoginPage');
         }
     }
 
