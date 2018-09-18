@@ -66,7 +66,7 @@ export default class DebugPanelPage extends BasePage {
             hostUrl: apiEnvironment.getCurrentHostUrl()
         });
         const resetAction = NavigationActions.reset({
-            index: 1,
+            index: 0,
             actions: [NavigationActions.navigate({ routeName: "Tab" })]
         });
         this.props.navigation.dispatch(resetAction);
