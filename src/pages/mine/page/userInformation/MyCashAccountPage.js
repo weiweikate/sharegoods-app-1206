@@ -38,7 +38,7 @@ export default class MyCashAccountPage extends BasePage {
                     serialNumber: '流水号：123456787653234567',
                     capital: '-200.00',
                     iconImage: withdrawMoney,
-                    capitalRed:true,
+                    capitalRed: true
                 },
                 {
                     type: '提现',
@@ -46,7 +46,7 @@ export default class MyCashAccountPage extends BasePage {
                     serialNumber: '流水号：123456787653234567',
                     capital: '-200.00',
                     iconImage: withdrawMoney,
-                    capitalRed:true,
+                    capitalRed: true
                 },
                 {
                     type: '提现',
@@ -54,7 +54,7 @@ export default class MyCashAccountPage extends BasePage {
                     serialNumber: '流水号：123456787653234567',
                     capital: '-200.00',
                     iconImage: withdrawMoney,
-                    capitalRed:true,
+                    capitalRed: true
                 },
                 {
                     type: '提现',
@@ -62,8 +62,8 @@ export default class MyCashAccountPage extends BasePage {
                     serialNumber: '流水号：123456787653234567',
                     capital: '-200.00',
                     iconImage: withdrawMoney,
-                    capitalRed:true,
-                },
+                    capitalRed: true
+                }
             ],
             restMoney: 1600.00,
             blockMoney: 256.00,
@@ -73,12 +73,12 @@ export default class MyCashAccountPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title:'现金账户',
+        title: '现金账户',
         show: true // false则隐藏导航
     };
 
     //**********************************ViewPart******************************************
-    _render(){
+    _render() {
         return (
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
@@ -95,6 +95,7 @@ export default class MyCashAccountPage extends BasePage {
             </View>
         );
     };
+
     renderHeader = () => {
         return (
             <View style={styles.container}>
