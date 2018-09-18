@@ -126,10 +126,27 @@ export default class BasePage extends Component {
             console.warn(`js_navigate error: ${e.toString()}`);
         }
     };
+    // 返回到首页
+    $navigateReset = (routeName = 'Tab', params) => {
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({
+                    routeName: routeName,
+                    params: params
+                })
+            ]
+        });
+        this.props.navigation.dispatch(resetAction);
+    };
     // 返回
-    $navigateBack = (routerKey) => {
+    $navigateBack = (step) => {
         try {
-            if (routerKey) {
+            console.log("step", step);
+            if (step) {
+                let $routes = global.$routes || [];
+                let router = $routes[$routes.length + step];
+                let routerKey = router.key;
                 const backAction = NavigationActions.back({ key: routerKey });
                 this.props.navigation.dispatch(backAction);
             } else {
