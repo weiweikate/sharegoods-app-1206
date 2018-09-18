@@ -106,7 +106,6 @@ export default class MinePage extends BasePage {
             this.$loadingDismiss();
             if (res.code == 10000) {
                 let data = res.data;
-                console.log(data.headImg);
                 this.setState({
                     availableBalance: data.availableBalance,
                     headImg: data.headImg,
