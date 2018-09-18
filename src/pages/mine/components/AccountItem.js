@@ -19,7 +19,7 @@ const AccountItem = props => {
         capital,
         iconImage,
         clickItem,
-        capitalRed
+        capitalRed,
         needQuestionImage = false
     } = props;
 
