@@ -121,8 +121,13 @@ this.$navigate('HtmlPage', {
     uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
 });
 
-// A->B->C C返回A
+// A->B->C C返回
 this.$navigateBack(-2)
+
+
+// 返回到首页
+// routeName 可以不写默认为Tab
+this.$navigateReset(routeName)
 ```
 #### NetFailedView 网络数据出错组件
 
