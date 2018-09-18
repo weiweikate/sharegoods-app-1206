@@ -47,9 +47,6 @@ export default class LoginPage extends BasePage {
             });
             this.props.navigation.dispatch(resetAction);
         }
-
-
-
     }
 
     _render() {
