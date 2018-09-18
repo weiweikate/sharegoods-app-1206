@@ -23,7 +23,8 @@ import qbcIcon from '../../res/customerservice/kf_22.png';
 import autobcIon from '../../res/customerservice/kf_24.png';
 import phoneIcon from '../../res/customerservice/kf_30.png';
 import personIcon from '../../res/customerservice/kf_30-33.png';
-// import QYChatUtil from 'QYChatUtil'
+// import QYChatUtil from 'QYChatUtil';
+import MineApi from '../../api/MineApi';
 export default class MyHelperPage extends BasePage {
     constructor(props) {
         super(props);
@@ -43,7 +44,7 @@ export default class MyHelperPage extends BasePage {
                 {this.state.typeList.map((item, index) => {
                     return (
                         <View key={index} style={styles.hotQuestionStyle}>
-                            <TouchableOpacity activeOpacity={0.6} onPress={() => this.orderListq(item.typeid)}
+                            <TouchableOpacity activeOpacity={0.6} onPress={() => this.orderListq(item.list)}
                                               style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                                 <Image source={kf11} style={{ width: 37, height: 37 }}/>
                                 <Text style={{ fontSize: 11, color: '#666666' }}>{item.name}</Text>
@@ -56,7 +57,7 @@ export default class MyHelperPage extends BasePage {
                                 </View>
                                 <View style={{ width: '100%', height: 0.5, backgroundColor: '#c9c9c9' }}/>
                                 <View style={{ flex: 1, justifyContent: 'center', borderColor: '#c9c9c9' }}>
-                                    <UIText onPress={() => this.gotoquestionDetail(item.list[0].id)}
+                                    <UIText onPress={() => this.gotoquestionDetail(item.list[1].id)}
                                             style={{ marginLeft: 10, fontSize: 15, color: '#666666' }}
                                             value={item.list.length > 1 ? item.list[1].title : ''}/>
                                 </View>
@@ -150,8 +151,8 @@ export default class MyHelperPage extends BasePage {
         console.log('fankui');
     }
 
-    orderListq(typeid) {
-        this.$navigate('mine/helper/HelperQuestionListPage');
+    orderListq(list) {
+        this.$navigate('mine/helper/HelperQuestionListPage',{list});
         // this.navigate(RouterPaths.HelperQuestionListPage,{typeid:typeid})
     }
 
@@ -160,37 +161,33 @@ export default class MyHelperPage extends BasePage {
     }
 
     gotoquestionDetail(id) {
-        this.$navigate('mine/helper/HelperQeustionDetail');
+        console.log(id);
+        this.$navigate('mine/helper/HelperQuestionDetail',{id:id});
         // this.navigate(RouterPaths.HelperQeustionDetail,{id:id})
     }
 
-    loadPageData() {
-        // MineApi.queryHelpQuestionList().then(res => {
-        //     if(res.ok&&typeof res.data==='object'){
-        //         let typeList = res.data.typeList;
-        //         let list = res.data.list;
-        //         let listArr =[];
-        //         for (let i = 0; i < typeList.length;i++){
-        //             let arr =[];
-        //             for (let j = 0; j < list.length; j++) {
-        //                 if (list[j].name == typeList[i].name){
-        //                     arr.push(list[j])
-        //                 }
-        //             }
-        //             if(arr.length>=0){
-        //                 listArr.push({ name: typeList[i].name, list: arr, typeid: typeList[i].id})
-        //             }
-        //         }
-        //         this.setState({
-        //             typeList: listArr
-        //         })
-        //     }else{
-        //        this.$toastShow(res.msg);
-        //         this.setState({isEmpty: true})
-        //     }
-        //     }
-        // );
-    }
+     componentDidMount(){
+        let list=[];
+         MineApi.queryHelpQuestionList().then(res => {
+             console.log(res);
+             if(res.code==10000){
+                 Object.keys(res.data).forEach(item=>{
+                     list.push({
+                         name:item,
+                         list:res.data[item],
+                         typeid:res.data[item][0].typeId
+                     })
+                 })
+                 this.setState({
+                     typeList: list
+                 })
+             }else{
+                this.$toastShow(res.msg);
+                 this.setState({isEmpty: true})
+             }
+             }
+         );
+     }
 
     _render() {
         return (

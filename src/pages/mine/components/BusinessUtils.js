@@ -2,6 +2,7 @@ import { Linking } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 // import Toast from "../components/Toast"; //第三方相机
 import apiEnvironment from '../../../api/ApiEnvironment';
+import Toast from './../../../utils/bridge';
 
 export default {
     /**
@@ -35,7 +36,7 @@ export default {
             else {
                 // Toast.showLoading('图片上传中，请稍后');
                 // this.$toastShow('图片上传中，请稍后');
-                console.log(response.data);
+                // console.log(response.data);
                 // console.log(response.uri);
 
                 let datas = {
@@ -51,7 +52,7 @@ export default {
                 if (apiEnvironment.envType.indexOf('dev') === 0) {//非dev,但是有端口号的，全部删除端口号
                     url = url + ':8102';
                 }
-                fetch(`${url}/user/ossClient/aliyunOSSUploadImage`, {
+                fetch(`${url}/common/upload/oss`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -59,20 +60,19 @@ export default {
                     },
                     body: formData
                 }).then(resq => resq.json()).then(response => {
-                    // Toast.hiddenLoading();
-                    this.$toastDismiss();
-                    if (response.code === 200 && response.data) {
+                    Toast.hiddenLoading();
+                    if (response.code === 10000 && response.data) {
                         callBack({
                             ok: true,
-                            imageUrl: response.data.imageUrl,
-                            imageThumbUrl: response.data.imageThumbUrl
+                            imageUrl: response.data,
+                            imageThumbUrl: response.data
                         });
                     } else {
                         callBack({ ok: false, msg: '上传图片失败' });
                     }
                 }).catch(error => {
                     // Toast.hiddenLoading();
-                    this.$toastDismiss();
+                    Toast.hiddenLoading();
                     callBack({ ok: false, msg: '上传图片失败' });
                     console.log(error);
                     console.warn('图片上传失败' + error.toString());
