@@ -46,4 +46,3 @@ export default function ApiUtils(Urls) {
     return result;
 
 }
-
