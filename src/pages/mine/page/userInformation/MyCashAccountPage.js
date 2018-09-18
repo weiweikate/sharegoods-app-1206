@@ -25,6 +25,7 @@ import MineApi from '../../api/MineApi';
 import Toast from './../../../../utils/bridge';
 
 export default class MyCashAccountPage extends BasePage {
+
     constructor(props) {
         super(props);
         this.state = {

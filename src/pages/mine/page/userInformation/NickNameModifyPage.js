@@ -37,17 +37,18 @@ export default class NickNameModifyPage extends BasePage {
                     underlineColorAndroid={'transparent'}
                 />
                 {this.renderWideLine()}
-                <Button
-                    title='保存'
-                    style={{
-                        marginTop: 36,
-                        backgroundColor: color.red,
-                        width: ScreenUtils.width - 96,
-                        height: 48,
-                        marginLeft: 48,
-                        marginRight: 48
-                    }}
-                    onPress={() => this.save()}/>
+                <View style={{
+                    marginTop: 36,
+                    width: ScreenUtils.width - 96,
+                    height: 50,
+                    marginLeft: 48,
+                    marginRight: 48
+                }}>
+                    <Button
+                        title='保存'
+                        color={color.red}
+                        onPress={() => this.save()}/>
+                </View>
             </View>
         );
     }

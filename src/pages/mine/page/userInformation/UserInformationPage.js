@@ -121,7 +121,7 @@ export default class UserInformationPage extends BasePage {
     };
     jumpToIDVertify2Page = () => {
         if (!user.isRealNameRegistration) {
-            this.props.navigation.navigate('login/login/LoginPage');
+            this.props.navigation.navigate('mine/userInformation/IDVertify2Page');
         }
     };
     jumpToNickNameModifyPage = () => {
