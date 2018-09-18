@@ -89,14 +89,15 @@ export default class AddressEditAndAddPage extends BasePage {
     }
 
     loadPageData = () => {
-        MineAPI.getAreaList({ fatherCode: "0" }).then((data) => {
-            console.log(data);
+        console.log(99999);
+        MineAPI.getAreaList({ fatherCode: "0" }).then((response) => {
+            console.log(response);
             // if (Platform.OS === "ios") {
             //     NativeModules.commModule.setCityPicker(response.data);
             // } else {
             //     NativeModules.commModule.setCityPicker(JSON.stringify(response.data));
             // }
-            bridge.$toast(data.toString());
+            bridge.$toast(response.msg);
         }).catch(data => {
             bridge.$toast(data.msg);
         });

@@ -26,8 +26,7 @@ class ApiEnvironment {
 
     // 获取当前主机地址host
     getCurrentHostUrl() {
-        // return ApiConfig[this.envType].host;
-        return "http://172.16.10.41:8180/gateway";
+        return ApiConfig[this.envType].host;
     }
 
 

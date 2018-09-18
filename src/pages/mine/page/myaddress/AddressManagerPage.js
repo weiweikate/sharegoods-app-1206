@@ -39,7 +39,6 @@ export default class AddressManagerPage extends BasePage {
     }
 
     refreshing() {
-        console.log(88888);
         MineAPI.queryAddrList({}).then((response) => {
             console.log(response.data);
             console.log(response.code);
