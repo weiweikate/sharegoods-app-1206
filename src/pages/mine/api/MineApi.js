@@ -40,7 +40,13 @@ const api = {
     // 设置默认地址
     setDefaultAddr: '/user/userAddress/setDefault',
     // 获取省市区列表
-    getAreaList: '/config/sysArea/queryAreaList'
+    getAreaList: '/config/sysArea/queryAreaList',
+    //查询积分记录
+    userScoreQuery:['/user/userScore/query',{method:'get'}],
+    //查询余额记录
+    userBalanceQuery:['/user/userBalance/query',{method:'get'}],
+    //用户登出
+    signOut:['/user/userLogin/signOut',{method:'get'}],
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';

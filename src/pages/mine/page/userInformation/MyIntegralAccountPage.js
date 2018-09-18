@@ -12,7 +12,9 @@ import { RefreshList } from '../../../../components/ui';
 import AccountItem from '../../components/AccountItem';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import withdrawMoney from '../../res/userInfoImg/withdrawMoney.png';
+import registeredImg from '../../res/userInfoImg/list_icon_zhucei.png';
+import activityPresent from '../../res/userInfoImg/list_icon_hedong.png';
+import xiaofei from '../../res/userInfoImg/list_icon_xiaofe.png';
 import consumePointPage from '../../res/userInfoImg/consumePointPage.png';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
@@ -32,23 +34,23 @@ export default class MyIntegralAccountPage extends BasePage {
             passwordError: false,
             viewData: [
                 {
-                    type: '秀逗消费',
+                    type: '秀豆消费',
                     time: '2018-05-25 12:15:45',
                     serialNumber: '流水号：123456787653234567',
                     capital: '-200',
-                    iconImage: withdrawMoney,
-                    capitalRed:true,
+                    iconImage: xiaofei,
+                    capitalRed: true
                 },
                 {
-                    type: '秀逗消费',
+                    type: '秀豆消费',
                     time: '2018-05-25 12:15:45',
                     serialNumber: '流水号：123456787653234567',
                     capital: '-200',
-                    iconImage: withdrawMoney,
-                    capitalRed:true,
-                },
+                    iconImage: xiaofei,
+                    capitalRed: true
+                }
             ],
-            restMoney: 1600.00,
+            restMoney: this.params.userScore,
             blockMoney: 256.00,
             currentPage: 1,
             isEmpty: false
@@ -56,7 +58,7 @@ export default class MyIntegralAccountPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '秀逗账户',
+        title: '秀豆账户',
         show: true // false则隐藏导航
     };
 
@@ -84,17 +86,19 @@ export default class MyIntegralAccountPage extends BasePage {
             <View style={styles.container}>
                 <Image style={styles.imageBackgroundStyle} source={consumePointPage}/>
                 <View style={styles.viewStyle}>
-                    <Text style={{ marginLeft: 25, marginTop: 15, fontSize: 13, color: color.white,fontFamily:'PingFangSC-Light' }}>秀逗账户</Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ height: 44, justifyContent: 'space-between', marginTop: 15 }}>
-                            <Text style={{
-                                marginLeft: 25,
-                                fontSize: 25,
-                                color: color.white
-                            }}>{this.state.restMoney}</Text>
-                            <Text style={{ marginLeft: 25, fontSize: 15, color: color.white }}/>
-                        </View>
-                    </View>
+                    <Text style={{
+                        marginLeft: 25,
+                        marginTop: 15,
+                        fontSize: 13,
+                        color: color.white,
+                        fontFamily: 'PingFangSC-Light'
+                    }}>秀豆账户</Text>
+                    <Text style={{
+                        marginLeft: 25,
+                        fontSize: 25,
+                        marginTop: 10,
+                        color: color.white
+                    }}>{this.state.restMoney}</Text>
                 </View>
             </View>
 
@@ -119,12 +123,12 @@ export default class MyIntegralAccountPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line, marginLeft: 48, marginRight: 48 }}></View>
+            <View style={{ height: 1, backgroundColor: color.line, marginLeft: 48, marginRight: 48 }}/>
         );
     };
 
     //**********************************BusinessPart******************************************
-    loadPageData() {
+    componentDidMount() {
         this.getDataFromNetwork();
     }
 
@@ -132,25 +136,27 @@ export default class MyIntegralAccountPage extends BasePage {
         alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '注册赠送', '活动赠送', '商品购买抵扣'];
+        let use_type = ['', '注册赠送', '活动赠送', '秀豆消费'];
         let use_type_symbol = ['', '+', '+', '-'];
+        let use_let_img = ['', registeredImg, activityPresent, xiaofei];
         Toast.showLoading();
-        MineApi.queryDetailUserScorePageListAPP({
-            dealerId: user.id,
-            page: this.state.currentPage
+        MineApi.userScoreQuery({
+            page: 1,
+            size: 20
         }).then((response) => {
             Toast.hiddenLoading();
-            if (response.ok) {
+            console.log(response);
+            if (response.code == 10000) {
                 let data = response.data;
                 let arrData = this.state.currentPage === 1 ? [] : this.state.viewData;
                 data.data.map((item, index) => {
                     arrData.push({
-                        type: use_type[item.use_type],
-                        time: DataUtils.getFormatDate(item.create_time / 1000),
+                        type: use_type[item.useType],
+                        time: DataUtils.getFormatDate(item.createTime / 1000),
                         serialNumber: '',
-                        capital: use_type_symbol[item.use_type] + item.user_score,
-                        iconImage: withdrawMoney,
-                        capitalRed: use_type_symbol[item.use_type] === '-'
+                        capital: use_type_symbol[item.useType] + item.userScore,
+                        iconImage: use_let_img[item.useType],
+                        capitalRed: use_type_symbol[item.useType] === '-'
                     });
                 });
                 this.setState({ viewData: arrData, isEmpty: data.data && data.data.length !== 0 ? false : true });
@@ -160,18 +166,18 @@ export default class MyIntegralAccountPage extends BasePage {
         }).catch(e => {
             Toast.hiddenLoading();
         });
-        MineApi.findDealerAccountByIdAPP({ id: user.id }).then((response) => {
-            if (response.ok) {
-                let data = response.data;
-                this.setState({
-                    restMoney: data.user_score
-                });
-            } else {
-                NativeModules.commModule.toast(response.msg);
-            }
-        }).catch(e => {
-            Toast.hiddenLoading();
-        });
+        //     MineApi.findDealerAccountByIdAPP({ id: user.id }).then((response) => {
+        //         if (response.ok) {
+        //             let data = response.data;
+        //             this.setState({
+        //                 restMoney: data.user_score
+        //             });
+        //         } else {
+        //             NativeModules.commModule.toast(response.msg);
+        //         }
+        //     }).catch(e => {
+        //         Toast.hiddenLoading();
+        //     });
     };
     onRefresh = () => {
         this.setState({
@@ -193,7 +199,7 @@ const styles = StyleSheet.create({
     },
     container: {}, imageBackgroundStyle: {
         position: 'absolute',
-        height: 140,
+        height: 95,
         width: ScreenUtils.width - 30,
         marginLeft: 15,
         marginRight: 15,
@@ -211,7 +217,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         alignItems: 'center'
     }, viewStyle: {
-        height: 140,
+        height: 95,
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 15,

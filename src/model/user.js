@@ -130,6 +130,7 @@ class User {
         AsyncStorage.getItem(USERINFOCACHEKEY).then(infoStr => {
             if (infoStr && typeof infoStr === 'string') {
                 const info = JSON.parse(infoStr);
+                console.log(info);
                 this.saveUserInfo(info, false);
             }
         }).catch(err => {
