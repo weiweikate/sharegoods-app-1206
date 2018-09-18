@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    NativeModules,
     StyleSheet,
     View,
     Image,
@@ -12,12 +13,7 @@ import AccountItem from '../../components/CashAccountItem';
 import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import withdrawMoney from '../../res/userInfoImg/list_icon_tixiang.png';
-import storeShare from '../../res/userInfoImg/list_icon_dianzhufehong.png';
-import storeShareBonus from '../../res/userInfoImg/list_icon_dianpufewhong.png';
-import tuiguang from '../../res/userInfoImg/list_icon_touguang.png';
-import xiaofei from '../../res/userInfoImg/list_icon_xiaofe.png';
-import salesCommissions from '../../res/userInfoImg/list_icon_xiaoshouticheng.png';
+import withdrawMoney from '../../res/userInfoImg/withdrawMoney.png';
 import cashAccount from '../../res/userInfoImg/cashAccount.png';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
@@ -37,12 +33,12 @@ export default class MyCashAccountPage extends BasePage {
             passwordError: false,
             viewData: [
                 {
-                    useType: '提现支出',
+                    type: '提现',
                     time: '2018-05-25 12:15:45',
                     serialNumber: '流水号：123456787653234567',
                     capital: '-200.00',
                     iconImage: withdrawMoney,
-                    capitalRed: true
+                    capitalRed:true,
                 },
                 {
                     type: '提现',
@@ -50,38 +46,39 @@ export default class MyCashAccountPage extends BasePage {
                     serialNumber: '流水号：123456787653234567',
                     capital: '-200.00',
                     iconImage: withdrawMoney,
-                    capitalRed: true
+                    capitalRed:true,
                 },
                 {
-                    type: '店主分红',
+                    type: '提现',
                     time: '2018-05-25 12:15:45',
                     serialNumber: '流水号：123456787653234567',
                     capital: '-200.00',
                     iconImage: withdrawMoney,
-                    capitalRed: true
+                    capitalRed:true,
                 },
                 {
-                    type: '销售提成',
+                    type: '提现',
                     time: '2018-05-25 12:15:45',
                     serialNumber: '流水号：123456787653234567',
                     capital: '-200.00',
                     iconImage: withdrawMoney,
-                    capitalRed: true
-                }
+                    capitalRed:true,
+                },
             ],
-            restMoney: this.params.availableBalance,
+            restMoney: 1600.00,
+            blockMoney: 256.00,
             currentPage: 1,
             isEmpty: false
         };
     }
 
     $navigationBarOptions = {
-        title: '现金账户',
+        title:'现金账户',
         show: true // false则隐藏导航
     };
 
     //**********************************ViewPart******************************************
-    _render() {
+    _render(){
         return (
             <View style={styles.mainContainer}>
                 {this.renderHeader()}
@@ -98,7 +95,6 @@ export default class MyCashAccountPage extends BasePage {
             </View>
         );
     };
-
     renderHeader = () => {
         return (
             <View style={styles.container}>
@@ -146,61 +142,55 @@ export default class MyCashAccountPage extends BasePage {
     };
 
     //**********************************BusinessPart******************************************
-    componentDidMount() {
+    loadPageData() {
         this.getDataFromNetwork();
     }
 
     jumpToWithdrawCashPage = () => {
-        this.$navigate('mine/userInformation/WithdrawCashPage');
+        this.navigate('mine/myAccount/WithdrawCashPage');
     };
     clickItem = (index) => {
         alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '推广提成'];
-        let use_type_symbol = ['', '+', '-', '-', '+', '+', '+', '+'];
-        let useLeftImg = ['', storeShare, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, tuiguang];
-
+        let use_type = ['', '店主分红', '提现', '分红点兑换', '交易完成', '消费'];
+        let use_type_symbol = ['', '+', '-', '+', '+', '-'];
         Toast.showLoading();
-        MineApi.userBalanceQuery({ page: 1, size: 20, type: 2 }).then((response) => {
+        MineApi.queryDetailBalanceListAPP({ dealerId: user.id }).then((response) => {
             Toast.hiddenLoading();
-            console.log(response);
-            if (response.code == 10000) {
+            if (response.ok) {
                 let data = response.data;
                 let arrData = this.state.currentPage == 1 ? [] : this.state.viewData;
                 data.data.map((item, index) => {
                     arrData.push({
-                        type: use_type[item.useType],
-                        time: DataUtils.getFormatDate(item.createTime / 1000),
-                        serialNumber: '流水号：' + item.serialNo,
-                        capital: use_type_symbol[item.useType] + item.balance,
-                        iconImage: useLeftImg[item.useType],
-                        capitalRed: use_type_symbol[item.useType] === '-'
+                        type: use_type[item.use_type],
+                        time: DataUtils.getFormatDate(item.create_time / 1000),
+                        serialNumber: '流水号：' + item.serial_no,
+                        capital: use_type_symbol[item.use_type] + item.balance,
+                        iconImage: withdrawMoney,
+                        capitalRed: use_type_symbol[item.use_type] == '-'
                     });
                 });
-                this.setState({
-                    viewData: arrData,
-                    isEmpty: data.data && data.data.length !== 0 ? false : true
-                });
+                this.setState({ viewData: arrData, isEmpty: data.data && data.data.length != 0 ? false : true });
             } else {
-                this.$toastShow(response.msg);
+                NativeModules.commModule.toast(response.msg);
             }
         }).catch(e => {
             Toast.hiddenLoading();
         });
-        // MineApi.findDealerAccountByIdAPP({ id: this.state.id }).then((response) => {
-        //     if (response.ok) {
-        //         let data = response.data;
-        //         this.setState({
-        //             restMoney: data.available_balance,
-        //             blockMoney: data.blocked_balances
-        //         });
-        //     } else {
-        //         NativeModules.commModule.toast(response.msg);
-        //     }
-        // }).catch(e => {
-        //     Toast.hiddenLoading();
-        // });
+        MineApi.findDealerAccountByIdAPP({ id: this.state.id }).then((response) => {
+            if (response.ok) {
+                let data = response.data;
+                this.setState({
+                    restMoney: data.available_balance,
+                    blockMoney: data.blocked_balances
+                });
+            } else {
+                NativeModules.commModule.toast(response.msg);
+            }
+        }).catch(e => {
+            Toast.hiddenLoading();
+        });
     };
     onRefresh = () => {
         this.setState({

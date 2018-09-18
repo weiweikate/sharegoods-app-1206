@@ -60,7 +60,7 @@ export default class DetailHeaderView extends Component {
                     loop={productImgList && productImgList.length > 1}
                     dot={<View style={styles.dot}/>}
                     activeDot={<View style={styles.activeDot}/>}>
-                    {productImgList? productImgList.map(this._renderImageItem):<View/>}
+                    {productImgList? productImgList.map(this._renderImageItem):<View />}
                 </Swiper>
 
                 < View style={{ backgroundColor: 'white' }}>

@@ -16,7 +16,6 @@ import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import arrow_right from '../../../mine/res/customerservice/icon_06-03.png';
 import user from '../../../../model/user';
-import MineApi from '../../api/MineApi';
 
 
 class SettingPage extends BasePage {
@@ -161,22 +160,23 @@ class SettingPage extends BasePage {
                     yes={() => {
                         this.setState({ isShowLoginOutModal: false });
                         user.clearUserInfo();
-                        this.$loadingShow();
-                        MineApi.signOut({}).then((response)=>{
-                            this.$loadingDismiss();
-                             if(response.code===10000){
-                                 // 正常退出，或者登录超时，都去清空数据
-                                 this.params.callBack&&this.params.callBack();
-                                 user.clearUserInfo();
-                                 this.$navigateReset();
-                                this.$toastShow('退出登录成功');
-                             } else {
-                                 this.$toastShow(response.msg);
-                             }
-                         }).catch(e=>{
-                            this.$loadingDismiss();
-                            this.$toastShow('退出失败');
-                         });
+                        // // Toast.showLoading();
+                        //  SettingApi.exitLogin({}).then((response)=>{
+                        //      Toast.hiddenLoading();
+                        //      if(response.ok || response.code === 210){
+                        //          // 正常退出，或者登录超时，都去清空数据
+                        //          this.params.callBack();
+                        //          user.clearUserInfo();
+                        //          this.reset(RouterPaths.Tab,{pageType:'HomePage'});
+                        //          Toast.toast('退出登录成功');
+                        //      } else {
+                        //          Toast.toast(response.msg);
+                        //      }
+                        //  }).catch(e=>{
+                        //      Toast.hiddenLoading()
+                        //      NativeModules.commModule.toast(response.msg)
+                        //      Toast.toast('退出失败');
+                        //  });
                     }}
                     no={() => {
                         this.setState({ isShowLoginOutModal: false });

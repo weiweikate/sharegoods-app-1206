@@ -106,16 +106,14 @@ export default class UserInformationPage extends BasePage {
                 console.log(response);
                 this.$loadingDismiss();
                 if (response.code == 10000) {
-                    user.headImg = callback.imageUrl;
+                    user.headImg = response.data.headImg;
                     this.$toastShow('头像修改成功');
                 } else {
                     // this.$toast(response.msg);
                 }
-            }).catch(err => {
+            }).catch(e => {
                 this.$loadingDismiss();
-                if (err.code == 10001) {
-                    this.props.navigation.navigate('login/login/LoginPage');
-                }
+                this.$toastShow(e.toString());
             });
         });
     };
