@@ -6,7 +6,7 @@ import {
 import { color } from '../../../constants/Theme';
 import arrow_right from '../../order/res/arrow_right.png';
 import {
-    UIText, UIImage,NoMoreClick
+    UIText, UIImage, NoMoreClick
 } from '../../../components/ui';
 // status,//账单状态：0出账中，1待支付，2已支付，3逾期
 const CashAccountItem = props => {
@@ -16,7 +16,8 @@ const CashAccountItem = props => {
         serialNumber,
         capital,
         iconImage,
-        clickItem
+        clickItem,
+        capitalRed
     } = props;
 
     return (
@@ -34,7 +35,8 @@ const CashAccountItem = props => {
                 <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row' }}>
                     <View
                         style={{ marginRight: 15, height: 60, justifyContent: 'space-between' }}>
-                        <UIText value={capital} style={{ color: color.blue_222, fontSize: 16 }}/>
+                        <UIText value={capital}
+                                style={{ color: capitalRed ? color.red : color.blue_222, fontSize: 16 }}/>
                         <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                             <UIImage source={arrow_right} style={{ height: 10, width: 7 }}/>
                         </View>

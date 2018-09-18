@@ -35,7 +35,10 @@ export default class HelperFeedbackPage extends BasePage {
             showModal: false,
             isShowFinishModal: false,
             course: '请选择问题类型',
-            CONFIG: [{dValue:'物流问题',dKey:0},{dValue:'客服问题',dKey:1},{dValue:'物流问题',dKey:2},{dValue:'客服问题',dKey:3},{dValue:'物流问题',dKey:4},{dValue:'客服问题',dKey:5}],//dValue, item.dKey
+            CONFIG: [{ dValue: '物流问题', dKey: 0 }, { dValue: '客服问题', dKey: 1 }, {
+                dValue: '物流问题',
+                dKey: 2
+            }, { dValue: '客服问题', dKey: 3 }, { dValue: '物流问题', dKey: 4 }, { dValue: '客服问题', dKey: 5 }],//dValue, item.dKey
             selectIndex: -1,
             imageArr: []
         };
@@ -54,7 +57,7 @@ export default class HelperFeedbackPage extends BasePage {
                     CONFIG: res.data
                 });
             } else {
-                this.$toast(res.msg);
+                this.$toastShow(res.msg);
             }
         }).catch(err => {
             console.log(err);
@@ -99,18 +102,18 @@ export default class HelperFeedbackPage extends BasePage {
             originalImg: orignImgs
         }).then(res => {
             console.log(res);
-            if (res.code==10000) {
+            if (res.code == 10000) {
                 this.setState({ isShowFinishModal: true });
 
             } else {
                 this.$toastShow(res.msg);
             }
-        }).catch(err=>{
-            if(err.code==10001){
-                this.$navigate('login/login/LoginPage')
+        }).catch(err => {
+            if (err.code == 10001) {
+                this.$navigate('login/login/LoginPage');
             }
 
-        })
+        });
     }
 
     renderFinishModal() {
@@ -229,7 +232,7 @@ export default class HelperFeedbackPage extends BasePage {
                             <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>请选择问题类型</Text>
                             <Image source={arrowUp} style={{ width: 15, height: 15, marginRight: 10 }}/>
                         </TouchableOpacity>
-                        <View style={{  width: ScreenUtils.width, backgroundColor: 'white' }}>
+                        <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
                             {this.state.CONFIG.map((item, i) => {
                                 return (
                                     <TouchableOpacity key={i} style={{ height: 48, justifyContent: 'center' }}

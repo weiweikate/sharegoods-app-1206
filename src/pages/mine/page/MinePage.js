@@ -39,19 +39,20 @@ import setting from '../res/homeBaseImg/icon_03.png';
 import service from '../res/homeBaseImg/icon02.png';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineApi from '../api/MineApi';
-import Toast from '../../../utils/bridge';
+import { observer } from 'mobx-react/native';
 
+@observer
 export default class MinePage extends BasePage {
-
     constructor(props) {
         super(props);
         this.state = {
             total: 0,
-            nickname: '八岐大蛇',
+            nickname: user.phone,
             headImg: '',
-            availableBalance: 0,
+            availableBalance: 0,//现金余额
+            blockedBalance: 0,//待提现
             levelId: 0,
-            userScore: 0,
+            userScore: 0,//秀豆
             refreshing: false,
             netFailedInfo: null,
             loadingState: PageLoadingState.success
@@ -76,27 +77,33 @@ export default class MinePage extends BasePage {
             this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
             return;
         }
-        Toast.showLoading();
-        MineApi.getUser().then(data => {
-            Toast.hiddenLoading();
-            if (data.code == 10000) {
-                let data = data.data;
+        this.$loadingShow();
+        MineApi.getUser().then(res => {
+            console.log(res);
+            this.$loadingDismiss();
+            if (res.code === 10000) {
+                let data = res.data;
                 this.setState({
                     availableBalance: data.availableBalance,
                     headImg: data.headImg,
                     levelId: data.levelId,
                     nickname: data.nickname,
-                    userScore: data.userScore
+                    userScore: data.userScore,
+                    blockedBalance: data.blockedBalance
+
                 });
+            }
+        }).catch(err => {
+            if (err.code === 10001) {
+                this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
             }
         });
     }
 
     refresh = () => {
-        Toast.showLoading();
+        this.$loadingShow();
         MineApi.getUser().then(res => {
-            console.log(res);
-            Toast.hiddenLoading();
+            this.$loadingDismiss();
             if (res.code == 10000) {
                 let data = res.data;
                 console.log(data.headImg);
@@ -105,7 +112,8 @@ export default class MinePage extends BasePage {
                     headImg: data.headImg,
                     levelId: data.levelId,
                     nickname: data.nickname,
-                    userScore: data.userScore
+                    userScore: data.userScore,
+                    blockedBalance: data.blockedBalance
                 });
             }
         });
@@ -159,7 +167,7 @@ export default class MinePage extends BasePage {
                         }} source={leftBg}>
                             {
                                 StringUtils.isEmpty('222') ? null :
-                                    <Image source={{ uri: this.state.headImg }} style={{
+                                    <Image source={{ uri: user.headImg }} style={{
                                         height: 50,
                                         width: 50,
                                         borderRadius: 25
@@ -173,7 +181,7 @@ export default class MinePage extends BasePage {
                         }}>
                             <NoMoreClick style={{ flexDirection: 'row', alignItems: 'center' }}
                                          onPress={this.jumpToUserInformationPage}>
-                                <UIText value={this.state.nickname}
+                                <UIText value={user.nickname ? user.nickname : user.phone}
                                         style={{ fontSize: 15, color: '#ffffff' }}/>
                                 <Image source={whiteArrowRight}
                                        style={{ height: 14, marginLeft: 12 }}
@@ -192,31 +200,33 @@ export default class MinePage extends BasePage {
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', height: 32, marginTop: 20 }}>
-                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                        <TouchableOpacity style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+                                          onPress={() => this.go2CashDetailPage(2)}>
                             <Text style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 14,
                                 color: '#ffffff'
-                            }}>0</Text>
+                            }}>{this.state.userScore}</Text>
                             <Text style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 11,
                                 color: '#ffffff'
                             }}>秀豆</Text>
-                        </View>
+                        </TouchableOpacity>
                         <View style={{ width: 1, height: '80%', backgroundColor: '#fff' }}/>
-                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                        <TouchableOpacity style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+                                          onPress={() => this.go2CashDetailPage(4)}>
                             <Text style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 14,
                                 color: '#ffffff'
-                            }}>{this.state.availableBalance}</Text>
+                            }}>{StringUtils.formatMoneyString(this.state.blockedBalance)}元</Text>
                             <Text style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 11,
                                 color: '#ffffff'
                             }}>待提现金额(元)</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 </ImageBackground>
 
@@ -337,7 +347,10 @@ export default class MinePage extends BasePage {
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <TouchableOpacity style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}
                                   onPress={() => this.go2CashDetailPage(1)}>
-                    <Text style={{ fontSize: 14, color: '#212121' }}>0.00元</Text>
+                    <Text style={{
+                        fontSize: 14,
+                        color: '#212121'
+                    }}>{StringUtils.formatMoneyString(this.state.availableBalance)}元</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{
                             fontFamily: 'PingFang-SC-Medium',
@@ -350,7 +363,7 @@ export default class MinePage extends BasePage {
 
                 </TouchableOpacity>
                 <TouchableOpacity style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}
-                                  onPress={() => this.go2CashDetailPage(2)}>
+                                  onPress={() => this.go2CashDetailPage(3)}>
                     <Text style={{ fontSize: 14, color: '#212121' }}>0.00元</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{
@@ -390,11 +403,11 @@ export default class MinePage extends BasePage {
     };
 
     go2CashDetailPage(i) {
-        if(i===1){
-            this.$navigate('mine/userInformation/MyCashAccountPage');
-        }else if(i===2){
-           this. $navigate('mine/userInformation/MyIntegralAccountPage');
-        }else{
+        if (i === 1) {
+            this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: this.state.availableBalance });
+        } else if (i === 2) {
+            this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: this.state.userScore });
+        } else {
             this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
 
         }
