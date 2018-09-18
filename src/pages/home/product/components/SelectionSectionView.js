@@ -17,7 +17,7 @@ export default class RecentSearchView extends Component {
         listData: PropTypes.array.isRequired,
         clickItemAction: PropTypes.func.isRequired,
         indexOfProp: PropTypes.any.isRequired,
-        tittle: PropTypes.any.isRequired
+        tittle: PropTypes.any.isRequired,
 
     };
 
@@ -29,7 +29,7 @@ export default class RecentSearchView extends Component {
         if (!this.props.listData[index].canSelected) {
             return;
         }
-        this.props.clickItemAction(this.props.listData[index], this.props.indexOfProp, this.props.tittle);
+        this.props.clickItemAction(this.props.listData[index], this.props.indexOfProp,this.props.tittle);
     };
 
 
@@ -44,12 +44,11 @@ export default class RecentSearchView extends Component {
             tagList.push(
                 <View key={index}>
                     <TouchableOpacity
-                        style={[styles.btn, { backgroundColor: isSelected ? '#D51243' :'#EEEEEE' }]}
+                        style={[styles.btn, { backgroundColor: isSelected ? '#D51243' : (canSelected ? '#EEEEEE' : 'yellow') }]}
                         onPress={() => {
                             this._clickItemAction(index);
                         }}>
-                        <Text
-                            style={[styles.btnText, { color: canSelected ? '#222222' : 'white' }]}>{this.props.listData[index].specValue}</Text>
+                        <Text style={styles.btnText}>{this.props.listData[index].specValue}</Text>
                     </TouchableOpacity>
                 </View>
             );
@@ -103,6 +102,7 @@ const styles = StyleSheet.create({
     },
     btnText: {
         paddingHorizontal: 12,
+        color: '#222222',
         fontSize: 13
     }
 });

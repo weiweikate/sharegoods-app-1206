@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: color.white,
         flexDirection: 'row',
-        height: 75,
+        height: 90,
         alignItems: 'center'
 
     }

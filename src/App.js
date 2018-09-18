@@ -13,7 +13,7 @@ import {
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 import RouterMap from './RouterMap';
-import user from '../src/model/user';
+
 import Router from './Router';
 import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
@@ -31,7 +31,6 @@ export default class App extends Component<Props> {
 
     async componentDidMount() {
         await apiEnvironment.loadLastApiSettingFromDiskCache();
-        await user.readUserInfoFromDisk();
         global.$navigator = this.refs.Navigator;
         global.$routes = [];
     }

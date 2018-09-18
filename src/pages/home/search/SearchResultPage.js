@@ -39,9 +39,7 @@ export default class SearchResultPage extends BasePage {
             page: 1,
 
             productList: [],
-            selectionData: {},
-
-            productId:''
+            selectionData: {}
         };
     }
 
@@ -111,19 +109,10 @@ export default class SearchResultPage extends BasePage {
     };
 
     //选择规格确认
-    _selectionViewConfirm = (amount, priceId) => {
-        this.$loadingShow();
-        HomeAPI.addItem({
-            'amount': amount,
-            'priceId': priceId,
-            'productId': this.state.productId
-        }).then((data) => {
-            this.$loadingDismiss();
-        }).catch((error) => {
-            this.$loadingDismiss();
-            this.$toastShow(error.msg);
-        });
+    _selectionViewConfirm = () => {
+
     };
+
     //选择规格关闭
     _selectionViewClose = () => {
 

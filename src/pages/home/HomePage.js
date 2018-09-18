@@ -31,10 +31,6 @@ const imageUrls = [
 ];
 const DemoList = [
     {
-        title: "优惠券",
-        uri: "mine/coupons/CouponsPage"
-    },
-    {
         title: "用户协议",
         uri: "HtmlPage",
         params: {
@@ -56,7 +52,7 @@ const DemoList = [
     {
         title: "搜索页面",
         uri: RouterMap.SearchPage
-    },
+    }
 ];
 export default class HomePage extends Component {
 
@@ -216,7 +212,6 @@ export default class HomePage extends Component {
                                             style={{ flex: 1 }}
                                             underlayColor="#e6e6e6"
                                             onPress={() => {
-                                                console.log(3232,uri,title)
                                                 this.redirect(uri, params);
                                             }}
                                         >
@@ -247,13 +242,7 @@ export default class HomePage extends Component {
             />);
     };
     redirect = (uri, params) => {
-        console.log(123, uri);
-        try {
-            this.props.navigation.navigate(uri, params || {});
-        } catch (e) {
-            console.warn(1111);
-        }
-
+        this.props.navigation.navigate(uri, params || {});
     };
 
 }
