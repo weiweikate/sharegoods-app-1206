@@ -20,6 +20,7 @@ import {
 } from '../../../components/ui/index';
 import ShopCartRes from '../res/ShopCartRes';
 import ShopCartAPI from "../api/ShopCartApi";
+import bridge from "../../../utils/bridge";
 
 export default class ShopCartPage extends BasePage {
 
@@ -40,7 +41,7 @@ export default class ShopCartPage extends BasePage {
         );
     };
     addGoods=()=>{
-
+        this.$navigate()
         ShopCartAPI.addItem({
             "amount": 10,
             "priceId": 1000,
@@ -49,6 +50,7 @@ export default class ShopCartPage extends BasePage {
         }).then((res)=>{
 
         }).catch((error)=>{
+          bridge.$toast(error.msg)
 
         });
     }
