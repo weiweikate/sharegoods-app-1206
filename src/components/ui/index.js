@@ -11,6 +11,7 @@ import SearchInput from './SearchInput';
 import TakePhoneModal from './TakePhotoModal';
 import ExchangeTypeModal from './ExchangeTypeModal';
 import AddPhotos from './AddPhotos';
+import NoMoreClick from './NoMoreClick';
 
 export {
     UIImage,
@@ -25,5 +26,6 @@ export {
     SearchInput,
     TakePhoneModal,
     ExchangeTypeModal,
-    AddPhotos
+    AddPhotos,
+    NoMoreClick
 };

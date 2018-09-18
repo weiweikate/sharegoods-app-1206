@@ -9,8 +9,10 @@ import { color } from '../../../../constants/Theme';
 import UserSingleItem from '../../components/UserSingleItem';
 import user from '../../../../model/user';
 import { observer } from 'mobx-react/native';
+import BusinessUtils from '../../components/BusinessUtils';
 
 const dismissKeyboard = require('dismissKeyboard');
+import MineApi from '../../api/MineApi';
 
 @observer
 export default class UserInformationPage extends BasePage {
@@ -98,6 +100,22 @@ export default class UserInformationPage extends BasePage {
     }
 
     takePhoto = () => {
+        BusinessUtils.getImagePicker(callback => {
+            this.$loadingShow();
+            MineApi.updateUserById({ headImg: callback.imageUrl, type: 1 }).then((response) => {
+                console.log(response);
+                this.$loadingDismiss();
+                if (response.code == 10000) {
+                    user.headImg = response.data.headImg;
+                    this.$toastShow('头像修改成功');
+                } else {
+                    // this.$toast(response.msg);
+                }
+            }).catch(e => {
+                this.$loadingDismiss();
+                this.$toastShow(e.toString());
+            });
+        });
     };
     jumpToIDVertify2Page = () => {
         if (!user.isRealNameRegistration) {

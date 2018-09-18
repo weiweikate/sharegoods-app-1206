@@ -19,6 +19,7 @@ import { SwipeRow } from 'react-native-swipe-list-view';
 import RefreshList from '../../../../components/ui/RefreshList';
 import NoMessage from '../../../../comm/res/empty_list_message.png';
 import user from '../../../../model/user';
+import MineApi from '../../api/MineApi';
 import { observer } from 'mobx-react/native';
 
 @observer
@@ -66,7 +67,6 @@ export default class MyCollectPage extends BasePage {
     };
 
     renderValidItem = ({ item, index }) => {
-
         return (
             <View>
                 <SwipeRow disableRightSwipe={true} leftOpenValue={75} rightOpenValue={-75} style={{
@@ -220,7 +220,9 @@ export default class MyCollectPage extends BasePage {
     }
 
     getDataFromNetwork = () => {
-
+      MineApi.queryCollection().then(res=>{
+          console.log(res);
+      })
     };
 
     _render() {
