@@ -42,7 +42,9 @@ const api = {
     // 获取省市区列表
     getAreaList: ['/config/sysArea/queryAreaList', { method: 'get' }],
     // 验证手机验证码是否正确
-    judgeCode: ['/user/judgePhoneCode', { method: 'post' }]
+    judgeCode: ['/user/judgePhoneCode', { method: 'post' }],
+    // 修改手机号
+    updatePhone: ['/user/updatePhone\n', { method: 'post' }]
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';

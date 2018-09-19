@@ -7,6 +7,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import bridge from '../../../../utils/bridge';
 import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
+import MineAPI from '../../api/MineApi';
 
 export default class SetNewPhoneNumPage extends BasePage {
 
@@ -106,7 +107,7 @@ export default class SetNewPhoneNumPage extends BasePage {
     _toNext = () => {
         let tel = this.state.telText;
         let code = this.state.code;
-        const { oldNum } = this.props.navigation.state.params;
+        const { oldNum, oldCode } = this.props.navigation.state.params;
         if (StringUtils.isEmpty(tel)) {
             bridge.$toast('请输入手机号');
             return;
@@ -121,8 +122,18 @@ export default class SetNewPhoneNumPage extends BasePage {
             return;
         }
         if (StringUtils.checkPhone(tel)) {
-            // 绑定
-
+            // 验证
+            MineAPI.updatePhone({
+                // verificationCode: this.state.code,
+                verificationCode: '2222',
+                oldVerificationCode: oldCode,
+                phone: this.state.telText
+            }).then((data) => {
+                bridge.$toast('绑定成功');
+                this.$navigateBack(-2);
+            }).catch((data) => {
+                bridge.$toast(data.msg);
+            });
         } else {
             bridge.$toast('手机格式不对');
             return;
