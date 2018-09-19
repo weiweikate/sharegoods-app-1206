@@ -34,6 +34,10 @@
         "gao_di": {
             "name": "测试_高迪",
             "host": "http://172.16.10.238:8180/gateway"
+        },
+        "zhou_hao": {
+            "name": "测试_周浩",
+            "host": "http://172.16.10.29:8180/gateway"
         }
     }
 }

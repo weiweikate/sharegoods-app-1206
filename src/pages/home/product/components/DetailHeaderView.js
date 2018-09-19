@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import Swiper from 'react-native-swiper';
 import PropTypes from 'prop-types';
 
 import {
     StyleSheet,
     Text,
-    View,
-    Image,
-    TouchableWithoutFeedback
+    View
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import ViewPager from '../../../../components/ui/ViewPager';
+import UIImage from '../../../../components/ui/UIImage';
 
 /**
  * 商品详情头部view
@@ -30,40 +29,54 @@ export default class DetailHeaderView extends Component {
     _clickItem = () => {
 
     };
-
-    _renderImageItem = (item, index) => {
+    renderViewPageItem = (item) => {
         const { originalImg } = item;
         return (
-            <TouchableWithoutFeedback key={index} onPress={() => this._clickItem(item)}>
-                <View style={{ flex: 1, backgroundColor: '#eeeeee' }}>
-                    {
-                        originalImg ? <Image
-                            style={{ flex: 1, width: ScreenUtils.width, height: ScreenUtils.autoSizeWidth(237) }}
-                            resizeMode="stretch"
-                            source={{ uri: originalImg }}/> : null
-                    }
-                </View>
-            </TouchableWithoutFeedback>
-        );
+            <UIImage
+                source={{ uri: originalImg || '' }}
+                style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
+                onPress={this._clickItem}
+                resizeMode="cover"
+            />);
     };
 
     render() {
-        const { productImgList, freight, monthSaleTotal, price, originalPrice, product } = this.props.data;
-        const { supplierName, brandName, name, firstCategoryName, secCategoryName, thirdCategoryName } = product || {};
+        let { productImgList, freight, monthSaleTotal, price, originalPrice, product } = this.props.data;
+        productImgList = productImgList || [];
+        freight = freight || 0;
+        monthSaleTotal = monthSaleTotal || 0;
+        price = price || 0;
+        originalPrice = originalPrice || 0;
+
+        let { supplierName, brandName, name, firstCategoryName, secCategoryName, thirdCategoryName } = product || {};
+        supplierName = supplierName || '';
+        brandName = brandName || '';
+        name = name || '';
+        firstCategoryName = firstCategoryName || '';
+        secCategoryName = secCategoryName || '';
+        thirdCategoryName = thirdCategoryName || '';
+
         return (
             <View>
-                <Swiper
-                    autoplay
-                    horizontal
-                    autoplayTimeout={3000}
-                    height={ScreenUtils.autoSizeWidth(377)}
-                    loop={productImgList && productImgList.length > 1}
-                    dot={<View style={styles.dot}/>}
-                    activeDot={<View style={styles.activeDot}/>}>
-                    {productImgList ? productImgList.map(this._renderImageItem) : <View/>}
-                </Swiper>
+                <ViewPager style={styles.ViewPager}
+                           arrayData={productImgList}
+                           renderItem={(item) => this.renderViewPageItem(item)}
+                           dotStyle={{
+                               height: 5,
+                               width: 5,
+                               borderRadius: 5,
+                               backgroundColor: '#eeeeee',
+                               opacity: 0.4
+                           }}
+                           activeDotStyle={{
+                               height: 5,
+                               width: 30,
+                               borderRadius: 5,
+                               backgroundColor: '#eeeeee'
+                           }}
+                           autoplay={true}/>
 
-                < View style={{ backgroundColor: 'white' }}>
+                <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{
                             marginTop: 14,
@@ -109,18 +122,9 @@ export default class DetailHeaderView extends Component {
 }
 
 const styles = StyleSheet.create({
-    activeDot: {
-        backgroundColor: 'white',
-        width: 12,
-        height: 2,
-        marginLeft: 3,
-        marginRight: 3
-    },
-    dot: {
-        backgroundColor: 'rgba(255,255,255,0.5)',
-        width: 12,
-        height: 2,
-        marginLeft: 3,
-        marginRight: 3
+    ViewPager: {
+        height: ScreenUtils.autoSizeWidth(377),
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        width: ScreenUtils.width
     }
 });
