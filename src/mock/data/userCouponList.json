@@ -11,7 +11,7 @@
         "data": [
             {
                 "id": 5,
-                "name": "满减",
+                "name": "多产品多分类",
                 "code": "MJ1234500917115713",
                 "remarks": "满减",
                 "type": 1,
@@ -20,11 +20,11 @@
                 "startTime": 1537233494000,
                 "expireTime": 1537233494000,
                 "status": 3,
-                "cat1": null,
-                "cat2": null,
-                "cat3": null,
+                "cat1": ["cat1"],
+                "cat2": ["cat2"],
+                "cat3": ["cat3"],
                 "products": [
-                    "1"
+                    "产品1"
                 ],
                 "levels": [
                     1,
@@ -36,7 +36,7 @@
             },
             {
                 "id": 6,
-                "name": "满减",
+                "name": "多产品",
                 "code": "MJ1234500917115713",
                 "remarks": "满减",
                 "type": 1,
@@ -49,7 +49,8 @@
                 "cat2": null,
                 "cat3": null,
                 "products": [
-                    "1"
+                    "产品1",
+                    "产品2"
                 ],
                 "levels": [
                     1,
@@ -61,7 +62,7 @@
             },
             {
                 "id": 7,
-                "name": "满减",
+                "name": "单产品",
                 "code": "MJ1234500917115711",
                 "remarks": "满减",
                 "type": 1,
@@ -74,7 +75,7 @@
                 "cat2": null,
                 "cat3": null,
                 "products": [
-                    "1"
+                    "产品1"
                 ],
                 "levels": [
                     1,
@@ -86,7 +87,7 @@
             },
             {
                 "id": 8,
-                "name": "抵扣",
+                "name": "多品类",
                 "code": "DK1234500917115711",
                 "remarks": "抵扣",
                 "type": 4,
@@ -95,12 +96,33 @@
                 "startTime": 1537329522000,
                 "expireTime": 1538539211000,
                 "status": 0,
-                "cat1": null,
+                "cat1": ["cat1"],
+                "cat2": ["cat2"],
+                "cat3": ["cat3"],
+                "products": null,
+                "levels": [
+                    1,
+                    2,
+                    3,
+                    5
+                ],
+                "createTime": 1537156822000
+            },
+            {
+                "id": 81,
+                "name": "d单品类",
+                "code": "DK1234500917115711",
+                "remarks": "抵扣",
+                "type": 4,
+                "value": 10,
+                "useConditions": 500,
+                "startTime": 1537329522000,
+                "expireTime": 1538539211000,
+                "status": 0,
+                "cat1": ["cat1"],
                 "cat2": null,
                 "cat3": null,
-                "products": [
-                    "1"
-                ],
+                "products": null,
                 "levels": [
                     1,
                     2,
