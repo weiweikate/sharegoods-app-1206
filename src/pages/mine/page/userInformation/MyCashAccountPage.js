@@ -57,7 +57,6 @@ export default class MyCashAccountPage extends BasePage {
                 },
                 {
                     type: '店主分红',
-                    type: '提现',
                     time: '2018-05-25 12:15:45',
                     serialNumber: '流水号：123456787653234567',
                     capital: '-200.00',
