@@ -21,6 +21,7 @@ import {
 import ShopCartRes from "../res/ShopCartRes";
 import shopCartStore from "../model/ShopCartStore";
 import StringUtils from "../../../utils/StringUtils";
+import shopCartCacheTool from "../model/ShopCartCacheTool";
 
 @observer
 export default class ShopCartPage extends BasePage {
@@ -42,7 +43,13 @@ export default class ShopCartPage extends BasePage {
         );
     };
     addGoods = () => {
-        shopCartStore.addItemToShopCart({
+        // shopCartStore.addItemToShopCart({
+        //     "amount": 10,
+        //     "priceId": 1,
+        //     "productId": 1,
+        //     "timestamp": 1536633469102
+        // });
+        shopCartCacheTool.addGoodItem({
             "amount": 10,
             "priceId": 1,
             "productId": 1,
@@ -51,7 +58,8 @@ export default class ShopCartPage extends BasePage {
     };
 
     componentDidMount() {
-        shopCartStore.getShopCartListData();
+        // shopCartStore.getShopCartListData();
+        shopCartCacheTool.getShopCartGoodsListData();
     }
 
     constructor(props) {
@@ -157,7 +165,7 @@ export default class ShopCartPage extends BasePage {
                 <View style={styles.standaloneRowFront}>
                     <UIImage
                         source={itemData.isSelected ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
-                        style={{ width: 22, height: 22, marginLeft: 10, marginBottom: 20 }}
+                        style={{ width: 22, height: 22, marginLeft: 10 }}
                         onPress={() => {
                             console.warn();
                             let [...tempValues] = shopCartStore.data;
@@ -166,19 +174,34 @@ export default class ShopCartPage extends BasePage {
                             shopCartStore.data = tempValues;
                         }}
                     />
+
                     <UIImage
                         source={{ uri: itemData.imgUrl }}
                         style={[styles.validProductImg]}
                     />
+                    <UIImage
+                        source={itemData.isSelected ? ShopCartRes.noGoodImg : ShopCartRes.invalidGoodImg}
+                        style={{
+                            // backgroundColor:'red',
+                            position:'absolute',
+                            marginLeft:55,
+                            width:60,
+                            height:60,
+                        }}
+                    />
+
                     <View style={styles.validContextContainer}>
                         <View>
                             <UIText
                                 value={itemData.productName}
+                                // value={"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"}
                                 numberOfLines={2}
                                 style={{
+                                    marginTop:0,
                                     fontFamily: "PingFang-SC-Medium",
                                     fontSize: 13,
-                                    lineHeight: 18,
+                                    lineHeight: 16,
+                                    height:32,
                                     color: ColorUtil.Color_222222
                                 }}
                             />
@@ -186,6 +209,7 @@ export default class ShopCartPage extends BasePage {
                             <UIText
                                 value={itemData.specString}
                                 numberOfLines={2}
+                                // value={"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"}
                                 style={{
                                     fontFamily: "PingFang-SC-Medium",
                                     fontSize: 13,
@@ -298,8 +322,8 @@ export default class ShopCartPage extends BasePage {
         // shopCartStore.data[rowId] = itemData;
     };
     /*删除操作*/
-    _deleteFromShoppingCartByProductId = (productId) => {
-        shopCartStore.deleteItemWithIndex(productId);
+    _deleteFromShoppingCartByProductId = (priceId) => {
+        shopCartCacheTool.deleteShopCartGoods(priceId);
     };
 }
 
@@ -331,6 +355,7 @@ const styles = StyleSheet.create({
     standaloneRowFront: {
         alignItems: "center",
         backgroundColor: "#fff",
+        // backgroundColor:'red',
         height: 130,
         width: ScreenUtils.width,
         flexDirection: "row",
@@ -355,7 +380,7 @@ const styles = StyleSheet.create({
         height: 80,
         marginLeft: 16,
         marginRight: 16,
-        marginBottom: 20
+        // marginBottom: 10
     },
     validConUITextContainer: {
         flex: 1,
