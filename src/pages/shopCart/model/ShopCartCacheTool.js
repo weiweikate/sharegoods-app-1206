@@ -18,18 +18,18 @@ class ShopCartCacheTool {
             this.synchronousData();
         }
 
-        return (!!(user.id))
+        return (!!(user.id));
     }
 
     /**
      * 删除本地数据
      */
-    deleteAllLocalData(){
-        Storage.remove(ShopCartCacheTool.shopCartLocalStorageKey).then(()=>{
+    deleteAllLocalData() {
+        Storage.remove(ShopCartCacheTool.shopCartLocalStorageKey).then(() => {
 
-        }).catch(()=>{
+        }).catch(() => {
 
-        })
+        });
     }
 
     /*同步购物车商品*/
@@ -48,7 +48,7 @@ class ShopCartCacheTool {
                     }
                 ).then(res => {
                     //同步完数据组装
-                    shopCartStore.packingShopCartGoodsData(res.data)
+                    shopCartStore.packingShopCartGoodsData(res.data);
                     //同步成功删除本地数据
                     this.deleteAllLocalData();
                 }).catch(error => {
@@ -81,17 +81,16 @@ class ShopCartCacheTool {
                     });
                 }
                 //再存入本地
-                Storage.set(ShopCartCacheTool.shopCartLocalStorageKey,localValue).then(()=>{
+                Storage.set(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
                     //拉取刷新
                     shopCartStore.getShopCartListWithNoLogin(localValue);
-                }).catch(error=>{
+                }).catch(error => {
 
-                })
+                });
             }).catch(error => {
             });
         }
     }
-
     /*
     * 参数对象必须包括参数
     * "amount": 10, 商品数量
@@ -140,7 +139,7 @@ class ShopCartCacheTool {
             Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
                 //拿到数据后拉去详情
                 let [...localValue] = res;
-                shopCartStore.getShopCartListWithNoLogin(localValue)
+                shopCartStore.getShopCartListWithNoLogin(localValue);
             }).catch(error => {
                 bridge.$toast("读取本地数据异常");
             });
