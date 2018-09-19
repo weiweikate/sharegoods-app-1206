@@ -79,7 +79,6 @@ export default class HomePage extends Component {
 
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
-        console.log(Y);
         if (Y < 100) {
             this.st = Y * 0.01;
         } else {

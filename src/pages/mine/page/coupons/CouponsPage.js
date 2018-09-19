@@ -42,7 +42,7 @@ export default class CouponsPage extends BasePage {
                         backgroundColor: '#f7f7f7'
                     }}
                     //进界面的时候打算进第几个
-                    initialPage={2}
+                    initialPage={0}
                     tabBarBackgroundColor='#fff'
                     tabBarActiveTextColor='red'
                     tabBarInactiveTextColor='#999999'

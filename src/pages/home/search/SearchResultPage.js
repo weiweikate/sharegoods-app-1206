@@ -18,6 +18,7 @@ import HomeAPI from '../api/HomeAPI';
 import DateUtils from '../../../utils/DateUtils';
 import SelectionPage from '../product/SelectionPage';
 import StringUtils from '../../../utils/StringUtils';
+import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 
 export default class SearchResultPage extends BasePage {
 
@@ -94,7 +95,8 @@ export default class SearchResultPage extends BasePage {
             this.$loadingDismiss();
             this.setState({
                 selectionData: data.data,
-                modalVisible: !this.state.modalVisible
+                modalVisible: !this.state.modalVisible,
+                productId:productId
             });
         }).catch((data) => {
             this.$loadingDismiss();
@@ -123,17 +125,12 @@ export default class SearchResultPage extends BasePage {
 
     //选择规格确认
     _selectionViewConfirm = (amount, priceId) => {
-        this.$loadingShow();
-        HomeAPI.addItem({
+        let temp = {
             'amount': amount,
             'priceId': priceId,
             'productId': this.state.productId
-        }).then((data) => {
-            this.$loadingDismiss();
-        }).catch((error) => {
-            this.$loadingDismiss();
-            this.$toastShow(error.msg);
-        });
+        };
+        shopCartCacheTool.addGoodItem(temp);
     };
 
     //选择规格关闭
