@@ -31,6 +31,10 @@ const imageUrls = [
 ];
 const DemoList = [
     {
+        title: "优惠券",
+        uri: "mine/coupons/CouponsPage"
+    },
+    {
         title: "用户协议",
         uri: "HtmlPage",
         params: {
