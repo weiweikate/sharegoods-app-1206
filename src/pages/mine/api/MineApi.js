@@ -43,6 +43,12 @@ const api = {
     getAreaList: ['/config/sysArea/queryAreaList', { method: 'get' }],
     // 验证手机验证码是否正确
     judgeCode: ['/user/judgePhoneCode', { method: 'post' }],
+    //查询积分记录
+    userScoreQuery:['/user/userScore/query',{method:'get'}],
+    //查询余额记录
+    userBalanceQuery:['/user/userBalance/query',{method:'get'}],
+    //用户登出
+    signOut:['/user/userLogin/signOut',{method:'get'}],
     // 修改手机号
     updatePhone: ['/user/updatePhone\n', { method: 'post' }]
 

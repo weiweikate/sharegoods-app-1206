@@ -1,0 +1,114 @@
+{
+    "code": 10000,
+    "msg": "业务处理成功",
+    "data": {
+        "currentPage": 1,
+        "pageSize": 10,
+        "totalNum": 4,
+        "isMore": 0,
+        "totalPage": 1,
+        "startIndex": 0,
+        "data": [
+            {
+                "id": 5,
+                "name": "满减",
+                "code": "MJ1234500917115713",
+                "remarks": "满减",
+                "type": 1,
+                "value": 50,
+                "useConditions": 100,
+                "startTime": 1537233494000,
+                "expireTime": 1537233494000,
+                "status": 3,
+                "cat1": null,
+                "cat2": null,
+                "cat3": null,
+                "products": [
+                    "1"
+                ],
+                "levels": [
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "createTime": 1537233494000
+            },
+            {
+                "id": 6,
+                "name": "满减",
+                "code": "MJ1234500917115713",
+                "remarks": "满减",
+                "type": 1,
+                "value": 50,
+                "useConditions": 100,
+                "startTime": 1537233494000,
+                "expireTime": 1537233494000,
+                "status": 2,
+                "cat1": null,
+                "cat2": null,
+                "cat3": null,
+                "products": [
+                    "1"
+                ],
+                "levels": [
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "createTime": 1537233494000
+            },
+            {
+                "id": 7,
+                "name": "满减",
+                "code": "MJ1234500917115711",
+                "remarks": "满减",
+                "type": 1,
+                "value": 50,
+                "useConditions": 100,
+                "startTime": 1537248409000,
+                "expireTime": 1538458009000,
+                "status": 1,
+                "cat1": null,
+                "cat2": null,
+                "cat3": null,
+                "products": [
+                    "1"
+                ],
+                "levels": [
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "createTime": 1537162009000
+            },
+            {
+                "id": 8,
+                "name": "抵扣",
+                "code": "DK1234500917115711",
+                "remarks": "抵扣",
+                "type": 4,
+                "value": 10,
+                "useConditions": 50,
+                "startTime": 1537329522000,
+                "expireTime": 1538539211000,
+                "status": 0,
+                "cat1": null,
+                "cat2": null,
+                "cat3": null,
+                "products": [
+                    "1"
+                ],
+                "levels": [
+                    1,
+                    2,
+                    3,
+                    5
+                ],
+                "createTime": 1537156822000
+            }
+        ]
+    }
+}

@@ -97,6 +97,7 @@ export default class MinePage extends BasePage {
             }
         }).catch(err => {
             if (err.code === 10001) {
+                user.clearUserInfo();
                 this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
             }
         });
@@ -405,7 +406,7 @@ export default class MinePage extends BasePage {
                 break;
         }
     };
-
+    //跳转到对应的账户页面
     go2CashDetailPage(i) {
         switch (i) {
             case 1:
@@ -472,9 +473,6 @@ export default class MinePage extends BasePage {
                 break;
         }
     };
-
-    loadPageData() {
-    }
 
     jumpToAllOrder = () => {
         if (!user.isLogin) {

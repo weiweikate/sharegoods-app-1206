@@ -6,6 +6,7 @@ import BasePage from '../../../../BasePage';
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MyCouponsItems from './../../components/MyCouponsItems';
+import User from '../../../../model/user';
 
 export default class CouponsPage extends BasePage {
 
@@ -20,6 +21,12 @@ export default class CouponsPage extends BasePage {
         title: '优惠券',
         show: true // false则隐藏导航
     };
+
+    componentDidMount() {
+        if (!User.isLogin) {
+            //this.$navigate('login/login/LoginPage');
+        }
+    }
 
     _render() {
         return (
@@ -44,12 +51,12 @@ export default class CouponsPage extends BasePage {
                     tabBarUnderlineStyle={{ backgroundColor: 'red', height: 2 }}
                     renderTabBar={() => <ScrollableTabBar/>}
                 >
-                    <MyCouponsItems tabLabel={'未使用'} pageStatus={0} nav={this.navigate} selectTab={this.state.selectTab}
-                                    isgiveup={false}/>
-                    <MyCouponsItems tabLabel={'已失效'} pageStatus={1} nav={this.navigate} selectTab={this.state.selectTab}
-                                    isgiveup={false}/>
-                    <MyCouponsItems tabLabel={'已使用'} pageStatus={2} nav={this.navigate} selectTab={this.state.selectTab}
-                                    isgiveup={false}/>
+                    <MyCouponsItems tabLabel={'未使用'} pageStatus={0} nav={this.props.navigation}
+                                    selectTab={this.state.selectTab} isgiveup={false}/>
+                    <MyCouponsItems tabLabel={'已失效'} pageStatus={1} nav={this.props.navigation}
+                                    selectTab={this.state.selectTab} isgiveup={false}/>
+                    <MyCouponsItems tabLabel={'已使用'} pageStatus={2} nav={this.props.navigation}
+                                    selectTab={this.state.selectTab} isgiveup={false}/>
                 </ScrollableTabView>
             </View>
         );
