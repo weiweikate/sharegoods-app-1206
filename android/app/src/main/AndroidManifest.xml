@@ -68,9 +68,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".zxing.activity.CaptureActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" />
 
-        </activity>
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"

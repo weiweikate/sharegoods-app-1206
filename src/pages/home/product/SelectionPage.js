@@ -10,6 +10,9 @@ import {
 import ScreenUtils from '../../../utils/ScreenUtils';
 import SelectionHeaderView from './components/SelectionHeaderView';
 import SelectionSectionView from './components/SelectionSectionView';
+import SelectionAmountView from './components/SelectionAmountView';
+import StringUtils from '../../../utils/StringUtils';
+
 
 export default class SelectionPage extends Component {
 
@@ -50,7 +53,8 @@ export default class SelectionPage extends Component {
 
 
             selectList: [],
-            selectStrList: []
+            selectStrList: [],
+            amount: 0
         };
 
     }
@@ -162,6 +166,41 @@ export default class SelectionPage extends Component {
         this._specMap(indexOfProp, tittle);
     };
 
+    _amountClickAction = (amount) => {
+        this.state.amount = amount;
+    };
+
+    _selectionViewConfirm = () => {
+        let priceArr = [];
+        let [...selectList] = this.state.selectList;
+        let isAll = true;
+        selectList.forEach((item, index) => {
+            if (StringUtils.isEmpty(item)) {
+                isAll = false;
+            } else {
+                priceArr.push(item.replace(/,/g, ''));
+            }
+        });
+
+        if (!isAll) {
+            return;
+        }
+
+        for (let i = 0; i < priceArr.length - 1; i++) {
+            for (let j = 0; j < priceArr.length - 1 - i; j++) {
+                if (priceArr[j] > priceArr[j + 1]) {
+                    let tmp = priceArr[j + 1];
+                    priceArr[j + 1] = priceArr[j];
+                    priceArr[j] = tmp;
+                }
+            }
+        }
+
+        let priceId = priceArr.join(',');
+        this.props.selectionViewConfirm(this.state.amount, priceId);
+        this.props.selectionViewClose();
+    };
+
     _addSelectionSectionView = () => {
 
         let tagList = [];
@@ -169,7 +208,7 @@ export default class SelectionPage extends Component {
         for (let key in this.state.specMap) {
             tagList.push(
                 <SelectionSectionView clickItemAction={this._clickItemAction} listData={this.state.specMap[key]}
-                                      indexOfProp={index} tittle={key} key = {key}/>
+                                      indexOfProp={index} tittle={key} key={key}/>
             );
             index++;
         }
@@ -194,9 +233,10 @@ export default class SelectionPage extends Component {
 
                     < ScrollView>
                         {this._addSelectionSectionView()}
+                        <SelectionAmountView style={{ marginTop: 30 }} amountClickAction={this._amountClickAction}/>
                     </ScrollView>
 
-                    <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
+                    <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
                         <View style={{
                             height: 49,
                             backgroundColor: '#D51243',

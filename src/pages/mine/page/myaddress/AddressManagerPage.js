@@ -87,7 +87,8 @@ export default class AddressManagerPage extends BasePage {
                     <Text style={{ flex: 1, fontSize: 13, color: '#333333' }}>{item.item.receiver}</Text>
                     <Text style={{ fontSize: 13, color: '#333333' }}>{item.item.receiverPhone}</Text>
                 </View>
-                <Text style={styles.cell_addr}>{item.item.address}</Text>
+                <Text
+                    style={styles.cell_addr}>{item.item.province + item.item.city + item.item.area + item.item.address}</Text>
                 <View style={{ height: 0.5, backgroundColor: '#EBEBEB', marginTop: 13 }}/>
                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                     <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginLeft: 20 }}

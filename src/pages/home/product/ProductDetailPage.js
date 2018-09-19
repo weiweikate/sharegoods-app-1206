@@ -3,7 +3,9 @@ import {
     View,
     StyleSheet,
     SectionList,
-    Modal
+    Modal,
+    Image,
+    TouchableWithoutFeedback
 } from 'react-native';
 
 import BasePage from '../../../BasePage';
@@ -12,6 +14,9 @@ import DetailSegmentView from './components/DetailSegmentView';
 import DetailBottomView from './components/DetailBottomView';
 import SelectionPage from './SelectionPage';
 import HomeAPI from '../api/HomeAPI';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
+import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 
 export default class ProductDetailPage extends BasePage {
 
@@ -45,9 +50,9 @@ export default class ProductDetailPage extends BasePage {
             this.setState({
                 data: data.data
             });
-        }).catch((data) => {
+        }).catch((error) => {
             this.$loadingDismiss();
-            this.$toastShow(data.message);
+            this.$toastShow(error.msg);
         });
     };
 
@@ -58,27 +63,30 @@ export default class ProductDetailPage extends BasePage {
 
     //去购物车
     _bottomViewGoGWC = () => {
-
+        this.$navigate('shopCart/ShopCart');
     };
 
-    //立即购买
-    _bottomViewBuy = () => {
+
+    //去选规格
+    _chooseSpecMap = () => {
         this.setState({
             modalVisible: true
         });
     };
-
-    //加入购物车
-    _bottomViewAddToGWC = () => {
-        this.setState({
-            modalVisible: true
-        });
-    };
-
 
     //选择规格确认
-    _selectionViewConfirm = () => {
-
+    _selectionViewConfirm = (amount, priceId) => {
+        this.$loadingShow();
+        HomeAPI.addItem({
+            'amount': amount,
+            'priceId': priceId,
+            'productId': this.state.data.product.id
+        }).then((data) => {
+            this.$loadingDismiss();
+        }).catch((error) => {
+            this.$loadingDismiss();
+            this.$toastShow(error.msg);
+        });
     };
 
     //选择规格关闭
@@ -98,20 +106,47 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({}) => {
-        return <View style={{ height: 1000, backgroundColor: '#EEEEEE' }}></View>;
+        return <View style={{ height: 200, backgroundColor: '#EEEEEE' }}></View>;
+    };
+
+    _onScroll = (event) => {
+        let Y = event.nativeEvent.contentOffset.y;
+        console.log(Y);
+        if (Y < 100) {
+            this.st = Y * 0.01;
+        } else {
+            this.st = 1;
+        }
+        this._refHeader.setNativeProps({
+            opacity: this.st
+        });
     };
 
     _render() {
         return (
             <View style={styles.container}>
-                <SectionList ListHeaderComponent={this._renderListHeader}
+                <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
+                <View style={styles.transparentView}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.$navigateBack();
+                    }}>
+                        <Image source={xiangqing_btn_return_nor}/>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback>
+                        <Image source={xiangqing_btn_more_nor}/>
+                    </TouchableWithoutFeedback>
+                </View>
+
+                <SectionList onScroll={this._onScroll}
+                             ListHeaderComponent={this._renderListHeader}
                              renderSectionHeader={this._renderSectionHeader}
                              renderItem={this._renderItem}
                              keyExtractor={(item, index) => `${index}`}
                              showsVerticalScrollIndicator={false}
-                             sections={[{ data: [{}] }]}/>
-                <DetailBottomView bottomViewGoGWC={this._bottomViewGoGWC} bottomViewBuy={this._bottomViewBuy}
-                                  bottomViewAddToGWC={this._bottomViewAddToGWC}/>
+                             sections={[{ data: [{}] }]}
+                             scrollEventThrottle={10}/>
+                <DetailBottomView bottomViewGoGWC={this._bottomViewGoGWC} bottomViewBuy={this._chooseSpecMap}
+                                  bottomViewAddToGWC={this._chooseSpecMap}/>
 
                 <Modal
                     animationType="none"
@@ -130,6 +165,28 @@ export default class ProductDetailPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    opacityView: {
+        height: ScreenUtils.headerHeight,
+        backgroundColor: 'white',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 2,
+        opacity: 0
+    },
+    transparentView: {
+        backgroundColor: 'transparent',
+        position: 'absolute',
+        top: ScreenUtils.statusBarHeight,
+        left: 16,
+        right: 16,
+        zIndex: 3,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     }
+
 });
 

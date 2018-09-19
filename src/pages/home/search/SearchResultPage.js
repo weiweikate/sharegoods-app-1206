@@ -17,6 +17,7 @@ import RouterMap from '../../../RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import DateUtils from '../../../utils/DateUtils';
 import SelectionPage from '../product/SelectionPage';
+import StringUtils from '../../../utils/StringUtils';
 
 export default class SearchResultPage extends BasePage {
 
@@ -39,7 +40,9 @@ export default class SearchResultPage extends BasePage {
             page: 1,
 
             productList: [],
-            selectionData: {}
+            selectionData: {},
+
+            productId: ''
         };
     }
 
@@ -53,15 +56,26 @@ export default class SearchResultPage extends BasePage {
 
     //数据
     _productList = () => {
+        let param = {};
+        param.page = this.state.page;
+        param.pageSize = 10;
+        param.sortModel = this.state.sortModel;
+        param.sortType = this.state.sortType;
+        param.time = DateUtils.formatDate(new Date());
+
+        //分类只需要categoryId
+        if (!StringUtils.isEmpty(this.params.categoryId)) {
+            param.categoryId = this.params.categoryId;
+        } else {
+            //热门搜索需要hotWordId
+            if (!StringUtils.isEmpty(this.params.hotWordId)) {
+                param.hotWordId = this.params.hotWordId;
+            }
+            param.keyword = this.params.keywords || '';
+        }
+
         this.$loadingShow();
-        HomeAPI.productList({
-            keyword: this.params.keywords,
-            pageSize: 10,
-            page: this.state.page,
-            sortModel: this.state.sortModel,
-            sortType: this.state.sortType,
-            time: DateUtils.formatDate(new Date())
-        }).then((data) => {
+        HomeAPI.productList(param).then((data) => {
             this.$loadingDismiss();
             this.setState({
                 productList: data.data.data
@@ -98,7 +112,6 @@ export default class SearchResultPage extends BasePage {
         });
     };
 
-
     _segmentOnPressAtIndex = (index) => {
         this.state.sortType = index + 1;
         this._productList();
@@ -109,8 +122,18 @@ export default class SearchResultPage extends BasePage {
     };
 
     //选择规格确认
-    _selectionViewConfirm = () => {
-
+    _selectionViewConfirm = (amount, priceId) => {
+        this.$loadingShow();
+        HomeAPI.addItem({
+            'amount': amount,
+            'priceId': priceId,
+            'productId': this.state.productId
+        }).then((data) => {
+            this.$loadingDismiss();
+        }).catch((error) => {
+            this.$loadingDismiss();
+            this.$toastShow(error.msg);
+        });
     };
 
     //选择规格关闭
@@ -122,7 +145,7 @@ export default class SearchResultPage extends BasePage {
     };
 
     _onPressToGwc = () => {
-
+        this.$navigate('shopCart/ShopCart');
     };
     _onPressToTop = () => {
         this.refs.FlatListShow.scrollToOffset({ offset: 0 });
@@ -145,7 +168,7 @@ export default class SearchResultPage extends BasePage {
                 <ResultSearchNav goBack={this._goBack}
                                  onSubmitEditing={this._onSubmitEditing}
                                  changeLayout={this._changeLayout} isHorizontal={this.state.isHorizontal}
-                                 value={this.params.keywords}/>
+                                 value={this.params.keywords || ''}/>
                 <ResultSegmentView segmentOnPressAtIndex={this._segmentOnPressAtIndex}/>
                 <FlatList
                     ref='FlatListShow'

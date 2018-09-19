@@ -7,6 +7,13 @@ const api = {
     getProductDetail: ['/product/getProductDetail',{method:'get'}],
     // 获取产品规格信息
     getProductSpec: ['/product/getProductSpec',{method:'get'}],
+
+    // 加入购物车
+    addItem: '/user/shoppingcart/addItem',
+
+    // 热门搜索
+    queryHotName: ['/config/sysHotWord/queryHotName',{method:'get'}],
+
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 
