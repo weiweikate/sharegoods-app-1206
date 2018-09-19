@@ -50,7 +50,12 @@ const api = {
     //用户登出
     signOut: ['/user/userLogin/signOut', { method: 'get' }],
     // 修改手机号
-    updatePhone: ['/user/updatePhone', { method: 'post' }]
+    updatePhone: ['/user/updatePhone', { method: 'post' }],
+    // 修改密码
+    changePhonePwd: ['/user/updateLoginPassword', { method: 'post' }],
+    // 解绑微信号
+    untiedWechat: ['/user/untiedWechat', { method: 'post' }]
+
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';

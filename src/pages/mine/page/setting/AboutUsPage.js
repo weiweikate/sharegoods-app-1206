@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Text, View, Image
+    Text, ScrollView, Image, View
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import Logo from '../../res/setting/launcher.png';
@@ -13,32 +13,66 @@ export default class AboutUsPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = {
-            version: '1.0.0'
-        };
-
     }
 
     _render() {
-        return <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
-            <Image source={Logo} style={{ height: 70, width: 70, marginTop: 40 }}/>
-            <Text style={{ color: '#666666', fontSize: 12, marginTop: 10 }}>当前版本：{this.state.version}</Text>
-            <Text style={{ color: '#222222', fontSize: 15, marginTop: 94 }}>公司简介</Text>
-            <Text style={{
-                flex: 1,
-                color: '#666666',
-                fontSize: 13,
-                marginTop: 14,
-                marginRight: 40,
-                marginLeft: 40
-            }}>杭州名融网络有限公司是一家以移动社交零售平台为主的互联网公司。目前，公司以雄厚的资金规模和全球知名时尚品牌共同打造全新的互联网流量经济平台和网红经济平台。公司以强大的资源体系和行业成功案例为依托，不断突破和创新，短短几年多时间已具有百万在线用户！</Text>
-            <Text style={{ color: '#999999', fontSize: 11 }}>杭州名融网络有限公司版权所有</Text><Text
-            style={{
-                color: '#999999',
-                fontSize: 11,
-                marginTop: 10,
-                marginBottom: 24
-            }}>Copyright@2018杭州名融网络有限公司版权所有</Text>
-        </View>;
+        return (<ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+            <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
+                <Image source={Logo} style={{ height: 70, width: 70, marginTop: 30 }}/>
+                <Text style={{ color: '#222222', fontSize: 15, marginTop: 30 }}>公司简介</Text>
+                <Text style={{
+                    color: '#222222',
+                    fontSize: 12,
+                    marginTop: 14,
+                    marginRight: 15,
+                    marginLeft: 15
+                }}>秀购是一款全新的互联网社交电商平台，致力于打造互联网时代社交电子商务新模式，为消费者提供集购物、分享、赚钱为一体的全新社交电商生态圈。秀购涵盖了诸多领域各大品类的国内外品牌及商品，为消费者带去优秀的购物体验及赚钱的全新方式，也不断的激励用户向好友分享优质的生活理念，建立良好的社交氛围。
+                </Text>
+                <Text style={{
+                    color: '#222222',
+                    fontSize: 12,
+                    marginTop: 18,
+                    marginRight: 15,
+                    marginLeft: 15
+                }}>
+                    秀购成立于2017年，由一群来自传统制造业、零售业、互联网、电商领域的领袖大咖们共同组建。我们希望以开放、共享的思维，将好的产品、服务、体验带给秀购的用户，同时带来分享经济下新的赚钱方式。
+                </Text>
+                <Text style={{
+                    color: '#222222',
+                    fontSize: 12,
+                    marginTop: 18,
+                    marginRight: 15,
+                    marginLeft: 15
+                }}>
+                    秀购精选上千种商品，涉及针织品、母婴、文娱、宠物、美妆、个护、日化、家居、食品等几十个类目。每一件商品都经过平台和第三方进行品质监管。与国际大牌制造商合作，对制造商有12层严格管控，360度品控。强大的供应链资源，提供100%正品保障，同时确保在售商品都安全、合法。
+                </Text>
+                <Text style={{
+                    color: '#222222',
+                    fontSize: 12,
+                    marginTop: 18,
+                    marginRight: 15,
+                    marginLeft: 15
+                }}>
+                    不仅如此，秀购的社交电商模式与政府倡导的新型电商模式不谋而合，不仅有政府政策的支持，还获得优质资本的大力支持，同时与银行有深度合作，每一笔资金都清晰可查。
+                </Text>
+                <Text style={{
+                    color: '#222222',
+                    fontSize: 12,
+                    marginTop: 18,
+                    marginRight: 15,
+                    marginLeft: 15
+                }}>
+                    秀购独创的分享赚取佣金模式，不管是线上发发朋友圈，还是线下朋友聚会聊聊天，只要你把秀购上的好货分享给别人，在分享生活和快乐的同时，每卖出一件商品，秀购就帮你向品牌商争取一份佣金。
+                </Text>
+                <Text style={{ color: '#999999', fontSize: 11, marginTop: 52 }}>杭州名融网络有限公司版权所有</Text>
+                <Text
+                    style={{
+                        color: '#999999',
+                        fontSize: 11,
+                        marginTop: 10,
+                        marginBottom: 24
+                    }}>Copyright@2018杭州名融网络有限公司版权所有</Text>
+            </View>
+        </ScrollView>);
     }
 }

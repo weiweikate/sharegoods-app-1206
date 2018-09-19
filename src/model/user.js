@@ -198,10 +198,16 @@ class User {
         }
     }
 
-    // 是否跳转到LoginPage
+    // 修改手机号
     @action
     changePhone(phone) {
         this.phone = phone;
+    }
+
+    // 解绑微信号
+    @action
+    untiedWechat(weChat) {
+        this.wechatId = weChat;
     }
 
     // 存储离线购物车信息
