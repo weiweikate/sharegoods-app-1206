@@ -44,7 +44,6 @@ export default class DetailBottomView extends Component {
                 </TouchableOpacity>
             </View>
 
-
         </View>);
     }
 

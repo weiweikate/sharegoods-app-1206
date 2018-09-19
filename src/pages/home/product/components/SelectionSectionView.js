@@ -18,7 +18,6 @@ export default class RecentSearchView extends Component {
         clickItemAction: PropTypes.func.isRequired,
         indexOfProp: PropTypes.any.isRequired,
         tittle: PropTypes.any.isRequired
-
     };
 
     constructor(props) {
@@ -44,7 +43,7 @@ export default class RecentSearchView extends Component {
             tagList.push(
                 <View key={index}>
                     <TouchableOpacity
-                        style={[styles.btn, { backgroundColor: isSelected ? '#D51243' :'#EEEEEE' }]}
+                        style={[styles.btn, { backgroundColor: isSelected ? '#D51243' : '#EEEEEE' }]}
                         onPress={() => {
                             this._clickItemAction(index);
                         }}>

@@ -13,6 +13,7 @@ import SelectionSectionView from './components/SelectionSectionView';
 import SelectionAmountView from './components/SelectionAmountView';
 import StringUtils from '../../../utils/StringUtils';
 
+
 export default class SelectionPage extends Component {
 
     static propTypes = {
@@ -172,13 +173,29 @@ export default class SelectionPage extends Component {
     _selectionViewConfirm = () => {
         let priceArr = [];
         let [...selectList] = this.state.selectList;
+        let isAll = true;
         selectList.forEach((item, index) => {
             if (StringUtils.isEmpty(item)) {
-                return;
+                isAll = false;
             } else {
                 priceArr.push(item.replace(/,/g, ''));
             }
         });
+
+        if (!isAll) {
+            return;
+        }
+
+        for (let i = 0; i < priceArr.length - 1; i++) {
+            for (let j = 0; j < priceArr.length - 1 - i; j++) {
+                if (priceArr[j] > priceArr[j + 1]) {
+                    let tmp = priceArr[j + 1];
+                    priceArr[j + 1] = priceArr[j];
+                    priceArr[j] = tmp;
+                }
+            }
+        }
+
         let priceId = priceArr.join(',');
         this.props.selectionViewConfirm(this.state.amount, priceId);
         this.props.selectionViewClose();
@@ -216,7 +233,6 @@ export default class SelectionPage extends Component {
 
                     < ScrollView>
                         {this._addSelectionSectionView()}
-
                         <SelectionAmountView style={{ marginTop: 30 }} amountClickAction={this._amountClickAction}/>
                     </ScrollView>
 

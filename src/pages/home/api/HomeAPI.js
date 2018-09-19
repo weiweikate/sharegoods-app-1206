@@ -10,6 +10,7 @@ const api = {
 
     // 获取产品规格信息
     addItem: ['/user/shoppingcart/addItem'],
+
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

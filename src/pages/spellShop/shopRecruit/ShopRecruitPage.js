@@ -25,7 +25,9 @@ export default class ShopRecruitPage extends BasePage {
         super(props);
         this.state = {
             refreshing: false,
-            canOpen: true
+            canOpen: true,
+            originDealerList:[{},{},{},{}],
+            dealerList:[{},{},{},{}]
         };
     }
 

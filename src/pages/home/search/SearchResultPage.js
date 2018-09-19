@@ -124,6 +124,8 @@ export default class SearchResultPage extends BasePage {
             this.$toastShow(error.msg);
         });
     };
+
+
     //选择规格关闭
     _selectionViewClose = () => {
 

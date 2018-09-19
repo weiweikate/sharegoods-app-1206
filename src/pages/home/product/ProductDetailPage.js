@@ -18,6 +18,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 
+
 export default class ProductDetailPage extends BasePage {
 
     $navigationBarOptions = {
@@ -52,7 +53,7 @@ export default class ProductDetailPage extends BasePage {
             });
         }).catch((error) => {
             this.$loadingDismiss();
-            this.$toastShow(error.message);
+            this.$toastShow(error.msg);
         });
     };
 
@@ -79,6 +80,7 @@ export default class ProductDetailPage extends BasePage {
             modalVisible: true
         });
     };
+
 
     //选择规格确认
     _selectionViewConfirm = (amount, priceId) => {
@@ -152,9 +154,11 @@ export default class ProductDetailPage extends BasePage {
                     zIndex: 3,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
+                    justifyContent: 'space-between'
                 }}>
-                    <TouchableWithoutFeedback onPress = {()=>{this.$navigateBack()}}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.$navigateBack();
+                    }}>
                         <Image source={xiangqing_btn_return_nor}/>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback>
@@ -189,8 +193,7 @@ export default class ProductDetailPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        position: 'relative'
+        flex: 1
     }
 });
 

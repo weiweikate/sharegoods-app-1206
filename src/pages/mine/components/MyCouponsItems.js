@@ -5,13 +5,14 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ImageBackground, Text, TouchableOpacity } from 'react-native';
 import RefreshList from './../../../components/ui/RefreshList';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import StringUtils from '../../../utils/StringUtils';
 import NoMessage from '../res/couponsImg/icon3_03.png';
-import noUseBg from '../res/couponsImg/icon_03.png';
+import unactivatedBg from '../res/couponsImg/icon1_03.png';
 import usedBg from '../res/couponsImg/icon1_03.png';
+import unuesdBg from '../res/couponsImg/icon2_03.png';
 import API from '../../../api';
 import UI from '../../../utils/bridge';
 import { observer } from 'mobx-react';
+
 
 const noactivelist = ['未', '激', '活'], usedlist = ['已', '使', '用'], nouselist = ['', '', '', ''],
     loselist = ['已', '失', '效'];
@@ -29,28 +30,30 @@ export default class MyCouponsItems extends Component {
             explainList: []
         };
     }
-
-    renderValidItem = ({ item, index }) => {
+    renderInvalidItem = ({ item, index }) => {
+        // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
+        let disabled = item.status === 0 ? false : true;
+        let BG = item.status === 0?unuesdBg:(item.status===3?unactivatedBg:usedBg);
         return (
             <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickItem(index, item)}>
                 <ImageBackground style={styles.imgBg}
-                                 source={noUseBg} resizeMode='stretch'>
+                                 source={BG} resizeMode='stretch'>
                     <View style={{ flex: 2, alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                                <Text style={{ fontSize: 5, color: '#e60012' }}>￥</Text>
+                                <Text style={{ fontSize: 15, color: disabled?'#999999':'#e60012' }}>￥</Text>
                             </View>
                             <View>
-                                <Text style={{ fontSize: 20, color: '#e60012' }}>{item.value}</Text>
+                                <Text style={{ fontSize: 35, color: disabled?'#999999':'#e60012' }}>{item.value}</Text>
                             </View>
                         </View>
                         <View>
                             <Text style={{ fontSize: 11, color: '#999999' }}>满{item.useConditions}可用</Text>
                         </View>
                     </View>
-                    <View style={{ flex: 4, alignItems: 'center' }}>
-                        <Text style={{ fontSize: 15, color: '#222222' }}>{item.nickname}</Text>
-                        <Text style={{ fontSize: 11, color: '#999999' }}>{item.name}</Text>
+                    <View style={{ flex: 4, alignItems: 'center' ,justifyContent:'flex-start'}}>
+                        <Text style={{ width:'100%',fontSize: 15, color: '#222222',textAlign:'left' ,backgroundColor:'yellow',}}>{item.name}</Text>
+                        <Text style={{ fontSize: 11, color: '#999999' }}>限品类: {item.name}</Text>
                         <Text style={{
                             fontSize: 11,
                             color: '#999999'
@@ -63,43 +66,6 @@ export default class MyCouponsItems extends Component {
                     </View>
                 </ImageBackground>
             </TouchableOpacity>
-        );
-    };
-    renderInvalidItem = ({ item, index }) => {
-        return (
-            <View style={{ backgroundColor: '#f7f7f7' }}>
-                <ImageBackground style={styles.imgBg}
-                                 source={usedBg} resizeMode='stretch'>
-                    <View style={{ flex: 2, alignItems: 'center' }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                                <Text style={{ fontSize: 5, color: '#e60012' }}>￥</Text>
-                            </View>
-                            <View>
-                                <Text style={{ fontSize: 20, color: '#e60012' }}>{item.value}</Text>
-                            </View>
-                        </View>
-                        <View>
-                            <Text style={{ fontSize: 11, color: '#999999' }}>满{item.useConditions}可用</Text>
-                        </View>
-                    </View>
-                    <View style={{ flex: 4, alignItems: 'center' }}>
-                        <Text style={{ fontSize: 15, color: '#222222' }}>{item.nickname}</Text>
-                        <Text style={{ fontSize: 11, color: '#999999' }}>限品类: {item.name}</Text>
-                        <Text style={{
-                            fontSize: 11,
-                            color: '#999999'
-                        }}>有效期：{this.fmtDate(item.startTime)}-{this.fmtDate(item.outTime)}</Text>
-                    </View>
-                    <TouchableOpacity disabled={item.status == 1 || item.status == 2}
-                                      onPress={() => this.clickItem(index, item)}
-                                      style={{ flex: 1, alignItems: 'center' }}>
-                        {item.explainList.map((item, i) => {
-                            return <Text key={i} style={{ fontSize: 15, color: '#fff' }}>{item}</Text>;
-                        })}
-                    </TouchableOpacity>
-                </ImageBackground>
-            </View>
         );
     };
 
@@ -115,13 +81,8 @@ export default class MyCouponsItems extends Component {
     renderItem = ({ item, index }) => {
         // console.log(item);
         return (
-            this.isValidItem(index) ? this.renderValidItem({ item, index }) : this.renderInvalidItem({ item, index })
+            this.renderInvalidItem({ item, index })
         );
-    };
-    isValidItem = (index) => {
-        let validCode = 0;
-
-        return this.state.viewData[index].status == validCode;
     };
 
     render() {
@@ -164,43 +125,43 @@ export default class MyCouponsItems extends Component {
         );
     }
 
-    getList = (data) => {
-        if (StringUtils.isNoEmpty(data)) {
-            let arrData = this.state.currentPage == 1 ? [] : this.state.viewData;
-            let explainList = [];
-            data.map((item, index) => {
-                switch (item.status) {
-                    case 0:
-                        explainList = nouselist;
-                        break;
-                    case 1:
-                        explainList = usedlist;
-                        break;
-                    case 2:
-                        explainList = loselist;
-                        break;
-                    case 3:
-                        explainList = noactivelist;
-                        break;
-                }
-                arrData.push({
-                    id: item.id,
-                    status: item.status,
-                    name: item.name,
-                    startTime: item.startTime,
-                    outTime: item.outTime,
-                    value: item.value,
-                    useConditions: item.useConditions,
-                    nickname: item.nickname,
-                    discountCouponId: item.discountCouponId,
-                    explainList: explainList
-                });
+    parseData = (dataList) => {
+        let arrData = [];
+        let explainList = [];
+        dataList.map((item) => {
+            switch (item.status) {
+                case 0:
+                    explainList = nouselist;
+                    break;
+                case 1:
+                    explainList = usedlist;
+                    break;
+                case 2:
+                    explainList = loselist;
+                    break;
+                case 3:
+                    explainList = noactivelist;
+                    break;
+            }
+            /*let products = item.products || [];
+            let cat1 = item.cat1,cat2 = item.cat2,cat3 = item.cat3;*/
 
+            arrData.push({
+                id: item.id,
+                status: item.status,
+                name: item.name,
+                startTime: item.startTime,
+                outTime: item.expireTime,
+                value: item.value,
+                useConditions: item.useConditions,
+                nickname: '',
+                discountCouponId: '',
+                explainList: explainList
             });
-            this.setState({ viewData: arrData });
-        } else {
-            // this.setState({isEmpty:true})
-        }
+
+        });
+        this.setState({ viewData: arrData });
+
     };
 
     componentDidMount() {
@@ -213,10 +174,7 @@ export default class MyCouponsItems extends Component {
         API.userCouponList({}).then(result => {
             let data = result.data || {};
             let dataList = data.data || [];
-
-            this.setState({
-                viewData: dataList
-            });
+            this.parseData(dataList)
 
         }).catch(result => {
 
