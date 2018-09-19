@@ -13,15 +13,12 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 export default class DetailBottomView extends Component {
 
     static propTypes = {
-        bottomViewBuy: PropTypes.func.isRequired,
-        bottomViewAddToGWC: PropTypes.func.isRequired,
-        bottomViewGoGWC: PropTypes.func.isRequired
+        bottomViewAction: PropTypes.func.isRequired,
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            selectedIndex: 0
         };
     }
 
@@ -29,17 +26,17 @@ export default class DetailBottomView extends Component {
         return (<View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49 ,backgroundColor: 'white'}}>
             <View style={styles.container}>
                 <TouchableOpacity style={{ width: 63, justifyContent: 'center', alignItems: 'center' }}
-                                  onPress={this.props.bottomViewGoGWC}>
+                                  onPress={this.props.bottomViewAction('gwc')}>
                     <Image style={{ marginBottom: 6 }} source={xiangqing_btn_gouwuche_nor}/>
                     <Text>购物车</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                                  onPress={this.props.bottomViewBuy}>
+                                  onPress={this.props.bottomViewAction('buy')}>
                     <Text>立即购买</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={{ flex: 1, backgroundColor: '#D51243', justifyContent: 'center', alignItems: 'center' }}
-                    onPress={this.props.bottomViewAddToGWC}>
+                    onPress={this.props.bottomViewAction('goGwc')}>
                     <Text style={{ color: 'white' }}>加入购物车</Text>
                 </TouchableOpacity>
             </View>

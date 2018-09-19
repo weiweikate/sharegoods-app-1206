@@ -10,7 +10,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ArrowImg from './res/xjt_03.png';
-import storeModel from '../../../model/storeModel';
+import storeModel from '../model/storeModel';
 import BasePage from '../../../BasePage';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -25,7 +25,7 @@ export default class ShopPageSettingPage extends BasePage {
     _managerShop = () => {
         //店铺管理是修改店铺的基础信息并保存在店铺中显示
         //异常：仅店长才能修改此功能
-        this.props.navigation.push('spellShop/shopSetting/SetShopNamePage', { isChangeStoreInfo: true });
+        this.$navigate('spellShop/shopSetting/SetShopNamePage', { isChangeStoreInfo: true });
     };
 
     // 邀请设置

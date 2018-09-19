@@ -46,7 +46,7 @@ export default class MyShopPage extends BasePage {
                 <Image style={{ marginRight: 11 }} source={ShopItemLogo}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={this._clickSettingItem}>
-                <Image style={{ marginRight: 20 }} source={storeModel.isYourStore ? MoreItemLogo : ItemLogo}/>
+                <Image style={{ marginRight: 20 }} source={1 ? MoreItemLogo : ItemLogo}/>
             </TouchableOpacity>
         </View>;
     };
@@ -57,13 +57,13 @@ export default class MyShopPage extends BasePage {
 
     // 点击店铺
     _clickShopItem = () => {
-        // this._navigate('spellShop/shopSetting/ShopRecommendPage');
+        this.$navigate('spellShop/recommendSearch/RecommendPage');
     };
 
     // 点击店铺设置
     _clickSettingItem = () => {
-        if (storeModel.isYourStore) {
-            // this._navigate('spellShop/shopSetting/ShopPageSettingPage');
+        if (1) {
+            this.$navigate('spellShop/shopSetting/ShopPageSettingPage');
         } else {
             this.actionSheetRef.show({
                 items: ['分享店铺', '举报店铺', '退出店铺']//

@@ -137,7 +137,7 @@ class ShopCartStore {
             let tempArr = [];
             response.forEach(item => {
                 item.isSelected = false;
-                let [...valueArr] = item.specValues;
+                let [...valueArr] = item.specValues||[];
                 let tempString = "";
                 valueArr.map((string) => {
                     tempString = tempString + `${string} `;

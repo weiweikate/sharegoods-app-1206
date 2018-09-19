@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
     View,
     StyleSheet,
@@ -6,17 +6,18 @@ import {
     Modal,
     Image,
     TouchableWithoutFeedback
-} from "react-native";
+} from 'react-native';
 
-import BasePage from "../../../BasePage";
-import DetailHeaderView from "./components/DetailHeaderView";
-import DetailSegmentView from "./components/DetailSegmentView";
-import DetailBottomView from "./components/DetailBottomView";
-import SelectionPage from "./SelectionPage";
-import HomeAPI from "../api/HomeAPI";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import xiangqing_btn_return_nor from "./res/xiangqing_btn_return_nor.png";
-import xiangqing_btn_more_nor from "./res/xiangqing_btn_more_nor.png";
+import BasePage from '../../../BasePage';
+import DetailHeaderView from './components/DetailHeaderView';
+import DetailSegmentView from './components/DetailSegmentView';
+import DetailBottomView from './components/DetailBottomView';
+import SelectionPage from './SelectionPage';
+import HomeAPI from '../api/HomeAPI';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
+import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
+import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 
 export default class ProductDetailPage extends BasePage {
 
@@ -28,7 +29,8 @@ export default class ProductDetailPage extends BasePage {
         super(props);
         this.state = {
             modalVisible: false,
-            data: {}
+            data: {},
+            goType: ''
         };
     }
 
@@ -62,31 +64,35 @@ export default class ProductDetailPage extends BasePage {
     };
 
     //去购物车
-    _bottomViewGoGWC = () => {
-        this.$navigate("shopCart/ShopCart");
-    };
-
-
-    //去选规格
-    _chooseSpecMap = () => {
-        this.setState({
-            modalVisible: true
-        });
+    __bottomViewAction = (type) => {
+        switch (type) {
+            case 'goGwc': {
+                this.$navigate('shopCart/ShopCart');
+            }
+                break;
+            case 'gwc':
+            case 'buy': {
+                this.setState({
+                    goType: type,
+                    modalVisible: true
+                });
+            }
+                break;
+        }
     };
 
     //选择规格确认
     _selectionViewConfirm = (amount, priceId) => {
-        this.$loadingShow();
-        HomeAPI.addItem({
-            "amount": amount,
-            "priceId": priceId,
-            "productId": this.state.data.product.id
-        }).then((data) => {
-            this.$loadingDismiss();
-        }).catch((error) => {
-            this.$loadingDismiss();
-            this.$toastShow(error.msg);
-        });
+        if (this.state.goType === 'gwc') {
+            let temp = {
+                'amount': amount,
+                'priceId': priceId,
+                'productId': this.state.data.product.id
+            };
+            shopCartCacheTool.addGoodItem(temp);
+        } else if (this.state.goType === 'buy') {
+
+        }
     };
 
     //选择规格关闭
@@ -106,7 +112,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({}) => {
-        return <View style={{ height: 200, backgroundColor: "#EEEEEE" }}></View>;
+        return <View style={{ height: 200, backgroundColor: '#EEEEEE' }}></View>;
     };
 
     _onScroll = (event) => {
@@ -145,8 +151,7 @@ export default class ProductDetailPage extends BasePage {
                              showsVerticalScrollIndicator={false}
                              sections={[{ data: [{}] }]}
                              scrollEventThrottle={10}/>
-                <DetailBottomView bottomViewGoGWC={this._bottomViewGoGWC} bottomViewBuy={this._chooseSpecMap}
-                                  bottomViewAddToGWC={this._chooseSpecMap}/>
+                <DetailBottomView bottomViewAction={this._bottomViewAction}/>
 
                 <Modal
                     animationType="none"
@@ -168,8 +173,8 @@ const styles = StyleSheet.create({
     },
     opacityView: {
         height: ScreenUtils.headerHeight,
-        backgroundColor: "white",
-        position: "absolute",
+        backgroundColor: 'white',
+        position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
@@ -177,15 +182,15 @@ const styles = StyleSheet.create({
         opacity: 0
     },
     transparentView: {
-        backgroundColor: "transparent",
-        position: "absolute",
+        backgroundColor: 'transparent',
+        position: 'absolute',
         top: ScreenUtils.statusBarHeight,
         left: 16,
         right: 16,
         zIndex: 3,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between"
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     }
 
 });
