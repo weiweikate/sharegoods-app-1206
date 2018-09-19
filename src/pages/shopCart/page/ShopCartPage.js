@@ -84,8 +84,17 @@ export default class ShopCartPage extends BasePage {
 
     _renderEmptyView = () => {
         return (
-            <View
-                style={{ backgroundColor: "red", flex: 1 }}/>
+            <View style={{
+                backgroundColor: ColorUtil.Color_f7f7f7,
+                flex: 1,
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center"
+            }}>
+                <Text>
+                    ~购物车暂无商品~!
+                </Text>
+            </View>
         );
     };
 
@@ -116,9 +125,6 @@ export default class ShopCartPage extends BasePage {
     };
 
     _renderShopCartBottomMenu = () => {
-        {
-            console.warn(shopCartStore.data);
-        }
         return (
             <View style={styles.CartBottomContainer}>
                 <TouchableOpacity
@@ -179,16 +185,20 @@ export default class ShopCartPage extends BasePage {
                         source={{ uri: itemData.imgUrl }}
                         style={[styles.validProductImg]}
                     />
-                    <UIImage
-                        source={itemData.isSelected ? ShopCartRes.noGoodImg : ShopCartRes.invalidGoodImg}
-                        style={{
-                            // backgroundColor:'red',
-                            position:'absolute',
-                            marginLeft:55,
-                            width:60,
-                            height:60,
-                        }}
-                    />
+
+                    {
+                        itemData.state === 1 ?
+                            <UIImage
+                                source={ShopCartRes.invalidGoodImg}
+                                style={{
+                                    // backgroundColor:'red',
+                                    position: "absolute",
+                                    marginLeft: 55,
+                                    width: 60,
+                                    height: 60
+                                }}
+                            /> : null
+                    }
 
                     <View style={styles.validContextContainer}>
                         <View>
@@ -197,11 +207,11 @@ export default class ShopCartPage extends BasePage {
                                 // value={"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"}
                                 numberOfLines={2}
                                 style={{
-                                    marginTop:0,
+                                    marginTop: 0,
                                     fontFamily: "PingFang-SC-Medium",
                                     fontSize: 13,
                                     lineHeight: 16,
-                                    height:32,
+                                    height: 32,
                                     color: ColorUtil.Color_222222
                                 }}
                             />
@@ -379,7 +389,7 @@ const styles = StyleSheet.create({
         width: 80,
         height: 80,
         marginLeft: 16,
-        marginRight: 16,
+        marginRight: 16
         // marginBottom: 10
     },
     validConUITextContainer: {
