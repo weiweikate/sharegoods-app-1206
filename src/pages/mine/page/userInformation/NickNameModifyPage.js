@@ -44,10 +44,10 @@ export default class NickNameModifyPage extends BasePage {
                     marginLeft: 48,
                     marginRight: 48
                 }}>
-                <Button
-                    title='保存'
-                    color={color.red}
-                    onPress={() => this.save()}/>
+                    <Button
+                        title='保存'
+                        color={color.red}
+                        onPress={() => this.save()}/>
                 </View>
             </View>
         );
@@ -64,6 +64,8 @@ export default class NickNameModifyPage extends BasePage {
                 user.nickname = this.state.nickName;
                 this.$navigateBack();
             }
+        }).catch(err => {
+            console.log(err);
         });
     };
 }

@@ -246,28 +246,28 @@ export default class IDVertify2Page extends BasePage {
             NativeModules.commModule.toast('请上传身份证正面图');
             return;
         }
-        // let params = {
-        //     backIdCard: this.state.backIdCard,
-        //     frontIdCard: this.state.frontIdCard,
-        //     idNumber: this.state.idNumber,
-        //     name: this.state.name
-        // };
-        this.$toastShow('审核中，请稍后');
-        // MineApi.getUserRealNameInfo(params).then((response) => {
-        //     Toast.hiddenLoading();
-        //     if (response.ok) {
-        //         NativeModules.commModule.toast('实名认证成功');
-        //         user.saveUserInfo(response.data);
-        //         this.navigateBack();
-        //     } else {
-        //         if (response.code == 500) {
-        //             this.setState({ disFailedStatus: true });
-        //         }
-        //         NativeModules.commModule.toast(response.msg);
-        //     }
-        // }).catch(e => {
-        //     Toast.hiddenLoading();
-        // });
+        let params = {
+            backPhoto: this.state.backIdCard,
+            frontPhoto: this.state.frontIdCard,
+            idcardNo: this.state.idNumber,
+            realName: this.state.name
+        };
+        this.$loadingShow();
+        MineApi.addUserCertification(params).then((response) => {
+            this.$loadingDismiss();
+            if (response.code===10000) {
+                NativeModules.commModule.toast('实名认证成功');
+                user.realnameStatus=1;
+                this.$navigateBack();
+            } else {
+                if (response.code == 500) {
+                    this.setState({ disFailedStatus: true });
+                }
+                NativeModules.commModule.toast(response.msg);
+            }
+        }).catch(e => {
+           this.$loadingDismiss();
+        });
     };
     agreeAggreement = () => {
         let agreeAggreement = !this.state.agreeAggreement;

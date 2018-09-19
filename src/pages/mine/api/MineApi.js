@@ -21,7 +21,7 @@ const api = {
     updateHelpQuestionToClick: '/help/helpQuestion/updateHelpQuestionToClick',
     //文件上传（OSS）
     oss: '/common/upload/oss',
-    //根据字典类型获取字典数据 WTFK
+    //根据字典类型获取字典数据 WTLX
     queryDictionaryTypeList: ['/config/sysDictionary/queryDictionaryTypeList', { method: 'get' }],
     //添加反馈:
     addFeedback: '/user/feedback/addFeedback',
@@ -49,6 +49,8 @@ const api = {
     userBalanceQuery:['/user/userBalance/query',{method:'get'}],
     //用户登出
     signOut:['/user/userLogin/signOut',{method:'get'}],
+    //添加实名认证
+    addUserCertification:'/user/UserCertification/addUserCertification',
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';
