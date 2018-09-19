@@ -8,7 +8,6 @@ import {
     View,
     Text,
     Image,
-    Switch,
     Platform,
     TextInput,
     Dimensions,
@@ -18,14 +17,10 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
 } from 'react-native';
-import Toast from 'Toast';
-import RegexUtil from 'RegexUtil';
-import SpellShopApi from 'SpellShopApi';
 import storeModel from '../model/storeModel';
-import BasePage from '../../../page/BasePage';
-import NavigatorBar from '../components/NavigatorBar';
 import BusinessUtils from '../../../utils/BusinessUtils';
 import ActionSheetView from '../components/ActionSheetView';
+import BasePage from '../../../BasePage';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 export default class SetShopNamePage extends BasePage {
