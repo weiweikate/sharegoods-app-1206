@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, ImageBackground, Text, TouchableOpacity } from 'react-native';
 import RefreshList from './../../../components/ui/RefreshList';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import { formatDate } from '../../../utils/DateUtils';
 import NoMessage from '../res/couponsImg/icon3_03.png';
 import unactivatedBg from '../res/couponsImg/icon1_03.png';
 import usedBg from '../res/couponsImg/icon1_03.png';
@@ -13,9 +14,12 @@ import API from '../../../api';
 import UI from '../../../utils/bridge';
 import { observer } from 'mobx-react';
 
+const { px2dp } = ScreenUtils;
+
 
 const noactivelist = ['未', '激', '活'], usedlist = ['已', '使', '用'], nouselist = ['', '', '', ''],
     loselist = ['已', '失', '效'];
+
 
 @observer
 export default class MyCouponsItems extends Component {
@@ -30,36 +34,60 @@ export default class MyCouponsItems extends Component {
             explainList: []
         };
     }
-    renderInvalidItem = ({ item, index }) => {
+
+    fmtDate(obj) {
+        return formatDate(obj, 'yyyy.MM.dd');
+    }
+
+    renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         let disabled = item.status === 0 ? false : true;
-        let BG = item.status === 0?unuesdBg:(item.status===3?unactivatedBg:usedBg);
+        let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
         return (
             <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickItem(index, item)}>
                 <ImageBackground style={styles.imgBg}
                                  source={BG} resizeMode='stretch'>
-                    <View style={{ flex: 2, alignItems: 'center' }}>
+                    <View style={styles.couponHeader}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                                <Text style={{ fontSize: 15, color: disabled?'#999999':'#e60012' }}>￥</Text>
+                                <Text style={{ fontSize: 15, color: disabled ? '#999999' : '#e60012' }}>￥</Text>
                             </View>
                             <View>
-                                <Text style={{ fontSize: 35, color: disabled?'#999999':'#e60012' }}>{item.value}</Text>
+                                <Text style={{
+                                    fontSize: 35,
+                                    color: disabled ? '#999999' : '#e60012'
+                                }}>{item.value}</Text>
                             </View>
                         </View>
                         <View>
                             <Text style={{ fontSize: 11, color: '#999999' }}>满{item.useConditions}可用</Text>
                         </View>
                     </View>
-                    <View style={{ flex: 4, alignItems: 'center' ,justifyContent:'flex-start'}}>
-                        <Text style={{ width:'100%',fontSize: 15, color: '#222222',textAlign:'left' ,backgroundColor:'yellow',}}>{item.name}</Text>
-                        <Text style={{ fontSize: 11, color: '#999999' }}>限品类: {item.name}</Text>
+                    <View style={{
+                        width: px2dp(190),
+                        paddingLeft: 10,
+                        alignItems: 'center',
+                        justifyContent: 'flex-start'
+                    }}>
                         <Text style={{
+                            width: '100%',
+                            fontSize: 15,
+                            color: '#222222',
+                            marginBottom: 10
+                        }}>{item.name}</Text>
+                        <Text style={{
+                            width: '100%',
+                            fontSize: 11,
+                            color: '#999999',
+                            marginBottom: 10
+                        }}>{item.limit}</Text>
+                        <Text style={{
+                            width: '100%',
                             fontSize: 11,
                             color: '#999999'
                         }}>有效期：{this.fmtDate(item.startTime)}-{this.fmtDate(item.outTime)}</Text>
                     </View>
-                    <View style={{ flex: 1, alignItems: 'center' }}>
+                    <View style={{ width: px2dp(50), alignItems: 'center' }}>
                         {item.explainList.map((item, i) => {
                             return <Text key={i} style={{ fontSize: 15, color: '#fff' }}>{item}</Text>;
                         })}
@@ -69,25 +97,9 @@ export default class MyCouponsItems extends Component {
         );
     };
 
-    fmtDate(obj) {
-        let date = new Date(obj);
-        let y = 1900 + date.getYear();
-        let m = '0' + (date.getMonth() + 1);
-        let d = '0' + date.getDate();
-        return y + '.' + m.substring(m.length - 2, m.length) + '.' + d.substring(d.length - 2, d.length);
-    }
-
-
-    renderItem = ({ item, index }) => {
-        // console.log(item);
-        return (
-            this.renderInvalidItem({ item, index })
-        );
-    };
-
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={styles.container}>
                 <RefreshList
                     style={{ backgroundColor: '#f7f7f7' }}
                     data={this.state.viewData}
@@ -125,6 +137,38 @@ export default class MyCouponsItems extends Component {
         );
     }
 
+    /*
+        1.单品类 标注品类 例如，一级品类，二级品类，三级分类
+        例如：限数码家电分类可用，限美容美妆分类可用，限手机分类可用，
+        2、多品类 标注品类，例如，限指定分类商品可用
+        3、单产品、限iphone手机商品可用（产品名称，名称过长则超过6个字后...限iphone手机...商品可用）
+        4、多产品、则直接显示，限指定商品可使用
+        5、产品+分类的情况下，则显示，限指定商品可使用
+    * */
+    parseCoupon = (item) => {
+        let products = item.products || [], cat1 = item.cat1 || [], cat2 = item.cat2 || [], cat3 = item.cat3 || [];
+        let result = null;
+        if (products.length) {
+            if ((cat1.length || cat2.length || cat3.length)) {
+                return '限指定商品可使用';
+            }
+            if (products.length > 1) {
+                return '限指定商品可使用';
+            }
+            if (products.length === 1) {
+                return `限${products[0]}可用`;
+            }
+        }
+        else if ((cat1.length + cat2.length + cat3.length) === 1) {
+            result = [...cat1, ...cat2, ...cat3];
+            return `限${result[0]}分类可用`;
+        }
+        else if ((cat1.length + cat2.length + cat3.length) > 1) {
+            return `限指定分类商品可用`;
+        } else {
+            return '';
+        }
+    };
     parseData = (dataList) => {
         let arrData = [];
         let explainList = [];
@@ -143,8 +187,6 @@ export default class MyCouponsItems extends Component {
                     explainList = noactivelist;
                     break;
             }
-            /*let products = item.products || [];
-            let cat1 = item.cat1,cat2 = item.cat2,cat3 = item.cat3;*/
 
             arrData.push({
                 id: item.id,
@@ -154,7 +196,7 @@ export default class MyCouponsItems extends Component {
                 outTime: item.expireTime,
                 value: item.value,
                 useConditions: item.useConditions,
-                nickname: '',
+                limit: this.parseCoupon(item),
                 discountCouponId: '',
                 explainList: explainList
             });
@@ -171,24 +213,27 @@ export default class MyCouponsItems extends Component {
     }
 
     getDataFromNetwork = () => {
-        API.userCouponList({}).then(result => {
+        let status = this.state.pageStatus;
+        let page = this.state.currentPage || 1;
+        API.userCouponList({
+            page,
+            status,
+            pageSize: 20
+        }).then(result => {
             let data = result.data || {};
             let dataList = data.data || [];
-            this.parseData(dataList)
+            this.parseData(dataList);
 
         }).catch(result => {
-
             UI.$toast(result.msg);
         });
-        switch (this.state.pageStatus) {
-        }
+
     };
 
     //当父组件Tab改变的时候让子组件更新
     componentWillReceiveProps(nextProps) {
         if (nextProps.selectTab < 8) {
             console.log(nextProps.selectTab + '=======================');
-
         }
     }
 
@@ -199,23 +244,22 @@ export default class MyCouponsItems extends Component {
     onRefresh = () => {
         this.setState({
             currentPage: 1
+        }, () => {
+            this.getDataFromNetwork();
         });
-        this.getDataFromNetwork();
+
     };
 
     onLoadMore = (page) => {
         this.setState({
             currentPage: this.state.currentPage + 1
+        }, () => {
+            this.getDataFromNetwork();
         });
-        this.getDataFromNetwork();
+
     };
 
     clickItem = (index, item) => {
-        if (this.props.fromOrder) {
-            this.props.useCoupons({ id: item.id, name: item.name, price: item.value });
-        } else {
-            this.props.nav.navigate('coupons/CouponsDetailPage', { id: item.discountCouponId });
-        }
 
     };
 
@@ -224,16 +268,22 @@ export default class MyCouponsItems extends Component {
 const styles = StyleSheet.create(
     {
         container: {
+            padding: 15,
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#f7f7f7'
         },
         imgBg: {
-            width: ScreenUtils.width - 30,
-            height: 100,
-            margin: 15,
+            width: px2dp(345),
+            height: px2dp(110),
+            marginBottom: 10,
+
             flexDirection: 'row',
+            alignItems: 'center'
+        },
+        couponHeader: {
+            width: px2dp(105),
             alignItems: 'center'
         }
     }
