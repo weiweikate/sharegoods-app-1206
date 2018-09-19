@@ -49,6 +49,8 @@ const api = {
     userBalanceQuery:['/user/userBalance/query',{method:'get'}],
     //用户登出
     signOut:['/user/userLogin/signOut',{method:'get'}],
+    // 修改手机号
+    updatePhone: ['/user/updatePhone\n', { method: 'post' }]
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';
