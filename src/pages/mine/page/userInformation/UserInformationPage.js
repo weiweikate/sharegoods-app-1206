@@ -93,7 +93,7 @@ export default class UserInformationPage extends BasePage {
                 <UserSingleItem leftText={'实名认证'} rightText={user.isRealNameRegistration ? '已实名认证' : '未实名认证'}
                                 rightTextStyle={[styles.grayText, { color: color.white }]}
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={false}
-                                circleStyle={this.state.hasVertifyID ? styles.hasVertifyID : styles.notVertifyID}
+                                circleStyle={user.isRealNameRegistration ? styles.hasVertifyID : styles.notVertifyID}
                                 onPress={() => this.jumpToIDVertify2Page()}/>
 
             </View>

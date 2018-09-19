@@ -18,7 +18,6 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 
-
 export default class ProductDetailPage extends BasePage {
 
     $navigationBarOptions = {
@@ -64,23 +63,16 @@ export default class ProductDetailPage extends BasePage {
 
     //去购物车
     _bottomViewGoGWC = () => {
-
+        this.$navigate('shopCart/ShopCart');
     };
 
-    //立即购买
-    _bottomViewBuy = () => {
+
+    //去选规格
+    _chooseSpecMap = () => {
         this.setState({
             modalVisible: true
         });
     };
-
-    //加入购物车
-    _bottomViewAddToGWC = () => {
-        this.setState({
-            modalVisible: true
-        });
-    };
-
 
     //选择规格确认
     _selectionViewConfirm = (amount, priceId) => {
@@ -133,29 +125,8 @@ export default class ProductDetailPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                <View ref={(e) => this._refHeader = e} style={{
-                    height: ScreenUtils.headerHeight,
-                    backgroundColor: 'white',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    zIndex: 2,
-                    opacity: 0
-                }}>
-                </View>
-
-                <View style={{
-                    backgroundColor: 'transparent',
-                    position: 'absolute',
-                    top: ScreenUtils.statusBarHeight,
-                    left: 16,
-                    right: 16,
-                    zIndex: 3,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                }}>
+                <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
+                <View style={styles.transparentView}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
@@ -174,8 +145,8 @@ export default class ProductDetailPage extends BasePage {
                              showsVerticalScrollIndicator={false}
                              sections={[{ data: [{}] }]}
                              scrollEventThrottle={10}/>
-                <DetailBottomView bottomViewGoGWC={this._bottomViewGoGWC} bottomViewBuy={this._bottomViewBuy}
-                                  bottomViewAddToGWC={this._bottomViewAddToGWC}/>
+                <DetailBottomView bottomViewGoGWC={this._bottomViewGoGWC} bottomViewBuy={this._chooseSpecMap}
+                                  bottomViewAddToGWC={this._chooseSpecMap}/>
 
                 <Modal
                     animationType="none"
@@ -194,6 +165,28 @@ export default class ProductDetailPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    opacityView: {
+        height: ScreenUtils.headerHeight,
+        backgroundColor: 'white',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 2,
+        opacity: 0
+    },
+    transparentView: {
+        backgroundColor: 'transparent',
+        position: 'absolute',
+        top: ScreenUtils.statusBarHeight,
+        left: 16,
+        right: 16,
+        zIndex: 3,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     }
+
 });
 

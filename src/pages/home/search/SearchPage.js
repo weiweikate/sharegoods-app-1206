@@ -26,8 +26,11 @@ export default class SearchPage extends BasePage {
         super(props);
         this.state = {
             inputText: '',
+            //搜索关键词后返回的关键词
             keywordsArr: [],
+            //最近搜索
             recentData: [],
+            //热门搜索
             hotData: []
         };
     }
@@ -53,6 +56,12 @@ export default class SearchPage extends BasePage {
 
     //热门数据;
     getHotWordsListActive = () => {
+        HomeAPI.queryHotName().then((data) => {
+            this.setState({
+                hotData: data.data || []
+            });
+        }).catch((error) => {
+        });
     };
 
     //getKeywords数据
@@ -60,7 +69,7 @@ export default class SearchPage extends BasePage {
         this.state.inputText = text;
         HomeAPI.getKeywords({ keyword: text }).then((data) => {
             this.setState({
-                keywordsArr: data.data
+                keywordsArr: data.data || []
             });
         }).catch((data) => {
             this.$toastShow(data.msg);
@@ -87,13 +96,13 @@ export default class SearchPage extends BasePage {
     };
 
     //跳转
-    _clickItemAction = (text) => {
+    _clickItemAction = (text, hotWordId) => {
         if (!this.state.recentData.includes(text)) {
             this.state.recentData.push(text);
             Storage.set(recentDataKey, this.state.recentData);
             this.forceUpdate();
         }
-        this.$navigate(RouterMap.SearchResultPage, { keywords: text });
+        this.$navigate(RouterMap.SearchResultPage, { keywords: text, hotWordId: hotWordId || '' });
     };
 
     //components

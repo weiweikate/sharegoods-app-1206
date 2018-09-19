@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import { observer } from 'mobx-react/native';
-import storeModel from './model/storeModel';
+import storeModel from '../model/storeModel';
 // import spellStatusModel from './model/spellStatusModel';
 
 import BasePage from '../../../BasePage';
@@ -20,7 +20,7 @@ import BasePage from '../../../BasePage';
 import ShopHeader from './components/ShopHeader';
 import MembersRow from './components/MembersRow';
 import InfoRow from './components/InfoRow';
-import ActionSheetView from './components/ActionSheetView';
+import ActionSheetView from '../components/ActionSheetView';
 import ReportAlert from './components/ReportAlert';
 // 图片资源
 import ShopItemLogo from './res/dp_03.png';
@@ -63,7 +63,7 @@ export default class MyShopPage extends BasePage {
     // 点击店铺设置
     _clickSettingItem = () => {
         if (storeModel.isYourStore) {
-            // this._navigate('spellShop/shopSetting/MyShopPageSettingPage');
+            // this._navigate('spellShop/shopSetting/ShopPageSettingPage');
         } else {
             this.actionSheetRef.show({
                 items: ['分享店铺', '举报店铺', '退出店铺']//
@@ -111,7 +111,7 @@ export default class MyShopPage extends BasePage {
 
     // 点击店铺公告
     _clickShopAnnouncement = () => {
-        // this._navigate('spellShop/announcement/ShopAnnouncementListPage');
+        // this._navigate('spellShop/announcement/AnnouncementListPage');
     };
 
     // 点击全部成员

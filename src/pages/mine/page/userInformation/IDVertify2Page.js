@@ -24,7 +24,6 @@ import UserSingleItem from '../../components/UserSingleItem';
 import BusinessUtils from '../../components/BusinessUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
-import Toast from '../../../../utils/bridge';
 
 export default class IDVertify2Page extends BasePage {
 
@@ -65,8 +64,8 @@ export default class IDVertify2Page extends BasePage {
                         <UIText value={'请填写自己的真实姓名及证件号'} style={styles.itemTitleText}/>
                     </View>
                     {this.renderLine()}
-                    <UserSingleItem leftText={'昵称'} rightText={user.nickname} rightTextStyle={styles.grayText}
-                                    leftTextStyle={styles.blackText} isLine={false}/>
+                    <UserSingleItem leftText={'证件'} rightText={'身份证'} rightTextStyle={styles.grayText}
+                                    leftTextStyle={styles.blackText} isLine={false} isArrow={false}/>
                     {this.renderWideLine()}
                     <View style={{
                         height: 56,
@@ -125,7 +124,7 @@ export default class IDVertify2Page extends BasePage {
                             onPress={() => this.commit()}/>
                     </View>
                     <View style={{ alignItems: 'center' }}>
-                        <UIText value={'（信息仅用户自己可见'} style={{
+                        <UIText value={'（信息仅用户自己可见）'} style={{
                             fontFamily: 'PingFang-SC-Medium',
                             fontSize: 13,
                             color: '#999999',
@@ -137,8 +136,10 @@ export default class IDVertify2Page extends BasePage {
                                           }}>
                             <Image source={this.state.agreeAggreement ? addressSelect : addressUnselect}
                                    style={{ width: 11, height: 11 }}/>
-                            <UIText value={'提交认证代表您已同意《实名认证协议》'}
+                            <UIText value={'提交认证代表您已同意'}
                                     style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#999999' }}/>
+                            <UIText value={'《实名认证协议》'}
+                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#D62B56' }}/>
                         </TouchableOpacity>
                     </View>
                 </View>

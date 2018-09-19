@@ -9,6 +9,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import bridge from '../../../../utils/bridge';
+import MineAPI from '../../api/MineApi';
 
 export default class EditPhoneNumPage extends BasePage {
 
@@ -93,8 +94,18 @@ export default class EditPhoneNumPage extends BasePage {
             bridge.$toast('验证码不能为空');
             return;
         }
-        this.$navigate('mine/account/SetNewPhoneNumPage', {
-            oldeNum: oldNum
+        MineAPI.judgeCode({
+            // verificationCode: this.state.code,
+            verificationCode: '1111',
+            phone: oldNum
+        }).then((data) => {
+            this.$navigate('mine/account/SetNewPhoneNumPage', {
+                oldNum: oldNum,
+                // oldCode:this.state.code
+                oldCode: '1111'
+            });
+        }).catch((data) => {
+            bridge.$toast(data.msg);
         });
     };
 
