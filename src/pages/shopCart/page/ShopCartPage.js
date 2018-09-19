@@ -87,9 +87,9 @@ export default class ShopCartPage extends BasePage {
             <View style={{
                 backgroundColor: ColorUtil.Color_f7f7f7,
                 flex: 1,
-                flexDirection:'column',
-                alignItems:'center',
-                justifyContent:'center'
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center"
             }}>
                 <Text>
                     ~购物车暂无商品~!
@@ -187,7 +187,7 @@ export default class ShopCartPage extends BasePage {
                     />
 
                     {
-                        itemData.state ===1?
+                        itemData.state === 1 ?
                             <UIImage
                                 source={ShopCartRes.invalidGoodImg}
                                 style={{
@@ -197,7 +197,7 @@ export default class ShopCartPage extends BasePage {
                                     width: 60,
                                     height: 60
                                 }}
-                            />:null
+                            /> : null
                     }
 
                     <View style={styles.validContextContainer}>
