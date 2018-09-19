@@ -9,6 +9,9 @@ import openEyeImage from '../../../login/res/ck_03-02.png';
 import closeEyeImage from '../../../login/res/yinc_03.png';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import MineAPI from '../../api/MineApi';
+import bridge from '../../../../utils/bridge';
+import StringUtils from '../../../../utils/StringUtils';
 
 export default class EditPhonePwdPage extends BasePage {
 
@@ -128,5 +131,29 @@ export default class EditPhonePwdPage extends BasePage {
 
     _done = () => {
         // 密码修改成功，请重新登录
+        if (StringUtils.isEmpty(this.state.oldPwd)) {
+            bridge.$toast('旧密码不能为空');
+            return;
+        }
+        if (StringUtils.isEmpty(this.state.newPwd)) {
+            bridge.$toast('新密码不能为空');
+            return;
+        }
+        if (StringUtils.isEmpty(this.state.newPwdAgain)) {
+            bridge.$toast('请再次输入新密码');
+            return;
+        }
+        if (this.state.newPwdAgain != this.state.newPwd) {
+            bridge.$toast('请确保两次输入的新密码一致');
+            return;
+        }
+        MineAPI.changePhonePwd({
+            oldPassword: this.state.oldPwd,
+            newPassword: this.state.newPwd
+        }).then((data) => {
+            bridge.$toast('密码修改成功，请重新登录');
+        }).catch((data) => {
+            bridge.$toast(data.msg);
+        });
     };
 }

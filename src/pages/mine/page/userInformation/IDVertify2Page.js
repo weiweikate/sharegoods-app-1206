@@ -23,8 +23,6 @@ import addressUnselect from '../../res/userInfoImg/addressUnselect.png';
 import UserSingleItem from '../../components/UserSingleItem';
 import BusinessUtils from '../../components/BusinessUtils';
 import user from '../../../../model/user';
-import MineApi from '../../api/MineApi';
-import Toast from '../../../../utils/bridge';
 
 export default class IDVertify2Page extends BasePage {
 
