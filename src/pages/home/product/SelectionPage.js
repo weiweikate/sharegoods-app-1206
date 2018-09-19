@@ -10,8 +10,6 @@ import {
 import ScreenUtils from '../../../utils/ScreenUtils';
 import SelectionHeaderView from './components/SelectionHeaderView';
 import SelectionSectionView from './components/SelectionSectionView';
-import SelectionAmountView from './components/SelectionAmountView';
-import StringUtils from '../../../utils/StringUtils';
 
 export default class SelectionPage extends Component {
 
@@ -52,8 +50,7 @@ export default class SelectionPage extends Component {
 
 
             selectList: [],
-            selectStrList: [],
-            amount: 0
+            selectStrList: []
         };
 
     }
@@ -207,7 +204,7 @@ export default class SelectionPage extends Component {
         for (let key in this.state.specMap) {
             tagList.push(
                 <SelectionSectionView clickItemAction={this._clickItemAction} listData={this.state.specMap[key]}
-                                      indexOfProp={index} tittle={key} key={key}/>
+                                      indexOfProp={index} tittle={key} key = {key}/>
             );
             index++;
         }
@@ -232,11 +229,9 @@ export default class SelectionPage extends Component {
 
                     < ScrollView>
                         {this._addSelectionSectionView()}
-
-                        <SelectionAmountView style={{ marginTop: 30 }} amountClickAction={this._amountClickAction}/>
                     </ScrollView>
 
-                    <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
+                    <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
                         <View style={{
                             height: 49,
                             backgroundColor: '#D51243',

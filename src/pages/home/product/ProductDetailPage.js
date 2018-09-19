@@ -3,9 +3,7 @@ import {
     View,
     StyleSheet,
     SectionList,
-    Modal,
-    Image,
-    TouchableWithoutFeedback
+    Modal
 } from 'react-native';
 
 import BasePage from '../../../BasePage';
@@ -14,9 +12,6 @@ import DetailSegmentView from './components/DetailSegmentView';
 import DetailBottomView from './components/DetailBottomView';
 import SelectionPage from './SelectionPage';
 import HomeAPI from '../api/HomeAPI';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
-import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 
 export default class ProductDetailPage extends BasePage {
 
@@ -50,9 +45,9 @@ export default class ProductDetailPage extends BasePage {
             this.setState({
                 data: data.data
             });
-        }).catch((error) => {
+        }).catch((data) => {
             this.$loadingDismiss();
-            this.$toastShow(error.message);
+            this.$toastShow(data.message);
         });
     };
 
@@ -80,19 +75,10 @@ export default class ProductDetailPage extends BasePage {
         });
     };
 
+
     //选择规格确认
-    _selectionViewConfirm = (amount, priceId) => {
-        this.$loadingShow();
-        HomeAPI.addItem({
-            'amount': amount,
-            'priceId': priceId,
-            'productId': this.state.data.product.id
-        }).then((data) => {
-            this.$loadingDismiss();
-        }).catch((error) => {
-            this.$loadingDismiss();
-            this.$toastShow(error.msg);
-        });
+    _selectionViewConfirm = () => {
+
     };
 
     //选择规格关闭
@@ -112,64 +98,18 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = ({}) => {
-        return <View style={{ height: 200, backgroundColor: '#EEEEEE' }}></View>;
-    };
-
-    _onScroll = (event) => {
-        let Y = event.nativeEvent.contentOffset.y;
-        console.log(Y);
-        if (Y < 100) {
-            this.st = Y * 0.01;
-        } else {
-            this.st = 1;
-        }
-        this._refHeader.setNativeProps({
-            opacity: this.st
-        });
+        return <View style={{ height: 1000, backgroundColor: '#EEEEEE' }}></View>;
     };
 
     _render() {
         return (
             <View style={styles.container}>
-                <View ref={(e) => this._refHeader = e} style={{
-                    height: ScreenUtils.headerHeight,
-                    backgroundColor: 'white',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    zIndex: 2,
-                    opacity: 0
-                }}>
-                </View>
-
-                <View style={{
-                    backgroundColor: 'transparent',
-                    position: 'absolute',
-                    top: ScreenUtils.statusBarHeight,
-                    left: 16,
-                    right: 16,
-                    zIndex: 3,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                }}>
-                    <TouchableWithoutFeedback onPress = {()=>{this.$navigateBack()}}>
-                        <Image source={xiangqing_btn_return_nor}/>
-                    </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback>
-                        <Image source={xiangqing_btn_more_nor}/>
-                    </TouchableWithoutFeedback>
-                </View>
-
-                <SectionList onScroll={this._onScroll}
-                             ListHeaderComponent={this._renderListHeader}
+                <SectionList ListHeaderComponent={this._renderListHeader}
                              renderSectionHeader={this._renderSectionHeader}
                              renderItem={this._renderItem}
                              keyExtractor={(item, index) => `${index}`}
                              showsVerticalScrollIndicator={false}
-                             sections={[{ data: [{}] }]}
-                             scrollEventThrottle={10}/>
+                             sections={[{ data: [{}] }]}/>
                 <DetailBottomView bottomViewGoGWC={this._bottomViewGoGWC} bottomViewBuy={this._bottomViewBuy}
                                   bottomViewAddToGWC={this._bottomViewAddToGWC}/>
 
@@ -189,8 +129,7 @@ export default class ProductDetailPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        position: 'relative'
+        flex: 1
     }
 });
 
