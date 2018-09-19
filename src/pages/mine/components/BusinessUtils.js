@@ -42,16 +42,16 @@ export default {
                 let datas = {
                     type: 'image/png',
                     uri: response.uri,
-                    name: 'c.png'
+                    name: new Date().getTime()+'c.png'
                 };
                 let formData = new FormData();
                 formData.append('file', datas);
                 //commonAPI/ossClient
                 //user/
                 let url = apiEnvironment.getCurrentHostUrl();
-                if (apiEnvironment.envType.indexOf('dev') === 0) {//非dev,但是有端口号的，全部删除端口号
-                    url = url + ':8102';
-                }
+                // if (apiEnvironment.envType.indexOf('dev') === 0) {//非dev,但是有端口号的，全部删除端口号
+                //     url = url + ':8102';
+                // }
                 fetch(`${url}/common/upload/oss`, {
                     method: 'POST',
                     headers: {
