@@ -6,7 +6,10 @@ import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import { color } from '../../../../constants/Theme';
 import arrow_right from '../../../mine/res/customerservice/icon_06-03.png';
+import user from '../../../../model/user';
+import { observer } from 'mobx-react/native';
 
+@observer
 export default class AccountSettingPage extends BasePage {
 
     $navigationBarOptions = {
@@ -16,7 +19,6 @@ export default class AccountSettingPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            tel: '17816857659',
             wechat: 'dfuodu'
         };
     }
@@ -24,9 +26,9 @@ export default class AccountSettingPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditPhoneNum(this.state.tel)}>
+                <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditPhoneNum(user.phone)}>
                     <UIText value={'修改手机号'} style={[styles.blackText, { flex: 1 }]}/>
-                    <UIText value={this.state.tel} style={{ fontSize: 13, color: '#666666', marginRight: 8 }}/>
+                    <UIText value={user.phone} style={{ fontSize: 13, color: '#666666', marginRight: 8 }}/>
                     <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{ height: 0.5, backgroundColor: '#eeeeee', marginLeft: 15, marginRight: 15 }}/>

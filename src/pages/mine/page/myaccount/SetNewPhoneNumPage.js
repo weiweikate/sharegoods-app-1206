@@ -8,6 +8,7 @@ import StringUtils from '../../../../utils/StringUtils';
 import bridge from '../../../../utils/bridge';
 import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import MineAPI from '../../api/MineApi';
+import user from '../../../../model/user';
 
 export default class SetNewPhoneNumPage extends BasePage {
 
@@ -129,6 +130,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                 oldVerificationCode: oldCode,
                 phone: this.state.telText
             }).then((data) => {
+                user.changePhone(tel);
                 bridge.$toast('绑定成功');
                 this.$navigateBack(-2);
             }).catch((data) => {

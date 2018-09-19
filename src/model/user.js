@@ -1,5 +1,5 @@
-import {AsyncStorage} from 'react-native';
-import {action, computed, observable} from 'mobx';
+import { AsyncStorage } from 'react-native';
+import { action, computed, observable } from 'mobx';
 //import apiEnvironment from '../api/ApiEnvironment';
 
 const USERINFOCACHEKEY = 'UserInfo';
@@ -196,6 +196,12 @@ class User {
             AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
             });
         }
+    }
+
+    // 是否跳转到LoginPage
+    @action
+    changePhone(phone) {
+        this.phone = phone;
     }
 
     // 存储离线购物车信息
