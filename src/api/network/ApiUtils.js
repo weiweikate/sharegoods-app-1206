@@ -1,10 +1,5 @@
 import HttpUtils from './HttpUtils';
-import { NavigationActions } from 'react-navigation';
-import RouterMap from '../../RouterMap';
-
-const loginAction = NavigationActions.navigate({
-    routeName: RouterMap.DebugLoginPage
-});
+import User from '../../model/user';
 
 export default function ApiUtils(Urls) {
     let result = {}, list = [];
@@ -34,9 +29,10 @@ export default function ApiUtils(Urls) {
                 return Promise.resolve(response);
             } else {
                 // 假如返回未登陆并且当前页面不是登陆页面则进行跳转
-                if (response.code === -10000) {
-                    console.log('未登陆', response);
-                    global.$navigator && global.$navigator.dispatch(loginAction);
+                if (response.code === 10001) {
+                    console.log('未登陆');
+                    await User.clearUserInfo();
+                    config.auth && config.nav && config.nav.navigate('login/login/LoginPage');
                 }
                 return Promise.reject(response);
             }
