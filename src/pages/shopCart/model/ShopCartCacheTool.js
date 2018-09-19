@@ -1,4 +1,4 @@
-import { observable, computed } from "mobx";
+import { computed } from "mobx";
 import ShopCartAPI from "../api/ShopCartApi";
 import bridge from "../../../utils/bridge";
 import user from "../../../model/user";
