@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     Image
 } from 'react-native';
-import gwc from '../res/gwc.png';
+import xiangqing_btn_gouwuche_nor from '../res/xiangqing_btn_gouwuche_nor.png';
+import ScreenUtils from '../../../../utils/ScreenUtils';
 
 export default class DetailBottomView extends Component {
 
@@ -25,21 +26,23 @@ export default class DetailBottomView extends Component {
     }
 
     render() {
-        return (<View style={styles.container}>
-            <TouchableOpacity style={{ width: 63, justifyContent: 'center', alignItems: 'center' }}
-                              onPress={this.props.bottomViewGoGWC}>
-                <Image style={{ marginBottom: 6 }} source={gwc}/>
-                <Text>购物车</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                              onPress={this.props.bottomViewBuy}>
-                <Text>立即购买</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={{ flex: 1, backgroundColor: '#D51243', justifyContent: 'center', alignItems: 'center' }}
-                onPress={this.props.bottomViewAddToGWC}>
-                <Text style={{ color: 'white' }}>加入购物车</Text>
-            </TouchableOpacity>
+        return (<View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49 ,backgroundColor: 'white'}}>
+            <View style={styles.container}>
+                <TouchableOpacity style={{ width: 63, justifyContent: 'center', alignItems: 'center' }}
+                                  onPress={this.props.bottomViewGoGWC}>
+                    <Image style={{ marginBottom: 6 }} source={xiangqing_btn_gouwuche_nor}/>
+                    <Text>购物车</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                                  onPress={this.props.bottomViewBuy}>
+                    <Text>立即购买</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{ flex: 1, backgroundColor: '#D51243', justifyContent: 'center', alignItems: 'center' }}
+                    onPress={this.props.bottomViewAddToGWC}>
+                    <Text style={{ color: 'white' }}>加入购物车</Text>
+                </TouchableOpacity>
+            </View>
 
         </View>);
     }

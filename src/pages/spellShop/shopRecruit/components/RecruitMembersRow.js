@@ -36,7 +36,7 @@ export default class AssistantRow extends Component {
         return (<View style={styles.row}>
             <TouchableOpacity activeOpacity={1} onPress={this.props.clickAllMembers} style={styles.topRow}>
                 <Image style={styles.topIcon} source={PeopleImg}/>
-                <Text style={styles.topTitle}>店铺成员</Text>
+                <Text style={styles.topTitle}>参与成员</Text>
                 <Text style={styles.topDescText}>共{(this.props.originDealerList || []).length}人</Text>
                 <Image style={styles.topArrow} source={ArrowImg}/>
             </TouchableOpacity>
@@ -59,7 +59,7 @@ export default class AssistantRow extends Component {
                                 </TouchableOpacity>);
                             }
 
-                            const { headImg, nickname } = item;
+                            const { headImg } = item;
                             return (<View style={styles.item} key={index}>
                                 <View style={styles.itemHeader}>
                                     {
@@ -67,7 +67,7 @@ export default class AssistantRow extends Component {
                                                          style={[styles.itemHeader, { marginTop: 0 }]}/> : null
                                     }
                                 </View>
-                                <Text numberOfLines={1} style={styles.itemTitleText}>{nickname || ''}</Text>
+                                <Text numberOfLines={1} style={styles.itemTitleText}>{'欧阳哈哈哈哈哈哈哈哈' || ''}</Text>
                             </View>);
                         })
                     }

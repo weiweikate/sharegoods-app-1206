@@ -31,22 +31,21 @@ export default class RecommendRow extends Component {
     };
 
     render() {
-        return <View style={styles.header}>
+        return <View style={styles.bg}>
             <ImageBackground source={HeaderBarBgImg} style={styles.headerBg}>
+                <View style={{ marginTop: 30, flexDirection: 'row'}}>
+                    <Image source={{ uri: this.state.store.headUrl }} style={styles.shopIcon}/>
+                    <View>
+                        <Text style={styles.shopName}>{'dianppp' || ''}</Text>
+                        <Text style={styles.shopId}>店铺ID：{this.state.store.id || ''}</Text>
+                    </View>
+                </View>
 
-                {
-                    this.state.store.headUrl ?
-                        <Image source={{ uri: this.state.store.headUrl }} style={styles.shopIcon}/> :
-                        <View style={styles.shopIcon}/>
-                }
-
-                <Text style={styles.shopName}>{'dianppp' || ''}</Text>
-                <Text style={styles.shopId}>店铺ID：{this.state.store.id || ''}</Text>
                 <Text style={{
                     fontFamily: 'PingFang-SC-Medium',
                     fontSize: 14,
                     color: '#f7f7f7',
-                    marginTop: 15
+                    marginTop: 20
                 }}>{this._formatDate()}</Text>
                 {
                     this.state.isOpenStore ? null : <Text style={{
@@ -58,59 +57,55 @@ export default class RecommendRow extends Component {
                     }}>{this._judgeCanOpenShop()}</Text>
                 }
 
+                <ImageBackground source={WhiteBgImg} style={styles.whiteBg}>
+                    <View style={{ height: 43, marginHorizontal: 0, flexDirection: 'row', alignItems: 'center' }}>
+                        <Image source={AdminImg} style={{ marginLeft: 17, marginRight: 6 }}/>
+                        <Text style={{
+                            fontFamily: 'PingFang-SC-Medium',
+                            fontSize: 15,
+                            color: '#000000'
+                        }}>店长信息</Text>
+                    </View>
 
-            </ImageBackground>
-            <ImageBackground source={WhiteBgImg} style={styles.whiteBg}>
-                <View style={{ height: 43, marginHorizontal: 0, flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={AdminImg} style={{ marginLeft: 17, marginRight: 6 }}/>
-                    <Text style={{
-                        fontFamily: 'PingFang-SC-Medium',
-                        fontSize: 15,
-                        color: '#000000'
-                    }}>店长信息</Text>
-                </View>
-
-                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                    {
-                        // dealer.headImg ? <Image source={{ uri: dealer.headImg }} style={{
-                        //     width: 44,
-                        //     height: 44,
-                        //     backgroundColor: '#eee',
-                        //     borderRadius: 22,
-                        //     marginLeft: 25
-                        // }}/> :
-                        <View style={{
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <Image style={{
                             width: 44,
                             height: 44,
                             backgroundColor: '#eee',
                             borderRadius: 22,
-                            marginLeft: 25
+                            marginLeft: 20,
+                            marginTop: 13
                         }}/>
-                    }
-                    <View style={{ flex: 1, marginHorizontal: 15, justifyContent: 'center' }}>
+                        <View style={{ flex: 1, marginHorizontal: 15, justifyContent: 'center' }}>
 
-                        <Text style={{
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 13,
-                            color: '#222222'
-                        }}>店长：{'对安卓' || ''}</Text>
+                            <Text style={{
+                                fontFamily: 'PingFang-SC-Medium',
+                                fontSize: 13,
+                                color: '#222222'
+                            }}>店长：{'对安卓' || ''}</Text>
 
-                        <Text style={{
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 13,
-                            color: '#666',
-                            marginTop: 6
-                        }}>等级：{'对安卓' || ''}</Text>
-
-
-                        <Text style={{
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 13,
-                            color: '#666',
-                            marginTop: 6
-                        }}>参与平台{'3天'}</Text>
+                            <Text style={{
+                                fontFamily: 'PingFang-SC-Medium',
+                                fontSize: 13,
+                                color: '#666',
+                                marginTop: 6
+                            }}>等级：{'对安卓' || ''}</Text>
 
 
+                            <Text style={{
+                                fontFamily: 'PingFang-SC-Medium',
+                                fontSize: 13,
+                                color: '#666',
+                                marginTop: 6
+                            }}>参与平台{'3天'}</Text>
+                        </View>
+                    </View>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginBottom: 15,
+                        paddingHorizontal: 19,
+                        justifyContent: 'space-between'
+                    }}>
                         <Text style={{
                             fontFamily: 'PingFang-SC-Medium',
                             fontSize: 13,
@@ -119,7 +114,6 @@ export default class RecommendRow extends Component {
                         }}>完成总交易额
                             ：1元</Text>
 
-
                         <Text style={{
                             fontFamily: 'PingFang-SC-Medium',
                             fontSize: 13,
@@ -127,24 +121,24 @@ export default class RecommendRow extends Component {
                             marginTop: 6
                         }}>参与拼店分红：1次</Text>
                     </View>
-
-                </View>
+                </ImageBackground>
             </ImageBackground>
         </View>;
     }
 }
 
 const styles = StyleSheet.create({
-    header: {
-        height: ScreenUtils.autoSizeWidth(223) + 10 + 129 / (ScreenUtils.width - 24) * ScreenUtils.width
+    bg: {
+        height: ScreenUtils.autoSizeWidth(223) + ScreenUtils.autoSizeWidth(98) + 10 + 10
     },
     //header背景
     headerBg: {
-        width: ScreenUtils.width, height: ScreenUtils.autoSizeWidth(223),
+        width: ScreenUtils.width,
+        height: ScreenUtils.autoSizeWidth(223),
         alignItems: 'center'
     },
     shopIcon: {
-        marginTop: 24,
+        marginRight: 10,
         width: 50,
         height: 50,
         borderRadius: 2,
@@ -155,8 +149,7 @@ const styles = StyleSheet.create({
     shopName: {
         fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
-        color: '#f7f7f7',
-        marginTop: 8
+        color: '#f7f7f7'
     },
     shopId: {
         fontFamily: 'PingFang-SC-Medium',
@@ -166,12 +159,9 @@ const styles = StyleSheet.create({
     },
     //白的面板背景
     whiteBg: {
+        marginTop: 10,
         width: ScreenUtils.width - 24,
-        height: ScreenUtils.autoSizeWidth(173),
-        position: 'absolute',
-        bottom: 11,
-        left: 11,
-        backgroundColor: 'transparent',
+        height: ScreenUtils.autoSizeWidth(175),
         shadowColor: 'rgba(0, 0, 0, 0.1)',
         shadowOffset: {
             width: 0,
