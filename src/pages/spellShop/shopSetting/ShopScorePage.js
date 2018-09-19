@@ -8,19 +8,22 @@ import {
     StyleSheet,
     ScrollView,
 } from 'react-native';
-import BasePage from '../../../page/BasePage';
-import NavigatorBar from '../components/NavigatorBar';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const WhitePanelHeight = 128 / 375 * SCREEN_WIDTH;
-import BgIcon from './src/bg_07.png';
-import StarIcon from './src/wjx_03.png';
+import BgIcon from './res/bg_07.png';
+import StarIcon from './res/wjx_03.png';
 import storeModel from '../model/storeModel';
+import BasePage from '../../../BasePage';
 
 export default class ShopScorePage extends BasePage {
 
-    renderContainer() {
+    $navigationBarOptions = {
+        title: '店铺评分',
+    };
 
-        const storeStar = storeModel.storeStar;
+    _render() {
+
+        const storeStar = storeModel.storeStar || 1;
         const starsArr = [];
         if(storeStar && typeof storeStar === "number"){
             for(let i = 0; i<storeStar; i++){
@@ -34,7 +37,6 @@ export default class ShopScorePage extends BasePage {
 
         return (
             <View style={{flex:1}}>
-                <NavigatorBar navigation={this.props.navigation} title={'店铺评分'}/>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.whitePanel}>
                         <View style={styles.starContainer}>

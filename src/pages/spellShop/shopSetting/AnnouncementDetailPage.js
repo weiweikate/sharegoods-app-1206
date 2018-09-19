@@ -17,8 +17,7 @@ export default class AnnouncementDetailPage extends BasePage {
         title: '公告详情'
     };
 
-
-    render() {
+    _render() {
         const { content, title } = this.props.navigation.state.params || {};
         return (
             <ScrollView showsVerticalScrollIndicator={false}
