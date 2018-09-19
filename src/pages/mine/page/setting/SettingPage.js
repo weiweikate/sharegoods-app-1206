@@ -160,22 +160,22 @@ class SettingPage extends BasePage {
                     }}
                     yes={() => {
                         this.setState({ isShowLoginOutModal: false });
-                        user.clearUserInfo();
                         this.$loadingShow();
-                        MineApi.signOut({}).then((response)=>{
+                        MineApi.signOut().then((response)=>{
                             this.$loadingDismiss();
                              if(response.code===10000){
                                  // 正常退出，或者登录超时，都去清空数据
-                                 this.params.callBack&&this.params.callBack();
+                                 //this.params.callBack&&this.params.callBack();
                                  user.clearUserInfo();
                                  this.$navigateReset();
-                                this.$toastShow('退出登录成功');
-                             } else {
-                                 this.$toastShow(response.msg);
                              }
-                         }).catch(e=>{
+                         }).catch(err=>{
                             this.$loadingDismiss();
-                            this.$toastShow('退出失败');
+                            this.$toastShow(err.msg);
+                            if(err.code==10001){
+                                user.clearUserInfo();
+                                this.$navigate('login/login/LoginPage')
+                            }
                          });
                     }}
                     no={() => {
@@ -188,9 +188,7 @@ class SettingPage extends BasePage {
     };
 
     //**********************************BusinessPart******************************************
-    loadPageData() {
 
-    }
 
     jumpToAddressManagePage = () => {
         this.$navigate('mine/address/AddressManagerPage');
