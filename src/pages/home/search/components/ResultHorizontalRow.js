@@ -26,14 +26,15 @@ export default class ResultHorizontalRow extends Component {
     }
 
     render() {
+        let { product, originalPrice } = this.props.itemData || {};
         return (
-            <TouchableWithoutFeedback onPress={()=>{
-                this.props.onPressAtIndex(this.props.itemData.product.id);
+            <TouchableWithoutFeedback onPress={() => {
+                this.props.onPressAtIndex(product.id);
             }}>
                 <View style={[styles.container]}>
-                    <Image style={styles.img} source={{ uri: this.props.itemData.product.imgUrl }}/>
+                    <Image style={styles.img} source={{ uri: product.imgUrl }}/>
                     <Text style={{ color: '#222222', fontSize: 13, paddingHorizontal: 10, marginTop: 9 }}
-                          numberOfLines={2}>{this.props.itemData.product.name}</Text>
+                          numberOfLines={2}>{product.name}</Text>
                     <View style={{
                         flexDirection: 'row',
                         justifyContent: 'space-between',
@@ -43,9 +44,11 @@ export default class ResultHorizontalRow extends Component {
                         marginTop: 21
                     }}>
                         <Text
-                            style={{ color: '#D51243', fontSize: 17 }}>{`￥${this.props.itemData.originalPrice}起`}</Text>
+                            style={{ color: '#D51243', fontSize: 17 }}>{`￥${originalPrice}起`}</Text>
                     </View>
-                    <TouchableWithoutFeedback onPress={()=>{this.props.storeProduct(this.props.itemData.product.id)}}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.props.storeProduct(product.id);
+                    }}>
                         <View style={{
                             width: 35,
                             height: 35,
