@@ -6,6 +6,7 @@ import {
     Image,
     TouchableWithoutFeedback
 } from 'react-native';
+import StringUtils from '../../../../utils/StringUtils';
 
 /**
  * 规格选择头部view
@@ -28,13 +29,20 @@ export default class SelectionHeaderView extends Component {
     }
 
     render() {
-        const { imgUrl } = this.props.product;
-        const price = this.props.price;
+        const { imgUrl } = this.props.product || {};
+        const price = this.props.price || 0;
+
         let stock = 0;
         let stockUnit;
         this.props.priceList.forEach((item) => {
+            //总库存库存遍历相加
             stock = stock + item.stock;
+            //件
             stockUnit = item.stockUnit;
+        });
+
+        let selectStrListTemp = this.props.selectStrList.filter((item) => {
+            return !StringUtils.isEmpty(item);
         });
 
         return (
@@ -51,7 +59,7 @@ export default class SelectionHeaderView extends Component {
                     justifyContent: 'center'
                 }}>
                     <Image style={{ width: 108, height: 108, borderRadius: 5, backgroundColor: '#eeeeee' }}
-                           source={{ uri: imgUrl }}/>
+                           source={{ uri: imgUrl || '' }}/>
                 </View>
                 <View style={{ flex: 1, marginLeft: 16 }}>
                     <Text style={{
@@ -65,7 +73,7 @@ export default class SelectionHeaderView extends Component {
                         color: '#222222',
                         fontSize: 13,
                         marginTop: 8
-                    }}>{this.props.selectStrList.join(',')}</Text>
+                    }}>{selectStrListTemp.join(',')}</Text>
                 </View>
                 <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
                     <Image style={{

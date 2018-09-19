@@ -100,14 +100,44 @@ class ShopCartStore {
             });
         }
     };
+    /*非登录状态通过本地缓存请求商品*/
+    getShopCartListWithNoLogin = (localValue) =>{
+        if (localValue && (localValue instanceof Array && localValue.length>0)) {
+            let params =
+                {
+                    "cacheList": localValue
+                };
+            //存在本地缓存
+            ShopCartAPI.getRichItemList(
+                params
+            ).then(res => {
+                //拿到本地缓存的购物车数据
+                this.packingShopCartGoodsData(res.data);
+            }).catch(error => {
+                bridge.$toast(error);
+            });
+        } else {
+            this.data = []
+            // bridge.$toast('不存在本地缓存')
+            //不存在本地缓存
+        }
+    }
     /*请求购物车商品*/
     getShopCartListData = () => {
-        let tempArr = [];
         ShopCartAPI.list().then(result => {
-            result.data.forEach(item => {
+            //组装购物车数据
+            this.packingShopCartGoodsData(result.data)
+        }).then(error => {
+            bridge.$toast(error.msg);
+        });
+    };
+    /*组装打包购物车数据*/
+    packingShopCartGoodsData=(response)=>{
+        if (response && response instanceof  Array && response.length > 0) {
+            let tempArr = [];
+            response.forEach(item => {
                 item.isSelected = false;
                 let [...valueArr] = item.specValues;
-                console.warn(valueArr);
                 let tempString = "";
                 valueArr.map((string) => {
                     tempString = tempString + `${string} `;
@@ -117,11 +147,10 @@ class ShopCartStore {
                 tempArr.push(item);
             });
             this.data = tempArr;
-        }).then(error => {
-            bridge.$toast(error.msg);
-        });
-    };
-
+        }else {
+            //组装元数据错误
+        }
+    }
     /*加入购物车*/
     addItemToShopCart(item) {
         if (item) {

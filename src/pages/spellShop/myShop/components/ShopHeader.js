@@ -12,7 +12,7 @@ import {
     ImageBackground,
     TouchableOpacity
 } from 'react-native';
-import storeModel from '../model/storeModel';
+import storeModel from '../../model/storeModel';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const headerWidth = 65 / 375 * SCREEN_WIDTH;
