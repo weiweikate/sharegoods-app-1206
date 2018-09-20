@@ -28,11 +28,11 @@ class User {
     @observable
     wechatId = '';          //微信号id
     @observable
-    phone = null;           //手机号
+    phone = 0;           //手机号
     @observable
     realname = null;        //真实姓名
     @observable
-    headImg = null;         //头像
+    headImg = '';         //头像
     @observable
     idcard = null;          //身份证号码
     @observable
