@@ -21,8 +21,7 @@ export default class SetNewPhoneNumPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            telText: '',
-            tips: '',
+            telText: user.phone,
             code: '',
             vertifyCodeTime: 0
         };
@@ -30,8 +29,8 @@ export default class SetNewPhoneNumPage extends BasePage {
 
     _render() {
         return (<View style={{ flex: 1 }}>
-            <View style={{ height: 40, justifyContent: 'center' }}>
-                <UIText value={this.state.tips}
+            <View style={{ height: 38, justifyContent: 'center' }}>
+                <UIText value={'手机验证'}
                         style={{
                             color: '#999999',
                             fontSize: 13,
@@ -40,17 +39,17 @@ export default class SetNewPhoneNumPage extends BasePage {
             </View>
             <View style={{ backgroundColor: 'white', flexDirection: 'column' }}>
                 <View style={styles.horizontalItem}>
-                    <Text style={styles.itemLeftText}>新手机</Text>
+                    <Text style={styles.itemLeftText}>手机号</Text>
                     <TextInput
                         style={styles.itemRightInput}
                         underlineColorAndroid={'transparent'}
                         onChangeText={(text) => this.setState({ telText: text })}
                         value={this.state.telText}
-                        placeholder={'请输入新手机号'}
+                        placeholder={'请输入手机号'}
                         placeholderTextColor={'#C8C8C8'}
                     />
                 </View>
-                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15, marginRight: 15 }}></View>
+                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15 }}></View>
                 <View style={{
                     height: 44,
                     flexDirection: 'row',
@@ -83,7 +82,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                 justifyContent: 'center',
                 borderRadius: 5
             }} onPress={() => this._toNext()}>
-                <Text style={{ fontSize: 13, color: 'white' }}>绑定</Text>
+                <Text style={{ fontSize: 13, color: 'white' }}>下一步</Text>
             </TouchableOpacity>
         </View>);
     }
@@ -96,9 +95,6 @@ export default class SetNewPhoneNumPage extends BasePage {
                     vertifyCodeTime: time
                 });
             });
-            this.setState({
-                tips: '我们将发送验证码到您的新手机上，请注意查收'
-            });
             bridge.$toast('验证码已发送请注意查收');
         } else {
             bridge.$toast('手机格式不对');
@@ -108,15 +104,9 @@ export default class SetNewPhoneNumPage extends BasePage {
     _toNext = () => {
         let tel = this.state.telText;
         let code = this.state.code;
-        const { oldNum, oldCode } = this.props.navigation.state.params;
         if (StringUtils.isEmpty(tel)) {
             bridge.$toast('请输入手机号');
             return;
-        } else {
-            if (oldNum == tel) {
-                bridge.$toast('请输入新的手机号');
-                return;
-            }
         }
         if (StringUtils.isEmpty(code)) {
             bridge.$toast('请输入验证码');
@@ -124,15 +114,12 @@ export default class SetNewPhoneNumPage extends BasePage {
         }
         if (StringUtils.checkPhone(tel)) {
             // 验证
-            MineAPI.updatePhone({
+            MineAPI.judgeCode({
                 // verificationCode: this.state.code,
-                verificationCode: '2222',
-                oldVerificationCode: oldCode,
+                verificationCode: '1111',
                 phone: this.state.telText
             }).then((data) => {
-                user.changePhone(tel);
-                bridge.$toast('绑定成功');
-                this.$navigateBack(-2);
+                this.$navigate('mine/account/JudgeIDCardPage');
             }).catch((data) => {
                 bridge.$toast(data.msg);
             });

@@ -1,43 +1,40 @@
 import React, {
     Component
 } from 'react';
-import PropTypes from 'prop-types';
 import {
     StyleSheet,
     View,
     TextInput,
-    InteractionManager,
-    ViewPropTypes
+    TouchableHighlight,
+    InteractionManager
 } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
+import PropTypes from 'prop-types';
 
-export default class PasswordInput extends Component {
+export default class Password extends Component {
     static propTypes = {
-        style: ViewPropTypes.style,
-        inputItemStyle: ViewPropTypes.style,
-        iconStyle: ViewPropTypes.style,
+        style: View.propTypes.style,
+        inputItemStyle: View.propTypes.style,
+        iconStyle: View.propTypes.style,
         maxLength: TextInput.propTypes.maxLength.isRequired,
         onChange: PropTypes.func,
         onEnd: PropTypes.func,
         autoFocus: PropTypes.bool
     };
 
+    // 构造
+    constructor(props) {
+        super(props);
+        this.state = {
+            text: ''
+        };
+    }
+
     static defaultProps = {
         autoFocus: true,
         onChange: () => {
         },
         onEnd: () => {
-        },
-        onTextFocus: () => {
-
-        },
-        onTextBlur: () => {
-
         }
-    };
-
-    state = {
-        text: ''
     };
 
     componentDidMount() {
@@ -50,25 +47,17 @@ export default class PasswordInput extends Component {
 
     render() {
         return (
-            <View
+            <TouchableHighlight
                 onPress={this._onPress.bind(this)}
                 activeOpacity={1}
                 underlayColor='transparent'>
                 <View style={[styles.container, this.props.style]}>
                     <TextInput
-                        style={{
-                            height: 45,
-                            zIndex: 99,
-                            position: 'absolute',
-                            width: 45 * this.props.maxLength,
-                            opacity: 0
-                        }}
+                        style={{ height: 45, zIndex: 99, position: 'absolute', width: 45 * 6, opacity: 0 }}
                         ref='textInput'
                         maxLength={this.props.maxLength}
                         autoFocus={false}
-                        value={this.state.text}
-                        keyboardType="numeric"
-                        underlineColorAndroid={'transparent'}
+                        keyboardType="number-pad"
                         onChangeText={
                             (text) => {
                                 this.setState({ text });
@@ -78,23 +67,15 @@ export default class PasswordInput extends Component {
                                 }
                             }
                         }
-                        onFocus={() => this.props.onTextFocus()}
-                        onBlur={() => this.props.onTextBlur()}
                     />
                     {
                         this._getInputItem()
                     }
                 </View>
-            </View>
+            </TouchableHighlight>
         );
 
     }
-
-    _clearTextInputContent = () => {
-        this.setState({
-            text: ''
-        });
-    };
 
     _getInputItem() {
         let inputItem = [];
@@ -120,9 +101,7 @@ export default class PasswordInput extends Component {
     }
 
     _onPress() {
-        if (this.refs.textInput) {
-            this.refs.textInput.focus();
-        }
+        this.refs.textInput.focus();
     }
 }
 
@@ -130,25 +109,25 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         flexDirection: 'row',
-        borderWidth: ScreenUtils.isIOS ? 1.0 : 0.5,
-        borderColor: '#ccc',
+        borderWidth: 0.5,
         borderRadius: 5,
+        borderColor: '#ddd',
         backgroundColor: '#fff'
     },
     inputItem: {
-        height: 38,
-        flex: 1,
+        height: 50,
+        width: 57,
         justifyContent: 'center',
         alignItems: 'center'
     },
     inputItemBorderLeftWidth: {
-        borderLeftWidth: ScreenUtils.isIOS ? 1.0 : 0.5,
-        borderColor: '#ccc'
+        borderLeftWidth: 0.5,
+        borderColor: '#ddd'
     },
     iconStyle: {
-        width: 16,
-        height: 16,
-        backgroundColor: '#222',
-        borderRadius: 8,
-    },
+        width: 10,
+        height: 10,
+        backgroundColor: '#999',
+        borderRadius: 5
+    }
 });

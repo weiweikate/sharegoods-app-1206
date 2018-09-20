@@ -4,7 +4,7 @@ import {
     StyleSheet,
     View,
     TextInput as RNTextInput,
-    Text, Button
+    Text
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import {
