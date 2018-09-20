@@ -40,35 +40,39 @@ class BankCardListPage extends BasePage {
         // })
         this.state = {
             viewData: [
-                // {
-                //     bankCardType:0,
-                //     unbind_time: 1533813688000,
-                //     card_no: "6212261202044786235",
-                //     create_time: 1533813688000,
-                //     bank_name: "工商银行",
-                //     id: 10,
-                //     card_type: 1,
-                //     bind_time: 1533813688000,
-                //     dealer_id: 10,
-                //     status: 1
-                // },{
-                //     bankCardType:1,
-                //     unbind_time: 1533813688000,
-                //     card_no: "6212261202044786235",
-                //     create_time: 1533813688000,
-                //     bank_name: "工商银行",
-                //     id: 10,
-                //     card_type: 1,
-                //     bind_time: 1533813688000,
-                //     dealer_id: 10,
-                //     status: 1
-                // },
+                {
+                    bankCardType:0,
+                    unbind_time: 1533813688000,
+                    card_no: "6212261202044786235",
+                    create_time: 1533813688000,
+                    bank_name: "工商银行",
+                    id: 10,
+                    card_type: 1,
+                    bind_time: 1533813688000,
+                    dealer_id: 10,
+                    status: 1
+                },{
+                    bankCardType:1,
+                    unbind_time: 1533813688000,
+                    card_no: "6212261202044786235",
+                    create_time: 1533813688000,
+                    bank_name: "工商银行",
+                    id: 10,
+                    card_type: 1,
+                    bind_time: 1533813688000,
+                    dealer_id: 10,
+                    status: 1
+                },
             ],
             isShowUnbindCardModal: false,
             selectBankCard: -1
         };
     }
+    // 导航配置
+    $navigationBarOptions = {
+        title: "银行卡",
 
+    };
     //**********************************ViewPart******************************************
     _render() {
         return (
