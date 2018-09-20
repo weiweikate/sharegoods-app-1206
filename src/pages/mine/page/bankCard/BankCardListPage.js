@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     ImageBackground,
     TouchableWithoutFeedback,
-    ScrollView
+    ScrollView, ListView
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import {
@@ -21,16 +21,16 @@ import bankCard2 from './res/bankCard2.png';
 import bankCard3 from './res/bankCard3.png';
 import bankCard4 from './res/bankCard4.png';
 import bankCard5 from './res/bankCard5.png';
-import { SwipeRow } from 'react-native-swipe-list-view';
+import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
 import SettingTransactionModal from '../../components/SettingTransactionModal';
-
 const bankCardList = [bankCard1, bankCard2, bankCard3, bankCard4, bankCard5];
 
 class BankCardListPage extends BasePage {
     constructor(props) {
         super(props);
+        this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         // this.initHeader({
         //     title: '银行卡',
         //     textColor:color.white,
@@ -41,44 +41,46 @@ class BankCardListPage extends BasePage {
         this.state = {
             viewData: [
                 {
-                    bankCardType:0,
+                    bankCardType: 0,
                     unbind_time: 1533813688000,
-                    card_no: "6212261202044786235",
+                    card_no: '6212261202044786235',
                     create_time: 1533813688000,
-                    bank_name: "工商银行",
+                    bank_name: '工商银行',
                     id: 10,
                     card_type: 1,
                     bind_time: 1533813688000,
                     dealer_id: 10,
                     status: 1
-                },{
-                    bankCardType:1,
+                }, {
+                    bankCardType: 1,
                     unbind_time: 1533813688000,
-                    card_no: "6212261202044786235",
+                    card_no: '6212261202044786234',
                     create_time: 1533813688000,
-                    bank_name: "工商银行",
+                    bank_name: '工商银行',
                     id: 10,
                     card_type: 1,
                     bind_time: 1533813688000,
                     dealer_id: 10,
                     status: 1
-                },
+                }
             ],
             isShowUnbindCardModal: false,
             selectBankCard: -1
         };
     }
+
     // 导航配置
     $navigationBarOptions = {
-        title: "银行卡",
+        title: '银行卡'
 
     };
+
     //**********************************ViewPart******************************************
     _render() {
         return (
             <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
                 <View style={{ alignItems: 'center' }}>
-                    {this.renderList()}
+                    {this.renderSwipeList()}
                     <TouchableOpacity
                         style={[styles.addBankCardView, { marginTop: this.state.viewData.length == 0 ? 76 : 47 }]}
                         onPress={() => this.addBankCard()}>
@@ -86,9 +88,51 @@ class BankCardListPage extends BasePage {
                                 style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 16, color: '#ffffff' }}/>
                     </TouchableOpacity>
                 </View>
+                {this.renderModal()}
             </ScrollView>
+
         );
     }
+
+    renderSwipeList = () => {
+        return (
+            <SwipeListView
+                disableRightSwipe={true} leftOpenValue={75} rightOpenValue={-75}
+                dataSource={this.ds.cloneWithRows(this.state.viewData)}
+
+                renderRow={(rowData, secId, rowId, rowMap) => (
+                    <TouchableWithoutFeedback style={{ height: 110, flexDirection: 'row', marginTop: 10 }}
+                        onPress={(rowId) => this.callBack(rowId)}>
+                        <ImageBackground style={styles.bankCardView}
+                                         source={bankCardList[rowData.bankCardType]}
+                                         resizeMode={'stretch'}>
+                            <UIText value={rowData.bank_name}
+                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 18, color: '#ffffff' }}/>
+                            <UIText value={'储蓄卡'}
+                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#ffffff' }}/>
+                            <UIText value={StringUtils.formatBankCardNum(rowData.card_no)} style={{
+                                fontFamily: 'PingFang-SC-Medium',
+                                fontSize: 18,
+                                color: '#ffffff',
+                                marginTop: 15
+                            }}/>
+
+                        </ImageBackground>
+                    </TouchableWithoutFeedback>
+                )}
+                renderHiddenRow={(data, secId, rowId, rowMap) => (
+                    <TouchableOpacity
+                        style={styles.standaloneRowBack}
+                        onPress={() => {
+                            rowMap[`${secId}${rowId}`].closeRow();
+                            this.deleteBankCard(rowId);
+                        }}>
+                        <UIText style={styles.backUITextWhite} value='删除'/>
+                    </TouchableOpacity>
+                )}
+            />
+        );
+    };
 
     renderList = () => {
         let arr = [];
@@ -120,7 +164,7 @@ class BankCardListPage extends BasePage {
                 </SwipeRow>
             );
         }
-        return arr;
+
     };
     renderLine = () => {
         return (
@@ -140,7 +184,7 @@ class BankCardListPage extends BasePage {
                 closeWindow={() => {
                     this.setState({ isShowUnbindCardModal: false });
                 }}
-                passwordInputError={this.state.isShowUnbindCardModal}
+                // passwordInputError={this.state.isShowUnbindCardModal}
                 //bottomText={'输入的密码有误'}
                 inputText={(text) => {
                     if (text.length == 6) {
@@ -201,6 +245,7 @@ class BankCardListPage extends BasePage {
         });
     };
     deleteBankCard = (index) => {
+        alert('cc');
         this.setState({
             isShowUnbindCardModal: true,
             selectBankCard: index
@@ -227,7 +272,8 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 17,
-        paddingLeft: 68
+        paddingLeft: 68,
+        marginTop:10
     }, backTextWhite: {
         color: color.white,
         marginRight: 20,
