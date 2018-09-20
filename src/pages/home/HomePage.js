@@ -15,6 +15,7 @@ import ViewPager from '../../components/ui/ViewPager';
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIImage from '../../components/ui/UIImage';
 import LinearGradient from 'react-native-linear-gradient';
+import HomeClassifyView   from './components/HomeClassifyView'
 
 import HomeClassifyView from './components/HomeClassifyView';
 
