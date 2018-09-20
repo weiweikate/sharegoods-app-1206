@@ -106,8 +106,8 @@ const Styles = StyleSheet.create(
 );
 
 HomeClassifyView.propTypes = {
-    itemTitles: PropTypes.object,
-    itemImages: PropTypes.object,
+    itemTitles: PropTypes.array,
+    itemImages: PropTypes.array,
     itemClickAction: PropTypes.func
 
 };
