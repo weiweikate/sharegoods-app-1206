@@ -16,6 +16,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import UIImage from '../../components/ui/UIImage';
 import LinearGradient from 'react-native-linear-gradient';
 import HomeClassifyView from './components/HomeClassifyView';
+// import HomeUserGradeView from './components/HomeUserGradeView';
 
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
@@ -157,6 +158,8 @@ export default class HomePage extends Component {
                             console.log('点击了分类item');
                         }}
                     />
+
+                    {/*<HomeUserGradeView/>*/}
 
                     <View style={[styles.box, { paddingTop: 10, paddingBottom: 10 }]}>
                         <View style={styles.featureBox}>

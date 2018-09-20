@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
-    TouchableHighlight,
+    TouchableOpacity,
     Image,
     Text
 } from 'react-native';
@@ -51,9 +51,9 @@ export default class HomeClassifyView extends Component {
                 {
                     itemViewArr.map((itemView, index) => {
                         return (
-                            <TouchableHighlight onPress={() => itemClickAction(index)}>
+                            <TouchableOpacity onPress={() => itemClickAction(index)}>
                                 {itemView}
-                            </TouchableHighlight>
+                            </TouchableOpacity>
                         );
                     })
                 }
