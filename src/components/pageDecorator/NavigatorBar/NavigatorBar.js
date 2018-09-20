@@ -9,9 +9,10 @@ import {
     PixelRatio,
     Dimensions,
     StyleSheet,
-    TouchableOpacity, NativeModules
+    TouchableOpacity
 } from 'react-native';
 import BackIcon from './source/icon_header_back.png';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
@@ -38,14 +39,6 @@ export default class NavigatorBar extends Component {
             console.warn('make sure you set rightPressed func~');
         }
     };
-
-    async componentWillMount() {
-        await NativeModules.commModule.getStatusHeight().then(data => {
-            this.setState({ statusHeight: data });
-        }).catch(err => {
-            console.warn(err);
-        });
-    }
 
     static propTypes = {
 
@@ -91,7 +84,7 @@ export default class NavigatorBar extends Component {
             rightNavTitle,
             leftNavItemHidden,
             rightNavItemHidden,
-            statusHeight: 20
+            androidStatusH: ScreenUtils.androidStatusHeight()
         };
     }
 
@@ -163,7 +156,7 @@ export default class NavigatorBar extends Component {
         // 文案
         if (leftNavTitle && typeof leftNavTitle === 'string') {
             return <TouchableOpacity
-                style={[styles.left, { top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight }]}
+                style={[styles.left, { top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH }]}
                 onPress={this._onLeftPressed}>
                 <Text numberOfLines={1}
                       allowFontScaling={false}
@@ -175,7 +168,7 @@ export default class NavigatorBar extends Component {
         // 图片
         if (leftNavImage) {
             return <TouchableOpacity style={[styles.left, {
-                top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight,
+                top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH,
                 paddingLeft: 15
             }]} onPress={this._onLeftPressed}>
                 <Image
@@ -197,7 +190,7 @@ export default class NavigatorBar extends Component {
 
         if (this.props.renderRight) {
             return <View
-                style={[styles.right, { top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight }]}>
+                style={[styles.right, { top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH }]}>
                 {this.props.renderRight()}
             </View>;
         }
@@ -209,7 +202,7 @@ export default class NavigatorBar extends Component {
         }
         if (rightNavImage) {
             return <TouchableOpacity
-                style={[styles.right, { top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight }]}
+                style={[styles.right, { top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH }]}
                 onPress={this._onRightPressed}>
                 <View>
                     <Image source={rightNavImage}/>
@@ -218,7 +211,7 @@ export default class NavigatorBar extends Component {
         }
         if (rightNavTitle && typeof rightNavTitle === 'string') {
             return <TouchableOpacity
-                style={[styles.right, { top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight }]}
+                style={[styles.right, { top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH }]}
                 onPress={this._onRightPressed}>
                 <Text style={[styles.button, this.props.rightTitleStyle]}>{rightNavTitle || ''}</Text>
             </TouchableOpacity>;
@@ -250,8 +243,8 @@ export default class NavigatorBar extends Component {
         } = this.props;
         return (
             <View style={[styles.navBar, headerStyle, {
-                paddingTop: this.state.statusHeight,
-                height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight) + 44
+                paddingTop: this.state.androidStatusH,
+                height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH) + 44
             }]}>
                 {this._renderStatusBar()}
                 {this._renderLeftItem()}

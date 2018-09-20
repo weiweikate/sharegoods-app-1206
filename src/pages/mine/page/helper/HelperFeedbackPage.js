@@ -35,7 +35,7 @@ export default class HelperFeedbackPage extends BasePage {
             showModal: false,
             isShowFinishModal: false,
             course: '请选择问题类型',
-            CONFIG: [{dValue:'物流问题',dKey:0},{dValue:'客服问题',dKey:1},{dValue:'物流问题',dKey:2},{dValue:'客服问题',dKey:3},{dValue:'物流问题',dKey:4},{dValue:'客服问题',dKey:5}],//dValue, item.dKey
+            CONFIG: [{value:'物流问题',detailId:0},{value:'客服问题',detailId:1},{value:'物流问题',detailId:2},{value:'客服问题',detailId:3},{value:'物流问题',detailId:4},{value:'客服问题',detailId:5}],//value, item.detailId
             selectIndex: -1,
             imageArr: []
         };
@@ -48,13 +48,13 @@ export default class HelperFeedbackPage extends BasePage {
     };
 
     componentDidMount() {
-        MineApi.queryDictionaryTypeList({ code: 'WTFK' }).then(res => {
+        MineApi.queryDictionaryTypeList({ code: 'WTLX' }).then(res => {
             if (res.code == 10000 && StringUtils.isNoEmpty(res.data)) {
                 this.setState({
                     CONFIG: res.data
                 });
             } else {
-                this.$toast(res.msg);
+                this.$toastShow('服务未返回类型数据，');
             }
         }).catch(err => {
             console.log(err);
@@ -234,12 +234,12 @@ export default class HelperFeedbackPage extends BasePage {
                                 return (
                                     <TouchableOpacity key={i} style={{ height: 48, justifyContent: 'center' }}
                                                       activeOpacity={0.6}
-                                                      onPress={() => this.selCourse(item.dValue, item.dKey)}>
+                                                      onPress={() => this.selCourse(item.value, i)}>
                                         <Text style={{
                                             color: i == this.state.selectIndex ? '#e60012' : '#222222',
                                             fontSize: 15,
                                             marginLeft: 15
-                                        }}>{item.dValue}</Text>
+                                        }}>{item.value}</Text>
                                     </TouchableOpacity>
                                 );
                             })

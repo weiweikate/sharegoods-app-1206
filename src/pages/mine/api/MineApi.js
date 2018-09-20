@@ -21,7 +21,7 @@ const api = {
     updateHelpQuestionToClick: '/help/helpQuestion/updateHelpQuestionToClick',
     //文件上传（OSS）
     oss: '/common/upload/oss',
-    //根据字典类型获取字典数据 WTFK
+    //根据字典类型获取字典数据 WTLX
     queryDictionaryTypeList: ['/config/sysDictionary/queryDictionaryTypeList', { method: 'get' }],
     //添加反馈:
     addFeedback: '/user/feedback/addFeedback',
@@ -49,12 +49,20 @@ const api = {
     userBalanceQuery: ['/user/userBalance/query', { method: 'get' }],
     //用户登出
     signOut: ['/user/userLogin/signOut', { method: 'get' }],
+    //添加实名认证
+    addUserCertification: '/user/UserCertification/addUserCertification',
     // 修改手机号
     updatePhone: ['/user/updatePhone', { method: 'post' }],
     // 修改密码
     changePhonePwd: ['/user/updateLoginPassword', { method: 'post' }],
     // 解绑微信号
-    untiedWechat: ['/user/untiedWechat', { method: 'post' }]
+    untiedWechat: ['/user/untiedWechat', { method: 'post' }],
+    // 验证交易密码
+    judgeSalesPassword: ['/user/judgeSalesPassword', { method: 'post' }],
+    // 修改交易密码
+    updateSalesOldPwd: ['/user/updateSalesPasswordByOldPassword', { method: 'post' }],
+    // 修改交易密码
+    updateSalesOldPwdByIDCard: ['/user/updateSalesPasswordByIdCard', { method: 'post' }]
 
 
 };

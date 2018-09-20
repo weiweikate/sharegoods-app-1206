@@ -8,21 +8,26 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
-    View
+    View, Platform
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 import RouterMap from './RouterMap';
-
+import user from '../src/model/user';
 import Router from './Router';
 import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
+import appData from './model/appData';
 
 type Props = {};
 
 export default class App extends Component<Props> {
     constructor(props) {
+        // 拿到android状态拦的高度
+        if (Platform.OS === 'android') {
+            appData.setAndroidStatusHeight(props.androidStatusH);
+        }
         super(props);
         this.state = {
             load: false
@@ -31,6 +36,7 @@ export default class App extends Component<Props> {
 
     async componentDidMount() {
         await apiEnvironment.loadLastApiSettingFromDiskCache();
+        await user.readUserInfoFromDisk();
         global.$navigator = this.refs.Navigator;
         global.$routes = [];
     }
@@ -79,7 +85,7 @@ export default class App extends Component<Props> {
                 <Navigator screenProps={this.props.params} ref='Navigator'
                            onNavigationStateChange={(prevState, currentState) => {
                                let curRouteName = getCurrentRouteName(currentState);
-                               console.log(curRouteName)
+                               console.log(curRouteName);
                                const currentScreen = getCurrentRouteName(currentState);
                                const prevScreen = getCurrentRouteName(prevState);
                                global.$routes = currentState.routes;

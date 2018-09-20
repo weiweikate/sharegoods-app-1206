@@ -76,7 +76,7 @@ export default class UserSingleItem extends Component {
         return (!isArrow ? null :
                 <View style={{ justifyContent: 'center', marginRight: 15, flexDirection: 'row', alignItems: 'center' }}>
                     {this.renderheadImage()}
-                    <Image source={right_arrow} style={{ width: 8, height: 15 }}></Image>
+                    <Image source={right_arrow} style={{ width: 8, height: 15 }}/>
                 </View>
         );
     };

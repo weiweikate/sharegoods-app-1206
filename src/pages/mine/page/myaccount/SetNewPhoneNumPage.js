@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 40,
         padding: 0,
-        color: '#999999',
+        color: '#222222',
         fontSize: 13
     }
 });

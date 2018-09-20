@@ -172,7 +172,7 @@ export default class MinePage extends BasePage {
                         }} source={leftBg}>
                             {
                                 StringUtils.isEmpty('222') ? null :
-                                    <Image source={{ uri: user.headImg }} style={{
+                                    <Image source={{ uri: user.headImg ? user.headImg : '' }} style={{
                                         height: 50,
                                         width: 50,
                                         borderRadius: 25
@@ -186,7 +186,7 @@ export default class MinePage extends BasePage {
                         }}>
                             <NoMoreClick style={{ flexDirection: 'row', alignItems: 'center' }}
                                          onPress={this.jumpToUserInformationPage}>
-                                <UIText value={user.nickname ? user.nickname : user.phone}
+                                <UIText value={user.nickname ? user.nickname : (user.phone ? user.phone : 1234)}
                                         style={{ fontSize: 15, color: '#ffffff' }}/>
                                 <Image source={whiteArrowRight}
                                        style={{ height: 14, marginLeft: 12 }}
@@ -211,7 +211,7 @@ export default class MinePage extends BasePage {
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 14,
                                 color: '#ffffff'
-                            }}>{this.state.userScore}</Text>
+                            }}>{this.state.userScore ? this.state.userScore : 0}</Text>
                             <Text style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 11,
@@ -406,6 +406,7 @@ export default class MinePage extends BasePage {
                 break;
         }
     };
+
     //跳转到对应的账户页面
     go2CashDetailPage(i) {
         switch (i) {
@@ -413,13 +414,13 @@ export default class MinePage extends BasePage {
                 this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: this.state.availableBalance });
                 break;
             case 2:
-                this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: this.state.userScore });
+                this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: this.state.userScore ? this.state.userScore : 0 });
                 break;
             case 3:
-                this.$navigate('mine/userInformation/WithdrawCashPage');
+                // this.$navigate('mine/userInformation/WithdrawCashPage');
                 break;
             default:
-                this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
+            // this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
         }
     }
 

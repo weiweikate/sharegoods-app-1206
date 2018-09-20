@@ -2,6 +2,10 @@ import EditPayPwdPage from './EditPayPwdPage';
 import EditPhoneNumPage from './EditPhoneNumPage';
 import EditPhonePwdPage from './EditPhonePwdPage';
 import SetNewPhoneNumPage from './SetNewPhoneNumPage';
+import OldPayPwdPage from './OldPayPwdPage';
+import JudgePhonePage from './JudgePhonePage';
+import JudgeIDCardPage from './JudgeIDCardPage';
+import ChangePayPwdPage from './ChangePayPwdPage';
 
 export default {
     moduleName: 'account',    //模块名称
@@ -9,6 +13,10 @@ export default {
         EditPayPwdPage,
         EditPhoneNumPage,
         EditPhonePwdPage,
-        SetNewPhoneNumPage
+        SetNewPhoneNumPage,
+        OldPayPwdPage,
+        JudgePhonePage,
+        JudgeIDCardPage,
+        ChangePayPwdPage
     }
 };

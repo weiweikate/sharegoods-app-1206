@@ -12,6 +12,8 @@ import TakePhoneModal from './TakePhotoModal';
 import ExchangeTypeModal from './ExchangeTypeModal';
 import AddPhotos from './AddPhotos';
 import NoMoreClick from './NoMoreClick';
+import PasswordInput from './PasswordInput';
+import UIButton from './UIButton';
 
 export {
     UIImage,
@@ -27,5 +29,7 @@ export {
     TakePhoneModal,
     ExchangeTypeModal,
     AddPhotos,
-    NoMoreClick
+    NoMoreClick,
+    PasswordInput,
+    UIButton
 };

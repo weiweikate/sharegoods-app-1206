@@ -23,6 +23,7 @@ import addressUnselect from '../../res/userInfoImg/addressUnselect.png';
 import UserSingleItem from '../../components/UserSingleItem';
 import BusinessUtils from '../../components/BusinessUtils';
 import user from '../../../../model/user';
+import MineApi from '../../api/MineApi';
 
 export default class IDVertify2Page extends BasePage {
 
@@ -63,8 +64,8 @@ export default class IDVertify2Page extends BasePage {
                         <UIText value={'请填写自己的真实姓名及证件号'} style={styles.itemTitleText}/>
                     </View>
                     {this.renderLine()}
-                    <UserSingleItem leftText={'昵称'} rightText={user.nickname} rightTextStyle={styles.grayText}
-                                    leftTextStyle={styles.blackText} isLine={false}/>
+                    <UserSingleItem leftText={'证件'} rightText={'身份证'} rightTextStyle={styles.grayText}
+                                    leftTextStyle={styles.blackText} isLine={false} isArrow={false}/>
                     {this.renderWideLine()}
                     <View style={{
                         height: 56,
@@ -123,7 +124,7 @@ export default class IDVertify2Page extends BasePage {
                             onPress={() => this.commit()}/>
                     </View>
                     <View style={{ alignItems: 'center' }}>
-                        <UIText value={'（信息仅用户自己可见'} style={{
+                        <UIText value={'（信息仅用户自己可见）'} style={{
                             fontFamily: 'PingFang-SC-Medium',
                             fontSize: 13,
                             color: '#999999',
@@ -135,8 +136,10 @@ export default class IDVertify2Page extends BasePage {
                                           }}>
                             <Image source={this.state.agreeAggreement ? addressSelect : addressUnselect}
                                    style={{ width: 11, height: 11 }}/>
-                            <UIText value={'提交认证代表您已同意《实名认证协议》'}
+                            <UIText value={'提交认证代表您已同意'}
                                     style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#999999' }}/>
+                            <UIText value={'《实名认证协议》'}
+                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#D62B56' }}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -181,7 +184,7 @@ export default class IDVertify2Page extends BasePage {
     };
     renderWideLine = () => {
         return (
-            <View style={{ height: 10,  }}/>
+            <View style={{ height: 10 }}/>
         );
     };
     renderModal = () => {
@@ -244,28 +247,28 @@ export default class IDVertify2Page extends BasePage {
             NativeModules.commModule.toast('请上传身份证正面图');
             return;
         }
-        // let params = {
-        //     backIdCard: this.state.backIdCard,
-        //     frontIdCard: this.state.frontIdCard,
-        //     idNumber: this.state.idNumber,
-        //     name: this.state.name
-        // };
-        this.$toastShow('审核中，请稍后');
-        // MineApi.getUserRealNameInfo(params).then((response) => {
-        //     Toast.hiddenLoading();
-        //     if (response.ok) {
-        //         NativeModules.commModule.toast('实名认证成功');
-        //         user.saveUserInfo(response.data);
-        //         this.navigateBack();
-        //     } else {
-        //         if (response.code == 500) {
-        //             this.setState({ disFailedStatus: true });
-        //         }
-        //         NativeModules.commModule.toast(response.msg);
-        //     }
-        // }).catch(e => {
-        //     Toast.hiddenLoading();
-        // });
+        let params = {
+            backPhoto: this.state.backIdCard,
+            frontPhoto: this.state.frontIdCard,
+            idcardNo: this.state.idNumber,
+            realName: this.state.name
+        };
+        this.$loadingShow();
+        MineApi.addUserCertification(params).then((response) => {
+            this.$loadingDismiss();
+            if (response.code === 10000) {
+                NativeModules.commModule.toast('实名认证成功');
+                user.realnameStatus = 1;
+                this.$navigateBack();
+            } else {
+                if (response.code == 500) {
+                    this.setState({ disFailedStatus: true });
+                }
+                NativeModules.commModule.toast(response.msg);
+            }
+        }).catch(e => {
+            this.$loadingDismiss();
+        });
     };
     agreeAggreement = () => {
         let agreeAggreement = !this.state.agreeAggreement;

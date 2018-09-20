@@ -114,7 +114,8 @@ class ShopCartStore {
                 //拿到本地缓存的购物车数据
                 this.packingShopCartGoodsData(res.data);
             }).catch(error => {
-                bridge.$toast(error);
+                this.data = [];
+                // bridge.$toast(error);
             });
         } else {
             this.data = [];
