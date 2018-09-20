@@ -10,12 +10,13 @@ import { color } from '../../../constants/Theme';
 import BonusExchangeSucceedBackground from '../res/userInfoImg/BonusExchangeSucceedBackground.png';
 import bonusClose from '../res/userInfoImg/bonusClose.png';
 import {
-    UIText, UIImage, PasswordInput
+    UIText, UIImage
 } from '../../../components/ui';
+import PasswordInput from './PasswordInput';
 import { observer } from 'mobx-react/native';
 
 @observer
-export default class SettingTransactionModal extends Component {
+class SettingTransactionModal extends Component {
 
     constructor(props) {
         super(props);
@@ -30,10 +31,10 @@ export default class SettingTransactionModal extends Component {
 
     };
     updateView = () => {
-        this.setState({ passwordInputError: this.props.passwordInputError });
+        // this.setState({passwordInputError:this.props.passwordInputError,})
         setTimeout(() => {
             this.updateView();
-        }, 100);
+        }, 500);
 
     };
 
@@ -124,3 +125,5 @@ const styles = StyleSheet.create({
         color: '#e60012'
     }
 });
+
+export default SettingTransactionModal;

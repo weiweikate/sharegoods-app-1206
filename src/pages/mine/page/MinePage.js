@@ -172,7 +172,7 @@ export default class MinePage extends BasePage {
                         }} source={leftBg}>
                             {
                                 StringUtils.isEmpty('222') ? null :
-                                    <Image source={{ uri: user.headImg }} style={{
+                                    <Image source={{ uri: user.headImg ? user.headImg : '' }} style={{
                                         height: 50,
                                         width: 50,
                                         borderRadius: 25
@@ -186,7 +186,7 @@ export default class MinePage extends BasePage {
                         }}>
                             <NoMoreClick style={{ flexDirection: 'row', alignItems: 'center' }}
                                          onPress={this.jumpToUserInformationPage}>
-                                <UIText value={user.nickname ? user.nickname : user.phone}
+                                <UIText value={user.nickname ? user.nickname : (user.phone ? user.phone : 1234)}
                                         style={{ fontSize: 15, color: '#ffffff' }}/>
                                 <Image source={whiteArrowRight}
                                        style={{ height: 14, marginLeft: 12 }}

@@ -8,7 +8,8 @@ import {
     Platform,
     Image,
     TextInput,
-    TouchableWithoutFeedback, Dimensions
+    TouchableWithoutFeedback,
+    Dimensions
 } from 'react-native';
 import RouterMap from '../../RouterMap';
 import ViewPager from '../../components/ui/ViewPager';
@@ -122,6 +123,7 @@ export default class HomePage extends Component {
                 <ScrollView showsVerticalScrollIndicator={false}
                             onScroll={this._onScroll}
                             scrollEventThrottle={10}>
+
                     <ViewPager style={{
                         backgroundColor: 'rgba(255, 255, 255, 0.7)',
                         width: ScreenUtils.width
@@ -145,49 +147,21 @@ export default class HomePage extends Component {
                                autoplay={true}
                                height={this.state.bannerHeight}
                     />
-
-                    <View style={styles.menuView}>
-                        <TouchableWithoutFeedback onPress={() => {
-
-                        }}>
-                            <View style={{ alignItems: 'center', flex: 1 }}>
-                                <Image style={styles.iconImg} source={require('./res/icons/zq.png')}/>
-                                <Text style={styles.showText}>赚钱</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => {
-
-                        }}>
-                            <View style={{ alignItems: 'center', flex: 1 }}>
-                                <Image style={styles.iconImg} source={require('./res/icons/sq.png')}/>
-                                <Text style={styles.showText}>省钱</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => {
-
-                        }}>
-                            <View style={{ alignItems: 'center', flex: 1 }}>
-                                <Image style={styles.iconImg} source={require('./res/icons/fx.png')}/>
-                                <Text style={styles.showText}>分享</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => {
-
-                        }}>
-                            <View style={{ alignItems: 'center', flex: 1 }}>
-                                <Image style={styles.iconImg} source={require('./res/icons/xy.png')}/>
-                                <Text style={styles.showText}>学院</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => {
-
-                        }}>
-                            <View style={{ alignItems: 'center', flex: 1 }}>
-                                <Image style={styles.iconImg} source={require('./res/icons/cx.png')}/>
-                                <Text style={styles.showText}>促销</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                    </View>
+                    {/*头部分类*/}
+                    <HomeClassifyView
+                        itemImages={[
+                            require('./res/icons/zq.png'),
+                            require('./res/icons/sq.png'),
+                            require('./res/icons/fx.png'),
+                            require('./res/icons/xy.png'),
+                            require('./res/icons/cx.png'),
+                            require('./res/icons/cx.png')
+                        ]}
+                        itemTitles={['赚钱', '省钱', '分享', '学院', '促销', '赚钱']}
+                        itemClickAction={() => {
+                            console.log('点击了分类item');
+                        }}
+                    />
 
                     <View style={[styles.box, { paddingTop: 10, paddingBottom: 10 }]}>
                         <View style={styles.featureBox}>
