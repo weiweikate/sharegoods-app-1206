@@ -54,7 +54,13 @@ const api = {
     // 修改密码
     changePhonePwd: ['/user/updateLoginPassword', { method: 'post' }],
     // 解绑微信号
-    untiedWechat: ['/user/untiedWechat', { method: 'post' }]
+    untiedWechat: ['/user/untiedWechat', { method: 'post' }],
+    // 验证交易密码
+    judgeSalesPassword: ['/user/judgeSalesPassword', { method: 'post' }],
+    // 修改交易密码
+    updateSalesOldPwd: ['/user/updateSalesPasswordByOldPassword', { method: 'post' }],
+    // 修改交易密码
+    updateSalesOldPwdByIDCard: ['/user/updateSalesPasswordByIdCard', { method: 'post' }]
 
 
 };
