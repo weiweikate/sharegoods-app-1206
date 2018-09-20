@@ -15,9 +15,8 @@ import ViewPager from '../../components/ui/ViewPager';
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIImage from '../../components/ui/UIImage';
 import LinearGradient from 'react-native-linear-gradient';
-import HomeClassifyView from './components/HomeClassifyView';
-// import HomeUserGradeView from './components/HomeUserGradeView';
 
+import HomeClassifyView from './components/HomeClassifyView';
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
@@ -72,11 +71,13 @@ export default class HomePage extends Component {
     }
 
     async componentWillMount() {
-        await NativeModules.commModule.getStatusHeight().then(data => {
-            this.setState({ statusHeight: data });
-        }).catch(err => {
-            console.warn(err);
-        });
+        if (Platform.OS === 'android') {
+            await NativeModules.commModule.getStatusHeight().then(data => {
+                this.setState({ statusHeight: data });
+            }).catch(err => {
+                console.warn(err);
+            });
+        }
     }
 
     _onScroll = (event) => {
@@ -158,8 +159,6 @@ export default class HomePage extends Component {
                             console.log('点击了分类item');
                         }}
                     />
-
-                    {/*<HomeUserGradeView/>*/}
 
                     <View style={[styles.box, { paddingTop: 10, paddingBottom: 10 }]}>
                         <View style={styles.featureBox}>
