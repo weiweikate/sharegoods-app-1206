@@ -182,7 +182,7 @@ export default class ShopCartPage extends BasePage {
                     />
 
                     <UIImage
-                        source={{ uri: itemData.imgUrl }}
+                        source={{ uri: itemData.imgUrl?itemData.imgUrl:'' }}
                         style={[styles.validProductImg]}
                     />
 
@@ -203,7 +203,7 @@ export default class ShopCartPage extends BasePage {
                     <View style={styles.validContextContainer}>
                         <View>
                             <UIText
-                                value={itemData.productName}
+                                value={itemData.productName?itemData.productName:''}
                                 // value={"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"}
                                 numberOfLines={2}
                                 style={{
@@ -217,9 +217,8 @@ export default class ShopCartPage extends BasePage {
                             />
 
                             <UIText
-                                value={itemData.specString}
+                                value={itemData.specString?itemData.specString:''}
                                 numberOfLines={2}
-                                // value={"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"}
                                 style={{
                                     fontFamily: "PingFang-SC-Medium",
                                     fontSize: 13,
@@ -252,14 +251,6 @@ export default class ShopCartPage extends BasePage {
                                     borderLeftWidth: 0,
                                     borderRightWidth: 0
                                 }]}>
-                                    {/*<TextInput*/}
-                                    {/*style={styles.TextInputStyle}*/}
-                                    {/*// onChangeText={text => this._onChangeText(text, itemData.index, itemData)}*/}
-                                    {/*underlineColorAndroid={"transparent"}*/}
-                                    {/*// value={data.disNum+''}*/}
-                                    {/*value={itemData.amount+''}*/}
-                                    {/*keyboardType='numeric'*/}
-                                    {/*/>*/}
                                     <UIText
                                         style={styles.TextInputStyle}
                                         value={itemData.amount}
