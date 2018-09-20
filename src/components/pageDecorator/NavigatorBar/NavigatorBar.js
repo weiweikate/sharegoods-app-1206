@@ -40,11 +40,13 @@ export default class NavigatorBar extends Component {
     };
 
     async componentWillMount() {
-        await NativeModules.commModule.getStatusHeight().then(data => {
-            this.setState({ statusHeight: data });
-        }).catch(err => {
-            console.warn(err);
-        });
+        if (Platform.OS === 'android') {
+            await NativeModules.commModule.getStatusHeight().then(data => {
+                this.setState({ statusHeight: data });
+            }).catch(err => {
+                console.warn(err);
+            });
+        }
     }
 
     static propTypes = {

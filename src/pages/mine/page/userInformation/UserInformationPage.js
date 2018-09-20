@@ -58,6 +58,7 @@ export default class UserInformationPage extends BasePage {
     };
 
     _render() {
+        //rightText={(user.province || ' ') + '-' + (user.city || ' ') + '-' + (user.area || ' ')}
         return (
             <View style={{ backgroundColor: color.white }}>
 
@@ -85,14 +86,14 @@ export default class UserInformationPage extends BasePage {
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={false}/>
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'所在区域'}
-                                rightText={(user.province || ' ') + '-' + (user.city || ' ') + '-' + (user.area || ' ')}
+                                rightText={user.address}
                                 rightTextStyle={styles.grayText} leftTextStyle={styles.blackText} isLine={false}
                                 onPress={() => this.renderGetCityPicker()}/>
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'实名认证'} rightText={user.isRealNameRegistration ? '已实名认证' : '未实名认证'}
                                 rightTextStyle={[styles.grayText, { color: color.white }]}
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={false}
-                                circleStyle={this.state.hasVertifyID ? styles.hasVertifyID : styles.notVertifyID}
+                                circleStyle={user.isRealNameRegistration ? styles.hasVertifyID : styles.notVertifyID}
                                 onPress={() => this.jumpToIDVertify2Page()}/>
 
             </View>
@@ -130,27 +131,33 @@ export default class UserInformationPage extends BasePage {
         this.props.navigation.navigate('mine/userInformation/NickNameModifyPage', { oldNickName: user.nickname });
     };
     renderGetCityPicker = () => {
+
         dismissKeyboard();
-        // NativeModules.commModule.cityPicker((data) => {
-        //     let dataJson = __IOS__ ? data : JSON.parse(data);
-        //     let params = {
-        //         areaId: dataJson.districId,
-        //         cityId: dataJson.cityId,
-        //         provinceId: dataJson.provinceId,
-        //     };
-        //     Toast.showLoading();
-        //     MineApi.updateDealerRegionById(params).then((response) => {
-        //         Toast.hiddenLoading();
-        //         if (response.ok) {
-        //             user.saveUserInfo(response.data);
-        //             NativeModules.commModule.toast('修改成功');
-        //         } else {
-        //             NativeModules.commModule.toast(response.msg);
-        //         }
-        //     }).catch(e => {
-        //         Toast.hiddenLoading();
-        //     });
-        // });
+        this.$navigate('mine/address/SelectAreaPage', {
+            setArea: this.setArea.bind(this),
+            tag: 'province',
+            fatherCode: '0'
+        });
+    };
+    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, areaText) {
+        this.setState({
+            areaText: areaText,
+            provinceCode: provinceCode,
+            provinceName: provinceName,
+            cityCode: cityCode,
+            cityName: cityName,
+            areaCode: areaCode,
+            areaName: areaName
+        });
+        MineApi.updateUserById({ type: 3, provinceId: provinceCode,cityId:cityCode,areaId:areaCode }).then(res => {
+            if (res.code === 10000) {
+                user.address=areaText;
+            }
+        }).catch(err => {
+            if (err.code == 10001) {
+                this.props.navigation.navigate('login/login/LoginPage');
+            }
+        });
     };
 }
 
