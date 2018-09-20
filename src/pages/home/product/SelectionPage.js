@@ -197,7 +197,18 @@ export default class SelectionPage extends Component {
         }
 
         let priceId = priceArr.join(',');
-        this.props.selectionViewConfirm(this.state.amount, priceId);
+        let id = undefined;
+        const { priceList } = this.props.data;
+        priceList.forEach((item)=>{
+            if (item.specIds === priceId) {
+                id = item.id;
+                return;
+            }
+        })
+        if (id){
+            return;
+        }
+        this.props.selectionViewConfirm(this.state.amount, id);
         this.props.selectionViewClose();
     };
 

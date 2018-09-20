@@ -3,14 +3,11 @@ import React from 'react';
 import {
     View,
     FlatList,
-    Dimensions
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import AnnouncementRow from './components/AnnouncementRow';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
-import storeModel from '../../../model/storeModel';
-import EmptyIcon from '../src/wqx_03.png';
-import EmptyView from '../../../components/pageDecorator/BaseView/EmptyView';
+import storeModel from '../model/storeModel';
 import { observer } from 'mobx-react/native';
 
 const DefaultPageSize = 10;
@@ -25,7 +22,7 @@ export default class AnnouncementListPage extends BasePage {
     };
 
     $NavBarRightPressed = () => {
-        this.$navigate('spellShop/announcement/AnnouncementPublishPage', {
+        this.$navigate('spellShop/shopSetting/AnnouncementPublishPage', {
             publishSuccess: this.loadPageData.bind(this)
         });
     };
@@ -34,7 +31,7 @@ export default class AnnouncementListPage extends BasePage {
         super(props);
 
         this.state = {
-            list: [],
+            list: [{},{},{}],
             refreshing: false,
             loadingMore: false,
             loadingMoreError: null,
@@ -116,7 +113,7 @@ export default class AnnouncementListPage extends BasePage {
     };
 
     _clickRow = (info) => {
-        this.props.navigation.navigate('spellShop/announcement/AnnouncementDetailPage', info);
+        this.props.navigation.navigate('spellShop/shopSetting/AnnouncementDetailPage', info);
     };
 
 
@@ -146,12 +143,6 @@ export default class AnnouncementListPage extends BasePage {
         this.loadPageDataMore();
     };
 
-    _ListEmptyComponent = () => {
-        return <EmptyView source={EmptyIcon}
-                          description={'暂无公告'}
-                          style={{ height: Dimensions.get('window').height - 100 }}/>;
-    };
-
     //下拉加载更多
     //已经到低啦
     _render() {
@@ -161,28 +152,13 @@ export default class AnnouncementListPage extends BasePage {
                           renderItem={this._renderItem}
                           onRefresh={this._onRefresh}
                           refreshing={this.state.refreshing}
-                          ListEmptyComponent={this._ListEmptyComponent}
                           onEndReached={this._onEndReached}
                           onEndReachedThreshold={0.1}
-                          ListFooterComponent={this._ListFooterComponent}
                           keyExtractor={this._keyExtractor}/>
                 <ConfirmAlert ref="delAlert"/>
             </View>
         );
     }
-
-    _ListFooterComponent = () => {
-        // if (this.state.loadingMore) {
-        //     return <ListFooter loadingMore/>;
-        // } else if (this.state.loadingMoreError) {
-        //     return <ListFooter onPressLoadError={this._onEndReached}
-        //                        errorDesc={this.state.loadingMoreError.msg}/>;
-        // } else if (this.state.noMore) {
-        //     return <ListFooter/>;
-        // } else {
-        //     return null;
-        // }
-    };
 
     _keyExtractor = (item, index) => `${index}`;
 
