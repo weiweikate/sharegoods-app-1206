@@ -1,5 +1,5 @@
-import {AsyncStorage} from 'react-native';
-import {action, computed, observable} from 'mobx';
+import { AsyncStorage } from 'react-native';
+import { action, computed, observable } from 'mobx';
 //import apiEnvironment from '../api/ApiEnvironment';
 
 const USERINFOCACHEKEY = 'UserInfo';
@@ -28,11 +28,11 @@ class User {
     @observable
     wechatId = '';          //微信号id
     @observable
-    phone = null;           //手机号
+    phone = 0;           //手机号
     @observable
     realname = null;        //真实姓名
     @observable
-    headImg = null;         //头像
+    headImg = '';         //头像
     @observable
     idcard = null;          //身份证号码
     @observable
@@ -196,6 +196,18 @@ class User {
             AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
             });
         }
+    }
+
+    // 修改手机号
+    @action
+    changePhone(phone) {
+        this.phone = phone;
+    }
+
+    // 解绑微信号
+    @action
+    untiedWechat(weChat) {
+        this.wechatId = weChat;
     }
 
     // 存储离线购物车信息

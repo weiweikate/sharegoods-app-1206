@@ -54,7 +54,7 @@ export default class SelectionPage extends Component {
 
             selectList: [],
             selectStrList: [],
-            amount: 0
+            amount: 1
         };
 
     }

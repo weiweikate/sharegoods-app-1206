@@ -2,10 +2,11 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    TextInput as RNTextInput, Button
+    TextInput as RNTextInput
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { color } from '../../../../constants/Theme';
+import { UIButton } from '../../../../components/ui';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
@@ -37,18 +38,17 @@ export default class NickNameModifyPage extends BasePage {
                     underlineColorAndroid={'transparent'}
                 />
                 {this.renderWideLine()}
-                <View style={{
-                    marginTop: 36,
-                    width: ScreenUtils.width - 96,
-                    height: 50,
-                    marginLeft: 48,
-                    marginRight: 48
-                }}>
-                    <Button
-                        title='保存'
-                        color={color.red}
-                        onPress={() => this.save()}/>
-                </View>
+                <UIButton
+                    title='保存'
+                    style={{
+                        marginTop: 36,
+                        width: ScreenUtils.width - 96,
+                        height: 50,
+                        marginLeft: 48,
+                        marginRight: 48,
+                        backgroundColor: color.red
+                    }}
+                    onPress={() => this.save()}/>
             </View>
         );
     }

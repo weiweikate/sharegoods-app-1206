@@ -184,7 +184,7 @@ export default class IDVertify2Page extends BasePage {
     };
     renderWideLine = () => {
         return (
-            <View style={{ height: 10,  }}/>
+            <View style={{ height: 10 }}/>
         );
     };
     renderModal = () => {
@@ -256,9 +256,9 @@ export default class IDVertify2Page extends BasePage {
         this.$loadingShow();
         MineApi.addUserCertification(params).then((response) => {
             this.$loadingDismiss();
-            if (response.code===10000) {
+            if (response.code === 10000) {
                 NativeModules.commModule.toast('实名认证成功');
-                user.realnameStatus=1;
+                user.realnameStatus = 1;
                 this.$navigateBack();
             } else {
                 if (response.code == 500) {
@@ -267,7 +267,7 @@ export default class IDVertify2Page extends BasePage {
                 NativeModules.commModule.toast(response.msg);
             }
         }).catch(e => {
-           this.$loadingDismiss();
+            this.$loadingDismiss();
         });
     };
     agreeAggreement = () => {

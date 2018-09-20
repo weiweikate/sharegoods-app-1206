@@ -8,6 +8,7 @@ import SettingPage from './page/setting/SettingPage';
 import setting from './page/setting';
 import MyAddress from './page/myaddress';
 import MyAccount from './page/myaccount';
+import bankCard from './page/bankCard';
 
 export default {
     moduleName: 'mine',    //模块名称
@@ -21,6 +22,7 @@ export default {
         SettingPage,
         setting,
         MyAddress,
-        MyAccount
+        MyAccount,
+        bankCard
     }
 };

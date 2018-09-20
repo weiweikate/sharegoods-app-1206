@@ -3,6 +3,7 @@ import recommendSearch from './recommendSearch';
 import openShop from './openShop';
 import shopRecruit from './shopRecruit';
 import myShop from './myShop';
+import shopSetting from './shopSetting';
 
 export default {
     //拼店模块
@@ -17,6 +18,8 @@ export default {
         //招募模块
         shopRecruit,
         //我的店铺模块
-        myShop
+        myShop,
+        //店铺设置
+        shopSetting
     }
 };
