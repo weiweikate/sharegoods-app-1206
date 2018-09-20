@@ -41,7 +41,7 @@ export default class ShopPageSettingPage extends BasePage {
     _assistantManager = () => {
         //公告管理可以对公告进行删除
         //异常：店长才可以进行删除
-        this.props.navigation.push('spellShop/announcement/AnnouncementListPage');
+        this.$navigate('spellShop/shopSetting/AnnouncementListPage');
     };
 
     // 店铺评分
