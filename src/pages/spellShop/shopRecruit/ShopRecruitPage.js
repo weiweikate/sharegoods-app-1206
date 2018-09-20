@@ -18,7 +18,8 @@ export default class ShopRecruitPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '店铺人员招募中'
+        title: '店铺人员招募中',
+        leftNavItemHidden:this.props.leftNavItemHidden,
     };
 
     constructor(props) {
