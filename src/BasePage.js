@@ -142,7 +142,7 @@ export default class BasePage extends Component {
     // 返回
     $navigateBack = (step) => {
         try {
-            console.log("step", step);
+            console.log('step', step);
             if (step) {
                 let $routes = global.$routes || [];
                 let router = $routes[$routes.length + step];

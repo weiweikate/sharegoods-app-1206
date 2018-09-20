@@ -8,15 +8,14 @@ import {
     Platform,
     Image,
     TextInput,
-    NativeModules, Dimensions
+    TouchableWithoutFeedback,
+    Dimensions
 } from 'react-native';
 import RouterMap from '../../RouterMap';
 import ViewPager from '../../components/ui/ViewPager';
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIImage from '../../components/ui/UIImage';
 import LinearGradient from 'react-native-linear-gradient';
-
-import HomeClassifyView from './components/HomeClassifyView';
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
@@ -66,18 +65,18 @@ export default class HomePage extends Component {
     constructor() {
         super();
         this.state = {
-            statusHeight: 20
+            androidStatusH: ScreenUtils.androidStatusHeight(),
+            swiperShow: false,
+            bannerHeight: px2dp(220)
         };
     }
 
-    async componentWillMount() {
-        if (Platform.OS === 'android') {
-            await NativeModules.commModule.getStatusHeight().then(data => {
-                this.setState({ statusHeight: data });
-            }).catch(err => {
-                console.warn(err);
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({
+                swiperShow: true
             });
-        }
+        }, 0);
     }
 
     _onScroll = (event) => {
@@ -96,17 +95,20 @@ export default class HomePage extends Component {
         return (
             <View style={styles.container}>
                 <View ref={(e) => this._refHeader = e}
-                      style={[styles.navBarBg, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight },
-                          { height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight) + 44 }]}/>
+                      style={[styles.navBarBg, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH },
+                          { height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH) + 44 }]}/>
                 <LinearGradient colors={['#000000', 'transparent']}
-                                style={[styles.navBar, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight },
+                                style={[styles.navBar, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH },
                                     {
-                                        height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight) + 58,
+                                        height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH) + 58,
                                         opacity: 0.5
                                     }]}/>
                 <View colors={['#000000', 'transparent']}
-                      style={[styles.navBar, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight },
-                          { height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight) + 44 }]}>
+                      style={[styles.navBar, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH },
+                          {
+                              height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH) + 44,
+                              opacity: 0.8
+                          }]}>
                     <Image source={require('./res/icons/logo.png')} style={styles.logo}/>
                     <View style={styles.searchBox}>
                         <Image source={require('./res/icon_search.png')} style={styles.searchIcon}/>
@@ -123,10 +125,10 @@ export default class HomePage extends Component {
                             scrollEventThrottle={10}>
 
                     <ViewPager style={{
-                        height: px2dp(220),
                         backgroundColor: 'rgba(255, 255, 255, 0.7)',
                         width: ScreenUtils.width
                     }}
+                               swiperShow={this.state.swiperShow}
                                arrayData={imageUrls}
                                renderItem={(item) => this.renderViewPageItem(item)}
                                dotStyle={{
@@ -143,6 +145,7 @@ export default class HomePage extends Component {
                                    backgroundColor: '#ffffff'
                                }}
                                autoplay={true}
+                               height={this.state.bannerHeight}
                     />
                     {/*头部分类*/}
                     <HomeClassifyView

@@ -159,20 +159,6 @@ public class CommModule extends ReactContextBaseJavaModule {
         promise.resolve(result);
     }
 
-
-    private int getStateBar() {
-        int result = 0;
-        int resourceId = mContext.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = mContext.getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
-
-    private void handleH5(JSONObject jsonObject) throws JSONException {
-
-    }
-
     /**
      * 功能：toast消息
      */
@@ -354,11 +340,6 @@ public class CommModule extends ReactContextBaseJavaModule {
     private String getTime(Date date) {//可根据需要自行截取数据显示
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(date);
-    }
-
-    @ReactMethod
-    public void getStatusHeight(Promise promise) {
-        promise.resolve(DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
     }
 
     //三方登录
