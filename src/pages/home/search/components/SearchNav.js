@@ -56,7 +56,7 @@ export default class SearchBar extends Component {
             <View style={[styles.container, this.props.style]}>
                 <View style={styles.contentView}>
                     <View style={styles.inputView}>
-                        <TextInput style={{ marginLeft: 24 }}
+                        <TextInput style={{ marginLeft: 24, padding: 0 }}
                                    keyboardType='web-search'
                                    underlineColorAndroid='transparent'
                                    placeholder={this.props.placeholder}

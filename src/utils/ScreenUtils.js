@@ -1,4 +1,5 @@
 import { Dimensions, Platform, PixelRatio } from 'react-native';
+import appData from '../model/appData';
 
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
@@ -38,6 +39,9 @@ function px2dp(size) {
     return size / DEFAULT_DENSITY;
 }
 
+function getStatusH() {
+    return appData.androidStatusH > 0 ? appData.androidStatusH : 24;
+}
 
 export default {
     px2dp,
@@ -47,8 +51,9 @@ export default {
     height: Dimensions.get('window').height,
     pixelRatio: PixelRatio.get(),
     onePixel: 1 / PixelRatio.get(),
-    statusBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 44 : 20) : 20,// (Platform.OS === 'ios' ? 20 : 0),
-    headerHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 88 : 64) : 64,
+    androidStatusHeight: getStatusH,
+    statusBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 44 : 20) : 24,// (Platform.OS === 'ios' ? 20 : 0),
+    headerHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 88 : 64) : 68,
     tabBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 83 : 49) : 49,
     isIOS: Platform.OS === 'ios',
     isIOSSmall: Platform.OS === 'ios' && Dimensions.get('window').height === 568,// phoneSE,phone4,phone5,phone5s

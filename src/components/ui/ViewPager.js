@@ -14,6 +14,8 @@ const ViewPager = props => {
         renderPagination,
         arrayData,
         renderItem,
+        swiperShow = false,
+        height,
         ...attributes
     } = props;
 
@@ -37,34 +39,40 @@ const ViewPager = props => {
     const renderSwiper = () => {
         if (arrayData && arrayData.length > 0) {
             if (renderPagination) {
-                return (
-                    <Swiper style={styles.wrapper}
-                            paginationStyle={{ marginBottom: -20 }}
-                            horizontal={horizontal}
-                            renderPagination={renderPagination}
-                            autoplay={autoplay}
-                            dotStyle={dotStyle}
-                            activeDotStyle={activeDotStyle}
-                            dotColor={dotColor}
-                            activeDotColor={activeDotColor}
-                            autoplayTimeout={6}
-                            removeClippedSubviews={false}>
-                        {renderItems()}
-                    </Swiper>);
+                if (swiperShow) {
+                    return (
+                        <Swiper style={styles.wrapper}
+                                height={height}
+                                paginationStyle={{ marginBottom: -20 }}
+                                horizontal={horizontal}
+                                renderPagination={renderPagination}
+                                autoplay={autoplay}
+                                dotStyle={dotStyle}
+                                activeDotStyle={activeDotStyle}
+                                dotColor={dotColor}
+                                activeDotColor={activeDotColor}
+                                autoplayTimeout={5}
+                                removeClippedSubviews={false}>
+                            {renderItems()}
+                        </Swiper>);
+                }
             } else {
-                return (
-                    <Swiper style={styles.wrapper}
-                            paginationStyle={{ marginBottom: -20 }}
-                            horizontal={horizontal}
-                            autoplay={autoplay}
-                            dotStyle={dotStyle}
-                            activeDotStyle={activeDotStyle}
-                            dotColor={dotColor}
-                            activeDotColor={activeDotColor}
-                            autoplayTimeout={6}
-                            removeClippedSubviews={false}>
-                        {renderItems()}
-                    </Swiper>);
+                if (swiperShow) {
+                    return (
+                        <Swiper style={styles.wrapper}
+                                height={height}
+                                paginationStyle={{ marginBottom: -20 }}
+                                horizontal={horizontal}
+                                autoplay={autoplay}
+                                dotStyle={dotStyle}
+                                activeDotStyle={activeDotStyle}
+                                dotColor={dotColor}
+                                activeDotColor={activeDotColor}
+                                autoplayTimeout={5}
+                                removeClippedSubviews={false}>
+                            {renderItems()}
+                        </Swiper>);
+                }
             }
         }
     };
