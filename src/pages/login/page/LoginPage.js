@@ -152,7 +152,8 @@ export default class LoginPage extends BasePage {
                 // console.log(data);
                 UserModel.saveUserInfo(data.data);
                 bridge.$toast("登陆成功");
-                this.params.callback?this.params.callback(): this.$navigateBack();
+                this.params.callback&&this.params.callback();
+                this.$navigateBack()
             }).catch((data) => {
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
