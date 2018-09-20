@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import {
     // StyleSheet,
-    View,
+    View
     // TouchableHighlight,
     // Image,
     // Text
@@ -20,18 +20,19 @@ export default class HomeUserGradeView extends Component {
         super(props);
         // 初始状态
         this.state = {
-            progress:0
+            progress: 0
         };
-        this.currProgress=1;
-        this.currBuffer=0.5;
+        this.currProgress = 1;
+        this.currBuffer = 0.5;
     }
-    render(){
-        return(
+
+    render() {
+        return (
             <View>
                 <CustomProgress
                     ref="progressBar"
                     style={{
-                        marginTop:100,
+                        marginTop: 100
                     }}
                     progress={this.currProgress}
                     buffer={this.currBuffer}

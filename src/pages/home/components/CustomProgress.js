@@ -1,10 +1,11 @@
-import React,{Component,PropTypes}from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
     View,
     StyleSheet,
     Animated,
     Easing
-}from 'react-native';
+} from 'react-native';
+
 export default class CustomProgress extends Component {
     static propTypes = {
         ...View.propTypes,
@@ -20,7 +21,7 @@ export default class CustomProgress extends Component {
         progressAniDuration: PropTypes.number,
         //buffer动画时长
         bufferAniDuration: PropTypes.number
-    }
+    };
     static defaultProps = {
         //进度条颜色
         progressColor: 'white',
@@ -30,7 +31,8 @@ export default class CustomProgress extends Component {
         progressAniDuration: 300,
         //buffer进度条动画时长
         bufferAniDuration: 300
-    }
+    };
+
     // 构造
     constructor(props) {
         super(props);
@@ -51,30 +53,30 @@ export default class CustomProgress extends Component {
     render() {
         return (
             <View
-                style={[styles.container,this.props.style]}
+                style={[styles.container, this.props.style]}
                 onLayout={this._onLayout.bind(this)}
             >
                 <Animated.View
                     ref="progress"
                     style={{
-                        position:'absolute',
-                        width:this._progressAni,
-                        backgroundColor:this.props.progressColor
+                        position: 'absolute',
+                        width: this._progressAni,
+                        backgroundColor: this.props.progressColor
                     }}
                 />
                 <Animated.View
                     ref="buffer"
                     style={{
-                        position:'absolute',
-                        width:this._bufferAni,
-                        backgroundColor:this.props.bufferColor
+                        position: 'absolute',
+                        width: this._bufferAni,
+                        backgroundColor: this.props.bufferColor
                     }}
                 />
             </View>
         );
     }
 
-    _onLayout({nativeEvent:{layout:{width,height}}}) {
+    _onLayout({ nativeEvent: { layout: { width, height } } }) {
         //防止多次调用,当第一次获取后,后面就不再去获取了
         if (width > 0 && this.totalWidth !== width) {
             //获取progress控件引用
@@ -116,7 +118,7 @@ export default class CustomProgress extends Component {
         if (this._buffer >= 0 && this.totalWidth != 0) {
             Animated.timing(this._bufferAni, {
                 toValue: buffer * this.totalWidth,
-                duration: this.props.bufferAniDuration,
+                duration: this.props.bufferAniDuration
             }).start();
         }
     }
@@ -136,7 +138,7 @@ export default class CustomProgress extends Component {
     }
 }
 Object.defineProperty(CustomProgress.prototype, 'progress', {
-    set(value){
+    set(value) {
         if (value >= 0 && this._progress != value) {
             this._progress = value;
             this._startAniProgress(value);
@@ -145,10 +147,10 @@ Object.defineProperty(CustomProgress.prototype, 'progress', {
     get() {
         return this._progress;
     },
-    enumerable: true,
+    enumerable: true
 });
 Object.defineProperty(CustomProgress.prototype, 'buffer', {
-    set(value){
+    set(value) {
         if (value >= 0 && this._buffer != value) {
             this._buffer = value;
             this._startAniBuffer(value);
@@ -157,7 +159,7 @@ Object.defineProperty(CustomProgress.prototype, 'buffer', {
     get() {
         return this._buffer;
     },
-    enumerable: true,
+    enumerable: true
 });
 const styles = StyleSheet.create({
     container: {
