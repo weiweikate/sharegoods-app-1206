@@ -75,33 +75,33 @@ export default class MinePage extends BasePage {
         this.$loadingDismiss();
     };
 
-    componentDidMount() {
-        if (!user.isLogin) {
-            this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
-            return;
-        }
-        this.$loadingShow('加载中...', { timeout: 3, timeoutCallBack: () => this.timeoutCallBack });
-        MineApi.getUser().then(res => {
-            console.log(res);
-            this.$loadingDismiss();
-            if (res.code === 10000) {
-                let data = res.data;
-                this.setState({
-                    availableBalance: data.availableBalance,
-                    headImg: data.headImg,
-                    levelId: data.levelId,
-                    userScore: data.userScore,
-                    blockedBalance: data.blockedBalance
-
-                });
-            }
-        }).catch(err => {
-            if (err.code === 10001) {
-                user.clearUserInfo();
-                this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
-            }
-        });
-    }
+    // componentDidMount() {
+    //     if (!user.isLogin) {
+    //         this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
+    //         return;
+    //     }
+    //     this.$loadingShow('加载中...', { timeout: 3, timeoutCallBack: () => this.timeoutCallBack });
+    //     MineApi.getUser().then(res => {
+    //         console.log(res);
+    //         this.$loadingDismiss();
+    //         if (res.code === 10000) {
+    //             let data = res.data;
+    //             this.setState({
+    //                 availableBalance: data.availableBalance,
+    //                 headImg: data.headImg,
+    //                 levelId: data.levelId,
+    //                 userScore: data.userScore,
+    //                 blockedBalance: data.blockedBalance
+    //
+    //             });
+    //         }
+    //     }).catch(err => {
+    //         if (err.code === 10001) {
+    //             user.clearUserInfo();
+    //             this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
+    //         }
+    //     });
+    // }
 
     refresh = () => {
         this.$loadingShow('加载中...', { timeout: 3, timeoutCallBack: () => this.timeoutCallBack });
@@ -441,7 +441,7 @@ export default class MinePage extends BasePage {
                 this.props.navigation.navigate('mine/coupons/CouponsPage');
                 break;
             case 3:
-                this.props.navigation.navigate('mine/MyData');
+                this.props.navigation.navigate('mine/MyPromotionPage');
                 break;
             case 4:
                 // this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });

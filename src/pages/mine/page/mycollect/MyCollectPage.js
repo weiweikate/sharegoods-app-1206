@@ -7,27 +7,42 @@ import {
     StyleSheet,
     View,
     Text,
-    TouchableOpacity
+    TouchableOpacity, ListView, TouchableWithoutFeedback, Image
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import UIImage from '../../../../components/ui/UIImage';
 import { color } from '../../../../constants/Theme';
-import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import { SwipeRow } from 'react-native-swipe-list-view';
+import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import RefreshList from '../../../../components/ui/RefreshList';
 import NoMessage from '../../../../comm/res/empty_list_message.png';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
+import MoneyIcon from '../../../spellShop/recommendSearch/src/je_07.png';
+import StarIcon from '../../../spellShop/recommendSearch/src/xj_10.png';
 import { observer } from 'mobx-react/native';
+
 
 @observer
 export default class MyCollectPage extends BasePage {
     constructor(props) {
         super(props);
+        this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
-            viewData: [],
+            viewData: [
+                // {
+                //     createTime: 1537183933000,
+                //     headUrl: 'string',
+                //     id: 71,
+                //     name: '张波的黑店',
+                //     storeId: 1,
+                //     storeStarId: 1,
+                //     totalTradeBalance: null,
+                //     userCount: 6,
+                //     userId: 25
+                // }
+            ],
             selectAll: false,
             currentPage: 1,
             isEmpty: true,
@@ -42,103 +57,75 @@ export default class MyCollectPage extends BasePage {
     };
     //**********************************ViewPart******************************************
     //删除收藏
-    deleteFromShoppingCartByProductId = (index) => {
+    deleteFromShoppingCartByProductId = (storeId) => {
         if (user.isLogin) {
-        } else {
-            let arrData = [];
-            for (let i = 0; i < this.state.viewData.length; i++) {
-                if (index != i) {
-                    arrData.push(this.state.viewData[i]);
+            this.$loadingShow();
+            MineApi.storeCollectionCancel({ storeId: storeId }).then(res => {
+                this.$loadingDismiss();
+                if (res.code === 10000) {
+                    this.$toastShow('删除成功');
+                    this.getDataFromNetwork();
+                } else {
+                    this.$toastShow(res.msg);
                 }
-            }
-            this.setState({ viewData: arrData });
-            this.updateShoppingCartItemsByProductId(index, -1);
+            }).catch(err => {
+                this.$loadingDismiss();
+                console.log(err);
+            });
+        } else {
+            this.$navigate('login/login/LoginPage');
         }
     };
     isValidItem = (index) => {
-        let validCode = 4;
-        return this.state.viewData[index].status == validCode;
+        // let validCode = 0;
+        // return this.state.viewData[index].status == validCode;
+        return true;
     };
-    renderItem = ({ item, index }) => {
+    renderItem = (item, index) => {
         return (
-            this.isValidItem(index) ? this.renderValidItem({ item, index }) : this.renderInvalidItem({ item, index })
+            this.isValidItem(index) ? this.renderValidItem(item, index) : this.renderInvalidItem({ item, index })
         );
 
     };
 
-    renderValidItem = ({ item, index }) => {
+    renderValidItem = (item, index) => {
+        console.log(item);
+        const storeStar = item.storeStarId;
+        const starsArr = [];
+        if (storeStar && typeof storeStar === 'number') {
+            for (let i = 0; i < (storeStar > 3 ? 3 : storeStar); i++) {
+                starsArr.push(i);
+            }
+        }
         return (
-            <View>
-                <SwipeRow disableRightSwipe={true} leftOpenValue={75} rightOpenValue={-75} style={{
-                    height: 100,
-                    flexDirection: 'row',
-                    backgroundColor: color.white,
-                    alignItems: 'center'
-                }}>
-                    <View style={styles.standaloneRowBack}>
-                        <UIText style={styles.backTextWhite} value={'删除'} onPress={() => {
-                            this.deleteFromShoppingCartByProductId(index);
-                        }}/>
-                    </View>
-                    <View style={[styles.standaloneRowFront, { height: 100 }]}>
-                        <TouchableOpacity style={{
-                            flexDirection: 'row',
-                            height: 100,
-                            width: ScreenUtils.width,
-                            alignItems: 'center'
-                        }}>
-                            <UIImage style={{ height: 80, width: 80, marginLeft: 15, marginTop: 11, borderRadius: 10 }}
-                                     onPress={() => this.go2PruductDetailPage(item.id)}
-                                     source={{ uri: this.state.viewData[index].pictureUrl }}/>
-                            <View style={{ flex: 1, marginTop: 11 }}>
-                                <View style={{ height: 31, justifyContent: 'flex-start' }}>
-                                    <Text style={{
-                                        flex: 1,
-                                        flexWrap: 'wrap',
-                                        color: color.black_222,
-                                        fontSize: 13,
-                                        marginLeft: 10,
-                                        marginRight: 10
-                                    }} numberOfLines={2}>{this.state.viewData[index].context}</Text>
+            <TouchableWithoutFeedback onPress={() => this.go2PruductDetailPage(item.storeId)}>
+                <View style={styles.rowContainer}>
+                    {
+                        item.headUrl ? <Image source={{ uri: item.headUrl }} style={styles.img}/> :
+                            <View style={styles.img}/>
+                    }
+                    <View style={styles.right}>
+                        <View style={styles.row}>
+                            <Text numberOfLines={1} style={styles.title}>{item.name || ''}</Text>
+                        </View>
 
-                                </View>
-                                <View style={{
-                                    backgroundColor: color.blue_4a9,
-                                    borderRadius: 5,
-                                    marginLeft: 10,
-                                    height: 15,
-                                    width: 30,
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }}>
-                                    <Text style={{ fontSize: 10, margin: 2 }}>包邮</Text>
-                                </View>
-                                <View style={{
-                                    height: 30,
-                                    marginLeft: 10,
-                                    marginRight: 10,
-                                    flexDirection: 'row',
-                                    justifyContent: 'flex-start',
-                                    marginTop: 10
-                                }}>
-
-                                    <UIText value={StringUtils.formatMoneyString(this.state.viewData[index].price)}
-                                            style={{ color: color.red, fontSize: 13, marginRight: 10 }}/>
-                                    <UIText
-                                        value={StringUtils.formatMoneyString(this.state.viewData[index].original_price)}
-                                        style={{
-                                            color: color.black_999,
-                                            fontSize: 13,
-                                            textDecorationLine: 'line-through'
-                                        }}/>
-
-                                </View>
+                        <Text style={[styles.desc, styles.margin]}>{item.userCount || 0}积分</Text>
+                        <View style={styles.bottomRow}>
+                            <Image source={MoneyIcon}/>
+                            <Text style={[styles.desc, { color: '#f39500' }]}>交易额:{item.totalTradeBalance}元</Text>
+                            <View style={{ flex: 1 }}/>
+                            <View style={styles.starContainer}>
+                                {
+                                    starsArr.map((index) => {
+                                        return <Image key={index} style={[index ? { marginLeft: 5 } : null]}
+                                                      source={StarIcon}/>;
+                                    })
+                                }
                             </View>
-                        </TouchableOpacity>
+                        </View>
                     </View>
-                </SwipeRow>
-                <View style={{ height: 2, backgroundColor: color.page_background }}/>
-            </View>
+                </View>
+            </TouchableWithoutFeedback>
         );
     };
     renderInvalidItem = ({ item, index }) => {
@@ -219,25 +206,97 @@ export default class MyCollectPage extends BasePage {
         // this.navigate('product/ProductDetailPage',{productId:i})
     }
 
+    componentDidMount() {
+        this.getDataFromNetwork();
+    }
+
     getDataFromNetwork = () => {
-      MineApi.queryCollection().then(res=>{
-          console.log(res);
-      })
+        this.$loadingShow();
+        MineApi.queryCollection({ page: 1, size: 20 }).then(res => {
+            this.$loadingDismiss();
+            let arr = [];
+            console.log(res);
+            if (res.code === 10000) {
+                let icons = res.data ? (res.data.data ? res.data.data : []) : [];
+                icons.forEach(item => {
+                    console.log(item);
+                    arr.push({
+                        createTime: item.createTime,
+                        headUrl: item.headUrl,
+                        id: item.id,
+                        name: item.name,
+                        storeId: item.storeId,
+                        storeStarId: item.storeStarId,
+                        totalTradeBalance: item.totalTradeBalance,
+                        userCount: item.userCount,
+                        userId: item.userId
+                    });
+                });
+                console.log(arr);
+                this.setState({
+                    viewData: arr
+                });
+            }
+        }).catch(err => {
+            this.$loadingDismiss();
+            if (err.code === 10001) {
+                this.$navigate('login/login/LoginPage');
+            }
+        });
     };
 
     _render() {
         return (
             <View style={styles.container}>
-                {this.renderBodyView()}
+                {this.state.viewData && this.state.viewData.length > 0 ? this._renderListView() : this._renderEmptyView()}
             </View>
         );
     }
+
+    _renderListView = () => {
+        console.log(this.state.viewData);
+        return (
+            <SwipeListView
+                dataSource={this.ds.cloneWithRows(this.state.viewData)}
+                disableRightSwipe={true}
+                renderRow={(rowData, secId, rowId, rowMap) => (
+                    this.renderItem(rowData, rowId)
+                )}
+                renderHiddenRow={(data, secId, rowId, rowMap) => (
+                    <TouchableOpacity
+                        style={styles.standaloneRowBack}
+                        onPress={() => {
+                            rowMap[`${secId}${rowId}`].closeRow();
+                            this.deleteFromShoppingCartByProductId(data.storeId);
+                        }}>
+                        <UIText style={{ color: 'white' }} value={'立即\n删除'}/>
+                    </TouchableOpacity>
+                )}
+                rightOpenValue={-75}
+            />
+        );
+    };
+
+    _renderEmptyView = () => {
+        return (
+            <View style={{
+                flex: 1,
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}>
+                <Text>
+                    ~暂无店铺收藏~!
+                </Text>
+            </View>
+        );
+    };
 
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: 'white'
+        flex: 1, backgroundColor: '#f7f7f7'
     },
     standaloneRowFront: {
         alignItems: 'center',
@@ -259,7 +318,69 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         padding: 15
+    },
+    bottomRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 0,
+        marginRight: 0
+    },
+    starContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: 55
+    },
+    right: {
+        marginLeft: 10,
+        flex: 1
+    },
+    margin: {
+        marginTop: 10,
+        marginBottom: 5
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    img: {
+        width: 50,
+        height: 50,
+        borderWidth: 1,
+        borderColor: '#c8c8c8',
+        backgroundColor: __DEV__ ? '#c8c8c8' : 'white'
+    },
+    ingContainer: {
+        width: 46,
+        height: 15,
+        borderRadius: 7,
+        backgroundColor: '#e60012',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 5
+    },
+    ingText: {
+        fontSize: 11,
+        color: '#f7f7f7'
+    },
+    rowContainer: {
+        height: 80,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        backgroundColor: 'white'
+    },
+    title: {
+        // fontFamily: "PingFang-SC-Medium",
+        fontSize: 13,
+        color: '#000000',
+        maxWidth: 200
+    },
+    desc: {
+        marginLeft: 2,
+        fontSize: 12,
+        color: '#666666'
     }
+
 });
 
 

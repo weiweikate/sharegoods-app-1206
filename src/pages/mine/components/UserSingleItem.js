@@ -37,7 +37,7 @@ export default class UserSingleItem extends Component {
                     <View style={{ justifyContent: 'center', marginLeft: marginLeft }}>
                         <Text style={leftTextStyle && leftTextStyle}>{leftText}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row',  justifyContent: 'center', alignItems: 'center' }}>
                         {this.renderRightText()}
                         {this.renderArrow()}
                     </View>
@@ -50,7 +50,7 @@ export default class UserSingleItem extends Component {
     renderLine = () => {
         const { isLine = true } = this.props;
         return (!isLine ? null :
-                <View style={{ height: 1, backgroundColor: color.gray_EEE }}></View>
+                <View style={{ height: 1, backgroundColor: color.gray_EEE }}/>
         );
     };
 
@@ -66,9 +66,9 @@ export default class UserSingleItem extends Component {
     renderheadImage = () => {
         const { headImage } = this.props;
         return (
-            headImage == '' ? null :
+            !headImage ? null :
                 <Image source={{ uri: StringUtils.isNoEmpty(headImage) ? headImage : '' }}
-                       style={{ width: 30, height: 30, borderRadius: 15 }}/>
+                       style={{ width: 30, height: 30, borderRadius: 15,marginRight:15 }}/>
         );
     };
     renderArrow = () => {
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
         marginRight: 15
     },
     rightText_noCircle: {
-        justifyContent: 'center', alignItems: 'center', marginRight: 15
+        justifyContent: 'flex-end', alignItems: 'center', marginRight: 15
     }
 });
 
