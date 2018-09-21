@@ -135,7 +135,6 @@ export default class LoginPage extends BasePage {
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
         this.$loadingShow();
-
         if (loginType === 0) {
             LoginAPI.codeLogin({
                 authcode: "22",

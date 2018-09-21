@@ -23,7 +23,17 @@ export default class DetailHeaderView extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            swiperShow: false
+        };
+    }
+
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({
+                swiperShow: true
+            });
+        }, 0);
     }
 
     _clickItem = () => {
@@ -68,12 +78,14 @@ export default class DetailHeaderView extends Component {
                                backgroundColor: '#eeeeee',
                                opacity: 0.4
                            }}
+                           swiperShow={this.state.swiperShow}
                            activeDotStyle={{
                                height: 5,
                                width: 30,
                                borderRadius: 5,
                                backgroundColor: '#eeeeee'
                            }}
+                           height={ScreenUtils.autoSizeWidth(377)}
                            autoplay={true}/>
 
                 <View style={{ backgroundColor: 'white' }}>
@@ -123,7 +135,7 @@ export default class DetailHeaderView extends Component {
 
 const styles = StyleSheet.create({
     ViewPager: {
-        height: ScreenUtils.autoSizeWidth(377),
+        // height: ScreenUtils.autoSizeWidth(377),
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
         width: ScreenUtils.width
     }

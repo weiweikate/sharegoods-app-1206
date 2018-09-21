@@ -22,6 +22,7 @@ import ShopCartRes from '../res/ShopCartRes';
 import shopCartStore from '../model/ShopCartStore';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
+import bridge from '../../../utils/bridge';
 
 @observer
 export default class ShopCartPage extends BasePage {
@@ -310,16 +311,19 @@ export default class ShopCartPage extends BasePage {
     /*action*/
     /*减号操作*/
     _reduceProductNum = (itemData, rowId) => {
+
         if (itemData.amount > 1) {
             itemData.amount--;
-            shopCartStore.updateCartItem(itemData, rowId);
+            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+        } else if (itemData.amount === 1) {
+            bridge.$toast('已达商品最小数量');
         }
         // itemData.amount
     };
     /*加号按钮操作*/
     _addProductNum = (itemData, rowId) => {
         itemData.amount++;
-        shopCartStore.updateCartItem(itemData, rowId);
+        shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         // shopCartStore.data[rowId] = itemData;
     };
     /*删除操作*/

@@ -15,7 +15,7 @@ import ViewPager from '../../components/ui/ViewPager';
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIImage from '../../components/ui/UIImage';
 import LinearGradient from 'react-native-linear-gradient';
-import HomeClassifyView   from './components/HomeClassifyView'
+import HomeClassifyView from './components/HomeClassifyView';
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
@@ -61,13 +61,15 @@ const DemoList = [
 export default class HomePage extends Component {
 
     st = 0;
+    bannerH = px2dp(220);
+    headerH = (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : ScreenUtils.androidStatusHeight()) + 44;
 
     constructor() {
         super();
         this.state = {
             androidStatusH: ScreenUtils.androidStatusHeight(),
             swiperShow: false,
-            bannerHeight: px2dp(220)
+            bannerHeight: this.bannerH
         };
     }
 
@@ -81,8 +83,8 @@ export default class HomePage extends Component {
 
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
-        if (Y < 100) {
-            this.st = Y * 0.01;
+        if (Y < this.bannerH) {
+            this.st = Y / (this.bannerH - this.headerH);
         } else {
             this.st = 1;
         }
@@ -96,17 +98,17 @@ export default class HomePage extends Component {
             <View style={styles.container}>
                 <View ref={(e) => this._refHeader = e}
                       style={[styles.navBarBg, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH },
-                          { height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH) + 44 }]}/>
+                          { height: this.headerH }]}/>
                 <LinearGradient colors={['#000000', 'transparent']}
                                 style={[styles.navBar, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH },
                                     {
-                                        height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH) + 58,
+                                        height: this.headerH + 14,
                                         opacity: 0.5
                                     }]}/>
                 <View colors={['#000000', 'transparent']}
                       style={[styles.navBar, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH },
                           {
-                              height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH) + 44,
+                              height: this.headerH,
                               opacity: 0.8
                           }]}>
                     <Image source={require('./res/icons/logo.png')} style={styles.logo}/>
