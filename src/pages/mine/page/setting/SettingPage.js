@@ -17,6 +17,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import arrow_right from '../../../mine/res/customerservice/icon_06-03.png';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
+import shopCartStore from '../../../shopCart/model/ShopCartStore';
 
 
 class SettingPage extends BasePage {
@@ -167,6 +168,8 @@ class SettingPage extends BasePage {
                                  // 正常退出，或者登录超时，都去清空数据
                                  //this.params.callBack&&this.params.callBack();
                                  user.clearUserInfo();
+                                 //清空购物车
+                                 shopCartStore.data = [];
                                  this.$navigateReset();
                              }
                          }).catch(err=>{
