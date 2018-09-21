@@ -12,9 +12,9 @@ import PropTypes from 'prop-types';
 
 export default class Password extends Component {
     static propTypes = {
-        style: View.propTypes.style,
-        inputItemStyle: View.propTypes.style,
-        iconStyle: View.propTypes.style,
+        style: PropTypes.style,
+        inputItemStyle: PropTypes.style,
+        iconStyle: PropTypes.style,
         maxLength: TextInput.propTypes.maxLength.isRequired,
         onChange: PropTypes.func,
         onEnd: PropTypes.func,
