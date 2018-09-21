@@ -191,6 +191,7 @@ export default class SearchResultPage extends BasePage {
                 <Modal
                     animationType="none"
                     transparent={true}
+                     onRequestClose={()=>this.setState({modalVisible:false})}
                     visible={this.state.modalVisible}>
                     <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
                                    selectionViewClose={this._selectionViewClose} data={this.state.selectionData}/>

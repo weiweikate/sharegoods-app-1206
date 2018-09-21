@@ -53,6 +53,9 @@ export default class ProductDetailPage extends BasePage {
                 data: data.data
             });
         }).catch((error) => {
+            if(error.code===10001){
+                this.$navigate('login/login/LoginPage')
+            }
             this.$loadingDismiss();
             this.$toastShow(error.msg);
         });
