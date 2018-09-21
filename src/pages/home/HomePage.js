@@ -8,14 +8,14 @@ import {
     Platform,
     Image,
     TextInput,
-    TouchableWithoutFeedback,
-    NativeModules, Dimensions
+    Dimensions
 } from 'react-native';
 import RouterMap from '../../RouterMap';
 import ViewPager from '../../components/ui/ViewPager';
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIImage from '../../components/ui/UIImage';
 import LinearGradient from 'react-native-linear-gradient';
+import HomeClassifyView from './components/HomeClassifyView';
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
@@ -61,28 +61,30 @@ const DemoList = [
 export default class HomePage extends Component {
 
     st = 0;
+    bannerH = px2dp(220);
+    headerH = (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : ScreenUtils.androidStatusHeight()) + 44;
 
     constructor() {
         super();
         this.state = {
-            statusHeight: 20
+            androidStatusH: ScreenUtils.androidStatusHeight(),
+            swiperShow: false,
+            bannerHeight: this.bannerH
         };
     }
 
-    async componentWillMount() {
-        if (Platform.OS === 'android') {
-            await NativeModules.commModule.getStatusHeight().then(data => {
-                this.setState({ statusHeight: data });
-            }).catch(err => {
-                console.warn(err);
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({
+                swiperShow: true
             });
-        }
+        }, 0);
     }
 
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
-        if (Y < 100) {
-            this.st = Y * 0.01;
+        if (Y < this.bannerH) {
+            this.st = Y / (this.bannerH - this.headerH);
         } else {
             this.st = 1;
         }
@@ -95,17 +97,20 @@ export default class HomePage extends Component {
         return (
             <View style={styles.container}>
                 <View ref={(e) => this._refHeader = e}
-                      style={[styles.navBarBg, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight },
-                          { height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight) + 44 }]}/>
+                      style={[styles.navBarBg, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH },
+                          { height: this.headerH }]}/>
                 <LinearGradient colors={['#000000', 'transparent']}
-                                style={[styles.navBar, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight },
+                                style={[styles.navBar, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH },
                                     {
-                                        height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight) + 58,
+                                        height: this.headerH + 14,
                                         opacity: 0.5
                                     }]}/>
                 <View colors={['#000000', 'transparent']}
-                      style={[styles.navBar, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight },
-                          { height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.statusHeight) + 44 }]}>
+                      style={[styles.navBar, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH },
+                          {
+                              height: this.headerH,
+                              opacity: 0.8
+                          }]}>
                     <Image source={require('./res/icons/logo.png')} style={styles.logo}/>
                     <View style={styles.searchBox}>
                         <Image source={require('./res/icon_search.png')} style={styles.searchIcon}/>
@@ -122,10 +127,10 @@ export default class HomePage extends Component {
                             scrollEventThrottle={10}>
 
                     <ViewPager style={{
-                        height: px2dp(220),
                         backgroundColor: 'rgba(255, 255, 255, 0.7)',
                         width: ScreenUtils.width
                     }}
+                               swiperShow={this.state.swiperShow}
                                arrayData={imageUrls}
                                renderItem={(item) => this.renderViewPageItem(item)}
                                dotStyle={{
@@ -142,50 +147,23 @@ export default class HomePage extends Component {
                                    backgroundColor: '#ffffff'
                                }}
                                autoplay={true}
+                               height={this.state.bannerHeight}
                     />
-
-                    <View style={styles.menuView}>
-                        <TouchableWithoutFeedback onPress={() => {
-
-                        }}>
-                            <View style={{ alignItems: 'center', flex: 1 }}>
-                                <Image style={styles.iconImg} source={require('./res/icons/zq.png')}/>
-                                <Text style={styles.showText}>赚钱</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => {
-
-                        }}>
-                            <View style={{ alignItems: 'center', flex: 1 }}>
-                                <Image style={styles.iconImg} source={require('./res/icons/sq.png')}/>
-                                <Text style={styles.showText}>省钱</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => {
-
-                        }}>
-                            <View style={{ alignItems: 'center', flex: 1 }}>
-                                <Image style={styles.iconImg} source={require('./res/icons/fx.png')}/>
-                                <Text style={styles.showText}>分享</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => {
-
-                        }}>
-                            <View style={{ alignItems: 'center', flex: 1 }}>
-                                <Image style={styles.iconImg} source={require('./res/icons/xy.png')}/>
-                                <Text style={styles.showText}>学院</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => {
-
-                        }}>
-                            <View style={{ alignItems: 'center', flex: 1 }}>
-                                <Image style={styles.iconImg} source={require('./res/icons/cx.png')}/>
-                                <Text style={styles.showText}>促销</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                    </View>
+                    {/*头部分类*/}
+                    <HomeClassifyView
+                        itemImages={[
+                            require('./res/icons/zq.png'),
+                            require('./res/icons/sq.png'),
+                            require('./res/icons/fx.png'),
+                            require('./res/icons/xy.png'),
+                            require('./res/icons/cx.png'),
+                            require('./res/icons/cx.png')
+                        ]}
+                        itemTitles={['赚钱', '省钱', '分享', '学院', '促销', '赚钱']}
+                        itemClickAction={() => {
+                            console.log('点击了分类item');
+                        }}
+                    />
 
                     <View style={[styles.box, { paddingTop: 10, paddingBottom: 10 }]}>
                         <View style={styles.featureBox}>

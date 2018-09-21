@@ -9,7 +9,7 @@ import {
     ScrollView,
     TouchableWithoutFeedback
 } from 'react-native';
-import storeModel from '../model/storeModel';
+import storeModel from '../model/StoreModel';
 import SelIcon from './res/xianzhong_03.png';
 import UnSelIcon from './res/weixianzhong_03-02.png';
 import BasePage from '../../../BasePage';

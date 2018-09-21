@@ -9,7 +9,7 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
-import storeModel from '../model/storeModel';
+import storeModel from '../model/StoreModel';
 import BasePage from '../../../BasePage';
 import StringUtils from '../../../utils/StringUtils';
 

@@ -119,7 +119,7 @@ export default class LoginPage extends BasePage {
                 if (error.code === 34005) {
                     this.$navigate("login/login/RegistPage", data);
                 }
-                bridge.$toast(data.msg);
+                // bridge.$toast(data.msg);
             });
         });
     };
@@ -135,7 +135,6 @@ export default class LoginPage extends BasePage {
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
         this.$loadingShow();
-
         if (loginType === 0) {
             LoginAPI.codeLogin({
                 authcode: "22",
@@ -149,14 +148,13 @@ export default class LoginPage extends BasePage {
                 wechatVersion: ""
             }).then((data) => {
                 this.$loadingDismiss();
-                console.log(data);
+                // console.log(data);
                 UserModel.saveUserInfo(data.data);
                 bridge.$toast("登陆成功");
                 this.params.callback&&this.params.callback();
-                this.$navigateBack();
+                this.$navigateBack()
             }).catch((data) => {
                 this.$loadingDismiss();
-                console.warn(data);
                 bridge.$toast(data.msg);
                 /*未注册*/
                 if (data.code === 34005){

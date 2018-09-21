@@ -12,7 +12,7 @@ import {
     ImageBackground,
     TouchableOpacity
 } from 'react-native';
-import storeModel from '../../model/storeModel';
+import storeModel from '../../model/StoreModel';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const headerWidth = 65 / 375 * SCREEN_WIDTH;
@@ -32,12 +32,12 @@ export default class ShopHeader extends Component {
 
     render() {
 
-        const progress = (storeModel.storeBonusDto.storeThisTimeBonus || 0) / (storeModel.store.groupMoney || 0) || 0;
+        const progress = (storeModel.storeBonusDto.storeThisTimeBonus || 0) / (storeModel.storeData.groupMoney || 0) || 0;
         const marginLeft = 315 / 375 * SCREEN_WIDTH * progress;
 
         const radius = marginLeft > 4 ? 0 : 4;
 
-        const storeStar = storeModel.storeStar;
+        const storeStar = storeModel.storeData.storeStarId;
         const starsArr = [];
         if (storeStar && typeof storeStar === 'number') {
             for (let i = 0; i < storeStar; i++) {
@@ -46,20 +46,20 @@ export default class ShopHeader extends Component {
         }
 
         //店铺尚未分红的钱-new  storeThisTimeBonus
-        const gap = (storeModel.store.groupMoney || 0) - (storeModel.storeBonusDto.storeThisTimeBonus || 0);
+        const gap = (storeModel.storeData.groupMoney || 0) - (storeModel.storeBonusDto.storeThisTimeBonus || 0);
 
         return <View style={styles.container}>
             <ImageBackground source={HeaderBarBgImg} style={styles.imgBg}>
                 <ImageBackground source={RingImg}
                                  style={styles.headerBg}>
                     {
-                        storeModel.store.headUrl ? <Image style={styles.headerImg}
-                                                          source={{ uri: storeModel.store.headUrl }}/> : null
+                        storeModel.storeData.headUrl ? <Image style={styles.headerImg}
+                                                          source={{ uri: storeModel.storeData.headUrl }}/> : null
                     }
                 </ImageBackground>
                 <View style={styles.shopInContainer}>
-                    <Text style={styles.shopName}>{storeModel.store.name || ''}</Text>
-                    <Text style={styles.shopId}>ID：{storeModel.store.id || ''}</Text>
+                    <Text style={styles.shopName}>{storeModel.storeData.name || ''}</Text>
+                    <Text style={styles.shopId}>ID：{storeModel.storeData.storeNumber || ''}</Text>
                     <View style={styles.starRow}>
                         <Text style={styles.shopName}>店铺星级：</Text>
                         {
@@ -87,7 +87,7 @@ export default class ShopHeader extends Component {
                     <Text style={styles.progress}>{storeModel.storeBonusDto.storeThisTimeBonus || 0}<Text style={{
                         color: '#666666'
                     }}>
-                        /{storeModel.store.groupMoney || 0}
+                        /{storeModel.storeData.groupMoney || 0}
                     </Text></Text>
 
                     <ImageBackground source={ProgressImg} style={{

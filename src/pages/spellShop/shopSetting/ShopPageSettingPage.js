@@ -10,7 +10,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ArrowImg from './res/xjt_03.png';
-import storeModel from '../model/storeModel';
+import storeModel from '../model/StoreModel';
 import BasePage from '../../../BasePage';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;

@@ -58,14 +58,11 @@ export default class SetPasswordPage extends BasePage {
         }).then(data=>{
             this.$loadingDismiss();
             console.warn(data);
-            this.$navigate('login/login/LoginPage');
-            // this.$navigateBack('login/login/LoginPage')
-
+            this.$navigateBack(-2);
         }).catch(data=>{
             this.$loadingDismiss()
              if (data.code === 34007 ){
                 bridge.$toast('该手机号已经注册,请更换新的手机号');
-                this.$toast
             } else {
                 this.$toast(data.msg);
             }

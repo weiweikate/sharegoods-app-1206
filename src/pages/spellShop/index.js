@@ -1,9 +1,10 @@
 import SpellShopPage from './SpellShopPage';
 import recommendSearch from './recommendSearch';
 import openShop from './openShop';
-import shopRecruit from './shopRecruit';
-import myShop from './myShop';
+// import shopRecruit from './shopRecruit';
+// import myShop from './myShop';
 import shopSetting from './shopSetting';
+import MyShop_RecruitPage from './MyShop_RecruitPage';
 
 export default {
     //拼店模块
@@ -15,10 +16,12 @@ export default {
         recommendSearch,
         //开店模块
         openShop,
-        //招募模块
-        shopRecruit,
-        //我的店铺模块
-        myShop,
+        // //招募模块
+        // shopRecruit,
+        // //我的店铺模块
+        // myShop,
+        //我的店铺 招募中
+        MyShop_RecruitPage,
         //店铺设置
         shopSetting
     }
