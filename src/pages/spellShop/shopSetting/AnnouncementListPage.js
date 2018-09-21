@@ -7,7 +7,7 @@ import {
 import BasePage from '../../../BasePage';
 import AnnouncementRow from './components/AnnouncementRow';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
-import storeModel from '../model/storeModel';
+import storeModel from '../model/StoreModel';
 import { observer } from 'mobx-react/native';
 
 const DefaultPageSize = 10;

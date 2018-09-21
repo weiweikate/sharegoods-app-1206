@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 
 import { observer } from 'mobx-react/native';
-import storeModel from '../model/storeModel';
-// import spellStatusModel from './model/spellStatusModel';
+import StoreModel from '../model/StoreModel';
+import SpellStatusModel from '../model/SpellStatusModel';
 
 import BasePage from '../../../BasePage';
 
@@ -38,15 +38,16 @@ export default class MyShopPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '我的店铺'
+        title: '我的店铺',
+        leftNavItemHidden:this.props.leftNavItemHidden,
     };
     $NavBarRenderRightItem = () => {
         return <View style={styles.rightBarItemContainer}>
-            <TouchableOpacity onPress={this._clickShopItem}>
+            {SpellStatusModel.canSeeGroupStore && <TouchableOpacity onPress={this._clickShopItem}>
                 <Image style={{ marginRight: 11 }} source={ShopItemLogo}/>
-            </TouchableOpacity>
+            </TouchableOpacity>}
             <TouchableOpacity onPress={this._clickSettingItem}>
-                <Image style={{ marginRight: 20 }} source={1 ? MoreItemLogo : ItemLogo}/>
+                <Image style={{ marginRight: 20 }} source={StoreModel.storeData.myStore ? MoreItemLogo : ItemLogo}/>
             </TouchableOpacity>
         </View>;
     };
@@ -62,7 +63,7 @@ export default class MyShopPage extends BasePage {
 
     // 点击店铺设置
     _clickSettingItem = () => {
-        if (1) {
+        if (StoreModel.storeData.myStore) {
             this.$navigate('spellShop/shopSetting/ShopPageSettingPage');
         } else {
             this.actionSheetRef.show({
@@ -161,25 +162,25 @@ export default class MyShopPage extends BasePage {
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl
-                            refreshing={storeModel.refreshing}
+                            refreshing={StoreModel.refreshing}
                             onRefresh={this._onRefresh}
                         />
                         }>
                 {this.renderHeader()}
-                <MembersRow dealerList={storeModel.dealerList.slice()}
-                            isYourStore={storeModel.isYourStore}
+                <MembersRow dealerList={StoreModel.storeUserList.slice()}
+                            isYourStore={StoreModel.myStore}
                             onPressAddItem={this._clickAddMembers}
                             onPressAllMembers={this._clickAllMembers}
                             onPressMemberItem={this._clickItemMembers}/>
                 {this.renderSepLine()}
-                {storeModel.isYourStore ? this._renderRow(RmbIcon, '店铺已完成分红总额', `${storeModel.storeBonusDto.storeThisTimeBonus || 0}元`) : null}
+                {StoreModel.myStore ? this._renderRow(RmbIcon, '店铺已完成分红总额', `${StoreModel.storeBonusDto.storeThisTimeBonus || 0}元`) : null}
                 <View style={{ height: 10 }}/>
-                {!storeModel.isYourStore ? this._renderRow(RmbIcon, '个人已完成交易总额', `${(storeModel.storeBonusDto.dealerThisTimeBonus || 0) + (storeModel.storeBonusDto.dealerTotalBonus || 0)}元`) : null}
-                {this._renderRow(ZuanIcon, '个人分红次数', `${storeModel.storeBonusDto.dealerTotalBonusCount || 0}次`)}
+                {!StoreModel.myStore ? this._renderRow(RmbIcon, '个人已完成交易总额', `${(StoreModel.tradeVolume || 0) + (StoreModel.storeBonusDto.dealerTotalBonus || 0)}元`) : null}
+                {this._renderRow(ZuanIcon, '个人分红次数', `${StoreModel.storeBonusDto.dealerTotalBonusCount || 0}次`)}
                 {this.renderSepLine()}
-                {this._renderRow(MoneyIcon, '个人已获得分红金', `${(storeModel.storeBonusDto.dealerTotalBonus || 0)}元`)}
+                {this._renderRow(MoneyIcon, '个人已获得分红金', `${(StoreModel.storeBonusDto.dealerTotalBonus || 0)}元`)}
                 {this.renderSepLine()}
-                {storeModel.isYourStore ? this._renderRow(QbIcon, '个人获得店长分红金', `${storeModel.storeBonusDto.storeManagerBonus || 0}元`) : this._renderRow(QbIcon, '加入时间', storeModel.addStoreTime)}
+                {StoreModel.myStore ? this._renderRow(QbIcon, '个人获得店长分红金', `${StoreModel.storeBonusDto.storeManagerBonus || 0}元`) : this._renderRow(QbIcon, '加入时间', StoreModel.addStoreTime)}
                 <View style={{ height: 15 }}/>
             </ScrollView>
         );

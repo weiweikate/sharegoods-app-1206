@@ -21,7 +21,7 @@ export default class OpenShopSuccessPage extends BasePage {
     };
 
     _clickEnterShop = () => {
-        this.jr_NavBarLeftPressed();
+        this.$navigateReset();
     };
 
     _clickInvite = () => {

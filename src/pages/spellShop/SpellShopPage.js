@@ -5,24 +5,23 @@ import {
     Image,
     StyleSheet,
     ScrollView,
-    RefreshControl,
-    TouchableWithoutFeedback,
-    Text
+    RefreshControl
 } from 'react-native';
 
 // 图片资源
 import IntroduceImg from './src/hhk_03.png';
 import IntroduceImg1 from './src/hhk_031.png';
-
-import NavigatorBar from '../../components/pageDecorator/NavigatorBar';
 import ScreenUtils from '../../utils/ScreenUtils';
 import BasePage from '../../BasePage';
 
 import { observer } from 'mobx-react';
+import SpellStatusModel from './model/SpellStatusModel';
+import RecommendPage from './recommendSearch/RecommendPage';
+import MyShop_RecruitPage from './MyShop_RecruitPage';
+import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 
 @observer
 export default class SpellShopPage extends BasePage {
-
     constructor(props) {
         super(props);
     }
@@ -31,49 +30,46 @@ export default class SpellShopPage extends BasePage {
         show: false
     };
 
-    _onRefresh = () => {
-
-    };
-
-    _clickSearchItem = () => {
-        this.$navigate('spellShop/recommendSearch/RecommendPage');
-    };
-
-    _renderBarRight = () => {
-        return <View style={styles.rightBarItemContainer}>
-            <TouchableWithoutFeedback style={styles.rightItemBtn} onPress={this._clickSearchItem}>
-                <View>
-                    <Text>推荐 </Text>
-                </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback style={styles.rightItemBtn} onPress={this._clickSearchItem}>
-                <View>
-                    <Text> 店铺</Text>
-
-                </View>
-            </TouchableWithoutFeedback>
-        </View>;
-    };
-
-    _renderContainer = () => {
+    $getPageStateOptions = () => {
         return {
-            bar: true,
-            cmp: <ScrollView refreshControl={<RefreshControl refreshing={false} onRefresh={this._onRefresh}/>}
-                             showsVerticalScrollIndicator={false}>
-                <View style={{ flex: 1 }}>
-                    <Image style={styles.levelLow} source={IntroduceImg} resizeMode='stretch'/>
-                    <Image style={styles.levelLow1} source={IntroduceImg1} resizeMode='stretch'/>
-                </View>
-            </ScrollView>
+            loadingState: SpellStatusModel.loadingState,
+            netFailedProps: {
+                netFailedInfo: SpellStatusModel.netFailedInfo,
+                reloadBtnClick: () => {
+                    SpellStatusModel.getUser(2);
+                }
+            }
         };
     };
 
+    _renderContainer = () => {
+        if (SpellStatusModel.storeId) {
+            // 加入了店铺或者自己有店铺
+            return (<MyShop_RecruitPage id={SpellStatusModel.storeId} navigation={this.props.navigation}/>);
+        } else if (SpellStatusModel.canSeeGroupStore) {
+            // 没有店铺，看见推荐店铺页面
+            return (<RecommendPage navigation={this.props.navigation} leftNavItemHidden={true}/>);
+        } else {
+            // 初始化的介绍页面
+            return (
+                <View>
+                    <NavigatorBar leftNavItemHidden={true} title={'拼店'}/>
+                    <ScrollView refreshControl={<RefreshControl refreshing={false} onRefresh={this._onRefresh}/>}
+                                showsVerticalScrollIndicator={false}>
+                        <View style={{ flex: 1 }}>
+                            <Image style={styles.levelLow} source={IntroduceImg} resizeMode='stretch'/>
+                            <Image style={styles.levelLow1} source={IntroduceImg1} resizeMode='stretch'/>
+                        </View>
+                    </ScrollView>
+                </View>
+            );
+        }
+    };
+
     _render() {
-        const { bar, cmp } = this._renderContainer();
         return (
             <View style={styles.container}>
-                {bar && <NavigatorBar leftNavItemHidden={true} title={'拼店'} renderRight={this._renderBarRight}/>}
-                {cmp}
+                {this._renderContainer()}
             </View>
         );
     }
@@ -83,11 +79,6 @@ export default class SpellShopPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1
-    },
-    rightBarItemContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
     },
     levelLow: {
         width: ScreenUtils.width,

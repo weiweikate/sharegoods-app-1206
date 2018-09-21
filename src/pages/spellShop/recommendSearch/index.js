@@ -6,8 +6,8 @@ export default {
     moduleName: 'recommendSearch',
     childRoutes: {
         //推荐页面
-        RecommendPage: RecommendPage,
+        RecommendPage,
         //搜索页面
-        SearchPage: SearchPage
+        SearchPage
     }
 };

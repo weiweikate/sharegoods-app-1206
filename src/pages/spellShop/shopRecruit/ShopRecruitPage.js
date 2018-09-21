@@ -13,12 +13,14 @@ import {
 import RecruitMembersRow from './components/RecruitMembersRow';
 import RecruitHeaderView from './components/RecruitHeaderView';
 import BasePage from '../../../BasePage';
+import storeModel from '../model/StoreModel';
 
 export default class ShopRecruitPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '店铺人员招募中'
+        title: '店铺人员招募中',
+        leftNavItemHidden:this.props.leftNavItemHidden,
     };
 
     constructor(props) {
@@ -27,7 +29,8 @@ export default class ShopRecruitPage extends BasePage {
             refreshing: false,
             canOpen: true,
             originDealerList:[{},{},{},{}],
-            dealerList:[{},{},{},{}]
+            dealerList:[{},{},{},{}],
+            storeId:this.params.storeId || storeModel
         };
     }
 

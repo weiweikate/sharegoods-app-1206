@@ -68,7 +68,8 @@ export default class SelectionHeaderView extends Component {
                         fontFamily: 'PingFang-SC-Medium',
                         marginTop: 16
                     }}>{`￥${price}`}</Text>
-                    <Text style={{ color: '#222222', fontSize: 13, marginTop: 8 }}>{`库存${stock}${stockUnit}`}</Text>
+                    <Text
+                        style={{ color: '#222222', fontSize: 13, marginTop: 8 }}>{`库存${stock}${stockUnit || ''}`}</Text>
                     <Text style={{
                         color: '#222222',
                         fontSize: 13,

@@ -11,13 +11,13 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 export default class RecommendSegmentView extends Component {
 
     static propTypes = {
-        onPressAtIndex: PropTypes.func
+        segmentPressAtIndex: PropTypes.func
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            selectIndex: 0
+            selectIndex: 1
         };
     }
 
@@ -28,7 +28,7 @@ export default class RecommendSegmentView extends Component {
         this.setState({
                 selectIndex: index
             }, () => {
-                this.props.onPressAtIndex(index);
+                this.props.segmentPressAtIndex(index);
             }
         );
     };
@@ -47,9 +47,9 @@ export default class RecommendSegmentView extends Component {
 
     render() {
         return (<View style={styles.container}>
-            {this._renderItem('新开店铺', 0)}
-            {this._renderItem('热门店铺', 1)}
-            {this._renderItem('所有店铺', 2)}
+            {this._renderItem('新开店铺', 1)}
+            {this._renderItem('热门店铺', 2)}
+            {this._renderItem('所有店铺', 3)}
         </View>);
     }
 
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         backgroundColor: '#D51243',
-        height: 3,
+        height: 1,
         width: 50,
         alignSelf: 'center'
     },

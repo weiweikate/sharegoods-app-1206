@@ -11,66 +11,112 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import StarImg from '../src/dj_03.png';
+
 
 export default class RecommendRow extends Component {
 
     static propTypes = {
-        id: PropTypes.number,        //店铺id
-        headUrl: PropTypes.string,   //头像
-        name: PropTypes.string,      //店名
-        hadUser: PropTypes.number,   //店内目前成员人数
-        onPress: PropTypes.func       //点击回调
+        RecommendRowItem: PropTypes.object,
+        RecommendRowOnPress: PropTypes.func
     };
 
     constructor(props) {
         super(props);
-        this.state = {
-            dataList: ['', '', '', '', '', '', '', '', '', '', '', '']
-        };
+        this.state = {};
     }
 
-    renderIconItem = () => {
-        return (<TouchableOpacity style={styles.item_container} onPress={() => {
+    renderIconItem = (item) => {
+        return (<TouchableOpacity onPress={() => {
         }}>
-            <Image style={styles.itemIcon}/>
+            {item.headImg ? <Image style={styles.itemIcon} source={{ uri: item.headImg || '' }}/> : <View
+                style={styles.itemIcon}/>}
         </TouchableOpacity>);
     };
     _onPress = () => {
-        this.props.onPress && this.props.onPress();
+        this.props.RecommendRowOnPress && this.props.RecommendRowOnPress();
     };
+
     render() {
+        const { ...RecommendRowItem } = this.props.RecommendRowItem;
+        const { storeUserList } = RecommendRowItem;
+
+        const storeStar = RecommendRowItem.storeStarId;
+        const starsArr = [];
+        if (storeStar && typeof storeStar === 'number') {
+            for (let i = 0; i < storeStar; i++) {
+                i <= 2 && starsArr.push(i);
+            }
+        }
+
         return (<TouchableWithoutFeedback style={styles.container} onPress={this._onPress}>
 
             <View style={styles.viewContainer}>
+                <View style={styles.topViewContainer}>
+                    <View style={{ flex: 1 }}>
+                        <View style={styles.headerViewContainer}>
+                            {RecommendRowItem.headUrl ? <Image style={styles.icon}
+                                                               source={{ uri: RecommendRowItem.headUrl || '' }}/> :
+                                <View
+                                    style={styles.icon}/>}
+                            <View style={styles.tittleContainer}>
+                                <Text style={styles.name}>{RecommendRowItem.name || ''}</Text>
+                                <Text style={styles.member}>{`店主: ${RecommendRowItem.storeUserName || ''}`}</Text>
+                            </View>
+                        </View>
+                        <FlatList
+                            style={styles.midFlatList}
+                            data={storeUserList}
+                            keyExtractor={(item, index) => `${index}`}
+                            renderItem={this.renderIconItem}
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                        />
+                        <View style={{
+                            marginLeft: 100,
+                            width: 100,
+                            height: 5,
+                            borderRadius: 2,
+                            borderColor: '#D51234',
+                            marginTop: 6
+                        }}>
 
-                <View style={styles.headerViewContainer}>
-                    <Image style={styles.icon} source={{ uri: this.props.headUrl }}/>
-                    <View style={styles.tittleContainer}>
-                        <Text style={styles.name}>美丽的小姑凉</Text>
-                        <Text style={styles.member}>成员：23人</Text>
+                        </View>
                     </View>
-                    <TouchableOpacity style={styles.joinBtn} onPress={() => {
-                        this.props.clickShopInfoRow();
-                    }}>
-                        <Text style={styles.joinText}>申请加入</Text>
-                    </TouchableOpacity>
+                    <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
+                    <View style={{ width: 44 + 70, alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                            {
+                                starsArr.map((item, index) => {
+                                    return <Image key={index} source={StarImg}/>;
+                                })
+                            }
+                        </View>
+                        <Text style={{ marginTop: 9, color: '#939393', fontSize: 14 }}>店铺等级</Text>
+                        <TouchableOpacity style={styles.joinBtn} onPress={() => {
+                            this.props.clickShopInfoRow();
+                        }}>
+                            <Text style={styles.joinText}>+加入我们</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
-                <FlatList
-                    style={styles.midFlatList}
-                    data={this.state.dataList}
-                    keyExtractor={(item, index) => `${index}`}
-                    renderItem={this.renderIconItem}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                />
-                <View style={styles.moneyContainer}>
-                    <Text style={styles.moneyText}>店铺本月收入：<Text style={{ color: '#D51243' }}>5888.98元</Text>
-                    </Text>
-                    <Text style={[styles.moneyText, { marginLeft: 16 }]}>
-                        店铺累计收入：<Text
-                        style={{ color: '#D51243' }}>15555.888.98元</Text>
-                    </Text>
+
+                <View style={styles.bottomContainer}>
+                    <View style={styles.moneyContainer}>
+                        <Text style={styles.moneyText}>店铺成员</Text>
+                        <Text style={styles.moneyText}>{RecommendRowItem.storeUserNum || 0}</Text>
+                    </View>
+                    <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
+                    <View style={styles.moneyContainer}>
+                        <Text style={styles.moneyText}>店铺本月收入</Text>
+                        <Text style={styles.moneyText}>{`${RecommendRowItem.tradeVolume || 0}元`}</Text>
+                    </View>
+                    <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
+                    <View style={styles.moneyContainer}>
+                        <Text style={styles.moneyText}>店铺累计收入</Text>
+                        <Text style={styles.moneyText}>{`${RecommendRowItem.totalTradeVolume || 0}元`}</Text>
+                    </View>
                 </View>
 
             </View>
@@ -82,13 +128,19 @@ export default class RecommendRow extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: ScreenUtils.width,
-        backgroundColor: 'rgb(245,245,245)'
+        width: ScreenUtils.width
     },
     viewContainer: {
         marginTop: 9,
+        marginHorizontal: 15,
         backgroundColor: 'white'
     },
+
+    topViewContainer: {
+        backgroundColor: '#FEFAF7',
+        flexDirection: 'row'
+    },
+
 
     headerViewContainer: {
         flexDirection: 'row',
@@ -97,12 +149,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15
     },
     icon: {
-        width: 44,
-        height: 44,
+        width: 50,
+        height: 50,
         backgroundColor: '#eee',
-        borderRadius: 4
+        borderRadius: 25
     },
     tittleContainer: {
+        justifyContent: 'center',
         marginLeft: 11,
         flex: 1
     },
@@ -117,11 +170,12 @@ const styles = StyleSheet.create({
         fontSize: 11
     },
     joinBtn: {
+        marginTop: 17,
         justifyContent: 'center',
         alignItems: 'center',
-        width: 90,
-        height: 27,
-        borderRadius: 4,
+        width: 70,
+        height: 22,
+        borderRadius: 11,
         backgroundColor: '#D51243'
     },
     joinText: {
@@ -131,30 +185,30 @@ const styles = StyleSheet.create({
     },
 
     midFlatList: {
-        marginTop: 30
-    },
-    itemContainer: {
-        width: 65,
-        height: 50
+        marginTop: 17
     },
     itemIcon: {
-        backgroundColor: 'red',
+        backgroundColor: '#eee',
         marginLeft: 15,
-        width: 50,
-        height: 50,
-        borderRadius: 25
+        width: 40,
+        height: 40,
+        borderRadius: 20
     },
 
-    moneyContainer: {
+    bottomContainer: {
         flexDirection: 'row',
-        marginTop: 29,
-        marginBottom: 16,
-        paddingHorizontal: 15
+        height: 63,
+        alignItems: 'center'
+    },
+    moneyContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     moneyText: {
-        color: '#999999',
+        color: '#666666',
         fontFamily: 'PingFang-SC-Medium',
-        fontSize: 12
+        fontSize: 11
     }
 
 
