@@ -136,7 +136,6 @@ export default class MyPromotionPage extends BasePage {
                     }
                 </ImageBackground>
                 <View style={{
-                    marginLeft: 25,
                     height: 105 / 375 * SCREEN_WIDTH,
                     justifyContent: 'center',
                     alignItems: 'center',
