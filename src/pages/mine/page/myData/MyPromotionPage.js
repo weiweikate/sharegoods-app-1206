@@ -12,7 +12,7 @@ import {
     InteractionManager,
     TouchableWithoutFeedback
 } from 'react-native';
-import storeModel from '../../../spellShop/model/storeModel';
+import storeModel from '../../../spellShop/model/StoreModel';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
 import MineApi from '../../api/MineApi';
 // 图片资源
@@ -135,7 +135,6 @@ export default class MyPromotionPage extends BasePage {
                     }
                 </ImageBackground>
                 <View style={{
-                    marginLeft: 25,
                     height: 105 / 375 * SCREEN_WIDTH,
                     justifyContent: 'center',
                     alignItems: 'center',
