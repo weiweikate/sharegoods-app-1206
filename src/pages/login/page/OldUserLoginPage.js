@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
     View,
     Text,
@@ -6,30 +6,31 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image
-} from "react-native";
-import CommSpaceLine from "../../../comm/components/CommSpaceLine";
-import { observer } from "mobx-react";
-import { observable, computed, action } from "mobx";
-import LoginAndRegistRes from "../res/LoginAndRegistRes";
-import ColorUtil from "../../../utils/ColorUtil";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import loginAndRegistRes from "../res/LoginAndRegistRes";
-import BasePage from "../../../BasePage";
-import LoginAPI from "../api/LoginApi";
-import StringUtils from "../../../utils/StringUtils";
+} from 'react-native';
+import CommSpaceLine from '../../../comm/components/CommSpaceLine';
+import { observer } from 'mobx-react';
+import { observable, computed, action } from 'mobx';
+import LoginAndRegistRes from '../res/LoginAndRegistRes';
+import ColorUtil from '../../../utils/ColorUtil';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import loginAndRegistRes from '../res/LoginAndRegistRes';
+import BasePage from '../../../BasePage';
+import LoginAPI from '../api/LoginApi';
+import StringUtils from '../../../utils/StringUtils';
+import bridge from '../../../utils/bridge';
 
 class OldUserLoginModel {
     @observable
-    phoneNumber = "";
+    phoneNumber = '';
     @observable
-    password = "";
+    password = '';
     @observable
     isSecuret = true;
 
     @action
     savePhoneNumber(phoneNmber) {
         if (!phoneNmber) {
-            this.phoneNumber = "";
+            this.phoneNumber = '';
             return;
         }
         this.phoneNumber = phoneNmber;
@@ -38,7 +39,7 @@ class OldUserLoginModel {
     @action
     savePassword(password) {
         if (!password) {
-            this.password = "";
+            this.password = '';
             return;
         }
         this.password = password;
@@ -64,7 +65,7 @@ export default class OldUserLoginPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: "老用户激活"
+        title: '老用户激活'
     };
     /*render右上角*/
     $NavBarRenderRightItem = () => {
@@ -76,15 +77,15 @@ export default class OldUserLoginPage extends BasePage {
     };
     /*注册事件*/
     registBtnClick = () => {
-        this.$navigate("login/login/RegistPage");
+        this.$navigate('login/login/RegistPage');
 
     };
 
     _render() {
         return (
             <View style={{ flex: 1 }}>
-                <View style={{ backgroundColor: "#fff" }}>
-                    <View style={{ marginTop: 30, justifyContent: "center", alignItems: "center" }}>
+                <View style={{ backgroundColor: '#fff' }}>
+                    <View style={{ marginTop: 30, justifyContent: 'center', alignItems: 'center' }}>
                         <Image style={{ width: 79, height: 79 }} source={LoginAndRegistRes.logoImage}/>
                     </View>
 
@@ -96,13 +97,13 @@ export default class OldUserLoginPage extends BasePage {
                                 this.oldUserLoginModel.savePhoneNumber(text);
                             }}
                             placeholder='请输入手机号'
-                            underlineColorAndroid={"transparent"}
+                            underlineColorAndroid={'transparent'}
                             keyboardType='default'
                         />
                         <CommSpaceLine style={Styles.lineStyle}/>
                     </View>
                     <View style={{ marginLeft: 20, marginRight: 30, marginTop: 20 }}>
-                        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <TextInput
                                 style={Styles.inputTextStyle}
                                 value={this.oldUserLoginModel.password}
@@ -110,7 +111,7 @@ export default class OldUserLoginPage extends BasePage {
                                     this.oldUserLoginModel.savePassword(text);
                                 }}
                                 placeholder='请输入密码'
-                                underlineColorAndroid={"transparent"}
+                                underlineColorAndroid={'transparent'}
                                 keyboardType='default'
                                 secureTextEntry={this.oldUserLoginModel.isSecuret}
                             />
@@ -127,13 +128,13 @@ export default class OldUserLoginPage extends BasePage {
                         style={[Styles.oldUserLoginBtnStyle, this.oldUserLoginModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]}>
                         <TouchableOpacity onPress={this.loginClick}>
                             <Text style={{
-                                textAlign: "center",
+                                textAlign: 'center',
                                 height: 45,
-                                alignItems: "center",
-                                color: "#fff",
+                                alignItems: 'center',
+                                color: '#fff',
                                 fontSize: 14,
                                 paddingTop: 15,
-                                fontWeight: "600"
+                                fontWeight: '600'
 
                             }}>
                                 登录
@@ -145,7 +146,7 @@ export default class OldUserLoginPage extends BasePage {
                 <Image
                     style={{
                         width: ScreenUtils.width,
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: 0,
                         height: 80
                     }}
@@ -154,11 +155,11 @@ export default class OldUserLoginPage extends BasePage {
                 <Text
                     style={{
                         width: ScreenUtils.width,
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: 90,
                         fontSize: 12,
                         color: ColorUtil.Color_666666,
-                        textAlign: "center"
+                        textAlign: 'center'
                     }}>
                     客服电话:400-888-8888
                 </Text>
@@ -168,39 +169,42 @@ export default class OldUserLoginPage extends BasePage {
 
     /*d点击登录*/
     loginClick = () => {
-       if ( StringUtils.checkPhone(this.oldUserLoginModel.phoneNumber)){
-           this.$loadingShow()
-           LoginAPI.existedUserVerify(
-               {
-                   authcode:'',
-                   code:'',
-                   device:'',
-                   headImg:'',
-                   nickname:'',
-                   openid:'',
-                   password:this.oldUserLoginModel.password,
-                   phone:'',
-                   systemVersion:'',
-                   username:this.oldUserLoginModel.phoneNumber,
-                   wechatCode:'',
-                   wechatVersion:'',
-               }).then((data) => {
-                   console.warn(data);
-                   this.$loadingDismiss()
-               if (data.code === 10000){
-                   this.$navigate("login/login/SetPasswordPage",{
-                       //存在老用户返回的code
-                       code:data.data.code,
-                   });
-               }
-           }).catch((data) => {
-               console.warn(data);
-               this.$toast(data.msg)
-               this.$loadingDismiss()
-           });
-       }else {
+        if (StringUtils.checkPhone(this.oldUserLoginModel.phoneNumber))
+        {
+            this.$loadingShow();
+            LoginAPI.existedUserVerify(
+                {
+                    authcode: '',
+                    code: '',
+                    device: '',
+                    headImg: '',
+                    nickname: '',
+                    openid: '',
+                    password: this.oldUserLoginModel.password,
+                    phone: '',
+                    systemVersion: '',
+                    username: this.oldUserLoginModel.phoneNumber,
+                    wechatCode: '',
+                    wechatVersion: ''
+                }).then((data) => {
+                console.warn(data);
+                this.$loadingDismiss();
+                if (data.code === 10000) {
+                    //存在老用户返回的code
+                    this.$navigate('login/login/SetPasswordPage', { code: data.data.code });
+                } else {
+                       this.$toast(data.msg);
+                }
+            }).catch((data) => {
+                this.$loadingDismiss();
+                console.warn(data);
+                // this.$toast(data.msg);
+                this.$loadingDismiss();
+                bridge.$toast(data.msg);
+            });
+        } else {
 
-       }
+        }
 
         // this.$navigate("login/login/SetPasswordPage");
     };
@@ -212,11 +216,11 @@ const Styles = StyleSheet.create(
             flex: 1,
             margin: 0,
             marginTop: -2,
-            backgroundColor: "#fff"
+            backgroundColor: '#fff'
         },
         rightTopTitleStyle: {
             fontSize: 15,
-            color: "#666"
+            color: '#666'
         },
         otherLoginBgStyle: {
             marginBottom: -20,
@@ -226,10 +230,10 @@ const Styles = StyleSheet.create(
         lineBgStyle: {
             marginLeft: 30,
             marginRight: 30,
-            flexDirection: "row",
+            flexDirection: 'row',
             height: 30,
-            backgroundColor: "#fff",
-            justifyContent: "center"
+            backgroundColor: '#fff',
+            justifyContent: 'center'
         },
         oldUserLoginBtnStyle: {
             marginLeft: 30,
@@ -246,7 +250,7 @@ const Styles = StyleSheet.create(
             marginLeft: 20,
             width: 120,
             fontSize: 14,
-            fontWeight: "400"
+            fontWeight: '400'
         }
     }
 );

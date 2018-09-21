@@ -1,5 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import { action, computed, observable } from 'mobx';
+import shopCartCacheTool from '../pages/shopCart/model/ShopCartCacheTool';
 //import apiEnvironment from '../api/ApiEnvironment';
 
 const USERINFOCACHEKEY = 'UserInfo';
@@ -196,6 +197,8 @@ class User {
             AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
             });
         }
+        //同步本地购物车
+        shopCartCacheTool.synchronousData();
     }
 
     // 修改手机号
