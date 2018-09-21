@@ -1,7 +1,6 @@
 import { observable, action, computed } from 'mobx';
 import ShopCartAPI from '../api/ShopCartApi';
 import bridge from '../../../utils/bridge';
-import user from '../../../model/user';
 
 
 class ShopCartStore {

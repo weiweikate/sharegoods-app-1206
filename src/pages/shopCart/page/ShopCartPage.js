@@ -314,9 +314,9 @@ export default class ShopCartPage extends BasePage {
 
         if (itemData.amount > 1) {
             itemData.amount--;
-            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId)
-        }else if (itemData.amount === 1) {
-            bridge.$toast('已达商品最小数量')
+            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+        } else if (itemData.amount === 1) {
+            bridge.$toast('已达商品最小数量');
         }
         // itemData.amount
     };

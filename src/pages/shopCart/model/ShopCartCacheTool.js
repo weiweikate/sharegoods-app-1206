@@ -35,7 +35,7 @@ class ShopCartCacheTool {
     /*同步购物车商品*/
     synchronousData() {
         //用户非登入状态
-        Storage.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res=>{
+        Storage.get(ShopCartCacheTool.shopCartLocalStorageKey).then(res => {
             let [...localValue] = res;
             if (localValue && (localValue instanceof Array && localValue.length > 0)) {
                 bridge.showLoading('正在同步本地购物车数据');
@@ -57,10 +57,10 @@ class ShopCartCacheTool {
                 });
             } else {
                 //不存在本地缓存 但他妈的也得拉一下数据老铁
-                shopCartStore.getShopCartListData()
+                shopCartStore.getShopCartListData();
             }
-        }).catch(error=>{
-            console.warn('获取购物车本地缓存异常')
+        }).catch(error => {
+            console.warn('获取购物车本地缓存异常');
         });
     }
 
