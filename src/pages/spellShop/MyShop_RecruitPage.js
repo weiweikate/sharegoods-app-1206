@@ -32,10 +32,6 @@ export default class MyShop_RecruitPage extends BasePage {
                     this._loadPageData();
                 }
             },
-            // emptyProps: {
-            //     isScrollViewContainer: true,
-            //     description: '暂无拼店消息'
-            // }
         };
     };
 

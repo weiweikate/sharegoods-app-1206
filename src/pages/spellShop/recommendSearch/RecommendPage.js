@@ -7,7 +7,7 @@ import {
     Image,
     StyleSheet,
     SectionList,
-    TouchableOpacity,
+    TouchableOpacity
 } from 'react-native';
 
 //source
@@ -18,28 +18,29 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import RecommendRow from './components/RecommendRow';
 import SegementHeaderView from './components/RecommendSegmentView';
 import BasePage from '../../../BasePage';
-import StoreModel from '../model/StoreModel';
 import SpellStatusModel from '../model/SpellStatusModel';
 import ViewPager from '../../../components/ui/ViewPager';
 import UIImage from '../../../components/ui/UIImage';
+import SpellShopApi from '../api/SpellShopApi';
 
 export default class RecommendPage extends BasePage {
 
     constructor(props) {
         super(props);
         this.state = {
-            dataList: [{}, {}, {}, {}, {}, {}],
-            adList: [{}, {}, {}]
+            segmentIndex: '1',
+            dataList: [],
+            adList: []
         };
     }
 
     $navigationBarOptions = {
-        title: '所有店铺',
+        title: '拼店',
         leftNavItemHidden: this.props.leftNavItemHidden
     };
 
     $NavBarRenderRightItem = () => {
-        const showShopItem = true;
+        const showShopItem = SpellStatusModel.canCreateStore;
         return <View style={styles.rightBarItemContainer}>
             {
                 showShopItem ? <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
@@ -50,6 +51,25 @@ export default class RecommendPage extends BasePage {
                 <Image source={SearchItemLogo}/>
             </TouchableOpacity>
         </View>;
+    };
+
+    componentDidMount() {
+        this._loadPageData();
+    }
+
+    _loadPageData = () => {
+        SpellShopApi.queryHomeStore({
+            page: 1,
+            size: 10,
+            type: this.state.segmentIndex
+        }).then((data) => {
+            let dataTemp = data.data || {};
+            this.setState({
+                dataList: dataTemp.data || []//data.data.data
+            });
+        }).catch((error) => {
+            this.$toastShow(error.msg);
+        });
     };
 
     // 点击开启店铺页面
@@ -63,15 +83,17 @@ export default class RecommendPage extends BasePage {
     };
 
     // 点击查看某个店铺
-    _clickShopInfoRow = (id) => {
+    _RecommendRowOnPress = (id) => {
+
     };
 
     // 点击轮播图广告
     _clickItem = (item) => {
     };
 
-    _onPressAtIndex = (index) => {
-
+    _segmentPressAtIndex = (index) => {
+        this.state.segmentIndex = index;
+        this._loadPageData();
     };
 
     _renderListHeader = () => {
@@ -93,7 +115,7 @@ export default class RecommendPage extends BasePage {
                            backgroundColor: '#eeeeee'
                        }}
                        autoplay={true}
-                       height={ScreenUtils.autoSizeWidth(150)}/>);
+            />);
     };
 
     _renderViewPageItem = (item) => {
@@ -108,11 +130,11 @@ export default class RecommendPage extends BasePage {
     };
 
     _renderSectionHeader = () => {
-        return (<SegementHeaderView onPressAtIndex={this._onPressAtIndex}/>);
+        return (<SegementHeaderView segmentPressAtIndex={this._segmentPressAtIndex}/>);
     };
 
     _renderItem = ({ item }) => {
-        return (<RecommendRow item={item} clickShopInfoRow={this._clickShopInfoRow}/>);
+        return (<RecommendRow RecommendRowItem={item} RecommendRowOnPress={this._RecommendRowOnPress}/>);
     };
 
     _render() {
@@ -149,24 +171,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
 
-    paginationStyle: {
-        bottom: 8,
-        left: 0,
-        right: 0
-    },
-    activeDot: {
-        backgroundColor: 'white',
-        width: 12,
-        height: 2,
-        marginLeft: 3,
-        marginRight: 3
-    },
-    dot: {
-        backgroundColor: 'rgba(255,255,255,0.5)',
-        width: 12,
-        height: 2,
-        marginLeft: 3,
-        marginRight: 3
+    ViewPager: {
+        height: ScreenUtils.autoSizeWidth(230),
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+        width: ScreenUtils.width
     }
 
 });

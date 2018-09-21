@@ -26,12 +26,12 @@ class SpellStatusModel {
 
     @computed//可以去开店 推荐店铺中使用
     get canCreateStore() {
-        return (this.allowCreateStore && this.allowCreateStore === 1);
+        return this.allowCreateStore && this.allowCreateStore === 1;
     }
 
     @computed//可以看到拼店推荐页面 推荐店铺中使用
     get canSeeGroupStore() {
-        return (this.allowGroupStore && this.allowGroupStore === 1);
+        return this.allowGroupStore && this.allowGroupStore === 1;
     }
 
     /******************************【action】******************************************/
@@ -42,7 +42,7 @@ class SpellStatusModel {
         this.refreshing = false;
 
         this.allowCreateStore = data.allowCreateStore;
-        this.allowGroupStore = 1;
+        this.allowGroupStore = data.allowGroupStore;
         this.storeId = data.storeId;
     }
 

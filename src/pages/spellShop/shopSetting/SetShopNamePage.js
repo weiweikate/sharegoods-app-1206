@@ -21,6 +21,7 @@ import storeModel from '../model/StoreModel';
 import ActionSheetView from '../components/ActionSheetView';
 import BasePage from '../../../BasePage';
 import StringUtils from '../../../utils/StringUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
@@ -29,28 +30,29 @@ export default class SetShopNamePage extends BasePage {
     $navigationBarOptions = {
         title: this.params.isChangeStoreInfo ? '我的店铺' : '开店基础信息',
         rightNavTitle: '完成',
-        rightTitleStyle: styles.rightItem
+        rightTitleStyle: styles.rightItem,
+        rightNavItemHidden: !this.params.isChangeStoreInfo
     };
 
     $NavBarLeftPressed = () => {
-        if (this.params.isChangeStoreInfo) {
-            this.$navigateBack();
-        } else {
-            // this.props.navigation.popToTop();
-        }
+        // if (this.params.isChangeStoreInfo) {
+        this.$navigateBack();
+        // } else {
+        // this.props.navigation.popToTop();
+        // }
     };
 
     $NavBarRightPressed = () => {
-        if (StringUtils.isEmpty(this.state.storeHeadUrlOrigin)) {
-            this.$toast('店铺头像不能为空');
-            return;
-        }
+        // if (StringUtils.isEmpty(this.state.storeHeadUrlOrigin)) {
+        //     this.$toastShow('店铺头像不能为空');
+        //     return;
+        // }
         if (StringUtils.isEmpty(this.state.text)) {
-            this.$toast('店铺名称不能为空');
+            this.$toastShow('店铺名称不能为空');
             return;
         }
         if (this.state.text.length < 4 || this.state.text.length > 16) {
-            this.$toast('店铺名称仅限4~16位字符');
+            this.$toastShow('店铺名称仅限4~16位字符');
             return;
         }
         const { isChangeStoreInfo } = this.params || {};//是否是修改信息
@@ -60,15 +62,6 @@ export default class SetShopNamePage extends BasePage {
             //         storeModel.setStoreImgAndName(this.state.text,this.state.storeHeadUrlOrigin);
             //         Toast.toast('修改成功');
             //         this.props.navigation.goBack();
-            //     } else {
-            //         Toast.toast(response.msg);
-            //     }
-            // });
-        } else {
-            // 创建店铺，并设置店铺基础信息
-            // SpellShopApi.createStore({name: this.state.text,headUrl: this.state.storeHeadUrlOrigin}).then(response =>{
-            //     if(response.ok){
-            //         this.props.navigation.navigate('spellShop/openShop/OpenShopSuccessPage');
             //     } else {
             //         Toast.toast(response.msg);
             //     }
@@ -122,6 +115,9 @@ export default class SetShopNamePage extends BasePage {
         }
     }
 
+    _complete =()=>{
+        this.props.navigation.navigate('spellShop/openShop/OpenShopSuccessPage');
+    }
     _onChangeText = (text) => {
         this.setState({ text });
     };
@@ -183,9 +179,7 @@ export default class SetShopNamePage extends BasePage {
                     {
                         isChangeStoreInfo ? null : <TouchableWithoutFeedback onPress={this._complete}>
                             <View style={styles.btnRow}>
-                                <Text style={styles.btnTitle}>
-                                    确定
-                                </Text>
+                                <Text style={styles.btnTitle}>开店</Text>
                             </View>
                         </TouchableWithoutFeedback>
                     }
@@ -276,9 +270,9 @@ const styles = StyleSheet.create({
     btnRow: {
         height: 48,
         borderRadius: 5,
-        backgroundColor: '#e60012',
+        backgroundColor: '#D51243',
         marginHorizontal: 43,
-        marginTop: SCREEN_HEIGHT - 450,
+        marginTop: ScreenUtils.autoSizeHeight(123),
         justifyContent: 'center',
         alignItems: 'center'
     },

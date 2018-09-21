@@ -13,6 +13,7 @@ import {
 import RecruitMembersRow from './components/RecruitMembersRow';
 import RecruitHeaderView from './components/RecruitHeaderView';
 import BasePage from '../../../BasePage';
+import storeModel from '../model/StoreModel';
 
 export default class ShopRecruitPage extends BasePage {
 
@@ -28,7 +29,8 @@ export default class ShopRecruitPage extends BasePage {
             refreshing: false,
             canOpen: true,
             originDealerList:[{},{},{},{}],
-            dealerList:[{},{},{},{}]
+            dealerList:[{},{},{},{}],
+            storeId:this.params.storeId || storeModel
         };
     }
 

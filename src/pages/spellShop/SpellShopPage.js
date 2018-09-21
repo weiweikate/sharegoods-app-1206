@@ -18,18 +18,16 @@ import { observer } from 'mobx-react';
 import SpellStatusModel from './model/SpellStatusModel';
 import RecommendPage from './recommendSearch/RecommendPage';
 import MyShop_RecruitPage from './MyShop_RecruitPage';
+import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 
 @observer
 export default class SpellShopPage extends BasePage {
-
     constructor(props) {
         super(props);
     }
 
     $navigationBarOptions = {
-        title: '拼店11',
-        leftNavItemHidden:true,
-        show: !(SpellStatusModel.storeId || SpellStatusModel.canSeeGroupStore)
+        show: false
     };
 
     $getPageStateOptions = () => {
@@ -40,30 +38,31 @@ export default class SpellShopPage extends BasePage {
                 reloadBtnClick: () => {
                     SpellStatusModel.getUser(2);
                 }
-            },
-            // emptyProps: {
-            //     isScrollViewContainer: true,
-            //     description: '暂无拼店消息'
-            // }
+            }
         };
     };
 
     _renderContainer = () => {
         if (SpellStatusModel.storeId) {
             // 加入了店铺或者自己有店铺
-            return (<MyShop_RecruitPage id = {SpellStatusModel.storeId} navigation={this.props.navigation}/>);
+            return (<MyShop_RecruitPage id={SpellStatusModel.storeId} navigation={this.props.navigation}/>);
         } else if (SpellStatusModel.canSeeGroupStore) {
             // 没有店铺，看见推荐店铺页面
-            return (<RecommendPage navigation={this.props.navigation} leftNavItemHidden = {true}/>);
+            return (<RecommendPage navigation={this.props.navigation} leftNavItemHidden={true}/>);
         } else {
             // 初始化的介绍页面
-            return (<ScrollView refreshControl={<RefreshControl refreshing={false} onRefresh={this._onRefresh}/>}
-                               showsVerticalScrollIndicator={false}>
-                <View style={{ flex: 1 }}>
-                    <Image style={styles.levelLow} source={IntroduceImg} resizeMode='stretch'/>
-                    <Image style={styles.levelLow1} source={IntroduceImg1} resizeMode='stretch'/>
+            return (
+                <View>
+                    <NavigatorBar leftNavItemHidden={true} title={'拼店'}/>
+                    <ScrollView refreshControl={<RefreshControl refreshing={false} onRefresh={this._onRefresh}/>}
+                                showsVerticalScrollIndicator={false}>
+                        <View style={{ flex: 1 }}>
+                            <Image style={styles.levelLow} source={IntroduceImg} resizeMode='stretch'/>
+                            <Image style={styles.levelLow1} source={IntroduceImg1} resizeMode='stretch'/>
+                        </View>
+                    </ScrollView>
                 </View>
-            </ScrollView>);
+            );
         }
     };
 
