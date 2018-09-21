@@ -60,7 +60,11 @@ class AddBankCardPage extends BasePage {
             }
         };
     }
+    // 导航配置
+    $navigationBarOptions = {
+        title: '绑定银行卡'
 
+    };
     //**********************************ViewPart******************************************
     _render(){
         return (

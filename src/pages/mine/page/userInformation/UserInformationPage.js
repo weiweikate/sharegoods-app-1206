@@ -68,7 +68,7 @@ export default class UserInformationPage extends BasePage {
                                 leftTextStyle={styles.blackText} headImage={user.headImg}
                                 onPress={() => this.takePhoto()}/>
                 <UserSingleItem leftText={'昵称'} rightText={user.nickname} rightTextStyle={styles.grayText}
-                                leftTextStyle={styles.blackText} isLine={false}
+                                leftTextStyle={styles.blackText} isLine={false} isArrow={true}
                                 onPress={() => this.jumpToNickNameModifyPage()}/>
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'授权ID'} rightText={user.code} rightTextStyle={styles.grayText}

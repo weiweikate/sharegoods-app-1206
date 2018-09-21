@@ -25,6 +25,7 @@ import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
 import SettingTransactionModal from '../../components/SettingTransactionModal';
+
 const bankCardList = [bankCard1, bankCard2, bankCard3, bankCard4, bankCard5];
 
 class BankCardListPage extends BasePage {
@@ -80,7 +81,7 @@ class BankCardListPage extends BasePage {
         return (
             <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
                 <View style={{ alignItems: 'center' }}>
-                    {this.renderSwipeList()}
+                    {this.renderList()}
                     <TouchableOpacity
                         style={[styles.addBankCardView, { marginTop: this.state.viewData.length == 0 ? 76 : 47 }]}
                         onPress={() => this.addBankCard()}>
@@ -102,7 +103,7 @@ class BankCardListPage extends BasePage {
 
                 renderRow={(rowData, secId, rowId, rowMap) => (
                     <TouchableWithoutFeedback style={{ height: 110, flexDirection: 'row', marginTop: 10 }}
-                        onPress={(rowId) => this.callBack(rowId)}>
+                                              onPress={(rowId) => this.callBack(rowId)}>
                         <ImageBackground style={styles.bankCardView}
                                          source={bankCardList[rowData.bankCardType]}
                                          resizeMode={'stretch'}>
@@ -149,7 +150,7 @@ class BankCardListPage extends BasePage {
                         <ImageBackground style={styles.bankCardView}
                                          source={bankCardList[this.state.viewData[i].bankCardType]}
                                          resizeMode={'stretch'}>
-                            <UIText value={this.state.bank_name}
+                            <UIText value={this.state.viewData[i].bank_name}
                                     style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 18, color: '#ffffff' }}/>
                             <UIText value={'储蓄卡'}
                                     style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#ffffff' }}/>
@@ -164,6 +165,7 @@ class BankCardListPage extends BasePage {
                 </SwipeRow>
             );
         }
+        return arr;
 
     };
     renderLine = () => {
@@ -188,8 +190,10 @@ class BankCardListPage extends BasePage {
                 //bottomText={'输入的密码有误'}
                 inputText={(text) => {
                     if (text.length == 6) {
-                        this.setState({ isShowUnbindCardModal: false });
-                        this.finishPasswordInput(text);
+                        setTimeout(() => {
+                            this.setState({ isShowUnbindCardModal: false });
+                            this.finishPasswordInput(text);
+                        }, 500);
                     }
                 }}
             />
@@ -245,7 +249,6 @@ class BankCardListPage extends BasePage {
         });
     };
     deleteBankCard = (index) => {
-        alert('cc');
         this.setState({
             isShowUnbindCardModal: true,
             selectBankCard: index
@@ -273,7 +276,6 @@ const styles = StyleSheet.create({
         marginRight: 15,
         paddingTop: 17,
         paddingLeft: 68,
-        marginTop:10
     }, backTextWhite: {
         color: color.white,
         marginRight: 20,

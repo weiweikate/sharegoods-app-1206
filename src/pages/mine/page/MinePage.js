@@ -441,7 +441,7 @@ export default class MinePage extends BasePage {
                 this.props.navigation.navigate('mine/coupons/CouponsPage');
                 break;
             case 3:
-                this.props.navigation.navigate('mine/MyData');
+                this.props.navigation.navigate('mine/MyPromotionPage');
                 break;
             case 4:
                 // this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });

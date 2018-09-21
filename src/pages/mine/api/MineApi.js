@@ -62,7 +62,13 @@ const api = {
     // 修改交易密码
     updateSalesOldPwd: ['/user/updateSalesPasswordByOldPassword', { method: 'post' }],
     // 修改交易密码
-    updateSalesOldPwdByIDCard: ['/user/updateSalesPasswordByIdCard', { method: 'post' }]
+    updateSalesOldPwdByIDCard: ['/user/updateSalesPasswordByIdCard', { method: 'post' }],
+    //取消收藏店铺 -
+    storeCollectionCancel:'/user/storeCollection/cancel',
+    //查看收藏的店铺列表
+    queryCollection:['/user/storeCollection/queryCollection',{method:'get'}],
+    //我的晋升
+    getUserLevelInfo:['/user/getUserLevelInfo',{method:'get'}]
 
 
 };

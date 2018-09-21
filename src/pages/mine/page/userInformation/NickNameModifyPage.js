@@ -39,7 +39,7 @@ export default class NickNameModifyPage extends BasePage {
                 />
                 {this.renderWideLine()}
                 <UIButton
-                    title='保存'
+                    value={'保存'}
                     style={{
                         marginTop: 36,
                         width: ScreenUtils.width - 96,
