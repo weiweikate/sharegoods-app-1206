@@ -10,7 +10,6 @@ import {
     Image,
     Platform,
     TextInput,
-    Dimensions,
     StyleSheet,
     ScrollView,
     BackHandler,
@@ -23,7 +22,6 @@ import BasePage from '../../../BasePage';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 export default class SetShopNamePage extends BasePage {
 
@@ -115,9 +113,9 @@ export default class SetShopNamePage extends BasePage {
         }
     }
 
-    _complete =()=>{
+    _complete = () => {
         this.props.navigation.navigate('spellShop/openShop/OpenShopSuccessPage');
-    }
+    };
     _onChangeText = (text) => {
         this.setState({ text });
     };
