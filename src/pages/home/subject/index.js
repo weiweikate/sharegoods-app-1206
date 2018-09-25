@@ -1,4 +1,4 @@
-import SubjectPage from './SubjectPage'
+import SubjectPage from './SubjectPage';
 
 export default {
     moduleName: 'subject',    //模块名称

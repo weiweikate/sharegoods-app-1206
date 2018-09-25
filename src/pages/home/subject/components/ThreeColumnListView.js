@@ -53,7 +53,7 @@ export default class ThreeColumnListView extends Component {
                             { key: 'James' },
                             { key: 'Joel' },
                             { key: 'John' },
-                            { key: 'Jillian' },
+                            { key: 'Jillian' }
                         ]
                     },
                     {
@@ -80,7 +80,7 @@ export default class ThreeColumnListView extends Component {
     _renderHeaderView = (key) => {
         return (
             <SbSectiontHeaderView
-            subjectType={0}
+                subjectType={0}
             />
         );
     };
@@ -89,13 +89,13 @@ export default class ThreeColumnListView extends Component {
             <ActivityOneView/>
         );
     };
-    _itemClickAction=(item)=>{
-        console.log(item.key)
+    _itemClickAction = (item) => {
+        console.log(item.key);
 
-    }
+    };
     _renderRowView = (item) => {
         return (
-            <TouchableOpacity onPress = {()=>this._itemClickAction(item)} key={item.key}>
+            <TouchableOpacity onPress={() => this._itemClickAction(item)} key={item.key}>
                 <View style={Styles.itemBgStyle}>
                     <View style={Styles.itemContentStyle}>
                         {/*头部image*/}

@@ -3,7 +3,6 @@ import React from 'react';
 import ThreeColumnListView from './components/ThreeColumnListView';
 import BasePage from '../../../BasePage';
 import PropTypes from 'prop-types';
-import HomeClassifyView from '../components/HomeClassifyView';
 import TwoColumnListView from './components/TwoColumnListView';
 
 
@@ -22,14 +21,14 @@ export default class SubjectPage extends BasePage {
     };
 
     _render() {
-         const  { columnNumber, subjectType} = this.params;
+        const { columnNumber, subjectType } = this.params;
 
         return (
-            columnNumber === 3?
+            columnNumber === 3 ?
                 <ThreeColumnListView
                     columnNumber={columnNumber}
                     subjectType={subjectType}
-                />:
+                /> :
                 <TwoColumnListView
                     columnNumber={columnNumber}
                     subjectType={subjectType}

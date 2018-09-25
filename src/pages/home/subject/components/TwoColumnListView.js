@@ -84,7 +84,7 @@ export default class TwoColumnListView extends Component {
     _renderHeaderView = (key) => {
         return (
             <SbSectiontHeaderView
-            subjectType={1}
+                subjectType={1}
             />
         );
     };
