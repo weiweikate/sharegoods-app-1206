@@ -44,22 +44,15 @@ export default class ShopCartPage extends BasePage {
         );
     };
     addGoods = () => {
-        // shopCartStore.addItemToShopCart({
-        //     "amount": 10,
-        //     "priceId": 1,
-        //     "productId": 1,
-        //     "timestamp": 1536633469102
-        // });
         shopCartCacheTool.addGoodItem({
-            'amount': 10,
-            'priceId': 1,
-            'productId': 1,
+            'amount': 5,
+            'priceId': 9,
+            'productId': 14,
             'timestamp': 1536633469102
         });
     };
 
     componentDidMount() {
-        // shopCartStore.getShopCartListData();
         shopCartCacheTool.getShopCartGoodsListData();
     }
 
@@ -102,13 +95,14 @@ export default class ShopCartPage extends BasePage {
     _renderListView = () => {
         return (
             <SwipeListView
+                style={{backgroundColor:ColorUtil.Color_f7f7f7}}
                 dataSource={this.ds.cloneWithRows(shopCartStore.data.slice())}
                 disableRightSwipe={true}
                 // renderRow={ data => (
                 //     data.status==validCode? this._renderValidItem(data): this._renderInvalidItem(data)
                 // )}
                 renderRow={(rowData, secId, rowId, rowMap) => (
-                    this._renderValidItem(rowData, rowId)
+                    this._renderValidItem(rowData, rowId,rowMap)
                 )}
                 renderHiddenRow={(data, secId, rowId, rowMap) => (
                     <TouchableOpacity
@@ -146,7 +140,7 @@ export default class ShopCartPage extends BasePage {
                         value={'合计'}
                         style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: ColorUtil.Color_222222 }}/>
                     <UIText
-                        value={shopCartStore.getTotalMoney + ''}
+                        value={StringUtils.formatMoneyString(shopCartStore.getTotalMoney)}
                         style={styles.totalPrice}/>
                     <TouchableOpacity
                         style={styles.selectGoodsNum}
@@ -164,150 +158,246 @@ export default class ShopCartPage extends BasePage {
     _selectAll = () => {
         shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
     };
-    _renderValidItem = (itemData, rowId) => {
+    _renderValidItem = (itemData, rowId,rowMap) => {
         return (
-            <TouchableHighlight
-                onPress={() => this._jumpToProductDetailPage(itemData.productId)}
-                style={styles.itemContainer}>
-                <View style={styles.standaloneRowFront}>
-                    <UIImage
-                        source={itemData.isSelected ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
-                        style={{ width: 22, height: 22, marginLeft: 10 }}
-                        onPress={() => {
-                            console.warn();
-                            let [...tempValues] = shopCartStore.data;
-                            tempValues[rowId].isSelected = !tempValues[rowId].isSelected;
+            <View>
+                <TouchableHighlight
+                    onPress={() =>{
+                        rowMap
+                        this._jumpToProductDetailPage(itemData.productId)
+                    } }
+                    style={styles.itemContainer}>
 
-                            shopCartStore.data = tempValues;
-                        }}
-                    />
+                    {/*<View style={{backgroundColor:ColorUtil.Color_f7f7f7,width:ScreenUtils.width,height:10}}/>*/}
+                    <View style={styles.standaloneRowFront}>
 
-                    <UIImage
-                        source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
-                        style={[styles.validProductImg]}
-                    />
+                        <UIImage
+                            source={itemData.isSelected ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
+                            style={{ width: 22, height: 22, marginLeft: 10 }}
+                            onPress={() => {
+                                console.warn();
+                                let [...tempValues] = shopCartStore.data;
+                                tempValues[rowId].isSelected = !tempValues[rowId].isSelected;
 
-                    {
-                        itemData.state === 1 ?
-                            <UIImage
-                                source={ShopCartRes.invalidGoodImg}
-                                style={{
-                                    // backgroundColor:'red',
-                                    position: 'absolute',
-                                    marginLeft: 55,
-                                    width: 60,
-                                    height: 60
-                                }}
-                            /> : null
-                    }
+                                shopCartStore.data = tempValues;
+                            }}
+                        />
 
-                    <View style={styles.validContextContainer}>
-                        <View>
-                            <UIText
-                                value={itemData.productName ? itemData.productName : ''}
-                                // value={"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"}
-                                numberOfLines={2}
-                                style={{
-                                    marginTop: 0,
-                                    fontFamily: 'PingFang-SC-Medium',
-                                    fontSize: 13,
-                                    lineHeight: 16,
-                                    height: 32,
-                                    color: ColorUtil.Color_222222
-                                }}
-                            />
+                        <UIImage
+                            source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
+                            style={[styles.validProductImg]}
+                        />
 
-                            <UIText
-                                value={itemData.specString ? itemData.specString : ''}
-                                numberOfLines={2}
-                                style={{
-                                    fontFamily: 'PingFang-SC-Medium',
-                                    fontSize: 13,
-                                    color: ColorUtil.Color_999999
-                                }}/>
-                        </View>
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
-                        }}>
-                            <UIText
-                                value={'￥ ' + StringUtils.formatMoneyString(itemData.price, false)}
-                                style={{ fontSize: 14, color: '#e60012' }}/>
-                            <View style={{ flexDirection: 'row' }}>
-                                <TouchableOpacity
-                                    style={styles.rectangle}
-                                    onPress={() => {
-                                        this._reduceProductNum(itemData, rowId);
+                        {
+                            itemData.state === 1 ?
+                                <UIImage
+                                    source={ShopCartRes.invalidGoodImg}
+                                    style={{
+                                        // backgroundColor:'red',
+                                        position: 'absolute',
+                                        marginLeft: 55,
+                                        width: 60,
+                                        height: 60
                                     }}
-                                >
-                                    <UIText
-                                        value={'-'}
-                                        // style={{fontSize:15,color:data.num<=1?ColorUtil.Color_dddddd:ColorUtil.Color_222222}}
-                                        style={{ fontSize: 11, color: ColorUtil.Color_222222 }}
-                                    />
-                                </TouchableOpacity>
-                                <View style={[styles.rectangle, {
-                                    width: 46,
-                                    borderLeftWidth: 0,
-                                    borderRightWidth: 0
-                                }]}>
-                                    <UIText
-                                        style={styles.TextInputStyle}
-                                        value={itemData.amount}
-                                    />
-                                </View>
-                                <TouchableOpacity
-                                    style={styles.rectangle}
-                                    onPress={() => {
-                                        this._addProductNum(itemData, rowId);
-                                    }}>
-                                    <UIText
-                                        value={'+'}
-                                        // style={{fontSize:15,color:data.num>=data.stock?color.gray_DDD:color.black_222}}
-                                        style={{ fontSize: 11, color: ColorUtil.Color_222222 }}
+                                /> : null
+                        }
 
-                                    />
-                                </TouchableOpacity>
+                        <View style={styles.validContextContainer}>
+                            <View>
+                                <UIText
+                                    value={itemData.productName ? itemData.productName : ''}
+                                    // value={"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"}
+                                    numberOfLines={2}
+                                    style={{
+                                        marginTop: 0,
+                                        fontFamily: 'PingFang-SC-Medium',
+                                        fontSize: 13,
+                                        lineHeight: 16,
+                                        height: 32,
+                                        color: ColorUtil.Color_222222
+                                    }}
+                                />
+
+                                <UIText
+                                    value={itemData.specString ? itemData.specString : ''}
+                                    numberOfLines={2}
+                                    style={{
+                                        fontFamily: 'PingFang-SC-Medium',
+                                        fontSize: 13,
+                                        color: ColorUtil.Color_999999
+                                    }}/>
+                            </View>
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
+                            }}>
+                                <UIText
+                                    value={'￥ ' + StringUtils.formatMoneyString(itemData.price, false)}
+                                    style={{ fontSize: 14, color: '#e60012' }}/>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <TouchableOpacity
+                                        style={styles.rectangle}
+                                        onPress={() => {
+                                            this._reduceProductNum(itemData, rowId);
+                                        }}
+                                    >
+                                        <UIText
+                                            value={'-'}
+                                            // style={{fontSize:15,color:data.num<=1?ColorUtil.Color_dddddd:ColorUtil.Color_222222}}
+                                            style={{ fontSize: 11, color: ColorUtil.Color_222222 }}
+                                        />
+                                    </TouchableOpacity>
+                                    <View style={[styles.rectangle, {
+                                        width: 46,
+                                        borderLeftWidth: 0,
+                                        borderRightWidth: 0
+                                    }]}>
+                                        <UIText
+                                            style={styles.TextInputStyle}
+                                            value={itemData.amount}
+                                        />
+                                    </View>
+                                    <TouchableOpacity
+                                        style={styles.rectangle}
+                                        onPress={() => {
+                                            this._addProductNum(itemData, rowId);
+                                        }}>
+                                        <UIText
+                                            value={'+'}
+                                            // style={{fontSize:15,color:data.num>=data.stock?color.gray_DDD:color.black_222}}
+                                            style={{ fontSize: 11, color: ColorUtil.Color_222222 }}
+
+                                        />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
                     </View>
-                </View>
-            </TouchableHighlight>
+                </TouchableHighlight>
+                <View
+                    style={{height:10,backgroundColor:ColorUtil.Color_f7f7f7,width:ScreenUtils.width}}
+                />
+            </View>
+            // <TouchableHighlight
+            //     onPress={() => this._jumpToProductDetailPage(itemData.productId)}
+            //     style={styles.itemContainer}>
+            //
+            //     {/*<View style={{backgroundColor:ColorUtil.Color_f7f7f7,width:ScreenUtils.width,height:10}}/>*/}
+            //     <View style={styles.standaloneRowFront}>
+            //
+            //         <UIImage
+            //             source={itemData.isSelected ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
+            //             style={{ width: 22, height: 22, marginLeft: 10 }}
+            //             onPress={() => {
+            //                 console.warn();
+            //                 let [...tempValues] = shopCartStore.data;
+            //                 tempValues[rowId].isSelected = !tempValues[rowId].isSelected;
+            //
+            //                 shopCartStore.data = tempValues;
+            //             }}
+            //         />
+            //
+            //         <UIImage
+            //             source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
+            //             style={[styles.validProductImg]}
+            //         />
+            //
+            //         {
+            //             itemData.state === 1 ?
+            //                 <UIImage
+            //                     source={ShopCartRes.invalidGoodImg}
+            //                     style={{
+            //                         // backgroundColor:'red',
+            //                         position: 'absolute',
+            //                         marginLeft: 55,
+            //                         width: 60,
+            //                         height: 60
+            //                     }}
+            //                 /> : null
+            //         }
+            //
+            //         <View style={styles.validContextContainer}>
+            //             <View>
+            //                 <UIText
+            //                     value={itemData.productName ? itemData.productName : ''}
+            //                     // value={"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"}
+            //                     numberOfLines={2}
+            //                     style={{
+            //                         marginTop: 0,
+            //                         fontFamily: 'PingFang-SC-Medium',
+            //                         fontSize: 13,
+            //                         lineHeight: 16,
+            //                         height: 32,
+            //                         color: ColorUtil.Color_222222
+            //                     }}
+            //                 />
+            //
+            //                 <UIText
+            //                     value={itemData.specString ? itemData.specString : ''}
+            //                     numberOfLines={2}
+            //                     style={{
+            //                         fontFamily: 'PingFang-SC-Medium',
+            //                         fontSize: 13,
+            //                         color: ColorUtil.Color_999999
+            //                     }}/>
+            //             </View>
+            //             <View style={{
+            //                 flexDirection: 'row',
+            //                 justifyContent: 'space-between',
+            //                 alignItems: 'center'
+            //             }}>
+            //                 <UIText
+            //                     value={'￥ ' + StringUtils.formatMoneyString(itemData.price, false)}
+            //                     style={{ fontSize: 14, color: '#e60012' }}/>
+            //                 <View style={{ flexDirection: 'row' }}>
+            //                     <TouchableOpacity
+            //                         style={styles.rectangle}
+            //                         onPress={() => {
+            //                             this._reduceProductNum(itemData, rowId);
+            //                         }}
+            //                     >
+            //                         <UIText
+            //                             value={'-'}
+            //                             // style={{fontSize:15,color:data.num<=1?ColorUtil.Color_dddddd:ColorUtil.Color_222222}}
+            //                             style={{ fontSize: 11, color: ColorUtil.Color_222222 }}
+            //                         />
+            //                     </TouchableOpacity>
+            //                     <View style={[styles.rectangle, {
+            //                         width: 46,
+            //                         borderLeftWidth: 0,
+            //                         borderRightWidth: 0
+            //                     }]}>
+            //                         <UIText
+            //                             style={styles.TextInputStyle}
+            //                             value={itemData.amount}
+            //                         />
+            //                     </View>
+            //                     <TouchableOpacity
+            //                         style={styles.rectangle}
+            //                         onPress={() => {
+            //                             this._addProductNum(itemData, rowId);
+            //                         }}>
+            //                         <UIText
+            //                             value={'+'}
+            //                             // style={{fontSize:15,color:data.num>=data.stock?color.gray_DDD:color.black_222}}
+            //                             style={{ fontSize: 11, color: ColorUtil.Color_222222 }}
+            //
+            //                         />
+            //                     </TouchableOpacity>
+            //                 </View>
+            //             </View>
+            //         </View>
+            //         <View
+            //         style={{height:10,backgroundColor:'red',width:ScreenUtils.width}}
+            //         />
+            //     </View>
+            // </TouchableHighlight>
         );
     };
     _jumpToProductDetailPage = (productId) => {
         //跳转产品详情
     };
-    //
-    // _renderInvalidItem=(data)=>{
-    //     return(
-    //         <TouchableHighlight
-    //             onPress={()=>this._jumpToProductDetailPage(data.product_id)}
-    //             style={styles.invalidItemContainer}>
-    //             <View style={[styles.standaloneRowFront,{height:100}]}>
-    //                 <View style={styles.invalidUITextInvalid}>
-    //                     <UIText
-    //                         value={'失效'}
-    //                         style={{fontFamily: "PingFang-SC-Medium", fontSize: 12, color: "#ffffff"}}/>
-    //                 </View>
-    //                 <UIImage
-    //                     source={{uri:data.pictureUrl}}
-    //                     style={styles.invalidProductImg}/>
-    //                 <View style={styles.invalidUITextContainer}>
-    //                     <View>
-    //                         <UIText
-    //                             value={data.name}
-    //                             style={{fontFamily: "PingFang-SC-Medium", fontSize: 13, lineHeight: 18, color: "#222222"}}/>
-    //                         <UIText
-    //                             value={data.conUIText}
-    //                             style={{fontFamily: "PingFang-SC-Medium", fontSize: 13, color: "#999999"}}/>
-    //                     </View>
-    //                 </View>
-    //             </View>
-    //         </TouchableHighlight>
-    //     )
-    // }
     /*action*/
     /*减号操作*/
     _reduceProductNum = (itemData, rowId) => {
@@ -322,8 +412,14 @@ export default class ShopCartPage extends BasePage {
     };
     /*加号按钮操作*/
     _addProductNum = (itemData, rowId) => {
-        itemData.amount++;
-        shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+
+        if (itemData.amount >= itemData.stock) {
+            bridge.$toast('已达商品库存最大数');
+        }else {
+            itemData.amount++;
+            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+        }
+
         // shopCartStore.data[rowId] = itemData;
     };
     /*删除操作*/
@@ -360,7 +456,6 @@ const styles = StyleSheet.create({
     standaloneRowFront: {
         alignItems: 'center',
         backgroundColor: '#fff',
-        // backgroundColor:'red',
         height: 130,
         width: ScreenUtils.width,
         flexDirection: 'row',
@@ -376,9 +471,9 @@ const styles = StyleSheet.create({
     },
 
     validItemContainer: {
-        height: 130,
+        height: 140,
         flexDirection: 'row',
-        backgroundColor: ColorUtil.Color_ffffff
+        backgroundColor: ColorUtil.Color_f7f7f7
     },
     validProductImg: {
         width: 80,
