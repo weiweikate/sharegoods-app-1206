@@ -38,7 +38,7 @@ class ShopCartStore {
 
     @computed
     get getTotalMoney() {
-        let totalMoney = 0;
+        let totalMoney = 0.00;
         this.data.slice().map(item => {
             if (item.isSelected) {
                 totalMoney = totalMoney + parseFloat(item.amount) * parseFloat(item.price);

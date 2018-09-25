@@ -31,6 +31,22 @@ const imageUrls = [
 ];
 const DemoList = [
     {
+        title: '专题页面类型one',
+        uri: 'home/subject/SubjectPage',
+        params: {
+            columnNumber: 2,
+            subjectType: 1
+        }
+    },
+    {
+        title: '专题页面类型Two',
+        uri: 'home/subject/SubjectPage',
+        params: {
+            columnNumber: 3,
+            subjectType: 0
+        }
+    },
+    {
         title: '优惠券',
         uri: 'mine/coupons/CouponsPage'
     },
@@ -57,6 +73,7 @@ const DemoList = [
         title: '搜索页面',
         uri: RouterMap.SearchPage
     }
+
 ];
 export default class HomePage extends Component {
 
