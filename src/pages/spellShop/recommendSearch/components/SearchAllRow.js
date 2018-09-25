@@ -21,17 +21,13 @@ export default class RecommendRow extends Component {
         onPress: PropTypes.func      // 点击
     };
 
-    static defaultProps = {
-        showRecommend: true
-    };
-
     _onPress = () => {
         this.props.onPress && this.props.onPress();
     };
 
     render() {
-        const { item, showRecommend } = this.props;
-        const storeStar = 3;
+        const item = this.props.item || {};
+        const storeStar = item.storeStarId;
         const starsArr = [];
         if (storeStar && typeof storeStar === 'number') {
             for (let i = 0; i < (storeStar > 3 ? 3 : storeStar); i++) {
@@ -48,19 +44,11 @@ export default class RecommendRow extends Component {
                 <View style={styles.right}>
                     <View style={styles.row}>
                         <Text numberOfLines={1} style={styles.title}>{item.name || ''}</Text>
-                        {
-                            showRecommend ? <View style={styles.ingContainer}>
-                                <Text style={styles.ingText}>
-                                    推荐
-                                </Text>
-                            </View> : null
-                        }
                     </View>
-
-                    <Text style={[styles.desc, styles.margin]}>{item.hadUser || 0}成员</Text>
+                    <Text style={[styles.desc, styles.margin]}>{item.storeUserNum || 0}成员</Text>
                     <View style={styles.bottomRow}>
                         <Image source={MoneyIcon}/>
-                        <Text style={[styles.desc, { color: '#f39500' }]}>交易额:{item.totalTradeVolume}元</Text>
+                        <Text style={[styles.desc, { color: '#f39500' }]}>{`交易额:${item.totalTradeVolume||0}元`}</Text>
                         <View style={{ flex: 1 }}/>
                         <View style={styles.starContainer}>
                             {

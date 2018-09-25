@@ -36,13 +36,13 @@ export default class SearchRecruitingRow extends Component {
                     <View style={styles.row}>
                         <Text style={styles.title}>{item.name || ''}</Text>
                         <View style={styles.ingContainer}>
-                            <Text style={styles.ingText}>
-                                招募中
-                            </Text>
+                            <Text style={styles.ingText}>招募中</Text>
                         </View>
                     </View>
-                    <Text style={[styles.desc, styles.margin]}>{item.hadUser || 0}成员</Text>
-                    <Text numberOfLines={1} style={[styles.desc, { maxWidth: 200 }]}>店长:{item.storeUser || ''}</Text>
+                    <View style = {{flexDirection:'row',justifyContent:'space-between',marginTop:11}}>
+                        <Text style={[styles.desc]}>店长:{item.storeUserName || ''}</Text>
+                        <Text style={[styles.desc]}>{item.storeUserNum || 0}成员</Text>
+                    </View>
                 </View>
             </View>
         </TouchableWithoutFeedback>);
@@ -50,23 +50,32 @@ export default class SearchRecruitingRow extends Component {
 }
 
 const styles = StyleSheet.create({
-    right: {
-        marginLeft: 10
-    },
-    margin: {
-        marginTop: 10,
-        marginBottom: 5
-    },
-    row: {
+    rowContainer: {
+        height: 80,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        backgroundColor: 'white'
+    },
+    right: {
+        flex:1,
+        marginLeft: 10,
     },
     img: {
+        alignSelf:'center',
         width: 50,
         height: 50,
         borderWidth: 1,
         borderColor: '#c8c8c8',
-        backgroundColor: __DEV__ ? '#c8c8c8' : 'white'
+        backgroundColor: '#c8c8c8'
+    },
+    row: {
+        flexDirection: 'row',
+    },
+    title: {
+        fontFamily: 'PingFang-SC-Medium',
+        fontSize: 13,
+        color: '#000000'
     },
     ingContainer: {
         width: 46,
@@ -80,18 +89,6 @@ const styles = StyleSheet.create({
     ingText: {
         fontSize: 11,
         color: '#f7f7f7'
-    },
-    rowContainer: {
-        height: 80,
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        backgroundColor: 'white'
-    },
-    title: {
-        fontFamily: 'PingFang-SC-Medium',
-        fontSize: 13,
-        color: '#000000'
     },
     desc: {
         fontSize: 12,
