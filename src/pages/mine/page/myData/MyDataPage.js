@@ -87,7 +87,7 @@ export default class MyDataPage extends Component{
                 });
             }
         }).catch(error =>{
-            if(error.code === 10001){
+            if(error.code === 10009){
                 this.$navigator('login/login/LoginPage',{callback:this.loadPageData()});
             }
         })

@@ -7,29 +7,29 @@ import {
     TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import { RefreshList } from '../../../../components/ui';
-import AccountItem from '../../components/CashAccountItem';
+import { RefreshList, UIText, UIImage } from '../../../../components/ui';
+import AccountItem from '../../components/AccountItem';
 import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import withdrawMoney from '../../res/userInfoImg/list_icon_tixiang.png';
-import storeShare from '../../res/userInfoImg/list_icon_dianzhufehong.png';
-import storeShareBonus from '../../res/userInfoImg/list_icon_dianpufewhong.png';
+import withdrawMoney from '../../res/userInfoImg/withdrawMoney.png';
 import tuiguang from '../../res/userInfoImg/list_icon_touguang.png';
-import xiaofei from '../../res/userInfoImg/list_icon_xiaofe.png';
 import salesCommissions from '../../res/userInfoImg/list_icon_xiaoshouticheng.png';
-
-import cashAccount from '../../res/userInfoImg/cashAccount.png';
+import questionImage_white from '../../res/userInfoImg/questionImage_white.png';
+import waitWithdrawCashBg from '../../res/userInfoImg/waitWithdrawCashBg2.png';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
-import Toast from './../../../../utils/bridge';
+import Toast from '../../../../utils/bridge';
 
-export default class MyCashAccountPage extends BasePage {
+
+export default class WaitingForWithdrawCashPage extends BasePage {
     constructor(props) {
         super(props);
+        // this.initHeader({
+        //     title: '待提现账户',
+        // })
         this.state = {
-            id: user.id,
             phone: '',
             pwd: '',
             thirdType: 1,
@@ -38,53 +38,33 @@ export default class MyCashAccountPage extends BasePage {
             passwordError: false,
             viewData: [
                 {
-                    useType: '提现支出',
-
+                    type: '推广提成',
                     time: '2018-05-25 12:15:45',
-                    serialNumber: '流水号：123456787653234567',
-                    capital: '-200.00',
+                    capital: '200.00',
                     iconImage: withdrawMoney,
-                    capitalRed: true
+                    capitalRed: false
                 },
                 {
-                    type: '提现',
+                    type: '折扣支出',
                     time: '2018-05-25 12:15:45',
                     serialNumber: '流水号：123456787653234567',
                     capital: '-200.00',
                     iconImage: withdrawMoney,
-                    capitalRed: true
-
-                },
-                {
-                    type: '店主分红',
-                    time: '2018-05-25 12:15:45',
-                    serialNumber: '流水号：123456787653234567',
-                    capital: '-200.00',
-                    iconImage: withdrawMoney,
-                    capitalRed: true
-
-                },
-                {
-                    type: '销售提成',
-
-                    time: '2018-05-25 12:15:45',
-                    serialNumber: '流水号：123456787653234567',
-                    capital: '-200.00',
-                    iconImage: withdrawMoney,
-                    capitalRed: true
+                    capitalRed: true,
+                    needQuestionImage: true
                 }
             ],
-            restMoney: this.params.availableBalance,
-
+            restMoney: 1600.00,
+            isEmpty: false,
+            waitingForWithdrawMoney: 0,
             currentPage: 1,
-            isEmpty: false
+            blockedBalance: this.params.blockedBalance
         };
     }
 
     $navigationBarOptions = {
-        title: '现金账户',
-
-        show: true // false则隐藏导航
+        show: true, // false则隐藏导航
+        title: '待提现账户'
     };
 
     //**********************************ViewPart******************************************
@@ -99,7 +79,7 @@ export default class MyCashAccountPage extends BasePage {
                     onLoadMore={this.onLoadMore}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无数据'}
+                    emptyTip={'暂无数据！'}
                 />
             </View>
         );
@@ -108,20 +88,31 @@ export default class MyCashAccountPage extends BasePage {
     renderHeader = () => {
         return (
             <View style={styles.container}>
-                <Image style={styles.imageBackgroundStyle} source={cashAccount}/>
+                <Image style={styles.imageBackgroundStyle} source={waitWithdrawCashBg}/>
                 <View style={styles.viewStyle}>
-                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: color.white }}>账户余额(元)</Text>
+                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: color.white }}>待提现余额(元)</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={{ height: 44, justifyContent: 'space-between', marginTop: 15 }}>
                             <Text style={{
                                 marginLeft: 25,
                                 fontSize: 25,
                                 color: color.white
-                            }}>{StringUtils.formatMoneyString(this.state.restMoney, false)}</Text>
+                            }}>{StringUtils.formatMoneyString(this.state.blockedBalance, false)}</Text>
                         </View>
-                        <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
-                            <Text style={{ fontSize: 15, color: color.white }}>提现</Text>
-                        </TouchableOpacity>
+                        <View>
+                            <TouchableOpacity style={styles.rectangleStyle}
+                                              onPress={() => this.jumpToWithdrawCashPage()}>
+                                <Text style={{ fontSize: 15, color: color.white }}>兑换秀豆</Text>
+                            </TouchableOpacity>
+                            <View
+                                style={{ flexDirection: 'row', marginTop: 10, paddingLeft: 22, alignItems: 'center' }}>
+                                <UIImage source={questionImage_white}
+                                         style={{ width: 13, height: 13, marginRight: 3 }}/>
+                                <UIText value={'提现说明'}
+                                        style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#ffffff' }}/>
+                            </View>
+                        </View>
+
                     </View>
                 </View>
             </View>
@@ -141,6 +132,7 @@ export default class MyCashAccountPage extends BasePage {
                         this.clickItem(index);
                     }}
                     capitalRed={item.capitalRed}
+                    needQuestionImage={item.needQuestionImage}
                 />
             </TouchableOpacity>
         );
@@ -153,29 +145,29 @@ export default class MyCashAccountPage extends BasePage {
 
     //**********************************BusinessPart******************************************
     componentDidMount() {
-
+        if (!user.isLogin) {
+            this.$navigate('login/login/LoginPage');
+        }
         this.getDataFromNetwork();
     }
 
     jumpToWithdrawCashPage = () => {
-        this.$navigate('mine/userInformation/WithdrawCashPage');
-
+        this.$navigate('mine/userInformation/TokenExchangePage');
     };
     clickItem = (index) => {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '推广提成'];
-        let use_type_symbol = ['', '+', '-', '-', '+', '+', '+', '+'];
-        let useLeftImg = ['', storeShare, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, tuiguang];
+        let use_type = ['', '销售提成', '推广提成'];
+        let use_type_symbol = ['', '+', '+'];
+        let useLeftImg = ['', salesCommissions, tuiguang];
         Toast.showLoading();
-        MineApi.userBalanceQuery({ page: 1, size: 20, type: 2 }).then((response) => {
+        MineApi.userBalanceQuery({ page: 1, size: 20, type: 1 }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
-            if (response.code == 10000) {
-
+            if (response.code === 10000) {
                 let data = response.data;
-                let arrData = this.state.currentPage == 1 ? [] : this.state.viewData;
+                let arrData = this.state.currentPage === 1 ? [] : this.state.viewData;
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
                         arrData.push({
@@ -185,9 +177,11 @@ export default class MyCashAccountPage extends BasePage {
                             capital: use_type_symbol[item.useType] + item.balance,
                             iconImage: useLeftImg[item.useType],
                             capitalRed: use_type_symbol[item.useType] === '-'
+
                         });
                     });
                 }
+
                 this.setState({
                     viewData: arrData,
                     isEmpty: data.data && data.data.length !== 0 ? false : true
@@ -198,19 +192,16 @@ export default class MyCashAccountPage extends BasePage {
             }
         }).catch(e => {
             Toast.hiddenLoading();
+            if (e.code === 10009) {
+                this.$navigate('login/login/LoginPage');
+            }
         });
     };
     onRefresh = () => {
-        this.setState({
-            currentPage: 1
-        });
-        this.getDataFromNetwork();
+        this.setState({currentPage:1},this.getDataFromNetwork());
     };
-    onLoadMore = () => {
-        this.setState({
-            currentPage: this.state.currentPage + 1
-        });
-        this.getDataFromNetwork();
+    onLoadMore = (page) => {
+        this.setState({currentPage:this.state.currentPage+1},this.getDataFromNetwork());
     };
 }
 
@@ -245,5 +236,4 @@ const styles = StyleSheet.create({
         marginRight: 15
     }
 });
-
 

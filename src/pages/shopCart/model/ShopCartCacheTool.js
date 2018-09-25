@@ -60,7 +60,8 @@ class ShopCartCacheTool {
                 shopCartStore.getShopCartListData();
             }
         }).catch(error => {
-            console.warn('获取购物车本地缓存异常');
+            // console.warn('获取购物车本地缓存异常');本地未获取到购物车信息,也需要从服务器拉取一下
+            shopCartStore.getShopCartListData();
         });
     }
 

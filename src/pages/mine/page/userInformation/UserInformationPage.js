@@ -115,7 +115,7 @@ export default class UserInformationPage extends BasePage {
             }).catch(err => {
 
                 this.$loadingDismiss();
-                if (err.code == 10001) {
+                if (err.code == 10009) {
                     this.props.navigation.navigate('login/login/LoginPage');
                 }
 
@@ -154,7 +154,7 @@ export default class UserInformationPage extends BasePage {
                 user.address=areaText;
             }
         }).catch(err => {
-            if (err.code == 10001) {
+            if (err.code == 10009) {
                 this.props.navigation.navigate('login/login/LoginPage');
             }
         });
