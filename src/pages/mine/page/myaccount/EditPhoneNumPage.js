@@ -95,14 +95,12 @@ export default class EditPhoneNumPage extends BasePage {
             return;
         }
         MineAPI.judgeCode({
-            // verificationCode: this.state.code,
-            verificationCode: '1111',
+            verificationCode: this.state.code,
             phone: oldNum
         }).then((data) => {
             this.$navigate('mine/account/SetNewPhoneNumPage', {
                 oldNum: oldNum,
-                // oldCode:this.state.code
-                oldCode: '1111'
+                oldCode: this.state.code
             });
         }).catch((data) => {
             bridge.$toast(data.msg);

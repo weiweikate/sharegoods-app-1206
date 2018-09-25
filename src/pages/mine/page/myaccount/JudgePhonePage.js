@@ -12,11 +12,6 @@ import user from '../../../../model/user';
 
 export default class SetNewPhoneNumPage extends BasePage {
 
-    // 导航配置
-    $navigationBarOptions = {
-        title: '修改手机号'
-    };
-
     // 构造
     constructor(props) {
         super(props);
@@ -25,6 +20,7 @@ export default class SetNewPhoneNumPage extends BasePage {
             code: '',
             vertifyCodeTime: 0
         };
+        this.$navigationBarOptions.title = this.params.title;
     }
 
     _render() {
@@ -115,11 +111,21 @@ export default class SetNewPhoneNumPage extends BasePage {
         if (StringUtils.checkPhone(tel)) {
             // 验证
             MineAPI.judgeCode({
-                // verificationCode: this.state.code,
-                verificationCode: '1111',
+                verificationCode: this.state.code,
                 phone: this.state.telText
             }).then((data) => {
-                this.$navigate('mine/account/JudgeIDCardPage');
+                if (user.hadSalePassword) {
+                    this.$navigate('mine/account/JudgeIDCardPage');
+                } else {
+                    // 直接设置交易密码
+                    this.$navigate('mine/account/SetOrEditPayPwdPage', {
+                        title: '设置交易密码',
+                        tips: '请设置6位纯数字交易支付密码',
+                        from: 'set',
+                        oldPwd: '',
+                        code: this.state.code
+                    });
+                }
             }).catch((data) => {
                 bridge.$toast(data.msg);
             });

@@ -8,12 +8,13 @@ import StringUtils from '../../../../utils/StringUtils';
 import bridge from '../../../../utils/bridge';
 import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import user from '../../../../model/user';
+import MineAPI from '../../api/MineApi';
 
 export default class SetNewPhoneNumPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '修改手机号'
+        title: '修改交易密码'
     };
 
     // 构造
@@ -103,24 +104,20 @@ export default class SetNewPhoneNumPage extends BasePage {
             return;
         }
         // 验证身份
-        // MineAPI.updatePhone({
-        //     // verificationCode: this.state.code,
-        //     verificationCode: '2222',
-        //     oldVerificationCode: oldCode,
-        //     phone: this.state.telText
-        // }).then((data) => {
-        //     this.$navigate('mine/account/ChangePayPwdPage', {
-        //         oldPwd: '',
-        //         tips: '重新设置新的交易密码'
-        //     });
-        // }).catch((data) => {
-        //     bridge.$toast(data.msg);
-        // });
-        this.$navigate('mine/account/ChangePayPwdPage', {
-            userName,
-            cardNum,
-            oldPwd: '',
-            tips: '重新设置新的交易密码'
+        MineAPI.judgeIdCard({
+            realname: userName,
+            idcard: cardNum
+        }).then((data) => {
+            this.$navigate('mine/account/SetOrEditPayPwdPage', {
+                userName,
+                cardNum,
+                oldPwd: '',
+                tips: '重新设置新的交易密码',
+                title: '重置交易密码',
+                from: 'edit'
+            });
+        }).catch((data) => {
+            bridge.$toast(data.msg);
         });
     };
 

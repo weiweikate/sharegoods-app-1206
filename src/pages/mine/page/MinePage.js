@@ -86,6 +86,7 @@ export default class MinePage extends BasePage {
             this.$loadingDismiss();
             if (res.code === 10000) {
                 let data = res.data;
+                user.saveUserInfo(data);
                 this.setState({
                     availableBalance: data.availableBalance,
                     headImg: data.headImg,
@@ -109,6 +110,7 @@ export default class MinePage extends BasePage {
             this.$loadingDismiss();
             if (res.code == 10000) {
                 let data = res.data;
+                user.saveUserInfo(data);
                 this.setState({
                     availableBalance: data.availableBalance,
                     headImg: data.headImg,
