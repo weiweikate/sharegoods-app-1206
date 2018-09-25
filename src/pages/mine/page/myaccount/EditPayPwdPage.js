@@ -1,7 +1,4 @@
-import {
-    Text, TouchableOpacity,
-    View
-} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import { color } from '../../../../constants/Theme';
@@ -54,6 +51,8 @@ export default class EditPayPwdPage extends BasePage {
     };
 
     _doNext = () => {
-        this.$navigate('mine/account/JudgePhonePage');
+        this.$navigate('mine/account/JudgePhonePage', {
+            title: '修改交易密码'
+        });
     };
 }
