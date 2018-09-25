@@ -23,7 +23,7 @@ import qbcIcon from '../../res/customerservice/kf_22.png';
 import autobcIon from '../../res/customerservice/kf_24.png';
 import phoneIcon from '../../res/customerservice/kf_30.png';
 import personIcon from '../../res/customerservice/kf_30-33.png';
-// import QYChatUtil from 'QYChatUtil';
+import QYChatUtil from './QYChatModel';
 import MineApi from '../../api/MineApi';
 export default class MyHelperPage extends BasePage {
     constructor(props) {
@@ -144,7 +144,7 @@ export default class MyHelperPage extends BasePage {
         );
     };
     jumpQYIMPage = () => {
-        // QYChatUtil.qiYUChat()
+        QYChatUtil.qiYUChat()
     };
 
     jumpTohelpPage() {
@@ -185,8 +185,11 @@ export default class MyHelperPage extends BasePage {
                 this.$toastShow(res.msg);
                  this.setState({isEmpty: true})
              }
-             }
-         );
+             }).catch(error =>{
+                 if(error.code === 10009){
+                     this.$navigate('login/login/LoginPage')
+                 }
+         });
      }
 
     _render() {

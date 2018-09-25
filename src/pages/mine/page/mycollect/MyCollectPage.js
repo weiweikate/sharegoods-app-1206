@@ -239,7 +239,7 @@ export default class MyCollectPage extends BasePage {
             }
         }).catch(err => {
             this.$loadingDismiss();
-            if (err.code === 10001) {
+            if (err.code === 10009) {
                 this.$navigate('login/login/LoginPage');
             }
         });
