@@ -22,6 +22,7 @@ import SpellStatusModel from '../model/SpellStatusModel';
 import ViewPager from '../../../components/ui/ViewPager';
 import UIImage from '../../../components/ui/UIImage';
 import SpellShopApi from '../api/SpellShopApi';
+import storeModel from '../model/StoreModel';
 
 export default class RecommendPage extends BasePage {
 
@@ -74,7 +75,12 @@ export default class RecommendPage extends BasePage {
 
     // 点击开启店铺页面
     _clickOpenShopItem = () => {
-        this.$navigate('spellShop/openShop/OpenShopExplainPage');
+        //支付了跳转到初始化店铺页面
+        if (storeModel.status === 2) {
+            this.$navigate('spellShop/shopSetting/SetShopNamePage');
+        }else {
+            this.$navigate('spellShop/openShop/OpenShopExplainPage');
+        }
     };
 
     // 点击搜索店铺

@@ -44,7 +44,7 @@ export default class SpellShopPage extends BasePage {
 
     _renderContainer = () => {
         if (SpellStatusModel.storeId) {
-            // 加入了店铺或者自己有店铺
+            // 加入了店铺或者自己有店铺，缴纳了保证金还是未开启
             return (<MyShop_RecruitPage id={SpellStatusModel.storeId} navigation={this.props.navigation}/>);
         } else if (SpellStatusModel.canSeeGroupStore) {
             // 没有店铺，看见推荐店铺页面

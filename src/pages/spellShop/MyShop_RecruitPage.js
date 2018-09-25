@@ -11,6 +11,7 @@ import StoreModel from './model/StoreModel';
 import MyShopPage from './myShop/MyShopPage';
 import ShopRecruitPage from './shopRecruit/ShopRecruitPage';
 import SpellStatusModel from './model/SpellStatusModel';
+import RecommendPage from './recommendSearch/RecommendPage';
 
 @observer
 export default class MyShop_RecruitPage extends BasePage {
@@ -31,7 +32,7 @@ export default class MyShop_RecruitPage extends BasePage {
                 reloadBtnClick: () => {
                     this._loadPageData();
                 }
-            },
+            }
         };
     };
 
@@ -46,10 +47,13 @@ export default class MyShop_RecruitPage extends BasePage {
 
     _renderContainer = () => {
         if (StoreModel.status === 3) {
-            return <ShopRecruitPage navigation={this.props.navigation} leftNavItemHidden = {true}/>;
-        } else {
-            return <MyShopPage navigation={this.props.navigation} leftNavItemHidden = {true}/>;
+            return <ShopRecruitPage navigation={this.props.navigation} leftNavItemHidden={true}/>;
+        } else if (StoreModel.status === 2) {
+            return <RecommendPage navigation={this.props.navigation} leftNavItemHidden={true}/>;
+        } else if (StoreModel.status === 1) {
+            return <MyShopPage navigation={this.props.navigation} leftNavItemHidden={true}/>;
         }
+
     };
 
     _render() {
@@ -64,7 +68,7 @@ export default class MyShop_RecruitPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1
     }
 });
 

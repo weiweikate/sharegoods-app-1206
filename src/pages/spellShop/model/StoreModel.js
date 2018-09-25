@@ -60,6 +60,15 @@ class StoreModel {
         this.refreshing = false;
 
         this.storeData = data;
+        this.allowCreateStore = data.allowCreateStore;
+        this.allowGroupStore = data.allowGroupStore;
+        this.status = data.status;
+        this.userStatus = data.userStatus;
+        this.recruitStatus = data.recruitStatus;
+        this.maxUser = data.maxUser;
+        this.storeUserNum = data.storeUserNum;
+        this.storeUserList = data.storeUserList || [];
+
     }
 
     @action //错误
@@ -70,6 +79,15 @@ class StoreModel {
         this.refreshing = false;
 
         this.storeData = null;
+
+        this.allowCreateStore = null;
+        this.allowGroupStore = null;
+        this.status = null;
+        this.userStatus = null;
+        this.recruitStatus = null;
+        this.maxUser = null;
+        this.storeUserNum = null;
+        this.storeUserList = null;
     }
 
     @action //清空数据  重新加载
@@ -80,6 +98,15 @@ class StoreModel {
         this.refreshing = false;
 
         this.storeData = null;
+
+        this.allowCreateStore = null;
+        this.allowGroupStore = null;
+        this.status = null;
+        this.userStatus = null;
+        this.recruitStatus = null;
+        this.maxUser = null;
+        this.storeUserNum = null;
+        this.storeUserList = null;
     }
 
     /******************************【common】******************************************/
