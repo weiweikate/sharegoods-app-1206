@@ -29,5 +29,6 @@ ext {
             multidex: 'com.android.support:multidex:+',
             uapp    : 'com.umeng.sdk:analytics:latest.integration',
             ucommon : 'com.umeng.sdk:common:latest.integration',
+            qiyu    : 'com.qiyukf.unicorn:unicorn:+'
     ]
 }

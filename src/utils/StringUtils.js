@@ -96,6 +96,7 @@ const formatBankCardNum = (num) => {
     let headStr = '* * * *   * * * *   * * * *   ';
     return headStr + str.charAt(str.length - 3) + ' ' + str.charAt(str.length - 2) + ' ' + str.charAt(str.length - 1);
 };
+//银行卡号判断
 const checkBankCard = (bankCard) => {
     let bankno = bankCard;
     let lastNum = bankno.substr(bankno.length - 1, 1); //取出最后一位（与luhn进行比较）
@@ -157,7 +158,11 @@ const checkBankCard = (bankCard) => {
         return false;
     }
 };
-
+//判断正整数
+const checkIsPositionNumber = (num) => {
+    let reg = /^[1-9]+[0-9]*]*$/;
+    return reg.test(num);
+};
 export default {
     isEmpty,
     isNoEmpty,
@@ -168,7 +173,8 @@ export default {
     isChineseName,
     isCardNo,
     formatBankCardNum,
-    checkBankCard
+    checkBankCard,
+    checkIsPositionNumber
 };
 
 

@@ -106,7 +106,7 @@ export default class HelperFeedbackPage extends BasePage {
                 this.$toastShow(res.msg);
             }
         }).catch(err=>{
-            if(err.code==10001){
+            if(err.code==10009){
                 this.$navigate('login/login/LoginPage')
             }
 

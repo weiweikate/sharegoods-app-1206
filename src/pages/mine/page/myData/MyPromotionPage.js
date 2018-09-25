@@ -91,10 +91,15 @@ export default class MyPromotionPage extends BasePage {
                 });
             }
         }).catch(err => {
-            if (err.code === 10001) {
+            this.setState({
+                loading: false,
+                refreshing: false,
+                netFailedInfo: err,
+                loadingState: PageLoadingState.fail
+            });
+            if (err.code === 10009) {
                 this.props.navigation.navigate('login/login/LoginPage');
             }
-
         });
     };
 

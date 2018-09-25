@@ -51,7 +51,7 @@ export default class HomeClassifyView extends Component {
                 {
                     itemViewArr.map((itemView, index) => {
                         return (
-                            <TouchableOpacity onPress={() => itemClickAction(index)}>
+                            <TouchableOpacity onPress={() => itemClickAction(index)} key={index}>
                                 {itemView}
                             </TouchableOpacity>
                         );

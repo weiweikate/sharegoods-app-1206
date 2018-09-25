@@ -4,7 +4,6 @@ import {
     View,
     ScrollView,
     ImageBackground,
-    TouchableOpacity,
     Image,
     Platform,
     Linking,
@@ -51,7 +50,7 @@ export default class MinePage extends BasePage {
             headImg: '',
             availableBalance: 0,//现金余额
             blockedBalance: 0,//待提现
-            levelId: 0,
+            levelName: 'V0',
             userScore: 0,//秀豆
             refreshing: false,
             netFailedInfo: null,
@@ -80,45 +79,26 @@ export default class MinePage extends BasePage {
             this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
             return;
         }
-        this.$loadingShow('加载中...', { timeout: 3, timeoutCallBack: () => this.timeoutCallBack });
-        MineApi.getUser().then(res => {
-            console.log(res);
-            this.$loadingDismiss();
-            if (res.code === 10000) {
-                let data = res.data;
-                this.setState({
-                    availableBalance: data.availableBalance,
-                    headImg: data.headImg,
-                    levelId: data.levelId,
-                    userScore: data.userScore,
-                    blockedBalance: data.blockedBalance
-
-                });
-            }
-        }).catch(err => {
-            if (err.code === 10001) {
-                user.clearUserInfo();
-                this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
-            }
-        });
+        this.refresh();
     }
 
     refresh = () => {
-        this.$loadingShow('加载中...', { timeout: 3, timeoutCallBack: () => this.timeoutCallBack });
+        this.$loadingShow('加载中...', { timeout: 1, timeoutCallBack: () => this.timeoutCallBack });
         MineApi.getUser().then(res => {
+            console.log('refresh');
             this.$loadingDismiss();
             if (res.code == 10000) {
                 let data = res.data;
                 this.setState({
                     availableBalance: data.availableBalance,
                     headImg: data.headImg,
-                    levelId: data.levelId,
+                    levelName: data.levelName,
                     userScore: data.userScore,
                     blockedBalance: data.blockedBalance
                 });
             }
         }).catch(err => {
-            if (err.code === 10001) {
+            if (err.code === 10009) {
                 this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
             }
         });
@@ -146,15 +126,21 @@ export default class MinePage extends BasePage {
     };
     renderUserHead = () => {
         return (
-            <View style={{ height: 462, width: ScreenUtils.width }}>
-                <ImageBackground style={{ height: 240, width: ScreenUtils.width }} source={headBg}>
+            <View style={{
+                height: 462 + (ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 0),
+                width: ScreenUtils.width
+            }}>
+                <ImageBackground style={{
+                    height: 240 + (ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 0),
+                    width: ScreenUtils.width
+                }} source={headBg}>
                     <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',
                         marginRight: 5,
                         justifyContent: 'flex-end',
                         height: 40,
-                        marginTop: 20
+                        marginTop: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 20
                     }}>
                         <UIImage source={setting} style={{ height: 18, width: 22, marginRight: 15 }}
                                  onPress={() => this.jumpToSettingPage()}/>
@@ -194,7 +180,7 @@ export default class MinePage extends BasePage {
                             </NoMoreClick>
                             <ImageBackground style={{ width: 53, height: 14, alignItems: 'center', marginTop: 2 }}
                                              source={levelBg}>
-                                <Text style={{ fontSize: 9, color: '#ffa351' }}>V{this.state.levelId}</Text>
+                                <Text style={{ fontSize: 9, color: '#ffa351' }}>{this.state.levelName}</Text>
                             </ImageBackground>
                             <UIText value={'已帮你省：0.00元'} style={{
                                 fontFamily: 'PingFang-SC-Medium',
@@ -205,8 +191,8 @@ export default class MinePage extends BasePage {
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', height: 32, marginTop: 20 }}>
-                        <TouchableOpacity style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-                                          onPress={() => this.go2CashDetailPage(2)}>
+                        <NoMoreClick style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+                                     onPress={() => this.go2CashDetailPage(2)}>
                             <Text style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 14,
@@ -217,10 +203,10 @@ export default class MinePage extends BasePage {
                                 fontSize: 11,
                                 color: '#ffffff'
                             }}>秀豆</Text>
-                        </TouchableOpacity>
+                        </NoMoreClick>
                         <View style={{ width: 1, height: '80%', backgroundColor: '#fff' }}/>
-                        <TouchableOpacity style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-                                          onPress={() => this.go2CashDetailPage(4)}>
+                        <NoMoreClick style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+                                     onPress={() => this.go2CashDetailPage(3)}>
                             <Text style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 14,
@@ -231,7 +217,7 @@ export default class MinePage extends BasePage {
                                 fontSize: 11,
                                 color: '#ffffff'
                             }}>待提现金额(元)</Text>
-                        </TouchableOpacity>
+                        </NoMoreClick>
                     </View>
                 </ImageBackground>
 
@@ -260,7 +246,7 @@ export default class MinePage extends BasePage {
                         backgroundColor: color.white,
                         borderRadius: 10
                     }}>
-                        <TouchableOpacity style={{
+                        <NoMoreClick style={{
                             height: 44,
                             flexDirection: 'row',
                             alignItems: 'center',
@@ -279,7 +265,7 @@ export default class MinePage extends BasePage {
                                 <Image source={arrowRight} style={{ height: 12, marginLeft: 6 }}
                                        resizeMode={'contain'}/>
                             </View>
-                        </TouchableOpacity>
+                        </NoMoreClick>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
                             {this.renderOrderStates()}
                         </View>
@@ -315,12 +301,12 @@ export default class MinePage extends BasePage {
         let arr = [];
         for (let i = 0; i < statesImage.length; i++) {
             arr.push(
-                <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                                  onPress={() => this.jumpToOrderAccordingStates(i)} key={i}>
+                <NoMoreClick style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                             onPress={() => this.jumpToOrderAccordingStates(i)} key={i}>
                     <Image source={statesImage[i]}
                            style={{ height: 24, width: 24, marginBottom: 10 }}/>
                     <UIText value={statesText[i]} style={styles.blackText}/>
-                </TouchableOpacity>
+                </NoMoreClick>
             );
         }
         return arr;
@@ -350,8 +336,8 @@ export default class MinePage extends BasePage {
     renderMyWallet() {
         return (
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                <TouchableOpacity style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}
-                                  onPress={() => this.go2CashDetailPage(1)}>
+                <NoMoreClick style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}
+                             onPress={() => this.go2CashDetailPage(1)}>
                     <Text style={{
                         fontSize: 14,
                         color: '#212121'
@@ -366,9 +352,9 @@ export default class MinePage extends BasePage {
                         <Image source={arrowRight} style={{ width: 5, height: 8, marginLeft: 4, marginTop: 8 }}/>
                     </View>
 
-                </TouchableOpacity>
-                <TouchableOpacity style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}
-                                  onPress={() => this.go2CashDetailPage(3)}>
+                </NoMoreClick>
+                <NoMoreClick style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}
+                             onPress={() => this.go2CashDetailPage(4)}>
                     <Text style={{ fontSize: 14, color: '#212121' }}>0.00元</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{
@@ -379,7 +365,7 @@ export default class MinePage extends BasePage {
                         }}>代币余额</Text>
                         <Image source={arrowRight} style={{ width: 5, height: 8, marginLeft: 4, marginTop: 8 }}/>
                     </View>
-                </TouchableOpacity>
+                </NoMoreClick>
 
             </View>
         );
@@ -417,7 +403,7 @@ export default class MinePage extends BasePage {
                 this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: this.state.userScore ? this.state.userScore : 0 });
                 break;
             case 3:
-                // this.$navigate('mine/userInformation/WithdrawCashPage');
+                this.$navigate('mine/userInformation/WaitingForWithdrawCashPage', { blockedBalance: this.state.blockedBalance ? this.state.blockedBalance : 0 });
                 break;
             default:
             // this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
@@ -501,8 +487,8 @@ export default class MinePage extends BasePage {
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        marginTop: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 0
+        flex: 1
+        // marginTop: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 0
     },
     whatLeft: {  // 组件定义了一个上边框
         flex: 1,
