@@ -114,8 +114,8 @@ export default class ProductDetailPage extends BasePage {
         return <DetailSegmentView segmentViewOnPressAtIndex={this._segmentViewOnPressAtIndex}/>;
     };
 
-    _renderItem = ({}) => {
-        return <View style={{ height: 200, backgroundColor: '#EEEEEE' }}></View>;
+    _renderItem = () => {
+        return <View style={{ height: 200, backgroundColor: '#EEEEEE' }}/>;
     };
 
     _onScroll = (event) => {
