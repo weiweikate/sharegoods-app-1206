@@ -13,6 +13,7 @@ import SearchSegmentView from './components/SearchSegmentView';
 import SearchRecruitingRow from './components/SearchRecruitingRow';
 import SearchAllRow from './components/SearchAllRow';
 import BasePage from '../../../BasePage';
+import SpellShopApi from '../api/SpellShopApi';
 
 
 export default class SearchPage extends BasePage {
@@ -26,7 +27,7 @@ export default class SearchPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            list: [{}, {}, {}, {}],
+            dataList: [],
             loading: true,
             refreshing: false,
             selIndex: 0,
@@ -34,59 +35,62 @@ export default class SearchPage extends BasePage {
         };
     }
 
-    _onRefresh = () => {
-        this.setState({ refreshing: true }, this._searchKeyWord);
-    };
 
-    _searchKeyWord = () => {
-        this.setState({
-            loading: true,
-            list: [{}, {}, {}, {}]
-        }, () => {
+    componentDidMount() {
+        this._loadPageData();
+    }
+
+    _loadPageData = () => {
+        SpellShopApi.queryByStatusAndKeyword({
+            page: 1,
+            size: 10,
+            status: this.state.selIndex === 0 ? 1 : 3,
+            keyword: this.state.keyword
+        }).then((data) => {
+            let dataTemp = data.data || {};
+            this.setState({
+                dataList: dataTemp.data || []//data.data.data
+            });
+        }).catch((error) => {
+            this.$toastShow(error.msg);
         });
     };
 
     _onChangeText = (keyword) => {
-        this.setState({ keyword }, this._searchKeyWord);
+        this.setState({ keyword }, this._loadPageData);
     };
 
     _onPressAtIndex = (index) => {
-        this.setState({ selIndex: index, list: [] }, this._searchKeyWord);
+        this.state.selIndex = index;
+        this._loadPageData();
     };
 
-    _clickShopAtRow = (storeId) => {
-        this.$navigate('spellShop/MyShop_RecruitPage',{storeId:storeId});
+    _clickShopAtRow = (item) => {
+        if (item.status === 3) {
+            this.$navigate('spellShop/shopRecruit/ShopRecruitPage', { storeId: item.id });
+        } else if (item.status === 1) {
+            this.$navigate('spellShop/myShop/MyShopPage', { storeId: item.id });
+        }
     };
 
     _renderListHeader = () => {
         return <SearchBar style={{ marginBottom: 10 }}
                           onChangeText={this._onChangeText}
-                          searchClick={this._clickSearch}
                           title={this.state.keyword}
                           placeholder={'可通过搜索店铺/ID进行查找'}/>;
     };
 
-    _renderHeader = ({ section }) => {
-        // const { sectionGroup } = section;
-        // if (sectionGroup === 0) {
+    _renderHeader = () => {
         return <SearchSegmentView style={{ marginBottom: 10 }} onPressAtIndex={this._onPressAtIndex}/>;
-        // } else {
-        //     return null;
-        // }
     };
 
     // 渲染行
-    _renderItem = (item, section) => {
-        // const { sectionGroup } = section;
-        // if (sectionGroup === 1) {
+    _renderItem = (item) => {
         if (this.state.selIndex === 0) {
-            return (<SearchAllRow onPress={this._clickShopAtRow} item={item}/>);
+            return (<SearchAllRow onPress={this._clickShopAtRow} item={item.item}/>);
         } else {
-            return (<SearchRecruitingRow onPress={this._clickShopAtRow} item={item}/>);
+            return (<SearchRecruitingRow onPress={this._clickShopAtRow} item={item.item}/>);
         }
-        // } else {
-        //     return null;
-        // }
     };
 
     _renderSeparatorComponent = () => {
@@ -103,7 +107,7 @@ export default class SearchPage extends BasePage {
                              renderItem={this._renderItem}
                              ItemSeparatorComponent={this._renderSeparatorComponent}
                              keyExtractor={(item, index) => `${index}`}
-                             sections={[{ data: this.state.list }]}/>
+                             sections={[{ data: this.state.dataList }]}/>
             </View>
         );
     }

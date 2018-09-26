@@ -13,7 +13,7 @@ import SwipeOut from 'react-native-swipeout';
 export default class AssistantRow extends Component {
 
     static propTypes = {
-        // item: PropTypes.object,     //数据
+        item: PropTypes.object,     //数据
         style: PropTypes.any,       //样式
         onPress: PropTypes.func,    //点击回调
         onPressDelete: PropTypes.func,//删除的回调
@@ -28,25 +28,21 @@ export default class AssistantRow extends Component {
     state = {open: false};
 
     _clickAssistantDetail = ()=>{
-        const {id} = this.props.item;
+        const {userId} = this.props.item;
         const {onPress} = this.props;
-         onPress && onPress(id);
+         onPress && onPress(userId);
     };
 
     _onPressDelete = ()=>{
-        const {id} = this.props.item;
+        const {userId} = this.props.item;
         const {onPressDelete} = this.props;
-        onPressDelete && id && onPressDelete(id);
+        onPressDelete && userId && onPressDelete(userId);
     };
 
 
     renderContent = (style)=>{
-        let {headImg,levelName,nickname,code,contribution} = this.props.item;
+        let {headImg,levelName,nickName,contribution} = this.props.item;
         const sty = [styles.rowContainer];
-        // if(this.state.open){
-        //     sty.push({borderTopRightRadius: 0,
-        //         borderBottomRightRadius: 0});
-        // }
         // TODO 等待后台确定贡献度 计算方式
         sty.push(style);
         sty.push({backgroundColor: 'white'});
@@ -56,7 +52,7 @@ export default class AssistantRow extends Component {
                     headImg ? <Image source={{uri: headImg}} style={styles.headerImg}/> : <View style={styles.headerImg}/>
                 }
                 <View style={styles.right}>
-                    <Text style={styles.name}>{(nickname || '   ') + (code ? `（${code}）` : '') }</Text>
+                    <Text style={styles.name}>{nickName || ' '}</Text>
                     <Text style={styles.level}>{levelName || ' '}</Text>
                     <Text style={styles.desc}>贡献度：{contribution ? (contribution / 100) : 0}%</Text>
                 </View>

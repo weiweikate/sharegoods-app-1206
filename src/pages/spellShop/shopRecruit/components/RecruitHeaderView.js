@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
     View,
     Image,
@@ -11,33 +12,29 @@ import HeaderBarBgImg from '../src/bg_02.png';
 import WhiteBgImg from '../src/bg_03.png';
 import AdminImg from '../src/dyxx_03.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DateUtils from '../../../../utils/DateUtils';
 
 export default class RecommendRow extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            store: {},
-            dealerList: []
-        };
-    }
-
-    _formatDate = () => {
-        return 1 + '年' + 1 + '月' + 1 + '日发起招募';
+    static propTypes = {
+        storeData: PropTypes.object
     };
 
     _judgeCanOpenShop = () => {
-        return this.state.dealerList.length >= this.state.needPersonNum ? '已满足拼店要求' : '尚未满足拼店要求';
+        let { storeUserList, maxUser } = this.props.storeData;
+        storeUserList = storeUserList || [];
+        return maxUser && maxUser <= storeUserList.length ? '已满足拼店要求' : '尚未满足拼店要求';
     };
 
     render() {
+        const { headUrl, name, storeNumber, createTime, storeUserName, starName, totalTradeVolume, bonusCount } = this.props.storeData;
         return <View style={styles.bg}>
             <ImageBackground source={HeaderBarBgImg} style={styles.headerBg}>
-                <View style={{ marginTop: 30, flexDirection: 'row'}}>
-                    <Image source={{ uri: this.state.store.headUrl }} style={styles.shopIcon}/>
+                <View style={{ marginTop: 30, flexDirection: 'row' }}>
+                    <Image source={{ uri: headUrl }} style={styles.shopIcon}/>
                     <View>
-                        <Text style={styles.shopName}>{'dianppp' || ''}</Text>
-                        <Text style={styles.shopId}>店铺ID：{this.state.store.id || ''}</Text>
+                        <Text style={styles.shopName}>{name || ''}</Text>
+                        <Text style={styles.shopId}>店铺ID：{storeNumber || ''}</Text>
                     </View>
                 </View>
 
@@ -46,16 +43,14 @@ export default class RecommendRow extends Component {
                     fontSize: 14,
                     color: '#f7f7f7',
                     marginTop: 20
-                }}>{this._formatDate()}</Text>
-                {
-                    this.state.isOpenStore ? null : <Text style={{
-                        fontFamily: 'PingFang-SC-Medium',
-                        fontWeight: 'bold',
-                        fontSize: 14,
-                        color: '#f7f7f7',
-                        marginTop: 5
-                    }}>{this._judgeCanOpenShop()}</Text>
-                }
+                }}>{`${DateUtils.formatDate(createTime, 'yyyy-MM-dd')}日发起招募`}</Text>
+                <Text style={{
+                    fontFamily: 'PingFang-SC-Medium',
+                    fontWeight: 'bold',
+                    fontSize: 14,
+                    color: '#f7f7f7',
+                    marginTop: 5
+                }}>{this._judgeCanOpenShop()}</Text>
 
                 <ImageBackground source={WhiteBgImg} style={styles.whiteBg}>
                     <View style={{ height: 43, marginHorizontal: 0, flexDirection: 'row', alignItems: 'center' }}>
@@ -82,14 +77,14 @@ export default class RecommendRow extends Component {
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,
                                 color: '#222222'
-                            }}>店长：{'对安卓' || ''}</Text>
+                            }}>店长：{storeUserName || ''}</Text>
 
                             <Text style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,
                                 color: '#666',
                                 marginTop: 6
-                            }}>等级：{'对安卓' || ''}</Text>
+                            }}>等级：{starName || ''}</Text>
 
 
                             <Text style={{
@@ -111,15 +106,14 @@ export default class RecommendRow extends Component {
                             fontSize: 13,
                             color: '#c8c8c8',
                             marginTop: 6
-                        }}>完成总交易额
-                            ：1元</Text>
+                        }}>{`完成总交易额：${totalTradeVolume || 0}元`}</Text>
 
                         <Text style={{
                             fontFamily: 'PingFang-SC-Medium',
                             fontSize: 13,
                             color: '#666',
                             marginTop: 6
-                        }}>参与拼店分红：1次</Text>
+                        }}>{`参与拼店分红：${bonusCount || 0}次`}</Text>
                     </View>
                 </ImageBackground>
             </ImageBackground>
