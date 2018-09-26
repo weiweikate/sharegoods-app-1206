@@ -7,13 +7,7 @@ import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.facebook.soloader.SoLoader;
-import com.meeruu.commonlib.callback.ForegroundCallbacks;
-import com.meeruu.commonlib.imService.QiyuImageLoader;
 import com.meeruu.commonlib.umeng.RNUMConfigure;
-import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
-import com.qiyukf.unicorn.api.UICustomization;
-import com.qiyukf.unicorn.api.Unicorn;
-import com.qiyukf.unicorn.api.YSFOptions;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
@@ -40,14 +34,10 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         appContext = this;
-        // activity生命周期，onCreate之后
-        ForegroundCallbacks.init(this);
         if (getProcessName(this).equals(getPackageName())) {
             // 捕获闪退日志
 //            CrashHandler.getInstance().init(this);
             SoLoader.init(this, /* native exopackage */ false);
-            // 七鱼初始化
-            Unicorn.init(this, "db5a6f7eb0a3a8542e8ea36957e9122a", options(), new QiyuImageLoader(this));
             // umeng初始化
             RNUMConfigure.init(this, "5b7663a3f29d9830cb0000d8"
                     , "umeng", UMConfigure.DEVICE_TYPE_PHONE, null);//58edcfeb310c93091c000be2 5965ee00734be40b580001a0
@@ -61,22 +51,6 @@ public class BaseApplication extends MultiDexApplication {
         MultiDex.install(this);
     }
 
-    // 如果返回值为null，则全部使用默认参数。
-    private YSFOptions options() {
-        YSFOptions options = new YSFOptions();
-        options.statusBarNotificationConfig = new StatusBarNotificationConfig();
-        UICustomization uiCustomization = new UICustomization();
-        uiCustomization.avatarShape = 0;
-        uiCustomization.titleBackgroundColor = 0xFF12CDB0;
-        uiCustomization.titleBarStyle = 1;
-        uiCustomization.topTipBarBackgroundColor = 0xFF666666;
-        uiCustomization.titleCenter = true;
-        uiCustomization.topTipBarTextColor = 0xFFFFFFFF;
-        options.categoryDialogStyle = 0;
-        options.uiCustomization = uiCustomization;
-        return options;
-    }
-
     /**
      * 获取进程名。
      * 由于app是一个多进程应用，因此每个进程被os创建时，
@@ -87,7 +61,7 @@ public class BaseApplication extends MultiDexApplication {
      * @param context 上下文环境对象
      * @return 获取此进程的进程名
      */
-    private String getProcessName(Context context) {
+    public String getProcessName(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
         if (runningAppProcesses == null) {
