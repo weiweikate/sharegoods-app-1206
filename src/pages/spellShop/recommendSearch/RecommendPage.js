@@ -41,7 +41,7 @@ export default class RecommendPage extends BasePage {
     };
 
     $NavBarRenderRightItem = () => {
-        const showShopItem = SpellStatusModel.canCreateStore;
+        const showShopItem =  SpellStatusModel.canCreateStore;
         return <View style={styles.rightBarItemContainer}>
             {
                 showShopItem ? <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
@@ -59,6 +59,7 @@ export default class RecommendPage extends BasePage {
     }
 
     _loadPageData = () => {
+
         SpellShopApi.queryHomeStore({
             page: 1,
             size: 10,
@@ -71,14 +72,19 @@ export default class RecommendPage extends BasePage {
         }).catch((error) => {
             this.$toastShow(error.msg);
         });
+
+        storeModel.getById();
     };
 
     // 点击开启店铺页面
     _clickOpenShopItem = () => {
-        //支付了跳转到初始化店铺页面
-        if (storeModel.status === 2) {
+        if (storeModel.status === 1) {
+            this.$navigate('spellShop/myShop/MyShopPage');
+        } else if (storeModel.status === 2) {
             this.$navigate('spellShop/shopSetting/SetShopNamePage');
-        }else {
+        } else if (storeModel.status === 3) {
+            this.$navigate('spellShop/shopRecruit/ShopRecruitPage');
+        } else if (SpellStatusModel.canCreateStore) {
             this.$navigate('spellShop/openShop/OpenShopExplainPage');
         }
     };
@@ -90,7 +96,7 @@ export default class RecommendPage extends BasePage {
 
     // 点击查看某个店铺
     _RecommendRowOnPress = (id) => {
-
+        this.$navigate('spellShop/myShop/MyShopPage',{storeId: id});
     };
 
     // 点击轮播图广告
@@ -145,6 +151,7 @@ export default class RecommendPage extends BasePage {
 
     _render() {
         return (
+
             <View style={{ flex: 1 }}>
                 <SectionList refreshing={this.state.refreshing}
                              onRefresh={this._onRefresh}
@@ -156,7 +163,8 @@ export default class RecommendPage extends BasePage {
                              showsVerticalScrollIndicator={false}
                              sections={[{ data: this.state.dataList }]}/>
             </View>
-        );
+        )
+            ;
     }
 }
 

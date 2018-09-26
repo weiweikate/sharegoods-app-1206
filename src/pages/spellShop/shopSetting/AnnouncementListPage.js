@@ -2,13 +2,14 @@
 import React from 'react';
 import {
     View,
-    FlatList,
+    FlatList
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import AnnouncementRow from './components/AnnouncementRow';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import storeModel from '../model/StoreModel';
 import { observer } from 'mobx-react/native';
+import SpellShopApi from '../api/SpellShopApi';
 
 const DefaultPageSize = 10;
 // 是否显示删除按钮
@@ -23,7 +24,9 @@ export default class AnnouncementListPage extends BasePage {
 
     $NavBarRightPressed = () => {
         this.$navigate('spellShop/shopSetting/AnnouncementPublishPage', {
-            publishSuccess: this.loadPageData.bind(this)
+            publishSuccess: () => {
+                this.loadPageData();
+            }
         });
     };
 
@@ -31,7 +34,7 @@ export default class AnnouncementListPage extends BasePage {
         super(props);
 
         this.state = {
-            list: [{},{},{}],
+            list: [{}, {}, {}],
             refreshing: false,
             loadingMore: false,
             loadingMoreError: null,
@@ -42,26 +45,24 @@ export default class AnnouncementListPage extends BasePage {
 
     // 加载首页数据
     loadPageData(numebr = 1) {
-        // SpellShopApi.queryStoreNoticeList({
-        //     page: numebr,
-        //     pageSize: DefaultPageSize,
-        //     storeId: storeModel.storeId
-        // }).then((response) => {
-        //     if (response.ok) {
-        //         this.setState({
-        //             list: response.data || [],
-        //             refreshing: false,
-        //             loadingMore: false,
-        //             loadingMoreError: null
-        //         });
-        //     } else {
-        //         this.setState({
-        //             refreshing: false
-        //         }, () => {
-        //             Toast.toast(response.msg);
-        //         });
-        //     }
-        // });
+        SpellShopApi.storeNoticeInsert({
+            page: numebr,
+            pageSize: 10,
+            storeId: storeModel.storeData.id
+        }).then((data) => {
+            this.setState({
+                list: data.data || [],
+                refreshing: false,
+                loadingMore: false,
+                loadingMoreError: null
+            });
+        }).catch((error) => {
+            this.setState({
+                refreshing: false
+            }, () => {
+                this.$toastShow(error.msg);
+            });
+        });
     }
 
     loadPageDataMore = () => {
@@ -72,27 +73,25 @@ export default class AnnouncementListPage extends BasePage {
         this.setState({
             loadingMore: true
         }, () => {
-            // SpellShopApi.queryStoreNoticeList({
-            //     page: this.numebr + 1,
-            //     pageSize: DefaultPageSize,
-            //     storeId: storeModel.storeId
-            // }).then((response) => {
-            //     this.numebr++;
-            //     this.onEndReached = false;
-            //     if (response.ok) {
-            //         this.setState({
-            //             list: this.state.list.concat(response.data || []),
-            //             loadingMore: false,
-            //             loadingMoreError: false,
-            //             noMore: response.data && response.data.length === 0
-            //         });
-            //     } else {
-            //         this.setState({
-            //             loadingMore: false,
-            //             loadingMoreError: response
-            //         });
-            //     }
-            // });
+            SpellShopApi.storeNoticeInsert({
+                page: this.numebr + 1,
+                pageSize: 10,
+                storeId: storeModel.storeData.id
+            }).then((data) => {
+                this.numebr++;
+                this.onEndReached = false;
+                this.setState({
+                    list: data.data || [],
+                    loadingMore: false,
+                    loadingMoreError: false,
+                    noMore: data.data && data.data.length === 0
+                });
+            }).catch((error) => {
+                this.setState({
+                    loadingMore: false,
+                    loadingMoreError: error
+                });
+            });
         });
     };
 
@@ -100,20 +99,17 @@ export default class AnnouncementListPage extends BasePage {
         id && this.refs['delAlert'] && this.refs['delAlert'].show({
             title: '确定要删除此条公告？',
             confirmCallBack: () => {
-                // SpellShopApi.deleteStoreNotice({ id }).then((response) => {
-                //     if (response.ok) {
-                //         Toast.toast('删除成功');
-                //         this.loadPageData();
-                //     } else {
-                //         Toast.toast(response.msg);
-                //     }
-                // });
+                SpellShopApi.deleteById({ id: id }).then(() => {
+                    this.$toastShow('删除成功');
+                }).catch((error) => {
+                    this.$toastShow(error.msg);
+                });
             }
         });
     };
 
     _clickRow = (info) => {
-        this.props.navigation.navigate('spellShop/shopSetting/AnnouncementDetailPage', info);
+        this.$navigate('spellShop/shopSetting/AnnouncementDetailPage', info);
     };
 
 

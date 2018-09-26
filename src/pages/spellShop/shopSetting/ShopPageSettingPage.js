@@ -12,6 +12,7 @@ import {
 import ArrowImg from './res/xjt_03.png';
 import storeModel from '../model/StoreModel';
 import BasePage from '../../../BasePage';
+import DateUtils from '../../../utils/DateUtils';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -73,7 +74,7 @@ export default class ShopPageSettingPage extends BasePage {
                         }, {
                             key: '店铺成立时间',
                             showArrow: false,
-                            value: storeModel.storeCreateTime
+                            value: storeModel.storeData.createTime && DateUtils.formatDate(storeModel.storeData.createTime, 'yyyy-MM-dd')
                         }].map((item, index) => {
                             return this.renderRow(item, index);
                         })

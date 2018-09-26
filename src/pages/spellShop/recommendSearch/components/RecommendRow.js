@@ -34,7 +34,7 @@ export default class RecommendRow extends Component {
         </TouchableOpacity>);
     };
     _onPress = () => {
-        this.props.RecommendRowOnPress && this.props.RecommendRowOnPress();
+        this.props.RecommendRowOnPress && this.props.RecommendRowOnPress(this.props.RecommendRowItem.id);
     };
 
     render() {
@@ -94,7 +94,7 @@ export default class RecommendRow extends Component {
                         </View>
                         <Text style={{ marginTop: 9, color: '#939393', fontSize: 14 }}>店铺等级</Text>
                         <TouchableOpacity style={styles.joinBtn} onPress={() => {
-                            this.props.clickShopInfoRow();
+                            this.props.RecommendRowOnPress();
                         }}>
                             <Text style={styles.joinText}>+加入我们</Text>
                         </TouchableOpacity>

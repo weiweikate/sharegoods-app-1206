@@ -15,7 +15,7 @@ export default class MasterRow extends Component {
 
 
     static propTypes = {
-        // item: PropTypes.object,     //数据
+        item: PropTypes.object,     //数据
         style: PropTypes.any,       //样式
         onPress: PropTypes.func,    //点击回调
     };

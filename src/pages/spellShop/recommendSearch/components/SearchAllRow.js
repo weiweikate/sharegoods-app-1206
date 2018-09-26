@@ -21,8 +21,8 @@ export default class RecommendRow extends Component {
         onPress: PropTypes.func      // 点击
     };
 
-    _onPress = () => {
-        this.props.onPress && this.props.onPress();
+    _onPress = (item) => {
+        this.props.onPress && this.props.onPress(item);
     };
 
     render() {
@@ -35,7 +35,7 @@ export default class RecommendRow extends Component {
             }
         }
 
-        return (<TouchableWithoutFeedback onPress={this._onPress}>
+        return (<TouchableWithoutFeedback onPress={()=>this._onPress(item)}>
             <View style={styles.rowContainer}>
                 {
                     item.headUrl ? <Image source={{ uri: item.headUrl }} style={styles.img}/> :
