@@ -9,6 +9,9 @@ class StoreModel {
     @observable//店铺信息
     storeData = {};
 
+    @observable//店铺信息
+    myStore = null;
+
     @observable//状态 0-关闭 1-正常 2-已缴纳保证金 3-招募中
     status = null;
 
@@ -34,6 +37,7 @@ class StoreModel {
     @action //成功
     getByIdData(data) {
         this.storeData = data;
+        this.myStore = data.myStore;
         this.status = data.status;
         this.userStatus = data.userStatus;
         this.recruitStatus = data.recruitStatus;
@@ -45,6 +49,7 @@ class StoreModel {
     @action //错误
     getByIdError(error) {
         this.storeData = null;
+        this.myStore = null;
         this.status = null;
         this.userStatus = null;
         this.recruitStatus = null;
@@ -55,6 +60,7 @@ class StoreModel {
     @action //清空数据  重新加载
     clearGetByIdData() {
         this.storeData = null;
+        this.myStore = null;
         this.status = null;
         this.userStatus = null;
         this.recruitStatus = null;

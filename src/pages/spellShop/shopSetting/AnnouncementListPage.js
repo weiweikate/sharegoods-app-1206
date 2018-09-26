@@ -7,7 +7,6 @@ import {
 import BasePage from '../../../BasePage';
 import AnnouncementRow from './components/AnnouncementRow';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
-import storeModel from '../model/StoreModel';
 import { observer } from 'mobx-react/native';
 import SpellShopApi from '../api/SpellShopApi';
 
@@ -19,14 +18,16 @@ export default class AnnouncementListPage extends BasePage {
 
     $navigationBarOptions = {
         title: '公告详情',
-        rightNavTitle: '发布公告'
+        rightNavTitle: '发布公告',
+        rightNavItemHidden: !this.params.storeData.myStore
     };
 
     $NavBarRightPressed = () => {
         this.$navigate('spellShop/shopSetting/AnnouncementPublishPage', {
             publishSuccess: () => {
                 this.loadPageData();
-            }
+            },
+            storeData: this.params.storeData
         });
     };
 
@@ -34,7 +35,7 @@ export default class AnnouncementListPage extends BasePage {
         super(props);
 
         this.state = {
-            list: [{}, {}, {}],
+            list: [],
             refreshing: false,
             loadingMore: false,
             loadingMoreError: null,
@@ -42,16 +43,21 @@ export default class AnnouncementListPage extends BasePage {
         };
         this.numebr = 1;
     }
+    componentDidMount() {
+        this.loadPageData();
+    }
 
     // 加载首页数据
-    loadPageData(numebr = 1) {
-        SpellShopApi.storeNoticeInsert({
-            page: numebr,
+    loadPageData = () => {
+        const { storeData } = this.params;
+        SpellShopApi.queryByStoreId({
+            page: 1,
             pageSize: 10,
-            storeId: storeModel.storeData.id
+            storeId: storeData.id
         }).then((data) => {
+            let dateTemp = data.data || {};
             this.setState({
-                list: data.data || [],
+                list: dateTemp.data || [],
                 refreshing: false,
                 loadingMore: false,
                 loadingMoreError: null
@@ -63,9 +69,10 @@ export default class AnnouncementListPage extends BasePage {
                 this.$toastShow(error.msg);
             });
         });
-    }
+    };
 
     loadPageDataMore = () => {
+        const { storeData } = this.params;
         if (this.onEndReached) {
             return;
         }
@@ -73,15 +80,16 @@ export default class AnnouncementListPage extends BasePage {
         this.setState({
             loadingMore: true
         }, () => {
-            SpellShopApi.storeNoticeInsert({
+            SpellShopApi.queryByStoreId({
                 page: this.numebr + 1,
                 pageSize: 10,
-                storeId: storeModel.storeData.id
+                storeId: storeData.id
             }).then((data) => {
                 this.numebr++;
                 this.onEndReached = false;
+                let dateTemp = data.data || {};
                 this.setState({
-                    list: data.data || [],
+                    list: dateTemp.data || [],
                     loadingMore: false,
                     loadingMoreError: false,
                     noMore: data.data && data.data.length === 0
@@ -115,13 +123,13 @@ export default class AnnouncementListPage extends BasePage {
 
     // 渲染行
     _renderItem = ({ item }) => {
-        return (<AnnouncementRow canDelete={storeModel.isYourStore}
+        return (<AnnouncementRow canDelete={this.params.storeData.myStore}
                                  onPress={this._clickRow}
                                  onPressDelete={this._delItem} {...item} />);
     };
 
     _onRefresh = () => {
-        this.setState({ refreshing: true }, this.loadPageData);
+        this.setState({ refreshing: true }, this.loadPageData());
     };
 
 
@@ -136,7 +144,7 @@ export default class AnnouncementListPage extends BasePage {
         if (this.state.noMore) {
             return;
         }
-        this.loadPageDataMore();
+        // this.loadPageDataMore();
     };
 
     //下拉加载更多

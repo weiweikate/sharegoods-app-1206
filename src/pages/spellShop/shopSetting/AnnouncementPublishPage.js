@@ -12,7 +12,6 @@ import {
 import BasePage from '../../../BasePage';
 import StringUtils from '../../../utils/StringUtils';
 import SpellShopApi from '../api/SpellShopApi';
-import storeModel from '../model/StoreModel';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -34,7 +33,7 @@ export default class AnnouncementPublishPage extends BasePage {
             return;
         }
 
-        SpellShopApi.storeNoticeInsert({ content: this.state.text, storeId: storeModel.storeData.id }).then(() => {
+        SpellShopApi.storeNoticeInsert({ content: this.state.text, storeId: this.params.storeData.id }).then(() => {
             const { publishSuccess } = this.params;
             this.$toastShow('发布成功');
             publishSuccess && publishSuccess();

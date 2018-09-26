@@ -145,7 +145,7 @@ export default class RecommendPage extends BasePage {
         return (<SegementHeaderView segmentPressAtIndex={this._segmentPressAtIndex}/>);
     };
 
-    _renderItem = ({ item }) => {
+    _renderItem = ({item}) => {
         return (<RecommendRow RecommendRowItem={item} RecommendRowOnPress={this._RecommendRowOnPress}/>);
     };
 

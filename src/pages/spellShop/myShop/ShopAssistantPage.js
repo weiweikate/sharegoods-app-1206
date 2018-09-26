@@ -16,6 +16,7 @@ import AssistantRow from './components/AssistantRow';
 import MasterRow from './components/MasterRow';
 
 import BasePage from '../../../BasePage';
+import SpellShopApi from '../api/SpellShopApi';
 
 const sectionsArr = [
     'master',
@@ -34,7 +35,7 @@ export default class AssistantListPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            list: [{data:[{}]},{data:[{}]},{data:[{}]},{data:[{}]}],
+            list: [],
             searchText: '',
             refreshing: false,
             pageLoading: true,
@@ -42,6 +43,9 @@ export default class AssistantListPage extends BasePage {
         };
     }
 
+    componentDidMount() {
+        this.loadPageData();
+    }
 
     // 处理排序
     _transformList = (data) => {
@@ -63,28 +67,26 @@ export default class AssistantListPage extends BasePage {
     };
 
     loadPageData() {
-        // const keyword = this.state.searchText || '';
-        // SpellShopApi.getMemberList({ keyword }).then((response) => {
-        //     if (response.ok) {
-        //         response.data = (response.data && typeof response.data === 'object') ? response.data : {};
-        //         const list = this._transformList(response.data);
-        //         this.setState({
-        //             refreshing: false,
-        //             list,
-        //             pageLoading: false,
-        //             netFailedInfo: null
-        //         });
-        //     } else {
-        //         this.setState({
-        //             refreshing: false,
-        //             list: [],
-        //             pageLoading: false,
-        //             netFailedInfo: response
-        //         }, () => {
-        //             Toast.toast(response.ok ? '数据异常' : response.msg);
-        //         });
-        //     }
-        // });
+        const keyword = this.state.searchText || '';
+        SpellShopApi.listByKeyword({ keyword: keyword, storeId: this.params.storeData.id }).then((data) => {
+            data.data = data.data || {};
+            const list = this._transformList(data.data);
+            this.setState({
+                refreshing: false,
+                list,
+                pageLoading: false,
+                netFailedInfo: null
+            });
+        }).catch((error) => {
+            this.setState({
+                refreshing: false,
+                list: [],
+                pageLoading: false,
+                netFailedInfo: error
+            }, () => {
+                this.$toastShow(error.msg);
+            });
+        });
     }
 
     // 店员详情
@@ -92,20 +94,13 @@ export default class AssistantListPage extends BasePage {
         this.props.navigation.navigate('spellShop/myShop/ShopAssistantDetailPage', { id });
     };
 
-    _componentWillUnmount() {
-        this.params.reloadCallBack && this.params.reloadCallBack();
-    }
-
     // 删除具体店员
     _clickDeleteAssistant = (dealerId) => {
-        // SpellShopApi.removeMember({ dealerId }).then(response => {
-        //     if (response.ok) {
-        //         this.params.reloadCallBack && this.params.reloadCallBack();
-        //         this.loadPageData();
-        //     } else {
-        //         Toast.toast(response.msg);
-        //     }
-        // });
+        SpellShopApi.storeUserRemove({ otherUserId: dealerId }).then(() => {
+            this.loadPageData();
+        }).catch((error) => {
+            this.$toastShow(error.msg);
+        });
     };
 
     _onChangeText = (searchText) => {
@@ -113,12 +108,12 @@ export default class AssistantListPage extends BasePage {
     };
 
     // 渲染行
-    _renderItem = ({ item, index }) => {
+    _renderItem = ({ item }) => {
         if (item.roleType === 0) {//0店主
             return <MasterRow item={item} onPress={this._clickAssistantDetail}/>;
         } else {//1店员
             return (<AssistantRow item={item}
-                                  isYourStore={this.params.isYourStore}
+                                  isYourStore={this.params.storeData.myStore}
                                   onPress={this._clickAssistantDetail}
                                   onPressDelete={this._clickDeleteAssistant}/>);
         }
@@ -129,8 +124,8 @@ export default class AssistantListPage extends BasePage {
         this.setState({ refreshing: true }, this.loadPageData);
     };
 
-    _renderSectionHeader = ({ section }) => {
-        const { title, data } = section || {};
+    _renderSectionHeader = ({ item }) => {
+        const { title, data } = item || {};
         if (title === 'master' || !title || !data || !data.length) {
             return null;
         }
@@ -154,7 +149,6 @@ export default class AssistantListPage extends BasePage {
     _keyExtractor = (item, index) => `${index}`;
 
     _renderList = () => {
-        //ListHeaderComponent={this._renderHeaderComponent}
         return <View style={{ flex: 1 }}>
             {this._renderHeaderComponent()}
             <SectionList style={{ flex: 1 }} sections={this.state.list}
@@ -166,14 +160,6 @@ export default class AssistantListPage extends BasePage {
                          renderItem={this._renderItem}
                          keyExtractor={this._keyExtractor}/>
         </View>;
-    };
-
-    _reloadData = () => {
-        this.setState({
-            refreshing: false,
-            pageLoading: true,
-            netFailedInfo: null
-        }, this.loadPageData);
     };
 
     _render() {

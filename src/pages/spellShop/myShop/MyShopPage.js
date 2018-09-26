@@ -122,7 +122,7 @@ export default class MyShopPage extends BasePage {
     _clickSettingItem = () => {
         const { myStore } = this.state.storeData;
         if (myStore) {
-            this.$navigate('spellShop/shopSetting/ShopPageSettingPage');
+            this.$navigate('spellShop/shopSetting/ShopPageSettingPage', { storeData: this.state.storeData });
         } else {
             this.actionSheetRef.show({
                 items: ['分享店铺', '举报店铺', '退出店铺']//
@@ -167,19 +167,16 @@ export default class MyShopPage extends BasePage {
 
     // 点击店铺公告
     _clickShopAnnouncement = () => {
-        // this._navigate('spellShop/announcement/AnnouncementListPage');
+        this.$navigate('spellShop/shopSetting/AnnouncementListPage', { storeData: this.state.storeData });
     };
 
     // 点击全部成员
     _clickAllMembers = () => {
-        this.$navigate('spellShop/myShop/ShopAssistantPage');
+        this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
     };
 
     // 点击具体成员
     _clickItemMembers = (id, info) => {
-        // this._navigate('spellShop/assistant/AssistantDetailPage',{
-        //     id,info,
-        // });
     };
 
     _joinBtnAction = () => {
@@ -254,17 +251,22 @@ export default class MyShopPage extends BasePage {
                 btnText = '取消申请';
                 break;
         }
-        return <TouchableOpacity style={{
-            height: 48,
-            width: 150,
-            backgroundColor: canJoin ? '#D51243' : 'rgb(221,109,140)',
-            borderRadius: 5,
-            marginTop: 30,
-            alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
-        }}
-                                 onPress={this._joinBtnAction}>
-            <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{btnText}</Text>
-        </TouchableOpacity>;
+        if (this.state.storeData.userStatus !== undefined && this.state.storeData.userStatus !== 1) {
+            return <TouchableOpacity style={{
+                height: 48,
+                width: 150,
+                backgroundColor: canJoin ? '#D51243' : 'rgb(221,109,140)',
+                borderRadius: 5,
+                marginTop: 30,
+                alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
+            }}
+                                     onPress={this._joinBtnAction}>
+                <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{btnText}</Text>
+            </TouchableOpacity>;
+        } else {
+            return null;
+        }
+
     };
 
     renderSepLine = () => {
@@ -277,7 +279,7 @@ export default class MyShopPage extends BasePage {
 
     // 主题内容
     renderBodyView = () => {
-        let { myStore, storeUserList, userStatus } = this.state.storeData;
+        let { myStore, storeUserList } = this.state.storeData;
         storeUserList = storeUserList || [];
         return (
             <ScrollView showsVerticalScrollIndicator={false}
@@ -290,7 +292,7 @@ export default class MyShopPage extends BasePage {
                             onPressMemberItem={this._clickItemMembers}/>
                 {this.renderSepLine()}
                 {this._renderBottom()}
-                {userStatus && userStatus !== 1 && this._renderJoinBtn()}
+                {this._renderJoinBtn()}
             </ScrollView>
         );
 
