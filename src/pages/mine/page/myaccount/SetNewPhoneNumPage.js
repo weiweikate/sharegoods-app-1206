@@ -125,8 +125,7 @@ export default class SetNewPhoneNumPage extends BasePage {
         if (StringUtils.checkPhone(tel)) {
             // 验证
             MineAPI.updatePhone({
-                // verificationCode: this.state.code,
-                verificationCode: '2222',
+                verificationCode: this.state.code,
                 oldVerificationCode: oldCode,
                 phone: this.state.telText
             }).then((data) => {

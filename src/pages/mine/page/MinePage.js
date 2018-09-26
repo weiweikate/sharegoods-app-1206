@@ -85,10 +85,10 @@ export default class MinePage extends BasePage {
     refresh = () => {
         this.$loadingShow('加载中...', { timeout: 1, timeoutCallBack: () => this.timeoutCallBack });
         MineApi.getUser().then(res => {
-            console.log('refresh');
             this.$loadingDismiss();
             if (res.code == 10000) {
                 let data = res.data;
+                user.saveUserInfo(data);
                 this.setState({
                     availableBalance: data.availableBalance,
                     headImg: data.headImg,
