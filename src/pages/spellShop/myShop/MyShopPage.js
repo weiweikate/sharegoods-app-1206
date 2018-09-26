@@ -35,6 +35,7 @@ import QbIcon from './res/dzfhj_03-03.png';
 import SpellShopApi from '../api/SpellShopApi';
 import storeModel from '../model/StoreModel';
 import DateUtils from '../../../utils/DateUtils';
+import StringUtils from '../../../utils/StringUtils';
 
 @observer
 export default class MyShopPage extends BasePage {
@@ -251,7 +252,7 @@ export default class MyShopPage extends BasePage {
                 btnText = '取消申请';
                 break;
         }
-        if (this.state.storeData.userStatus !== undefined && this.state.storeData.userStatus !== 1) {
+        if (!StringUtils.isEmpty(this.state.storeData.userStatus) && this.state.storeData.userStatus !== 1) {
             return <TouchableOpacity style={{
                 height: 48,
                 width: 150,
