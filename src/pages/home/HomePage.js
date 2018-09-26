@@ -47,6 +47,11 @@ const DemoList = [
         }
     },
     {
+        title: '专题页面类型Three',
+        uri: 'home/subject/SubOpenPrizePage'
+
+    },
+    {
         title: '优惠券',
         uri: 'mine/coupons/CouponsPage'
     },

@@ -74,6 +74,22 @@ class ShopCartStore {
     }
 
     /**
+     * 开始结算
+     * @returns {any[]}
+     * @constructor
+     */
+
+    startSettlement=()=>{
+        let selectItemSet = new Set()
+        let  [...allItems] = this.data.slice()
+        allItems.map((good )=>{
+            if (good.isSelected){
+                selectItemSet.add(good);
+            }
+        });
+        return Array.from(selectItemSet)
+    }
+    /**
      以下为购物车数据操作相关方法
      */
     /*是否全部选中方法*/

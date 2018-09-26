@@ -144,7 +144,7 @@ export default class ShopCartPage extends BasePage {
                         style={styles.totalPrice}/>
                     <TouchableOpacity
                         style={styles.selectGoodsNum}
-                        // onPress={() => this._toBuyImmediately()}
+                        onPress={() => this._toBuyImmediately()}
                     >
                         <UIText
                             value={`结算(${shopCartStore.getTotalSelectGoodsNum})`}
@@ -155,6 +155,21 @@ export default class ShopCartPage extends BasePage {
             </View>
         );
     };
+    _toBuyImmediately = () =>{
+
+        let [...selectArr] = shopCartStore.startSettlement()
+        if (selectArr.length <=0){
+            bridge.$toast('请先选择结算商品~')
+        } else {
+            let goodsAllNumber = 0;
+            let allPrice = 0.00;
+            selectArr.map((goods) =>{
+                goodsAllNumber += goods.amount
+                allPrice += goods.amount * goods.price
+            })
+            bridge.$toast('选中商品类型'+selectArr.length+'种,商品数量'+goodsAllNumber+'个,总价:'+StringUtils.formatMoneyString(allPrice));
+        }
+    }
     _selectAll = () => {
         shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
     };
@@ -279,120 +294,6 @@ export default class ShopCartPage extends BasePage {
                     style={{height:10,backgroundColor:ColorUtil.Color_f7f7f7,width:ScreenUtils.width}}
                 />
             </View>
-            // <TouchableHighlight
-            //     onPress={() => this._jumpToProductDetailPage(itemData.productId)}
-            //     style={styles.itemContainer}>
-            //
-            //     {/*<View style={{backgroundColor:ColorUtil.Color_f7f7f7,width:ScreenUtils.width,height:10}}/>*/}
-            //     <View style={styles.standaloneRowFront}>
-            //
-            //         <UIImage
-            //             source={itemData.isSelected ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
-            //             style={{ width: 22, height: 22, marginLeft: 10 }}
-            //             onPress={() => {
-            //                 console.warn();
-            //                 let [...tempValues] = shopCartStore.data;
-            //                 tempValues[rowId].isSelected = !tempValues[rowId].isSelected;
-            //
-            //                 shopCartStore.data = tempValues;
-            //             }}
-            //         />
-            //
-            //         <UIImage
-            //             source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
-            //             style={[styles.validProductImg]}
-            //         />
-            //
-            //         {
-            //             itemData.state === 1 ?
-            //                 <UIImage
-            //                     source={ShopCartRes.invalidGoodImg}
-            //                     style={{
-            //                         // backgroundColor:'red',
-            //                         position: 'absolute',
-            //                         marginLeft: 55,
-            //                         width: 60,
-            //                         height: 60
-            //                     }}
-            //                 /> : null
-            //         }
-            //
-            //         <View style={styles.validContextContainer}>
-            //             <View>
-            //                 <UIText
-            //                     value={itemData.productName ? itemData.productName : ''}
-            //                     // value={"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"}
-            //                     numberOfLines={2}
-            //                     style={{
-            //                         marginTop: 0,
-            //                         fontFamily: 'PingFang-SC-Medium',
-            //                         fontSize: 13,
-            //                         lineHeight: 16,
-            //                         height: 32,
-            //                         color: ColorUtil.Color_222222
-            //                     }}
-            //                 />
-            //
-            //                 <UIText
-            //                     value={itemData.specString ? itemData.specString : ''}
-            //                     numberOfLines={2}
-            //                     style={{
-            //                         fontFamily: 'PingFang-SC-Medium',
-            //                         fontSize: 13,
-            //                         color: ColorUtil.Color_999999
-            //                     }}/>
-            //             </View>
-            //             <View style={{
-            //                 flexDirection: 'row',
-            //                 justifyContent: 'space-between',
-            //                 alignItems: 'center'
-            //             }}>
-            //                 <UIText
-            //                     value={'￥ ' + StringUtils.formatMoneyString(itemData.price, false)}
-            //                     style={{ fontSize: 14, color: '#e60012' }}/>
-            //                 <View style={{ flexDirection: 'row' }}>
-            //                     <TouchableOpacity
-            //                         style={styles.rectangle}
-            //                         onPress={() => {
-            //                             this._reduceProductNum(itemData, rowId);
-            //                         }}
-            //                     >
-            //                         <UIText
-            //                             value={'-'}
-            //                             // style={{fontSize:15,color:data.num<=1?ColorUtil.Color_dddddd:ColorUtil.Color_222222}}
-            //                             style={{ fontSize: 11, color: ColorUtil.Color_222222 }}
-            //                         />
-            //                     </TouchableOpacity>
-            //                     <View style={[styles.rectangle, {
-            //                         width: 46,
-            //                         borderLeftWidth: 0,
-            //                         borderRightWidth: 0
-            //                     }]}>
-            //                         <UIText
-            //                             style={styles.TextInputStyle}
-            //                             value={itemData.amount}
-            //                         />
-            //                     </View>
-            //                     <TouchableOpacity
-            //                         style={styles.rectangle}
-            //                         onPress={() => {
-            //                             this._addProductNum(itemData, rowId);
-            //                         }}>
-            //                         <UIText
-            //                             value={'+'}
-            //                             // style={{fontSize:15,color:data.num>=data.stock?color.gray_DDD:color.black_222}}
-            //                             style={{ fontSize: 11, color: ColorUtil.Color_222222 }}
-            //
-            //                         />
-            //                     </TouchableOpacity>
-            //                 </View>
-            //             </View>
-            //         </View>
-            //         <View
-            //         style={{height:10,backgroundColor:'red',width:ScreenUtils.width}}
-            //         />
-            //     </View>
-            // </TouchableHighlight>
         );
     };
     _jumpToProductDetailPage = (productId) => {
