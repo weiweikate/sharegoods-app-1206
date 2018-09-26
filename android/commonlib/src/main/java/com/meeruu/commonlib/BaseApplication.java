@@ -2,20 +2,17 @@ package com.meeruu.commonlib;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.facebook.soloader.SoLoader;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
+import com.meeruu.commonlib.imService.QiyuImageLoader;
 import com.meeruu.commonlib.umeng.RNUMConfigure;
-import com.qiyukf.unicorn.api.ImageLoaderListener;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
 import com.qiyukf.unicorn.api.Unicorn;
-import com.qiyukf.unicorn.api.UnicornImageLoader;
 import com.qiyukf.unicorn.api.YSFOptions;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
@@ -49,21 +46,12 @@ public class BaseApplication extends MultiDexApplication {
             // 捕获闪退日志
 //            CrashHandler.getInstance().init(this);
             SoLoader.init(this, /* native exopackage */ false);
-            Unicorn.init(this, "db5a6f7eb0a3a8542e8ea36957e9122a", options(), new UnicornImageLoader() {
-                @Nullable
-                @Override
-                public Bitmap loadImageSync(String uri, int width, int height) {
-                    return null;
-                }
-
-                @Override
-                public void loadImage(String uri, int width, int height, ImageLoaderListener listener) {
-
-                }
-            });
+            // 七鱼初始化
+            Unicorn.init(this, "db5a6f7eb0a3a8542e8ea36957e9122a", options(), new QiyuImageLoader(this));
+            // umeng初始化
             RNUMConfigure.init(this, "5b7663a3f29d9830cb0000d8"
                     , "umeng", UMConfigure.DEVICE_TYPE_PHONE, null);//58edcfeb310c93091c000be2 5965ee00734be40b580001a0
-            PlatformConfig.setWeixin("wxf5ab8d9143aa38e9", "3252881956221212770d73a7995d057d");
+            PlatformConfig.setWeixin("wx401bc973f010eece", "405dede82bb1c57e0b63056c8d2274c1");
         }
     }
 

@@ -4,8 +4,8 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
+import com.meeruu.commonlib.imService.QYChatModule;
 import com.meeruu.sharegoods.appPay.AppPayModule;
-import com.meeruu.sharegoods.imService.QYChatModule;
 import com.meeruu.sharegoods.loginAndSharing.LoginAndSharingModule;
 import com.meeruu.sharegoods.qrCode.QRCodeModule;
 
@@ -24,8 +24,10 @@ public class RNPackage implements ReactPackage {
     public QYChatModule qyChatModule;
     public AppPayModule appPayModule;
     public LoginAndSharingModule loginAndSharingModule;
+
     /**
      * 创建Native Module
+     *
      * @param reactContext
      * @return
      */
@@ -33,10 +35,10 @@ public class RNPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
         mModule = new CommModule(reactContext);
-        qrModule=new QRCodeModule(reactContext);
-        qyChatModule=new QYChatModule(reactContext);
-        appPayModule=new AppPayModule(reactContext);
-        loginAndSharingModule=new LoginAndSharingModule(reactContext);
+        qrModule = new QRCodeModule(reactContext);
+        qyChatModule = new QYChatModule(reactContext);
+        appPayModule = new AppPayModule(reactContext);
+        loginAndSharingModule = new LoginAndSharingModule(reactContext);
         modules.add(mModule);
         modules.add(qrModule);
         modules.add(qyChatModule);
