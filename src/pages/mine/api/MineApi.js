@@ -25,8 +25,6 @@ const api = {
     queryDictionaryTypeList: ['/config/sysDictionary/queryDictionaryTypeList', { method: 'get' }],
     //添加反馈:
     addFeedback: '/user/feedback/addFeedback',
-    //收藏店铺列表
-    queryCollection: ['/user/storeCollection/queryCollection', { method: 'get' }],
     //取消收藏店铺 -- 店员行为
     cancelCollection: '/user/storeCollection/cancel',
     //修改用户个人信息 type:1:修改头像 2:修改名字 3:修改省市区
@@ -64,11 +62,15 @@ const api = {
     // 修改交易密码
     updateSalesOldPwdByIDCard: ['/user/updateSalesPasswordByIdCard', { method: 'post' }],
     //取消收藏店铺 -
-    storeCollectionCancel:'/user/storeCollection/cancel',
+    storeCollectionCancel: '/user/storeCollection/cancel',
     //查看收藏的店铺列表
-    queryCollection:['/user/storeCollection/queryCollection',{method:'get'}],
+    queryCollection: ['/user/storeCollection/queryCollection', { method: 'get' }],
     //我的晋升
-    getUserLevelInfo:['/user/getUserLevelInfo',{method:'get'}]
+    getUserLevelInfo: ['/user/getUserLevelInfo', { method: 'get' }],
+    // 验证idCard是否正确
+    judgeIdCard: ['/user/judgeIdCard', { method: 'post' }],
+    // 设置初始交易密码
+    initSalesPassword: ['/user/initSalesPassword', { method: 'post' }]
 
 
 };

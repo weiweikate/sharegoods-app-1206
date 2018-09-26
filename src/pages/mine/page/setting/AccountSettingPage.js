@@ -60,7 +60,16 @@ export default class AccountSettingPage extends BasePage {
         this.$navigate('mine/account/EditPhonePwdPage');
     };
     _toEditPayPwd = () => {
-        this.$navigate('mine/account/EditPayPwdPage');
+        console.log(user);
+        if (user.hadSalePassword) {
+            // 设置过交易密码,
+            this.$navigate('mine/account/EditPayPwdPage');
+        } else {
+            // 验证手机号
+            this.$navigate('mine/account/JudgePhonePage', {
+                title: '设置交易密码'
+            });
+        }
     };
     _toEditWechat = (wechat) => {
         if (StringUtils.isEmpty(wechat)) {

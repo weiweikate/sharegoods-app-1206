@@ -63,6 +63,8 @@ class User {
     @observable
     updateAdmin = null;     //修改人
     @observable
+    hadSalePassword = false;     // 是否设置过交易密码
+    @observable
     updateTime = null;      //修改时间
     @observable
     levelId = null;         //用户等级层级 number
@@ -186,6 +188,7 @@ class User {
         this.level = info.level;                    //
         this.levelName = info.levelName;            //
         this.salePsw = info.salePsw;                //
+        this.hadSalePassword = info.hadSalePassword; // 是否设置过交易密码
         this.salePswSalt = info.salePswSalt;        //
         this.salePswEncryption = info.salePswEncryption;//
         this.province = info.province;              //
@@ -230,6 +233,11 @@ class User {
     @action
     changeToLoginInfo(toLogin) {
         this.toLogin = toLogin;
+    }
+
+    @action
+    setHadSalePassword(had) {
+        this.hadSalePassword = had;
     }
 
     // 提供BasePage中repeatClick()
@@ -283,6 +291,7 @@ class User {
         this.level = null;           //
         this.levelName = null;       //
         this.salePsw = null;         //
+        this.hadSalePassword = false;
         this.salePswSalt = null;     //
         this.salePswEncryption = null;//
         this.province = null;        //

@@ -12,7 +12,7 @@ import {
     InteractionManager,
     TouchableWithoutFeedback
 } from 'react-native';
-import storeModel from '../../../spellShop/model/StoreModel';
+// import storeModel from '../../../spellShop/model/storeModel';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
 import MineApi from '../../api/MineApi';
 // 图片资源
@@ -91,10 +91,15 @@ export default class MyPromotionPage extends BasePage {
                 });
             }
         }).catch(err => {
-            if (err.code === 10001) {
+            this.setState({
+                loading: false,
+                refreshing: false,
+                netFailedInfo: err,
+                loadingState: PageLoadingState.fail
+            });
+            if (err.code === 10009) {
                 this.props.navigation.navigate('login/login/LoginPage');
             }
-
         });
     };
 
@@ -112,7 +117,8 @@ export default class MyPromotionPage extends BasePage {
         const radius = marginLeft > 4 ? 0 : 4;
 
 
-        const storeStar = storeModel.storeStar;
+        // const storeStar = storeModel.storeStar;
+        const storeStar = 3;
         const starsArr = [];
         if (storeStar && typeof storeStar === 'number') {
             for (let i = 0; i < storeStar; i++) {
