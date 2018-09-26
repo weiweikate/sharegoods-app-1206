@@ -10,8 +10,8 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ArrowImg from './res/xjt_03.png';
-import storeModel from '../model/StoreModel';
 import BasePage from '../../../BasePage';
+import DateUtils from '../../../utils/DateUtils';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -21,36 +21,42 @@ export default class ShopPageSettingPage extends BasePage {
         title: '我的店铺'
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            storeData: this.params.storeData
+        };
+    }
+
     // 店铺管理
     _managerShop = () => {
         //店铺管理是修改店铺的基础信息并保存在店铺中显示
         //异常：仅店长才能修改此功能
-        this.$navigate('spellShop/shopSetting/SetShopNamePage', { isChangeStoreInfo: true });
+        this.$navigate('spellShop/shopSetting/SetShopNamePage', { storeData: this.state.storeData });
     };
 
     // 邀请设置
     _inviteSetting = () => {
         //店铺邀请会有几种条件在里面，设置某种条件就会有对应的条件设置才能邀请进来
         //异常：通过条件才能进入到店铺
-        this.props.navigation.push('spellShop/shopSetting/InvitationSettingPage', {
-            recruitStatus: this.params.recruitStatus
-        });
+        this.$navigate('spellShop/shopSetting/InvitationSettingPage');
     };
 
     // 公告管理
     _assistantManager = () => {
         //公告管理可以对公告进行删除
         //异常：店长才可以进行删除
-        this.$navigate('spellShop/shopSetting/AnnouncementListPage');
+        this.$navigate('spellShop/shopSetting/AnnouncementListPage', { storeData: this.state.storeData });
     };
 
     // 店铺评分
     _scoreShop = () => {
-        this.props.navigation.push('spellShop/shopSetting/ShopScorePage');
+        this.$navigate('spellShop/shopSetting/ShopScorePage');
     };
 
     _render() {
         return (
+
             <View style={{ flex: 1 }}>
                 <ScrollView>
                     {
@@ -73,14 +79,15 @@ export default class ShopPageSettingPage extends BasePage {
                         }, {
                             key: '店铺成立时间',
                             showArrow: false,
-                            value: storeModel.storeCreateTime
+                            value: this.params.storeData.createTime && DateUtils.formatDate(this.params.storeData.createTime, 'yyyy-MM-dd')
                         }].map((item, index) => {
                             return this.renderRow(item, index);
                         })
                     }
                 </ScrollView>
             </View>
-        );
+        )
+            ;
     }
 
     renderRow = ({ key, value, showArrow, onPres }, index) => {

@@ -11,16 +11,15 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 export default class SearchSegmentView extends Component {
 
     static propTypes = {
-        onPressAtIndex: PropTypes.func //点击搜索的回调函数
+        segmentOnPressAtIndex: PropTypes.func //点击搜索的回调函数
     };
 
-    static defaultProps = {
-        onPressAtIndex: () => {
-            console.warn('SegmentView miss onPressAtIndex func');
-        }
-    };
-
-    state = { selIndex: 0 };
+    constructor(props) {
+        super(props);
+        this.state = {
+            selIndex: 0,
+        };
+    }
 
     _onPress = (index) => {
         if (index === this.state.selIndex) {

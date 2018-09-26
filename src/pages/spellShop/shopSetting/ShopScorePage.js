@@ -23,7 +23,7 @@ export default class ShopScorePage extends BasePage {
 
     _render() {
 
-        const storeStar = storeModel.storeStar || 1;
+        const storeStar = storeModel.storeData.storeStarId||0;
         const starsArr = [];
         if(storeStar && typeof storeStar === "number"){
             for(let i = 0; i<storeStar; i++){
@@ -46,7 +46,7 @@ export default class ShopScorePage extends BasePage {
                                 })
                             }
                         </View>
-                        <Text style={styles.shopLevel}>铂金店铺</Text>
+                        <Text style={styles.shopLevel}>{storeModel.storeData.starName||'店铺'}</Text>
                     </View>
                     <View style={styles.content}>
 

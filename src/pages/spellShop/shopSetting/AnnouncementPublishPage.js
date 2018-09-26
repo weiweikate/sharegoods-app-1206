@@ -9,9 +9,9 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
-import storeModel from '../model/StoreModel';
 import BasePage from '../../../BasePage';
 import StringUtils from '../../../utils/StringUtils';
+import SpellShopApi from '../api/SpellShopApi';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -25,29 +25,22 @@ export default class AnnouncementPublishPage extends BasePage {
     // 发布公告
     _saveContent = () => {
         if (StringUtils.isEmpty(this.state.text)) {
-            this.$toast('公告内容不能为空');
+            this.$toastShow('公告内容不能为空');
             return;
         }
         if (this.state.text.length > 180) {
-            this.$toast('公告长度不能大于180字');
-            return;
-        }
-        // const {publishSuccess} = this.props.navigation.state.params || {};
-
-        if (!storeModel.storeId) {
-            this.$toast('店铺id不能为空');
+            this.$toastShow('公告长度不能大于180字');
             return;
         }
 
-        // SpellShopApi.addStoreNotice({content: this.state.text,storeId: storeModel.storeId}).then(response =>{
-        //     if(response.ok){
-        //         Toast.toast('发布成功');
-        //         this.props.navigation.goBack();
-        //         publishSuccess && publishSuccess();
-        //     } else {
-        //         Toast.toast(response.msg);
-        //     }
-        // });
+        SpellShopApi.storeNoticeInsert({ content: this.state.text, storeId: this.params.storeData.id }).then(() => {
+            const { publishSuccess } = this.params;
+            this.$toastShow('发布成功');
+            publishSuccess && publishSuccess();
+        }).catch((error) => {
+            this.$toastShow(error.msg);
+        });
+
     };
 
     _goBack = () => {

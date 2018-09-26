@@ -12,7 +12,6 @@ import {
     ImageBackground,
     TouchableOpacity
 } from 'react-native';
-import storeModel from '../../model/StoreModel';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const headerWidth = 65 / 375 * SCREEN_WIDTH;
@@ -26,40 +25,33 @@ import ProgressImg from '../res/jdt_05.png';
 export default class ShopHeader extends Component {
 
     static propTypes = {
-        onPressShopAnnouncement: PropTypes.func//点击公告
+        onPressShopAnnouncement: PropTypes.func,//点击公告
+        item: PropTypes.object
     };
 
 
     render() {
+        const { headUrl, name, storeNumber, storeStarId } = this.props.item;
 
-        const progress = (storeModel.storeBonusDto.storeThisTimeBonus || 0) / (storeModel.storeData.groupMoney || 0) || 0;
-        const marginLeft = 315 / 375 * SCREEN_WIDTH * progress;
-
-        const radius = marginLeft > 4 ? 0 : 4;
-
-        const storeStar = storeModel.storeData.storeStarId;
         const starsArr = [];
-        if (storeStar && typeof storeStar === 'number') {
-            for (let i = 0; i < storeStar; i++) {
+        if (storeStarId && typeof storeStarId === 'number') {
+            for (let i = 0; i < storeStarId; i++) {
                 i <= 2 && starsArr.push(i);
             }
         }
-
-        //店铺尚未分红的钱-new  storeThisTimeBonus
-        const gap = (storeModel.storeData.groupMoney || 0) - (storeModel.storeBonusDto.storeThisTimeBonus || 0);
 
         return <View style={styles.container}>
             <ImageBackground source={HeaderBarBgImg} style={styles.imgBg}>
                 <ImageBackground source={RingImg}
                                  style={styles.headerBg}>
                     {
-                        storeModel.storeData.headUrl ? <Image style={styles.headerImg}
-                                                          source={{ uri: storeModel.storeData.headUrl }}/> : null
+                        headUrl ? <Image style={styles.headerImg}
+                                         source={{ uri: headUrl }}/> : null
                     }
                 </ImageBackground>
                 <View style={styles.shopInContainer}>
-                    <Text style={styles.shopName}>{storeModel.storeData.name || ''}</Text>
-                    <Text style={styles.shopId}>ID：{storeModel.storeData.storeNumber || ''}</Text>
+                    <Text style={styles.shopName}>{name || ''}</Text>
+                    <Text style={styles.shopId}>ID：{storeNumber || ''}</Text>
                     <View style={styles.starRow}>
                         <Text style={styles.shopName}>店铺星级：</Text>
                         {
@@ -79,16 +71,14 @@ export default class ShopHeader extends Component {
                     <Image source={CCZImg} style={styles.whiteBgTopRowIcon}/>
                     <Text style={styles.chengzhangzhi}>成长值</Text>
                     <Text style={styles.gongxian}>
-                        (贡献度：{`${((storeModel.storeBonusDto.dealerThisTimeBonus || 0) / (storeModel.storeBonusDto.storeThisTimeBonus || 0) * 100 || 0).toFixed(2)}`}%)
+                        (贡献度：{`${((13 || 0) / (100 || 0) * 100 || 0).toFixed(2)}`}%)
                     </Text>
                 </View>
 
                 <View style={{ flex: 1, alignItems: 'center' }}>
-                    <Text style={styles.progress}>{storeModel.storeBonusDto.storeThisTimeBonus || 0}<Text style={{
+                    <Text style={styles.progress}>{4500 || 0}<Text style={{
                         color: '#666666'
-                    }}>
-                        /{storeModel.storeData.groupMoney || 0}
-                    </Text></Text>
+                    }}>/{6000 || 0}</Text></Text>
 
                     <ImageBackground source={ProgressImg} style={{
                         overflow: 'hidden',
@@ -97,22 +87,17 @@ export default class ShopHeader extends Component {
                         width: 315 / 375 * SCREEN_WIDTH
                     }}>
                         <View style={[styles.progressBg, {
-                            marginLeft: marginLeft,
-                            borderBottomLeftRadius: radius,
-                            borderTopLeftRadius: radius
+                        marginLeft: 315 / 375 * SCREEN_WIDTH * 4500/6000,
                         }]}/>
                     </ImageBackground>
 
                     <Text style={styles.chaju}>距离分红还差<Text style={{
                         color: '#000',
                         fontSize: 15
-                    }}>
-                        {gap}
-                    </Text>元</Text>
-
+                    }}>1999</Text>元</Text>
 
                     <Text style={styles.fenghong}>预计该次分红金可得<Text style={{ color: 'rgb(236,10,10)' }}>
-                        {storeModel.storeBonusDto.dealerThisTimeBonus || 0}
+                        {4999 || 0}
                     </Text>元</Text>
 
                 </View>

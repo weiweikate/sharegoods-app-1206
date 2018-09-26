@@ -13,6 +13,7 @@ import storeModel from '../model/StoreModel';
 import SelIcon from './res/xianzhong_03.png';
 import UnSelIcon from './res/weixianzhong_03-02.png';
 import BasePage from '../../../BasePage';
+import SpellShopApi from '../api/SpellShopApi';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -25,15 +26,12 @@ export default class InvitationSettingPage extends BasePage {
     };
 
     $NavBarRightPressed = () => {
-        // SpellShopApi.updateStoreRecruitStatus({recruitStatus: this.state.selIndex}).then(response=>{
-        //     if(response.ok){
-        //         storeModel.setStoreRecruitStatus(this.state.selIndex);
-        //         Toast.toast('设置成功');
-        //         this.props.navigation.goBack();
-        //     } else {
-        //         Toast.toast(response.msg);
-        //     }
-        // });
+        SpellShopApi.invitationSetting({ recruitStatus: this.state.selIndex }).then(() => {
+            storeModel.getById();
+            this.$toastShow('设置成功');
+        }).catch((error) => {
+            this.$toastShow(error.msg);
+        });
     };
 
     constructor(props) {
