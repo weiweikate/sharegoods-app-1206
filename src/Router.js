@@ -20,6 +20,7 @@ import spellShop from './pages/spellShop';
 import login from './pages/login';
 import order from './pages/order';
 import htmlView from './components/web/HtmlView';
+import message from './pages/message';
 
 const Router = {
     Tab: {
@@ -64,7 +65,7 @@ addSubModule(shopCart);
 addSubModule(spellShop);
 addSubModule(login);
 addSubModule(order);
-
+addSubModule(message);
 
 console.log('Router', Object.keys(Router));
 console.log(Router);

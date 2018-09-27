@@ -16,11 +16,6 @@ import { observer } from 'mobx-react';
 
 const { px2dp } = ScreenUtils;
 
-
-const noactivelist = ['未', '激', '活'], usedlist = ['已', '使', '用'], nouselist = ['', '', '', ''],
-    loselist = ['已', '失', '效'];
-
-
 @observer
 export default class MyCouponsItems extends Component {
 
@@ -106,8 +101,8 @@ export default class MyCouponsItems extends Component {
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
+                    emptyTip={'暂无优惠券！'}
                     emptyIcon={NoMessage}
-                    emptyTip={'暂无数据'}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
                     isHideFooter={true}
@@ -131,7 +126,7 @@ export default class MyCouponsItems extends Component {
                                 fontSize: 14,
                                 color: '#666666'
                             }}>放弃使用优惠券</Text>
-                        </TouchableOpacity></View> : <View/>}
+                        </TouchableOpacity></View> : null}
 
             </View>
         );
@@ -175,16 +170,16 @@ export default class MyCouponsItems extends Component {
         dataList.map((item) => {
             switch (item.status) {
                 case 0:
-                    explainList = nouselist;
+                    explainList = ['', '', '', ''];
                     break;
                 case 1:
-                    explainList = usedlist;
+                    explainList = ['已', '使', '用'];
                     break;
                 case 2:
-                    explainList = loselist;
+                    explainList = ['已', '失', '效'];
                     break;
                 case 3:
-                    explainList = noactivelist;
+                    explainList = ['未', '激', '活'];
                     break;
             }
 
@@ -225,6 +220,9 @@ export default class MyCouponsItems extends Component {
             this.parseData(dataList);
 
         }).catch(result => {
+            if(result.code===10009){
+                this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
+            }
             UI.$toast(result.msg);
         });
 
