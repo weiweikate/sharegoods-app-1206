@@ -69,7 +69,7 @@ const DemoList = [
     },
     {
         title: '我的订单',
-        uri: 'order/order/MyOrdersListPage',
+        uri: 'order/order/MyOrderTestPage',
         params: {
             index: 0
         }
@@ -321,7 +321,6 @@ const styles = StyleSheet.create({
     inputText: {
         flex: 1,
         backgroundColor: '#666666',
-        fontSize: 14,
         padding: 0
     },
 

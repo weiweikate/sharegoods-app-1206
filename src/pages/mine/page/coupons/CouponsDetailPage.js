@@ -20,13 +20,14 @@ export default class CouponsDetailPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            viewData: {
-                value:12,
-                useConditions:500,
-                productNames:'葫芦小精钢',
-                startTime:1537324480000,
-                outTime:1537327480000,
-            },
+            viewData:this.params.item,
+            // viewData: {
+            //     value:12,
+            //     useConditions:500,
+            //     productNames:'葫芦小精钢',
+            //     startTime:1537324480000,
+            //     outTime:1537327480000,
+            // },
             explain:"去使用"
         }
     }
