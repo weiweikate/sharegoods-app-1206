@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import {
     View,
-    Image,
     StyleSheet,
     TouchableOpacity,
     Text
@@ -10,6 +9,7 @@ import {
 import ColorUtil from '../../../../utils/ColorUtil';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import ProgressBarView from './ProgressBarView';
+import PreLoadImage from '../../../../components/ui/preLoadImage/PreLoadImage';
 
 export default class OpenPrizeItemView extends Component {
 
@@ -23,7 +23,11 @@ export default class OpenPrizeItemView extends Component {
                 <View style={ItemStyles.itemBgStyle}>
                     <View style={ItemStyles.itemContentStyle}>
                         {/*头部image*/}
-                        <Image
+                        {/*<Image*/}
+                        {/*style={ItemStyles.itemTopImageStyle}*/}
+                        {/*/>*/}
+                        <PreLoadImage
+                            imageUri={'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/11.jpg'}
                             style={ItemStyles.itemTopImageStyle}
                         />
                         <Text
@@ -36,15 +40,15 @@ export default class OpenPrizeItemView extends Component {
                         <View
                             style={{
                                 marginTop: 5,
-                                marginLeft:10
+                                marginLeft: 10
                             }}
                         >
                             <ProgressBarView/>
                             {/*<Text*/}
-                                {/*style={ItemStyles.itemFolloweTextStyle}*/}
-                                {/*number={1}*/}
+                            {/*style={ItemStyles.itemFolloweTextStyle}*/}
+                            {/*number={1}*/}
                             {/*>*/}
-                                {/*52人已关注*/}
+                            {/*52人已关注*/}
                             {/*</Text>*/}
                         </View>
 
@@ -134,7 +138,7 @@ const ItemStyles = StyleSheet.create({
         backgroundColor: 'white'
     },
     itemTopImageStyle: {
-        backgroundColor: 'red',
+        // backgroundColor: 'red',
         width: ScreenUtils.width / 2 - 16,
         height: ScreenUtils.width / 2 - 16
     },
@@ -152,9 +156,4 @@ const ItemStyles = StyleSheet.create({
         marginLeft: 10,
         marginRight: 10
     },
-    itemBottomPriceTextStyle: {
-        color: ColorUtil.Color_d51243,
-        fontSize: 16,
-        marginTop: 10
-    }
 });

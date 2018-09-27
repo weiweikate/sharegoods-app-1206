@@ -27,7 +27,7 @@ export default class MessageGatherPage extends BasePage {
         }
     }
     $navigationBarOptions = {
-        title:"消息",
+        title:'消息',
         show: true // false则隐藏导航
     };
     go2DetailPage(id,type,ids) {
@@ -58,9 +58,9 @@ export default class MessageGatherPage extends BasePage {
             if(res.ok&&typeof res.data==='object'&&StringUtils.isNoEmpty(res.data.data)){
 
                 let arrData = [];
-                // let title = "";
                 res.data.data.map((item, index) => {
                     let obj = {
+                        title:'',
                         creatTime: item.creatTime,
                         id: item.id,
                         type: item.type,
@@ -116,7 +116,7 @@ export default class MessageGatherPage extends BasePage {
                             obj.totalPrice = item.totalPrice;
                             break;
                         case 12://代币提现到账
-                            title = "代币提现到账";
+                            obj.title = "代币提现到账";
                             break;
                         case 13://身份认证成功
                             obj.title = "身份认证成功";
@@ -460,7 +460,7 @@ export default class MessageGatherPage extends BasePage {
                             obj.tokenCoin = item.tokenCoin;
                             break;
                         case 12://代币提现到账
-                            title = "代币提现到账";
+                            obj.title = "代币提现到账";
                             obj.tokenCoin = item.tokenCoin;
                             break;
                         case 13://身份认证成功
