@@ -26,12 +26,14 @@ export default class PreLoadImage extends Component {
     }
 
     render() {
-        const { imageUri, style, defaultImage, errImage} = this.props;
+        const { imageUri, style, defaultImage, errImage,onClickAction} = this.props;
         let source = { uri: imageUri };
         if (this.state.type === 1) {
             source = errImage;
         }
         return (
+
+            onClickAction?
             <TouchableOpacity
                 activeOpacity={0.9}
                 onPress={() => {
@@ -63,6 +65,31 @@ export default class PreLoadImage extends Component {
                     }
                 </View>
             </TouchableOpacity>
+                :
+                <View>
+                    <Image
+                        source={source}
+                        style={style}
+                        onError={(error) => {
+                            this.setState({
+                                type: 1
+                            });
+                        }}
+                        onLoadEnd={() => {
+                            this.setState({
+                                isLoadComplete: true
+                            });
+                        }}
+                    />
+                    {this.state.isLoadComplete ? null :
+                        <View style={PreLoadImageStyles.preImageBgStyle}>
+                            <Image
+                                style={style}
+                                source={defaultImage}
+                            />
+                        </View>
+                    }
+                </View>
         );
     }
 
