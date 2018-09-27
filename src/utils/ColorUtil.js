@@ -20,7 +20,8 @@ const ColorUtil = {
     Color_222222: '#222222',
     Color_666666: '#666666',
     Color_999999: '#999999',
-    Color_d1d1d1: '#d1d1d1'
+    Color_d1d1d1: '#d1d1d1',
+    Color_33b4ff: '#33b4ff'
 };
 
 export default ColorUtil;

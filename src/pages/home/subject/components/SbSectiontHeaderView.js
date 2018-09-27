@@ -8,6 +8,7 @@ import {
 import React, { Component } from 'react';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
+import SubSwichView from './SubSwichView';
 
 
 class SbSectiontHeaderView extends Component {
@@ -23,17 +24,21 @@ class SbSectiontHeaderView extends Component {
 
     render() {
         const { subjectType } = this.props;
+
         return (
             <View>
                 <Image
                     style={SbSectiontHeaderViewStyles.topImageStyle}
                 />
+
+
                 {subjectType === 1 ?
-                    <View style={{ height: 50, width: ScreenUtils.width, backgroundColor: 'green' }}/> : null}
+                    <SubSwichView/> : null}
 
             </View>
         );
     }
+
 }
 
 const SbSectiontHeaderViewStyles = StyleSheet.create({
