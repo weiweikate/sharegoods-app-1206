@@ -258,7 +258,10 @@ export default class MyCouponsItems extends Component {
     };
 
     clickItem = (index, item) => {
-
+        // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
+        if(item.status === 0 ||item.status === 3){
+            this.props.nav.navigate('mine/coupons/CouponsDetailPage')
+        }
     };
 
 }
