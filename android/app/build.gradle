@@ -80,7 +80,7 @@ dependencies {
     api project(':react-native-image-picker')
     api project(':react-native-linear-gradient')
     api project(path: ':commonlib')
-    api project(path: ':im_qiyu')
+    api project(path: ':qiyu_service')
 
     api rootProject.ext.dependencies.support
 

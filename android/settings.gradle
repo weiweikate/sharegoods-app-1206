@@ -12,4 +12,4 @@ project(':react-native-image-picker').projectDir = new File(rootProject.projectD
 
 include ':app'
 include ':commonlib'
-include ':im_qiyu'
+include ':qiyu_service'

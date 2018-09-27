@@ -38,7 +38,8 @@ export default class SetOrEditPayPwdPage extends BasePage {
                     cardNum,
                     oldPwd: pwd,
                     title,
-                    tips: '请确认新的交易密码'
+                    tips: '请确认新的交易密码',
+                    from
                 });
             } else {
                 // 跳转到确认密码
@@ -46,7 +47,8 @@ export default class SetOrEditPayPwdPage extends BasePage {
                     oldPwd: pwd,
                     title,
                     tips: '请再次输入一次交易支付密码',
-                    code
+                    code,
+                    from
                 });
             }
         } else {
@@ -56,7 +58,7 @@ export default class SetOrEditPayPwdPage extends BasePage {
             } else {
                 if (from == 'edit') {
                     MineAPI.updateSalesOldPwdByIDCard({
-                        idCard: cardNum,
+                        idcard: cardNum,
                         realname: userName,
                         newPassword: pwd
                     }).then((response) => {

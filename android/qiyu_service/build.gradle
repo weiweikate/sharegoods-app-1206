@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 
 
-
 static def getGitVersion() {
     try {
         return 'git rev-parse --short HEAD'.execute().text.trim()
