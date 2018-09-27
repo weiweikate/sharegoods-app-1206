@@ -27,12 +27,10 @@ export default class SbOpenPrizeHeader extends Component {
         selectSate: 2
 
     };
-
     constructor(props) {
         super(props);
 
     }
-
     render() {
         return (
             <View>
