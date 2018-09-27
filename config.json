@@ -13,7 +13,7 @@
         },
         "dev": {
             "name": "开发环境",
-            "host": "http://172.16.10.253"
+            "host": "http://devapi.sharegoodsmall.com/gateway"
         },
         "qa": {
             "name": "测试环境",
@@ -38,6 +38,10 @@
         "zhou_hao": {
             "name": "测试_周浩",
             "host": "http://172.16.10.29:8180/gateway"
+        },
+        "shen_yaoxing":{
+            "name": "测试_沈耀鑫",
+            "host": "http://172.16.10.56:8180/gateway"
         }
     }
 }

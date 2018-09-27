@@ -180,7 +180,7 @@ export default class MinePage extends BasePage {
                             </NoMoreClick>
                             <ImageBackground style={{ width: 53, height: 14, alignItems: 'center', marginTop: 2 }}
                                              source={levelBg}>
-                                <Text style={{ fontSize: 9, color: '#ffa351' }}>{this.state.levelName}</Text>
+                                <Text style={{ fontSize: 9, color: '#ffa351' }}>{this.state.levelName?this.state.levelName:`${'VO'}`}</Text>
                             </ImageBackground>
                             <UIText value={'已帮你省：0.00元'} style={{
                                 fontFamily: 'PingFang-SC-Medium',
