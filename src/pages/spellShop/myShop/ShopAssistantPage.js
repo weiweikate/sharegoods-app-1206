@@ -90,13 +90,13 @@ export default class AssistantListPage extends BasePage {
     }
 
     // 店员详情
-    _clickAssistantDetail = (id) => {
-        this.props.navigation.navigate('spellShop/myShop/ShopAssistantDetailPage', { id });
+    _clickAssistantDetail = (userId) => {
+        this.$navigate('spellShop/myShop/ShopAssistantDetailPage', { userId });
     };
 
     // 删除具体店员
-    _clickDeleteAssistant = (dealerId) => {
-        SpellShopApi.storeUserRemove({ otherUserId: dealerId }).then(() => {
+    _clickDeleteAssistant = (userId) => {
+        SpellShopApi.storeUserRemove({ otherUserId: userId }).then(() => {
             this.loadPageData();
         }).catch((error) => {
             this.$toastShow(error.msg);
@@ -108,7 +108,7 @@ export default class AssistantListPage extends BasePage {
     };
 
     // 渲染行
-    _renderItem = ({ item }) => {
+    _renderItem = ( {item} ) => {
         if (item.roleType === 0) {//0店主
             return <MasterRow item={item} onPress={this._clickAssistantDetail}/>;
         } else {//1店员
@@ -124,8 +124,8 @@ export default class AssistantListPage extends BasePage {
         this.setState({ refreshing: true }, this.loadPageData);
     };
 
-    _renderSectionHeader = ({ item }) => {
-        const { title, data } = item || {};
+    _renderSectionHeader = ( {section} ) => {
+        const { title, data } = section || {};
         if (title === 'master' || !title || !data || !data.length) {
             return null;
         }

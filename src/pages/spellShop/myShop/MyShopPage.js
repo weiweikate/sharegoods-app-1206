@@ -35,6 +35,7 @@ import QbIcon from './res/dzfhj_03-03.png';
 import SpellShopApi from '../api/SpellShopApi';
 import storeModel from '../model/StoreModel';
 import DateUtils from '../../../utils/DateUtils';
+import StringUtils from '../../../utils/StringUtils';
 
 @observer
 export default class MyShopPage extends BasePage {
@@ -79,7 +80,8 @@ export default class MyShopPage extends BasePage {
         SpellShopApi.getById({ id: this.state.storeId }).then((data) => {
             let dataTemp = data.data || {};
             this.setState({
-                storeData: dataTemp
+                storeData: dataTemp,
+                storeId:dataTemp.id
             });
         }).catch((error) => {
             this.$toastShow(error.msg);
@@ -128,28 +130,20 @@ export default class MyShopPage extends BasePage {
                 items: ['分享店铺', '举报店铺', '退出店铺']//
             }, (item, index) => {
                 if (index === 0) {
-                    // const shareInfo = {
-                    //     name: storeModel.store.name,//店铺名称
-                    //     id: storeModel.store.id,//店铺id
-                    //     headUrl: storeModel.store.headUrl,//店铺头像url
-                    //     storeUser: storeModel.store.storeUser
-                    // };
-                    // this._navigate('spellShop/invite/InvitationToShopPage', { shareInfo });
+
                 } else if (index === 1) {
                     // 举报弹框
                     setTimeout(() => {
                         this.reportAlert && this.reportAlert.show({
-                            confirmCallBack: () => {
-                                // SpellShopApi.addStoreReport({
-                                //     content: '违法赌博',
-                                //     storeId: storeModel.storeId
-                                // }).then(response => {
-                                //     if (response.ok) {
-                                //         Toast.toast('举报成功');
-                                //     } else {
-                                //         Toast.toast(response.msg);
-                                //     }
-                                // });
+                            confirmCallBack: (text) => {
+                                SpellShopApi.storeTipOffInsert({
+                                    content: text,
+                                    storeId: this.state.storeId
+                                }).then(() => {
+                                    this.$toastShow('举报成功')
+                                }).catch((error)=>{
+                                    this.$toastShow(error.msg)
+                                });
                             }
                         });
                     }, 500);
@@ -251,7 +245,7 @@ export default class MyShopPage extends BasePage {
                 btnText = '取消申请';
                 break;
         }
-        if (this.state.storeData.userStatus !== undefined && this.state.storeData.userStatus !== 1) {
+        if (!StringUtils.isEmpty(this.state.storeData.userStatus) && this.state.storeData.userStatus !== 1) {
             return <TouchableOpacity style={{
                 height: 48,
                 width: 150,
