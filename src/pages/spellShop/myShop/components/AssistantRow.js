@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     headerImg: {
         width: 28,
         height: 28,
-        backgroundColor: '#f6a3aa',
+        backgroundColor: '#eeeeee',
         borderRadius: 14,
         marginLeft: 20,
         marginTop: 15

@@ -108,6 +108,7 @@ export default class AnnouncementListPage extends BasePage {
             title: '确定要删除此条公告？',
             confirmCallBack: () => {
                 SpellShopApi.deleteById({ id: id }).then(() => {
+                    this.loadPageData();
                     this.$toastShow('删除成功');
                 }).catch((error) => {
                     this.$toastShow(error.msg);
