@@ -16,7 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
-import com.jure.commonlib.R;
+import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.customview.pickerview.configure.PickerOptions;
 import com.meeruu.commonlib.customview.pickerview.listener.OnDismissListener;
 import com.meeruu.commonlib.customview.pickerview.utils.PickerViewAnimateUtil;

@@ -5,6 +5,7 @@ import OpenShopExplainPage from './OpenShopExplainPage';
 import CashExplainPage from './CashExplainPage';
 import OpenShopSuccessPage from './OpenShopSuccessPage';
 import InvitationFriendPage from './InvitationFriendPage';
+import TestPay from './TestPay';
 
 export default {
     //开店模块
@@ -17,6 +18,7 @@ export default {
         //开店成功页面
         OpenShopSuccessPage,
         //邀请好友
-        InvitationFriendPage
+        InvitationFriendPage,
+        TestPay
     }
 };

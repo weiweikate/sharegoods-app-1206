@@ -114,7 +114,8 @@ class ShopCartCacheTool {
                 if (localValue && (localValue instanceof Array)) {
                     let isHave = false;
                     localValue.map((localItem, indexPath) => {
-                        if (localItem.priceId === goodsItem.priceId && localValue.productId === goodsItem.productId) {
+                        if (localItem.priceId === goodsItem.priceId &&
+                            localItem.productId === goodsItem.productId ) {
                             localValue[indexPath] = goodsItem;
                             isHave = true;
                         }
@@ -172,8 +173,7 @@ class ShopCartCacheTool {
                 localValue.map((localItemGood, indexPath) => {
 
                     if (localItemGood.priceId === itemData.priceId &&
-                        localItemGood.productId === itemData.productId
-                    ) {
+                        localItemGood.productId === itemData.productId ) {
                         localValue[indexPath] = itemData;
                     }
                 });

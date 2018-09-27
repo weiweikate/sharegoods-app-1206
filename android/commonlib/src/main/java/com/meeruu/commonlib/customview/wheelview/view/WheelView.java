@@ -17,7 +17,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.jure.commonlib.R;
+import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.customview.wheelview.adapter.WheelAdapter;
 import com.meeruu.commonlib.customview.wheelview.interfaces.IPickerViewData;
 import com.meeruu.commonlib.customview.wheelview.listener.LoopViewGestureListener;

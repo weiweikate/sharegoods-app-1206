@@ -24,11 +24,9 @@ ext {
             design  : 'com.android.support:design:27.+',
             eventbus: 'org.greenrobot:eventbus:+',
             zxing   : 'com.google.zxing:core:3.+',
-            qiyu    : 'com.qiyukf.unicorn:unicorn:+',
             wechat  : 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+',
             multidex: 'com.android.support:multidex:+',
             uapp    : 'com.umeng.sdk:analytics:latest.integration',
-            ucommon : 'com.umeng.sdk:common:latest.integration',
-            qiyu    : 'com.qiyukf.unicorn:unicorn:+'
+            ucommon : 'com.umeng.sdk:common:latest.integration'
     ]
 }

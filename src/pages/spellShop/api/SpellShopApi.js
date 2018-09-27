@@ -11,10 +11,13 @@ const api = {
     // 查询店铺列表
     queryByStatusAndKeyword: ['/user/store/queryByStatusAndKeyword', { method: 'get' }],
 
-    // 开启店铺post
-    startStore: '/user/store/startStore',
+    //test-------------test店铺支付成功
+    depositTest: ['/user/store/deposit', { method: 'get' }],
+
     // 缴纳完保证金后 初始化店铺post
     initStore: '/user/store/initStore',
+    // 开启店铺post
+    startStore: '/user/store/startStore',
 
 
     // 根据id查询店铺

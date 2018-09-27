@@ -12,13 +12,29 @@ import com.horcrux.svg.SvgPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
 import com.meeruu.commonlib.BaseApplication;
-import com.meeruu.commonlib.imService.QYChatModule;
+import com.meeruu.commonlib.callback.ForegroundCallbacks;
+import com.meeruu.qiyu.imService.QiyuImageLoader;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
+import com.qiyukf.unicorn.api.UICustomization;
+import com.qiyukf.unicorn.api.Unicorn;
+import com.qiyukf.unicorn.api.YSFOptions;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends BaseApplication implements ReactApplication {
+
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ForegroundCallbacks.init(this);
+        if (getProcessName(this).equals(getPackageName())) {
+            // 七鱼初始化
+            Unicorn.init(this, "db5a6f7eb0a3a8542e8ea36957e9122a", options(), new QiyuImageLoader(this));
+        }
+    }
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -56,5 +72,23 @@ public class MainApplication extends BaseApplication implements ReactApplication
     @Override
     public ReactNativeHost getReactNativeHost() {
         return mReactNativeHost;
+    }
+
+    // 如果返回值为null，则全部使用默认参数。
+    private YSFOptions options() {
+        YSFOptions options = new YSFOptions();
+        options.statusBarNotificationConfig = new StatusBarNotificationConfig();
+        UICustomization uiCustomization = new UICustomization();
+        // 头像风格，0为圆形，1为方形
+        uiCustomization.avatarShape = 0;
+        // 标题栏背景
+        uiCustomization.titleBackgroundColor = 0xFFFFFFFF;
+        uiCustomization.titleBarStyle = 0;
+        uiCustomization.topTipBarBackgroundColor = 0xFF666666;
+        uiCustomization.titleCenter = true;
+        uiCustomization.topTipBarTextColor = 0xFFFFFFFF;
+        options.categoryDialogStyle = 0;
+        options.uiCustomization = uiCustomization;
+        return options;
     }
 }

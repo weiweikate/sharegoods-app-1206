@@ -8,43 +8,62 @@ import {
     View,
     Text,
     Image,
-    Platform,
     TextInput,
     StyleSheet,
     ScrollView,
-    BackHandler,
     TouchableOpacity,
     TouchableWithoutFeedback
 } from 'react-native';
-import storeModel from '../model/StoreModel';
-import ActionSheetView from '../components/ActionSheetView';
 import BasePage from '../../../BasePage';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-
+import BusinessUtils from '../../mine/components/BusinessUtils';
+import SpellShopApi from '../api/SpellShopApi';
+import spellStatusModel from '../model/SpellStatusModel';
 
 export default class SetShopNamePage extends BasePage {
 
     $navigationBarOptions = {
-        title: this.params.isChangeStoreInfo ? '我的店铺' : '开店基础信息',
+        title: this.params.storeData ? '我的店铺' : '开店基础信息',
         rightNavTitle: '完成',
         rightTitleStyle: styles.rightItem,
-        rightNavItemHidden: !this.params.isChangeStoreInfo
+        rightNavItemHidden: !this.params.storeData
     };
 
     $NavBarLeftPressed = () => {
-        // if (this.params.isChangeStoreInfo) {
-        this.$navigateBack();
-        // } else {
-        // this.props.navigation.popToTop();
-        // }
+        if (this.params.storeData) {
+            this.$navigateBack();
+        } else {
+            this.$navigateReset();
+        }
     };
 
     $NavBarRightPressed = () => {
-        // if (StringUtils.isEmpty(this.state.storeHeadUrlOrigin)) {
-        //     this.$toastShow('店铺头像不能为空');
-        //     return;
-        // }
+        this._complete();
+    };
+
+    constructor(props) {
+        super(props);
+        if (this.params.storeData) {//修改
+            this.state = {
+                text: this.params.storeData.storeName,
+                storeHeadUrl: this.params.storeData.storeHeadUrl,
+                storeHeadUrlOrigin: this.params.storeData.storeHeadUrl
+            };
+        } else {
+            this.state = {
+                text: null,
+                storeHeadUrl: null,
+                storeHeadUrlOrigin: null
+            };
+        }
+    }
+
+    _complete = () => {
+        if (StringUtils.isEmpty(this.state.storeHeadUrlOrigin)) {
+            this.$toastShow('店铺头像不能为空');
+            return;
+        }
         if (StringUtils.isEmpty(this.state.text)) {
             this.$toastShow('店铺名称不能为空');
             return;
@@ -53,102 +72,57 @@ export default class SetShopNamePage extends BasePage {
             this.$toastShow('店铺名称仅限4~16位字符');
             return;
         }
-        const { isChangeStoreInfo } = this.params || {};//是否是修改信息
-        if (isChangeStoreInfo) {
-            // SpellShopApi.updateStoreBaseInfo({name: this.state.text,headUrl: this.state.storeHeadUrlOrigin}).then((response)=>{
-            //     if(response.ok){
-            //         storeModel.setStoreImgAndName(this.state.text,this.state.storeHeadUrlOrigin);
-            //         Toast.toast('修改成功');
-            //         this.props.navigation.goBack();
-            //     } else {
-            //         Toast.toast(response.msg);
-            //     }
-            // });
-        }
-    };
-
-    constructor(props) {
-        super(props);
-        if (this.params.isChangeStoreInfo) {//修改
-            this.state = {
-                text: storeModel.storeName,
-                switchValue: true,
-                storeHeadUrl: storeModel.storeHeadUrl,
-                storeHeadUrlOrigin: storeModel.storeHeadUrl
-            };
+        if (this.params.storeData) {
+            SpellShopApi.updateStoreInfo({
+                name: this.state.text,
+                headUrl: this.state.storeHeadUrlOrigin
+            }).then(() => {
+                this.$toastShow('修改成功');
+                this.$navigateBack();
+            }).catch((error) => {
+                this.$toastShow(error.msg);
+            });
         } else {
-            this.state = {
-                text: null,
-                switchValue: true,
-                storeHeadUrl: null,
-                storeHeadUrlOrigin: null
-            };
-        }
-    }
-
-    componentWillMount() {
-        if (this.params.isChangeStoreInfo) {
-            return;
-        }
-        if (Platform.OS === 'android') {
-            this.backListener = BackHandler.addEventListener('hardwareBackPress', () => {
-                if (this.params.gesturesEnabled === false) {
-                    return true;
-                } else {
-                    return false;
-                }
+            // 创建店铺，并设置店铺基础信息
+            SpellShopApi.initStore({
+                name: this.state.text,
+                headUrl: this.state.storeHeadUrlOrigin,
+                status: 3
+            }).then(() => {
+                spellStatusModel.getUser(2);
+                this.$navigate('spellShop/openShop/OpenShopSuccessPage');
+            }).catch((error) => {
+                this.$toastShow(error.msg);
             });
         }
-    }
-
-    componentDidMount() {
-        if (this.params.isChangeStoreInfo) {
-            this.$NavigationBarHiddenRightItem(true);
-        }
-    }
-
-    componentWillUnmount() {
-        if (Platform.OS === 'android') {
-            this.backListener && this.backListener.remove();
-        }
-    }
-
-    _complete = () => {
-        this.props.navigation.navigate('spellShop/openShop/OpenShopSuccessPage');
     };
+
     _onChangeText = (text) => {
         this.setState({ text });
     };
 
     //点击头像
     _clickHeader = () => {
-
-        // BusinessUtils.getImagePicker((response) => {
-        //     if (response && typeof response === 'object' && response.ok) {
-        //         const { imageUrl, imageThumbUrl } = response;
-        //         if (imageUrl && imageThumbUrl) {
-        //             this.setState({
-        //                 storeHeadUrl: imageThumbUrl,
-        //                 storeHeadUrlOrigin: imageUrl
-        //             });
-        //         }
-        //     } else {
-        //         this.$toast(response.msg);
-        //     }
-        // });
+        BusinessUtils.getImagePicker((response) => {
+            if (response && typeof response === 'object' && response.ok) {
+                const { imageUrl, imageThumbUrl } = response;
+                if (imageUrl && imageThumbUrl) {
+                    this.setState({
+                        storeHeadUrl: imageThumbUrl,
+                        storeHeadUrlOrigin: imageUrl
+                    });
+                }
+            } else {
+                this.$toastShow(response.msg);
+            }
+        });
     };
 
     _render() {
-
-
-        const { isChangeStoreInfo } = this.params || {};//是否是修改信息
-
         const uri = this.state.storeHeadUrl;
-
         return (
             <View style={styles.container}>
                 <ScrollView>
-
                     <View style={styles.whitePanel}>
 
                         <TouchableOpacity onPress={this._clickHeader}>
@@ -175,7 +149,7 @@ export default class SetShopNamePage extends BasePage {
                     </View>
 
                     {
-                        isChangeStoreInfo ? null : <TouchableWithoutFeedback onPress={this._complete}>
+                        this.params.storeData ? null : <TouchableWithoutFeedback onPress={this._complete}>
                             <View style={styles.btnRow}>
                                 <Text style={styles.btnTitle}>开店</Text>
                             </View>
@@ -183,9 +157,6 @@ export default class SetShopNamePage extends BasePage {
                     }
 
                 </ScrollView>
-                <ActionSheetView ref={ref => {
-                    this.actionSheetRef = ref;
-                }}/>
             </View>
         );
 
