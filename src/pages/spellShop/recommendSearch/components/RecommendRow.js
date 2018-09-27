@@ -26,7 +26,7 @@ export default class RecommendRow extends Component {
         this.state = {};
     }
 
-    renderIconItem = (item) => {
+    renderIconItem = ({item}) => {
         return (<TouchableOpacity onPress={() => {
         }}>
             {item.headImg ? <Image style={styles.itemIcon} source={{ uri: item.headImg || '' }}/> : <View

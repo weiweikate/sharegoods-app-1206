@@ -79,13 +79,7 @@ export default class ShopRecruitPage extends BasePage {
             items: ['分享店铺', '举报店铺']//
         }, (item, index) => {
             if (index === 0) {
-                // const shareInfo = {
-                //     name: storeModel.store.name,//店铺名称
-                //     id: storeModel.store.id,//店铺id
-                //     headUrl: storeModel.store.headUrl,//店铺头像url
-                //     storeUser: storeModel.store.storeUser
-                // };
-                // this._navigate('spellShop/invite/InvitationToShopPage', { shareInfo });
+
             } else if (index === 1) {
                 // 举报弹框
                 setTimeout(() => {
