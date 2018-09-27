@@ -72,6 +72,10 @@ const DemoList = [
     {
         title: '搜索页面',
         uri: RouterMap.SearchPage
+    },
+    {
+        title:'分类搜索',
+        uri:'home/search/CategorySearchPage'
     }
 
 ];
@@ -137,7 +141,9 @@ export default class HomePage extends Component {
                             underlineColorAndroid={'transparent'}
                             style={styles.inputText}/>
                     </View>
-                    <Image source={require('./res/icons/msg.png')} style={styles.scanIcon}/>
+                    <TouchableHighlight onPress={()=>this.props.navigation.navigate('message/MessageCenterPage')}>
+                        <Image source={require('./res/icons/msg.png')} style={styles.scanIcon}/>
+                    </TouchableHighlight>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}
                             onScroll={this._onScroll}
