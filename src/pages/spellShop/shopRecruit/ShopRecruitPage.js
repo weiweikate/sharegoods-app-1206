@@ -15,12 +15,10 @@ import RecruitHeaderView from './components/RecruitHeaderView';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import SpellStatusModel from '../model/SpellStatusModel';
 import ActionSheetView from '../components/ActionSheetView';
 import ReportAlert from '../components/ReportAlert';
 
 // 图片资源
-import ShopItemLogo from './src/dp_03.png';
 import ItemLogo from './src/more_icon.png';
 import StoreModel from '../model/StoreModel';
 
@@ -34,11 +32,7 @@ export default class ShopRecruitPage extends BasePage {
 
     $NavBarRenderRightItem = () => {
         return <View style={styles.rightBarItemContainer}>
-            {SpellStatusModel.canSeeGroupStore && <TouchableOpacity onPress={this._clickShopItem}>
-                <Image style={{ marginRight: 11 }} source={ShopItemLogo}/>
-            </TouchableOpacity>}
-
-            {this.state.storeData.myStore && <TouchableOpacity onPress={this._clickSettingItem}>
+            {<TouchableOpacity onPress={this._clickSettingItem}>
                 <Image style={{ marginRight: 20 }} source={ItemLogo}/>
             </TouchableOpacity>}
         </View>;
@@ -63,6 +57,7 @@ export default class ShopRecruitPage extends BasePage {
             let datalist = dataTemp.storeUserList || [];
             this.setState({
                 storeData: dataTemp,
+                storeId: dataTemp.id,
                 canOpen: dataTemp.maxUser && dataTemp.maxUser <= datalist.length
             });
         }).catch((error) => {
@@ -70,13 +65,9 @@ export default class ShopRecruitPage extends BasePage {
         });
     };
 
-    _clickShopItem = () => {
-        this.$navigate('spellShop/recommendSearch/RecommendPage');
-    };
-
     _clickSettingItem = () => {
         this.actionSheetRef.show({
-            items: ['分享店铺', '举报店铺']//
+            items: ['分享店铺']//
         }, (item, index) => {
             if (index === 0) {
 
@@ -84,17 +75,15 @@ export default class ShopRecruitPage extends BasePage {
                 // 举报弹框
                 setTimeout(() => {
                     this.reportAlert && this.reportAlert.show({
-                        confirmCallBack: () => {
-                            // SpellShopApi.addStoreReport({
-                            //     content: '违法赌博',
-                            //     storeId: storeModel.storeId
-                            // }).then(response => {
-                            //     if (response.ok) {
-                            //         Toast.toast('举报成功');
-                            //     } else {
-                            //         Toast.toast(response.msg);
-                            //     }
-                            // });
+                        confirmCallBack: (text) => {
+                            SpellShopApi.storeTipOffInsert({
+                                content: text,
+                                storeId: this.state.storeId
+                            }).then(() => {
+                                this.$toastShow('举报成功');
+                            }).catch((error) => {
+                                this.$toastShow(error.msg);
+                            });
                         }
                     });
                 }, 500);
@@ -102,6 +91,7 @@ export default class ShopRecruitPage extends BasePage {
         });
     };
     _closeStore = () => {
+        
         this._loadPageData();
     };
 
