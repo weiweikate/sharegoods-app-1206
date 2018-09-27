@@ -2,7 +2,7 @@ package com.meeruu.commonlib.customview.pickerview.view;
 
 import android.view.View;
 
-import com.jure.commonlib.R;
+import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.customview.pickerview.adapter.ArrayWheelAdapter;
 import com.meeruu.commonlib.customview.pickerview.adapter.NumericWheelAdapter;
 import com.meeruu.commonlib.customview.pickerview.listener.ISelectTimeCallback;

@@ -189,7 +189,3 @@ public static final int *;
 -dontwarn javax.annotation.**
 -dontwarn com.android.volley.toolbox.**
 -dontwarn com.facebook.infer.**
-
-# 七鱼
--dontwarn com.qiyukf.**
--keep class com.qiyukf.** {*;}

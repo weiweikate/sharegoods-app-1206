@@ -2,7 +2,7 @@ package com.meeruu.commonlib.customview.pickerview.utils;
 
 import android.view.Gravity;
 
-import com.jure.commonlib.R;
+import com.meeruu.commonlib.R;
 
 /**
  * Created by Sai on 15/8/9.
