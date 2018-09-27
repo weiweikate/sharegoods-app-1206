@@ -49,7 +49,7 @@ export default class CouponsPage extends BasePage {
                     locked={true}
                     tabBarTextStyle={{ fontSize: 15 }}
                     tabBarUnderlineStyle={{ backgroundColor: 'red', height: 2 }}
-                    renderTabBar={() => <ScrollableTabBar/>}
+                    renderTabBar={() => <ScrollableTabBar style={{ borderWidth: 0.5 }}/>}
                 >
                     <MyCouponsItems tabLabel={'未使用'} pageStatus={0} nav={this.props.navigation}
                                     selectTab={this.state.selectTab} isgiveup={false}/>

@@ -97,7 +97,12 @@ class MyOrdersListPage extends BasePage {
                 underlineColor='red'
                 backgroundColor='white'
                 tabMargin={35}
-                style={{ alignItems: 'center', justifyContent: 'center', alignContent: 'center' }}/>
+                style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    borderWidth: 0.5
+                }}/>
 
         );
     };
