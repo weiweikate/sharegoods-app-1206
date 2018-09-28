@@ -8,7 +8,7 @@
 	<string>ad-hoc</string>
 	<key>provisioningProfiles</key>
 	<dict>
-		<key>com.jure.crm</key>
+		<key>com.meeruu.sharegoods</key>
 		<string>adhoc</string>
 	</dict>
 	<key>signingCertificate</key>
