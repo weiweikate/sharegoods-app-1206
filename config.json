@@ -42,6 +42,10 @@
         "shen_yaoxing":{
             "name": "测试_沈耀鑫",
             "host": "http://172.16.10.56:8180/gateway"
+        },
+        "dev_cs": {
+            "name": "开发环境-陈帅",
+            "host": "http://172.16.10.88:8180/gateway"
         }
     }
 }

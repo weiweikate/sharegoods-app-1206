@@ -7,9 +7,9 @@ import RefreshList from './../../../components/ui/RefreshList';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
 import NoMessage from '../res/couponsImg/icon3_03.png';
-import unactivatedBg from '../res/couponsImg/icon1_03.png';
-import usedBg from '../res/couponsImg/icon1_03.png';
-import unuesdBg from '../res/couponsImg/icon2_03.png';
+import unactivatedBg from '../res/couponsImg/youhuiquan_bg_zhihui.png';
+import usedBg from '../res/couponsImg/youhuiquan_bg_zhihui.png';
+import unuesdBg from '../res/couponsImg/youhuiquan_bg_nor.png';
 import API from '../../../api';
 import UI from '../../../utils/bridge';
 import { observer } from 'mobx-react';
@@ -36,57 +36,38 @@ export default class MyCouponsItems extends Component {
 
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
-        let disabled = item.status === 0 ? false : true;
         let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
         return (
             <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickItem(index, item)}>
-                <ImageBackground style={styles.imgBg}
-                                 source={BG} resizeMode='stretch'>
-                    <View style={styles.couponHeader}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                                <Text style={{ fontSize: 15, color: disabled ? '#999999' : '#e60012' }}>￥</Text>
-                            </View>
-                            <View>
-                                <Text style={{
-                                    fontSize: 35,
-                                    color: disabled ? '#999999' : '#e60012'
-                                }}>{item.value}</Text>
+                <ImageBackground style={{
+                    width: ScreenUtils.width - px2dp(30),
+                    height: px2dp(109),
+                    margin: 5,
+                }} source={BG} resizeMode='stretch'>
+                    <View  style={{flexDirection:'row',alignItems:'center',height:px2dp(73)}}>
+                        <View style={{alignItems: 'center',flexDirection:'row',justifyContent:'center',width:px2dp(80)}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <View style={{alignSelf: 'flex-end', marginBottom: 2}}>
+                                    <Text style={{fontSize: 5, color: "#222222"}}>￥</Text>
+                                </View>
+                                <View>
+                                    <Text style={{fontSize: 20, color: "#222222"}}>{item.value}</Text>
+                                </View>
                             </View>
                         </View>
-                        <View>
-                            <Text style={{ fontSize: 11, color: '#999999' }}>满{item.useConditions}可用</Text>
+                        <View style={{flex: 1, alignItems: 'flex-start',marginLeft:10}}>
+                            <Text style={{fontSize: 15, color: "#222222"}}>满{item.useConditions}可用</Text>
+                            <Text style={{
+                                fontSize: 11,
+                                color: "#999999"
+                            }}>有效期：{this.fmtDate(item.startTime)}-{this.fmtDate(item.outTime)}</Text>
                         </View>
                     </View>
-                    <View style={{
-                        width: px2dp(190),
-                        paddingLeft: 10,
-                        alignItems: 'center',
-                        justifyContent: 'flex-start'
-                    }}>
-                        <Text style={{
-                            width: '100%',
-                            fontSize: 15,
-                            color: '#222222',
-                            marginBottom: 10
-                        }}>{item.name}</Text>
-                        <Text style={{
-                            width: '100%',
-                            fontSize: 11,
-                            color: '#999999',
-                            marginBottom: 10
-                        }}>{item.limit}</Text>
-                        <Text style={{
-                            width: '100%',
-                            fontSize: 11,
-                            color: '#999999'
-                        }}>有效期：{this.fmtDate(item.startTime)}-{this.fmtDate(item.outTime)}</Text>
+
+                    <View style={{height:px2dp(33),justifyContent:'center',marginLeft:10}}>
+                        <Text style={{fontSize: 11, color: "#999999"}}>限品类:{item.limit}</Text>
                     </View>
-                    <View style={{ width: px2dp(50), alignItems: 'center' }}>
-                        {item.explainList.map((item, i) => {
-                            return <Text key={i} style={{ fontSize: 15, color: '#fff' }}>{item}</Text>;
-                        })}
-                    </View>
+
                 </ImageBackground>
             </TouchableOpacity>
         );
@@ -269,7 +250,7 @@ export default class MyCouponsItems extends Component {
 const styles = StyleSheet.create(
     {
         container: {
-            padding: 15,
+            paddingTop: 15,
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
@@ -279,9 +260,6 @@ const styles = StyleSheet.create(
             width: px2dp(345),
             height: px2dp(110),
             marginBottom: 10,
-
-            flexDirection: 'row',
-            alignItems: 'center'
         },
         couponHeader: {
             width: px2dp(105),

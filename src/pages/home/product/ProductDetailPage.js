@@ -18,6 +18,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
+import ConfirOrderPage from '../../order/order/ConfirOrderPage';
 
 export default class ProductDetailPage extends BasePage {
 
@@ -86,6 +87,7 @@ export default class ProductDetailPage extends BasePage {
 
     //选择规格确认
     _selectionViewConfirm = (amount, priceId) => {
+        let orderProducts = [];
         if (this.state.goType === 'gwc') {
             let temp = {
                 'amount': amount,
@@ -94,7 +96,12 @@ export default class ProductDetailPage extends BasePage {
             };
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
-
+            orderProducts.push({
+                priceId: priceId,
+                num: 1,
+                productId: this.state.data.product.id,
+            });
+            this.$navigate('order/order/ConfirOrderPage',{orderParamVO:{orderType:99,orderProducts:orderProducts}})
         }
     };
 
