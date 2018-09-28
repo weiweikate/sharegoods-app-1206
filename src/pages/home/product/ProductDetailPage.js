@@ -5,6 +5,8 @@ import {
     SectionList,
     Modal,
     Image,
+    FlatList,
+    Text,
     TouchableWithoutFeedback
 } from 'react-native';
 
@@ -18,6 +20,8 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
+import AutoHeightWebView from 'react-native-autoheight-webview';
+import StringUtils from '../../../utils/StringUtils';
 
 export default class ProductDetailPage extends BasePage {
 
@@ -30,7 +34,8 @@ export default class ProductDetailPage extends BasePage {
         this.state = {
             modalVisible: false,
             data: {},
-            goType: ''
+            goType: '',
+            selectedIndex: 0
         };
     }
 
@@ -53,17 +58,12 @@ export default class ProductDetailPage extends BasePage {
                 data: data.data
             });
         }).catch((error) => {
-            if(error.code===10001){
-                this.$navigate('login/login/LoginPage')
+            if (error.code === 10009) {
+                this.$navigate('login/login/LoginPage');
             }
             this.$loadingDismiss();
             this.$toastShow(error.msg);
         });
-    };
-
-    //segment 详情0 参数1 选项
-    _segmentViewOnPressAtIndex = (index) => {
-
     };
 
     //去购物车
@@ -105,6 +105,12 @@ export default class ProductDetailPage extends BasePage {
         });
     };
 
+    //segment 详情0 参数1 选项
+    _segmentViewOnPressAtIndex = (index) => {
+        this.setState({
+            selectedIndex: index
+        });
+    };
 
     _renderListHeader = () => {
         return <DetailHeaderView data={this.state.data}/>;
@@ -115,9 +121,41 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderItem = () => {
-        return <View style={{ height: 200, backgroundColor: '#EEEEEE' }}/>;
+        let { product } = this.state.data;
+        product = product || {};
+        if (StringUtils.isEmpty(product.content)) {
+            return null;
+        }
+        if (this.state.selectedIndex === 0) {
+            return <View>
+                <AutoHeightWebView source={{ html: product.content }}/>
+            </View>;
+        } else {
+            return <View style={{ backgroundColor: 'white' }}>
+                <FlatList
+                    style={{ marginHorizontal: 16, marginVertical: 16,borderWidth:0.5,borderColor:'#eee' }}
+                    renderItem={this._renderSmallItem}
+                    ItemSeparatorComponent={this._renderSeparatorComponent}
+                    showsVerticalScrollIndicator={false}
+                    keyExtractor={(item, index) => `${index}`}
+                    data={this.state.data.paramList || []}>
+                </FlatList>
+            </View>;
+        }
     };
 
+    _renderSmallItem = ({ item }) => {
+        return <View style={{ flexDirection: 'row', height: 35 }}>
+            <View style={{ backgroundColor: '#DDDDDD', width: 70, justifyContent: 'center' }}>
+                <Text style={{ marginLeft: 10, color: '#222222', fontSize: 12 }}>{item.paramName || ''}</Text>
+            </View>
+            <Text style={{ flex:1,alignSelf:'center',marginLeft: 20, color: '#999999', fontSize: 12 }}>{item.paramValue || ' '}</Text>
+        </View>;
+    };
+
+    _renderSeparatorComponent = ()=>{
+        return <View style = {{height:0.5,backgroundColor:'#eee',}}/>
+    }
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
         console.log(Y);
