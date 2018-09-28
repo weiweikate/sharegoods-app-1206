@@ -153,6 +153,9 @@ export default class AddressManagerPage extends BasePage {
                 selectIndex: nowIndex
             });
         }).catch((data) => {
+            if(data.code ===10009||data.code===10001){
+                this.$navigate('login/login/LoginPage');
+            }
             bridge.$toast(data.msg);
         });
     };

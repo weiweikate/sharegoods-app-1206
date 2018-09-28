@@ -21,6 +21,7 @@ import GoodsItem from '../components/GoodsItem';
 import user from '../../../model/user';
 import Toast from '../../../utils/bridge';
 import BasePage from '../../../BasePage';
+import OrderApi from './../api/orderApi';
 
 let oldViewData, oldPriceList;
 export default class ConfirOrderPage extends BasePage {
@@ -85,7 +86,7 @@ export default class ConfirOrderPage extends BasePage {
                 totalFreightFee: 0,
                 totalAmounts: 0
             },
-            orderParam: this.params.orderParam ? this.params.orderParam : []
+            orderParam: this.params.orderParamVO ? this.params.orderParamVO : []
 
         };
     }
@@ -233,7 +234,7 @@ export default class ConfirOrderPage extends BasePage {
                 <View style={{ position: 'absolute' }}>
                     <Image source={colorLine} style={{ height: 3, width: ScreenUtils.width, marginTop: 5 }}/>
                 </View>
-                {this.params.orderParam && this.params.orderParam.orderType === 3 ?
+                {this.state.orderParam && this.state.orderParam.orderType === 3 ?
 
                     <View style={{
                         marginTop: 20,
@@ -314,12 +315,12 @@ export default class ConfirOrderPage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}
-                                  disabled={this.params.orderParam && this.params.orderParam.orderType == 1 || this.params.orderParam.orderType == 2}
+                                  disabled={this.state.orderParam && this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2}
                                   onPress={() => this.jumpToCouponsPage()}>
                     <UIText value={'优惠卷'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={this.params.orderParam && this.params.orderParam.orderType == 1 || this.params.orderParam.orderType == 2 ? '不可使用优惠券' : '选择优惠卷'}
+                            value={this.state.orderParam && this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 ? '不可使用优惠券' : '选择优惠卷'}
                             style={[styles.grayText, { marginRight: 15 }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -415,7 +416,7 @@ export default class ConfirOrderPage extends BasePage {
 
     _render() {
         return (
-            //                    data={this.params.orderParam && this.params.orderParam.orderType === 3 || this.params.orderParam.orderType === 98 ? this.state.priceList : this.state.viewData.list}
+            //                    data={this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98 ? this.state.priceList : this.state.viewData.list}
             <View style={styles.container}>
                 <RefreshList
                     ListHeaderComponent={this.renderHeader}
@@ -430,7 +431,7 @@ export default class ConfirOrderPage extends BasePage {
     };
 
     renderItem = ({ item, index }) => {
-        if (this.params.orderParam && this.params.orderParam.orderType === 3 || this.params.orderParam.orderType === 98) {
+        if (this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98) {
             return (
 
                 <GoodsItem
@@ -470,6 +471,34 @@ export default class ConfirOrderPage extends BasePage {
         );
     };
 
+    componentDidMount() {
+        Toast.showLoading();
+        OrderApi.makeSureOrder({ orderType:this.params.orderParamVO.orderType,orderProducts:this.params.orderParamVO.orderProducts}).then((response) => {
+            Toast.hiddenLoading();
+                console.log(response);
+                let data = response.data;
+                let arrData = [];
+                data.orderProductList.map((item, index) => {
+                    arrData.push({
+                        productId: item.productId,
+                        uri: item.specImg,
+                        goodsName: item.name,
+                        salePrice: item.salePrice,
+                        category: item.spec,
+                        goodsNum: item.num,
+                        activityId: item.activityId
+                    });
+
+                });
+
+        }).catch(err =>{
+            Toast.hiddenLoading();
+            console.log(err);
+            if(err.code===10001||err.code===10009){
+                this.$navigate('login/login/LoginPage');
+            }
+        })
+    }
     //**********************************BusinessPart******************************************
     // loadPageData() {
     //     Toast.showLoading();
@@ -545,32 +574,32 @@ export default class ConfirOrderPage extends BasePage {
     // }
 
     clickItem = (index, item) => {
-        if (this.params.orderParam && this.params.orderParam.orderType === 3) {//优惠套餐
-            this.navigate('home/CouponsComboDetailPage', { id: this.state.viewData.list[0].productId });
-        } else if (this.params.orderParam && this.params.orderParam.orderType === 1) {//秒杀
-            this.navigate('product/ProductDetailPage', {
+        if (this.state.orderParam && this.state.orderParam.orderType === 3) {//优惠套餐
+            this.$navigate('home/CouponsComboDetailPage', { id: this.state.viewData.list[0].productId });
+        } else if (this.state.orderParam && this.state.orderParam.orderType === 1) {//秒杀
+            this.$navigate('product/ProductDetailPage', {
                 productId: item.productId,
                 activityCode: item.productId,
                 ids: item.activityId
             });
 
         }
-        else if (this.params.orderParam && this.params.orderParam.orderType === 2) {//降价拍
-            this.navigate('product/ProductDetailPage', {
+        else if (this.state.orderParam && this.state.orderParam.orderType === 2) {//降价拍
+            this.$navigate('product/ProductDetailPage', {
                 productId: item.productId,
                 id: item.productId,
                 ids: item.activityId
             });
-        } else if (this.params.orderParam && this.params.orderParam.orderType === 98) {
-            this.navigate('home/GiftProductDetailPage', { id: this.state.viewData.list[0].productId });
+        } else if (this.state.orderParam && this.state.orderParam.orderType === 98) {
+            this.$navigate('home/GiftProductDetailPage', { id: this.state.viewData.list[0].productId });
         }
         else {
-            this.navigate('product/ProductDetailPage', { productId: item.productId });//正常商品
+            this.$navigate('product/ProductDetailPage', { productId: item.productId });//正常商品
         }
 
     };
     selectPickAddress = () => {
-        this.navigate('addressSelect/SelectAddressPage', {
+        this.$navigate('addressSelect/SelectAddressPage', {
             callBack: (jsonData) => {
                 let json = JSON.parse(jsonData);
                 let viewData = this.state.viewData;
@@ -592,10 +621,10 @@ export default class ConfirOrderPage extends BasePage {
         });
     };
     selectAddress = () => {
-        this.navigate('setting/AddressManagePage', {
+        this.$navigate('mine/address/AddressManagerPage', {
             callBack: (jsonData) => {
                 let json = JSON.parse(jsonData);
-                let orderParams = this.params.orderParam;
+                let orderParams = this.state.orderParam;
                 let viewData = this.state.viewData;
                 viewData.express = {
                     id: json.id,
@@ -668,14 +697,14 @@ export default class ConfirOrderPage extends BasePage {
         }
         Toast.showLoading();
         let params;
-        if (this.params.orderParam && this.params.orderParam.orderType === 1 || this.params.orderParam.orderType === 2 || this.params.orderParam.orderType === 98) {
+        if (this.state.orderParam && this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2 || this.state.orderParam.orderType === 98) {
             params = {
                 address: address,
                 areaCode: areaCode,
                 buyerRemark: buyerRemark,
                 cityCode: cityCode,
-                orderProducts: this.params.orderParam.orderProducts,
-                orderType: this.params.orderParam.orderType,
+                orderProducts: this.state.orderParam.orderProducts,
+                orderType: this.state.orderParam.orderType,
                 pickedUp: pickedUp,
                 provinceCode: provinceCode,
                 receiver: receiver,
@@ -688,8 +717,8 @@ export default class ConfirOrderPage extends BasePage {
                 areaCode: areaCode,
                 buyerRemark: buyerRemark,
                 cityCode: cityCode,
-                orderProducts: this.params.orderParam.orderProducts,
-                orderType: this.params.orderParam.orderType,
+                orderProducts: this.state.orderParam.orderProducts,
+                orderType: this.state.orderParam.orderType,
                 pickedUp: pickedUp,
                 provinceCode: provinceCode,
                 receiver: receiver,
@@ -699,7 +728,7 @@ export default class ConfirOrderPage extends BasePage {
             };
         }
         console.log(params);
-        if (this.params.orderParam && this.params.orderParam.orderType === 1) {//如果是秒杀的下单
+        if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
             // HomeApi.submitOrder({ orderParam: JSON.stringify(params) }).then((response) => {
             //     if (response.ok) {
             //         let data = response.data;
@@ -739,10 +768,10 @@ export default class ConfirOrderPage extends BasePage {
 
     };
     jumpToCouponsPage = () => {
-        this.navigate('coupons/CouponsPage', {
+        this.$navigate('coupons/CouponsPage', {
             fromOrder: 1, productIds: this.state.viewData.list[0].productId,
-            orderParam: JSON.stringify(this.params.orderParam), callBack: (data) => {
-                let orderParams = this.params.orderParam;
+            orderParam: JSON.stringify(this.state.orderParam), callBack: (data) => {
+                let orderParams = this.state.orderParam;
                 if (data && data.id) {
                     orderParams.couponId = data.id;
                     // HomeApi.orderCalcDiscountCouponAndUseScore({ orderParam: JSON.stringify(orderParams) }).then(res => {
