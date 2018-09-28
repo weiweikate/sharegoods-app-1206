@@ -9,7 +9,7 @@ class SpellStatusModel {
 
     /******************************【observable】******************************************/
     @observable
-    loadingState = PageLoadingState.null;//页面状态
+    loadingState = PageLoadingState.loading;//页面状态
     @observable
     netFailedInfo = null;//配合loadingState.fail使用
     @observable
@@ -45,7 +45,7 @@ class SpellStatusModel {
 
     @action //错误
     getUserError(error) {
-        if (error.code === 10001){
+        if (error.code === 10009){
             this.loadingState = PageLoadingState.success;
         } else {
             this.loadingState = PageLoadingState.fail;
