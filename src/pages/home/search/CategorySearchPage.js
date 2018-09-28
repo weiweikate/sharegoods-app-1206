@@ -3,7 +3,7 @@ import {
     View, Text, TouchableOpacity, StyleSheet, Image, ScrollView
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import { UIImage } from '../../../components/ui';
+import { UIImage,PreLoadImage } from '../../../components/ui';
 import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ViewPager from '../../../components/ui/ViewPager';
@@ -233,11 +233,11 @@ export default class CategorySearchPage extends BasePage {
                                 return (
                                     <TouchableOpacity style={{ justifyContent: 'center', width: '33.3%', marginTop: 10 }}
                                           key={index} onPress={()=>this.go2ResultPage(item.id)}>
-                                        <Image style={{
+                                        <PreLoadImage style={{
                                             width: 60,
                                             height: 60,
                                             alignSelf: 'center'
-                                        }} source={{ uri: item.img }}/>
+                                        }} imageUri={ item.img }/>
                                         <Text style={{
                                             fontSize: 13,
                                             marginTop: 10,
@@ -283,11 +283,11 @@ export default class CategorySearchPage extends BasePage {
                                     return (
                                         <TouchableOpacity style={{ justifyContent: 'center', width: '33.3%', marginTop: 10 }}
                                               key={index} onPress={()=>this.go2ResultPage(item.id)}>
-                                            <Image style={{
+                                            <PreLoadImage style={{
                                                 width: 60,
                                                 height: 60,
                                                 alignSelf: 'center'
-                                            }} source={{ uri: item.img }}/>
+                                            }} imageUri={item.img }/>
                                             <Text style={{
                                                 fontSize: 13,
                                                 marginTop: 10,

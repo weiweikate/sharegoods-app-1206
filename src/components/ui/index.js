@@ -14,6 +14,7 @@ import AddPhotos from './AddPhotos';
 import NoMoreClick from './NoMoreClick';
 import PasswordInput from './PasswordInput';
 import UIButton from './UIButton';
+import PreLoadImage from './preLoadImage/PreLoadImage';
 
 export {
     UIImage,
@@ -31,5 +32,6 @@ export {
     AddPhotos,
     NoMoreClick,
     PasswordInput,
-    UIButton
+    UIButton,
+    PreLoadImage
 };
