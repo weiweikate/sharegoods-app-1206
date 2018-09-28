@@ -3,7 +3,7 @@ package com.meeruu.commonlib.customview.pickerview.view;
 import android.graphics.Typeface;
 import android.view.View;
 
-import com.jure.commonlib.R;
+import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.customview.pickerview.adapter.ArrayWheelAdapter;
 import com.meeruu.commonlib.customview.pickerview.listener.OnOptionsSelectChangeListener;
 import com.meeruu.commonlib.customview.wheelview.listener.OnItemSelectedListener;

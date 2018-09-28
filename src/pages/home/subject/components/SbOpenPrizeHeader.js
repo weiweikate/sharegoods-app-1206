@@ -14,6 +14,7 @@ import ColorUtil from '../../../../utils/ColorUtil';
 import UIText from '../../../../comm/components/UIText';
 import bridge from '../../../../utils/bridge';
 import SbResTool from '../res/SbResTool';
+import PreLoadImage from '../../../../components/ui/preLoadImage/PreLoadImage';
 
 
 export default class SbOpenPrizeHeader extends Component {
@@ -36,7 +37,8 @@ export default class SbOpenPrizeHeader extends Component {
     render() {
         return (
             <View>
-                <Image
+                <PreLoadImage
+                    imageUri={''}
                     style={SbOpenPrizeHeaderStyles.topImageStyle}
                 />
                 <View style={SbOpenPrizeHeaderStyles.bottomDownViewBgStyle}>
@@ -49,13 +51,11 @@ export default class SbOpenPrizeHeader extends Component {
                             }
                         }
                     />
-
                     <Image
                         source={SbResTool.miaosha_qianggouzhong_img}
                         style={[itemViewStyle.itemBgImageStyle,
                             { left: this.state.selectSate * ScreenUtils.width / 5 }]}
                     />
-
                     <View
                         style={{
                             position: 'absolute',
@@ -131,8 +131,7 @@ const SbOpenPrizeHeaderStyles = StyleSheet.create({
     },
     topImageStyle: {
         width: ScreenUtils.width,
-        height: ScreenUtils.width * 188 / 375,
-        backgroundColor: 'red'
+        height: ScreenUtils.width * 188 / 375
     },
     bottomDownViewBgStyle: {
         height: 55,

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
     StyleSheet,
@@ -119,6 +118,7 @@ class SettingPage extends BasePage {
                         if (ScreenUtils.isIOS) {
                             CachesModule.clearCaches(() => {
                                 this.getAllCachesSize();
+                                // 清楚七鱼缓存
                                 // NativeModules.commModule.toast('删除成功');
                             });
                         } else {
@@ -162,24 +162,24 @@ class SettingPage extends BasePage {
                     yes={() => {
                         this.setState({ isShowLoginOutModal: false });
                         this.$loadingShow();
-                        MineApi.signOut().then((response)=>{
+                        MineApi.signOut().then((response) => {
                             this.$loadingDismiss();
-                             if(response.code===10000){
-                                 // 正常退出，或者登录超时，都去清空数据
-                                 //this.params.callBack&&this.params.callBack();
-                                 user.clearUserInfo();
-                                 //清空购物车
-                                 shopCartStore.data = [];
-                                 this.$navigateReset();
-                             }
-                         }).catch(err=>{
+                            if (response.code === 10000) {
+                                // 正常退出，或者登录超时，都去清空数据
+                                //this.params.callBack&&this.params.callBack();
+                                user.clearUserInfo();
+                                //清空购物车
+                                shopCartStore.data = [];
+                                this.$navigateReset();
+                            }
+                        }).catch(err => {
                             this.$loadingDismiss();
                             this.$toastShow(err.msg);
-                            if(err.code==10009){
+                            if (err.code == 10009) {
                                 user.clearUserInfo();
-                                this.$navigate('login/login/LoginPage')
+                                this.$navigate('login/login/LoginPage');
                             }
-                         });
+                        });
                     }}
                     no={() => {
                         this.setState({ isShowLoginOutModal: false });

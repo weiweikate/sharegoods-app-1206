@@ -15,7 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.jure.commonlib.R;
+import com.meeruu.commonlib.R;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

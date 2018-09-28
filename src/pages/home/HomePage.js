@@ -4,10 +4,10 @@ import {
     View,
     ScrollView,
     TouchableHighlight,
+    TouchableOpacity,
     StyleSheet,
     Platform,
     Image,
-    TextInput,
     Dimensions
 } from 'react-native';
 import RouterMap from '../../RouterMap';
@@ -77,6 +77,10 @@ const DemoList = [
     {
         title: '搜索页面',
         uri: RouterMap.SearchPage
+    },
+    {
+        title: '分类搜索',
+        uri: 'home/search/CategorySearchPage'
     }
 
 ];
@@ -115,6 +119,7 @@ export default class HomePage extends Component {
         });
     };
 
+
     render() {
         return (
             <View style={styles.container}>
@@ -134,15 +139,13 @@ export default class HomePage extends Component {
                               opacity: 0.8
                           }]}>
                     <Image source={require('./res/icons/logo.png')} style={styles.logo}/>
-                    <View style={styles.searchBox}>
+                    <TouchableOpacity style={styles.searchBox} onPress={()=> this.props.navigation.navigate('home/search/SearchPage')}>
                         <Image source={require('./res/icon_search.png')} style={styles.searchIcon}/>
-                        <TextInput
-                            keyboardType='web-search'
-                            placeholder='请输入关键词搜索'
-                            underlineColorAndroid={'transparent'}
-                            style={styles.inputText}/>
-                    </View>
-                    <Image source={require('./res/icons/msg.png')} style={styles.scanIcon}/>
+                        <View style={styles.inputText}/>
+                    </TouchableOpacity>
+                    <TouchableHighlight onPress={() => this.props.navigation.navigate('message/MessageCenterPage')}>
+                        <Image source={require('./res/icons/msg.png')} style={styles.scanIcon}/>
+                    </TouchableHighlight>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}
                             onScroll={this._onScroll}
@@ -317,7 +320,7 @@ const styles = StyleSheet.create({
     },
     inputText: {
         flex: 1,
-        color: '#666666',
+        backgroundColor: '#666666',
         fontSize: 14,
         padding: 0
     },

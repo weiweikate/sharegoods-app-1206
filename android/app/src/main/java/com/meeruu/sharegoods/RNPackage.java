@@ -4,7 +4,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
-import com.meeruu.commonlib.imService.QYChatModule;
+import com.meeruu.qiyu.imService.QYChatModule;
 import com.meeruu.sharegoods.appPay.AppPayModule;
 import com.meeruu.sharegoods.loginAndSharing.LoginAndSharingModule;
 import com.meeruu.sharegoods.qrCode.QRCodeModule;
