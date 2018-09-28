@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #获取workspace名称
-projectName=crm_app_xiugou
+projectName=秀购
 #编译条件 Release Debug 两种
 configuration=Release
 #打包方式
