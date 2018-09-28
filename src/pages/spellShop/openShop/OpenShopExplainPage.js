@@ -18,6 +18,12 @@ export default class OpenShopExplainPage extends BasePage {
         title: '开店'
     };
 
+    _onPress = ()=>{
+        this.$navigate('HtmlPage',{
+            title:'用户协议内容',
+            uri:'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
+        })
+    }
 
     _clickOpen = () => {
         this.$navigate('spellShop/openShop/CashExplainPage');
@@ -70,7 +76,7 @@ export default class OpenShopExplainPage extends BasePage {
                     fontFamily: 'PingFang-SC-Medium',
                     fontSize: 17,
                     color: '#000000'
-                }}>保证金缴纳说明</Text>
+                }}>拼店规则说明</Text>
                 <View style={{ marginTop: 32 }}>
                     {
                         arr.map((item, index) => {
@@ -87,9 +93,16 @@ export default class OpenShopExplainPage extends BasePage {
                             fontFamily: 'PingFang-SC-Medium',
                             fontSize: 15,
                             color: '#ffffff'
-                        }}>缴纳保证金</Text>
+                        }}>我要开店</Text>
                     </TouchableOpacity>
-                    <Text style={styles.descText}>点击缴纳则默认已阅读并同意缴纳保证金</Text>
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={styles.descText}>点击我要开店则默认同意</Text>
+                        <TouchableOpacity onPress = {this._onPress}>
+                            <Text style={[styles.descText, { color: '#D51243' }]}>《拼店管理条例》</Text>
+                        </TouchableOpacity>
+                    </View>
+
                 </View>
             </ScrollView>
         );
@@ -129,7 +142,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     descText: {
-        marginTop: 10,
+        paddingVertical: 10,
         fontFamily: 'PingFang-SC-Medium',
         fontSize: 11,
         color: '#999999',
