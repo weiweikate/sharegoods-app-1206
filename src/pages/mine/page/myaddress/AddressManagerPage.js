@@ -6,6 +6,7 @@ import addrUnselectedImg from '../../res/address/dizhi_btn_moren_nor.png';
 import addrBorderImgN from '../../res/address/dizhi_img_nor.png';
 import addrBorderImgS from '../../res/address/dizhi_img_sel.png';
 import addrRight from '../../res/address/dizhi_icon_moren_sel.png';
+import dingwei from '../../res/address/dizhi_icon_dingwei_nor.png';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -90,7 +91,7 @@ export default class AddressManagerPage extends BasePage {
                    style={styles.topImage}/>
             <View style={styles.cell}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 20 }}>
-                    <Image source={addrRight}
+                    <Image source={dingwei}
                            style={{
                                width: 16,
                                height: 20,
