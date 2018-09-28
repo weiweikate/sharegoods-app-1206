@@ -22,7 +22,6 @@ import user from '../../../model/user';
 import Toast from '../../../utils/bridge';
 import BasePage from '../../../BasePage';
 import OrderApi from './../api/orderApi';
-import AddressManagerPage from '../../mine/page/myaddress/AddressManagerPage';
 
 let oldViewData, oldPriceList;
 export default class ConfirOrderPage extends BasePage {
@@ -474,8 +473,7 @@ export default class ConfirOrderPage extends BasePage {
 
     componentDidMount() {
         Toast.showLoading();
-        console.log(this.params.orderParamVO);
-        OrderApi.makeSureOrder({ orderParamVO: this.state.orderParam }).then((response) => {
+        OrderApi.makeSureOrder({ orderType:this.params.orderParamVO.orderType,orderProducts:this.params.orderParamVO.orderProducts}).then((response) => {
             Toast.hiddenLoading();
                 console.log(response);
                 let data = response.data;

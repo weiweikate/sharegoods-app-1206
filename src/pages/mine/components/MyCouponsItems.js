@@ -2,7 +2,7 @@
  * Created by xiangchen on 2018/7/23.
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, ImageBackground, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, ImageBackground, Text, TouchableOpacity,Image } from 'react-native';
 import RefreshList from './../../../components/ui/RefreshList';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
@@ -10,6 +10,10 @@ import NoMessage from '../res/couponsImg/icon3_03.png';
 import unactivatedBg from '../res/couponsImg/youhuiquan_bg_zhihui.png';
 import usedBg from '../res/couponsImg/youhuiquan_bg_zhihui.png';
 import unuesdBg from '../res/couponsImg/youhuiquan_bg_nor.png';
+import tobeActive from '../res/couponsImg/youhuiquan_icon_daijihuo_nor.png';
+import  ActivedIcon from '../res/couponsImg/youhuiquan_icon_yishixiao_nor.png';
+import usedRIcon from '../res/couponsImg/youhuiquan_icon_yishiyong_nor.png'
+
 import API from '../../../api';
 import UI from '../../../utils/bridge';
 import { observer } from 'mobx-react';
@@ -37,12 +41,13 @@ export default class MyCouponsItems extends Component {
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
+        let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status==1?usedRIcon:ActivedIcon));
         return (
             <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickItem(index, item)}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(109),
-                    margin: 5,
+                    margin: 2,
                 }} source={BG} resizeMode='stretch'>
                     <View  style={{flexDirection:'row',alignItems:'center',height:px2dp(73)}}>
                         <View style={{alignItems: 'center',flexDirection:'row',justifyContent:'center',width:px2dp(80)}}>
@@ -54,14 +59,16 @@ export default class MyCouponsItems extends Component {
                                     <Text style={{fontSize: 20, color: "#222222"}}>{item.value}</Text>
                                 </View>
                             </View>
-                        </View>
+                            </View>
+
                         <View style={{flex: 1, alignItems: 'flex-start',marginLeft:10}}>
-                            <Text style={{fontSize: 15, color: "#222222"}}>满{item.useConditions}可用</Text>
+                            <Text style={{fontSize: 15, color: "#222222"}}>{item.name} </Text>
                             <Text style={{
                                 fontSize: 11,
                                 color: "#999999"
                             }}>有效期：{this.fmtDate(item.startTime)}-{this.fmtDate(item.outTime)}</Text>
                         </View>
+                        <Image style={{marginRight:5,width:px2dp(70),height:px2dp(70)}} source={BGR}/>
                     </View>
 
                     <View style={{height:px2dp(33),justifyContent:'center',marginLeft:10}}>
