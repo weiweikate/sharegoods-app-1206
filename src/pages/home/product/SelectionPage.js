@@ -197,6 +197,7 @@ export default class SelectionPage extends Component {
         }
 
         let priceId = priceArr.join(',');
+        priceId = `,${priceId},`
         let id = undefined;
         const { priceList } = this.props.data;
         priceList.forEach((item)=>{
@@ -205,7 +206,7 @@ export default class SelectionPage extends Component {
                 return;
             }
         })
-        if (id){
+        if (!id){
             return;
         }
         this.props.selectionViewConfirm(this.state.amount, id);
