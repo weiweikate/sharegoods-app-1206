@@ -169,13 +169,12 @@ export default class MyCashAccountPage extends BasePage {
         let use_type_symbol = ['', '+', '-', '-', '+', '+', '+', '+'];
         let useLeftImg = ['', storeShare, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, tuiguang];
         Toast.showLoading();
+        let arrData = this.state.currentPage == 1 ? [] : this.state.viewData;
         MineApi.userBalanceQuery({ page: 1, size: 20, type: 2 }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
             if (response.code == 10000) {
-
                 let data = response.data;
-                let arrData = this.state.currentPage == 1 ? [] : this.state.viewData;
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
                         arrData.push({
@@ -198,6 +197,10 @@ export default class MyCashAccountPage extends BasePage {
             }
         }).catch(e => {
             Toast.hiddenLoading();
+            this.setState({
+                viewData: arrData,
+                isEmpty: true
+            });
         });
     };
     onRefresh = () => {

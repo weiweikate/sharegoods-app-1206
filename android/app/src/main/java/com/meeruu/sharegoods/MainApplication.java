@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.BV.LinearGradient.LinearGradientPackage;
+import com.facebook.react.BuildConfig;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;

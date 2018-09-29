@@ -151,6 +151,7 @@ export default class MyIntegralAccountPage extends BasePage {
 
         let use_type_symbol = ['', '+', '+', '-'];
         let use_let_img = ['', registeredImg, activityPresent, xiaofei];
+        let arrData = this.state.currentPage === 1 ? [] : this.state.viewData;
         Toast.showLoading();
         MineApi.userScoreQuery({
             page: 1,
@@ -161,7 +162,6 @@ export default class MyIntegralAccountPage extends BasePage {
             console.log(response);
             if (response.code == 10000) {
                 let data = response.data;
-                let arrData = this.state.currentPage === 1 ? [] : this.state.viewData;
                 data.data.map((item, index) => {
                     arrData.push({
                         type: use_type[item.useType],
@@ -180,6 +180,8 @@ export default class MyIntegralAccountPage extends BasePage {
             }
         }).catch(e => {
             Toast.hiddenLoading();
+            this.setState({ viewData: arrData, isEmpty:  true });
+
         });
     };
     onRefresh = () => {
