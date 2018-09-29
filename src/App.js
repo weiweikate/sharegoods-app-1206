@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
-    View, Platform
+    View,
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';

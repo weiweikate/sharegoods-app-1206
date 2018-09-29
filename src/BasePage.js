@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import {
     View,
     StyleSheet,
-    SafeAreaView
 } from 'react-native';
 import NavigatorBar from './components/pageDecorator/NavigatorBar/index';
 import {
