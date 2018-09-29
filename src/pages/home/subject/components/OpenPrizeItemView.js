@@ -33,8 +33,14 @@ export default class OpenPrizeItemView extends Component {
                         <Text
                             style={ItemStyles.itemBottomTextStyle}
                             number={2}
+                            onLayout={(e) => {
+                                if (e.nativeEvent.layout.height > 25) {//多于一行时改为红色
+
+                                }
+                             }
+                            }
                         >
-                            测试测试测试测试 测试测试测试测试 测试测试测试测试
+                            测试测试
                         </Text>
                         {/*中部视图 关注或者进度条*/}
                         <View
@@ -138,7 +144,7 @@ const ItemStyles = StyleSheet.create({
         backgroundColor: 'white'
     },
     itemTopImageStyle: {
-        // backgroundColor: 'red',
+        // backgroundColor: 'red'
         width: ScreenUtils.width / 2 - 16,
         height: ScreenUtils.width / 2 - 16
     },
@@ -155,5 +161,5 @@ const ItemStyles = StyleSheet.create({
         marginTop: 5,
         marginLeft: 10,
         marginRight: 10
-    },
+    }
 });

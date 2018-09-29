@@ -22,9 +22,14 @@ export default class LoginPage extends BasePage {
         super(props);
     }
 
+    static navigationOptions = {
+        gesturesEnabled:false,
+    };
+
     // 导航配置
     $navigationBarOptions = {
-        title: "登录"
+        title: "登录",
+        gesturesEnabled:false,
     };
     /*render右上角*/
     $NavBarRenderRightItem = () => {

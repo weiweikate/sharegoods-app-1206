@@ -1998,7 +1998,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.meeruu.sharegoods;
 				PRODUCT_NAME = crm_app_xiugou;
-				PROVISIONING_PROFILE = "97999c4b-9c83-4d50-a64c-1bf5328188e4";
+				PROVISIONING_PROFILE = "6e72b68c-47a4-4f8c-9e22-61413ada5265";
 				PROVISIONING_PROFILE_SPECIFIER = devXiuGou;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -2036,8 +2036,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.meeruu.sharegoods;
 				PRODUCT_NAME = crm_app_xiugou;
-				PROVISIONING_PROFILE = "3e0c9c3f-26ed-452d-a4bd-105c176c2d62";
-				PROVISIONING_PROFILE_SPECIFIER = productXiuGou;
+				PROVISIONING_PROFILE = "d0442cbf-8695-44bd-87c0-01a8f592c3d6";
+				PROVISIONING_PROFILE_SPECIFIER = adhoc;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
