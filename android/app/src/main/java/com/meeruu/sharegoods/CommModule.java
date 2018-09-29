@@ -25,8 +25,6 @@ import com.meeruu.commonlib.bean.IdNameBean;
 import com.meeruu.commonlib.customview.pickerview.builder.OptionsPickerBuilder;
 import com.meeruu.commonlib.customview.pickerview.listener.OnOptionsSelectListener;
 import com.meeruu.commonlib.customview.pickerview.view.OptionsPickerView;
-import com.meeruu.commonlib.utils.DensityUtils;
-import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.bean.AreaListResponse;
 import com.meeruu.sharegoods.bean.CityPickerBean;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
@@ -36,7 +34,6 @@ import com.meeruu.sharegoods.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
