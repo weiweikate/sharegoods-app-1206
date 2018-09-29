@@ -179,7 +179,7 @@ export default class CategorySearchPage extends BasePage {
                         <ViewPager style={{
                             backgroundColor: 'rgba(255, 255, 255, 0.7)',
                             width: ScreenUtils.width - 110,
-                            height:110
+                            // height:110
                         }}
                                    swiperShow={this.state.swiperShow}
                                    arrayData={imageUrls}
@@ -211,8 +211,8 @@ export default class CategorySearchPage extends BasePage {
         );
     }
 
-    go2ResultPage(categoryId) {
-        this.$navigate('home/search/SearchResultPage', { categoryId: categoryId });
+    go2ResultPage(categoryId,name) {
+        this.$navigate('home/search/SearchResultPage', { categoryId: categoryId ,name:name});
     }
 
     renderHotFlagView = () => {
@@ -237,7 +237,7 @@ export default class CategorySearchPage extends BasePage {
                         {this.state.viewData.map((item, index) => {
                                 return (
                                     <TouchableOpacity style={{ justifyContent: 'center', width: '33.3%', marginTop: 10 }}
-                                                      key={index} onPress={() => this.go2ResultPage(item.id)}>
+                                                      key={index} onPress={() => this.go2ResultPage(item.id,item.name)}>
                                         <PreLoadImage style={{
                                             width: 60,
                                             height: 60,
@@ -288,7 +288,7 @@ export default class CategorySearchPage extends BasePage {
                                     return (
                                         <TouchableOpacity
                                             style={{ justifyContent: 'center', width: '33.3%', marginTop: 10 }}
-                                            key={index} onPress={() => this.go2ResultPage(item.id)}>
+                                            key={index} onPress={() => this.go2ResultPage(item.id,item.name)}>
                                             <PreLoadImage style={{
                                                 width: 60,
                                                 height: 60,

@@ -165,7 +165,7 @@ export default class SearchResultPage extends BasePage {
                 <ResultSearchNav goBack={this._goBack}
                                  onSubmitEditing={this._onSubmitEditing}
                                  changeLayout={this._changeLayout} isHorizontal={this.state.isHorizontal}
-                                 value={this.params.keywords || ''}/>
+                                 value={this.params.keywords ||this.params.name ||''}/>
                 <ResultSegmentView segmentOnPressAtIndex={this._segmentOnPressAtIndex}/>
                 <FlatList
                     ref='FlatListShow'
