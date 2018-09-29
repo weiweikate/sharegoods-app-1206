@@ -161,13 +161,14 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         let use_type = ['', '销售提成', '推广提成'];
         let use_type_symbol = ['', '+', '+'];
         let useLeftImg = ['', salesCommissions, tuiguang];
+        let arrData = this.state.currentPage === 1 ? [] : this.state.viewData;
         Toast.showLoading();
         MineApi.userBalanceQuery({ page: 1, size: 20, type: 1 }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
             if (response.code === 10000) {
                 let data = response.data;
-                let arrData = this.state.currentPage === 1 ? [] : this.state.viewData;
+
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
                         arrData.push({
@@ -188,6 +189,10 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                 });
             } else {
                 this.$toastShow(response.msg);
+                this.setState({
+                    viewData: arrData,
+                    isEmpty:  true
+                });
 
             }
         }).catch(e => {
