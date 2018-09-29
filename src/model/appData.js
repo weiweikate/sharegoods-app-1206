@@ -1,4 +1,4 @@
-import bridge from '../utils/bridge';
+// import bridge from '../utils/bridge';
 
 class AppData {
 
@@ -9,7 +9,7 @@ class AppData {
     // 状态栏高度
     setStatusBarHeight(height) {
         console.log(height);
-        bridge.$toast('stateheight是'+height)
+        // bridge.$toast('stateheight是'+height)
         // this.androidStatusH = height;
         this.statusBarHeight = height;
     }
