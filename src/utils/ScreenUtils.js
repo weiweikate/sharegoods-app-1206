@@ -52,6 +52,7 @@ export default {
     pixelRatio: PixelRatio.get(),
     onePixel: 1 / PixelRatio.get(),
     androidStatusHeight: getStatusH,
+    allStatusBarHeight: getStatusH,
     statusBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 44 : 20) : 24,// (Platform.OS === 'ios' ? 20 : 0),
     headerHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 88 : 64) : 68,
     tabBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 83 : 49) : 49,

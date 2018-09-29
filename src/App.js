@@ -24,10 +24,9 @@ type Props = {};
 
 export default class App extends Component<Props> {
     constructor(props) {
-        // 拿到android状态拦的高度
-        if (Platform.OS === 'android') {
-            appData.setAndroidStatusHeight(props.androidStatusH);
-        }
+
+        appData.setStatusBarHeight(props.statusBarHeight);
+
         super(props);
         this.state = {
             load: false

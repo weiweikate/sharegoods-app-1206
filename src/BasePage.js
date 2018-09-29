@@ -4,7 +4,8 @@
 import React, { Component } from 'react';
 import {
     View,
-    StyleSheet
+    StyleSheet,
+    SafeAreaView
 } from 'react-native';
 import NavigatorBar from './components/pageDecorator/NavigatorBar/index';
 import {
@@ -32,7 +33,8 @@ export default class BasePage extends Component {
         let isShowNavBar = navigationBarOptions.show !== undefined ? navigationBarOptions.show : true;
         let controlParams = this.$getPageStateOptions ? this.$getPageStateOptions() : null;
 
-        return (<View style={styles.container}>
+        return (
+            <View style={styles.container}>
             {
                 isShowNavBar && <NavigatorBar {...navigationBarOptions}
                                               renderRight={this.$NavBarRenderRightItem || null}
@@ -57,7 +59,8 @@ export default class BasePage extends Component {
             <LoadingHub ref={(loadingHub) => {
                 this.$loadingHub = loadingHub;
             }}/>
-        </View>);
+        </View>
+        );
     }
 
     // 默认点击左侧
