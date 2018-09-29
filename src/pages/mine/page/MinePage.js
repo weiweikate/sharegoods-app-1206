@@ -180,7 +180,10 @@ export default class MinePage extends BasePage {
                             </NoMoreClick>
                             <ImageBackground style={{ width: 53, height: 14, alignItems: 'center', marginTop: 2 }}
                                              source={levelBg}>
-                                <Text style={{ fontSize: 9, color: '#ffa351' }}>{this.state.levelName?this.state.levelName:`${'VO'}`}</Text>
+                                <Text style={{
+                                    fontSize: 9,
+                                    color: '#ffa351'
+                                }}>{this.state.levelName ? this.state.levelName : `${'VO'}`}</Text>
                             </ImageBackground>
                             <UIText value={'已帮你省：0.00元'} style={{
                                 fontFamily: 'PingFang-SC-Medium',
@@ -351,22 +354,8 @@ export default class MinePage extends BasePage {
                         }}>现金余额</Text>
                         <Image source={arrowRight} style={{ width: 5, height: 8, marginLeft: 4, marginTop: 8 }}/>
                     </View>
-
                 </NoMoreClick>
-                <NoMoreClick style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}
-                             onPress={() => this.go2CashDetailPage(4)}>
-                    <Text style={{ fontSize: 14, color: '#212121' }}>0.00元</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 11,
-                            color: '#666666',
-                            marginTop: 8
-                        }}>代币余额</Text>
-                        <Image source={arrowRight} style={{ width: 5, height: 8, marginLeft: 4, marginTop: 8 }}/>
-                    </View>
-                </NoMoreClick>
-
+                <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}/>
             </View>
         );
     };
