@@ -66,11 +66,7 @@ export default class SearchPage extends BasePage {
     };
 
     _clickShopAtRow = (item) => {
-        if (item.status === 3) {
-            this.$navigate('spellShop/shopRecruit/ShopRecruitPage', { storeId: item.id });
-        } else if (item.status === 1) {
-            this.$navigate('spellShop/myShop/MyShopPage', { storeId: item.id });
-        }
+        this.$navigate('spellShop/MyShop_RecruitPage', { storeId: item.id });
     };
 
     _renderListHeader = () => {

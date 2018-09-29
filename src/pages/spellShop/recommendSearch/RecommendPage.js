@@ -22,7 +22,6 @@ import SpellStatusModel from '../model/SpellStatusModel';
 import ViewPager from '../../../components/ui/ViewPager';
 import UIImage from '../../../components/ui/UIImage';
 import SpellShopApi from '../api/SpellShopApi';
-import storeModel from '../model/StoreModel';
 
 export default class RecommendPage extends BasePage {
 
@@ -72,19 +71,11 @@ export default class RecommendPage extends BasePage {
         }).catch((error) => {
             this.$toastShow(error.msg);
         });
-
-        storeModel.getById();
     };
 
     // 点击开启店铺页面
     _clickOpenShopItem = () => {
-        if (storeModel.status === 1) {
-            this.$navigate('spellShop/myShop/MyShopPage');
-        } else if (storeModel.status === 2) {
-            this.$navigate('spellShop/shopSetting/SetShopNamePage');
-        } else if (storeModel.status === 3) {
-            this.$navigate('spellShop/shopRecruit/ShopRecruitPage');
-        } else if (SpellStatusModel.canCreateStore) {
+       if (SpellStatusModel.canCreateStore) {
             this.$navigate('spellShop/openShop/OpenShopExplainPage');
         }
     };
@@ -96,7 +87,7 @@ export default class RecommendPage extends BasePage {
 
     // 点击查看某个店铺
     _RecommendRowOnPress = (id) => {
-        this.$navigate('spellShop/myShop/MyShopPage',{storeId: id});
+        this.$navigate('spellShop/MyShop_RecruitPage',{storeId: id});
     };
 
     // 点击轮播图广告

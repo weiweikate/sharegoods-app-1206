@@ -33,9 +33,9 @@ import MoneyIcon from './res/fhje_14.png';
 import QbIcon from './res/dzfhj_03-03.png';
 
 import SpellShopApi from '../api/SpellShopApi';
-import storeModel from '../model/StoreModel';
 import DateUtils from '../../../utils/DateUtils';
 import StringUtils from '../../../utils/StringUtils';
+import spellStatusModel from '../model/SpellStatusModel';
 
 @observer
 export default class MyShopPage extends BasePage {
@@ -66,7 +66,7 @@ export default class MyShopPage extends BasePage {
         super(props);
         this.state = {
             storeData: {},
-            storeId: this.params.storeId,
+            storeId: this.params.storeId || this.props.storeId,
             isLike: false
         };
     }
@@ -81,7 +81,7 @@ export default class MyShopPage extends BasePage {
             let dataTemp = data.data || {};
             this.setState({
                 storeData: dataTemp,
-                storeId:dataTemp.id
+                storeId: dataTemp.id
             });
         }).catch((error) => {
             this.$toastShow(error.msg);
@@ -140,19 +140,26 @@ export default class MyShopPage extends BasePage {
                                     content: text,
                                     storeId: this.state.storeId
                                 }).then(() => {
-                                    this.$toastShow('举报成功')
-                                }).catch((error)=>{
-                                    this.$toastShow(error.msg)
+                                    this.$toastShow('举报成功');
+                                }).catch((error) => {
+                                    this.$toastShow(error.msg);
                                 });
                             }
                         });
                     }, 500);
                 } else if (index === 2) {
+                    this.$loadingShow();
                     SpellShopApi.quitStore({ storeId: this.state.storeId }).then((data) => {
-                        this.$navigateBack();
-                        storeModel.getById();
+                        if (!this.props.propReload) {
+                            //不是首页刷新当前页面
+                            this._loadPageData();
+                        }
+                        //刷新首页
+                        spellStatusModel.getUser(2);
+                        this.$loadingDismiss();
                     }).catch((error) => {
                         this.$toastShow(error.msg);
+                        this.$loadingDismiss();
                     });
                 }
             });
@@ -173,14 +180,25 @@ export default class MyShopPage extends BasePage {
     _clickItemMembers = (id, info) => {
     };
 
+    //加入店铺
     _joinBtnAction = () => {
         let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2;
         if (canJoin) {
+            this.$loadingShow();
             SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
+                //加入肯定是推荐搜索来的   刷新首页和当前页
                 this._loadPageData();
-                storeModel.getById();
+
+                if (!this.props.propReload) {
+                    //不是首页刷新当前页面
+                    this._loadPageData();
+                }
+                //刷新首页
+                spellStatusModel.getUser(2);
+                this.$loadingDismiss();
             }).catch((error) => {
                 this.$toastShow(error.msg);
+                this.$loadingDismiss();
             });
         }
     };

@@ -19,6 +19,8 @@ class SpellStatusModel {
     allowCreateStore = null;       //可不可以走开店流程1允许 2不允许
     @observable
     allowGroupStore = null;       //能否看到拼店推荐页面1允许 2不允许
+    @observable
+    storeId = null;//是否有店
 
     /******************************【computed】******************************************/
 
@@ -41,6 +43,7 @@ class SpellStatusModel {
 
         this.allowCreateStore = data.allowCreateStore;
         this.allowGroupStore = data.allowGroupStore;
+        this.storeId = data.storeId;
     }
 
     @action //错误
@@ -56,6 +59,7 @@ class SpellStatusModel {
 
         this.allowCreateStore = null;
         this.allowGroupStore = null;
+        this.storeId = null;
     }
 
     @action //清空数据  重新加载
@@ -67,6 +71,7 @@ class SpellStatusModel {
 
         this.allowCreateStore = null;
         this.allowGroupStore = null;
+        this.storeId = null;
     }
 
     /******************************【common】******************************************/

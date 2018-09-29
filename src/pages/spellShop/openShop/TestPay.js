@@ -17,7 +17,6 @@ export default class OpenShopSuccessPage extends BasePage {
     };
 
     _click = () => {
-        //邀请好友页面
         SpellShopApi.depositTest().then(() => {
             spellStatusModel.getUser(2);
             this.$navigate('spellShop/shopSetting/SetShopNamePage');

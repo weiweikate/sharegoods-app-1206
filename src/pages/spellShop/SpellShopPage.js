@@ -18,6 +18,7 @@ import { observer } from 'mobx-react';
 import SpellStatusModel from './model/SpellStatusModel';
 import RecommendPage from './recommendSearch/RecommendPage';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
+import MyShop_RecruitPage from './MyShop_RecruitPage';
 
 @observer
 export default class SpellShopPage extends BasePage {
@@ -41,7 +42,10 @@ export default class SpellShopPage extends BasePage {
         };
     };
     _renderContainer = () => {
-        if (SpellStatusModel.canSeeGroupStore) {
+        //加入了店铺
+        if (SpellStatusModel.storeId) {
+            return (<MyShop_RecruitPage storeId={SpellStatusModel.storeId} navigation={this.props.navigation} leftNavItemHidden = {true} isHome={true}/>);
+        } else if (SpellStatusModel.canSeeGroupStore) {
             // 能看见推荐店铺页面
             return (<RecommendPage navigation={this.props.navigation} leftNavItemHidden={true}/>);
         } else {

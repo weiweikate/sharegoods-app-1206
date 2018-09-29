@@ -8,11 +8,11 @@
 	<string>ad-hoc</string>
 	<key>provisioningProfiles</key>
 	<dict>
-		<key>com.jure.crm</key>
+		<key>com.meeruu.sharegoods</key>
 		<string>adhoc</string>
 	</dict>
 	<key>signingCertificate</key>
-	<string>DE63107BE6512B81B8D384B26B4568AFC7EC1E68</string>
+	<string>1C83343311D3930AB69543A79B532181532B8570</string>
 	<key>signingStyle</key>
 	<string>manual</string>
 	<key>stripSwiftSymbols</key>
