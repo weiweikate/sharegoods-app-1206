@@ -175,7 +175,7 @@ class SettingPage extends BasePage {
                         }).catch(err => {
                             this.$loadingDismiss();
                             this.$toastShow(err.msg);
-                            if (err.code == 10009) {
+                            if (err.code === 10009) {
                                 user.clearUserInfo();
                                 this.$navigate('login/login/LoginPage');
                             }
