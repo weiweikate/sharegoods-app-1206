@@ -3,7 +3,7 @@ import {
     View, Text, TouchableOpacity, StyleSheet, Image, ScrollView
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import { UIImage,PreLoadImage } from '../../../components/ui';
+import { UIImage, PreLoadImage } from '../../../components/ui';
 import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ViewPager from '../../../components/ui/ViewPager';
@@ -40,7 +40,7 @@ export default class CategorySearchPage extends BasePage {
             swiperShow: false,
             leftArr: [],
             rightSuperArr: [],
-            hotData:[],
+            hotData: []
         };
     }
 
@@ -52,11 +52,11 @@ export default class CategorySearchPage extends BasePage {
     async componentDidMount() {
         this.$loadingShow();
         let leftArr = [];
-        await   HomeAPI.findHotList().then((data) => {
+        await HomeAPI.findHotList().then((data) => {
             this.$loadingDismiss();
             let datas = data.data || [];
             this.setState({
-                hotData:datas,
+                hotData: datas,
                 viewData: datas
             });
         }).catch((data) => {
@@ -106,7 +106,7 @@ export default class CategorySearchPage extends BasePage {
     checkoutLeft = (index, id) => {
         // this.setState({viewData:[]})
         let viewData = [];
-        if(index!==0){
+        if (index !== 0) {
             HomeAPI.findProductCategoryList({ id: id }).then(res => {
                 if (res.code === 10000) {
                     let data = res.data || [];
@@ -125,7 +125,7 @@ export default class CategorySearchPage extends BasePage {
                     });
                 }
             });
-        }else{
+        } else {
             this.setState({
                 leftIndex: index,
                 viewData: this.state.hotData
@@ -133,9 +133,9 @@ export default class CategorySearchPage extends BasePage {
         }
 
     };
-    go2SearchPage=() =>{
-        this.$navigate('home/search/SearchPage')
-    }
+    go2SearchPage = () => {
+        this.$navigate('home/search/SearchPage');
+    };
 
     _render() {
         return (
@@ -143,11 +143,11 @@ export default class CategorySearchPage extends BasePage {
                 <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={styles.searchBox} onPress={this.go2SearchPage}>
                         <Image source={require('../res/icon_search.png')}
-                               style={{ width: 22, height: 21, marginLeft: 20 }}/>
+                               style={{ width: 22, height: 21, marginLeft: 20 }} resizeMode={'center'}/>
                         <View style={styles.inputText}/>
                     </TouchableOpacity>
                 </View>
-                <View style={{ flexDirection: 'row', flex: 1 }}>
+                <View style={{ flexDirection: 'row' }}>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         {this.state.leftArr.map((item, index) => {
                             return (
@@ -177,8 +177,7 @@ export default class CategorySearchPage extends BasePage {
                     <View style={{ width: ScreenUtils.width - 90, padding: 10, backgroundColor: 'white' }}>
                         <ViewPager style={{
                             backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                            width: ScreenUtils.width - 110,
-                            height: 110
+                            width: ScreenUtils.width - 110
                         }}
                                    swiperShow={this.state.swiperShow}
                                    arrayData={imageUrls}
@@ -197,6 +196,7 @@ export default class CategorySearchPage extends BasePage {
                                        backgroundColor: '#ffffff'
                                    }}
                                    autoplay={true}
+                                   height={110}
                         />
                         <ScrollView style={{ marginTop: 20 }} showsVerticalScrollIndicator={false}>
                             {this.renderHotFlagView()}
@@ -207,9 +207,11 @@ export default class CategorySearchPage extends BasePage {
             </View>
         );
     }
-    go2ResultPage(categoryId){
-        this.$navigate('home/search/SearchResultPage',{categoryId:categoryId})
+
+    go2ResultPage(categoryId) {
+        this.$navigate('home/search/SearchResultPage', { categoryId: categoryId });
     }
+
     renderHotFlagView = () => {
         if (this.state.leftIndex == 0) {
             return (
@@ -232,12 +234,12 @@ export default class CategorySearchPage extends BasePage {
                         {this.state.viewData.map((item, index) => {
                                 return (
                                     <TouchableOpacity style={{ justifyContent: 'center', width: '33.3%', marginTop: 10 }}
-                                          key={index} onPress={()=>this.go2ResultPage(item.id)}>
+                                                      key={index} onPress={() => this.go2ResultPage(item.id)}>
                                         <PreLoadImage style={{
                                             width: 60,
                                             height: 60,
                                             alignSelf: 'center'
-                                        }} imageUri={ item.img }/>
+                                        }} imageUri={item.img}/>
                                         <Text style={{
                                             fontSize: 13,
                                             marginTop: 10,
@@ -279,15 +281,16 @@ export default class CategorySearchPage extends BasePage {
                                 flexDirection: 'row',
                                 flexWrap: 'wrap'
                             }}>
-                                {this.state.viewData[index].productCategoryList?this.state.viewData[index].productCategoryList.map((item, index) => {
+                                {this.state.viewData[index].productCategoryList ? this.state.viewData[index].productCategoryList.map((item, index) => {
                                     return (
-                                        <TouchableOpacity style={{ justifyContent: 'center', width: '33.3%', marginTop: 10 }}
-                                              key={index} onPress={()=>this.go2ResultPage(item.id)}>
+                                        <TouchableOpacity
+                                            style={{ justifyContent: 'center', width: '33.3%', marginTop: 10 }}
+                                            key={index} onPress={() => this.go2ResultPage(item.id)}>
                                             <PreLoadImage style={{
                                                 width: 60,
                                                 height: 60,
                                                 alignSelf: 'center'
-                                            }} imageUri={item.img }/>
+                                            }} imageUri={item.img}/>
                                             <Text style={{
                                                 fontSize: 13,
                                                 marginTop: 10,
@@ -295,7 +298,7 @@ export default class CategorySearchPage extends BasePage {
                                             }}>{item.name}</Text>
                                         </TouchableOpacity>
                                     );
-                                }):null}
+                                }) : null}
                             </View>
                         </View>
                     );
@@ -308,8 +311,7 @@ export default class CategorySearchPage extends BasePage {
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#f7f7f7'
+        flexDirection: 'column'
     },
     searchBox: {
         height: 40,
