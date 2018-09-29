@@ -62,7 +62,7 @@ public class MainActivity extends ReactActivity {
         protected Bundle getLaunchOptions() {
             Bundle bundle = new Bundle();
             // android状态栏高度
-            bundle.putInt("androidStatusH", DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
+            bundle.putInt("statusBarHeight", DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
             return bundle;
         }
     }

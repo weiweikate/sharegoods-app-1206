@@ -12,6 +12,8 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
+import user from '../../../../model/user';
+import shopCartStore from '../../../shopCart/model/ShopCartStore';
 
 export default class EditPhonePwdPage extends BasePage {
 
@@ -151,7 +153,26 @@ export default class EditPhonePwdPage extends BasePage {
             oldPassword: this.state.oldPwd,
             newPassword: this.state.newPwd
         }).then((data) => {
-            bridge.$toast('密码修改成功，请重新登录');
+            // 退出登录
+            MineAPI.signOut().then((response) => {
+                if (response.code === 10000) {
+                    // 正常退出，或者登录超时，都去清空数据
+                    user.clearUserInfo();
+                    //清空购物车
+                    shopCartStore.data = [];
+                    this.$navigateReset();
+                    this.$navigate('login/login/LoginPage');
+                    bridge.$toast('密码修改成功，请重新登录');
+                }
+            }).catch(err => {
+                bridge.$toast(err.msg);
+                if (err.code === 10009) {
+                    user.clearUserInfo();
+                    shopCartStore.data = [];
+                    this.$navigateReset();
+                    this.$navigate('login/login/LoginPage');
+                }
+            });
         }).catch((data) => {
             bridge.$toast(data.msg);
         });
