@@ -1,0 +1,8 @@
+app_identifier("com.facebook.REACT.crm_app_xiugou-tvOS") # The bundle identifier of your app
+apple_id("dnlhot@163.com") # Your Apple email address
+
+itc_team_id("119200194") # App Store Connect Team ID
+team_id("T586HGP9C9") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
