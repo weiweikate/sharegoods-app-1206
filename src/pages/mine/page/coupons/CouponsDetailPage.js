@@ -13,20 +13,23 @@ import BasePage from '../../../../BasePage'
 import ScreenUtils from '../../../../utils/ScreenUtils'
 // import StringUtils from "../../utils/StringUtils";
 import {color} from "../../../../constants/Theme";
-import detailbg from "./../../res/couponsImg/icon_03.png"
+import detailbg from "./../../res/couponsImg/youhuiquan_bg_nor.png"
 // import Toast from '../../../../utils/bridge';
+const { px2dp } = ScreenUtils;
+
 export default class CouponsDetailPage extends BasePage {
 
     constructor(props) {
         super(props);
         this.state = {
-            viewData: {
-                value:12,
-                useConditions:500,
-                productNames:'葫芦小精钢',
-                startTime:1537324480000,
-                outTime:1537327480000,
-            },
+            viewData:this.params.item,
+            // viewData: {
+            //     value:12,
+            //     useConditions:500,
+            //     productNames:'葫芦小精钢',
+            //     startTime:1537324480000,
+            //     outTime:1537327480000,
+            // },
             explain:"去使用"
         }
     }
@@ -35,6 +38,7 @@ export default class CouponsDetailPage extends BasePage {
         show: true,
         title: '优惠券详情'
     };
+
     fmtDate(obj) {
         var date = new Date(obj);
         var y = 1900 + date.getYear();
@@ -84,35 +88,35 @@ export default class CouponsDetailPage extends BasePage {
         return (
             <View style={{backgroundColor: '#f7f7f7'}}>
                 <ImageBackground style={{
-                    width: ScreenUtils.width - 30,
-                    height: 100,
+                    width: ScreenUtils.width - px2dp(30),
+                    height: px2dp(109),
                     margin: 15,
-                    flexDirection: 'row',
-                    alignItems: 'center'
                 }} source={detailbg} resizeMode='stretch'>
-                    <View style={{flex: 2, alignItems: 'center'}}>
+                    <View  style={{flexDirection:'row',alignItems:'center',height:px2dp(73)}}>
+                    <View style={{alignItems: 'center',flexDirection:'row',justifyContent:'center',width:px2dp(80)}}>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
                             <View style={{alignSelf: 'flex-end', marginBottom: 2}}>
-                                <Text style={{fontSize: 5, color: "#e60012"}}>￥</Text>
+                                <Text style={{fontSize: 5, color: "#222222"}}>￥</Text>
                             </View>
                             <View>
-                                <Text style={{fontSize: 20, color: "#e60012"}}>{this.state.viewData.value}</Text>
+                                <Text style={{fontSize: 20, color: "#222222"}}>{this.state.viewData.value}</Text>
                             </View>
                         </View>
-                        <View>
-                            <Text style={{fontSize: 11, color: "#999999"}}>满{this.state.viewData.useConditions}可用</Text>
-                        </View>
                     </View>
-                    <View style={{flex: 4, alignItems: 'center'}}>
-                        <Text style={{fontSize: 15, color: "#222222"}}>会员专享券</Text>
+                    <View style={{flex: 1, alignItems: 'flex-start',marginLeft:10}}>
+                        <Text style={{fontSize: 15, color: "#222222"}}>{this.state.viewData.name}</Text>
                         <Text style={{fontSize: 11, color: "#999999"}}>{this.state.viewData.productNames}</Text>
                         <Text style={{
                             fontSize: 11,
                             color: "#999999"
                         }}>有效期：{this.fmtDate(this.state.viewData.startTime)}-{this.fmtDate(this.state.viewData.outTime)}</Text>
                     </View>
-                    <View style={{flex: 1, alignItems: 'center'}}>
                     </View>
+
+                        <View style={{height:px2dp(33),justifyContent:'center',marginLeft:10}}>
+                            <Text style={{fontSize: 11, color: "#999999"}}>限品类:{this.state.viewData.limit}</Text>
+                        </View>
+
                 </ImageBackground>
                 <View style={{marginTop:20,alignItems:'flex-start',marginLeft:15,flex:1}}>
                     <Text style={{marginTop:5}}>使用说明:</Text>

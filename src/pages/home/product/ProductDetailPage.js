@@ -86,6 +86,7 @@ export default class ProductDetailPage extends BasePage {
 
     //选择规格确认
     _selectionViewConfirm = (amount, priceId) => {
+        let orderProducts = [];
         if (this.state.goType === 'gwc') {
             let temp = {
                 'amount': amount,
@@ -94,7 +95,12 @@ export default class ProductDetailPage extends BasePage {
             };
             shopCartCacheTool.addGoodItem(temp);
         } else if (this.state.goType === 'buy') {
-
+            orderProducts.push({
+                priceId: priceId,
+                num: 1,
+                productId: this.state.data.product.id,
+            });
+            this.$navigate('order/order/ConfirOrderPage',{orderParamVO:{orderType:99,orderProducts:orderProducts}})
         }
     };
 

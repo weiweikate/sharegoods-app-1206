@@ -10,7 +10,7 @@ readonly UserKey=f5b7d971ed1b5a4c24f1ec7a7dd7fb4f
 #蒲公英账号密码
 #地址：https://www.pgyer.com/
 #账号：13735533492
-#密码：86957821BS
+#密码：123qwe
 
 # 校验包文件是否存在
 checkPackagePath(){
