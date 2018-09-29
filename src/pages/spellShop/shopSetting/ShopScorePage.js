@@ -12,7 +12,6 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const WhitePanelHeight = 128 / 375 * SCREEN_WIDTH;
 import BgIcon from './res/bg_07.png';
 import StarIcon from './res/wjx_03.png';
-import storeModel from '../model/StoreModel';
 import BasePage from '../../../BasePage';
 
 export default class ShopScorePage extends BasePage {
@@ -23,7 +22,7 @@ export default class ShopScorePage extends BasePage {
 
     _render() {
 
-        const storeStar = storeModel.storeData.storeStarId||0;
+        const storeStar = this.params.storeData.storeStarId||0;
         const starsArr = [];
         if(storeStar && typeof storeStar === "number"){
             for(let i = 0; i<storeStar; i++){
@@ -46,7 +45,7 @@ export default class ShopScorePage extends BasePage {
                                 })
                             }
                         </View>
-                        <Text style={styles.shopLevel}>{storeModel.storeData.starName||'店铺'}</Text>
+                        <Text style={styles.shopLevel}>{this.params.storeData.starName||'店铺'}</Text>
                     </View>
                     <View style={styles.content}>
 

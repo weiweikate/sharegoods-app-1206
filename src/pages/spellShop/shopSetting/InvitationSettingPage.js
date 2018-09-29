@@ -9,7 +9,6 @@ import {
     ScrollView,
     TouchableWithoutFeedback
 } from 'react-native';
-import storeModel from '../model/StoreModel';
 import SelIcon from './res/xianzhong_03.png';
 import UnSelIcon from './res/weixianzhong_03-02.png';
 import BasePage from '../../../BasePage';
@@ -27,7 +26,6 @@ export default class InvitationSettingPage extends BasePage {
 
     $NavBarRightPressed = () => {
         SpellShopApi.invitationSetting({ recruitStatus: this.state.selIndex }).then(() => {
-            storeModel.getById();
             this.$toastShow('设置成功');
         }).catch((error) => {
             this.$toastShow(error.msg);
@@ -37,10 +35,26 @@ export default class InvitationSettingPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            selIndex: storeModel.recruitStatus,
+            selIndex: null,
             bounceValue: new Animated.Value(1)//logo 尺寸
         };
     }
+
+    componentDidMount() {
+        this._loadPageData();
+    }
+
+    _loadPageData = () => {
+        //店铺信息
+        SpellShopApi.getById({ id: this.params.storeData.storeId }).then((data) => {
+            let dataTemp = data.data || {};
+            this.setState({
+                selIndex: dataTemp.recruitStatus,
+            });
+        }).catch((error) => {
+            this.$toastShow(error.msg);
+        });
+    };
 
     // 点击行
     _clickRow = (index) => {

@@ -39,7 +39,7 @@ export default class ShopPageSettingPage extends BasePage {
     _inviteSetting = () => {
         //店铺邀请会有几种条件在里面，设置某种条件就会有对应的条件设置才能邀请进来
         //异常：通过条件才能进入到店铺
-        this.$navigate('spellShop/shopSetting/InvitationSettingPage');
+        this.$navigate('spellShop/shopSetting/InvitationSettingPage',{ storeData: this.state.storeData });
     };
 
     // 公告管理
@@ -51,7 +51,7 @@ export default class ShopPageSettingPage extends BasePage {
 
     // 店铺评分
     _scoreShop = () => {
-        this.$navigate('spellShop/shopSetting/ShopScorePage');
+        this.$navigate('spellShop/shopSetting/ShopScorePage',{ storeData: this.state.storeData });
     };
 
     _render() {
