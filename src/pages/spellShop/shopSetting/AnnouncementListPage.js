@@ -17,7 +17,7 @@ const DefaultPageSize = 10;
 export default class AnnouncementListPage extends BasePage {
 
     $navigationBarOptions = {
-        title: '公告详情',
+        title: '公告列表',
         rightNavTitle: '发布公告',
         rightNavItemHidden: !this.params.storeData.myStore
     };

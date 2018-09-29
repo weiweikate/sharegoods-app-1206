@@ -20,7 +20,7 @@ import ReportAlert from '../components/ReportAlert';
 
 // 图片资源
 import ItemLogo from './src/more_icon.png';
-import StoreModel from '../model/StoreModel';
+import spellStatusModel from '../model/SpellStatusModel';
 
 export default class ShopRecruitPage extends BasePage {
 
@@ -41,7 +41,7 @@ export default class ShopRecruitPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            storeId: this.params.storeId,
+            storeId: this.params.storeId || this.props.storeId,
             storeData: {},
             canOpen: false
         };
@@ -91,15 +91,19 @@ export default class ShopRecruitPage extends BasePage {
         });
     };
     _closeStore = () => {
-        
+
         this._loadPageData();
     };
 
     //开启店铺
     _openStore = () => {
         SpellShopApi.startStore({ status: 1 }).then((data) => {
-            StoreModel.getById();
-            this.$navigateBack();
+            //首页开店 直接刷新
+            if (this.props.propReload) {
+                this.props.propReload();
+            } else {
+                this.$navigateBack();
+            }
         }).catch((error) => {
             this.$toastShow(error.msg);
         });
@@ -107,25 +111,35 @@ export default class ShopRecruitPage extends BasePage {
 
     //加入店铺
     _joinStore = () => {
+        this.$loadingShow();
         SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
-            this._loadPageData();
-            StoreModel.getById();
+            if (!this.props.propReload) {
+                //不是首页刷新当前页面
+                this._loadPageData();
+            }
+            //刷新首页
+            spellStatusModel.getUser(2);
+            this.$loadingDismiss();
         }).catch((error) => {
             this.$toastShow(error.msg);
+            this.$loadingDismiss();
         });
     };
 
     //退出店铺
     _quitStore = () => {
+        this.$loadingShow();
         SpellShopApi.quitStore({ storeId: this.state.storeId }).then((data) => {
-            StoreModel.getById();
-            if (this.state.storeId) {
+            if (!this.props.propReload) {
+                //不是首页刷新当前页面
                 this._loadPageData();
-            } else {
-                this.$navigateBack();
             }
+            //刷新首页
+            spellStatusModel.getUser(2);
+            this.$loadingDismiss();
         }).catch((error) => {
             this.$toastShow(error.msg);
+            this.$loadingDismiss();
         });
     };
 

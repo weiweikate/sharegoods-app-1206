@@ -37,6 +37,7 @@ export default class AnnouncementPublishPage extends BasePage {
             const { publishSuccess } = this.params;
             this.$toastShow('发布成功');
             publishSuccess && publishSuccess();
+            this.$navigateBack();
         }).catch((error) => {
             this.$toastShow(error.msg);
         });
