@@ -43,8 +43,6 @@ export default class BasePage extends Component {
                                                   this.$navigatorBar = bar;
                                               }}/>
             }
-
-
             {
                 controlParams ? renderViewByLoadingState(controlParams, () => {
                     return this._render();

@@ -1,12 +1,13 @@
 import React from 'react';
-import {
-    View, Text, TouchableOpacity, StyleSheet, Image, ScrollView
-} from 'react-native';
+import { FlatList, SectionList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../BasePage';
-import { UIImage, PreLoadImage } from '../../../components/ui';
+import { PreLoadImage } from '../../../components/ui';
 import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import bridge from '../../../utils/bridge';
 import ViewPager from '../../../components/ui/ViewPager';
+import UIText from '../../../components/ui/UIText';
+import UIImage from '../../../components/ui/UIImage';
 
 const imageUrls = [
     'https://yanxuan.nosdn.127.net/2ac89fb96fe24a2b69cae74a571244cb.jpg?imageView&quality=75&thumbnail=750x0',
@@ -14,132 +15,69 @@ const imageUrls = [
     'https://yanxuan.nosdn.127.net/a9e80a3516c99ce550c7b5574973c22f.jpg?imageView&quality=75&thumbnail=750x0',
     'https://yanxuan.nosdn.127.net/11b673687ae33f87168cc7b93250c331.jpg?imageView&quality=75&thumbnail=750x0'
 ];
+const marginLR = (ScreenUtils.width - 110 - 3 * 60 - 2 * 20) / 2;
 export default class CategorySearchPage extends BasePage {
+
     constructor(props) {
         super(props);
         this.state = {
-            viewData: [
-                //     {
-                //     "createTime": "2018-09-27T02:36:10.076Z",
-                //     "fatherId": 0,
-                //     "hotFlag": 0,
-                //     "hotSort": 0,
-                //     "id": 0,
-                //     "img": "string",
-                //     "level": 0,
-                //     "name": "string",
-                //     "productCategoryList": [
-                //         null
-                //     ],
-                //     "status": 0,
-                //     "type": 0,
-                //     "updateTime": "2018-09-27T02:36:10.076Z",
-                // },
-            ],
             leftIndex: 0,
             swiperShow: false,
-            leftArr: [],
-            rightSuperArr: [],
-            hotData: []
+            nameArr: [],
+            sectionArr: []
         };
     }
 
     $navigationBarOptions = {
-        show: true,
         title: '商品分类'
     };
 
     async componentDidMount() {
         this.$loadingShow();
-        let leftArr = [];
-        await HomeAPI.findHotList().then((data) => {
+        // 分类列表
+        HomeAPI.findNameList().then((response) => {
             this.$loadingDismiss();
-            let datas = data.data || [];
+            setTimeout(() => {
+                this.setState({ swiperShow: true });
+            }, 0);
+            let datas = response.data || [];
+            // 将为您推荐id设置为-10
+            let item = { id: -10, name: '为您推荐' };
+            datas.unshift(item);
             this.setState({
-                hotData: datas,
-                viewData: datas
+                nameArr: datas
             });
         }).catch((data) => {
             this.$loadingDismiss();
-            this.$toastShow(data.msg);
-        });
-        HomeAPI.findNameList().then(res => {
-            if (res.code === 10000) {
-                let data = res.data || [];
-                data.map((item, index) => {
-                    leftArr.push({
-                        name: item.name,
-                        id: item.id,
-                        hotFlag: item.id
-                    });
-                });
-                leftArr.unshift({
-                    name: '为您推荐',
-                    id: 0,
-                    hotFlag: 0
-                });
-                this.setState({ leftArr: leftArr });
-            }
-        }).catch(err => {
-            console.log(err);
+            bridge.$toast(data.msg);
         });
 
-        setTimeout(() => {
+        // 热门分类
+        HomeAPI.findHotList().then((response) => {
+            let datas = response.data || [];
             this.setState({
-                swiperShow: true
+                sectionArr: [{ title: '热门分类', data: datas }]
             });
-        }, 0);
+        }).catch((data) => {
+            bridge.$toast(data.msg);
+        });
     }
 
-    renderViewPageItem = (item) => {
-        console.log(item);
+    renderViewPageItem = (url) => {
         return (
             <UIImage
-                source={{ uri: item }}
-                style={{ height: 110, width: ScreenUtils.width - 110, borderRadius: 5 }}
-                onPress={() => {
-
-                }}
-                resizeMode="cover"
+                source={{ uri: url }}
+                style={{ width: ScreenUtils.width - 110, height: 118, borderRadius: 5 }}
             />);
     };
-    checkoutLeft = (index, id) => {
-        // this.setState({viewData:[]})
-        let viewData = [];
-        if (index !== 0) {
-            HomeAPI.findProductCategoryList({ id: id }).then(res => {
-                if (res.code === 10000) {
-                    let data = res.data || [];
-                    data.map((item, index) => {
-                        viewData.push({
-                            title: item.name,
-                            hotFlag: item.hotFlag,
-                            productCategoryList: item.productCategoryList || [],
-                            name: item.name,
-                            img: item.img
-                        });
-                    });
-                    this.setState({
-                        leftIndex: index,
-                        viewData: viewData
-                    });
-                }
-            });
-        } else {
-            this.setState({
-                leftIndex: index,
-                viewData: this.state.hotData
-            });
-        }
 
-    };
     go2SearchPage = () => {
         this.$navigate('home/search/SearchPage');
     };
 
     _render() {
         return (
-            <View style={styles.container}>
+            <View style={{ flexDirection: 'column' }}>
                 <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={styles.searchBox} onPress={this.go2SearchPage}>
                         <Image source={require('../res/icon_search.png')}
@@ -148,166 +86,183 @@ export default class CategorySearchPage extends BasePage {
                     </TouchableOpacity>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        {this.state.leftArr.map((item, index) => {
-                            return (
-                                <TouchableOpacity style={{
-                                    flexDirection: 'row',
-                                    backgroundColor: index == this.state.leftIndex ? 'white' : '#EEEEEE',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width: 90,
-                                    height: 45
-                                }} onPress={() => this.checkoutLeft(index, item.id)} key={index}>
-                                    <View style={{
-                                        width: 1,
-                                        height: '100%',
-                                        backgroundColor: index == this.state.leftIndex ? 'red' : 'white',
-                                        position: 'absolute',
-                                        left: 0,
-                                        top: 0
-                                    }}/>
-                                    <Text style={{ fontSize: 13, fontFamily: 'PingFang-SC-Medium', color: '#222222' }}
-                                          key={index}>{item.name}</Text>
-                                </TouchableOpacity>
-                            );
-
-                        })}
-                    </ScrollView>
-                    <View style={{ width: ScreenUtils.width - 90, padding: 10, backgroundColor: 'white' }}>
-                        <ViewPager style={{
-                            backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                            width: ScreenUtils.width - 110
-                        }}
-                                   swiperShow={this.state.swiperShow}
-                                   arrayData={imageUrls}
-                                   renderItem={(item) => this.renderViewPageItem(item)}
-                                   dotStyle={{
-                                       height: 5,
-                                       width: 5,
-                                       borderRadius: 5,
-                                       backgroundColor: '#ffffff',
-                                       opacity: 0.4
-                                   }}
-                                   activeDotStyle={{
-                                       height: 5,
-                                       width: 20,
-                                       borderRadius: 5,
-                                       backgroundColor: '#ffffff'
-                                   }}
-                                   autoplay={true}
-                                   height={110}
-                        />
-                        <ScrollView style={{ marginTop: 20 }} showsVerticalScrollIndicator={false}>
-                            {this.renderHotFlagView()}
-                            {this.renderNormalView()}
-                        </ScrollView>
+                    <FlatList
+                        style={{ width: 90, backgroundColor: '#EEEEEE' }}
+                        renderItem={this._categoryItem}
+                        extraData={this.state}
+                        refreshing={false}
+                        keyExtractor={(item) => item.id + ''}
+                        showsVerticalScrollIndicator={false}
+                        getItemLayout={(data, index) => (
+                            //行高于分割线高，优化
+                            { length: 45, offset: 45 * index, index }
+                        )}
+                        data={this.state.nameArr}>
+                    </FlatList>
+                    <View style={{
+                        width: ScreenUtils.width - 90,
+                        flexDirection: 'column',
+                        padding: 10,
+                        backgroundColor: 'white'
+                    }}>
+                        {
+                            imageUrls.length > 0 ?
+                                <ViewPager swiperShow={this.state.swiperShow}
+                                           arrayData={imageUrls}
+                                           renderItem={(url) => this.renderViewPageItem(url)}
+                                           dotStyle={{
+                                               height: 5,
+                                               width: 5,
+                                               borderRadius: 5,
+                                               backgroundColor: '#ffffff',
+                                               opacity: 0.4
+                                           }}
+                                           activeDotStyle={{
+                                               height: 5,
+                                               width: 20,
+                                               borderRadius: 5,
+                                               backgroundColor: '#ffffff'
+                                           }}
+                                           autoplay={true}
+                                           height={118}
+                                           width={ScreenUtils.width - 110}
+                                           style={{ marginBottom: 10 }}
+                                /> : null}
+                        <SectionList style={{ marginTop: 10 }}
+                                     contentContainerStyle={{
+                                         flexDirection: 'row',
+                                         flexWrap: 'wrap'
+                                     }}
+                                     renderItem={this._sectionItem}
+                                     renderSectionHeader={this._sectionHeader}
+                                     ListFooterComponent={this._listFooter}
+                                     sections={this.state.sectionArr}
+                                     initialNumToRender={9}
+                                     removeClippedSubviews={false}
+                                     keyExtractor={(item) => item.id + ''}/>
                     </View>
                 </View>
             </View>
         );
     }
 
-    go2ResultPage(categoryId) {
-        this.$navigate('home/search/SearchResultPage', { categoryId: categoryId });
-    }
-
-    renderHotFlagView = () => {
-        if (this.state.leftIndex == 0) {
-            return (
-                <View style={{ marginTop: 10 }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{
-                            width: 12,
-                            height: 12,
-                            borderRadius: 6,
-                            backgroundColor: 'black'
-                        }}/>
-                        <Text style={{ fontSize: 13, marginLeft: 5 }}>热门推荐</Text>
-                    </View>
-                    <View style={{
-                        marginLeft: 23,
-                        marginRight: 23,
-                        flexDirection: 'row',
-                        flexWrap: 'wrap'
+    _categoryItem = (item) => {
+        return (
+            <TouchableOpacity style={{ height: 45, flexDirection: 'row' }}
+                              onPress={() => this._onCategoryClick(item.item, item.index)}>
+                <View style={{
+                    height: 45,
+                    width: 2,
+                    backgroundColor: item.index === this.state.leftIndex ? '#D51243' : '#EEEEEE'
+                }}/>
+                <View style={{
+                    flex: 1,
+                    height: 45,
+                    backgroundColor: item.index === this.state.leftIndex ? 'white' : '#EEEEEE',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <Text style={{
+                        fontSize: 13,
+                        color: '#222222'
                     }}>
-                        {this.state.viewData.map((item, index) => {
-                                return (
-                                    <TouchableOpacity style={{ justifyContent: 'center', width: '33.3%', marginTop: 10 }}
-                                                      key={index} onPress={() => this.go2ResultPage(item.id)}>
-                                        <PreLoadImage style={{
-                                            width: 60,
-                                            height: 60,
-                                            alignSelf: 'center'
-                                        }} imageUri={item.img}/>
-                                        <Text style={{
-                                            fontSize: 13,
-                                            marginTop: 10,
-                                            alignSelf: 'center'
-                                        }}>{item.name}</Text>
-                                    </TouchableOpacity>
-                                );
-                            }
-                        )}
-                    </View>
+                        {item.item.name}
+                    </Text>
                 </View>
-
-            );
-        } else {
-            return null;
-        }
-
+            </TouchableOpacity>
+        );
     };
 
-    renderNormalView = () => {
-        if (this.state.leftIndex != 0) {
-            return (
-                this.state.viewData.map((item, index) => {
-                    return (
-                        <View key={index} style={{ marginTop: 10 }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <View style={{
-                                    width: 12,
-                                    height: 12,
-                                    borderRadius: 6,
-                                    backgroundColor: 'black'
-                                }}/>
-                                <Text style={{ fontSize: 13, marginLeft: 5 }}>{item.name}</Text>
-                            </View>
-
-                            <View style={{
-                                marginLeft: 23,
-                                marginRight: 23,
-                                flexDirection: 'row',
-                                flexWrap: 'wrap'
-                            }}>
-                                {this.state.viewData[index].productCategoryList ? this.state.viewData[index].productCategoryList.map((item, index) => {
-                                    return (
-                                        <TouchableOpacity
-                                            style={{ justifyContent: 'center', width: '33.3%', marginTop: 10 }}
-                                            key={index} onPress={() => this.go2ResultPage(item.id)}>
-                                            <PreLoadImage style={{
-                                                width: 60,
-                                                height: 60,
-                                                alignSelf: 'center'
-                                            }} imageUri={item.img}/>
-                                            <Text style={{
-                                                fontSize: 13,
-                                                marginTop: 10,
-                                                alignSelf: 'center'
-                                            }}>{item.name}</Text>
-                                        </TouchableOpacity>
-                                    );
-                                }) : null}
-                            </View>
-                        </View>
-                    );
-                })
-            );
+    _onCategoryClick = (item, index) => {
+        this.setState({
+            leftIndex: index
+        });
+        // 点击分类
+        if (this.state.leftIndex != index) {
+            if (index === 0) {
+                // 热门分类
+                HomeAPI.findHotList().then((response) => {
+                    let datas = response.data || [];
+                    this.setState({
+                        sectionArr: [{ title: '热门分类', data: datas }]
+                    });
+                }).catch((data) => {
+                    bridge.$toast(data.msg);
+                });
+            } else {
+                // 分级
+                HomeAPI.findProductCategoryList({ id: item.id }).then((response) => {
+                    let datas = response.data || [];
+                    let arr = [];
+                    for (let i = 0, len = datas.length; i < len; i++) {
+                        let item = { title: datas[i].name, data: datas[i].productCategoryList };
+                        arr.push(item);
+                    }
+                    this.setState({
+                        sectionArr: arr
+                    });
+                }).catch((data) => {
+                    bridge.$toast(data.msg);
+                });
+            }
         }
-
     };
 
+    _sectionItem = (item) => {
+        return (
+            <View style={{
+                flexDirection: 'column',
+                width: 60,
+                marginRight: (item.index % 3 == 0 || item.index % 3 == 1) ? 10 : marginLR,
+                marginLeft: (item.index % 3 == 1 || item.index % 3 == 2) ? 10 : marginLR,
+                alignItems: 'center'
+            }}>
+                <PreLoadImage imageUri={item.item.img}
+                              style={{
+                                  height: 60,
+                                  width: 60
+                              }}
+                              resizeMode={'cover'}
+                              onClickAction={() => this.go2ResultPage(item.item.id, item.item.name)}/>
+                <UIText value={item.item.name}
+                        style={{ fontSize: 13, color: '#222222', marginTop: 12, marginBottom: 16 }}/>
+            </View>
+        );
+    };
+
+    _sectionHeader = ({ section }) => {
+        return (
+            <View style={{
+                width: ScreenUtils.width - 110,
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: 10
+            }}>
+                <View style={{ width: 10, height: 10, marginRight: 3, borderRadius: 5, backgroundColor: 'black' }}/>
+                <UIText value={section.title} style={{ fontSize: 13, color: '#222222' }}/>
+            </View>
+        );
+    };
+
+    _listFooter = ({ section }) => {
+        return (
+            <View style={{
+                width: ScreenUtils.width - 110,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: 30
+            }}>
+                <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginRight: 10 }}/>
+                <UIText value={'没有更多啦～'} style={{ fontSize: 12, color: '#999999' }}/>
+                <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginLeft: 10 }}/>
+            </View>
+        );
+    };
+
+    go2ResultPage(categoryId, name) {
+        this.$navigate('home/search/SearchResultPage', { categoryId, name });
+    }
 }
 const styles = StyleSheet.create({
     container: {

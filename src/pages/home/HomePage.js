@@ -82,7 +82,6 @@ const DemoList = [
         title: '分类搜索',
         uri: 'home/search/CategorySearchPage'
     }
-
 ];
 export default class HomePage extends Component {
 
