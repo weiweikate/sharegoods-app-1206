@@ -222,7 +222,8 @@ const styles = StyleSheet.create({
     },
     box: {
         backgroundColor: '#ffffff',
-        marginBottom: 10
+        marginBottom: 10,
+        marginTop: 10
     },
     // headerBg
     navBarBg: {

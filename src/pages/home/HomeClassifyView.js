@@ -32,7 +32,6 @@ class HomeClassifyView extends Component {
     renderItems = () => {
         const { classify } = this.props
         const { classifyList } = classify
-        console.log('HomeClassifyView', classifyList)
         let itemViews = []
         classifyList.map((value, index)=> {
             itemViews.push( <Item key={index} data={value} onPress={(data)=> {this._onItemPress(data)}}/>)
