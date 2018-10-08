@@ -1,3 +1,6 @@
+/**
+ * 明星店铺
+ */
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Image } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
@@ -32,13 +35,13 @@ const Profile = ({avatar, name, level, member, income, allIncome}) => <View styl
     <Line/>
     <View style={styles.incomeBox}>
         <Text style={styles.text}>店铺本月收入</Text>
-        <View style={styles.space}/>
+        <View style={{height: px2dp(6)}}/>
         <Text style={styles.income}>{income}</Text>
     </View>
     <Line/>
     <View style={styles.allIncomeBox}>
         <Text style={styles.text}>店铺累计收入</Text>
-        <View style={styles.space}/>
+        <View style={{height: px2dp(6)}}/>
         <Text style={styles.income}>{allIncome}</Text>
     </View>
 </View>
@@ -114,7 +117,7 @@ let styles = StyleSheet.create({
         fontSize: px2dp(22),
         color: '#fff',
         fontWeight: '700',
-        marginTop: px2dp(52)
+        marginTop: px2dp(47)
     },
     profile: {
         flexDirection: 'row',
@@ -162,7 +165,7 @@ let styles = StyleSheet.create({
     line: {
         width: onePixel,
         height: px2dp(35),
-        backgroundColor: '#999'
+        backgroundColor: '#e5e5e5'
     },
     incomeBox: {
         width: px2dp(95),

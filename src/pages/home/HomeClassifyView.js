@@ -26,7 +26,7 @@ const Item = ({data,  onPress}) => <TouchableOpacity style={styles.item} onPress
 class HomeClassifyView extends Component {
 
     constructor(props) {
-        super(props) 
+        super(props)
         const { classify } = this.props
         const { loadClassifyList } = classify
         loadClassifyList && loadClassifyList()

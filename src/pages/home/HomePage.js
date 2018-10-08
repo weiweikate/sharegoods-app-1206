@@ -1,3 +1,7 @@
+/**
+ * 首页
+ */
+
 import React, { Component } from 'react';
 import {
     Text,
@@ -16,6 +20,7 @@ const {bannerModule } = Modules
 import HomeSearchView from './HomeSearchView'
 import HomeClassifyView from './HomeClassifyView'
 import HomeStarShopView from './HomeStarShopView'
+import HomeTodayView from './HomeTodayView'
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 const DemoList = [
@@ -151,7 +156,7 @@ class HomePage extends Component {
                         </View>
                     </View>
                     <HomeStarShopView/>
-
+                    <HomeTodayView/>
                     <View style={[styles.box]}>
                         {
                             DemoList.map(item => {
