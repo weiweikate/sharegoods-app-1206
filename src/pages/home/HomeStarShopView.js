@@ -68,7 +68,7 @@ class HomeStarShopView extends Component {
         const { starShop } = this.props
         const { shopList } = starShop
         shopList.map((shop, index) => {
-            cells.push(<Cell data={shop} press={()=>this._shopPress(shop)}/>)
+            cells.push(<Cell key={index} data={shop} press={()=>this._shopPress(shop)}/>)
         })
         return <View style={styles.container}>
             <View style={styles.titleView}><Text style={styles.title}>明星店铺</Text></View>

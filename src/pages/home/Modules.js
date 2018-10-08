@@ -104,11 +104,33 @@ class StarShopModule {
 
 const starShopModule = new StarShopModule()
 
+
+import today1Img from './res/today1.png'
+import today2Img from './res/today2.png'
+import today3Img from './res/today3.png'
+
+//今日榜单
+class TodayModule {
+    @observable todayList = []
+
+    @action loadTodayList = () => {
+        this.todayList = [{
+            img: today1Img
+        },{
+            img: today2Img
+        },{
+            img: today3Img
+        }]
+    }
+}
+
+const todayModule = new TodayModule()
+
 autorun(function() {
     console.log(` ${bannerModule.bannerList}  ${bannerModule.bannerList.length} ${classifyModule.classifyList} ${starShopModule.shopList}`)
 })
 
-export default {classifyModule, bannerModule, starShopModule}
+export default {classifyModule, bannerModule, starShopModule, todayModule}
 
 
 

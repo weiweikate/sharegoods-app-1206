@@ -5,30 +5,54 @@ import React, {Component} from 'react'
 import { View, ScrollView, StyleSheet, Text, Image } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
-import today1Img from './res/today1.png'
-import today2Img from './res/today2.png'
-import today3Img from './res/today3.png'
+import {observer} from 'mobx-react'
+import Modules from './Modules'
+const { todayModule } = Modules
 
-const TodayItem = ({img}) => <View style={styles.item}>
-    <Image style={styles.img} source={img}/>
+const TodayItem = ({item}) => <View style={styles.item}>
+    <Image style={styles.img} source={item.img}/>
 </View>
 
-export default class HomeTodayView extends Component {
+class HomeTodayView extends Component {
 
     constructor(props) {
         super(props)
+        const { today } = this.props
+        const { loadTodayList } = today
+        loadTodayList && loadTodayList()
     }
 
     render() {
-        return <View style={styles.container}>
-            <View style={styles.titleView}>
-                <Text style={styles.title}>今日榜单</Text>
+        const { today } = this.props
+        const { todayList } = today
+        let items = []
+        todayList.map((item, index) => {
+            items.push(<TodayItem key={index} item={item}/>)
+        })
+        return <View>
+        {
+            items.length > 0
+            ?
+            <View style={styles.container}>
+                <View style={styles.titleView}>
+                    <Text style={styles.title}>今日榜单</Text>
+                </View>
+                <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
+                    {items}
+                    <View style={styles.space}/>
+                </ScrollView>
             </View>
-            <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
-                <TodayItem img={today1Img}/><TodayItem img={today2Img}/><TodayItem img={today3Img}/>
-                <View style={styles.space}/>
-            </ScrollView>
+            :
+            null
+        }
         </View>
+    }
+}
+
+@observer
+export default class HomeToday extends Component {
+    render () {
+        return <HomeTodayView today={todayModule} {...this.props}/>
     }
 }
 
