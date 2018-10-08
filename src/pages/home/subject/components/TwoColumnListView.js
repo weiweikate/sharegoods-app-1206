@@ -95,6 +95,8 @@ export default class TwoColumnListView extends Component {
     };
     _itemClickAction = (item) => {
         console.log(item.key);
+        const {navigateTool} = this.props
+        navigateTool('')
 
     };
     _renderRowView = (item) => {
@@ -133,7 +135,9 @@ TwoColumnListView.propTypes = {
     //专题列表列数
     columnNumber: PropTypes.number,
     //0无切换 1 有切换
-    subjectType: PropTypes.number
+    subjectType: PropTypes.number,
+
+    navigateTool:PropTypes.func,
 };
 
 const Styles = StyleSheet.create({

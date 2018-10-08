@@ -15,7 +15,7 @@ export default class SubjectPage extends BasePage {
         this.props.subjectType = this.params.subjectType;
     }
 
-    
+
 
     $navigationBarOptions = {
         title: '专题',
@@ -34,6 +34,7 @@ export default class SubjectPage extends BasePage {
                 <TwoColumnListView
                     columnNumber={columnNumber}
                     subjectType={subjectType}
+                    navigateTool={this.$navigate}
                 />
         );
     }
