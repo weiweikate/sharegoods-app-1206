@@ -97,4 +97,4 @@ const styles = StyleSheet.create({
 
 HomeClassify.propTypes = {
     navigation: PropTypes.object
-};
+}

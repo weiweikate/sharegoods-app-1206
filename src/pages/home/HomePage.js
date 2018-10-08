@@ -21,6 +21,7 @@ import HomeSearchView from './HomeSearchView'
 import HomeClassifyView from './HomeClassifyView'
 import HomeStarShopView from './HomeStarShopView'
 import HomeTodayView from './HomeTodayView'
+import HomeRecommendView from './HomeRecommendView'
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 const DemoList = [
@@ -157,6 +158,7 @@ class HomePage extends Component {
                     </View>
                     <HomeStarShopView/>
                     <HomeTodayView/>
+                    <HomeRecommendView/>
                     <View style={[styles.box]}>
                         {
                             DemoList.map(item => {

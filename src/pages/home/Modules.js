@@ -126,11 +126,40 @@ class TodayModule {
 
 const todayModule = new TodayModule()
 
+import recommend1Img from './res/recommend1.png'
+import recommend2Img from './res/recommend2.png'
+import recommend3Img from './res/recommend3.png'
+
+//精品推荐
+class RecommendModule {
+    @observable recommendList = []
+    @action loadRecommendList = () => [
+        this.recommendList = [{
+            img: recommend1Img,
+            text: 'dkf都说了看风景饿哭了人类客人鄂温克人接'
+        },{
+            img: recommend2Img,
+            text: 'dkf都说了看风景饿哭了人类客人sdafkj 收到了看风景瑟夫鄂温克人接'
+        },{
+            img: recommend3Img,
+            text: 'dkf都说了看风景饿哭了人类客人sdafkj 收到了看风景瑟夫鄂温克人接'
+        }]
+    ]
+}
+
+const recommendModule = new RecommendModule()
+
 autorun(function() {
     console.log(` ${bannerModule.bannerList}  ${bannerModule.bannerList.length} ${classifyModule.classifyList} ${starShopModule.shopList}`)
 })
 
-export default {classifyModule, bannerModule, starShopModule, todayModule}
+export default {
+    classifyModule,
+    bannerModule,
+    starShopModule,
+    todayModule,
+    recommendModule
+}
 
 
 
