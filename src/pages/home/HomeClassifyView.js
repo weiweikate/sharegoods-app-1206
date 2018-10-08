@@ -20,10 +20,17 @@ const { px2dp } = ScreenUtils
 const Item = ({data,  onPress}) => <TouchableOpacity style={styles.item} onPress={()=> onPress(data)}>
     <Image style={styles.icon} source={(data.icon)}/>
     <View style={styles.space}/>
-    <Text>{data.name}</Text>
+    <Text style={styles.name}>{data.name}</Text>
 </TouchableOpacity>
 
 class HomeClassifyView extends Component {
+
+    constructor(props) {
+        super(props) 
+        const { classify } = this.props
+        const { loadClassifyList } = classify
+        loadClassifyList && loadClassifyList()
+    }
 
     _onItemPress = (data) => {
         console.log('_onItemPress', data)
@@ -40,7 +47,6 @@ class HomeClassifyView extends Component {
     }
 
     render() {
-        
         return (<View style={styles.container}>
             {this.renderItems()}
         </View>
@@ -82,6 +88,10 @@ const styles = StyleSheet.create({
     },
     space: {
         height: px2dp(6)
+    },
+    name: {
+        color: '#666',
+        fontSize: px2dp(12)
     }
 });
 

@@ -15,6 +15,7 @@ import Modules from './Modules'
 const {bannerModule } = Modules
 import HomeSearchView from './HomeSearchView'
 import HomeClassifyView from './HomeClassifyView'
+import HomeStarShopView from './HomeStarShopView'
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 const DemoList = [
@@ -93,6 +94,11 @@ class HomePage extends Component {
         });
     };
 
+    constructor(props) {
+        super(props)
+        const {loadbBnnerList} = this.props.bannerModule
+        loadbBnnerList && loadbBnnerList()
+    }
 
     render() {
         const { bannerList } = this.props.bannerModule
@@ -144,6 +150,7 @@ class HomePage extends Component {
                             </View>
                         </View>
                     </View>
+                    <HomeStarShopView/>
 
                     <View style={[styles.box]}>
                         {
