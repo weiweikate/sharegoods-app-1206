@@ -54,7 +54,7 @@ const Cell = ({data, press}) => <View style={styles.cell}>
 
 class HomeStarShopView extends Component {
     constructor(props) {
-        super(props) 
+        super(props)
         const { starShop } = this.props
         const { loadShopList } = starShop
         loadShopList && loadShopList()

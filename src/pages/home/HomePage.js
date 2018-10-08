@@ -16,12 +16,13 @@ import ViewPager from '../../components/ui/ViewPager';
 import ScreenUtils from '../../utils/ScreenUtils';
 import {observer} from 'mobx-react';
 import Modules from './Modules'
-const {bannerModule } = Modules
+const { bannerModule } = Modules
 import HomeSearchView from './HomeSearchView'
 import HomeClassifyView from './HomeClassifyView'
 import HomeStarShopView from './HomeStarShopView'
 import HomeTodayView from './HomeTodayView'
 import HomeRecommendView from './HomeRecommendView'
+import HomeActivityView from './HomeActivityView'
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 const DemoList = [
@@ -159,6 +160,7 @@ class HomePage extends Component {
                     <HomeStarShopView/>
                     <HomeTodayView/>
                     <HomeRecommendView/>
+                    <HomeActivityView/>
                     <View style={[styles.box]}>
                         {
                             DemoList.map(item => {

@@ -133,7 +133,7 @@ import recommend3Img from './res/recommend3.png'
 //精品推荐
 class RecommendModule {
     @observable recommendList = []
-    @action loadRecommendList = () => [
+    @action loadRecommendList = () => {
         this.recommendList = [{
             img: recommend1Img,
             text: 'dkf都说了看风景饿哭了人类客人鄂温克人接'
@@ -144,10 +144,71 @@ class RecommendModule {
             img: recommend3Img,
             text: 'dkf都说了看风景饿哭了人类客人sdafkj 收到了看风景瑟夫鄂温克人接'
         }]
-    ]
+    }
 }
 
 const recommendModule = new RecommendModule()
+
+import activity1Img from './res/activity1.png'
+import activity2Img from './res/activity2.png'
+import activity3Img from './res/activity3.png'
+import activity4Img from './res/activity4.png'
+import goodsImg from './res/goods.png'
+
+//超值热卖
+class ActivityModule {
+    @observable activityList = []
+    @action loadActivityList = () => {
+        this.activityList = [
+            {
+                banner: activity1Img,
+                goods: [
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' }
+                ]
+            },
+            {
+                banner: activity2Img,
+                goods: [
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' }
+                ]
+            },
+            {
+                banner: activity3Img,
+                goods: [
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' }
+                ]
+            },
+            {
+                banner: activity4Img,
+                goods: [
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' }
+                ]
+            }
+        ]
+    }
+}
+
+const activityModule = new ActivityModule()
 
 autorun(function() {
     console.log(` ${bannerModule.bannerList}  ${bannerModule.bannerList.length} ${classifyModule.classifyList} ${starShopModule.shopList}`)
@@ -158,7 +219,8 @@ export default {
     bannerModule,
     starShopModule,
     todayModule,
-    recommendModule
+    recommendModule,
+    activityModule
 }
 
 
