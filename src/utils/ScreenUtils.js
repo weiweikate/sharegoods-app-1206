@@ -54,12 +54,15 @@ export default {
     pixelRatio: PixelRatio.get(),
     onePixel: 1 / PixelRatio.get(),
     androidStatusHeight: getStatusH,
-    statusBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 44 : 20) : getStatusH(),// (Platform.OS === 'ios' ? 20 : 0),
+    allStatusBarHeight: getStatusH,
+    statusBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 44 : 20) : getStatusH(),
     headerHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 88 : 64) : 68,
     tabBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 83 : 49) : 49,
+    tabBarHeightMore:this.tabBarHeight-49,
     isIOS: Platform.OS === 'ios',
     isIOSSmall: Platform.OS === 'ios' && Dimensions.get('window').height === 568,// phoneSE,phone4,phone5,phone5s
     isIOSNomarl: Platform.OS === 'ios' && Dimensions.get('window').height === 667,// phone6,phone7,phone8
     isIOSP: Platform.OS === 'ios' && Dimensions.get('window').height === 736,//phone6p,phone7p,phone8p
     isIOSX: Platform.OS === 'ios' && Dimensions.get('window').height === 812
+
 };
