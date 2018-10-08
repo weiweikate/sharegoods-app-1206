@@ -27,7 +27,12 @@ export default class PreLoadImage extends Component {
 
     render() {
         const { imageUri, style, defaultImage, errImage,onClickAction} = this.props;
-        let source = { uri: imageUri };
+        let source;
+        if (imageUri){
+           source  = { uri: imageUri };
+        } else {
+            source= undefined;
+        }
         if (this.state.type === 1) {
             source = errImage;
         }

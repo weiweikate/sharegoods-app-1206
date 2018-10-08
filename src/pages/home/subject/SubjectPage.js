@@ -15,6 +15,8 @@ export default class SubjectPage extends BasePage {
         this.props.subjectType = this.params.subjectType;
     }
 
+    
+
     $navigationBarOptions = {
         title: '专题',
         show: true

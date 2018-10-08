@@ -20,25 +20,23 @@ import PreLoadImage from '../../../../components/ui/preLoadImage/PreLoadImage';
 export default class SbOpenPrizeHeader extends Component {
 
     static propTypes = {
-        subjectType: PropTypes.number
-
+        subjectType: PropTypes.number,
+        headerData:PropTypes.object.isRequired,
     };
-
     state = {
         selectSate: 2
 
     };
-
     constructor(props) {
         super(props);
-
     }
-
     render() {
+        const {imgUrl} = this.props.headerData;
+        console.log(imgUrl)
         return (
             <View>
                 <PreLoadImage
-                    imageUri={''}
+                    imageUri={imgUrl}
                     style={SbOpenPrizeHeaderStyles.topImageStyle}
                 />
                 <View style={SbOpenPrizeHeaderStyles.bottomDownViewBgStyle}>
@@ -75,46 +73,47 @@ export default class SbOpenPrizeHeader extends Component {
             </View>
         );
     }
-
     _getDownTimeItemView = () => {
-        let itemArr = [
-            '00:00',
-            '08:00',
-            '10:00',
-            '22:00',
-            '00:00'
-        ];
-        let tempCompoentArr = [];
-        itemArr.map((item, index) => {
-            tempCompoentArr.push(
-                <TouchableOpacity onPress={() => {
-                    this._downItemViewClick(index, item);
-                }} key={index}>
-                    <View style={itemViewStyle.itemBgStyle}>
-                        <UIText
-                            value={item}
-                            style={[itemViewStyle.itemTopTextStyle, this.state.selectSate === index ?
-                                {
-                                    color: ColorUtil.Color_ffffff
-                                } : null]}
-                        />
-                        <UIText
-                            value={'已经开抢'}
-                            style={
-                                [
-                                    itemViewStyle.itemBottomTextStyle,
-                                    this.state.selectSate === index ?
-                                        {
-                                            color: ColorUtil.Color_ffffff
-                                        } : null
-                                ]
-                            }
-                        />
-                    </View>
-                </TouchableOpacity>
-            );
-        });
-        return tempCompoentArr;
+       const {topicNavTitleList} = this.props.headerData
+        console.log(topicNavTitleList)
+        if (topicNavTitleList instanceof Array && topicNavTitleList.length > 0){
+            let tempCompoentArr = [];
+            topicNavTitleList.map((item, index) => {
+                tempCompoentArr.push(
+                    <TouchableOpacity onPress={() => {
+                        this._downItemViewClick(index, item);
+                    }} key={index}>
+                        <View style={itemViewStyle.itemBgStyle}>
+                            <UIText
+                                value={item}
+                                style={[itemViewStyle.itemTopTextStyle, this.state.selectSate === index ?
+                                    {
+                                        color: ColorUtil.Color_ffffff
+                                    } : null]}
+                            />
+                            {/*//先注释掉*/}
+                            {/*<UIText*/}
+                                {/*value={'已经开抢'}*/}
+                                {/*style={*/}
+                                    {/*[*/}
+                                        {/*itemViewStyle.itemBottomTextStyle,*/}
+                                        {/*this.state.selectSate === index ?*/}
+                                            {/*{*/}
+                                                {/*color: ColorUtil.Color_ffffff*/}
+                                            {/*} : null*/}
+                                    {/*]*/}
+                                {/*}*/}
+                            {/*/>*/}
+                        </View>
+                    </TouchableOpacity>
+                );
+            });
+            return tempCompoentArr;
+        } else {
+            return [];
+        }
+
+
     };
 
     _downItemViewClick = (index, item) => {
