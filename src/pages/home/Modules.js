@@ -71,13 +71,38 @@ class ClassifyModules {
 const classifyModule = new ClassifyModules()
 
 
+import banner1Img from './res/banner1.png'
+import avatar1Img from './res/avatar1.png'
+import banner2Img from './res/banner2.png'
+import avatar2Img from './res/avatar2.png'
+
 class StarShopModule {
     @observable shopList = []
+
+    @action loadShopList = () => {
+        this.shopList =  [{
+            banner1Img: banner1Img,
+            title: '动人的美丽时尚你的生活',
+            avatar: avatar1Img,
+            name: '赵丽颖',
+            level: 'V5',
+            member: '32万+',
+            income: '200082.98',
+            allIncome: '300万元'
+        },{
+            banner1Img: banner2Img,
+            title: '动人的美丽s时尚你的生活',
+            avatar: avatar2Img,
+            name: '吴磊',
+            level: 'V5',
+            member: '32万+',
+            income: '200082.98',
+            allIncome: '300万元'
+        }]
+    }
 }
 
 const starShopModule = new StarShopModule()
-starShopModule.shopList = [{}]
-
 
 autorun(function() {
     console.log(` ${bannerModule.bannerList}  ${bannerModule.bannerList.length} ${classifyModule.classifyList} ${starShopModule.shopList}`)

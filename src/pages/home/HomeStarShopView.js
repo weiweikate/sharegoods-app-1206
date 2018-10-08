@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Image } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
-import banner1Img from './res/banner1.png'
-import avatar1Img from './res/avatar1.png'
+import {observer} from 'mobx-react'
+import Modules from './Modules'
+const { starShopModule } = Modules
 
 const Banner = ({backImage, title, press}) => <View style={styles.bannerContainer}>
     <ImageBackground style={styles.bannerImg}  source={backImage}>
@@ -48,25 +49,35 @@ const Cell = ({data, press}) => <View style={styles.cell}>
 </View>
 
 
-export default class HomeStarShopView extends Component {
-    data = {
-        banner1Img: banner1Img,
-        title: '动人的美丽时尚你的生活',
-        avatar: avatar1Img,
-        name: '赵丽颖',
-        level: 'V5',
-        member: '32万+',
-        income: '200082.98',
-        allIncome: '300万元'
+class HomeStarShopView extends Component {
+    
+    constructor(props) {
+        super(props) 
+        const { starShop } = this.props
+        const { loadShopList } = starShop
+        loadShopList && loadShopList()
     }
     _shopPress() {
         console.log('_shopPress')
     }
     render () {
+        let cells = []
+        const { starShop } = this.props
+        const { shopList } = starShop
+        shopList.map((shop, index) => {
+            cells.push(<Cell data={shop} press={()=>this._shopPress(shop)}/>)
+        })
         return <View style={styles.container}>
             <View style={styles.titleView}><Text style={styles.title}>明星店铺</Text></View>
-            <Cell data={this.data} press={()=>this._shopPress()}/>
+            {cells}
         </View>
+    }
+}
+
+@observer
+export default class HomeStarShop extends Component {
+    render () {
+        return <HomeStarShopView starShop={starShopModule} {...this.props}/>
     }
 }
 
@@ -92,7 +103,8 @@ let styles = StyleSheet.create({
         height: px2dp(175),
         borderRadius: px2dp(5),
         backgroundColor: '#fff',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        marginBottom: px2dp(10)
     },
     bannerImg: {
         height: px2dp(110),
