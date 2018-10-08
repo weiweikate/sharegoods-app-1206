@@ -68,7 +68,7 @@ export default class SearchResultPage extends BasePage {
         if (!StringUtils.isEmpty(this.params.categoryId)) {
             param.categoryId = this.params.categoryId;
         } else {
-            //热门搜索需要hotWordId
+            //热门搜索额外需要hotWordId
             if (!StringUtils.isEmpty(this.params.hotWordId)) {
                 param.hotWordId = this.params.hotWordId;
             }
