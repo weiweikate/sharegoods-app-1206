@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
-    View, Platform
+    View,
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
@@ -24,10 +24,9 @@ type Props = {};
 
 export default class App extends Component<Props> {
     constructor(props) {
-        // 拿到android状态拦的高度
-        if (Platform.OS === 'android') {
-            appData.setAndroidStatusHeight(props.androidStatusH);
-        }
+
+        appData.setStatusBarHeight(props.statusBarHeight);
+
         super(props);
         this.state = {
             load: false

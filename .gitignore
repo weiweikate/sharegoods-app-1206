@@ -63,5 +63,6 @@ package-lock.json
 /android/gradlew.bat
 /android/keystores/
 pgyer/
+tsconfig.json
 /android/app/src/main/assets/index.android.bundle.meta
 /android/app/src/main/assets/index.android.bundle
