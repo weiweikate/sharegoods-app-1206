@@ -40,6 +40,7 @@ export default class NavigatorBar extends Component {
         }
     };
 
+
     static propTypes = {
 
         navigation: PropTypes.object,//导航
@@ -85,7 +86,7 @@ export default class NavigatorBar extends Component {
             leftNavItemHidden,
             rightNavItemHidden,
             androidStatusH: ScreenUtils.androidStatusHeight(),
-            statusHeight:ScreenUtils.allStatusBarHeight()
+            statusHeight: ScreenUtils.allStatusBarHeight()
         };
     }
 
@@ -154,10 +155,14 @@ export default class NavigatorBar extends Component {
         if (this.state.leftNavItemHidden) {
             return null;
         }
+        const { statusBarHeight } = ScreenUtils;
         // 文案
         if (leftNavTitle && typeof leftNavTitle === 'string') {
             return <TouchableOpacity
-                style={[styles.left, { top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH }]}
+                style={[styles.left,
+                    {
+                        top: statusBarHeight
+                    }]}
                 onPress={this._onLeftPressed}>
                 <Text numberOfLines={1}
                       allowFontScaling={false}
@@ -168,10 +173,12 @@ export default class NavigatorBar extends Component {
         }
         // 图片
         if (leftNavImage) {
-            return <TouchableOpacity style={[styles.left, {
-                top: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH,
-                paddingLeft: 15
-            }]} onPress={this._onLeftPressed}>
+            return <TouchableOpacity
+                style={[styles.left,
+                    {
+                        top: statusBarHeight
+                    }]}
+                onPress={this._onLeftPressed}>
                 <Image
                     source={leftNavImage}
                     resizeMode={'stretch'}
@@ -242,13 +249,17 @@ export default class NavigatorBar extends Component {
         const {
             headerStyle
         } = this.props;
+        const { statusBarHeight } = ScreenUtils;
         return (
+
             <View style={[styles.navBar, headerStyle, {
                 // paddingTop: this.state.androidStatusH,
-                paddingTop:this.state.statusHeight,
-                height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH) + 44
+                // paddingTop:this.state.statusHeight,
+                paddingTop: statusBarHeight,
+                height: statusBarHeight + 44
+                // height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH) + 44
             }]}>
-                {this._renderStatusBar()}
+                {/*{this._renderStatusBar()}*/}
                 {this._renderLeftItem()}
                 {this._renderTitle()}
                 {this._renderRightItem()}
@@ -261,9 +272,9 @@ export default class NavigatorBar extends Component {
 const styles = StyleSheet.create({
     navBar: { //考虑适配 iPhone X
         width: SCREEN_WIDTH,
-        height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20) + 44,
+        // height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20) + 44,
         // height: this.state.statusHeight + 44,
-        paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
+        // paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
         // paddingTop: this.state.statusHeight,
         backgroundColor: 'white',
         justifyContent: 'center',
@@ -281,9 +292,10 @@ const styles = StyleSheet.create({
     },
     title: {
         // marginTop:10,
-        fontSize: 17,
+        fontSize: 16,
         color: '#222',
         backgroundColor: 'transparent'
+        // backgroundColor:'red'
     },
     left: {
         position: 'absolute',
