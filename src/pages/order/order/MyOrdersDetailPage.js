@@ -31,6 +31,8 @@ import DateUtils from '../../../utils/DateUtils';
 import Toast from '../../../utils/bridge';
 import productDetailImg from '../res/productDetailImg.png';
 import GoodsItem from '../components/GoodsItem';
+import OrderApi from '../api/orderApi';
+import user from '../../../model/user';
 
 class MyOrdersDetailPage extends BasePage {
     constructor(props) {
@@ -166,6 +168,9 @@ class MyOrdersDetailPage extends BasePage {
 
         );
     };
+    componentDidMount(){
+        this.loadPageData();
+    }
     _render = () => {
         return (
             <View style={styles.container}>
@@ -585,157 +590,156 @@ class MyOrdersDetailPage extends BasePage {
         }
         return afterSaleService;
     };
-    // loadPageData(){
-    //     Toast.showLoading();
-    //     OrderApi.getOrderDetail({orderId:this.state.orderId}).then((response)=>{
-    //         Toast.hiddenLoading()
-    //         if(response.ok ){
-    //             let data=response.data
-    //             let arr=[],lowerarr=[];
-    //             data.list.map((item,index)=>{
-    //                 arr.push({
-    //                     id:item.id,
-    //                     orderId:item.orderId,
-    //                     productId:item.productId,
-    //                     uri:item.imgUrl,
-    //                     goodsName:item.productName,
-    //                     salePrice:StringUtils.isNoEmpty(item.price)?item.price:0,
-    //                     category:item.spec,
-    //                     goodsNum:item.num,
-    //                     returnProductId:item.returnProductId,
-    //                     afterSaleService:this.getAfterSaleService(data,index),
-    //                 })
-    //             })
-    //              if(data.orderType===3||data.orderType===98){
-    //                  lowerarr=data.list[0].orderProductPrices
-    //              }
-    //             let pageStateString=constants.pageStateString[parseInt(data.status)]
-    //             /*
-    //              * operationMenuCheckList
-    //              * 取消订单                 ->  1
-    //              * 去支付                   ->  2
-    //              * 继续支付                 ->  3
-    //              * 订单退款                 ->  4
-    //              * 查看物流                 ->  5
-    //              * 确认收货                 ->  6
-    //              * 删除订单(已完成)          ->  7
-    //              * 再次购买                 ->  8
-    //              * 删除订单(已关闭(取消))    ->  9
-    //              * */
-    //             switch (parseInt(data.status)){
-    //                 // case 0:
-    //                 //     break
-    //                 //等待买家付款
-    //                 case 1:
-    //                     this.startCutDownTime(response.data.overtimeClosedTime)
-    //                     pageStateString.sellerState='收货人：'+data.receiver+'                   '+data.recevicePhone
-    //                     pageStateString.sellerTime='收货地址：'+data.province+data.city+data.area+data.address
-    //                     if (StringUtils.isEmpty(data.outTradeNo)){
-    //                         pageStateString.menu=[
-    //                             {
-    //                                 id:1,
-    //                                 operation:'取消订单',
-    //                                 isRed:false,
-    //                             },{
-    //                                 id:2,
-    //                                 operation:'去支付',
-    //                                 isRed:true,
-    //                             },
-    //                         ]
-    //                     }else{
-    //                         pageStateString.menu=[
-    //                             {
-    //                                 id:1,
-    //                                 operation:'取消订单',
-    //                                 isRed:false,
-    //                             },{
-    //                                 id:3,
-    //                                 operation:'继续支付',
-    //                                 isRed:true,
-    //                             },
-    //                         ]
-    //                     }
-    //                     break
-    //                 //买家已付款
-    //                 case 2:
-    //                     //nothing need update Extraly
-    //                     break
-    //                 //卖家已发货
-    //                 case 3:
-    //                     this.startCutDownTime2(response.data.autoConfirmTime)
-    //                     pageStateString.sellerTime='收货地址：'+data.province+data.city+data.area+data.address
-    //                     break
-    //                 //等待买家自提
-    //                 case 4:
-    //                     pageStateString.sellerState='自提点：浙江省杭州市萧山区宁围镇鸿宁路望京商务C2-502'
-    //                     break
-    //                 //订单已完成
-    //                 case 5:
-    //                     pageStateString.sellerTime='收货地址：'+data.province+data.city+data.area+data.address
-    //                     break
-    //                 case 6:
-    //                     //no UI(can't enter this page)
-    //                     break
-    //                 case 7:
-    //                     //no UI(can't enter this page)
-    //                     break
-    //                 case 8:
-    //                     pageStateString.sellerState='收货人：'+data.receiver+'                   '+data.recevicePhone
-    //                     pageStateString.sellerTime='收货地址：'+data.province+data.city+data.area+data.address
-    //                     pageStateString.moreDetail=data.buyerRemark
-    //                     //no UI(can't enter this page)
-    //                     break
-    //                 case 9:
-    //                     //no UI(can't enter this page)
-    //                     break
-    //                 case 10:
-    //                     //no UI(can't enter this page)
-    //                     break
-    //             }
-    //             this.setState({
-    //                 viewData:{
-    //                     expressNo:data.expressNo,
-    //                     orderId:this.params.orderId,
-    //                     list:arr,
-    //                     receiverName:data.receiver,
-    //                     receiverNum:data.recevicePhone,
-    //                     receiverAddress:data.address,
-    //                     provinceString:data.province,
-    //                     cityString:data.city,
-    //                     areaString:data.area,
-    //                     goodsPrice:data.totalPrice-data.freightPrice,//商品价格(detail.totalPrice-detail.freightPrice)
-    //                     freightPrice:data.freightPrice,//运费（快递）
-    //                     userScore:data.userScore,//积分抵扣
-    //                     totalPrice:data.totalPrice,//订单总价
-    //                     orderTotalPrice:data.orderTotalPrice,//需付款
-    //                     orderNum:data.orderNum,//订单编号
-    //                     createTime:data.createTime,//创建时间
-    //                     sysPayTime:data.sysPayTime,//平台付款时间
-    //                     payTime:data.payTime,//三方付款时间
-    //                     outTradeNo:data.outTradeNo,//三方交易号
-    //                     sendTime:data.sendTime,//发货时间
-    //                     finishTime:'',//成交时间
-    //                     autoConfirmTime:data.autoConfirmTime,//自动确认时间
-    //                     pickedUp:data.pickedUp,//
-    //                 },
-    //                 pageStateString:pageStateString,
-    //                 expressNo:data.expressNo,
-    //                 pageState:data.pageState,
-    //                 activityId:data.activityId,
-    //                 orderType:data.orderType,
-    //                 orderProductPrices:data.list[0].orderProductPrices
-    //             })
-    //         } else {
-    //             NativeModules.commModule.toast(response.msg)
-    //         }
-    //     }).catch(e=>{
-    //         Toast.hiddenLoading()
-    //     });
-    // }
+
+    loadPageData(){
+        Toast.showLoading();
+        OrderApi.lookDetail({id:this.state.orderId,userId:user.id,status:this.params.status,orderNum:this.params.orderNum}).then((response)=>{
+            Toast.hiddenLoading()
+                let data=response.data;
+                let arr=[];
+                data.orderProductList.map((item,index)=>{
+                    arr.push({
+                        id:item.id,
+                        orderId:item.orderId,
+                        productId:item.productId,
+                        uri:item.specImg,
+                        goodsName:item.productName,
+                        salePrice:StringUtils.isNoEmpty(item.price)?item.price:0,
+                        category:item.spec,
+                        goodsNum:item.num,
+                        returnProductId:item.returnProductId,
+                        afterSaleService:this.getAfterSaleService(data,index),
+                    })
+                })
+                 if(data.orderType===3||data.orderType===98){
+                   // let  lowerarr=data.list[0].orderProductPrices
+                 }
+                let pageStateString=constants.pageStateString[parseInt(data.status)]
+                /*
+                 * operationMenuCheckList
+                 * 取消订单                 ->  1
+                 * 去支付                   ->  2
+                 * 继续支付                 ->  3
+                 * 订单退款                 ->  4
+                 * 查看物流                 ->  5
+                 * 确认收货                 ->  6
+                 * 删除订单(已完成)          ->  7
+                 * 再次购买                 ->  8
+                 * 删除订单(已关闭(取消))    ->  9
+                 * */
+                switch (parseInt(data.status)){
+                    // case 0:
+                    //     break
+                    //等待买家付款
+                    case 1:
+                        this.startCutDownTime(response.data.overtimeClosedTime)
+                        pageStateString.sellerState='收货人：'+data.receiver+'                   '+data.recevicePhone
+                        pageStateString.sellerTime='收货地址：'+data.province+data.city+data.area+data.address
+                        if (StringUtils.isEmpty(data.outTradeNo)){
+                            pageStateString.menu=[
+                                {
+                                    id:1,
+                                    operation:'取消订单',
+                                    isRed:false,
+                                },{
+                                    id:2,
+                                    operation:'去支付',
+                                    isRed:true,
+                                },
+                            ]
+                        }else{
+                            pageStateString.menu=[
+                                {
+                                    id:1,
+                                    operation:'取消订单',
+                                    isRed:false,
+                                },{
+                                    id:3,
+                                    operation:'继续支付',
+                                    isRed:true,
+                                },
+                            ]
+                        }
+                        break
+                    //买家已付款
+                    case 2:
+                        //nothing need update Extraly
+                        break
+                    //卖家已发货
+                    case 3:
+                        this.startCutDownTime2(response.data.autoConfirmTime)
+                        pageStateString.sellerTime='收货地址：'+data.province+data.city+data.area+data.address
+                        break
+                    //等待买家自提
+                    case 4:
+                        pageStateString.sellerState='自提点：浙江省杭州市萧山区宁围镇鸿宁路望京商务C2-502'
+                        break
+                    //订单已完成
+                    case 5:
+                        pageStateString.sellerTime='收货地址：'+data.province+data.city+data.area+data.address
+                        break
+                    case 6:
+                        //no UI(can't enter this page)
+                        break
+                    case 7:
+                        //no UI(can't enter this page)
+                        break
+                    case 8:
+                        pageStateString.sellerState='收货人：'+data.receiver+'                   '+data.recevicePhone
+                        pageStateString.sellerTime='收货地址：'+data.province+data.city+data.area+data.address
+                        pageStateString.moreDetail=data.buyerRemark
+                        //no UI(can't enter this page)
+                        break
+                    case 9:
+                        //no UI(can't enter this page)
+                        break
+                    case 10:
+                        //no UI(can't enter this page)
+                        break
+                }
+                this.setState({
+                    viewData:{
+                        expressNo:data.expressNo,
+                        orderId:this.params.orderId,
+                        list:arr,
+                        receiverName:data.receiver,
+                        receiverNum:data.recevicePhone,
+                        receiverAddress:data.address,
+                        provinceString:data.province,
+                        cityString:data.city,
+                        areaString:data.area,
+                        goodsPrice:data.totalPrice-data.freightPrice,//商品价格(detail.totalPrice-detail.freightPrice)
+                        freightPrice:data.freightPrice,//运费（快递）
+                        userScore:data.userScore,//积分抵扣
+                        totalPrice:data.totalPrice,//订单总价
+                        orderTotalPrice:data.orderTotalPrice,//需付款
+                        orderNum:data.orderNum,//订单编号
+                        createTime:data.createTime,//创建时间
+                        sysPayTime:data.sysPayTime,//平台付款时间
+                        payTime:data.payTime,//三方付款时间
+                        outTradeNo:data.outTradeNo,//三方交易号
+                        sendTime:data.sendTime,//发货时间
+                        finishTime:'',//成交时间
+                        autoConfirmTime:data.autoConfirmTime,//自动确认时间
+                        pickedUp:data.pickedUp,//
+                    },
+                    pageStateString:pageStateString,
+                    expressNo:data.expressNo,
+                    pageState:data.pageState,
+                    activityId:data.activityId,
+                    orderType:data.orderType,
+                    orderProductPrices:data.list[0].orderProductPrices
+                })
+
+        }).catch(e=>{
+            Toast.hiddenLoading();
+            console.log(e)
+        });
+    }
     clickItem = (index, item) => {
         switch (this.state.orderType) {
             case 1://秒杀
-                this.navigate('product/ProductDetailPage', {
+                this.$navigate('product/ProductDetailPage', {
                     productId: this.state.viewData.list[index].productId,
                     activityCode: item.id,
                     ids: this.state.activityId
@@ -743,7 +747,7 @@ class MyOrdersDetailPage extends BasePage {
 
                 break;
             case 2://降价拍
-                this.navigate('product/ProductDetailPage', {
+                this.$navigate('product/ProductDetailPage', {
                     productId: this.state.viewData.list[index].productId,
                     id: item.id,
                     ids: this.state.activityId
@@ -752,18 +756,18 @@ class MyOrdersDetailPage extends BasePage {
                 break;
 
             case 3://优惠套餐
-                this.navigate('home/CouponsComboDetailPage', { id: this.state.viewData.list[index].productId });
+                this.$navigate('home/CouponsComboDetailPage', { id: this.state.viewData.list[index].productId });
                 break;
             case 4:
 
                 break;
 
             case 98://礼包
-                this.navigate('home/GiftProductDetailPage', { giftBagId: this.state.viewData.list[index].productId });
+                this.$navigate('home/GiftProductDetailPage', { giftBagId: this.state.viewData.list[index].productId });
                 break;
 
             case 99://普通商品
-                this.navigate('product/ProductDetailPage', { productId: this.state.viewData.list[index].productId });
+                this.$navigate('home/product/ProductDetailPage', { productId: this.state.viewData.list[index].productId });
                 break;
         }
     };

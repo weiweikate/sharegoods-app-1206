@@ -78,7 +78,6 @@ const DemoList = [
         title: '分类搜索',
         uri: 'home/search/CategorySearchPage'
     }
-
 ];
 
 

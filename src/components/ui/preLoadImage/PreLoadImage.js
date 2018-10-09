@@ -26,21 +26,25 @@ export default class PreLoadImage extends Component {
     }
 
     render() {
-        const { imageUri, style, defaultImage, errImage,onClickAction} = this.props;
-        let source = { uri: imageUri };
+        const { imageUri, style, defaultImage, errImage, onClickAction, ...props } = this.props;
+        let source;
+        if (imageUri){
+           source  = { uri: imageUri };
+        } else {
+            source= undefined;
+        }
         if (this.state.type === 1) {
             source = errImage;
         }
         return (
 
-            onClickAction?
-            <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() => {
-                    this._onClickAction();
-                }}
-            >
-                <View>
+            onClickAction ?
+                <TouchableOpacity
+                    activeOpacity={0.5}
+                    onPress={() => {
+                        this._onClickAction();
+                    }}
+                >
                     <Image
                         source={source}
                         style={style}
@@ -54,6 +58,7 @@ export default class PreLoadImage extends Component {
                                 isLoadComplete: true
                             });
                         }}
+                        {...props}
                     />
                     {this.state.isLoadComplete ? null :
                         <View style={PreLoadImageStyles.preImageBgStyle}>
@@ -63,8 +68,7 @@ export default class PreLoadImage extends Component {
                             />
                         </View>
                     }
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
                 :
                 <View>
                     <Image
@@ -80,6 +84,7 @@ export default class PreLoadImage extends Component {
                                 isLoadComplete: true
                             });
                         }}
+                        {...props}
                     />
                     {this.state.isLoadComplete ? null :
                         <View style={PreLoadImageStyles.preImageBgStyle}>
@@ -98,7 +103,7 @@ export default class PreLoadImage extends Component {
      * @private
      */
     _onClickAction = () => {
-        const { imageUri,onClickAction } = this.props;
+        const { imageUri, onClickAction } = this.props;
         onClickAction && onClickAction(imageUri);
     };
 }

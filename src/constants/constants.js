@@ -7,7 +7,7 @@ let constants = {
 
     //功能常量
     TO_LOGIN:'toLogin',//用户未登录
-    PAGESIZE:10,
+    PAGESIZE:20,
     CARTDATA:'cartData',//离线购物车数据
 
 
