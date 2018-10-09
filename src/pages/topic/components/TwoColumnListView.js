@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 
 import React, { Component } from 'react';
-import ScreenUtils from '../../../../utils/ScreenUtils';
-import ColorUtil from '../../../../utils/ColorUtil';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import ColorUtil from '../../../utils/ColorUtil';
 import { SbSectiontHeaderView, ActivityOneView } from './SbSectiontHeaderView';
 import PropTypes from 'prop-types';
 

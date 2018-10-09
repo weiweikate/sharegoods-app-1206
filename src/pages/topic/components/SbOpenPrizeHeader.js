@@ -8,13 +8,13 @@ import {
 } from 'react-native';
 
 import React, { Component } from 'react';
-import ScreenUtils from '../../../../utils/ScreenUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
-import ColorUtil from '../../../../utils/ColorUtil';
-import UIText from '../../../../comm/components/UIText';
-import bridge from '../../../../utils/bridge';
+import ColorUtil from '../../../utils/ColorUtil';
+import UIText from '../../../comm/components/UIText';
+import bridge from '../../../utils/bridge';
 import SbResTool from '../res/SbResTool';
-import PreLoadImage from '../../../../components/ui/preLoadImage/PreLoadImage';
+import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
 
 export default class SbOpenPrizeHeader extends Component {

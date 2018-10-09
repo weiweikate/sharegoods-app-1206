@@ -4,9 +4,9 @@ import {
     StyleSheet,
     Animated
 } from 'react-native';
-import UIText from '../../../../comm/components/UIText';
-import ScreenUtils from '../../../../utils/ScreenUtils';
-import ColorUtil from '../../../../utils/ColorUtil';
+import UIText from '../../../comm/components/UIText';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import ColorUtil from '../../../utils/ColorUtil';
 
 
 export default class SubSwichView extends Component {
