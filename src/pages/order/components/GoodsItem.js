@@ -4,6 +4,8 @@ import {
     UIText
 } from '../../../components/ui';
 import { color } from '../../../constants/Theme';
+import ScreenUtils from '../../../utils/ScreenUtils';
+
 
 const GoodsItem = props => {
     const {
@@ -17,34 +19,34 @@ const GoodsItem = props => {
     } = props;
 
     return (
-        <TouchableOpacity style={{ flexDirection: 'row', height: 100 }} onPress={() => onPress()}>
-            <View style={{ height: 80, width: 80, marginLeft: 15, marginTop: 11 }}>
+        <TouchableOpacity style={{ flexDirection: 'row', height: 100, alignItems: 'center' ,width:ScreenUtils.width,backgroundColor:'white'}} onPress={() => onPress()}>
+            <View style={{ height: 80, width: 80, marginLeft: 15 }}>
                 <Image style={{ height: 80, width: 80 }} source={{ uri: uri }}/>
             </View>
-            <View style={{ flex: 1, marginTop: 11 }}>
-                <View style={{ height: 31, flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={{ justifyContent: 'space-between',  height: 80 ,flex:1}}>
+                <View style={{height:30,justifyContent:'center'}}>
                     <Text style={{
-                        flex: 1,
                         flexWrap: 'wrap',
                         color: color.black_222,
                         fontSize: 13,
                         marginLeft: 10,
                         marginRight: 20
                     }} numberOfLines={2}>{goodsName}</Text>
-                    <View style={{ marginRight: 14 }}>
-                        <UIText value={salePrice} style={{ color: color.black_999, fontSize: 13 }}/>
-                    </View>
+                </View>
+                <View style={{ marginTop: 5 ,marginLeft:10}}>
+                    <UIText value={`规格: ${category}`} style={{ color: color.black_999, fontSize: 13 }}/>
                 </View>
                 <View style={{
-                    height: 30,
                     marginLeft: 10,
                     marginRight: 10,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    marginTop: 10
+                    flexDirection:'row',
+                     justifyContent:'space-between'
                 }}>
-                    <UIText value={category} style={{ color: color.black_999, fontSize: 13 }}/>
-                    <UIText value={goodsNum} style={{ color: color.black_999, fontSize: 13 }}/>
+
+                        <UIText value={salePrice} style={{ color: '#D51243', fontSize: 13 }}/>
+
+                       <UIText value={goodsNum} style={{ color: color.black_999, fontSize: 13 }}/>
+
                 </View>
             </View>
         </TouchableOpacity>
