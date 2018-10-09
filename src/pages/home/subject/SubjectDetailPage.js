@@ -13,15 +13,12 @@ import {
 import BasePage from '../../../BasePage';
 import DetailHeaderView from './components/DetailHeaderView';
 import DetailSegmentView from './components/DetailSegmentView';
-import DetailBottomView from './components/DetailBottomView';
-import SelectionPage from './SelectionPage';
-import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
-import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import StringUtils from '../../../utils/StringUtils';
+import HomeAPI from '../api/HomeAPI';
 
 export default class ProductDetailPage extends BasePage {
 
@@ -32,10 +29,9 @@ export default class ProductDetailPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            selectedIndex: 0,
             modalVisible: false,
-            data: {},
-            goType: '',
-            selectedIndex: 0
+            data: {}
         };
     }
 
@@ -50,26 +46,12 @@ export default class ProductDetailPage extends BasePage {
     //数据
     _getProductDetail = () => {
         this.$loadingShow();
-        HomeAPI.getProductDetail({
-            id: this.params.productId
+        HomeAPI.activityDepreciate_findById({
+            code: 'JJP1809270006'
         }).then((data) => {
             this.$loadingDismiss();
-            data.data = data.data||{}
-            const { specMap, priceList } = data.data;
-            //修改specMap每个元素首尾增加'，'
-            for (let key in specMap) {
-                specMap[key].forEach((item) => {
-                    if (String(item.id).indexOf(',') === -1) {
-                        item.id = `,${item.id},`;
-                    }
-                });
-            }
-            //修改priceList中的specIds首尾增加','
-            priceList.forEach((item) => {
-                item.specIds = `,${item.specIds},`;
-            });
             this.setState({
-                data: data.data
+                data: data.data||{}
             });
         }).catch((error) => {
             this.$loadingDismiss();
@@ -77,47 +59,20 @@ export default class ProductDetailPage extends BasePage {
         });
     };
 
-    //去购物车
-    _bottomViewAction = (type) => {
-        switch (type) {
-            case 'goGwc': {
-                this.$navigate('shopCart/ShopCart');
-            }
-                break;
-            case 'gwc':
-            case 'buy': {
-                this.setState({
-                    goType: type,
-                    modalVisible: true
-                });
-            }
-                break;
-        }
-    };
-
     //选择规格确认
     _selectionViewConfirm = (amount, priceId) => {
         let orderProducts = [];
-        if (this.state.goType === 'gwc') {
-            let temp = {
-                'amount': amount,
-                'priceId': priceId,
-                'productId': this.state.data.product.id
-            };
-            shopCartCacheTool.addGoodItem(temp);
-        } else if (this.state.goType === 'buy') {
-            orderProducts.push({
-                priceId: priceId,
-                num: 1,
-                productId: this.state.data.product.id
-            });
-            this.$navigate('order/order/ConfirOrderPage', {
-                orderParamVO: {
-                    orderType: 99,
-                    orderProducts: orderProducts
-                }
-            });
-        }
+        orderProducts.push({
+            priceId: priceId,
+            num: 1,
+            productId: this.state.data.product.id
+        });
+        this.$navigate('order/order/ConfirOrderPage', {
+            orderParamVO: {
+                orderType: 99,
+                orderProducts: orderProducts
+            }
+        });
     };
 
     //选择规格关闭
@@ -219,16 +174,6 @@ export default class ProductDetailPage extends BasePage {
                              showsVerticalScrollIndicator={false}
                              sections={[{ data: [{}] }]}
                              scrollEventThrottle={10}/>
-                <DetailBottomView bottomViewAction={this._bottomViewAction}/>
-
-                <Modal
-                    animationType="none"
-                    transparent={true}
-                    visible={this.state.modalVisible}>
-                    <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
-                                   selectionViewClose={this._selectionViewClose} data={this.state.data}/>
-                </Modal>
-
             </View>
         );
     };
