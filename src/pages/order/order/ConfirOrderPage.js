@@ -6,7 +6,7 @@ import {
     Image,
     TextInput as RNTextInput,
     Text,
-    TouchableOpacity, Switch
+    TouchableOpacity,
 } from 'react-native';
 import {
     UIText, UIImage, RefreshList
@@ -45,18 +45,6 @@ export default class ConfirOrderPage extends BasePage {
                     cityString: '金华市',
                     areaString: '义乌市'
                 },
-                pickSelf: {
-                    id: 1,
-                    name: '提货点A',
-                    address: '浙江省杭州市萧山区宁围镇鸿宁路区宁围镇鸿宁路区宁围镇鸿宁路望京商务C2-502',
-                    areaCode: 0,
-                    cityCode: 0,
-                    provinceCode: 0,
-                    receiverNum: 0,
-                    provinceString: '浙江省',
-                    cityString: '金华市',
-                    areaString: '义乌市'
-                },
                 list: [
                     {
                         productId: 1,
@@ -78,13 +66,12 @@ export default class ConfirOrderPage extends BasePage {
                         'productName': 'Meitu/美图 T9美图T9手机新款 双卡双待美颜拍照手机 美图手机正品 F4明星同款手机'
                     }
                 ],
-                score: 0,
                 userScore: 0,
                 reducePrice: 0,
                 canUseScore: true,
-                useScore: false,
                 totalFreightFee: 0,
-                totalAmounts: 0
+                totalAmounts: 0,
+                tokenCoin:0
             },
             orderParam: this.params.orderParamVO ? this.params.orderParamVO : []
 
@@ -141,98 +128,11 @@ export default class ConfirOrderPage extends BasePage {
                 </TouchableOpacity>
         );
     };
-    renderAddressRight = () => {
-        return (StringUtils.isNoEmpty(this.state.viewData.pickSelf.name) ?
-                <TouchableOpacity
-                    style={{ height: 87, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
-                    onPress={() => this.selectPickAddress()}>
-                    <View style={{ flex: 1, flexDirection: 'row', paddingLeft: 20, alignItems: 'center' }}>
-                        <Image style={{ height: 20 }} source={position}/>
-                        <View style={{ marginLeft: 15 }}>
-                            <UIText value={this.state.viewData.pickSelf.name}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 15, color: '#222222' }}/>
-                            <UIText
-                                value={
-                                    this.state.viewData.pickSelf.provinceString
-                                    + this.state.viewData.pickSelf.cityString
-                                    + this.state.viewData.pickSelf.areaString
-                                    + this.state.viewData.pickSelf.address
-                                }
-                                style={{
-                                    fontFamily: 'PingFang-SC-Medium',
-                                    fontSize: 13,
-                                    color: '#222222',
-                                    marginTop: 5,
-                                    paddingRight: 40
-                                }}/>
-                        </View>
-                    </View>
-                    <Image source={arrow_right} style={{ height: 14, marginRight: 15 }}/>
-                </TouchableOpacity> :
-                <TouchableOpacity
-                    style={{ height: 87, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
-                    onPress={() => this.selectPickAddress()}>
-                    <View style={{ flex: 1, flexDirection: 'row', paddingLeft: 20, alignItems: 'center' }}>
-                        <Image style={{ height: 20 }} source={position}/>
-                        <UIText value={'请添加一个收货人地址'} style={{
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 13,
-                            color: '#c8c8c8',
-                            marginLeft: 15
-                        }}/>
-                    </View>
-                    <Image source={arrow_right} style={{ height: 14, marginRight: 15 }}/>
-                </TouchableOpacity>
-        );
-    };
-    renderSelectImage2 = () => {
-        return (this.state.pickedUp ?
-                //快递与自提
-                <View style={{
-                    height: 25,
-                    backgroundColor: '#ffffff',
-                    flexDirection: 'row',
-                    paddingLeft: 15,
-                    paddingRight: 15
-                }}>
-                    <TouchableOpacity style={this.state.selectExpress ? styles.selectView : styles.unSelectView}
-                                      onPress={() => this.setState({ selectExpress: true })}>
-                        <UIText value={'快递'} style={{
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 13,
-                            color: !this.state.selectExpress ? '#61686c' : '#ffffff'
-                        }}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={!this.state.selectExpress ? styles.selectView : styles.unSelectView}
-                                      onPress={() => this.setState({ selectExpress: false })}>
-                        <UIText value={'自提'} style={{
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 13,
-                            color: this.state.selectExpress ? '#61686c' : '#ffffff'
-                        }}/>
-                    </TouchableOpacity>
-                </View>
-                :
-                //只有快递
-                <View style={{
-                    height: 25,
-                    backgroundColor: '#61686c',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    paddingLeft: 15,
-                    paddingRight: 15
-                }}>
-                    <UIText value={'快递'} style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#ffffff' }}/>
-                </View>
-
-
-        );
-    };
     renderSelectImage = () => {
         return (
             <View>
-                <View style={{ position: 'absolute' }}>
-                    <Image source={colorLine} style={{ height: 3, width: ScreenUtils.width, marginTop: 5 }}/>
+                <View style={{}}>
+                    <Image source={colorLine} style={{ height: 3, width: ScreenUtils.width }}/>
                 </View>
                 {this.state.orderParam && this.state.orderParam.orderType === 3 ?
 
@@ -269,44 +169,9 @@ export default class ConfirOrderPage extends BasePage {
             </View>
         );
     };
-    renderScore = () => {//渲染使用积分那一行
-        return (!this.state.viewData.canUseScore ? null :
-                <View>
-                    {this.renderLine()}
-                    <TouchableOpacity style={{
-                        height: 44,
-                        flexDirection: 'row',
-                        paddingLeft: 15,
-                        paddingRight: 15,
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
-                    }}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <UIText
-                                value={'共' + this.state.viewData.userScore + '秀豆，可用' + this.state.viewData.score + '秀豆，抵'}
-                                style={styles.blackText}/>
-                            <UIText value={'￥' + this.state.viewData.reducePrice}
-                                    style={[styles.blackText, { color: color.red }]}/>
-                        </View>
-                        <Switch value={this.state.isCheck} onTintColor={color.red}
-                                thumbTintColor={color.red}
-                                onValueChange={(isCheck) => {
-                                    let viewData = this.state.viewData;
-                                    if (isCheck) {
-                                        viewData.useScore = true;
-                                    } else {
-                                        viewData.useScore = false;
-                                    }
-                                    this.setState({ isCheck: isCheck, viewData: viewData });
-                                }}
-                        />
-                    </TouchableOpacity>
-                </View>
-        );
-    };
     renderDetail = () => {
         return (
-            <View>
+            <View style={{backgroundColor:'white'}}>
                 <TouchableOpacity style={{
                     height: 44,
                     flexDirection: 'row',
@@ -325,7 +190,26 @@ export default class ConfirOrderPage extends BasePage {
                         <Image source={arrow_right}/>
                     </View>
                 </TouchableOpacity>
-                {this.renderScore()}
+                {this.renderLine()}
+                <TouchableOpacity style={{
+                    height: 44,
+                    flexDirection: 'row',
+                    paddingLeft: 15,
+                    paddingRight: 15,
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                }}
+                                  disabled={this.state.orderParam && this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2}
+                                  onPress={() => this.jumpToCouponsPage()}>
+                    <UIText value={'1元现金券'} style={styles.blackText}/>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <UIText
+                            value={this.state.orderParam && this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 ? '不可使用1元现金券' : '选择1元现金券'}
+                            style={[styles.grayText, { marginRight: 15 }]}/>
+                        <Image source={arrow_right}/>
+                    </View>
+                </TouchableOpacity>
+                {this.renderLine()}
                 {this.renderLine()}
                 <TouchableOpacity style={{
                     height: 44,
@@ -367,8 +251,7 @@ export default class ConfirOrderPage extends BasePage {
     renderHeader = () => {
         return (
             <View>
-                {this.renderSelectImage2()}
-                {this.state.selectExpress ? this.renderAddress() : this.renderAddressRight()}
+                {this.renderAddress()}
                 {this.renderSelectImage()}
             </View>
         );
@@ -416,7 +299,7 @@ export default class ConfirOrderPage extends BasePage {
 
     _render() {
         return (
-            //                    data={this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98 ? this.state.priceList : this.state.viewData.list}
+            // data={this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98 ? this.state.priceList : this.state.viewData.list}
             <View style={styles.container}>
                 <RefreshList
                     ListHeaderComponent={this.renderHeader}
@@ -433,7 +316,6 @@ export default class ConfirOrderPage extends BasePage {
     renderItem = ({ item, index }) => {
         if (this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98) {
             return (
-
                 <GoodsItem
                     uri={item.specImg}
                     goodsName={item.productName}
@@ -462,116 +344,62 @@ export default class ConfirOrderPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line }}/>
-        );
-    };
-    renderWideLine = () => {
-        return (
-            <View style={{ height: 10, height: 10 }}/>
+            <View style={{ height: 0.5, backgroundColor: color.line }}/>
         );
     };
 
     componentDidMount() {
         Toast.showLoading();
-        OrderApi.makeSureOrder({ orderType:this.params.orderParamVO.orderType,orderProducts:this.params.orderParamVO.orderProducts}).then((response) => {
+        let viewData = this.state.viewData;
+        OrderApi.makeSureOrder({
+            orderType: this.params.orderParamVO.orderType,
+            orderProducts: this.params.orderParamVO.orderProducts
+        }).then((response) => {
             Toast.hiddenLoading();
-                console.log(response);
-                let data = response.data;
-                let arrData = [];
-                data.orderProductList.map((item, index) => {
-                    arrData.push({
-                        productId: item.productId,
-                        uri: item.specImg,
-                        goodsName: item.name,
-                        salePrice: item.salePrice,
-                        category: item.spec,
-                        goodsNum: item.num,
-                        activityId: item.activityId
-                    });
-
+            console.log(response);
+            let data = response.data;
+            let arrData = [];
+            data.orderProductList.map((item, index) => {
+                arrData.push({
+                    productId: item.productId,
+                    uri: item.specImg,
+                    goodsName: item.productName,
+                    salePrice: item.price,
+                    category: item.spec,
+                    goodsNum: item.num,
+                    originalPrice:item.originalPrice
+                    // activityId: item.activityId
                 });
-
-        }).catch(err =>{
+            });
+            if (data.userAddress) {
+                viewData.express = {
+                    id: data.userAddress.id,
+                    receiverName: data.userAddress.receiver,
+                    receiverNum: data.userAddress.receiverPhone,
+                    receiverAddress: data.userAddress.address,
+                    areaCode: data.userAddress.areaCode,
+                    cityCode: data.userAddress.cityCode,
+                    provinceCode: data.userAddress.provinceCode,
+                    provinceString: data.userAddress.province,
+                    cityString: data.userAddress.city,
+                    areaString: data.userAddress.area
+                };
+            } else {
+                viewData.express = {};
+            }
+            viewData.totalAmounts=data.totalAmounts;
+            viewData.totalFreightFee=data.totalFreightFee;
+            viewData.tokenCoin=data.tokenCoin;
+            viewData.list = arrData;
+            this.setState({ viewData });
+        }).catch(err => {
             Toast.hiddenLoading();
             console.log(err);
-            if(err.code===10001||err.code===10009){
+            if (err.code === 10001 || err.code === 10009) {
                 this.$navigate('login/login/LoginPage');
             }
-        })
+        });
     }
-    //**********************************BusinessPart******************************************
-    // loadPageData() {
-    //     Toast.showLoading();
-    //     OrderApi.makeSureOrder({ orderParam: JSON.stringify(this.state.orderParam) }).then((response) => {
-    //         Toast.hiddenLoading();
-    //         if (response.ok) {
-    //             console.log(response.data);
-    //             let data = response.data;
-    //             let arrData = [];
-    //             data.orderProductList.map((item, index) => {
-    //                 arrData.push({
-    //                     productId: item.productId,
-    //                     uri: item.specImg,
-    //                     goodsName: item.name,
-    //                     salePrice: item.salePrice,
-    //                     category: item.spec,
-    //                     goodsNum: item.num,
-    //                     activityId: item.activityId
-    //                 });
-    //
-    //             });
-    //
-    //             // 积分抵扣计算
-    //             let score = data.dealer.userScore > data.totalScore ? data.totalScore : data.dealer.userScore;
-    //             let viewData = this.state.viewData;
-    //             viewData.score = score;
-    //             viewData.list = arrData;
-    //             viewData.userScore = data.dealer.userScore;
-    //             viewData.reducePrice = data.userScoreToBalance * score;
-    //             // 当商品可以使用积分 用户积分大于0的时候 显示可以使用积分
-    //             viewData.canUseScore = (data.totalScore > 0 && data.dealer.userScore) ? true : false;
-    //             viewData.totalFreightFee = StringUtils.isNoEmpty(data.totalFreightFee) ? data.totalFreightFee : 0;
-    //             viewData.totalAmounts = data.totalAmounts;
-    //             this.setState({ viewData: viewData, priceList: data.orderProductList[0].priceList });
-    //             oldViewData = Object.assign({}, viewData);
-    //             oldPriceList = [...data.orderProductList[0].priceList];
-    //             console.log(oldViewData);
-    //         } else {
-    //             NativeModules.commModule.toast(response.msg);
-    //         }
-    //     }).catch(e => {
-    //         Toast.hiddenLoading();
-    //     });
-    //     //查询默认地址
-    //     Toast.showLoading();
-    //     OrderApi.queryUserAddressList({}).then((response) => {
-    //         Toast.hiddenLoading();
-    //         if (response.ok) {
-    //             let data = response.data;
-    //             data.map((item, index) => {
-    //                 if (item.defaultStatus == 1) {
-    //                     let viewData = this.state.viewData;
-    //                     viewData.express.receiverName = item.receiver;
-    //                     viewData.express.receiverNum = item.recevicePhone;
-    //                     viewData.express.receiverAddress = item.address;
-    //                     viewData.express.areaCode = item.areaCode;
-    //                     viewData.express.cityCode = item.cityCode;
-    //                     viewData.express.provinceCode = item.provinceCode;
-    //                     viewData.express.provinceString = item.province;
-    //                     viewData.express.cityString = item.province;
-    //                     viewData.express.areaString = item.province;
-    //                     this.setState({ viewData: viewData });
-    //                 }
-    //             });
-    //         } else {
-    //             NativeModules.commModule.toast(response.msg);
-    //         }
-    //     }).catch(e => {
-    //         Toast.hiddenLoading();
-    //     });
-    //
-    //
-    // }
 
     clickItem = (index, item) => {
         if (this.state.orderParam && this.state.orderParam.orderType === 3) {//优惠套餐
@@ -594,52 +422,31 @@ export default class ConfirOrderPage extends BasePage {
             this.$navigate('home/GiftProductDetailPage', { id: this.state.viewData.list[0].productId });
         }
         else {
-            this.$navigate('product/ProductDetailPage', { productId: item.productId });//正常商品
+            this.$navigate('home/product/ProductDetailPage', { productId: item.productId });//正常商品
         }
 
     };
-    selectPickAddress = () => {
-        this.$navigate('addressSelect/SelectAddressPage', {
-            callBack: (jsonData) => {
-                let json = JSON.parse(jsonData);
-                let viewData = this.state.viewData;
-                viewData.pickSelf = {
-                    id: json.id,
-                    name: json.name,
-                    address: json.addressDetail,
-                    areaCode: json.area,
-                    cityCode: json.city,
-                    provinceCode: json.province,
-                    receiverNum: json.phone,
-                    provinceString: json.provinceString,
-                    cityString: json.cityString,
-                    areaString: json.areaString
-                };
-                this.setState({ viewData: viewData });
-
-            }
-        });
-    };
     selectAddress = () => {
         this.$navigate('mine/address/AddressManagerPage', {
-            callBack: (jsonData) => {
-                let json = JSON.parse(jsonData);
+            callBack: (json) => {
+                console.log(json);
+                // let json = JSON.parse(jsonData);
                 let orderParams = this.state.orderParam;
                 let viewData = this.state.viewData;
                 viewData.express = {
                     id: json.id,
-                    receiverName: json.name,
-                    receiverNum: json.phone,
-                    receiverAddress: json.addressDetail,
-                    areaCode: json.area,
-                    cityCode: json.city,
-                    provinceCode: json.province,
-                    provinceString: json.provinceString,
-                    cityString: json.cityString,
-                    areaString: json.areaString
+                    receiverName: json.receiver,
+                    receiverNum: json.receiverPhone,
+                    receiverAddress: json.address,
+                    areaCode: json.areaCode,
+                    cityCode: json.cityCode,
+                    provinceCode: json.provinceCode,
+                    provinceString: json.province,
+                    cityString: json.city,
+                    areaString: json.area
                 };
-                orderParams.cityCode = json.city;
-                console.log(orderParams);
+                orderParams.cityCode = json.cityCode;
+                // console.log(orderParams);
                 // OrderApi.calcFreight({ orderParam: JSON.stringify(orderParams) }).then((res) => {
                 //     if (res.ok) {
                 //         if (StringUtils.isNoEmpty(res.data.totalFreightFee)) {
@@ -666,36 +473,22 @@ export default class ConfirOrderPage extends BasePage {
         let buyerRemark = this.state.message;//Y:买家留言	string
         let cityCode;//Y:收货市code	number
         //let orderProductList = JSON.stringify(this.state.orderProductList);//N:{[price_id:12,num:12],[...]}	string
-        ////1 快递 2自提
-        let pickedUp = this.state.selectExpress ? 1 : 2;//N:是否自提	number
         let provinceCode;//N:收货省code	number
         let receiver;//	Y:收货人	string
         let recevicePhone;//Y:收货人手机号	number
-        let storehouseId = this.state.selectExpress ? '' : this.state.viewData.pickSelf.id;//Y:提货模板id	number
-        let useScore = this.state.viewData.score;//N：使用积分	string
+        let useScore = this.state.viewData.tokenCoin;//N：使用积分	string
 
-        if (this.state.selectExpress) {
-            //快递
             address = this.state.viewData.express.receiverAddress;
             areaCode = this.state.viewData.express.areaCode;
             cityCode = this.state.viewData.express.cityCode;
             provinceCode = this.state.viewData.express.provinceCode;
             receiver = this.state.viewData.express.receiverName;
             recevicePhone = this.state.viewData.express.receiverNum;
-        } else {
-            //自提
-            address = this.state.viewData.pickSelf.address;
-            areaCode = this.state.viewData.pickSelf.areaCode;
-            cityCode = this.state.viewData.pickSelf.cityCode;
-            provinceCode = this.state.viewData.pickSelf.provinceCode;
-            receiver = this.state.viewData.pickSelf.name;
-            recevicePhone = this.state.viewData.pickSelf.receiverNum;
-        }
         if (StringUtils.isEmpty(areaCode)) {
             NativeModules.commModule.toast('请先添加地址');
             return;
         }
-        Toast.showLoading();
+         this.$loadingShow('加载中...');
         let params;
         if (this.state.orderParam && this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2 || this.state.orderParam.orderType === 98) {
             params = {
@@ -705,11 +498,9 @@ export default class ConfirOrderPage extends BasePage {
                 cityCode: cityCode,
                 orderProducts: this.state.orderParam.orderProducts,
                 orderType: this.state.orderParam.orderType,
-                pickedUp: pickedUp,
                 provinceCode: provinceCode,
                 receiver: receiver,
                 recevicePhone: recevicePhone,
-                storehouseId: storehouseId
             };
         } else {
             params = {
@@ -719,51 +510,34 @@ export default class ConfirOrderPage extends BasePage {
                 cityCode: cityCode,
                 orderProducts: this.state.orderParam.orderProducts,
                 orderType: this.state.orderParam.orderType,
-                pickedUp: pickedUp,
                 provinceCode: provinceCode,
                 receiver: receiver,
                 recevicePhone: recevicePhone,
-                storehouseId: storehouseId,
-                useScore: useScore
+                tokenCoin: useScore
             };
         }
         console.log(params);
         if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
-            // HomeApi.submitOrder({ orderParam: JSON.stringify(params) }).then((response) => {
-            //     if (response.ok) {
-            //         let data = response.data;
-            //         // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
-            //         this.navigate('payment/PaymentMethodPage', {
-            //             orderNum: data.orderNum,
-            //             amounts: this.state.viewData.totalAmounts,//todo 新加的
-            //             orderType: this.state.selectExpress ? 0 : 1,
-            //             pageType: 0,
-            //             tokenCoinToBalance: data.tokenCoinToBalance
-            //         });
-            //     } else {
-            //         Toast.toast(response.msg);
-            //     }
-            // }).catch(e => {
-            //     Toast.toast('' + e);
-            // });
         } else {
-            // OrderApi.submitOrder({ orderParam: JSON.stringify(params) }).then((response) => {
-            //     if (response.ok) {
-            //         let data = response.data;
-            //         // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
-            //         this.navigate('payment/PaymentMethodPage', {
-            //             orderNum: data.orderNum,
-            //             amounts: this.state.viewData.useScore ? this.state.viewData.totalAmounts - this.state.viewData.reducePrice : this.state.viewData.totalAmounts,
-            //             orderType: this.state.selectExpress ? 0 : 1,
-            //             pageType: 0,
-            //             tokenCoinToBalance: data.tokenCoinToBalance
-            //         });
-            //     } else {
-            //         NativeModules.commModule.toast(response.msg);
-            //     }
-            // }).catch(e => {
-            //     NativeModules.commModule.toast('' + e);
-            // });
+            OrderApi.submitOrder( params ).then((response) => {
+                this.$loadingDismiss();
+                    let data = response.data;
+                    // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
+                    this.$navigate('order/payment/PayMentMethodPage', {
+                        orderNum: data.orderNum,
+                        amounts: this.state.viewData.useScore ? this.state.viewData.totalAmounts - this.state.viewData.reducePrice : this.state.viewData.totalAmounts,
+                        orderType: this.state.selectExpress ? 0 : 1,
+                        pageType: 0,
+                        tokenCoinToBalance: data.tokenCoinToBalance
+                    });
+
+            }).catch(e => {
+                this.$loadingDismiss();
+                 console.log(e);
+                 if(e.code===10009){
+                     this.$navigate('login/login/LoginPage');
+                 }
+            });
         }
 
     };
@@ -806,16 +580,12 @@ export default class ConfirOrderPage extends BasePage {
     };
 
     componentWillUnmount() {
-        // 移除
-        if (this.usedCouponsListener) {
-            this.usedCouponsListener.remove();
-        }
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: 'white', justifyContent: 'flex-end'
+        flex: 1, backgroundColor: '#f7f7f7', justifyContent: 'flex-end'
     }, selectText: {
         fontFamily: 'PingFang-SC-Medium', fontSize: 16, color: '#ffffff'
     }, blackText: {
