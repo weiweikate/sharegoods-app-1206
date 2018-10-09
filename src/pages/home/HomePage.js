@@ -1,3 +1,7 @@
+/**
+ * 首页
+ */
+
 import React, { Component } from 'react';
 import {
     Text,
@@ -8,14 +12,17 @@ import {
     Image
 } from 'react-native';
 import RouterMap from '../../RouterMap';
-import ViewPager from '../../components/ui/ViewPager';
 import ScreenUtils from '../../utils/ScreenUtils';
 import {observer} from 'mobx-react';
 import Modules from './Modules'
-const {bannerModule } = Modules
+const { bannerModule } = Modules
 import HomeSearchView from './HomeSearchView'
 import HomeClassifyView from './HomeClassifyView'
 import HomeStarShopView from './HomeStarShopView'
+import HomeTodayView from './HomeTodayView'
+import HomeRecommendView from './HomeRecommendView'
+import HomeActivityView from './HomeActivityView'
+import HomeBannerView from './HomeBannerView'
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 const DemoList = [
@@ -93,41 +100,13 @@ class HomePage extends Component {
         });
     };
 
-    constructor(props) {
-        super(props)
-        const {loadbBnnerList} = this.props.bannerModule
-        loadbBnnerList && loadbBnnerList()
-    }
-
     render() {
-        const { bannerList } = this.props.bannerModule
         return (
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}
                             onScroll={this._onScroll}
                             scrollEventThrottle={10}>
-                    <View style={styles.viewPager}>
-                        <ViewPager
-                            swiperShow={true}
-                            arrayData={bannerList.toJS()}
-                            renderItem={(item) => this.renderViewPageItem(item)}
-                            dotStyle={{
-                                height: px2dp(5),
-                                width: px2dp(5),
-                                borderRadius: px2dp(5),
-                                backgroundColor: '#ffffff',
-                                opacity: 0.4
-                            }}
-                            activeDotStyle={{
-                                height: px2dp(5),
-                                width: px2dp(30),
-                                borderRadius: px2dp(5),
-                                backgroundColor: '#ffffff'
-                            }}
-                            autoplay={true}
-                            height={bannerHeight}
-                        />
-                    </View>
+                    <HomeBannerView/>
                     {/*头部分类*/}
                     <HomeClassifyView navigation = {this.props.navigation}/>
                     <View style={[styles.box, { paddingTop: 10, paddingBottom: 10 }]}>
@@ -149,8 +128,6 @@ class HomePage extends Component {
                             </View>
                         </View>
                     </View>
-                    <HomeStarShopView/>
-
                     <View style={[styles.box]}>
                         {
                             DemoList.map(item => {
@@ -173,6 +150,10 @@ class HomePage extends Component {
                             })
                         }
                     </View>
+                    <HomeStarShopView/>
+                    <HomeTodayView/>
+                    <HomeRecommendView/>
+                    <HomeActivityView/>
                 </ScrollView>
                 <View style={styles.navBarBg} ref={e => this._refHeader = e} >
                     <HomeSearchView navigation={this.props.navigation}/>
@@ -209,7 +190,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#f7f7f7'
     },
     viewPager: {
-        backgroundColor: 'rgba(255, 255, 255, 0.7)',
         width: ScreenUtils.width,
         height: bannerHeight
     },

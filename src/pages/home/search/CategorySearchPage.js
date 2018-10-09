@@ -23,6 +23,7 @@ export default class CategorySearchPage extends BasePage {
         this.state = {
             leftIndex: 0,
             swiperShow: false,
+            bannerData: [],
             nameArr: [],
             sectionArr: []
         };
@@ -56,7 +57,8 @@ export default class CategorySearchPage extends BasePage {
         HomeAPI.findHotList().then((response) => {
             let datas = response.data || [];
             this.setState({
-                sectionArr: [{ title: '热门分类', data: datas }]
+                sectionArr: [{ title: '热门分类', data: datas }],
+                bannerData: imageUrls
             });
         }).catch((data) => {
             bridge.$toast(data.msg);
@@ -106,9 +108,9 @@ export default class CategorySearchPage extends BasePage {
                         backgroundColor: 'white'
                     }}>
                         {
-                            imageUrls.length > 0 ?
+                            this.state.bannerData.length > 0 ?
                                 <ViewPager swiperShow={this.state.swiperShow}
-                                           arrayData={imageUrls}
+                                           arrayData={this.state.bannerData}
                                            renderItem={(url) => this.renderViewPageItem(url)}
                                            dotStyle={{
                                                height: 5,
@@ -184,7 +186,8 @@ export default class CategorySearchPage extends BasePage {
                 HomeAPI.findHotList().then((response) => {
                     let datas = response.data || [];
                     this.setState({
-                        sectionArr: [{ title: '热门分类', data: datas }]
+                        sectionArr: [{ title: '热门分类', data: datas }],
+                        bannerData: imageUrls
                     });
                 }).catch((data) => {
                     bridge.$toast(data.msg);
@@ -199,7 +202,8 @@ export default class CategorySearchPage extends BasePage {
                         arr.push(item);
                     }
                     this.setState({
-                        sectionArr: arr
+                        sectionArr: arr,
+                        bannerData: imageUrls
                     });
                 }).catch((data) => {
                     bridge.$toast(data.msg);

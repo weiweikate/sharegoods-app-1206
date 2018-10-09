@@ -28,6 +28,8 @@ export default class LoginPage extends BasePage {
         if (Platform.OS === 'android') {
             BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid);
         }
+
+        console.log(this.props.navigation.state)
     }
 
     componentWillUnmount() {
@@ -63,13 +65,17 @@ export default class LoginPage extends BasePage {
         if (UserModel.isLogin) {
             this.$navigateBack();
         } else {
-            let resetAction = NavigationActions.reset({
-                index: 0,
-                actions: [
-                    NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                ]
-            });
-            this.props.navigation.dispatch(resetAction);
+            if (this.params.callback){
+                let resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
+                    ]
+                });
+                this.props.navigation.dispatch(resetAction);
+            } else {
+                this.$navigateBack();
+            }
         }
     };
 
