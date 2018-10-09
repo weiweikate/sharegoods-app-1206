@@ -3,8 +3,8 @@
  */
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import ScreenUtils from '../../../../utils/ScreenUtils';
-import ColorUtil from '../../../../utils/ColorUtil';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import ColorUtil from '../../../utils/ColorUtil';
 
 export default class ProgressBarView extends Component {
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import BasePage from '../../../BasePage';
+import BasePage from '../../BasePage';
 
 import {
     View,
@@ -7,16 +7,16 @@ import {
     StyleSheet
 } from 'react-native';
 import { observer } from 'mobx-react';
-import ColorUtil from '../../../utils/ColorUtil';
+import ColorUtil from '../../utils/ColorUtil';
 import { ActivityOneView } from './components/SbSectiontHeaderView';
-import ScreenUtils from '../../../utils/ScreenUtils';
+import ScreenUtils from '../../utils/ScreenUtils';
 import SbOpenPrizeHeader from './components/SbOpenPrizeHeader';
 import OpenPrizeItemView from './components/OpenPrizeItemView';
-import HomeAPI from '../api/HomeAPI';
+// import HomeAPI from '../api/HomeAPI';
 import TotalTopicDataModel from './model/SubTopicModel';
 
 @observer
-export default class SubOpenPrizePage extends BasePage {
+export default class DownPricePage extends BasePage {
 
     dataModel = new TotalTopicDataModel();
     $navigationBarOptions = {
@@ -24,14 +24,14 @@ export default class SubOpenPrizePage extends BasePage {
         show: true
     };
     componentDidMount() {
-        HomeAPI.findTopicById({
-            id: 33
-        }).then((result) => {
-            this.dataModel.saveResultDataWith(result.data);
-            console.log(this.dataModel);
-        }).catch((error) => {
-
-        });
+        // HomeAPI.findTopicById({
+        //     id: 33
+        // }).then((result) => {
+        //     this.dataModel.saveResultDataWith(result.data);
+        //     console.log(this.dataModel);
+        // }).catch((error) => {
+        //
+        // });
     }
     _render() {
         return (
