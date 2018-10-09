@@ -96,7 +96,7 @@ export default class TwoColumnListView extends Component {
     _itemClickAction = (item) => {
         console.log(item.key);
         const {navigateTool} = this.props
-        navigateTool('')
+        navigateTool('home/subject/SubjectDetailPage')
 
     };
     _renderRowView = (item) => {

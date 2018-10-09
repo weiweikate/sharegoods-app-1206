@@ -20,8 +20,9 @@ const api = {
     //二、三级列表
     findProductCategoryList:['/product/productCategory/findProductCategoryList',{method:'get'}],
     //获取专题列表
-    findTopicById:['/topic/findById',{method:'get'}]
-
+    findTopicById:['/topic/findById',{method:'get'}],
+    //根据ID查询降价拍详情 沈耀鑫
+    activityDepreciate_findById:['/operator/activityDepreciate/findById',{method:'get'}]
 
 
 };
