@@ -68,8 +68,8 @@ export default class SetShopNamePage extends BasePage {
             this.$toastShow('店铺名称不能为空');
             return;
         }
-        if (this.state.text.length < 4 || this.state.text.length > 16) {
-            this.$toastShow('店铺名称仅限4~16位字符');
+        if (this.state.text.length < 2 || this.state.text.length > 16) {
+            this.$toastShow('店铺名称仅限2~16位字符');
             return;
         }
         if (this.params.storeData) {
