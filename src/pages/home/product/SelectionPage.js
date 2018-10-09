@@ -24,36 +24,25 @@ export default class SelectionPage extends Component {
 
     constructor(props) {
         super(props);
-        const { specMap, product, price, priceList } = this.props.data;
+        const { specMap, product, price } = this.props.data;
 
         //提取规格处理id
         let tittleList = [];
         for (let key in specMap) {
             tittleList.push(key);
-            specMap[key].forEach((item) => {
-                if (String(item.id).indexOf(',') === -1) {
-                    item.id = `,${item.id},`;
-                }
-            });
         }
-
-        //修改priceList中的specIds首尾增加','
-        priceList.forEach((item) => {
-            item.specIds = `,${item.specIds},`;
-        });
-
         this.state = {
             product: product || {},
             price: price,
             tittleList: tittleList,
 
-            priceList: [],
-            priceSeletedList: [],
-            specMap: [],
+            priceList: [],//根据最新选择下标获取别的row的数据
+            priceSeletedList: [],//根据别的row的状态获取当前选择row的数据
+            specMap: [],//所有规格  额外增加了isSelected  canSelected
 
 
-            selectList: [],
-            selectStrList: [],
+            selectList: [],//选择的规格id数组
+            selectStrList: [],//选择的规格名称值
             amount: 1
         };
 

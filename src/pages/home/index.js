@@ -2,7 +2,6 @@
 import HomePage from "./HomePage";
 import search from './search'
 import product from './product'
-import subject from './subject'
 
 export default {
     moduleName: 'home',    //模块名称
@@ -10,6 +9,5 @@ export default {
         HomePage,
         search,
         product,
-        subject
     }
 }
