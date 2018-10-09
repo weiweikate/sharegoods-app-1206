@@ -23,7 +23,7 @@ import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 import Toast from '../../../utils/bridge';
 
-// import OrderApi from 'OrderApi'
+ import OrderApi from 'OrderApi'
 
 class ExchangeGoodsDetailPage extends BasePage {
     constructor(props) {
@@ -100,12 +100,18 @@ class ExchangeGoodsDetailPage extends BasePage {
             }
         };
 
+        this._bindFunc();
+
     }
 
     $navigationBarOptions = {
         title: '换货详情界面',
         show: true// false则隐藏导航
     };
+
+    _bindFunc(){
+        this.renderOperationApplyView = this.renderOperationApplyView.bind(this);
+    }
 
     //**********************************ViewPart******************************************
     _render() {
@@ -114,6 +120,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {this.renderNotice()}
                     {this.renderHeader()}
+                    {this.renderOperationApplyView()}
                     {this.renderSucceedDetail()}
                     {this.renderAddress()}
                     {this.renderLogistics()}
@@ -453,6 +460,41 @@ class ExchangeGoodsDetailPage extends BasePage {
 
     /*** huchao */
 
+    renderOperationApplyView() {
+        return(
+            <View style = {styles.operationApplyView_container}>
+                <View style = {styles.operationApplyView_title}>
+                <UIText value = {'您已成功发起退款申请，请耐心等待商家处理'} style = {{ color: '#222222', fontSize: 15, marginLeft: 15}}/>
+                </View>
+                <View style = {{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
+                    <TouchableOpacity onPress = {() => {this.onPressOperationApply(true)}} style ={[styles.borderButton, {borderColor: '#666666'}]}>
+                        <UIText value = {'撤销申请'} style = {{fontSize: 16, color: '#666666'}}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress = {() => {this.onPressOperationApply(false)}} style ={styles.borderButton}>
+                        <UIText value = {'编辑申请'} style = {{fontSize: 16, color: '#D51243'}}/>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    }
+    /**
+     * 撤销、编辑申请
+     * @param cancel true -》撤销 、false -》编辑申请
+     */
+    onPressOperationApply(cancel){
+        if (cancel){
+            this.$loadingShow();
+            OrderApi.revokeApply({}).then(result => {
+                this.$loadingDismiss();
+                this.$navigateBack('/order/order/MyOrdersDetailPage');
+            }).catch(error => {
+                this.$loadingDismiss();
+                this.$toastShow(error.msg || '操作失败，请重试');
+            });
+        }else {
+
+        }
+    }
     /**
      * 获取剩余时间的字符串
      * @param out_time 失效时间 number
@@ -484,9 +526,31 @@ const styles = StyleSheet.create({
     container: {
         flex: 1, backgroundColor: color.white,
         justifyContent: 'flex-end'
-    }, refundReason: {
+    },
+    refundReason: {
         color: color.black_999, fontSize: 13, marginLeft: 17, marginTop: 10
-    }, addressStyle: {}
+    },
+    addressStyle: {},
+    operationApplyView_container: {
+        backgroundColor: 'white',
+        height: 110,
+    },
+    operationApplyView_title: {
+        height: 45,
+        borderBottomWidth: 1,
+        borderBottomColor: '#DDDDDD',
+        justifyContent: 'center',
+    },
+    borderButton: {
+        borderWidth: 1,
+        borderColor: '#D51243',
+        borderRadius: 5,
+        height: 30,
+        width: 83,
+        marginRight: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
 });
 
 export default ExchangeGoodsDetailPage;
