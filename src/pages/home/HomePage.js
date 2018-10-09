@@ -157,10 +157,6 @@ class HomePage extends Component {
                             </View>
                         </View>
                     </View>
-                    <HomeStarShopView/>
-                    <HomeTodayView/>
-                    <HomeRecommendView/>
-                    <HomeActivityView/>
                     <View style={[styles.box]}>
                         {
                             DemoList.map(item => {
@@ -183,6 +179,10 @@ class HomePage extends Component {
                             })
                         }
                     </View>
+                    <HomeStarShopView/>
+                    <HomeTodayView/>
+                    <HomeRecommendView/>
+                    <HomeActivityView/>
                 </ScrollView>
                 <View style={styles.navBarBg} ref={e => this._refHeader = e} >
                     <HomeSearchView navigation={this.props.navigation}/>
