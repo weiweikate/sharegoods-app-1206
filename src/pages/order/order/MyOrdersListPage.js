@@ -70,19 +70,19 @@ class MyOrdersListPage extends BasePage {
                         selectTab={this.state.selectTab}/>
 
                     <MyOrdersListView
-                        tabLabel={{ label: '待支付', badge: this.state.states.toBePaid }} pageStatus={1}
+                        tabLabel={{ label: '待支付', }} pageStatus={1}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
                     <MyOrdersListView
-                        tabLabel={{ label: '待发货', badge: this.state.states.toBePaid }} pageStatus={2}
+                        tabLabel={{ label: '待发货',}} pageStatus={2}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
                     <MyOrdersListView
-                        tabLabel={{ label: '待收货', badge: this.state.states.toBePaid }} pageStatus={3}
+                        tabLabel={{ label: '待收货',}} pageStatus={3}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
                     <MyOrdersListView
-                        tabLabel={{ label: '已完成', badge: this.state.states.toBePaid }} pageStatus={4}
+                        tabLabel={{ label: '已完成', }} pageStatus={4}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
 
