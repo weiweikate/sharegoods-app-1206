@@ -109,14 +109,14 @@ class AfterSaleServiceHomePage extends BasePage {
                 });
                 break;
             case 1:
-                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
+                this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
                     pageType: 1,
                     index: this.params.index ? this.params.index : 0,
                     pageData: this.params.pageData ? this.params.pageData : {}
                 });
                 break;
             case 2:
-                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
+                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 2,
                     index: this.params.index ? this.params.index : 0,
                     pageData: this.params.pageData ? this.params.pageData : {}

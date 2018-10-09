@@ -450,6 +450,34 @@ class ExchangeGoodsDetailPage extends BasePage {
             });
         }
     };
+
+    /*** huchao */
+
+    /**
+     * 获取剩余时间的字符串
+     * @param out_time 失效时间 number
+     * return 如果当前时间大于 out_time 返回 null
+     */
+    getRemainingTime(out_time){
+        let timestamp = Date.parse(new Date()) / 1000;
+        out_time = out_time / 1000;
+
+        if (timestamp >= out_time){
+            return null;
+        }
+
+        let remainingTime = timestamp - out_time;
+        let s = remainingTime % 60;
+        remainingTime = (remainingTime - s) / 60;
+        let m = remainingTime % 60;
+        remainingTime = (remainingTime - m) / 60;
+        let H = remainingTime % 24;
+        remainingTime = (remainingTime - H) / 24;
+        let d = remainingTime;
+
+        return '剩余' + d + '天' + H + '小时' + m + '分'
+    }
+
 }
 
 const styles = StyleSheet.create({
