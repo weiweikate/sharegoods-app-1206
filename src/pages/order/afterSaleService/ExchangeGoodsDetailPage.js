@@ -36,7 +36,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             phoneError: false,
             passwordError: false,
             imageArr: [
-                // 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
+                'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
                 // 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
                 // 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
                 // 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
