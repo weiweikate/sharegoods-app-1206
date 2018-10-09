@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, NativeModules } from 'react-native';
 import RefreshList from '../../../components/ui/RefreshList';
 import constants from '../../../constants/constants';
 import StringUtils from '../../../utils/StringUtils';
@@ -7,10 +7,10 @@ import GoodsListItem from './GoodsListItem';
 import SingleSelectionModal from './BottomSingleSelectModal';
 import CommonTwoChoiceModal from './CommonTwoChoiceModal';
 import Toast from '../../../utils/bridge';
+import user from '../../../model/user';
+import OrderApi from '../api/orderApi';
 
-// import OrderApi from 'OrderApi'
-
-class MyOrdersListView extends Component {
+export default class MyOrdersListView extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -146,7 +146,7 @@ class MyOrdersListView extends Component {
                         }
                     ],
                     pickedUp: 2//2为自提，1为快递
-                },
+                }
             ],
             pageStatus: this.props.pageStatus,
             isEmpty: false,
@@ -311,7 +311,7 @@ class MyOrdersListView extends Component {
                 productId: item.productId,
                 productName: item.productName,
                 spec: item.spec,
-                imgUrl: item.imgUrl,
+                imgUrl: item.specImg,
                 price: StringUtils.formatMoneyString(item.price),
                 num: item.num,
                 status: item.status
@@ -320,23 +320,25 @@ class MyOrdersListView extends Component {
         return arrData;
     };
     getList = (data) => {
-        if (StringUtils.isNoEmpty(data)) {
+        if (StringUtils.isNoEmpty(data)&&StringUtils.isNoEmpty(data.data)) {
             let arrData = this.state.currentPage === 1 ? [] : this.state.viewData;
             data.data.map((item, index) => {
                 arrData.push({
                     id: item.id,
                     orderNum: item.orderNum,
                     expressNo: item.expressNo,
-                    orderCreateTime: item.orderCreateTime,
-                    orderStatus: item.orderStatus,
+                    orderCreateTime: item.createTime,
+                    orderStatus: item.status,
                     freightPrice: item.freightPrice,
                     totalPrice: item.totalPrice,
-                    orderProduct: this.getOrderProduct(item.orderProduct),
+                    orderProduct: this.getOrderProduct(item.orderProductList),
                     pickedUp: item.pickedUp,
-                    outTrandNo: item.outTrandNo
+                    outTrandNo: item.shutOffTime
                 });
             });
             this.setState({ viewData: arrData });
+        }else{
+            this.setState({viewData:[],isEmpty:true})
         }
     };
 
@@ -346,82 +348,66 @@ class MyOrdersListView extends Component {
     }
 
     getDataFromNetwork = () => {
-        // let params={
-        //     dealerId:user.id,
-        //     page:this.state.currentPage,
-        //     pageSize:constants.PAGESIZE
-        // }
-        // this.$loadingShow();
+        let params = {
+            userId: user.id,
+            page: this.state.currentPage,
+            size: constants.PAGESIZE
+        };
+        Toast.showLoading();
         switch (this.state.pageStatus) {
             case 0:
-                // OrderApi.queryAllOrderPageList(params).then((response)=>{
-                //     Toast.hiddenLoading()
-                //     if(response.ok ){
-                //         Toast.hiddenLoading()
-                //         this.getList(response.data)
-                //         this.setState({isEmpty:response.data&&StringUtils.isNoEmpty(response.data)&&response.data.length!=0})
-                //     } else {
-                //         NativeModules.commModule.toast(response.msg)
-                //     }
-                // }).catch(e=>{
-                //     NativeModules.commModule.toast(e)
-                // });
+                OrderApi.queryPage(params).then((response) => {
+                    Toast.hiddenLoading();
+                    this.getList(response.data);
+                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+
+                }).catch(e => {
+                    Toast.hiddenLoading();
+                    console.log(e);
+                });
                 break;
             case 1:
-                // OrderApi.queryUnPaidOrderPageList(params).then((response)=>{
-                //     Toast.hiddenLoading()
-                //     if(response.ok ){
-                //         Toast.hiddenLoading()
-                //         this.getList(response.data)
-                //         this.setState({isEmpty:response.data&&StringUtils.isNoEmpty(response.data)&&response.data.length!=0})
-                //     } else {
-                //         NativeModules.commModule.toast(response.msg)
-                //     }
-                // }).catch(e=>{
-                //     NativeModules.commModule.toast(e)
-                // });
+                OrderApi.queryPage({ ...params, status: 1 }).then((response) => {
+                    Toast.hiddenLoading();
+                    this.getList(response.data);
+                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+                }).catch(e => {
+                    Toast.hiddenLoading();
+                    NativeModules.commModule.toast(e.msg);
+                });
                 break;
             case 2:
-                // OrderApi.queryUnSendOutOrderPageList(params).then((response)=>{
-                //     Toast.hiddenLoading()
-                //     if(response.ok ){
-                //         Toast.hiddenLoading()
-                //         this.getList(response.data)
-                //         this.setState({isEmpty:response.data&&StringUtils.isNoEmpty(response.data)&&response.data.length!=0})
-                //     } else {
-                //         NativeModules.commModule.toast(response.msg)
-                //     }
-                // }).catch(e=>{
-                //     NativeModules.commModule.toast(e)
-                // });
+                OrderApi.queryPage({...params,status:2}).then((response) => {
+                    Toast.hiddenLoading();
+                    this.getList(response.data);
+                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+
+                }).catch(e => {
+                    Toast.hiddenLoading();
+                    NativeModules.commModule.toast(e.msg);
+                });
                 break;
             case 3:
-                // OrderApi.queryWaitReceivingOrderPageList(params).then((response)=>{
-                //     Toast.hiddenLoading()
-                //     if(response.ok ){
-                //         Toast.hiddenLoading()
-                //         this.getList(response.data)
-                //         this.setState({isEmpty:response.data&&StringUtils.isNoEmpty(response.data)&&response.data.length!=0})
-                //     } else {
-                //         NativeModules.commModule.toast(response.msg)
-                //     }
-                // }).catch(e=>{
-                //     NativeModules.commModule.toast(e)
-                // });
+                OrderApi.queryPage({...params,status:3}).then((response) => {
+                    Toast.hiddenLoading();
+                    this.getList(response.data);
+                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+
+                }).catch(e => {
+                    Toast.hiddenLoading();
+                    NativeModules.commModule.toast(e.msg);
+                });
                 break;
             case 4:
-                // OrderApi.queryCompletedOrderPageList(params).then((response)=>{
-                //     Toast.hiddenLoading()
-                //     if(response.ok ){
-                //         Toast.hiddenLoading()
-                //         this.getList(response.data)
-                //         this.setState({isEmpty:response.data&&StringUtils.isNoEmpty(response.data)&&response.data.length!=0})
-                //     } else {
-                //         NativeModules.commModule.toast(response.msg)
-                //     }
-                // }).catch(e=>{
-                //     NativeModules.commModule.toast(e)
-                // });
+                OrderApi.queryPage({...params,status:4}).then((response) => {
+                    Toast.hiddenLoading();
+                    this.getList(response.data);
+                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+
+                }).catch(e => {
+                    Toast.hiddenLoading();
+                    NativeModules.commModule.toast(e.msg);
+                });
                 break;
             default:
                 // let orderNum=this.props.orderNum
@@ -477,6 +463,8 @@ class MyOrdersListView extends Component {
         } else {
             this.props.nav('order/order/MyOrdersDetailPage', {
                 orderId: this.state.viewData[index].id,
+                status:this.state.viewData[index].orderStatus,
+                orderNum:this.state.viewData[index].orderNum,
                 callBack: this.onRefresh
             });
         }
@@ -564,5 +552,3 @@ class MyOrdersListView extends Component {
         }
     };
 }
-
-export default MyOrdersListView;

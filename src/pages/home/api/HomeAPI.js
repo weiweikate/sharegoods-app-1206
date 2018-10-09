@@ -18,7 +18,11 @@ const api = {
     //一级类目列表
     findNameList:'/product/productCategory/findNameList',
     //二、三级列表
-    findProductCategoryList:['/product/productCategory/findProductCategoryList',{method:'get'}]
+    findProductCategoryList:['/product/productCategory/findProductCategoryList',{method:'get'}],
+    //获取专题列表
+    findTopicById:['/topic/findById',{method:'get'}]
+
+
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';

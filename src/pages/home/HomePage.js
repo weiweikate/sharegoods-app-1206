@@ -1,34 +1,30 @@
+/**
+ * 首页
+ */
+
 import React, { Component } from 'react';
 import {
     Text,
     View,
     ScrollView,
     TouchableHighlight,
-    TouchableOpacity,
     StyleSheet,
-    Platform,
-    Image,
-    Dimensions
+    Image
 } from 'react-native';
 import RouterMap from '../../RouterMap';
-import ViewPager from '../../components/ui/ViewPager';
 import ScreenUtils from '../../utils/ScreenUtils';
-import UIImage from '../../components/ui/UIImage';
-import LinearGradient from 'react-native-linear-gradient';
-import HomeClassifyView from './components/HomeClassifyView';
+import {observer} from 'mobx-react';
+import Modules from './Modules'
+const { bannerModule } = Modules
+import HomeSearchView from './HomeSearchView'
+import HomeClassifyView from './HomeClassifyView'
+import HomeStarShopView from './HomeStarShopView'
+import HomeTodayView from './HomeTodayView'
+import HomeRecommendView from './HomeRecommendView'
+import HomeActivityView from './HomeActivityView'
+import HomeBannerView from './HomeBannerView'
 
-const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
-const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
-const IPHONEX = (MIN_SCREENT === 375.00 && MAX_SCREENT === 812.0);
-
-const { px2dp } = ScreenUtils;
-
-const imageUrls = [
-    'https://yanxuan.nosdn.127.net/2ac89fb96fe24a2b69cae74a571244cb.jpg?imageView&quality=75&thumbnail=750x0',
-    'https://yanxuan.nosdn.127.net/8f283dd0ad76bb48ef9c29a04690816a.jpg?imageView&quality=75&thumbnail=750x0',
-    'https://yanxuan.nosdn.127.net/a9e80a3516c99ce550c7b5574973c22f.jpg?imageView&quality=75&thumbnail=750x0',
-    'https://yanxuan.nosdn.127.net/11b673687ae33f87168cc7b93250c331.jpg?imageView&quality=75&thumbnail=750x0'
-];
+const { px2dp, statusBarHeight } = ScreenUtils;
 const DemoList = [
     {
         title: '专题页面类型one',
@@ -83,33 +79,19 @@ const DemoList = [
         uri: 'home/search/CategorySearchPage'
     }
 ];
-export default class HomePage extends Component {
+
+
+const bannerHeight = px2dp(220)
+
+class HomePage extends Component {
 
     st = 0;
-    bannerH = px2dp(220);
-    headerH = (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : ScreenUtils.androidStatusHeight()) + 44;
-
-    constructor() {
-        super();
-        this.state = {
-            androidStatusH: ScreenUtils.androidStatusHeight(),
-            swiperShow: false,
-            bannerHeight: this.bannerH
-        };
-    }
-
-    componentDidMount() {
-        setTimeout(() => {
-            this.setState({
-                swiperShow: true
-            });
-        }, 0);
-    }
+    headerH = statusBarHeight + 44;
 
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
-        if (Y < this.bannerH) {
-            this.st = Y / (this.bannerH - this.headerH);
+        if (Y < bannerHeight) {
+            this.st = Y / (bannerHeight - this.headerH);
         } else {
             this.st = 1;
         }
@@ -118,77 +100,15 @@ export default class HomePage extends Component {
         });
     };
 
-
     render() {
         return (
             <View style={styles.container}>
-                <View ref={(e) => this._refHeader = e}
-                      style={[styles.navBarBg, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH },
-                          { height: this.headerH }]}/>
-                <LinearGradient colors={['#000000', 'transparent']}
-                                style={[styles.navBar, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH },
-                                    {
-                                        height: this.headerH + 14,
-                                        opacity: 0.5
-                                    }]}/>
-                <View colors={['#000000', 'transparent']}
-                      style={[styles.navBar, { paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : this.state.androidStatusH },
-                          {
-                              height: this.headerH,
-                              opacity: 0.8
-                          }]}>
-                    <Image source={require('./res/icons/logo.png')} style={styles.logo}/>
-                    <TouchableOpacity style={styles.searchBox} onPress={()=> this.props.navigation.navigate('home/search/SearchPage')}>
-                        <Image source={require('./res/icon_search.png')} style={styles.searchIcon}/>
-                        <View style={styles.inputText}/>
-                    </TouchableOpacity>
-                    <TouchableHighlight onPress={() => this.props.navigation.navigate('message/MessageCenterPage')}>
-                        <Image source={require('./res/icons/msg.png')} style={styles.scanIcon}/>
-                    </TouchableHighlight>
-                </View>
                 <ScrollView showsVerticalScrollIndicator={false}
                             onScroll={this._onScroll}
                             scrollEventThrottle={10}>
-
-                    <ViewPager style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                        width: ScreenUtils.width
-                    }}
-                               swiperShow={this.state.swiperShow}
-                               arrayData={imageUrls}
-                               renderItem={(item) => this.renderViewPageItem(item)}
-                               dotStyle={{
-                                   height: px2dp(5),
-                                   width: px2dp(5),
-                                   borderRadius: px2dp(5),
-                                   backgroundColor: '#ffffff',
-                                   opacity: 0.4
-                               }}
-                               activeDotStyle={{
-                                   height: px2dp(5),
-                                   width: px2dp(30),
-                                   borderRadius: px2dp(5),
-                                   backgroundColor: '#ffffff'
-                               }}
-                               autoplay={true}
-                               height={this.state.bannerHeight}
-                    />
+                    <HomeBannerView/>
                     {/*头部分类*/}
-                    <HomeClassifyView
-                        itemImages={[
-                            require('./res/icons/zq.png'),
-                            require('./res/icons/sq.png'),
-                            require('./res/icons/fx.png'),
-                            require('./res/icons/xy.png'),
-                            require('./res/icons/cx.png'),
-                            require('./res/icons/cx.png')
-                        ]}
-                        itemTitles={['赚钱', '省钱', '分享', '学院', '促销', '赚钱']}
-                        itemClickAction={() => {
-                            console.log('点击了分类item');
-                        }}
-                    />
-
+                    <HomeClassifyView navigation = {this.props.navigation}/>
                     <View style={[styles.box, { paddingTop: 10, paddingBottom: 10 }]}>
                         <View style={styles.featureBox}>
                             <View style={[styles.featureBox1]}>
@@ -208,7 +128,6 @@ export default class HomePage extends Component {
                             </View>
                         </View>
                     </View>
-
                     <View style={[styles.box]}>
                         {
                             DemoList.map(item => {
@@ -231,7 +150,14 @@ export default class HomePage extends Component {
                             })
                         }
                     </View>
+                    <HomeStarShopView/>
+                    <HomeTodayView/>
+                    <HomeRecommendView/>
+                    <HomeActivityView/>
                 </ScrollView>
+                <View style={styles.navBarBg} ref={e => this._refHeader = e} >
+                    <HomeSearchView navigation={this.props.navigation}/>
+                </View>
             </View>
 
         );
@@ -239,12 +165,9 @@ export default class HomePage extends Component {
 
     renderViewPageItem = (item) => {
         return (
-            <UIImage
+            <Image
                 source={{ uri: item }}
                 style={{ height: px2dp(220), width: ScreenUtils.width }}
-                onPress={() => {
-
-                }}
                 resizeMode="cover"
             />);
     };
@@ -254,22 +177,47 @@ export default class HomePage extends Component {
 
 }
 
+@observer
+export default class Home extends Component {
+    render () {
+        return <HomePage bannerModule={bannerModule} {...this.props}/>
+    }
+}
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f7f7f7'
     },
+    viewPager: {
+        width: ScreenUtils.width,
+        height: bannerHeight
+    },
+    dotStyle: {
+        height: px2dp(5),
+        width: px2dp(5),
+        borderRadius: px2dp(5),
+        backgroundColor: '#fff',
+        opacity: 0.4
+    },
+    activeDotStyle: {
+        height: px2dp(5),
+        width: px2dp(30),
+        borderRadius: px2dp(5),
+        backgroundColor: '#fff'
+    },
     box: {
         backgroundColor: '#ffffff',
-        marginBottom: 10
+        marginBottom: 10,
+        marginTop: 10
     },
     // headerBg
     navBarBg: {
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
-        height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20) + 44,
-        paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
+        height: statusBarHeight + 44,
+        paddingTop: statusBarHeight,
         backgroundColor: '#d51243',
         alignItems: 'center',
         opacity: 0,
@@ -278,20 +226,6 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         zIndex: 2
-    },
-    // header
-    navBar: {
-        flexDirection: 'row',
-        paddingLeft: 10,
-        paddingRight: 10,
-        height: (Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20) + 44,
-        paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        zIndex: 3
     },
     logo: {
         height: 27,

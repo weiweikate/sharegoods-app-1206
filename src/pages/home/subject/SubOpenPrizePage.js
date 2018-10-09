@@ -4,19 +4,35 @@ import BasePage from '../../../BasePage';
 import {
     View,
     SectionList,
-    StyleSheet,
+    StyleSheet
 } from 'react-native';
+import { observer } from 'mobx-react';
 import ColorUtil from '../../../utils/ColorUtil';
 import { ActivityOneView } from './components/SbSectiontHeaderView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import SbOpenPrizeHeader from './components/SbOpenPrizeHeader';
 import OpenPrizeItemView from './components/OpenPrizeItemView';
+import HomeAPI from '../api/HomeAPI';
+import TotalTopicDataModel from './model/SubTopicModel';
 
+@observer
 export default class SubOpenPrizePage extends BasePage {
+
+    dataModel = new TotalTopicDataModel();
     $navigationBarOptions = {
         title: '专题',
         show: true
     };
+    componentDidMount() {
+        HomeAPI.findTopicById({
+            id: 33
+        }).then((result) => {
+            this.dataModel.saveResultDataWith(result.data);
+            console.log(this.dataModel);
+        }).catch((error) => {
+
+        });
+    }
     _render() {
         return (
             <View>
@@ -38,7 +54,9 @@ export default class SubOpenPrizePage extends BasePage {
                             }
                         }
                     }
-
+                    renderItem={({ item, index, section }) => {
+                        return this._renderRowView(item);
+                    }}
                     // contentContainerStyle={styles.list}//设置cell的样式
                     pageSize={2}  // 配置pageSize确认网格数量
                     sections={[
@@ -68,13 +86,12 @@ export default class SubOpenPrizePage extends BasePage {
                             ]
                         }
                     ]}
-                    renderItem={({ item, index, section }) => {
-                        return this._renderRowView(item);
-                    }}
+
                 />
             </View>
         );
     }
+
     /**
      *
      * @param key
@@ -91,8 +108,12 @@ export default class SubOpenPrizePage extends BasePage {
      * @private
      */
     _renderHeaderView = (key) => {
+
+        console.log(this.dataModel)
         if (key === 'one') {
-            return <SbOpenPrizeHeader/>;
+            return <SbOpenPrizeHeader
+                headerData={this.dataModel}
+            />;
         } else {
             return <ActivityOneView/>;
         }
@@ -104,14 +125,13 @@ export default class SubOpenPrizePage extends BasePage {
      * @private
      */
     _renderRowView = (item) => {
-        return(<OpenPrizeItemView/>);
+        return (<OpenPrizeItemView/>);
     };
     /**
      *
      * @private
      */
     _itemClickAction = () => {
-
 
     };
 }
@@ -128,5 +148,5 @@ const Styles = StyleSheet.create({
         backgroundColor: ColorUtil.Color_f7f7f7,
         padding: 8,
         paddingBottom: 0
-    },
+    }
 });

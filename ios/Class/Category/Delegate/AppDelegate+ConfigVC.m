@@ -15,13 +15,14 @@
 
 -(void)JR_ConfigVC:(UIApplication *)application  didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  
   //TODO: 应用根控制器的view指向了RCTRootView。但RCTRootView加载jsCodeLocation对应的js代码是耗时操作。
   //未了避免白屏，可以添加launchscreen一样的view强行覆盖window.等待js代码被真正执行时，再出发native移除此view.
   NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
   
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"sharegoods"
-                                               initialProperties:nil
+                                               initialProperties:@{@"statusBarHeight":[NSNumber numberWithFloat:kStatusBarHeight]}
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
