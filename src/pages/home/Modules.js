@@ -4,7 +4,7 @@ class BannerModules {
     @observable bannerList = []
     @computed get bannerCount() { return this.bannerList.length }
 
-    @action loadbBnnerList = () => {
+    @action loadBannerList = () => {
         this.bannerList = [
             'https://yanxuan.nosdn.127.net/2ac89fb96fe24a2b69cae74a571244cb.jpg?imageView&quality=75&thumbnail=750x0',
             'https://yanxuan.nosdn.127.net/8f283dd0ad76bb48ef9c29a04690816a.jpg?imageView&quality=75&thumbnail=750x0',
