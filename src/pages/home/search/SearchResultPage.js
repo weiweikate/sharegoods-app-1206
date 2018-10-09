@@ -68,7 +68,7 @@ export default class SearchResultPage extends BasePage {
         if (!StringUtils.isEmpty(this.params.categoryId)) {
             param.categoryId = this.params.categoryId;
         } else {
-            //热门搜索需要hotWordId
+            //热门搜索额外需要hotWordId
             if (!StringUtils.isEmpty(this.params.hotWordId)) {
                 param.hotWordId = this.params.hotWordId;
             }
@@ -93,6 +93,20 @@ export default class SearchResultPage extends BasePage {
             id: productId
         }).then((data) => {
             this.$loadingDismiss();
+            data.data = data.data||{}
+            const { specMap, priceList } = data.data;
+            //修改specMap每个元素首尾增加'，'
+            for (let key in specMap) {
+                specMap[key].forEach((item) => {
+                    if (String(item.id).indexOf(',') === -1) {
+                        item.id = `,${item.id},`;
+                    }
+                });
+            }
+            //修改priceList中的specIds首尾增加','
+            priceList.forEach((item) => {
+                item.specIds = `,${item.specIds},`;
+            });
             this.setState({
                 selectionData: data.data,
                 modalVisible: !this.state.modalVisible,

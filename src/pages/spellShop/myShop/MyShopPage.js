@@ -67,11 +67,19 @@ export default class MyShopPage extends BasePage {
         this.state = {
             storeData: {},
             storeId: this.params.storeId || this.props.storeId,
-            isLike: false
+            isLike: false,
+            isRefresh:false
         };
     }
 
     componentDidMount() {
+        this._loadPageData();
+    }
+
+    _onRefresh = ()=>{
+        this.setState({
+            isRefresh:true
+        });
         this._loadPageData();
     }
 
@@ -81,10 +89,14 @@ export default class MyShopPage extends BasePage {
             let dataTemp = data.data || {};
             this.setState({
                 storeData: dataTemp,
-                storeId: dataTemp.id
+                storeId: dataTemp.id,
+                isRefresh:false
             });
         }).catch((error) => {
             this.$toastShow(error.msg);
+            this.setState({
+                isRefresh:false
+            });
         });
 
         //是否收藏店铺
@@ -296,7 +308,7 @@ export default class MyShopPage extends BasePage {
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl
-                            onRefresh={this._onRefresh}/>}>
+                            onRefresh={this._onRefresh} refreshing={this.state.isRefresh}/>}>
                 {this.renderHeader()}
                 <MembersRow dealerList={storeUserList.slice()}
                             isYourStore={myStore}

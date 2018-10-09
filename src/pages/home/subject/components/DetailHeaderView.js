@@ -50,10 +50,6 @@ export default class DetailHeaderView extends Component {
             />);
     };
 
-    _renderActivityView= ()=>{
-
-    }
-
     render() {
         const { productImgList = [{}], freight = 0, monthSaleTotal = 0, price = 0, originalPrice = 0, product = {} } = this.props.data || {};
         const { supplierName = '', brandName = '', name = '', firstCategoryName = '', secCategoryName = '', thirdCategoryName = '' } = product;
@@ -81,24 +77,9 @@ export default class DetailHeaderView extends Component {
 
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
-                        <Text style={{
-                            marginTop: 14,
-                            color: '#222222',
-                            fontSize: 15
-                        }}>{`${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`}</Text>
-                        <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
-                            <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${price}起`}</Text>
-                            <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${originalPrice}`}</Text>
-                            <Text style={{
-                                marginLeft: 5,
-                                backgroundColor: 'red',
-                                color: '#FFFFFF',
-                                fontSize: 10
-                            }}>拼店价</Text>
-                        </View>
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text
-                                style={{ color: '#BBBBBB', fontSize: 11 }}>{freight === 0 ? '包邮' : `${freight}元`}</Text>
+                                style={{ color: '#BBBBBB', fontSize: 11 }}>快递：{freight === 0 ? `包邮` : `${freight}元`}</Text>
                             <Text style={{
                                 color: '#666666',
                                 fontSize: 13,

@@ -26,7 +26,7 @@ export default class RecommendRow extends Component {
         this.state = {};
     }
 
-    renderIconItem = ({item}) => {
+    renderIconItem = ({ item }) => {
         return (<TouchableOpacity onPress={() => {
         }}>
             {item.headImg ? <Image style={styles.itemIcon} source={{ uri: item.headImg || '' }}/> : <View
@@ -57,8 +57,7 @@ export default class RecommendRow extends Component {
                         <View style={styles.headerViewContainer}>
                             {RecommendRowItem.headUrl ? <Image style={styles.icon}
                                                                source={{ uri: RecommendRowItem.headUrl || '' }}/> :
-                                <View
-                                    style={styles.icon}/>}
+                                <View style={styles.icon}/>}
                             <View style={styles.tittleContainer}>
                                 <Text style={styles.name}>{RecommendRowItem.name || ''}</Text>
                                 <Text style={styles.member}>{`店主: ${RecommendRowItem.storeUserName || ''}`}</Text>

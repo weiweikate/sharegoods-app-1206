@@ -9,6 +9,7 @@ import BasePage from '../../BasePage';
 import { observer } from 'mobx-react';
 import MyShopPage from './myShop/MyShopPage';
 import ShopRecruitPage from './shopRecruit/ShopRecruitPage';
+import RecommendPage from './recommendSearch/RecommendPage';
 import SpellShopApi from './api/SpellShopApi';
 import StringUtils from '../../utils/StringUtils';
 import { PageLoadingState } from '../../components/pageDecorator/PageState';
@@ -65,7 +66,9 @@ export default class MyShop_RecruitPage extends BasePage {
         if (StringUtils.isEmpty(this.state.status)) {
             return null;
         }
-        if (this.state.status === 3) {
+        if (this.state.status === 2) {
+            return (<RecommendPage navigation={this.props.navigation} leftNavItemHidden={true}/>);
+        } else if (this.state.status === 3) {
             return <ShopRecruitPage navigation={this.props.navigation}
                                     storeId={this.props.storeId}
                                     leftNavItemHidden={this.props.leftNavItemHidden}
