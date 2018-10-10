@@ -40,60 +40,67 @@ export class AdModules {
     })
 }
 
-import zqImg from './res/icons/zq.png'
-import sqImg from './res/icons/sq.png'
-import cxImg from './res/icons/cx.png'
+import schoolImg from './res/school.png'
+import makemoneyImg from './res/makemoney.png'
+import shareImg from './res/share.png'
+import signinImg from './res/signin.png'
+import spikeImg from './res/spike.png'
+import computerImg from './res/computer.png'
+import iphoneImg from './res/iphone.png'
+import allImg from './res/all.png'
+import makeupsImg from './res/makeups.png'
+import clothImg from './res/cloth.png'
 
 export class ClassifyModules {
     @observable classifyList = []
     @action loadClassifyList = () => {
         this.classifyList = [{
-            icon: cxImg,
+            icon: makemoneyImg,
             name: '赚钱',
             id: 1,
             route: 'home/search/CategorySearchPage'
         },{
-            icon: sqImg,
-            name: '省钱',
-            id: 1,
-            route: 'home/search/CategorySearchPage'
-        },{
-            icon: zqImg,
+            icon: shareImg,
             name: '分享',
             id: 1,
             route: 'home/search/CategorySearchPage'
         },{
-            icon: zqImg,
+            icon: signinImg,
+            name: '签到',
+            id: 1,
+            route: 'home/search/CategorySearchPage'
+        },{
+            icon: schoolImg,
             name: '学院',
             id: 1,
             route: 'home/search/CategorySearchPage'
         },{
-            icon: cxImg,
-            name: '促销',
+            icon: spikeImg,
+            name: '秒杀',
             id: 1,
             route: 'home/search/CategorySearchPage'
         },{
-            icon: sqImg,
-            name: '赚钱',
+            icon: iphoneImg,
+            name: '手机相册',
             id: 1,
             route: 'home/search/CategorySearchPage'
         },{
-            icon: zqImg,
-            name: '学院',
+            icon: computerImg,
+            name: '电脑家电',
             id: 1,
             route: 'home/search/CategorySearchPage'
         },{
-            icon: sqImg,
-            name: '学院',
+            icon: clothImg,
+            name: '品质男装',
             id: 1,
             route: 'home/search/CategorySearchPage'
         },{
-            icon: cxImg,
-            name: '学院',
+            icon: makeupsImg,
+            name: '美妆个护',
             id: 1,
             route: 'home/search/CategorySearchPage'
         },{
-            icon: sqImg,
+            icon: allImg,
             name: '全部分类',
             id: 1,
             route: 'home/search/CategorySearchPage'
