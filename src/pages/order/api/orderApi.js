@@ -30,7 +30,7 @@ const api = {
     //（陈帅）填写寄回信息
     fillSendInfo: '/order/returnProduct/fillSendInfo',
     //（陈帅）查看详情
-    lookDetail:'/order/returnProduct/lookDetail',
+    returnProductLookDetail:'/order/returnProduct/lookDetail',
     //（陈帅）撤销申请
     revokeApply: '/order/returnProduct/revokeApply',
     //（陈帅）修改申请
