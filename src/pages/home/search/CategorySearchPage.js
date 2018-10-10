@@ -8,6 +8,7 @@ import bridge from '../../../utils/bridge';
 import ViewPager from '../../../components/ui/ViewPager';
 import UIText from '../../../components/ui/UIText';
 import UIImage from '../../../components/ui/UIImage';
+import StringUtils from '../../../utils/StringUtils';
 
 const itemImgW = (ScreenUtils.width - 110 - 2 * 30 - 2 * 20) / 3;
 const bannerW = ScreenUtils.width - 110;
@@ -53,7 +54,7 @@ export default class CategorySearchPage extends BasePage {
             let datas = response.data || {};
             this.setState({
                 sectionArr: [{ title: '热门分类', data: datas.productCategoryList }],
-                bannerData: datas.imgList
+                bannerData: [datas.imgList]
             });
         }).catch((data) => {
             bridge.$toast(data.msg);
@@ -77,7 +78,7 @@ export default class CategorySearchPage extends BasePage {
 
             <View style={{ flexDirection: 'column' }}>
                 <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity style={styles.searchBox} onPress={()=>this.go2SearchPage()}>
+                    <TouchableOpacity style={styles.searchBox} onPress={() => this.go2SearchPage()}>
                         <Image source={require('../res/icon_search.png')}
                                style={{ width: 22, height: 21, marginLeft: 20 }} resizeMode={'center'}/>
                         <View style={styles.inputText}/>
@@ -101,15 +102,15 @@ export default class CategorySearchPage extends BasePage {
                             </FlatList> : null
                     }
                     <View style={{
-                        width: bannerW + 20
+                        width: bannerW + 20,
+                        backgroundColor: 'white'
                     }}>
                         {
                             this.state.bannerData && this.state.bannerData.length > 0 ?
                                 <View style={{
                                     width: bannerW + 20,
                                     flexDirection: 'column',
-                                    padding: 10,
-                                    backgroundColor: 'white'
+                                    padding: 10
                                 }}>
                                     <ViewPager swiperShow={this.state.swiperShow}
                                                arrayData={this.state.bannerData}
@@ -142,6 +143,7 @@ export default class CategorySearchPage extends BasePage {
                                                  sections={this.state.sectionArr}
                                                  initialNumToRender={9}
                                                  removeClippedSubviews={false}
+                                                 showsVerticalScrollIndicator={false}
                                                  keyExtractor={(item) => item.id + ''}/>
                                 </View> : null
                         }
@@ -195,7 +197,7 @@ export default class CategorySearchPage extends BasePage {
                     let datas = response.data || {};
                     this.setState({
                         sectionArr: [{ title: '热门分类', data: datas.productCategoryList }],
-                        bannerData: datas.imgList,
+                        bannerData: StringUtils.isEmpty(datas.imgList) ? [] : [datas.imgList],
                         swiperShow: true
                     });
                 }).catch((data) => {
@@ -215,7 +217,7 @@ export default class CategorySearchPage extends BasePage {
                     }
                     this.setState({
                         sectionArr: arr,
-                        bannerData: datas.imgList,
+                        bannerData: StringUtils.isEmpty(datas.imgList) ? [] : [datas.imgList],
                         swiperShow: true
                     });
                 }).catch((data) => {
