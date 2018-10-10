@@ -11,8 +11,8 @@ import {
 } from 'react-native';
 
 import BasePage from '../../../BasePage';
-import DetailHeaderView from './components/DetailHeaderView';
-import DetailSegmentView from './components/DetailSegmentView';
+import SubjectDetailHeaderView from './components/SubjectDetailHeaderView';
+import SubjectDetailSegmentView from './components/SubjectDetailSegmentView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
@@ -20,7 +20,7 @@ import AutoHeightWebView from 'react-native-autoheight-webview';
 import StringUtils from '../../../utils/StringUtils';
 import HomeAPI from '../api/HomeAPI';
 
-export default class ProductDetailPage extends BasePage {
+export default class SubjectDetailPage extends BasePage {
 
     $navigationBarOptions = {
         show: false
@@ -29,9 +29,15 @@ export default class ProductDetailPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            //活动类型1.秒杀2.降价拍
+            activityType: 2,
+            //参数还是详情
             selectedIndex: 0,
+            //是否显示规格选择
             modalVisible: false,
-            data: {}
+            //数据
+            data: {},
+            activityData: {}
         };
     }
 
@@ -40,18 +46,30 @@ export default class ProductDetailPage extends BasePage {
     }
 
     loadPageData() {
-        this._getProductDetail();
+        this._getActivityData();
     }
 
     //数据
-    _getProductDetail = () => {
+    _getActivityData = () => {
         this.$loadingShow();
         HomeAPI.activityDepreciate_findById({
             code: 'JJP1809270006'
         }).then((data) => {
+            this.state.activityData = data.data || {};
+            this._getProductDetail(this.state.activityData.productId);
+        }).catch((error) => {
+            this.$loadingDismiss();
+            this.$toastShow(error.msg);
+        });
+    };
+
+    _getProductDetail = (productId) => {
+        HomeAPI.getProductDetail({
+            id: productId
+        }).then((data) => {
             this.$loadingDismiss();
             this.setState({
-                data: data.data||{}
+                data: data.data || {}
             });
         }).catch((error) => {
             this.$loadingDismiss();
@@ -90,16 +108,15 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        return <DetailHeaderView data={this.state.data}/>;
+        return <SubjectDetailHeaderView data={this.state.data} activityType={this.state.activityType}/>;
     };
 
     _renderSectionHeader = () => {
-        return <DetailSegmentView segmentViewOnPressAtIndex={this._segmentViewOnPressAtIndex}/>;
+        return <SubjectDetailSegmentView segmentViewOnPressAtIndex={this._segmentViewOnPressAtIndex}/>;
     };
 
     _renderItem = () => {
-        let { product } = this.state.data;
-        product = product || {};
+        let { product = {} } = this.state.data;
         if (StringUtils.isEmpty(product.content)) {
             return null;
         }

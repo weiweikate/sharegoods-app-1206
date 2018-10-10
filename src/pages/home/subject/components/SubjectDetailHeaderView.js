@@ -4,17 +4,20 @@ import PropTypes from 'prop-types';
 import {
     StyleSheet,
     Text,
-    View
+    View,
+    TouchableOpacity,
+    Image
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import ViewPager from '../../../../components/ui/ViewPager';
 import UIImage from '../../../../components/ui/UIImage';
+import xjt_03 from '../res/xjt_03.png';
 
 /**
  * 商品详情头部view
  */
 
-export default class DetailHeaderView extends Component {
+export default class SubjectDetailHeaderView extends Component {
 
 
     static propTypes = {
@@ -51,8 +54,9 @@ export default class DetailHeaderView extends Component {
     };
 
     render() {
-        const { productImgList = [{}], freight = 0, monthSaleTotal = 0, price = 0, originalPrice = 0, product = {} } = this.props.data || {};
+        const { productImgList = [{}], freight = 0, monthSaleTotal = 0, product = {} } = this.props.data || {};
         const { supplierName = '', brandName = '', name = '', firstCategoryName = '', secCategoryName = '', thirdCategoryName = '' } = product;
+        const { activityType } = this.props;
         return (
             <View>
                 <ViewPager style={styles.ViewPager}
@@ -77,9 +81,16 @@ export default class DetailHeaderView extends Component {
 
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
+                        <Text style={{
+                            marginTop: 14,
+                            color: '#222222',
+                            fontSize: 15
+                        }}>{`${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`}</Text>
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
-                            <Text
-                                style={{ color: '#BBBBBB', fontSize: 11 }}>快递：{freight === 0 ? `包邮` : `${freight}元`}</Text>
+                            <Text style={{
+                                color: '#BBBBBB',
+                                fontSize: 11
+                            }}>快递：{freight === 0 ? `包邮` : `${freight}元`}</Text>
                             <Text style={{
                                 color: '#666666',
                                 fontSize: 13,
@@ -88,12 +99,20 @@ export default class DetailHeaderView extends Component {
                         </View>
                     </View>
                 </View>
-                <View style={{ backgroundColor: 'white', marginTop: 10, marginBottom: 12 }}>
+                {activityType === 2 ?
+                    <View style={{ backgroundColor: 'white', marginTop: 10 }}>
+                        <TouchableOpacity style={{ height: 45,flexDirection: 'row',justifyContent:'space-between' ,alignItems:'center'}}>
+                            <Text style = {{color:'#666666',fontSize:13,marginLeft:16}}>抢拍规则</Text>
+                            <Image style = {{marginRight:16}} source = {xjt_03}/>
+                        </TouchableOpacity>
+                        <View style={{ height: 1, backgroundColor: '#eeee', }}/>
+                    </View> : null}
+                <View style={{ backgroundColor: 'white', marginTop: activityType === 2 ? 0 : 10, marginBottom: 12 }}>
                     <View style={{
                         flexDirection: 'row',
                         marginLeft: 16,
                         width: ScreenUtils.width - 32,
-                        marginVertical: 13,
+                        marginVertical: 16,
                         alignItems: 'center'
                     }}>
                         <Text style={{ color: '#D51243', fontSize: 13 }}>服务</Text>
@@ -107,7 +126,6 @@ export default class DetailHeaderView extends Component {
 
 const styles = StyleSheet.create({
     ViewPager: {
-        // height: ScreenUtils.autoSizeWidth(377),
         backgroundColor: 'rgba(255, 255, 255, 0.7)',
         width: ScreenUtils.width
     }
