@@ -38,11 +38,19 @@ export default class HomeAdView extends Component {
                 </View>)
             }
         })
-       return <View style={[styles.box, { paddingTop: 10, paddingBottom: 10 }]}>
-        <View style={styles.featureBox}>
-            {items}
-        </View>
-    </View>
+       return <View>
+           {
+               items.length > 0
+               ?
+               <View style={[styles.box, { paddingTop: 10, paddingBottom: 10 }]}>
+                    <View style={styles.featureBox}>
+                        {items}
+                    </View>
+                </View>
+                :
+                null
+           }
+       </View>
     }
 }
 

@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, StyleSheet,  FlatList} from 'react-native';
+import { View, StyleSheet,  FlatList, Text } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import {observer} from 'mobx-react';
 import { homeType, HomeModule } from './Modules'
@@ -15,6 +15,7 @@ import HomeRecommendView from './HomeRecommendView'
 import HomeSubjectView from './HomeSubjectView'
 import HomeBannerView from './HomeBannerView'
 import HomeAdView from './HomeAdView'
+import HomeGoodsView from './HomeGoodsView'
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 
@@ -46,6 +47,7 @@ export default class HomePage extends Component {
     _keyExtractor = (item, index) => item.id + ''
     _renderItem = (item) => {
         let data = item.item
+        console.log('_renderItem', data.type)
         if (data.type === homeType.swiper) {
             return <HomeBannerView/>
         } else if (data.type === homeType.classify) {
@@ -60,6 +62,16 @@ export default class HomePage extends Component {
             return <HomeSubjectView/>
         } else if (data.type === homeType.starShop) {
             return <HomeStarShopView/>
+        } else if (data.type === homeType.goods) {
+            let itemData = [
+                {imgUrl: 'http://imgsrc.baidu.com/imgad/pic/item/1b4c510fd9f9d72ad3f6b420df2a2834349bbb79.jpg', title: '海外品牌 100%纯棉', discribe: 'TRENDIANO男装夏装纯棉宽松字母印花圆领短袖...', money: '123.00'},
+                {imgUrl: 'http://imgsrc.baidu.com/imgad/pic/item/1b4c510fd9f9d72ad3f6b420df2a2834349bbb79.jpg', title: '海外品牌 100%纯棉', discribe: 'TRENDIANO男装夏装纯棉宽松字母印花圆领短袖...', money: '123.00'},
+            ]
+            return <HomeGoodsView data={itemData}/>
+        } else if (data.type === homeType.goodsTitle) {
+            return <View style={styles.titleView}>
+                <Text style={styles.title}>为你推荐</Text>
+            </View>
         }
         return <View/>
     }
@@ -119,5 +131,16 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         zIndex: 3
+    },
+    titleView: {
+        backgroundColor: '#fff',
+        height: px2dp(53),
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    title: {
+        color: '#333',
+        fontSize: px2dp(19),
+        fontWeight: '600'
     }
 });

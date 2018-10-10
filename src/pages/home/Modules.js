@@ -8,8 +8,10 @@ export const homeType = {
     starShop: 3,       //明星店铺
     today: 4,             //今日榜单
     recommend: 5,     //精品推荐
-    activity: 'activity',       //活动
-    other: 'other'
+    goods: 'goods',
+    other: 'other',
+    classify: 'classify',
+    'goodsTitle': 'goodsTitle'
 }
 
 export class BannerModules {
@@ -214,7 +216,10 @@ export class HomeModule {
             type: homeType.recommend
         },{
             id: 5,
-            type: homeType.activity
+            type: homeType.goodsTitle
+        },{
+            id: 6,
+            type: homeType.goods
         }]
     }
 }
