@@ -134,8 +134,6 @@ export class RecommendModule {
 //专题
 class SubjectModule {
     @observable subjectList = []
-    @observable selectedSubject = null
-
     //记载专题
     loadSubjectList = flow(function * () {
         try {
@@ -159,9 +157,27 @@ class SubjectModule {
 
 export const subjectModule = new SubjectModule()
 
+
+const homeLinkType = {
+    good: 1,
+    subject: 2,
+    down: 3,
+    spike: 4,
+    package: 5
+}
+
+const homeRoute = {
+    [homeLinkType.good]: '',
+    [homeLinkType.subject]: 'topic/DownPricePage',
+    [homeLinkType.down]: 'topic/DownPricePage',
+    [homeLinkType.spike]: 'topic/DownPricePage',
+    [homeLinkType.package]: 'topic/DownPricePage',
+}
+
 //首页modules
-export class HomeModule {
+class HomeModule {
     @observable homeList = []
+    @observable selectedTypeCode = null
     @action loadHomeList = () => {
         this.homeList = [{
             id: 0,
@@ -189,7 +205,14 @@ export class HomeModule {
             type: homeType.goods
         }]
     }
+
+    @action homeNavigate = (linkType, linkTypeCode) => {
+        this.selectedTypeCode = linkTypeCode
+        return homeRoute[linkType]
+    }
 }
+
+export const homeModule = new HomeModule()
 
 export default {
     classifyModule
