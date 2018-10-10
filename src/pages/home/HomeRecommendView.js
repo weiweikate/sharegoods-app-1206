@@ -2,18 +2,18 @@
  * 精品推荐
  */
 import React, {Component} from 'react'
-import { View, ScrollView, StyleSheet, Text, Image } from 'react-native'
+import { View, ScrollView, StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import {RecommendModule} from './Modules'
+import {RecommendModule, homeModule} from './Modules'
 
-const RecommendItem = ({item}) => <View style={styles.item}>
+const RecommendItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <View style={styles.imgView}>
         <Image style={styles.img}  source={{uri:item.imgUrl}}/>
     </View>
     <Text style={styles.text} numberOfLines={1}>{item.remark}</Text>
-</View>
+</TouchableOpacity>
 
 @observer
 export default class HomeRecommendView extends Component {
@@ -24,11 +24,17 @@ export default class HomeRecommendView extends Component {
         this.recommendModule.loadRecommendList()
     }
 
+    _onRecommendAction(item) {
+        let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
+        const {navigation} = this.props
+        navigation && navigation.navigate(router)
+    }
+
     render() {
         const { recommendList } = this.recommendModule
         let items = []
         recommendList.map((item, index) => {
-            items.push(<RecommendItem key={index} item={item}/>)
+            items.push(<RecommendItem key={index} item={item} press={()=>this._onRecommendAction(item)}/>)
         })
         return <View>
         {
