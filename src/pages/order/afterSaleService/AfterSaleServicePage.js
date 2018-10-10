@@ -1,3 +1,9 @@
+/**
+ * pageType: 0(退款),1(退货退款),2(换货)
+ * index: 要退第几个商品,如果是礼包、优惠套装，可以不用传，也可以传0
+ * pageData: 订单详情的data/退货详情的data
+ * isEdit: true(编辑申请)，false（提交申请）。当编辑申请的时候，数据都是从接口获取的。
+ */
 import React from 'react';
 import {
     NativeModules,
@@ -29,6 +35,28 @@ import BusinessUtils from '../../mine/components/BusinessUtils';
 class AfterSaleServicePage extends BasePage {
     constructor(props) {
         super(props);
+        let index = this.params.index ? this.params.index : 0;
+        let pageData = this.params.pageData || {};
+        let productData = {};
+        if (this.params.isEdit === true) {
+            let tempData = pageData;
+            productData = {
+                spec: tempData.spec,
+                specImg: tempData.specImg,
+                productName: tempData.productName,
+                price: tempData.price,
+                num: tempData.num,
+            }
+        }else {
+            let tempData = pageData.orderProductList[index];
+            productData = {
+                spec: tempData.spec,
+                specImg: tempData.specImg,
+                productName: tempData.productName,
+                price: tempData.price,
+                num: tempData.num,
+            }
+        }
         this.state = {
             phone: '',
             pwd: '',
@@ -36,7 +64,6 @@ class AfterSaleServicePage extends BasePage {
             passwordDis: false,
             phoneError: false,
             passwordError: false,
-            refundsDescription: '',
             hasInputNum: 0,
             isShowSingleSelctionModal: false,
             isShowTakePhotoModal: false,
@@ -54,16 +81,13 @@ class AfterSaleServicePage extends BasePage {
             activeProduct: ['', '退回商品需由买家承担运费，请确保不影响商品完好', '活动产品，不支持单个产品退款'],
             reason: ['退款原因', '退款原因', '换货原因'],
             inputReason: ['退款说明', '退款说明', '换货说明'],
-            actualReason: '',
-            imageArr: [
-                // {
-                //     imageUrl:'https://ws1.sinaimg.cn/large/006tNc79gy1fsys3wvijdj30iu0iu7k3.jpg',
-                //     imageThumbUrl:'https://ws1.sinaimg.cn/large/006tNc79gy1fsys3wvijdj30iu0iu7k3.jpg'
-                // },
-            ],
-            index: this.params.index ? this.params.index : 0,
-            pageData: this.params.pageData ? this.params.pageData : {},
-            hasApply: false
+            hasApply: false,
+            productData: productData,                                                                //商品数据
+            orderNum: this.params.isEdit === true ? pageData.orderNum : pageData.orderNum,           //订单单号
+            createTime: this.params.isEdit === true ? pageData.orderCreateTime : pageData.createTime,//创建时间
+            returnReason: this.params.isEdit === true ? pageData.returnReason : '',                  //退款原因
+            remark: this.params.isEdit === true ? pageData.remark : '',                              //退款具体说明
+            imageArr: this.params.isEdit === true ? pageData.imgList : [],                           //选择的图片数组
         };
     }
 
@@ -91,7 +115,7 @@ class AfterSaleServicePage extends BasePage {
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: color.white, justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + this.params.pageData.orderNum}
+                <UIText value={'订单编号：' + this.state.orderNum}
                         style={{ color: color.black_222, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
@@ -137,11 +161,11 @@ class AfterSaleServicePage extends BasePage {
                     <View>
                         {this.renderWideLine()}
                         <TouchableOpacity style={{height:48,backgroundColor:color.white,justifyContent:'space-between',flexDirection:'row',alignItems:'center'}} onPress={()=>this.exchangeType()}>
-                        <UIText value={'更换型号'} style={{color:color.black_222,fontSize:13,marginLeft:16}}/>
-                        <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-                        <UIText style={{color:color.black_222,fontSize:13,marginRight:5}} value={'红色 X'}/>
-                        <UIImage source={arrow_right} style={{height:10,width:7,marginRight:15}}/>
-                        </View>
+                            <UIText value={'更换型号'} style={{color:color.black_222,fontSize:13,marginLeft:16}}/>
+                            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                                <UIText style={{color:color.black_222,fontSize:13,marginRight:5}} value={'红色 X'}/>
+                                <UIImage source={arrow_right} style={{height:10,width:7,marginRight:15}}/>
+                            </View>
                         </TouchableOpacity>
                         <View style = {{height: 30, alignItems: 'center', flexDirection: 'row'}}>
                             <UIText value = {'*'} style = {{fontSize: 12, color: '#D51243', marginLeft: 15}}/>
@@ -149,9 +173,9 @@ class AfterSaleServicePage extends BasePage {
                         </View>
                         {/*{this.renderWideLine()}*/}
                         {/*<AddressItem*/}
-                            {/*name={this.state.pageData.receiverName}*/}
-                            {/*phone={this.state.pageData.receiverNum}*/}
-                            {/*address={this.state.pageData.receiverAddress}*/}
+                        {/*name={this.state.pageData.receiverName}*/}
+                        {/*phone={this.state.pageData.receiverNum}*/}
+                        {/*address={this.state.pageData.receiverAddress}*/}
                         {/*/>*/}
                         {/*<UIImage source={addressLine} style={{ width: ScreenUtils.width, height: 3 }}/>*/}
                     </View>
@@ -163,7 +187,7 @@ class AfterSaleServicePage extends BasePage {
         return (
             <View>
                 <View style={{ height: 40, backgroundColor: color.white, justifyContent: 'center' }}>
-                    <UIText value={'下单时间：' + DateUtils.getFormatDate(this.params.pageData.createTime / 1000)}
+                    <UIText value={'下单时间：' + DateUtils.getFormatDate(this.state.createTime / 1000)}
                             style={{ color: color.black_222, fontSize: 13, marginLeft: 16 }}/>
                 </View>
                 {this.renderWideLine()}
@@ -178,10 +202,10 @@ class AfterSaleServicePage extends BasePage {
                             style={{ color: color.black_222, fontSize: 13, marginLeft: 16 }}/>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <UIText style={{
-                            color: StringUtils.isNoEmpty(this.state.actualReason) ? color.black_222 : color.gray_c8c,
+                            color: StringUtils.isNoEmpty(this.state.returnReason) ? color.black_222 : color.gray_c8c,
                             fontSize: 13,
                             marginRight: 5
-                        }} value={StringUtils.isNoEmpty(this.state.actualReason) ? this.state.actualReason : '请选择'}/>
+                        }} value={StringUtils.isNoEmpty(this.state.returnReason) ? this.state.returnReason : '请选择'}/>
                         <UIImage source={arrow_right} style={{ height: 10, width: 7, marginRight: 15 }}/>
                     </View>
                 </TouchableOpacity>
@@ -198,7 +222,7 @@ class AfterSaleServicePage extends BasePage {
                 <View style={{ height: 90, backgroundColor: color.white }}>
                     <AutoExpandingInput
                         style={styles.inputTextStyle}
-                        onChangeText={text => this.setState({ refundsDescription: text, hasInputNum: text.length })}
+                        onChangeText={text => this.setState({ remark: text, hasInputNum: text.length })}
                         placeholder={'填写说明文字...'}
                         maxLength={100}
                         underlineColorAndroid={'transparent'}
@@ -236,21 +260,19 @@ class AfterSaleServicePage extends BasePage {
         );
     };
     renderGoodsList = () => {
-        let itemArr = [];
-        // for (let i = 0; i < this.params.pageData.list.length; i++) {
-        itemArr.push(
+        let productData = this.state.productData;
+        return(
             <GoodsItem
-                uri={this.params.pageData.list[this.params.index].uri}
-                goodsName={this.params.pageData.list[this.params.index].goodsName}
-                salePrice={StringUtils.formatMoneyString(this.params.pageData.list[this.params.index].salePrice)}
-                category={this.params.pageData.list[this.params.index].category}
-                goodsNum={this.params.pageData.list[this.params.index].goodsNum}
-                onPress={() => this.jumpToProductDetailPage(this.params.pageData.productId)}
+                uri={productData.specImg}
+                goodsName={productData.productName}
+                salePrice={StringUtils.formatMoneyString(productData.price)}
+                category={productData.spec}
+                goodsNum={productData.num}
+                //onPress={() => this.jumpToProductDetailPage(this.params.pageData.productId)}
             />
-        );
-        // }
-        return itemArr;
-    };
+        )
+    }
+    ;
     renderCommit = () => {
         return (
             <TouchableOpacity
@@ -272,7 +294,7 @@ class AfterSaleServicePage extends BasePage {
                     }}
                     commit={(index) => {
                         this.setState({ isShowSingleSelctionModal: false });
-                        this.setState({ actualReason: ['不喜欢/不想要了', '空包裹', '快递/物流一直未送到', '货物破损已拒签'][index] });
+                        this.setState({ returnReason: ['不喜欢/不想要了', '空包裹', '快递/物流一直未送到', '货物破损已拒签'][index] });
                     }}
                 />
                 <TakePhoneModal
@@ -359,8 +381,8 @@ class AfterSaleServicePage extends BasePage {
         const params = {
             imgUrls: imgUrls,
             orderProductId: this.params.pageData.list[this.params.index].id,
-            remark: this.state.refundsDescription,
-            returnReason: this.state.actualReason,
+            remark: this.state.remark,
+            returnReason: this.state.returnReason,
             smallImgUrls: smallImgUrls
         };
         if (StringUtils.isEmpty(params.remark)) {

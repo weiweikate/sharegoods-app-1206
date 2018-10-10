@@ -23,7 +23,7 @@ import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 import Toast from '../../../utils/bridge';
 
- import OrderApi from '../api/orderApi'
+import OrderApi from '../api/orderApi'
 
 class ExchangeGoodsDetailPage extends BasePage {
     constructor(props) {

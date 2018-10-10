@@ -35,6 +35,7 @@ import moreIcon from '../../spellShop/myShop/res/more_icon.png'
 import GoodsItem from '../components/GoodsItem';
 import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
+import AfterSaleServiceHomePage from "../afterSaleService/AfterSaleServiceHomePage";
 
 class MyOrdersDetailPage extends BasePage {
     constructor(props) {
@@ -200,6 +201,12 @@ class MyOrdersDetailPage extends BasePage {
                     emptyTip={'暂无数据！'}
                 />
                {this.renderModal()}
+               <TouchableOpacity onPress = {() =>  this.$navigate('order/afterSaleService/AfterSaleServiceHomePage', {
+                   index: 0,
+                   pageData: this.state.pageData,
+               })}>
+                   <UIText value = {'fsdfsdfsdfsdfsdfafs'} />
+               </TouchableOpacity>
             </View>
         );
     };
@@ -720,6 +727,7 @@ class MyOrdersDetailPage extends BasePage {
                         break
                 }
                 this.setState({
+                    pageData: data,
                     viewData:{
                         expressNo:data.expressNo,
                         orderId:this.params.orderId,

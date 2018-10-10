@@ -43,7 +43,7 @@ class AfterSaleServiceHomePage extends BasePage {
 
     //**********************************ViewPart******************************************
     _render() {
-        let productData = this.params.pageData.list[this.state.index];
+        let productData = this.params.pageData.orderProductList[this.state.index];
         return (
             <View style={styles.container}>
                 {this.renderWideLine()}
@@ -52,11 +52,11 @@ class AfterSaleServiceHomePage extends BasePage {
                 {this.renderSelect()}
                 {this.renderOrderNum()}
                 <GoodsItem
-                    uri={productData.uri}
-                    goodsName={productData.goodsName}
-                    salePrice={StringUtils.formatMoneyString(productData.salePrice)}
-                    category={productData.category}
-                    goodsNum={productData.goodsNum}
+                    uri={productData.specImg}
+                    goodsName={productData.productName}
+                    salePrice={StringUtils.formatMoneyString(productData.price)}
+                    category={productData.spec}
+                    goodsNum={productData.num}
                     onPress={() => this.jumpToProductDetailPage()}
                 />
                 {this.renderOrderTime()}
@@ -109,23 +109,23 @@ class AfterSaleServiceHomePage extends BasePage {
         switch (index) {
             case 0:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
-                    pageType: 2,
-                    index: this.params.index ? this.params.index : 0,
-                    pageData: this.params.pageData ? this.params.pageData : {}
+                    pageType: 0,
+                    index: this.state.index,
+                    pageData: this.state.pageData,
                 });
                 break;
             case 1:
-                this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
+                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 1,
-                    index: this.params.index ? this.params.index : 0,
-                    pageData: this.params.pageData ? this.params.pageData : {}
+                    index: this.state.index,
+                    pageData: this.state.pageData,
                 });
                 break;
             case 2:
-                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 2,
-                    index: this.params.index ? this.params.index : 0,
-                    pageData: this.params.pageData ? this.params.pageData : {}
+                    index: this.state.index,
+                    pageData: this.state.pageData,
                 });
                 break;
         }
@@ -154,7 +154,7 @@ class AfterSaleServiceHomePage extends BasePage {
 
     jumpToProductDetailPage = (productId) => {
         //this.$navigate('home/product/ProductDetailPage', { productId: productId });
-        let productData = this.params.pageData.list[this.state.index];
+        let productData = this.params.pageData.orderProductList[this.state.index];
         switch (this.state.pageData.orderType) {
             case 1://秒杀
                 this.$navigate('product/ProductDetailPage', {
