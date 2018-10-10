@@ -42,9 +42,7 @@ class TotalTopicresultDataModel {
     }
     @action
     packageSectionData() {
-
         let tempArr = [];
-
         /*所有导航的数据源*/
         let navListData = {
             navName: '',

@@ -151,8 +151,6 @@ export default class BasePage extends Component {
         this.props.navigation.dispatch(resetAction);
     };
 
-
-
     // 返回
     $navigateBack = (step) => {
         try {
