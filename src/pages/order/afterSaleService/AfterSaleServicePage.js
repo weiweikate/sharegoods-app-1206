@@ -1,7 +1,5 @@
 /**
  * pageType: 0(退款),1(退货退款),2(换货)
- * index: 要退第几个商品,如果是礼包、优惠套装，可以不用传，也可以传0
- * pageData: 订单详情的data/退货详情的data
  * isEdit: true(编辑申请)，false（提交申请）。当编辑申请的时候，数据都是从接口获取的。
  */
 import React from 'react';
@@ -28,35 +26,15 @@ import arrow_right from '../res/arrow_right.png';
 import AutoExpandingInput from '../../../components/ui/AutoExpandingInput';
 import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
-// import Toast from '../../../utils/bridge';
+import Toast from '../../../utils/bridge';
 
-// import OrderApi from 'OrderApi'
+import OrderApi from '../api/orderApi'
+import ExchangeGoodsDetailPage from "./ExchangeGoodsDetailPage";
 
 class AfterSaleServicePage extends BasePage {
     constructor(props) {
         super(props);
-        let index = this.params.index ? this.params.index : 0;
-        let pageData = this.params.pageData || {};
-        let productData = {};
-        if (this.params.isEdit === true) {
-            let tempData = pageData;
-            productData = {
-                spec: tempData.spec,
-                specImg: tempData.specImg,
-                productName: tempData.productName,
-                price: tempData.price,
-                num: tempData.num,
-            }
-        }else {
-            let tempData = pageData.orderProductList[index];
-            productData = {
-                spec: tempData.spec,
-                specImg: tempData.specImg,
-                productName: tempData.productName,
-                price: tempData.price,
-                num: tempData.num,
-            }
-        }
+        let pageData = this.params.pageData;
         this.state = {
             phone: '',
             pwd: '',
@@ -81,15 +59,20 @@ class AfterSaleServicePage extends BasePage {
             activeProduct: ['', '退回商品需由买家承担运费，请确保不影响商品完好', '活动产品，不支持单个产品退款'],
             reason: ['退款原因', '退款原因', '换货原因'],
             inputReason: ['退款说明', '退款说明', '换货说明'],
-            hasApply: false,
-            productData: productData,                                                                //商品数据
-            orderNum: this.params.isEdit === true ? pageData.orderNum : pageData.orderNum,           //订单单号
-            createTime: this.params.isEdit === true ? pageData.orderCreateTime : pageData.createTime,//创建时间
+            productData: {},// 里面包含了商品、订单id、价格等信息
+            // orderNum: this.params.isEdit === true ? pageData.orderNum : pageData.orderNum,           //订单单号
+            // createTime: this.params.isEdit === true ? pageData.orderCreateTime : pageData.createTime,//创建时间
             returnReason: this.params.isEdit === true ? pageData.returnReason : '',                  //退款原因
             remark: this.params.isEdit === true ? pageData.remark : '',                              //退款具体说明
             imageArr: this.params.isEdit === true ? pageData.imgList : [],                           //选择的图片数组
         };
     }
+
+    componentDidMount(){
+
+        this.loadPageData();
+    }
+
 
     $navigationBarOptions = {
         title: ['申请退款', '售后服务', '申请换货'][this.params.pageType ? this.params.pageType : 0],
@@ -115,7 +98,7 @@ class AfterSaleServicePage extends BasePage {
     renderOrderNum = () => {
         return (
             <View style={{ height: 40, backgroundColor: color.white, justifyContent: 'center' }}>
-                <UIText value={'订单编号：' + this.state.orderNum}
+                <UIText value={'订单编号：' + this.state.productData.orderNum}
                         style={{ color: color.black_222, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
@@ -133,7 +116,7 @@ class AfterSaleServicePage extends BasePage {
                             flexDirection: 'row'
                         }}>
                             <UIText value={'退款金额：'} style={{ color: color.black_222, fontSize: 13, marginLeft: 16 }}/>
-                            <UIText value={StringUtils.formatMoneyString(this.params.pageData.goodsPrice)}
+                            <UIText value={StringUtils.formatMoneyString(this.state.productData.refundPrice)}
                                     style={{ color: color.red, fontSize: 13 }}/>
                         </View>
                     </View>
@@ -150,7 +133,7 @@ class AfterSaleServicePage extends BasePage {
                             flexDirection: 'row'
                         }}>
                             <UIText value={'退款金额：'} style={{ color: color.black_222, fontSize: 13, marginLeft: 16 }}/>
-                            <UIText value={StringUtils.formatMoneyString(this.params.pageData.goodsPrice)}
+                            <UIText value={StringUtils.formatMoneyString(this.state.productData.refundPrice)}
                                     style={{ color: color.red, fontSize: 13 }}/>
                         </View>
                     </View>
@@ -187,7 +170,7 @@ class AfterSaleServicePage extends BasePage {
         return (
             <View>
                 <View style={{ height: 40, backgroundColor: color.white, justifyContent: 'center' }}>
-                    <UIText value={'下单时间：' + DateUtils.getFormatDate(this.state.createTime / 1000)}
+                    <UIText value={'下单时间：' + DateUtils.getFormatDate(this.state.productData.orderCreateTime / 1000)}
                             style={{ color: color.black_222, fontSize: 13, marginLeft: 16 }}/>
                 </View>
                 {this.renderWideLine()}
@@ -359,31 +342,33 @@ class AfterSaleServicePage extends BasePage {
     };
 
     loadPageData() {
+        let that = this;
+        OrderApi.subOrderLookDetial({ orderProductId: this.params.orderProductId }).then((result) => {
+            that.setState({productData: result.data});
+        }).catch(error => {
 
+        });
     }
 
     commit = () => {
-        if (this.state.hasApply) {
-            NativeModules.commModule.toast('您已申请,请勿重复提交');
-            return;
-        }
-        let imgUrls = '';
-        let smallImgUrls = '';
+        let imgList = [];
         for (let i = 0; i < this.state.imageArr.length; i++) {
-            if (i = 0) {
-                imgUrls = this.state.imageArr[i].imageUrl;
-                smallImgUrls = this.state.imageArr[i].imageThumbUrl;
-            } else {
-                imgUrls = ',' + this.state.imageArr[i].imageUrl;
-                smallImgUrls = ',' + this.state.imageArr[i].imageThumbUrl;
-            }
+            // if (i = 0) {
+            //     imgUrls = this.state.imageArr[i].imageUrl;
+            //     smallImgUrls = this.state.imageArr[i].imageThumbUrl;
+            // } else {
+            //     imgUrls = ',' + this.state.imageArr[i].imageUrl;
+            //     smallImgUrls = ',' + this.state.imageArr[i].imageThumbUrl;
+            // }
+            let smallImg = this.state.imageArr[i].smallImg || this.state.imageArr[i].imageThumbUrl;
+            let originalImg = this.state.imageArr[i].originalImg || this.state.imageArr[i].imageUrl;
+            imgList.push({originalImg, smallImg});
         }
         const params = {
-            imgUrls: imgUrls,
-            orderProductId: this.params.pageData.list[this.params.index].id,
+            imgList: imgList,
+            orderProductId: this.params.orderProductId,
             remark: this.state.remark,
             returnReason: this.state.returnReason,
-            smallImgUrls: smallImgUrls
         };
         if (StringUtils.isEmpty(params.remark)) {
             NativeModules.commModule.toast('请选择说明');
@@ -393,7 +378,7 @@ class AfterSaleServicePage extends BasePage {
             NativeModules.commModule.toast('请填写原因');
             return;
         }
-        if (StringUtils.isEmpty(params.imgUrls)) {
+        if (StringUtils.isEmpty(imgList)) {
             NativeModules.commModule.toast('请上传照片');
             return;
         }
@@ -416,31 +401,24 @@ class AfterSaleServicePage extends BasePage {
             * */
 
             case 0:
-                // Toast.showLoading();
-                // OrderApi.orderRefund(params).then((response) => {
-                //     //{"code":200,"msg":"退款成功","data":{"returnProductId":242},"ok":true}
-                //     Toast.hiddenLoading();
-                //     if (response.ok) {
-                //         if (response.data && !response.data.returnProductId) {
-                //             NativeModules.commModule.toast(response.msg + '');
-                //             return;
-                //         }
-                //         if (this.params.refleshOrderDetail) {
-                //             this.params.refleshOrderDetail();
-                //         }
-                //         this.navigate('order/afterSaleService/ApplyRefundNextPage', {
-                //             returnProductId: response.data.returnProductId,
-                //             pageType: 0,
-                //             pageData: this.state.pageData,
-                //             index: this.state.index,
-                //             returnProductStatus: 4
-                //         });
-                //     } else {
-                //         NativeModules.commModule.toast(response.msg);
-                //     }
-                // }).catch(e => {
-                //     Toast.hiddenLoading();
-                // });
+                Toast.showLoading();
+                OrderApi.applyRefund(params).then((response) => {
+                    Toast.hiddenLoading();
+                    if (response.code === 10000) {
+                        if (response.data && !response.data.returnProductId) {
+                            NativeModules.commModule.toast(response.msg + '');
+                            return;
+                        }
+                        this.navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+                            returnProductId: response.data.id,
+                            pageType: 0,
+                        });
+                    } else {
+                        NativeModules.commModule.toast(response.msg);
+                    }
+                }).catch(e => {
+                    Toast.hiddenLoading();
+                });
                 break;
             case 1:
                 // Toast.showLoading();
@@ -496,7 +474,7 @@ class AfterSaleServicePage extends BasePage {
                 // });
                 break;
         }
-        this.setState({ hasApply: true });
+
     };
     jumpToProductDetailPage = (productId) => {
         this.navigate('product/ProductDetailPage', { productId: productId });

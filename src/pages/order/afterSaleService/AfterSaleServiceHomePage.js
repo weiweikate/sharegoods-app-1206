@@ -106,12 +106,14 @@ class AfterSaleServiceHomePage extends BasePage {
         return arr;
     };
     pageSelect = (index) => {
+        let orderProductId = this.params.pageData.orderProductList[this.state.index].id;
         switch (index) {
             case 0:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 0,
                     index: this.state.index,
                     pageData: this.state.pageData,
+                    orderProductId: orderProductId,
                 });
                 break;
             case 1:
@@ -119,6 +121,7 @@ class AfterSaleServiceHomePage extends BasePage {
                     pageType: 1,
                     index: this.state.index,
                     pageData: this.state.pageData,
+                    orderProductId: orderProductId,
                 });
                 break;
             case 2:
@@ -126,6 +129,7 @@ class AfterSaleServiceHomePage extends BasePage {
                     pageType: 2,
                     index: this.state.index,
                     pageData: this.state.pageData,
+                    orderProductId: orderProductId,
                 });
                 break;
         }

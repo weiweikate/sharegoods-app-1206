@@ -125,14 +125,14 @@ class ExchangeGoodsDetailPage extends BasePage {
                     {this.renderAddress()}
                     {this.renderLogistics()}
                     {this.renderOrder()}
-                    <GoodsItem
-                        uri={this.state.pageData.list[this.state.index].uri}
-                        goodsName={this.state.pageData.list[this.state.index].goodsName}
-                        salePrice={StringUtils.formatMoneyString(this.state.pageData.list[this.state.index].salePrice)}
-                        category={this.state.pageData.list[this.state.index].category}
-                        goodsNum={this.state.pageData.list[this.state.index].goodsNum}
-                        onPress={() => this.jumpToProductDetailPage(this.state.pageData.list[this.state.index].productId)}
-                    />
+                    {/*<GoodsItem*/}
+                        {/*uri={this.state.pageData.list[this.state.index].uri}*/}
+                        {/*goodsName={this.state.pageData.list[this.state.index].goodsName}*/}
+                        {/*salePrice={StringUtils.formatMoneyString(this.state.pageData.list[this.state.index].salePrice)}*/}
+                        {/*category={this.state.pageData.list[this.state.index].category}*/}
+                        {/*goodsNum={this.state.pageData.list[this.state.index].goodsNum}*/}
+                        {/*onPress={() => this.jumpToProductDetailPage(this.state.pageData.list[this.state.index].productId)}*/}
+                    {/*/>*/}
                     {this.renderReason()}
                 </ScrollView>
                 {this.renderContact()}
