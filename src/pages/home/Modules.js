@@ -3,8 +3,8 @@ import HomeApi from './api/HomeAPI'
 
 export const homeType = {
     swiper: 1,           //轮播
-    classify: 'classify',       //分类
-    subject: 'subject',         //专题
+    ad: 2,       //推荐
+    subject: 7,         //专题
     starShop: 3,       //明星店铺
     today: 4,             //今日榜单
     recommend: 5,     //精品推荐
@@ -25,11 +25,22 @@ export class BannerModules {
     })
 }
 
+export class AdModules {
+    @observable ad = []
+    loadAdList = flow(function * () {
+        try {
+            const res = yield HomeApi.getAd({type: homeType.ad})
+            console.log('loadAdList', res.data)
+            this.ad = res.data
+        } catch (error) {
+            console.log(error)
+        }
+    })
+}
+
 import zqImg from './res/icons/zq.png'
 import sqImg from './res/icons/sq.png'
 import cxImg from './res/icons/cx.png'
-
-// const bannerModule = new BannerModules()
 
 class ClassifyModules {
     @observable classifyList = []
@@ -100,7 +111,6 @@ export class TodayModule {
         try {
             const res = yield HomeApi.getTodays({type: homeType.today})
             this.todayList = res.data
-            console.log('loadTodayList', res.data)
         } catch (error) {
             console.log(error)
         }
@@ -197,7 +207,7 @@ export class HomeModule {
             type: homeType.classify
         },{
             id: 2,
-            type: homeType.subject
+            type: homeType.ad
         },{
             id: 3,
             type: homeType.today

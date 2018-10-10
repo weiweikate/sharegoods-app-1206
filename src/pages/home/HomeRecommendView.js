@@ -10,9 +10,9 @@ import {RecommendModule} from './Modules'
 
 const RecommendItem = ({item}) => <View style={styles.item}>
     <View style={styles.imgView}>
-        <Image style={styles.img}  source={item.img}/>
+        <Image style={styles.img}  source={{uri:item.imgUrl}}/>
     </View>
-    <Text style={styles.text} numberOfLines={1}>{item.text}</Text>
+    <Text style={styles.text} numberOfLines={1}>{item.remark}</Text>
 </View>
 
 @observer

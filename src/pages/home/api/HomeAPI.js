@@ -28,7 +28,9 @@ const api = {
     //精品推荐
     getRecommends: ['/config/advertisement/queryAdvertisementList'],
     //明星店铺
-    getStarShop: ['/config/advertisement/queryAdvertisementList']
+    getStarShop: ['/config/advertisement/queryAdvertisementList'],
+    //推荐广告
+    getAd: ['/config/advertisement/queryAdvertisementList']
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

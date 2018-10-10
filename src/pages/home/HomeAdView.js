@@ -1,26 +1,46 @@
 import React, {Component} from 'react'
 import {View, StyleSheet, Image} from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
+import { AdModules } from './Modules'
+import {observer} from 'mobx-react';
 
-export default class HomeSubjectView extends Component {
+@observer
+export default class HomeAdView extends Component {
+    constructor(props) {
+        super(props)
+        this.adModules = new AdModules()
+        this.adModules.loadAdList()
+    }
     render() {
+        const {ad} = this.adModules
+        let items = []
+        ad.map((value, index) => {
+            console.log(' ad.map ',value)
+            if (index === 0) {
+                items.push(<View key={index} style={[styles.featureBox1]}>
+                    <Image
+                        source={{ uri: value.imgUrl }}
+                        style={styles.featureBox1Image}/>
+                </View>)
+            } else if (index === 1) {
+                items.push(
+                    <View key={index}  style={[styles.featureBox2]}>
+                        <Image
+                            source={{ uri: value.imgUrl}}
+                            style={styles.featureBox2Image}/>
+                    </View>
+                )
+            } else {
+                items.push(<View key={index}  style={[styles.featureBox3]}>
+                    <Image
+                        source={{ uri:  value.imgUrl }}
+                        style={styles.featureBox2Image}/>
+                </View>)
+            }
+        })
        return <View style={[styles.box, { paddingTop: 10, paddingBottom: 10 }]}>
         <View style={styles.featureBox}>
-            <View style={[styles.featureBox1]}>
-                <Image
-                    source={{ uri: 'https://yanxuan.nosdn.127.net/b72c6486bc681f7b0dcb87d9af0ab1bb.png' }}
-                    style={styles.featureBox1Image}/>
-            </View>
-            <View style={[styles.featureBox2]}>
-                <Image
-                    source={{ uri: 'https://yanxuan.nosdn.127.net/957c8d117473d103b52ff694f372a346.png' }}
-                    style={styles.featureBox2Image}/>
-            </View>
-            <View style={[styles.featureBox3]}>
-                <Image
-                    source={{ uri: 'https://yanxuan.nosdn.127.net/e3bcfdff30c97ba87d510da8d9da5d09.png' }}
-                    style={styles.featureBox2Image}/>
-            </View>
+            {items}
         </View>
     </View>
     }

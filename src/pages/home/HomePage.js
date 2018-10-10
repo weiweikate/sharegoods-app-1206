@@ -14,7 +14,7 @@ import HomeTodayView from './HomeTodayView'
 import HomeRecommendView from './HomeRecommendView'
 import HomeActivityView from './HomeActivityView'
 import HomeBannerView from './HomeBannerView'
-import HomeSubjectView from './HomeSubjectView'
+import HomeAdView from './HomeAdView'
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 
@@ -45,14 +45,13 @@ export default class HomePage extends Component {
 
     _keyExtractor = (item, index) => item.id + ''
     _renderItem = (item) => {
-        console.log(item)
         let data = item.item
         if (data.type === homeType.swiper) {
             return <HomeBannerView/>
         } else if (data.type === homeType.classify) {
             return <HomeClassifyView navigation = {this.props.navigation}/>
-        } else if (data.type === homeType.subject) {
-            return <HomeSubjectView/>
+        } else if (data.type === homeType.ad) {
+            return <HomeAdView/>
         } else if (data.type === homeType.today) {
             return <HomeTodayView/>
         } else if (data.type === homeType.recommend) {
@@ -80,7 +79,6 @@ export default class HomePage extends Component {
                     <HomeSearchView navigation={this.props.navigation}/>
                 </View>
             </View>
-
         );
     }
 
