@@ -26,9 +26,14 @@ class AfterSaleServiceHomePage extends BasePage {
             passwordDis: false,
             phoneError: false,
             passwordError: false,
+            /** pageData.orderProductList 如果是产品订单里面就是一个一个商品，如果是礼包、优惠券订单，该数组就只有一个。
+             * orderProductList.orderProductPriceList 就是礼包里面的子商品
+             * index 表示当前退的哪一个商品，如果没有index，说明退的是礼包，那么默认取orderProductList第一个来显示就行
+             */
             index: this.params.index ? this.params.index : 0,
-            pageData: this.params.pageData ? this.params.pageData : {}
+            pageData: this.params.pageData ? this.params.pageData : {} // pageData.orderType 3：优惠套餐、5：礼包 其余的统一处理
         };
+        this.jumpToProductDetailPage = this.jumpToProductDetailPage.bind(this);
     }
 
     $navigationBarOptions = {
@@ -38,6 +43,7 @@ class AfterSaleServiceHomePage extends BasePage {
 
     //**********************************ViewPart******************************************
     _render() {
+        let productData = this.params.pageData.list[this.state.index];
         return (
             <View style={styles.container}>
                 {this.renderWideLine()}
@@ -46,12 +52,12 @@ class AfterSaleServiceHomePage extends BasePage {
                 {this.renderSelect()}
                 {this.renderOrderNum()}
                 <GoodsItem
-                    uri={this.params.pageData.list[this.params.index].uri}
-                    goodsName={this.params.pageData.list[this.params.index].goodsName}
-                    salePrice={StringUtils.formatMoneyString(this.params.pageData.list[this.params.index].salePrice)}
-                    category={this.params.pageData.list[this.params.index].category}
-                    goodsNum={this.params.pageData.list[this.params.index].goodsNum}
-                    onPress={() => this.jumpToProductDetailPage(this.params.pageData.list[this.params.index].productId)}
+                    uri={productData.uri}
+                    goodsName={productData.goodsName}
+                    salePrice={StringUtils.formatMoneyString(productData.salePrice)}
+                    category={productData.category}
+                    goodsNum={productData.goodsNum}
+                    onPress={() => this.jumpToProductDetailPage()}
                 />
                 {this.renderOrderTime()}
             </View>
@@ -103,7 +109,7 @@ class AfterSaleServiceHomePage extends BasePage {
         switch (index) {
             case 0:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
-                    pageType: 0,
+                    pageType: 2,
                     index: this.params.index ? this.params.index : 0,
                     pageData: this.params.pageData ? this.params.pageData : {}
                 });
@@ -147,7 +153,43 @@ class AfterSaleServiceHomePage extends BasePage {
     }
 
     jumpToProductDetailPage = (productId) => {
-        this.$navigate('product/ProductDetailPage', { productId: productId });
+        //this.$navigate('home/product/ProductDetailPage', { productId: productId });
+        let productData = this.params.pageData.list[this.state.index];
+        switch (this.state.pageData.orderType) {
+            case 1://秒杀
+                this.$navigate('product/ProductDetailPage', {
+                    productId: productData.productId,
+                    activityCode: productData.id,
+                    ids: productData.activityCode
+                });
+
+                break;
+            case 2://降价拍
+                this.$navigate('product/ProductDetailPage', {
+                    productId: productData.productId,
+                    id: productData.id,
+                    ids: productData.activityCode
+                });
+
+                break;
+
+            case 3://优惠套餐
+                this.$navigate('home/CouponsComboDetailPage', { id: productData.productId });
+                break;
+            case 4:
+
+                break;
+
+            case 5://礼包
+                this.$navigate('home/GiftProductDetailPage', { giftBagId: productData.productId });
+                break;
+
+            case 99://普通商品
+                this.$navigate('home/product/ProductDetailPage', { productId: productData.productId });
+                break;
+            default:
+                 break;
+        }
     };
 }
 
