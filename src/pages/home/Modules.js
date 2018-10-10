@@ -11,7 +11,8 @@ export const homeType = {
     goods: 'goods',
     other: 'other',
     classify: 'classify',
-    'goodsTitle': 'goodsTitle'
+    goodsTitle: 'goodsTitle',
+    user: 'user'
 }
 
 export class BannerModules {
@@ -201,21 +202,24 @@ class HomeModule {
             type: homeType.classify
         },{
             id: 2,
-            type: homeType.ad
+            type: homeType.user
         },{
             id: 3,
-            type: homeType.today
+            type: homeType.ad
         },{
             id: 4,
-            type: homeType.recommend
+            type: homeType.today
         },{
             id: 5,
-            type: homeType.subject
+            type: homeType.recommend
         },{
             id: 6,
-            type: homeType.goodsTitle
+            type: homeType.subject
         },{
             id: 7,
+            type: homeType.goodsTitle
+        },{
+            id: 8,
             type: homeType.goods
         }]
     }
