@@ -6,28 +6,26 @@ import { View, ScrollView, StyleSheet, Text, Image } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import Modules from './Modules'
-const { recommendModule } = Modules
+import {RecommendModule} from './Modules'
 
 const RecommendItem = ({item}) => <View style={styles.item}>
     <View style={styles.imgView}>
-        <Image style={styles.img}  source={item.img}/>
+        <Image style={styles.img}  source={{uri:item.imgUrl}}/>
     </View>
-    <Text style={styles.text} numberOfLines={1}>{item.text}</Text>
+    <Text style={styles.text} numberOfLines={1}>{item.remark}</Text>
 </View>
 
-class HomeRecommendView extends Component {
+@observer
+export default class HomeRecommendView extends Component {
 
     constructor(props) {
         super(props)
-        const { recommend } = this.props
-        const { loadRecommendList } = recommend
-        loadRecommendList && loadRecommendList()
+        this.recommendModule = new RecommendModule()
+        this.recommendModule.loadRecommendList()
     }
 
     render() {
-        const { recommend } = this.props
-        const { recommendList } = recommend
+        const { recommendList } = this.recommendModule
         let items = []
         recommendList.map((item, index) => {
             items.push(<RecommendItem key={index} item={item}/>)
@@ -49,13 +47,6 @@ class HomeRecommendView extends Component {
             null
         }
         </View>
-    }
-}
-
-@observer
-export default class HomeRecommend extends Component {
-    render () {
-        return <HomeRecommendView recommend={recommendModule} {...this.props}/>
     }
 }
 
