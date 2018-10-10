@@ -193,15 +193,36 @@ export default class ShopCartPage extends BasePage {
                                 console.warn();
                                 let [...tempValues] = shopCartStore.data;
                                 tempValues[rowId].isSelected = !tempValues[rowId].isSelected;
-
                                 shopCartStore.data = tempValues;
                             }}
                         />
+
 
                         <UIImage
                             source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
                             style={[styles.validProductImg]}
                         />
+                        <UIText
+                        value={'降'}
+                        style={
+                            {
+                                position:'absolute',
+                                padding:2,
+                                left:50,
+                                top:20,
+                                fontSize:11,
+                                color:ColorUtil.mainRedColor,
+                                borderWidth:1,
+                                borderRadius:4,
+                                borderColor:ColorUtil.mainRedColor
+                            }
+                        }
+                        />
+
+                       {/*<UIImage*/}
+                           {/*source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}*/}
+                           {/*style={[styles.validProductImg]}*/}
+                       {/*/>*/}
 
                         {
                             itemData.state === 1 ?
