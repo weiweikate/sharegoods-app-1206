@@ -123,7 +123,7 @@ export default class AddressManagerPage extends BasePage {
                         }}>默认地址</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}
-                                      onPress={() => this._onEditAddress(item.item)}>
+                                      onPress={() => this._onEditAddress(item.item, item.index)}>
                         <Image style={{ width: 16, height: 17, marginRight: 4 }}
                                source={require('../../res/address/addr_edit.png')}/>
                         <Text style={{ fontSize: 13, color: '#999999' }}>编辑</Text>
@@ -144,26 +144,27 @@ export default class AddressManagerPage extends BasePage {
     _onItemClick = (item) => {
         // 地址列表点击
         console.log(item);
-        this.params.callBack&&this.params.callBack(item);
+        this.params.callBack && this.params.callBack(item);
         this.$navigateBack();
     };
 
     _onSelectImgClick = (item, index) => {
         // 设置默认地址
-        MineAPI.setDefaultAddr({ id: item.id }).then((response) => {
-            let nowIndex = index === this.state.selectIndex ? this.initIndex : index;
-            this.setState({
-                selectIndex: nowIndex
+        if (index != this.state.selectIndex) {
+            MineAPI.setDefaultAddr({ id: item.id }).then((response) => {
+                this.setState({
+                    selectIndex: index
+                });
+            }).catch((data) => {
+                if (data.code === 10009 || data.code === 10001) {
+                    this.$navigate('login/login/LoginPage');
+                }
+                bridge.$toast(data.msg);
             });
-        }).catch((data) => {
-            if(data.code ===10009||data.code===10001){
-                this.$navigate('login/login/LoginPage');
-            }
-            bridge.$toast(data.msg);
-        });
+        }
     };
 
-    _onEditAddress = (item) => {
+    _onEditAddress = (item, index) => {
         // 编辑地址页面
         this.props.navigation.navigate('mine/address/AddressEditAndAddPage', {
             refreshing: this.refreshing.bind(this),
@@ -176,7 +177,7 @@ export default class AddressManagerPage extends BasePage {
             provinceCode: item.provinceCode,
             cityCode: item.cityCode,
             areaCode: item.areaCode,
-            isDefault: item.defaultStatus === 1
+            isDefault: index === this.state.selectIndex
         });
     };
 

@@ -8,13 +8,8 @@ import bridge from '../../../utils/bridge';
 import ViewPager from '../../../components/ui/ViewPager';
 import UIText from '../../../components/ui/UIText';
 import UIImage from '../../../components/ui/UIImage';
+import StringUtils from '../../../utils/StringUtils';
 
-const imageUrls = [
-    'https://yanxuan.nosdn.127.net/2ac89fb96fe24a2b69cae74a571244cb.jpg?imageView&quality=75&thumbnail=750x0',
-    'https://yanxuan.nosdn.127.net/8f283dd0ad76bb48ef9c29a04690816a.jpg?imageView&quality=75&thumbnail=750x0',
-    'https://yanxuan.nosdn.127.net/a9e80a3516c99ce550c7b5574973c22f.jpg?imageView&quality=75&thumbnail=750x0',
-    'https://yanxuan.nosdn.127.net/11b673687ae33f87168cc7b93250c331.jpg?imageView&quality=75&thumbnail=750x0'
-];
 const itemImgW = (ScreenUtils.width - 110 - 2 * 30 - 2 * 20) / 3;
 const bannerW = ScreenUtils.width - 110;
 export default class CategorySearchPage extends BasePage {
@@ -56,10 +51,10 @@ export default class CategorySearchPage extends BasePage {
 
         // 热门分类
         HomeAPI.findHotList().then((response) => {
-            let datas = response.data || [];
+            let datas = response.data || {};
             this.setState({
-                sectionArr: [{ title: '热门分类', data: datas }],
-                bannerData: imageUrls
+                sectionArr: [{ title: '热门分类', data: datas.productCategoryList }],
+                bannerData: [datas.imgList]
             });
         }).catch((data) => {
             bridge.$toast(data.msg);
@@ -80,66 +75,78 @@ export default class CategorySearchPage extends BasePage {
 
     _render() {
         return (
+
             <View style={{ flexDirection: 'column' }}>
                 <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity style={styles.searchBox} onPress={this.go2SearchPage}>
+                    <TouchableOpacity style={styles.searchBox} onPress={() => this.go2SearchPage()}>
                         <Image source={require('../res/icon_search.png')}
                                style={{ width: 22, height: 21, marginLeft: 20 }} resizeMode={'center'}/>
                         <View style={styles.inputText}/>
                     </TouchableOpacity>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <FlatList
-                        style={{ width: 90, backgroundColor: '#EEEEEE' }}
-                        renderItem={this._categoryItem}
-                        extraData={this.state}
-                        refreshing={false}
-                        keyExtractor={(item) => item.id + ''}
-                        showsVerticalScrollIndicator={false}
-                        getItemLayout={(data, index) => (
-                            //行高于分割线高，优化
-                            { length: 45, offset: 45 * index, index }
-                        )}
-                        data={this.state.nameArr}>
-                    </FlatList>
+                    {
+                        this.state.nameArr && this.state.nameArr.length > 0 ?
+                            <FlatList
+                                style={{ width: 90, backgroundColor: '#EEEEEE' }}
+                                renderItem={this._categoryItem}
+                                extraData={this.state}
+                                refreshing={false}
+                                keyExtractor={(item) => item.id + ''}
+                                showsVerticalScrollIndicator={false}
+                                getItemLayout={(data, index) => (
+                                    //行高于分割线高，优化
+                                    { length: 45, offset: 45 * index, index }
+                                )}
+                                data={this.state.nameArr}>
+                            </FlatList> : null
+                    }
                     <View style={{
                         width: bannerW + 20,
-                        flexDirection: 'column',
-                        padding: 10,
                         backgroundColor: 'white'
                     }}>
-                        <ViewPager swiperShow={this.state.swiperShow && this.state.bannerData.length}
-                                   arrayData={this.state.bannerData}
-                                   renderItem={(url) => this.renderViewPageItem(url)}
-                                   dotStyle={{
-                                       height: 5,
-                                       width: 5,
-                                       borderRadius: 5,
-                                       backgroundColor: '#ffffff',
-                                       opacity: 0.4
-                                   }}
-                                   activeDotStyle={{
-                                       height: 5,
-                                       width: 20,
-                                       borderRadius: 5,
-                                       backgroundColor: '#ffffff'
-                                   }}
-                                   autoplay={true}
-                                   height={118}
-                                   style={{ marginBottom: 10 }}
-                        />
-                        <SectionList style={{ marginTop: 10 }}
-                                     contentContainerStyle={{
-                                         flexDirection: 'row',
-                                         flexWrap: 'wrap'
-                                     }}
-                                     renderItem={this._sectionItem}
-                                     renderSectionHeader={this._sectionHeader}
-                                     ListFooterComponent={this._listFooter}
-                                     sections={this.state.sectionArr}
-                                     initialNumToRender={9}
-                                     removeClippedSubviews={false}
-                                     keyExtractor={(item) => item.id + ''}/>
+                        {
+                            this.state.bannerData && this.state.bannerData.length > 0 ?
+                                <View style={{
+                                    width: bannerW + 20,
+                                    flexDirection: 'column',
+                                    padding: 10
+                                }}>
+                                    <ViewPager swiperShow={this.state.swiperShow}
+                                               arrayData={this.state.bannerData}
+                                               renderItem={(url) => this.renderViewPageItem(url)}
+                                               dotStyle={{
+                                                   height: 5,
+                                                   width: 5,
+                                                   borderRadius: 5,
+                                                   backgroundColor: '#ffffff',
+                                                   opacity: 0.4
+                                               }}
+                                               activeDotStyle={{
+                                                   height: 5,
+                                                   width: 20,
+                                                   borderRadius: 5,
+                                                   backgroundColor: '#ffffff'
+                                               }}
+                                               autoplay={true}
+                                               height={118}
+                                               style={{ marginBottom: 10 }}
+                                    />
+                                    <SectionList style={{ marginTop: 10 }}
+                                                 contentContainerStyle={{
+                                                     flexDirection: 'row',
+                                                     flexWrap: 'wrap'
+                                                 }}
+                                                 renderItem={this._sectionItem}
+                                                 renderSectionHeader={this._sectionHeader}
+                                                 ListFooterComponent={this._listFooter}
+                                                 sections={this.state.sectionArr}
+                                                 initialNumToRender={9}
+                                                 removeClippedSubviews={false}
+                                                 showsVerticalScrollIndicator={false}
+                                                 keyExtractor={(item) => item.id + ''}/>
+                                </View> : null
+                        }
                     </View>
                 </View>
             </View>
@@ -181,15 +188,16 @@ export default class CategorySearchPage extends BasePage {
         if (this.state.leftIndex != index) {
             // 先隐藏，后显示，起到刷新作用
             this.setState({
-                swiperShow: false
+                swiperShow: false,
+                bannerData: []
             });
             if (index === 0) {
                 // 热门分类
                 HomeAPI.findHotList().then((response) => {
-                    let datas = response.data || [];
+                    let datas = response.data || {};
                     this.setState({
-                        sectionArr: [{ title: '热门分类', data: datas }],
-                        bannerData: imageUrls,
+                        sectionArr: [{ title: '热门分类', data: datas.productCategoryList }],
+                        bannerData: StringUtils.isEmpty(datas.imgList) ? [] : [datas.imgList],
                         swiperShow: true
                     });
                 }).catch((data) => {
@@ -198,15 +206,18 @@ export default class CategorySearchPage extends BasePage {
             } else {
                 // 分级
                 HomeAPI.findProductCategoryList({ id: item.id }).then((response) => {
-                    let datas = response.data || [];
+                    let datas = response.data || {};
                     let arr = [];
-                    for (let i = 0, len = datas.length; i < len; i++) {
-                        let item = { title: datas[i].name, data: datas[i].productCategoryList };
+                    for (let i = 0, len = datas.productCategoryList.length; i < len; i++) {
+                        let item = {
+                            title: datas.productCategoryList[i].name,
+                            data: datas.productCategoryList[i].productCategoryList
+                        };
                         arr.push(item);
                     }
                     this.setState({
                         sectionArr: arr,
-                        bannerData: imageUrls,
+                        bannerData: StringUtils.isEmpty(datas.imgList) ? [] : [datas.imgList],
                         swiperShow: true
                     });
                 }).catch((data) => {
@@ -254,6 +265,7 @@ export default class CategorySearchPage extends BasePage {
 
     _listFooter = ({ section }) => {
         return (
+
             <View style={{
                 width: ScreenUtils.width - 110,
                 flexDirection: 'row',
@@ -288,8 +300,6 @@ const styles = StyleSheet.create({
     },
     inputText: {
         flex: 1,
-        color: '#666666',
-        fontSize: 14,
         padding: 5
     }
 });

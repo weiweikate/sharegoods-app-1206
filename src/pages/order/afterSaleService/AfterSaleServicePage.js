@@ -15,10 +15,10 @@ import {
 import { color } from '../../../constants/Theme';
 import BottomSingleSelectModal from '../components/BottomSingleSelectModal';
 import StringUtils from '../../../utils/StringUtils';
-import ScreenUtils from '../../../utils/ScreenUtils';
+// import ScreenUtils from '../../../utils/ScreenUtils';
 import arrow_right from '../res/arrow_right.png';
-import addressLine from '../res/addressLine.png';
-import AddressItem from '../components/AddressItem';
+// import addressLine from '../res/addressLine.png';
+// import AddressItem from '../components/AddressItem';
 import AutoExpandingInput from '../../../components/ui/AutoExpandingInput';
 import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
@@ -135,21 +135,25 @@ class AfterSaleServicePage extends BasePage {
             case 2:
                 return (
                     <View>
-                        {/*{this.renderLine()}*/}
-                        {/*<TouchableOpacity style={{height:48,backgroundColor:color.white,justifyContent:'space-between',flexDirection:'row',alignItems:'center'}} onPress={()=>this.exchangeType()}>*/}
-                        {/*<UIText value={'更换型号'} style={{color:color.black_222,fontSize:13,marginLeft:16}}/>*/}
-                        {/*<View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>*/}
-                        {/*<UIText style={{color:color.black_222,fontSize:13,marginRight:5}} value={'红色 X'}/>*/}
-                        {/*<UIImage source={arrow_right} style={{height:10,width:7,marginRight:15}}/>*/}
-                        {/*</View>*/}
-                        {/*</TouchableOpacity>*/}
                         {this.renderWideLine()}
-                        <AddressItem
-                            name={this.state.pageData.receiverName}
-                            phone={this.state.pageData.receiverNum}
-                            address={this.state.pageData.receiverAddress}
-                        />
-                        <UIImage source={addressLine} style={{ width: ScreenUtils.width, height: 3 }}/>
+                        <TouchableOpacity style={{height:48,backgroundColor:color.white,justifyContent:'space-between',flexDirection:'row',alignItems:'center'}} onPress={()=>this.exchangeType()}>
+                        <UIText value={'更换型号'} style={{color:color.black_222,fontSize:13,marginLeft:16}}/>
+                        <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                        <UIText style={{color:color.black_222,fontSize:13,marginRight:5}} value={'红色 X'}/>
+                        <UIImage source={arrow_right} style={{height:10,width:7,marginRight:15}}/>
+                        </View>
+                        </TouchableOpacity>
+                        <View style = {{height: 30, alignItems: 'center', flexDirection: 'row'}}>
+                            <UIText value = {'*'} style = {{fontSize: 12, color: '#D51243', marginLeft: 15}}/>
+                            <UIText value = {'请确保退换商品不影响二次销售'} style = {{fontSize: 12, color: '#999999'}}/>
+                        </View>
+                        {/*{this.renderWideLine()}*/}
+                        {/*<AddressItem*/}
+                            {/*name={this.state.pageData.receiverName}*/}
+                            {/*phone={this.state.pageData.receiverNum}*/}
+                            {/*address={this.state.pageData.receiverAddress}*/}
+                        {/*/>*/}
+                        {/*<UIImage source={addressLine} style={{ width: ScreenUtils.width, height: 3 }}/>*/}
                     </View>
                 );
                 break;
@@ -311,6 +315,7 @@ class AfterSaleServicePage extends BasePage {
                     {this.renderOrderTime()}
                 </ScrollView>
                 {this.renderCommit()}
+                {this.renderModal()}
             </View>
         );
     };

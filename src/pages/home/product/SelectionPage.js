@@ -232,7 +232,7 @@ export default class SelectionPage extends Component {
                                          selectStrList={this.state.selectStrList}
                                          priceList={this.state.priceList}/>
 
-                    < ScrollView>
+                    <ScrollView>
                         {this._addSelectionSectionView()}
                         <SelectionAmountView style={{ marginTop: 30 }} amountClickAction={this._amountClickAction}/>
                     </ScrollView>

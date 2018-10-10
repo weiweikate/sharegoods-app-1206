@@ -2,7 +2,7 @@
  * Created by xiangchen on 2018/7/23.
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, ImageBackground, Text, TouchableOpacity,Image } from 'react-native';
+import { StyleSheet, View, ImageBackground, Text, TouchableOpacity, Image } from 'react-native';
 import RefreshList from './../../../components/ui/RefreshList';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
@@ -11,8 +11,8 @@ import unactivatedBg from '../res/couponsImg/youhuiquan_bg_zhihui.png';
 import usedBg from '../res/couponsImg/youhuiquan_bg_zhihui.png';
 import unuesdBg from '../res/couponsImg/youhuiquan_bg_nor.png';
 import tobeActive from '../res/couponsImg/youhuiquan_icon_daijihuo_nor.png';
-import  ActivedIcon from '../res/couponsImg/youhuiquan_icon_yishixiao_nor.png';
-import usedRIcon from '../res/couponsImg/youhuiquan_icon_yishiyong_nor.png'
+import ActivedIcon from '../res/couponsImg/youhuiquan_icon_yishixiao_nor.png';
+import usedRIcon from '../res/couponsImg/youhuiquan_icon_yishiyong_nor.png';
 
 import API from '../../../api';
 import UI from '../../../utils/bridge';
@@ -41,38 +41,43 @@ export default class MyCouponsItems extends Component {
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
-        let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status==1?usedRIcon:ActivedIcon));
+        let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
         return (
             <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickItem(index, item)}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(109),
-                    margin: 2,
+                    margin: 2
                 }} source={BG} resizeMode='stretch'>
-                    <View  style={{flexDirection:'row',alignItems:'center',height:px2dp(73)}}>
-                        <View style={{alignItems: 'center',flexDirection:'row',justifyContent:'center',width:px2dp(80)}}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <View style={{alignSelf: 'flex-end', marginBottom: 2}}>
-                                    <Text style={{fontSize: 5, color: "#222222"}}>￥</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', height: px2dp(73) }}>
+                        <View style={{
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            width: px2dp(80)
+                        }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
+                                    <Text style={{ fontSize: 8, color: '#222222', marginBottom: 2 }}>￥</Text>
                                 </View>
                                 <View>
-                                    <Text style={{fontSize: 20, color: "#222222"}}>{item.value}</Text>
+                                    <Text style={{ fontSize: 20, color: '#222222' }}>{item.value}</Text>
                                 </View>
                             </View>
-                            </View>
+                        </View>
 
-                        <View style={{flex: 1, alignItems: 'flex-start',marginLeft:10}}>
-                            <Text style={{fontSize: 15, color: "#222222"}}>{item.name} </Text>
+                        <View style={{ flex: 1, alignItems: 'flex-start', marginLeft: 10 }}>
+                            <Text style={{ fontSize: 15, color: '#222222' }}>{item.name} </Text>
                             <Text style={{
                                 fontSize: 11,
-                                color: "#999999"
+                                color: '#999999'
                             }}>有效期：{this.fmtDate(item.startTime)}-{this.fmtDate(item.outTime)}</Text>
                         </View>
-                        <Image style={{marginRight:5,width:px2dp(70),height:px2dp(70)}} source={BGR}/>
+                        <Image style={{ marginRight: 5, width: px2dp(70), height: px2dp(70) }} source={BGR}/>
                     </View>
 
-                    <View style={{height:px2dp(33),justifyContent:'center',marginLeft:10}}>
-                        <Text style={{fontSize: 11, color: "#999999"}}>限品类:{item.limit}</Text>
+                    <View style={{ height: px2dp(33), justifyContent: 'center', marginLeft: 10 }}>
+                        <Text style={{ fontSize: 11, color: '#999999' }}>限品类:{item.limit}</Text>
                     </View>
 
                 </ImageBackground>
@@ -208,7 +213,7 @@ export default class MyCouponsItems extends Component {
             this.parseData(dataList);
 
         }).catch(result => {
-            if(result.code===10009){
+            if (result.code === 10009) {
                 this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
             }
             UI.$toast(result.msg);
@@ -247,9 +252,7 @@ export default class MyCouponsItems extends Component {
 
     clickItem = (index, item) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
-        if(item.status === 0 ||item.status === 3){
-            this.props.nav.navigate('mine/coupons/CouponsDetailPage',{item:item})
-        }
+        this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
     };
 
 }
@@ -266,7 +269,7 @@ const styles = StyleSheet.create(
         imgBg: {
             width: px2dp(345),
             height: px2dp(110),
-            marginBottom: 10,
+            marginBottom: 10
         },
         couponHeader: {
             width: px2dp(105),

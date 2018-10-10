@@ -21,10 +21,20 @@ const api = {
     findProductCategoryList:['/product/productCategory/findProductCategoryList',{method:'get'}],
     //获取专题列表
     findTopicById:['/topic/findById',{method:'get'}],
+    //获取轮播图
+    getSwipers: ['/config/advertisement/queryAdvertisementList',{method:'post'} ],
+    //今日榜单
+    getTodays: ['/config/advertisement/queryAdvertisementList'],
+    //精品推荐
+    getRecommends: ['/config/advertisement/queryAdvertisementList'],
+    //明星店铺
+    getStarShop: ['/config/advertisement/queryAdvertisementList'],
+    //推荐广告
+    getAd: ['/config/advertisement/queryAdvertisementList'],
     //根据ID查询降价拍详情 沈耀鑫
-    activityDepreciate_findById:['/operator/activityDepreciate/findById',{method:'get'}]
-
-
+    activityDepreciate_findById:['/operator/activityDepreciate/findById',{method:'get'}],
+    //专题
+    getSubject: ['/config/advertisement/queryAdvertisementList']
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 
