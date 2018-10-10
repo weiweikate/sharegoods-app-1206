@@ -3,11 +3,12 @@
  */
 
 import React, {Component} from 'react'
-import {View , ScrollView, StyleSheet, Text, Image} from 'react-native'
+import {View , ScrollView, StyleSheet, Text, Image, TouchableOpacity} from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
-import { SubjectModule } from './Modules'
+import { subjectModule } from './Modules'
+import goodsImg from './res/goods.png'
 
 const GoodItems = ({img, title, money}) => <View style={styles.goodsView}>
     <Image style={styles.goodImg} source={img}/>
@@ -23,18 +24,27 @@ const MoreItem = () => <View style={styles.moreView}>
     </View>
 </View>
 
-const AcitivyItem = ({data}) => {
-    const { goods } = data
+const goods = [
+    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
+    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' }
+]
+
+const AcitivyItem = ({data, press}) => {
+    const {imgUrl} = data
     let goodsItem = []
     goods.map((value,index) => {
         goodsItem.push(<GoodItems key={index} title={value.title} money={value.money} img={value.img}/>)
     })
     return <View>
-        <View style={styles.bannerBox}>
+        <TouchableOpacity style={styles.bannerBox} onPress={()=>{press && press()}}>
             <View style={styles.bannerView}>
-                <Image style={styles.banner} source={data.banner}/>
+                <Image style={styles.banner} source={{url: imgUrl}}/>
             </View>
-        </View>
+        </TouchableOpacity>
         <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
             {goodsItem}
             <MoreItem/>
@@ -47,14 +57,19 @@ const AcitivyItem = ({data}) => {
 export default class HomeSubjectView extends Component {
     constructor(props) {
         super(props)
-        this.subjectModule = new SubjectModule()
-        this.subjectModule.loadSubjectList()
+        subjectModule.loadSubjectList()
+    }
+    _subjectActions(item) {
+        console.log('_subjectActions', item)
+        subjectModule.selectedSubjectAction(item)
+        const { navigation } = this.props
+        navigation.navigate('topic/DownPricePage')
     }
     render() {
-        const { subjectList } = this.subjectModule
+        const { subjectList } = subjectModule
         let items = []
         subjectList.map((item, index) => {
-            items.push(<AcitivyItem data={item} key={index}/>)
+            items.push(<AcitivyItem data={item} key={index} press={()=>this._subjectActions(item)}/>)
         })
         return <View style={styles.container}>
             <View style={styles.titleView}>

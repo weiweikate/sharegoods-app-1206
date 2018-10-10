@@ -131,69 +131,33 @@ export class RecommendModule {
         }
     })
 }
-
-import activity1Img from './res/activity1.png'
-import activity2Img from './res/activity2.png'
-import activity3Img from './res/activity3.png'
-import activity4Img from './res/activity4.png'
-import goodsImg from './res/goods.png'
-
 //专题
-export class SubjectModule {
+class SubjectModule {
     @observable subjectList = []
-    @action loadSubjectList = () => {
-        this.subjectList = [
-            {
-                banner: activity1Img,
-                goods: [
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' }
-                ]
-            },
-            {
-                banner: activity2Img,
-                goods: [
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' }
-                ]
-            },
-            {
-                banner: activity3Img,
-                goods: [
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' }
-                ]
-            },
-            {
-                banner: activity4Img,
-                goods: [
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-                    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' }
-                ]
-            }
-        ]
+    @observable selectedSubject = null
+
+    //记载专题
+    loadSubjectList = flow(function * () {
+        try {
+            const res = yield HomeApi.getSubject({type: homeType.subject})
+            console.log('loadSubjectList', res.data)
+            this.subjectList = res.data
+        } catch (error) {
+            console.log(error)
+        }
+    })
+
+    //选择专题
+    @action
+    selectedSubjectAction = (subject) => {
+        this.selectedSubject = {
+            subjectCode : subject.linkTypeCode,
+            createTime: subject.createTime
+        }
     }
 }
 
-// autorun(function() {
-//     console.log(` ${bannerModule.bannerList}  ${bannerModule.bannerList.length} ${classifyModule.classifyList} ${starShopModule.shopList}`)
-// })
+export const subjectModule = new SubjectModule()
 
 //首页modules
 export class HomeModule {
@@ -216,9 +180,12 @@ export class HomeModule {
             type: homeType.recommend
         },{
             id: 5,
-            type: homeType.goodsTitle
+            type: homeType.subject
         },{
             id: 6,
+            type: homeType.goodsTitle
+        },{
+            id: 7,
             type: homeType.goods
         }]
     }

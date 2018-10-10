@@ -17,7 +17,7 @@ const Goods = ({goods}) => <View style={styles.container}>
 
 export default class GoodsCell extends Component {
     static propTypes = {
-        data: PropTypes.object.isRequired
+        data: PropTypes.array.isRequired
     }
     render() {
         const {data} = this.props
