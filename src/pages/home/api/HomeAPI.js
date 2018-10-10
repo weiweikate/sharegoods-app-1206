@@ -30,7 +30,9 @@ const api = {
     //明星店铺
     getStarShop: ['/config/advertisement/queryAdvertisementList'],
     //推荐广告
-    getAd: ['/config/advertisement/queryAdvertisementList']
+    getAd: ['/config/advertisement/queryAdvertisementList'],
+    //根据ID查询降价拍详情 沈耀鑫
+    activityDepreciate_findById:['/operator/activityDepreciate/findById',{method:'get'}]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

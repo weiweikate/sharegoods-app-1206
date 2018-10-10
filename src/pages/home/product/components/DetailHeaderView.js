@@ -50,22 +50,13 @@ export default class DetailHeaderView extends Component {
             />);
     };
 
+    _renderActivityView= ()=>{
+
+    }
+
     render() {
-        let { productImgList, freight, monthSaleTotal, price, originalPrice, product } = this.props.data;
-        productImgList = productImgList || [];
-        freight = freight || 0;
-        monthSaleTotal = monthSaleTotal || 0;
-        price = price || 0;
-        originalPrice = originalPrice || 0;
-
-        let { supplierName, brandName, name, firstCategoryName, secCategoryName, thirdCategoryName } = product || {};
-        supplierName = supplierName || '';
-        brandName = brandName || '';
-        name = name || '';
-        firstCategoryName = firstCategoryName || '';
-        secCategoryName = secCategoryName || '';
-        thirdCategoryName = thirdCategoryName || '';
-
+        const { productImgList = [{}], freight = 0, monthSaleTotal = 0, price = 0, originalPrice = 0, product = {} } = this.props.data || {};
+        const { supplierName = '', brandName = '', name = '', firstCategoryName = '', secCategoryName = '', thirdCategoryName = '' } = product;
         return (
             <View>
                 <ViewPager style={styles.ViewPager}

@@ -6,10 +6,10 @@ import {
     TouchableOpacity,
     Text
 } from 'react-native';
-import ColorUtil from '../../../../utils/ColorUtil';
-import ScreenUtils from '../../../../utils/ScreenUtils';
+import ColorUtil from '../../../utils/ColorUtil';
+import ScreenUtils from '../../../utils/ScreenUtils';
 import ProgressBarView from './ProgressBarView';
-import PreLoadImage from '../../../../components/ui/preLoadImage/PreLoadImage';
+import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
 export default class OpenPrizeItemView extends Component {
 

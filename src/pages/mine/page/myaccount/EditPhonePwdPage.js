@@ -160,8 +160,7 @@ export default class EditPhonePwdPage extends BasePage {
                     user.clearUserInfo();
                     //清空购物车
                     shopCartStore.data = [];
-                    this.$navigateReset();
-                    this.$navigate('login/login/LoginPage');
+                    this.$navigateResetLogin()
                     bridge.$toast('密码修改成功，请重新登录');
                 }
             }).catch(err => {
@@ -169,8 +168,9 @@ export default class EditPhonePwdPage extends BasePage {
                 if (err.code === 10009) {
                     user.clearUserInfo();
                     shopCartStore.data = [];
-                    this.$navigateReset();
-                    this.$navigate('login/login/LoginPage');
+                    this.$navigateResetLogin()
+                    // this.$navigateReset();
+                    // this.$navigate('login/login/LoginPage');
                 }
             });
         }).catch((data) => {

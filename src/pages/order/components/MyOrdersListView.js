@@ -283,21 +283,21 @@ export default class MyOrdersListView extends Component {
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
                     }}
-                    // commit={(index)=>{
-                    //     this.setState({isShowSingleSelctionModal:false})
-                    //     Toast.showLoading()
-                    //     OrderApi.cancelOrder({buyerRemark:['我不想买了','信息填写错误，重新拍','其他原因'][index],orderNum:this.state.viewData[this.state.index].orderNum}).then((response)=>{
-                    //         Toast.hiddenLoading()
-                    //         if(response.ok ){
-                    //             NativeModules.commModule.toast('订单已取消')
-                    //             this.getDataFromNetwork()
-                    //         } else {
-                    //             NativeModules.commModule.toast(response.msg)
-                    //         }
-                    //     }).catch(e=>{
-                    //         NativeModules.commModule.toast(e)
-                    //     });
-                    // }}
+                    commit={(index)=>{
+                        this.setState({isShowSingleSelctionModal:false})
+                        Toast.showLoading()
+                        OrderApi.cancelOrder({buyerRemark:['我不想买了','信息填写错误，重新拍','其他原因'][index],orderNum:this.state.viewData[this.state.index].orderNum}).then((response)=>{
+                            Toast.hiddenLoading();
+                            if(response.code === 10000 ){
+                                NativeModules.commModule.toast('订单已取消');
+                                this.getDataFromNetwork()
+                            } else {
+                                NativeModules.commModule.toast(response.msg)
+                            }
+                        }).catch(e=>{
+                            NativeModules.commModule.toast(e)
+                        });
+                    }}
                 />
             </View>
 
@@ -488,21 +488,21 @@ export default class MyOrdersListView extends Component {
                 this.setState({ isShowSingleSelctionModal: true });
                 break;
             case 2:
-                this.props.nav('payment/PaymentMethodPage', {
+                this.props.nav('order/payment/PaymentMethodPage', {
                     orderNum: this.state.viewData[index].orderNum,
                     amounts: this.state.viewData[index].price
                 });
                 break;
             case 3:
                 //订单 0:快递订单 1:自提订单
-                this.props.nav('payment/PaymentMethodPage', {
+                this.props.nav('order/payment/PaymentMethodPage', {
                     orderNum: this.state.viewData[index].orderNum,
                     amounts: this.state.viewData[index].totalPrice + this.state.viewData[index].freightPrice,
                     orderType: this.state.viewData[index].pickedUp - 1
                 });
                 break;
             case 4:
-                this.props.nav('payment/PaymentMethodPage', {
+                this.props.nav('order/payment/PaymentMethodPage', {
                     orderNum: this.state.viewData[index].orderNum,
                     amounts: this.state.viewData[index].price
                 });
