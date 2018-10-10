@@ -20,10 +20,15 @@ const api = {
     //二、三级列表
     findProductCategoryList:['/product/productCategory/findProductCategoryList',{method:'get'}],
     //获取专题列表
-    findTopicById:['/topic/findById',{method:'get'}]
-
-
-
+    findTopicById:['/topic/findById',{method:'get'}],
+    //获取轮播图
+    getSwipers: ['/config/advertisement/queryAdvertisementList',{method:'post'} ],
+    //今日榜单
+    getTodays: ['/config/advertisement/queryAdvertisementList'],
+    //精品推荐
+    getRecommends: ['/config/advertisement/queryAdvertisementList'],
+    //明星店铺
+    getStarShop: ['/config/advertisement/queryAdvertisementList']
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

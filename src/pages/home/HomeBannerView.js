@@ -3,52 +3,57 @@
  */
 import React, { Component } from 'react'
 import { View , StyleSheet, Image} from 'react-native'
-import Swiper from 'react-native-swiper'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils
 import {observer} from 'mobx-react';
-import Modules from './Modules'
-const { bannerModule } = Modules
+import { BannerModules } from './Modules'
+import ViewPager from '../../components/ui/ViewPager'
 
 const bannerHeight = px2dp(220)
 
-class HomeBannerView extends Component {
+@observer
+export default class HomeBannerView extends Component {
     constructor(props) {
         super(props)
-        const {loadBannerList} = this.props.bannerModule
-        loadBannerList && loadBannerList()
+        this.bannerModule = new BannerModules()
+        this.bannerModule.loadBannerList()
     }
+    renderViewPageItem = (item) => {
+        return <Image
+            source={{ uri: item }}
+            style={styles.img}
+            onPress={() => { }}
+            resizeMode="cover" />
+    };
+
     render() {
-        const {bannerList} = this.props.bannerModule
+        const {bannerList} = this.bannerModule
         let items = []
         bannerList.map((value, index) => {
-            items.push(<Image key={index} style={styles.img} source={{uri:value }}/>)
+            items.push(value.imgUrl)
         })
-        return <View><Swiper dotStyle={{
-            height: px2dp(5),
-            width: px2dp(5),
-            borderRadius: px2dp(5),
-            backgroundColor: '#fff',
-            opacity: 0.4
-        }}
-        activeDotStyle={{
-            height: px2dp(5),
-            width: px2dp(30),
-            borderRadius: px2dp(5),
-            backgroundColor: '#fff'
-        }}
-        autoplay={true}
-        height={bannerHeight} showsButtons={false}>
-            {items}
-        </Swiper>
+        return <View>
+            <ViewPager
+                swiperShow={true}
+                arrayData={items}
+                renderItem={(item) => this.renderViewPageItem(item)}
+                dotStyle={{
+                    height: px2dp(5),
+                    width: px2dp(5),
+                    borderRadius: px2dp(5),
+                    backgroundColor: '#ffffff',
+                    opacity: 0.4
+                }}
+                activeDotStyle={{
+                    height: px2dp(5),
+                    width: px2dp(30),
+                    borderRadius: px2dp(5),
+                    backgroundColor: '#ffffff'
+                }}
+                autoplay={true}
+                height={bannerHeight}
+            />
         </View>
-    }
-}
-
-@observer
-export default class HomeBanner extends Component {
-    render () {
-        return <HomeBannerView bannerModule={bannerModule} {...this.props}/>
     }
 }
 
