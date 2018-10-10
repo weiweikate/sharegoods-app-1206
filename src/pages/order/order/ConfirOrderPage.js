@@ -476,7 +476,7 @@ export default class ConfirOrderPage extends BasePage {
         let provinceCode;//N:收货省code	number
         let receiver;//	Y:收货人	string
         let recevicePhone;//Y:收货人手机号	number
-        let useScore = this.state.viewData.tokenCoin;//N：使用积分	string
+        let tokenCoin = this.state.viewData.tokenCoin;//N：使用积分	string
 
             address = this.state.viewData.express.receiverAddress;
             areaCode = this.state.viewData.express.areaCode;
@@ -513,7 +513,7 @@ export default class ConfirOrderPage extends BasePage {
                 provinceCode: provinceCode,
                 receiver: receiver,
                 recevicePhone: recevicePhone,
-                tokenCoin: useScore
+                tokenCoin: tokenCoin
             };
         }
         console.log(params);
@@ -523,12 +523,10 @@ export default class ConfirOrderPage extends BasePage {
                 this.$loadingDismiss();
                     let data = response.data;
                     // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
-                    this.$navigate('order/payment/PayMentMethodPage', {
+                    this.$navigate('order/payment/PaymentMethodPage', {
                         orderNum: data.orderNum,
-                        amounts: this.state.viewData.useScore ? this.state.viewData.totalAmounts - this.state.viewData.reducePrice : this.state.viewData.totalAmounts,
-                        orderType: this.state.selectExpress ? 0 : 1,
-                        pageType: 0,
-                        tokenCoinToBalance: data.tokenCoinToBalance
+                        amounts:  this.state.viewData.totalAmounts,
+                        tokenCoinToBalance: data.user.availableBalance
                     });
 
             }).catch(e => {

@@ -110,7 +110,7 @@ export default class MyPromotionPage extends BasePage {
 
     renderHeader = () => {
 
-        const progress = this.state.levelExperience / this.state.experience;
+        const progress = this.state.experience / this.state.levelExperience;
         const marginLeft = 315 / 375 * SCREEN_WIDTH * progress;
         const headerWidth = 65 / 375 * SCREEN_WIDTH;
         const radius = marginLeft > 4 ? 0 : 4;
@@ -173,10 +173,10 @@ export default class MyPromotionPage extends BasePage {
                         color: '#e60012',
                         fontSize: 10,
                         fontFamily: 'PingFang-SC-Medium'
-                    }}>{this.state.levelExperience || 0}<Text style={{
+                    }}>{this.state.experience || 0}<Text style={{
                         color: '#666666'
                     }}>
-                        /{this.state.experience}
+                        /{this.state.levelExperience}
                     </Text></Text>
 
                     <ImageBackground source={ProgressImg} style={{
@@ -207,7 +207,7 @@ export default class MyPromotionPage extends BasePage {
                         color: '#000',
                         fontSize: 15
                     }}>
-                        {this.state.experience - this.state.levelExperience}
+                        {this.state.levelExperience - this.state.experience}
                     </Text>分</Text>
                 </View>
             </ImageBackground>

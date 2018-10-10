@@ -1,3 +1,5 @@
+import {Clipboard} from "react-native";
+
 const isEmpty = (param) => {
     let input = param + '';
     return input === '' || input === 'undefined' || input === 'null' || input === '[]' || input === ' ';
@@ -163,6 +165,14 @@ const checkIsPositionNumber = (num) => {
     let reg = /^[1-9]+[0-9]*]*$/;
     return reg.test(num);
 };
+
+//剪切板
+const clipboardSetString=(content)=>{
+    Clipboard.setString(content)
+}
+const clipboardGetString=()=>{
+    return Clipboard.getString()
+}
 export default {
     isEmpty,
     isNoEmpty,
@@ -174,7 +184,9 @@ export default {
     isCardNo,
     formatBankCardNum,
     checkBankCard,
-    checkIsPositionNumber
+    checkIsPositionNumber,
+    clipboardSetString,
+    clipboardGetString
 };
 
 

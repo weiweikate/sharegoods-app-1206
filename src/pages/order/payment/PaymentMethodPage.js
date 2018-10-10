@@ -5,7 +5,7 @@ import {
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
 
-export default class PayMentMethodPage extends BasePage{
+export default class PaymentMethodPage extends BasePage{
     constructor(props){
         super(props);
         this.state={
