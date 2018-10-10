@@ -44,23 +44,34 @@ export default class ProductDetailPage extends BasePage {
     }
 
     loadPageData() {
-        this._productList();
+        this._getProductDetail();
     }
 
     //数据
-    _productList = () => {
+    _getProductDetail = () => {
         this.$loadingShow();
         HomeAPI.getProductDetail({
             id: this.params.productId
         }).then((data) => {
             this.$loadingDismiss();
+            data.data = data.data||{}
+            const { specMap, priceList } = data.data;
+            //修改specMap每个元素首尾增加'，'
+            for (let key in specMap) {
+                specMap[key].forEach((item) => {
+                    if (String(item.id).indexOf(',') === -1) {
+                        item.id = `,${item.id},`;
+                    }
+                });
+            }
+            //修改priceList中的specIds首尾增加','
+            priceList.forEach((item) => {
+                item.specIds = `,${item.specIds},`;
+            });
             this.setState({
                 data: data.data
             });
         }).catch((error) => {
-            if (error.code === 10009) {
-                this.$navigate('login/login/LoginPage');
-            }
             this.$loadingDismiss();
             this.$toastShow(error.msg);
         });
@@ -98,9 +109,14 @@ export default class ProductDetailPage extends BasePage {
             orderProducts.push({
                 priceId: priceId,
                 num: 1,
-                productId: this.state.data.product.id,
+                productId: this.state.data.product.id
             });
-            this.$navigate('order/order/ConfirOrderPage',{orderParamVO:{orderType:99,orderProducts:orderProducts}})
+            this.$navigate('order/order/ConfirOrderPage', {
+                orderParamVO: {
+                    orderType: 99,
+                    orderProducts: orderProducts
+                }
+            });
         }
     };
 
@@ -139,7 +155,7 @@ export default class ProductDetailPage extends BasePage {
         } else {
             return <View style={{ backgroundColor: 'white' }}>
                 <FlatList
-                    style={{ marginHorizontal: 16, marginVertical: 16,borderWidth:0.5,borderColor:'#eee' }}
+                    style={{ marginHorizontal: 16, marginVertical: 16, borderWidth: 0.5, borderColor: '#eee' }}
                     renderItem={this._renderSmallItem}
                     ItemSeparatorComponent={this._renderSeparatorComponent}
                     showsVerticalScrollIndicator={false}
@@ -155,16 +171,21 @@ export default class ProductDetailPage extends BasePage {
             <View style={{ backgroundColor: '#DDDDDD', width: 70, justifyContent: 'center' }}>
                 <Text style={{ marginLeft: 10, color: '#222222', fontSize: 12 }}>{item.paramName || ''}</Text>
             </View>
-            <Text style={{ flex:1,alignSelf:'center',marginLeft: 20, color: '#999999', fontSize: 12 }}>{item.paramValue || ' '}</Text>
+            <Text style={{
+                flex: 1,
+                alignSelf: 'center',
+                marginLeft: 20,
+                color: '#999999',
+                fontSize: 12
+            }}>{item.paramValue || ' '}</Text>
         </View>;
     };
 
-    _renderSeparatorComponent = ()=>{
-        return <View style = {{height:0.5,backgroundColor:'#eee',}}/>
-    }
+    _renderSeparatorComponent = () => {
+        return <View style={{ height: 0.5, backgroundColor: '#eee' }}/>;
+    };
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
-        console.log(Y);
         if (Y < 100) {
             this.st = Y * 0.01;
         } else {

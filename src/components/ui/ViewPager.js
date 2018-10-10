@@ -26,15 +26,14 @@ const ViewPager = props => {
     const renderItems = () => {
         if (arrayData) {
             let itemViews = [];
-            arrayData.map((item, key) => {
-                itemViews.push(<View style={{ flex: 1 }} key={key}>
-                    {renderItem(item)}
+            arrayData.map((item, index) => {
+                itemViews.push(<View style={{ flex: 1 }} key={index}>
+                    {renderItem(item, index)}
                 </View>);
             });
 
             return itemViews;
         }
-
     };
     const renderSwiper = () => {
         if (arrayData && arrayData.length > 0) {
@@ -52,7 +51,10 @@ const ViewPager = props => {
                                 dotColor={dotColor}
                                 activeDotColor={activeDotColor}
                                 autoplayTimeout={5}
-                                removeClippedSubviews={false}>
+                                removeClippedSubviews={false}
+                                containerStyle={{
+                                    height: height
+                                }}>
                             {renderItems()}
                         </Swiper>);
                 }
@@ -69,7 +71,10 @@ const ViewPager = props => {
                                 dotColor={dotColor}
                                 activeDotColor={activeDotColor}
                                 autoplayTimeout={5}
-                                removeClippedSubviews={false}>
+                                removeClippedSubviews={false}
+                                containerStyle={{
+                                    height: height
+                                }}>
                             {renderItems()}
                         </Swiper>);
                 }

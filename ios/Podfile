@@ -50,14 +50,4 @@ pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 #    pod 'SDCycleScrollView'
 #    pod 'WZLBadge'
 #    pod 'DZNEmptyDataSet'
-
-   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
-
-   pod 'react-native-video', :path => '../node_modules/react-native-video'
-
-   pod 'React', :path => '../node_modules/react-native'
-
-   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
-
- end
-
+ 

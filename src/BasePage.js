@@ -139,19 +139,44 @@ export default class BasePage extends Component {
         });
         this.props.navigation.dispatch(resetAction);
     };
+    // 返回到首页
+    $navigateResetLogin = () => {
+        const resetAction = NavigationActions.reset({
+            index: 1,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Tab' }),
+                NavigationActions.navigate({ routeName: 'login/login/LoginPage' }),
+            ],
+        });
+        this.props.navigation.dispatch(resetAction);
+    };
+
+
+
     // 返回
     $navigateBack = (step) => {
         try {
             console.log('step', step);
-            if (step) {
-                let $routes = global.$routes || [];
+            let $routes = global.$routes || [];
+            let routerKey = null;
+            if (typeof step === 'number') {
                 let router = $routes[$routes.length + step];
-                let routerKey = router.key;
+                routerKey = router.key;
+            } else if(typeof step === 'string'){
+                for(let i = 0; i < $routes.length; i++){
+                    if (step === $routes[i].routeName){
+                        routerKey = $routes[i].key;
+                        break;
+                    }
+                }
+            }
+            if (routerKey){
                 const backAction = NavigationActions.back({ key: routerKey });
                 this.props.navigation.dispatch(backAction);
             } else {
                 this.props.navigation.goBack();
             }
+
         } catch (e) {
             console.warn(`$navigateBack error: ${e.toString()}`);
         }

@@ -9,13 +9,8 @@ import ViewPager from '../../../components/ui/ViewPager';
 import UIText from '../../../components/ui/UIText';
 import UIImage from '../../../components/ui/UIImage';
 
-const imageUrls = [
-    'https://yanxuan.nosdn.127.net/2ac89fb96fe24a2b69cae74a571244cb.jpg?imageView&quality=75&thumbnail=750x0',
-    'https://yanxuan.nosdn.127.net/8f283dd0ad76bb48ef9c29a04690816a.jpg?imageView&quality=75&thumbnail=750x0',
-    'https://yanxuan.nosdn.127.net/a9e80a3516c99ce550c7b5574973c22f.jpg?imageView&quality=75&thumbnail=750x0',
-    'https://yanxuan.nosdn.127.net/11b673687ae33f87168cc7b93250c331.jpg?imageView&quality=75&thumbnail=750x0'
-];
-const marginLR = (ScreenUtils.width - 110 - 3 * 60 - 2 * 20) / 2;
+const itemImgW = (ScreenUtils.width - 110 - 2 * 30 - 2 * 20) / 3;
+const bannerW = ScreenUtils.width - 110;
 export default class CategorySearchPage extends BasePage {
 
     constructor(props) {
@@ -23,6 +18,7 @@ export default class CategorySearchPage extends BasePage {
         this.state = {
             leftIndex: 0,
             swiperShow: false,
+            bannerData: [],
             nameArr: [],
             sectionArr: []
         };
@@ -54,9 +50,10 @@ export default class CategorySearchPage extends BasePage {
 
         // 热门分类
         HomeAPI.findHotList().then((response) => {
-            let datas = response.data || [];
+            let datas = response.data || {};
             this.setState({
-                sectionArr: [{ title: '热门分类', data: datas }]
+                sectionArr: [{ title: '热门分类', data: datas.productCategoryList }],
+                bannerData: datas.imgList
             });
         }).catch((data) => {
             bridge.$toast(data.msg);
@@ -67,7 +64,7 @@ export default class CategorySearchPage extends BasePage {
         return (
             <UIImage
                 source={{ uri: url }}
-                style={{ width: ScreenUtils.width - 110, height: 118, borderRadius: 5 }}
+                style={{ width: bannerW, height: 118, borderRadius: 5 }}
             />);
     };
 
@@ -77,6 +74,7 @@ export default class CategorySearchPage extends BasePage {
 
     _render() {
         return (
+
             <View style={{ flexDirection: 'column' }}>
                 <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={styles.searchBox} onPress={this.go2SearchPage}>
@@ -86,60 +84,67 @@ export default class CategorySearchPage extends BasePage {
                     </TouchableOpacity>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <FlatList
-                        style={{ width: 90, backgroundColor: '#EEEEEE' }}
-                        renderItem={this._categoryItem}
-                        extraData={this.state}
-                        refreshing={false}
-                        keyExtractor={(item) => item.id + ''}
-                        showsVerticalScrollIndicator={false}
-                        getItemLayout={(data, index) => (
-                            //行高于分割线高，优化
-                            { length: 45, offset: 45 * index, index }
-                        )}
-                        data={this.state.nameArr}>
-                    </FlatList>
+                    {
+                        this.state.nameArr.length > 0 ?
+                            <FlatList
+                                style={{ width: 90, backgroundColor: '#EEEEEE' }}
+                                renderItem={this._categoryItem}
+                                extraData={this.state}
+                                refreshing={false}
+                                keyExtractor={(item) => item.id + ''}
+                                showsVerticalScrollIndicator={false}
+                                getItemLayout={(data, index) => (
+                                    //行高于分割线高，优化
+                                    { length: 45, offset: 45 * index, index }
+                                )}
+                                data={this.state.nameArr}>
+                            </FlatList> : null
+                    }
                     <View style={{
-                        width: ScreenUtils.width - 90,
-                        flexDirection: 'column',
-                        padding: 10,
-                        backgroundColor: 'white'
+                        width: bannerW + 20
                     }}>
                         {
-                            imageUrls.length > 0 ?
-                                <ViewPager swiperShow={this.state.swiperShow}
-                                           arrayData={imageUrls}
-                                           renderItem={(url) => this.renderViewPageItem(url)}
-                                           dotStyle={{
-                                               height: 5,
-                                               width: 5,
-                                               borderRadius: 5,
-                                               backgroundColor: '#ffffff',
-                                               opacity: 0.4
-                                           }}
-                                           activeDotStyle={{
-                                               height: 5,
-                                               width: 20,
-                                               borderRadius: 5,
-                                               backgroundColor: '#ffffff'
-                                           }}
-                                           autoplay={true}
-                                           height={118}
-                                           width={ScreenUtils.width - 110}
-                                           style={{ marginBottom: 10 }}
-                                /> : null}
-                        <SectionList style={{ marginTop: 10 }}
-                                     contentContainerStyle={{
-                                         flexDirection: 'row',
-                                         flexWrap: 'wrap'
-                                     }}
-                                     renderItem={this._sectionItem}
-                                     renderSectionHeader={this._sectionHeader}
-                                     ListFooterComponent={this._listFooter}
-                                     sections={this.state.sectionArr}
-                                     initialNumToRender={9}
-                                     removeClippedSubviews={false}
-                                     keyExtractor={(item) => item.id + ''}/>
+                            this.state.bannerData.length > 0 ?
+                                <View style={{
+                                    width: bannerW + 20,
+                                    flexDirection: 'column',
+                                    padding: 10,
+                                    backgroundColor: 'white'
+                                }}>
+                                    <ViewPager swiperShow={this.state.swiperShow}
+                                               arrayData={this.state.bannerData}
+                                               renderItem={(url) => this.renderViewPageItem(url)}
+                                               dotStyle={{
+                                                   height: 5,
+                                                   width: 5,
+                                                   borderRadius: 5,
+                                                   backgroundColor: '#ffffff',
+                                                   opacity: 0.4
+                                               }}
+                                               activeDotStyle={{
+                                                   height: 5,
+                                                   width: 20,
+                                                   borderRadius: 5,
+                                                   backgroundColor: '#ffffff'
+                                               }}
+                                               autoplay={true}
+                                               height={118}
+                                               style={{ marginBottom: 10 }}
+                                    />
+                                    <SectionList style={{ marginTop: 10 }}
+                                                 contentContainerStyle={{
+                                                     flexDirection: 'row',
+                                                     flexWrap: 'wrap'
+                                                 }}
+                                                 renderItem={this._sectionItem}
+                                                 renderSectionHeader={this._sectionHeader}
+                                                 ListFooterComponent={this._listFooter}
+                                                 sections={this.state.sectionArr}
+                                                 initialNumToRender={9}
+                                                 removeClippedSubviews={false}
+                                                 keyExtractor={(item) => item.id + ''}/>
+                                </View> : null
+                        }
                     </View>
                 </View>
             </View>
@@ -179,12 +184,19 @@ export default class CategorySearchPage extends BasePage {
         });
         // 点击分类
         if (this.state.leftIndex != index) {
+            // 先隐藏，后显示，起到刷新作用
+            this.setState({
+                swiperShow: false,
+                bannerData: []
+            });
             if (index === 0) {
                 // 热门分类
                 HomeAPI.findHotList().then((response) => {
-                    let datas = response.data || [];
+                    let datas = response.data || {};
                     this.setState({
-                        sectionArr: [{ title: '热门分类', data: datas }]
+                        sectionArr: [{ title: '热门分类', data: datas.productCategoryList }],
+                        bannerData: datas.imgList,
+                        swiperShow: true
                     });
                 }).catch((data) => {
                     bridge.$toast(data.msg);
@@ -192,14 +204,19 @@ export default class CategorySearchPage extends BasePage {
             } else {
                 // 分级
                 HomeAPI.findProductCategoryList({ id: item.id }).then((response) => {
-                    let datas = response.data || [];
+                    let datas = response.data || {};
                     let arr = [];
-                    for (let i = 0, len = datas.length; i < len; i++) {
-                        let item = { title: datas[i].name, data: datas[i].productCategoryList };
+                    for (let i = 0, len = datas.productCategoryList.length; i < len; i++) {
+                        let item = {
+                            title: datas.productCategoryList[i].name,
+                            data: datas.productCategoryList[i].productCategoryList
+                        };
                         arr.push(item);
                     }
                     this.setState({
-                        sectionArr: arr
+                        sectionArr: arr,
+                        bannerData: datas.imgList,
+                        swiperShow: true
                     });
                 }).catch((data) => {
                     bridge.$toast(data.msg);
@@ -212,15 +229,15 @@ export default class CategorySearchPage extends BasePage {
         return (
             <View style={{
                 flexDirection: 'column',
-                width: 60,
-                marginRight: (item.index % 3 == 0 || item.index % 3 == 1) ? 10 : marginLR,
-                marginLeft: (item.index % 3 == 1 || item.index % 3 == 2) ? 10 : marginLR,
+                width: itemImgW,
+                marginRight: (item.index % 3 == 0 || item.index % 3 == 1) ? 10 : 28,
+                marginLeft: (item.index % 3 == 1 || item.index % 3 == 2) ? 10 : 28,
                 alignItems: 'center'
             }}>
                 <PreLoadImage imageUri={item.item.img}
                               style={{
-                                  height: 60,
-                                  width: 60
+                                  height: itemImgW,
+                                  width: itemImgW
                               }}
                               resizeMode={'cover'}
                               onClickAction={() => this.go2ResultPage(item.item.id, item.item.name)}/>
@@ -246,6 +263,7 @@ export default class CategorySearchPage extends BasePage {
 
     _listFooter = ({ section }) => {
         return (
+
             <View style={{
                 width: ScreenUtils.width - 110,
                 flexDirection: 'row',

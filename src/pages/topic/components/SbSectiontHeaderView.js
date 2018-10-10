@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 
 import React, { Component } from 'react';
-import ScreenUtils from '../../../../utils/ScreenUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
 import SubSwichView from './SubSwichView';
 
