@@ -44,55 +44,62 @@ import zqImg from './res/icons/zq.png'
 import sqImg from './res/icons/sq.png'
 import cxImg from './res/icons/cx.png'
 
-class ClassifyModules {
+export class ClassifyModules {
     @observable classifyList = []
     @action loadClassifyList = () => {
         this.classifyList = [{
             icon: cxImg,
             name: '赚钱',
-            id: 1
+            id: 1,
+            route: 'home/search/CategorySearchPage'
         },{
             icon: sqImg,
             name: '省钱',
-            id: 1
+            id: 1,
+            route: 'home/search/CategorySearchPage'
         },{
             icon: zqImg,
             name: '分享',
-            id: 1
+            id: 1,
+            route: 'home/search/CategorySearchPage'
         },{
             icon: zqImg,
             name: '学院',
-            id: 1
+            id: 1,
+            route: 'home/search/CategorySearchPage'
         },{
             icon: cxImg,
             name: '促销',
-            id: 1
+            id: 1,
+            route: 'home/search/CategorySearchPage'
         },{
             icon: sqImg,
             name: '赚钱',
-            id: 1
+            id: 1,
+            route: 'home/search/CategorySearchPage'
         },{
             icon: zqImg,
             name: '学院',
-            id: 1
+            id: 1,
+            route: 'home/search/CategorySearchPage'
         },{
             icon: sqImg,
             name: '学院',
-            id: 1
+            id: 1,
+            route: 'home/search/CategorySearchPage'
         },{
             icon: cxImg,
             name: '学院',
-            id: 1
+            id: 1,
+            route: 'home/search/CategorySearchPage'
         },{
             icon: sqImg,
-            name: '学院',
-            id: 1
+            name: '全部分类',
+            id: 1,
+            route: 'home/search/CategorySearchPage'
         }]
     }
 }
-
-const classifyModule = new ClassifyModules()
-
 
 export class StarShopModule {
     @observable shopList = []
@@ -213,10 +220,6 @@ class HomeModule {
 }
 
 export const homeModule = new HomeModule()
-
-export default {
-    classifyModule
-}
 
 
 

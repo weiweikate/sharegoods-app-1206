@@ -12,8 +12,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types'
 import {observer} from 'mobx-react'
-import Modules from './Modules'
-const { classifyModule } = Modules
+import {ClassifyModules} from './Modules'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils
 
@@ -23,22 +22,23 @@ const Item = ({data,  onPress}) => <TouchableOpacity style={styles.item} onPress
     <Text style={styles.name}>{data.name}</Text>
 </TouchableOpacity>
 
-class HomeClassifyView extends Component {
+@observer
+export default class HomeClassifyView extends Component {
 
     constructor(props) {
         super(props)
-        const { classify } = this.props
-        const { loadClassifyList } = classify
-        loadClassifyList && loadClassifyList()
+        this.classifyModule = new ClassifyModules()
+        this.classifyModule.loadClassifyList()
     }
 
     _onItemPress = (data) => {
         console.log('_onItemPress', data)
+        const {navigation} = this.props
+        navigation.navigate(data.route)
     }
 
     renderItems = () => {
-        const { classify } = this.props
-        const { classifyList } = classify
+        const { classifyList } = this.classifyModule
         let itemViews = []
         classifyList.map((value, index)=> {
             itemViews.push( <Item key={index} data={value} onPress={(data)=> {this._onItemPress(data)}}/>)
@@ -54,11 +54,8 @@ class HomeClassifyView extends Component {
     }
 }
 
-@observer
-export default class HomeClassify extends Component {
-    render () {
-        return <HomeClassifyView classify={classifyModule} {...this.props}/>
-    }
+HomeClassifyView.propTypes = {
+    navigation: PropTypes.object
 }
 
 const styles = StyleSheet.create({
@@ -91,10 +88,8 @@ const styles = StyleSheet.create({
     },
     name: {
         color: '#666',
-        fontSize: px2dp(12)
+        fontSize: px2dp(10)
     }
 });
 
-HomeClassify.propTypes = {
-    navigation: PropTypes.object
-}
+
