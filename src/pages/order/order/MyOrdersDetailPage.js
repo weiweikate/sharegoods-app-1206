@@ -5,7 +5,7 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ImageBackground
+    ImageBackground,Image
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import {
@@ -15,8 +15,9 @@ import { RefreshList } from '../../../components/ui';
 import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import {TimeDownUtils} from '../../../utils/TimeDownUtils';
 import buyerHasPay from '../res/buyerHasPay.png';
-import car from '../res/car.png';
+// import car from '../res/car.png';
 import arrow_right from '../res/arrow_right.png';
 import position from '../res/position.png';
 import GoodsDetailItem from '../components/GoodsDetailItem';
@@ -30,6 +31,7 @@ import constants from '../../../constants/constants';
 import DateUtils from '../../../utils/DateUtils';
 import Toast from '../../../utils/bridge';
 import productDetailImg from '../res/productDetailImg.png';
+import moreIcon from '../../spellShop/myShop/res/more_icon.png'
 import GoodsItem from '../components/GoodsItem';
 import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
@@ -47,7 +49,7 @@ class MyOrdersDetailPage extends BasePage {
             viewData: {
                 expressNo:'',
                 orderId:1235,
-                list:[
+                orderProductList:[
                     {
                         id:1,
                         productId:1,
@@ -129,10 +131,20 @@ class MyOrdersDetailPage extends BasePage {
             }
         };
     };
+    $NavBarRenderRightItem = () => {
+        return (
+            <TouchableOpacity onPress={this.showMore}>
+                <Image source={moreIcon} style={{width:20,height:5,marginRight:10}} resizeMode='contain'/>
+            </TouchableOpacity>
+        );
+    };
+    showMore=()=>{
+        this.setState({isShowShowMessageModal:true});
+    }
     //**********************************ViewPart******************************************
     renderState = () => {
         return (
-            <View>
+            <View style={{marginBottom:10}}>
                 <ImageBackground style={styles.redRectangle} source={productDetailImg}>
                     <UIImage source={buyerHasPay} style={{ height: 25, width: 25, marginTop: 22 }}/>
                     <View style={{ marginTop: 22 }}>
@@ -148,7 +160,7 @@ class MyOrdersDetailPage extends BasePage {
                 </ImageBackground>
                 <View style={styles.whiteRectangle}>
                     <View style={{ flexDirection: 'row' }}>
-                        <UIImage source={car} style={{ height: 19, width: 19, marginLeft: 21, marginTop: 7 }}/>
+                        <UIImage source={position} style={{ height: 19, width: 19, marginLeft: 21, marginTop: 7 }}/>
                         <View>
                             <UIText value={this.state.pageStateString.sellerState} style={{
                                 color: color.black_222,
@@ -185,6 +197,7 @@ class MyOrdersDetailPage extends BasePage {
                     isEmpty={this.state.isEmpty}
                     emptyTip={'暂无数据！'}
                 />
+               {this.renderModal()}
             </View>
         );
     };
@@ -241,9 +254,14 @@ class MyOrdersDetailPage extends BasePage {
                                 rightText={StringUtils.formatMoneyString(this.state.viewData.freightPrice)}
                                 rightTextStyle={{ color: color.black_999 }} isArrow={false}
                                 isLine={false}/>
-                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'积分抵扣'}
+                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'优惠券优惠'}
                                 leftTextStyle={{ color: color.black_999 }}
-                                rightText={StringUtils.formatMoneyString(this.state.viewData.userScore)}
+                                rightText={'-'+StringUtils.formatMoneyString(this.state.viewData.userScore)}
+                                rightTextStyle={{ color: color.black_999 }} isArrow={false}
+                                isLine={false}/>
+                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元现金券'}
+                                leftTextStyle={{ color: color.black_999 }}
+                                rightText={'-'+StringUtils.formatMoneyString(this.state.viewData.userScore)}
                                 rightTextStyle={{ color: color.black_999 }} isArrow={false}
                                 isLine={false}/>
                 <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={'订单总价'}
@@ -434,18 +452,19 @@ class MyOrdersDetailPage extends BasePage {
                     }}
                     commit={(index) => {
                         this.setState({ isShowSingleSelctionModal: false });
-                        // Toast.showLoading()
-                        // OrderApi.cancelOrder({buyerRemark:['我不想买了','信息填写错误，重新拍','其他原因'][index],orderNum:this.state.viewData.orderNum}).then((response)=>{
-                        //     Toast.hiddenLoading()
-                        //     if(response.ok ){
-                        //         NativeModules.commModule.toast('订单已取消')
-                        //         this.getDataFromNetwork()
-                        //     } else {
-                        //         NativeModules.commModule.toast(response.msg)
-                        //     }
-                        // }).catch(e=>{
-                        //     Toast.hiddenLoading()
-                        // });
+                        Toast.showLoading()
+                        OrderApi.cancelOrder({buyerRemark:['我不想买了','信息填写错误，重新拍','其他原因'][index],orderNum:this.state.viewData.orderNum}).then((response)=>{
+                            Toast.hiddenLoading()
+                            if(response.code ===10000 ){
+                                NativeModules.commModule.toast('订单已取消')
+                                this.getDataFromNetwork()
+                            } else {
+                                NativeModules.commModule.toast(response.msg)
+                            }
+                        }).catch(e=>{
+                            Toast.hiddenLoading();
+                            NativeModules.commModule.toast(e.msg)
+                        });
                     }}
                 />
             </View>
@@ -499,7 +518,8 @@ class MyOrdersDetailPage extends BasePage {
         if (autoConfirmTime < 0) {
             return;
         }
-        this.CountdownUtil.settimer(time => {
+        (new TimeDownUtils()).settimer((time) => {
+            console.log(time);
             let pageStateString = this.state.pageStateString;
             pageStateString.moreDetail = time.hours + ':' + time.min + ':' + time.sec + '后自动取消订单';
             this.setState({ pageStateString: pageStateString });
@@ -520,7 +540,7 @@ class MyOrdersDetailPage extends BasePage {
         if (autoConfirmTime < 0) {
             return;
         }
-        this.CountdownUtil.settimer(time => {
+        (new TimeDownUtils()).settimer(time => {
             let pageStateString = this.state.pageStateString;
             pageStateString.moreDetail = time.days + '天' + time.hours + ':' + time.min + ':' + time.sec + '后自动确认收货';
             this.setState({ pageStateString: pageStateString });
@@ -539,7 +559,7 @@ class MyOrdersDetailPage extends BasePage {
     getAfterSaleService = (data, index) => {
         //售后状态
         let afterSaleService = [];
-        if (StringUtils.isEmpty(data.list[index].returnProductStatus)) {
+        if (StringUtils.isEmpty(data[index].returnProductStatus)) {
             if (data.status === 2 || data.status === 4) {
                 afterSaleService.push({
                     id: 0,
@@ -566,21 +586,21 @@ class MyOrdersDetailPage extends BasePage {
                 }
             }
         } else {
-            if (data.list[index].status === 4) {
+            if (data[index].status === 4) {
                 afterSaleService.push({
                     id: 2,
                     operation: '退款中',
                     isRed: false
                 });
             }
-            if (data.list[index].status === 5 || data.list[index].status === 6) {
+            if (data[index].status === 5 || data[index].status === 6) {
                 afterSaleService.push({
                     id: 3,
                     operation: '退换中',
                     isRed: false
                 });
             }
-            if (data.list[index].status === 8 && data.list[index].returnType) {
+            if (data[index].status === 8 && data[index].returnType) {
                 afterSaleService.push({
                     id: 4,
                     operation: '售后完成',
@@ -608,10 +628,10 @@ class MyOrdersDetailPage extends BasePage {
                         category:item.spec,
                         goodsNum:item.num,
                         returnProductId:item.returnProductId,
-                        afterSaleService:this.getAfterSaleService(data,index),
+                        afterSaleService:this.getAfterSaleService(data.orderProductList,index),
                     })
                 })
-                 if(data.orderType===3||data.orderType===98){
+                 if(data.orderType===3||data.orderType===98){//礼包。。。
                    // let  lowerarr=data.list[0].orderProductPrices
                  }
                 let pageStateString=constants.pageStateString[parseInt(data.status)]
@@ -632,7 +652,7 @@ class MyOrdersDetailPage extends BasePage {
                     //     break
                     //等待买家付款
                     case 1:
-                        this.startCutDownTime(response.data.overtimeClosedTime)
+                        this.startCutDownTime(1539089916000)
                         pageStateString.sellerState='收货人：'+data.receiver+'                   '+data.recevicePhone
                         pageStateString.sellerTime='收货地址：'+data.province+data.city+data.area+data.address
                         if (StringUtils.isEmpty(data.outTradeNo)){
@@ -728,7 +748,7 @@ class MyOrdersDetailPage extends BasePage {
                     pageState:data.pageState,
                     activityId:data.activityId,
                     orderType:data.orderType,
-                    orderProductPrices:data.list[0].orderProductPrices
+                    orderProductPrices:data.orderProductList[0].price
                 })
 
         }).catch(e=>{
@@ -789,14 +809,14 @@ class MyOrdersDetailPage extends BasePage {
                 this.setState({ isShowSingleSelctionModal: true });
                 break;
             case 2:
-                this.$navigate('payment/PaymentMethodPage', {
+                this.$navigate('order/payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
                     amounts: this.state.viewData.totalPrice + this.state.viewData.freightPrice,
                     orderType: this.state.viewData.pickedUp - 1
                 });
                 break;
             case 3:
-                this.$navigate('payment/PaymentMethodPage', {
+                this.$navigate('order/payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
                     amounts: this.state.viewData.goodsPrice
                 });

@@ -56,7 +56,7 @@ let constants = {
             index:0,
         },{
             index:1,
-            orderStatus:'等待买家付款',
+            orderStatus:'待支付',
             menuData:[{
                 id:1,
                 operation:'取消订单',
@@ -65,20 +65,22 @@ let constants = {
                 id:2,
                 operation:'去支付',
                 isRed:true,
-            },{
-                id:3,
-                operation:'继续支付',
-                isRed:true,
-            }],
+            },
+            //     {
+            //     id:3,
+            //     operation:'继续支付',
+            //     isRed:true,
+            // }
+            ],
             menuData2:[]
         },{
             index:2,
-            orderStatus:'买家已付款',
+            orderStatus:'已付款',
             menuData:[],
             menuData2:['退款','退款中','售后完成']
         },{
             index:3,
-            orderStatus:'卖家已发货',
+            orderStatus:'已发货',
             menuData:[{
                 id:5,
                 operation:'查看物流',

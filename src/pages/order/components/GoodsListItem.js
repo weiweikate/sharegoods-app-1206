@@ -16,6 +16,7 @@ import GoodsItem from './GoodsItem';
 import StringUtils from '../../../utils/StringUtils';
 import DateUtils from '../../../utils/DateUtils';
 import constants from '../../../constants/constants';
+import {TimeDownUtils} from '../../../utils/TimeDownUtils';
 
 const GoodsListItem = props => {
     const {
@@ -28,15 +29,60 @@ const GoodsListItem = props => {
         clickItem,
         goodsItemClick,
         operationMenuClick,
-        outTrandNo
-    } = props;
+        outTrandNo,
+    } = props
+    this.state={ pageStateString:'27:45:45后自动取消订单'};
 
+    this.startCutDownTime2 = (autoConfirmTime2) => {
+        let autoConfirmTime = Math.round((autoConfirmTime2 - new Date().valueOf()) / 1000);
+        if (autoConfirmTime < 0) {
+            return;
+        }
+        (new TimeDownUtils()).settimer(time => {
+            this.state.pageStateString=time.days + '天' + time.hours + ':' + time.min + ':' + time.sec + '后自动关闭';
+            console.log(this.state.pageStateString);
+            if (time.hours === undefined && time.min === undefined && time.sec === undefined) {
+                this.setState({
+                    pageStateString: constants.pageStateString[5]
+                });
+                if (this.params.callBack) {
+                    this.params.callBack();
+                }
+            }
+        }, autoConfirmTime);
+    };
+    //28:45:45后自动取消订单
     this.renderMenu = () => {
         let nameArr = constants.viewOrderStatus[orderStatus].menuData;
         let itemArr = [];
         for (let i = 0; i < nameArr.length; i++) {
             if ((StringUtils.isNoEmpty(outTrandNo) && nameArr[i].id == 2) | (StringUtils.isEmpty(outTrandNo) && nameArr[i].id == 3)) {
-
+       return(
+             <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                 <View style={{marginLeft:5}}>
+                     <Text style={{color:'#D51243',fontSize:13}}>{this.state.pageStateString}</Text>
+                 </View>
+                 <View style={{flexDirection:'row'}}>
+                     {nameArr.map((item,i)=>{
+                         return    <TouchableOpacity key={i} style={{
+                             borderWidth: 1,
+                             borderColor: item.isRed ? color.red : color.gray_DDD,
+                             height: 30,
+                             borderRadius: 10,
+                             marginRight: 15,
+                             justifyContent: 'center',
+                             paddingLeft: 20,
+                             paddingRight: 20
+                         }} onPress={() => {
+                             operationMenuClick(item);
+                         }}>
+                             <Text
+                                 style={{ color: item.isRed ? color.red : color.gray_666 }}>{item.operation}</Text>
+                         </TouchableOpacity>
+                     })}
+                 </View>
+             </View>
+       )
             } else {
                 itemArr.push(
                     <TouchableOpacity key={i} style={{
