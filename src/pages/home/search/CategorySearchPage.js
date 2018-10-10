@@ -77,7 +77,7 @@ export default class CategorySearchPage extends BasePage {
 
             <View style={{ flexDirection: 'column' }}>
                 <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity style={styles.searchBox} onPress={this.go2SearchPage}>
+                    <TouchableOpacity style={styles.searchBox} onPress={()=>this.go2SearchPage()}>
                         <Image source={require('../res/icon_search.png')}
                                style={{ width: 22, height: 21, marginLeft: 20 }} resizeMode={'center'}/>
                         <View style={styles.inputText}/>
@@ -85,7 +85,7 @@ export default class CategorySearchPage extends BasePage {
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     {
-                        this.state.nameArr.length > 0 ?
+                        this.state.nameArr && this.state.nameArr.length > 0 ?
                             <FlatList
                                 style={{ width: 90, backgroundColor: '#EEEEEE' }}
                                 renderItem={this._categoryItem}
@@ -104,7 +104,7 @@ export default class CategorySearchPage extends BasePage {
                         width: bannerW + 20
                     }}>
                         {
-                            this.state.bannerData.length > 0 ?
+                            this.state.bannerData && this.state.bannerData.length > 0 ?
                                 <View style={{
                                     width: bannerW + 20,
                                     flexDirection: 'column',
@@ -298,8 +298,6 @@ const styles = StyleSheet.create({
     },
     inputText: {
         flex: 1,
-        color: '#666666',
-        fontSize: 14,
         padding: 5
     }
 });
