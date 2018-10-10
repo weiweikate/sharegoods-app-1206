@@ -51,9 +51,9 @@ export default class HomePage extends Component {
         } else if (data.type === homeType.classify) {
             return <HomeClassifyView navigation = {this.props.navigation}/>
         } else if (data.type === homeType.ad) {
-            return <HomeAdView/>
+            return <HomeAdView navigation = {this.props.navigation}/>
         } else if (data.type === homeType.today) {
-            return <HomeTodayView/>
+            return <HomeTodayView navigation = {this.props.navigation}/>
         } else if (data.type === homeType.recommend) {
             return <HomeRecommendView navigation = {this.props.navigation}/>
         } else if (data.type === homeType.subject) {

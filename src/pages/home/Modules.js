@@ -99,7 +99,7 @@ export class StarShopModule {
 
     loadShopList = flow(function * () {
         try {
-            const res = yield HomeApi.getSwipers({type: homeType.starShop})
+            const res = yield HomeApi.getStarShop({type: homeType.starShop})
             this.shopList = res.data
         } catch (error) {
             console.log(error)
@@ -167,7 +167,7 @@ const homeLinkType = {
 }
 
 const homeRoute = {
-    [homeLinkType.good]: '',
+    [homeLinkType.good]: 'home/product/ProductDetailPage',
     [homeLinkType.subject]: 'topic/DownPricePage',
     [homeLinkType.down]: 'topic/DownPricePage',
     [homeLinkType.spike]: 'topic/DownPricePage',
