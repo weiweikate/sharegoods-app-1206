@@ -29,7 +29,6 @@ import BusinessUtils from '../../mine/components/BusinessUtils';
 import Toast from '../../../utils/bridge';
 
 import OrderApi from '../api/orderApi'
-import ExchangeGoodsDetailPage from "./ExchangeGoodsDetailPage";
 
 class AfterSaleServicePage extends BasePage {
     constructor(props) {
