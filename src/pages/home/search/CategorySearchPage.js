@@ -100,7 +100,9 @@ export default class CategorySearchPage extends BasePage {
                                 data={this.state.nameArr}>
                             </FlatList> : null
                     }
-                    <View>
+                    <View style={{
+                        width: bannerW + 20
+                    }}>
                         {
                             this.state.bannerData.length > 0 ?
                                 <View style={{
