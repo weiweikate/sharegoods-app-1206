@@ -7,8 +7,7 @@ import {View , ScrollView, StyleSheet, Text, Image} from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
-import Modules from './Modules'
-const { activityModule } = Modules
+import { SubjectModule } from './Modules'
 
 const GoodItems = ({img, title, money}) => <View style={styles.goodsView}>
     <Image style={styles.goodImg} source={img}/>
@@ -44,18 +43,17 @@ const AcitivyItem = ({data}) => {
     </View>
 }
 
-class HomeActivityView extends Component {
+@observer
+export default class HomeSubjectView extends Component {
     constructor(props) {
         super(props)
-        const { activity } = this.props
-        const { loadActivityList } = activity
-        loadActivityList && loadActivityList()
+        this.subjectModule = new SubjectModule()
+        this.subjectModule.loadSubjectList()
     }
     render() {
-        const { activity } = this.props
-        const { activityList }  = activity
+        const { subjectList } = this.subjectModule
         let items = []
-        activityList.map((item, index) => {
+        subjectList.map((item, index) => {
             items.push(<AcitivyItem data={item} key={index}/>)
         })
         return <View style={styles.container}>
@@ -64,13 +62,6 @@ class HomeActivityView extends Component {
             </View>
             {items}
         </View>
-    }
-}
-
-@observer
-export default class HomeActivity extends Component {
-    render () {
-        return <HomeActivityView activity={activityModule} {...this.props}/>
     }
 }
 

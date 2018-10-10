@@ -136,11 +136,11 @@ import activity3Img from './res/activity3.png'
 import activity4Img from './res/activity4.png'
 import goodsImg from './res/goods.png'
 
-//超值热卖
-class ActivityModule {
-    @observable activityList = []
-    @action loadActivityList = () => {
-        this.activityList = [
+//专题
+export class SubjectModule {
+    @observable subjectList = []
+    @action loadSubjectList = () => {
+        this.subjectList = [
             {
                 banner: activity1Img,
                 goods: [
@@ -189,8 +189,6 @@ class ActivityModule {
     }
 }
 
-const activityModule = new ActivityModule()
-
 // autorun(function() {
 //     console.log(` ${bannerModule.bannerList}  ${bannerModule.bannerList.length} ${classifyModule.classifyList} ${starShopModule.shopList}`)
 // })
@@ -222,8 +220,7 @@ export class HomeModule {
 }
 
 export default {
-    classifyModule,
-    activityModule
+    classifyModule
 }
 
 

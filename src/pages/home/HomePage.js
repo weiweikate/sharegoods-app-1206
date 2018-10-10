@@ -12,7 +12,7 @@ import HomeClassifyView from './HomeClassifyView'
 import HomeStarShopView from './HomeStarShopView'
 import HomeTodayView from './HomeTodayView'
 import HomeRecommendView from './HomeRecommendView'
-import HomeActivityView from './HomeActivityView'
+import HomeSubjectView from './HomeSubjectView'
 import HomeBannerView from './HomeBannerView'
 import HomeAdView from './HomeAdView'
 
@@ -57,7 +57,7 @@ export default class HomePage extends Component {
         } else if (data.type === homeType.recommend) {
             return <HomeRecommendView/>
         } else if (data.type === homeType.activity) {
-            return <HomeActivityView/>
+            return <HomeSubjectView/>
         } else if (data.type === homeType.starShop) {
             return <HomeStarShopView/>
         }
