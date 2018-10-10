@@ -2,15 +2,15 @@
  * 今日榜单
  */
 import React, {Component} from 'react'
-import { View, ScrollView, StyleSheet, Text, Image } from 'react-native'
+import { View, ScrollView, StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import { TodayModule } from './Modules'
+import { TodayModule, homeModule } from './Modules'
 
-const TodayItem = ({item}) => <View style={styles.item}>
+const TodayItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <Image style={styles.img} source={{uri: item.imgUrl}}/>
-</View>
+</TouchableOpacity>
 
 @observer
 export default class HomeTodayView extends Component {
@@ -21,11 +21,17 @@ export default class HomeTodayView extends Component {
         this.todayModule.loadTodayList()
     }
 
+    _todayItemAction(item) {
+        let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
+        const {navigation} = this.props
+        navigation && navigation.navigate(router)
+    }
+
     render() {
         const { todayList } = this.todayModule
         let items = []
         todayList.map((item, index) => {
-            items.push(<TodayItem key={index} item={item}/>)
+            items.push(<TodayItem key={index} item={item} press={()=>this._todayItemAction(item)}/>)
         })
         return <View>
         {

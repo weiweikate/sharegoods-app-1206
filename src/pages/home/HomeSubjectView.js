@@ -7,7 +7,7 @@ import {View , ScrollView, StyleSheet, Text, Image, TouchableOpacity} from 'reac
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
-import { subjectModule } from './Modules'
+import { subjectModule, homeModule } from './Modules'
 import goodsImg from './res/goods.png'
 
 const GoodItems = ({img, title, money}) => <View style={styles.goodsView}>
@@ -60,10 +60,10 @@ export default class HomeSubjectView extends Component {
         subjectModule.loadSubjectList()
     }
     _subjectActions(item) {
-        console.log('_subjectActions', item)
         subjectModule.selectedSubjectAction(item)
         const { navigation } = this.props
-        navigation.navigate('topic/DownPricePage')
+        const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
+        navigation.navigate(router)
     }
     render() {
         const { subjectList } = subjectModule

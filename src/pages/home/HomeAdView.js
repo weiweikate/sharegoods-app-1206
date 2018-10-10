@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {View, StyleSheet, Image} from 'react-native'
+import {View, StyleSheet, Image, TouchableOpacity} from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
-import { AdModules } from './Modules'
+import { AdModules , homeModule} from './Modules'
 import {observer} from 'mobx-react';
 
 @observer
@@ -11,31 +11,35 @@ export default class HomeAdView extends Component {
         this.adModules = new AdModules()
         this.adModules.loadAdList()
     }
+    _adAction(value) {
+        const router =  homeModule.homeNavigate(value.linkType, value.linkTypeCode)
+        const {navigation} = this.props
+        navigation.navigate(router)
+    }
     render() {
         const {ad} = this.adModules
         let items = []
         ad.map((value, index) => {
-            console.log(' ad.map ',value)
             if (index === 0) {
-                items.push(<View key={index} style={[styles.featureBox1]}>
+                items.push(<TouchableOpacity key={index} style={[styles.featureBox1]}  onPress={()=>this._adAction(value)}>
                     <Image
                         source={{ uri: value.imgUrl }}
                         style={styles.featureBox1Image}/>
-                </View>)
+                </TouchableOpacity>)
             } else if (index === 1) {
                 items.push(
-                    <View key={index}  style={[styles.featureBox2]}>
+                    <TouchableOpacity key={index}  style={[styles.featureBox2]} onPress={()=>this._adAction(value)}>
                         <Image
                             source={{ uri: value.imgUrl}}
                             style={styles.featureBox2Image}/>
-                    </View>
+                    </TouchableOpacity>
                 )
             } else {
-                items.push(<View key={index}  style={[styles.featureBox3]}>
+                items.push(<TouchableOpacity key={index}  style={[styles.featureBox3]} onPress={()=>this._adAction(value)}>
                     <Image
                         source={{ uri:  value.imgUrl }}
                         style={styles.featureBox2Image}/>
-                </View>)
+                </TouchableOpacity>)
             }
         })
        return <View>

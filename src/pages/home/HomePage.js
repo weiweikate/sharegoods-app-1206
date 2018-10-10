@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet,  FlatList, Text } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import {observer} from 'mobx-react';
-import { homeType, HomeModule } from './Modules'
+import { homeType, homeModule } from './Modules'
 import HomeSearchView from './HomeSearchView'
 import HomeClassifyView from './HomeClassifyView'
 import HomeStarShopView from './HomeStarShopView'
@@ -28,8 +28,7 @@ export default class HomePage extends Component {
     headerH = statusBarHeight + 44;
     constructor(props) {
         super(props)
-        this.homeModule = new HomeModule()
-        this.homeModule.loadHomeList()
+        homeModule.loadHomeList()
     }
 
     _onScroll = (event) => {
@@ -47,17 +46,16 @@ export default class HomePage extends Component {
     _keyExtractor = (item, index) => item.id + ''
     _renderItem = (item) => {
         let data = item.item
-        console.log('_renderItem', data.type)
         if (data.type === homeType.swiper) {
-            return <HomeBannerView/>
+            return <HomeBannerView navigation = {this.props.navigation}/>
         } else if (data.type === homeType.classify) {
             return <HomeClassifyView navigation = {this.props.navigation}/>
         } else if (data.type === homeType.ad) {
-            return <HomeAdView/>
+            return <HomeAdView navigation = {this.props.navigation}/>
         } else if (data.type === homeType.today) {
-            return <HomeTodayView/>
+            return <HomeTodayView navigation = {this.props.navigation}/>
         } else if (data.type === homeType.recommend) {
-            return <HomeRecommendView/>
+            return <HomeRecommendView navigation = {this.props.navigation}/>
         } else if (data.type === homeType.subject) {
             return <HomeSubjectView navigation = {this.props.navigation}/>
         } else if (data.type === homeType.starShop) {
@@ -77,7 +75,7 @@ export default class HomePage extends Component {
     }
 
     render() {
-        const { homeList } = this.homeModule
+        const { homeList } = homeModule
         return (
             <View style={styles.container}>
                 <FlatList
