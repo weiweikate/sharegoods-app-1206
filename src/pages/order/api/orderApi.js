@@ -19,7 +19,10 @@ const api = {
     confirmReceipt: '/order/confirmReceipt',
     //取消订单
     cancelOrder: '/order/cancelOrder',
-
+    //继续支付
+    continuePay:'/order/payRecord/continuePay',
+    //继续去支付
+    continueToPay:['/order/payRecord/continueToPay',{method:'get'}],
     /**  售后模块相关接口 huchao */
     //（陈帅）申请退款
     applyRefund: '/order/returnProduct/applyRefund',

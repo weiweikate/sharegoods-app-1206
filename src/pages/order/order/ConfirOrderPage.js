@@ -526,7 +526,8 @@ export default class ConfirOrderPage extends BasePage {
                     this.$navigate('order/payment/PaymentMethodPage', {
                         orderNum: data.orderNum,
                         amounts:  this.state.viewData.totalAmounts,
-                        tokenCoinToBalance: data.user.availableBalance
+                        pageType:0,
+                        availableBalance: data.user.availableBalance
                     });
 
             }).catch(e => {

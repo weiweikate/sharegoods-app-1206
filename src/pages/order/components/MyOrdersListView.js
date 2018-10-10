@@ -333,7 +333,7 @@ export default class MyOrdersListView extends Component {
                     totalPrice: item.totalPrice,
                     orderProduct: this.getOrderProduct(item.orderProductList),
                     pickedUp: item.pickedUp,
-                    outTrandNo: item.shutOffTime
+                    outTrandNo: item.outTrandNo
                 });
             });
             this.setState({ viewData: arrData });
@@ -359,6 +359,7 @@ export default class MyOrdersListView extends Component {
                 OrderApi.queryPage(params).then((response) => {
                     Toast.hiddenLoading();
                     this.getList(response.data);
+                    console.log(response);
                     this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
 
                 }).catch(e => {

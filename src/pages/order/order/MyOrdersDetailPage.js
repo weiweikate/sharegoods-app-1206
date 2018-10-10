@@ -99,6 +99,8 @@ class MyOrdersDetailPage extends BasePage {
                 goodsPrice:5292,//商品价格(detail.totalPrice-detail.freightPrice)
                 freightPrice:5092,//运费（快递）
                 userScore:0,//积分抵扣
+                tokenCoin:0,//一元券抵扣
+                couponPrice:0,//优惠券抵扣
                 totalPrice:5292,//订单总价
                 orderTotalPrice:5292,//需付款
                 orderNum:2018070250371039050793800,//订单编号
@@ -256,12 +258,12 @@ class MyOrdersDetailPage extends BasePage {
                                 isLine={false}/>
                 <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'优惠券优惠'}
                                 leftTextStyle={{ color: color.black_999 }}
-                                rightText={'-'+StringUtils.formatMoneyString(this.state.viewData.userScore)}
+                                rightText={'-'+StringUtils.formatMoneyString(this.state.viewData.couponPrice)}
                                 rightTextStyle={{ color: color.black_999 }} isArrow={false}
                                 isLine={false}/>
                 <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元现金券'}
                                 leftTextStyle={{ color: color.black_999 }}
-                                rightText={'-'+StringUtils.formatMoneyString(this.state.viewData.userScore)}
+                                rightText={'-'+StringUtils.formatMoneyString(this.state.viewData.tokenCoin)}
                                 rightTextStyle={{ color: color.black_999 }} isArrow={false}
                                 isLine={false}/>
                 <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={'订单总价'}
@@ -652,7 +654,7 @@ class MyOrdersDetailPage extends BasePage {
                     //     break
                     //等待买家付款
                     case 1:
-                        this.startCutDownTime(1539089916000)
+                        this.startCutDownTime(data.shutOffTime);
                         pageStateString.sellerState='收货人：'+data.receiver+'                   '+data.recevicePhone
                         pageStateString.sellerTime='收货地址：'+data.province+data.city+data.area+data.address
                         if (StringUtils.isEmpty(data.outTradeNo)){
@@ -728,11 +730,12 @@ class MyOrdersDetailPage extends BasePage {
                         provinceString:data.province,
                         cityString:data.city,
                         areaString:data.area,
-                        goodsPrice:data.totalPrice-data.freightPrice,//商品价格(detail.totalPrice-detail.freightPrice)
+                        goodsPrice:data.totalProductPrice,//商品价格(detail.totalPrice-detail.freightPrice)
                         freightPrice:data.freightPrice,//运费（快递）
-                        userScore:data.userScore,//积分抵扣
-                        totalPrice:data.totalPrice,//订单总价
-                        orderTotalPrice:data.orderTotalPrice,//需付款
+                        tokenCoin:data.tokenCoin||0,//一元券抵扣
+                        couponPrice:data.couponPrice||0,//优惠券抵扣
+                        totalPrice:data.totalOrderPrice,//订单总价
+                        orderTotalPrice:data.needPrice,//需付款
                         orderNum:data.orderNum,//订单编号
                         createTime:data.createTime,//创建时间
                         sysPayTime:data.sysPayTime,//平台付款时间
@@ -740,7 +743,7 @@ class MyOrdersDetailPage extends BasePage {
                         outTradeNo:data.outTradeNo,//三方交易号
                         sendTime:data.sendTime,//发货时间
                         finishTime:'',//成交时间
-                        autoConfirmTime:data.autoConfirmTime,//自动确认时间
+                        autoConfirmTime:data.autoReceiveTime,//自动确认时间
                         pickedUp:data.pickedUp,//
                     },
                     pageStateString:pageStateString,
@@ -748,7 +751,7 @@ class MyOrdersDetailPage extends BasePage {
                     pageState:data.pageState,
                     activityId:data.activityId,
                     orderType:data.orderType,
-                    orderProductPrices:data.orderProductList[0].price
+                    orderProductPrices:data.orderProductList[0].price//礼包，套餐啥的
                 })
 
         }).catch(e=>{
