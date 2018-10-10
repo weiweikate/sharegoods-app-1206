@@ -1,4 +1,6 @@
 import { observable, action } from 'mobx';
+import TopicAPI from '../api/TopicApi';
+import bridge from '../../../utils/bridge';
 
 class TotalTopicresultDataModel {
     @observable
@@ -18,12 +20,33 @@ class TotalTopicresultDataModel {
     @observable
     topicNavbarList = [];
     @observable
-    topicNavTitleList = [];
+    topicNavTitleList = [
+        {
+            title: '00:00',
+            subTitle: '已开抢'
+        },
+        {
+            title: '00:00',
+            subTitle: '已开抢'
+        },
+        {
+            title: '00:00',
+            subTitle: '已开抢'
+        },
+        {
+            title: '00:00',
+            subTitle: '已开抢'
+        }
+    ];
 
     /*不同导航下的数据*/
     @observable
     sectionDataList = [];
 
+    /**
+     * 存储专题数据
+     * @param resultData
+     */
     @action
     saveResultDataWith(resultData) {
         this.id = resultData.id;
@@ -40,71 +63,98 @@ class TotalTopicresultDataModel {
         //组装不同类目的导航数据
         this.packageSectionData();
     }
+
+    /**
+     * 组装专题数据
+     */
     @action
     packageSectionData() {
         let tempArr = [];
         /*所有导航的数据源*/
-        let navListData = {
-            navName: '',
-            navSections: []
-        };
+        // let navListData = {
+        //     navName: '',
+        //     navSections: []
+        // };
         //开始组装不同的nav下的sections数据
-        this.topicNavbarList.slice().map((topicNavListItem, index) => {
-            // sections={[{
-            //             title: 'one',
-            //             key: 'one',
-            //             data: [
-            //                 { key: 'Devin' },
-            //                 { key: 'Jackson' },
-            //                 { key: 'James' },
-            //                 { key: 'Joel' },
-            //                 { key: 'John' },
-            //                 { key: 'Jillian' }
-            //             ]
-            //         }]};
-           //单个导航的数据源
-            const {navName,topicBannerProducts,topicNavbarBannerList} = topicNavListItem
+        const numberOfNav =  this.topicNavbarList.slice().length;
+        for (var indexOfNav = 0 ;indexOfNav <numberOfNav ;indexOfNav++){
+          let  topicNavListItemArr = this.topicNavbarList.slice();
+          let topicNavListItem = topicNavListItemArr[indexOfNav]
 
+            //单个导航的数据源
+            // const { navName, topicBannerProducts, topicNavbarBannerList } = topicNavListItem;
+            const { navName, topicBannerProducts,topicNavbarBannerList} = topicNavListItem;
+            //为null的时候会终止函数,我也是醉了
+            let BannerProducts = topicBannerProducts || [];
+            //一个导航下的数据
             let sections = {
-                navName:navName,
-                sectionDataList:[],
+                navName: navName,
+                sectionDataList: []
             };
-            //创建导航的第一组
+            //创建导航的第一组,每一组的数据结构如下
             let firstSection = {
-                key:'first',
-                data:topicBannerProducts,
+                key: 'one',
+                //第一组的bannerImg为空
+                bannerImg: '',
+                data: BannerProducts.slice() || []
             };
-            sections.sectionDataList.push(firstSection)
-            //判断从第二个section开始的数据是否有数据
-            if (topicNavbarBannerList instanceof Array &&
-                topicNavbarBannerList.length > 0
-            ) {
-                topicNavbarBannerList.map((otherSection, otherSectionIndex)=>{
+            sections.sectionDataList.push(firstSection);
+            /**
+             * 第二个组开始
+             */
+
+           let topicNavbarBannerNormalList = topicNavbarBannerList||[]
+
+            if (topicNavbarBannerNormalList.slice().length > 0) {
+                topicNavbarBannerNormalList.slice().map((otherSection, otherSectionIndex) => {
+                    const { topicBannerProductList } = otherSection;
+                    let productlist = topicBannerProductList || [];
                     //组装从第二个开始的组
                     let otherSections = {
-                        key:otherSectionIndex,
-                        bannerImg:otherSection.bannerImg,
-                        data:otherSection.topicBannerProductList||[],
+                        key: otherSectionIndex,
+                        bannerImg: otherSection.bannerImg,
+                        data: productlist.slice()
                     };
+                    //开始加入从第二组开始的数据
                     sections.sectionDataList.push(otherSections);
-                })
+                });
             }
-            navListData.navSections.push(sections)
-            tempArr.push(navListData);
-
-        });
-        this.sectionDataList=tempArr;
-        console.log(this.sectionDataList);
+            tempArr.push(sections);
+          //   console.log(tempArr);
+        };
+        this.sectionDataList = tempArr;
+        console.log(tempArr);
     }
 
+    /**
+     * 组装专题导航标题数据
+     */
     @action
     packageNavTitle() {
         let [...tempArr] = this.topicNavbarList.slice();
         let titleArr = [];
         tempArr.map(item => {
-            titleArr.push(item.navName);
+            titleArr.push({
+                title: item.navName
+            });
         });
         this.topicNavTitleList = titleArr;
+    }
+
+    /**
+     * 获取专题数据
+     * @param topicID 专题id
+     */
+    @action
+    loadTopicData(topicCode) {
+        TopicAPI.findTopicById({
+            code: topicCode
+        }).then(result => {
+            this.saveResultDataWith(result.data);
+            console.log(result);
+        }).catch(error => {
+            bridge.$toast(error.msg);
+        });
     }
 }
 

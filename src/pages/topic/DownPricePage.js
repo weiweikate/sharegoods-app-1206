@@ -18,30 +18,44 @@ import TotalTopicDataModel from './model/SubTopicModel';
 @observer
 export default class DownPricePage extends BasePage {
 
-    dataModel = new TotalTopicDataModel();
     $navigationBarOptions = {
         title: '专题',
         show: true
     };
-    componentDidMount() {
-        // HomeAPI.findTopicById({
-        //     id: 33
-        // }).then((result) => {
-        //     this.dataModel.saveResultDataWith(result.data);
-        //     console.log(this.dataModel);
-        // }).catch((error) => {
-        //
-        // });
+
+    constructor(props) {
+        super(props);
+        this.dataModel = new TotalTopicDataModel();
+        this.state={
+            selectNav:0
+        }
     }
+
+    componentDidMount() {
+        this.dataModel.loadTopicData('ZT20180002');
+    }
+
     _render() {
+        const sectionList = this.dataModel.sectionDataList.slice() || [];
+        let sectionData = [];
+        if (sectionList.length > 0) {
+            sectionData = sectionList[this.state.selectNav].sectionDataList||[];
+        }else {
+
+        }
+
         return (
-            <View>
+            <View style={
+                {
+                    flex:1
+                }
+            }>
                 <SectionList
                     contentContainerStyle={Styles.list}
                     style={{
                         backgroundColor: ColorUtil.Color_f7f7f7
                     }}
-                    numColumns={2}
+                    // numColumns={2}
                     columnWrapperStyle={Styles.itemBgStyle}
                     stickySectionHeadersEnabled={false}
                     /* 渲染头*/
@@ -58,34 +72,37 @@ export default class DownPricePage extends BasePage {
                         return this._renderRowView(item);
                     }}
                     // contentContainerStyle={styles.list}//设置cell的样式
-                    pageSize={2}  // 配置pageSize确认网格数量
-                    sections={[
-                        {
-                            title: 'one',
-                            key: 'one',
-                            data: [
-                                { key: 'Devin' },
-                                { key: 'Jackson' },
-                                { key: 'James' },
-                                { key: 'Joel' },
-                                { key: 'John' },
-                                { key: 'Jillian' }
-                            ]
-                        },
-                        {
-                            key: 'two',
-                            data: [
-                                { key: 'Devin' },
-                                { key: 'Jackson' },
-                                { key: 'James' },
-                                { key: 'Joel' },
-                                { key: 'John' },
-                                { key: 'Jillian' },
-                                { key: 'Jimmy' },
-                                { key: 'Julie' }
-                            ]
-                        }
-                    ]}
+                    // pageSize={2}  // 配置pageSize确认网格数量
+                    sections={sectionData}
+                    // sections={
+                    //     [
+                    //     {
+                    //         title: 'one',
+                    //         key: 'one',
+                    //         data: [
+                    //             { key: 'Devin' },
+                    //             { key: 'Jackson' },
+                    //             { key: 'James' },
+                    //             { key: 'Joel' },
+                    //             { key: 'John' },
+                    //             { key: 'Jillian' }
+                    //         ]
+                    //     },
+                    //     {
+                    //         key: 'two',
+                    //         data: [
+                    //             { key: 'Devin' },
+                    //             { key: 'Jackson' },
+                    //             { key: 'James' },
+                    //             { key: 'Joel' },
+                    //             { key: 'John' },
+                    //             { key: 'Jillian' },
+                    //             { key: 'Jimmy' },
+                    //             { key: 'Julie' }
+                    //         ]
+                    //     }
+                    // ]
+                    // }
 
                 />
             </View>
@@ -108,11 +125,16 @@ export default class DownPricePage extends BasePage {
      * @private
      */
     _renderHeaderView = (key) => {
-
-        console.log(this.dataModel)
+        console.log(this.dataModel);
         if (key === 'one') {
             return <SbOpenPrizeHeader
                 headerData={this.dataModel}
+                navItemClick={(index, item) => {
+                    //自导航点击事件
+                    this.setState({
+                        selectNav:index
+                    })
+                }}
             />;
         } else {
             return <ActivityOneView/>;
@@ -125,7 +147,9 @@ export default class DownPricePage extends BasePage {
      * @private
      */
     _renderRowView = (item) => {
-        return (<OpenPrizeItemView/>);
+        return (<OpenPrizeItemView
+                itemData={item}
+        />);
     };
     /**
      *
