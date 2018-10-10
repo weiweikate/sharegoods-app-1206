@@ -21,7 +21,7 @@ export default class SearchPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '申请店铺'
+        title: '搜索店铺'
     };
 
     constructor(props) {

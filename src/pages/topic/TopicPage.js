@@ -1,12 +1,12 @@
 import React from 'react';
 
 import ThreeColumnListView from './components/ThreeColumnListView';
-import BasePage from '../../../BasePage';
+import BasePage from '../../BasePage';
 import PropTypes from 'prop-types';
 import TwoColumnListView from './components/TwoColumnListView';
 
 
-export default class SubjectPage extends BasePage {
+export default class TopicPage extends BasePage {
 
 
     constructor(props) {
@@ -39,7 +39,7 @@ export default class SubjectPage extends BasePage {
         );
     }
 }
-SubjectPage.propTypes = {
+TopicPage.propTypes = {
     //专题列表列数
     columnNumber: PropTypes.number,
     //0无切换 1 有切换

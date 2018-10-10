@@ -139,6 +139,20 @@ export default class BasePage extends Component {
         });
         this.props.navigation.dispatch(resetAction);
     };
+    // 返回到首页
+    $navigateResetLogin = () => {
+        const resetAction = NavigationActions.reset({
+            index: 1,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Tab' }),
+                NavigationActions.navigate({ routeName: 'login/login/LoginPage' }),
+            ],
+        });
+        this.props.navigation.dispatch(resetAction);
+    };
+
+
+
     // 返回
     $navigateBack = (step) => {
         try {

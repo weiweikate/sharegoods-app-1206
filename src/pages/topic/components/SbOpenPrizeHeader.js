@@ -8,31 +8,33 @@ import {
 } from 'react-native';
 
 import React, { Component } from 'react';
-import ScreenUtils from '../../../../utils/ScreenUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
-import ColorUtil from '../../../../utils/ColorUtil';
-import UIText from '../../../../comm/components/UIText';
-import bridge from '../../../../utils/bridge';
+import ColorUtil from '../../../utils/ColorUtil';
+import UIText from '../../../comm/components/UIText';
+import bridge from '../../../utils/bridge';
 import SbResTool from '../res/SbResTool';
-import PreLoadImage from '../../../../components/ui/preLoadImage/PreLoadImage';
+import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
 
 export default class SbOpenPrizeHeader extends Component {
 
     static propTypes = {
         subjectType: PropTypes.number,
-        headerData:PropTypes.object.isRequired,
+        headerData: PropTypes.object.isRequired
     };
     state = {
         selectSate: 2
 
     };
+
     constructor(props) {
         super(props);
     }
+
     render() {
-        const {imgUrl} = this.props.headerData;
-        console.log(imgUrl)
+        const { imgUrl } = this.props.headerData;
+        console.log(imgUrl);
         return (
             <View>
                 <PreLoadImage
@@ -73,10 +75,11 @@ export default class SbOpenPrizeHeader extends Component {
             </View>
         );
     }
+
     _getDownTimeItemView = () => {
-       const {topicNavTitleList} = this.props.headerData
-        console.log(topicNavTitleList)
-        if (topicNavTitleList instanceof Array && topicNavTitleList.length > 0){
+        const { topicNavTitleList } = this.props.headerData;
+        console.log(topicNavTitleList);
+        if (topicNavTitleList instanceof Array && topicNavTitleList.length > 0) {
             let tempCompoentArr = [];
             topicNavTitleList.map((item, index) => {
                 tempCompoentArr.push(
@@ -93,16 +96,16 @@ export default class SbOpenPrizeHeader extends Component {
                             />
                             {/*//先注释掉*/}
                             {/*<UIText*/}
-                                {/*value={'已经开抢'}*/}
-                                {/*style={*/}
-                                    {/*[*/}
-                                        {/*itemViewStyle.itemBottomTextStyle,*/}
-                                        {/*this.state.selectSate === index ?*/}
-                                            {/*{*/}
-                                                {/*color: ColorUtil.Color_ffffff*/}
-                                            {/*} : null*/}
-                                    {/*]*/}
-                                {/*}*/}
+                            {/*value={'已经开抢'}*/}
+                            {/*style={*/}
+                            {/*[*/}
+                            {/*itemViewStyle.itemBottomTextStyle,*/}
+                            {/*this.state.selectSate === index ?*/}
+                            {/*{*/}
+                            {/*color: ColorUtil.Color_ffffff*/}
+                            {/*} : null*/}
+                            {/*]*/}
+                            {/*}*/}
                             {/*/>*/}
                         </View>
                     </TouchableOpacity>

@@ -28,7 +28,7 @@ const { px2dp, statusBarHeight } = ScreenUtils;
 const DemoList = [
     {
         title: '专题页面类型one',
-        uri: 'home/subject/SubjectPage',
+        uri: 'topic/TopicPage',
         params: {
             columnNumber: 2,
             subjectType: 1
@@ -36,7 +36,7 @@ const DemoList = [
     },
     {
         title: '专题页面类型Two',
-        uri: 'home/subject/SubjectPage',
+        uri: 'topic/TopicPage',
         params: {
             columnNumber: 3,
             subjectType: 0
@@ -44,7 +44,7 @@ const DemoList = [
     },
     {
         title: '专题页面类型Three',
-        uri: 'home/subject/SubOpenPrizePage'
+        uri: 'topic/DownPricePage'
 
     },
     {
