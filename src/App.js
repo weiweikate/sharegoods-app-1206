@@ -82,6 +82,7 @@ export default class App extends Component<Props> {
         return (
             <View style={styles.container}>
                 <Navigator screenProps={this.props.params} ref='Navigator'
+
                            onNavigationStateChange={(prevState, currentState) => {
                                let curRouteName = getCurrentRouteName(currentState);
                                console.log(curRouteName);
@@ -91,6 +92,7 @@ export default class App extends Component<Props> {
                                if (prevScreen !== currentScreen) {
                                    //console.log('从页面' + prevScreen + '跳转页面' + currentScreen);
                                }
+
                            }}/>
                 {
                     CONFIG.showDebugPanel ? <DebugButton onPress={this.showDebugPage}><Text
