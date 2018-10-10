@@ -10,6 +10,7 @@ import ColorUtil from '../../../utils/ColorUtil';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ProgressBarView from './ProgressBarView';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+import PropTypes from 'prop-types';
 
 export default class OpenPrizeItemView extends Component {
 
@@ -17,7 +18,12 @@ export default class OpenPrizeItemView extends Component {
         super(props);
     }
 
+    static propTypes = {
+       itemData:PropTypes.object.isRequired
+    };
+
     render() {
+        // const itemData = this.props.itemData
         return (
             <TouchableOpacity>
                 <View style={ItemStyles.itemBgStyle}>
