@@ -26,6 +26,11 @@ export default class AddressEditAndAddPage extends BasePage {
         if (StringUtils.isEmpty(this.state.receiverText)) {
             bridge.$toast('请输入收货人');
             return;
+        } else {
+            if (this.state.receiverText.length > 16 || this.state.receiverText.length < 2) {
+                bridge.$toast('收货人必须2～16位长度');
+                return;
+            }
         }
         if (StringUtils.isEmpty(this.state.telText)) {
             bridge.$toast('请输入手机号');
@@ -33,6 +38,7 @@ export default class AddressEditAndAddPage extends BasePage {
         } else {
             if (!StringUtils.checkPhone(this.state.telText)) {
                 bridge.$toast('手机号格式不对');
+                return;
             }
         }
         if (StringUtils.isEmpty(this.state.provinceCode)) {
@@ -102,7 +108,8 @@ export default class AddressEditAndAddPage extends BasePage {
             cityName: '',
             areaCode: areaCode,
             areaName: '',
-            isDefault: isDefault || false
+            isDefault: isDefault || false,
+            from
         };
     }
 
@@ -146,24 +153,26 @@ export default class AddressEditAndAddPage extends BasePage {
                     value={this.state.addrText}
                 />
             </View>
-            <View style={{
-                backgroundColor: 'white',
-                marginTop: 10,
-                flexDirection: 'row',
-                height: 44,
-                alignItems: 'center'
-            }}>
-                <UIText value={'是否设为默认地址'} style={[styles.itemLeftText, { flex: 1, marginLeft: 20 }]}/>
-                <UIImage source={this.state.isDefault ? addrSelectedIcon : addrUnSelectedIcon} style={{
-                    width: 16,
-                    height: 16,
-                    paddingRight: 14,
-                    marginRight: 16,
-                    paddingLeft: 16,
-                    paddingTop: 12,
-                    paddingBottom: 12
-                }} resizeMode={'contain'} onPress={() => this.setState({ isDefault: !this.state.isDefault })}/>
-            </View>
+            {
+                this.state.from === 'add' ?
+                    <View style={{
+                        backgroundColor: 'white',
+                        marginTop: 10,
+                        flexDirection: 'row',
+                        height: 44,
+                        alignItems: 'center'
+                    }}>
+                        <UIText value={'是否设为默认地址'} style={[styles.itemLeftText, { flex: 1, marginLeft: 20 }]}/>
+                        <UIImage source={this.state.isDefault ? addrSelectedIcon : addrUnSelectedIcon} style={{
+                            width: 16,
+                            height: 16,
+                            paddingRight: 14,
+                            marginRight: 16,
+                            paddingLeft: 16,
+                            paddingTop: 12,
+                            paddingBottom: 12
+                        }} resizeMode={'contain'} onPress={() => this.setState({ isDefault: !this.state.isDefault })}/>
+                    </View> : null}
         </View>;
     }
 
