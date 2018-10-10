@@ -35,7 +35,6 @@ import moreIcon from '../../spellShop/myShop/res/more_icon.png'
 import GoodsItem from '../components/GoodsItem';
 import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
-import AfterSaleServiceHomePage from "../afterSaleService/AfterSaleServiceHomePage";
 
 class MyOrdersDetailPage extends BasePage {
     constructor(props) {
