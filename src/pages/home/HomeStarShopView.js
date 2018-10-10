@@ -6,8 +6,7 @@ import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Image } from
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
-import Modules from './Modules'
-const { starShopModule } = Modules
+import { StarShopModule } from './Modules'
 
 const Banner = ({backImage, title, press}) => <View style={styles.bannerContainer}>
     <ImageBackground style={styles.bannerImg}  source={backImage}>
@@ -52,20 +51,19 @@ const Cell = ({data, press}) => <View style={styles.cell}>
 </View>
 
 
-class HomeStarShopView extends Component {
+@observer
+export default class HomeStarShopView extends Component {
     constructor(props) {
         super(props)
-        const { starShop } = this.props
-        const { loadShopList } = starShop
-        loadShopList && loadShopList()
+        this.starShop = new StarShopModule()
+        this.starShop.loadShopList()
     }
     _shopPress() {
         console.log('_shopPress')
     }
     render () {
         let cells = []
-        const { starShop } = this.props
-        const { shopList } = starShop
+        const { shopList } = this.starShop
         shopList.map((shop, index) => {
             cells.push(<Cell key={index} data={shop} press={()=>this._shopPress(shop)}/>)
         })
@@ -73,13 +71,6 @@ class HomeStarShopView extends Component {
             <View style={styles.titleView}><Text style={styles.title}>明星店铺</Text></View>
             {cells}
         </View>
-    }
-}
-
-@observer
-export default class HomeStarShop extends Component {
-    render () {
-        return <HomeStarShopView starShop={starShopModule} {...this.props}/>
     }
 }
 

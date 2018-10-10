@@ -6,25 +6,23 @@ import { View, ScrollView, StyleSheet, Text, Image } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import Modules from './Modules'
-const { todayModule } = Modules
+import { TodayModule } from './Modules'
 
 const TodayItem = ({item}) => <View style={styles.item}>
-    <Image style={styles.img} source={item.img}/>
+    <Image style={styles.img} source={{uri: item.imgUrl}}/>
 </View>
 
-class HomeTodayView extends Component {
+@observer
+export default class HomeTodayView extends Component {
 
     constructor(props) {
         super(props)
-        const { today } = this.props
-        const { loadTodayList } = today
-        loadTodayList && loadTodayList()
+        this.todayModule = new TodayModule()
+        this.todayModule.loadTodayList()
     }
 
     render() {
-        const { today } = this.props
-        const { todayList } = today
+        const { todayList } = this.todayModule
         let items = []
         todayList.map((item, index) => {
             items.push(<TodayItem key={index} item={item}/>)
@@ -46,13 +44,6 @@ class HomeTodayView extends Component {
             null
         }
         </View>
-    }
-}
-
-@observer
-export default class HomeToday extends Component {
-    render () {
-        return <HomeTodayView today={todayModule} {...this.props}/>
     }
 }
 
