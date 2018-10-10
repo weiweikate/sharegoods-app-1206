@@ -19,6 +19,10 @@ const api = {
     confirmReceipt: '/order/confirmReceipt',
     //取消订单
     cancelOrder: '/order/cancelOrder',
+    //继续支付
+    continuePay:'/order/payRecord/continuePay',
+    //继续去支付
+    continueToPay:['/order/payRecord/continueToPay',{method:'get'}]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 
