@@ -26,7 +26,7 @@ const MoreItem = ({press}) => <TouchableOpacity style={styles.moreView} onPress=
 const AcitivyItem = ({data, press}) => {
     const {imgUrl, topicBannerProductDTOList} = data
     let goodsItem = []
-    topicBannerProductDTOList.map((value,index) => {
+    topicBannerProductDTOList && topicBannerProductDTOList.map((value,index) => {
         goodsItem.push(<GoodItems key={index} title={value.productName} money={value.startPrice} img={value.specImg}/>)
     })
     return <View>
@@ -57,6 +57,9 @@ export default class HomeSubjectView extends Component {
     }
     render() {
         const { subjectList } = subjectModule
+        if (!subjectList) {
+            return <View/>
+        }
         if (subjectList.length <= 0) {
             return <View/>
         }
