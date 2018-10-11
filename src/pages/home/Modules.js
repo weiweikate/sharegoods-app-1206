@@ -8,10 +8,11 @@ export const homeType = {
     starShop: 3,       //明星店铺
     today: 4,             //今日榜单
     recommend: 5,     //精品推荐
-    goods: 'goods',
+    goods: 8,
     other: 'other',
     classify: 'classify',
-    'goodsTitle': 'goodsTitle'
+    goodsTitle: 'goodsTitle',
+    user: 'user'
 }
 
 export class BannerModules {
@@ -32,7 +33,6 @@ export class AdModules {
     loadAdList = flow(function * () {
         try {
             const res = yield HomeApi.getAd({type: homeType.ad})
-            console.log('loadAdList', res.data)
             this.ad = res.data
         } catch (error) {
             console.log(error)
@@ -152,7 +152,6 @@ class SubjectModule {
     loadSubjectList = flow(function * () {
         try {
             const res = yield HomeApi.getSubject({type: homeType.subject})
-            console.log('loadSubjectList', res.data)
             this.subjectList = res.data
         } catch (error) {
             console.log(error)
@@ -177,7 +176,8 @@ const homeLinkType = {
     subject: 2,
     down: 3,
     spike: 4,
-    package: 5
+    package: 5,
+    store: 8
 }
 
 const homeRoute = {
@@ -186,13 +186,28 @@ const homeRoute = {
     [homeLinkType.down]: 'topic/DownPricePage',
     [homeLinkType.spike]: 'topic/DownPricePage',
     [homeLinkType.package]: 'topic/DownPricePage',
+    [homeLinkType.store]: 'spellShop/SpellShopPage'
 }
 
 //首页modules
 class HomeModule {
     @observable homeList = []
     @observable selectedTypeCode = null
-    @action loadHomeList = () => {
+    @observable isRefreshing = false
+    isFetching = false
+    isEnd = false
+    page = 1
+    firstLoad = true
+
+    @action homeNavigate = (linkType, linkTypeCode) => {
+        this.selectedTypeCode = linkTypeCode
+        return homeRoute[linkType]
+    }
+
+    //加载为你推荐列表
+    loadHomeList = flow(function * () {
+        this.isRefreshing = true
+        this.page = 1
         this.homeList = [{
             id: 0,
             type: homeType.swiper
@@ -201,32 +216,149 @@ class HomeModule {
             type: homeType.classify
         },{
             id: 2,
-            type: homeType.ad
+            type: homeType.user
         },{
             id: 3,
-            type: homeType.today
+            type: homeType.ad
         },{
             id: 4,
-            type: homeType.recommend
+            type: homeType.today
         },{
             id: 5,
-            type: homeType.subject
-        },{
-            id: 6,
-            type: homeType.goodsTitle
+            type: homeType.recommend
         },{
             id: 7,
-            type: homeType.goods
+            type: homeType.starShop
+        },{
+            id: 8,
+            type: homeType.subject
         }]
-    }
 
-    @action homeNavigate = (linkType, linkTypeCode) => {
-        this.selectedTypeCode = linkTypeCode
-        return homeRoute[linkType]
-    }
+        if (this.isFetching === true) {
+            return
+        }
+        
+        try {
+            this.isFetching = true
+            const res = yield HomeApi.getGoodsInHome({page: this.page})
+            let list = res.data.data
+            console.log('loadhomelist', list)
+            let home = [{
+                id: 9,
+                type: homeType.goodsTitle
+            }]
+            let itemData = []
+            
+            for(let i = 0; i < list.length; i++ ) {
+                if (i % 2 === 1) {
+                    let good = list[i]
+                    itemData.push(good)
+                    home.push({
+                        itemData: itemData,
+                        type: homeType.goods,
+                        id : 'goods' + i
+                    })
+                    itemData = []
+                } else {
+                    itemData.push(list[i])
+                }
+            }
+            this.homeList = [...this.homeList, ...home]
+            this.isFetching = false
+            this.isRefreshing = false
+            this.page++
+            this.firstLoad = false
+        } catch (error) {
+            console.log(error)
+            this.isFetching = false
+            this.isRefreshing = false
+        }
+    })
+
+    //加载为你推荐列表
+    loadMoreHomeList = flow(function * () {
+        if (this.isFetching) {
+            return
+        }
+        if (this.isEnd) {
+            return
+        }
+        if (this.firstLoad) {
+            return
+        }
+        try {
+            this.isFetching = true
+            const res = yield HomeApi.getGoodsInHome({page: this.page})
+            let list = res.data.data
+            if (list.length <= 0) {
+                this.isEnd = true
+                return
+            }
+            let itemData = []
+            let home = []
+            for(let i = 0; i < list.length; i++ ) {
+                if (i % 2 === 1) {
+                    let good = list[i]
+                    itemData.push(good)
+                    home.push({
+                        itemData: itemData,
+                        type: homeType.goods,
+                        id : 'goods' + good.linkTypeCode
+                    })
+                    itemData = []
+                } else {
+                    itemData.push(list[i])
+                }
+            }
+            this.homeList = [...this.homeList, ...home]
+            this.isFetching = false
+            this.page++
+        } catch (error) {
+            console.log(error)
+        }
+    })
 }
 
 export const homeModule = new HomeModule()
+
+export class MemberModule {
+    @observable memberLevel = ''
+    @observable memberLevels = []
+    @computed get levelCount() {
+        return this.memberLevels.length
+    }
+    @computed get totalExp() {
+        let exp = 0
+        if (this.memberLevels.length > 0) {
+            let lastLevel =  this.memberLevels[this.memberLevels.length - 1]
+            exp = lastLevel.upgradeExp
+            console.log('MemberModule', exp)
+        }
+        return exp
+    }
+    @computed get levelNumber () {
+        let level = []
+        if (this.memberLevels.length > 0) {
+            let lastLevel = 0
+            this.memberLevels.map(value => {
+                lastLevel = value.upgradeExp - lastLevel
+                level.push(lastLevel)
+                lastLevel = value.upgradeExp
+            })
+        }
+        return level
+    }
+    //选择专题
+    loadMembersInfo = flow(function * () {
+        try {
+            const res = yield HomeApi.getMembers()
+            console.log('loadMembersInfo', res.data)
+            this.memberLevels = res.data
+        } catch (error) {
+            console.log(error)
+        }
+    })
+}
 
 
 
