@@ -1,26 +1,20 @@
 import React from 'react';
-import {
-    View, Text, Platform, NativeModules, StyleSheet, TouchableOpacity, Image, Modal, Alert
-} from 'react-native';
-import BasePage from '../../../BasePage';
-import {
-    UIText
-} from '../../../components/ui';
-// import SpellShopApi from 'SpellShopApi';
-import StringUtils from '../../../utils/StringUtils';
-// import ScreenUtils from '../../../utils/ScreenUtils';
-import { color } from '../../../constants/Theme';
+import { View, Text, Platform, NativeModules, StyleSheet, TouchableOpacity, Image, Modal, Alert} from 'react-native';
+import BasePage from '../../BasePage';
+import { UIText } from '../../components/ui';
+import StringUtils from '../../utils/StringUtils';
+import { color } from '../../constants/Theme';
 import selected from './res/selected.png';
 import noselect from './res/icon13_03.png';
 import yinunit from './res/icon_03-05.png';
 import zfbicon from './res/icon_03-09.png';
 import wxicon from './res/icon_03-08.png';
 import moneIon from './res/icon_03-02.png';
-import Toast from '../../../utils/bridge';
-import OrderApi from '../api/orderApi';
+import Toast from '../../utils/bridge';
+import OrderApi from './api';
 import PayUtil from './PayUtil';
-import InputTransactionPasswordModal from '../components/InputTransactionPasswordModal';
-import user from '../../../model/user';
+import InputTransactionPasswordModal from './InputTransactionPasswordModal';
+import user from '../../model/user';
 import { observer } from 'mobx-react/native';
 import { NavigationActions } from 'react-navigation';
 

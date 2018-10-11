@@ -484,14 +484,14 @@ export default class MyOrdersListView extends Component {
                 this.setState({isShowSingleSelctionModal: true});
                 break;
                 case 2:
-                this.props.nav('order/payment/PaymentMethodPage', {
+                this.props.nav('payment/PaymentMethodPage', {
                 orderNum: this.state.viewData[index].orderNum,
                 amounts: this.state.viewData[index].totalPrice
             });
                 break;
                 case 3:
                 //订单 0:快递订单 1:自提订单
-                this.props.nav('order/payment/PaymentMethodPage', {
+                this.props.nav('payment/PaymentMethodPage', {
                 orderNum: this.state.viewData[index].orderNum,
                 amounts: this.state.viewData[index].price
                 // amounts: this.state.viewData[index].totalPrice + this.state.viewData[index].freightPrice,
@@ -499,7 +499,7 @@ export default class MyOrdersListView extends Component {
             });
                 break;
                 case 4:
-                this.props.nav('order/payment/PaymentMethodPage', {
+                this.props.nav('payment/PaymentMethodPage', {
                 orderNum: this.state.viewData[index].orderNum,
                 amounts: this.state.viewData[index].price
             });
