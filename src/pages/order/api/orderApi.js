@@ -19,6 +19,32 @@ const api = {
     confirmReceipt: '/order/confirmReceipt',
     //取消订单
     cancelOrder: '/order/cancelOrder',
+    //继续支付
+    continuePay:'/order/payRecord/continuePay',
+    //继续去支付
+    continueToPay:['/order/payRecord/continueToPay',{method:'get'}],
+    /**  售后模块相关接口 huchao */
+    //（陈帅）申请退款
+    applyRefund: '/order/returnProduct/applyRefund',
+    //（陈帅）申请换货
+    applyExchangeGoods: '/order/returnProduct/applyExchangeGoods',
+    //（陈帅）申请退款退货
+    applyReturnGoods: '/order/returnProduct/applyReturnGoods',
+    //（陈帅）填写寄回信息
+    fillSendInfo: '/order/returnProduct/fillSendInfo',
+    //（陈帅）查看详情
+    returnProductLookDetail:'/order/returnProduct/lookDetail',
+    //（陈帅）撤销申请
+    revokeApply: '/order/returnProduct/revokeApply',
+    //（陈帅）修改申请
+    updateApply: '/order/returnProduct/updateApply',
+    //（陈帅）查询子订单详情
+    subOrderLookDetial: ['/order/orderProduct/lookDetial',{method:'get'}],
+
+
+
+
+
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

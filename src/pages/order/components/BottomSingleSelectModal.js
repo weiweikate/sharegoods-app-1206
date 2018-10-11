@@ -5,13 +5,13 @@ import {
     Text,
     Modal,
     NativeModules,
-    TouchableOpacity, Button
+    TouchableOpacity,
 } from 'react-native';
 import { color } from '../../../constants/Theme';
 import circleSelect from '../../mine/res/userInfoImg/circleSelect.png';
 import circleUnselect from '../../mine/res/userInfoImg/circleUnselect.png';
 import {
-    UIText, UIImage
+    UIText, UIImage,UIButton
 } from '../../../components/ui';
 
 export default class BottomSingleSelectModal extends Component {
@@ -97,13 +97,13 @@ export default class BottomSingleSelectModal extends Component {
                         </TouchableOpacity>
                     </View>
                     {this.renderMenu()}
-                    <View style={{ justifyContent: 'center', alignItems: 'center', height: 64 }}>
-                        <Button
-                            title='确定'
-                            style={{ height: 43 }}
-                            color={color.red}
-                            onPress={() => this.commitSelect()}/>
+                    <View style={{justifyContent:'center',alignItems:'center',height:64}}>
+                        <UIButton
+                            value={'确定'}
+                            style={{backgroundColor: color.red,height:43}}
+                            onPress={()=>this.commitSelect()}/>
                     </View>
+
                 </View>
             </View>
         );

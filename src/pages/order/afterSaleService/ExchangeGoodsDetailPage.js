@@ -14,7 +14,7 @@ import { UIText, UIImage } from '../../../components/ui';
 import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import GoodsItem from '../components/GoodsItem';
+//import GoodsItem from '../components/GoodsItem';
 import applyRefundMessage from '../res/applyRefundMessage.png';
 import applyRefundPhone from '../res/applyRefundPhone.png';
 import right_arrow from '../res/arrow_right.png';
@@ -23,7 +23,7 @@ import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 import Toast from '../../../utils/bridge';
 
-// import OrderApi from 'OrderApi'
+import OrderApi from '../api/orderApi'
 
 class ExchangeGoodsDetailPage extends BasePage {
     constructor(props) {
@@ -36,7 +36,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             phoneError: false,
             passwordError: false,
             imageArr: [
-                // 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
+                'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
                 // 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
                 // 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
                 // 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
@@ -100,12 +100,18 @@ class ExchangeGoodsDetailPage extends BasePage {
             }
         };
 
+        this._bindFunc();
+
     }
 
     $navigationBarOptions = {
         title: '换货详情界面',
         show: true// false则隐藏导航
     };
+
+    _bindFunc(){
+        this.renderOperationApplyView = this.renderOperationApplyView.bind(this);
+    }
 
     //**********************************ViewPart******************************************
     _render() {
@@ -114,18 +120,19 @@ class ExchangeGoodsDetailPage extends BasePage {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {this.renderNotice()}
                     {this.renderHeader()}
+                    {this.renderOperationApplyView()}
                     {this.renderSucceedDetail()}
                     {this.renderAddress()}
                     {this.renderLogistics()}
                     {this.renderOrder()}
-                    <GoodsItem
-                        uri={this.state.pageData.list[this.state.index].uri}
-                        goodsName={this.state.pageData.list[this.state.index].goodsName}
-                        salePrice={StringUtils.formatMoneyString(this.state.pageData.list[this.state.index].salePrice)}
-                        category={this.state.pageData.list[this.state.index].category}
-                        goodsNum={this.state.pageData.list[this.state.index].goodsNum}
-                        onPress={() => this.jumpToProductDetailPage(this.state.pageData.list[this.state.index].productId)}
-                    />
+                    {/*<GoodsItem*/}
+                        {/*uri={this.state.pageData.list[this.state.index].uri}*/}
+                        {/*goodsName={this.state.pageData.list[this.state.index].goodsName}*/}
+                        {/*salePrice={StringUtils.formatMoneyString(this.state.pageData.list[this.state.index].salePrice)}*/}
+                        {/*category={this.state.pageData.list[this.state.index].category}*/}
+                        {/*goodsNum={this.state.pageData.list[this.state.index].goodsNum}*/}
+                        {/*onPress={() => this.jumpToProductDetailPage(this.state.pageData.list[this.state.index].productId)}*/}
+                    {/*/>*/}
                     {this.renderReason()}
                 </ScrollView>
                 {this.renderContact()}
@@ -450,15 +457,100 @@ class ExchangeGoodsDetailPage extends BasePage {
             });
         }
     };
+
+    /*** huchao */
+
+    renderOperationApplyView() {
+        return(
+            <View style = {styles.operationApplyView_container}>
+                <View style = {styles.operationApplyView_title}>
+                <UIText value = {'您已成功发起退款申请，请耐心等待商家处理'} style = {{ color: '#222222', fontSize: 15, marginLeft: 15}}/>
+                </View>
+                <View style = {{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
+                    <TouchableOpacity onPress = {() => {this.onPressOperationApply(true)}} style ={[styles.borderButton, {borderColor: '#666666'}]}>
+                        <UIText value = {'撤销申请'} style = {{fontSize: 16, color: '#666666'}}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress = {() => {this.onPressOperationApply(false)}} style ={styles.borderButton}>
+                        <UIText value = {'编辑申请'} style = {{fontSize: 16, color: '#D51243'}}/>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    }
+    /**
+     * 撤销、编辑申请
+     * @param cancel true -》撤销 、false -》编辑申请
+     */
+    onPressOperationApply(cancel){
+        if (cancel){
+            this.$loadingShow();
+            OrderApi.revokeApply({}).then(result => {
+                this.$loadingDismiss();
+                this.$navigateBack('/order/order/MyOrdersDetailPage');
+            }).catch(error => {
+                this.$loadingDismiss();
+                this.$toastShow(error.msg || '操作失败，请重试');
+            });
+        }else {
+
+        }
+    }
+    /**
+     * 获取剩余时间的字符串
+     * @param out_time 失效时间 number
+     * return 如果当前时间大于 out_time 返回 null
+     */
+    getRemainingTime(out_time){
+        let timestamp = Date.parse(new Date()) / 1000;
+        out_time = out_time / 1000;
+
+        if (timestamp >= out_time){
+            return null;
+        }
+
+        let remainingTime = timestamp - out_time;
+        let s = remainingTime % 60;
+        remainingTime = (remainingTime - s) / 60;
+        let m = remainingTime % 60;
+        remainingTime = (remainingTime - m) / 60;
+        let H = remainingTime % 24;
+        remainingTime = (remainingTime - H) / 24;
+        let d = remainingTime;
+
+        return '剩余' + d + '天' + H + '小时' + m + '分'
+    }
+
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1, backgroundColor: color.white,
         justifyContent: 'flex-end'
-    }, refundReason: {
+    },
+    refundReason: {
         color: color.black_999, fontSize: 13, marginLeft: 17, marginTop: 10
-    }, addressStyle: {}
+    },
+    addressStyle: {},
+    operationApplyView_container: {
+        backgroundColor: 'white',
+        height: 110,
+    },
+    operationApplyView_title: {
+        height: 45,
+        borderBottomWidth: 1,
+        borderBottomColor: '#DDDDDD',
+        justifyContent: 'center',
+    },
+    borderButton: {
+        borderWidth: 1,
+        borderColor: '#D51243',
+        borderRadius: 5,
+        height: 30,
+        width: 83,
+        marginRight: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
 });
 
 export default ExchangeGoodsDetailPage;

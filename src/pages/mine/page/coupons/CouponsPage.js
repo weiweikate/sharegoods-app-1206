@@ -53,9 +53,9 @@ export default class CouponsPage extends BasePage {
                 >
                     <MyCouponsItems tabLabel={'未使用'} pageStatus={0} nav={this.props.navigation}
                                     selectTab={this.state.selectTab} isgiveup={false}/>
-                    <MyCouponsItems tabLabel={'已失效'} pageStatus={2} nav={this.props.navigation}
-                                    selectTab={this.state.selectTab} isgiveup={false}/>
                     <MyCouponsItems tabLabel={'已使用'} pageStatus={1} nav={this.props.navigation}
+                                    selectTab={this.state.selectTab} isgiveup={false}/>
+                    <MyCouponsItems tabLabel={'已失效'} pageStatus={2} nav={this.props.navigation}
                                     selectTab={this.state.selectTab} isgiveup={false}/>
                 </ScrollableTabView>
             </View>
