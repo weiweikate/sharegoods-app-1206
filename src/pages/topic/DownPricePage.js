@@ -34,7 +34,9 @@ export default class DownPricePage extends BasePage {
     }
 
     componentDidMount() {
-        this.dataModel.loadTopicData('ZT20180002');
+        const {linkTypeCode} = this.params;
+        this.dataModel.loadTopicData(linkTypeCode);
+        // this.dataModel.loadTopicData('ZT20180002');
     }
 
     /**
@@ -117,6 +119,7 @@ export default class DownPricePage extends BasePage {
 
         }
         const { imgUrl } = this.dataModel;
+        // const {linkTypeCode} = this.params;
         return (
 
             <ScrollView
@@ -134,6 +137,10 @@ export default class DownPricePage extends BasePage {
                     }}
                 />
                 {/*降价拍的头*/}
+                {/*{*/}
+                    {/*if(Stri)*/}
+                    {/**/}
+                {/*}*/}
                 <SbOpenPrizeHeader
                     headerData={this.dataModel}
                     navItemClick={(index, item) => {
@@ -152,8 +159,8 @@ export default class DownPricePage extends BasePage {
 }
 
 DownPricePage.propTypes = {
-    //专题列表列数
-    topicTypeCode: PropTypes.number,
+    //专题code
+    linkTypeCode: PropTypes.string.isRequired,
 };
 const Styles = StyleSheet.create({
     list: {

@@ -31,8 +31,6 @@ class SbSectiontHeaderView extends Component {
                 <Image
                     style={SbSectiontHeaderViewStyles.topImageStyle}
                 />
-
-
                 {subjectType === 1 ?
                     <SubSwichView/> : null}
 
