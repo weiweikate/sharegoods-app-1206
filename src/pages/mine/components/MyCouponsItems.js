@@ -80,7 +80,6 @@ export default class MyCouponsItems extends Component {
                     <View style={{ height: px2dp(33), justifyContent: 'center', marginLeft: 10 }}>
                         <Text style={{ fontSize: 11, color: '#999999' }}>{item.limit}</Text>
                     </View>
-
                 </ImageBackground>
             </TouchableOpacity>
         );
