@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, StyleSheet,  FlatList, Text } from 'react-native';
+import { View, StyleSheet,  FlatList, Text, RefreshControl } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import {observer} from 'mobx-react';
 import { homeType, homeModule } from './Modules'
@@ -16,6 +16,7 @@ import HomeSubjectView from './HomeSubjectView'
 import HomeBannerView from './HomeBannerView'
 import HomeAdView from './HomeAdView'
 import HomeGoodsView from './HomeGoodsView'
+import HomeUserView from './HomeUserView'
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 
@@ -26,6 +27,7 @@ export default class HomePage extends Component {
 
     st = 0;
     headerH = statusBarHeight + 44;
+
     constructor(props) {
         super(props)
         homeModule.loadHomeList()
@@ -41,7 +43,7 @@ export default class HomePage extends Component {
         this._refHeader.setNativeProps({
             opacity: this.st
         });
-    };
+    }
 
     _keyExtractor = (item, index) => item.id + ''
     _renderItem = (item) => {
@@ -59,19 +61,25 @@ export default class HomePage extends Component {
         } else if (data.type === homeType.subject) {
             return <HomeSubjectView navigation = {this.props.navigation}/>
         } else if (data.type === homeType.starShop) {
-            return <HomeStarShopView/>
-        } else if (data.type === homeType.goods) {
-            let itemData = [
-                {imgUrl: 'http://imgsrc.baidu.com/imgad/pic/item/1b4c510fd9f9d72ad3f6b420df2a2834349bbb79.jpg', title: '海外品牌 100%纯棉', discribe: 'TRENDIANO男装夏装纯棉宽松字母印花圆领短袖...', money: '123.00'},
-                {imgUrl: 'http://imgsrc.baidu.com/imgad/pic/item/1b4c510fd9f9d72ad3f6b420df2a2834349bbb79.jpg', title: '海外品牌 100%纯棉', discribe: 'TRENDIANO男装夏装纯棉宽松字母印花圆领短袖...', money: '123.00'},
-            ]
-            return <HomeGoodsView data={itemData}/>
+            return <HomeStarShopView navigation = {this.props.navigation}/>
+        } else if (data.type === homeType.user) {
+            return <HomeUserView navigation = {this.props.navigation}/>
+        }else if (data.type === homeType.goods) {
+            return <HomeGoodsView data={data.itemData} navigation = {this.props.navigation}/>
         } else if (data.type === homeType.goodsTitle) {
             return <View style={styles.titleView}>
                 <Text style={styles.title}>为你推荐</Text>
             </View>
         }
         return <View/>
+    }
+
+    _onEndReached() {
+        homeModule.loadMoreHomeList()
+    }
+
+    _onRefresh() {
+        homeModule.loadHomeList()
     }
 
     render() {
@@ -83,6 +91,17 @@ export default class HomePage extends Component {
                     renderItem={this._renderItem.bind(this)}
                     keyExtractor={this._keyExtractor.bind(this)}
                     onScroll={this._onScroll.bind(this)}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={homeModule.isRefreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                            title="下拉刷新"
+                            tintColor="#999"
+                            titleColor="#999"
+                        />
+                    }
+                    onEndReached={this._onEndReached.bind(this)}
+                    onEndReachedThreshold={0.1}
                 />
                 <View style={styles.navBarBg} ref={e => this._refHeader = e} />
                 <View style={styles.navBar}>
@@ -133,6 +152,7 @@ const styles = StyleSheet.create({
     titleView: {
         backgroundColor: '#fff',
         height: px2dp(53),
+        marginTop:px2dp(10),
         alignItems: 'center',
         justifyContent: 'center'
     },

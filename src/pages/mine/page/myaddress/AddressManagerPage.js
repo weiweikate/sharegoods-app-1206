@@ -143,9 +143,10 @@ export default class AddressManagerPage extends BasePage {
 
     _onItemClick = (item) => {
         // 地址列表点击
-        console.log(item);
-        this.params.callBack && this.params.callBack(item);
-        this.$navigateBack();
+        if (this.params.from == 'order') {
+            this.params.callBack && this.params.callBack(item);
+            this.$navigateBack();
+        }
     };
 
     _onSelectImgClick = (item, index) => {

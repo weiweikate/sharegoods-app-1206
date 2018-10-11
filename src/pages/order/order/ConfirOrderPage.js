@@ -465,7 +465,8 @@ export default class ConfirOrderPage extends BasePage {
                 // });
 
                 this.setState({ viewData: viewData });
-            }
+            },
+            from: 'order'
         });
     };
     commitOrder = () => {

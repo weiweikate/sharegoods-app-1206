@@ -70,14 +70,15 @@ export default class MyCouponsItems extends Component {
                             <Text style={{ fontSize: 15, color: '#222222' }}>{item.name} </Text>
                             <Text style={{
                                 fontSize: 11,
-                                color: '#999999'
-                            }}>有效期：{this.fmtDate(item.startTime)}-{this.fmtDate(item.outTime)}</Text>
+                                color: '#999999',
+                                marginTop: 5
+                            }}>使用有效期：{this.fmtDate(item.startTime)}-{this.fmtDate(item.outTime)}</Text>
                         </View>
                         <Image style={{ marginRight: 5, width: px2dp(70), height: px2dp(70) }} source={BGR}/>
                     </View>
 
                     <View style={{ height: px2dp(33), justifyContent: 'center', marginLeft: 10 }}>
-                        <Text style={{ fontSize: 11, color: '#999999' }}>限品类:{item.limit}</Text>
+                        <Text style={{ fontSize: 11, color: '#999999' }}>{item.limit}</Text>
                     </View>
 
                 </ImageBackground>
@@ -108,7 +109,6 @@ export default class MyCouponsItems extends Component {
                         <TouchableOpacity style={{
                             width: ScreenUtils.width,
                             height: 48,
-
                             backgroundColor: '#ffffff',
                             borderStyle: 'solid'
                             , alignItems: 'center', justifyContent: 'center'
@@ -138,21 +138,21 @@ export default class MyCouponsItems extends Component {
         let result = null;
         if (products.length) {
             if ((cat1.length || cat2.length || cat3.length)) {
-                return '限指定商品可使用';
+                return '限商品：限指定商品可使用';
             }
             if (products.length > 1) {
-                return '限指定商品可使用';
+                return '限商品：限指定商品可使用';
             }
             if (products.length === 1) {
-                return `限${products[0]}可用`;
+                return `限商品：限${products[0]}可用`;
             }
         }
         else if ((cat1.length + cat2.length + cat3.length) === 1) {
             result = [...cat1, ...cat2, ...cat3];
-            return `限${result[0]}分类可用`;
+            return `限品类：限${result[0]}品类可用`;
         }
         else if ((cat1.length + cat2.length + cat3.length) > 1) {
-            return `限指定分类商品可用`;
+            return `限品类：限指定品类商品可用`;
         } else {
             return '';
         }
@@ -170,6 +170,7 @@ export default class MyCouponsItems extends Component {
                 useConditions: item.useConditions,
                 limit: this.parseCoupon(item),
                 discountCouponId: '',
+                remarks: item.remarks
             });
 
         });
