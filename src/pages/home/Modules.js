@@ -115,6 +115,7 @@ export class StarShopModule {
     loadShopList = flow(function * () {
         try {
             const res = yield HomeApi.getStarShop({type: homeType.starShop})
+            console.log('loadShopList', res.data)
             this.shopList = res.data
         } catch (error) {
             console.log(error)
@@ -213,13 +214,16 @@ class HomeModule {
             id: 5,
             type: homeType.recommend
         },{
-            id: 6,
-            type: homeType.subject
-        },{
             id: 7,
-            type: homeType.goodsTitle
+            type: homeType.starShop
         },{
             id: 8,
+            type: homeType.subject
+        },{
+            id: 9,
+            type: homeType.goodsTitle
+        },{
+            id: 10,
             type: homeType.goods
         }]
     }
@@ -231,6 +235,26 @@ class HomeModule {
 }
 
 export const homeModule = new HomeModule()
+
+export class MemberModule {
+    @observable memberLevel = ''
+    @observable memberLevels = []
+    @computed get levelCount() {
+        return this.memberLevels.length
+    }
+    @observable experience = 0
+
+    //选择专题
+    loadMembersInfo = flow(function * () {
+        try {
+            const res = yield HomeApi.getMembers()
+            console.log('loadMembersInfo', res.data)
+            this.memberLevels = res.data
+        } catch (error) {
+            console.log(error)
+        }
+    })
+}
 
 
 

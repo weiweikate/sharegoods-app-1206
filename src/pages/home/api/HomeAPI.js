@@ -34,7 +34,9 @@ const api = {
     //根据ID查询降价拍详情 沈耀鑫
     activityDepreciate_findById:['/operator/activityDepreciate/findById',{method:'get'}],
     //专题
-    getSubject: ['/config/advertisement/queryAdvertisementList']
+    getSubject: ['/config/advertisement/queryAdvertisementList'],
+    //会员
+    getMembers: ['/user/level/get', {method: 'get'}]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 

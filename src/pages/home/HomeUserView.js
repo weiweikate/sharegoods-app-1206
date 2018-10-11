@@ -7,6 +7,7 @@ const { px2dp } = ScreenUtil
 import rightImg from './res/right_arrow.png'
 import user from '../../model/user'
 import {observer} from 'mobx-react';
+import { MemberModule } from './Modules'
 
 const Circle = ({sizeStyle}) => <View style={[styles.circle, sizeStyle]}/>
 
@@ -17,15 +18,26 @@ const Level = ({levelStyle, sizeStyle, text}) => <View style={levelStyle}>
 
 @observer
 export default class HomeUserView extends Component {
+    constructor(props) {
+        super(props)
+        this.memberModule = new MemberModule()
+        this.memberModule.loadMembersInfo()
+    }
     _goToPromotionPage() {
         const {navigation} = this.props
         navigation && navigation.navigate('mine/MyPromotionPage')
     }
     render () {
+        if (!user.isLogin) {
+            return <View/>
+        }
+        const { memberLevels, levelCount } = this.memberModule
+        let items = []
+        memberLevels.map((level, index) => {
+            let levelStyle =  index === 0 ? {marginLeft: 24} : {marginLeft: px2dp(200) / (levelCount - 1)}
+            items.push(<Level key={index} levelStyle={levelStyle} sizeStyle={styles.smallCircle} text={level.name}/>)
+        })
         return <View>
-        {
-            user.isLogin
-            ?
             <View style={styles.container}>
                 <LinearGradient colors={['#F7D795', '#F7D794']} style={styles.inContainer}>
                     <View style={styles.left}>
@@ -39,11 +51,7 @@ export default class HomeUserView extends Component {
                                     progress={0.3}
                                     />
                             </View>
-                            <Level levelStyle={{marginLeft: 24}} sizeStyle={styles.smallCircle} text='V1'/>
-                            <Level levelStyle={{marginLeft: px2dp(200) / 5}}  sizeStyle={styles.smallCircle} text='V2'/>
-                            <Level levelStyle={{marginLeft: px2dp(200) / 5}} sizeStyle={styles.smallCircle} text='V3'/>
-                            <Level levelStyle={{marginLeft: px2dp(200) / 5}} sizeStyle={styles.smallCircle} text='V4'/>
-                            <Level levelStyle={{marginLeft: px2dp(200) / 5}} sizeStyle={styles.smallCircle} text='V5'/>
+                            {items}
                         </View>
                     </View>
                     <TouchableOpacity style={styles.right}  onPress={()=>this._goToPromotionPage()}>
@@ -54,9 +62,6 @@ export default class HomeUserView extends Component {
                     </TouchableOpacity>
                 </LinearGradient>
             </View>
-            :
-            null
-        }
         </View>
     }
 }

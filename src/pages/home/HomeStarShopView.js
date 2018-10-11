@@ -45,9 +45,9 @@ const Profile = ({avatar, name, level, member, income, allIncome}) => <View styl
     </View>
 </View>
 
-const Cell = ({data, press}) => <View style={styles.cell}>
-    <Banner backImage={data.banner1Img} title={data.title} onPress={()=>press && press()}/>
-    <Profile avatar={data.avatar} name={data.name} level={data.level} member={data.member} income={data.income} allIncome={data.allIncome}/>
+const Cell = ({data, store, press}) => <View style={styles.cell}>
+    <Banner backImage={{uri:data.imgUrl}} title={data.title} onPress={()=>press && press()}/>
+    <Profile avatar={{uri:store.headUrl}} name={store.name} level={store.starName} member={store.storeUserNum} income={store.tradeBalance} allIncome={store.totalTradeBalance}/>
 </View>
 
 
@@ -65,7 +65,7 @@ export default class HomeStarShopView extends Component {
         let cells = []
         const { shopList } = this.starShop
         shopList.map((shop, index) => {
-            cells.push(<Cell key={index} data={shop} press={()=>this._shopPress(shop)}/>)
+            cells.push(<Cell key={index} data={shop} store={shop.storeDTO} press={()=>this._shopPress(shop)}/>)
         })
         return <View style={styles.container}>
             <View style={styles.titleView}><Text style={styles.title}>明星店铺</Text></View>
