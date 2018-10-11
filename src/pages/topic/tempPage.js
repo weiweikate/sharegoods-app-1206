@@ -14,7 +14,6 @@ import SbOpenPrizeHeader from './components/SbOpenPrizeHeader';
 import OpenPrizeItemView from './components/OpenPrizeItemView';
 // import HomeAPI from '../api/HomeAPI';
 import TotalTopicDataModel from './model/SubTopicModel';
-import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 
 @observer
 export default class DownPricePage extends BasePage {
@@ -36,12 +35,6 @@ export default class DownPricePage extends BasePage {
         this.dataModel.loadTopicData('ZT20180002');
     }
 
-    /**
-     * 渲染底部组列表
-     * @param sections 所有组数据
-     * @returns {*}
-     * @private
-     */
     _renderBottomListView(sections) {
         const sectionsData = sections.slice() || [];
         return (
@@ -55,7 +48,6 @@ export default class DownPricePage extends BasePage {
                     }
                 }
             >
-
                 {
                     sectionsData.map((section, sectionIndex) => {
                         return this._renderSection(section);
@@ -66,13 +58,6 @@ export default class DownPricePage extends BasePage {
         );
 
     }
-
-    /**
-     * 渲染具体组
-     * @param section 组数据
-     * @returns {*}
-     * @private
-     */
 
     _renderSection = (section) => {
         const sectionListData = section.data.slice() || [];
@@ -94,11 +79,6 @@ export default class DownPricePage extends BasePage {
                     sectionListData.map((itemData, itemIndex) => {
                         return <OpenPrizeItemView
                             itemData={itemData}
-                            itemClick={(itemData) => {
-
-
-                            }
-                            }
                         />;
                     })
                 }
@@ -115,9 +95,7 @@ export default class DownPricePage extends BasePage {
         } else {
 
         }
-        const { imgUrl } = this.dataModel;
         return (
-
             <ScrollView
                 alwaysBounceVertical={true}
                 contentContainerStyle={Styles.list}
@@ -125,14 +103,6 @@ export default class DownPricePage extends BasePage {
                     width: ScreenUtils.width
                 }}
             >
-                <PreLoadImage
-                    imageUri={imgUrl}
-                    style={{
-                        width: ScreenUtils.width,
-                        height: ScreenUtils.width * 188 / 375
-                    }}
-                />
-                {/*降价拍的头*/}
                 <SbOpenPrizeHeader
                     headerData={this.dataModel}
                     navItemClick={(index, item) => {
@@ -145,14 +115,137 @@ export default class DownPricePage extends BasePage {
                 {
                     this._renderBottomListView(sectionData)
                 }
+
             </ScrollView>
+
         );
+
+        // return (
+
+        //     <View style={
+        //         {
+        //             flex:1
+        //         }
+        //     }>
+        //         <SectionList
+        //             contentContainerStyle={Styles.list}
+        //             style={{
+        //                 backgroundColor: ColorUtil.Color_f7f7f7
+        //             }}
+        //             // numColumns={2}
+        //             columnWrapperStyle={Styles.itemBgStyle}
+        //             stickySectionHeadersEnabled={false}
+        //
+        //             renderSectionHeader={
+        //                 ({ section }) => {
+        //
+        //                     if (section.key == 'one') {
+        //                         return this._renderHeaderView(section.key);
+        //                     } else {
+        //                         return this._renderActivityView(section.key,section.bannerImg);
+        //                     }
+        //                 }
+        //             }
+        //             renderItem={({ item, index, section }) => {
+        //                 return this._renderRowView(item);
+        //             }}
+        //             // contentContainerStyle={styles.list}//设置cell的样式
+        //             // pageSize={2}  // 配置pageSize确认网格数量
+        //             sections={sectionData}
+        //             // sections={
+        //             //     [
+        //             //     {
+        //             //         title: 'one',
+        //             //         key: 'one',
+        //             //         data: [
+        //             //             { key: 'Devin' },
+        //             //             { key: 'Jackson' },
+        //             //             { key: 'James' },
+        //             //             { key: 'Joel' },
+        //             //             { key: 'John' },
+        //             //             { key: 'Jillian' }
+        //             //         ]
+        //             //     },
+        //             //     {
+        //             //         key: 'two',
+        //             //         data: [
+        //             //             { key: 'Devin' },
+        //             //             { key: 'Jackson' },
+        //             //             { key: 'James' },
+        //             //             { key: 'Joel' },
+        //             //             { key: 'John' },
+        //             //             { key: 'Jillian' },
+        //             //             { key: 'Jimmy' },
+        //             //             { key: 'Julie' }
+        //             //         ]
+        //             //     }
+        //             // ]
+        //             // }
+        //
+        //         />
+        //     </View>
+        // );
     }
+
+    /**
+     *
+     * @param key
+     * @returns {*}
+     * @private
+     */
+    _renderActivityView = (key, imgUrl) => {
+        return <ActivityOneView
+            imageUrl={imgUrl}
+        />;
+    };
+    /**
+     *
+     * @param key
+     * @returns {*}
+     * @private
+     */
+    _renderHeaderView = (key) => {
+        console.log(this.dataModel);
+        if (key === 'one') {
+            return <SbOpenPrizeHeader
+                headerData={this.dataModel}
+                navItemClick={(index, item) => {
+                    //自导航点击事件
+                    this.setState({
+                        selectNav: index
+                    });
+                }}
+            />;
+        } else {
+            return <ActivityOneView
+
+            />;
+        }
+    };
+    /**
+     *
+     * @param item
+     * @returns {*}
+     * @private
+     */
+    _renderRowView = (item) => {
+        return (<OpenPrizeItemView
+            itemData={item}
+        />);
+    };
+    /**
+     *
+     * @private
+     */
+    _itemClickAction = () => {
+
+    };
 }
 const Styles = StyleSheet.create({
     list: {
         flexDirection: 'row',//设置横向布局
         flexWrap: 'wrap',  //设置换行显示
+        // alignItems: 'flex-start',
         backgroundColor: '#FFFFFF'
     },
     itemBgStyle: {

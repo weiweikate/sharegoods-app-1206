@@ -8,7 +8,6 @@ import {
     StyleSheet,
     TextInput,
     Image,
-    Alert
 } from 'react-native';
 import ColorUtil from '../../../utils/ColorUtil';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
@@ -127,7 +126,10 @@ export default class LoginTopView extends Component {
                 </View>
                 {this.LoginModel.selectIndex ? this.renderPasswordLogin() : this.renderCodeLogin()}
                 <View style={[Styles.loginBtnStyle, this.LoginModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]}>
-                    <TouchableOpacity onPress={this.clickLoginBtn}>
+                    <TouchableOpacity
+                        onPress={this.clickLoginBtn}
+                        activeOpacity={this.LoginModel.isCanClick?0.6:1}
+                    >
                         <Text style={Styles.loginBtnTextStyle}>
                             登录
                         </Text>
@@ -161,7 +163,11 @@ export default class LoginTopView extends Component {
                         underlineColorAndroid={'transparent'}
                         keyboardType='default'
                     />
-                    <TouchableOpacity onPress={this.getVertifyCode}>
+                    <TouchableOpacity
+                        onPress={this.getVertifyCode}
+                        activeOpacity={1}
+
+                    >
                         <Text style={Styles.codeTextStyle}>
                             {this.LoginModel.dowTime > 0 ? `${this.LoginModel.dowTime}秒后重新获取` : '获取验证码'}
                         </Text>
@@ -173,17 +179,6 @@ export default class LoginTopView extends Component {
     };
     getVertifyCode = () => {
         if (this.LoginModel.dowTime > 0) {
-            Alert.alert(
-                '提示',
-                '操作过于频繁稍后重试',
-                [
-                    {
-                        text: '确定', onPress: () => {
-                        }
-                    }
-                ],
-                { cancelable: false }
-            );
             return;
         }
         if (StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
