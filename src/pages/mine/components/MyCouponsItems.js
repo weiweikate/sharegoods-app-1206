@@ -158,23 +158,7 @@ export default class MyCouponsItems extends Component {
     };
     parseData = (dataList) => {
         let arrData = [];
-        let explainList = [];
         dataList.map((item) => {
-            switch (item.status) {
-                case 0:
-                    explainList = ['', '', '', ''];
-                    break;
-                case 1:
-                    explainList = ['已', '使', '用'];
-                    break;
-                case 2:
-                    explainList = ['已', '失', '效'];
-                    break;
-                case 3:
-                    explainList = ['未', '激', '活'];
-                    break;
-            }
-
             arrData.push({
                 id: item.id,
                 status: item.status,
@@ -185,7 +169,6 @@ export default class MyCouponsItems extends Component {
                 useConditions: item.useConditions,
                 limit: this.parseCoupon(item),
                 discountCouponId: '',
-                explainList: explainList,
                 remarks: item.remarks
             });
 
