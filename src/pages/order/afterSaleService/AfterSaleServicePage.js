@@ -27,7 +27,6 @@ import arrow_right from '../res/arrow_right.png';
 import AutoExpandingInput from '../../../components/ui/AutoExpandingInput';
 import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
-import Toast from '../../../utils/bridge';
 
 import OrderApi from '../api/orderApi'
 
