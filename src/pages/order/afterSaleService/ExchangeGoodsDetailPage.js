@@ -14,7 +14,7 @@ import { UIText, UIImage } from '../../../components/ui';
 import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import GoodsItem from '../components/GoodsItem';
+//import GoodsItem from '../components/GoodsItem';
 import applyRefundMessage from '../res/applyRefundMessage.png';
 import applyRefundPhone from '../res/applyRefundPhone.png';
 import right_arrow from '../res/arrow_right.png';
@@ -23,7 +23,7 @@ import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 import Toast from '../../../utils/bridge';
 
- import OrderApi from '../api/orderApi'
+import OrderApi from '../api/orderApi'
 
 class ExchangeGoodsDetailPage extends BasePage {
     constructor(props) {
@@ -125,14 +125,14 @@ class ExchangeGoodsDetailPage extends BasePage {
                     {this.renderAddress()}
                     {this.renderLogistics()}
                     {this.renderOrder()}
-                    <GoodsItem
-                        uri={this.state.pageData.list[this.state.index].uri}
-                        goodsName={this.state.pageData.list[this.state.index].goodsName}
-                        salePrice={StringUtils.formatMoneyString(this.state.pageData.list[this.state.index].salePrice)}
-                        category={this.state.pageData.list[this.state.index].category}
-                        goodsNum={this.state.pageData.list[this.state.index].goodsNum}
-                        onPress={() => this.jumpToProductDetailPage(this.state.pageData.list[this.state.index].productId)}
-                    />
+                    {/*<GoodsItem*/}
+                        {/*uri={this.state.pageData.list[this.state.index].uri}*/}
+                        {/*goodsName={this.state.pageData.list[this.state.index].goodsName}*/}
+                        {/*salePrice={StringUtils.formatMoneyString(this.state.pageData.list[this.state.index].salePrice)}*/}
+                        {/*category={this.state.pageData.list[this.state.index].category}*/}
+                        {/*goodsNum={this.state.pageData.list[this.state.index].goodsNum}*/}
+                        {/*onPress={() => this.jumpToProductDetailPage(this.state.pageData.list[this.state.index].productId)}*/}
+                    {/*/>*/}
                     {this.renderReason()}
                 </ScrollView>
                 {this.renderContact()}
