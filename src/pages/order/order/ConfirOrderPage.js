@@ -180,12 +180,12 @@ export default class ConfirOrderPage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}
-                                  disabled={this.state.orderParam && this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2}
+                                  disabled={this.state.viewData.list[0].restrictions & 1 !== 1}
                                   onPress={() => this.jumpToCouponsPage()}>
                     <UIText value={'优惠卷'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={this.state.orderParam && this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 ? '不可使用优惠券' : '选择优惠卷'}
+                            value={this.state.viewData.list[0].restrictions & 1 !== 1 ? '不可使用优惠券' : '选择优惠卷'}
                             style={[styles.grayText, { marginRight: 15 }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -199,12 +199,12 @@ export default class ConfirOrderPage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}
-                                  disabled={this.state.orderParam && this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2}
-                                  onPress={() => this.jumpToCouponsPage()}>
+                                  disabled={this.state.viewData.list[0].restrictions & 2 !== 2}
+                                  onPress={() => this.jumpToCouponsPage('justOne')}>
                     <UIText value={'1元现金券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={this.state.orderParam && this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 ? '不可使用1元现金券' : '选择1元现金券'}
+                            value={this.state.viewData.list[0].restrictions & 2 !== 2 ? '不可使用1元现金券' : '选择1元现金券'}
                             style={[styles.grayText, { marginRight: 15 }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -367,7 +367,8 @@ export default class ConfirOrderPage extends BasePage {
                     salePrice: item.price,
                     category: item.spec,
                     goodsNum: item.num,
-                    originalPrice: item.originalPrice
+                    originalPrice: item.originalPrice,
+                    restrictions: item.restrictions
                     // activityId: item.activityId
                 });
             });
@@ -541,8 +542,8 @@ export default class ConfirOrderPage extends BasePage {
         }
 
     };
-    jumpToCouponsPage = () => {
-        this.$navigate('coupons/CouponsPage', {
+    jumpToCouponsPage = (params) => {
+        this.$navigate('mine/coupons/CouponsPage', {
             fromOrder: 1, productIds: this.state.viewData.list[0].productId,
             orderParam: JSON.stringify(this.state.orderParam), callBack: (data) => {
                 let orderParams = this.state.orderParam;
