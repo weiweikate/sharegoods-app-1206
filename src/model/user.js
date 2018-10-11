@@ -103,6 +103,8 @@ class User {
     @observable
     levelName = null;       //
     @observable
+    experience = 0          //会员经验
+    @observable
     salePsw = null;         //
     @observable
     salePswSalt = null;     //
@@ -127,6 +129,9 @@ class User {
 
     @observable
     needWaiting = false;   //提供BasePage中repeatClick()
+
+   
+
 
     // 从缓存磁盘读取用户上一次使用的信息记录
     async readUserInfoFromDisk() {
@@ -187,6 +192,7 @@ class User {
         this.roleType = info.roleType;              //
         this.level = info.level;                    //
         this.levelName = info.levelName;            //
+        this.experience = info.experience;
         this.salePsw = info.salePsw;                //
         this.hadSalePassword = info.hadSalePassword; // 是否设置过交易密码
         this.salePswSalt = info.salePswSalt;        //

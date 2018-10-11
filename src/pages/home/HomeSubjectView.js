@@ -57,6 +57,9 @@ export default class HomeSubjectView extends Component {
     }
     render() {
         const { subjectList } = subjectModule
+        if (subjectList.length <= 0) {
+            return <View/>
+        }
         let items = []
         subjectList.map((item, index) => {
             items.push(<AcitivyItem data={item} key={index} press={()=>this._subjectActions(item)}/>)

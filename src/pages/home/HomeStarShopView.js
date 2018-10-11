@@ -67,6 +67,9 @@ export default class HomeStarShopView extends Component {
     render () {
         let cells = []
         const { shopList } = this.starShop
+        if (shopList.length <= 0) {
+            return <View/>
+        }
         shopList.map((shop, index) => {
             cells.push(<Cell key={index} data={shop} store={shop.storeDTO} press={()=>this._shopPress(shop)}/>)
         })

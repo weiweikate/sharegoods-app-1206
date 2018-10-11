@@ -11,7 +11,7 @@ import { MemberModule } from './Modules'
 
 const Circle = ({sizeStyle}) => <View style={[styles.circle, sizeStyle]}/>
 
-const Level = ({levelStyle, sizeStyle, text}) => <View style={levelStyle}>
+const Level = ({levelBox, levelStyle, sizeStyle, text}) => <View style={levelStyle}>
     <Text style={styles.level}>{text}</Text>
     <Circle sizeStyle={sizeStyle}/>
 </View>
@@ -31,24 +31,33 @@ export default class HomeUserView extends Component {
         if (!user.isLogin) {
             return <View/>
         }
-        const { memberLevels, levelCount } = this.memberModule
+        const {levelName,  experience} = user
+        const { memberLevels, totalExp,  levelCount, levelNumber} = this.memberModule
+        console.log('experience', experience, levelName,  totalExp, experience / totalExp, levelNumber)
+
         let items = []
+        let width = px2dp(220) - px2dp(5) * levelCount
+        let left = px2dp(24)
         memberLevels.map((level, index) => {
-            let levelStyle =  index === 0 ? {marginLeft: 24} : {marginLeft: px2dp(200) / (levelCount - 1)}
+            let levelStyle = {left: left}
+            console.log('memberLevels', left, levelNumber[index], totalExp, levelNumber[index] / totalExp)
             items.push(<Level key={index} levelStyle={levelStyle} sizeStyle={styles.smallCircle} text={level.name}/>)
+            if (index < memberLevels.length - 1) {
+                left +=  width * (levelNumber[index + 1] / totalExp)
+            }
         })
         return <View>
             <View style={styles.container}>
                 <LinearGradient colors={['#F7D795', '#F7D794']} style={styles.inContainer}>
                     <View style={styles.left}>
-                        <Text style={styles.title}>尊敬的V2会员您好</Text>
+                        <Text style={styles.title}>尊敬的{levelName}会员您好</Text>
                         <View style={styles.progressView}>
                             <View style={styles.progress}>
                                 <ProgressBar
                                     fillStyle={{backgroundColor:'#E7AE39',height: 4, borderRadius: 2,}}
                                     backgroundStyle={{backgroundColor: '#9B6D26', borderRadius: 2, height:4 }}
                                     style={{marginTop: 10, width: px2dp(220), height: 4}}
-                                    progress={0.3}
+                                    progress={ experience / totalExp}
                                     />
                             </View>
                             {items}
@@ -106,8 +115,8 @@ let styles = StyleSheet.create({
     smallCircle: {
         borderWidth: px2dp(2),
         backgroundColor: '#fff',
-        width: px2dp(12),
-        height: px2dp(12),
+        width: px2dp(10),
+        height: px2dp(10),
         borderRadius: px2dp(6)
     },
     bigCircle: {
@@ -130,7 +139,7 @@ let styles = StyleSheet.create({
     level: {
         color: '#9B6D26',
         fontSize: px2dp(11),
-        height: px2dp(19)
+        height: px2dp(20)
     },
     see: {
         marginLeft: px2dp(4),
@@ -140,5 +149,9 @@ let styles = StyleSheet.create({
     },
     rightImg: {
         marginLeft: 0
+    },
+    levelBox: {
+        position: 'absolute',
+        top: 0
     }
 })

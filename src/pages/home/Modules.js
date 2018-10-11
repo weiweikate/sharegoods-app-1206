@@ -270,6 +270,8 @@ class HomeModule {
             this.firstLoad = false
         } catch (error) {
             console.log(error)
+            this.isFetching = false
+            this.isRefreshing = false
         }
     })
 
@@ -284,7 +286,6 @@ class HomeModule {
         if (this.firstLoad) {
             return
         }
-        console.log('loadMoreHomeList')
         try {
             this.isFetching = true
             const res = yield HomeApi.getGoodsInHome({page: this.page})
@@ -326,8 +327,27 @@ export class MemberModule {
     @computed get levelCount() {
         return this.memberLevels.length
     }
-    @observable experience = 0
-
+    @computed get totalExp() {
+        let exp = 0
+        if (this.memberLevels.length > 0) {
+            let lastLevel =  this.memberLevels[this.memberLevels.length - 1]
+            exp = lastLevel.upgradeExp
+            console.log('MemberModule', exp)
+        }
+        return exp
+    }
+    @computed get levelNumber () {
+        let level = []
+        if (this.memberLevels.length > 0) {
+            let lastLevel = 0
+            this.memberLevels.map(value => {
+                lastLevel = value.upgradeExp - lastLevel
+                level.push(lastLevel)
+                lastLevel = value.upgradeExp
+            })
+        }
+        return level
+    }
     //选择专题
     loadMembersInfo = flow(function * () {
         try {
