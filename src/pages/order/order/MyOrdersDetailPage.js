@@ -692,14 +692,9 @@ class MyOrdersDetailPage extends BasePage {
                 //买家已付款 待发货
                 case 2:
                     //nothing need update Extraly
-                    pageStateString.menu=[]
-                    // pageStateString.menu = [
-                    //     {
-                    //         id: 1,
-                    //         operation: '退款',
-                    //         isRed: false
-                    //     }
-                    // ];
+                    pageStateString.menu=[];
+                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+
                     break;
                 //卖家已发货 待收货
                 case 3:
