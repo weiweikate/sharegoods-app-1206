@@ -9,7 +9,6 @@ import MyCouponsItems from './../../components/MyCouponsItems';
 import User from '../../../../model/user';
 
 export default class CouponsPage extends BasePage {
-
     constructor(props) {
         super(props);
         this.state = {

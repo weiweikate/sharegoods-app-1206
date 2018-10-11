@@ -432,13 +432,13 @@ class MyOrdersDetailPage extends BasePage {
                     yes={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
                         Toast.showLoading();
-                        OrderApi.confirmReceipt({orderId:this.state.orderId}).then((response)=>{
+                        OrderApi.confirmReceipt({ orderId: this.state.orderId }).then((response) => {
                             Toast.hiddenLoading();
-                                NativeModules.commModule.toast('确认收货成功')
-                                this.getDataFromNetwork()
-                        }).catch(e=>{
+                            NativeModules.commModule.toast('确认收货成功');
+                            this.getDataFromNetwork();
+                        }).catch(e => {
                             Toast.hiddenLoading();
-                            this.$toastShow(e.msg)
+                            this.$toastShow(e.msg);
                         });
                     }}
                     no={() => {
@@ -563,7 +563,7 @@ class MyOrdersDetailPage extends BasePage {
         //售后状态
         let afterSaleService = [];
         if (StringUtils.isEmpty(data[index].returnProductStatus)) {
-            if (data[index].status === 2 || data[index].status === 4) {
+            if (data[index].status === 2) {
                 afterSaleService.push({
                     id: 0,
                     operation: '退款',
@@ -590,6 +590,35 @@ class MyOrdersDetailPage extends BasePage {
             }
         } else {
             if (data[index].status === 4) {
+                switch (data[index].returnType) {
+                    case 1://申请退款
+                        afterSaleService.push({
+                            id: 2,
+                            operation: '退款中',
+                            isRed: false
+                        });
+                        break;
+                    case 2://申请退货
+                        afterSaleService.push({
+                            id: 3,
+                            operation: '退货中',
+                            isRed: false
+                        });
+                        break;
+                    case 3://申请换货
+                        afterSaleService.push({
+                            id: 6,
+                            operation: '换货中',
+                            isRed: false
+                        });
+                        break;
+                    default:
+                        afterSaleService.push({
+                            id: 2,
+                            operation: '退换',
+                            isRed: false
+                        });
+                }
                 afterSaleService.push({
                     id: 2,
                     operation: '退换',
@@ -598,12 +627,12 @@ class MyOrdersDetailPage extends BasePage {
             }
             if (data[index].status === 5 || data[index].status === 6) {
                 afterSaleService.push({
-                    id: 3,
-                    operation: '退换中',
+                    id: 1,
+                    operation: '退换',
                     isRed: false
                 });
             }
-            if (data[index].status === 8 && data[index].returnType) {
+            if (data[index].status === 7 && data[index].returnType) {
                 afterSaleService.push({
                     id: 4,
                     operation: '售后完成',
@@ -692,14 +721,14 @@ class MyOrdersDetailPage extends BasePage {
                 //买家已付款 待发货
                 case 2:
                     //nothing need update Extraly
-                    pageStateString.menu=[];
-                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    pageStateString.menu = [];
+                    // pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
 
                     break;
                 //卖家已发货 待收货
                 case 3:
                     this.startCutDownTime2(response.data.autoReceiveTime);
-                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    pageStateString.sellerTime = "";
                     break;
                 //   确认收货
                 case 4:
@@ -761,6 +790,7 @@ class MyOrdersDetailPage extends BasePage {
                 activityId: data.activityId,
                 orderType: data.orderType,
                 orderProductPrices: data.orderProductList[0].price,//礼包，套餐啥的
+                allData: data
             });
 
         }).catch(e => {
@@ -824,14 +854,14 @@ class MyOrdersDetailPage extends BasePage {
             case 2:
                 this.$navigate('order/payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
-                    amounts: this.state.viewData.totalPrice + this.state.viewData.freightPrice,
-                    orderType: this.state.viewData.pickedUp - 1
+                    amounts: this.state.viewData.totalPrice
+                    // orderType: this.state.viewData.pickedUp - 1
                 });
                 break;
             case 3:
                 this.$navigate('order/payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
-                    amounts: this.state.viewData.goodsPrice
+                    amounts: this.state.viewData.totalPrice
                 });
                 break;
             case 4:
@@ -914,34 +944,39 @@ class MyOrdersDetailPage extends BasePage {
         //                 operation:'售后失败',
         //                 isRed:true,
         //             },
+        // {
+            //                 id:6,
+            //                 operation:'售后失败',
+            //                 isRed:true,
+            //             },
         //         ],
         switch (menu.id) {
             case 0:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 0,
-                    orderProductId: this.state.viewData.list[index].id,
+                    orderProductId: this.state.viewData.list[index].id
                     // index: index,
                     // refleshOrderDetail: () => this.loadPageData()
                 });
                 break;
             case 1:
                 this.$navigate('order/afterSaleService/AfterSaleServiceHomePage', {
-                    pageData: this.state.viewData,
+                    pageData: this.state.allData,
                     index: index
                 });
                 break;
             case 2:
-                this.$navigate('order/afterSaleService/ApplyRefundNextPage', {
+                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 0,
-                    pageData: this.state.viewData,
-                    index: index
+                    returnProductId: this.state.viewData.list[index].returnProductId,
+                    // index: index
                 });
                 break;
             case 3:
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    pageType: 3,
+                    pageType:1,
                     // pageData: this.state.viewData,
-                    returnProductId:this.state.viewData.list[index].returnProductId,
+                    returnProductId: this.state.viewData.list[index].returnProductId
                     // index: index
                 });
                 break;
@@ -949,7 +984,7 @@ class MyOrdersDetailPage extends BasePage {
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 6,
                     // pageData: this.state.viewData,
-                    returnProductId:this.state.viewData.list[index].returnProductId,
+                    returnProductId: this.state.viewData.list[index].returnProductId
                     // index: index
                 });
                 break;
@@ -957,8 +992,16 @@ class MyOrdersDetailPage extends BasePage {
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 7,
                     // pageData: this.state.viewData,
-                    returnProductId:this.state.viewData.list[index].returnProductId,
+                    returnProductId: this.state.viewData.list[index].returnProductId,
                     index: index
+                });
+                break;
+            case 6:
+                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+                    pageType:2,
+                    // pageData: this.state.viewData,
+                    returnProductId: this.state.viewData.list[index].returnProductId
+                    // index: index
                 });
                 break;
         }
@@ -975,7 +1018,7 @@ const styles = StyleSheet.create({
         backgroundColor: color.red,
         flexDirection: 'row',
         paddingLeft: 22,
-        position: 'absolute',
+        position: 'absolute'
     }, whiteRectangle: {
         height: 81,
         marginTop: 69,

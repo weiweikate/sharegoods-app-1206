@@ -6,7 +6,7 @@ import {
     Image,
     TextInput as RNTextInput,
     Text,
-    TouchableOpacity,
+    TouchableOpacity
 } from 'react-native';
 import {
     UIText, UIImage, RefreshList
@@ -71,7 +71,7 @@ export default class ConfirOrderPage extends BasePage {
                 canUseScore: true,
                 totalFreightFee: 0,
                 totalAmounts: 0,
-                tokenCoin:0
+                tokenCoin: 0
             },
             orderParam: this.params.orderParamVO ? this.params.orderParamVO : []
 
@@ -171,7 +171,7 @@ export default class ConfirOrderPage extends BasePage {
     };
     renderDetail = () => {
         return (
-            <View style={{backgroundColor:'white'}}>
+            <View style={{ backgroundColor: 'white' }}>
                 <TouchableOpacity style={{
                     height: 44,
                     flexDirection: 'row',
@@ -180,12 +180,12 @@ export default class ConfirOrderPage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}
-                                  disabled={this.state.orderParam && this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2}
+                                  disabled={this.state.viewData.list[0].restrictions & 1 !== 1}
                                   onPress={() => this.jumpToCouponsPage()}>
                     <UIText value={'优惠卷'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={this.state.orderParam && this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 ? '不可使用优惠券' : '选择优惠卷'}
+                            value={this.state.viewData.list[0].restrictions & 1 !== 1 ? '不可使用优惠券' : '选择优惠卷'}
                             style={[styles.grayText, { marginRight: 15 }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -199,12 +199,12 @@ export default class ConfirOrderPage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}
-                                  disabled={this.state.orderParam && this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2}
-                                  onPress={() => this.jumpToCouponsPage()}>
+                                  disabled={this.state.viewData.list[0].restrictions & 2 !== 2}
+                                  onPress={() => this.jumpToCouponsPage('justOne')}>
                     <UIText value={'1元现金券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={this.state.orderParam && this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 ? '不可使用1元现金券' : '选择1元现金券'}
+                            value={this.state.viewData.list[0].restrictions & 2 !== 2 ? '不可使用1元现金券' : '选择1元现金券'}
                             style={[styles.grayText, { marginRight: 15 }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -367,7 +367,8 @@ export default class ConfirOrderPage extends BasePage {
                     salePrice: item.price,
                     category: item.spec,
                     goodsNum: item.num,
-                    originalPrice:item.originalPrice
+                    originalPrice: item.originalPrice,
+                    restrictions: item.restrictions
                     // activityId: item.activityId
                 });
             });
@@ -387,9 +388,9 @@ export default class ConfirOrderPage extends BasePage {
             } else {
                 viewData.express = {};
             }
-            viewData.totalAmounts=data.totalAmounts;
-            viewData.totalFreightFee=data.totalFreightFee;
-            viewData.tokenCoin=data.tokenCoin;
+            viewData.totalAmounts = data.totalAmounts;
+            viewData.totalFreightFee = data.totalFreightFee;
+            viewData.tokenCoin = data.tokenCoin;
             viewData.list = arrData;
             this.setState({ viewData });
         }).catch(err => {
@@ -478,17 +479,17 @@ export default class ConfirOrderPage extends BasePage {
         let recevicePhone;//Y:收货人手机号	number
         let tokenCoin = this.state.viewData.tokenCoin;//N：使用积分	string
 
-            address = this.state.viewData.express.receiverAddress;
-            areaCode = this.state.viewData.express.areaCode;
-            cityCode = this.state.viewData.express.cityCode;
-            provinceCode = this.state.viewData.express.provinceCode;
-            receiver = this.state.viewData.express.receiverName;
-            recevicePhone = this.state.viewData.express.receiverNum;
+        address = this.state.viewData.express.receiverAddress;
+        areaCode = this.state.viewData.express.areaCode;
+        cityCode = this.state.viewData.express.cityCode;
+        provinceCode = this.state.viewData.express.provinceCode;
+        receiver = this.state.viewData.express.receiverName;
+        recevicePhone = this.state.viewData.express.receiverNum;
         if (StringUtils.isEmpty(areaCode)) {
             NativeModules.commModule.toast('请先添加地址');
             return;
         }
-         this.$loadingShow('加载中...');
+        this.$loadingShow('加载中...');
         let params;
         if (this.state.orderParam && this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2 || this.state.orderParam.orderType === 98) {
             params = {
@@ -500,7 +501,7 @@ export default class ConfirOrderPage extends BasePage {
                 orderType: this.state.orderParam.orderType,
                 provinceCode: provinceCode,
                 receiver: receiver,
-                recevicePhone: recevicePhone,
+                recevicePhone: recevicePhone
             };
         } else {
             params = {
@@ -519,29 +520,29 @@ export default class ConfirOrderPage extends BasePage {
         console.log(params);
         if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
         } else {
-            OrderApi.submitOrder( params ).then((response) => {
+            OrderApi.submitOrder(params).then((response) => {
                 this.$loadingDismiss();
-                    let data = response.data;
-                    // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
-                    this.$navigate('order/payment/PaymentMethodPage', {
-                        orderNum: data.orderNum,
-                        amounts:  this.state.viewData.totalAmounts,
-                        pageType:0,
-                        availableBalance: data.user.availableBalance
-                    });
+                let data = response.data;
+                // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
+                this.$navigate('order/payment/PaymentMethodPage', {
+                    orderNum: data.orderNum,
+                    amounts: this.state.viewData.totalAmounts,
+                    pageType: 0,
+                    availableBalance: data.user.availableBalance
+                });
 
             }).catch(e => {
                 this.$loadingDismiss();
-                 console.log(e);
-                 if(e.code===10009){
-                     this.$navigate('login/login/LoginPage');
-                 }
+                console.log(e);
+                if (e.code === 10009) {
+                    this.$navigate('login/login/LoginPage');
+                }
             });
         }
 
     };
-    jumpToCouponsPage = () => {
-        this.$navigate('coupons/CouponsPage', {
+    jumpToCouponsPage = (params) => {
+        this.$navigate('mine/coupons/CouponsPage', {
             fromOrder: 1, productIds: this.state.viewData.list[0].productId,
             orderParam: JSON.stringify(this.state.orderParam), callBack: (data) => {
                 let orderParams = this.state.orderParam;
