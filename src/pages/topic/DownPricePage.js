@@ -15,6 +15,7 @@ import OpenPrizeItemView from './components/OpenPrizeItemView';
 // import HomeAPI from '../api/HomeAPI';
 import TotalTopicDataModel from './model/SubTopicModel';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
+import PropTypes from 'prop-types';
 
 @observer
 export default class DownPricePage extends BasePage {
@@ -149,6 +150,11 @@ export default class DownPricePage extends BasePage {
         );
     }
 }
+
+DownPricePage.propTypes = {
+    //专题列表列数
+    topicTypeCode: PropTypes.number,
+};
 const Styles = StyleSheet.create({
     list: {
         flexDirection: 'row',//设置横向布局
