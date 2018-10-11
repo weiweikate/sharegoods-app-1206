@@ -1,6 +1,7 @@
 /**
  * pageType: 0(退款),1(退货退款),2(换货)
  * isEdit: true(编辑申请)，false（提交申请）。当编辑申请的时候，数据都是从接口获取的。
+ *
  */
 import React from 'react';
 import {
@@ -54,10 +55,10 @@ class AfterSaleServicePage extends BasePage {
             * 3 :AfterSaleServicePage:'售后服务',   =========》全退(1.0版本不用)
             * */
             pageType: this.params.pageType ? this.params.pageType : 0,
-            pageTitle: ['申请退款', '售后服务', '申请换货'],
-            activeProduct: ['', '退回商品需由买家承担运费，请确保不影响商品完好', '活动产品，不支持单个产品退款'],
-            reason: ['退款原因', '退款原因', '换货原因'],
-            inputReason: ['退款说明', '退款说明', '换货说明'],
+            pageTitle: ['申请退款', '申请退货', '申请换货'],
+            activeProduct: ['', '退回商品需由买家承担运费，请确保不影响商品完好', '仅限更换同款相同价格商品'],
+            reason: ['退款原因', '退货原因', '换货原因'],
+            inputReason: ['退款说明', '退货说明', '换货说明'],
             productData: {},// 里面包含了商品、订单id、价格等信息
             // orderNum: this.params.isEdit === true ? pageData.orderNum : pageData.orderNum,           //订单单号
             // createTime: this.params.isEdit === true ? pageData.orderCreateTime : pageData.createTime,//创建时间
@@ -400,51 +401,32 @@ class AfterSaleServicePage extends BasePage {
             * */
 
             case 0:
-                Toast.showLoading();
+                this.$loadingShow();
                 OrderApi.applyRefund(params).then((response) => {
-                    Toast.hiddenLoading();
-                    if (response.code === 10000) {
-                        if (response.data && !response.data.returnProductId) {
-                            NativeModules.commModule.toast(response.msg + '');
-                            return;
-                        }
-                        this.navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                            returnProductId: response.data.id,
-                            pageType: 0,
-                        });
-                    } else {
-                        NativeModules.commModule.toast(response.msg);
-                    }
+                    this.$loadingDismiss();
+                    this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+                        returnProductId: response.data.id,
+                        pageType: 0,
+                    });
+
                 }).catch(e => {
-                    Toast.hiddenLoading();
+                    this.$loadingDismiss();
+                    this.$toastShow(e.msg)
                 });
                 break;
             case 1:
-                // Toast.showLoading();
-                // OrderApi.applyReturnGoods(params).then((response) => {
-                //     //{"code":200,"msg":"退货退款申请提交成功，请在7天内填写退回的信息！","data":{"returnProductId":248},"ok":true}
-                //     Toast.hiddenLoading();
-                //     if (response.ok) {
-                //         if (!response.data.returnProductId) {
-                //             NativeModules.commModule.toast(response.msg + '');
-                //             return;
-                //         }
-                //         if (this.params.refleshOrderDetail) {
-                //             this.params.refleshOrderDetail();
-                //         }
-                //         this.navigate('order/afterSaleService/ApplyRefundNextPage', {
-                //             returnProductId: response.data.returnProductId,
-                //             pageType: 0,
-                //             pageData: this.state.pageData,
-                //             index: this.state.index,
-                //             returnProductStatus: 3
-                //         });
-                //     } else {
-                //         NativeModules.commModule.toast(response.msg);
-                //     }
-                // }).catch(e => {
-                //     Toast.hiddenLoading();
-                // });
+                this.$loadingShow();
+                OrderApi.applyReturnGoods(params).then((response) => {
+                    this.$loadingDismiss();
+                    this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+                        returnProductId: response.data.id,
+                        pageType: 1,
+                    });
+                }).catch(e => {
+                    this.$loadingDismiss();
+                    this.$toastShow(e.msg)
+                });
+                break;
                 break;
             case 2:
                 // Toast.showLoading();
