@@ -1,3 +1,7 @@
+/**
+ * pageType 0 退款详情  1 退货详情   2 换货详情
+ * returnProductId
+ */
 import React from 'react';
 import {
     NativeModules,
@@ -14,14 +18,14 @@ import { UIText, UIImage } from '../../../components/ui';
 import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-//import GoodsItem from '../components/GoodsItem';
+import GoodsItem from '../components/GoodsItem';
 import applyRefundMessage from '../res/applyRefundMessage.png';
 import applyRefundPhone from '../res/applyRefundPhone.png';
 import right_arrow from '../res/arrow_right.png';
 import exchangeGoodsDetailBg from '../res/exchangeGoodsDetailBg.png';
 import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
-import Toast from '../../../utils/bridge';
+import refusa_icon from '../res/tuikuan_icon_jujue_nor.png';
 
 import OrderApi from '../api/orderApi'
 
@@ -29,12 +33,8 @@ class ExchangeGoodsDetailPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            phone: '',
-            pwd: '',
-            thirdType: 1,
-            passwordDis: false,
-            phoneError: false,
-            passwordError: false,
+            pageData: null,
+            timeStr: '',
             imageArr: [
                 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
                 // 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
@@ -64,8 +64,6 @@ class ExchangeGoodsDetailPage extends BasePage {
             description1: ['请联系客服', '', '4天12小时32分', '等待商家确认中', '7天退换，请退货给商家', '2018-07-27 11:55:49', '2018-07-27 11:55:49', '2018-07-27 11:55:49'],
             description2: ['', '', '', '', '4天12小时32分', '', '', ''],
             sellerPhone: -1,
-            index: this.params.index ? this.params.index : 0,
-            pageData: this.params.pageData ? this.params.pageData : {},
             returnProduct: {
                 out_time: 1533993685000,
                 had_gift_bag: 2,
@@ -105,12 +103,18 @@ class ExchangeGoodsDetailPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '换货详情界面',
+        title: ['退款详情', '退货详情', '换货详情'][this.params.pageType],
         show: true// false则隐藏导航
     };
 
     _bindFunc(){
         this.renderOperationApplyView = this.renderOperationApplyView.bind(this);
+        this.startTimer = this.startTimer.bind(this);
+        this.stopTimer = this.stopTimer.bind(this);
+    }
+
+    componentDidMount(){
+        this.loadPageData();
     }
 
     //**********************************ViewPart******************************************
@@ -118,32 +122,40 @@ class ExchangeGoodsDetailPage extends BasePage {
         return (
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    {this.renderNotice()}
+                    {/*{this.renderNotice()}*/}
                     {this.renderHeader()}
                     {this.renderOperationApplyView()}
-                    {this.renderSucceedDetail()}
-                    {this.renderAddress()}
-                    {this.renderLogistics()}
-                    {this.renderOrder()}
-                    {/*<GoodsItem*/}
-                        {/*uri={this.state.pageData.list[this.state.index].uri}*/}
-                        {/*goodsName={this.state.pageData.list[this.state.index].goodsName}*/}
-                        {/*salePrice={StringUtils.formatMoneyString(this.state.pageData.list[this.state.index].salePrice)}*/}
-                        {/*category={this.state.pageData.list[this.state.index].category}*/}
-                        {/*goodsNum={this.state.pageData.list[this.state.index].goodsNum}*/}
-                        {/*onPress={() => this.jumpToProductDetailPage(this.state.pageData.list[this.state.index].productId)}*/}
-                    {/*/>*/}
+                    {this.renderArefundView()}
+                    {/*{this.renderAddress()}*/}
+                    {/*{this.renderLogistics()}*/}
+                    {/*{this.renderOrder()}*/}
+                    {this.state.pageData ?
+                        <GoodsItem
+                    uri={this.state.pageData.specImg}
+                    goodsName={this.state.pageData.productName}
+                    salePrice={StringUtils.formatMoneyString(this.state.pageData.price)}
+                    category={this.state.pageData.spec}
+                    goodsNum={this.state.pageData.num}
+                   // onPress={() => this.jumpToProductDetailPage(this.state.pageData.list[this.state.index].productId)}
+                    /> : null}
                     {this.renderReason()}
                 </ScrollView>
-                {this.renderContact()}
+                {/*{this.renderContact()}*/}
             </View>
         );
     }
 
-    renderSucceedDetail = () => {
+    /**  退款详情专用  中间一段View */
+    renderArefundView = () => {
+        if (this.state.pageData === null || this.state.pageData.undefined || this.params.pageType !== 0) {
+            return null;// 数据没有请求下来，或不是退款详情页面
+        }
+        //退款成功的时候页面是和其他状态不一样的
+        let isSuccess = this.state.pageData.status === 6 ? true : false;
+        let orderReturnAmounts = this.state.pageData.orderReturnAmounts || {}
         return (
             <View>
-                <TouchableOpacity style={{
+                <View style={{
                     height: 44,
                     backgroundColor: color.white,
                     flexDirection: 'row',
@@ -159,39 +171,41 @@ class ExchangeGoodsDetailPage extends BasePage {
                         alignItems: 'center'
                     }}>
                         <UIText value={'退款金额:'} style={{ color: color.black_222, fontSize: 13 }}/>
-                        <UIText value={StringUtils.formatMoneyString(this.params.pageData.goodsPrice)}
-                                style={{ color: color.red, fontSize: 13, marginLeft: 5 }}/>
+                        {/*<UIText value={StringUtils.formatMoneyString(this.params.pageData.totalRefundPrice)}*/}
+                                {/*style={{ color: color.red, fontSize: 13, marginLeft: 5 }}/>*/}
                     </View>
-                    {/*<UIText value={'已退款'} style={{color:color.black_222,fontSize:13}}/>*/}
-                </TouchableOpacity>
-                <View
-                    style={{ backgroundColor: color.gray_f7f7, height: 40, justifyContent: 'center', paddingLeft: 15 }}>
-                    <UIText value={'退款明细'} style={{ color: color.black_999, fontSize: 13 }}/>
+                    {
+                        isSuccess ? <UIText value={'已退款'} style={{color:color.black_222,fontSize:13}}/> : null
+                    }
                 </View>
-                <UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退回银行卡'}
-                                leftTextStyle={{ color: color.black_222, fontSize: 13 }}
-                                rightText={StringUtils.formatMoneyString(this.state.viewData.return_amounts)}
-                                rightTextStyle={{ color: color.black_222, fontSize: 13, marginRight: 5 }}
-                                isArrow={false} isLine={false}/>
-                {this.renderLine()}
-                <UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退回余额账户'}
-                                leftTextStyle={{ color: color.black_222, fontSize: 13 }}
-                                rightText={StringUtils.formatMoneyString(this.state.viewData.return_balance)}
-                                rightTextStyle={{ color: color.black_222, fontSize: 13, marginRight: 5 }}
-                                isArrow={false} isLine={false}/>
-                {this.renderLine()}
-                <UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退回代币账户'}
-                                leftTextStyle={{ color: color.black_222, fontSize: 13 }}
-                                rightText={this.state.viewData.return_token_coin + '枚'}
-                                rightTextStyle={{ color: color.black_222, fontSize: 13, marginRight: 5 }}
-                                isArrow={false} isLine={false}/>
-                {this.renderLine()}
-                <UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退回积分账户'}
-                                leftTextStyle={{ color: color.black_222, fontSize: 13 }}
-                                rightText={this.state.viewData.return_user_score + '积分'}
-                                rightTextStyle={{ color: color.black_222, fontSize: 13, marginRight: 5 }}
-                                isArrow={false} isLine={false}/>
-                {this.renderWideLine()}
+                {
+                    isSuccess ? (
+                        <View>
+                            <View
+                                style={{ backgroundColor: color.gray_f7f7, height: 40, justifyContent: 'center', paddingLeft: 15 }}>
+                                <UIText value={'退款明细'} style={{ color: color.black_999, fontSize: 13 }}/>
+                            </View>
+                            <UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退回银行卡'}
+                                            leftTextStyle={{ color: color.black_222, fontSize: 13 }}
+                                            rightText={StringUtils.formatMoneyString(orderReturnAmounts.actualAmounts)}
+                                            rightTextStyle={{ color: color.black_222, fontSize: 13, marginRight: 5 }}
+                                            isArrow={false} isLine={false}/>
+                            {this.renderLine()}
+                            <UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退回余额账户'}
+                                            leftTextStyle={{ color: color.black_222, fontSize: 13 }}
+                                            rightText={StringUtils.formatMoneyString(orderReturnAmounts.actualBalance)}
+                                            rightTextStyle={{ color: color.black_222, fontSize: 13, marginRight: 5 }}
+                                            isArrow={false} isLine={false}/>
+                            {this.renderLine()}
+                            <UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'1元现金券'}
+                                            leftTextStyle={{ color: color.black_222, fontSize: 13 }}
+                                            rightText={orderReturnAmounts.actualTokenCoin + '张'}
+                                            rightTextStyle={{ color: color.black_222, fontSize: 13, marginRight: 5 }}
+                                            isArrow={false} isLine={false}/>
+                            {this.renderWideLine()}
+                        </View>
+                    ) : null
+                }
             </View>
         );
     };
@@ -325,31 +339,38 @@ class ExchangeGoodsDetailPage extends BasePage {
         );
     };
     renderReason = () => {
+        let pageData = this.state.pageData;
+        if (pageData === undefined || pageData === null){
+            return null;
+        }
+        let typeStr = ['退款', '退货', '换货'][this.params.pageType];
         return (
             <View>
                 {this.renderLine()}
-                <UIText value={'退款原因：' + this.state.viewData.return_reason} style={styles.refundReason}/>
-                <UIText value={'退款金额：' + StringUtils.formatMoneyString(this.state.viewData.return_amounts)}
+                <UIText value={typeStr + '原因：' + pageData.returnReason} style={styles.refundReason}/>
+                <UIText value={typeStr + '金额：' + StringUtils.formatMoneyString(pageData.totalRefundPrice)}
                         style={styles.refundReason}/>
-                <UIText value={'退款说明：' + this.state.viewData.remark} style={styles.refundReason}/>
+                <UIText value={typeStr + '说明：' + pageData.remark} style={styles.refundReason}/>
                 <UIText value={'凭证图片：'} style={styles.refundReason}/>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingRight: 15 }}>
                     {this.renderCertificateImage()}
                 </View>
-                <UIText value={'申请时间：' + DateUtils.getFormatDate(this.state.viewData.apply_time / 1000)}
+                <UIText value={'申请时间：' + DateUtils.getFormatDate(pageData.applyTime / 1000)}
                         style={styles.refundReason}/>
-                {/*<UIText value={'更换型号：32G    黑色   全网通'} style={styles.refundReason}/>*/}
-                <UIText value={'数量：x' + this.params.pageData.list[this.params.index].goodsNum}
-                        style={[styles.refundReason, { marginBottom: 20 }]}/>
+                <UIText value={'订单编号：' + pageData.orderNum}
+                        style={styles.refundReason}/>
+                <UIText value={typeStr + '编号：' + pageData.refundNo}
+                        style={styles.refundReason}/>
             </View>
         );
     };
 
     renderCertificateImage = () => {
         let arr = [];
-        for (let i = 0; i < this.state.imageArr.length; i++) {
+        let imgList = this.state.pageData.imgList || [];
+        for (let i = 0; i < imgList.length; i++) {
             arr.push(
-                <UIImage source={{ uri: this.state.imageArr[i] }}
+                <UIImage source={{ uri: imgList[i].smallImg }}
                          style={{ height: 83, width: 83, marginLeft: 15, marginTop: 10 }}/>
             );
         }
@@ -368,17 +389,47 @@ class ExchangeGoodsDetailPage extends BasePage {
     };
 
     renderHeader = () => {
+        let {pageData} = this.state;
+        if (pageData === null || pageData === undefined){
+            return null;
+        }
+
+        let imageCommpent = () => {};
+        let titleCommpent = () => {};
+        let detialCommpent = () => {};
+        let timerCommpent = () => {};
+        let textContaner_marginLeft = 15;
+        if (this.params.pageType === 0){//退款详情
+
+            let titles = ['商家退款审核中', '*-商家同意退款', '商家拒绝退款', '*-发货中', '*-云仓库发货中', '退款完成', '已关闭', '超时关闭'];
+            titleCommpent = () => {return <UIText value = {titles[pageData.status-1]} style = {styles.header_title}/>};
+            if (pageData.status === 3){//拒绝
+                textContaner_marginLeft = 10;
+                imageCommpent = () => {return <UIImage soucre = {refusa_icon} style = {styles.header_image}/>};
+                detialCommpent = () => {return <UIText value = {pageData.refusalReason} style = {styles.header_detail}/>};
+            } else if (pageData.status === 6){//已完成
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.orderReturnAmounts.refundTime,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+            } else if(pageData.status === 1){//申请中
+                timerCommpent = () => {return <UIText value = {pageData.timeStr} style = {styles.header_detail}/>};
+            }
+        } else if (this.params.pageType === 1) {//退货详情
+
+        } else if (this.params.pageType === 2) {//换货详情
+
+        }
+
         return (
             <View>
                 <View style={{ position: 'absolute', height: 100, width: ScreenUtils.width }}>
                     <UIImage source={exchangeGoodsDetailBg} style={{ height: 100, width: ScreenUtils.width }}/>
                 </View>
-                <View style={{ height: 100, justifyContent: 'center', marginLeft: 42 }}>
-                    <UIText value={this.state.title[this.state.pageType]} style={{ fontSize: 18, color: color.white }}/>
-                    <UIText value={this.state.description1[this.state.pageType]}
-                            style={{ fontSize: 13, color: color.white }}/>
-                    <UIText value={this.state.description2[this.state.pageType]}
-                            style={{ fontSize: 12, color: color.white }}/>
+                <View style={{ height: 100, alignItems: 'center', flexDirection:'row', width: ScreenUtils.width}}>
+                    {imageCommpent()}
+                    <View style = {{marginLeft: textContaner_marginLeft}}>
+                        {titleCommpent()}
+                        {detialCommpent()}
+                        {timerCommpent()}
+                    </View>
                 </View>
             </View>
         );
@@ -396,36 +447,18 @@ class ExchangeGoodsDetailPage extends BasePage {
 
     //**********************************BusinessPart******************************************
     loadPageData() {
-        Toast.hiddenLoading();
-        // OrderApi.findReturnProductById({returnProductId:this.params.pageData.list[this.params.index].returnProductId}).then((response)=>{
-        //     Toast.hiddenLoading()
-        //     if(response.ok ){
-        //         let imageArr=[]
-        //         response.data.imgList.map((item, index)=>{
-        //             imageArr.push(item.originalImg)
-        //         })
-        //         this.setState({
-        //             imageArr:imageArr,
-        //             viewData:{
-        //                 return_reason:response.data.returnProduct.return_reason,
-        //                 remark:response.data.returnProduct.remark,
-        //                 return_amounts:response.data.returnProduct.return_amounts,
-        //                 apply_time:response.data.returnProduct.apply_time,
-        //                 outRefundNo:response.data.returnAmountsRecord&&response.data.returnAmountsRecord.outRefundNo+'',
-        //                 return_balance:response.data.returnProduct.return_balance,   //余额
-        //                 return_token_coin:response.data.returnProduct.return_token_coin,//代币
-        //                 return_user_score:response.data.returnProduct.return_user_score,//积分
-        //             },
-        //             sellerPhone:response.data.returnAddress.recevicePhone,
-        //             returnProduct:response.data.returnProduct,
-        //             returnAddres:response.data.returnAddress,
-        //         })
-        //     } else {
-        //         NativeModules.commModule.toast(response.msg)
-        //     }
-        // }).catch(e=>{
-        //     Toast.hiddenLoading()
-        // });
+        this.$loadingShow();
+        OrderApi.returnProductLookDetail({returnProductId:this.params.returnProductId}).then((response)=>{
+            this.$loadingDismiss()
+            this.setState({pageData: response.data});
+            if (response.data.status === 1){//申请中开始定时器倒计时
+                this.startTimer();
+            } else {
+                this.stopTimer();
+            }
+        }).catch(e=>{
+            this.$loadingDismiss()
+        });
     }
 
     callPhone = () => {
@@ -461,10 +494,14 @@ class ExchangeGoodsDetailPage extends BasePage {
     /*** huchao */
 
     renderOperationApplyView() {
+        let typeStr = ['退款', '退货', '换货'][this.params.pageType];
+        if (this.state.pageData === undefined || this.state.pageData === null || this.state.pageData.status !== 1){
+            return null; //数据未请求下来、不是申请状态
+        }
         return(
             <View style = {styles.operationApplyView_container}>
                 <View style = {styles.operationApplyView_title}>
-                <UIText value = {'您已成功发起退款申请，请耐心等待商家处理'} style = {{ color: '#222222', fontSize: 15, marginLeft: 15}}/>
+                    <UIText value = {'您已成功发起' + typeStr + '申请，请耐心等待商家处理'} style = {{ color: '#222222', fontSize: 15, marginLeft: 15}}/>
                 </View>
                 <View style = {{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
                     <TouchableOpacity onPress = {() => {this.onPressOperationApply(true)}} style ={[styles.borderButton, {borderColor: '#666666'}]}>
@@ -505,7 +542,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         out_time = out_time / 1000;
 
         if (timestamp >= out_time){
-            return null;
+            return '';
         }
 
         let remainingTime = timestamp - out_time;
@@ -518,6 +555,25 @@ class ExchangeGoodsDetailPage extends BasePage {
         let d = remainingTime;
 
         return '剩余' + d + '天' + H + '小时' + m + '分'
+    }
+
+    startTimer(){
+        if (this.state.pageData === null){
+            return;
+        }
+        this.stopTimer();
+        this.timer = setInterval(() => {
+            let timeStr = this.getRemainingTime(this.state.pageData.outTime);
+            this.setState({timeStr: timeStr});
+            if (timeStr === ''){
+                this.loadPageData();
+            } else {
+                this.stopTimer();
+            }
+        }, 1000);
+    }
+    stopTimer(){
+        this.timer && clearInterval(this.timer);
     }
 
 }
@@ -550,6 +606,20 @@ const styles = StyleSheet.create({
         marginRight: 15,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    header_title: {
+        fontSize: 18,
+        color: '#FFFFFF',
+    },
+    header_detail: {
+        fontSize: 12,
+        color: '#FFFFFF',
+        marginTop: 3,
+    },
+    header_image: {
+        height: 35,
+        width: 35,
+        marginRight: 15,
     }
 });
 
