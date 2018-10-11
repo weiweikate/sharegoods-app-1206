@@ -2,7 +2,8 @@ import {
     View,
     Image,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    ScrollView
 
 
 } from 'react-native';
@@ -16,24 +17,22 @@ import bridge from '../../../utils/bridge';
 import SbResTool from '../res/SbResTool';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
-
 export default class SbOpenPrizeHeader extends Component {
 
     static propTypes = {
         subjectType: PropTypes.number,
-        headerData: PropTypes.object.isRequired
+        headerData: PropTypes.object.isRequired,
+        navItemClick:PropTypes.func.isRequired
     };
     state = {
         selectSate: 2
-
     };
-
     constructor(props) {
         super(props);
     }
 
     render() {
-        const { imgUrl } = this.props.headerData;
+        const { imgUrl, topicNavTitleList } = this.props.headerData;
         console.log(imgUrl);
         return (
             <View>
@@ -41,37 +40,55 @@ export default class SbOpenPrizeHeader extends Component {
                     imageUri={imgUrl}
                     style={SbOpenPrizeHeaderStyles.topImageStyle}
                 />
-                <View style={SbOpenPrizeHeaderStyles.bottomDownViewBgStyle}>
-                    <View
-                        style={
-                            {
-                                width: ScreenUtils.width,
-                                height: 48,
-                                backgroundColor: 'white'
-                            }
-                        }
-                    />
-                    <Image
-                        source={SbResTool.miaosha_qianggouzhong_img}
-                        style={[itemViewStyle.itemBgImageStyle,
-                            { left: this.state.selectSate * ScreenUtils.width / 5 }]}
-                    />
-                    <View
-                        style={{
-                            position: 'absolute',
-                            height: 48,
-                            width: ScreenUtils.width,
-                            left: 0,
-                            top: 0,
-                            flexDirection: 'row'
-                        }}
-                    >
-                        {this._getDownTimeItemView().map(itemView => {
-                            return itemView;
-                        })}
-                    </View>
-                </View>
-
+                {
+                    (topicNavTitleList instanceof Array && topicNavTitleList.length > 1) ?
+                        <View style={SbOpenPrizeHeaderStyles.bottomDownViewBgStyle}>
+                            <View
+                                style={
+                                    {
+                                        width: ScreenUtils.width,
+                                        height: 48,
+                                        backgroundColor: 'white'
+                                    }
+                                }
+                            />
+                            {/*<Image*/}
+                            {/*source={SbResTool.miaosha_qianggouzhong_img}*/}
+                            {/*style={[itemViewStyle.itemBgImageStyle,*/}
+                            {/*{*/}
+                            {/*left: this.state.selectSate * ScreenUtils.width / 5*/}
+                            {/*}]}*/}
+                            {/*/>*/}
+                            <ScrollView
+                                ref="scroll"
+                                style={{
+                                    position: 'absolute',
+                                    height: 55,
+                                    width: ScreenUtils.width,
+                                    left: 0,
+                                    top: 0
+                                }}
+                                contentContainerStyle={{
+                                    flexDirection: 'row',
+                                    }
+                                }
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
+                            >
+                                <Image
+                                source={SbResTool.miaosha_qianggouzhong_img}
+                                style={[itemViewStyle.itemBgImageStyle,
+                                {
+                                left: this.state.selectSate * ScreenUtils.width / 5
+                                }]}
+                                />
+                                {this._getDownTimeItemView().map(itemView => {
+                                    return itemView;
+                                })}
+                            </ScrollView>
+                        </View>
+                        : null
+                }
             </View>
         );
     }
@@ -86,13 +103,17 @@ export default class SbOpenPrizeHeader extends Component {
                     <TouchableOpacity onPress={() => {
                         this._downItemViewClick(index, item);
                     }} key={index}>
-                        <View style={itemViewStyle.itemBgStyle}>
+                        <View style={[itemViewStyle.itemBgStyle
+                            // { width: ScreenUtils.width /arrAccount}
+                        ]}>
                             <UIText
-                                value={item}
-                                style={[itemViewStyle.itemTopTextStyle, this.state.selectSate === index ?
-                                    {
-                                        color: ColorUtil.Color_ffffff
-                                    } : null]}
+                                value={item.title}
+                                style={[itemViewStyle.itemTopTextStyle,
+                                    // { width: ScreenUtils.width /arrAccount},
+                                    this.state.selectSate === index ?
+                                        {
+                                            color: ColorUtil.Color_ffffff
+                                        } : null]}
                             />
                             {/*//先注释掉*/}
                             {/*<UIText*/}
@@ -118,12 +139,25 @@ export default class SbOpenPrizeHeader extends Component {
 
 
     };
-
+    /**
+     * 每个自导航点击的事件
+     * @param index 子导航索引
+     * @param item  子导航所对应的导航数据
+     * @private
+     */
     _downItemViewClick = (index, item) => {
         this.setState({
             selectSate: index
         });
-        bridge.$toast('点击了 ' + item + ' 索引:' + index);
+        if (index > 2){
+            let  offsetX = index*(ScreenUtils.width/5) -(ScreenUtils.width* 2/5);
+            this.refs.scroll.scrollTo({x: offsetX, y: 0 , animated: true})
+        }else {
+            this.refs.scroll.scrollTo({x: 0, y: 0 , animated: true})
+        }
+
+        this.props.navItemClick(index,item);
+         bridge.$toast('点击了 ' + item + ' 索引:' + index);
     };
 }
 
@@ -141,7 +175,6 @@ const SbOpenPrizeHeaderStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         backgroundColor: ColorUtil.Color_f7f7f7
-
     }
 });
 
@@ -171,7 +204,6 @@ const itemViewStyle = StyleSheet.create({
         textAlign: 'center',
         fontSize: 12
     }
-
 });
 
 

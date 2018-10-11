@@ -40,6 +40,9 @@ const api = {
     revokeApply: '/order/returnProduct/revokeApply',
     //（陈帅）修改申请
     updateApply: '/order/returnProduct/updateApply',
+    //（陈帅）查询子订单详情
+    subOrderLookDetial: ['/order/orderProduct/lookDetial',{method:'get'}],
+
 
 
 
