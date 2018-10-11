@@ -24,7 +24,7 @@ export default class HomeBannerView extends Component {
         const banner = bannerList[index]
         const router =  homeModule.homeNavigate(banner.linkType, banner.linkTypeCode)
         const {navigation} = this.props
-        navigation.navigate(router)
+        navigation.navigate(router, {linkTypeCode : banner.linkTypeCode})
     }
 
     _renderViewPageItem = (item, index) => {
