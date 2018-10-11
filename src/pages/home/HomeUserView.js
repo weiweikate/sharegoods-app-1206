@@ -1,20 +1,31 @@
 import React, {Component} from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import ProgressBar from '../../components/ui/ProgressBar'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
+import rightImg from './res/right_arrow.png'
+import user from '../../model/user'
+import {observer} from 'mobx-react';
 
 const Circle = ({sizeStyle}) => <View style={[styles.circle, sizeStyle]}/>
 
-const Level = ({levelStyle, sizeStyle, text}) => <View style={levelStyle}> 
+const Level = ({levelStyle, sizeStyle, text}) => <View style={levelStyle}>
     <Text style={styles.level}>{text}</Text>
     <Circle sizeStyle={sizeStyle}/>
 </View>
 
+@observer
 export default class HomeUserView extends Component {
+    _goToPromotionPage() {
+        const {navigation} = this.props
+        navigation && navigation.navigate('mine/MyPromotionPage')
+    }
     render () {
-        return(
+        return <View>
+        {
+            user.isLogin
+            ?
             <View style={styles.container}>
                 <LinearGradient colors={['#F7D795', '#F7D794']} style={styles.inContainer}>
                     <View style={styles.left}>
@@ -35,11 +46,18 @@ export default class HomeUserView extends Component {
                             <Level levelStyle={{marginLeft: px2dp(200) / 5}} sizeStyle={styles.smallCircle} text='V5'/>
                         </View>
                     </View>
-                    <View style={styles.right}>                   
-                    </View>
+                    <TouchableOpacity style={styles.right}  onPress={()=>this._goToPromotionPage()}>
+                        <View style={[styles.circle, styles.bigCircle]}>
+                            <Text style={styles.see}>特权查看</Text>
+                            <Image style={styles.rightImg} source={rightImg}/>
+                        </View>
+                    </TouchableOpacity>
                 </LinearGradient>
             </View>
-        )
+            :
+            null
+        }
+        </View>
     }
 }
 
@@ -68,7 +86,9 @@ let styles = StyleSheet.create({
         flex: 1
     },
     right: {
-        width: px2dp(90)
+        width: px2dp(90),
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     progressView: {
         flex: 1,
@@ -85,6 +105,16 @@ let styles = StyleSheet.create({
         height: px2dp(12),
         borderRadius: px2dp(6)
     },
+    bigCircle: {
+        borderWidth: px2dp(4),
+        backgroundColor: '#fff',
+        width: px2dp(50),
+        height: px2dp(50),
+        borderRadius: px2dp(25),
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
     progress: {
         position: 'absolute',
         left:  px2dp(28),
@@ -96,5 +126,14 @@ let styles = StyleSheet.create({
         color: '#9B6D26',
         fontSize: px2dp(11),
         height: px2dp(19)
+    },
+    see: {
+        marginLeft: px2dp(4),
+        color: '#9B6D26',
+        fontSize: px2dp(11),
+        width: 30
+    },
+    rightImg: {
+        marginLeft: 0
     }
 })

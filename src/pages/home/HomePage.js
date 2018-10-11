@@ -62,7 +62,7 @@ export default class HomePage extends Component {
         } else if (data.type === homeType.starShop) {
             return <HomeStarShopView/>
         } else if (data.type === homeType.user) {
-            return <HomeUserView/>
+            return <HomeUserView navigation = {this.props.navigation}/>
         }else if (data.type === homeType.goods) {
             let itemData = [
                 {imgUrl: 'http://imgsrc.baidu.com/imgad/pic/item/1b4c510fd9f9d72ad3f6b420df2a2834349bbb79.jpg', title: '海外品牌 100%纯棉', discribe: 'TRENDIANO男装夏装纯棉宽松字母印花圆领短袖...', money: '123.00'},
