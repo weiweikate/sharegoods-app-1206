@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import { View, Image, Text, StyleSheet } from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtils
-import PropTypes from 'prop-types'
 
 const Goods = ({goods}) => <View style={styles.container}>
     <View style={styles.image}>
@@ -11,16 +10,17 @@ const Goods = ({goods}) => <View style={styles.container}>
             <Text style={styles.title}>{goods.title}</Text>
         </View>
     </View>
-    <Text style={styles.dis}>{goods.discribe}</Text>
-    <Text style={styles.money}>¥ {goods.money}</Text>
+    <Text style={styles.dis}>{goods.name}</Text>
+    <Text style={styles.money}>¥ {goods.price}</Text>
 </View>
 
 export default class GoodsCell extends Component {
-    static propTypes = {
-        data: PropTypes.array.isRequired
-    }
     render() {
         const {data} = this.props
+        if (!data) {
+            return <View/>
+        }
+        console.log('GoodsCell', data[0])
         return <View style={styles.cell}>
         {
             data[0]

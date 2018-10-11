@@ -42,7 +42,7 @@ export default class HomePage extends Component {
         this._refHeader.setNativeProps({
             opacity: this.st
         });
-    };
+    }
 
     _keyExtractor = (item, index) => item.id + ''
     _renderItem = (item) => {
@@ -60,15 +60,11 @@ export default class HomePage extends Component {
         } else if (data.type === homeType.subject) {
             return <HomeSubjectView navigation = {this.props.navigation}/>
         } else if (data.type === homeType.starShop) {
-            return <HomeStarShopView/>
+            return <HomeStarShopView navigation = {this.props.navigation}/>
         } else if (data.type === homeType.user) {
             return <HomeUserView navigation = {this.props.navigation}/>
         }else if (data.type === homeType.goods) {
-            let itemData = [
-                {imgUrl: 'http://imgsrc.baidu.com/imgad/pic/item/1b4c510fd9f9d72ad3f6b420df2a2834349bbb79.jpg', title: '海外品牌 100%纯棉', discribe: 'TRENDIANO男装夏装纯棉宽松字母印花圆领短袖...', money: '123.00'},
-                {imgUrl: 'http://imgsrc.baidu.com/imgad/pic/item/1b4c510fd9f9d72ad3f6b420df2a2834349bbb79.jpg', title: '海外品牌 100%纯棉', discribe: 'TRENDIANO男装夏装纯棉宽松字母印花圆领短袖...', money: '123.00'},
-            ]
-            return <HomeGoodsView data={itemData}/>
+            return <HomeGoodsView data={data.itemData} navigation = {this.props.navigation}/>
         } else if (data.type === homeType.goodsTitle) {
             return <View style={styles.titleView}>
                 <Text style={styles.title}>为你推荐</Text>
@@ -136,6 +132,7 @@ const styles = StyleSheet.create({
     titleView: {
         backgroundColor: '#fff',
         height: px2dp(53),
+        marginTop:px2dp(10),
         alignItems: 'center',
         justifyContent: 'center'
     },

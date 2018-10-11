@@ -8,7 +8,7 @@ export const homeType = {
     starShop: 3,       //明星店铺
     today: 4,             //今日榜单
     recommend: 5,     //精品推荐
-    goods: 'goods',
+    goods: 8,
     other: 'other',
     classify: 'classify',
     goodsTitle: 'goodsTitle',
@@ -179,7 +179,8 @@ const homeLinkType = {
     subject: 2,
     down: 3,
     spike: 4,
-    package: 5
+    package: 5,
+    store: 8
 }
 
 const homeRoute = {
@@ -188,13 +189,21 @@ const homeRoute = {
     [homeLinkType.down]: 'topic/DownPricePage',
     [homeLinkType.spike]: 'topic/DownPricePage',
     [homeLinkType.package]: 'topic/DownPricePage',
+    [homeLinkType.store]: 'spellShop/SpellShopPage'
 }
 
 //首页modules
 class HomeModule {
     @observable homeList = []
     @observable selectedTypeCode = null
-    @action loadHomeList = () => {
+
+    @action homeNavigate = (linkType, linkTypeCode) => {
+        this.selectedTypeCode = linkTypeCode
+        return homeRoute[linkType]
+    }
+
+    //加载为你推荐列白哦
+    loadHomeList = flow(function * () {
         this.homeList = [{
             id: 0,
             type: homeType.swiper
@@ -219,19 +228,36 @@ class HomeModule {
         },{
             id: 8,
             type: homeType.subject
-        },{
-            id: 9,
-            type: homeType.goodsTitle
-        },{
-            id: 10,
-            type: homeType.goods
         }]
-    }
-
-    @action homeNavigate = (linkType, linkTypeCode) => {
-        this.selectedTypeCode = linkTypeCode
-        return homeRoute[linkType]
-    }
+        
+        try {
+            const res = yield HomeApi.getGoodsInHome({type: homeType.goods})
+            let list = res.data.data
+            let home = [{
+                id: 9,
+                type: homeType.goodsTitle
+            }]
+            let itemData = []
+            
+            for(let i = 0; i < list.length; i++ ) {
+                if (i % 2 === 1) {
+                    let good = list[i]
+                    itemData.push(good)
+                    home.push({
+                        itemData: itemData,
+                        type: homeType.goods,
+                        id : 'goods' + good.id
+                    })
+                    itemData = []
+                } else {
+                    itemData.push(list[i])
+                }
+            }
+            this.homeList = [...this.homeList, ...home]
+        } catch (error) {
+            console.log(error)
+        }
+    })
 }
 
 export const homeModule = new HomeModule()

@@ -6,7 +6,7 @@ import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Image } from
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
-import { StarShopModule } from './Modules'
+import { StarShopModule, homeModule } from './Modules'
 
 const Banner = ({backImage, title, press}) => <View style={styles.bannerContainer}>
     <ImageBackground style={styles.bannerImg}  source={backImage}>
@@ -46,7 +46,7 @@ const Profile = ({avatar, name, level, member, income, allIncome}) => <View styl
 </View>
 
 const Cell = ({data, store, press}) => <View style={styles.cell}>
-    <Banner backImage={{uri:data.imgUrl}} title={data.title} onPress={()=>press && press()}/>
+    <Banner backImage={{uri:data.imgUrl}} title={data.title} press={()=>press && press()}/>
     <Profile avatar={{uri:store.headUrl}} name={store.name} level={store.starName} member={store.storeUserNum} income={store.tradeBalance} allIncome={store.totalTradeBalance}/>
 </View>
 
@@ -60,6 +60,9 @@ export default class HomeStarShopView extends Component {
     }
     _shopPress() {
         console.log('_shopPress')
+        const { navigation } = this.props
+        let route  = homeModule.homeNavigate(8)
+        navigation.navigate(route)
     }
     render () {
         let cells = []

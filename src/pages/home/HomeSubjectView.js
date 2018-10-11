@@ -8,10 +8,9 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { subjectModule, homeModule } from './Modules'
-import goodsImg from './res/goods.png'
 
 const GoodItems = ({img, title, money}) => <View style={styles.goodsView}>
-    <Image style={styles.goodImg} source={img}/>
+    <Image style={styles.goodImg} source={{uri:img}}/>
     <Text style={styles.goodsTitle} numberOfLines={2}>{title}</Text>
     <Text style={styles.money}>¥ {money}</Text>
 </View>
@@ -24,20 +23,11 @@ const MoreItem = () => <View style={styles.moreView}>
     </View>
 </View>
 
-const goods = [
-    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' },
-    {title: '是离开的肌肤收到了空间飞来峰', img: goodsImg,  money: '232.00' }
-]
-
 const AcitivyItem = ({data, press}) => {
-    const {imgUrl} = data
+    const {imgUrl, topicBannerProductDTOList} = data
     let goodsItem = []
-    goods.map((value,index) => {
-        goodsItem.push(<GoodItems key={index} title={value.title} money={value.money} img={value.img}/>)
+    topicBannerProductDTOList.map((value,index) => {
+        goodsItem.push(<GoodItems key={index} title={value.productName} money={value.startPrice} img={value.specImg}/>)
     })
     return <View>
         <TouchableOpacity style={styles.bannerBox} onPress={()=>{press && press()}}>
