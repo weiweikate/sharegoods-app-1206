@@ -402,7 +402,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         if (this.params.pageType === 0){//退款详情
 
             let titles = ['商家退款审核中', '*-商家同意退款', '商家拒绝退款', '*-发货中', '*-云仓库发货中', '退款完成', '已关闭', '超时关闭'];
-            titleCommpent = () => {return <UIText value = {titles[pageData.status]} style = {styles.header_title}/>};
+            titleCommpent = () => {return <UIText value = {titles[pageData.status-1]} style = {styles.header_title}/>};
             if (pageData.status === 3){//拒绝
                 textContaner_marginLeft = 10;
                 imageCommpent = () => {return <UIImage soucre = {refusa_icon} style = {styles.header_image}/>};
