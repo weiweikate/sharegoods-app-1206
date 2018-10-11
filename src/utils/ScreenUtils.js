@@ -8,6 +8,33 @@ const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('win
 const __ISIPHONEX__ = Platform.OS === 'ios' && (MIN_SCREENT === 375.0 && MAX_SCREENT === 812.0);
 const __ISIPHONEXSMAX__ = Platform.OS === 'ios' && (MIN_SCREENT === 414.0 && MAX_SCREENT === 896.0);
 
+export const deviceWidth = Dimensions.get('window').width;      //设备的宽度
+export const deviceHeight = Dimensions.get('window').height;    //设备的高度
+let fontScale = PixelRatio.getFontScale();                      //返回字体大小缩放比例
+
+let pixelRatio = PixelRatio.get();      //当前设备的像素密度
+const defaultPixel = 2;                           //iphone6的像素密度
+//px转换成dp
+const w_2 = 750 / defaultPixel;
+const h_2 = 1334 / defaultPixel;
+const scale = Math.min(deviceHeight / h_2, deviceWidth / w_2);   //获取缩放比例
+/**
+ * 设置text为sp
+ * @param size sp
+ * return number dp
+ */
+export function setSpText(size: number) {
+    size = Math.round((size * scale + 0.5) * pixelRatio / fontScale);
+    return size / defaultPixel;
+}
+
+export function scaleSize(size: number) {
+
+    size = Math.round(size * scale + 0.5);
+    return size / defaultPixel;
+}
+
+
 function autoSizeWidth(dp) {
     return PixelRatio.roundToNearestPixel(dp * Dimensions.get('window').width / 375);
 }
@@ -58,7 +85,7 @@ export default {
     statusBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 44 : 20) : getStatusH(),
     headerHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 88 : 64) : 68,
     tabBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 83 : 49) : 49,
-    tabBarHeightMore:this.tabBarHeight-49,
+    tabBarHeightMore: this.tabBarHeight - 49,
     isIOS: Platform.OS === 'ios',
     isIOSSmall: Platform.OS === 'ios' && Dimensions.get('window').height === 568,// phoneSE,phone4,phone5,phone5s
     isIOSNomarl: Platform.OS === 'ios' && Dimensions.get('window').height === 667,// phone6,phone7,phone8

@@ -7,20 +7,21 @@ import {
     Image,
     FlatList,
     Text,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    TouchableOpacity
 } from 'react-native';
 
-import BasePage from '../../../BasePage';
-import SubjectDetailHeaderView from './components/SubjectDetailHeaderView';
-import SubjectDetailSegmentView from './components/SubjectDetailSegmentView';
-import ScreenUtils from '../../../utils/ScreenUtils';
+import BasePage from '../../BasePage';
+import TopicDetailHeaderView from './components/TopicDetailHeaderView';
+import TopicDetailSegmentView from './components/TopicDetailSegmentView';
+import ScreenUtils from '../../utils/ScreenUtils';
 import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-import StringUtils from '../../../utils/StringUtils';
-import HomeAPI from '../api/HomeAPI';
+import StringUtils from '../../utils/StringUtils';
+import HomeAPI from '../home/api/HomeAPI';
 
-export default class SubjectDetailPage extends BasePage {
+export default class TopicDetailPage extends BasePage {
 
     $navigationBarOptions = {
         show: false
@@ -52,8 +53,9 @@ export default class SubjectDetailPage extends BasePage {
     //数据
     _getActivityData = () => {
         this.$loadingShow();
+        //code JJP1810100008已结束
         HomeAPI.activityDepreciate_findById({
-            code: 'JJP1809270006'
+            code: this.params.activityCode || 'JJP1810100008'
         }).then((data) => {
             this.state.activityData = data.data || {};
             this._getProductDetail(this.state.activityData.productId);
@@ -108,11 +110,12 @@ export default class SubjectDetailPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        return <SubjectDetailHeaderView data={this.state.data} activityType={this.state.activityType}/>;
+        return <TopicDetailHeaderView data={this.state.data} activityType={this.state.activityType}
+                                      activityData={this.state.activityData}/>;
     };
 
     _renderSectionHeader = () => {
-        return <SubjectDetailSegmentView segmentViewOnPressAtIndex={this._segmentViewOnPressAtIndex}/>;
+        return <TopicDetailSegmentView segmentViewOnPressAtIndex={this._segmentViewOnPressAtIndex}/>;
     };
 
     _renderItem = () => {
@@ -169,6 +172,27 @@ export default class SubjectDetailPage extends BasePage {
     };
 
     _render() {
+        const { notifyFlag, surplusNumber, limitNumber, limitFlag, beginTime, date, endTime } = this.state.activityData;
+        let bottomTittle, colorType;
+        if (beginTime > date) {
+            if (notifyFlag === 1) {
+                bottomTittle = '开始前3分钟提醒';
+            } else {
+                bottomTittle = '设置提醒';
+                colorType = 1;
+            }
+        } else if (endTime > date) {
+            if (surplusNumber === 0) {
+                bottomTittle = '已抢光';
+            } else if (limitNumber !== -1 && limitFlag === 1) {
+                bottomTittle = `每人限购${limitNumber}次（您已购买过本商品）`;
+            } else {
+                bottomTittle = '立即拍';
+                colorType = 2;
+            }
+        } else if (date > endTime) {
+            bottomTittle = '已结束';
+        }
         return (
             <View style={styles.container}>
                 <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
@@ -191,6 +215,19 @@ export default class SubjectDetailPage extends BasePage {
                              showsVerticalScrollIndicator={false}
                              sections={[{ data: [{}] }]}
                              scrollEventThrottle={10}/>
+                <View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49, backgroundColor: 'white' }}>
+                    <TouchableOpacity style={{
+                        height: 49,
+                        backgroundColor: colorType === 1 ? '#33B4FF' : (colorType === 2 ? '#D51243' : '#CCCCCC'),
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <Text style={{
+                            color: 'white',
+                            fontSize: 14
+                        }}>{bottomTittle}</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         );
     };

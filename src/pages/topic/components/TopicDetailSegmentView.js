@@ -7,7 +7,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 
-export default class SubjectDetailSegmentView extends Component {
+export default class TopicDetailSegmentView extends Component {
 
     static propTypes = {
         segmentViewOnPressAtIndex: PropTypes.func.isRequired

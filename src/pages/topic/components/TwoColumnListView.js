@@ -9,12 +9,12 @@ import {
 } from 'react-native';
 
 import React, { Component } from 'react';
-import ScreenUtils from '../../../../utils/ScreenUtils';
-import ColorUtil from '../../../../utils/ColorUtil';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import ColorUtil from '../../../utils/ColorUtil';
 import { SbSectiontHeaderView, ActivityOneView } from './SbSectiontHeaderView';
 import PropTypes from 'prop-types';
 
-export default class ThreeColumnListView extends Component {
+export default class TwoColumnListView extends Component {
 
     constructor(props) {
         super(props);
@@ -23,64 +23,68 @@ export default class ThreeColumnListView extends Component {
 
     render() {
         return (
-            <SectionList
-                contentContainerStyle={Styles.list}
-                style={{
-                    backgroundColor: ColorUtil.Color_f7f7f7
-                }}
-                numColumns={2}
-                stickySectionHeadersEnabled={false}
-                /* 渲染头*/
-                renderSectionHeader={
-                    ({ section }) => {
-                        if (section.key == 'one') {
-                            return this._renderHeaderView(section.key);
-                        } else {
-                            return this._renderActivityView(section.key);
+            <View>
+                <SectionList
+                    contentContainerStyle={Styles.list}
+                    style={{
+                        backgroundColor: ColorUtil.Color_f7f7f7
+                    }}
+                    numColumns={2}
+                    columnWrapperStyle={Styles.itemBgStyle}
+                    stickySectionHeadersEnabled={false}
+                    /* 渲染头*/
+                    renderSectionHeader={
+                        ({ section }) => {
+                            if (section.key == 'one') {
+                                return this._renderHeaderView(section.key);
+                            } else {
+                                return this._renderActivityView(section.key);
+                            }
                         }
                     }
-                }
 
-                // contentContainerStyle={styles.list}//设置cell的样式
-                pageSize={2}  // 配置pageSize确认网格数量
-                sections={[
-                    {
-                        title: 'one',
-                        key: 'one',
-                        data: [
-                            { key: 'Devin' },
-                            { key: 'Jackson' },
-                            { key: 'James' },
-                            { key: 'Joel' },
-                            { key: 'John' },
-                            { key: 'Jillian' }
-                        ]
-                    },
-                    {
-                        key: 'two',
-                        data: [
-                            { key: 'Devin' },
-                            { key: 'Jackson' },
-                            { key: 'James' },
-                            { key: 'Joel' },
-                            { key: 'John' },
-                            { key: 'Jillian' },
-                            { key: 'Jimmy' },
-                            { key: 'Julie' }
-                        ]
-                    }
-                ]}
-                renderItem={({ item, index, section }) => {
-                    return this._renderRowView(item);
-                }}
-            />
+                    // contentContainerStyle={styles.list}//设置cell的样式
+                    pageSize={2}  // 配置pageSize确认网格数量
+                    sections={[
+                        {
+                            title: 'one',
+                            key: 'one',
+                            data: [
+                                { key: 'Devin' },
+                                { key: 'Jackson' },
+                                { key: 'James' },
+                                { key: 'Joel' },
+                                { key: 'John' },
+                                { key: 'Jillian' }
+                            ]
+                        },
+                        {
+                            key: 'two',
+                            data: [
+                                { key: 'Devin' },
+                                { key: 'Jackson' },
+                                { key: 'James' },
+                                { key: 'Joel' },
+                                { key: 'John' },
+                                { key: 'Jillian' },
+                                { key: 'Jimmy' },
+                                { key: 'Julie' }
+                            ]
+                        }
+                    ]}
+                    renderItem={({ item, index, section }) => {
+                        return this._renderRowView(item);
+                    }}
+                />
+            </View>
+
         );
     }
 
     _renderHeaderView = (key) => {
         return (
             <SbSectiontHeaderView
-                subjectType={0}
+                subjectType={1}
             />
         );
     };
@@ -91,6 +95,8 @@ export default class ThreeColumnListView extends Component {
     };
     _itemClickAction = (item) => {
         console.log(item.key);
+        const {navigateTool} = this.props
+        navigateTool('topic/TopicDetailPage')
 
     };
     _renderRowView = (item) => {
@@ -125,23 +131,25 @@ export default class ThreeColumnListView extends Component {
     };
 }
 
-ThreeColumnListView.propTypes = {
+TwoColumnListView.propTypes = {
     //专题列表列数
     columnNumber: PropTypes.number,
     //0无切换 1 有切换
-    subjectType: PropTypes.number
+    subjectType: PropTypes.number,
+
+    navigateTool:PropTypes.func,
 };
 
 const Styles = StyleSheet.create({
     list: {
         flexDirection: 'row',//设置横向布局
         flexWrap: 'wrap',  //设置换行显示
-        alignItems: 'flex-start',
+        // alignItems: 'flex-start',
         backgroundColor: '#FFFFFF'
     },
     itemBgStyle: {
-        width: ScreenUtils.width / 3,
-        height: ScreenUtils.width / 3 + 70,
+        width: ScreenUtils.width / 2,
+        height: ScreenUtils.width / 2 + 70,
         backgroundColor: ColorUtil.Color_f7f7f7,
         padding: 8,
         paddingBottom: 0
@@ -152,15 +160,14 @@ const Styles = StyleSheet.create({
     },
     itemTopImageStyle: {
         backgroundColor: 'red',
-
-        width: ScreenUtils.width / 3 - 16,
-        height: ScreenUtils.width / 3 - 16
+        width: ScreenUtils.width / 2 - 16,
+        height: ScreenUtils.width / 2 - 16
     },
     itemTipBgViewStyle: {
         position: 'absolute',
         alignItems: 'center',
-        marginTop: ScreenUtils.width / 3 - 16 - 16,
-        width: ScreenUtils.width / 3 - 16,
+        marginTop: ScreenUtils.width / 2 - 16 - 16,
+        width: ScreenUtils.width / 2 - 16,
         height: 16,
         opacity: 0.3,
         backgroundColor: 'black'
@@ -175,7 +182,7 @@ const Styles = StyleSheet.create({
     itemBottomTextStyle: {
         marginTop: 10,
         color: ColorUtil.Color_222222,
-        width: ScreenUtils.width / 3 - 16,
+        width: ScreenUtils.width / 2 - 16,
         height: 28,
         fontSize: 12
     },

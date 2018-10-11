@@ -80,7 +80,6 @@ class CommModel {
 @observer
 export default class CommRegistView extends Component {
     registModel = new CommModel();
-
     constructor(props) {
         super(props);
         this.state = {

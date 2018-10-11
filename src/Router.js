@@ -21,6 +21,7 @@ import login from './pages/login';
 import order from './pages/order';
 import htmlView from './components/web/HtmlView';
 import message from './pages/message';
+import topic from './pages/topic'
 
 const Router = {
     Tab: {
@@ -66,6 +67,7 @@ addSubModule(spellShop);
 addSubModule(login);
 addSubModule(order);
 addSubModule(message);
+addSubModule(topic);
 
 console.log('Router', Object.keys(Router));
 console.log(Router);
