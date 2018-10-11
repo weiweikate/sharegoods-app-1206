@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    View, Text, Platform, NativeModules, StyleSheet, TouchableOpacity, Image
+    View, Text, Platform, NativeModules, StyleSheet, TouchableOpacity, Image, Modal, Alert
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import {
@@ -22,6 +22,7 @@ import PayUtil from './PayUtil';
 import InputTransactionPasswordModal from '../components/InputTransactionPasswordModal';
 import user from '../../../model/user';
 import { observer } from 'mobx-react/native';
+import { NavigationActions } from 'react-navigation';
 
 @observer
 export default class PaymentMethodPage extends BasePage {
@@ -57,7 +58,8 @@ export default class PaymentMethodPage extends BasePage {
                     // //订单 0:快递订单 1:自提订单
                     // orderType:this.params.orderType?this.params.orderType:0,
                 }
-            }
+            },
+            isShow:false
         };
     }
 
@@ -106,10 +108,32 @@ export default class PaymentMethodPage extends BasePage {
                     {this.renderMenu()}
                 </View>
                 {this.renderBottomOrder()}
+                {this.renderCenterModal()}
             </View>
         );
     }
 
+    onRequestClose(){
+        this.setState({
+            isShow:true
+        })
+    }
+    renderCenterModal(){
+        return (
+            <Modal
+                animationType='fade'
+                transparent={true}
+                onRequestClose={() => this.onRequestClose()}
+                visible={this.state.isShow}>
+                <View style={styles.modalStyle}>
+                    {this.renderContent()}
+                </View>
+            </Modal>
+        );
+    }
+    renderContent(){
+        return null;
+    }
     //支付方式弹窗
     renderPaymentModal = () => {
         return (
@@ -421,10 +445,27 @@ export default class PaymentMethodPage extends BasePage {
     //继续去支付
     continueToPay = (outTradeNo) => {
         OrderApi.continueToPay({ outTradeNo: outTradeNo }).then((response) => {
-            if (response.ok) {
-                NativeModules.commModule.toast('支付成功');
-                this.loadPageData();
-                this.navigate('payment/PayResultPage', { pageType: this.state.paymentPageParams.orderPayParams.orderType });
+                // NativeModules.commModule.toast('支付成功');
+            Alert.alert('支付提示','支付成功', [
+                {
+                    text: '返回首页', onPress: () => {
+                        let resetAction = NavigationActions.reset({
+                            index: 0,
+                            actions: [
+                                NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
+                            ]
+                        });
+                        this.props.navigation.dispatch(resetAction);
+                    }
+                },
+                {
+                    text: '回到订单', onPress: () => {
+                      this.$navigate('order/order/MyOrdersListPage')
+                    }
+                }
+            ], { cancelable: true });
+                // this.loadPageData();
+                // this.$navigate('payment/PayResultPage', { pageType: this.state.paymentPageParams.orderPayParams.orderType });
                 // //继续支付
                 // OrderApi.continuePay({outTradeNo:response.data.outTradeNo,type:1}).then((response)=>{
                 //     if(response.ok ){
@@ -435,9 +476,6 @@ export default class PaymentMethodPage extends BasePage {
                 // }).catch(e=>{
                 //     NativeModules.commModule.toast(e)
                 // });
-            } else {
-                NativeModules.commModule.toast(response.msg);
-            }
         }).catch(e => {
             NativeModules.commModule.toast(e);
         });
@@ -509,6 +547,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: color.red,
         marginRight: 12
-    }
+    },
 });
 
