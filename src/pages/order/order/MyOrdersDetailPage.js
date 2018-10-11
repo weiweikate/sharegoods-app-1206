@@ -200,6 +200,12 @@ class MyOrdersDetailPage extends BasePage {
                     emptyTip={'暂无数据！'}
                 />
                {this.renderModal()}
+               <TouchableOpacity onPress = {() =>  this.$navigate('order/afterSaleService/AfterSaleServiceHomePage', {
+                   index: 0,
+                   pageData: this.state.pageData,
+               })}>
+                   <UIText value = {'fsdfsdfsdfsdfsdfafs'} />
+               </TouchableOpacity>
             </View>
         );
     };
@@ -720,6 +726,7 @@ class MyOrdersDetailPage extends BasePage {
                         break
                 }
                 this.setState({
+                    pageData: data,
                     viewData:{
                         expressNo:data.expressNo,
                         orderId:this.params.orderId,
