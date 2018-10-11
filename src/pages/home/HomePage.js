@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { View, StyleSheet,  FlatList, Text } from 'react-native';
+import { View, StyleSheet,  FlatList, Text, RefreshControl } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import {observer} from 'mobx-react';
 import { homeType, homeModule } from './Modules'
@@ -27,6 +27,7 @@ export default class HomePage extends Component {
 
     st = 0;
     headerH = statusBarHeight + 44;
+
     constructor(props) {
         super(props)
         homeModule.loadHomeList()
@@ -73,6 +74,14 @@ export default class HomePage extends Component {
         return <View/>
     }
 
+    _onEndReached() {
+        homeModule.loadMoreHomeList()
+    }
+
+    _onRefresh() {
+        homeModule.loadHomeList()
+    }
+
     render() {
         const { homeList } = homeModule
         return (
@@ -82,6 +91,17 @@ export default class HomePage extends Component {
                     renderItem={this._renderItem.bind(this)}
                     keyExtractor={this._keyExtractor.bind(this)}
                     onScroll={this._onScroll.bind(this)}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={homeModule.isRefreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                            title="下拉刷新"
+                            tintColor="#999"
+                            titleColor="#999"
+                        />
+                    }
+                    onEndReached={this._onEndReached.bind(this)}
+                    onEndReachedThreshold={0.1}
                 />
                 <View style={styles.navBarBg} ref={e => this._refHeader = e} />
                 <View style={styles.navBar}>

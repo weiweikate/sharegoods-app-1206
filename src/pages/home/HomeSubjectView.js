@@ -15,13 +15,13 @@ const GoodItems = ({img, title, money}) => <View style={styles.goodsView}>
     <Text style={styles.money}>¥ {money}</Text>
 </View>
 
-const MoreItem = () => <View style={styles.moreView}>
+const MoreItem = ({press}) => <TouchableOpacity style={styles.moreView} onPress={()=>{press && press()}}>
     <View style={styles.backView}>
         <Text style={styles.seeMore}>查看更多</Text>
         <View style={styles.line}/>
         <Text style={styles.seeMoreEn}>View More</Text>
     </View>
-</View>
+</TouchableOpacity>
 
 const AcitivyItem = ({data, press}) => {
     const {imgUrl, topicBannerProductDTOList} = data
@@ -37,7 +37,7 @@ const AcitivyItem = ({data, press}) => {
         </TouchableOpacity>
         <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
             {goodsItem}
-            <MoreItem/>
+            <MoreItem press={()=>{press && press()}}/>
             <View style={styles.space}/>
         </ScrollView>
     </View>

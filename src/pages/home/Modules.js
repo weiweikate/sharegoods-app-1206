@@ -33,7 +33,6 @@ export class AdModules {
     loadAdList = flow(function * () {
         try {
             const res = yield HomeApi.getAd({type: homeType.ad})
-            console.log('loadAdList', res.data)
             this.ad = res.data
         } catch (error) {
             console.log(error)
@@ -115,7 +114,6 @@ export class StarShopModule {
     loadShopList = flow(function * () {
         try {
             const res = yield HomeApi.getStarShop({type: homeType.starShop})
-            console.log('loadShopList', res.data)
             this.shopList = res.data
         } catch (error) {
             console.log(error)
@@ -154,7 +152,6 @@ class SubjectModule {
     loadSubjectList = flow(function * () {
         try {
             const res = yield HomeApi.getSubject({type: homeType.subject})
-            console.log('loadSubjectList', res.data)
             this.subjectList = res.data
         } catch (error) {
             console.log(error)
@@ -196,14 +193,21 @@ const homeRoute = {
 class HomeModule {
     @observable homeList = []
     @observable selectedTypeCode = null
+    @observable isRefreshing = false
+    isFetching = false
+    isEnd = false
+    page = 1
+    firstLoad = true
 
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode
         return homeRoute[linkType]
     }
 
-    //加载为你推荐列白哦
+    //加载为你推荐列表
     loadHomeList = flow(function * () {
+        this.isRefreshing = true
+        this.page = 1
         this.homeList = [{
             id: 0,
             type: homeType.swiper
@@ -229,10 +233,16 @@ class HomeModule {
             id: 8,
             type: homeType.subject
         }]
+
+        if (this.isFetching === true) {
+            return
+        }
         
         try {
-            const res = yield HomeApi.getGoodsInHome({type: homeType.goods})
+            this.isFetching = true
+            const res = yield HomeApi.getGoodsInHome({page: this.page})
             let list = res.data.data
+            console.log('loadhomelist', list)
             let home = [{
                 id: 9,
                 type: homeType.goodsTitle
@@ -246,7 +256,7 @@ class HomeModule {
                     home.push({
                         itemData: itemData,
                         type: homeType.goods,
-                        id : 'goods' + good.id
+                        id : 'goods' + i
                     })
                     itemData = []
                 } else {
@@ -254,6 +264,54 @@ class HomeModule {
                 }
             }
             this.homeList = [...this.homeList, ...home]
+            this.isFetching = false
+            this.isRefreshing = false
+            this.page++
+            this.firstLoad = false
+        } catch (error) {
+            console.log(error)
+        }
+    })
+
+    //加载为你推荐列表
+    loadMoreHomeList = flow(function * () {
+        if (this.isFetching) {
+            return
+        }
+        if (this.isEnd) {
+            return
+        }
+        if (this.firstLoad) {
+            return
+        }
+        console.log('loadMoreHomeList')
+        try {
+            this.isFetching = true
+            const res = yield HomeApi.getGoodsInHome({page: this.page})
+            let list = res.data.data
+            if (list.length <= 0) {
+                this.isEnd = true
+                return
+            }
+            let itemData = []
+            let home = []
+            for(let i = 0; i < list.length; i++ ) {
+                if (i % 2 === 1) {
+                    let good = list[i]
+                    itemData.push(good)
+                    home.push({
+                        itemData: itemData,
+                        type: homeType.goods,
+                        id : 'goods' + good.linkTypeCode
+                    })
+                    itemData = []
+                } else {
+                    itemData.push(list[i])
+                }
+            }
+            this.homeList = [...this.homeList, ...home]
+            this.isFetching = false
+            this.page++
         } catch (error) {
             console.log(error)
         }
