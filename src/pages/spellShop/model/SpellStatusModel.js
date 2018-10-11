@@ -89,6 +89,7 @@ class SpellStatusModel {
 
         SpellShopApi.getUser().then((data) => {
             this.getUserData(data.data || {});
+            user.saveUserInfo(data.data);
         }).catch((error) => {
             this.getUserError(error);
         });

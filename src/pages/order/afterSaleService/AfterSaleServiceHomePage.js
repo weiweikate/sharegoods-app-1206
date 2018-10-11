@@ -10,9 +10,9 @@ import {
 } from '../../../components/ui';
 import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
-import changeGoods from '../res/changeGoods.png';
-import refuseGoodsAndMoney from '../res/refuseGoodsAndMoney.png';
-import refuseMoney from '../res/refuseMoney.png';
+import changeGoods from '../res/shouhou_icon_huanhuo_nor.png';
+import refuseGoodsAndMoney from '../res/shouhou_icon_tuihuo_nor.png';
+import refuseMoney from '../res/shouhou_icon_tuikuan_nor.png';
 import GoodsItem from '../components/GoodsItem';
 import DateUtils from '../../../utils/DateUtils';
 
@@ -43,7 +43,7 @@ class AfterSaleServiceHomePage extends BasePage {
 
     //**********************************ViewPart******************************************
     _render() {
-        let productData = this.params.pageData.list[this.state.index];
+        let productData = this.params.pageData.orderProductList[this.state.index];
         return (
             <View style={styles.container}>
                 {this.renderWideLine()}
@@ -52,11 +52,11 @@ class AfterSaleServiceHomePage extends BasePage {
                 {this.renderSelect()}
                 {this.renderOrderNum()}
                 <GoodsItem
-                    uri={productData.uri}
-                    goodsName={productData.goodsName}
-                    salePrice={StringUtils.formatMoneyString(productData.salePrice)}
-                    category={productData.category}
-                    goodsNum={productData.goodsNum}
+                    uri={productData.specImg}
+                    goodsName={productData.productName}
+                    salePrice={StringUtils.formatMoneyString(productData.price)}
+                    category={productData.spec}
+                    goodsNum={productData.num}
                     onPress={() => this.jumpToProductDetailPage()}
                 />
                 {this.renderOrderTime()}
@@ -84,48 +84,51 @@ class AfterSaleServiceHomePage extends BasePage {
         let image = [refuseMoney, refuseGoodsAndMoney, changeGoods];
         let title = ['退款', '退货退款', '换货'];
         let content = ['未收到货（包含未签收）', '已收到货，需要退换已收到的货物', '需要更换货'];
+        // 1 2 4 8 16 分别代表不支持优惠券、一元、换货、退货
+        let status = [4, 16, 8];
+        let productData = this.params.pageData.orderProductList[this.state.index];
         let arr = [];
         for (let i = 0; i < image.length; i++) {
-            arr.push(
-                <TouchableOpacity style={{
-                    flexDirection: 'row',
-                    height: 79,
-                    alignItems: 'center',
-                    alignContent: 'center',
-                    marginBottom: 10,
-                    backgroundColor: color.white
-                }} onPress={() => this.pageSelect(i)} key={i}>
-                    <UIImage source={image[i]} style={{ width: 50, height: 50, marginBottom: 10, marginLeft: 21 }}/>
-                    <View style={{ marginLeft: 10 }}>
-                        <UIText value={title[i]} style={{ fontSize: 16, color: color.black }}/>
-                        <UIText value={content[i]} style={{ fontSize: 15, color: color.gray_666 }}/>
-                    </View>
-                </TouchableOpacity>
-            );
+           if ((productData.restrictions & status[i]) !== productData.restrictions) {
+               arr.push(
+                   <TouchableOpacity style={{
+                       flexDirection: 'row',
+                       height: 79,
+                       alignItems: 'center',
+                       alignContent: 'center',
+                       marginBottom: 10,
+                       backgroundColor: color.white
+                   }} onPress={() => this.pageSelect(i)} key={i}>
+                       <UIImage source={image[i]} style={{ width: 50, height: 50, marginBottom: 10, marginLeft: 21 }}/>
+                       <View style={{ marginLeft: 10 }}>
+                           <UIText value={title[i]} style={{ fontSize: 16, color: color.black }}/>
+                           <UIText value={content[i]} style={{ fontSize: 15, color: color.gray_666 }}/>
+                       </View>
+                   </TouchableOpacity>
+               );
+           }
         }
         return arr;
     };
     pageSelect = (index) => {
+        let orderProductId = this.params.pageData.orderProductList[this.state.index].id;
         switch (index) {
             case 0:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
-                    pageType: 2,
-                    index: this.params.index ? this.params.index : 0,
-                    pageData: this.params.pageData ? this.params.pageData : {}
+                    pageType: 0,
+                    orderProductId: orderProductId,
                 });
                 break;
             case 1:
-                this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
+                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 1,
-                    index: this.params.index ? this.params.index : 0,
-                    pageData: this.params.pageData ? this.params.pageData : {}
+                    orderProductId: orderProductId,
                 });
                 break;
             case 2:
-                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+                this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 2,
-                    index: this.params.index ? this.params.index : 0,
-                    pageData: this.params.pageData ? this.params.pageData : {}
+                    orderProductId: orderProductId,
                 });
                 break;
         }
@@ -154,7 +157,7 @@ class AfterSaleServiceHomePage extends BasePage {
 
     jumpToProductDetailPage = (productId) => {
         //this.$navigate('home/product/ProductDetailPage', { productId: productId });
-        let productData = this.params.pageData.list[this.state.index];
+        let productData = this.params.pageData.orderProductList[this.state.index];
         switch (this.state.pageData.orderType) {
             case 1://秒杀
                 this.$navigate('product/ProductDetailPage', {

@@ -5,7 +5,7 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ImageBackground,Image
+    ImageBackground, Image
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import {
@@ -15,7 +15,7 @@ import { RefreshList } from '../../../components/ui';
 import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import {TimeDownUtils} from '../../../utils/TimeDownUtils';
+import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import buyerHasPay from '../res/buyerHasPay.png';
 // import car from '../res/car.png';
 import arrow_right from '../res/arrow_right.png';
@@ -31,7 +31,7 @@ import constants from '../../../constants/constants';
 import DateUtils from '../../../utils/DateUtils';
 import Toast from '../../../utils/bridge';
 import productDetailImg from '../res/productDetailImg.png';
-import moreIcon from '../../spellShop/myShop/res/more_icon.png'
+import moreIcon from '../../spellShop/myShop/res/more_icon.png';
 import GoodsItem from '../components/GoodsItem';
 import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
@@ -47,69 +47,71 @@ class MyOrdersDetailPage extends BasePage {
             orderId: this.props.navigation.state.params.orderId,
             expressNo: '',
             viewData: {
-                expressNo:'',
-                orderId:1235,
-                orderProductList:[
+                expressNo: '',
+                orderId: 1235,
+                list: [
                     {
-                        id:1,
-                        productId:1,
-                        orderId:1,
-                        uri:'https://ws2.sinaimg.cn/large/006tNc79gy1fsvlm591zyj30om056dl8.jpg',
-                        goodsName:'CHEERIOBAN 慵懒随意春装2018新款女毛呢格纹编制流苏小香风外套',
-                        salePrice:'150',
-                        category:'通勤通勤: 复古衣长: 中长款袖长: 长袖',
-                        goodsNum:'1',
-                        returnProductId:1,
-                        afterSaleService:[
+                        id: 1,
+                        productId: 1,
+                        orderId: 1,
+                        uri: 'https://ws2.sinaimg.cn/large/006tNc79gy1fsvlm591zyj30om056dl8.jpg',
+                        goodsName: 'CHEERIOBAN 慵懒随意春装2018新款女毛呢格纹编制流苏小香风外套',
+                        salePrice: '150',
+                        category: '通勤通勤: 复古衣长: 中长款袖长: 长袖',
+                        goodsNum: '1',
+                        returnProductId: 1,
+                        afterSaleService: [
                             {
-                                id:0,
-                                operation:'退款',
-                                isRed:false,
-                            },{
-                                id:1,
-                                operation:'退换',
-                                isRed:false,
-                            },{
-                                id:2,
-                                operation:'退款中',
-                                isRed:false,
-                            },{
-                                id:3,
-                                operation:'退换中',
-                                isRed:false,
+                                id: 0,
+                                operation: '退款',
+                                isRed: false
+                            }, {
+                                id: 1,
+                                operation: '退换',
+                                isRed: false
+                            }, {
+                                id: 2,
+                                operation: '退款中',
+                                isRed: false
+                            }, {
+                                id: 3,
+                                operation: '退换中',
+                                isRed: false
                             },
-                            // {
-                            //     id:4,
-                            //     operation:'售后完成',
-                            //     isRed:true,
-                            // },{
-                            //     id:5,
-                            //     operation:'售后失败',
-                            //     isRed:true,
-                            // },
-                        ],
-                    },
+                            {
+                                id: 4,
+                                operation: '售后完成',
+                                isRed: true
+                            }, {
+                                id: 5,
+                                operation: '售后失败',
+                                isRed: true
+                            }
+                        ]
+                    }
                 ],
-                receiverName:'赵信',
-                receiverNum:'18254569878',
-                receiverAddress:'浙江省杭州市萧山区宁围镇鸿宁路望京商务C2-502',
-                provinceString:'浙江省',
-                cityString:'金华市',
-                areaString:'义乌市',
-                goodsPrice:5292,//商品价格(detail.totalPrice-detail.freightPrice)
-                freightPrice:5092,//运费（快递）
-                userScore:0,//积分抵扣
-                totalPrice:5292,//订单总价
-                orderTotalPrice:5292,//需付款
-                orderNum:2018070250371039050793800,//订单编号
-                createTime:1530499145000,//创建时间
-                sysPayTime:1530499145000,//平台付款时间
-                payTime:1530499145000,//三方付款时间
-                outTradeNo:2018070250371039050793800,//三方交易号
-                sendTime:1530499145000,//发货时间
-                finishTime:1530499145000,//成交时间
-                autoConfirmTime:1533669382000,//自动确认时间
-                pickedUp:2,
+                receiverName: '赵信',
+                receiverNum: '18254569878',
+                receiverAddress: '浙江省杭州市萧山区宁围镇鸿宁路望京商务C2-502',
+                provinceString: '浙江省',
+                cityString: '金华市',
+                areaString: '义乌市',
+                goodsPrice: 5292,//商品价格(detail.totalPrice-detail.freightPrice)
+                freightPrice: 5092,//运费（快递）
+                userScore: 0,//积分抵扣
+                tokenCoin: 0,//一元券抵扣
+                couponPrice: 0,//优惠券抵扣
+                totalPrice: 5292,//订单总价
+                orderTotalPrice: 5292,//需付款
+                orderNum: 2018070250371039050793800,//订单编号
+                createTime: 1530499145000,//创建时间
+                platformPayTime: 1530499145000,//平台付款时间
+                payTime: 1530499145000,//三方付款时间
+                outTradeNo: 2018070250371039050793800,//三方交易号
+                sendTime: 1530499145000,//发货时间
+                finishTime: 1530499145000,//成交时间
+                autoConfirmTime: 1533669382000,//自动确认时间
+                pickedUp: 2
             },
             //todo 这里的初始化仅仅为了减少判空处理的代码，后面会删除
             pageState: 1,
@@ -119,7 +121,7 @@ class MyOrdersDetailPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title:'订单详情',
+        title: '订单详情',
         show: true// false则隐藏导航
     };
     $getPageStateOptions = () => {
@@ -134,17 +136,17 @@ class MyOrdersDetailPage extends BasePage {
     $NavBarRenderRightItem = () => {
         return (
             <TouchableOpacity onPress={this.showMore}>
-                <Image source={moreIcon} style={{width:20,height:5,marginRight:10}} resizeMode='contain'/>
+                <Image source={moreIcon} style={{ width: 20, height: 5, marginRight: 10 }} resizeMode='contain'/>
             </TouchableOpacity>
         );
     };
-    showMore=()=>{
-        this.setState({isShowShowMessageModal:true});
-    }
+    showMore = () => {
+        this.setState({ isShowShowMessageModal: true });
+    };
     //**********************************ViewPart******************************************
     renderState = () => {
         return (
-            <View style={{marginBottom:10}}>
+            <View style={{ marginBottom: 10 }}>
                 <ImageBackground style={styles.redRectangle} source={productDetailImg}>
                     <UIImage source={buyerHasPay} style={{ height: 25, width: 25, marginTop: 22 }}/>
                     <View style={{ marginTop: 22 }}>
@@ -180,9 +182,11 @@ class MyOrdersDetailPage extends BasePage {
 
         );
     };
-    componentDidMount(){
+
+    componentDidMount() {
         this.loadPageData();
     }
+
     _render = () => {
         return (
             <View style={styles.container}>
@@ -197,7 +201,7 @@ class MyOrdersDetailPage extends BasePage {
                     isEmpty={this.state.isEmpty}
                     emptyTip={'暂无数据！'}
                 />
-               {this.renderModal()}
+                {this.renderModal()}
             </View>
         );
     };
@@ -256,12 +260,12 @@ class MyOrdersDetailPage extends BasePage {
                                 isLine={false}/>
                 <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'优惠券优惠'}
                                 leftTextStyle={{ color: color.black_999 }}
-                                rightText={'-'+StringUtils.formatMoneyString(this.state.viewData.userScore)}
+                                rightText={'-' + StringUtils.formatMoneyString(this.state.viewData.couponPrice)}
                                 rightTextStyle={{ color: color.black_999 }} isArrow={false}
                                 isLine={false}/>
                 <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元现金券'}
                                 leftTextStyle={{ color: color.black_999 }}
-                                rightText={'-'+StringUtils.formatMoneyString(this.state.viewData.userScore)}
+                                rightText={'-' + StringUtils.formatMoneyString(this.state.viewData.tokenCoin)}
                                 rightTextStyle={{ color: color.black_999 }} isArrow={false}
                                 isLine={false}/>
                 <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={'订单总价'}
@@ -294,7 +298,7 @@ class MyOrdersDetailPage extends BasePage {
                 <UIText value={'创建时间：' + DateUtils.getFormatDate(this.state.viewData.createTime / 1000)}
                         style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>
                 {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
-                    <UIText value={'平台付款时间：' + DateUtils.getFormatDate(this.state.viewData.sysPayTime / 1000)}
+                    <UIText value={'平台付款时间：' + DateUtils.getFormatDate(this.state.viewData.platformPayTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
                 {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
                     <UIText value={'三方付款时间：' + DateUtils.getFormatDate(this.state.viewData.payTime / 1000)}
@@ -427,18 +431,15 @@ class MyOrdersDetailPage extends BasePage {
                     }}
                     yes={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
-                        // Toast.showLoading()
-                        // OrderApi.confirmReceipt({orderId:this.state.orderId}).then((response)=>{
-                        //     Toast.hiddenLoading()
-                        //     if(response.ok ){
-                        //         NativeModules.commModule.toast('确认收货成功')
-                        //         this.getDataFromNetwork()
-                        //     } else {
-                        //         NativeModules.commModule.toast(response.msg)
-                        //     }
-                        // }).catch(e=>{
-                        //     Toast.hiddenLoading()
-                        // });
+                        Toast.showLoading();
+                        OrderApi.confirmReceipt({orderId:this.state.orderId}).then((response)=>{
+                            Toast.hiddenLoading();
+                                NativeModules.commModule.toast('确认收货成功')
+                                this.getDataFromNetwork()
+                        }).catch(e=>{
+                            Toast.hiddenLoading();
+                            this.$toastShow(e.msg)
+                        });
                     }}
                     no={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
@@ -452,18 +453,21 @@ class MyOrdersDetailPage extends BasePage {
                     }}
                     commit={(index) => {
                         this.setState({ isShowSingleSelctionModal: false });
-                        Toast.showLoading()
-                        OrderApi.cancelOrder({buyerRemark:['我不想买了','信息填写错误，重新拍','其他原因'][index],orderNum:this.state.viewData.orderNum}).then((response)=>{
-                            Toast.hiddenLoading()
-                            if(response.code ===10000 ){
-                                NativeModules.commModule.toast('订单已取消')
-                                this.getDataFromNetwork()
-                            } else {
-                                NativeModules.commModule.toast(response.msg)
-                            }
-                        }).catch(e=>{
+                        Toast.showLoading();
+                        OrderApi.cancelOrder({
+                            buyerRemark: ['我不想买了', '信息填写错误，重新拍', '其他原因'][index],
+                            orderNum: this.state.viewData.orderNum
+                        }).then((response) => {
                             Toast.hiddenLoading();
-                            NativeModules.commModule.toast(e.msg)
+                            if (response.code === 10000) {
+                                NativeModules.commModule.toast('订单已取消');
+                                this.getDataFromNetwork();
+                            } else {
+                                NativeModules.commModule.toast(response.msg);
+                            }
+                        }).catch(e => {
+                            Toast.hiddenLoading();
+                            NativeModules.commModule.toast(e.msg);
                         });
                     }}
                 />
@@ -519,7 +523,6 @@ class MyOrdersDetailPage extends BasePage {
             return;
         }
         (new TimeDownUtils()).settimer((time) => {
-            console.log(time);
             let pageStateString = this.state.pageStateString;
             pageStateString.moreDetail = time.hours + ':' + time.min + ':' + time.sec + '后自动取消订单';
             this.setState({ pageStateString: pageStateString });
@@ -560,21 +563,21 @@ class MyOrdersDetailPage extends BasePage {
         //售后状态
         let afterSaleService = [];
         if (StringUtils.isEmpty(data[index].returnProductStatus)) {
-            if (data.status === 2 || data.status === 4) {
+            if (data[index].status === 2 || data[index].status === 4) {
                 afterSaleService.push({
                     id: 0,
                     operation: '退款',
                     isRed: false
                 });
             }
-            if (data.status === 3) {
+            if (data[index].status === 3) {
                 afterSaleService.push({
                     id: 1,
                     operation: '退换',
                     isRed: false
                 });
             }
-            if (data.status === 5) {
+            if (data[index].status === 5) {
                 // 确认收货的状态的订单售后截止时间和当前时间比
                 let now = new Date().getTime();
                 if (data.list[index].finishTime - now > 0) {
@@ -589,7 +592,7 @@ class MyOrdersDetailPage extends BasePage {
             if (data[index].status === 4) {
                 afterSaleService.push({
                     id: 2,
-                    operation: '退款中',
+                    operation: '退换',
                     isRed: false
                 });
             }
@@ -611,151 +614,161 @@ class MyOrdersDetailPage extends BasePage {
         return afterSaleService;
     };
 
-    loadPageData(){
+    loadPageData() {
         Toast.showLoading();
-        OrderApi.lookDetail({id:this.state.orderId,userId:user.id,status:this.params.status,orderNum:this.params.orderNum}).then((response)=>{
-            Toast.hiddenLoading()
-                let data=response.data;
-                let arr=[];
-                data.orderProductList.map((item,index)=>{
-                    arr.push({
-                        id:item.id,
-                        orderId:item.orderId,
-                        productId:item.productId,
-                        uri:item.specImg,
-                        goodsName:item.productName,
-                        salePrice:StringUtils.isNoEmpty(item.price)?item.price:0,
-                        category:item.spec,
-                        goodsNum:item.num,
-                        returnProductId:item.returnProductId,
-                        afterSaleService:this.getAfterSaleService(data.orderProductList,index),
-                    })
-                })
-                 if(data.orderType===3||data.orderType===98){//礼包。。。
-                   // let  lowerarr=data.list[0].orderProductPrices
-                 }
-                let pageStateString=constants.pageStateString[parseInt(data.status)]
-                /*
-                 * operationMenuCheckList
-                 * 取消订单                 ->  1
-                 * 去支付                   ->  2
-                 * 继续支付                 ->  3
-                 * 订单退款                 ->  4
-                 * 查看物流                 ->  5
-                 * 确认收货                 ->  6
-                 * 删除订单(已完成)          ->  7
-                 * 再次购买                 ->  8
-                 * 删除订单(已关闭(取消))    ->  9
-                 * */
-                switch (parseInt(data.status)){
-                    // case 0:
-                    //     break
-                    //等待买家付款
-                    case 1:
-                        this.startCutDownTime(1539089916000)
-                        pageStateString.sellerState='收货人：'+data.receiver+'                   '+data.recevicePhone
-                        pageStateString.sellerTime='收货地址：'+data.province+data.city+data.area+data.address
-                        if (StringUtils.isEmpty(data.outTradeNo)){
-                            pageStateString.menu=[
-                                {
-                                    id:1,
-                                    operation:'取消订单',
-                                    isRed:false,
-                                },{
-                                    id:2,
-                                    operation:'去支付',
-                                    isRed:true,
-                                },
-                            ]
-                        }else{
-                            pageStateString.menu=[
-                                {
-                                    id:1,
-                                    operation:'取消订单',
-                                    isRed:false,
-                                },{
-                                    id:3,
-                                    operation:'继续支付',
-                                    isRed:true,
-                                },
-                            ]
-                        }
-                        break
-                    //买家已付款
-                    case 2:
-                        //nothing need update Extraly
-                        break
-                    //卖家已发货
-                    case 3:
-                        this.startCutDownTime2(response.data.autoConfirmTime)
-                        pageStateString.sellerTime='收货地址：'+data.province+data.city+data.area+data.address
-                        break
-                    //等待买家自提
-                    case 4:
-                        pageStateString.sellerState='自提点：浙江省杭州市萧山区宁围镇鸿宁路望京商务C2-502'
-                        break
-                    //订单已完成
-                    case 5:
-                        pageStateString.sellerTime='收货地址：'+data.province+data.city+data.area+data.address
-                        break
-                    case 6:
-                        //no UI(can't enter this page)
-                        break
-                    case 7:
-                        //no UI(can't enter this page)
-                        break
-                    case 8:
-                        pageStateString.sellerState='收货人：'+data.receiver+'                   '+data.recevicePhone
-                        pageStateString.sellerTime='收货地址：'+data.province+data.city+data.area+data.address
-                        pageStateString.moreDetail=data.buyerRemark
-                        //no UI(can't enter this page)
-                        break
-                    case 9:
-                        //no UI(can't enter this page)
-                        break
-                    case 10:
-                        //no UI(can't enter this page)
-                        break
-                }
-                this.setState({
-                    viewData:{
-                        expressNo:data.expressNo,
-                        orderId:this.params.orderId,
-                        list:arr,
-                        receiverName:data.receiver,
-                        receiverNum:data.recevicePhone,
-                        receiverAddress:data.address,
-                        provinceString:data.province,
-                        cityString:data.city,
-                        areaString:data.area,
-                        goodsPrice:data.totalPrice-data.freightPrice,//商品价格(detail.totalPrice-detail.freightPrice)
-                        freightPrice:data.freightPrice,//运费（快递）
-                        userScore:data.userScore,//积分抵扣
-                        totalPrice:data.totalPrice,//订单总价
-                        orderTotalPrice:data.orderTotalPrice,//需付款
-                        orderNum:data.orderNum,//订单编号
-                        createTime:data.createTime,//创建时间
-                        sysPayTime:data.sysPayTime,//平台付款时间
-                        payTime:data.payTime,//三方付款时间
-                        outTradeNo:data.outTradeNo,//三方交易号
-                        sendTime:data.sendTime,//发货时间
-                        finishTime:'',//成交时间
-                        autoConfirmTime:data.autoConfirmTime,//自动确认时间
-                        pickedUp:data.pickedUp,//
-                    },
-                    pageStateString:pageStateString,
-                    expressNo:data.expressNo,
-                    pageState:data.pageState,
-                    activityId:data.activityId,
-                    orderType:data.orderType,
-                    orderProductPrices:data.orderProductList[0].price
-                })
-
-        }).catch(e=>{
+        OrderApi.lookDetail({
+            id: this.state.orderId,
+            userId: user.id,
+            status: this.params.status,
+            orderNum: this.params.orderNum
+        }).then((response) => {
             Toast.hiddenLoading();
-            console.log(e)
+            let data = response.data;
+            let arr = [];
+            data.orderProductList.map((item, index) => {
+                arr.push({
+                    id: item.id,
+                    orderId: item.orderId,
+                    productId: item.productId,
+                    uri: item.specImg,
+                    goodsName: item.productName,
+                    salePrice: StringUtils.isNoEmpty(item.price) ? item.price : 0,
+                    category: item.spec,
+                    goodsNum: item.num,
+                    returnProductId: item.returnProductId,
+                    afterSaleService: this.getAfterSaleService(data.orderProductList, index)
+                });
+            });
+            if (data.orderType === 3 || data.orderType === 98) {//礼包。。。
+                // let  lowerarr=data.list[0].orderProductPrices
+            }
+            let pageStateString = constants.pageStateString[parseInt(data.status)];
+            /*
+             * operationMenuCheckList
+             * 取消订单                 ->  1
+             * 去支付                   ->  2
+             * 继续支付                 ->  3
+             * 订单退款                 ->  4
+             * 查看物流                 ->  5
+             * 确认收货                 ->  6
+             * 删除订单(已完成)          ->  7
+             * 再次购买                 ->  8
+             * 删除订单(已关闭(取消))    ->  9
+             * */
+            switch (parseInt(data.status)) {
+                // case 0:
+                //     break
+                //等待买家付款
+                case 1:
+                    this.startCutDownTime(data.shutOffTime);
+                    pageStateString.sellerState = '收货人：' + data.receiver + '                   ' + data.recevicePhone;
+                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    if (StringUtils.isEmpty(data.outTradeNo)) {
+                        pageStateString.menu = [
+                            {
+                                id: 1,
+                                operation: '取消订单',
+                                isRed: false
+                            }, {
+                                id: 2,
+                                operation: '去支付',
+                                isRed: true
+                            }
+                        ];
+                    } else {
+                        pageStateString.menu = [
+                            {
+                                id: 1,
+                                operation: '取消订单',
+                                isRed: false
+                            }, {
+                                id: 3,
+                                operation: '继续支付',
+                                isRed: true
+                            }
+                        ];
+                    }
+                    break;
+                //买家已付款 待发货
+                case 2:
+                    //nothing need update Extraly
+                    pageStateString.menu=[];
+                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+
+                    break;
+                //卖家已发货 待收货
+                case 3:
+                    this.startCutDownTime2(response.data.autoReceiveTime);
+                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    break;
+                //   确认收货
+                case 4:
+                    pageStateString.sellerState = '已签收';
+                    break;
+                //订单已完成
+                case 5:
+                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    break;
+                case 6://退货关闭
+                    //no UI(can't enter this page)
+                    pageStateString.sellerState = '订单已关闭';
+                    break;
+                case 7://用户关闭
+                    //no UI(can't enter this page)
+                    pageStateString.sellerState = '订单已关闭';
+                    break;
+                case 8://超时关闭
+                    pageStateString.sellerState = '收货人：' + data.receiver + '                   ' + data.recevicePhone;
+                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    pageStateString.moreDetail = data.buyerRemark;
+                    //no UI(can't enter this page)
+                    break;
+                case 9:
+                    //no UI(can't enter this page)
+                    break;
+
+            }
+            this.setState({
+                viewData: {
+                    expressNo: data.expressNo,
+                    orderId: this.params.orderId,
+                    list: arr,
+                    receiverName: data.receiver,
+                    receiverNum: data.recevicePhone,
+                    receiverAddress: data.address,
+                    provinceString: data.province,
+                    cityString: data.city,
+                    areaString: data.area,
+                    goodsPrice: data.totalProductPrice,//商品价格(detail.totalPrice-detail.freightPrice)
+                    freightPrice: data.freightPrice,//运费（快递）
+                    tokenCoin: data.tokenCoin || 0,//一元券抵扣
+                    couponPrice: data.couponPrice || 0,//优惠券抵扣
+                    totalPrice: data.totalOrderPrice,//订单总价
+                    orderTotalPrice: data.needPrice,//需付款
+                    orderNum: data.orderNum,//订单编号
+                    createTime: data.createTime,//创建时间
+                    platformPayTime: data.platformPayTime,//平台付款时间
+                    payTime: data.payTime,//三方付款时间
+                    outTradeNo: data.outTradeNo,//三方交易号
+                    sendTime: data.sendTime,//发货时间
+                    finishTime: '',//成交时间
+                    autoConfirmTime: data.autoReceiveTime,//自动确认时间
+                    pickedUp: data.pickedUp//
+                },
+                pageStateString: pageStateString,
+                expressNo: data.expressNo,
+                pageState: data.pageState,
+                activityId: data.activityId,
+                orderType: data.orderType,
+                orderProductPrices: data.orderProductList[0].price,//礼包，套餐啥的
+            });
+
+        }).catch(e => {
+            Toast.hiddenLoading();
+            Toast.$toast(e.msg);
         });
     }
+
     clickItem = (index, item) => {
         switch (this.state.orderType) {
             case 1://秒杀
@@ -874,7 +887,7 @@ class MyOrdersDetailPage extends BasePage {
         NativeModules.commModule.toast('订单号已经复制到剪切板');
     };
     afterSaleServiceClick = (menu, index) => {
-        console.warn(menu);
+        console.log(menu);
         // afterSaleService:[
         //             {
         //                 id:0,
@@ -906,9 +919,9 @@ class MyOrdersDetailPage extends BasePage {
             case 0:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 0,
-                    pageData: this.state.viewData,
-                    index: index,
-                    refleshOrderDetail: () => this.loadPageData()
+                    orderProductId: this.state.viewData.list[index].id,
+                    // index: index,
+                    // refleshOrderDetail: () => this.loadPageData()
                 });
                 break;
             case 1:
@@ -927,21 +940,24 @@ class MyOrdersDetailPage extends BasePage {
             case 3:
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 3,
-                    pageData: this.state.viewData,
-                    index: index
+                    // pageData: this.state.viewData,
+                    returnProductId:this.state.viewData.list[index].returnProductId,
+                    // index: index
                 });
                 break;
             case 4:
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 6,
-                    pageData: this.state.viewData,
-                    index: index
+                    // pageData: this.state.viewData,
+                    returnProductId:this.state.viewData.list[index].returnProductId,
+                    // index: index
                 });
                 break;
             case 5:
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 7,
-                    pageData: this.state.viewData,
+                    // pageData: this.state.viewData,
+                    returnProductId:this.state.viewData.list[index].returnProductId,
                     index: index
                 });
                 break;

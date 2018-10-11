@@ -75,12 +75,12 @@ let constants = {
             menuData2:[]
         },{
             index:2,
-            orderStatus:'已付款',
+            orderStatus:'待发货',
             menuData:[],
             menuData2:['退款','退款中','售后完成']
         },{
             index:3,
-            orderStatus:'已发货',
+            orderStatus:'待收货',
             menuData:[{
                 id:5,
                 operation:'查看物流',
@@ -93,7 +93,7 @@ let constants = {
             menuData2:['退换','退换中','售后完成']
         },{
             index:4,
-            orderStatus:'等待买家自提',
+            orderStatus:'确认收货',
             menuData:[{
                 id:6,
                 operation:'确认收货',
@@ -102,7 +102,7 @@ let constants = {
             menuData2:['退款','退款中','售后完成']
         },{
             index:5,
-            orderStatus:'交易已完成',
+            orderStatus:'已完成',
             menuData:[{
                 id:7,
                 operation:'删除订单',
@@ -115,12 +115,20 @@ let constants = {
             menuData2:['退换','退换中','售后完成']
         },{
             index:6,
-            orderStatus:'已关闭',
-            menuData:[],
+            orderStatus:'退货关闭',
+            menuData:[{
+                id:7,
+                operation:'删除订单',
+                isRed:false,
+            },{
+                id:8,
+                operation:'再次购买',
+                isRed:true,
+            }],
             menuData2:['']
         },{
             index:7,
-            orderStatus:'订单已完成',
+            orderStatus:'用户关闭',
             menuData:[{
                 id:7,
                 operation:'删除订单',
@@ -133,7 +141,7 @@ let constants = {
             menuData2:['',]
         },{
             index:8,
-            orderStatus:'交易关闭',
+            orderStatus:'超时关闭',
             menuData:[{
                 id:9,
                 operation:'删除订单',
@@ -201,7 +209,7 @@ let constants = {
             index:2,
             buyState:'买家已付款',
             moreDetail:'',
-            sellerState:'待卖家发货',
+            sellerState:'等待卖家发货...',
             sellerTime:'',
             disNextView:true,
             menu:[
@@ -231,9 +239,9 @@ let constants = {
             ],
         },{
             index:4,
-            buyState:'等待买家自提',
+            buyState:'订单已完成',
             moreDetail:'',
-            // sellerState:'自提点：浙江省杭州市萧山区宁围镇鸿宁路望京商务C2-502',
+             sellerState:'已签收',
             sellerTime:'',
             disNextView:false,
             menu:[
