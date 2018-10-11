@@ -53,7 +53,7 @@ export default class HomeSubjectView extends Component {
         subjectModule.selectedSubjectAction(item)
         const { navigation } = this.props
         const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
-        navigation.navigate(router)
+        navigation.navigate(router,  {linkTypeCode : item.linkTypeCode})
     }
     render() {
         const { subjectList } = subjectModule

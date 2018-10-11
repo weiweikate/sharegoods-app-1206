@@ -14,7 +14,7 @@ export default class HomeAdView extends Component {
     _adAction(value) {
         const router =  homeModule.homeNavigate(value.linkType, value.linkTypeCode)
         const {navigation} = this.props
-        navigation.navigate(router)
+        navigation.navigate(router, {linkTypeCode : value.linkTypeCode})
     }
     render() {
         const {ad} = this.adModules
