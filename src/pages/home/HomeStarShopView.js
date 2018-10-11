@@ -58,11 +58,11 @@ export default class HomeStarShopView extends Component {
         this.starShop = new StarShopModule()
         this.starShop.loadShopList()
     }
-    _shopPress() {
+    _shopPress(shop) {
         console.log('_shopPress')
         const { navigation } = this.props
         let route  = homeModule.homeNavigate(8)
-        navigation.navigate(route)
+        navigation.navigate(route, {linkTypeCode : shop.linkTypeCode})
     }
     render () {
         let cells = []
