@@ -1,31 +1,36 @@
 import React, {Component} from 'react'
-import { View, Image, Text, StyleSheet } from 'react-native'
+import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtils
-import PropTypes from 'prop-types'
+import { homeModule } from './Modules'
 
-const Goods = ({goods}) => <View style={styles.container}>
+const Goods = ({goods, press}) => <TouchableOpacity style={styles.container} onPress={()=> press && press()}>
     <View style={styles.image}>
         <Image style={styles.image} source={{uri: goods.imgUrl}}/>
         <View style={styles.titleView}>
             <Text style={styles.title}>{goods.title}</Text>
         </View>
     </View>
-    <Text style={styles.dis}>{goods.discribe}</Text>
-    <Text style={styles.money}>¥ {goods.money}</Text>
-</View>
+    <Text style={styles.dis}>{goods.name}</Text>
+    <Text style={styles.money}>¥ {goods.price}</Text>
+</TouchableOpacity>
 
 export default class GoodsCell extends Component {
-    static propTypes = {
-        data: PropTypes.array.isRequired
+    _goodsAction(data) {
+        let route = homeModule.homeNavigate(data.linkType, data.linkTypeCode)
+        const { navigation } = this.props
+        navigation.navigate(route)
     }
     render() {
         const {data} = this.props
+        if (!data) {
+            return <View/>
+        }
         return <View style={styles.cell}>
         {
             data[0]
             ?
-            <Goods goods={data[0]}/>
+            <Goods goods={data[0]} press={()=> this._goodsAction(data[0])}/>
             :
             null
         }
@@ -33,7 +38,7 @@ export default class GoodsCell extends Component {
         {
             data[1]
             ?
-            <Goods goods={data[1]}/>
+            <Goods goods={data[1]} press={()=> this._goodsAction(data[1])}/>
             :
             null
         }

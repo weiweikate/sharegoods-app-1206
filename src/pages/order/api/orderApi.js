@@ -15,6 +15,8 @@ const api = {
     addItem: '/user/shoppingcart/addItem',
     //删除已关闭订单
     deleteClosedOrder: '/order/deleteClosedOrder',
+    //删除已完成订单
+    deleteCompletedOrder:'/order/deleteCompletedOrder',
     //确认收货
     confirmReceipt: '/order/confirmReceipt',
     //取消订单
