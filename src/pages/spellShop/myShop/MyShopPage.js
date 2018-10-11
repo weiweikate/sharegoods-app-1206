@@ -185,7 +185,9 @@ export default class MyShopPage extends BasePage {
 
     // 点击全部成员
     _clickAllMembers = () => {
-        this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
+        if (this.state.storeData.userStatus === 1) {
+            this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
+        }
     };
 
     // 点击具体成员

@@ -15,6 +15,8 @@ const api = {
     addItem: '/user/shoppingcart/addItem',
     //删除已关闭订单
     deleteClosedOrder: '/order/deleteClosedOrder',
+    //删除已完成订单
+    deleteCompletedOrder:'/order/deleteCompletedOrder',
     //确认收货
     confirmReceipt: '/order/confirmReceipt',
     //取消订单
@@ -38,6 +40,9 @@ const api = {
     revokeApply: '/order/returnProduct/revokeApply',
     //（陈帅）修改申请
     updateApply: '/order/returnProduct/updateApply',
+    //（陈帅）查询子订单详情
+    subOrderLookDetial: ['/order/orderProduct/lookDetial',{method:'get'}],
+
 
 
 

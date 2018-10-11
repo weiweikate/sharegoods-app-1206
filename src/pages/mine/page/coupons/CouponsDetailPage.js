@@ -101,15 +101,14 @@ export default class CouponsDetailPage extends BasePage {
                         </View>
 
                         <View style={{ height: px2dp(33), justifyContent: 'center', marginLeft: 10 }}>
-                            <Text style={{ fontSize: 11, color: '#999999' }}>限品类:{item.limit}</Text>
+                            <Text style={{ fontSize: 11, color: '#999999' }}>{item.limit}</Text>
                         </View>
 
                     </ImageBackground>
                 </View>
                 <View style={{ marginTop: 20, alignItems: 'flex-start', marginLeft: 10, flex: 1 }}>
                     <Text style={{ marginTop: 5, color: '#222' }}>使用说明:</Text>
-                    <Text style={{ marginTop: 5, color: '#666' }}>1.礼包优惠券在激活有效期内可以购买指定商品</Text>
-                    <Text tyle={{ marginTop: 5, color: '#666' }}>2.不可与其他优惠券叠加使用</Text>
+                    <Text style={{ marginTop: 5, color: '#666', lineHeight: 25 }}>{item.remarks}</Text>
                 </View>
                 <View
                     style={{ width: ScreenUtils.width, height: 180, alignItems: 'center', justifyContent: 'flex-end' }}>

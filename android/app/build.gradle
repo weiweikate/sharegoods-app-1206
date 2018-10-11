@@ -29,6 +29,10 @@ android {
     dexOptions {
         jumboMode true
     }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
     splits {
         abi {
             reset()
