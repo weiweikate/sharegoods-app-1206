@@ -29,7 +29,7 @@ export default class LoginPage extends BasePage {
             BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid);
         }
 
-        console.log(this.props.navigation.state)
+        console.log(this.props.navigation.state);
     }
 
     componentWillUnmount() {
@@ -65,7 +65,7 @@ export default class LoginPage extends BasePage {
         if (UserModel.isLogin) {
             this.$navigateBack();
         } else {
-            if (this.params.callback){
+            if (this.params.callback) {
                 let resetAction = NavigationActions.reset({
                     index: 0,
                     actions: [
@@ -149,7 +149,7 @@ export default class LoginPage extends BasePage {
                 if (error.code === 34005) {
                     this.$navigate('login/login/RegistPage', data);
                 }
-                // bridge.$toast(data.msg);
+                bridge.$toast(data.msg);
             });
         });
     };

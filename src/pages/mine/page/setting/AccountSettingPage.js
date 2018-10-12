@@ -42,9 +42,10 @@ export default class AccountSettingPage extends BasePage {
                     <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{ height: 0.5, backgroundColor: '#eeeeee', marginLeft: 15, marginRight: 15 }}/>
-                <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditWechat(user.wechatId)}>
+                <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditWechat(user.wechatName)}>
                     <UIText value={'微信账号'} style={[styles.blackText, { flex: 1 }]}/>
-                    <UIText value={user.wechatId} style={{ fontSize: 13, color: '#666666', marginRight: 8 }}/>
+                    <UIText value={StringUtils.isEmpty(user.openid) ? '未绑定' : user.wechatName}
+                            style={{ fontSize: 13, color: '#666666', marginRight: 8 }}/>
                     <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
             </View>
@@ -73,26 +74,42 @@ export default class AccountSettingPage extends BasePage {
     };
     _toEditWechat = (wechat) => {
         if (StringUtils.isEmpty(wechat)) {
-            bridge.$toast('未绑定微信账号');
-            return;
+            bridge.$loginWx((data) => {
+                MineAPI.updateUserById({
+                    type: 4,
+                    openid: data.openid,
+                    wechatName: data.nickName
+                }).then((res) => {
+                    if (res.code === 10000) {
+                        user.untiedWechat(data.nickName, data.openid);
+                        bridge.$toast('绑定成功');
+                    }
+                }).catch((error) => {
+                    if (error.code === 34005) {
+                        this.$navigate('login/login/RegistPage', data);
+                    }
+                    bridge.$toast(data.msg);
+                });
+            });
+        } else {
+            Alert.alert('确定解绑微信账号？', '解绑微信账号后，将无法使用微信登录该账号', [
+                {
+                    text: '取消', onPress: () => {
+                        style: 'cancel';
+                    }
+                },
+                {
+                    text: '确定', onPress: () => {
+                        MineAPI.untiedWechat({}).then((response) => {
+                            user.untiedWechat('', '');
+                            bridge.$toast('解绑成功');
+                        }).catch((data) => {
+                            bridge.$toast(data.msg);
+                        });
+                    }
+                }
+            ], { cancelable: true });
         }
-        Alert.alert('确定解绑微信账号？', '解绑微信账号后，将无法使用微信登录该账号', [
-            {
-                text: '取消', onPress: () => {
-                    style: 'cancel';
-                }
-            },
-            {
-                text: '确定', onPress: () => {
-                    MineAPI.untiedWechat({}).then((response) => {
-                        user.untiedWechat(wechat);
-                        bridge.$toast('解绑成功');
-                    }).catch((data) => {
-                        bridge.$toast(data.msg);
-                    });
-                }
-            }
-        ], { cancelable: true });
     };
 
 }

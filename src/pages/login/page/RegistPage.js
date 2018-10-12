@@ -13,7 +13,7 @@ import CommRegistView from '../components/CommRegistView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LoginApi from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
-import user from "../../../model/user";
+import user from '../../../model/user';
 
 @observer
 export default class RegistPage extends BasePage {
@@ -67,12 +67,12 @@ export default class RegistPage extends BasePage {
                         });
                     }}>
                         <Text style={{ color: ColorUtil.mainRedColor, fontSize: 11 }}
-                        onPress={()=>{
-                            this.$navigate('HtmlPage',{
-                                title:'用户协议内容',
-                                uri:'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
-                            })
-                        }}
+                              onPress={() => {
+                                  this.$navigate('HtmlPage', {
+                                      title: '用户协议内容',
+                                      uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
+                                  });
+                              }}
                         >
                             《用户协议》
                         </Text>
@@ -102,12 +102,13 @@ export default class RegistPage extends BasePage {
             systemVersion: this.params.systemVersion ? this.params.systemVersion : '',
             wechatVersion: ''
         }).then((data) => {
-            if (data.code === 10000){
-                user.saveUserInfo(data.data)
+            if (data.code === 10000) {
+                user.saveUserInfo(data.data);
+                user.untiedWechat(this.params.nickName, this.params.openid);
                 this.$navigateBack();
                 bridge.$toast('登录成功');
             } else {
-                bridge.$toast(data.msg)
+                bridge.$toast(data.msg);
             }
             this.$loadingDismiss();
 

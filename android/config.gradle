@@ -18,14 +18,14 @@ ext {
 
     dependencies = [
             //此处是27.+，需要在rn中做排除
-            support : 'com.android.support:appcompat-v7:27.+',
+            support : 'com.android.support:appcompat-v7:27.1.1',
             rn      : 'com.facebook.react:react-native:+',
             gson    : 'com.google.code.gson:gson:+',
-            design  : 'com.android.support:design:27.+',
+            design  : 'com.android.support:design:27.1.1',
             eventbus: 'org.greenrobot:eventbus:+',
             zxing   : 'com.google.zxing:core:3.+',
             wechat  : 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+',
-            multidex: 'com.android.support:multidex:+',
+            multidex: 'com.android.support:multidex:1.0.3',
             uapp    : 'com.umeng.sdk:analytics:latest.integration',
             ucommon : 'com.umeng.sdk:common:latest.integration'
     ]
