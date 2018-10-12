@@ -15,6 +15,7 @@ public class WXLoginBean {
     private String device;
     private String openid;
     private String systemVersion;
+    private String nickName;
 
     public String getDevice() {
         return device;
@@ -38,5 +39,13 @@ public class WXLoginBean {
 
     public void setSystemVersion(String systemVersion) {
         this.systemVersion = systemVersion;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

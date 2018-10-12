@@ -1,4 +1,5 @@
 package com.meeruu.sharegoods.loginAndSharing;
+
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,14 +31,16 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         @Override
         public void onStart(SHARE_MEDIA platform) {
         }
+
         /**
          * @descrption 分享成功的回调
          * @param platform 平台类型
          */
         @Override
         public void onResult(SHARE_MEDIA platform) {
-            Toast.makeText(getCurrentActivity(),"成功了",Toast.LENGTH_LONG).show();
+            Toast.makeText(getCurrentActivity(), "成功了", Toast.LENGTH_LONG).show();
         }
+
         /**
          * @descrption 分享失败的回调
          * @param platform 平台类型
@@ -45,15 +48,16 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
          */
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(getCurrentActivity(),"失败"+t.getMessage(),Toast.LENGTH_LONG).show();
+            Toast.makeText(getCurrentActivity(), "失败" + t.getMessage(), Toast.LENGTH_LONG).show();
         }
+
         /**
          * @descrption 分享取消的回调
          * @param platform 平台类型
          */
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(getCurrentActivity(),"取消了",Toast.LENGTH_LONG).show();
+            Toast.makeText(getCurrentActivity(), "取消了", Toast.LENGTH_LONG).show();
         }
     };
 
@@ -78,7 +82,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void share(ReadableMap params){
+    public void share(ReadableMap params) {
         /**
          * api参考地址：https://developer.umeng.com/docs/66632/detail/66639
          jsonData 参数
@@ -91,9 +95,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
          thumImage:(分享图标小图(http链接)图文分享使用)
          shareImage:分享的大图(本地URL)图片分享使用
          **/
-        int shareType=params.getInt("shareType");
-        SHARE_MEDIA platform=params.getInt("platformType")==1?SHARE_MEDIA.WEIXIN:SHARE_MEDIA.WEIXIN_CIRCLE;
-        switch (shareType){
+        int shareType = params.getInt("shareType");
+        SHARE_MEDIA platform = params.getInt("platformType") == 1 ? SHARE_MEDIA.WEIXIN : SHARE_MEDIA.WEIXIN_CIRCLE;
+        switch (shareType) {
             case 0:
                 UMImage image = new UMImage(getCurrentActivity(), params.getString("thumImage"));//网络图片
                 UMWeb web = new UMWeb("http://www.baidu.com");
@@ -117,9 +121,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 break;
         }
     }
+
     @ReactMethod
-    public void loginWX(final Callback callback){
-        final String TAG="";
+    public void loginWX(final Callback callback) {
+        final String TAG = "";
         UMShareAPI.get(getCurrentActivity()).getPlatformInfo(getCurrentActivity(), SHARE_MEDIA.WEIXIN, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
@@ -149,12 +154,13 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 Log.e(TAG, "onStart授权完成: " + gender);
                 Log.e(TAG, "onStart授权完成: " + iconurl);
                 umengDeleteOauth(SHARE_MEDIA.WEIXIN);
-                WXLoginBean bean=new WXLoginBean();
+                WXLoginBean bean = new WXLoginBean();
                 bean.setDevice(android.os.Build.DEVICE);
                 bean.setOpenid(openid);
                 bean.setSystemVersion(android.os.Build.VERSION.RELEASE);
-                Gson gson=new Gson();
-                String s=gson.toJson(bean);
+                bean.setNickName(name);
+                Gson gson = new Gson();
+                String s = gson.toJson(bean);
                 callback.invoke(s);
             }
 
@@ -173,7 +179,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     private void umengDeleteOauth(SHARE_MEDIA share_media_type) {
-        final String TAG="";
+        final String TAG = "";
         UMShareAPI.get(getCurrentActivity()).deleteOauth(getCurrentActivity(), share_media_type, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
@@ -200,8 +206,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             }
         });
     }
+
     @ReactMethod
-    public void shareScreen(final Callback callback){
+    public void shareScreen(final Callback callback) {
 
     }
 }
