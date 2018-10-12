@@ -24,7 +24,7 @@ export default class SbOpenPrizeHeader extends Component {
         navItemClick: PropTypes.func.isRequired
     };
     state = {
-        selectSate: 2
+        selectSate: 0
     };
 
     constructor(props) {

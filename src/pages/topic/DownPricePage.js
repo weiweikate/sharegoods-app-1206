@@ -106,7 +106,17 @@ export default class DownPricePage extends BasePage {
                             }
                             }
                             itemClick={(itemData) => {
-                                this.$navigate('topic/TopicDetailPage', { activityCode: itemData.prodCode });
+                                if (itemData.productType === 99) {
+                                    this.$navigate('home/product/ProductDetailPage', {
+                                        productId: itemData.productId
+                                    });
+                                } else if (itemData.productType === 1 || itemData.productType === 2) {
+                                    this.$navigate('topic/TopicDetailPage', {
+                                        activityCode: itemData.prodCode,
+                                        productType: itemData.productType
+                                    });
+                                }
+
                             }
                             }
                         />;
@@ -178,21 +188,21 @@ export default class DownPricePage extends BasePage {
                 />
 
                 {/*{*/}
-                    {/*this._getTopicType() === 0*/}
-                        {/*?*/}
-                        {/*<SubSwichView*/}
-                            {/*headerData={this.dataModel}*/}
-                        {/*/>*/}
-                        {/*:*/}
-                        {/*<SbOpenPrizeHeader*/}
-                            {/*headerData={this.dataModel}*/}
-                            {/*navItemClick={(index, item) => {*/}
-                                {/*//自导航点击事件*/}
-                                {/*this.setState({*/}
-                                    {/*selectNav: index*/}
-                                {/*});*/}
-                            {/*}}*/}
-                        {/*/>*/}
+                {/*this._getTopicType() === 0*/}
+                {/*?*/}
+                {/*<SubSwichView*/}
+                {/*headerData={this.dataModel}*/}
+                {/*/>*/}
+                {/*:*/}
+                {/*<SbOpenPrizeHeader*/}
+                {/*headerData={this.dataModel}*/}
+                {/*navItemClick={(index, item) => {*/}
+                {/*//自导航点击事件*/}
+                {/*this.setState({*/}
+                {/*selectNav: index*/}
+                {/*});*/}
+                {/*}}*/}
+                {/*/>*/}
 
                 {/*}*/}
                 <SbOpenPrizeHeader
