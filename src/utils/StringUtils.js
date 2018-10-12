@@ -4,7 +4,7 @@ const isEmpty = (param) => {
     let input = param + '';
     return input === '' || input === 'undefined' || input === 'null' || input === '[]' || input === ' ';
 };
-const isNoEmpty = (input) => {
+export const isNoEmpty = (input) => {
     return !isEmpty(input);
 };
 /*
