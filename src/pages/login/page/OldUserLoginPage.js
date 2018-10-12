@@ -191,7 +191,10 @@ export default class OldUserLoginPage extends BasePage {
                 this.$loadingDismiss();
                 if (data.code === 10000) {
                     //存在老用户返回的code
-                    this.$navigate('login/login/SetPasswordPage', { code: data.data.code });
+                    this.$navigate('login/login/SetPasswordPage', {
+                        code: data.data.code ,
+                        phone:this.oldUserLoginModel.phoneNumber,
+                    });
                 } else {
                        this.$toast(data.msg);
                 }
