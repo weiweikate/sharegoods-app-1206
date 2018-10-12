@@ -1,4 +1,5 @@
 export default {
+    demo: ['/demo/signTest?ddd=1', { method: 'post' }],
     apiDemoList: ['/api/demo/list', { method: 'get' }],
     apiDemoAdd: '/api/demo/add',
     apiDemoUpdate: '/api/demo/update',
