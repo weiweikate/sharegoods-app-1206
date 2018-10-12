@@ -12,12 +12,14 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.google.gson.Gson;
+import com.meeruu.commonlib.BaseApplication;
 import com.meeruu.sharegoods.MainApplication;
 import com.meeruu.sharegoods.event.AppPayEvent;
 import com.meeruu.sharegoods.utils.aipay.PayResult;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tencent.mm.opensdk.utils.Log;
 
 public class AppPayModule extends ReactContextBaseJavaModule {
 
@@ -64,6 +66,7 @@ public class AppPayModule extends ReactContextBaseJavaModule {
 
                         // 支付宝返回此次支付结果及加签，建议对支付宝签名信息拿签约时支付宝提供的公钥做验签
                         String resultInfo = payResult.getResult();
+                        System.out.println(resultInfo + "========");
 
                         String resultStatus = payResult.getResultStatus();
 
@@ -74,7 +77,7 @@ public class AppPayModule extends ReactContextBaseJavaModule {
                             event.setSdkCode(9000);
                             event.setAliPayResult(null);
                             promise.resolve(gson.toJson(event));
-                            Toast.makeText(MainApplication.getInstance().getApplicationContext(), "支付成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BaseApplication.appContext, "支付成功", Toast.LENGTH_SHORT).show();
                         } else {
                             // 判断resultStatus 为非“9000”则代表可能支付失败
                             // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
@@ -84,7 +87,7 @@ public class AppPayModule extends ReactContextBaseJavaModule {
                                 event.setSdkCode(8000);
                                 event.setAliPayResult(null);
                                 promise.resolve(gson.toJson(event));
-                                Toast.makeText(MainApplication.getInstance().getApplicationContext(), "支付结果确认中", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(BaseApplication.appContext, "支付结果确认中", Toast.LENGTH_SHORT).show();
 
                             } else {
                                 // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
@@ -93,7 +96,7 @@ public class AppPayModule extends ReactContextBaseJavaModule {
                                 event.setSdkCode(0);
                                 event.setAliPayResult(null);
                                 promise.resolve(gson.toJson(event));
-                                Toast.makeText(MainApplication.getInstance().getApplicationContext(), "支付失败", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(BaseApplication.appContext, "支付失败", Toast.LENGTH_SHORT).show();
                             }
                         }
                         break;

@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.bean;
+package com.meeruu.commonlib.bean;
 
 /**
  * Created by zhanglei on 2018/8/18.

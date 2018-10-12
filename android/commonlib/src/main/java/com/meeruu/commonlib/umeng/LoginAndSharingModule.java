@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.loginAndSharing;
+package com.meeruu.commonlib.umeng;
 
 import android.util.Log;
 import android.widget.Toast;
@@ -9,7 +9,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.google.gson.Gson;
-import com.meeruu.sharegoods.bean.WXLoginBean;
+import com.meeruu.commonlib.bean.WXLoginBean;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
