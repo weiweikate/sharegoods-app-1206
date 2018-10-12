@@ -23,7 +23,8 @@ export default class OpenPrizeItemView extends Component {
 
     static propTypes = {
         itemData: PropTypes.object.isRequired,
-        itemClick: PropTypes.func.isRequired
+        itemClick: PropTypes.func.isRequired,
+        followAction:PropTypes.func.isRequired,
     };
 
     render() {
@@ -144,8 +145,10 @@ export default class OpenPrizeItemView extends Component {
                                         }}>
                                         <TouchableOpacity
                                             onPress={() => {
-                                                this._followAction();
+                                                // this._followAction();
+                                                this.props.followAction&&this.props.followAction();
                                             }
+
                                             }
                                         >
                                             <Text
@@ -213,13 +216,6 @@ export default class OpenPrizeItemView extends Component {
         );
     }
 
-    /**
-     *
-     * @private
-     */
-    _itemClickAction = () => {
-
-    };
     /**
      *
      */

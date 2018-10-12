@@ -16,6 +16,10 @@ import OpenPrizeItemView from './components/OpenPrizeItemView';
 import TotalTopicDataModel from './model/SubTopicModel';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 import PropTypes from 'prop-types';
+import SubSwichView from './components/SubSwichView';
+import TopicAPI from './api/TopicApi';
+import bridge from '../../utils/bridge';
+import user from '../../model/user';
 
 @observer
 export default class DownPricePage extends BasePage {
@@ -34,9 +38,9 @@ export default class DownPricePage extends BasePage {
     }
 
     componentDidMount() {
-        const {linkTypeCode} = this.params;
-        this.dataModel.loadTopicData(linkTypeCode);
-        // this.dataModel.loadTopicData('ZT20180002');
+        // const {linkTypeCode} = this.params;
+        // this.dataModel.loadTopicData(linkTypeCode);
+        this.dataModel.loadTopicData('ZT20180002');
     }
 
     /**
@@ -61,7 +65,7 @@ export default class DownPricePage extends BasePage {
 
                 {
                     sectionsData.map((section, sectionIndex) => {
-                        return this._renderSection(section);
+                        return this._renderSection(section, sectionIndex);
                     })
                 }
 
@@ -77,7 +81,7 @@ export default class DownPricePage extends BasePage {
      * @private
      */
 
-    _renderSection = (section) => {
+    _renderSection = (section, sectionIndex) => {
         const sectionListData = section.data.slice() || [];
         return (
             <View
@@ -97,9 +101,12 @@ export default class DownPricePage extends BasePage {
                     sectionListData.map((itemData, itemIndex) => {
                         return <OpenPrizeItemView
                             itemData={itemData}
+                            followAction={() => {
+                                this._followActionClick(itemData, sectionIndex, itemIndex);
+                            }
+                            }
                             itemClick={(itemData) => {
-
-
+                                this.$navigate('topic/TopicDetailPage', { activityCode: itemData.prodCode });
                             }
                             }
                         />;
@@ -107,8 +114,41 @@ export default class DownPricePage extends BasePage {
                 }
             </View>
         );
+    };
+
+    /**
+     * 取消关注和关注
+     * @param itemData
+     * @param sectionIndex
+     * @param itemIndex
+     * @private
+     */
+    _followActionClick = (itemData, sectionIndex, itemIndex) => {
+
+        let type = itemData.notifyFlag ? 0 : 1;
+        let param = {
+            'activityId': itemData.id,
+            'activityType': itemData.productType,
+            'type': type,
+            'userId': user.id
+        };
+        TopicAPI.followAction(
+            param
+        ).then(result => {
+
+            bridge.$toast(result.msg);
+            let section = this.dataModel.sectionDataList[sectionIndex] || [];
+            section.data[itemIndex].notifyFlag = type;
+            //重新赋值
+            this.dataModel.sectionDataList[sectionIndex] = section;
+
+        }).catch(error => {
+            bridge.$toast(error.msg);
+
+        });
 
     };
+
 
     _render() {
         const sectionList = this.dataModel.sectionDataList.slice() || [];
@@ -136,31 +176,53 @@ export default class DownPricePage extends BasePage {
                         height: ScreenUtils.width * 188 / 375
                     }}
                 />
-                {/*降价拍的头*/}
-                {/*{*/}
-                    {/*if(Stri)*/}
-                    {/**/}
-                {/*}*/}
-                <SbOpenPrizeHeader
-                    headerData={this.dataModel}
-                    navItemClick={(index, item) => {
-                        //自导航点击事件
-                        this.setState({
-                            selectNav: index
-                        });
-                    }}
-                />
+
+                {
+                    this._getTopicType() === 0
+                        ?
+                        <SubSwichView
+                            headerData={this.dataModel}
+                        />
+                        :
+                        <SbOpenPrizeHeader
+                            headerData={this.dataModel}
+                            navItemClick={(index, item) => {
+                                //自导航点击事件
+                                this.setState({
+                                    selectNav: index
+                                });
+                            }}
+                        />
+
+                }
+
                 {
                     this._renderBottomListView(sectionData)
                 }
             </ScrollView>
         );
     }
+
+    /**
+     * 获取类型
+     * 0 普通专题
+     * 1 秒杀
+     * 2 降价拍
+     * */
+    _getTopicType = () => {
+        const { linkTypeCode } = this.params;
+        if (linkTypeCode.search('ZT') != -1) {
+            return 0;
+        } else {
+            return 1;
+        }
+    };
 }
+
 
 DownPricePage.propTypes = {
     //专题code
-    linkTypeCode: PropTypes.string.isRequired,
+    linkTypeCode: PropTypes.string.isRequired
 };
 const Styles = StyleSheet.create({
     list: {
