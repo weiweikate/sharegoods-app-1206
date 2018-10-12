@@ -20,7 +20,6 @@ export default class ThreeColumnListView extends Component {
         super(props);
     }
 
-
     render() {
         return (
             <SectionList

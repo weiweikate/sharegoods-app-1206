@@ -5,7 +5,6 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
-    Alert
 
 } from 'react-native';
 
@@ -136,9 +135,12 @@ export default class CommRegistView extends Component {
 
                                 />
                             </View>
-                            <TouchableOpacity onPress={() => {
+                            <TouchableOpacity
+                                onPress={() => {
                                 this.getVertifyCode();
-                            }}>
+                            }}
+                                activeOpacity={1}
+                            >
                                 <Text style={{ color: ColorUtil.mainRedColor }}>
                                     {this.registModel.dowTime > 0 ? `${this.registModel.dowTime}秒后重新获取` : '获取验证码'}
                                 </Text>
@@ -194,7 +196,11 @@ export default class CommRegistView extends Component {
                     },
                         this.registModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]
                 }>
-                    <TouchableOpacity onPress={this.loginClick}>
+                    <TouchableOpacity
+                        onPress={this.loginClick}
+                        activeOpacity={this.registModel.isCanClick?0.6:1}
+
+                    >
                         <Text style={{
                             textAlign: 'center',
                             height: 45,
@@ -219,17 +225,6 @@ export default class CommRegistView extends Component {
     /*获取验证码*/
     getVertifyCode = () => {
         if (this.registModel.dowTime > 0) {
-            Alert.alert(
-                '提示',
-                '操作过于频繁稍后重试',
-                [
-                    {
-                        text: '确定', onPress: () => {
-                        }
-                    }
-                ],
-                { cancelable: false }
-            );
             return;
         }
         if (StringUtils.checkPhone(this.registModel.phoneNumber)) {

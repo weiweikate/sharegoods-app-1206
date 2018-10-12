@@ -127,13 +127,13 @@ export default class LoginPage extends BasePage {
     /*微信登陆*/
     weChatLoginClick = () => {
         bridge.$loginWx((data) => {
-            console.warn(data);
+            console.log(data);
             LoginAPI.appWechatLogin({
                 device: data.device,
                 encryptedData: '',
                 headImg: '',
                 iv: '',
-                nickname: '',
+                nickname: data.nickName,
                 openid: data.openid,
                 systemVersion: data.systemVersion,
                 wechatVersion: ''
