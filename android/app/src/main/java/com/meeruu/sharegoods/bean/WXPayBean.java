@@ -7,6 +7,7 @@ public String prepayid;
 public String noncestr;
 public String timestamp;
 public String appid;
+public String partnerid;
 
     public String getSign() {
         return sign;
@@ -14,6 +15,14 @@ public String appid;
 
     public void setSign(String sign) {
         this.sign = sign;
+    }
+
+    public String getPartnerid() {
+        return partnerid;
+    }
+
+    public void setPartnerid(String partnerid) {
+        this.partnerid = partnerid;
     }
 
     public String getPrepayid() {

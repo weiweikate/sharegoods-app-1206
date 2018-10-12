@@ -162,7 +162,7 @@ public class AppPayModule extends ReactContextBaseJavaModule {
 //                request.timeStamp = params.getString("timestamp");//时间戳
 //                request.sign = params.getString("sign");//签名
                 request.appId = params.getAppid();//应用ID
-                request.partnerId ="";//商户号
+                request.partnerId =params.getPartnerid();//商户号
                 request.prepayId = params.getPrepayid();//预支付交易会话ID
                 request.packageValue = "Sign=WXPay";//扩展字段
                 request.nonceStr = params.getNoncestr();//随机字符串
