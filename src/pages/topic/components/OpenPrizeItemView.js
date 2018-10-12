@@ -11,6 +11,9 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import ProgressBarView from './ProgressBarView';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import PropTypes from 'prop-types';
+import TopicAPI from '../api/TopicApi';
+import user from '../../../model/user';
+import bridge from '../../../utils/bridge';
 
 export default class OpenPrizeItemView extends Component {
 
@@ -19,21 +22,25 @@ export default class OpenPrizeItemView extends Component {
     }
 
     static propTypes = {
-       itemData:PropTypes.object.isRequired
+        itemData: PropTypes.object.isRequired,
+        itemClick: PropTypes.func.isRequired,
+        followAction:PropTypes.func.isRequired,
     };
 
     render() {
-        // const itemData = this.props.itemData
+        const itemData = this.props.itemData;
         return (
-            <TouchableOpacity>
+            <TouchableOpacity
+                onPress={
+                    () => {
+                        this.props.itemClick && this.props.itemClick(itemData);
+                    }
+                }
+            >
                 <View style={ItemStyles.itemBgStyle}>
                     <View style={ItemStyles.itemContentStyle}>
-                        {/*头部image*/}
-                        {/*<Image*/}
-                        {/*style={ItemStyles.itemTopImageStyle}*/}
-                        {/*/>*/}
                         <PreLoadImage
-                            imageUri={'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/11.jpg'}
+                            imageUri={itemData.specImg}
                             style={ItemStyles.itemTopImageStyle}
                         />
                         <Text
@@ -41,12 +48,11 @@ export default class OpenPrizeItemView extends Component {
                             number={2}
                             onLayout={(e) => {
                                 if (e.nativeEvent.layout.height > 25) {//多于一行时改为红色
-
                                 }
-                             }
+                            }
                             }
                         >
-                            测试测试
+                            {itemData.productName}
                         </Text>
                         {/*中部视图 关注或者进度条*/}
                         <View
@@ -55,13 +61,46 @@ export default class OpenPrizeItemView extends Component {
                                 marginLeft: 10
                             }}
                         >
-                            <ProgressBarView/>
-                            {/*<Text*/}
-                            {/*style={ItemStyles.itemFolloweTextStyle}*/}
-                            {/*number={1}*/}
-                            {/*>*/}
-                            {/*52人已关注*/}
-                            {/*</Text>*/}
+                            {
+                                itemData.status === 0 ?
+                                    <Text
+                                        style={ItemStyles.itemFolloweTextStyle}
+                                        number={1}
+                                    >
+                                        {'商品异常'}
+                                    </Text>
+                                    : null
+                            }
+
+                            {
+                                itemData.status === 1 ?
+                                    <Text
+                                        style={ItemStyles.itemFolloweTextStyle}
+                                        number={1}
+                                    >
+                                        {itemData.reseCount + '人已关注'}
+                                    </Text>
+                                    : null
+                            }
+                            {
+                                itemData.status === 2 ?
+                                    <ProgressBarView
+                                        progressValue={(itemData.totalNumber - itemData.surplusNumber) / itemData.totalNumber}
+                                        haveRobNum={itemData.totalNumber - itemData.surplusNumber}
+                                    /> :
+                                    null
+                            }
+                            {
+                                itemData.status === 3 || itemData.status === 4 || itemData.status === 5 ?
+                                    <Text
+                                        style={ItemStyles.itemFolloweTextStyle}
+                                        number={1}
+                                    >
+                                        {'抢光了' + itemData.totalNumber + '件'}
+                                    </Text>
+                                    : null
+                            }
+
                         </View>
 
                         <View
@@ -82,7 +121,7 @@ export default class OpenPrizeItemView extends Component {
                                     fontSize: 16,
                                     color: ColorUtil.Color_d51243
                                 }}>
-                                    $52起
+                                    {itemData.seckillPrice + '起'}
                                 </Text>
                                 <Text style={{
                                     height: 11,
@@ -90,36 +129,85 @@ export default class OpenPrizeItemView extends Component {
                                     textDecorationLine: 'line-through',
                                     color: ColorUtil.Color_999999
                                 }}>
-                                    $52起
+                                    {itemData.originalPrice + '起'}
                                 </Text>
                             </View>
                             {/*右下角按钮*/}
-                            <View
-                                style={{
-                                    // backgroundColor: 'red',
-                                    backgroundColor: ColorUtil.Color_d51243,
-                                    height: 30,
-                                    width: (ScreenUtils.width / 2 - 16) / 2,
-                                    borderRadius: 5,
-                                    borderRadius: 5
-                                }}>
-                                <TouchableOpacity>
-                                    <Text
+                            {
+                                itemData.status === 1 ?
+                                    <View
                                         style={{
-                                            color: ColorUtil.Color_ffffff,
-                                            textAlign: 'center',
+                                            backgroundColor: ColorUtil.Color_f7f7f7,
                                             height: 30,
-                                            // alignItems:'center'
-                                            // alignItems:'center'
-                                            // alignSelf:'center'
-                                            paddingTop: 8,
-                                            fontSize: 12
-                                        }}
-                                    >
-                                        马上抢
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
+                                            width: (ScreenUtils.width / 2 - 16) / 2,
+                                            borderRadius: 5,
+                                            borderRadius: 5
+                                        }}>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                // this._followAction();
+                                                this.props.followAction&&this.props.followAction();
+                                            }
+
+                                            }
+                                        >
+                                            <Text
+                                                style={
+                                                    {
+                                                        color: ColorUtil.Color_999999,
+                                                        textAlign: 'center',
+                                                        height: 30,
+                                                        paddingTop: 8,
+                                                        fontSize: 12
+                                                    }
+                                                }
+                                            >
+                                                {itemData.notifyFlag ? '取消关注' : '关注'}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    :
+                                    <View
+                                        style={[{
+                                            backgroundColor: ColorUtil.Color_d51243,
+                                            height: 30,
+                                            width: (ScreenUtils.width / 2 - 16) / 2,
+                                            borderRadius: 5,
+                                            borderRadius: 5
+                                        },
+                                            (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
+                                                ? { backgroundColor: ColorUtil.Color_f7f7f7 }
+                                                : { backgroundColor: ColorUtil.Color_d51243 }
+
+                                        ]}>
+                                        <TouchableOpacity
+
+                                        >
+                                            <Text
+                                                style={
+                                                    [{
+                                                        color: ColorUtil.Color_ffffff,
+                                                        textAlign: 'center',
+                                                        height: 30,
+                                                        paddingTop: 8,
+                                                        fontSize: 12
+                                                    },
+                                                        (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
+                                                            ? { color: ColorUtil.Color_999999 }
+                                                            : { color: ColorUtil.Color_ffffff }
+                                                    ]
+                                                }
+                                            >
+                                                {
+                                                    (itemData.status === 3 || itemData.status === 4 || itemData.status === 5) ?
+                                                        '已抢光' :
+                                                        '马上抢'
+                                                }
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                            }
+
                             {/*</View>*/}
                         </View>
                     </View>
@@ -130,10 +218,23 @@ export default class OpenPrizeItemView extends Component {
 
     /**
      *
-     * @private
      */
-    _itemClickAction = () => {
+    _followAction = () => {
+        const itemData = this.props.itemData;
+        let param = {
+            'activityId': itemData.id,
+            'activityType': itemData.productType,
+            'type': itemData.notifyFlag ? 0 : 1,
+            'userId': user.id
+        };
+        TopicAPI.followAction(
+            param
+        ).then(result => {
+            bridge.$toast(result.msg);
+        }).catch(error => {
+            bridge.$toast(error.msg);
 
+        });
 
     };
 }
@@ -158,6 +259,7 @@ const ItemStyles = StyleSheet.create({
         padding: 10,
         color: ColorUtil.Color_222222,
         width: ScreenUtils.width / 2 - 16,
+
         height: 38,
         fontSize: 12
     },
@@ -165,7 +267,7 @@ const ItemStyles = StyleSheet.create({
         color: ColorUtil.Color_33b4ff,
         fontSize: 11,
         marginTop: 5,
-        marginLeft: 10,
+        marginLeft: 0,
         marginRight: 10
     }
 });

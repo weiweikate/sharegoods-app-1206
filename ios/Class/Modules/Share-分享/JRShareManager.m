@@ -97,7 +97,8 @@ SINGLETON_FOR_CLASS(JRShareManager)
     NSDictionary *dicData = @{
                               @"openid":res.openid?res.openid:[NSNull null],
                               @"systemVersion":[JRDeviceInfo systemVersion],
-                              @"device":[JRDeviceInfo device]
+                              @"device":[JRDeviceInfo device],
+                              @"nickName":[res name],
                               };
     
     if(finshBlock){
