@@ -4,7 +4,8 @@ import {
     View,
     StyleSheet,
     TouchableOpacity,
-    Text
+    Text,
+    Image
 } from 'react-native';
 import ColorUtil from '../../../utils/ColorUtil';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -14,6 +15,7 @@ import PropTypes from 'prop-types';
 import TopicAPI from '../api/TopicApi';
 import user from '../../../model/user';
 import bridge from '../../../utils/bridge';
+import ShopCartRes from '../../shopCart/res/ShopCartRes';
 
 export default class OpenPrizeItemView extends Component {
 
@@ -43,6 +45,23 @@ export default class OpenPrizeItemView extends Component {
                             imageUri={itemData.specImg}
                             style={ItemStyles.itemTopImageStyle}
                         />
+                        {
+                            (itemData.status === 3 || itemData.status === 4 || itemData.status === 5) ?
+                                <Image
+                                    source={ShopCartRes.noGoodImg}
+                                    style={
+                                        {
+                                            position:'absolute',
+                                            top:10,
+                                            left:5,
+                                            width: ScreenUtils.width / 2 - 16 - 10,
+                                            height: ScreenUtils.width / 2 - 16-15
+                                        }
+                                    }
+                                />
+                                 :
+                                null
+                        }
                         <Text
                             style={ItemStyles.itemBottomTextStyle}
                             number={2}
