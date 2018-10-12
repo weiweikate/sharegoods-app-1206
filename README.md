@@ -1,5 +1,11 @@
 # 秀购
 
+## 关于数据加签
+配置文件目录：`src/api/network/rsa_config.js`
+需要配置的字段： `client` `version` `rsa_key`
+
+
+
 ## 依赖包
 所有依赖包必须固定版本
 
