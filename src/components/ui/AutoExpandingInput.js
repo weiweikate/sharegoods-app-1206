@@ -5,7 +5,8 @@ class AutoExpandingInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            height: 35
+            height: 35,
+            defaultValue: props.defaultValue,
         };
     }
 
@@ -20,7 +21,7 @@ class AutoExpandingInput extends Component {
                        onChange={this.onChange}
                        onContentSizeChange={this.onContentSizeChange.bind(this)}
                        style={[this.props.style, { height: Math.max(35, this.state.height) }]}
-                       value={this.state.text}
+                       defaultValue={this.state.defaultValue}
                        underlineColorAndroid={'transparent'}
             />
         );
