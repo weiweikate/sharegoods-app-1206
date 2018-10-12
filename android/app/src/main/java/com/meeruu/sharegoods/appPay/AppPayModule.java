@@ -19,7 +19,6 @@ import com.meeruu.sharegoods.utils.aipay.PayResult;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.tencent.mm.opensdk.utils.Log;
 
 public class AppPayModule extends ReactContextBaseJavaModule {
 
@@ -66,8 +65,6 @@ public class AppPayModule extends ReactContextBaseJavaModule {
 
                         // 支付宝返回此次支付结果及加签，建议对支付宝签名信息拿签约时支付宝提供的公钥做验签
                         String resultInfo = payResult.getResult();
-                        System.out.println(resultInfo + "========");
-
                         String resultStatus = payResult.getResultStatus();
 
                         // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
