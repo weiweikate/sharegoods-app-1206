@@ -38,9 +38,9 @@ export default class DownPricePage extends BasePage {
     }
 
     componentDidMount() {
-        // const {linkTypeCode} = this.params;
-        // this.dataModel.loadTopicData(linkTypeCode);
-        this.dataModel.loadTopicData('ZT20180002');
+        const {linkTypeCode} = this.params;
+        this.dataModel.loadTopicData(linkTypeCode);
+        // this.dataModel.loadTopicData('ZT20180002');
     }
 
     /**
