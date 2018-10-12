@@ -27,18 +27,12 @@ export default class SubSwichView extends Component {
             selectState: 0
         };
     }
+
     render() {
         // const { headerData } = this.props;
         return (
             <View style={SwichStyles.swichBgStyle}>
                 {this._renderTitleItem()}
-                <Animated.View
-                    style={[SwichStyles.bottomLineViewStyle,
-                        {
-                            marginLeft: this.state.bottomLineMarginLeft
-                        }]}
-                >
-                </Animated.View>
             </View>
         );
     }
@@ -50,22 +44,39 @@ export default class SubSwichView extends Component {
             <View style={SwichStyles.titleBgStyle}>
                 {
                     tempTitleArr.slice().map((titleItem, titleItemIndex) => {
+                        return <View>
+                            <UIText
+                                onPress={() => {
+                                    this.itemClick(titleItemIndex);
+                                }}
+                                style={[SwichStyles.titleItemStyle,
+                                    this.state.selectState === titleItemIndex ?
+                                        {
+                                            color: ColorUtil.mainRedColor
+                                        }
+                                        :
+                                        { color: ColorUtil.Color_666666 }
 
-                    return  <UIText
-                            onPress={() => {
-                                this.itemClick(titleItemIndex);
-                            }}
-                            style={[SwichStyles.titleItemStyle,
+                                ]}
+                                value={titleItem.title}
+                            />
+                            {
                                 this.state.selectState === titleItemIndex ?
-                                    {
-                                        borderBottomWidth:1,
-                                        borderColor:ColorUtil.mainRedColor
-                                    } :
-                                    { color: ColorUtil.Color_666666 }
+                                    <View
+                                        style={
+                                            {
+                                                marginTop:10,
+                                                height:1,
+                                                backgroundColor:ColorUtil.mainRedColor
+                                            }
+                                        }
+                                    />
+                                    :
+                                    null
+                            }
 
-                            ]}
-                            value={titleItem.title}
-                        />;
+                        </View>;
+
                     })
                 }
             </View>
@@ -77,27 +88,8 @@ export default class SubSwichView extends Component {
         this.setState({
             selectState: index
         });
-
-        if (index === 0) {
-            Animated.timing(
-                this.state.bottomLineMarginLeft,
-                {
-                    toValue: (ScreenUtils.width - 70 * 2) / 4,
-                    duration: 300
-                }
-            ).start();
-        } else {
-            Animated.timing(
-                this.state.bottomLineMarginLeft,
-                {
-                    toValue: ScreenUtils.width - ((ScreenUtils.width - 70 * 2) / 4) - 70,
-                    duration: 300
-                }
-            ).start();
-        }
-
+        this.props.navItemClick&&this.props.navItemClick(index)
     };
-
 }
 
 const SwichStyles = StyleSheet.create({
