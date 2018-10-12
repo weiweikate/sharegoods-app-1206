@@ -41,6 +41,7 @@ export default {
     appWXPay(payInfo){
         return PayTool.appWXPay(payInfo).then((response)=>{
             //response 出错的时候，做统一的业务自动打点
+            console.log(response);
             /**
              * response object 支付结果   0成功 1 失败 2 未安装 3 无回调
              * 数据格式如下

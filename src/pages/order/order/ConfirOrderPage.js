@@ -199,12 +199,12 @@ export default class ConfirOrderPage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}
-                                  disabled={this.state.viewData.list[0].restrictions & 2 !== 2}
+                                  disabled={true}
                                   onPress={() => this.jumpToCouponsPage('justOne')}>
                     <UIText value={'1元现金券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={this.state.viewData.list[0].restrictions & 2 !== 2 ? '不可使用1元现金券' : '选择1元现金券'}
+                            value={this.state.viewData.list[0].restrictions !== 2 ? '不可使用1元现金券' : '选择1元现金券'}
                             style={[styles.grayText, { marginRight: 15 }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -278,7 +278,7 @@ export default class ConfirOrderPage extends BasePage {
                             marginRight: 12
                         }}/>
                         <UIText
-                            value={StringUtils.formatMoneyString(this.state.viewData.useScore ? this.state.viewData.totalAmounts - this.state.viewData.reducePrice : this.state.viewData.totalAmounts)}
+                            value={StringUtils.formatMoneyString(this.state.viewData.totalAmounts)}
                             style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 15,
@@ -545,7 +545,7 @@ export default class ConfirOrderPage extends BasePage {
     jumpToCouponsPage = (params) => {
         this.$navigate('mine/coupons/CouponsPage', {
             fromOrder: 1, productIds: this.state.viewData.list[0].productId,
-            orderParam: JSON.stringify(this.state.orderParam), callBack: (data) => {
+            orderParam: this.state.orderParam, callBack: (data) => {
                 let orderParams = this.state.orderParam;
                 if (data && data.id) {
                     orderParams.couponId = data.id;

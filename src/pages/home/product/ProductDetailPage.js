@@ -108,7 +108,7 @@ export default class ProductDetailPage extends BasePage {
         } else if (this.state.goType === 'buy') {
             orderProducts.push({
                 priceId: priceId,
-                num: 1,
+                num: amount,
                 productId: this.state.data.product.id
             });
             this.$navigate('order/order/ConfirOrderPage', {

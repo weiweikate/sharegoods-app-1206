@@ -14,14 +14,16 @@ import {
 import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import RefreshList from '../../../components/ui';
+import {RefreshList} from '../../../components/ui';
 import logisticsTop from '../res/logisticsTop.png';
 import logisticsBottom from '../res/logisticsBottom.png';
 import copy from '../res/copy.png';
 import logisticsIcon from '../res/logisticsIcon.png';
 import LogisticsDetailItem from '../components/LogisticsDetailItem';
-// import Toast from '../../../utils/bridge'
-// import OrderApi from 'OrderApi'
+import tryIcon from '../res/car.png';
+import Toast from '../../../utils/bridge';
+import OrderApi from '../api/orderApi';
+
 // import {PageLoadingState} from 'PageState';
 
 class LogisticsDetailsPage extends BasePage {
@@ -42,37 +44,38 @@ class LogisticsDetailsPage extends BasePage {
             orderId: this.params.orderId ? this.params.orderId : 0,
             expressNo: this.params.expressNo ? this.params.expressNo : '',
             expressName: '',
+            loadingState: 'success',
             viewData: [
-                // {
-                //     time: '',
-                //     middleImage:shou,
-                //     title:'',
-                //     content1:'[收货地址]浙江省杭州市萧山区 宁围镇鸿宁街道望京商务中心C2-502',
-                //
-                // },{
-                //     time: '06-01\n07:25',
-                //     middleImage:yiQianShou,
-                //     title:'已签收',
-                //     content1:'[自提柜]已签收，签收人凭取货码签收。感谢使用ZJ望京国际丰巢【自提柜】，期待再次为您服务。',
-                // },{
-                //     time: '06-01\n07:25',
-                //     middleImage:yiQianShou,
-                //     title:'派送中',
-                //     content1:'[杭州市] 杭州萧山派件员：杨二萌',
-                //     content2:'185158675566',
-                //     content3:'正在为您派件',
-                // },{
-                //     time: '06-01\n07:25',
-                //     content1:'[杭州市] 杭州萧山派件员：杨二萌',
-                // },
-                // {
-                //     time: '06-01\n07:25',
-                //     content1:'[杭州市] 杭州萧山派件员：杨二萌',
-                // },
-                // {
-                //     time: '06-01\n07:25',
-                //     content1:'[杭州市] 杭州萧山派件员：杨二萌',
-                // },
+                {
+                    time: '',
+                    middleImage: tryIcon,
+                    title: '',
+                    content1: '[收货地址]浙江省杭州市萧山区 宁围镇鸿宁街道望京商务中心C2-502'
+
+                }, {
+                    time: '06-01\n07:25',
+                    middleImage: tryIcon,
+                    title: '已签收',
+                    content1: '[自提柜]已签收，签收人凭取货码签收。感谢使用ZJ望京国际丰巢【自提柜】，期待再次为您服务。'
+                }, {
+                    time: '06-01\n07:25',
+                    middleImage: tryIcon,
+                    title: '派送中',
+                    content1: '[杭州市] 杭州萧山派件员：杨二萌',
+                    content2: '185158675566',
+                    content3: '正在为您派件'
+                }, {
+                    time: '06-01\n07:25',
+                    content1: '[杭州市] 杭州萧山派件员：杨二萌'
+                },
+                {
+                    time: '06-01\n07:25',
+                    content1: '[杭州市] 杭州萧山派件员：杨二萌'
+                },
+                {
+                    time: '06-01\n07:25',
+                    content1: '[杭州市] 杭州萧山派件员：杨二萌'
+                }
 
             ]
         };
@@ -148,7 +151,8 @@ class LogisticsDetailsPage extends BasePage {
             </TouchableOpacity>
         );
     };
-    _render(){
+
+    _render() {
         return (
             <View style={styles.container}>
                 {this.renderLogisticsNumber()}
@@ -173,39 +177,42 @@ class LogisticsDetailsPage extends BasePage {
         );
     };
 
+    componentDidMount(){
+        this.loadPageData()
+    }
     //**********************************BusinessPart******************************************
-    // loadPageData(){
-    //     Toast.showLoading()
-    //     OrderApi.find({orderId:this.state.orderId,}).then((response)=>{
-    //         Toast.hiddenLoading()
-    //         if(response.ok ){
-    //             let arrData=[]
-    //             if (!response.data.showapi_res_body.flag){
-    //                 NativeModules.commModule.toast('查询出错')
-    //                 this.setState({
-    //                     loadingState: PageLoadingState.fail,
-    //                 })
-    //                 return
-    //             }
-    //             response.data.showapi_res_body.data.map((item, index)=> {
-    //                 let time=item.time
-    //                 arrData.push({
-    //                     time: time.replace(' ','\n'),
-    //                     content1:item.context,
-    //                 },)
-    //             })
-    //             this.setState({
-    //                 expressName:response.data.showapi_res_body.expTextName,
-    //                 viewData:arrData,
-    //                 loadingState: PageLoadingState.success,
-    //             })
-    //         } else {
-    //             NativeModules.commModule.toast(response.data.showapi_res_body.msg)
-    //         }
-    //     }).catch(e=>{
-    //         Toast.hiddenLoading()
-    //     });
-    // }
+    loadPageData() {
+        console.log(this.params);
+        Toast.showLoading();
+        OrderApi.findLogisticsDetail({ expNum: this.state.expressNo }).then((response) => {
+            Toast.hiddenLoading();
+            console.log(response);
+            let arrData = [];
+            if (!response.data.showapi_res_body.flag) {
+                NativeModules.commModule.toast('查询出错');
+                this.setState({
+                    loadingState: 'fail'
+                });
+                return;
+            }
+            response.data.showapi_res_body.data.map((item, index) => {
+                let time = item.time;
+                arrData.push({
+                    time: time.replace(' ', '\n'),
+                    content1: item.context
+                });
+            });
+            this.setState({
+                expressName: response.data.showapi_res_body.expTextName,
+                viewData: arrData,
+                loadingState: 'success'
+            });
+        }).catch(e => {
+            Toast.hiddenLoading();
+            console.log(e);
+        });
+    }
+
     copyToClipboard = () => {
         StringUtils.clipboardSetString(this.state.expressNo);
         NativeModules.commModule.toast('快递单号已复制到剪切板');

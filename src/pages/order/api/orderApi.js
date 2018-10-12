@@ -25,6 +25,8 @@ const api = {
     continuePay:'/order/payRecord/continuePay',
     //继续去支付
     continueToPay:['/order/payRecord/continueToPay',{method:'get'}],
+    // 查看物流详情
+    findLogisticsDetail:['/order/logistics/findLogisticsDetail',{method:'get'}],
     /**  售后模块相关接口 huchao */
     //（陈帅）申请退款
     applyRefund: '/order/returnProduct/applyRefund',
