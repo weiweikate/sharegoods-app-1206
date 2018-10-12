@@ -7,89 +7,89 @@ import {
 import UIText from '../../../comm/components/UIText';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ColorUtil from '../../../utils/ColorUtil';
+import PropTypes from 'prop-types';
 
 
 export default class SubSwichView extends Component {
-    state = {
-        bottomLineMarginLeft: new Animated.Value((ScreenUtils.width - 70 * 2) / 4),
-        selectState: 0
+
+    static propTypes = {
+        subjectType: PropTypes.number,
+        headerData: PropTypes.object.isRequired,
+        navItemClick: PropTypes.func.isRequired
     };
 
     constructor(props) {
         super(props);
-    }
-
-    componentDidMount() {
-
+        // const {topicNavTitleList} = this.props
+        // const titleWith = ScreenUtils.width/topicNavTitleList.slice().length
+        this.state = {
+            bottomLineMarginLeft: new Animated.Value(0),
+            selectState: 0
+        };
     }
 
     render() {
+        // const { headerData } = this.props;
         return (
             <View style={SwichStyles.swichBgStyle}>
-                <View style={SwichStyles.titleBgStyle}>
-                    <UIText
-                        onPress={() => {
-                            this.itemClick(0);
-                        }}
-                        style={[SwichStyles.titleItemStyle,
-                            this.state.selectState === 0 ?
-                                { color: ColorUtil.Color_d51243 } :
-                                { color: ColorUtil.Color_666666 }
-
-                        ]}
-                        value={'美容彩妆'}
-                    />
-                    <UIText
-                        onPress={
-                            () => {
-                                this.itemClick(1);
-                            }
-                        }
-                        style={[SwichStyles.titleItemStyle,
-                            this.state.selectState === 0 ?
-                                { color: ColorUtil.Color_666666 } :
-                                { color: ColorUtil.Color_d51243 }
-                        ]}
-                        value={'个人护肤'}
-                    />
-                </View>
-                <Animated.View
-                    style={[SwichStyles.bottomLineViewStyle,
-                        {
-                            marginLeft: this.state.bottomLineMarginLeft
-                        }]}
-                >
-                </Animated.View>
+                {this._renderTitleItem()}
             </View>
         );
     }
 
-    itemClick = (index) => {
-
-        this.setState({
-            selectState: index
-        });
-
-        if (index === 0) {
-            Animated.timing(
-                this.state.bottomLineMarginLeft,
+    _renderTitleItem = () => {
+        const { topicNavTitleList } = this.props.headerData || [];
+        let tempTitleArr = topicNavTitleList || [];
+        return (
+            <View style={SwichStyles.titleBgStyle}>
                 {
-                    toValue: (ScreenUtils.width - 70 * 2) / 4,
-                    duration: 300
+                    tempTitleArr.slice().map((titleItem, titleItemIndex) => {
+                        return <View>
+                            <UIText
+                                onPress={() => {
+                                    this.itemClick(titleItemIndex);
+                                }}
+                                style={[SwichStyles.titleItemStyle,
+                                    this.state.selectState === titleItemIndex ?
+                                        {
+                                            color: ColorUtil.mainRedColor
+                                        }
+                                        :
+                                        { color: ColorUtil.Color_666666 }
+
+                                ]}
+                                value={titleItem.title}
+                            />
+                            {
+                                this.state.selectState === titleItemIndex ?
+                                    <View
+                                        style={
+                                            {
+                                                marginTop:10,
+                                                height:1,
+                                                backgroundColor:ColorUtil.mainRedColor
+                                            }
+                                        }
+                                    />
+                                    :
+                                    null
+                            }
+
+                        </View>;
+
+                    })
                 }
-            ).start();
-        } else {
-            Animated.timing(
-                this.state.bottomLineMarginLeft,
-                {
-                    toValue: ScreenUtils.width - ((ScreenUtils.width - 70 * 2) / 4) - 70,
-                    duration: 300
-                }
-            ).start();
-        }
+            </View>
+        );
 
     };
 
+    itemClick = (index) => {
+        this.setState({
+            selectState: index
+        });
+        this.props.navItemClick&&this.props.navItemClick(index)
+    };
 }
 
 const SwichStyles = StyleSheet.create({
@@ -111,7 +111,7 @@ const SwichStyles = StyleSheet.create({
         bottomLineViewStyle: {
             height: 2,
             backgroundColor: ColorUtil.Color_d51243,
-            width: 70,
+            width: 50,
             marginLeft: (ScreenUtils.width - 70 * 2) / 4
         }
     }

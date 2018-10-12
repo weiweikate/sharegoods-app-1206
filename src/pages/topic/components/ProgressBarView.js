@@ -5,17 +5,18 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ColorUtil from '../../../utils/ColorUtil';
+// import TopicItemView from './TopicItemView';
+import PropTypes from 'prop-types';
 
 export default class ProgressBarView extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-
-        };
+        this.state = {};
     }
-    render() {
 
+    render() {
+        const { progressValue, haveRobNum } = this.props;
         return (
             <View style={{
                 width: ScreenUtils.width / 2 - 40,
@@ -28,7 +29,7 @@ export default class ProgressBarView extends Component {
                 marginTop: 5
             }}>
                 <View style={{
-                    width: 0.5 * (ScreenUtils.width / 2 - 40),
+                    width: progressValue / 100 * (ScreenUtils.width / 2 - 40),
                     height: 12,
                     borderRadius: 6,
                     backgroundColor: ColorUtil.Color_d51243,
@@ -39,20 +40,27 @@ export default class ProgressBarView extends Component {
 
                 </View>
                 {/*<Text style={{ fontSize: 11, marginLeft: 5 }}>{this.state.nav < 1 ? `已抢${this.state.num}件` : ''}</Text>*/}
-                <Text style={{ fontSize: 11, marginLeft: 5,color:ColorUtil.Color_ffffff }}>
-                    已抢10件
+                <Text style={{ fontSize: 11, marginLeft: 5, color: ColorUtil.Color_ffffff }}>
+                    {'已抢' + haveRobNum + '件'}
                 </Text>
                 {/*<Text style={{*/}
-                    {/*fontSize: 11,*/}
-                    {/*marginRight: 5*/}
+                {/*fontSize: 11,*/}
+                {/*marginRight: 5*/}
                 {/*}}>{this.state.nav < 1 ? `${this.state.nav * 100}%` : '已售完'}</Text>*/}
                 <Text style={{
                     fontSize: 11,
                     marginRight: 5,
-                    color:ColorUtil.Color_ffffff
-                }}>50%</Text>
+                    color: ColorUtil.Color_ffffff
+                }}>
+                    {progressValue + '%'}
+                </Text>
 
             </View>
         );
     }
 }
+
+ProgressBarView.propTypes = {
+    progressValue: PropTypes.number.isRequired,
+    haveRobNum: PropTypes.number.isRequired
+};

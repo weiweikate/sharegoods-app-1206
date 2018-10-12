@@ -1,5 +1,17 @@
 # 秀购
 
+## 关于数据加签
+配置文件目录：`src/api/network/rsa_config.js`
+需要配置的字段： `client` `version` `rsa_key`
+
+| 参数          | 类型        | 是否必填  | 最大长度  | 描述  | 示例值  |
+| ---------     |-------------| --------- | --------- | ----- | -----   |
+| sign          | String | 是 | 512   | 用户请求签名，详见3.3     - header中                | 详见3.3.1   |
+| timestamp     | String | 是 | 19    | 发送请求的时间，为系统当前时间毫秒数，UTC+8  - header中    | 1521813339311  |
+| nonce     | String | 是 | 16    | 请求随机值 - header中     | 58442c21xug38sho1x   |
+| client    | String | 是 | | 客户端 - header中| ios/android/miniapp/h5|
+| version   |String |是|  | 客户端版本 - header中| 1.0|
+
 ## 依赖包
 所有依赖包必须固定版本
 

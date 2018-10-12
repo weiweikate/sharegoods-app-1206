@@ -20,24 +20,7 @@ class TotalTopicresultDataModel {
     @observable
     topicNavbarList = [];
     @observable
-    topicNavTitleList = [
-        {
-            title: '00:00',
-            subTitle: '已开抢'
-        },
-        {
-            title: '00:00',
-            subTitle: '已开抢'
-        },
-        {
-            title: '00:00',
-            subTitle: '已开抢'
-        },
-        {
-            title: '00:00',
-            subTitle: '已开抢'
-        }
-    ];
+    topicNavTitleList = [];
 
     /*不同导航下的数据*/
     @observable

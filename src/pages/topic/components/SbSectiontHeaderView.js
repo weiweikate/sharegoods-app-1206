@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
 import SubSwichView from './SubSwichView';
+import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
 
 class SbSectiontHeaderView extends Component {
@@ -30,8 +31,6 @@ class SbSectiontHeaderView extends Component {
                 <Image
                     style={SbSectiontHeaderViewStyles.topImageStyle}
                 />
-
-
                 {subjectType === 1 ?
                     <SubSwichView/> : null}
 
@@ -51,10 +50,18 @@ const SbSectiontHeaderViewStyles = StyleSheet.create({
 
 /*活动类型one的view 只是测试 可能会有多种,再添加*/
 class ActivityOneView extends Component {
+
+    static propTypes = {
+        imageUrl: PropTypes.string.isRequired
+    };
+
     render() {
+        const { imageUrl } = this.props;
+        console.log(imageUrl);
         return (
             <View>
-                <Image
+                <PreLoadImage
+                    imageUri={imageUrl}
                     style={ActivityOneViewStyles.bgImageStyle}
                 />
             </View>

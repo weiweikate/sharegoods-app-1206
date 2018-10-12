@@ -15,18 +15,18 @@ import ColorUtil from '../../../utils/ColorUtil';
 import UIText from '../../../comm/components/UIText';
 import bridge from '../../../utils/bridge';
 import SbResTool from '../res/SbResTool';
-import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 
 export default class SbOpenPrizeHeader extends Component {
 
     static propTypes = {
         subjectType: PropTypes.number,
         headerData: PropTypes.object.isRequired,
-        navItemClick:PropTypes.func.isRequired
+        navItemClick: PropTypes.func.isRequired
     };
     state = {
-        selectSate: 2
+        selectSate: 0
     };
+
     constructor(props) {
         super(props);
     }
@@ -36,10 +36,10 @@ export default class SbOpenPrizeHeader extends Component {
         console.log(imgUrl);
         return (
             <View>
-                <PreLoadImage
-                    imageUri={imgUrl}
-                    style={SbOpenPrizeHeaderStyles.topImageStyle}
-                />
+                {/*<PreLoadImage*/}
+                {/*imageUri={imgUrl}*/}
+                {/*style={SbOpenPrizeHeaderStyles.topImageStyle}*/}
+                {/*/>*/}
                 {
                     (topicNavTitleList instanceof Array && topicNavTitleList.length > 1) ?
                         <View style={SbOpenPrizeHeaderStyles.bottomDownViewBgStyle}>
@@ -52,13 +52,6 @@ export default class SbOpenPrizeHeader extends Component {
                                     }
                                 }
                             />
-                            {/*<Image*/}
-                            {/*source={SbResTool.miaosha_qianggouzhong_img}*/}
-                            {/*style={[itemViewStyle.itemBgImageStyle,*/}
-                            {/*{*/}
-                            {/*left: this.state.selectSate * ScreenUtils.width / 5*/}
-                            {/*}]}*/}
-                            {/*/>*/}
                             <ScrollView
                                 ref="scroll"
                                 style={{
@@ -69,18 +62,18 @@ export default class SbOpenPrizeHeader extends Component {
                                     top: 0
                                 }}
                                 contentContainerStyle={{
-                                    flexDirection: 'row',
-                                    }
+                                    flexDirection: 'row'
+                                }
                                 }
                                 horizontal={true}
                                 showsHorizontalScrollIndicator={false}
                             >
                                 <Image
-                                source={SbResTool.miaosha_qianggouzhong_img}
-                                style={[itemViewStyle.itemBgImageStyle,
-                                {
-                                left: this.state.selectSate * ScreenUtils.width / 5
-                                }]}
+                                    source={SbResTool.miaosha_qianggouzhong_img}
+                                    style={[itemViewStyle.itemBgImageStyle,
+                                        {
+                                            left: this.state.selectSate * ScreenUtils.width / 5
+                                        }]}
                                 />
                                 {this._getDownTimeItemView().map(itemView => {
                                     return itemView;
@@ -149,15 +142,15 @@ export default class SbOpenPrizeHeader extends Component {
         this.setState({
             selectSate: index
         });
-        if (index > 2){
-            let  offsetX = index*(ScreenUtils.width/5) -(ScreenUtils.width* 2/5);
-            this.refs.scroll.scrollTo({x: offsetX, y: 0 , animated: true})
-        }else {
-            this.refs.scroll.scrollTo({x: 0, y: 0 , animated: true})
+        if (index > 2) {
+            let offsetX = index * (ScreenUtils.width / 5) - (ScreenUtils.width * 2 / 5);
+            this.refs.scroll.scrollTo({ x: offsetX, y: 0, animated: true });
+        } else {
+            this.refs.scroll.scrollTo({ x: 0, y: 0, animated: true });
         }
 
-        this.props.navItemClick(index,item);
-         bridge.$toast('点击了 ' + item + ' 索引:' + index);
+        this.props.navItemClick(index, item);
+        bridge.$toast('点击了 ' + item + ' 索引:' + index);
     };
 }
 
