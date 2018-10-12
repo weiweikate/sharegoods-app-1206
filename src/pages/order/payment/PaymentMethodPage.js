@@ -279,7 +279,7 @@ export default class PaymentMethodPage extends BasePage {
 
     forgetTransactionPassword = () => {
         this.setState({ isShowPaymentModal: false });
-        this.navigate('mine/transactionPassword/SettingTransactionPasswordStep2Page');
+        this.$navigate('mine/account/SetOrEditPayPwdPage');
     };
     payIntercept = (type) => {
         console.log(type);
@@ -305,10 +305,10 @@ export default class PaymentMethodPage extends BasePage {
             Toast.$toast('暂不支持银行卡支付');
             return false;
         }
-        if (payMethodList[3]) {
-            Toast.$toast('暂不支持微信支付');
-            return false;
-        }
+        // if (payMethodList[3]) {
+        //     Toast.$toast('暂不支持微信支付');
+        //     return false;
+        // }
         // //使用代币但是未找到代币与余额的兑换比例参数tokenCoinToBalance拦截
         // if (payMethodList[0]&&this.state.paymentPageParams.tokenCoinToBalance==-1){
         //     Toast.toast('查询服务器代币兑换比例异常');
@@ -342,7 +342,7 @@ export default class PaymentMethodPage extends BasePage {
             this.setState({ password: '' });
 
         } else {
-            this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
+            this.$navigate('mine/account/SetOrEditPayPwdPage', { hasOriginalPsw: false });
         }
 
     };
@@ -355,6 +355,9 @@ export default class PaymentMethodPage extends BasePage {
         }
         if (payMethodList[4]) {
             type += 8;
+        }
+        if(payMethodList[3]){
+            type +=4
         }
         /*
         * 先扣除代币 -> 余额 -> 三方
@@ -384,6 +387,7 @@ export default class PaymentMethodPage extends BasePage {
         let payMethodList = this.state.payMethodList;
         Toast.showLoading();
         OrderApi.prePay(params).then((response) => {
+            console.log(response)
             Toast.hiddenLoading();
                 if (payMethodList[4]) {
                     let payString = response.data.prePayStr;
@@ -392,13 +396,27 @@ export default class PaymentMethodPage extends BasePage {
                         if (resultStr.code == 0) {
                             this.continueToPay(response.data.outTradeNo);
                         } else {
-                            this.navigate('payment/PayResultPage', { pageType: this.state.paymentPageParams.orderPayParams.orderType + 1 });
+                            this.$navigate('payment/PayResultPage', { pageType: this.state.paymentPageParams.orderPayParams.orderType + 1 });
                             // NativeModules.commModule.toast('支付失败')
                         }
                     }).catch(e => {
                         NativeModules.commModule.toast('调用失败' + e);
                     });
-                } else {
+                }else if(payMethodList[3]){
+                    let payString = response.data.prePayStr;
+                    PayUtil.appWXPay(payString).then(resultStr => {
+                        console.log('WxinPay:' + JSON.stringify(resultStr));
+                        if (resultStr.code == 0) {
+                            this.continueToPay(response.data.outTradeNo);
+                        } else {
+                            this.$navigate('payment/PayResultPage', { pageType: this.state.paymentPageParams.orderPayParams.orderType + 1 });
+                            // NativeModules.commModule.toast('支付失败')
+                        }
+                    }).catch(e => {
+                        NativeModules.commModule.toast('调用失败' + e);
+                    });
+                }
+                else {
                     this.continueToPay(response.data.outTradeNo);
                 }
         }).catch(e => {

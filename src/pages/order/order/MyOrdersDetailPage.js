@@ -5,7 +5,7 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ImageBackground, Image
+    ImageBackground, Image,DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import {
@@ -148,31 +148,34 @@ class MyOrdersDetailPage extends BasePage {
         return (
             <View style={{ marginBottom: 10 }}>
                 <ImageBackground style={styles.redRectangle} source={productDetailImg}>
-                    <UIImage source={buyerHasPay} style={{ height: 25, width: 25, marginTop: 22 }}/>
-                    <View style={{ marginTop: 22 }}>
+                    <UIImage source={buyerHasPay} style={{ height: 25, width: 25, marginTop: -22 }}/>
+                    <View style={{ marginTop: -22 }}>
                         <UIText value={this.state.pageStateString.buyState} style={{
                             color: color.white,
                             fontSize: 18,
                             marginLeft: 10,
-                            marginTop: this.state.pageStateString.moreDetail === '' ? 7 : 0
                         }}/>
+                        {StringUtils.isNoEmpty(this.state.pageStateString.moreDetail)?
                         <UIText value={this.state.pageStateString.moreDetail}
-                                style={{ color: color.white, fontSize: 13, marginLeft: 10 }}/>
+                            style={{ color: color.white, fontSize: 13, marginLeft: 10 }}/> :null
+                        }
                     </View>
                 </ImageBackground>
                 <View style={styles.whiteRectangle}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <UIImage source={position} style={{ height: 19, width: 19, marginLeft: 21, marginTop: 7 }}/>
+                    <View style={{ flexDirection: 'row' ,alignItems:'center'}}>
+                        <UIImage source={position} style={{ height: 19, width: 19, marginLeft: 21, }}/>
                         <View>
                             <UIText value={this.state.pageStateString.sellerState} style={{
                                 color: color.black_222,
                                 fontSize: 18,
                                 marginLeft: 10,
-                                marginTop: this.state.pageStateString.sellerTime === '' ? 2 : -7,
                                 marginRight: 46
                             }}/>
-                            <UIText value={this.state.pageStateString.sellerTime}
-                                    style={{ color: color.black_999, fontSize: 13, marginLeft: 10, marginRight: 46 }}/>
+                            {StringUtils.isNoEmpty(this.state.pageStateString.sellerTime)?
+                                <UIText value={this.state.pageStateString.sellerTime}
+                                        style={{ color: color.black_999, fontSize: 13, marginLeft: 10, marginRight: 46 }}/>
+                            :null}
+
                         </View>
                     </View>
                     <UIImage source={arrow_right} style={{ height: 19, width: 19, marginRight: 11 }}
@@ -184,6 +187,7 @@ class MyOrdersDetailPage extends BasePage {
     };
 
     componentDidMount() {
+        DeviceEventEmitter.addListener('OrderNeedRefresh',()=>this.loadPageData());
         this.loadPageData();
     }
 
@@ -589,7 +593,7 @@ class MyOrdersDetailPage extends BasePage {
                 }
             }
         } else {
-            if (data[index].status === 4) {
+            if (data[index].status === 4||data[index].status === 5) {
                 switch (data[index].returnType) {
                     case 1://申请退款
                         afterSaleService.push({
@@ -614,28 +618,57 @@ class MyOrdersDetailPage extends BasePage {
                         break;
                     default:
                         afterSaleService.push({
-                            id: 2,
+                            id: 1,
                             operation: '退换',
                             isRed: false
                         });
                 }
-                afterSaleService.push({
-                    id: 2,
-                    operation: '退换',
-                    isRed: false
-                });
+                // afterSaleService.push({
+                //     id: 2,
+                //     operation: '退换',
+                //     isRed: false
+                // });
             }
-            if (data[index].status === 5 || data[index].status === 6) {
-                afterSaleService.push({
-                    id: 1,
-                    operation: '退换',
-                    isRed: false
-                });
+            if (data[index].status === 6) {
+                switch (data[index].returnType) {
+                    case 1://申请退款
+                        afterSaleService.push({
+                            id: 2,
+                            operation: '退款完成',
+                            isRed: false
+                        });
+                        break;
+                    case 2://申请退货
+                        afterSaleService.push({
+                            id: 3,
+                            operation: '退货完成',
+                            isRed: false
+                        });
+                        break;
+                    case 3://申请换货
+                        afterSaleService.push({
+                            id: 6,
+                            operation: '换货完成',
+                            isRed: false
+                        });
+                        break;
+                    default:
+                        afterSaleService.push({
+                            id: 1,
+                            operation: '退换',
+                            isRed: false
+                        });
+                }
+                // afterSaleService.push({
+                //     id: 1,
+                //     operation: '退换',
+                //     isRed: false
+                // });
             }
             if (data[index].status === 7 && data[index].returnType) {
                 afterSaleService.push({
                     id: 4,
-                    operation: '售后完成',
+                    operation: '已关闭',
                     isRed: true
                 });
             }
@@ -933,7 +966,7 @@ class MyOrdersDetailPage extends BasePage {
         //                 isRed:false,
         //             },{
         //                 id:3,
-        //                 operation:'退换中',
+        //                 operation:'退货中',
         //                 isRed:false,
         //             },{
         //                 id:4,
@@ -946,7 +979,7 @@ class MyOrdersDetailPage extends BasePage {
         //             },
         // {
             //                 id:6,
-            //                 operation:'售后失败',
+            //                 operation:'换货中',
             //                 isRed:true,
             //             },
         //         ],
@@ -1018,7 +1051,8 @@ const styles = StyleSheet.create({
         backgroundColor: color.red,
         flexDirection: 'row',
         paddingLeft: 22,
-        position: 'absolute'
+        position: 'absolute',
+        alignItems:'center'
     }, whiteRectangle: {
         height: 81,
         marginTop: 69,

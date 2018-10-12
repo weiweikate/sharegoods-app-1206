@@ -187,21 +187,42 @@ export default class MyCouponsItems extends Component {
     getDataFromNetwork = () => {
         let status = this.state.pageStatus;
         let page = this.state.currentPage || 1;
-        API.userCouponList({
-            page,
-            status,
-            pageSize: 20
-        }).then(result => {
-            let data = result.data || {};
-            let dataList = data.data || [];
-            this.parseData(dataList);
+        if (this.props.fromOrder) {
+            let arr = [], ProductPriceIdPair = {};
+            // ProductPriceIdPair=this.props.productIds;
+            // priceId  productId
+            ProductPriceIdPair.priceId = this.props.productIds.orderProducts[0].priceId,
+                ProductPriceIdPair.productId =this.props.productIds.orderProducts[0].productId,
 
-        }).catch(result => {
-            if (result.code === 10009) {
-                this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
-            }
-            UI.$toast(result.msg);
-        });
+                arr.push({
+                    ProductPriceIdPair
+                });
+            API.listAvailable({ page, pageSize: 20, productPriceIds: arr }).then(res => {
+                console.log(res.data);
+            }).catch(result => {
+                if (result.code === 10009) {
+                    this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
+                }
+                UI.$toast(result.msg);
+            });
+        } else {
+            API.userCouponList({
+                page,
+                status,
+                pageSize: 20
+            }).then(result => {
+                let data = result.data || {};
+                let dataList = data.data || [];
+                this.parseData(dataList);
+
+            }).catch(result => {
+                if (result.code === 10009) {
+                    this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
+                }
+                UI.$toast(result.msg);
+            });
+        }
+
 
     };
 
