@@ -15,6 +15,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.google.gson.Gson;
 import com.meeruu.commonlib.BaseApplication;
 import com.meeruu.sharegoods.bean.WXPayBean;
+
 import com.meeruu.sharegoods.event.AppPayEvent;
 import com.meeruu.sharegoods.utils.aipay.PayResult;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -68,7 +69,6 @@ public class AppPayModule extends ReactContextBaseJavaModule {
 
                         // 支付宝返回此次支付结果及加签，建议对支付宝签名信息拿签约时支付宝提供的公钥做验签
                         String resultInfo = payResult.getResult();
-
                         String resultStatus = payResult.getResultStatus();
                         Toast.makeText(BaseApplication.appContext, resultStatus, Toast.LENGTH_SHORT).show();
                         // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
