@@ -142,8 +142,8 @@ public class AppPayModule extends ReactContextBaseJavaModule {
     public void appWXPay(final String params1, final Promise promise) {
         //通过WXAPIFactory工厂，获取IWXAPI的实例
         iwxapi = WXAPIFactory.createWXAPI(mContext, App_ID, true);
-       Gson gson = new Gson();
-    final  WXPayBean params= gson.fromJson(params1,WXPayBean.class);
+        Gson gson = new Gson();
+        final WXPayBean params = gson.fromJson(params1, WXPayBean.class);
         //下面是设置必要的参数，也就是前面说的参数,这几个参数从何而来请看上面说明
         //https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_12&index=2
         //将应用的appId注册到微信
@@ -154,15 +154,8 @@ public class AppPayModule extends ReactContextBaseJavaModule {
                 PayReq request = new PayReq(); //调起微信APP的对象
                 //下面是设置必要的参数，也就是前面说的参数,这几个参数从何而来请看上面说明
                 //https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_12&index=2
-//                request.appId = params.getString("appid");//应用ID
-//                request.partnerId = params.getString("partnerid");//商户号
-//                request.prepayId = params.getString("prepayid");//预支付交易会话ID
-//                request.packageValue = params.getString("package");//扩展字段
-//                request.nonceStr = params.getString("noncestr");//随机字符串
-//                request.timeStamp = params.getString("timestamp");//时间戳
-//                request.sign = params.getString("sign");//签名
                 request.appId = params.getAppid();//应用ID
-                request.partnerId =params.getPartnerid();//商户号
+                request.partnerId = params.getPartnerid();//商户号
                 request.prepayId = params.getPrepayid();//预支付交易会话ID
                 request.packageValue = "Sign=WXPay";//扩展字段
                 request.nonceStr = params.getNoncestr();//随机字符串
