@@ -16,7 +16,7 @@ import OpenPrizeItemView from './components/OpenPrizeItemView';
 import TotalTopicDataModel from './model/SubTopicModel';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 import PropTypes from 'prop-types';
-import SubSwichView from './components/SubSwichView';
+// import SubSwichView from './components/SubSwichView';
 import TopicAPI from './api/TopicApi';
 import bridge from '../../utils/bridge';
 import user from '../../model/user';
@@ -177,24 +177,33 @@ export default class DownPricePage extends BasePage {
                     }}
                 />
 
-                {
-                    this._getTopicType() === 0
-                        ?
-                        <SubSwichView
-                            headerData={this.dataModel}
-                        />
-                        :
-                        <SbOpenPrizeHeader
-                            headerData={this.dataModel}
-                            navItemClick={(index, item) => {
-                                //自导航点击事件
-                                this.setState({
-                                    selectNav: index
-                                });
-                            }}
-                        />
+                {/*{*/}
+                    {/*this._getTopicType() === 0*/}
+                        {/*?*/}
+                        {/*<SubSwichView*/}
+                            {/*headerData={this.dataModel}*/}
+                        {/*/>*/}
+                        {/*:*/}
+                        {/*<SbOpenPrizeHeader*/}
+                            {/*headerData={this.dataModel}*/}
+                            {/*navItemClick={(index, item) => {*/}
+                                {/*//自导航点击事件*/}
+                                {/*this.setState({*/}
+                                    {/*selectNav: index*/}
+                                {/*});*/}
+                            {/*}}*/}
+                        {/*/>*/}
 
-                }
+                {/*}*/}
+                <SbOpenPrizeHeader
+                    headerData={this.dataModel}
+                    navItemClick={(index, item) => {
+                        //自导航点击事件
+                        this.setState({
+                            selectNav: index
+                        });
+                    }}
+                />
 
                 {
                     this._renderBottomListView(sectionData)
