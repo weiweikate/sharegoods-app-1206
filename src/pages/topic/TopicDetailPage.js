@@ -20,6 +20,9 @@ import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import StringUtils from '../../utils/StringUtils';
 import HomeAPI from '../home/api/HomeAPI';
+import TopicApi from './api/TopicApi';
+import user from '../../model/user';
+import TopicDetailSelectPage from './TopicDetailSelectPage'
 
 export default class TopicDetailPage extends BasePage {
 
@@ -31,13 +34,14 @@ export default class TopicDetailPage extends BasePage {
         super(props);
         this.state = {
             //活动类型1.秒杀2.降价拍
-            activityType: 2,
+            activityType: this.params.productType,
             //参数还是详情
             selectedIndex: 0,
             //是否显示规格选择
             modalVisible: false,
             //数据
             data: {},
+            //活动数据
             activityData: {}
         };
     }
@@ -52,17 +56,29 @@ export default class TopicDetailPage extends BasePage {
 
     //数据
     _getActivityData = () => {
-        this.$loadingShow();
-        //code JJP1810100008已结束
-        HomeAPI.activityDepreciate_findById({
-            code: this.params.activityCode || 'JJP1810100008'
-        }).then((data) => {
-            this.state.activityData = data.data || {};
-            this._getProductDetail(this.state.activityData.productId);
-        }).catch((error) => {
-            this.$loadingDismiss();
-            this.$toastShow(error.msg);
-        });
+        if (this.state.activityType === 1) {
+            this.$loadingShow();
+            TopicApi.seckill_findByCode({
+                code: this.params.activityCode
+            }).then((data) => {
+                this.state.activityData = data.data || {};
+                this._getProductDetail(this.state.activityData.productId);
+            }).catch((error) => {
+                this.$loadingDismiss();
+                this.$toastShow(error.msg);
+            });
+        } else {
+            this.$loadingShow();
+            TopicApi.activityDepreciate_findById({
+                code: this.params.activityCode
+            }).then((data) => {
+                this.state.activityData = data.data || {};
+                this._getProductDetail(this.state.activityData.productId);
+            }).catch((error) => {
+                this.$loadingDismiss();
+                this.$toastShow(error.msg);
+            });
+        }
     };
 
     _getProductDetail = (productId) => {
@@ -74,11 +90,32 @@ export default class TopicDetailPage extends BasePage {
                 data: data.data || {}
             });
         }).catch((error) => {
+            this.setState({
+                data: error || {}
+            });
             this.$loadingDismiss();
             this.$toastShow(error.msg);
         });
     };
 
+    _followAction = () => {
+        const itemData = this.state.activityData;
+        let param = {
+            'activityId': itemData.id,
+            'activityType': this.state.activityType,
+            'type': itemData.notifyFlag ? 0 : 1,
+            'userId': user.id
+        };
+        TopicApi.followAction(
+            param
+        ).then(result => {
+            this._getActivityData();
+            this.$toastShow(result.msg);
+        }).catch(error => {
+            this.$toastShow(error.msg);
+        });
+
+    };
     //选择规格确认
     _selectionViewConfirm = (amount, priceId) => {
         let orderProducts = [];
@@ -107,6 +144,18 @@ export default class TopicDetailPage extends BasePage {
         this.setState({
             selectedIndex: index
         });
+    };
+
+    _bottomAction = (type) => {
+        if (type === 1) {
+            this._followAction();
+        } else if (type === 2) {
+            this._selectionViewConfirm();
+        }else {
+            this.setState({
+                modalVisible: true
+            });
+        }
     };
 
     _renderListHeader = () => {
@@ -221,13 +270,20 @@ export default class TopicDetailPage extends BasePage {
                         backgroundColor: colorType === 1 ? '#33B4FF' : (colorType === 2 ? '#D51243' : '#CCCCCC'),
                         justifyContent: 'center',
                         alignItems: 'center'
-                    }}>
+                    }} onPress={() => this._bottomAction(colorType)}>
                         <Text style={{
                             color: 'white',
                             fontSize: 14
                         }}>{bottomTittle}</Text>
                     </TouchableOpacity>
                 </View>
+                <Modal
+                    animationType="none"
+                    transparent={true}
+                    visible={this.state.modalVisible}>
+                    <TopicDetailSelectPage selectionViewConfirm={this._selectionViewConfirm}
+                                   selectionViewClose={this._selectionViewClose} data={this.state.data} activityType = {this.state.activityType}/>
+                </Modal>
             </View>
         );
     };

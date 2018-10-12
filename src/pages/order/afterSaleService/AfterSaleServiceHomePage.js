@@ -129,6 +129,7 @@ class AfterSaleServiceHomePage extends BasePage {
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 2,
                     orderProductId: orderProductId,
+                    productId: this.params.pageData.orderProductList[this.state.index].productId,
                 });
                 break;
         }
