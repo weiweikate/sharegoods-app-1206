@@ -57,7 +57,8 @@ export default class SetPasswordPage extends BasePage {
             wechatVersion: ''
         }).then(data=>{
             this.$loadingDismiss();
-            console.warn(data);
+
+            // console.warn(data);
             this.$navigateBack(-2);
         }).catch(data=>{
             this.$loadingDismiss()

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {
     View,
     StyleSheet,
-    Animated
+    Animated,
+    ScrollView
 } from 'react-native';
 import UIText from '../../../comm/components/UIText';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -41,10 +42,27 @@ export default class SubSwichView extends Component {
         const { topicNavTitleList } = this.props.headerData || [];
         let tempTitleArr = topicNavTitleList || [];
         return (
-            <View style={SwichStyles.titleBgStyle}>
+            <ScrollView
+                        ref="scroll"
+                        style={{
+                            width: ScreenUtils.width,
+                        }}
+                        contentContainerStyle={
+                            SwichStyles.titleBgStyle
+                        }
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+            >
                 {
                     tempTitleArr.slice().map((titleItem, titleItemIndex) => {
-                        return <View>
+                        return <View
+                        style={{
+                            width:ScreenUtils.width/2,
+                            justifyContent:'center',
+                            flexDirection:'column',
+                            // alignItems:'center'
+                        }}
+                        >
                             <UIText
                                 onPress={() => {
                                     this.itemClick(titleItemIndex);
@@ -65,6 +83,8 @@ export default class SubSwichView extends Component {
                                     <View
                                         style={
                                             {
+                                                width:70,
+                                                marginLeft:(ScreenUtils.width/2 - 70)/2,
                                                 marginTop:10,
                                                 height:1,
                                                 backgroundColor:ColorUtil.mainRedColor
@@ -72,14 +92,22 @@ export default class SubSwichView extends Component {
                                         }
                                     />
                                     :
-                                    null
+                                    <View
+                                        style={
+                                            {
+                                                marginTop:10,
+                                                height:1,
+                                                backgroundColor:ColorUtil.Color_ffffff
+                                            }
+                                        }
+                                    />
                             }
 
                         </View>;
 
                     })
                 }
-            </View>
+            </ScrollView>
         );
 
     };
@@ -98,21 +126,21 @@ const SwichStyles = StyleSheet.create({
             height: 48
         },
         titleBgStyle: {
-            width: ScreenUtils.width,
             height: 47,
             flexDirection: 'row',
-            justifyContent: 'space-around'
         },
         titleItemStyle: {
             paddingTop: 15,
             color: ColorUtil.Color_d51243,
-            fontSize: 16
+            fontSize: 16,
+            width:ScreenUtils.width/2,
+            textAlign:'center'
         },
         bottomLineViewStyle: {
             height: 2,
             backgroundColor: ColorUtil.Color_d51243,
             width: 50,
             marginLeft: (ScreenUtils.width - 70 * 2) / 4
-        }
+        },
     }
 );

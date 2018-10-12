@@ -234,7 +234,6 @@ export default class DownPricePage extends BasePage {
             </ScrollView>
         );
     }
-
     /**
      * 获取类型
      * 0 普通专题
@@ -242,7 +241,6 @@ export default class DownPricePage extends BasePage {
      * 2 降价拍
      * */
     _getTopicType = () => {
-
         return 1;
         const { linkTypeCode } = this.params;
         if (linkTypeCode.search('ZT') != -1) {
