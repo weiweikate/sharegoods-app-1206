@@ -2,6 +2,7 @@
 import HomePage from "./HomePage";
 import search from './search'
 import product from './product'
+import signIn from './signIn'
 
 export default {
     moduleName: 'home',    //模块名称
@@ -9,5 +10,6 @@ export default {
         HomePage,
         search,
         product,
+        signIn
     }
 }

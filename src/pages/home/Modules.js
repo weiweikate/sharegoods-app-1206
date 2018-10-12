@@ -68,7 +68,7 @@ export class ClassifyModules {
             icon: signinImg,
             name: '签到',
             id: 1,
-            route: 'home/search/CategorySearchPage'
+            route: 'home/signIn/SignInPage'
         },{
             icon: schoolImg,
             name: '学院',
@@ -237,7 +237,7 @@ class HomeModule {
         if (this.isFetching === true) {
             return
         }
-        
+
         try {
             this.isFetching = true
             const res = yield HomeApi.getGoodsInHome({page: this.page})
@@ -248,7 +248,7 @@ class HomeModule {
                 type: homeType.goodsTitle
             }]
             let itemData = []
-            
+
             for(let i = 0; i < list.length; i++ ) {
                 if (i % 2 === 1) {
                     let good = list[i]
