@@ -17,8 +17,10 @@ import StringUtils from '../../../utils/StringUtils';
 import DateUtils from '../../../utils/DateUtils';
 import constants from '../../../constants/constants';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
-import { CountDownReact } from '../../../components/ui';
-
+// import { CountDownReact } from '../../../components/ui';
+//  <CountDownReact date1={(new Date().valueOf())+1000*60*30}
+//                                             date2={new Date().valueOf()}
+//                                             callback={()=>console.log('22')}/>
 const GoodsListItem = props => {
     const {
         orderNum,
@@ -94,10 +96,7 @@ const GoodsListItem = props => {
 
 
                         <View style={{ marginLeft: 5 ,flexDirection:'row'}}>
-                            <CountDownReact date1={(new Date().valueOf())+1000*60*30}
-                                            date2={new Date().valueOf()}
-                                            callback={()=>console.log('22')}/>
-                            <Text style={{ color: '#D51243', fontSize: 13 }}>后自动取消</Text>
+                            <Text style={{ color: '#D51243', fontSize: 13 }}>00:21:43后自动取消</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             {nameArr.map((item, i) => {
