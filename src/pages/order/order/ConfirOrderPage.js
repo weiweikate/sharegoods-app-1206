@@ -23,7 +23,7 @@ import Toast from '../../../utils/bridge';
 import BasePage from '../../../BasePage';
 import OrderApi from './../api/orderApi';
 
-let oldViewData, oldPriceList;
+// let oldViewData, oldPriceList;
 export default class ConfirOrderPage extends BasePage {
     constructor(props) {
         super(props);
@@ -349,6 +349,9 @@ export default class ConfirOrderPage extends BasePage {
     };
 
     componentDidMount() {
+        this.loadPageData();
+    }
+    loadPageData(){
         Toast.showLoading();
         let viewData = this.state.viewData;
         OrderApi.makeSureOrder({
@@ -395,9 +398,11 @@ export default class ConfirOrderPage extends BasePage {
             this.setState({ viewData });
         }).catch(err => {
             Toast.hiddenLoading();
-            console.log(err);
-            if (err.code === 10001 || err.code === 10009) {
-                this.$navigate('login/login/LoginPage');
+            this.$toastShow(err.msg);
+            if (err.code === 10009) {
+                this.$navigate('login/login/LoginPage',{callback:()=>{
+                    this.loadPageData()
+                    }});
             }
         });
     }
@@ -536,7 +541,9 @@ export default class ConfirOrderPage extends BasePage {
                 this.$loadingDismiss();
                 console.log(e);
                 if (e.code === 10009) {
-                    this.$navigate('login/login/LoginPage');
+                    this.$navigate('login/login/LoginPage',{callback:()=>{
+                        this.loadPageData()
+                        }});
                 }
             });
         }
@@ -546,6 +553,7 @@ export default class ConfirOrderPage extends BasePage {
         this.$navigate('mine/coupons/CouponsPage', {
             fromOrder: 1, productIds: this.state.viewData.list[0].productId,
             orderParam: this.state.orderParam, callBack: (data) => {
+                console.log(data);
                 let orderParams = this.state.orderParam;
                 if (data && data.id) {
                     orderParams.couponId = data.id;
@@ -570,8 +578,8 @@ export default class ConfirOrderPage extends BasePage {
                     //     }
                     // });
                 } else {
-                    console.log(oldViewData);
-                    this.setState({ viewData: oldViewData, priceList: oldPriceList });
+                    // console.log(oldViewData);
+                    // this.setState({ viewData: oldViewData, priceList: oldPriceList });
 
                 }
 
