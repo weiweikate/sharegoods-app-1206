@@ -48,6 +48,10 @@ class ExchangeGoodsDetailPage extends BasePage {
         show: true// false则隐藏导航
     };
 
+    $NavigationBarDefaultLeftPressed = () => {
+     this.$navigateBack('order/afterSaleService/AfterSaleServiceHomePage');
+    }
+
     _bindFunc(){
         this.renderOperationApplyView = this.renderOperationApplyView.bind(this);
         this.renderReturnGoodsView = this.renderReturnGoodsView.bind(this);
@@ -181,7 +185,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         /** 显示物流*/
         let pageType = this.params.pageType;
         let pageData = this.state.pageData;
-        if (pageType === 0 || EmptyUtils.isEmpty(pageData)){//退款无物流
+        if (pageType === 0 || EmptyUtils.isEmpty(pageData) || pageData.status === 1){//退款无物流
             return;
         }
         return (
@@ -438,7 +442,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 imageCommpent = () => {return <UIImage soucre = {refusa_icon} style = {styles.header_image}/>};
                 detialCommpent = () => {return <UIText value = {pageData.refusalReason} style = {styles.header_detail}/>};
             } else if (pageData.status === 6){//已完成
-                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.refundTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.payTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
             } else if(pageData.status === 1){//申请中 applyTime	Long	1539250433000
                 detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.applyTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
             }
@@ -450,7 +454,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 imageCommpent = () => {return <UIImage soucre = {refusa_icon} style = {styles.header_image}/>};
                 detialCommpent = () => {return <UIText value = {DateUtils.getFormatDate(pageData.refuseTime / 1000,'yyyy年MM月dd日  hh:mm')	} style = {styles.header_detail}/>};
             } else if (pageData.status === 6){//已完成
-                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.refundTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.payTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
             } else if(pageData.status === 1){//申请中
                 detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.applyTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
             }else if (pageData.status === 2){//同意申请
@@ -464,7 +468,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 imageCommpent = () => {return <UIImage soucre = {refusa_icon} style = {styles.header_image}/>};
                 detialCommpent = () => {return <UIText value = {DateUtils.getFormatDate(pageData.refuseTime / 1000,'yyyy年MM月dd日  hh:mm')	} style = {styles.header_detail}/>};
             } else if (pageData.status === 6){//已完成
-                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.refundTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.backsendTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
             } else if(pageData.status === 1){//申请中 applyTime	Long	1539250433000
                 detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.applyTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
             }else if (pageData.status === 2){//同意申请
@@ -472,7 +476,6 @@ class ExchangeGoodsDetailPage extends BasePage {
                 timerCommpent = () =>  {return <UIText value = { this.state.timeStr} style = {styles.header_detail}/>};
             }
         }
-
         return (
             <View>
                 <View style={{ position: 'absolute', height: 100, width: ScreenUtils.width }}>
@@ -601,10 +604,10 @@ class ExchangeGoodsDetailPage extends BasePage {
             this.$loadingShow();
             OrderApi.revokeApply({returnProductId: this.state.pageData.id}).then(result => {
                 this.$loadingDismiss();
+                DeviceEventEmitter.emit('OrderNeedRefresh');
                 this.$navigateBack('/order/order/MyOrdersDetailPage');
             }).catch(error => {
                 this.$loadingDismiss();
-                DeviceEventEmitter.emit('OrderNeedRefresh')
                 this.$toastShow(error.msg || '操作失败，请重试');
             });
         }else {
@@ -637,13 +640,13 @@ class ExchangeGoodsDetailPage extends BasePage {
      */
     getRemainingTime(out_time){
         let timestamp = Date.parse(new Date()) / 1000;
-        out_time = out_time / 1000;
+        out_time = out_time ;
 
         if (timestamp >= out_time){
             return '已超时';
         }
 
-        let remainingTime = timestamp - out_time;
+        let remainingTime = out_time - timestamp;
         let s = remainingTime % 60;
         remainingTime = (remainingTime - s) / 60;
         let m = remainingTime % 60;
@@ -652,7 +655,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         remainingTime = (remainingTime - H) / 24;
         let d = remainingTime;
 
-        return '剩余' + d + '天' + H + '小时' + m + '分'
+        return '剩余' + d + '天' + H + '小时' + m + '分' + s + '秒'
     }
 
     startTimer(out_time){
@@ -669,11 +672,12 @@ class ExchangeGoodsDetailPage extends BasePage {
         this.timer = setInterval(() => {
             let timeStr = this.getRemainingTime(out_time);
             this.setState({timeStr: timeStr});
-            if (timeStr === ''){
+            if (timeStr === '已超时'){
                 DeviceEventEmitter.emit('OrderNeedRefresh');
+                this.stopTimer();
                 this.loadPageData();
             } else {
-                this.stopTimer();
+
             }
         }, 1000);
     }
