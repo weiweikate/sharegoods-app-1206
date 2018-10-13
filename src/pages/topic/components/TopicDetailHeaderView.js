@@ -12,8 +12,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import ViewPager from '../../../components/ui/ViewPager';
 import UIImage from '../../../components/ui/UIImage';
 import xjt_03 from '../res/xjt_03.png';
-import { timeDifc } from '../../../utils/DateUtils';
-
+import ActivityView from './ActivityView'
 /**
  * 商品详情头部view
  */
@@ -55,84 +54,6 @@ export default class TopicDetailHeaderView extends Component {
                 resizeMode="cover"
             />);
     };
-
-    _renderActivityView = () => {
-        //markdownPrice 拍卖价 startPrice起拍价
-        //originalPrice 原价
-        //reseCount 预约购买人数
-        //beginTime 开抢时间
-        // notifyFlag推送消息 0未通知1已通知
-        // 下次降价时间或者结束时间 activityTime floorPrice最低价=markdownPrice
-        // date当前时间
-        // surplusNumber 剩余数量 totalNumber总
-        // endTime活动结束时间
-        const { activityType } = this.props;
-        let price = '', one = '', two = '', three = '', four = '';
-        let begin = false;
-        let end = false;
-        if (activityType === 2) {
-            const {
-                startPrice, markdownPrice = '', originalPrice = '', reseCount = '',
-                floorPrice, surplusNumber = '', totalNumber,
-                activityTime, date, beginTime, endTime
-            } = this.props.activityData;
-            begin = beginTime > date;
-            end = date > endTime;
-            price = markdownPrice;
-            if (begin) {
-                one = '起拍价';
-                two = `原价￥${startPrice}|${reseCount}人关注`;
-                three = `距开抢 ${beginTime - date}`;
-                four = `${beginTime}开拍`;
-            } else {
-                one = `原价￥${originalPrice}`;
-                two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '起拍价'}`;
-                three = markdownPrice === floorPrice ? `距结束 ${timeDifc(date, endTime) || ''}` : `距下次降价 ${timeDifc(date, activityTime) || ''}`;
-                four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;
-            }
-        }
-
-        return <View style={{
-            height: 50,
-            backgroundColor: begin ? '#33B4FF' : '#D51243',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-        }}>
-            <View style={{ marginLeft: 11, flexDirection: 'row' }}>
-                <Text style={{ color: 'white', fontSize: 18 }}>￥<Text
-                    style={{ fontSize: 40 }}>{price}</Text></Text>
-                <View style={{ marginLeft: 10, justifyContent: 'center' }}>
-                    <Text style={{ color: '#F7F7F7', fontSize: 12 }}>{one}</Text>
-                    <Text style={{
-                        color: '#F7F7F7',
-                        fontSize: 10,
-                        marginTop: 4
-                    }}>{two}</Text>
-                </View>
-            </View>
-            <View style={{ marginRight: 15 }}>
-                {end ?
-                    <Text style={{ color: '#FFFC00', fontSize: 13 }}>活动结束</Text>
-                    :
-                    <View>
-                        <Text style={{ color: begin ? '#1B7BB3' : '#FFFC00', fontSize: 11 }}>{three}</Text>
-                        <View style={{
-                            marginTop: 5,
-                            width: 100,
-                            height: 15,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundColor: begin ? '#2B99D9' : '#FFFC00'
-                        }}>
-                            <Text style={{ color: begin ? '#F7F7F7' : '#D51243', fontSize: 11 }}>{four}</Text>
-                        </View>
-                    </View>
-                }
-            </View>
-        </View>;
-    };
-
     render() {
         const { productImgList = [{}], freight = '', monthSaleTotal = 0, product = {} } = this.props.data || {};
         const { supplierName = '', brandName = '', name = '', firstCategoryName = '', secCategoryName = '', thirdCategoryName = '' } = product;
@@ -158,7 +79,7 @@ export default class TopicDetailHeaderView extends Component {
                            }}
                            height={ScreenUtils.autoSizeWidth(377)}
                            autoplay={true}/>
-                {this._renderActivityView()}
+                <ActivityView activityData={this.props.activityData} activityType={activityType}/>
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{

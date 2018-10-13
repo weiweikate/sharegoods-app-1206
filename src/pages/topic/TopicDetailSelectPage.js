@@ -5,90 +5,63 @@ import {
     StyleSheet,
     TouchableWithoutFeedback,
     Text,
-    ScrollView
+    ScrollView,
+    TouchableOpacity
 } from 'react-native';
-import ScreenUtils from '../../../utils/ScreenUtils';
-import SelectionHeaderView from './components/SelectionHeaderView';
-import SelectionSectionView from './components/SelectionSectionView';
-import SelectionAmountView from './components/SelectionAmountView';
-import StringUtils from '../../../utils/StringUtils';
-
+import ScreenUtils from '../../utils/ScreenUtils';
 
 export default class TopicDetailSelectPage extends Component {
 
     static propTypes = {
         selectionViewConfirm: PropTypes.func.isRequired,
         selectionViewClose: PropTypes.func.isRequired,
-        data: PropTypes.object.isRequired
+        data: PropTypes.object.isRequired,
+        activityType: PropTypes.object.isRequired
     };
 
     constructor(props) {
         super(props);
-        const { specMap, product, price } = this.props.data;
-
-        //提取规格处理id
-        let tittleList = [];
-        for (let key in specMap) {
-            tittleList.push(key);
-        }
-        this.state = {
-            product: product || {},
-            price: price,
-            tittleList: tittleList,
-
-            priceList: [],//根据最新选择下标获取别的row的数据
-            priceSeletedList: [],//根据别的row的状态获取当前选择row的数据
-            specMap: [],//所有规格  额外增加了isSelected  canSelected
-
-
-            selectList: [],//选择的规格id数组
-            selectStrList: [],//选择的规格名称值
-            amount: 1
-        };
+        this.state = {};
 
     }
 
     componentDidMount() {
     }
 
-    _clickItemAction = (item, indexOfProp, tittle) => {
-        if (item.isSelected) {
-            this.state.selectList[indexOfProp] = undefined;
-            this.state.selectStrList[indexOfProp] = undefined;
-            item.isSelected = false;
-        } else {
-            this.state.selectList[indexOfProp] = item.id;
-            this.state.selectStrList[indexOfProp] = item.specValue;
-        }
-
-        this._priceListAll(indexOfProp);
-        this._specMap(indexOfProp, tittle);
-    };
-
-    _amountClickAction = (amount) => {
-        this.state.amount = amount;
-    };
-
     _selectionViewConfirm = () => {
-        this.props.selectionViewConfirm(this.state.amount, 1);
+        const { productPriceId } = this.props.data || {};
+        this.props.selectionViewConfirm(1, productPriceId);
         this.props.selectionViewClose();
     };
 
     _addSelectionSectionView = () => {
-
+        const { productSpecValue = [] } = this.props.data || {};
         let tagList = [];
-        let index = 0;
-        for (let key in this.state.specMap) {
+        for (let obj in productSpecValue) {
             tagList.push(
-                <SelectionSectionView clickItemAction={this._clickItemAction} listData={this.state.specMap[key]}
-                                      indexOfProp={index} tittle={key} key={key}/>
+                <View>
+                    <View style={styles.headerContainer}>
+                        <Text style={styles.headerText}>{this.props.tittle}</Text>
+                    </View>
+                    <View style={styles.containerView}>
+                        <View>
+                            <TouchableOpacity
+                                style={[styles.btn, { backgroundColor: '#D51243' }]}>
+                                <Text
+                                    style={[styles.btnText, { color: 'white' }]}>{obj.specValue}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: '#eeeeee' }}/>
+                </View>
             );
-            index++;
         }
         return tagList;
     };
 
     render() {
+        const { markdownPrice = '', seckillPrice = '' } = this.props.data || {};
+        let price = this.props.activityType === 1 ? seckillPrice : markdownPrice;
         return (
             <View style={styles.container}>
 
@@ -98,15 +71,81 @@ export default class TopicDetailSelectPage extends Component {
 
                 <View style={{ backgroundColor: 'white', flex: 1 }}>
 
-                    <SelectionHeaderView product={this.state.product}
-                                         price={this.state.price}
-                                         selectList={this.state.selectList}
-                                         selectStrList={this.state.selectStrList}
-                                         priceList={this.state.priceList}/>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{
+                            marginLeft: 10,
+                            marginTop: -20,
+                            height: 110,
+                            width: 110,
+                            borderColor: '#EEEEEE',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <Image style={{ width: 108, height: 108, borderRadius: 5, backgroundColor: '#eeeeee' }}
+                                   source={{ uri: imgUrl || '' }}/>
+                        </View>
+                        <View style={{ flex: 1, marginLeft: 16 }}>
+                            <Text style={{
+                                color: '#D51243',
+                                fontSize: 16,
+                                fontFamily: 'PingFang-SC-Medium',
+                                marginTop: 16
+                            }}>{`￥${price}`}</Text>
+                            <Text
+                                style={{
+                                    color: '#222222',
+                                    fontSize: 13,
+                                    marginTop: 8
+                                }}>{`库存${stock}${stockUnit || ''}`}</Text>
+                            <Text style={{
+                                color: '#222222',
+                                fontSize: 13,
+                                marginTop: 8
+                            }}>{selectStrListTemp.join(',')}</Text>
+                        </View>
+                        <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
+                            <Image style={{
+                                marginRight: 16,
+                                marginTop: 19,
+                                width: 23,
+                                height: 23
+                            }}/>
+                        </TouchableWithoutFeedback>
+                    </View>
 
                     < ScrollView>
                         {this._addSelectionSectionView()}
-                        <SelectionAmountView style={{ marginTop: 30 }} amountClickAction={this._amountClickAction}/>
+                        <View style={[{
+                            marginTop: 30,
+                            flexDirection: 'row',
+                            height: 30,
+                            justifyContent: 'space-between',
+                            alignItems: 'center'
+                        }, this.props.style]}>
+                            <Text style={{ color: '#666666', marginLeft: 16, fontSize: 13 }}>购买数量</Text>
+                            <View style={{
+                                flexDirection: 'row',
+                                borderColor: '#dddddd',
+                                borderWidth: 1,
+                                borderRadius: 2,
+                                marginRight: 16,
+                                height: 30
+                            }}>
+                                <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text style={{ color: '#dddddd', fontSize: 15, paddingHorizontal: 11 }}>-</Text>
+                                </TouchableOpacity>
+                                <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
+                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text style={{ paddingHorizontal: 15 }}>{this.state.amount}</Text>
+                                </View>
+                                <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
+                                <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text style={{ color: '#222222', fontSize: 15, paddingHorizontal: 11 }}>+</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </ScrollView>
 
                     <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>

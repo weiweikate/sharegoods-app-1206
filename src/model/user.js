@@ -29,6 +29,8 @@ class User {
     @observable
     wechatId = '';          //微信号id
     @observable
+    wechatName = '';          //微信用户名称
+    @observable
     phone = 0;           //手机号
     @observable
     realname = null;        //真实姓名
@@ -103,7 +105,7 @@ class User {
     @observable
     levelName = null;       //
     @observable
-    experience = 0          //会员经验
+    experience = 0;          //会员经验
     @observable
     salePsw = null;         //
     @observable
@@ -130,8 +132,6 @@ class User {
     @observable
     needWaiting = false;   //提供BasePage中repeatClick()
 
-   
-
 
     // 从缓存磁盘读取用户上一次使用的信息记录
     async readUserInfoFromDisk() {
@@ -156,6 +156,7 @@ class User {
         this.openid = info.openid;                  //
         this.nickname = info.nickname;              //昵称
         this.wechatId = info.wechatId;              //微信号id
+        this.wechatName = info.wechatName;          //微信用户名称
         this.phone = info.phone;                    //手机号
         this.realname = info.realname;              //真实姓名
         this.headImg = info.headImg;                //头像
@@ -216,10 +217,11 @@ class User {
         this.phone = phone;
     }
 
-    // 解绑微信号
+    // 解绑/绑定微信号
     @action
-    untiedWechat(weChat) {
-        this.wechatId = weChat;
+    untiedWechat(wechatName, openId) {
+        this.wechatName = wechatName;
+        this.openid = openId;
     }
 
     // 存储离线购物车信息
@@ -260,6 +262,7 @@ class User {
         this.openid = null;          //
         this.nickname = '';          //昵称
         this.wechatId = '';          //微信号id
+        this.wechatName = '';          //微信用户昵称
         this.phone = null;           //手机号
         this.realname = null;        //真实姓名
         this.headImg = null;         //头像

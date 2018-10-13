@@ -54,7 +54,7 @@ const isTomorrow = (date = new Date()) => {
     let tomorrow = new Date(today + 24 * 3600 * 1000 - 1).getTime();
     return (date.getTime() >= today && tomorrow >= date.getTime());
 };
-const getFormatDate = (timestamp, fmt = 'yyyy-MM-dd hh:mm:ss') => {
+export const getFormatDate = (timestamp, fmt = 'yyyy-MM-dd hh:mm:ss') => {
     timestamp = parseInt(timestamp + '000');
     var newDate = new Date(timestamp);
     Date.prototype.format = function(format) {
@@ -81,37 +81,10 @@ const getFormatDate = (timestamp, fmt = 'yyyy-MM-dd hh:mm:ss') => {
     return newDate.format(fmt);
 };
 
-export function timeDifc(start, end) {
-    let starts = new Date(start), ends = new Date(end), message = '11';
-    if (starts.getTime() > ends.getTime()) {
-        return message = '时间已过';
-    }
-    if ((ends.getTime() - starts.getTime()) / (1000 * 60) < 1) {
-        return message = '';
-    }
-    if (ends.getFullYear() > starts.getFullYear() && ends.getMonth() >= starts.getMonth()) {
-        message += ends.getFullYear() - starts.getFullYear() + ':';
-    }
-    if (ends.getMonth() > starts.getMonth() && ends.getDate() >= starts.getDate()) {
-        message += ends.getMonth() - starts.getMonth() + ':';
-    }
-    if (ends.getDate() > starts.getDate() && ends.getHours() >= starts.getHours()) {
-        message += ends.getDate() - starts.getDate() + ':';
-    }
-    if (ends.getHours() > starts.getHours() && ends.getMinutes() >= starts.getMinutes()) {
-        message += ends.getHours() - starts.getHours() + ':';
-    }
-    if (ends.getMinutes() > starts.getMinutes()) {
-        message += ends.getMinutes() - starts.getMinutes() + ':';
-    }
-    return message;
-}
-
 export default {
     formatDate,
     isToday,
     isTomorrow,
     getFormatDate,
-    timeDifc
 };
 
