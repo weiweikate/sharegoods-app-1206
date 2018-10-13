@@ -168,11 +168,12 @@ export default class MyCouponsItems extends Component {
                 name: item.name,
                 startTime: item.startTime,
                 outTime: item.expireTime,
-                value: item.value,
+                value: item.type === 3 ? (item.value / 10) + '折' : (item.type === 4 ? '商品\n抵扣' : item.value),
                 useConditions: item.useConditions,
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
-                remarks: item.remarks
+                remarks: item.remarks,
+                type: item.type
             });
 
         });
@@ -274,7 +275,7 @@ export default class MyCouponsItems extends Component {
         if (this.props.fromOrder) {
             this.props.useCoupons(item);
         } else {
-                this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
+            this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
         }
 
 
