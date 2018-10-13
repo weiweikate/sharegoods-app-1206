@@ -57,9 +57,11 @@ export default class MyCouponsItems extends Component {
                             width: px2dp(80)
                         }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                                    <Text style={{ fontSize: 8, color: '#222222', marginBottom: 2 }}>￥</Text>
-                                </View>
+                                {
+                                    item.type === 3 || item.type === 4 ? null :
+                                        <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
+                                            <Text style={{ fontSize: 8, color: '#222222', marginBottom: 2 }}>￥</Text>
+                                        </View>}
                                 <View>
                                     <Text style={{ fontSize: 20, color: '#222222' }}>{item.value}</Text>
                                 </View>
@@ -165,11 +167,12 @@ export default class MyCouponsItems extends Component {
                 name: item.name,
                 startTime: item.startTime,
                 outTime: item.expireTime,
-                value: item.value,
+                value: item.type === 3 ? (item.value / 10) + '折' : (item.type === 4 ? '商品\n抵扣' : item.value),
                 useConditions: item.useConditions,
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
-                remarks: item.remarks
+                remarks: item.remarks,
+                type: item.type
             });
 
         });
@@ -271,7 +274,7 @@ export default class MyCouponsItems extends Component {
         if (this.props.fromOrder) {
             this.props.useCoupons(item);
         } else {
-                this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
+            this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
         }
 
 
