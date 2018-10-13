@@ -530,7 +530,7 @@ export default class ConfirOrderPage extends BasePage {
                 this.$loadingDismiss();
                 let data = response.data;
                 // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
-                this.$navigate('order/payment/PaymentMethodPage', {
+                this.$navigate('payment/PaymentMethodPage', {
                     orderNum: data.orderNum,
                     amounts: this.state.viewData.totalAmounts,
                     pageType: 0,

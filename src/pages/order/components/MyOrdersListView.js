@@ -485,13 +485,13 @@ export default class MyOrdersListView extends Component {
                 this.setState({ isShowSingleSelctionModal: true });
                 break;
             case 2:
-                this.props.nav('order/payment/PaymentMethodPage', {
+                this.props.nav('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData[index].orderNum,
                     amounts: this.state.viewData[index].totalPrice
                 });
                 break;
             case 3:
-                this.props.nav('order/payment/PaymentMethodPage', {
+                this.props.nav('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData[index].orderNum,
                     amounts: this.state.viewData[index].totalPrice,
                     outTrandNo: this.state.viewData[index].outTrandNo
@@ -500,7 +500,7 @@ export default class MyOrdersListView extends Component {
                 });
                 break;
             case 4:
-                this.props.nav('order/payment/PaymentMethodPage', {
+                this.props.nav('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData[index].orderNum,
                     amounts: this.state.viewData[index].price
                 });
