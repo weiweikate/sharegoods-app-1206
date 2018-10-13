@@ -52,8 +52,14 @@ export default class CouponsPage extends BasePage {
                     tabBarUnderlineStyle={{ backgroundColor: 'red', height: 2 }}
                     renderTabBar={() => <ScrollableTabBar style={{ borderWidth: 0.5 }}/>}
                 >
-                    <MyCouponsItems  tabLabel={'未使用'} pageStatus={0} nav={this.$navigate} selectTab={this.state.selectTab} isgiveup={this.params.fromOrder} fromOrder={this.params.fromOrder}
-                                     productIds={this.params.orderParam} giveupUse={()=>{this.params.callBack(), this.$navigateBack()}} useCoupons={(data)=>{this.params.callBack(data),this.$navigateBack()}}/>
+                    <MyCouponsItems tabLabel={'未使用'} pageStatus={0} nav={this.$navigate}
+                                    selectTab={this.state.selectTab} isgiveup={this.params.fromOrder}
+                                    fromOrder={this.params.fromOrder}
+                                    productIds={this.params.orderParam} giveupUse={() => {
+                        this.params.callBack(), this.$navigateBack();
+                    }} useCoupons={(data) => {
+                        this.params.callBack(data), this.$navigateBack();
+                    }}/>
                     <MyCouponsItems tabLabel={'已使用'} pageStatus={1} nav={this.props.navigation}
                                     selectTab={this.state.selectTab} isgiveup={false}/>
                     <MyCouponsItems tabLabel={'已失效'} pageStatus={2} nav={this.props.navigation}

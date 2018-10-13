@@ -43,7 +43,7 @@ export default class MyCouponsItems extends Component {
         let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
         let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
         return (
-            <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickItem(index, item)}>
+            <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickItem(item)}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(109),
@@ -254,17 +254,13 @@ export default class MyCouponsItems extends Component {
 
     };
 
-    clickItem = (index, item) => {
+    clickItem = (item) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         if (this.props.fromOrder) {
             this.props.useCoupons(item);
         } else {
-            if (item.status === 0 || item.status.status === 3) {
-                this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
-            }
+            this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
         }
-
-
     };
 
 }
