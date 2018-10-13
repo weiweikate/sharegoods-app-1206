@@ -43,7 +43,7 @@ export default class MyCouponsItems extends Component {
         let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
         let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
         return (
-            <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickItem(item)}>
+            <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickItem(index, item)}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(109),
@@ -185,19 +185,29 @@ export default class MyCouponsItems extends Component {
 
     getDataFromNetwork = () => {
         let status = this.state.pageStatus;
+        /**
+
+         "page": 1,
+         "pageSize": 10,
+         "productPriceIds": [
+         {
+           "priceId": 1,
+           "productId": 1
+         }
+         */
         let page = this.state.currentPage || 1;
         if (this.props.fromOrder && status == 0) {
-            let arr = [], ProductPriceIdPair = {};
-            // ProductPriceIdPair=this.props.productIds;
-            // priceId  productId
-            ProductPriceIdPair.priceId = this.props.productIds.orderProducts[0].priceId,
-                ProductPriceIdPair.productId = this.props.productIds.orderProducts[0].productId,
+            let arr = [];
+            let data = {
+                priceId: this.props.productIds.orderProducts[0].priceId,
+                productId: this.props.productIds.orderProducts[0].productId
+            };
 
-                arr.push({
-                    ProductPriceIdPair
-                });
+            arr.push(data);
             API.listAvailable({ page, pageSize: 20, productPriceIds: arr }).then(res => {
-                console.log(res.data);
+                let data = res.data || {};
+                let dataList = data.data || [];
+                this.parseData(dataList);
             }).catch(result => {
                 if (result.code === 10009) {
                     this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
@@ -254,13 +264,15 @@ export default class MyCouponsItems extends Component {
 
     };
 
-    clickItem = (item) => {
+    clickItem = (index, item) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         if (this.props.fromOrder) {
             this.props.useCoupons(item);
         } else {
             this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
         }
+
+
     };
 
 }

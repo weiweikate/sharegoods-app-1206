@@ -560,7 +560,7 @@ export default class ConfirOrderPage extends BasePage {
                     OrderApi.makeSureOrder({
                         orderType: this.params.orderParamVO.orderType,
                         orderProducts: this.params.orderParamVO.orderProducts,
-                        couponId:data.id,
+                        couponId:data.couponConfigId,
                     }).then((response) => {
                         Toast.hiddenLoading();
                         console.log(response);
