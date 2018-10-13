@@ -57,9 +57,11 @@ export default class MyCouponsItems extends Component {
                             width: px2dp(80)
                         }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                                    <Text style={{ fontSize: 8, color: '#222222', marginBottom: 2 }}>￥</Text>
-                                </View>
+                                {
+                                    item.type === 3 || item.type === 4 ? null :
+                                        <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
+                                            <Text style={{ fontSize: 8, color: '#222222', marginBottom: 2 }}>￥</Text>
+                                        </View>}
                                 <View>
                                     <Text style={{ fontSize: 20, color: '#222222' }}>{item.value}</Text>
                                 </View>
@@ -169,7 +171,8 @@ export default class MyCouponsItems extends Component {
                 useConditions: item.useConditions,
                 limit: this.parseCoupon(item),
                 discountCouponId: '',
-                remarks: item.remarks
+                remarks: item.remarks,
+                type: item.type
             });
 
         });
