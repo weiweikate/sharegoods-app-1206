@@ -43,7 +43,7 @@ const api = {
     //（陈帅）查询子订单详情
     subOrderLookDetial: ['/order/orderProduct/lookDetial',{method:'get'}],
     // 获取物流公司
-    findAllExpress: ['/sysExpress/findAllExpress',{method:'get'}],
+    findAllExpress: ['/sysExpress/findAllExpress', {method: 'get'}],
 
 
 

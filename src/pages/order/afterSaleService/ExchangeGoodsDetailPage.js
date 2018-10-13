@@ -203,9 +203,9 @@ class ExchangeGoodsDetailPage extends BasePage {
                         alignItems: 'center'
                     }}>
                         <UIText
-                            value={EmptyUtils.isEmpty(pageData.express_no) === false ? `${pageData.ecExpressName}(${pageData.express_no})`: '请填写寄回物流信息'}
+                            value={EmptyUtils.isEmpty(pageData.expressNo) === false ? `${pageData.expressName}(${pageData.expressNo})`: '请填写寄回物流信息'}
                             style={{
-                                color: EmptyUtils.isEmpty(pageData.express_no) === false ? color.black_222 : color.gray_c8c,
+                                color: EmptyUtils.isEmpty(pageData.expressNo) === false ? color.black_222 : color.gray_c8c,
                                 fontSize: 12,
                                 marginRight: 15
                             }}/>
@@ -219,7 +219,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                             <TouchableOpacity style={{height:44,backgroundColor:color.white,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingLeft:15,paddingRight:15}} onPress={()=>this.shopLogists()}>
                                 <UIText value={'商家物流'} style={{color:color.black_222,fontSize:13}}/>
                                 <View style={{height:44,flexDirection:'row',backgroundColor:color.white,alignItems:'center'}}>
-                                    <UIText value={`${pageData.ecExpressName}(${pageData.ecExpressNo})`} style={{color:color.gray_c8c,fontSize:12,marginRight:15}}/>
+                                    <UIText value={`${pageData.ecExpressName}(${pageData.ecExpressNo})`} style={{color:color.black_222,fontSize:12,marginRight:15}}/>
                                     <UIImage source={right_arrow} style={{height:10,width:7}}/>
                                 </View>
                             </TouchableOpacity>
@@ -546,7 +546,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         this.navigate('product/ProductDetailPage', { productId: productId });
     };
     returnLogists = () => {
-        if (EmptyUtils.isEmpty(this.state.pageData.express_no)) {
+        if (EmptyUtils.isEmpty(this.state.pageData.expressNo)) {
             this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
                 pageData: this.state.pageData,
                 callBack: this.loadPageData,
