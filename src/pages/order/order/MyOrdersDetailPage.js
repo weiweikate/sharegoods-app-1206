@@ -885,14 +885,14 @@ class MyOrdersDetailPage extends BasePage {
                 this.setState({ isShowSingleSelctionModal: true });
                 break;
             case 2:
-                this.$navigate('order/payment/PaymentMethodPage', {
+                this.$navigate('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
                     amounts: this.state.viewData.totalPrice
                     // orderType: this.state.viewData.pickedUp - 1
                 });
                 break;
             case 3:
-                this.$navigate('order/payment/PaymentMethodPage', {
+                this.$navigate('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
                     amounts: this.state.viewData.totalPrice,
                     outTrandNo: this.state.viewData.outTrandNo
