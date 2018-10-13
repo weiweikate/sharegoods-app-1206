@@ -193,7 +193,7 @@ export default class PaymentMethodPage extends BasePage {
     async _wechat() {
         const { params } = this.getApiRequestParams()
         const {resultStr, preStr} = await this.payment.appWXPay(params)
-        if (resultStr.code === 0) {
+        if (resultStr.sdkCode === 0) {
             let checkResult = await this.payment.checkPayStatus({outTradeNo: preStr.data.outTradeNo})
             this._showPayresult(checkResult)
         } else {

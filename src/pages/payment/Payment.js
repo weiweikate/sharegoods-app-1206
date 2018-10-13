@@ -57,7 +57,11 @@ export class Payment {
         this.selectedBalace = !this.selectedBalace
     }
     @action selectPaymentType = (data) => {
-        this.selectedTypes = data
+        if (this.selectedTypes && data.type === this.selectedTypes.type) {
+            this.selectedTypes = null
+        } else {
+            this.selectedTypes = data
+        }
     }
     //余额支付
     balancePay = flow(function * (params) {
@@ -125,9 +129,12 @@ export class Payment {
             console.log('wechat:' + JSON.stringify(resultStr))
             if (parseInt(resultStr.sdkCode, 0) !== 0) {
                 Toast.$toast(resultStr.msg)
+                Toast.hiddenLoading()
+                return
             }
+
             Toast.hiddenLoading()
-            // return {resultStr, preStr}
+            return {resultStr, preStr}
         } catch (error) {
             console.log(error)
         }
