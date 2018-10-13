@@ -33,12 +33,12 @@ export default class SelectLogisticsCompanyPage extends BasePage {
 
     loadPageData(){
         this.$loadingShow();
-        OrderApi.findAllExpress().then(result => {
+        OrderApi.findAllExpress().then((result) => {
             this.$loadingDismiss();
-            this.handleNetData(result.data);
-        }).catch(error => {
-            this.$loadingDismiss();
-            this.$toastShow(error.msg || '操作失败，请重试');
+           this.handleNetData(result.data);
+        }).catch((error) => {
+           this.$loadingDismiss();
+           this.$toastShow(error.msg || '操作失败，请重试');
         });
     }
 
