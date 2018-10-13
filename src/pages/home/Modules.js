@@ -152,6 +152,7 @@ class SubjectModule {
     loadSubjectList = flow(function * () {
         try {
             const res = yield HomeApi.getSubject({type: homeType.subject})
+            console.log('load some ------'+res.data);
             this.subjectList = res.data
         } catch (error) {
             console.log(error)
@@ -237,7 +238,7 @@ class HomeModule {
         if (this.isFetching === true) {
             return
         }
-        
+
         try {
             this.isFetching = true
             const res = yield HomeApi.getGoodsInHome({page: this.page})
@@ -248,7 +249,7 @@ class HomeModule {
                 type: homeType.goodsTitle
             }]
             let itemData = []
-            
+
             for(let i = 0; i < list.length; i++ ) {
                 if (i % 2 === 1) {
                     let good = list[i]

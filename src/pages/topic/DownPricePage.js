@@ -15,7 +15,7 @@ import OpenPrizeItemView from './components/OpenPrizeItemView';
 // import HomeAPI from '../api/HomeAPI';
 import TotalTopicDataModel from './model/SubTopicModel';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import SubSwichView from './components/SubSwichView';
 import TopicAPI from './api/TopicApi';
 import bridge from '../../utils/bridge';
@@ -41,6 +41,7 @@ export default class DownPricePage extends BasePage {
 
     componentDidMount() {
         // const {linkTypeCode} = this.params;
+        // console.log('-----'+linkTypeCode);
         // this.dataModel.loadTopicData(linkTypeCode);
         this.dataModel.loadTopicData(this.state.linkTypeCode);
     }
@@ -251,11 +252,6 @@ export default class DownPricePage extends BasePage {
     };
 }
 
-
-DownPricePage.propTypes = {
-    //专题code
-    linkTypeCode: PropTypes.string.isRequired
-};
 const Styles = StyleSheet.create({
     list: {
         flexDirection: 'row',//设置横向布局

@@ -98,7 +98,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
                               @"openid":res.openid?res.openid:[NSNull null],
                               @"systemVersion":[JRDeviceInfo systemVersion],
                               @"device":[JRDeviceInfo device],
-                              @"nickName":[res name],
+                              @"nickName":res.name?res.name:@"---",
                               };
     
     if(finshBlock){
