@@ -167,10 +167,10 @@ export default class MyCouponsItems extends Component {
                 name: item.name,
                 startTime: item.startTime,
                 outTime: item.expireTime,
-                value: item.value,
+                value: item.type === 3 ? (item.value / 10) + '折' : (item.type === 4 ? '商品\n抵扣' : item.value),
                 useConditions: item.useConditions,
                 limit: this.parseCoupon(item),
-                discountCouponId: '',
+                couponConfigId: item.couponConfigId,
                 remarks: item.remarks,
                 type: item.type
             });
@@ -201,6 +201,8 @@ export default class MyCouponsItems extends Component {
         let page = this.state.currentPage || 1;
         if (this.props.fromOrder && status == 0) {
             let arr = [];
+            // ProductPriceIdPair=this.props.productIds;
+            // priceId  productId
             let data = {
                 priceId: this.props.productIds.orderProducts[0].priceId,
                 productId: this.props.productIds.orderProducts[0].productId
