@@ -2,56 +2,93 @@
  * @author xzm
  * @date 2018/10/13
  */
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+const { px2dp } = ScreenUtils;
 
-import React, { PureComponent } from "react";
 import {
-  StyleSheet,
-  View,
-  TextInput,
-  Alert,
-  Text,
-  TouchableOpacity,
-  Navigator,
-  StatusBar,
-  ScrollView,
-  ToastAndroid,
-  TouchableWithoutFeedback,
-  FlatList,
-  Modal,
-  InteractionManager,
-  ViewPagerAndroid,
-  Image
-} from "react-native";
-import { connect } from "react-redux";
+    StyleSheet,
+    Text,
+    View,
+    Image
+} from 'react-native';
+import ScreenUtils from "../../../../utils/ScreenUtils";
+import signingInIcon from '../res/qiandao_btn_return_nor.png';
 
-const FlyDimensions = require("FlyDimensions");
-const FlySources = require("FlySources");
-const FlyIconfonts = require("FlyIconfonts");
-const FlyColors = require("FlyColors");
-const FlyImage = require("FlyImage");
-const FlyItem = require("FlyItem");
-const FlyBase = require("FlyBase");
-const ImageButton = require("ImageButton");
-const FlyHeader = require("FlyHeader");
-const SceneUtils = require("SceneUtils");
-const FlyModal = require("FlyModal");
-const Utils = require("Utils");
-const FlyContainer = require("FlyContainer");
-const FlyBottomButton = require("FlyBottomButton");
-const FlyWebView = require("FlyWebView");
-const FlyValues = require("FlyValues");
-const {} = require("../../actions");
+/**
+ * 签到圆形view
+ */
 
-class SignInCircleView extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
+
+export default class SignInCircleView extends PureComponent {
+    static propTypes = {
+        count: PropTypes.number.isRequired,
+        kind: PropTypes.oneOf(['signedIn','signingIn','noSignIn']).isRequired
+    };
+
+    constructor(props) {
+        super(props);
+    }
+
+    signedInRender(){
+        return (
+            <View style={[styles.circleStyle,{ backgroundColor: 'white'}]}>
+                <Text style={[styles.textStyle,{color:'#666666'}]}>
+                    {`+${this.props.count}`}
+                </Text>
+            </View>
+        );
+    }
+
+    signingInRender(){
+        return (
+            <View style={[styles.circleStyle,{ backgroundColor: 'white'}]}>
+                <Image source={signingInIcon} style={styles.iconStyle} resizeMode={'stretch'}/>
+            </View>
+        );
+    }
+
+    noSignInRender(){
+        return (
+            <View style={[styles.circleStyle,{ backgroundColor: '#c6b478'}]}>
+                <Text style={[styles.textStyle,{color:'#F7F7F7'}]}>
+                    {`+${this.props.count}`}
+                </Text>
+            </View>
+        );
+    }
+
+    render(){
+        switch (this.props.kind) {
+            case 'signedIn' :
+                return this.signedInRender();
+                break;
+            case 'signingIn' :
+                return this.signingInRender();
+                break;
+            case 'noSignIn' :
+                return this.noSignInRender();
+                break;
+        }
+    }
 }
 
-var styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    circleStyle:{
+        width:px2dp(24),
+        height:px2dp(24),
+        borderRadius:px2dp(12),
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    textStyle:{
+        fontSize:px2dp(12),
+    },
+    iconStyle:{
+        width:px2dp(18),
+        height:px2dp(18)
+    }
+});
 
-function select(store) {
-  return {};
-}
 
-module.exports = connect(select)(SignInCircleView);
+
