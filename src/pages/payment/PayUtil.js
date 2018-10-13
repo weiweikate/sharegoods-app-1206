@@ -39,6 +39,9 @@ export default {
     //  package
     //  sign
     appWXPay(payInfo){
+        if(Platform.OS !== 'ios'){
+            payInfo = JSON.stringify(payInfo)
+        }
         return PayTool.appWXPay(payInfo).then((response)=>{
             //response 出错的时候，做统一的业务自动打点
             console.log(response);
