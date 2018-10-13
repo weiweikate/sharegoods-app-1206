@@ -8,7 +8,8 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import AddressItem from '../components/AddressItem';
@@ -26,6 +27,7 @@ import exchangeGoodsDetailBg from '../res/exchangeGoodsDetailBg.png';
 import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 import refusa_icon from '../res/tuikuan_icon_jujue_nor.png';
+import EmptyUtils from '../../../utils/EmptyUtils';
 
 import OrderApi from '../api/orderApi'
 
@@ -34,68 +36,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         super(props);
         this.state = {
             pageData: null,
-            timeStr: '',
-            imageArr: [
-                'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
-                // 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
-                // 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
-                // 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
-                // 'https://ws4.sinaimg.cn/large/006tNc79gy1fsnh4ez029j3058056myq.jpg',
-            ],
-            /*
-            * 0:订单异常
-            * 1:换货完成
-            * 2:待买家收货确认
-            * 3:换货中
-            * 4:商家已通过
-            * */
-            viewData: {
-                // return_reason:'不想要了',
-                // remark:'比较有钱，不要了...',
-                // return_amounts:'724',    //(另外暂时作为银行卡)
-                // apply_time:1532568808000,
-                // outRefundNo:'7802201807260933275286636',
-                // return_balance:0,   //余额
-                // return_token_coin:0,//代币
-                // return_user_score:0,//积分
-            },
             pageType: this.params.pageType ? this.params.pageType : 0,
-            title: ['订单异常', '换货完成', '待买家收货确认', '换货中', '商家已通过', '退款成功', '售后完成', '售后失败'],
-            description1: ['请联系客服', '', '4天12小时32分', '等待商家确认中', '7天退换，请退货给商家', '2018-07-27 11:55:49', '2018-07-27 11:55:49', '2018-07-27 11:55:49'],
-            description2: ['', '', '', '', '4天12小时32分', '', '', ''],
-            sellerPhone: -1,
-            returnProduct: {
-                out_time: 1533993685000,
-                had_gift_bag: 2,
-                return_reason: '不喜欢/不想要了',
-                order_product_id: 351,
-                return_balance: 0,
-                spec_img: 'http://juretest.oss-cn-hangzhou.aliyuncs.com/jure/jure_crm/test/c8425d24-13cd-41fe-9f5c-09f6278f53d4_1533195145027.jpg',
-                refund_no: '2179201808102121253455770',
-                num: 1,
-                apply_time: 1533907285000,
-                remark: '是否大额方法',
-                type: 3,
-                return_token_coin: 0,
-                product_name: '旺旺小小酥',
-                spec: '44',
-                price: 8000,
-                return_amounts: 0,
-                id: 104,
-                return_user_score: 0,
-                status: 1
-            },
-            returnAddres: {
-                id: 1,
-                receiver: '王小明1',
-                recevicePhone: '15257114444',
-                provinceCode: 320000,
-                cityCode: 320500,
-                areaCode: 320504,
-                address: '江苏省苏州市金阊区地铁口A口望京C2座5楼',
-                createTime: 1531346973000,
-                status: 1
-            }
         };
 
         this._bindFunc();
@@ -107,10 +48,16 @@ class ExchangeGoodsDetailPage extends BasePage {
         show: true// false则隐藏导航
     };
 
+    $NavigationBarDefaultLeftPressed = () => {
+     this.$navigateBack('order/afterSaleService/AfterSaleServiceHomePage');
+    }
+
     _bindFunc(){
         this.renderOperationApplyView = this.renderOperationApplyView.bind(this);
+        this.renderReturnGoodsView = this.renderReturnGoodsView.bind(this);
         this.startTimer = this.startTimer.bind(this);
         this.stopTimer = this.stopTimer.bind(this);
+        this.loadPageData = this.loadPageData.bind(this);
     }
 
     componentDidMount(){
@@ -122,13 +69,14 @@ class ExchangeGoodsDetailPage extends BasePage {
         return (
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    {/*{this.renderNotice()}*/}
+                    {this.renderNotice()}
                     {this.renderHeader()}
                     {this.renderOperationApplyView()}
                     {this.renderArefundView()}
-                    {/*{this.renderAddress()}*/}
-                    {/*{this.renderLogistics()}*/}
-                    {/*{this.renderOrder()}*/}
+                    {this.renderReturnGoodsView()}
+                    {this.renderAddress()}
+                    {this.renderLogistics()}
+                    {this.renderOrder()}
                     {this.state.pageData ?
                         <GoodsItem
                     uri={this.state.pageData.specImg}
@@ -152,6 +100,30 @@ class ExchangeGoodsDetailPage extends BasePage {
         }
         //退款成功的时候页面是和其他状态不一样的
         let isSuccess = this.state.pageData.status === 6 ? true : false;
+        return this.renderItems(isSuccess);
+    };
+    /**  退货详情专用  中间一段View */
+    renderReturnGoodsView() {
+        if (this.state.pageData === null || this.state.pageData.undefined || this.params.pageType !== 1) {
+            return null;// 数据没有请求下来，或不是退款详情页面
+        }
+        if (this.state.pageData.status === 6){
+            return this.renderItems(true);
+        } else if (this.state.pageData.status === 3){
+           return(
+               <View style={{
+                   height: 44,
+                   flexDirection: 'row',
+                   backgroundColor: color.white,
+                   alignItems: 'center'
+               }}>
+                   <UIText value={'拒绝原因:' + this.state.pageData.refusalReason} style={{ color: color.black_222, fontSize: 13 }}/>
+               </View>
+           )
+        }
+    }
+
+    renderItems(isSuccess){
         let orderReturnAmounts = this.state.pageData.orderReturnAmounts || {}
         return (
             <View>
@@ -171,8 +143,8 @@ class ExchangeGoodsDetailPage extends BasePage {
                         alignItems: 'center'
                     }}>
                         <UIText value={'退款金额:'} style={{ color: color.black_222, fontSize: 13 }}/>
-                        {/*<UIText value={StringUtils.formatMoneyString(this.params.pageData.totalRefundPrice)}*/}
-                                {/*style={{ color: color.red, fontSize: 13, marginLeft: 5 }}/>*/}
+                        <UIText value={StringUtils.formatMoneyString(this.state.pageData.totalRefundPrice)}
+                        style={{ color: color.red, fontSize: 13, marginLeft: 5 }}/>
                     </View>
                     {
                         isSuccess ? <UIText value={'已退款'} style={{color:color.black_222,fontSize:13}}/> : null
@@ -208,9 +180,14 @@ class ExchangeGoodsDetailPage extends BasePage {
                 }
             </View>
         );
-    };
-
+    }
     renderLogistics = () => {
+        /** 显示物流*/
+        let pageType = this.params.pageType;
+        let pageData = this.state.pageData;
+        if (pageType === 0 || EmptyUtils.isEmpty(pageData) || pageData.status === 1){//退款无物流
+            return;
+        }
         return (
             <View>
                 <TouchableOpacity style={{
@@ -222,7 +199,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     paddingLeft: 15,
                     paddingRight: 15
                 }} onPress={() => this.returnLogists()}>
-                    <UIText value={'退货物流'} style={{ color: color.black_222, fontSize: 13 }}/>
+                    <UIText value={['无物流','退货物流','换货物流'][pageType]} style={{ color: color.black_222, fontSize: 13 }}/>
                     <View style={{
                         height: 44,
                         flexDirection: 'row',
@@ -230,36 +207,65 @@ class ExchangeGoodsDetailPage extends BasePage {
                         alignItems: 'center'
                     }}>
                         <UIText
-                            value={StringUtils.isNoEmpty(this.state.returnProduct.express_no) ? this.state.returnProduct.express_no : '请填写寄回物流信息'}
+                            value={EmptyUtils.isEmpty(pageData.expressNo) === false ? `${pageData.expressName}(${pageData.expressNo})`: '请填写寄回物流信息'}
                             style={{
-                                color: StringUtils.isEmpty(this.state.returnProduct.express_no) ? color.black_222 : color.gray_c8c,
+                                color: EmptyUtils.isEmpty(pageData.expressNo) === false ? color.black_222 : color.gray_c8c,
                                 fontSize: 12,
                                 marginRight: 15
                             }}/>
                         <UIImage source={right_arrow} style={{ height: 10, width: 7 }}/>
                     </View>
                 </TouchableOpacity>
-                {/*{this.renderLine()}*/}
-                {/*<TouchableOpacity style={{height:44,backgroundColor:color.white,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingLeft:15,paddingRight:15}} onPress={()=>this.shopLogists()}>*/}
-                {/*<UIText value={'商家物流'} style={{color:color.black_222,fontSize:13}}/>*/}
-                {/*<View style={{height:44,flexDirection:'row',backgroundColor:color.white,alignItems:'center'}}>*/}
-                {/*<UIText value={'请填写寄回物流信息'} style={{color:color.gray_c8c,fontSize:12,marginRight:15}}/>*/}
-                {/*<UIImage source={right_arrow} style={{height:10,width:7}}/>*/}
-                {/*</View>*/}
-                {/*</TouchableOpacity>*/}
+                {
+                    pageData.ecExpressNo ?
+                        <View>
+                            {this.renderLine()}
+                            <TouchableOpacity style={{height:44,backgroundColor:color.white,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingLeft:15,paddingRight:15}} onPress={()=>this.shopLogists()}>
+                                <UIText value={'商家物流'} style={{color:color.black_222,fontSize:13}}/>
+                                <View style={{height:44,flexDirection:'row',backgroundColor:color.white,alignItems:'center'}}>
+                                    <UIText value={`${pageData.ecExpressName}(${pageData.ecExpressNo})`} style={{color:color.black_222,fontSize:12,marginRight:15}}/>
+                                    <UIImage source={right_arrow} style={{height:10,width:7}}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View> : null
+                }
             </View>
         );
     };
     renderAddress = () => {
+        let pageData = this.state.pageData;
+        if (pageData === null || pageData === undefined){
+            return;
+        }
+        let status = pageData.status;
+        let returnAddress = pageData.returnAddress || {}
+        if (this.params.pageType === 0){
+            return;
+        } else if (this.params.pageType === 1){
+            if (status === 1 || status === 3){
+                //退货 状态为申请中、申请已拒绝，不显示寄回地址
+                return;
+            }
+        } else if (this.params.pageType === 2){
+            if (status === 1 || status === 3){
+                //退货 状态为申请中、申请已拒绝，不显示寄回地址
+                return;
+            }
+        }
         return (
             <View>
-                <AddressItem
-                    name={this.state.pageData.receiverName}
-                    phone={this.state.pageData.receiverNum}
-                    address={this.state.pageData.receiverAddress}
-                />
-                <UIImage source={addressLine} style={{ width: ScreenUtils.width, height: 3 }}/>
-                {this.renderWideLine()}
+                {
+                    this.params.pageType === 2 ?
+                    <View>
+                        <AddressItem
+                            name={'收货人：' + pageData.receiver}
+                            phone={pageData.recevicePhone || ''}
+                            address={pageData.receiveAddress || ''}
+                        />
+                        < UIImage source = { addressLine } style={{width: ScreenUtils.width, height: 3}}/>
+                        {this.renderWideLine()}
+                    </View> : null
+                }
                 <View style={{ flexDirection: 'row', height: 82, alignItems: 'center' }}>
                     <View style={{
                         width: 43,
@@ -280,9 +286,13 @@ class ExchangeGoodsDetailPage extends BasePage {
                                      alignItems: 'center',
                                      backgroundColor: color.white
                                  }}
-                                 name={this.state.returnAddres.receiver}
-                                 phone={this.state.returnAddres.recevicePhone}
-                                 address={this.state.returnAddres.address}
+                                 name={'收货人：' + returnAddress.receiver}
+                                 phone={returnAddress.recevicePhone}
+                                 address={returnAddress.provinceName +
+                                 returnAddress.cityName +
+                                 returnAddress.areaName +
+                                 returnAddress.address
+                                 }
                     />
                 </View>
                 {this.renderWideLine()}
@@ -291,12 +301,36 @@ class ExchangeGoodsDetailPage extends BasePage {
         );
     };
     renderNotice = () => {
-        return (this.state.pageType !== 4 ? null :
+        let tip = null;
+        let pageData = this.state.pageData;
+        if (pageData === undefined || pageData === null){
+            return;
+        }
+        if (this.params.pageType === 0){//退款详情
+
+        } else if (this.params.pageType === 1) {//退货详情
+
+             if (pageData.status === 2){//同意申请
+                tip = '商家已同意换货申请，请尽早发货';
+            } else if(pageData.status === 8){//超时关闭
+                tip = '已撤销退货退款申请，申请已关闭，交易将正常进行，请关注交易';
+            }
+
+        } else if (this.params.pageType === 2) {//换货详情
+            if (pageData.status === 2){//同意申请
+                tip = '商家已同意换货申请，请尽早发货';
+            }
+        }
+        if (tip) {
+            return (
                 <View
                     style={{ height: 20, backgroundColor: color.red, justifyContent: 'center', alignItems: 'center' }}>
-                    <UIText value={'商家已同意换货申请，请尽快发货'} style={{ fontSize: 13, color: color.white }}/>
+                    <UIText value={tip} style={{ fontSize: 13, color: color.white }}/>
                 </View>
-        );
+            )
+        }else {
+            return null;
+        }
     };
     renderContact = () => {
         return (
@@ -381,7 +415,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             <View>
                 <View
                     style={{ backgroundColor: color.gray_f7f7, height: 40, justifyContent: 'center', paddingLeft: 15 }}>
-                    <UIText value={'换货订单'} style={{ color: color.black_999, fontSize: 13 }}/>
+                    <UIText value={['退款订单', '退货订单', '换货订单'][this.params.pageType]} style={{ color: color.black_999, fontSize: 13 }}/>
                 </View>
                 {this.renderLine()}
             </View>
@@ -401,23 +435,47 @@ class ExchangeGoodsDetailPage extends BasePage {
         let textContaner_marginLeft = 15;
         if (this.params.pageType === 0){//退款详情
 
-            let titles = ['商家退款审核中', '*-商家同意退款', '商家拒绝退款', '*-发货中', '*-云仓库发货中', '退款完成', '已关闭', '超时关闭'];
+            let titles = ['商家退款审核中', '*-商家同意退款', '商家拒绝退款', '*-发货中', '*-云仓库发货中', '退款完成', '已关闭', '超时关闭', '商家拒绝退款'];
             titleCommpent = () => {return <UIText value = {titles[pageData.status-1]} style = {styles.header_title}/>};
             if (pageData.status === 3){//拒绝
                 textContaner_marginLeft = 10;
                 imageCommpent = () => {return <UIImage soucre = {refusa_icon} style = {styles.header_image}/>};
                 detialCommpent = () => {return <UIText value = {pageData.refusalReason} style = {styles.header_detail}/>};
             } else if (pageData.status === 6){//已完成
-                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.orderReturnAmounts.refundTime,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
-            } else if(pageData.status === 1){//申请中
-                timerCommpent = () => {return <UIText value = {pageData.timeStr} style = {styles.header_detail}/>};
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.payTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+            } else if(pageData.status === 1){//申请中 applyTime	Long	1539250433000
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.applyTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
             }
         } else if (this.params.pageType === 1) {//退货详情
-
+            let titles = ['等待商家处理', '请退货给商家', '商家拒绝退货申请', '等待商家确认', '等待商家确认', '退货退款成功', '已关闭', '退货退款超时关闭', '商家拒绝退货'];
+            titleCommpent = () => {return <UIText value = {titles[pageData.status-1]} style = {styles.header_title}/>};
+            if (pageData.status === 3 || pageData.status === 9){//拒绝
+                textContaner_marginLeft = 10;
+                imageCommpent = () => {return <UIImage soucre = {refusa_icon} style = {styles.header_image}/>};
+                detialCommpent = () => {return <UIText value = {DateUtils.getFormatDate(pageData.refuseTime / 1000,'yyyy年MM月dd日  hh:mm')	} style = {styles.header_detail}/>};
+            } else if (pageData.status === 6){//已完成
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.payTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+            } else if(pageData.status === 1){//申请中
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.applyTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+            }else if (pageData.status === 2){//同意申请
+                timerCommpent = () =>  {return <UIText value = { this.state.timeStr} style = {styles.header_detail}/>};
+            }
         } else if (this.params.pageType === 2) {//换货详情
-
+            let titles = ['等待商家处理', '商家已同意', '商家拒绝换货申请', '等待商家确认', '云仓库发货中', '换货完成', '已关闭', '超时关闭', '商家拒绝换货', '等待买家确认'];
+            titleCommpent = () => {return <UIText value = {titles[pageData.status-1]} style = {styles.header_title}/>};
+            if (pageData.status === 3 || pageData.status === 9){//拒绝
+                textContaner_marginLeft = 10;
+                imageCommpent = () => {return <UIImage soucre = {refusa_icon} style = {styles.header_image}/>};
+                detialCommpent = () => {return <UIText value = {DateUtils.getFormatDate(pageData.refuseTime / 1000,'yyyy年MM月dd日  hh:mm')	} style = {styles.header_detail}/>};
+            } else if (pageData.status === 6){//已完成
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.backsendTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+            } else if(pageData.status === 1){//申请中 applyTime	Long	1539250433000
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.applyTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+            }else if (pageData.status === 2){//同意申请
+                detialCommpent = () => {return <UIText value = { '7天退货，请退货给商家'} style = {styles.header_detail}/>};
+                timerCommpent = () =>  {return <UIText value = { this.state.timeStr} style = {styles.header_detail}/>};
+            }
         }
-
         return (
             <View>
                 <View style={{ position: 'absolute', height: 100, width: ScreenUtils.width }}>
@@ -450,13 +508,29 @@ class ExchangeGoodsDetailPage extends BasePage {
         this.$loadingShow();
         OrderApi.returnProductLookDetail({returnProductId:this.params.returnProductId}).then((response)=>{
             this.$loadingDismiss()
-            this.setState({pageData: response.data});
-            if (response.data.status === 1){//申请中开始定时器倒计时
-                this.startTimer();
+            let pageData = response.data;
+            if (pageData.status === 3 && pageData.expressName && pageData.expressNo) {
+                /** 将原来的拒绝状态（3），分成 3 -》 商家拒绝申请 和 9 -》 表示寄出商品后商家拒绝退款
+                 * 状态为已拒绝，且有寄出物流的信息，新增加状态 9 -》 表示寄出商品后商家拒绝退款
+                 */
+                pageData.status = 9;
+            }
+            if(this.params.pageType === 2 && pageData.status === 4 && pageData.ecExpressNo && pageData.ecExpressName){
+                /**
+                 * 在换货的详情，将原来的发货中状态（4）， 分成 3 -》用户发货，等待商家确认 和 10 =》表示商家发货，等待买家确认
+                 */
+                pageData.status = 10;
+            }
+
+            this.setState({pageData: pageData});
+            if (response.data.status === 2 && (this.params.pageType === 1 || this.params.pageType === 2)){
+                /**为退货，或换货的详情。状态为同意申请,开始定时器倒计，倒计用户给商家发货的剩余时间*/
+                this.startTimer(pageData.outTime);
             } else {
                 this.stopTimer();
             }
         }).catch(e=>{
+            this.stopTimer();
             this.$loadingDismiss()
         });
     }
@@ -475,21 +549,28 @@ class ExchangeGoodsDetailPage extends BasePage {
         this.navigate('product/ProductDetailPage', { productId: productId });
     };
     returnLogists = () => {
-        if (StringUtils.isEmpty(this.state.returnProduct.express_no)) {
-            this.navigate('order/logistics/LogisticsInformationPage', {
+        if (EmptyUtils.isEmpty(this.state.pageData.expressNo)) {
+            this.$navigate('order/afterSaleService/FillReturnLogisticsPage', {
                 pageData: this.state.pageData,
-                index: this.state.index,
-                returnProduct: this.state.returnProduct,
-                returnAddres: this.state.returnAddres,
-                callBack: this.loadPageData()
+                callBack: this.loadPageData,
             });
         } else {
-            this.navigate('order/logistics/LogisticsDetailsPage', {
-                orderId: this.state.pageData.orderId,
+            this.$navigate('order/logistics/LogisticsDetailsPage', {
+                orderId: this.state.pageData.orderNum,
                 expressNo: this.state.pageData.expressNo
             });
         }
     };
+    shopLogists(){
+        if(EmptyUtils.isEmpty(this.state.pageData.expressNo)){
+            this.$toastShow('请填写完整的退货物流信息\n才可以查看商家的物流信息')
+            return;
+        }
+        this.$navigate('order/logistics/LogisticsDetailsPage', {
+            orderNum: this.state.pageData.orderNum,
+            expressNo: this.state.pageData.ecExpressNo
+        });
+    }
 
     /*** huchao */
 
@@ -521,14 +602,34 @@ class ExchangeGoodsDetailPage extends BasePage {
     onPressOperationApply(cancel){
         if (cancel){
             this.$loadingShow();
-            OrderApi.revokeApply({}).then(result => {
+            OrderApi.revokeApply({returnProductId: this.state.pageData.id}).then(result => {
                 this.$loadingDismiss();
+                DeviceEventEmitter.emit('OrderNeedRefresh');
                 this.$navigateBack('/order/order/MyOrdersDetailPage');
             }).catch(error => {
                 this.$loadingDismiss();
                 this.$toastShow(error.msg || '操作失败，请重试');
             });
         }else {
+            let {orderProductId, returnReason, remark, imgList, exchangePriceId, exchangeSpec, exchangeSpecImg, productId} = this.state.pageData;
+            for (let i = 0; i < imgList.length; i++){
+                imgList[i].imageThumbUrl = imgList[i].smallImg;
+                imgList[i].imageUrl =  imgList[i].originalImg
+            }
+            this.$navigate('order/afterSaleService/AfterSaleServicePage', {
+                pageType: this.params.pageType,
+                returnProductId: this.state.pageData.id,
+                isEdit: true,
+                callBack: this.loadPageData,
+                orderProductId,
+                returnReason,
+                remark,
+                imgList,
+                exchangePriceId,
+                exchangeSpec,
+                exchangeSpecImg,
+                productId,
+            });
 
         }
     }
@@ -539,13 +640,13 @@ class ExchangeGoodsDetailPage extends BasePage {
      */
     getRemainingTime(out_time){
         let timestamp = Date.parse(new Date()) / 1000;
-        out_time = out_time / 1000;
+        out_time = out_time ;
 
         if (timestamp >= out_time){
-            return '';
+            return '已超时';
         }
 
-        let remainingTime = timestamp - out_time;
+        let remainingTime = out_time - timestamp;
         let s = remainingTime % 60;
         remainingTime = (remainingTime - s) / 60;
         let m = remainingTime % 60;
@@ -554,21 +655,29 @@ class ExchangeGoodsDetailPage extends BasePage {
         remainingTime = (remainingTime - H) / 24;
         let d = remainingTime;
 
-        return '剩余' + d + '天' + H + '小时' + m + '分'
+        return '剩余' + d + '天' + H + '小时' + m + '分' + s + '秒'
     }
 
-    startTimer(){
-        if (this.state.pageData === null){
+    startTimer(out_time){
+        this.stopTimer();
+        if (out_time === null || out_time === undefined){
             return;
         }
-        this.stopTimer();
+        /** 当前的时间已经超出，不开启定时器*/
+        let timestamp = Date.parse(new Date()) / 1000;
+        out_time = out_time / 1000;
+        if (timestamp >= out_time) {
+            return;
+        }
         this.timer = setInterval(() => {
-            let timeStr = this.getRemainingTime(this.state.pageData.outTime);
+            let timeStr = this.getRemainingTime(out_time);
             this.setState({timeStr: timeStr});
-            if (timeStr === ''){
+            if (timeStr === '已超时'){
+                DeviceEventEmitter.emit('OrderNeedRefresh');
+                this.stopTimer();
                 this.loadPageData();
             } else {
-                this.stopTimer();
+
             }
         }, 1000);
     }

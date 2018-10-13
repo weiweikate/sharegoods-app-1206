@@ -16,8 +16,11 @@ import GoodsItem from './GoodsItem';
 import StringUtils from '../../../utils/StringUtils';
 import DateUtils from '../../../utils/DateUtils';
 import constants from '../../../constants/constants';
-import {TimeDownUtils} from '../../../utils/TimeDownUtils';
-
+import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+// import { CountDownReact } from '../../../components/ui';
+//  <CountDownReact date1={(new Date().valueOf())+1000*60*30}
+//                                             date2={new Date().valueOf()}
+//                                             callback={()=>console.log('22')}/>
 const GoodsListItem = props => {
     const {
         orderNum,
@@ -30,8 +33,8 @@ const GoodsListItem = props => {
         goodsItemClick,
         operationMenuClick,
         outTrandNo,
-    } = props
-    this.state={ pageStateString:'27:45:45后自动取消订单'};
+    } = props;
+    this.state = { pageStateString: '27:45:45后自动取消订单' };
 
     this.startCutDownTime2 = (autoConfirmTime2) => {
         let autoConfirmTime = Math.round((autoConfirmTime2 - new Date().valueOf()) / 1000);
@@ -39,11 +42,11 @@ const GoodsListItem = props => {
             return;
         }
         (new TimeDownUtils()).settimer(time => {
-            this.state.pageStateString=time.days + '天' + time.hours + ':' + time.min + ':' + time.sec + '后自动关闭';
+            this.state.pageStateString = time.days + '天' + time.hours + ':' + time.min + ':' + time.sec + '后自动关闭';
             console.log(this.state.pageStateString);
             if (time.hours === undefined && time.min === undefined && time.sec === undefined) {
                 this.setState({
-                    pageStateString: constants.pageStateString[5]
+                    pageStateString: ''
                 });
                 if (this.params.callBack) {
                     this.params.callBack();
@@ -56,33 +59,66 @@ const GoodsListItem = props => {
         let nameArr = constants.viewOrderStatus[orderStatus].menuData;
         let itemArr = [];
         for (let i = 0; i < nameArr.length; i++) {
-            if ((StringUtils.isNoEmpty(outTrandNo) && nameArr[i].id == 2) | (StringUtils.isEmpty(outTrandNo) && nameArr[i].id == 3)) {
-       return(
-             <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
-                 <View style={{marginLeft:5}}>
-                     <Text style={{color:'#D51243',fontSize:13}}>{this.state.pageStateString}</Text>
-                 </View>
-                 <View style={{flexDirection:'row'}}>
-                     {nameArr.map((item,i)=>{
-                         return    <TouchableOpacity key={i} style={{
-                             borderWidth: 1,
-                             borderColor: item.isRed ? color.red : color.gray_DDD,
-                             height: 30,
-                             borderRadius: 10,
-                             marginRight: 15,
-                             justifyContent: 'center',
-                             paddingLeft: 20,
-                             paddingRight: 20
-                         }} onPress={() => {
-                             operationMenuClick(item);
-                         }}>
-                             <Text
-                                 style={{ color: item.isRed ? color.red : color.gray_666 }}>{item.operation}</Text>
-                         </TouchableOpacity>
-                     })}
-                 </View>
-             </View>
-       )
+            if (orderStatus == 1) {
+                // this.startCutDownTime2(1539319978000);
+                if (StringUtils.isNoEmpty(outTrandNo)) {
+                    nameArr = [{
+                        id: 1,
+                        operation: '取消订单',
+                        isRed: false
+                    },
+                        {
+                            id: 3,
+                            operation: '继续支付',
+                            isRed: true
+                        }
+                    ];
+                } else {
+                    nameArr = [{
+                        id: 1,
+                        operation: '取消订单',
+                        isRed: false
+                    },
+                        {
+                            id: 2,
+                            operation: '去支付',
+                            isRed: true
+                        }
+                    ];
+                }
+                return (
+                    <View style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
+                    }}>
+
+
+                        <View style={{ marginLeft: 5 ,flexDirection:'row'}}>
+                            <Text style={{ color: '#D51243', fontSize: 13 }}>00:21:43后自动取消</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            {nameArr.map((item, i) => {
+                                return <TouchableOpacity key={i} style={{
+                                    borderWidth: 1,
+                                    borderColor: item.isRed ? color.red : color.gray_DDD,
+                                    height: 30,
+                                    borderRadius: 10,
+                                    marginRight: 15,
+                                    justifyContent: 'center',
+                                    paddingLeft: 20,
+                                    paddingRight: 20
+                                }} onPress={() => {
+                                    operationMenuClick(item);
+                                }}>
+                                    <Text
+                                        style={{ color: item.isRed ? color.red : color.gray_666 }}>{item.operation}</Text>
+                                </TouchableOpacity>;
+                            })}
+                        </View>
+                    </View>
+                );
             } else {
                 itemArr.push(
                     <TouchableOpacity key={i} style={{

@@ -19,14 +19,14 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 30,
         color: '#FFF',
-        marginLeft: 7,
+        marginLeft: 2,
     },
     container: {
         flexDirection: 'row',
     },
     //时间文字
     defaultTime: {
-        paddingHorizontal: 3,
+        paddingHorizontal: 1,
         backgroundColor: 'rgba(85, 85, 85, 1)',
         fontSize: 12,
         color: 'white',

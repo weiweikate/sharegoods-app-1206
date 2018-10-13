@@ -80,7 +80,6 @@ export default class MyCouponsItems extends Component {
                     <View style={{ height: px2dp(33), justifyContent: 'center', marginLeft: 10 }}>
                         <Text style={{ fontSize: 11, color: '#999999' }}>{item.limit}</Text>
                     </View>
-
                 </ImageBackground>
             </TouchableOpacity>
         );
@@ -159,23 +158,7 @@ export default class MyCouponsItems extends Component {
     };
     parseData = (dataList) => {
         let arrData = [];
-        let explainList = [];
         dataList.map((item) => {
-            switch (item.status) {
-                case 0:
-                    explainList = ['', '', '', ''];
-                    break;
-                case 1:
-                    explainList = ['已', '使', '用'];
-                    break;
-                case 2:
-                    explainList = ['已', '失', '效'];
-                    break;
-                case 3:
-                    explainList = ['未', '激', '活'];
-                    break;
-            }
-
             arrData.push({
                 id: item.id,
                 status: item.status,
@@ -186,7 +169,6 @@ export default class MyCouponsItems extends Component {
                 useConditions: item.useConditions,
                 limit: this.parseCoupon(item),
                 discountCouponId: '',
-                explainList: explainList,
                 remarks: item.remarks
             });
 
@@ -204,21 +186,42 @@ export default class MyCouponsItems extends Component {
     getDataFromNetwork = () => {
         let status = this.state.pageStatus;
         let page = this.state.currentPage || 1;
-        API.userCouponList({
-            page,
-            status,
-            pageSize: 20
-        }).then(result => {
-            let data = result.data || {};
-            let dataList = data.data || [];
-            this.parseData(dataList);
+        if (this.props.fromOrder && status == 0) {
+            let arr = [], ProductPriceIdPair = {};
+            // ProductPriceIdPair=this.props.productIds;
+            // priceId  productId
+            ProductPriceIdPair.priceId = this.props.productIds.orderProducts[0].priceId,
+                ProductPriceIdPair.productId = this.props.productIds.orderProducts[0].productId,
 
-        }).catch(result => {
-            if (result.code === 10009) {
-                this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
-            }
-            UI.$toast(result.msg);
-        });
+                arr.push({
+                    ProductPriceIdPair
+                });
+            API.listAvailable({ page, pageSize: 20, productPriceIds: arr }).then(res => {
+                console.log(res.data);
+            }).catch(result => {
+                if (result.code === 10009) {
+                    this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
+                }
+                UI.$toast(result.msg);
+            });
+        } else {
+            API.userCouponList({
+                page,
+                status,
+                pageSize: 20
+            }).then(result => {
+                let data = result.data || {};
+                let dataList = data.data || [];
+                this.parseData(dataList);
+
+            }).catch(result => {
+                if (result.code === 10009) {
+                    this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
+                }
+                UI.$toast(result.msg);
+            });
+        }
+
 
     };
 
@@ -253,7 +256,15 @@ export default class MyCouponsItems extends Component {
 
     clickItem = (index, item) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
-        this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
+        if (this.props.fromOrder) {
+            this.props.useCoupons(item);
+        } else {
+            if (item.status === 0 || item.status.status === 3) {
+                this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
+            }
+        }
+
+
     };
 
 }

@@ -8,16 +8,17 @@ import {
     View,
     TouchableWithoutFeedback,
     SectionList,
-} from 'react-native';
+} from "react-native";
 import BasePage from '../../../BasePage';
 import {
     UIText, UIImage
 } from '../../../components/ui';
+import OrderApi from "../api/orderApi";
 export default class SelectLogisticsCompanyPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            logisticsCompanys: [{title: 'A', data: [{name: '公司'}]},{title: 'B', data: [{name: '公司'}]}]
+            logisticsCompanys: []
         }
         this._bindFunc();
     }
@@ -26,8 +27,31 @@ export default class SelectLogisticsCompanyPage extends BasePage {
         this._renderItem = this._renderItem.bind(this);
         this._renderSectionHeader = this._renderSectionHeader.bind(this);
         this._onPressItem = this._onPressItem.bind(this);
+        this.loadPageData = this.loadPageData.bind(this);
+        this.handleNetData = this.handleNetData.bind(this);
     }
 
+    loadPageData(){
+        this.$loadingShow();
+        OrderApi.findAllExpress().then((result) => {
+            this.$loadingDismiss();
+           this.handleNetData(result.data);
+        }).catch((error) => {
+           this.$loadingDismiss();
+           this.$toastShow(error.msg || '操作失败，请重试');
+        });
+    }
+
+    handleNetData(pageData){
+        let logisticsCompanys = Object.keys(pageData).map((key) => {
+            return {title: key, data: pageData[key]}
+        })
+        this.setState({logisticsCompanys});
+    }
+
+    componentDidMount(){
+        this.loadPageData();
+    }
     $navigationBarOptions = {
         title: '选择物流公司',
         show: true// false则隐藏导航
@@ -73,7 +97,8 @@ export default class SelectLogisticsCompanyPage extends BasePage {
     }
 
     _onPressItem(item, index, section){
-        this.$navigateBack('order/afterSaleService/FillReturnLogisticsPage');
+        this.$navigateBack();
+        this.params.callBack &&  this.params.callBack(item.name)
     }
 }
 
