@@ -1,22 +1,54 @@
 import React from 'react';
-import { View, Text, Platform, NativeModules, StyleSheet, TouchableOpacity, Image, Modal, Alert} from 'react-native';
+import { View, Text, Platform, StyleSheet, TouchableOpacity, Image, Alert, ScrollView} from 'react-native';
 import BasePage from '../../BasePage';
 import { UIText } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
 import { color } from '../../constants/Theme';
-import selected from './res/selected.png';
-import noselect from './res/icon13_03.png';
-import yinunit from './res/icon_03-05.png';
-import zfbicon from './res/icon_03-09.png';
-import wxicon from './res/icon_03-08.png';
-import moneIon from './res/icon_03-02.png';
+import selectedImg from './res/selected.png';
 import Toast from '../../utils/bridge';
-import OrderApi from './api';
-import PayUtil from './PayUtil';
 import InputTransactionPasswordModal from './InputTransactionPasswordModal';
 import user from '../../model/user';
 import { observer } from 'mobx-react/native';
 import { NavigationActions } from 'react-navigation';
+import unselectedImg from './res/unselected.png'
+import { Payment, paymentType } from './Payment'
+
+const PayCell = ({data, isSelected, balance, press, selectedTypes}) => {
+    let selected = isSelected
+    if (data.type !== paymentType.balance && selectedTypes) {
+        selected = selectedTypes.type === data.type
+    }
+    return <TouchableOpacity style={styles.cell} onPress={()=>press && press()}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image source={data.icon} style={{ height: 33 }} resizeMode={'contain'}/>
+            <Text style={[styles.blackText, { marginLeft: 5 }]}>{data.name}</Text>
+        </View>
+        {
+            data.hasBalance
+            ?
+            <Text style={{
+                    marginLeft: 5,
+                    marginRight: 7,
+                    color: '#999999',
+                    fontSize: 13
+                }}>可用余额: {balance}</Text>
+            :
+            null
+        }
+        <Image source={selected ? selectedImg : unselectedImg} style={{ height: 22, width: 22 }} resizeMode={'stretch'}/>
+    </TouchableOpacity>
+}
+
+const Section = ({data}) => <View style={{
+    backgroundColor: color.page_background,
+    height: 39,
+    justifyContent: 'center'
+}}>
+    <Text style={{
+        fontFamily: 'PingFang-SC-Medium', fontSize: 13
+        , color: '#999999', marginLeft: 15
+    }}>{data.name}</Text>
+</View>
 
 @observer
 export default class PaymentMethodPage extends BasePage {
@@ -29,11 +61,8 @@ export default class PaymentMethodPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            payMethodList: [false, false, false, false, false, false],
             isShowPaymentModal: false,
             password: '',
-            //余额
-            available_balance: user.availableBalance,
             /*
             * 用于支付页面的相关数据展示与页面控制,这里展示最大子集(可拓展)，并不需要全部传完
             * */
@@ -52,81 +81,36 @@ export default class PaymentMethodPage extends BasePage {
                     // //订单 0:快递订单 1:自提订单
                     // orderType:this.params.orderType?this.params.orderType:0,
                 }
-            },
-            isShow:false
+            }
         };
+        this.payment = new Payment()
+    }
+    _selectedPayType(value) {
+        this.payment.selectPaymentType(value)
     }
 
-    //支付方式选择
-    orderMenuJump(i) {
-        /*
-        * 0-1为代币支付 余额支付
-        * 2为UI空白行
-        * 3-5为银行卡支付 微信支付 支付宝支付
-        *
-        * */
-        let payMethodList = this.state.payMethodList;
-        switch (i) {
-            case 0:
-                payMethodList[0] = !payMethodList[0];
-                // payMethodList[1]=payMethodList[1];
-                break;
-            // case 1:
-            //     payMethodList[0]=payMethodList[0];
-            //     payMethodList[1]=!payMethodList[1];
-            //     break
-            case 2:
-                payMethodList[2] = !payMethodList[2];
-                payMethodList[3] = false;
-                payMethodList[4] = false;
-                break;
-            case 3:
-                payMethodList[2] = false;
-                payMethodList[3] = !payMethodList[3];
-                payMethodList[4] = false;
-                break;
-            case 4:
-                payMethodList[2] = false;
-                payMethodList[3] = false;
-                payMethodList[4] = !payMethodList[4];
-                break;
-        }
-        this.setState({ payMethodList: payMethodList });
+    _selectedBalancePay() {
+        this.payment.selectBalancePayment()
     }
 
     _render() {
-        return (
-            <View style={styles.container}>
-                <View style={{ flex: 1 }}>
-                    {this.renderPaymentModal()}
-                    {this.renderMenu()}
-                </View>
-                {this.renderBottomOrder()}
-                {this.renderCenterModal()}
-            </View>
-        );
-    }
-
-    onRequestClose(){
-        this.setState({
-            isShow:true
+        const { paymentList,  availableBalance, balancePayment, selectedBalace, selectedTypes} = this.payment
+        let items = []
+        paymentList.map((value, index) => {
+            if (value.type === paymentType.section) {
+                items.push(<Section key={index + ''} data={value}/>)
+            } else {
+                items.push(<PayCell key={index + ''}  selectedTypes={selectedTypes} data={value} balance={availableBalance} press={()=>this._selectedPayType(value)}/>)
+            }
         })
-    }
-    renderCenterModal(){
-        return (
-            <Modal
-                animationType='fade'
-                transparent={true}
-                onRequestClose={() => this.onRequestClose()}
-                visible={this.state.isShow}>
-                <View style={styles.modalStyle}>
-                    {this.renderContent()}
-                </View>
-            </Modal>
-        );
-    }
-    renderContent(){
-        return null;
+
+        return  <View  style={styles.container}><ScrollView style={styles.container}>
+            <PayCell data={balancePayment} isSelected={selectedBalace} balance={availableBalance} press={()=>this._selectedBalancePay(balancePayment)}/>
+            {items}
+        </ScrollView>
+        {this.renderBottomOrder()}
+        {this.renderPaymentModal()}
+        </View>
     }
     //支付方式弹窗
     renderPaymentModal = () => {
@@ -150,65 +134,6 @@ export default class PaymentMethodPage extends BasePage {
                 forgetPassword={() => this.forgetTransactionPassword()}
             />
         );
-    };
-
-    renderMenu = () => {
-        let leftImage = [moneIon, '', yinunit, wxicon, zfbicon];
-        let leftText = ['余额支付', '', '银行卡支付', '微信支付', '支付宝支付'];
-        let rightText = ['可用金额: ' + this.state.available_balance, '', '', ''];
-        let isBottomLineWide = [false, false, false, false, false];
-        let arr = [];
-        for (let i = 0; i < leftImage.length; i++) {
-            if (i === 1) {
-                arr.push(
-                    <View key={i} style={{
-                        backgroundColor: color.page_background,
-                        height: 39,
-                        justifyContent: 'center'
-                    }}>
-                        <Text style={{
-                            fontFamily: 'PingFang-SC-Medium', fontSize: 13
-                            , color: '#999999', marginLeft: 15
-                        }}>其他支付</Text>
-                    </View>
-                );
-            } else {
-                (
-                    arr.push(
-                        <View key={i} style={{ height: 60, justifyContent: 'center' }}>
-                            <TouchableOpacity style={{
-                                flex: 1,
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                height: 44,
-                                paddingLeft: 21,
-                                paddingRight: 28,
-                                backgroundColor: color.white,
-                                flexDirection: 'row'
-                            }} onPress={() => this.orderMenuJump(i)}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Image source={leftImage[i]} style={{ height: 33 }} resizeMode={'contain'}/>
-                                    <UIText value={leftText[i]} style={[styles.blackText, { marginLeft: 5 }]}/>
-                                </View>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <UIText value={rightText[i]} style={{
-                                        marginLeft: 5,
-                                        marginRight: 7,
-                                        color: '#999999',
-                                        fontSize: 13
-                                    }}/>
-                                    <Image source={this.state.payMethodList[i] ? selected : noselect}
-                                           style={{ height: 22, width: 22 }} resizeMode={'stretch'}/>
-                                </View>
-                            </TouchableOpacity>
-                            {isBottomLineWide[i] ? null :
-                                <View style={{ backgroundColor: '#f7f7f7', height: 11 }}/>}
-                        </View>
-                    )
-                );
-            }
-        }
-        return arr;
     };
     renderLine = () => {
         return (
@@ -236,210 +161,47 @@ export default class PaymentMethodPage extends BasePage {
             </View>
         );
     };
-
-    loadPageData() {
-        //初始化用户可用代币
-        // Toast.showLoading();
-        // OrderApi.findDealerAccountByIdAPP({ id: this.state.id }).then((response) => {
-        //     Toast.hiddenLoading();
-        //     if (response.ok) {
-        //         let data = response.data;
-        //         this.setState({
-        //             token_coin: data.token_coin ? data.token_coin : 0,
-        //             available_balance: data.available_balance ? data.available_balance : 0
-        //         });
-        //     } else {
-        //         NativeModules.commModule.toast(response.msg);
-        //     }
-        // }).catch(e => {
-        //     Toast.hiddenLoading();
-        // });
-        //初始化店铺保证金金额
-        if (this.params.openShopPay) {
-            // SpellShopApi.findConfig().then((response)=>{
-            //     if(response.ok){
-            //         let paymentPageParams=this.state.paymentPageParams
-            //         paymentPageParams.shouldPayMoney=response.data.storeDeposit
-            //         paymentPageParams.tokenCoinToBalance=response.data.tokenCoinToBalance
-            //         this.setState({
-            //             paymentPageParams:paymentPageParams,
-            //         })
-            //     } else {
-            //         Toast.toast(response.msg);
-            //     }
-            // });
-        }
-    }
-
     forgetTransactionPassword = () => {
         this.setState({ isShowPaymentModal: false });
         this.navigate('mine/transactionPassword/SettingTransactionPasswordStep2Page');
     };
-    payIntercept = (type) => {
-        console.log(type);
-        console.log(this.state.payMethodList);
-        let payMethodList = this.state.payMethodList;
-        if (type == 0) {
-            Toast.$toast('暂不支持！');
-            return false;
-        }
-        //纯平台支付金额不足拦截
-        if (payMethodList[2] == false && payMethodList[3] == false && payMethodList[4] == false) {
-            let hasSelectPay = 0;
-            if (payMethodList[0]) {
-                hasSelectPay += parseFloat(this.state.available_balance);
-            }
-            if (hasSelectPay < parseFloat(this.state.paymentPageParams.shouldPayMoney)) {
-                Toast.$toast('您平台余额不足，请选择其他支付方式');
-                return false;
-            }
-        }
-        //暂不支持的支付拦截
-        if (payMethodList[2]) {
-            Toast.$toast('暂不支持银行卡支付');
-            return false;
-        }
-        if (payMethodList[3]) {
-            Toast.$toast('暂不支持微信支付');
-            return false;
-        }
-        // //使用代币但是未找到代币与余额的兑换比例参数tokenCoinToBalance拦截
-        // if (payMethodList[0]&&this.state.paymentPageParams.tokenCoinToBalance==-1){
-        //     Toast.toast('查询服务器代币兑换比例异常');
-        //     return false
-        // }
-        return true;
-    };
-    commitOrder = () => {
-        const { params, type } = this.getApiRequestParams();
-        if (!this.payIntercept(type)) {
-            return;
-        }
-        //判断是否有初始化交易密码
+    async _balancePay() {
+        const { params } = this.getApiRequestParams();
         if (user.hadSalePassword) {
-            //仅三方支付不需要输入交易密码
-            if (type != 8 && StringUtils.isEmpty(this.state.password)) {
+            if (StringUtils.isEmpty(this.state.password)) {
                 this.setState({ isShowPaymentModal: true });
                 return;
             }
-            //纯
-            switch (this.state.paymentPageParams.pageType) {
-                //0:订单 1:拼店 and etc (页面来源,默认值为1拼店)
-                case 0:
-                    this.orderPay(params);
-                    break;
-                case 1:
-                    // this.spellShopPay(params)
-                    break;
-            }
-            //password错误之后需要置空，重新输入密码
-            this.setState({ password: '' });
-
-        } else {
+            let result = await this.payment.balancePay(params, this.props.navigation)
+            console.log('checkRes', result)
+            this._showPayresult(result)
+        }
+        else {
             this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
         }
-
-    };
-    //需要在当前选择的支付方式能完成支付的情况下，才保证调用该方法返回的数据有效性
-    getApiRequestParams = () => {
-        let payMethodList = this.state.payMethodList;
-        let type = 0;
-        if (payMethodList[0]) {
-            type += 1;
+    }
+    async _alipay() {
+        const { params } = this.getApiRequestParams()
+        const {resultStr, preStr} = await this.payment.alipay(params)
+        if (resultStr.code === 0) {
+            let checkResult = await this.payment.checkPayStatus({outTradeNo: preStr.data.outTradeNo})
+            this._showPayresult(checkResult)
+        } else {
+            Toast.$toast('支付失败')
         }
-        if (payMethodList[4]) {
-            type += 8;
+    }
+    async _wechat() {
+        const { params } = this.getApiRequestParams()
+        const {resultStr, preStr} = await this.payment.appWXPay(params)
+        if (resultStr.code === 0) {
+            let checkResult = await this.payment.checkPayStatus({outTradeNo: preStr.data.outTradeNo})
+            this._showPayresult(checkResult)
+        } else {
+            Toast.$toast('支付失败')
         }
-        /*
-        * 先扣除代币 -> 余额 -> 三方
-        * */
-        let balance = 0;
-        let leftShouldPayMoney = this.state.paymentPageParams.shouldPayMoney;
-        if (payMethodList[0] && leftShouldPayMoney != 0) {
-            if (parseFloat(this.state.available_balance) >= parseFloat(leftShouldPayMoney)) {
-                balance = parseFloat(leftShouldPayMoney);
-                leftShouldPayMoney = 0;
-            } else {
-                balance = this.state.available_balance;
-                leftShouldPayMoney = parseFloat(this.state.paymentPageParams.shouldPayMoney) - parseFloat(this.state.available_balance);
-            }
-        }
-        //对应的leftShouldPayMoney后端也会计算
-        let params = {
-            balance: balance,//N:余额	number
-            amounts: this.state.paymentPageParams.shouldPayMoney,//N:第三方金额	number
-            orderNum: this.state.paymentPageParams.orderPayParams.orderNum,//N:订单号	string
-            salePsw: this.state.password,//Y:交易密码	string
-            type: type//N:支付方式	number 1:纯平台2：微信小程序4：微信app8：支付宝16：银联卡
-        };
-        return { params, type };
-    };
-    orderPay = (params) => {
-        let payMethodList = this.state.payMethodList;
-        Toast.showLoading();
-        OrderApi.prePay(params).then((response) => {
-            Toast.hiddenLoading();
-                if (payMethodList[4]) {
-                    let payString = response.data.prePayStr;
-                    PayUtil.appAliPay(payString).then(resultStr => {
-                        console.log('appAliPay:' + JSON.stringify(resultStr));
-                        if (resultStr.code == 0) {
-                            this.continueToPay(response.data.outTradeNo);
-                        } else {
-                            this.navigate('payment/PayResultPage', { pageType: this.state.paymentPageParams.orderPayParams.orderType + 1 });
-                            // NativeModules.commModule.toast('支付失败')
-                        }
-                    }).catch(e => {
-                        NativeModules.commModule.toast('调用失败' + e);
-                    });
-                } else {
-                    this.continueToPay(response.data.outTradeNo);
-                }
-        }).catch(e => {
-            NativeModules.commModule.toast(e.msg + '');
-            Toast.hiddenLoading();
-        });
-    };
-    //拼店的支付
-    // spellShopPay = (params) => {
-    //     let payMethodList = this.state.payMethodList;
-    //     const { openShopPay } = this.params || {};
-    //     if (openShopPay) {
-    //         SpellShopApi.storeDeposit(params).then((response) => {
-    //             if (response.ok) {
-    //                 if (payMethodList[5]) {
-    //                     //针对服务器脏数据处理
-    //                     if (StringUtils.isEmpty(response.data)) {
-    //                         NativeModules.commModule.toast('服务器数据异常');
-    //                         return;
-    //                     }
-    //                     let payString = response.data.data;
-    //                     PayUtil.appAliPay(payString).then(resultStr => {
-    //                         console.log('appAliPay:' + JSON.stringify(resultStr));
-    //                         if (resultStr.code == 0) {
-    //                             this.props.navigation.navigate('spellShop/shopSetting/SetShopNamePage', {
-    //                                 gesturesEnabled: false
-    //                             });
-    //                         }
-    //                     }).catch(e => {
-    //                         NativeModules.commModule.toast('调用失败' + e.msg);
-    //                     });
-    //                 } else {
-    //                     this.props.navigation.navigate('spellShop/shopSetting/SetShopNamePage', {
-    //                         gesturesEnabled: false
-    //                     });
-    //                 }
-    //             } else {
-    //                 Toast.toast(response.msg);
-    //             }
-    //         });
-    //         return;
-    //     }
-    // };
-    //继续去支付
-    continueToPay = (outTradeNo) => {
-        OrderApi.continueToPay({ outTradeNo: outTradeNo }).then((response) => {
-                // NativeModules.commModule.toast('支付成功');
+    }
+    _showPayresult(result) {
+        if ( parseInt(result.code, 0) === 10000) {
             Alert.alert('支付提示','支付成功', [
                 {
                     text: '返回首页', onPress: () => {
@@ -454,30 +216,49 @@ export default class PaymentMethodPage extends BasePage {
                 },
                 {
                     text: '回到订单', onPress: () => {
-                      this.$navigate('order/order/MyOrdersListPage')
+                        this.props.navigation.goBack(null)
                     }
                 }
             ], { cancelable: true });
-                // this.loadPageData();
-                // this.$navigate('payment/PayResultPage', { pageType: this.state.paymentPageParams.orderPayParams.orderType });
-                // //继续支付
-                // OrderApi.continuePay({outTradeNo:response.data.outTradeNo,type:1}).then((response)=>{
-                //     if(response.ok ){
-                //
-                //     } else {
-                //         NativeModules.commModule.toast(response.msg)
-                //     }
-                // }).catch(e=>{
-                //     NativeModules.commModule.toast(e)
-                // });
-        }).catch(e => {
-            NativeModules.commModule.toast(e);
-        });
+        }
+    }
+    commitOrder = () => {
+        const {selectedBalace} = this.payment
+        
+        if (selectedBalace) {
+            this._balancePay()
+            return
+        }
+        const { selectedTypes } = this.payment
+        if (selectedTypes.type === paymentType.alipay) {
+            this._alipay()
+            return
+        }
+
+        if (selectedTypes.type === paymentType.wechat) {
+            this._wechat()
+            return
+        }
+
+        Toast.$toast('暂不支持')
+        
+    };
+    //需要在当前选择的支付方式能完成支付的情况下，才保证调用该方法返回的数据有效性
+    getApiRequestParams = () => {
+        //对应的leftShouldPayMoney后端也会计算
+        let params = {
+            amounts: this.state.paymentPageParams.shouldPayMoney,//N:第三方金额	number
+            orderNum: this.state.paymentPageParams.orderPayParams.orderNum,//N:订单号	string
+            salePsw: this.state.password,//Y:交易密码	string
+            // type: type//N:支付方式	number 1:纯平台  2：微信小程序   4：微信app   8：支付宝   16：银联卡
+        };
+        return { params };
     };
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: '#f7f7f7', justifyContent: 'flex-end'
+        flex: 1,
+        backgroundColor: '#f7f7f7'
     },
     selectText: {
         fontFamily: 'PingFang-SC-Medium', fontSize: 16, color: '#ffffff'
@@ -542,5 +323,15 @@ const styles = StyleSheet.create({
         color: color.red,
         marginRight: 12
     },
+    cell: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: 44,
+        paddingLeft: 21,
+        paddingRight: 28,
+        backgroundColor: color.white,
+        marginTop: 10
+    }
 });
 

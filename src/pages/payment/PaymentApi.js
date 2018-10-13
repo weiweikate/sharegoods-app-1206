@@ -9,10 +9,11 @@ const api = {
     continuePay:'/order/payRecord/continuePay',
     //继续去支付
     continueToPay:['/order/payRecord/continueToPay',{method:'get'}],
-
+    //检查订单状态
+    checkOrderStatus: ['/order/lookDetail']
 };
 import ApiUtils from '../../api/network/ApiUtils';
 
-const OrderApi = ApiUtils(api);
+const PaymentApi = ApiUtils(api);
 
-export default OrderApi;
+export default PaymentApi;
