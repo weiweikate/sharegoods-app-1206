@@ -816,7 +816,6 @@ class MyOrdersDetailPage extends BasePage {
                     finishTime: '',//成交时间
                     autoConfirmTime: data.autoReceiveTime,//自动确认时间
                     pickedUp: data.pickedUp,//
-                    outTradeNo:data.outTradeNo,//交易订单号
                 },
                 pageStateString: pageStateString,
                 expressNo: data.expressNo,
