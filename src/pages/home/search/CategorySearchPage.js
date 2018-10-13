@@ -54,7 +54,7 @@ export default class CategorySearchPage extends BasePage {
             let datas = response.data || {};
             this.setState({
                 sectionArr: [{ title: '热门分类', data: datas.productCategoryList }],
-                bannerData: [datas.imgList]
+                bannerData: StringUtils.isEmpty(datas.imgList) ? [] : [datas.imgList]
             });
         }).catch((data) => {
             bridge.$toast(data.msg);
@@ -101,52 +101,48 @@ export default class CategorySearchPage extends BasePage {
                                 data={this.state.nameArr}>
                             </FlatList> : null
                     }
+
                     <View style={{
                         width: bannerW + 20,
+                        flexDirection: 'column',
+                        paddingRight: 10,
+                        paddingLeft: 10,
+                        paddingBottom: 20,
                         backgroundColor: 'white'
                     }}>
-                        {
-                            this.state.bannerData && this.state.bannerData.length > 0 ?
-                                <View style={{
-                                    width: bannerW + 20,
-                                    flexDirection: 'column',
-                                    padding: 10
-                                }}>
-                                    <ViewPager swiperShow={this.state.swiperShow}
-                                               arrayData={this.state.bannerData}
-                                               renderItem={(url) => this.renderViewPageItem(url)}
-                                               dotStyle={{
-                                                   height: 5,
-                                                   width: 5,
-                                                   borderRadius: 5,
-                                                   backgroundColor: '#ffffff',
-                                                   opacity: 0.4
-                                               }}
-                                               activeDotStyle={{
-                                                   height: 5,
-                                                   width: 20,
-                                                   borderRadius: 5,
-                                                   backgroundColor: '#ffffff'
-                                               }}
-                                               autoplay={true}
-                                               height={118}
-                                               style={{ marginBottom: 10 }}
-                                    />
-                                    <SectionList style={{ marginTop: 10 }}
-                                                 contentContainerStyle={{
-                                                     flexDirection: 'row',
-                                                     flexWrap: 'wrap'
-                                                 }}
-                                                 renderItem={this._sectionItem}
-                                                 renderSectionHeader={this._sectionHeader}
-                                                 ListFooterComponent={this._listFooter}
-                                                 sections={this.state.sectionArr}
-                                                 initialNumToRender={9}
-                                                 removeClippedSubviews={false}
-                                                 showsVerticalScrollIndicator={false}
-                                                 keyExtractor={(item) => item.id + ''}/>
-                                </View> : null
-                        }
+                        <ViewPager swiperShow={this.state.swiperShow && this.state.bannerData.length > 0}
+                                   arrayData={this.state.bannerData}
+                                   renderItem={(url) => this.renderViewPageItem(url)}
+                                   dotStyle={{
+                                       height: 5,
+                                       width: 5,
+                                       borderRadius: 5,
+                                       backgroundColor: '#ffffff',
+                                       opacity: 0.4
+                                   }}
+                                   activeDotStyle={{
+                                       height: 5,
+                                       width: 20,
+                                       borderRadius: 5,
+                                       backgroundColor: '#ffffff'
+                                   }}
+                                   autoplay={true}
+                                   height={118}
+                                   style={{ marginBottom: 10 }}
+                        />
+                        <SectionList style={{ marginTop: 10 }}
+                                     contentContainerStyle={{
+                                         flexDirection: 'row',
+                                         flexWrap: 'wrap'
+                                     }}
+                                     renderItem={this._sectionItem}
+                                     renderSectionHeader={this._sectionHeader}
+                                     ListFooterComponent={this._listFooter}
+                                     sections={this.state.sectionArr}
+                                     initialNumToRender={9}
+                                     removeClippedSubviews={false}
+                                     showsVerticalScrollIndicator={false}
+                                     keyExtractor={(item) => item.id + ''}/>
                     </View>
                 </View>
             </View>
@@ -189,7 +185,8 @@ export default class CategorySearchPage extends BasePage {
             // 先隐藏，后显示，起到刷新作用
             this.setState({
                 swiperShow: false,
-                bannerData: []
+                bannerData: [],
+                sectionArr: []
             });
             if (index === 0) {
                 // 热门分类

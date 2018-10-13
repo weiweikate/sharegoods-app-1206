@@ -32,7 +32,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
         ForegroundCallbacks.init(this);
         if (getProcessName(this).equals(getPackageName())) {
             // 七鱼初始化
-            Unicorn.init(this, "db5a6f7eb0a3a8542e8ea36957e9122a", options(), new QiyuImageLoader(this));
+            Unicorn.init(this, "aa15b0b8c2a1bc1bf0341e244c049961", options(), new QiyuImageLoader(this));
         }
     }
 

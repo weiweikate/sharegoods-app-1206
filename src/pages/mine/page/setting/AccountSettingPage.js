@@ -42,7 +42,7 @@ export default class AccountSettingPage extends BasePage {
                     <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
                 <View style={{ height: 0.5, backgroundColor: '#eeeeee', marginLeft: 15, marginRight: 15 }}/>
-                <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditWechat(user.wechatName)}>
+                <TouchableOpacity style={styles.viewStyle} onPress={() => this._toEditWechat(user.openid)}>
                     <UIText value={'微信账号'} style={[styles.blackText, { flex: 1 }]}/>
                     <UIText value={StringUtils.isEmpty(user.openid) ? '未绑定' : user.wechatName}
                             style={{ fontSize: 13, color: '#666666', marginRight: 8 }}/>
@@ -72,8 +72,8 @@ export default class AccountSettingPage extends BasePage {
             });
         }
     };
-    _toEditWechat = (wechat) => {
-        if (StringUtils.isEmpty(wechat)) {
+    _toEditWechat = (openid) => {
+        if (StringUtils.isEmpty(openid)) {
             bridge.$loginWx((data) => {
                 MineAPI.updateUserById({
                     type: 4,
