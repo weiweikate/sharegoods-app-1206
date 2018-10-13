@@ -39,6 +39,7 @@ export default class MyCouponsItems extends Component {
     }
 
     renderItem = ({ item, index }) => {
+
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
         let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
@@ -57,9 +58,11 @@ export default class MyCouponsItems extends Component {
                             width: px2dp(80)
                         }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                                    <Text style={{ fontSize: 8, color: '#222222', marginBottom: 2 }}>￥</Text>
-                                </View>
+                                {
+                                    item.type === 3 || item.type === 4 ? null :
+                                        <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
+                                            <Text style={{ fontSize: 8, color: '#222222', marginBottom: 2 }}>￥</Text>
+                                        </View>}
                                 <View>
                                     <Text style={{ fontSize: 20, color: '#222222' }}>{item.value}</Text>
                                 </View>
