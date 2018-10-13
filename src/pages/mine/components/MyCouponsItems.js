@@ -168,7 +168,7 @@ export default class MyCouponsItems extends Component {
                 value: item.value,
                 useConditions: item.useConditions,
                 limit: this.parseCoupon(item),
-                discountCouponId: '',
+                couponConfigId: item.couponConfigId,
                 remarks: item.remarks
             });
 

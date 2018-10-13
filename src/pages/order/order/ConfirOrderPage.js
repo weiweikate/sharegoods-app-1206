@@ -353,6 +353,13 @@ export default class ConfirOrderPage extends BasePage {
     }
     loadPageData(){
         Toast.showLoading();
+        if(this.state.orderParam.orderType === 2){
+            OrderApi.DepreciateMakeSureOrder({
+                orderType: this.params.orderParamVO.orderType,
+                code:this.params.orderParamVO.orderProducts.code,
+                num:this.params.orderParamVO.orderProducts.num,
+            })
+        }
         let viewData = this.state.viewData;
         OrderApi.makeSureOrder({
             orderType: this.params.orderParamVO.orderType,
@@ -554,6 +561,7 @@ export default class ConfirOrderPage extends BasePage {
             fromOrder: 1, productIds: this.state.viewData.list[0].productId,
             orderParam: this.state.orderParam, callBack: (data) => {
                 console.log(data);
+                console.log('ccccccc');
                 // let orderParams = this.state.orderParam;
                 if (data && data.id) {
                     let viewData = this.state.viewData;
