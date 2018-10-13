@@ -55,7 +55,7 @@ export default class SelectionPage extends Component {
 
     _priceListAll = (indexOfProp) => {
 
-        const { priceList } = this.props.data;
+        const { priceList = [] } = this.props.data;
         //this.state.selectList元数据不能被修改  只能在_clickItemAction中修改
         let [...selectList] = this.state.selectList;
 
@@ -86,7 +86,7 @@ export default class SelectionPage extends Component {
 
     //根据priceList库存修改specMap中是否可点击
     _specMap = (indexOfProp, tittle) => {
-        const { specMap } = this.props.data;
+        const { specMap = {} } = this.props.data;
 
         let needUpdate = false;
         for (let key in specMap) {
@@ -161,7 +161,7 @@ export default class SelectionPage extends Component {
 
     _selectionViewConfirm = () => {
         let priceArr = [];
-        let [...selectList] = this.state.selectList;
+        let [...selectList] = this.state.selectList || [];
         let isAll = true;
         selectList.forEach((item, index) => {
             if (StringUtils.isEmpty(item)) {
@@ -186,16 +186,16 @@ export default class SelectionPage extends Component {
         }
 
         let priceId = priceArr.join(',');
-        priceId = `,${priceId},`
+        priceId = `,${priceId},`;
         let id = undefined;
-        const { priceList } = this.props.data;
-        priceList.forEach((item)=>{
+        const { priceList = [] } = this.props.data;
+        priceList.forEach((item) => {
             if (item.specIds === priceId) {
                 id = item.id;
                 return;
             }
-        })
-        if (!id){
+        });
+        if (!id) {
             return;
         }
         this.props.selectionViewConfirm(this.state.amount, id);
