@@ -554,29 +554,61 @@ export default class ConfirOrderPage extends BasePage {
             fromOrder: 1, productIds: this.state.viewData.list[0].productId,
             orderParam: this.state.orderParam, callBack: (data) => {
                 console.log(data);
-                let orderParams = this.state.orderParam;
+                // let orderParams = this.state.orderParam;
                 if (data && data.id) {
-                    orderParams.couponId = data.id;
-                    // HomeApi.orderCalcDiscountCouponAndUseScore({ orderParam: JSON.stringify(orderParams) }).then(res => {
-                    //     if (res.ok) {
-                    //         let data = res.data;
-                    //         // 积分抵扣计算
-                    //         let score = data.dealer.userScore > data.totalScore ? data.totalScore : data.dealer.userScore;
-                    //         let viewData = this.state.viewData;
-                    //         viewData.score = score;
-                    //         //let userScore = data.dealer.userScore;
-                    //         viewData.reducePrice = data.userScoreToBalance * score;
-                    //         // 当商品可以使用积分 用户积分大于0的时候 显示可以使用积分
-                    //         viewData.canUseScore = (data.totalScore > 0 && data.dealer.userScore) ? true : false;
-                    //         viewData.totalFreightFee = StringUtils.isNoEmpty(data.totalFreightFee) ? data.totalFreightFee : 0;
-                    //         viewData.totalAmounts = data.totalAmounts;
-                    //         this.setState({
-                    //             viewData: viewData
-                    //         });
-                    //     } else {
-                    //         Toast.toast(res.msg);
-                    //     }
-                    // });
+                    let viewData = this.state.viewData;
+                    OrderApi.makeSureOrder({
+                        orderType: this.params.orderParamVO.orderType,
+                        orderProducts: this.params.orderParamVO.orderProducts,
+                        couponId:data.id,
+                    }).then((response) => {
+                        Toast.hiddenLoading();
+                        console.log(response);
+                        let data = response.data;
+                        let arrData = [];
+                        data.orderProductList.map((item, index) => {
+                            arrData.push({
+                                productId: item.productId,
+                                uri: item.specImg,
+                                goodsName: item.productName,
+                                salePrice: item.price,
+                                category: item.spec,
+                                goodsNum: item.num,
+                                originalPrice: item.originalPrice,
+                                restrictions: item.restrictions
+                                // activityId: item.activityId
+                            });
+                        });
+                        if (data.userAddress) {
+                            viewData.express = {
+                                id: data.userAddress.id,
+                                receiverName: data.userAddress.receiver,
+                                receiverNum: data.userAddress.receiverPhone,
+                                receiverAddress: data.userAddress.address,
+                                areaCode: data.userAddress.areaCode,
+                                cityCode: data.userAddress.cityCode,
+                                provinceCode: data.userAddress.provinceCode,
+                                provinceString: data.userAddress.province,
+                                cityString: data.userAddress.city,
+                                areaString: data.userAddress.area
+                            };
+                        } else {
+                            viewData.express = {};
+                        }
+                        viewData.totalAmounts = data.totalAmounts;
+                        viewData.totalFreightFee = data.totalFreightFee;
+                        viewData.tokenCoin = data.tokenCoin;
+                        viewData.list = arrData;
+                        this.setState({ viewData });
+                    }).catch(err => {
+                        Toast.hiddenLoading();
+                        this.$toastShow(err.msg);
+                        if (err.code === 10009) {
+                            this.$navigate('login/login/LoginPage',{callback:()=>{
+                                    this.loadPageData()
+                                }});
+                        }
+                    });
                 } else {
                     // console.log(oldViewData);
                     // this.setState({ viewData: oldViewData, priceList: oldPriceList });
