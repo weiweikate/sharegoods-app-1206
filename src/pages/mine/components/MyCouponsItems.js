@@ -186,12 +186,12 @@ export default class MyCouponsItems extends Component {
     getDataFromNetwork = () => {
         let status = this.state.pageStatus;
         let page = this.state.currentPage || 1;
-        if (this.props.fromOrder) {
+        if (this.props.fromOrder && status == 0) {
             let arr = [], ProductPriceIdPair = {};
             // ProductPriceIdPair=this.props.productIds;
             // priceId  productId
             ProductPriceIdPair.priceId = this.props.productIds.orderProducts[0].priceId,
-                ProductPriceIdPair.productId =this.props.productIds.orderProducts[0].productId,
+                ProductPriceIdPair.productId = this.props.productIds.orderProducts[0].productId,
 
                 arr.push({
                     ProductPriceIdPair
@@ -256,7 +256,15 @@ export default class MyCouponsItems extends Component {
 
     clickItem = (index, item) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
-        this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
+        if (this.props.fromOrder) {
+            this.props.useCoupons(item);
+        } else {
+            if (item.status === 0 || item.status.status === 3) {
+                this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
+            }
+        }
+
+
     };
 
 }

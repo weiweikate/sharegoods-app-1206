@@ -815,7 +815,7 @@ class MyOrdersDetailPage extends BasePage {
                     sendTime: data.sendTime,//发货时间
                     finishTime: '',//成交时间
                     autoConfirmTime: data.autoReceiveTime,//自动确认时间
-                    pickedUp: data.pickedUp//
+                    pickedUp: data.pickedUp,//
                 },
                 pageStateString: pageStateString,
                 expressNo: data.expressNo,
@@ -894,7 +894,8 @@ class MyOrdersDetailPage extends BasePage {
             case 3:
                 this.$navigate('order/payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
-                    amounts: this.state.viewData.totalPrice
+                    amounts: this.state.viewData.totalPrice,
+                    outTrandNo: this.state.viewData.outTrandNo
                 });
                 break;
             case 4:

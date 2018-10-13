@@ -443,7 +443,7 @@ class AfterSaleServicePage extends BasePage {
             }
             OrderApi.updateApply(params).then((response) => {
                 this.$loadingDismiss();
-                this.params.callBack && this.params.callBack
+                this.params.callBack && this.params.callBack();
                 this.$navigateBack();
 
             }).catch(e => {
