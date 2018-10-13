@@ -48,6 +48,10 @@ export default class OldPayPwdPage extends BasePage {
                 bridge.$toast(data.msg);
             });
         } else {
+            if (oldPwd === pwd) {
+                bridge.$toast('新密码不能与旧密码相同');
+                return;
+            }
             MineAPI.updateSalesOldPwd({
                 oldPassword: oldPwd,
                 newPassword: pwd
