@@ -22,7 +22,7 @@ import StringUtils from '../../utils/StringUtils';
 import HomeAPI from '../home/api/HomeAPI';
 import TopicApi from './api/TopicApi';
 import user from '../../model/user';
-import TopicDetailSelectPage from './TopicDetailSelectPage'
+import TopicDetailSelectPage from './TopicDetailSelectPage';
 
 export default class TopicDetailPage extends BasePage {
 
@@ -121,12 +121,12 @@ export default class TopicDetailPage extends BasePage {
         let orderProducts = [];
         orderProducts.push({
             priceId: priceId,
-            num: 1,
-            productId: this.state.data.product.id
+            num: amount,
+            code: this.state.activityData.activityCode
         });
         this.$navigate('order/order/ConfirOrderPage', {
             orderParamVO: {
-                orderType: 99,
+                orderType: this.state.activityType,
                 orderProducts: orderProducts
             }
         });
@@ -147,11 +147,9 @@ export default class TopicDetailPage extends BasePage {
     };
 
     _bottomAction = (type) => {
-        if (type === 1) {
+        if (type === 1) {//设置提醒
             this._followAction();
-        } else if (type === 2) {
-            this._selectionViewConfirm();
-        }else {
+        } else if (type === 2) {//立即拍
             this.setState({
                 modalVisible: true
             });
@@ -282,7 +280,8 @@ export default class TopicDetailPage extends BasePage {
                     transparent={true}
                     visible={this.state.modalVisible}>
                     <TopicDetailSelectPage selectionViewConfirm={this._selectionViewConfirm}
-                                   selectionViewClose={this._selectionViewClose} data={this.state.data} activityType = {this.state.activityType}/>
+                                           selectionViewClose={this._selectionViewClose} data={this.state.activityData}
+                                           activityType={this.state.activityType}/>
                 </Modal>
             </View>
         );
