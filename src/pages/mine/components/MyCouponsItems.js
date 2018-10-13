@@ -185,19 +185,31 @@ export default class MyCouponsItems extends Component {
 
     getDataFromNetwork = () => {
         let status = this.state.pageStatus;
+        /**
+
+         "page": 1,
+         "pageSize": 10,
+         "productPriceIds": [
+         {
+           "priceId": 1,
+           "productId": 1
+         }
+         */
         let page = this.state.currentPage || 1;
         if (this.props.fromOrder && status == 0) {
-            let arr = [], ProductPriceIdPair = {};
+            let arr = [];
             // ProductPriceIdPair=this.props.productIds;
             // priceId  productId
-            ProductPriceIdPair.priceId = this.props.productIds.orderProducts[0].priceId,
-                ProductPriceIdPair.productId = this.props.productIds.orderProducts[0].productId,
+            let data = {
+                priceId: this.props.productIds.orderProducts[0].priceId,
+                productId: this.props.productIds.orderProducts[0].productId
+            };
 
-                arr.push({
-                    ProductPriceIdPair
-                });
+            arr.push(data);
             API.listAvailable({ page, pageSize: 20, productPriceIds: arr }).then(res => {
-                console.log(res.data);
+                let data = res.data || {};
+                let dataList = data.data || [];
+                this.parseData(dataList);
             }).catch(result => {
                 if (result.code === 10009) {
                     this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
@@ -259,9 +271,7 @@ export default class MyCouponsItems extends Component {
         if (this.props.fromOrder) {
             this.props.useCoupons(item);
         } else {
-            if (item.status === 0 || item.status.status === 3) {
                 this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
-            }
         }
 
 

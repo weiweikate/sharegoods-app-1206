@@ -11,7 +11,7 @@ import {
     LoadingHub,
     ToastView
 } from './components/pageDecorator/BaseView';
-
+import ScreenUtils from './utils/ScreenUtils'
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';
 
@@ -210,6 +210,7 @@ export default class BasePage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F6F6F6'
+        backgroundColor: '#F6F6F6',
+        marginBottom: ScreenUtils.safeBottom
     }
 });
