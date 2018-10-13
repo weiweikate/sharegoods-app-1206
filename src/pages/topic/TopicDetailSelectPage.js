@@ -6,7 +6,8 @@ import {
     TouchableWithoutFeedback,
     Text,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 
@@ -37,11 +38,11 @@ export default class TopicDetailSelectPage extends Component {
     _addSelectionSectionView = () => {
         const { productSpecValue = [] } = this.props.data || {};
         let tagList = [];
-        for (let obj in productSpecValue) {
+        productSpecValue.forEach((obj) => {
             tagList.push(
                 <View>
                     <View style={styles.headerContainer}>
-                        <Text style={styles.headerText}>{this.props.tittle}</Text>
+                        <Text style={styles.headerText}>{obj.specName}</Text>
                     </View>
                     <View style={styles.containerView}>
                         <View>
@@ -55,13 +56,15 @@ export default class TopicDetailSelectPage extends Component {
                     <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: '#eeeeee' }}/>
                 </View>
             );
-        }
+        });
         return tagList;
     };
 
     render() {
-        const { markdownPrice = '', seckillPrice = '' } = this.props.data || {};
+        const { markdownPrice = '', seckillPrice = '', specImg, surplusNumber = 0, spec = '', productSpec = '' } = this.props.data || {};
         let price = this.props.activityType === 1 ? seckillPrice : markdownPrice;
+        let specs = this.props.activityType === 1 ? productSpec : spec;
+
         return (
             <View style={styles.container}>
 
@@ -84,7 +87,7 @@ export default class TopicDetailSelectPage extends Component {
                             justifyContent: 'center'
                         }}>
                             <Image style={{ width: 108, height: 108, borderRadius: 5, backgroundColor: '#eeeeee' }}
-                                   source={{ uri: imgUrl || '' }}/>
+                                   source={{ uri: specImg }}/>
                         </View>
                         <View style={{ flex: 1, marginLeft: 16 }}>
                             <Text style={{
@@ -98,12 +101,12 @@ export default class TopicDetailSelectPage extends Component {
                                     color: '#222222',
                                     fontSize: 13,
                                     marginTop: 8
-                                }}>{`库存${stock}${stockUnit || ''}`}</Text>
+                                }}>{`库存${surplusNumber}件`}</Text>
                             <Text style={{
                                 color: '#222222',
                                 fontSize: 13,
                                 marginTop: 8
-                            }}>{selectStrListTemp.join(',')}</Text>
+                            }}>{specs}</Text>
                         </View>
                         <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
                             <Image style={{
@@ -118,29 +121,26 @@ export default class TopicDetailSelectPage extends Component {
                     < ScrollView>
                         {this._addSelectionSectionView()}
                         <View style={[{
-                            marginTop: 30,
                             flexDirection: 'row',
-                            height: 30,
+                            height: 60,
                             justifyContent: 'space-between',
-                            alignItems: 'center'
-                        }, this.props.style]}>
+                            alignItems: 'center' }]}>
                             <Text style={{ color: '#666666', marginLeft: 16, fontSize: 13 }}>购买数量</Text>
                             <View style={{
                                 flexDirection: 'row',
                                 borderColor: '#dddddd',
                                 borderWidth: 1,
                                 borderRadius: 2,
-                                marginRight: 16,
-                                height: 30
+                                marginRight: 16
                             }}>
                                 <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
                                     <Text style={{ color: '#dddddd', fontSize: 15, paddingHorizontal: 11 }}>-</Text>
                                 </TouchableOpacity>
-                                <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
+                                <View style={{ height: 21, width: 1, backgroundColor: '#dddddd' }}/>
                                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text style={{ paddingHorizontal: 15 }}>{this.state.amount}</Text>
+                                    <Text style={{ paddingHorizontal: 15 }}>{1}</Text>
                                 </View>
-                                <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
+                                <View style={{ height: 21, width: 1, backgroundColor: '#dddddd' }}/>
                                 <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
                                     <Text style={{ color: '#222222', fontSize: 15, paddingHorizontal: 11 }}>+</Text>
                                 </TouchableOpacity>
@@ -170,7 +170,34 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'rgba(59, 59, 59, 0.7)',
         flex: 1
-    }
+    },
+    headerContainer: {
+        marginTop: 18,
+        marginHorizontal: 16,
+        justifyContent: 'center'
+    },
+    headerText: {
+        fontSize: 13,
+        color: '#666666'
+    },
 
+    containerView: {
+        marginTop: 6,
+        flexDirection: 'row',   // 水平排布
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        marginHorizontal: 16
+    },
+    btn: {
+        justifyContent: 'center',
+        marginTop: 10,
+        marginRight: 10,
+        height: 30,
+        borderRadius: 3
+    },
+    btnText: {
+        paddingHorizontal: 12,
+        fontSize: 13
+    }
 });
 
