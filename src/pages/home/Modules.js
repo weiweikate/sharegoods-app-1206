@@ -215,7 +215,7 @@ class HomeModule {
 
         const {linkType} = data
         return {
-            activityType: linkType - 2,
+            activityType: linkType===3?2:linkType===4?1:3,
             activityCode: data.linkTypeCode,
             linkTypeCode: data.linkTypeCode,
             productId: data.linkTypeCode,
