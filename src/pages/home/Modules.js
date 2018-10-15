@@ -146,7 +146,7 @@ export class RecommendModule {
     })
 }
 //专题
-class SubjectModule {
+export class SubjectModule {
     @observable subjectList = []
     //记载专题
     loadSubjectList = flow(function * () {
@@ -157,19 +157,7 @@ class SubjectModule {
             console.log(error)
         }
     })
-
-    //选择专题
-    @action
-    selectedSubjectAction = (subject) => {
-        this.selectedSubject = {
-            subjectCode : subject.linkTypeCode,
-            createTime: subject.createTime
-        }
-    }
 }
-
-export const subjectModule = new SubjectModule()
-
 
 const homeLinkType = {
     good: 1,
