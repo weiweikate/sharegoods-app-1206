@@ -308,6 +308,7 @@ class HomeModule {
         try {
             this.isFetching = true
             const res = yield HomeApi.getGoodsInHome({page: this.page})
+            this.isFetching = false
             let list = res.data.data
             if (list.length <= 0) {
                 this.isEnd = true
@@ -330,7 +331,6 @@ class HomeModule {
                 }
             }
             this.homeList = [...this.homeList, ...home]
-            this.isFetching = false
             this.page++
         } catch (error) {
             console.log(error)
