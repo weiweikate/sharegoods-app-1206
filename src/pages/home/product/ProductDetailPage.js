@@ -22,6 +22,7 @@ import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import StringUtils from '../../../utils/StringUtils';
+import CommShareModal from '../../../comm/components/CommShareModal '
 
 export default class ProductDetailPage extends BasePage {
 
@@ -206,7 +207,7 @@ export default class ProductDetailPage extends BasePage {
                     }}>
                         <Image source={xiangqing_btn_return_nor}/>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress = {() => {this.shareModal.open()}}>
                         <Image source={xiangqing_btn_more_nor}/>
                     </TouchableWithoutFeedback>
                 </View>
@@ -228,7 +229,21 @@ export default class ProductDetailPage extends BasePage {
                     <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
                                    selectionViewClose={this._selectionViewClose} data={this.state.data}/>
                 </Modal>
+                <CommShareModal ref = {(ref) => this.shareModal = ref}
+                                type = {'Image'}
+                                imageJson = {{
+                                    imageUrlStr: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1539577593172&di=c87eead9eb2e2073b50758daf6194c62&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F59c914525c484566292f8d8d3d29c964ca59c7ca.jpg',
+                                    titleStr: '商品标题',
+                                    priceStr: '¥100.00',
+                                    QRCodeStr: '分享的链接'}}
+                                webJson = {{
+                                    title: '分享标题(当为图文分享时候使用)',
+                                    dec: '内容(当为图文分享时候使用)',
+                                    linkUrl: '(图文分享下的链接)',
+                                    thumImage: '(分享图标小图(http链接)图文分享使用)',
+                                       }}
 
+                />
             </View>
         );
     };

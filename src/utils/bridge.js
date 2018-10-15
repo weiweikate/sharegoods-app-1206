@@ -44,5 +44,44 @@ export default {
      */
     hiddenLoading() {
         NativeModules.commModule.hideLoadingDialog();
+    },
+    /**
+     * 生成分享的图片
+     * @param jsonParam
+     * {
+         imageUrlStr: 'http//：xxxx.png',
+            titleStr: '商品标题',
+            priceStr: '¥100.00',
+           QRCodeStr: '分享的链接',
+ }
+     * @param onSuccess(path)
+     * @param onError(errorStr)
+     */
+    creatShareImage(jsonParam, onSuccess, onError = (errorStr) => {}) {
+        NativeModules.LoginAndShareModule.creatShareImage(jsonParam, onSuccess, onError);
+    },
+    /**
+     * @param jsonParam
+    <<<<<<<<<<<<< 共同 <<<<<<<<<<<<<<
+     shareType : 0图片分享 1 图文链接分享
+     platformType: 0 朋友圈 1 会话
+
+     <<<<<<<<< shareType : 1 图文链接分享 <<<<<<<
+     title:分享标题(当为图文分享时候使用)
+     dec:内容(当为图文分享时候使用)
+     linkUrl:(图文分享下的链接)
+     thumImage:(分享图标小图(http链接)图文分享使用)
+
+     <<<<<<<<<<<  shareType : 0图片分享 <<<<<<<<<<<<<<
+     shareImage:分享的大图(本地URL)图片分享使用
+
+     * @param onSuccess()
+     * @param onError(errorStr)
+     */
+    share(jsonParam, onSuccess, onError = (errorStr) => {}) {
+        NativeModules.LoginAndShareModule.share(jsonParam, onSuccess, onError);
+    },
+    saveImage(path){
+        NativeModules.LoginAndShareModule.saveImage(path);
     }
 };

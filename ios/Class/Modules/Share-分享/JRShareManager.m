@@ -9,6 +9,9 @@
 #import "JRShareManager.h"
 #import "JRDeviceInfo.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+@implementation JRShareModel
+
+@end
 
 @implementation JRShareManager
 
@@ -24,26 +27,25 @@ SINGLETON_FOR_CLASS(JRShareManager)
  thumImage:(分享图标小图(http链接)图文分享使用)
  shareImage:分享的大图(本地URL)图片分享使用
  **/
--(void)beginShare:(id)param{
-  NSDictionary * dicParam = param;
-  if ([dicParam[@"platformType"] integerValue] == 0) {
-    //朋友圈
-    if ([dicParam[@"shareType"] integerValue] == 0) {
-      //图文链接
-      [self shareWithPlatefrom:UMSocialPlatformType_WechatTimeLine Title:dicParam[@"title"] SubTitle:dicParam[@"dec"] Image:dicParam[@"thumImage"] LinkUrl:dicParam[@"linkUrl"]];
-    }else{
-      //图片
-      [self shareImage:UMSocialPlatformType_WechatTimeLine imageUrl:dicParam[@"shareImage"]];
-    }
+-(void)beginShare:(JRShareModel *)shareModel
+       completion:(shareFinshBlock) completion
+{
+  UMSocialPlatformType platefrom = UMSocialPlatformType_UnKnown;
+  if ([shareModel.platformType integerValue] == 0) {
+    platefrom = UMSocialPlatformType_WechatTimeLine;
   }else{
-    //会话
-    if ([dicParam[@"shareType"] integerValue] == 0) {
-      //图文链接
-      [self shareWithPlatefrom:UMSocialPlatformType_WechatSession Title:dicParam[@"title"] SubTitle:dicParam[@"dec"] Image:dicParam[@"thumImage"] LinkUrl:dicParam[@"linkUrl"]];
-    }else{
-      //图片
-      [self shareImage:UMSocialPlatformType_WechatSession imageUrl:dicParam[@"shareImage"]];
-    }
+    platefrom = UMSocialPlatformType_WechatSession;
+    
+  }
+  if ([shareModel.shareType integerValue] == 0) {//为分享网页
+    [self shareWithPlatefrom:platefrom
+                       Title:shareModel.title
+                    SubTitle:shareModel.dec
+                       Image:shareModel.thumImage
+                     LinkUrl:shareModel.linkUrl
+                  completion: completion];
+  }else{//分享图片
+    [self shareImage:platefrom imageUrl:shareModel.shareImage completion: completion];
   }
 }
 -(void)shareWithPlatefrom:(UMSocialPlatformType)platform
@@ -51,6 +53,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
                  SubTitle:(NSString *)subTitle
                     Image:(NSString *)imageUrl
                   LinkUrl:(NSString *)linkUrl
+               completion:(shareFinshBlock) completion
 {
   UMSocialMessageObject * message = [[UMSocialMessageObject alloc]init];
   NSString* thumbURL =  linkUrl;
@@ -59,19 +62,30 @@ SINGLETON_FOR_CLASS(JRShareManager)
   shareObject.webpageUrl = linkUrl;
   //分享消息对象设置分享内容对象
   message.shareObject = shareObject;
-  [[UMSocialManager defaultManager]shareToPlatform:UMSocialPlatformType_WechatTimeLine messageObject:message currentViewController:KRootVC completion:^(id result, NSError *error) {
-    
+  [[UMSocialManager defaultManager]shareToPlatform:UMSocialPlatformType_WechatTimeLine messageObject:message currentViewController:self.currentViewController_XG completion:^(id result, NSError *error) {
+    if(error){
+      completion(error.description);
+    }else{
+      completion(nil);
+    }
   }];
 }
+
 -(void)shareImage:(UMSocialPlatformType)platform
          imageUrl:(NSString *)imageStr
+       completion:(shareFinshBlock) completion
 {
   UMSocialMessageObject * message = [[UMSocialMessageObject alloc]init];
   UMShareImageObject *imageObject = [UMShareImageObject shareObjectWithTitle:nil descr:nil thumImage:nil];
   //分享消息对象设置分享内容对象
   imageObject.shareImage = [imageStr isKindOfClass:[UIImage class]]?imageStr :  [UIImage imageWithContentsOfFile:imageStr];
   message.shareObject = imageObject;
-  [[UMSocialManager defaultManager]shareToPlatform:platform messageObject:message currentViewController:KRootVC completion:^(id result, NSError *error) {
+  [[UMSocialManager defaultManager]shareToPlatform:platform messageObject:message currentViewController:self.currentViewController_XG completion:^(id result, NSError *error) {
+    if(error){
+      completion(error.description);
+    }else{
+      completion(nil);
+    }
   }];
 }
 //分享小程序
@@ -92,7 +106,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
 ////    [JRLoadingAndToastTool showToast:@"未安装微信" andDelyTime:2];
 ////    return;
 //  }
-  [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_WechatSession currentViewController:KRootVC completion:^(id result, NSError *error) {
+  [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_WechatSession currentViewController:self.currentViewController_XG completion:^(id result, NSError *error) {
     UMSocialUserInfoResponse * res = result ;
     NSDictionary *dicData = @{
                               @"openid":res.openid?res.openid:[NSNull null],
