@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import CommTabImag from './comm/res/CommTabImag';
 import ColorUtil from './utils/ColorUtil';
+import ScreenUtils from './utils/ScreenUtils'
 
 export const TabNav = TabNavigator(
     {
@@ -106,7 +107,8 @@ export const TabNav = TabNavigator(
             //tab bar的样式
             style: {
                 backgroundColor: '#fff',
-                paddingBottom: 1,
+                paddingBottom: ScreenUtils.safeBottomMax,
+                height: 50 + ScreenUtils.safeBottomMax,
                 borderTopWidth: 0.2,
                 paddingTop: 1,
                 borderTopColor: '#ccc'

@@ -20,9 +20,8 @@ import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
 import appData from './model/appData';
 
-type Props = {};
 
-export default class App extends Component<Props> {
+export default class App extends Component {
     constructor(props) {
 
         appData.setStatusBarHeight(props.statusBarHeight);
@@ -57,7 +56,6 @@ export default class App extends Component<Props> {
         // goBack 返回指定的router
         const defaultStateAction = Navigator.router.getStateForAction;
         Navigator.router.getStateForAction = (action, state) => {
-            //console.log(action,state)
             if (state && action.type === NavigationActions.BACK && state.routes.length === 1) {
                 console.log('退出RN页面');
                 const routes = [...state.routes];
@@ -67,6 +65,7 @@ export default class App extends Component<Props> {
                     index: routes.length - 1
                 };
             }
+            
             return defaultStateAction(action, state);
         };
         const getCurrentRouteName = (navigationState) => {
@@ -81,8 +80,8 @@ export default class App extends Component<Props> {
         };
         return (
             <View style={styles.container}>
-                <Navigator screenProps={this.props.params} ref='Navigator'
-
+                <Navigator screenProps={this.props.params} 
+                           ref='Navigator'
                            onNavigationStateChange={(prevState, currentState) => {
                                let curRouteName = getCurrentRouteName(currentState);
                                console.log(curRouteName);
@@ -115,7 +114,7 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF'
+        backgroundColor: '#fff'
     },
     debugBtn: {
         width: 60,
