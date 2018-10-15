@@ -152,7 +152,6 @@ class SubjectModule {
     loadSubjectList = flow(function * () {
         try {
             const res = yield HomeApi.getSubject({type: homeType.subject})
-            console.log('load some ------'+res.data);
             this.subjectList = res.data
         } catch (error) {
             console.log(error)

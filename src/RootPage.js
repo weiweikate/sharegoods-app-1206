@@ -107,7 +107,7 @@ export const TabNav = TabNavigator(
             //tab bar的样式
             style: {
                 backgroundColor: '#fff',
-                paddingBottom: ScreenUtils.safeBottomMax,
+                paddingBottom: ScreenUtils.safeBottomMax + 1,
                 height: 50 + ScreenUtils.safeBottomMax,
                 borderTopWidth: 0.2,
                 paddingTop: 1,
