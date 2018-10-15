@@ -22,6 +22,7 @@ import CCZImg from './res/ccz_03.png';
 import ProgressImg from './res/jdt_05.png';
 // import {NavigationActions} from "react-navigation";
 import BasePage from '../../../../BasePage';
+import { NavigationActions } from 'react-navigation';
 // 常量
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -293,11 +294,13 @@ export default class MyPromotionPage extends BasePage {
 
     // 去购物
     _onGoShop = () => {
-        // const resetAction=NavigationActions.reset({
-        //     index: 0,
-        //     actions: [NavigationActions.navigate({routeName: 'Tab'})]
-        // });
-        // this.props.navigation.dispatch(resetAction);
+        let resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
+            ]
+        });
+        this.props.navigation.dispatch(resetAction);
     };
 
     renderFooter() {
