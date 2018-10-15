@@ -19,7 +19,7 @@ const PayCell = ({data, isSelected, balance, press, selectedTypes}) => {
         selected = selectedTypes.type === data.type
     }
     return <TouchableOpacity style={styles.cell} onPress={()=>press && press()}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' ,flex:1}}>
             <Image source={data.icon} style={{ height: 33 }} resizeMode={'contain'}/>
             <Text style={[styles.blackText, { marginLeft: 5 }]}>{data.name}</Text>
         </View>
@@ -216,7 +216,7 @@ export default class PaymentMethodPage extends BasePage {
                 },
                 {
                     text: '回到订单', onPress: () => {
-                        this.props.navigation.goBack(null)
+                        this.props.navigation.navigate('order/order/MyOrdersListPage')
                     }
                 }
             ], { cancelable: true });
@@ -224,7 +224,7 @@ export default class PaymentMethodPage extends BasePage {
     }
     commitOrder = () => {
         const {selectedBalace} = this.payment
-        
+
         if (selectedBalace) {
             this._balancePay()
             return
@@ -241,7 +241,7 @@ export default class PaymentMethodPage extends BasePage {
         }
 
         Toast.$toast('暂不支持')
-        
+
     };
     //需要在当前选择的支付方式能完成支付的情况下，才保证调用该方法返回的数据有效性
     getApiRequestParams = () => {
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
     },
     cell: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         height: 44,
         paddingLeft: 21,

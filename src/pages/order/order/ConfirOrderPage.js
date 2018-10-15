@@ -182,10 +182,10 @@ export default class ConfirOrderPage extends BasePage {
                 }}
                                   disabled={this.state.viewData.list[0].restrictions & 1 !== 1}
                                   onPress={() => this.jumpToCouponsPage()}>
-                    <UIText value={'优惠卷'} style={styles.blackText}/>
+                    <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={this.state.viewData.list[0].restrictions & 1 !== 1 ? '不可使用优惠券' : '选择优惠卷'}
+                            value={this.state.viewData.list[0].restrictions & 1 !== 1 ? '不可使用优惠券' : '选择优惠券'}
                             style={[styles.grayText, { marginRight: 15 }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -353,11 +353,12 @@ export default class ConfirOrderPage extends BasePage {
     }
     loadPageData(){
         Toast.showLoading();
+        let viewData=this.state.viewData;
         if(this.state.orderParam.orderType === 2){
             OrderApi.DepreciateMakeSureOrder({
                 orderType: this.params.orderParamVO.orderType,
-                code:this.params.orderParamVO.orderProducts.code,
-                num:this.params.orderParamVO.orderProducts.num,
+                code:this.params.orderParamVO.orderProducts[0].code,
+                num:this.params.orderParamVO.orderProducts[0].num,
             }).then(response =>{
                 console.log(response);
                 let data = response.data;
@@ -397,59 +398,60 @@ export default class ConfirOrderPage extends BasePage {
                 viewData.list = arrData;
                 this.setState({ viewData });
             })
-        }
-        let viewData = this.state.viewData;
-        OrderApi.makeSureOrder({
-            orderType: this.params.orderParamVO.orderType,
-            orderProducts: this.params.orderParamVO.orderProducts
-        }).then((response) => {
-            Toast.hiddenLoading();
-            console.log(response);
-            let data = response.data;
-            let arrData = [];
-            data.orderProductList.map((item, index) => {
-                arrData.push({
-                    productId: item.productId,
-                    uri: item.specImg,
-                    goodsName: item.productName,
-                    salePrice: item.price,
-                    category: item.spec,
-                    goodsNum: item.num,
-                    originalPrice: item.originalPrice,
-                    restrictions: item.restrictions
-                    // activityId: item.activityId
+        }else{
+            OrderApi.makeSureOrder({
+                orderType: this.params.orderParamVO.orderType,
+                orderProducts: this.params.orderParamVO.orderProducts
+            }).then((response) => {
+                Toast.hiddenLoading();
+                console.log(response);
+                let data = response.data;
+                let arrData = [];
+                data.orderProductList.map((item, index) => {
+                    arrData.push({
+                        productId: item.productId,
+                        uri: item.specImg,
+                        goodsName: item.productName,
+                        salePrice: item.price,
+                        category: item.spec,
+                        goodsNum: item.num,
+                        originalPrice: item.originalPrice,
+                        restrictions: item.restrictions
+                        // activityId: item.activityId
+                    });
                 });
+                if (data.userAddress) {
+                    viewData.express = {
+                        id: data.userAddress.id,
+                        receiverName: data.userAddress.receiver,
+                        receiverNum: data.userAddress.receiverPhone,
+                        receiverAddress: data.userAddress.address,
+                        areaCode: data.userAddress.areaCode,
+                        cityCode: data.userAddress.cityCode,
+                        provinceCode: data.userAddress.provinceCode,
+                        provinceString: data.userAddress.province,
+                        cityString: data.userAddress.city,
+                        areaString: data.userAddress.area
+                    };
+                } else {
+                    viewData.express = {};
+                }
+                viewData.totalAmounts = data.totalAmounts;
+                viewData.totalFreightFee = data.totalFreightFee;
+                viewData.tokenCoin = data.tokenCoin;
+                viewData.list = arrData;
+                this.setState({ viewData });
+            }).catch(err => {
+                Toast.hiddenLoading();
+                this.$toastShow(err.msg);
+                if (err.code === 10009) {
+                    this.$navigate('login/login/LoginPage',{callback:()=>{
+                            this.loadPageData()
+                        }});
+                }
             });
-            if (data.userAddress) {
-                viewData.express = {
-                    id: data.userAddress.id,
-                    receiverName: data.userAddress.receiver,
-                    receiverNum: data.userAddress.receiverPhone,
-                    receiverAddress: data.userAddress.address,
-                    areaCode: data.userAddress.areaCode,
-                    cityCode: data.userAddress.cityCode,
-                    provinceCode: data.userAddress.provinceCode,
-                    provinceString: data.userAddress.province,
-                    cityString: data.userAddress.city,
-                    areaString: data.userAddress.area
-                };
-            } else {
-                viewData.express = {};
-            }
-            viewData.totalAmounts = data.totalAmounts;
-            viewData.totalFreightFee = data.totalFreightFee;
-            viewData.tokenCoin = data.tokenCoin;
-            viewData.list = arrData;
-            this.setState({ viewData });
-        }).catch(err => {
-            Toast.hiddenLoading();
-            this.$toastShow(err.msg);
-            if (err.code === 10009) {
-                this.$navigate('login/login/LoginPage',{callback:()=>{
-                    this.loadPageData()
-                    }});
-            }
-        });
+        }
+
     }
 
     clickItem = (index, item) => {
@@ -548,12 +550,37 @@ export default class ConfirOrderPage extends BasePage {
                 areaCode: areaCode,
                 buyerRemark: buyerRemark,
                 cityCode: cityCode,
-                orderProducts: this.state.orderParam.orderProducts,
+                num: this.state.orderParam.orderProducts[0].num,
+                code:this.state.orderParam.orderProducts[0].code,
                 orderType: this.state.orderParam.orderType,
                 provinceCode: provinceCode,
                 receiver: receiver,
                 recevicePhone: recevicePhone
             };
+            console.log(params);
+            if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
+            } else {
+                OrderApi.DepreciateSubmitOrder(params).then((response) => {
+                    this.$loadingDismiss();
+                    let data = response.data;
+                    // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
+                    this.$navigate('payment/PaymentMethodPage', {
+                        orderNum: data.orderNum,
+                        amounts: this.state.viewData.totalAmounts,
+                        pageType: 0,
+                        availableBalance: data.user.availableBalance
+                    });
+
+                }).catch(e => {
+                    this.$loadingDismiss();
+                    console.log(e);
+                    if (e.code === 10009) {
+                        this.$navigate('login/login/LoginPage',{callback:()=>{
+                                this.loadPageData()
+                            }});
+                    }
+                });
+            }
         } else {
             params = {
                 address: address,
@@ -567,32 +594,31 @@ export default class ConfirOrderPage extends BasePage {
                 recevicePhone: recevicePhone,
                 tokenCoin: tokenCoin
             };
-        }
-        console.log(params);
-        if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
-        } else {
-            OrderApi.submitOrder(params).then((response) => {
-                this.$loadingDismiss();
-                let data = response.data;
-                // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
-                this.$navigate('payment/PaymentMethodPage', {
-                    orderNum: data.orderNum,
-                    amounts: this.state.viewData.totalAmounts,
-                    pageType: 0,
-                    availableBalance: data.user.availableBalance
+            console.log(params);
+            if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
+            } else {
+                OrderApi.submitOrder(params).then((response) => {
+                    this.$loadingDismiss();
+                    let data = response.data;
+                    // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
+                    this.$navigate('payment/PaymentMethodPage', {
+                        orderNum: data.orderNum,
+                        amounts: this.state.viewData.totalAmounts,
+                        pageType: 0,
+                        availableBalance: data.user.availableBalance
+                    });
+
+                }).catch(e => {
+                    this.$loadingDismiss();
+                    console.log(e);
+                    if (e.code === 10009) {
+                        this.$navigate('login/login/LoginPage',{callback:()=>{
+                                this.loadPageData()
+                            }});
+                    }
                 });
-
-            }).catch(e => {
-                this.$loadingDismiss();
-                console.log(e);
-                if (e.code === 10009) {
-                    this.$navigate('login/login/LoginPage',{callback:()=>{
-                        this.loadPageData()
-                        }});
-                }
-            });
+            }
         }
-
     };
     jumpToCouponsPage = (params) => {
         this.$navigate('mine/coupons/CouponsPage', {
