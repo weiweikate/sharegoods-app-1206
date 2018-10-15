@@ -63,6 +63,7 @@ export default class TopicDetailPage extends BasePage {
             }).then((data) => {
                 this.state.activityData = data.data || {};
                 this._getProductDetail(this.state.activityData.productId);
+                this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType);
             }).catch((error) => {
                 this.$loadingDismiss();
                 this.$toastShow(error.msg);
@@ -74,6 +75,7 @@ export default class TopicDetailPage extends BasePage {
             }).then((data) => {
                 this.state.activityData = data.data || {};
                 this._getProductDetail(this.state.activityData.productId);
+                this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType);
             }).catch((error) => {
                 this.$loadingDismiss();
                 this.$toastShow(error.msg);
@@ -155,9 +157,10 @@ export default class TopicDetailPage extends BasePage {
             });
         }
     };
-
     _renderListHeader = () => {
-        return <TopicDetailHeaderView data={this.state.data} activityType={this.state.activityType}
+        return <TopicDetailHeaderView ref={(e) => {
+            this.TopicDetailHeaderView = e;
+        }} data={this.state.data} activityType={this.state.activityType}
                                       activityData={this.state.activityData}/>;
     };
 
