@@ -83,13 +83,22 @@ export default class CouponsDetailPage extends BasePage {
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     {
                                         item.type === 3 || item.type === 4 ? null :
-                                            <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
+                                            <View style={{ alignSelf: 'flex-end', marginBottom: 4 }}>
                                                 <Text
-                                                    style={{ fontSize: 8, color: '#222222', marginBottom: 2 }}>￥</Text>
+                                                    style={{ fontSize: 14, color: '#222222', marginBottom: 2 }}>￥</Text>
                                             </View>}
                                     <View>
-                                        <Text style={{ fontSize: 20, color: '#222222' }}>{item.value}</Text>
+                                        <Text style={{
+                                            fontSize: item.type === 4 ? 20 : 34,
+                                            color: '#222222'
+                                        }}>{item.value}</Text>
                                     </View>
+                                    {
+                                        item.type === 3 ?
+                                            <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
+                                                <Text
+                                                    style={{ fontSize: 14, color: '#222222', marginBottom: 4 }}>折</Text>
+                                            </View> : null}
                                 </View>
                             </View>
 
