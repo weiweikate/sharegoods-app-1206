@@ -15,7 +15,7 @@ import OpenPrizeItemView from './components/OpenPrizeItemView';
 // import HomeAPI from '../api/HomeAPI';
 import TotalTopicDataModel from './model/SubTopicModel';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import SubSwichView from './components/SubSwichView';
 import TopicAPI from './api/TopicApi';
 import bridge from '../../utils/bridge';
@@ -40,9 +40,10 @@ export default class DownPricePage extends BasePage {
     }
 
     componentDidMount() {
-        // const {linkTypeCode} = this.params;
-        // this.dataModel.loadTopicData(linkTypeCode);
-        this.dataModel.loadTopicData(this.state.linkTypeCode);
+        const {linkTypeCode} = this.params;
+        console.log('-----'+linkTypeCode);
+        this.dataModel.loadTopicData(linkTypeCode);
+        // this.dataModel.loadTopicData(this.state.linkTypeCode);
     }
 
     /**
@@ -101,7 +102,6 @@ export default class DownPricePage extends BasePage {
                 {
                     sectionListData.map((itemData, itemIndex) => {
                         return(
-
                             this._getTopicType() === 1?
                             <OpenPrizeItemView
                                 itemData={itemData}
@@ -116,8 +116,9 @@ export default class DownPricePage extends BasePage {
                             />
                                 :
                                 <TopicItemView
+                                    key={itemIndex}
                                     itemData={itemData}
-                                    numOfColum={2}
+                                    numOfColum={this._getColumNum()}
                                     itemClickAction={
                                         ()=>{
                                             this._itemActionClick(itemData)
@@ -241,21 +242,23 @@ export default class DownPricePage extends BasePage {
      * 2 降价拍
      * */
     _getTopicType = () => {
-        return 1;
-        const { linkTypeCode } = this.params;
-        if (linkTypeCode.search('ZT') != -1) {
-            return 0;
-        } else {
+        if (this.dataModel.templateId === 5 ||
+            this.dataModel.templateId === 6){
             return 1;
+        } else {
+            return 0;
         }
     };
+    _getColumNum = () => {
+        if (this.dataModel.templateId === 3 ||
+            this.dataModel.templateId === 4 ){
+            return 3;
+        } else {
+            return 2;
+        }
+    }
 }
 
-
-DownPricePage.propTypes = {
-    //专题code
-    linkTypeCode: PropTypes.string.isRequired
-};
 const Styles = StyleSheet.create({
     list: {
         flexDirection: 'row',//设置横向布局

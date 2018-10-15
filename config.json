@@ -46,6 +46,10 @@
     "dev_cs": {
       "name": "开发环境-陈帅",
       "host": "http://172.16.10.88:8180/gateway"
+    },
+    "dev_yxm": {
+      "name": "开发环境-杨小猛",
+      "host": "http://172.16.10.12:8180/gateway"
     }
   }
 }

@@ -27,7 +27,7 @@ const AcitivyItem = ({data, press}) => {
     const {imgUrl, topicBannerProductDTOList} = data
     let goodsItem = []
     topicBannerProductDTOList && topicBannerProductDTOList.map((value,index) => {
-        goodsItem.push(<GoodItems key={index} title={value.productName} money={value.startPrice} img={value.specImg}/>)
+        goodsItem.push(<GoodItems key={index} title={value.productName} money={value.startPrice ? value.startPrice : 0} img={value.specImg ? value.specImg : ''}/>)
     })
     return <View>
         <TouchableOpacity style={styles.bannerBox} onPress={()=>{press && press()}}>
@@ -52,8 +52,9 @@ export default class HomeSubjectView extends Component {
     _subjectActions(item) {
         subjectModule.selectedSubjectAction(item)
         const { navigation } = this.props
+        let params = homeModule.paramsNavigate(item)
         const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
-        navigation.navigate(router,  {linkTypeCode : item.linkTypeCode})
+        navigation.navigate(router,  params)
     }
     render() {
         const { subjectList } = subjectModule

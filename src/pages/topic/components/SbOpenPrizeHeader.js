@@ -33,6 +33,7 @@ export default class SbOpenPrizeHeader extends Component {
 
     render() {
         const { imgUrl, topicNavTitleList } = this.props.headerData;
+        const NavWidth = topicNavTitleList.length>5?ScreenUtils.width/5: ScreenUtils.width/topicNavTitleList.length;
         console.log(imgUrl);
         return (
             <View>
@@ -41,6 +42,7 @@ export default class SbOpenPrizeHeader extends Component {
                 {/*style={SbOpenPrizeHeaderStyles.topImageStyle}*/}
                 {/*/>*/}
                 {
+
                     (topicNavTitleList instanceof Array && topicNavTitleList.length > 1) ?
                         <View style={SbOpenPrizeHeaderStyles.bottomDownViewBgStyle}>
                             <View
@@ -72,7 +74,8 @@ export default class SbOpenPrizeHeader extends Component {
                                     source={SbResTool.miaosha_qianggouzhong_img}
                                     style={[itemViewStyle.itemBgImageStyle,
                                         {
-                                            left: this.state.selectSate * ScreenUtils.width / 5
+                                            // left: this.state.selectSate * ScreenUtils.width / 5
+                                            left: this.state.selectSate * NavWidth
                                         }]}
                                 />
                                 {this._getDownTimeItemView().map(itemView => {
@@ -88,6 +91,7 @@ export default class SbOpenPrizeHeader extends Component {
 
     _getDownTimeItemView = () => {
         const { topicNavTitleList } = this.props.headerData;
+        const NavWidth = topicNavTitleList.length>5?ScreenUtils.width/5: ScreenUtils.width/topicNavTitleList.length;
         console.log(topicNavTitleList);
         if (topicNavTitleList instanceof Array && topicNavTitleList.length > 0) {
             let tempCompoentArr = [];
@@ -96,8 +100,9 @@ export default class SbOpenPrizeHeader extends Component {
                     <TouchableOpacity onPress={() => {
                         this._downItemViewClick(index, item);
                     }} key={index}>
-                        <View style={[itemViewStyle.itemBgStyle
+                        <View style={[itemViewStyle.itemBgStyle,
                             // { width: ScreenUtils.width /arrAccount}
+                            {width:NavWidth}
                         ]}>
                             <UIText
                                 value={item.title}

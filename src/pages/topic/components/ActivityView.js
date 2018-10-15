@@ -17,20 +17,35 @@ export default class MyShop_RecruitPage extends Component {
 
     constructor(props) {
         super(props);
+        this.timer = new TimeDownUtils();
         this.state = {
             countTime: 0
         };
     }
 
-    componentDidMount() {
-        const { activityType } = this.props;
-        const { date, beginTime, endTime } = this.props.activityData;
+    componentWillUnmount() {
+        this.timer.stop();
+    }
+
+
+    _time(start, end) {
+        if (isNoEmpty(start) && isNoEmpty(end)) {
+            this.timer.startDown((time) => {
+                this.setState({
+                    countTime: time
+                });
+            }, Math.floor((end - start) / 1000));
+        }
+    };
+
+    saveActivityViewData(activityData, activityType) {
+        const { date, beginTime, endTime } = activityData;
         let begin = beginTime > date;
         if (begin) {
             this._time(date, beginTime);
         } else {
             if (activityType === 2) {
-                const { markdownPrice = '', floorPrice, activityTime } = this.props.activityData;
+                const { markdownPrice = '', floorPrice, activityTime } = activityData;
                 markdownPrice === floorPrice ? this._time(date, endTime) : this._time(date, activityTime);
             } else {
                 this._time(date, endTime);
@@ -54,16 +69,6 @@ export default class MyShop_RecruitPage extends Component {
         let time = days + ':' + hours + ':' + minutes + ':' + second;
         return time;
     }
-
-    _time = (start, end) => {
-        if (isNoEmpty(start) && isNoEmpty(end)) {
-            new TimeDownUtils().startDown((time) => {
-                this.setState({
-                    countTime: time
-                });
-            }, Math.floor(end - start / (1000)));
-        }
-    };
 
     render() {
         //markdownPrice 拍卖价 startPrice起拍价
@@ -97,7 +102,7 @@ export default class MyShop_RecruitPage extends Component {
                 four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;
             }
         } else {
-            const { productPrice = '', seckillPrice = '', subscribeCount = '' } = this.props.activityData;
+            const { productPrice, seckillPrice = '', subscribeCount = '' } = this.props.activityData;
             price = seckillPrice;
             if (begin) {
                 one = '秒杀价';
@@ -105,7 +110,7 @@ export default class MyShop_RecruitPage extends Component {
                 three = `距开抢 ${this._timeDif(this.state.countTime) || ''}`;
                 four = `${getFormatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
             } else {
-                one = `原价￥${productPrice}`;
+                one = `原价￥${isNoEmpty(productPrice) ? productPrice : ''}`;
                 two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '秒杀价'}`;
                 three = `距结束 ${this._timeDif(this.state.countTime) || ''}`;
                 four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;

@@ -27,7 +27,8 @@ export default class HomeRecommendView extends Component {
     _onRecommendAction(item) {
         let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
         const {navigation} = this.props
-        navigation && navigation.navigate(router,  {linkTypeCode : item.linkTypeCode})
+        let params = homeModule.paramsNavigate(item)
+        navigation && navigation.navigate(router,  params)
     }
 
     render() {

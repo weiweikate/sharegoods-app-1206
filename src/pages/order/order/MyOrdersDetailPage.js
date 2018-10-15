@@ -688,6 +688,7 @@ class MyOrdersDetailPage extends BasePage {
             let data = response.data;
             let arr = [];
             data.orderProductList.map((item, index) => {
+                console.log('orderProductList',item);
                 arr.push({
                     id: item.id,
                     orderId: item.orderId,
@@ -701,6 +702,7 @@ class MyOrdersDetailPage extends BasePage {
                     afterSaleService: this.getAfterSaleService(data.orderProductList, index)
                 });
             });
+            console.log('orderProductList',data, arr);
             if (data.orderType === 3 || data.orderType === 98) {//礼包。。。
                 // let  lowerarr=data.list[0].orderProductPrices
             }
@@ -760,7 +762,7 @@ class MyOrdersDetailPage extends BasePage {
                     break;
                 //卖家已发货 待收货
                 case 3:
-                    this.startCutDownTime2(response.data.autoReceiveTime);
+                    // this.startCutDownTime2(response.data.autoReceiveTime);
                     pageStateString.sellerTime = "";
                     break;
                 //   确认收货
@@ -815,7 +817,7 @@ class MyOrdersDetailPage extends BasePage {
                     sendTime: data.sendTime,//发货时间
                     finishTime: '',//成交时间
                     autoConfirmTime: data.autoReceiveTime,//自动确认时间
-                    pickedUp: data.pickedUp//
+                    pickedUp: data.pickedUp,//
                 },
                 pageStateString: pageStateString,
                 expressNo: data.expressNo,
@@ -825,7 +827,7 @@ class MyOrdersDetailPage extends BasePage {
                 orderProductPrices: data.orderProductList[0].price,//礼包，套餐啥的
                 allData: data
             });
-
+         console.log("viewDAta"+this.state.viewData);
         }).catch(e => {
             Toast.hiddenLoading();
             Toast.$toast(e.msg);
@@ -885,16 +887,17 @@ class MyOrdersDetailPage extends BasePage {
                 this.setState({ isShowSingleSelctionModal: true });
                 break;
             case 2:
-                this.$navigate('order/payment/PaymentMethodPage', {
+                this.$navigate('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
                     amounts: this.state.viewData.totalPrice
                     // orderType: this.state.viewData.pickedUp - 1
                 });
                 break;
             case 3:
-                this.$navigate('order/payment/PaymentMethodPage', {
+                this.$navigate('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
-                    amounts: this.state.viewData.totalPrice
+                    amounts: this.state.viewData.totalPrice,
+                    outTrandNo: this.state.viewData.outTrandNo
                 });
                 break;
             case 4:

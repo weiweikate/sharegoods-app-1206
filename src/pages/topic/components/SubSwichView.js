@@ -31,10 +31,17 @@ export default class SubSwichView extends Component {
 
     render() {
         // const { headerData } = this.props;
+        const { topicNavTitleList } = this.props.headerData || [];
+        let tempTitleArr = topicNavTitleList || [];
         return (
+            //当标题为一个是不显示
+            tempTitleArr.length > 1
+                ?
             <View style={SwichStyles.swichBgStyle}>
                 {this._renderTitleItem()}
             </View>
+                :
+                null
         );
     }
 
