@@ -23,6 +23,7 @@ import HomeAPI from '../home/api/HomeAPI';
 import TopicApi from './api/TopicApi';
 import user from '../../model/user';
 import TopicDetailSelectPage from './TopicDetailSelectPage';
+import PackageDetailSelectPage from './PackageDetailSelectPage';
 
 export default class TopicDetailPage extends BasePage {
 
@@ -86,7 +87,9 @@ export default class TopicDetailPage extends BasePage {
                 code: 'TC201810130007'
             }).then((data) => {
                 this.$loadingDismiss();
-                this.state.activityData = data.data || {};
+                this.setState({
+                    data: data.data || {}
+                });
             }).catch((error) => {
                 this.$loadingDismiss();
                 this.$toastShow(error.msg);
@@ -185,12 +188,10 @@ export default class TopicDetailPage extends BasePage {
 
     _renderItem = () => {
         let { product = {} } = this.state.data;
-        if (StringUtils.isEmpty(product.content)) {
-            return null;
-        }
         if (this.state.selectedIndex === 0) {
             return <View>
-                <AutoHeightWebView source={{ html: product.content }}/>
+                <AutoHeightWebView
+                    source={{ html: this.state.activityType === 3 ? this.state.data.content : product.content }}/>
             </View>;
         } else {
             return <View style={{ backgroundColor: 'white' }}>
@@ -200,7 +201,7 @@ export default class TopicDetailPage extends BasePage {
                     ItemSeparatorComponent={this._renderSeparatorComponent}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => `${index}`}
-                    data={this.state.data.paramList || []}>
+                    data={this.state.activityType === 3 ? this.state.data.paramValueList || [] : this.state.data.paramList || []}>
                 </FlatList>
             </View>;
         }
@@ -209,7 +210,11 @@ export default class TopicDetailPage extends BasePage {
     _renderSmallItem = ({ item }) => {
         return <View style={{ flexDirection: 'row', height: 35 }}>
             <View style={{ backgroundColor: '#DDDDDD', width: 70, justifyContent: 'center' }}>
-                <Text style={{ marginLeft: 10, color: '#222222', fontSize: 12 }}>{item.paramName || ''}</Text>
+                <Text style={{
+                    marginLeft: 10,
+                    color: '#222222',
+                    fontSize: 12
+                }}>{this.state.activityType === 3 ? item.param || '' : item.paramName || ''}</Text>
             </View>
             <Text style={{
                 flex: 1,
@@ -237,26 +242,31 @@ export default class TopicDetailPage extends BasePage {
     };
 
     _render() {
-        const { notifyFlag, surplusNumber, limitNumber, limitFlag, beginTime, date, endTime } = this.state.activityData;
         let bottomTittle, colorType;
-        if (beginTime > date) {
-            if (notifyFlag === 1) {
-                bottomTittle = '开始前3分钟提醒';
-            } else {
-                bottomTittle = '设置提醒';
-                colorType = 1;
+        if (this.state.activityType === 3) {
+            bottomTittle = '立即购买';
+            colorType = 2;
+        } else {
+            const { notifyFlag, surplusNumber, limitNumber, limitFlag, beginTime, date, endTime } = this.state.activityData;
+            if (beginTime > date) {
+                if (notifyFlag === 1) {
+                    bottomTittle = '开始前3分钟提醒';
+                } else {
+                    bottomTittle = '设置提醒';
+                    colorType = 1;
+                }
+            } else if (endTime > date) {
+                if (surplusNumber === 0) {
+                    bottomTittle = '已抢光';
+                } else if (limitNumber !== -1 && limitFlag === 1) {
+                    bottomTittle = `每人限购${limitNumber}次（您已购买过本商品）`;
+                } else {
+                    bottomTittle = '立即拍';
+                    colorType = 2;
+                }
+            } else if (date > endTime) {
+                bottomTittle = '已结束';
             }
-        } else if (endTime > date) {
-            if (surplusNumber === 0) {
-                bottomTittle = '已抢光';
-            } else if (limitNumber !== -1 && limitFlag === 1) {
-                bottomTittle = `每人限购${limitNumber}次（您已购买过本商品）`;
-            } else {
-                bottomTittle = '立即拍';
-                colorType = 2;
-            }
-        } else if (date > endTime) {
-            bottomTittle = '已结束';
         }
         return (
             <View style={styles.container}>
@@ -297,9 +307,16 @@ export default class TopicDetailPage extends BasePage {
                     animationType="none"
                     transparent={true}
                     visible={this.state.modalVisible}>
-                    <TopicDetailSelectPage selectionViewConfirm={this._selectionViewConfirm}
-                                           selectionViewClose={this._selectionViewClose} data={this.state.activityData}
-                                           activityType={this.state.activityType}/>
+                    {this.state.activityType === 3 ?
+                        <PackageDetailSelectPage selectionViewConfirm={this._selectionViewConfirm}
+                                                 selectionViewClose={this._selectionViewClose}
+                                                 data={this.state.data}
+                                                 activityType={this.state.activityType}/> :
+                        <TopicDetailSelectPage selectionViewConfirm={this._selectionViewConfirm}
+                                               selectionViewClose={this._selectionViewClose}
+                                               data={this.state.activityData}
+                                               activityType={this.state.activityType}/>}
+
                 </Modal>
             </View>
         );

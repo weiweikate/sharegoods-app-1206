@@ -145,9 +145,6 @@ export default class ProductDetailPage extends BasePage {
     _renderItem = () => {
         let { product } = this.state.data;
         product = product || {};
-        if (StringUtils.isEmpty(product.content)) {
-            return null;
-        }
         if (this.state.selectedIndex === 0) {
             return <View>
                 <AutoHeightWebView source={{ html: product.content }}/>
