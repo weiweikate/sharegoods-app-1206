@@ -397,6 +397,14 @@ export default class ConfirOrderPage extends BasePage {
                 viewData.tokenCoin = data.tokenCoin;
                 viewData.list = arrData;
                 this.setState({ viewData });
+            }).catch(err =>{
+                Toast.hiddenLoading();
+                this.$toastShow(err.msg);
+                if (err.code === 10009) {
+                    this.$navigate('login/login/LoginPage',{callback:()=>{
+                            this.loadPageData()
+                        }});
+                }
             })
         }else{
             OrderApi.makeSureOrder({
