@@ -688,6 +688,7 @@ class MyOrdersDetailPage extends BasePage {
             let data = response.data;
             let arr = [];
             data.orderProductList.map((item, index) => {
+                console.log('orderProductList',item);
                 arr.push({
                     id: item.id,
                     orderId: item.orderId,
@@ -701,6 +702,7 @@ class MyOrdersDetailPage extends BasePage {
                     afterSaleService: this.getAfterSaleService(data.orderProductList, index)
                 });
             });
+            console.log('orderProductList',data, arr);
             if (data.orderType === 3 || data.orderType === 98) {//礼包。。。
                 // let  lowerarr=data.list[0].orderProductPrices
             }
@@ -760,7 +762,7 @@ class MyOrdersDetailPage extends BasePage {
                     break;
                 //卖家已发货 待收货
                 case 3:
-                    this.startCutDownTime2(response.data.autoReceiveTime);
+                    // this.startCutDownTime2(response.data.autoReceiveTime);
                     pageStateString.sellerTime = "";
                     break;
                 //   确认收货
@@ -825,7 +827,7 @@ class MyOrdersDetailPage extends BasePage {
                 orderProductPrices: data.orderProductList[0].price,//礼包，套餐啥的
                 allData: data
             });
-
+         console.log("viewDAta"+this.state.viewData);
         }).catch(e => {
             Toast.hiddenLoading();
             Toast.$toast(e.msg);
