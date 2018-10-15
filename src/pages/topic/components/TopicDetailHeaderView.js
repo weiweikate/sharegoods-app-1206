@@ -12,7 +12,9 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import ViewPager from '../../../components/ui/ViewPager';
 import UIImage from '../../../components/ui/UIImage';
 import xjt_03 from '../res/xjt_03.png';
-import ActivityView from './ActivityView'
+import ActivityView from './ActivityView';
+import { isNoEmpty } from '../../../utils/StringUtils';
+
 /**
  * 商品详情头部view
  */
@@ -41,6 +43,10 @@ export default class TopicDetailHeaderView extends Component {
         }, 0);
     }
 
+    updateTime(activityData, activityType) {
+        this.ActivityView.saveActivityViewData(activityData, activityType);
+    }
+
     _clickItem = () => {
 
     };
@@ -54,14 +60,33 @@ export default class TopicDetailHeaderView extends Component {
                 resizeMode="cover"
             />);
     };
+
     render() {
-        const { productImgList = [{}], freight = '', monthSaleTotal = 0, product = {} } = this.props.data || {};
-        const { supplierName = '', brandName = '', name = '', firstCategoryName = '', secCategoryName = '', thirdCategoryName = '' } = product;
         const { activityType } = this.props;
+        let bannerImgList, tittle, freightValue, monthSale;
+        let nowPrice, oldPrice;
+
+        if (activityType === 3) {
+            const { imgFileList = [{}], name, levelPrice, originalPrice, freight, saleNum } = this.props.data || {};
+            bannerImgList = imgFileList;
+            tittle = name;
+            nowPrice = levelPrice;
+            oldPrice = originalPrice;
+            freightValue = freight;
+            monthSale = saleNum;
+        } else {
+            const { productImgList = [{}], freight, monthSaleTotal, product = {} } = this.props.data || {};
+            const { supplierName, brandName, name, firstCategoryName, secCategoryName, thirdCategoryName } = product;
+
+            bannerImgList = productImgList;
+            tittle = `${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`;
+            freightValue = freight;
+            monthSale = monthSaleTotal;
+        }
         return (
             <View>
                 <ViewPager style={styles.ViewPager}
-                           arrayData={productImgList}
+                           arrayData={bannerImgList}
                            renderItem={(item) => this.renderViewPageItem(item)}
                            dotStyle={{
                                height: 5,
@@ -79,24 +104,30 @@ export default class TopicDetailHeaderView extends Component {
                            }}
                            height={ScreenUtils.autoSizeWidth(377)}
                            autoplay={true}/>
-                <ActivityView activityData={this.props.activityData} activityType={activityType}/>
+                {activityType === 3 ? null : <ActivityView ref={(e) => {
+                    this.ActivityView = e;
+                }} activityData={this.props.activityData} activityType={activityType}/>}
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{
                             marginTop: 14,
                             color: '#222222',
                             fontSize: 15
-                        }}>{`${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`}</Text>
+                        }}>{tittle}</Text>
+                        {activityType === 3 ?<View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
+                            <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
+                            <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${oldPrice}`}</Text>
+                        </View>:null}
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text style={{
                                 color: '#BBBBBB',
                                 fontSize: 11
-                            }}>快递：{freight === 0 ? `包邮` : `${freight}元`}</Text>
+                            }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : 0}元`}</Text>
                             <Text style={{
                                 color: '#666666',
                                 fontSize: 13,
                                 marginLeft: ScreenUtils.autoSizeWidth(108)
-                            }}>{`月销售${monthSaleTotal}笔`}</Text>
+                            }}>{`月销售${isNoEmpty(monthSale) ? monthSale : 0}笔`}</Text>
                         </View>
                     </View>
                 </View>

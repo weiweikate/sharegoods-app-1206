@@ -68,13 +68,16 @@ export class Payment {
         try {
             Toast.showLoading()
             params.type = paymentType.balance
-            params.balance = this.availableBalance - params.amounts
+            params.balance = params.amounts
+            params.amounts= 0
             const res = yield this.perpay(params)
             const outTradeNo = res.data.outTradeNo
             const checkRes = yield this.checkPayStatus({outTradeNo: outTradeNo})
             Toast.hiddenLoading()
             return checkRes
         } catch (error) {
+            Toast.hiddenLoading();
+            Toast.$toast(error.msg);
             console.log(error)
         }
     })
@@ -85,6 +88,7 @@ export class Payment {
             const res = yield PaymentApi.prePay(params)
             return res
         } catch (error) {
+            Toast.$toast(error.msg);
             console.log(error)
         }
     })
@@ -104,14 +108,17 @@ export class Payment {
         try {
             Toast.showLoading()
             params.type = paymentType.alipay
-            params.balance = this.availableBalance
+            params.balance = 0
+            params.amounts = params.amounts
+            // params
             const preStr = yield this.perpay(params)
             const prePayStr = preStr.data.prePayStr
             const resultStr = yield PayUtil.appAliPay(prePayStr)
             console.log('appAliPay:' + JSON.stringify(resultStr))
-            Toast.hiddenLoading()
+            Toast.hiddenLoading();
             return {resultStr, preStr}
         } catch (error) {
+            Toast.showLoading()
             console.log(error)
         }
     })
@@ -121,7 +128,8 @@ export class Payment {
         try {
             Toast.showLoading()
             params.type = paymentType.wechat
-            params.balance = this.availableBalance
+            params.balance = 0
+            params.amounts = params.amounts
             const preStr = yield this.perpay(params)
             const prePay = JSON.parse(preStr.data.prePayStr)
             console.log('prePayStr', prePay)
@@ -136,6 +144,7 @@ export class Payment {
             Toast.hiddenLoading()
             return {resultStr, preStr}
         } catch (error) {
+            Toast.showLoading()
             console.log(error)
         }
     })

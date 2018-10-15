@@ -152,7 +152,6 @@ class SubjectModule {
     loadSubjectList = flow(function * () {
         try {
             const res = yield HomeApi.getSubject({type: homeType.subject})
-            console.log('load some ------'+res.data);
             this.subjectList = res.data
         } catch (error) {
             console.log(error)
@@ -213,14 +212,16 @@ class HomeModule {
             product = topicBannerProductDTOList[0]
             productType = product.productType
         }
-        
+
+        const {linkType} = data
         return {
+            activityType: linkType===3?2:linkType===4?1:3,
             activityCode: data.linkTypeCode,
             linkTypeCode: data.linkTypeCode,
             productId: data.linkTypeCode,
             productType: productType
         }
-        
+
     }
 
     //加载为你推荐列表
@@ -308,6 +309,7 @@ class HomeModule {
         try {
             this.isFetching = true
             const res = yield HomeApi.getGoodsInHome({page: this.page})
+            this.isFetching = false
             let list = res.data.data
             if (list.length <= 0) {
                 this.isEnd = true
@@ -330,7 +332,6 @@ class HomeModule {
                 }
             }
             this.homeList = [...this.homeList, ...home]
-            this.isFetching = false
             this.page++
         } catch (error) {
             console.log(error)
