@@ -169,7 +169,6 @@ export default class MyOrdersListView extends Component {
         };
     };
     renderItem = ({ item, index }) => {
-        console.log(item);
         return (
             <GoodsListItem
                 id={item.id}
@@ -396,7 +395,7 @@ export default class MyOrdersListView extends Component {
                 });
                 break;
             case 4:
-                OrderApi.queryPage({ ...params, status: 5 }).then((response) => {
+                OrderApi.queryPage({ ...params, status: 4 }).then((response) => {
                     Toast.hiddenLoading();
                     this.getList(response.data);
                     this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
