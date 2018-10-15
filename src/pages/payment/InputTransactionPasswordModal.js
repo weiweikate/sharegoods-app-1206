@@ -6,14 +6,12 @@ import {
     Modal,
     ImageBackground,
 } from 'react-native'
-import {color} from "../../../constants/Theme";
-import BonusExchangeSucceedBackground from '../../mine/res/userInfoImg/BonusExchangeSucceedBackground.png';
-import bonusClose from '../../mine/res/userInfoImg/bonusClose.png';
-import {
-    UIText, UIImage
-} from '../../../components/ui'
-import PasswordInput from '../../mine/components/PasswordInput';
-import {observer} from 'mobx-react/native';
+import {color} from "../../constants/Theme";
+import BonusExchangeSucceedBackground from '../mine/res/userInfoImg/BonusExchangeSucceedBackground.png'
+import bonusClose from '../mine/res/userInfoImg/bonusClose.png'
+import { UIText, UIImage } from '../../components/ui'
+import PasswordInput from '../mine/components/PasswordInput'
+import {observer} from 'mobx-react/native'
 
 @observer
 class  InputTransactionPasswordModal extends Component {

@@ -39,6 +39,7 @@ export default class MyCouponsItems extends Component {
     }
 
     renderItem = ({ item, index }) => {
+
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
         let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
@@ -57,12 +58,24 @@ export default class MyCouponsItems extends Component {
                             width: px2dp(80)
                         }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                                    <Text style={{ fontSize: 8, color: '#222222', marginBottom: 2 }}>￥</Text>
-                                </View>
+                                {
+                                    item.type === 3 || item.type === 4 ? null :
+                                        <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
+                                            <Text
+                                                style={{ fontSize: 14, color: '#222222', marginBottom: 4 }}>￥</Text>
+                                        </View>}
                                 <View>
-                                    <Text style={{ fontSize: 20, color: '#222222' }}>{item.value}</Text>
+                                    <Text style={{
+                                        fontSize: item.type === 4 ? 20 : 34,
+                                        color: '#222222'
+                                    }}>{item.value}</Text>
                                 </View>
+                                {
+                                    item.type === 3 ?
+                                        <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
+                                            <Text
+                                                style={{ fontSize: 14, color: '#222222', marginBottom: 4 }}>折</Text>
+                                        </View> : null}
                             </View>
                         </View>
 
@@ -165,11 +178,12 @@ export default class MyCouponsItems extends Component {
                 name: item.name,
                 startTime: item.startTime,
                 outTime: item.expireTime,
-                value: item.value,
+                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n抵扣' : item.value),
                 useConditions: item.useConditions,
                 limit: this.parseCoupon(item),
-                discountCouponId: '',
-                remarks: item.remarks
+                couponConfigId: item.couponConfigId,
+                remarks: item.remarks,
+                type: item.type
             });
 
         });
@@ -185,19 +199,31 @@ export default class MyCouponsItems extends Component {
 
     getDataFromNetwork = () => {
         let status = this.state.pageStatus;
+        /**
+
+         "page": 1,
+         "pageSize": 10,
+         "productPriceIds": [
+         {
+           "priceId": 1,
+           "productId": 1
+         }
+         */
         let page = this.state.currentPage || 1;
         if (this.props.fromOrder && status == 0) {
-            let arr = [], ProductPriceIdPair = {};
+            let arr = [];
             // ProductPriceIdPair=this.props.productIds;
             // priceId  productId
-            ProductPriceIdPair.priceId = this.props.productIds.orderProducts[0].priceId,
-                ProductPriceIdPair.productId = this.props.productIds.orderProducts[0].productId,
+            let data = {
+                priceId: this.props.productIds.orderProducts[0].priceId,
+                productId: this.props.productIds.orderProducts[0].productId
+            };
 
-                arr.push({
-                    ProductPriceIdPair
-                });
+            arr.push(data);
             API.listAvailable({ page, pageSize: 20, productPriceIds: arr }).then(res => {
-                console.log(res.data);
+                let data = res.data || {};
+                let dataList = data.data || [];
+                this.parseData(dataList);
             }).catch(result => {
                 if (result.code === 10009) {
                     this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
@@ -259,9 +285,7 @@ export default class MyCouponsItems extends Component {
         if (this.props.fromOrder) {
             this.props.useCoupons(item);
         } else {
-            if (item.status === 0 || item.status.status === 3) {
-                this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
-            }
+            this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
         }
 
 

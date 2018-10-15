@@ -131,7 +131,7 @@ export default class CommRegistView extends Component {
                                     }}
                                     placeholder='请输入验证码'
                                     underlineColorAndroid={'transparent'}
-                                    keyboardType='default'
+                                    keyboardType='numeric'
 
                                 />
                             </View>

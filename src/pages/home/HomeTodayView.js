@@ -23,8 +23,9 @@ export default class HomeTodayView extends Component {
 
     _todayItemAction(item) {
         let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
+        let params = homeModule.paramsNavigate(item)
         const {navigation} = this.props
-        navigation && navigation.navigate(router,  {linkTypeCode : item.linkTypeCode})
+        navigation && navigation.navigate(router,  params)
     }
 
     render() {

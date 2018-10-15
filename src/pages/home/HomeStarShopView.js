@@ -62,7 +62,8 @@ export default class HomeStarShopView extends Component {
         console.log('_shopPress')
         const { navigation } = this.props
         let route  = homeModule.homeNavigate(8)
-        navigation.navigate(route, {linkTypeCode : shop.linkTypeCode})
+        let params = homeModule.paramsNavigate(shop)
+        navigation.navigate(route, params)
     }
     render () {
         let cells = []

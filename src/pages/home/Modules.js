@@ -4,7 +4,7 @@ import HomeApi from './api/HomeAPI'
 export const homeType = {
     swiper: 1,           //轮播
     ad: 2,       //推荐
-    subject: 7,         //专题
+    subject: 6,         //专题
     starShop: 3,       //明星店铺
     today: 4,             //今日榜单
     recommend: 5,     //精品推荐
@@ -152,6 +152,7 @@ class SubjectModule {
     loadSubjectList = flow(function * () {
         try {
             const res = yield HomeApi.getSubject({type: homeType.subject})
+            console.log('load some ------'+res.data);
             this.subjectList = res.data
         } catch (error) {
             console.log(error)
@@ -183,9 +184,9 @@ const homeLinkType = {
 const homeRoute = {
     [homeLinkType.good]: 'home/product/ProductDetailPage',
     [homeLinkType.subject]: 'topic/DownPricePage',
-    [homeLinkType.down]: 'topic/DownPricePage',
-    [homeLinkType.spike]: 'topic/DownPricePage',
-    [homeLinkType.package]: 'topic/DownPricePage',
+    [homeLinkType.down]: 'topic/TopicDetailPage',
+    [homeLinkType.spike]: 'topic/TopicDetailPage',
+    [homeLinkType.package]: 'topic/TopicDetailPage',
     [homeLinkType.store]: 'spellShop/SpellShopPage'
 }
 
@@ -202,6 +203,24 @@ class HomeModule {
     @action homeNavigate = (linkType, linkTypeCode) => {
         this.selectedTypeCode = linkTypeCode
         return homeRoute[linkType]
+    }
+
+    @action paramsNavigate = (data) => {
+        const {topicBannerProductDTOList } = data
+        let product = null
+        let productType = ''
+        if (topicBannerProductDTOList) {
+            product = topicBannerProductDTOList[0]
+            productType = product.productType
+        }
+        
+        return {
+            activityCode: data.linkTypeCode,
+            linkTypeCode: data.linkTypeCode,
+            productId: data.linkTypeCode,
+            productType: productType
+        }
+        
     }
 
     //加载为你推荐列表
@@ -237,7 +256,7 @@ class HomeModule {
         if (this.isFetching === true) {
             return
         }
-        
+
         try {
             this.isFetching = true
             const res = yield HomeApi.getGoodsInHome({page: this.page})
@@ -248,7 +267,7 @@ class HomeModule {
                 type: homeType.goodsTitle
             }]
             let itemData = []
-            
+
             for(let i = 0; i < list.length; i++ ) {
                 if (i % 2 === 1) {
                     let good = list[i]

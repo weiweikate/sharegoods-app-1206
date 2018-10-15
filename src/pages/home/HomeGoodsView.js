@@ -19,7 +19,8 @@ export default class GoodsCell extends Component {
     _goodsAction(data) {
         let route = homeModule.homeNavigate(data.linkType, data.linkTypeCode)
         const { navigation } = this.props
-        navigation.navigate(route,  {linkTypeCode : data.linkTypeCode})
+        let params = homeModule.paramsNavigate(data)
+        navigation.navigate(route,  params)
     }
     render() {
         const {data} = this.props
