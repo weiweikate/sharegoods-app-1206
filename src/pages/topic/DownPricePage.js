@@ -102,7 +102,6 @@ export default class DownPricePage extends BasePage {
                 {
                     sectionListData.map((itemData, itemIndex) => {
                         return(
-
                             this._getTopicType() === 1?
                             <OpenPrizeItemView
                                 itemData={itemData}
@@ -117,8 +116,9 @@ export default class DownPricePage extends BasePage {
                             />
                                 :
                                 <TopicItemView
+                                    key={itemIndex}
                                     itemData={itemData}
-                                    numOfColum={2}
+                                    numOfColum={this._getColumNum()}
                                     itemClickAction={
                                         ()=>{
                                             this._itemActionClick(itemData)
@@ -242,14 +242,21 @@ export default class DownPricePage extends BasePage {
      * 2 降价拍
      * */
     _getTopicType = () => {
-        return 1;
-        const { linkTypeCode } = this.params;
-        if (linkTypeCode.search('ZT') != -1) {
-            return 0;
-        } else {
+        if (this.dataModel.templateId === 5 ||
+            this.dataModel.templateId === 6){
             return 1;
+        } else {
+            return 0;
         }
     };
+    _getColumNum = () => {
+        if (this.dataModel.templateId === 3 ||
+            this.dataModel.templateId === 4 ){
+            return 3;
+        } else {
+            return 2;
+        }
+    }
 }
 
 const Styles = StyleSheet.create({
