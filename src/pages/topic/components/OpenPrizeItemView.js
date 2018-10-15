@@ -17,6 +17,38 @@ import user from '../../../model/user';
 import bridge from '../../../utils/bridge';
 import ShopCartRes from '../../shopCart/res/ShopCartRes';
 
+// 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
+const statues = {
+    deleteStatue:0,
+    noBegin:1,
+    isBeginning:2,
+    haveSoldOut:3,
+    timeOver:4,
+    handOver:5,
+}
+// 1.秒杀 2.降价拍 3.礼包 4.助力免费领 5.专题 99.普通产品
+const productTypes = {
+    skill: 1,
+    down: 2,
+    giftPackage:3,
+    helpFree:4,
+    newTopic:5,
+    normalProduct:99
+}
+const downPriceParam = {
+    [statues.noBegin]:'startPrice',
+    [statues.isBeginning]:'markdownPrice'
+}
+const typeName = {
+    [productTypes.skill]: 'seckillPrice',
+    //降价拍需要判断statue 如果为1 则为startPrice 如果为2 则为 markdownPrice
+    [productTypes.down]:downPriceParam,
+    [productTypes.giftPackage]:'暂无',
+    [productTypes.helpFree]:'暂无',
+    [productTypes.newTopic]:'暂无',
+}
+
+
 export default class OpenPrizeItemView extends Component {
 
     constructor(props) {
@@ -26,7 +58,7 @@ export default class OpenPrizeItemView extends Component {
     static propTypes = {
         itemData: PropTypes.object.isRequired,
         itemClick: PropTypes.func.isRequired,
-        followAction:PropTypes.func.isRequired,
+        followAction: PropTypes.func.isRequired
     };
 
     render() {
@@ -51,15 +83,15 @@ export default class OpenPrizeItemView extends Component {
                                     source={ShopCartRes.noGoodImg}
                                     style={
                                         {
-                                            position:'absolute',
-                                            top:10,
-                                            left:5,
+                                            position: 'absolute',
+                                            top: 10,
+                                            left: 5,
                                             width: ScreenUtils.width / 2 - 16 - 10,
-                                            height: ScreenUtils.width / 2 - 16-15
+                                            height: ScreenUtils.width / 2 - 16 - 15
                                         }
                                     }
                                 />
-                                 :
+                                :
                                 null
                         }
                         <Text
@@ -80,48 +112,13 @@ export default class OpenPrizeItemView extends Component {
                                 marginLeft: 10
                             }}
                         >
-                            {
-                                itemData.status === 0 ?
-                                    <Text
-                                        style={ItemStyles.itemFolloweTextStyle}
-                                        number={1}
-                                    >
-                                        {'商品异常'}
-                                    </Text>
-                                    : null
-                            }
-
-                            {
-                                itemData.status === 1 ?
-                                    <Text
-                                        style={ItemStyles.itemFolloweTextStyle}
-                                        number={1}
-                                    >
-                                        {itemData.reseCount + '人已关注'}
-                                    </Text>
-                                    : null
-                            }
-                            {
-                                itemData.status === 2 ?
                                     <ProgressBarView
                                         progressValue={(itemData.totalNumber - itemData.surplusNumber) / itemData.totalNumber}
                                         haveRobNum={itemData.totalNumber - itemData.surplusNumber}
-                                    /> :
-                                    null
-                            }
-                            {
-                                itemData.status === 3 || itemData.status === 4 || itemData.status === 5 ?
-                                    <Text
-                                        style={ItemStyles.itemFolloweTextStyle}
-                                        number={1}
-                                    >
-                                        {'抢光了' + itemData.totalNumber + '件'}
-                                    </Text>
-                                    : null
-                            }
-
+                                        statue={itemData.status}
+                                        itemData={itemData}
+                                    />
                         </View>
-
                         <View
                             style={{
                                 flexDirection: 'row',
@@ -140,7 +137,13 @@ export default class OpenPrizeItemView extends Component {
                                     fontSize: 16,
                                     color: ColorUtil.Color_d51243
                                 }}>
-                                    {itemData.seckillPrice + '起'}
+                                    {
+                                        itemData.productType === 2
+                                            ?
+                                        itemData[typeName[itemData.productType][itemData.status]]
+                                            :
+                                            itemData[typeName[itemData.productType]]
+                                    }
                                 </Text>
                                 <Text style={{
                                     height: 11,
@@ -165,7 +168,7 @@ export default class OpenPrizeItemView extends Component {
                                         <TouchableOpacity
                                             onPress={() => {
                                                 // this._followAction();
-                                                this.props.followAction&&this.props.followAction();
+                                                this.props.followAction && this.props.followAction();
                                             }
 
                                             }

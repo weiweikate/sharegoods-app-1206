@@ -200,14 +200,16 @@ class HomeModule {
             product = topicBannerProductDTOList[0]
             productType = product.productType
         }
-        
+
+        const {linkType} = data
         return {
+            activityType: linkType===3?2:linkType===4?1:3,
             activityCode: data.linkTypeCode,
             linkTypeCode: data.linkTypeCode,
             productId: data.linkTypeCode,
             productType: productType
         }
-        
+
     }
 
     //加载为你推荐列表
