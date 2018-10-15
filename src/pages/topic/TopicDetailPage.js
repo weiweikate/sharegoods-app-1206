@@ -33,8 +33,8 @@ export default class TopicDetailPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            //活动类型1.秒杀2.降价拍
-            activityType: this.params.productType,
+            //类型: 1.秒杀 2.降价拍 3.礼包 4.助力免费领 5.专题 99.普通产品
+            activityType: 3,
             //参数还是详情
             selectedIndex: 0,
             //是否显示规格选择
@@ -68,7 +68,7 @@ export default class TopicDetailPage extends BasePage {
                 this.$loadingDismiss();
                 this.$toastShow(error.msg);
             });
-        } else {
+        } else if (this.state.activityType === 2) {
             this.$loadingShow();
             TopicApi.activityDepreciate_findById({
                 code: this.params.activityCode
@@ -76,6 +76,17 @@ export default class TopicDetailPage extends BasePage {
                 this.state.activityData = data.data || {};
                 this._getProductDetail(this.state.activityData.productId);
                 this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType);
+            }).catch((error) => {
+                this.$loadingDismiss();
+                this.$toastShow(error.msg);
+            });
+        } else if (this.state.activityType === 3) {
+            this.$loadingShow();
+            TopicApi.findActivityPackageDetail({
+                code: 'TC201810130007'
+            }).then((data) => {
+                this.$loadingDismiss();
+                this.state.activityData = data.data || {};
             }).catch((error) => {
                 this.$loadingDismiss();
                 this.$toastShow(error.msg);
@@ -100,6 +111,7 @@ export default class TopicDetailPage extends BasePage {
         });
     };
 
+    //订阅
     _followAction = () => {
         const itemData = this.state.activityData;
         let param = {
@@ -118,6 +130,7 @@ export default class TopicDetailPage extends BasePage {
         });
 
     };
+
     //选择规格确认
     _selectionViewConfirm = (amount, priceId) => {
         let orderProducts = [];
@@ -148,6 +161,7 @@ export default class TopicDetailPage extends BasePage {
         });
     };
 
+    //立即购买
     _bottomAction = (type) => {
         if (type === 1) {//设置提醒
             this._followAction();
@@ -157,6 +171,7 @@ export default class TopicDetailPage extends BasePage {
             });
         }
     };
+
     _renderListHeader = () => {
         return <TopicDetailHeaderView ref={(e) => {
             this.TopicDetailHeaderView = e;
