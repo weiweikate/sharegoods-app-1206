@@ -285,7 +285,6 @@ export default class PaymentMethodPage extends BasePage {
         this.$navigate('mine/account/SetOrEditPayPwdPage');
     };
     payIntercept = (type) => {
-        console.log(type);
         console.log(this.state.payMethodList);
         let payMethodList = this.state.payMethodList;
         if (type == 0) {
@@ -321,6 +320,8 @@ export default class PaymentMethodPage extends BasePage {
     };
     commitOrder = () => {
         const { params, type } = this.getApiRequestParams();
+        console.log(params);
+        console.log(type);
         if (!this.payIntercept(type)) {
             return;
         }
@@ -363,7 +364,7 @@ export default class PaymentMethodPage extends BasePage {
             type += 4;
         }
         /*
-        * 先扣除代币 -> 余额 -> 三方
+        * 先扣除 余额 -> 三方
         * */
         let balance = 0;
         let leftShouldPayMoney = this.state.paymentPageParams.shouldPayMoney;

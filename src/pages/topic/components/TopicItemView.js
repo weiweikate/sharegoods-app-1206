@@ -44,19 +44,19 @@ export default class TopicItemView extends Component {
                                 ]}
                             imageUri={itemData.specImg}
                         />
-                        <View style={
-                            [Styles.itemTipBgViewStyle,
-                                {
-                                    marginTop: ScreenUtils.width / numOfColum - 16 - 16,
-                                    width: ScreenUtils.width / numOfColum - 16
-                                }
-                            ]
+                        {/*<View style={*/}
+                            {/*[Styles.itemTipBgViewStyle,*/}
+                                {/*{*/}
+                                    {/*marginTop: ScreenUtils.width / numOfColum - 16 - 16,*/}
+                                    {/*width: ScreenUtils.width / numOfColum - 16*/}
+                                {/*}*/}
+                            {/*]*/}
 
-                        }>
-                            <Text style={Styles.itemTipTextStyle}>
-                                测试测试测试测试
-                            </Text>
-                        </View>
+                        {/*}>*/}
+                            {/*/!*<Text style={Styles.itemTipTextStyle}>*!/*/}
+                                {/*/!*测试测试测试测试*!/*/}
+                            {/*/!*</Text>*!/*/}
+                        {/*</View>*/}
                         <Text
                             style={
                                 [

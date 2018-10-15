@@ -148,6 +148,7 @@ export default class MinePage extends BasePage {
                                  onPress={() => this.jumpToServicePage()}/>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <NoMoreClick onPress={this.jumpToUserInformationPage}>
                         <ImageBackground style={{
                             height: 60,
                             width: 60,
@@ -157,7 +158,7 @@ export default class MinePage extends BasePage {
                             alignItems: 'center'
                         }} source={leftBg}>
                             {
-                                StringUtils.isEmpty('222') ? null :
+                                StringUtils.isEmpty(user.headImg) ? null :
                                     <Image source={{ uri: user.headImg ? user.headImg : '' }} style={{
                                         height: 50,
                                         width: 50,
@@ -165,6 +166,7 @@ export default class MinePage extends BasePage {
                                     }}/>
                             }
                         </ImageBackground>
+                        </NoMoreClick>
                         <View style={{
                             marginLeft: 20,
                             justifyContent: 'space-between',

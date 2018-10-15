@@ -27,7 +27,7 @@ const AcitivyItem = ({data, press}) => {
     const {imgUrl, topicBannerProductDTOList} = data
     let goodsItem = []
     topicBannerProductDTOList && topicBannerProductDTOList.map((value,index) => {
-        goodsItem.push(<GoodItems key={index} title={value.productName} money={value.startPrice} img={value.specImg}/>)
+        goodsItem.push(<GoodItems key={index} title={value.productName} money={value.startPrice ? value.startPrice : 0} img={value.specImg ? value.specImg : ''}/>)
     })
     return <View>
         <TouchableOpacity style={styles.bannerBox} onPress={()=>{press && press()}}>
