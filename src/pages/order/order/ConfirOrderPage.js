@@ -358,6 +358,44 @@ export default class ConfirOrderPage extends BasePage {
                 orderType: this.params.orderParamVO.orderType,
                 code:this.params.orderParamVO.orderProducts.code,
                 num:this.params.orderParamVO.orderProducts.num,
+            }).then(response =>{
+                console.log(response);
+                let data = response.data;
+                let arrData = [];
+                data.orderProductList.map((item, index) => {
+                    arrData.push({
+                        productId: item.productId,
+                        uri: item.specImg,
+                        goodsName: item.productName,
+                        salePrice: item.price,
+                        category: item.spec,
+                        goodsNum: item.num,
+                        originalPrice: item.originalPrice,
+                        restrictions: item.restrictions
+                        // activityId: item.activityId
+                    });
+                });
+                if (data.userAddress) {
+                    viewData.express = {
+                        id: data.userAddress.id,
+                        receiverName: data.userAddress.receiver,
+                        receiverNum: data.userAddress.receiverPhone,
+                        receiverAddress: data.userAddress.address,
+                        areaCode: data.userAddress.areaCode,
+                        cityCode: data.userAddress.cityCode,
+                        provinceCode: data.userAddress.provinceCode,
+                        provinceString: data.userAddress.province,
+                        cityString: data.userAddress.city,
+                        areaString: data.userAddress.area
+                    };
+                } else {
+                    viewData.express = {};
+                }
+                viewData.totalAmounts = data.totalAmounts;
+                viewData.totalFreightFee = data.totalFreightFee;
+                viewData.tokenCoin = data.tokenCoin;
+                viewData.list = arrData;
+                this.setState({ viewData });
             })
         }
         let viewData = this.state.viewData;

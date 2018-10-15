@@ -120,7 +120,7 @@ export default class LoginTopView extends Component {
                         onChangeText={text => this.LoginModel.savePhoneNumber(text)}
                         placeholder='请输入手机号'
                         underlineColorAndroid={'transparent'}
-                        keyboardType='default'
+                        keyboardType='numeric'
                     />
                     <CommSpaceLine style={Styles.lineStyle}/>
                 </View>
@@ -161,7 +161,7 @@ export default class LoginTopView extends Component {
                         onChangeText={text => this.LoginModel.saveVertifyCode(text)}
                         placeholder='请输入验证码'
                         underlineColorAndroid={'transparent'}
-                        keyboardType='default'
+                        keyboardType='numeric'
                     />
                     <TouchableOpacity
                         onPress={this.getVertifyCode}
