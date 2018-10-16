@@ -17,9 +17,9 @@ import usedRIcon from '../res/couponsImg/youhuiquan_icon_yishiyong_nor.png';
 import API from '../../../api';
 import UI from '../../../utils/bridge';
 import { observer } from 'mobx-react';
-import UIText from '../../../components/ui/UIText';
 import StringUtils from '../../../utils/StringUtils';
 import user from '../../../model/user';
+import UIText from '../../../components/ui/UIText';
 
 const { px2dp } = ScreenUtils;
 
@@ -87,64 +87,17 @@ export default class MyCouponsItems extends Component {
                             <Text style={{
                                 fontSize: 11,
                                 color: '#999999',
-                                marginTop: 5
-                            }}>使用有效期：{this.fmtDate(item.startTime)}-{this.fmtDate(item.outTime)}</Text>
+                                marginTop: 6
+                            }}>使用有效期：{item.timeStr}</Text>
                         </View>
                         <Image style={{ marginRight: 5, width: px2dp(70), height: px2dp(70) }} source={BGR}/>
+                        {item.type === 99 ?
+                            <UIText value={'x' + user.tokenCoin}
+                                    style={{ marginRight: 15, marginTop: 15, fontSize: 14, color: '#222' }}/> : null}
                     </View>
 
                     <View style={{ height: px2dp(33), justifyContent: 'center', marginLeft: 10 }}>
                         <Text style={{ fontSize: 11, color: '#999999' }}>{item.limit}</Text>
-                    </View>
-                </ImageBackground>
-            </TouchableOpacity>
-        );
-    };
-
-    // 头部一元券
-    headrItem = () => {
-        return (
-            <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickHeaderItem()}>
-                <ImageBackground style={{
-                    width: ScreenUtils.width - px2dp(30),
-                    height: px2dp(109),
-                    margin: 2
-                }} source={unuesdBg} resizeMode='stretch'>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', height: px2dp(73) }}>
-                        <View style={{
-                            alignItems: 'center',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            width: px2dp(80)
-                        }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                                    <Text
-                                        style={{ fontSize: 14, color: '#222222', marginBottom: 4 }}>￥</Text>
-                                </View>
-                                <View>
-                                    <Text style={{
-                                        fontSize: 34,
-                                        color: '#222222'
-                                    }}>1</Text>
-                                </View>
-                            </View>
-                        </View>
-
-                        <View style={{ flex: 1, alignItems: 'flex-start', marginLeft: 10 }}>
-                            <Text style={{ fontSize: 15, color: '#222222' }}>可叠加使用 </Text>
-                            <Text style={{
-                                fontSize: 11,
-                                color: '#999999',
-                                marginTop: 5
-                            }}>使用有效期：无时间限制</Text>
-                        </View>
-                        <UIText value={'x' + user.tokenCoin}
-                                style={{ marginRight: 15, marginTop: 15, fontSize: 14, color: '#222' }}/>
-                    </View>
-
-                    <View style={{ height: px2dp(33), justifyContent: 'center', marginLeft: 10 }}>
-                        <Text style={{ fontSize: 11, color: '#999999' }}>全品类：无金额门槛</Text>
                     </View>
                 </ImageBackground>
             </TouchableOpacity>
@@ -158,7 +111,6 @@ export default class MyCouponsItems extends Component {
                     style={{ backgroundColor: '#f7f7f7' }}
                     data={this.state.viewData}
                     renderItem={this.renderItem}
-                    ListHeaderComponent={StringUtils.isEmpty(user.tokenCoin) ? null : (this.state.pageStatus === 0 ? this.headrItem() : null)}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
                     emptyTip={'暂无优惠券！'}
@@ -225,15 +177,24 @@ export default class MyCouponsItems extends Component {
     };
     parseData = (dataList) => {
         let arrData = [];
+        if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0) {
+            arrData.push({
+                status: 0,
+                name: '可叠加使用',
+                timeStr: '无时间限制',
+                value: 1,
+                limit: '全品类：无金额门槛',
+                remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
+                type: 99 //以type=99表示1元券
+            });
+        }
         dataList.map((item) => {
             arrData.push({
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                startTime: item.startTime,
-                outTime: item.expireTime,
+                timeStr: this.fmtDate(item.startTime) + '-' + this.fmtDate(item.outTime),
                 value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n抵扣' : item.value),
-                useConditions: item.useConditions,
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
                 remarks: item.remarks,
@@ -342,15 +303,6 @@ export default class MyCouponsItems extends Component {
             this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
         }
     };
-
-    clickHeaderItem = () => {
-        // if (this.props.fromOrder) {
-        //     this.props.useCoupons(item);
-        // } else {
-        //     this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
-        // }
-    };
-
 }
 
 const styles = StyleSheet.create(
