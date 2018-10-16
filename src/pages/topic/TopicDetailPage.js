@@ -170,7 +170,7 @@ export default class TopicDetailPage extends BasePage {
         });
         this.$navigate('order/order/ConfirOrderPage', {
             orderParamVO: {
-                packageCode: this.state.activityData.activityCode,
+                packageCode: this.state.activityCode,
                 orderType: this.state.activityType,
                 orderProducts: orderProducts
             }
