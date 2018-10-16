@@ -21,8 +21,7 @@ import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-//import StringUtils from '../../../utils/StringUtils';
-import CommShareModal from '../../../comm/components/CommShareModal '
+// import CommShareModal from '../../../comm/components/CommShareModal'
 
 export default class ProductDetailPage extends BasePage {
 
@@ -51,30 +50,63 @@ export default class ProductDetailPage extends BasePage {
     //数据
     _getProductDetail = () => {
         this.$loadingShow();
-        HomeAPI.getProductDetail({
-            id: this.params.productId
-        }).then((data) => {
-            this.$loadingDismiss();
-            data.data = data.data||{}
-            const { specMap, priceList } = data.data;
-            //修改specMap每个元素首尾增加'，'
-            for (let key in specMap) {
-                specMap[key].forEach((item) => {
-                    if (String(item.id).indexOf(',') === -1) {
-                        item.id = `,${item.id},`;
-                    }
-                });
-            }
-            //修改priceList中的specIds首尾增加','
-            priceList.forEach((item) => {
-                item.specIds = `,${item.specIds},`;
+        if (this.params.productId) {
+            HomeAPI.getProductDetail({
+                id: this.params.productId
+            }).then((data) => {
+                this.$loadingDismiss();
+                this._savaData(data.data || {});
+            }).catch((error) => {
+                this.$loadingDismiss();
+                this.$toastShow(error.msg);
             });
-            this.setState({
-                data: data.data
+        } else {
+            HomeAPI.getProductDetailByCode({
+                code: this.params.productCode
+            }).then((data) => {
+                this.$loadingDismiss();
+                this._savaData(data.data || {});
+            }).catch((error) => {
+                this.$loadingDismiss();
+                this.$toastShow(error.msg);
             });
-        }).catch((error) => {
-            this.$loadingDismiss();
-            this.$toastShow(error.msg);
+        }
+    };
+
+    _getQueryByProductId = () => {
+        if (!this.params.productId) {
+            return;
+        }
+        // HomeAPI.queryByProductId({
+        //     code: this.params.productId
+        // }).then((data) => {
+        //     this.$loadingDismiss();
+        //     data.data = data.data || {};
+        //     this._savaData(data);
+        // }).catch((error) => {
+        //     this.$loadingDismiss();
+        //     this.$toastShow(error.msg);
+        // });
+    };
+
+    _savaData = (data) => {
+        const { product = {} } = data;
+        this._getQueryByProductId(product.id);
+        const { specMap, priceList } = data.data;
+        //修改specMap每个元素首尾增加'，'
+        for (let key in specMap) {
+            specMap[key].forEach((item) => {
+                if (String(item.id).indexOf(',') === -1) {
+                    item.id = `,${item.id},`;
+                }
+            });
+        }
+        //修改priceList中的specIds首尾增加','
+        priceList.forEach((item) => {
+            item.specIds = `,${item.specIds},`;
+        });
+        this.setState({
+            data: data.data
         });
     };
 
@@ -226,21 +258,19 @@ export default class ProductDetailPage extends BasePage {
                     <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
                                    selectionViewClose={this._selectionViewClose} data={this.state.data}/>
                 </Modal>
-                <CommShareModal ref = {(ref) => this.shareModal = ref}
-                                type = {'Image'}
-                                imageJson = {{
-                                    imageUrlStr: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1539577593172&di=c87eead9eb2e2073b50758daf6194c62&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F59c914525c484566292f8d8d3d29c964ca59c7ca.jpg',
-                                    titleStr: '商品标题',
-                                    priceStr: '¥100.00',
-                                    QRCodeStr: '分享的链接'}}
-                                webJson = {{
-                                    title: '分享标题(当为图文分享时候使用)',
-                                    dec: '内容(当为图文分享时候使用)',
-                                    linkUrl: '(图文分享下的链接)',
-                                    thumImage: '(分享图标小图(http链接)图文分享使用)',
-                                       }}
-
-                />
+                {/*<CommShareModal ref = {(ref) => this.shareModal = ref}*/}
+                                {/*type = {'Image'}*/}
+                                {/*imageJson = {{*/}
+                                    {/*imageUrlStr: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1539577593172&di=c87eead9eb2e2073b50758daf6194c62&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F59c914525c484566292f8d8d3d29c964ca59c7ca.jpg',*/}
+                                    {/*titleStr: '商品标题',*/}
+                                    {/*priceStr: '¥100.00',*/}
+                                    {/*QRCodeStr: '分享的链接'}}*/}
+                                {/*webJson = {{*/}
+                                    {/*title: '分享标题(当为图文分享时候使用)',*/}
+                                    {/*dec: '内容(当为图文分享时候使用)',*/}
+                                    {/*linkUrl: '(图文分享下的链接)',*/}
+                                    {/*thumImage: '(分享图标小图(http链接)图文分享使用)',*/}
+                                       {/*}}/>*/}
             </View>
         );
     };
