@@ -92,7 +92,7 @@ export default class ProductDetailPage extends BasePage {
     _savaData = (data) => {
         const { product = {} } = data;
         this._getQueryByProductId(product.id);
-        const { specMap, priceList } = data.data;
+        const { specMap, priceList } = data;
         //修改specMap每个元素首尾增加'，'
         for (let key in specMap) {
             specMap[key].forEach((item) => {
@@ -106,7 +106,7 @@ export default class ProductDetailPage extends BasePage {
             item.specIds = `,${item.specIds},`;
         });
         this.setState({
-            data: data.data
+            data: data
         });
     };
 
