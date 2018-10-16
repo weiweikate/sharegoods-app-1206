@@ -10,7 +10,7 @@ import { ShowBannerModules } from './Show'
 
 const BannerItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <View style={styles.imgView}>
-        <Image style={styles.img}  source={{uri:item.imgUrl}}/>
+        <Image style={styles.img} source={{uri:item.imgUrl}}/>
     </View>
     <Text style={styles.text} numberOfLines={1}>{item.remark}</Text>
 </TouchableOpacity>
@@ -42,7 +42,12 @@ export default class ShowBannerView extends Component {
             items.length > 0
             ?
             <View style={styles.container}>
-                <ScrollView pagingEnabled={true} style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
+                <ScrollView
+                    pagingEnabled={true}
+                    style={styles.scroll}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                >
                     {items}
                     <View style={styles.space}/>
                 </ScrollView>

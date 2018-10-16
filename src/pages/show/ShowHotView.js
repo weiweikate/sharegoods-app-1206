@@ -5,6 +5,7 @@ import React, {Component} from 'react'
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Waterfall from '../../components/ui/WaterFall'
 import ShowBannerView from './ShowBannerView'
+import ShowChoiceView from './ShowChoiceView'
 
 export default class ShowHotView extends Component {
     constructor(props) {
@@ -41,7 +42,6 @@ export default class ShowHotView extends Component {
             done()
         }, 1000)
     }
-        
     refreshing(done) {
         setTimeout(() => {
             done()
@@ -74,7 +74,7 @@ export default class ShowHotView extends Component {
         )
     }
     renderHeader = () => {
-        return <View><ShowBannerView/></View>
+        return <View><ShowBannerView/><ShowChoiceView/></View>
     }
     render() {
         return(

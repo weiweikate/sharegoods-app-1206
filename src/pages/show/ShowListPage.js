@@ -6,6 +6,7 @@ import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtils
 import ShowHotView from './ShowHotView'
 
+
 export default class ShowListPage extends BasePage {
     constructor(props) {
         super(props)
@@ -34,8 +35,7 @@ export default class ShowListPage extends BasePage {
 
 let styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fff'
+        flex: 1
     },
     underline: {
         height: onePixel,
