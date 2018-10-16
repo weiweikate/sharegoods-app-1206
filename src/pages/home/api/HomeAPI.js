@@ -38,7 +38,9 @@ const api = {
     //会员
     getMembers: ['/user/level/get', {method: 'get'}],
     //为你推荐
-    getGoodsInHome: ['/config/advertisement/queryRecommendedPageList']
+    getGoodsInHome: ['/config/advertisement/queryRecommendedPageList'],
+    //查询签到信息
+    querySignList:['/user/userSign/querySignList',{method:'get'}]
 }
 import ApiUtils from '../../../api/network/ApiUtils';
 

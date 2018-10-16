@@ -23,7 +23,7 @@ import signingInIcon from '../res/qiandao_btn_return_nor.png';
 export default class SignInCircleView extends PureComponent {
     static propTypes = {
         count: PropTypes.number.isRequired,
-        kind: PropTypes.oneOf(['signedIn','signingIn','noSignIn']).isRequired
+        kind: PropTypes.oneOf(['signedIn','signingIn','noSignIn','willSignIn']).isRequired
     };
 
     constructor(props) {
@@ -48,10 +48,20 @@ export default class SignInCircleView extends PureComponent {
         );
     }
 
-    noSignInRender(){
+    willSignInRender(){
         return (
             <View style={[styles.circleStyle,{ backgroundColor: '#c6b478'}]}>
                 <Text style={[styles.textStyle,{color:'#F7F7F7'}]}>
+                    {`+${this.props.count}`}
+                </Text>
+            </View>
+        );
+    }
+
+    noSignInRender(){
+        return (
+            <View style={[styles.circleStyle,{ backgroundColor: '#c6b478'}]}>
+                <Text style={[styles.textStyle,{color:'#666666'}]}>
                     {`+${this.props.count}`}
                 </Text>
             </View>
@@ -68,6 +78,9 @@ export default class SignInCircleView extends PureComponent {
                 break;
             case 'noSignIn' :
                 return this.noSignInRender();
+                break;
+            case 'willSignIn' :
+                return this.willSignInRender();
                 break;
         }
     }

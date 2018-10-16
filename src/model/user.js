@@ -130,7 +130,7 @@ class User {
     @observable
     needWaiting = false;   //提供BasePage中repeatClick()
 
-   
+
 
 
     // 从缓存磁盘读取用户上一次使用的信息记录
@@ -295,7 +295,7 @@ class User {
         this.storeId = null;         //
         this.roleType = null;        //
         this.level = null;           //
-        this.levelName = null;       //
+        this.levelName = null;       //t
         this.salePsw = null;         //
         this.hadSalePassword = false;
         this.salePswSalt = null;     //

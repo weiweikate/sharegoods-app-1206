@@ -13,7 +13,7 @@ import DateUtils from '../../utils/DateUtils';
 import BasePage from '../../BasePage';
 import {RefreshList} from "../../components/ui";
 import arrorw_rightIcon from "../order/res/arrow_right.png";
-import HomeApi from '../home/api/HomeAPI';
+import MessageAPI from '../message/api/MessageApi';
 import Toast from '../../utils/bridge';
 
 
@@ -53,7 +53,7 @@ export default class MessageGatherPage extends BasePage {
     /*加载数据*/
     loadPageData() {
         Toast.showLoading()
-        HomeApi.queryMessage({page: 1, pageSize: 30}).then(res => {
+        MessageAPI.queryMessage({page: 1, pageSize: 30}).then(res => {
             Toast.hiddenLoading()
             if(res.ok&&typeof res.data==='object'&&StringUtils.isNoEmpty(res.data.data)){
 
@@ -399,7 +399,7 @@ export default class MessageGatherPage extends BasePage {
 
     getDataFromNetwork() {
 
-        HomeApi.queryMessage({page: this.state.currentPage, pageSize: 15}).then(res => {
+        MessageAPI.queryMessage({page: this.state.currentPage, pageSize: 15}).then(res => {
             if(res.ok&&typeof res.data==='object'&&res.data.data.length>0){
                 let arrData = [];
                 res.data.data.map((item, index) => {
