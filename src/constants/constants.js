@@ -247,7 +247,7 @@ let constants = {
             moreDetail:'',
              sellerState:'已签收',
             sellerTime:'',
-            disNextView:false,
+            disNextView:true,
             menu:[
 
             ],
