@@ -8,7 +8,6 @@ import {
     TouchableOpacity,
     ListView, TouchableHighlight,
     Text
-
 } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
@@ -23,6 +22,27 @@ import shopCartStore from '../model/ShopCartStore';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import bridge from '../../../utils/bridge';
+
+
+const activityCode = {
+    skill: 1,//秒杀
+    makeDown: 2,//降价拍
+    discount: 3,//优惠套餐
+    helpFree: 4,//助力免费领
+    payGift: 5,//支付有礼
+    fullReduce: 6,//满减
+    guaguaLe: 7//呱呱乐
+};
+
+const activityString = {
+    [activityCode.skill]: '秒',
+    [activityCode.makeDown]: '降',
+    [activityCode.discount]: '优',
+    [activityCode.helpFree]: '助',
+    [activityCode.payGift]: '支',
+    [activityCode.fullReduce]: '满',
+    [activityCode.guaguaLe]: '刮'
+};
 
 @observer
 export default class ShopCartPage extends BasePage {
@@ -197,28 +217,35 @@ export default class ShopCartPage extends BasePage {
                             source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
                             style={[styles.validProductImg]}
                         />
-                        {/*<UIText*/}
-                        {/*value={'降'}*/}
-                        {/*style={*/}
-                        {/*{*/}
-                        {/*position:'absolute',*/}
-                        {/*padding:2,*/}
-                        {/*left:50,*/}
-                        {/*top:20,*/}
-                        {/*fontSize:11,*/}
-                        {/*color:ColorUtil.mainRedColor,*/}
-                        {/*borderWidth:1,*/}
-                        {/*borderRadius:4,*/}
-                        {/*borderColor:ColorUtil.mainRedColor*/}
-                        {/*}*/}
-                        {/*}*/}
-                        {/*/>*/}
+                        {
+                            activityString[itemData.activityCode]
+                                ?
+                                <UIText
+                                    value={
+                                        activityString[itemData.activityCode]
+                                    }
+                                    style={
+                                        {
+                                            position: 'absolute',
+                                            padding: 2,
+                                            left: 140,
+                                            top: 20,
+                                            fontSize: 11,
+                                            color: ColorUtil.mainRedColor,
+                                            borderWidth: 1,
+                                            borderRadius: 4,
+                                            borderColor: ColorUtil.mainRedColor
+                                        }
+                                    }
+                                />
+                                : null
+                        }
+
 
                         {/*<UIImage*/}
                         {/*source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}*/}
                         {/*style={[styles.validProductImg]}*/}
                         {/*/>*/}
-
                         {
                             itemData.state === 1 ?
                                 <UIImage
@@ -236,8 +263,18 @@ export default class ShopCartPage extends BasePage {
                         <View style={styles.validContextContainer}>
                             <View>
                                 <UIText
-                                    value={itemData.productName ? itemData.productName : ''}
-                                    // value={"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"}
+                                    value={
+                                        itemData.productName
+                                            ?
+                                            (
+                                                activityString[itemData.activityCode]
+                                                    ?
+                                                    '    ' + itemData.productName
+                                                    :
+                                                    ''+itemData.productName
+                                            )
+                                            :
+                                            ''}
                                     numberOfLines={2}
                                     style={{
                                         marginTop: 0,
@@ -308,7 +345,7 @@ export default class ShopCartPage extends BasePage {
                 </TouchableHighlight>
 
                 {
-                    itemData.activityCode === 2 
+                    itemData.activityCode === 2
                         ?
                         <View
                             style={
@@ -316,16 +353,16 @@ export default class ShopCartPage extends BasePage {
                                     height: 13,
                                     backgroundColor: ColorUtil.mainRedColor,
                                     width: ScreenUtils.width,
-                                    justifyContent:'center',
-                                    alignItems:'center'
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
                                 }]
                             }
                         >
                             <Text style={{
-                                flex:1,
-                                textAlign:'center',
-                                color:ColorUtil.Color_ffffff,
-                                fontSize:11
+                                flex: 1,
+                                textAlign: 'center',
+                                color: ColorUtil.Color_ffffff,
+                                fontSize: 11
                             }}>
                                 该商品正在进行秒杀活动,快去看看~
                             </Text>
