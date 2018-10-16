@@ -12,7 +12,6 @@ import { ActivityOneView } from './components/SbSectiontHeaderView';
 import ScreenUtils from '../../utils/ScreenUtils';
 import SbOpenPrizeHeader from './components/SbOpenPrizeHeader';
 import OpenPrizeItemView from './components/OpenPrizeItemView';
-// import HomeAPI from '../api/HomeAPI';
 import TotalTopicDataModel from './model/SubTopicModel';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 import SubSwichView from './components/SubSwichView';
@@ -39,7 +38,6 @@ export default class DownPricePage extends BasePage {
         const { linkTypeCode } = this.params;
         console.log('-----' + linkTypeCode);
         this.dataModel.loadTopicData(linkTypeCode);
-        // this.dataModel.loadTopicData(this.state.linkTypeCode);
     }
 
     /**
