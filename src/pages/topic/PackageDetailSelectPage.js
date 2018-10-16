@@ -22,7 +22,7 @@ export default class TopicDetailSelectPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { specs: [] };
+        this.state = { selectList: [], selectStrList: [], selectData: [] };
     }
 
     componentDidMount() {
@@ -30,39 +30,39 @@ export default class TopicDetailSelectPage extends Component {
     }
 
     _selectionViewConfirm = () => {
-        const { productPriceId } = this.props.data || {};
-        this.props.selectionViewConfirm(1, productPriceId);
+
+        this.props.selectionViewConfirm(1, this.state.selectData);
         this.props.selectionViewClose();
     };
 
-    _clickItemAction = (item, indexOfProp, tittle) => {
+    _clickItemAction = (item, indexOfTop) => {
         if (item.isSelected) {
-            this.state.selectList[indexOfProp] = undefined;
-            this.state.selectStrList[indexOfProp] = undefined;
-            item.isSelected = false;
+            this.state.selectList[indexOfTop] = undefined;
+            this.state.selectStrList[indexOfTop] = undefined;
+            this.state.selectData[indexOfTop] = undefined;
         } else {
-            this.state.selectList[indexOfProp] = item.id;
-            this.state.selectStrList[indexOfProp] = item.specValue;
+            this.state.selectList[indexOfTop] = item.id;
+            this.state.selectStrList[indexOfTop] = item.specValues;
+            this.state.selectData[indexOfTop] = item;
         }
-
-        this._priceListAll(indexOfProp);
-        this._specMap(indexOfProp, tittle);
+        this.forceUpdate();
     };
 
-    rendTag = (data) => {
+    rendTag = (data, indexOfTop) => {
         let tagList = [];
         for (let index = 0; index < data.length; index++) {
-            let canSelected = data[index].surplusNumber > 0;
-            let isSelected = data[index].isSelected;
+            let obj = data[index];
+            obj.canSelected = obj.surplusNumber > 0;
+            obj.isSelected = obj.id === this.state.selectList[indexOfTop];
             tagList.push(
                 <View key={index}>
                     <TouchableOpacity
-                        style={[styles.btn, { backgroundColor: isSelected ? '#D51243' : '#EEEEEE' }]}
+                        style={[styles.btn, { backgroundColor: obj.isSelected ? '#D51243' : '#EEEEEE' }]}
                         onPress={() => {
-                            this._clickItemAction(index);
+                            this._clickItemAction(obj, indexOfTop);
                         }}>
                         <Text
-                            style={[styles.btnText, { color: canSelected ? '#222222' : 'white' }]}>{data[index].specValues}</Text>
+                            style={[styles.btnText, { color: obj.isSelected ? 'white' : obj.canSelected ? '#666666' : 'white' }]}>{data[index].specValues}</Text>
                     </TouchableOpacity>
                 </View>
             );
@@ -73,6 +73,7 @@ export default class TopicDetailSelectPage extends Component {
     _addSelectionSectionView = () => {
         const { specPriceList = {} } = this.props.data || {};
         let tagList = [];
+        let indexOfTop = 0;
         for (let key in specPriceList) {
             tagList.push(
                 <View>
@@ -80,18 +81,19 @@ export default class TopicDetailSelectPage extends Component {
                         <Text style={styles.headerText}>{key}</Text>
                     </View>
                     <View style={styles.containerView}>
-                        {this.rendTag(specPriceList[key])}
+                        {this.rendTag(specPriceList[key], indexOfTop)}
                     </View>
                     <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: '#eeeeee' }}/>
                 </View>
             );
+            indexOfTop++;
         }
         return tagList;
     };
 
     render() {
         const { imgUrl = '', levelPrice = '', surplusNumber = 1 } = this.props.data || {};
-        let specs = this.state.specs.join(',');
+        let specs = this.state.selectStrList.join(',');
         return (
             <View style={styles.container}>
                 <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
