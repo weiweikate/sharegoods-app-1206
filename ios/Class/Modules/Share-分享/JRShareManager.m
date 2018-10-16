@@ -18,7 +18,7 @@
 SINGLETON_FOR_CLASS(JRShareManager)
 /**
  shareType : 0图片分享 1 图文链接分享
- platformType: 0 朋友圈 1 会话
+ platformType:0 微信好友 1朋友圈 2qq好友 3qq空间 4微博
  title:分享标题(当为图文分享时候使用)
  dec:内容(当为图文分享时候使用)
  linkUrl:(图文分享下的链接)
@@ -28,13 +28,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
 -(void)beginShare:(JRShareModel *)shareModel
        completion:(shareFinshBlock) completion
 {
-  UMSocialPlatformType platefrom = UMSocialPlatformType_UnKnown;
-  if ([shareModel.platformType integerValue] == 0) {
-    platefrom = UMSocialPlatformType_WechatTimeLine;
-  }else{
-    platefrom = UMSocialPlatformType_WechatSession;
-    
-  }
+  UMSocialPlatformType platefrom = [self getUMSocialPlatformType:[shareModel.platformType  integerValue]];
   if ([shareModel.shareType integerValue] == 1) {//为分享网页
     [self shareWithPlatefrom:platefrom
                        Title:shareModel.title
@@ -44,6 +38,24 @@ SINGLETON_FOR_CLASS(JRShareManager)
                   completion: completion];
   }else{//分享图片
     [self shareImage:platefrom imageUrl:shareModel.shareImage completion: completion];
+  }
+}
+
+- (UMSocialPlatformType)getUMSocialPlatformType:(NSInteger) platefrom {
+  switch (platefrom) {
+    case 0:
+      return UMSocialPlatformType_WechatSession;
+    case 1:
+      return UMSocialPlatformType_WechatTimeLine;
+    case 2:
+      return UMSocialPlatformType_QQ;
+    case 3:
+      return UMSocialPlatformType_Qzone;
+    case 4:
+      return UMSocialPlatformType_Sina;
+    default:
+      return UMSocialPlatformType_UnKnown;
+      break;
   }
 }
 -(void)shareWithPlatefrom:(UMSocialPlatformType)platform
