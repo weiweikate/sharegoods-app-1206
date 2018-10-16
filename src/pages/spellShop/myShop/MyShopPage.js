@@ -68,7 +68,7 @@ export default class MyShopPage extends BasePage {
             storeData: {},
             storeId: this.params.storeId || this.props.storeId,
             isLike: false,
-            isRefresh:false
+            isRefresh: false
         };
     }
 
@@ -76,12 +76,12 @@ export default class MyShopPage extends BasePage {
         this._loadPageData();
     }
 
-    _onRefresh = ()=>{
+    _onRefresh = () => {
         this.setState({
-            isRefresh:true
+            isRefresh: true
         });
         this._loadPageData();
-    }
+    };
 
     _loadPageData = () => {
         //店铺信息
@@ -90,12 +90,12 @@ export default class MyShopPage extends BasePage {
             this.setState({
                 storeData: dataTemp,
                 storeId: dataTemp.id,
-                isRefresh:false
+                isRefresh: false
             });
         }).catch((error) => {
             this.$toastShow(error.msg);
             this.setState({
-                isRefresh:false
+                isRefresh: false
             });
         });
 
@@ -258,13 +258,20 @@ export default class MyShopPage extends BasePage {
 
     _renderJoinBtn = () => {
         let btnText;
-        let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2;
+        const { maxUser, storeUserList = [] } = this.state.storeData;
+        let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2 && maxUser > storeUserList.length;
         switch (this.state.storeData.userStatus) {
             case 0: {
                 if (this.state.storeData.recruitStatus === 0) {
                     btnText = '申请加入';
+                    if (!canJoin) {
+                        btnText = '人员已满';
+                    }
                 } else if (this.state.storeData.recruitStatus === 1) {
                     btnText = '加入店铺';
+                    if (!canJoin) {
+                        btnText = '人员已满';
+                    }
                 } else {
                     btnText = '暂不允许加入';
                 }
