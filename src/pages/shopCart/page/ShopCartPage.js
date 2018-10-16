@@ -8,7 +8,6 @@ import {
     TouchableOpacity,
     ListView, TouchableHighlight,
     Text
-
 } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
@@ -23,6 +22,27 @@ import shopCartStore from '../model/ShopCartStore';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import bridge from '../../../utils/bridge';
+
+
+const activityCode = {
+    skill: 1,//秒杀
+    makeDown: 2,//降价拍
+    discount: 3,//优惠套餐
+    helpFree: 4,//助力免费领
+    payGift: 5,//支付有礼
+    fullReduce: 6,//满减
+    guaguaLe: 7//呱呱乐
+};
+
+const activityString = {
+    [activityCode.skill]: '秒',
+    [activityCode.makeDown]: '降',
+    [activityCode.discount]: '优',
+    [activityCode.helpFree]: '助',
+    [activityCode.payGift]: '支',
+    [activityCode.fullReduce]: '满',
+    [activityCode.guaguaLe]: '刮'
+};
 
 @observer
 export default class ShopCartPage extends BasePage {
@@ -95,14 +115,14 @@ export default class ShopCartPage extends BasePage {
     _renderListView = () => {
         return (
             <SwipeListView
-                style={{backgroundColor:ColorUtil.Color_f7f7f7}}
+                style={{ backgroundColor: ColorUtil.Color_f7f7f7 }}
                 dataSource={this.ds.cloneWithRows(shopCartStore.data.slice())}
                 disableRightSwipe={true}
                 // renderRow={ data => (
                 //     data.status==validCode? this._renderValidItem(data): this._renderInvalidItem(data)
                 // )}
                 renderRow={(rowData, secId, rowId, rowMap) => (
-                    this._renderValidItem(rowData, rowId,rowMap)
+                    this._renderValidItem(rowData, rowId, rowMap)
                 )}
                 renderHiddenRow={(data, secId, rowId, rowMap) => (
                     <TouchableOpacity
@@ -155,37 +175,34 @@ export default class ShopCartPage extends BasePage {
             </View>
         );
     };
-    _toBuyImmediately = () =>{
+    _toBuyImmediately = () => {
 
-        let [...selectArr] = shopCartStore.startSettlement()
-        if (selectArr.length <=0){
-            bridge.$toast('请先选择结算商品~')
+        let [...selectArr] = shopCartStore.startSettlement();
+        if (selectArr.length <= 0) {
+            bridge.$toast('请先选择结算商品~');
         } else {
             let goodsAllNumber = 0;
             let allPrice = 0.00;
-            selectArr.map((goods) =>{
-                goodsAllNumber += goods.amount
-                allPrice += goods.amount * goods.price
-            })
-            bridge.$toast('选中商品类型'+selectArr.length+'种,商品数量'+goodsAllNumber+'个,总价:'+StringUtils.formatMoneyString(allPrice));
+            selectArr.map((goods) => {
+                goodsAllNumber += goods.amount;
+                allPrice += goods.amount * goods.price;
+            });
+            bridge.$toast('选中商品类型' + selectArr.length + '种,商品数量' + goodsAllNumber + '个,总价:' + StringUtils.formatMoneyString(allPrice));
         }
-    }
+    };
     _selectAll = () => {
         shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
     };
-    _renderValidItem = (itemData, rowId,rowMap) => {
+    _renderValidItem = (itemData, rowId, rowMap) => {
         return (
             <View>
                 <TouchableHighlight
-                    onPress={() =>{
-                        rowMap
-                        this._jumpToProductDetailPage(itemData)
-                    } }
+                    onPress={() => {
+                        rowMap;
+                        this._jumpToProductDetailPage(itemData);
+                    }}
                     style={styles.itemContainer}>
-
-                    {/*<View style={{backgroundColor:ColorUtil.Color_f7f7f7,width:ScreenUtils.width,height:10}}/>*/}
                     <View style={styles.standaloneRowFront}>
-
                         <UIImage
                             source={itemData.isSelected ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
                             style={{ width: 22, height: 22, marginLeft: 10 }}
@@ -196,34 +213,39 @@ export default class ShopCartPage extends BasePage {
                                 shopCartStore.data = tempValues;
                             }}
                         />
-
-
                         <UIImage
                             source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
                             style={[styles.validProductImg]}
                         />
-                        {/*<UIText*/}
-                        {/*value={'降'}*/}
-                        {/*style={*/}
-                            {/*{*/}
-                                {/*position:'absolute',*/}
-                                {/*padding:2,*/}
-                                {/*left:50,*/}
-                                {/*top:20,*/}
-                                {/*fontSize:11,*/}
-                                {/*color:ColorUtil.mainRedColor,*/}
-                                {/*borderWidth:1,*/}
-                                {/*borderRadius:4,*/}
-                                {/*borderColor:ColorUtil.mainRedColor*/}
-                            {/*}*/}
-                        {/*}*/}
+                        {
+                            activityString[itemData.activityCode]
+                                ?
+                                <UIText
+                                    value={
+                                        activityString[itemData.activityCode]
+                                    }
+                                    style={
+                                        {
+                                            position: 'absolute',
+                                            padding: 2,
+                                            left: 140,
+                                            top: 20,
+                                            fontSize: 11,
+                                            color: ColorUtil.mainRedColor,
+                                            borderWidth: 1,
+                                            borderRadius: 4,
+                                            borderColor: ColorUtil.mainRedColor
+                                        }
+                                    }
+                                />
+                                : null
+                        }
+
+
+                        {/*<UIImage*/}
+                        {/*source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}*/}
+                        {/*style={[styles.validProductImg]}*/}
                         {/*/>*/}
-
-                       {/*<UIImage*/}
-                           {/*source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}*/}
-                           {/*style={[styles.validProductImg]}*/}
-                       {/*/>*/}
-
                         {
                             itemData.state === 1 ?
                                 <UIImage
@@ -241,8 +263,18 @@ export default class ShopCartPage extends BasePage {
                         <View style={styles.validContextContainer}>
                             <View>
                                 <UIText
-                                    value={itemData.productName ? itemData.productName : ''}
-                                    // value={"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"}
+                                    value={
+                                        itemData.productName
+                                            ?
+                                            (
+                                                activityString[itemData.activityCode]
+                                                    ?
+                                                    '    ' + itemData.productName
+                                                    :
+                                                    ''+itemData.productName
+                                            )
+                                            :
+                                            ''}
                                     numberOfLines={2}
                                     style={{
                                         marginTop: 0,
@@ -311,18 +343,45 @@ export default class ShopCartPage extends BasePage {
                         </View>
                     </View>
                 </TouchableHighlight>
+
+                {
+                    itemData.activityCode === 2
+                        ?
+                        <View
+                            style={
+                                [{
+                                    height: 13,
+                                    backgroundColor: ColorUtil.mainRedColor,
+                                    width: ScreenUtils.width,
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }]
+                            }
+                        >
+                            <Text style={{
+                                flex: 1,
+                                textAlign: 'center',
+                                color: ColorUtil.Color_ffffff,
+                                fontSize: 11
+                            }}>
+                                该商品正在进行秒杀活动,快去看看~
+                            </Text>
+                        </View>
+                        : null
+                }
+
                 <View
-                    style={{height:10,backgroundColor:ColorUtil.Color_f7f7f7,width:ScreenUtils.width}}
+                    style={{ height: 10, backgroundColor: ColorUtil.Color_f7f7f7, width: ScreenUtils.width }}
                 />
             </View>
         );
     };
     _jumpToProductDetailPage = (itemData) => {
         //跳转产品详情
-            this.$navigate('home/product/ProductDetailPage', {
-                productId: itemData.productId,
-                productCode: itemData.productId
-            });
+        this.$navigate('home/product/ProductDetailPage', {
+            productId: itemData.productId,
+            productCode: itemData.productId
+        });
     };
     /*action*/
     /*减号操作*/
@@ -340,7 +399,7 @@ export default class ShopCartPage extends BasePage {
 
         if (itemData.amount >= itemData.stock) {
             bridge.$toast('已达商品库存最大数');
-        }else {
+        } else {
             itemData.amount++;
             shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
