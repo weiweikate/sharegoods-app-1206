@@ -4,6 +4,8 @@ import bridge from '../../../utils/bridge';
 
 class TotalTopicresultDataModel {
     @observable
+    checkIndex = 0;
+    @observable
     id = '';
     @observable
     code = '';
@@ -21,7 +23,6 @@ class TotalTopicresultDataModel {
     topicNavbarList = [];
     @observable
     topicNavTitleList = [];
-
     /*不同导航下的数据*/
     @observable
     sectionDataList = [];
@@ -32,6 +33,7 @@ class TotalTopicresultDataModel {
      */
     @action
     saveResultDataWith(resultData) {
+        this.checkIndex = resultData.checkIndex;
         this.id = resultData.id;
         this.code = resultData.code;
         this.name = resultData.name;
@@ -118,7 +120,8 @@ class TotalTopicresultDataModel {
         let titleArr = [];
         tempArr.map(item => {
             titleArr.push({
-                title: item.navName
+                title: item.navName,
+                subTitle:item.desc
             });
         });
         this.topicNavTitleList = titleArr;
