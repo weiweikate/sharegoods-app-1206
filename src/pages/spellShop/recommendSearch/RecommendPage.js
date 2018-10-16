@@ -40,7 +40,7 @@ export default class RecommendPage extends BasePage {
     };
 
     $NavBarRenderRightItem = () => {
-        const showShopItem =  SpellStatusModel.canCreateStore;
+        const showShopItem = SpellStatusModel.canCreateStore && !this.params.havaShop;
         return <View style={styles.rightBarItemContainer}>
             {
                 showShopItem ? <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
@@ -75,7 +75,9 @@ export default class RecommendPage extends BasePage {
 
     // 点击开启店铺页面
     _clickOpenShopItem = () => {
-       if (SpellStatusModel.canCreateStore) {
+        if (SpellStatusModel.storeId && !this.params.havaShop) {
+            this.$navigate('spellShop/shopSetting/SetShopNamePage');
+        } else {
             this.$navigate('spellShop/openShop/OpenShopExplainPage');
         }
     };
@@ -87,7 +89,7 @@ export default class RecommendPage extends BasePage {
 
     // 点击查看某个店铺
     _RecommendRowOnPress = (id) => {
-        this.$navigate('spellShop/MyShop_RecruitPage',{storeId: id});
+        this.$navigate('spellShop/MyShop_RecruitPage', { storeId: id });
     };
 
     // 点击轮播图广告
@@ -136,7 +138,7 @@ export default class RecommendPage extends BasePage {
         return (<SegementHeaderView segmentPressAtIndex={this._segmentPressAtIndex}/>);
     };
 
-    _renderItem = ({item}) => {
+    _renderItem = ({ item }) => {
         return (<RecommendRow RecommendRowItem={item} RecommendRowOnPress={this._RecommendRowOnPress}/>);
     };
 
