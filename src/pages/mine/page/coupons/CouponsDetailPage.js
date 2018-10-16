@@ -17,6 +17,8 @@ import tobeActive from '../../res/couponsImg/youhuiquan_icon_daijihuo_nor.png';
 import unactivatedBg from '../../res/couponsImg/youhuiquan_bg_zhihui.png';
 import ActivedIcon from '../../res/couponsImg/youhuiquan_icon_yishixiao_nor.png';
 import usedRIcon from '../../res/couponsImg/youhuiquan_icon_yishiyong_nor.png';
+import UIText from '../../../../components/ui/UIText';
+import user from '../../../../model/user';
 
 const { px2dp } = ScreenUtils;
 
@@ -106,10 +108,19 @@ export default class CouponsDetailPage extends BasePage {
                                 <Text style={{ fontSize: 15, color: '#222222' }}>{item.name} </Text>
                                 <Text style={{
                                     fontSize: 11,
-                                    color: '#999999'
-                                }}>有效期：{this.fmtDate(item.startTime)}-{this.fmtDate(item.outTime)}</Text>
+                                    color: '#999999',
+                                    marginTop: 6
+                                }}>使用有效期：{item.timeStr}</Text>
                             </View>
                             <Image style={{ marginRight: 5, width: px2dp(70), height: px2dp(70) }} source={BGR}/>
+                            {item.type === 99 ?
+                                <UIText value={'x' + user.tokenCoin}
+                                        style={{
+                                            marginRight: 15,
+                                            marginTop: 15,
+                                            fontSize: 14,
+                                            color: '#222'
+                                        }}/> : null}
                         </View>
 
                         <View style={{ height: px2dp(33), justifyContent: 'center', marginLeft: 10 }}>
