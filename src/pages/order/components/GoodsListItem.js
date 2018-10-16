@@ -33,6 +33,7 @@ const GoodsListItem = props => {
         goodsItemClick,
         operationMenuClick,
         outTrandNo,
+        platformPayTime,
     } = props;
     this.state = { pageStateString: '27:45:45后自动取消订单' };
 
@@ -212,8 +213,13 @@ const GoodsListItem = props => {
                 paddingRight: 16,
                 paddingLeft: 16
             }}>
-                <UIText value={'创建时间：' + DateUtils.getFormatDate(orderCreateTime / 1000)}
-                        style={{ fontSize: 13, color: color.black_222 }}/>
+                {platformPayTime?<UIText value={'付款时间：' + DateUtils.getFormatDate(platformPayTime / 1000)}
+                                         style={{ fontSize: 13, color: color.black_222 }}/>
+                    :
+                    <UIText value={'创建时间：' + DateUtils.getFormatDate(orderCreateTime / 1000)}
+                            style={{ fontSize: 13, color: color.black_222 }}/>
+                }
+
             </View>
         );
     };
