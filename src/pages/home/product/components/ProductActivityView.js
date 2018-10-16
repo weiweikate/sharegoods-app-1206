@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text
+    Text,
+    TouchableOpacity,
+    Image
 } from 'react-native';
-import { isNoEmpty } from '../../../utils/StringUtils';
-import { formatDate } from '../../../utils/DateUtils';
-import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+import { isNoEmpty } from '../../../../utils/StringUtils';
+import { formatDate } from '../../../../utils/DateUtils';
+import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
+import whiteArrowRight from '../res/icon3_03.png';
 
 export default class ActivityView extends Component {
 
@@ -81,49 +84,49 @@ export default class ActivityView extends Component {
         // surplusNumber 剩余数量 totalNumber总
         // endTime活动结束时间
         const { activityType } = this.props;
-        const { surplusNumber = '', totalNumber, date, beginTime, endTime } = this.props.activityData;
+        const { surplusNumber = '', date, beginTime, endTime } = this.props.activityData;
         let price = '', one = '', two = '', three = '', four = '';
         let begin = beginTime > date;
         let end = date > endTime;
         if (activityType === 2) {
             const {
-                startPrice, markdownPrice = '', originalPrice = '', reseCount = '', floorPrice
+                startPrice, markdownPrice = '', reseCount = '', floorPrice
             } = this.props.activityData;
             if (begin) {
                 price = startPrice;
                 one = '起拍价';
-                two = `原价￥${originalPrice}|${reseCount}人关注`;
+                two = `${reseCount}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime)}`;
                 four = `${formatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
             } else {
                 price = markdownPrice;
-                one = `原价￥${originalPrice}`;
-                two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '起拍价'}`;
+                one = '起拍价';
+                two = `${reseCount}人关注`;
                 three = markdownPrice === floorPrice ? `距结束 ${this._timeDif(this.state.countTime) || ''}` : `距下次降价 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;
+                four = `${surplusNumber === 0 ? `已抢完` : `还剩${surplusNumber}件`}`;
             }
         } else {
-            const { productPrice, seckillPrice = '', subscribeCount = '' } = this.props.activityData;
+            const { seckillPrice = '', subscribeCount = '' } = this.props.activityData;
             price = seckillPrice;
             if (begin) {
                 one = '秒杀价';
-                two = `原价￥${isNoEmpty(productPrice) ? productPrice : ''}|${isNoEmpty(subscribeCount) ? subscribeCount : ''}人关注`;
+                two = `${isNoEmpty(subscribeCount) ? subscribeCount : ''}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime) || ''}`;
                 four = `${formatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
             } else {
-                one = `原价￥${isNoEmpty(productPrice) ? productPrice : ''}`;
-                two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '秒杀价'}`;
+                one = '秒杀价';
+                two = `${isNoEmpty(subscribeCount) ? subscribeCount : ''}人关注`;
                 three = `距结束 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;
+                four = `${surplusNumber === 0 ? `已抢完` : `还剩${surplusNumber}件`}`;
             }
         }
 
-        return <View style={{
-            backgroundColor: begin ? '#33B4FF' : '#D51243',
+        return <TouchableOpacity style={{
+            backgroundColor: '#33B4FF',
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between'
-        }}>
+        }} onPress = {()=>this.props.productActivityViewAction()}>
             <View style={{ marginLeft: 11, flexDirection: 'row', paddingVertical: 10 }}>
                 <Text style={{ color: 'white', fontSize: 18 }}>￥<Text
                     style={{ fontSize: 40 }}>{price}</Text></Text>
@@ -140,21 +143,27 @@ export default class ActivityView extends Component {
                 {end ?
                     <Text style={{ color: '#FFFC00', fontSize: 13 }}>活动结束</Text>
                     :
-                    <View>
-                        <Text style={{ color: begin ? '#1B7BB3' : '#FFFC00', fontSize: 11 }}>{three}</Text>
-                        <View style={{
-                            marginTop: 5,
-                            width: 100,
-                            paddingVertical: 2,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundColor: begin ? '#2B99D9' : '#FFFC00'
-                        }}>
-                            <Text style={{ color: begin ? '#F7F7F7' : '#D51243', fontSize: 11 }}>{four}</Text>
+                    <View style = {{flexDirection:'row',alignItems:'center'}}>
+                        <View>
+                            <Text style={{ color: '#1B7BB3', fontSize: 11 }}>{three}</Text>
+                            <View style={{
+                                marginTop: 5,
+                                width: 100,
+                                paddingVertical: 2,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: '#2B99D9'
+                            }}>
+                                <Text style={{ color: '#F7F7F7', fontSize: 11 }}>{four}</Text>
+                            </View>
                         </View>
+
+                        <Image source={whiteArrowRight}
+                               style={{ height: 14, marginLeft: 2 }}
+                               resizeMode={'contain'}/>
                     </View>
                 }
             </View>
-        </View>;
+        </TouchableOpacity>;
     }
 }
