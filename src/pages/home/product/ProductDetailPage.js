@@ -54,19 +54,17 @@ export default class ProductDetailPage extends BasePage {
                 id: this.params.productId
             }).then((data) => {
                 this.$loadingDismiss();
-                data.data = data.data || {};
-                this._savaData(data);
+                this._savaData(data.data || {});
             }).catch((error) => {
                 this.$loadingDismiss();
                 this.$toastShow(error.msg);
             });
-        }else{
+        } else {
             HomeAPI.getProductDetailByCode({
                 code: this.params.productCode
             }).then((data) => {
                 this.$loadingDismiss();
-                data.data = data.data || {};
-                this._savaData(data);
+                this._savaData(data.data || {});
             }).catch((error) => {
                 this.$loadingDismiss();
                 this.$toastShow(error.msg);
@@ -74,7 +72,25 @@ export default class ProductDetailPage extends BasePage {
         }
     };
 
+    _getQueryByProductId = () => {
+        if (!this.params.productId) {
+            return;
+        }
+        // HomeAPI.queryByProductId({
+        //     code: this.params.productId
+        // }).then((data) => {
+        //     this.$loadingDismiss();
+        //     data.data = data.data || {};
+        //     this._savaData(data);
+        // }).catch((error) => {
+        //     this.$loadingDismiss();
+        //     this.$toastShow(error.msg);
+        // });
+    };
+
     _savaData = (data) => {
+        const { product = {} } = data;
+        this._getQueryByProductId(product.id);
         const { specMap, priceList } = data.data;
         //修改specMap每个元素首尾增加'，'
         for (let key in specMap) {

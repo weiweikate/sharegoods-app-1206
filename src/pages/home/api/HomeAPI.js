@@ -7,6 +7,9 @@ const api = {
     getProductDetail: ['/product/getProductDetail',{method:'get'}],
     // 根据code获取产品规格信息 杨小猛
     getProductDetailByCode: ['/product/getProductDetailByCode',{method:'get'}],
+    // 获取产品活动信息 蒋大为
+    queryByProductId: ['/operator/activity/queryByProductId',{method:'get'}],
+
     // 获取产品规格信息
     getProductSpec: ['/product/getProductSpec',{method:'get'}],
 
