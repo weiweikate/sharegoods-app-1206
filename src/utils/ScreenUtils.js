@@ -7,6 +7,7 @@ const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('win
 
 const __ISIPHONEX__ = Platform.OS === 'ios' && (MIN_SCREENT === 375.0 && MAX_SCREENT === 812.0);
 const __ISIPHONEXSMAX__ = Platform.OS === 'ios' && (MIN_SCREENT === 414.0 && MAX_SCREENT === 896.0);
+
 export const deviceWidth = Dimensions.get('window').width;      //设备的宽度
 export const deviceHeight = Dimensions.get('window').height;    //设备的高度
 let fontScale = PixelRatio.getFontScale();                      //返回字体大小缩放比例
@@ -92,5 +93,7 @@ export default {
     isIOSX: Platform.OS === 'ios' && Dimensions.get('window').height === 812,
     safeBottomMax: Platform.OS === 'ios' ? (__ISIPHONEXSMAX__ ? 37 : 0) : 0,
     safeBottomX: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 37 : 0) : 0,
-    isIphoneMax: __ISIPHONEXSMAX__
+    isIphoneMax: __ISIPHONEXSMAX__,
+    saveMarginBottom: Platform.OS === 'ios' && (Dimensions.get('window').height === 812 || Dimensions.get('window').height === 736) ? 34 : 0,
+
 };

@@ -179,7 +179,7 @@ export default class ShopCartPage extends BasePage {
                 <TouchableHighlight
                     onPress={() =>{
                         rowMap
-                        this._jumpToProductDetailPage(itemData.productId)
+                        this._jumpToProductDetailPage(itemData)
                     } }
                     style={styles.itemContainer}>
 
@@ -202,22 +202,22 @@ export default class ShopCartPage extends BasePage {
                             source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
                             style={[styles.validProductImg]}
                         />
-                        <UIText
-                        value={'降'}
-                        style={
-                            {
-                                position:'absolute',
-                                padding:2,
-                                left:50,
-                                top:20,
-                                fontSize:11,
-                                color:ColorUtil.mainRedColor,
-                                borderWidth:1,
-                                borderRadius:4,
-                                borderColor:ColorUtil.mainRedColor
-                            }
-                        }
-                        />
+                        {/*<UIText*/}
+                        {/*value={'降'}*/}
+                        {/*style={*/}
+                            {/*{*/}
+                                {/*position:'absolute',*/}
+                                {/*padding:2,*/}
+                                {/*left:50,*/}
+                                {/*top:20,*/}
+                                {/*fontSize:11,*/}
+                                {/*color:ColorUtil.mainRedColor,*/}
+                                {/*borderWidth:1,*/}
+                                {/*borderRadius:4,*/}
+                                {/*borderColor:ColorUtil.mainRedColor*/}
+                            {/*}*/}
+                        {/*}*/}
+                        {/*/>*/}
 
                        {/*<UIImage*/}
                            {/*source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}*/}
@@ -317,13 +317,16 @@ export default class ShopCartPage extends BasePage {
             </View>
         );
     };
-    _jumpToProductDetailPage = (productId) => {
+    _jumpToProductDetailPage = (itemData) => {
         //跳转产品详情
+            this.$navigate('home/product/ProductDetailPage', {
+                productId: itemData.productId,
+                productCode: itemData.productId
+            });
     };
     /*action*/
     /*减号操作*/
     _reduceProductNum = (itemData, rowId) => {
-
         if (itemData.amount > 1) {
             itemData.amount--;
             shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);

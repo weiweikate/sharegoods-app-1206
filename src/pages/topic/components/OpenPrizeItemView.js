@@ -19,52 +19,56 @@ import ShopCartRes from '../../shopCart/res/ShopCartRes';
 
 // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
 const statues = {
-    deleteStatue:0,
-    noBegin:1,
-    isBeginning:2,
-    haveSoldOut:3,
-    timeOver:4,
-    handOver:5,
-}
+    deleteStatue: 0,
+    noBegin: 1,
+    isBeginning: 2,
+    haveSoldOut: 3,
+    timeOver: 4,
+    handOver: 5
+};
 // 1.秒杀 2.降价拍 3.礼包 4.助力免费领 5.专题 99.普通产品
 const productTypes = {
     skill: 1,
     down: 2,
-    giftPackage:3,
-    helpFree:4,
-    newTopic:5,
-    normalProduct:99
-}
+    giftPackage: 3,
+    helpFree: 4,
+    newTopic: 5,
+    normalProduct: 99
+};
 const downPriceParam = {
-    [statues.noBegin]:'startPrice',
-    [statues.isBeginning]:'markdownPrice'
-}
+    [statues.noBegin]: 'startPrice',
+    [statues.isBeginning]: 'markdownPrice'
+};
 const typeName = {
     [productTypes.skill]: 'seckillPrice',
     //降价拍需要判断statue 如果为1 则为startPrice 如果为2 则为 markdownPrice
-    [productTypes.down]:downPriceParam,
-    [productTypes.giftPackage]:'暂无',
-    [productTypes.helpFree]:'暂无',
-    [productTypes.newTopic]:'暂无',
-}
+    [productTypes.down]: downPriceParam,
+    [productTypes.giftPackage]: '暂无',
+    [productTypes.helpFree]: '暂无',
+    [productTypes.newTopic]: '暂无'
+};
 
 
 export default class OpenPrizeItemView extends Component {
 
     constructor(props) {
         super(props);
+        const itemData = this.props.itemData;
+        this.state = {
+            itemData: itemData
+        };
     }
 
     static propTypes = {
         itemData: PropTypes.object.isRequired,
-        itemClick: PropTypes.func.isRequired,
-        followAction: PropTypes.func.isRequired
+        itemClick: PropTypes.func.isRequired
     };
 
     render() {
-        const itemData = this.props.itemData;
+        const itemData = this.state.itemData;
         return (
             <TouchableOpacity
+                activeOpacity={0.8}
                 onPress={
                     () => {
                         this.props.itemClick && this.props.itemClick(itemData);
@@ -112,12 +116,12 @@ export default class OpenPrizeItemView extends Component {
                                 marginLeft: 10
                             }}
                         >
-                                    <ProgressBarView
-                                        progressValue={(itemData.totalNumber - itemData.surplusNumber) / itemData.totalNumber}
-                                        haveRobNum={itemData.totalNumber - itemData.surplusNumber}
-                                        statue={itemData.status}
-                                        itemData={itemData}
-                                    />
+                            <ProgressBarView
+                                progressValue={(itemData.totalNumber - itemData.surplusNumber) / itemData.totalNumber}
+                                haveRobNum={itemData.totalNumber - itemData.surplusNumber}
+                                statue={itemData.status}
+                                itemData={itemData}
+                            />
                         </View>
                         <View
                             style={{
@@ -140,7 +144,7 @@ export default class OpenPrizeItemView extends Component {
                                     {
                                         itemData.productType === 2
                                             ?
-                                        itemData[typeName[itemData.productType][itemData.status]]
+                                            itemData[typeName[itemData.productType][itemData.status]]
                                             :
                                             itemData[typeName[itemData.productType]]
                                     }
@@ -167,8 +171,7 @@ export default class OpenPrizeItemView extends Component {
                                         }}>
                                         <TouchableOpacity
                                             onPress={() => {
-                                                // this._followAction();
-                                                this.props.followAction && this.props.followAction();
+                                                this._followAction();
                                             }
 
                                             }
@@ -184,7 +187,7 @@ export default class OpenPrizeItemView extends Component {
                                                     }
                                                 }
                                             >
-                                                {itemData.notifyFlag ? '取消关注' : '关注'}
+                                                {this.state.itemData.notifyFlag ? '取消关注' : '关注'}
                                             </Text>
                                         </TouchableOpacity>
                                     </View>
@@ -202,31 +205,28 @@ export default class OpenPrizeItemView extends Component {
                                                 : { backgroundColor: ColorUtil.Color_d51243 }
 
                                         ]}>
-                                        <TouchableOpacity
-
+                                        <Text
+                                            style={
+                                                [{
+                                                    color: ColorUtil.Color_ffffff,
+                                                    textAlign: 'center',
+                                                    height: 30,
+                                                    paddingTop: 8,
+                                                    fontSize: 12
+                                                },
+                                                    (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
+                                                        ? { color: ColorUtil.Color_999999 }
+                                                        : { color: ColorUtil.Color_ffffff }
+                                                ]
+                                            }
                                         >
-                                            <Text
-                                                style={
-                                                    [{
-                                                        color: ColorUtil.Color_ffffff,
-                                                        textAlign: 'center',
-                                                        height: 30,
-                                                        paddingTop: 8,
-                                                        fontSize: 12
-                                                    },
-                                                        (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
-                                                            ? { color: ColorUtil.Color_999999 }
-                                                            : { color: ColorUtil.Color_ffffff }
-                                                    ]
-                                                }
-                                            >
-                                                {
-                                                    (itemData.status === 3 || itemData.status === 4 || itemData.status === 5) ?
-                                                        '已抢光' :
-                                                        '马上抢'
-                                                }
-                                            </Text>
-                                        </TouchableOpacity>
+                                            {
+                                                (itemData.status === 3 || itemData.status === 4 || itemData.status === 5) ?
+                                                    '已抢光' :
+                                                    '马上抢'
+                                            }
+                                        </Text>
+
                                     </View>
                             }
 
@@ -242,22 +242,24 @@ export default class OpenPrizeItemView extends Component {
      *
      */
     _followAction = () => {
-        const itemData = this.props.itemData;
+        const itemData = this.state.itemData;
+        let type = this.state.itemData.notifyFlag ? 0 : 1;
         let param = {
-            'activityId': itemData.id,
-            'activityType': itemData.productType,
-            'type': itemData.notifyFlag ? 0 : 1,
+            'activityId': this.state.itemData.id,
+            'activityType': this.state.itemData.productType,
+            'type': type,
             'userId': user.id
         };
         TopicAPI.followAction(
             param
         ).then(result => {
-            bridge.$toast(result.msg);
+            itemData.notifyFlag = type;
+            this.setState({
+                itemData: itemData
+            });
         }).catch(error => {
             bridge.$toast(error.msg);
-
         });
-
     };
 }
 const ItemStyles = StyleSheet.create({
@@ -282,7 +284,7 @@ const ItemStyles = StyleSheet.create({
         color: ColorUtil.Color_222222,
         width: ScreenUtils.width / 2 - 16,
 
-        height: 38,
+        height: 35,
         fontSize: 12
     },
     itemFolloweTextStyle: {

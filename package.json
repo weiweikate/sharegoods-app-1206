@@ -11,7 +11,9 @@
         "lint:fix": "eslint --ext .js ./src --fix",
         "mock:server": "node ./src/mock/server.js",
         "run-ios": "react-native run-ios",
-        "run-android": "react-native run-android"
+        "run-android": "react-native run-android",
+        "bundle:android": "cd android && ./gradlew assembleRelease && npm run deploy:android",
+        "deploy:android": "curl -F \"file=@./android/app/build/outputs/apk/app-release.apk\" -F \"_api_key=13949a533c6ab385526ee2a960e88c71\" https://www.pgyer.com/apiv2/app/upload"
     },
     "lint-staged": {
         "src/**/*.js": "eslint"

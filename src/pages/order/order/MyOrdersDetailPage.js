@@ -301,21 +301,21 @@ class MyOrdersDetailPage extends BasePage {
                 </View>
                 <UIText value={'创建时间：' + DateUtils.getFormatDate(this.state.viewData.createTime / 1000)}
                         style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>
-                {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
+                {StringUtils.isEmpty(this.state.viewData.platformPayTime) ? null :
                     <UIText value={'平台付款时间：' + DateUtils.getFormatDate(this.state.viewData.platformPayTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
-                {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
+                {StringUtils.isEmpty(this.state.viewData.payTime) ? null :
                     <UIText value={'三方付款时间：' + DateUtils.getFormatDate(this.state.viewData.payTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
-                {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
-                    <UIText value={'支付宝交易号：' + this.state.viewData.outTradeNo} style={{
+                {StringUtils.isEmpty(this.state.viewData.outTradeNo) ? null :
+                    <UIText value={'交易订单号：' + this.state.viewData.outTradeNo} style={{
                         color: color.black_999,
                         fontSize: 13,
                         marginLeft: 16,
                         marginTop: 10,
                         marginBottom: 10
                     }}/>}
-                {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
+                {StringUtils.isEmpty(this.state.viewData.sendTime) ? null :
                     <UIText value={'发货时间：' + DateUtils.getFormatDate(this.state.viewData.sendTime / 1000)} style={{
                         color: color.black_999,
                         fontSize: 13,
@@ -394,31 +394,26 @@ class MyOrdersDetailPage extends BasePage {
                         this.setState({ isShowDeleteOrderModal: false });
                         if (this.state.menu.id === 7) {
                             Toast.hiddenLoading();
-                            // OrderApi.deleteOrder({orderId:this.state.orderId}).then((response)=>{
-                            //     Toast.hiddenLoading()
-                            //     if(response.ok ){
-                            //         NativeModules.commModule.toast('订单已删除')
-                            //         this.getDataFromNetwork()
-                            //     } else {
-                            //         NativeModules.commModule.toast(response.msg)
-                            //     }
-                            // }).catch(e=>{
-                            //     Toast.hiddenLoading()
-                            // });
+                            Toast.showLoading();
+                            OrderApi.deleteCompletedOrder({ orderNum: this.state.viewData.orderNum }).then((response) => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast('订单已删除');
+                                this.loadPageData();
+                            }).catch(e => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast(e.msg);
+                            });
 
                         } else if (this.state.menu.id === 9) {
-                            // Toast.showLoading()
-                            // OrderApi.deleteClosedOrder({orderId:this.state.orderId}).then((response)=>{
-                            //     Toast.hiddenLoading()
-                            //     if(response.ok && typeof response.data ==== 'object'){
-                            //         NativeModules.commModule.toast('订单已删除')
-                            //         this.getDataFromNetwork()
-                            //     } else {
-                            //         NativeModules.commModule.toast(response.msg)
-                            //     }
-                            // }).catch(e=>{
-                            //     Toast.hiddenLoading()
-                            // });
+                            Toast.showLoading();
+                            OrderApi.deleteClosedOrder({ orderNum: this.state.viewData.orderNum }).then((response) => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast('订单已删除');
+                                this.loadPageData();
+                            }).catch(e => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast(e.msg);
+                            });
                         } else {
                             NativeModules.commModule.toast('状态值异常，暂停操作');
                         }
@@ -436,10 +431,10 @@ class MyOrdersDetailPage extends BasePage {
                     yes={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
                         Toast.showLoading();
-                        OrderApi.confirmReceipt({ orderId: this.state.orderId }).then((response) => {
+                        OrderApi.confirmReceipt({ orderNum: this.state.viewData.orderNum }).then((response) => {
                             Toast.hiddenLoading();
                             NativeModules.commModule.toast('确认收货成功');
-                            this.getDataFromNetwork();
+                            this.loadPageData();
                         }).catch(e => {
                             Toast.hiddenLoading();
                             this.$toastShow(e.msg);
@@ -574,7 +569,7 @@ class MyOrdersDetailPage extends BasePage {
                     isRed: false
                 });
             }
-            if (data[index].status === 3) {
+            if (data[index].status === 3||data[index].status === 4) {
                 afterSaleService.push({
                     id: 1,
                     operation: '退换',
@@ -584,13 +579,20 @@ class MyOrdersDetailPage extends BasePage {
             if (data[index].status === 5) {
                 // 确认收货的状态的订单售后截止时间和当前时间比
                 let now = new Date().getTime();
-                if (data.list[index].finishTime - now > 0) {
+                if (data[index].finishTime - now > 0) {
                     afterSaleService.push({
                         id: 1,
                         operation: '退换',
                         isRed: false
                     });
                 }
+            }
+            if (data[index].status === 7 ||data[index].status === 8||data[index].status === 6) {
+                afterSaleService.push({
+                    id: 4,
+                    operation: '已关闭',
+                    isRed: true
+                });
             }
         } else {
             if (data[index].status === 4||data[index].status === 5) {
@@ -665,7 +667,7 @@ class MyOrdersDetailPage extends BasePage {
                 //     isRed: false
                 // });
             }
-            if (data[index].status === 7 && data[index].returnType) {
+            if (data[index].status === 7 ||data[index].status === 8&& data[index].returnType) {
                 afterSaleService.push({
                     id: 4,
                     operation: '已关闭',
@@ -762,7 +764,7 @@ class MyOrdersDetailPage extends BasePage {
                     break;
                 //卖家已发货 待收货
                 case 3:
-                    // this.startCutDownTime2(response.data.autoReceiveTime);
+                    this.startCutDownTime2(data.autoReceiveTime);
                     pageStateString.sellerTime = "";
                     break;
                 //   确认收货
@@ -815,7 +817,7 @@ class MyOrdersDetailPage extends BasePage {
                     payTime: data.payTime,//三方付款时间
                     outTradeNo: data.outTradeNo,//三方交易号
                     sendTime: data.sendTime,//发货时间
-                    finishTime: '',//成交时间
+                    finishTime: data.finishTime,//成交时间
                     autoConfirmTime: data.autoReceiveTime,//自动确认时间
                     pickedUp: data.pickedUp,//
                 },
@@ -827,10 +829,16 @@ class MyOrdersDetailPage extends BasePage {
                 orderProductPrices: data.orderProductList[0].price,//礼包，套餐啥的
                 allData: data
             });
-         console.log("viewDAta"+this.state.viewData);
+            console.log(this.state.viewData);
         }).catch(e => {
+
             Toast.hiddenLoading();
             Toast.$toast(e.msg);
+            if(e.code === 10009){
+                this.$navigate('login/login/LoginPage',{callback:()=>{
+                        this.loadPageData()
+                    }});
+            }
         });
     }
 

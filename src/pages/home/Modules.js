@@ -209,7 +209,7 @@ class HomeModule {
             activityType: linkType === 3 ? 2 : linkType === 4 ? 1 : 3,
             activityCode: data.linkTypeCode,
             linkTypeCode: data.linkTypeCode,
-            productId: data.linkTypeCode,
+            productCode: data.linkTypeCode,
             productType: productType
         }
 

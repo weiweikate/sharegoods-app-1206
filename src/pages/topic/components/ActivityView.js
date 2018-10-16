@@ -5,10 +5,10 @@ import {
     Text
 } from 'react-native';
 import { isNoEmpty } from '../../../utils/StringUtils';
-import { getFormatDate } from '../../../utils/DateUtils';
+import { formatDate } from '../../../utils/DateUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 
-export default class MyShop_RecruitPage extends Component {
+export default class ActivityView extends Component {
 
     static propTypes = {
         activityData: PropTypes.object.isRequired,
@@ -89,13 +89,14 @@ export default class MyShop_RecruitPage extends Component {
             const {
                 startPrice, markdownPrice = '', originalPrice = '', reseCount = '', floorPrice
             } = this.props.activityData;
-            price = markdownPrice;
             if (begin) {
+                price = startPrice;
                 one = '起拍价';
-                two = `原价￥${startPrice}|${reseCount}人关注`;
+                two = `原价￥${originalPrice}|${reseCount}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime)}`;
-                four = `${getFormatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
+                four = `${formatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
             } else {
+                price = markdownPrice;
                 one = `原价￥${originalPrice}`;
                 two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '起拍价'}`;
                 three = markdownPrice === floorPrice ? `距结束 ${this._timeDif(this.state.countTime) || ''}` : `距下次降价 ${this._timeDif(this.state.countTime) || ''}`;
@@ -108,7 +109,7 @@ export default class MyShop_RecruitPage extends Component {
                 one = '秒杀价';
                 two = `原价￥${isNoEmpty(productPrice) ? productPrice : ''}|${isNoEmpty(subscribeCount) ? subscribeCount : ''}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${getFormatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
+                four = `${formatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
             } else {
                 one = `原价￥${isNoEmpty(productPrice) ? productPrice : ''}`;
                 two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '秒杀价'}`;

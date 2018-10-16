@@ -18,7 +18,6 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-import StringUtils from '../../utils/StringUtils';
 import HomeAPI from '../home/api/HomeAPI';
 import TopicApi from './api/TopicApi';
 import user from '../../model/user';
@@ -84,7 +83,7 @@ export default class TopicDetailPage extends BasePage {
         } else if (this.state.activityType === 3) {
             this.$loadingShow();
             TopicApi.findActivityPackageDetail({
-                code: 'TC201810130007'
+                code: this.params.activityCode
             }).then((data) => {
                 this.$loadingDismiss();
                 this.setState({
@@ -134,7 +133,7 @@ export default class TopicDetailPage extends BasePage {
 
     };
 
-    //选择规格确认
+    //选择规格确认 秒杀 降价拍
     _selectionViewConfirm = (amount, priceId) => {
         let orderProducts = [];
         orderProducts.push({
@@ -144,6 +143,34 @@ export default class TopicDetailPage extends BasePage {
         });
         this.$navigate('order/order/ConfirOrderPage', {
             orderParamVO: {
+                orderType: this.state.activityType,
+                orderProducts: orderProducts
+            }
+        });
+    };
+
+    //选择规格确认 礼包
+    _selectionViewPakageConfirm = (amount, selectData) => {
+        let orderProducts = [];
+        selectData.forEach((item) => {
+            orderProducts.push({
+                num: 1,
+                priceId: this.state.data.id,
+                productId: this.state.data.id,
+                priceList: [{
+                    num: 1,
+                    priceId: item.productPriceId,
+                    productId: item.productId,
+                    productName: item.productName,
+                    sourceId: item.id,
+                    spec: item.specValues,
+                    specImg: item.specImg
+                }]
+            });
+        });
+        this.$navigate('order/order/ConfirOrderPage', {
+            orderParamVO: {
+                packageCode: this.state.activityCode,
                 orderType: this.state.activityType,
                 orderProducts: orderProducts
             }
@@ -308,7 +335,7 @@ export default class TopicDetailPage extends BasePage {
                     transparent={true}
                     visible={this.state.modalVisible}>
                     {this.state.activityType === 3 ?
-                        <PackageDetailSelectPage selectionViewConfirm={this._selectionViewConfirm}
+                        <PackageDetailSelectPage selectionViewConfirm={this._selectionViewPakageConfirm}
                                                  selectionViewClose={this._selectionViewClose}
                                                  data={this.state.data}
                                                  activityType={this.state.activityType}/> :

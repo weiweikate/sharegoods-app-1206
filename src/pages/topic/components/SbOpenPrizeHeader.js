@@ -13,7 +13,6 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
 import ColorUtil from '../../../utils/ColorUtil';
 import UIText from '../../../comm/components/UIText';
-import bridge from '../../../utils/bridge';
 import SbResTool from '../res/SbResTool';
 
 export default class SbOpenPrizeHeader extends Component {
@@ -23,26 +22,28 @@ export default class SbOpenPrizeHeader extends Component {
         headerData: PropTypes.object.isRequired,
         navItemClick: PropTypes.func.isRequired
     };
-    state = {
-        selectSate: 0
-    };
 
     constructor(props) {
         super(props);
+        const { checkIndex } = props.headerData;
+        this.state = {
+            selectSate: checkIndex || 0
+        }
     }
-
+    /**/
+    componentDidMount(){
+        const { topicNavTitleList } = this.props.headerData;
+        if (topicNavTitleList instanceof Array && topicNavTitleList.length > 0) {
+            this._downItemViewClick(this.state.selectSate,topicNavTitleList[this.state.selectSate])
+        }
+    }
     render() {
         const { imgUrl, topicNavTitleList } = this.props.headerData;
-        const NavWidth = topicNavTitleList.length>5?ScreenUtils.width/5: ScreenUtils.width/topicNavTitleList.length;
+        const NavWidth = topicNavTitleList.length > 5 ? ScreenUtils.width / 5 : ScreenUtils.width / topicNavTitleList.length;
         console.log(imgUrl);
         return (
             <View>
-                {/*<PreLoadImage*/}
-                {/*imageUri={imgUrl}*/}
-                {/*style={SbOpenPrizeHeaderStyles.topImageStyle}*/}
-                {/*/>*/}
                 {
-
                     (topicNavTitleList instanceof Array && topicNavTitleList.length > 1) ?
                         <View style={SbOpenPrizeHeaderStyles.bottomDownViewBgStyle}>
                             <View
@@ -74,7 +75,6 @@ export default class SbOpenPrizeHeader extends Component {
                                     source={SbResTool.miaosha_qianggouzhong_img}
                                     style={[itemViewStyle.itemBgImageStyle,
                                         {
-                                            // left: this.state.selectSate * ScreenUtils.width / 5
                                             left: this.state.selectSate * NavWidth
                                         }]}
                                 />
@@ -91,7 +91,7 @@ export default class SbOpenPrizeHeader extends Component {
 
     _getDownTimeItemView = () => {
         const { topicNavTitleList } = this.props.headerData;
-        const NavWidth = topicNavTitleList.length>5?ScreenUtils.width/5: ScreenUtils.width/topicNavTitleList.length;
+        const NavWidth = topicNavTitleList.length > 5 ? ScreenUtils.width / 5 : ScreenUtils.width / topicNavTitleList.length;
         console.log(topicNavTitleList);
         if (topicNavTitleList instanceof Array && topicNavTitleList.length > 0) {
             let tempCompoentArr = [];
@@ -101,8 +101,7 @@ export default class SbOpenPrizeHeader extends Component {
                         this._downItemViewClick(index, item);
                     }} key={index}>
                         <View style={[itemViewStyle.itemBgStyle,
-                            // { width: ScreenUtils.width /arrAccount}
-                            {width:NavWidth}
+                            { width: NavWidth }
                         ]}>
                             <UIText
                                 value={item.title}
@@ -113,19 +112,18 @@ export default class SbOpenPrizeHeader extends Component {
                                             color: ColorUtil.Color_ffffff
                                         } : null]}
                             />
-                            {/*//先注释掉*/}
-                            {/*<UIText*/}
-                            {/*value={'已经开抢'}*/}
-                            {/*style={*/}
-                            {/*[*/}
-                            {/*itemViewStyle.itemBottomTextStyle,*/}
-                            {/*this.state.selectSate === index ?*/}
-                            {/*{*/}
-                            {/*color: ColorUtil.Color_ffffff*/}
-                            {/*} : null*/}
-                            {/*]*/}
-                            {/*}*/}
-                            {/*/>*/}
+                            <UIText
+                                value={item.subTitle}
+                                style={
+                                    [
+                                        itemViewStyle.itemBottomTextStyle,
+                                        this.state.selectSate === index ?
+                                            {
+                                                color: ColorUtil.Color_ffffff
+                                            } : null
+                                    ]
+                                }
+                            />
                         </View>
                     </TouchableOpacity>
                 );
@@ -134,8 +132,6 @@ export default class SbOpenPrizeHeader extends Component {
         } else {
             return [];
         }
-
-
     };
     /**
      * 每个自导航点击的事件
@@ -149,13 +145,11 @@ export default class SbOpenPrizeHeader extends Component {
         });
         if (index > 2) {
             let offsetX = index * (ScreenUtils.width / 5) - (ScreenUtils.width * 2 / 5);
-            this.refs.scroll.scrollTo({ x: offsetX, y: 0, animated: true });
+            this.refs.scroll  && this.refs.scroll.scrollTo({ x: offsetX, y: 0, animated: true });
         } else {
-            this.refs.scroll.scrollTo({ x: 0, y: 0, animated: true });
+            this.refs.scroll && this.refs.scroll.scrollTo({ x: 0, y: 0, animated: true });
         }
-
-        this.props.navItemClick(index, item);
-        bridge.$toast('点击了 ' + item + ' 索引:' + index);
+         this.props.navItemClick(index, item);
     };
 }
 
