@@ -34,6 +34,8 @@ const GoodsListItem = props => {
         operationMenuClick,
         outTrandNo,
         platformPayTime,
+        sendTime,
+        finishTime
     } = props;
     this.state = { pageStateString: '27:45:45后自动取消订单' };
 
@@ -96,7 +98,7 @@ const GoodsListItem = props => {
                     }}>
 
 
-                        <View style={{ marginLeft: 5 ,flexDirection:'row'}}>
+                        <View style={{ marginLeft: 5, flexDirection: 'row' }}>
                             <Text style={{ color: '#D51243', fontSize: 13 }}>00:21:43后自动取消</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
@@ -202,6 +204,35 @@ const GoodsListItem = props => {
         );
     };
     this.renderTime = () => {
+        let aboutTime;
+        switch (orderStatus) {
+            case 1:
+            case 6:
+            case 7:
+            case 8:
+                aboutTime = <UIText value={'创建时间：' + DateUtils.getFormatDate(orderCreateTime / 1000)}
+                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                break;
+
+            case 2:
+                aboutTime = <UIText value={'付款时间：' + DateUtils.getFormatDate(platformPayTime / 1000)}
+                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                break;
+            case 3:
+                aboutTime = <UIText value={'发货时间：' + DateUtils.getFormatDate(sendTime / 1000)}
+                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                break;
+
+            case 4:
+                aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(sendTime / 1000)}
+                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+            case 5:
+                aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(finishTime / 1000)}
+                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                break;
+
+
+        }
         return (
             <View style={{
                 flex: 1,
@@ -213,13 +244,7 @@ const GoodsListItem = props => {
                 paddingRight: 16,
                 paddingLeft: 16
             }}>
-                {platformPayTime?<UIText value={'付款时间：' + DateUtils.getFormatDate(platformPayTime / 1000)}
-                                         style={{ fontSize: 13, color: color.black_222 }}/>
-                    :
-                    <UIText value={'创建时间：' + DateUtils.getFormatDate(orderCreateTime / 1000)}
-                            style={{ fontSize: 13, color: color.black_222 }}/>
-                }
-
+                {aboutTime}
             </View>
         );
     };
