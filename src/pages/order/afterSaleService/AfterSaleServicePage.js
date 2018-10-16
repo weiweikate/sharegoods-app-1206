@@ -15,7 +15,7 @@ import {
     DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import GoodsItem from '../components/GoodsItem';
+import GoodsItem from '../components/GoodsGrayItem';
 //import ExchangeTypeModal from '../../../components/ui/ExchangeTypeModal';
 import {
     UIText, UIImage, AddPhotos, TakePhoneModal
@@ -419,14 +419,14 @@ class AfterSaleServicePage extends BasePage {
             remark: this.state.remark,
             returnReason: this.state.returnReason,
         };
-        if (StringUtils.isEmpty(params.remark)) {
-            NativeModules.commModule.toast('请选择说明');
-            return;
-        }
-        // if (StringUtils.isEmpty(params.returnReason) && this.state.pageType === 2) {
-        //     NativeModules.commModule.toast('请填写原因');
+        // if (StringUtils.isEmpty(params.remark)) {
+        //     NativeModules.commModule.toast('请选择说明');
         //     return;
         // }
+        if (StringUtils.isEmpty(params.returnReason) && this.state.pageType === 2) {
+            NativeModules.commModule.toast('请填写原因');
+            return;
+        }
         // if (StringUtils.isEmpty(imgList)) {
         //     NativeModules.commModule.toast('请上传照片');
         //     return;

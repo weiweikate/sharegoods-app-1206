@@ -11,7 +11,7 @@ import {
     DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import GoodsItem from '../components/GoodsItem';
+import GoodsItem from '../components/GoodsGrayItem';
 import arrow_right from '../res/arrow_right.png';
 import wuxiu_btn_saoma_nor from '../res/wuxiu_btn_saoma_nor.png';
 import {
@@ -108,10 +108,15 @@ export default class FillReturnLogisticsPage extends BasePage {
             this.$toastShow('请填写物流单号')
             return;
         }
+        let returnAddress = this.params.pageData.returnAddress || {}
+        let {receiver, recevicePhone, provinceName, cityName, areaName, address} = returnAddress;
         let parmas = {
             expressNo: this.state.logisticsNum,
             expressName: this.state.logisticsCompanyName,
-            id: this.params.pageData.id
+            id: this.params.pageData.id,
+            backAddress: provinceName + cityName + areaName + address,
+            backPhone: recevicePhone,
+            backReceiver: receiver,
         };
         this.$loadingShow();
         OrderApi.fillSendInfo(parmas).then(result => {

@@ -398,7 +398,7 @@ class MyOrdersDetailPage extends BasePage {
                             OrderApi.deleteCompletedOrder({ orderNum: this.state.viewData.orderNum }).then((response) => {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast('订单已删除');
-                                this.getDataFromNetwork();
+                                this.loadPageData();
                             }).catch(e => {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast(e.msg);
@@ -409,7 +409,7 @@ class MyOrdersDetailPage extends BasePage {
                             OrderApi.deleteClosedOrder({ orderNum: this.state.viewData.orderNum }).then((response) => {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast('订单已删除');
-                                this.getDataFromNetwork();
+                                this.loadPageData();
                             }).catch(e => {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast(e.msg);
@@ -434,7 +434,7 @@ class MyOrdersDetailPage extends BasePage {
                         OrderApi.confirmReceipt({ orderNum: this.state.viewData.orderNum }).then((response) => {
                             Toast.hiddenLoading();
                             NativeModules.commModule.toast('确认收货成功');
-                            this.getDataFromNetwork();
+                            this.loadPageData();
                         }).catch(e => {
                             Toast.hiddenLoading();
                             this.$toastShow(e.msg);
