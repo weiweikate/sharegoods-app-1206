@@ -6,6 +6,7 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Waterfall from '../../components/ui/WaterFall'
 import ShowBannerView from './ShowBannerView'
 import ShowChoiceView from './ShowChoiceView'
+import ShowFindView from './ShowFindView'
 
 export default class ShowHotView extends Component {
     constructor(props) {
@@ -74,7 +75,7 @@ export default class ShowHotView extends Component {
         )
     }
     renderHeader = () => {
-        return <View><ShowBannerView/><ShowChoiceView/></View>
+        return <View><ShowBannerView/><ShowChoiceView/><ShowFindView/></View>
     }
     render() {
         return(
