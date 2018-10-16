@@ -32,7 +32,7 @@ export default class RecentSearchView extends Component {
             tagList.push(
                 <View key={index}>
                     <TouchableOpacity style={styles.btn}
-                                      onPress={() => this.props.clickItemAction(item.wordName,item.id)}>
+                                      onPress={() => this.props.clickItemAction(item.wordName,index,item.id)}>
                         <Text style={styles.btnText}>{item.wordName||''}</Text>
                     </TouchableOpacity>
                 </View>

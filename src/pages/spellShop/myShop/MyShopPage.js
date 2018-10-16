@@ -22,7 +22,8 @@ import ActionSheetView from '../components/ActionSheetView';
 import ReportAlert from '../components/ReportAlert';
 // 图片资源
 import settingLogo from './res/dp_03-02.png';
-import moreLogo from './res/more_icon.png';
+import icons8_Shop_50px from '../shopRecruit/src/icons8_Shop_50px.png';
+import icons9_shop from '../shopRecruit/src/icons9_shop.png';
 
 import onSc_03 from './res/sc_03.png';
 import unSc_03 from './res/wsc_03.png';
@@ -48,9 +49,16 @@ export default class MyShopPage extends BasePage {
         const { myStore, userStatus } = this.state.storeData;
         if (userStatus === 1) {
             return (
-                <TouchableOpacity onPress={this._clickSettingItem} style={styles.rightBarItemContainer}>
-                    <Image style={{ marginRight: 20 }} source={myStore ? settingLogo : moreLogo}/>
-                </TouchableOpacity>
+                <View style={styles.rightBarItemContainer}>
+                    <TouchableOpacity onPress={() => {
+                        this.$navigate('spellShop/recommendSearch/RecommendPage',{havaShop:true})}
+                    }>
+                        <Image style={{ marginRight: 20 }} source={icons8_Shop_50px}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this._clickSettingItem} style={styles.rightBarItemContainer}>
+                        <Image style={{ marginRight: 20 }} source={myStore ? settingLogo : icons9_shop}/>
+                    </TouchableOpacity>
+                </View>
             );
         } else {
             return (

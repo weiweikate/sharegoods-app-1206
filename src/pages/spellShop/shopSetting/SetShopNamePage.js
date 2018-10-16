@@ -58,8 +58,18 @@ export default class SetShopNamePage extends BasePage {
             };
         }
     }
-
+    _checkIsHasSpecialStr(str){
+        let myReg = /[~!@#$%^&*()/\|,.<>?"'();:_+-=\[\]{}]/;
+        if(myReg.test(str)) {
+            return true;
+        }
+        return false;
+    }
     _complete = () => {
+        if (this._checkIsHasSpecialStr(this.state.text)) {
+            this.$toastShow('店铺名称不能包含特殊字符');
+            return;
+        }
         if (StringUtils.isEmpty(this.state.storeHeadUrlOrigin)) {
             this.$toastShow('店铺头像不能为空');
             return;
