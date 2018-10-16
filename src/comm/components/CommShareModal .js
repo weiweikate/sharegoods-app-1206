@@ -38,7 +38,7 @@ import {
 } from '../../components/ui';
 
 import ScreenUtils from '../../utils/ScreenUtils';
-const saveMarginBottom = ScreenUtils.saveMarginBottom;
+//const saveMarginBottom = ScreenUtils.saveMarginBottom;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 import CommTabImag from '../res/CommTabImag'
@@ -194,7 +194,7 @@ export default class CommShareModal extends React.Component {
                             height: autoSizeWidth(650 / 2),
                             width: autoSizeWidth(250),
                             position: 'absolute',
-                            top: autoSizeWidth(90 + ScreenUtils.statusBarHeight),
+                            top: autoSizeWidth(90),
                             left: autoSizeWidth(125 / 2),
                             borderRadius: 8,
                             borderColor: '#CCCCCC',
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         backgroundColor: 'white',
-        height: autoSizeWidth(295) + saveMarginBottom,
+        height: autoSizeWidth(295)
     },
     header:{
         flexDirection: 'row',
@@ -229,7 +229,6 @@ const styles = StyleSheet.create({
     },
     bottomBtn: {
         height: autoSizeWidth(45),
-        marginBottom: saveMarginBottom,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white',

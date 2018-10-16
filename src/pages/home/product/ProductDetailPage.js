@@ -21,7 +21,7 @@ import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-import StringUtils from '../../../utils/StringUtils';
+//import StringUtils from '../../../utils/StringUtils';
 import CommShareModal from '../../../comm/components/CommShareModal '
 
 export default class ProductDetailPage extends BasePage {
