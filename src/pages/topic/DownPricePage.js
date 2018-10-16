@@ -21,7 +21,7 @@ import TopicAPI from './api/TopicApi';
 import bridge from '../../utils/bridge';
 import user from '../../model/user';
 import TopicItemView from './components/TopicItemView';
-import UIText from '../../comm/components/UIText';
+// import UIText from '../../comm/components/UIText';
 
 @observer
 export default class DownPricePage extends BasePage {
