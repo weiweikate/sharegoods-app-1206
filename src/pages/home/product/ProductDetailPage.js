@@ -21,7 +21,6 @@ import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-import StringUtils from '../../../utils/StringUtils';
 
 export default class ProductDetailPage extends BasePage {
 
@@ -50,30 +49,47 @@ export default class ProductDetailPage extends BasePage {
     //数据
     _getProductDetail = () => {
         this.$loadingShow();
-        HomeAPI.getProductDetail({
-            id: this.params.productId
-        }).then((data) => {
-            this.$loadingDismiss();
-            data.data = data.data||{}
-            const { specMap, priceList } = data.data;
-            //修改specMap每个元素首尾增加'，'
-            for (let key in specMap) {
-                specMap[key].forEach((item) => {
-                    if (String(item.id).indexOf(',') === -1) {
-                        item.id = `,${item.id},`;
-                    }
-                });
-            }
-            //修改priceList中的specIds首尾增加','
-            priceList.forEach((item) => {
-                item.specIds = `,${item.specIds},`;
+        if (this.params.productId) {
+            HomeAPI.getProductDetail({
+                id: this.params.productId
+            }).then((data) => {
+                this.$loadingDismiss();
+                data.data = data.data || {};
+                this._savaData(data);
+            }).catch((error) => {
+                this.$loadingDismiss();
+                this.$toastShow(error.msg);
             });
-            this.setState({
-                data: data.data
+        }else{
+            HomeAPI.getProductDetailByCode({
+                code: this.params.productCode
+            }).then((data) => {
+                this.$loadingDismiss();
+                data.data = data.data || {};
+                this._savaData(data);
+            }).catch((error) => {
+                this.$loadingDismiss();
+                this.$toastShow(error.msg);
             });
-        }).catch((error) => {
-            this.$loadingDismiss();
-            this.$toastShow(error.msg);
+        }
+    };
+
+    _savaData = (data) => {
+        const { specMap, priceList } = data.data;
+        //修改specMap每个元素首尾增加'，'
+        for (let key in specMap) {
+            specMap[key].forEach((item) => {
+                if (String(item.id).indexOf(',') === -1) {
+                    item.id = `,${item.id},`;
+                }
+            });
+        }
+        //修改priceList中的specIds首尾增加','
+        priceList.forEach((item) => {
+            item.specIds = `,${item.specIds},`;
+        });
+        this.setState({
+            data: data.data
         });
     };
 
