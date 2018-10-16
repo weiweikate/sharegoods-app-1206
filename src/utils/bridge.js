@@ -64,7 +64,7 @@ export default {
      * @param jsonParam
     <<<<<<<<<<<<< 共同 <<<<<<<<<<<<<<
      shareType : 0图片分享 1 图文链接分享
-     platformType: 0 朋友圈 1 会话
+     pplatformType:0 微信好友 1朋友圈 2qq好友 3qq空间 4微博
 
      <<<<<<<<< shareType : 1 图文链接分享 <<<<<<<
      title:分享标题(当为图文分享时候使用)

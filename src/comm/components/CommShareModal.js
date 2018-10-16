@@ -139,8 +139,11 @@ export default class CommShareModal extends React.Component {
     render() {
         let array = [];
         if(this.props.type === 'Image'){
-            array.push({image: CommTabImag.wechat, title: '微信好友', onPress: () => {this.share(1)}});
-            array.push( {image: CommTabImag.pengyouquan, title: '朋友圈', onPress: () => {this.share(0)}});
+            array.push({image: CommTabImag.wechat, title: '微信好友', onPress: () => {this.share(0)}});
+            array.push( {image: CommTabImag.pengyouquan, title: '朋友圈', onPress: () => {this.share(1)}});
+            array.push( {image: CommTabImag.qq, title: 'QQ好友', onPress: () => {this.share(2)}});
+            array.push( {image: CommTabImag.kongjian, title: 'QQ好友', onPress: () => {this.share(3)}});
+            array.push( {image: CommTabImag.weibo, title: '微博', onPress: () => {this.share(4)}});
             if (this.state.shareType === 1){
                 array.push({image: CommTabImag.lianjie, title: '复制链接', onPress: () => {this.copyUrl()}})
                 array.push({image: CommTabImag.baocun, title: '保存图片', onPress: () => {this.changeShareType(0)}});
@@ -234,7 +237,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     item: {
-        width: autoSizeWidth(187.5/2),
+        width: ScreenUtils.width/4 - 0.1,
         height: autoSizeWidth(187.5/2),
         marginTop: autoSizeWidth(20),
         alignItems: 'center',

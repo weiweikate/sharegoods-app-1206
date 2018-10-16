@@ -46,16 +46,23 @@
 -(void)configUM{
   [[UMSocialManager defaultManager] setUmSocialAppkey:KUmSocialAppkey];
   [[UMSocialManager defaultManager] openLog:YES];
-  /* 微信朋友圈 */
-  [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatTimeLine
+  /* 设置微信的appKey和appSecret */
+  [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession
                                         appKey:KWechatAppKey
                                      appSecret:KWechatAppSecret
-                                   redirectURL:@""];
-  /* 微信聊天 */
-  [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatTimeLine
-                                        appKey:KWechatAppKey
-                                     appSecret:KWechatAppSecret
-                                   redirectURL:@""];
+                                   redirectURL:@"http://mobile.umeng.com/social"];
+  /* 设置分享到QQ互联的appID
+   * U-Share SDK为了兼容大部分平台命名，统一用appKey和appSecret进行参数设置，而QQ平台仅需将appID作为U-Share的appKey参数传进即可。
+   */
+  [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ
+                                        appKey:KQQAppKey/*设置QQ平台的appID*/
+                                     appSecret:nil
+                                   redirectURL:@"http://mobile.umeng.com/social"];
+  /* 设置新浪的appKey和appSecret */
+  [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Sina
+                                        appKey:KWeiboKey
+                                     appSecret:KWeiboAppSecret
+                                   redirectURL:@"https://sns.whalecloud.com/sina2/callback"];
   
 }
 -(void)configQYLib{
