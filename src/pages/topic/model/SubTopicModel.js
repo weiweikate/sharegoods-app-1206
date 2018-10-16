@@ -21,6 +21,7 @@ class TotalTopicresultDataModel {
     status = '';
     @observable
     topicNavbarList = [];
+    /*导航标题列表*/
     @observable
     topicNavTitleList = [];
     /*不同导航下的数据*/
@@ -61,14 +62,14 @@ class TotalTopicresultDataModel {
         //     navSections: []
         // };
         //开始组装不同的nav下的sections数据
-        const numberOfNav =  this.topicNavbarList.slice().length;
-        for (var indexOfNav = 0 ;indexOfNav <numberOfNav ;indexOfNav++){
-          let  topicNavListItemArr = this.topicNavbarList.slice();
-          let topicNavListItem = topicNavListItemArr[indexOfNav]
+        const numberOfNav = this.topicNavbarList.slice().length;
+        for (var indexOfNav = 0; indexOfNav < numberOfNav; indexOfNav++) {
+            let topicNavListItemArr = this.topicNavbarList.slice();
+            let topicNavListItem = topicNavListItemArr[indexOfNav];
 
             //单个导航的数据源
             // const { navName, topicBannerProducts, topicNavbarBannerList } = topicNavListItem;
-            const { navName, topicBannerProducts,topicNavbarBannerList} = topicNavListItem;
+            const { navName, topicBannerProducts, topicNavbarBannerList } = topicNavListItem;
             //为null的时候会终止函数,我也是醉了
             let BannerProducts = topicBannerProducts || [];
             //一个导航下的数据
@@ -88,7 +89,7 @@ class TotalTopicresultDataModel {
              * 第二个组开始
              */
 
-           let topicNavbarBannerNormalList = topicNavbarBannerList||[]
+            let topicNavbarBannerNormalList = topicNavbarBannerList || [];
 
             if (topicNavbarBannerNormalList.slice().length > 0) {
                 topicNavbarBannerNormalList.slice().map((otherSection, otherSectionIndex) => {
@@ -105,8 +106,9 @@ class TotalTopicresultDataModel {
                 });
             }
             tempArr.push(sections);
-          //   console.log(tempArr);
-        };
+            //   console.log(tempArr);
+        }
+        ;
         this.sectionDataList = tempArr;
         console.log(tempArr);
     }
@@ -121,7 +123,7 @@ class TotalTopicresultDataModel {
         tempArr.map(item => {
             titleArr.push({
                 title: item.navName,
-                subTitle:item.desc
+                subTitle: item.desc
             });
         });
         this.topicNavTitleList = titleArr;

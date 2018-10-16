@@ -9,6 +9,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import ViewPager from '../../../../components/ui/ViewPager';
 import UIImage from '../../../../components/ui/UIImage';
+import ProductActivityView from './ProductActivityView';
 
 /**
  * 商品详情头部view
@@ -50,11 +51,8 @@ export default class DetailHeaderView extends Component {
             />);
     };
 
-    _renderActivityView= ()=>{
-
-    }
-
     render() {
+        const { activityType } = this.props;
         const { productImgList = [{}], freight = 0, monthSaleTotal = 0, price = 0, originalPrice = 0, product = {} } = this.props.data || {};
         const { supplierName = '', brandName = '', name = '', firstCategoryName = '', secCategoryName = '', thirdCategoryName = '' } = product;
         return (
@@ -78,7 +76,9 @@ export default class DetailHeaderView extends Component {
                            }}
                            height={ScreenUtils.autoSizeWidth(377)}
                            autoplay={true}/>
-
+                {activityType === 1 || activityType === 2 ? <ProductActivityView ref={(e) => {
+                    this.ActivityView = e;
+                }} activityData={this.props.activityData} activityType={activityType} productActivityViewAction={this.props.productActivityViewAction}/> : null}
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{

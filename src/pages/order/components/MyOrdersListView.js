@@ -179,6 +179,8 @@ export default class MyOrdersListView extends Component {
                 totalPrice={item.totalPrice}
                 orderProduct={item.orderProduct}
                 platformPayTime={item.platformPayTime}
+                finishTime={item.finishTime}
+                sendTime={item.sendTime}
                 clickItem={() => {
                     this.clickItem(index);
                 }}
@@ -260,7 +262,7 @@ export default class MyOrdersListView extends Component {
                             NativeModules.commModule.toast('确认收货成功');
                             this.getDataFromNetwork();
                         }).catch(e => {
-                            Toast.showLoading();
+                            Toast.hiddenLoading();
                             NativeModules.commModule.toast(e.msg);
                         });
                     }}
@@ -289,6 +291,7 @@ export default class MyOrdersListView extends Component {
                                 NativeModules.commModule.toast(response.msg);
                             }
                         }).catch(e => {
+                            Toast.hiddenLoading();
                             NativeModules.commModule.toast(e);
                         });
                     }}
@@ -324,6 +327,9 @@ export default class MyOrdersListView extends Component {
                     expressNo: item.expressNo,
                     orderCreateTime: item.createTime,
                     platformPayTime:item.platformPayTime,
+                    payTime:item.payTime,
+                    sendTime:item.sendTime,
+                    finishTime:item.finishTime,
                     orderStatus: item.status,
                     freightPrice: item.freightPrice,
                     totalPrice: item.totalPrice,
