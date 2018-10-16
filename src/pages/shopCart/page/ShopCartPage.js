@@ -69,8 +69,6 @@ export default class ShopCartPage extends BasePage {
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
             viewData: [
-                { a: 11 }
-
             ]
         };
     }
@@ -357,7 +355,6 @@ export default class ShopCartPage extends BasePage {
                         </View>
                         : null
                 }
-
                 <View
                     style={{ height: 10, backgroundColor: ColorUtil.Color_f7f7f7, width: ScreenUtils.width }}
                 />
