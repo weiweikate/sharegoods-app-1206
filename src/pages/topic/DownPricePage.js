@@ -15,13 +15,8 @@ import OpenPrizeItemView from './components/OpenPrizeItemView';
 // import HomeAPI from '../api/HomeAPI';
 import TotalTopicDataModel from './model/SubTopicModel';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
-// import PropTypes from 'prop-types';
 import SubSwichView from './components/SubSwichView';
-import TopicAPI from './api/TopicApi';
-import bridge from '../../utils/bridge';
-import user from '../../model/user';
 import TopicItemView from './components/TopicItemView';
-// import UIText from '../../comm/components/UIText';
 
 @observer
 export default class DownPricePage extends BasePage {
@@ -36,13 +31,13 @@ export default class DownPricePage extends BasePage {
         this.dataModel = new TotalTopicDataModel();
         this.state = {
             selectNav: 0,
-            linkTypeCode: 'ZT20180002'
+            // linkTypeCode: 'ZT20180002'
         };
     }
 
     componentDidMount() {
-        const {linkTypeCode} = this.params;
-        console.log('-----'+linkTypeCode);
+        const { linkTypeCode } = this.params;
+        console.log('-----' + linkTypeCode);
         this.dataModel.loadTopicData(linkTypeCode);
         // this.dataModel.loadTopicData(this.state.linkTypeCode);
     }
@@ -101,84 +96,54 @@ export default class DownPricePage extends BasePage {
 
                 {
                     sectionListData.map((itemData, itemIndex) => {
-                        return(
-                            this._getTopicType() === 1?
-                            <OpenPrizeItemView
-                                itemData={itemData}
-                                followAction={() => {
-                                    this._followActionClick(itemData, sectionIndex, itemIndex);
-                                  }
-                                }
-                                itemClick={(itemData) => {
-                                    this._itemActionClick(itemData)
-                                  }
-                                }
-                            />
+                        return (
+                            this._getTopicType() === 1 ?
+                                <OpenPrizeItemView
+                                    itemData={itemData}
+                                    itemClick={(itemData) => {
+                                        this._itemActionClick(itemData);
+                                    }
+                                    }
+                                />
                                 :
                                 <TopicItemView
                                     key={itemIndex}
                                     itemData={itemData}
                                     numOfColum={this._getColumNum()}
                                     itemClickAction={
-                                        ()=>{
-                                            this._itemActionClick(itemData)
+                                        () => {
+                                            this._itemActionClick(itemData);
                                         }
                                     }
                                 />
-                        )
+                        );
                     })
                 }
             </View>
         );
     };
-
     /**
      *
      * @param itemData
      * @private
      */
-    _itemActionClick=(itemData)=>{
+    _itemActionClick = (itemData) => {
         if (itemData.productType === 99) {
             this.$navigate('home/product/ProductDetailPage', {
                 productId: itemData.productId,
-                productCode: itemData.prodCode,
+                productCode: itemData.prodCode
             });
-        } else if (itemData.productType === 1 || itemData.productType === 2) {
+        } else if (itemData.productType === 1 || itemData.productType === 2 || itemData.productType === 3) {
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: itemData.prodCode,
                 activityType: itemData.productType
             });
-        } else if (itemData.productId === 5){
-            this.$navigate('topic/TopicPage',{
-                linkTypeCode:itemData.prodCode
-            })
+        } else if (itemData.productId === 5) {
+            this.$navigate('topic/TopicPage', {
+                linkTypeCode: itemData.prodCode
+            });
         }
-    }
-    /**
-     * 取消关注和关注
-     * @param itemData
-     * @param sectionIndex
-     * @param itemIndex
-     * @private
-     */
-    _followActionClick = (itemData, sectionIndex, itemIndex) => {
-        let type = itemData.notifyFlag ? 0 : 1;
-        let param = {
-            'activityId': itemData.id,
-            'activityType': itemData.productType,
-            'type': type,
-            'userId': user.id
-        };
-        TopicAPI.followAction(
-            param
-        ).then(result => {
-            bridge.$toast(result.msg);
-            this.dataModel.loadTopicData(this.state.linkTypeCode);
-        }).catch(error => {
-            bridge.$toast(error.msg);
-        });
     };
-
     _render() {
         const sectionList = this.dataModel.sectionDataList.slice() || [];
         let sectionData = [];
@@ -236,6 +201,7 @@ export default class DownPricePage extends BasePage {
             </ScrollView>
         );
     }
+
     /**
      * 获取类型
      * 0 普通专题
@@ -244,7 +210,7 @@ export default class DownPricePage extends BasePage {
      * */
     _getTopicType = () => {
         if (this.dataModel.templateId === 5 ||
-            this.dataModel.templateId === 6){
+            this.dataModel.templateId === 6) {
             return 1;
         } else {
             return 0;
@@ -252,12 +218,12 @@ export default class DownPricePage extends BasePage {
     };
     _getColumNum = () => {
         if (this.dataModel.templateId === 3 ||
-            this.dataModel.templateId === 4 ){
+            this.dataModel.templateId === 4) {
             return 3;
         } else {
             return 2;
         }
-    }
+    };
 }
 
 const Styles = StyleSheet.create({
