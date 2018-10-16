@@ -216,7 +216,7 @@ export default class PaymentMethodPage extends BasePage {
                 },
                 {
                     text: '回到订单', onPress: () => {
-                        this.props.navigation.navigate('order/order/MyOrdersListPage')
+                        this.props.navigation.navigate('order/order/MyOrdersListPage',{index:0})
                     }
                 }
             ], { cancelable: true });
@@ -230,6 +230,12 @@ export default class PaymentMethodPage extends BasePage {
             return
         }
         const { selectedTypes } = this.payment
+
+        if (!selectedTypes) {
+            Toast.$toast('请选择支付方式')
+            return
+        }
+
         if (selectedTypes.type === paymentType.alipay) {
             this._alipay()
             return

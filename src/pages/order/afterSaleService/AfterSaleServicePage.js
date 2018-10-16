@@ -423,14 +423,14 @@ class AfterSaleServicePage extends BasePage {
             NativeModules.commModule.toast('请选择说明');
             return;
         }
-        if (StringUtils.isEmpty(params.returnReason) && this.state.pageType === 2) {
-            NativeModules.commModule.toast('请填写原因');
-            return;
-        }
-        if (StringUtils.isEmpty(imgList)) {
-            NativeModules.commModule.toast('请上传照片');
-            return;
-        }
+        // if (StringUtils.isEmpty(params.returnReason) && this.state.pageType === 2) {
+        //     NativeModules.commModule.toast('请填写原因');
+        //     return;
+        // }
+        // if (StringUtils.isEmpty(imgList)) {
+        //     NativeModules.commModule.toast('请上传照片');
+        //     return;
+        // }
        if(this.params.isEdit){
            params.returnProductId = this.state.returnProductId;
        }

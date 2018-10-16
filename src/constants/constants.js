@@ -93,12 +93,16 @@ let constants = {
             menuData2:['退换','退换中','售后完成']
         },{
             index:4,
-            orderStatus:'确认收货',
+            orderStatus:'已确认收货',
             menuData:[{
-                id:6,
-                operation:'确认收货',
+                id:7,
+                operation:'删除订单',
+                isRed:false,
+            },{
+                id:8,
+                operation:'再次购买',
                 isRed:true,
-            },],
+            }],
             menuData2:['退款','退款中','售后完成']
         },{
             index:5,
@@ -243,7 +247,7 @@ let constants = {
             moreDetail:'',
              sellerState:'已签收',
             sellerTime:'',
-            disNextView:false,
+            disNextView:true,
             menu:[
 
             ],

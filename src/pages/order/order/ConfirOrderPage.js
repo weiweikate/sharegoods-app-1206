@@ -360,7 +360,7 @@ export default class ConfirOrderPage extends BasePage {
                 code:this.params.orderParamVO.orderProducts[0].code,
                 num:this.params.orderParamVO.orderProducts[0].num,
             }).then(response =>{
-                console.log(response);
+                Toast.hiddenLoading();
                 let data = response.data;
                 let arrData = [];
                 data.orderProductList.map((item, index) => {
@@ -397,6 +397,14 @@ export default class ConfirOrderPage extends BasePage {
                 viewData.tokenCoin = data.tokenCoin;
                 viewData.list = arrData;
                 this.setState({ viewData });
+            }).catch(err =>{
+                Toast.hiddenLoading();
+                this.$toastShow(err.msg);
+                if (err.code === 10009) {
+                    this.$navigate('login/login/LoginPage',{callback:()=>{
+                            this.loadPageData()
+                        }});
+                }
             })
         }else{
             OrderApi.makeSureOrder({
@@ -624,9 +632,6 @@ export default class ConfirOrderPage extends BasePage {
         this.$navigate('mine/coupons/CouponsPage', {
             fromOrder: 1, productIds: this.state.viewData.list[0].productId,
             orderParam: this.state.orderParam, callBack: (data) => {
-                console.log(data);
-                console.log('ccccccc');
-                // let orderParams = this.state.orderParam;
                 if (data && data.id) {
                     let viewData = this.state.viewData;
                     OrderApi.makeSureOrder({

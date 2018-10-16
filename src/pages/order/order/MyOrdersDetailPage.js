@@ -574,7 +574,7 @@ class MyOrdersDetailPage extends BasePage {
                     isRed: false
                 });
             }
-            if (data[index].status === 3) {
+            if (data[index].status === 3||data[index].status === 4) {
                 afterSaleService.push({
                     id: 1,
                     operation: '退换',
@@ -584,13 +584,20 @@ class MyOrdersDetailPage extends BasePage {
             if (data[index].status === 5) {
                 // 确认收货的状态的订单售后截止时间和当前时间比
                 let now = new Date().getTime();
-                if (data.list[index].finishTime - now > 0) {
+                if (data[index].finishTime - now > 0) {
                     afterSaleService.push({
                         id: 1,
                         operation: '退换',
                         isRed: false
                     });
                 }
+            }
+            if (data[index].status === 7 ||data[index].status === 8||data[index].status === 6) {
+                afterSaleService.push({
+                    id: 4,
+                    operation: '已关闭',
+                    isRed: true
+                });
             }
         } else {
             if (data[index].status === 4||data[index].status === 5) {
@@ -665,7 +672,7 @@ class MyOrdersDetailPage extends BasePage {
                 //     isRed: false
                 // });
             }
-            if (data[index].status === 7 && data[index].returnType) {
+            if (data[index].status === 7 ||data[index].status === 8&& data[index].returnType) {
                 afterSaleService.push({
                     id: 4,
                     operation: '已关闭',
@@ -688,6 +695,7 @@ class MyOrdersDetailPage extends BasePage {
             let data = response.data;
             let arr = [];
             data.orderProductList.map((item, index) => {
+                console.log('orderProductList',item);
                 arr.push({
                     id: item.id,
                     orderId: item.orderId,
@@ -701,6 +709,7 @@ class MyOrdersDetailPage extends BasePage {
                     afterSaleService: this.getAfterSaleService(data.orderProductList, index)
                 });
             });
+            console.log('orderProductList',data, arr);
             if (data.orderType === 3 || data.orderType === 98) {//礼包。。。
                 // let  lowerarr=data.list[0].orderProductPrices
             }
@@ -760,7 +769,7 @@ class MyOrdersDetailPage extends BasePage {
                     break;
                 //卖家已发货 待收货
                 case 3:
-                    this.startCutDownTime2(response.data.autoReceiveTime);
+                    this.startCutDownTime2(data.autoReceiveTime);
                     pageStateString.sellerTime = "";
                     break;
                 //   确认收货
@@ -825,10 +834,15 @@ class MyOrdersDetailPage extends BasePage {
                 orderProductPrices: data.orderProductList[0].price,//礼包，套餐啥的
                 allData: data
             });
-
         }).catch(e => {
+
             Toast.hiddenLoading();
             Toast.$toast(e.msg);
+            if(e.code === 10009){
+                this.$navigate('login/login/LoginPage',{callback:()=>{
+                        this.loadPageData()
+                    }});
+            }
         });
     }
 

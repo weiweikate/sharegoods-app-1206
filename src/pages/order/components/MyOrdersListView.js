@@ -178,6 +178,7 @@ export default class MyOrdersListView extends Component {
                 freightPrice={item.freightPrice}
                 totalPrice={item.totalPrice}
                 orderProduct={item.orderProduct}
+                platformPayTime={item.platformPayTime}
                 clickItem={() => {
                     this.clickItem(index);
                 }}
@@ -323,6 +324,7 @@ export default class MyOrdersListView extends Component {
                     orderNum: item.orderNum,
                     expressNo: item.expressNo,
                     orderCreateTime: item.createTime,
+                    platformPayTime:item.platformPayTime,
                     orderStatus: item.status,
                     freightPrice: item.freightPrice,
                     totalPrice: item.totalPrice,
