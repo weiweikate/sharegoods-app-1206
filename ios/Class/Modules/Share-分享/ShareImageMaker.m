@@ -70,15 +70,15 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   [QRCodeImage drawInRect:CGRectMake(180, 265, 55, 55)];
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  return [self save:image];
+  return [self save:image withPath:@"/Documents/QRCode.png"];
 }
 
 /**
  保存图片到本地，并返回路径
  */
-- (NSString *)save:(UIImage *)imgsave{
+- (NSString *)save:(UIImage *)imgsave withPath:(NSString *)subPath{
   NSString * path =NSHomeDirectory();
-  NSString * Pathimg =[path stringByAppendingString:@"/Documents/QRCode.png"];
+  NSString * Pathimg =[path stringByAppendingString:subPath];
   if ([UIImagePNGRepresentation(imgsave) writeToFile:Pathimg atomically:YES]) {
     return Pathimg;
   }
@@ -127,5 +127,20 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   CGContextRelease(bitmapRef);
   CGImageRelease(bitmapImage);
   return [UIImage imageWithCGImage:scaledImage];
+}
+
+- (void)creatQRCodeImageWithQRCodeStr:(NSString *)QRCodeStr
+                        completion:(ShareImageMakercompletionBlock) completion{
+  if (QRCodeStr.length == 0 || QRCodeStr == nil) {
+    completion(nil,@"生成二维码的字符串不能为空");
+    return;
+  }
+  UIImage *QRCodeImage =  [self QRCodeWithStr:QRCodeStr];
+  NSString *path = [self save:QRCodeImage withPath:@"/Documents/InviteFriendsQRCode.png"];
+  if (path.length == 0 || path == nil) {
+    completion(nil,@"保存二维码失败");
+  }else{
+    completion(path,nil);
+  }
 }
 @end

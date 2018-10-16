@@ -28,6 +28,11 @@ SINGLETON_FOR_HEADER(ShareImageMaker)
  */
 - (void)creatShareImageWithShareImageMakerModel:(ShareImageMakerModel *)model
                                     completion:(ShareImageMakercompletionBlock) completion;
+
+- (void)creatQRCodeImageWithQRCodeStr:(NSString *)QRCodeStr
+                                     completion:(ShareImageMakercompletionBlock) completion;
+
+
 @end
 
 
