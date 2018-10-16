@@ -21,7 +21,15 @@ const CommTabImag = {
         img_Nor: require('./mine_tab_unselected.png'),
         img_Sel: require('./mine_tab_selected.png')
     },
-    comm_back_img: require('./icon_header_back.png')
+    comm_back_img: require('./icon_header_back.png'),
+    wechat: require('./share_icon_wechat_nor.png'),
+    pengyouquan: require('./share_icon_pengyouquan_nor.png'),
+    qq: require('./share_icon_qq_nor.png'),
+    kongjian: require('./share_icon_kongjian_nor.png'),
+    weibo: require('./share_icon_weibo_nor.png'),
+    lianjie: require('./share_icon_lianjie_nor.png'),
+    baocun: require('./share_icon_baocun_nor.png'),
+    download: require('./share_btn_download_nor.png'),
 
 
 };
