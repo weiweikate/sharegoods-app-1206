@@ -53,24 +53,12 @@ export default class ShopCartPage extends BasePage {
         leftNavItemHidden: true
 
     };
-    $NavBarRenderRightItem = () => {
+ /*   $NavBarRenderRightItem = () => {
         return (
-            <Text style={{
-                fontSize: 15,
-                color: '#666'
-            }} onPress={this.addGoods}>
-                添加商品
-            </Text>
+            <View
+            />
         );
-    };
-    addGoods = () => {
-        shopCartCacheTool.addGoodItem({
-            'amount': 5,
-            'priceId': 9,
-            'productId': 14,
-            'timestamp': 1536633469102
-        });
-    };
+    };*/
 
     componentDidMount() {
         shopCartCacheTool.getShopCartGoodsListData();
