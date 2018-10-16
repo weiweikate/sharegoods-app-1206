@@ -362,6 +362,11 @@ export default class MyOrdersListView extends Component {
                 }).catch(e => {
                     Toast.hiddenLoading();
                     console.log(e);
+                     if(e.code === 10009){
+                         this.$navigate('login/login/LoginPage',{callback:()=>{
+                                 this.loadPageData()
+                             }});
+                     }
                 });
                 break;
             case 1:
@@ -372,6 +377,11 @@ export default class MyOrdersListView extends Component {
                 }).catch(e => {
                     Toast.hiddenLoading();
                     NativeModules.commModule.toast(e.msg);
+                    if(e.code === 10009){
+                        this.$navigate('login/login/LoginPage',{callback:()=>{
+                                this.loadPageData()
+                            }});
+                    }
                 });
                 break;
             case 2:
@@ -383,6 +393,11 @@ export default class MyOrdersListView extends Component {
                 }).catch(e => {
                     Toast.hiddenLoading();
                     NativeModules.commModule.toast(e.msg);
+                    if(e.code === 10009){
+                        this.$navigate('login/login/LoginPage',{callback:()=>{
+                                this.loadPageData()
+                            }});
+                    }
                 });
                 break;
             case 3:
@@ -394,6 +409,11 @@ export default class MyOrdersListView extends Component {
                 }).catch(e => {
                     Toast.hiddenLoading();
                     NativeModules.commModule.toast(e.msg);
+                    if(e.code === 10009){
+                        this.$navigate('login/login/LoginPage',{callback:()=>{
+                                this.loadPageData()
+                            }});
+                    }
                 });
                 break;
             case 4:
@@ -405,6 +425,11 @@ export default class MyOrdersListView extends Component {
                 }).catch(e => {
                     Toast.hiddenLoading();
                     NativeModules.commModule.toast(e.msg);
+                    if(e.code === 10009){
+                        this.$navigate('login/login/LoginPage',{callback:()=>{
+                                this.loadPageData()
+                            }});
+                    }
                 });
                 break;
             default:
