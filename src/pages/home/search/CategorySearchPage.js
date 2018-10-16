@@ -169,7 +169,7 @@ export default class CategorySearchPage extends BasePage {
                         fontSize: 13,
                         color: '#222222'
                     }}>
-                        {item.item.name}
+                        {item.item.name.length > 4 ? item.item.name.substr(0, 4) + '...' : item.item.name}
                     </Text>
                 </View>
             </TouchableOpacity>
