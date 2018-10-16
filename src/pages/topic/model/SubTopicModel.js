@@ -10,7 +10,7 @@ class TotalTopicresultDataModel {
     @observable
     name = '';
     @observable
-    templateId = '';
+    templateId = 1;
     @observable
     imgUrl = '';
     @observable

@@ -16,6 +16,7 @@ export function setToken(data) {
         ...data
     };
 }
+
 // 这是默认post
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.interceptors.response.use(null, configureResponseError);
@@ -34,7 +35,7 @@ axios.interceptors.response.use((response) => {
 axios.defaults.timeout = 20000;
 
 // 记录日志
-function createHistory(response,requestStamp) {
+function createHistory(response, requestStamp) {
 
 
     let responseStamp = +new Date();
@@ -56,9 +57,10 @@ function createHistory(response,requestStamp) {
         requestBody,
         responseJson
     };
-    console.log('history',history);
+    console.log('history', history);
     return history;
 }
+
 export default class HttpUtils {
 
     static get(uri, params) {
@@ -74,12 +76,12 @@ export default class HttpUtils {
         let timeLineStart = +new Date();
         return axios.get(url).then(response => {
             let data = response.data;
-            let history = createHistory(response,timeLineStart);
+            let history = createHistory(response, timeLineStart);
 
             fetchHistory.insertData(history);
             return data;
         }).catch(response => {
-            let history = createHistory(response,timeLineStart);
+            let history = createHistory(response, timeLineStart);
 
             fetchHistory.insertData(history);
 
@@ -98,14 +100,14 @@ export default class HttpUtils {
         let timeLineStart = +new Date();
         return axios.post(url, data, config)
             .then(response => {
-                let history = createHistory(response,timeLineStart);
+                let history = createHistory(response, timeLineStart);
 
                 fetchHistory.insertData(history);
 
                 return response.data;
             })
             .catch(response => {
-                let history = createHistory(response,timeLineStart);
+                let history = createHistory(response, timeLineStart);
 
                 fetchHistory.insertData(history);
 

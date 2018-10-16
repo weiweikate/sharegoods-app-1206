@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.loginAndSharing;
+package com.meeruu.commonlib.umeng;
 
 public class ShareImageBean {
     public String imageUrlStr;

@@ -15,11 +15,12 @@ import OpenPrizeItemView from './components/OpenPrizeItemView';
 // import HomeAPI from '../api/HomeAPI';
 import TotalTopicDataModel from './model/SubTopicModel';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
-import PropTypes from 'prop-types';
-// import SubSwichView from './components/SubSwichView';
+// import PropTypes from 'prop-types';
+import SubSwichView from './components/SubSwichView';
 import TopicAPI from './api/TopicApi';
 import bridge from '../../utils/bridge';
 import user from '../../model/user';
+import TopicItemView from './components/TopicItemView';
 
 @observer
 export default class DownPricePage extends BasePage {
@@ -33,14 +34,16 @@ export default class DownPricePage extends BasePage {
         super(props);
         this.dataModel = new TotalTopicDataModel();
         this.state = {
-            selectNav: 0
+            selectNav: 0,
+            linkTypeCode: 'ZT20180002'
         };
     }
 
     componentDidMount() {
         const {linkTypeCode} = this.params;
+        console.log('-----'+linkTypeCode);
         this.dataModel.loadTopicData(linkTypeCode);
-        // this.dataModel.loadTopicData('ZT20180002');
+        // this.dataModel.loadTopicData(this.state.linkTypeCode);
     }
 
     /**
@@ -62,7 +65,6 @@ export default class DownPricePage extends BasePage {
                     }
                 }
             >
-
                 {
                     sectionsData.map((section, sectionIndex) => {
                         return this._renderSection(section, sectionIndex);
@@ -99,33 +101,58 @@ export default class DownPricePage extends BasePage {
 
                 {
                     sectionListData.map((itemData, itemIndex) => {
-                        return <OpenPrizeItemView
-                            itemData={itemData}
-                            followAction={() => {
-                                this._followActionClick(itemData, sectionIndex, itemIndex);
-                            }
-                            }
-                            itemClick={(itemData) => {
-                                if (itemData.productType === 99) {
-                                    this.$navigate('home/product/ProductDetailPage', {
-                                        productId: itemData.productId
-                                    });
-                                } else if (itemData.productType === 1 || itemData.productType === 2) {
-                                    this.$navigate('topic/TopicDetailPage', {
-                                        activityCode: itemData.prodCode,
-                                        productType: itemData.productType
-                                    });
+                        return(
+                            this._getTopicType() === 1?
+                            <OpenPrizeItemView
+                                itemData={itemData}
+                                followAction={() => {
+                                    this._followActionClick(itemData, sectionIndex, itemIndex);
+                                  }
                                 }
-
-                            }
-                            }
-                        />;
+                                itemClick={(itemData) => {
+                                    this._itemActionClick(itemData)
+                                  }
+                                }
+                            />
+                                :
+                                <TopicItemView
+                                    key={itemIndex}
+                                    itemData={itemData}
+                                    numOfColum={this._getColumNum()}
+                                    itemClickAction={
+                                        ()=>{
+                                            this._itemActionClick(itemData)
+                                        }
+                                    }
+                                />
+                        )
                     })
                 }
             </View>
         );
     };
 
+    /**
+     *
+     * @param itemData
+     * @private
+     */
+    _itemActionClick=(itemData)=>{
+        if (itemData.productType === 99) {
+            this.$navigate('home/product/ProductDetailPage', {
+                productId: itemData.productId
+            });
+        } else if (itemData.productType === 1 || itemData.productType === 2) {
+            this.$navigate('topic/TopicDetailPage', {
+                activityCode: itemData.prodCode,
+                productType: itemData.productType
+            });
+        } else if (itemData.productId === 5){
+            this.$navigate('topic/TopicPage',{
+                linkTypeCode:itemData.prodCode
+            })
+        }
+    }
     /**
      * 取消关注和关注
      * @param itemData
@@ -134,7 +161,6 @@ export default class DownPricePage extends BasePage {
      * @private
      */
     _followActionClick = (itemData, sectionIndex, itemIndex) => {
-
         let type = itemData.notifyFlag ? 0 : 1;
         let param = {
             'activityId': itemData.id,
@@ -145,20 +171,12 @@ export default class DownPricePage extends BasePage {
         TopicAPI.followAction(
             param
         ).then(result => {
-
             bridge.$toast(result.msg);
-            let section = this.dataModel.sectionDataList[sectionIndex] || [];
-            section.data[itemIndex].notifyFlag = type;
-            //重新赋值
-            this.dataModel.sectionDataList[sectionIndex] = section;
-
+            this.dataModel.loadTopicData(this.state.linkTypeCode);
         }).catch(error => {
             bridge.$toast(error.msg);
-
         });
-
     };
-
 
     _render() {
         const sectionList = this.dataModel.sectionDataList.slice() || [];
@@ -187,41 +205,36 @@ export default class DownPricePage extends BasePage {
                     }}
                 />
 
-                {/*{*/}
-                {/*this._getTopicType() === 0*/}
-                {/*?*/}
-                {/*<SubSwichView*/}
-                {/*headerData={this.dataModel}*/}
-                {/*/>*/}
-                {/*:*/}
-                {/*<SbOpenPrizeHeader*/}
-                {/*headerData={this.dataModel}*/}
-                {/*navItemClick={(index, item) => {*/}
-                {/*//自导航点击事件*/}
-                {/*this.setState({*/}
-                {/*selectNav: index*/}
-                {/*});*/}
-                {/*}}*/}
-                {/*/>*/}
+                {
+                    this._getTopicType() === 0
+                        ?
+                        <SubSwichView
+                            headerData={this.dataModel}
+                            navItemClick={(index) => {
+                                this.setState({
+                                    selectNav: index
+                                });
+                            }
+                            }
+                        />
+                        :
+                        <SbOpenPrizeHeader
+                            headerData={this.dataModel}
+                            navItemClick={(index, item) => {
+                                //自导航点击事件
+                                this.setState({
+                                    selectNav: index
+                                });
+                            }}
+                        />
 
-                {/*}*/}
-                <SbOpenPrizeHeader
-                    headerData={this.dataModel}
-                    navItemClick={(index, item) => {
-                        //自导航点击事件
-                        this.setState({
-                            selectNav: index
-                        });
-                    }}
-                />
-
+                }
                 {
                     this._renderBottomListView(sectionData)
                 }
             </ScrollView>
         );
     }
-
     /**
      * 获取类型
      * 0 普通专题
@@ -229,20 +242,23 @@ export default class DownPricePage extends BasePage {
      * 2 降价拍
      * */
     _getTopicType = () => {
-        const { linkTypeCode } = this.params;
-        if (linkTypeCode.search('ZT') != -1) {
-            return 0;
-        } else {
+        if (this.dataModel.templateId === 5 ||
+            this.dataModel.templateId === 6){
             return 1;
+        } else {
+            return 0;
         }
     };
+    _getColumNum = () => {
+        if (this.dataModel.templateId === 3 ||
+            this.dataModel.templateId === 4 ){
+            return 3;
+        } else {
+            return 2;
+        }
+    }
 }
 
-
-DownPricePage.propTypes = {
-    //专题code
-    linkTypeCode: PropTypes.string.isRequired
-};
 const Styles = StyleSheet.create({
     list: {
         flexDirection: 'row',//设置横向布局

@@ -25,6 +25,13 @@ const api = {
     continuePay:'/order/payRecord/continuePay',
     //继续去支付
     continueToPay:['/order/payRecord/continueToPay',{method:'get'}],
+    // 查看物流详情
+    findLogisticsDetail:['/order/logistics/findLogisticsDetail',{method:'get'}],
+    //降价拍的确认订单
+    DepreciateMakeSureOrder:'/operator/activityDepreciate/makeSureOrder',
+    //降价拍的提交订单 沈耀鑫
+    DepreciateSubmitOrder:'/operator/activityDepreciate/submitOrder',
+    // 降价拍提交订单 沈耀鑫
     /**  售后模块相关接口 huchao */
     //（陈帅）申请退款
     applyRefund: '/order/returnProduct/applyRefund',
@@ -42,6 +49,9 @@ const api = {
     updateApply: '/order/returnProduct/updateApply',
     //（陈帅）查询子订单详情
     subOrderLookDetial: ['/order/orderProduct/lookDetial',{method:'get'}],
+    // 获取物流公司
+    findAllExpress: ['/sysExpress/findAllExpress', {method: 'get'}],
+
 
 
 

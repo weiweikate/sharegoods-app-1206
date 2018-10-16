@@ -59,7 +59,7 @@ export default class PaymentMethodPage extends BasePage {
                     // orderType:this.params.orderType?this.params.orderType:0,
                 }
             },
-            isShow:false
+            isShow: false
         };
     }
 
@@ -113,12 +113,13 @@ export default class PaymentMethodPage extends BasePage {
         );
     }
 
-    onRequestClose(){
+    onRequestClose() {
         this.setState({
-            isShow:true
-        })
+            isShow: true
+        });
     }
-    renderCenterModal(){
+
+    renderCenterModal() {
         return (
             <Modal
                 animationType='fade'
@@ -131,9 +132,11 @@ export default class PaymentMethodPage extends BasePage {
             </Modal>
         );
     }
-    renderContent(){
+
+    renderContent() {
         return null;
     }
+
     //支付方式弹窗
     renderPaymentModal = () => {
         return (
@@ -279,10 +282,9 @@ export default class PaymentMethodPage extends BasePage {
 
     forgetTransactionPassword = () => {
         this.setState({ isShowPaymentModal: false });
-        this.navigate('mine/transactionPassword/SettingTransactionPasswordStep2Page');
+        this.$navigate('mine/account/SetOrEditPayPwdPage');
     };
     payIntercept = (type) => {
-        console.log(type);
         console.log(this.state.payMethodList);
         let payMethodList = this.state.payMethodList;
         if (type == 0) {
@@ -305,10 +307,10 @@ export default class PaymentMethodPage extends BasePage {
             Toast.$toast('暂不支持银行卡支付');
             return false;
         }
-        if (payMethodList[3]) {
-            Toast.$toast('暂不支持微信支付');
-            return false;
-        }
+        // if (payMethodList[3]) {
+        //     Toast.$toast('暂不支持微信支付');
+        //     return false;
+        // }
         // //使用代币但是未找到代币与余额的兑换比例参数tokenCoinToBalance拦截
         // if (payMethodList[0]&&this.state.paymentPageParams.tokenCoinToBalance==-1){
         //     Toast.toast('查询服务器代币兑换比例异常');
@@ -318,13 +320,15 @@ export default class PaymentMethodPage extends BasePage {
     };
     commitOrder = () => {
         const { params, type } = this.getApiRequestParams();
+        console.log(params);
+        console.log(type);
         if (!this.payIntercept(type)) {
             return;
         }
         //判断是否有初始化交易密码
         if (user.hadSalePassword) {
             //仅三方支付不需要输入交易密码
-            if (type != 8 && StringUtils.isEmpty(this.state.password)) {
+            if (type != 8 && StringUtils.isEmpty(this.state.password) && type != 4) {
                 this.setState({ isShowPaymentModal: true });
                 return;
             }
@@ -342,7 +346,7 @@ export default class PaymentMethodPage extends BasePage {
             this.setState({ password: '' });
 
         } else {
-            this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
+            this.$navigate('mine/account/SetOrEditPayPwdPage', { hasOriginalPsw: false });
         }
 
     };
@@ -356,8 +360,11 @@ export default class PaymentMethodPage extends BasePage {
         if (payMethodList[4]) {
             type += 8;
         }
+        if (payMethodList[3]) {
+            type += 4;
+        }
         /*
-        * 先扣除代币 -> 余额 -> 三方
+        * 先扣除 余额 -> 三方
         * */
         let balance = 0;
         let leftShouldPayMoney = this.state.paymentPageParams.shouldPayMoney;
@@ -384,23 +391,38 @@ export default class PaymentMethodPage extends BasePage {
         let payMethodList = this.state.payMethodList;
         Toast.showLoading();
         OrderApi.prePay(params).then((response) => {
+            console.log(response);
             Toast.hiddenLoading();
-                if (payMethodList[4]) {
-                    let payString = response.data.prePayStr;
-                    PayUtil.appAliPay(payString).then(resultStr => {
-                        console.log('appAliPay:' + JSON.stringify(resultStr));
-                        if (resultStr.code == 0) {
-                            this.continueToPay(response.data.outTradeNo);
-                        } else {
-                            this.navigate('payment/PayResultPage', { pageType: this.state.paymentPageParams.orderPayParams.orderType + 1 });
-                            // NativeModules.commModule.toast('支付失败')
-                        }
-                    }).catch(e => {
-                        NativeModules.commModule.toast('调用失败' + e);
-                    });
-                } else {
-                    this.continueToPay(response.data.outTradeNo);
-                }
+            if (payMethodList[4]) {
+                let payString = response.data.prePayStr;
+                PayUtil.appAliPay(payString).then(resultStr => {
+                    console.log('appAliPay:' + JSON.stringify(resultStr));
+                    if (resultStr.code == 0) {
+                        this.continueToPay(response.data.outTradeNo);
+                    } else {
+                        this.$navigate('payment/PayResultPage', { pageType: this.state.paymentPageParams.orderPayParams.orderType + 1 });
+                        // NativeModules.commModule.toast('支付失败')
+                    }
+                }).catch(e => {
+                    NativeModules.commModule.toast('调用失败' + e);
+                });
+            } else if (payMethodList[3]) {
+                let payString = response.data.prePayStr;
+                PayUtil.appWXPay(payString).then(resultStr => {
+                    console.log('WxinPay:' + JSON.stringify(resultStr));
+                    if (resultStr.code == 0) {
+                        this.continueToPay(response.data.outTradeNo);
+                    } else {
+                        this.$navigate('payment/PayResultPage', { pageType: this.state.paymentPageParams.orderPayParams.orderType + 1 });
+                        // NativeModules.commModule.toast('支付失败')
+                    }
+                }).catch(e => {
+                    NativeModules.commModule.toast('调用失败' + e);
+                });
+            }
+            else {
+                this.continueToPay(response.data.outTradeNo);
+            }
         }).catch(e => {
             NativeModules.commModule.toast(e.msg + '');
             Toast.hiddenLoading();
@@ -445,8 +467,8 @@ export default class PaymentMethodPage extends BasePage {
     //继续去支付
     continueToPay = (outTradeNo) => {
         OrderApi.continueToPay({ outTradeNo: outTradeNo }).then((response) => {
-                // NativeModules.commModule.toast('支付成功');
-            Alert.alert('支付提示','支付成功', [
+            // NativeModules.commModule.toast('支付成功');
+            Alert.alert('支付提示', '支付成功', [
                 {
                     text: '返回首页', onPress: () => {
                         let resetAction = NavigationActions.reset({
@@ -460,22 +482,22 @@ export default class PaymentMethodPage extends BasePage {
                 },
                 {
                     text: '回到订单', onPress: () => {
-                      this.$navigate('order/order/MyOrdersListPage')
+                        this.$navigate('order/order/MyOrdersListPage');
                     }
                 }
             ], { cancelable: true });
-                // this.loadPageData();
-                // this.$navigate('payment/PayResultPage', { pageType: this.state.paymentPageParams.orderPayParams.orderType });
-                // //继续支付
-                // OrderApi.continuePay({outTradeNo:response.data.outTradeNo,type:1}).then((response)=>{
-                //     if(response.ok ){
-                //
-                //     } else {
-                //         NativeModules.commModule.toast(response.msg)
-                //     }
-                // }).catch(e=>{
-                //     NativeModules.commModule.toast(e)
-                // });
+            // this.loadPageData();
+            // this.$navigate('payment/PayResultPage', { pageType: this.state.paymentPageParams.orderPayParams.orderType });
+            // //继续支付
+            // OrderApi.continuePay({outTradeNo:response.data.outTradeNo,type:1}).then((response)=>{
+            //     if(response.ok ){
+            //
+            //     } else {
+            //         NativeModules.commModule.toast(response.msg)
+            //     }
+            // }).catch(e=>{
+            //     NativeModules.commModule.toast(e)
+            // });
         }).catch(e => {
             NativeModules.commModule.toast(e);
         });
@@ -547,6 +569,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: color.red,
         marginRight: 12
-    },
+    }
 });
 

@@ -23,7 +23,7 @@ import Toast from '../../../utils/bridge';
 import BasePage from '../../../BasePage';
 import OrderApi from './../api/orderApi';
 
-let oldViewData, oldPriceList;
+// let oldViewData, oldPriceList;
 export default class ConfirOrderPage extends BasePage {
     constructor(props) {
         super(props);
@@ -182,10 +182,10 @@ export default class ConfirOrderPage extends BasePage {
                 }}
                                   disabled={this.state.viewData.list[0].restrictions & 1 !== 1}
                                   onPress={() => this.jumpToCouponsPage()}>
-                    <UIText value={'优惠卷'} style={styles.blackText}/>
+                    <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={this.state.viewData.list[0].restrictions & 1 !== 1 ? '不可使用优惠券' : '选择优惠卷'}
+                            value={this.state.viewData.list[0].restrictions & 1 !== 1 ? '不可使用优惠券' : '选择优惠券'}
                             style={[styles.grayText, { marginRight: 15 }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -199,12 +199,12 @@ export default class ConfirOrderPage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}
-                                  disabled={this.state.viewData.list[0].restrictions & 2 !== 2}
+                                  disabled={true}
                                   onPress={() => this.jumpToCouponsPage('justOne')}>
                     <UIText value={'1元现金券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={this.state.viewData.list[0].restrictions & 2 !== 2 ? '不可使用1元现金券' : '选择1元现金券'}
+                            value={this.state.viewData.list[0].restrictions !== 2 ? '不可使用1元现金券' : '选择1元现金券'}
                             style={[styles.grayText, { marginRight: 15 }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -278,7 +278,7 @@ export default class ConfirOrderPage extends BasePage {
                             marginRight: 12
                         }}/>
                         <UIText
-                            value={StringUtils.formatMoneyString(this.state.viewData.useScore ? this.state.viewData.totalAmounts - this.state.viewData.reducePrice : this.state.viewData.totalAmounts)}
+                            value={StringUtils.formatMoneyString(this.state.viewData.totalAmounts)}
                             style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 15,
@@ -349,57 +349,117 @@ export default class ConfirOrderPage extends BasePage {
     };
 
     componentDidMount() {
+        this.loadPageData();
+    }
+    loadPageData(){
         Toast.showLoading();
-        let viewData = this.state.viewData;
-        OrderApi.makeSureOrder({
-            orderType: this.params.orderParamVO.orderType,
-            orderProducts: this.params.orderParamVO.orderProducts
-        }).then((response) => {
-            Toast.hiddenLoading();
-            console.log(response);
-            let data = response.data;
-            let arrData = [];
-            data.orderProductList.map((item, index) => {
-                arrData.push({
-                    productId: item.productId,
-                    uri: item.specImg,
-                    goodsName: item.productName,
-                    salePrice: item.price,
-                    category: item.spec,
-                    goodsNum: item.num,
-                    originalPrice: item.originalPrice,
-                    restrictions: item.restrictions
-                    // activityId: item.activityId
+        let viewData=this.state.viewData;
+        if(this.state.orderParam.orderType === 2){
+            OrderApi.DepreciateMakeSureOrder({
+                orderType: this.params.orderParamVO.orderType,
+                code:this.params.orderParamVO.orderProducts[0].code,
+                num:this.params.orderParamVO.orderProducts[0].num,
+            }).then(response =>{
+                console.log(response);
+                let data = response.data;
+                let arrData = [];
+                data.orderProductList.map((item, index) => {
+                    arrData.push({
+                        productId: item.productId,
+                        uri: item.specImg,
+                        goodsName: item.productName,
+                        salePrice: item.price,
+                        category: item.spec,
+                        goodsNum: item.num,
+                        originalPrice: item.originalPrice,
+                        restrictions: item.restrictions
+                        // activityId: item.activityId
+                    });
                 });
+                if (data.userAddress) {
+                    viewData.express = {
+                        id: data.userAddress.id,
+                        receiverName: data.userAddress.receiver,
+                        receiverNum: data.userAddress.receiverPhone,
+                        receiverAddress: data.userAddress.address,
+                        areaCode: data.userAddress.areaCode,
+                        cityCode: data.userAddress.cityCode,
+                        provinceCode: data.userAddress.provinceCode,
+                        provinceString: data.userAddress.province,
+                        cityString: data.userAddress.city,
+                        areaString: data.userAddress.area
+                    };
+                } else {
+                    viewData.express = {};
+                }
+                viewData.totalAmounts = data.totalAmounts;
+                viewData.totalFreightFee = data.totalFreightFee;
+                viewData.tokenCoin = data.tokenCoin;
+                viewData.list = arrData;
+                this.setState({ viewData });
+            }).catch(err =>{
+                Toast.hiddenLoading();
+                this.$toastShow(err.msg);
+                if (err.code === 10009) {
+                    this.$navigate('login/login/LoginPage',{callback:()=>{
+                            this.loadPageData()
+                        }});
+                }
+            })
+        }else{
+            OrderApi.makeSureOrder({
+                orderType: this.params.orderParamVO.orderType,
+                orderProducts: this.params.orderParamVO.orderProducts
+            }).then((response) => {
+                Toast.hiddenLoading();
+                console.log(response);
+                let data = response.data;
+                let arrData = [];
+                data.orderProductList.map((item, index) => {
+                    arrData.push({
+                        productId: item.productId,
+                        uri: item.specImg,
+                        goodsName: item.productName,
+                        salePrice: item.price,
+                        category: item.spec,
+                        goodsNum: item.num,
+                        originalPrice: item.originalPrice,
+                        restrictions: item.restrictions
+                        // activityId: item.activityId
+                    });
+                });
+                if (data.userAddress) {
+                    viewData.express = {
+                        id: data.userAddress.id,
+                        receiverName: data.userAddress.receiver,
+                        receiverNum: data.userAddress.receiverPhone,
+                        receiverAddress: data.userAddress.address,
+                        areaCode: data.userAddress.areaCode,
+                        cityCode: data.userAddress.cityCode,
+                        provinceCode: data.userAddress.provinceCode,
+                        provinceString: data.userAddress.province,
+                        cityString: data.userAddress.city,
+                        areaString: data.userAddress.area
+                    };
+                } else {
+                    viewData.express = {};
+                }
+                viewData.totalAmounts = data.totalAmounts;
+                viewData.totalFreightFee = data.totalFreightFee;
+                viewData.tokenCoin = data.tokenCoin;
+                viewData.list = arrData;
+                this.setState({ viewData });
+            }).catch(err => {
+                Toast.hiddenLoading();
+                this.$toastShow(err.msg);
+                if (err.code === 10009) {
+                    this.$navigate('login/login/LoginPage',{callback:()=>{
+                            this.loadPageData()
+                        }});
+                }
             });
-            if (data.userAddress) {
-                viewData.express = {
-                    id: data.userAddress.id,
-                    receiverName: data.userAddress.receiver,
-                    receiverNum: data.userAddress.receiverPhone,
-                    receiverAddress: data.userAddress.address,
-                    areaCode: data.userAddress.areaCode,
-                    cityCode: data.userAddress.cityCode,
-                    provinceCode: data.userAddress.provinceCode,
-                    provinceString: data.userAddress.province,
-                    cityString: data.userAddress.city,
-                    areaString: data.userAddress.area
-                };
-            } else {
-                viewData.express = {};
-            }
-            viewData.totalAmounts = data.totalAmounts;
-            viewData.totalFreightFee = data.totalFreightFee;
-            viewData.tokenCoin = data.tokenCoin;
-            viewData.list = arrData;
-            this.setState({ viewData });
-        }).catch(err => {
-            Toast.hiddenLoading();
-            console.log(err);
-            if (err.code === 10001 || err.code === 10009) {
-                this.$navigate('login/login/LoginPage');
-            }
-        });
+        }
+
     }
 
     clickItem = (index, item) => {
@@ -498,12 +558,37 @@ export default class ConfirOrderPage extends BasePage {
                 areaCode: areaCode,
                 buyerRemark: buyerRemark,
                 cityCode: cityCode,
-                orderProducts: this.state.orderParam.orderProducts,
+                num: this.state.orderParam.orderProducts[0].num,
+                code:this.state.orderParam.orderProducts[0].code,
                 orderType: this.state.orderParam.orderType,
                 provinceCode: provinceCode,
                 receiver: receiver,
                 recevicePhone: recevicePhone
             };
+            console.log(params);
+            if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
+            } else {
+                OrderApi.DepreciateSubmitOrder(params).then((response) => {
+                    this.$loadingDismiss();
+                    let data = response.data;
+                    // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
+                    this.$navigate('payment/PaymentMethodPage', {
+                        orderNum: data.orderNum,
+                        amounts: this.state.viewData.totalAmounts,
+                        pageType: 0,
+                        availableBalance: data.user.availableBalance
+                    });
+
+                }).catch(e => {
+                    this.$loadingDismiss();
+                    console.log(e);
+                    if (e.code === 10009) {
+                        this.$navigate('login/login/LoginPage',{callback:()=>{
+                                this.loadPageData()
+                            }});
+                    }
+                });
+            }
         } else {
             params = {
                 address: address,
@@ -517,61 +602,96 @@ export default class ConfirOrderPage extends BasePage {
                 recevicePhone: recevicePhone,
                 tokenCoin: tokenCoin
             };
-        }
-        console.log(params);
-        if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
-        } else {
-            OrderApi.submitOrder(params).then((response) => {
-                this.$loadingDismiss();
-                let data = response.data;
-                // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
-                this.$navigate('order/payment/PaymentMethodPage', {
-                    orderNum: data.orderNum,
-                    amounts: this.state.viewData.totalAmounts,
-                    pageType: 0,
-                    availableBalance: data.user.availableBalance
+            console.log(params);
+            if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
+            } else {
+                OrderApi.submitOrder(params).then((response) => {
+                    this.$loadingDismiss();
+                    let data = response.data;
+                    // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
+                    this.$navigate('payment/PaymentMethodPage', {
+                        orderNum: data.orderNum,
+                        amounts: this.state.viewData.totalAmounts,
+                        pageType: 0,
+                        availableBalance: data.user.availableBalance
+                    });
+
+                }).catch(e => {
+                    this.$loadingDismiss();
+                    console.log(e);
+                    if (e.code === 10009) {
+                        this.$navigate('login/login/LoginPage',{callback:()=>{
+                                this.loadPageData()
+                            }});
+                    }
                 });
-
-            }).catch(e => {
-                this.$loadingDismiss();
-                console.log(e);
-                if (e.code === 10009) {
-                    this.$navigate('login/login/LoginPage');
-                }
-            });
+            }
         }
-
     };
     jumpToCouponsPage = (params) => {
         this.$navigate('mine/coupons/CouponsPage', {
             fromOrder: 1, productIds: this.state.viewData.list[0].productId,
-            orderParam: JSON.stringify(this.state.orderParam), callBack: (data) => {
-                let orderParams = this.state.orderParam;
+            orderParam: this.state.orderParam, callBack: (data) => {
+                console.log(data);
+                console.log('ccccccc');
+                // let orderParams = this.state.orderParam;
                 if (data && data.id) {
-                    orderParams.couponId = data.id;
-                    // HomeApi.orderCalcDiscountCouponAndUseScore({ orderParam: JSON.stringify(orderParams) }).then(res => {
-                    //     if (res.ok) {
-                    //         let data = res.data;
-                    //         // 积分抵扣计算
-                    //         let score = data.dealer.userScore > data.totalScore ? data.totalScore : data.dealer.userScore;
-                    //         let viewData = this.state.viewData;
-                    //         viewData.score = score;
-                    //         //let userScore = data.dealer.userScore;
-                    //         viewData.reducePrice = data.userScoreToBalance * score;
-                    //         // 当商品可以使用积分 用户积分大于0的时候 显示可以使用积分
-                    //         viewData.canUseScore = (data.totalScore > 0 && data.dealer.userScore) ? true : false;
-                    //         viewData.totalFreightFee = StringUtils.isNoEmpty(data.totalFreightFee) ? data.totalFreightFee : 0;
-                    //         viewData.totalAmounts = data.totalAmounts;
-                    //         this.setState({
-                    //             viewData: viewData
-                    //         });
-                    //     } else {
-                    //         Toast.toast(res.msg);
-                    //     }
-                    // });
+                    let viewData = this.state.viewData;
+                    OrderApi.makeSureOrder({
+                        orderType: this.params.orderParamVO.orderType,
+                        orderProducts: this.params.orderParamVO.orderProducts,
+                        couponId:data.couponConfigId,
+                    }).then((response) => {
+                        Toast.hiddenLoading();
+                        console.log(response);
+                        let data = response.data;
+                        let arrData = [];
+                        data.orderProductList.map((item, index) => {
+                            arrData.push({
+                                productId: item.productId,
+                                uri: item.specImg,
+                                goodsName: item.productName,
+                                salePrice: item.price,
+                                category: item.spec,
+                                goodsNum: item.num,
+                                originalPrice: item.originalPrice,
+                                restrictions: item.restrictions
+                                // activityId: item.activityId
+                            });
+                        });
+                        if (data.userAddress) {
+                            viewData.express = {
+                                id: data.userAddress.id,
+                                receiverName: data.userAddress.receiver,
+                                receiverNum: data.userAddress.receiverPhone,
+                                receiverAddress: data.userAddress.address,
+                                areaCode: data.userAddress.areaCode,
+                                cityCode: data.userAddress.cityCode,
+                                provinceCode: data.userAddress.provinceCode,
+                                provinceString: data.userAddress.province,
+                                cityString: data.userAddress.city,
+                                areaString: data.userAddress.area
+                            };
+                        } else {
+                            viewData.express = {};
+                        }
+                        viewData.totalAmounts = data.totalAmounts;
+                        viewData.totalFreightFee = data.totalFreightFee;
+                        viewData.tokenCoin = data.tokenCoin;
+                        viewData.list = arrData;
+                        this.setState({ viewData });
+                    }).catch(err => {
+                        Toast.hiddenLoading();
+                        this.$toastShow(err.msg);
+                        if (err.code === 10009) {
+                            this.$navigate('login/login/LoginPage',{callback:()=>{
+                                    this.loadPageData()
+                                }});
+                        }
+                    });
                 } else {
-                    console.log(oldViewData);
-                    this.setState({ viewData: oldViewData, priceList: oldPriceList });
+                    // console.log(oldViewData);
+                    // this.setState({ viewData: oldViewData, priceList: oldPriceList });
 
                 }
 

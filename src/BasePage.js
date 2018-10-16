@@ -11,7 +11,6 @@ import {
     LoadingHub,
     ToastView
 } from './components/pageDecorator/BaseView';
-
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';
 

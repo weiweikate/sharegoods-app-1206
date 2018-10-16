@@ -12,7 +12,8 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import ViewPager from '../../../components/ui/ViewPager';
 import UIImage from '../../../components/ui/UIImage';
 import xjt_03 from '../res/xjt_03.png';
-import { timeDifc } from '../../../utils/DateUtils';
+import ActivityView from './ActivityView';
+import { isNoEmpty } from '../../../utils/StringUtils';
 
 /**
  * 商品详情头部view
@@ -42,6 +43,10 @@ export default class TopicDetailHeaderView extends Component {
         }, 0);
     }
 
+    updateTime(activityData, activityType) {
+        this.ActivityView.saveActivityViewData(activityData, activityType);
+    }
+
     _clickItem = () => {
 
     };
@@ -56,91 +61,32 @@ export default class TopicDetailHeaderView extends Component {
             />);
     };
 
-    _renderActivityView = () => {
-        //markdownPrice 拍卖价 startPrice起拍价
-        //originalPrice 原价
-        //reseCount 预约购买人数
-        //beginTime 开抢时间
-        // notifyFlag推送消息 0未通知1已通知
-        // 下次降价时间或者结束时间 activityTime floorPrice最低价=markdownPrice
-        // date当前时间
-        // surplusNumber 剩余数量 totalNumber总
-        // endTime活动结束时间
-        const { activityType } = this.props;
-        let price = '', one = '', two = '', three = '', four = '';
-        let begin = false;
-        let end = false;
-        if (activityType === 2) {
-            const {
-                startPrice, markdownPrice = '', originalPrice = '', reseCount = '',
-                floorPrice, surplusNumber = '', totalNumber,
-                activityTime, date, beginTime, endTime
-            } = this.props.activityData;
-            begin = beginTime > date;
-            end = date > endTime;
-            price = markdownPrice;
-            if (begin) {
-                one = '起拍价';
-                two = `原价￥${startPrice}|${reseCount}人关注`;
-                three = `距开抢 ${beginTime - date}`;
-                four = `${beginTime}开拍`;
-            } else {
-                one = `原价￥${originalPrice}`;
-                two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '起拍价'}`;
-                three = markdownPrice === floorPrice ? `距结束 ${timeDifc(date, endTime) || ''}` : `距下次降价 ${timeDifc(date, activityTime) || ''}`;
-                four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;
-            }
-        }
-
-        return <View style={{
-            height: 50,
-            backgroundColor: begin ? '#33B4FF' : '#D51243',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-        }}>
-            <View style={{ marginLeft: 11, flexDirection: 'row' }}>
-                <Text style={{ color: 'white', fontSize: 18 }}>￥<Text
-                    style={{ fontSize: 40 }}>{price}</Text></Text>
-                <View style={{ marginLeft: 10, justifyContent: 'center' }}>
-                    <Text style={{ color: '#F7F7F7', fontSize: 12 }}>{one}</Text>
-                    <Text style={{
-                        color: '#F7F7F7',
-                        fontSize: 10,
-                        marginTop: 4
-                    }}>{two}</Text>
-                </View>
-            </View>
-            <View style={{ marginRight: 15 }}>
-                {end ?
-                    <Text style={{ color: '#FFFC00', fontSize: 13 }}>活动结束</Text>
-                    :
-                    <View>
-                        <Text style={{ color: begin ? '#1B7BB3' : '#FFFC00', fontSize: 11 }}>{three}</Text>
-                        <View style={{
-                            marginTop: 5,
-                            width: 100,
-                            height: 15,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundColor: begin ? '#2B99D9' : '#FFFC00'
-                        }}>
-                            <Text style={{ color: begin ? '#F7F7F7' : '#D51243', fontSize: 11 }}>{four}</Text>
-                        </View>
-                    </View>
-                }
-            </View>
-        </View>;
-    };
-
     render() {
-        const { productImgList = [{}], freight = '', monthSaleTotal = 0, product = {} } = this.props.data || {};
-        const { supplierName = '', brandName = '', name = '', firstCategoryName = '', secCategoryName = '', thirdCategoryName = '' } = product;
         const { activityType } = this.props;
+        let bannerImgList, tittle, freightValue, monthSale;
+        let nowPrice, oldPrice;
+
+        if (activityType === 3) {
+            const { imgFileList = [{}], name, levelPrice, originalPrice, freight, saleNum } = this.props.data || {};
+            bannerImgList = imgFileList;
+            tittle = name;
+            nowPrice = levelPrice;
+            oldPrice = originalPrice;
+            freightValue = freight;
+            monthSale = saleNum;
+        } else {
+            const { productImgList = [{}], freight, monthSaleTotal, product = {} } = this.props.data || {};
+            const { supplierName, brandName, name, firstCategoryName, secCategoryName, thirdCategoryName } = product;
+
+            bannerImgList = productImgList;
+            tittle = `${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`;
+            freightValue = freight;
+            monthSale = monthSaleTotal;
+        }
         return (
             <View>
                 <ViewPager style={styles.ViewPager}
-                           arrayData={productImgList}
+                           arrayData={bannerImgList}
                            renderItem={(item) => this.renderViewPageItem(item)}
                            dotStyle={{
                                height: 5,
@@ -158,24 +104,30 @@ export default class TopicDetailHeaderView extends Component {
                            }}
                            height={ScreenUtils.autoSizeWidth(377)}
                            autoplay={true}/>
-                {this._renderActivityView()}
+                {activityType === 3 ? null : <ActivityView ref={(e) => {
+                    this.ActivityView = e;
+                }} activityData={this.props.activityData} activityType={activityType}/>}
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{
                             marginTop: 14,
                             color: '#222222',
                             fontSize: 15
-                        }}>{`${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`}</Text>
+                        }}>{tittle}</Text>
+                        {activityType === 3 ?<View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
+                            <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
+                            <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${oldPrice}`}</Text>
+                        </View>:null}
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text style={{
                                 color: '#BBBBBB',
                                 fontSize: 11
-                            }}>快递：{freight === 0 ? `包邮` : `${freight}元`}</Text>
+                            }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : 0}元`}</Text>
                             <Text style={{
                                 color: '#666666',
                                 fontSize: 13,
                                 marginLeft: ScreenUtils.autoSizeWidth(108)
-                            }}>{`月销售${monthSaleTotal}笔`}</Text>
+                            }}>{`月销售${isNoEmpty(monthSale) ? monthSale : 0}笔`}</Text>
                         </View>
                     </View>
                 </View>

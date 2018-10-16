@@ -90,6 +90,10 @@ export default {
     isIOSSmall: Platform.OS === 'ios' && Dimensions.get('window').height === 568,// phoneSE,phone4,phone5,phone5s
     isIOSNomarl: Platform.OS === 'ios' && Dimensions.get('window').height === 667,// phone6,phone7,phone8
     isIOSP: Platform.OS === 'ios' && Dimensions.get('window').height === 736,//phone6p,phone7p,phone8p
-    isIOSX: Platform.OS === 'ios' && Dimensions.get('window').height === 812
+    isIOSX: Platform.OS === 'ios' && Dimensions.get('window').height === 812,
+    safeBottomMax: Platform.OS === 'ios' ? (__ISIPHONEXSMAX__ ? 37 : 0) : 0,
+    safeBottomX: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 37 : 0) : 0,
+    isIphoneMax: __ISIPHONEXSMAX__,
+    saveMarginBottom: Platform.OS === 'ios' && (Dimensions.get('window').height === 812 || Dimensions.get('window').height === 736) ? 34 : 0,
 
 };

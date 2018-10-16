@@ -25,6 +25,8 @@ dependencies {
     compile rootProject.ext.dependencies.multidex
     compile rootProject.ext.dependencies.uapp
     compile rootProject.ext.dependencies.ucommon
+    api rootProject.ext.dependencies.gson
+    api rootProject.ext.dependencies.zxing
 
     // From node_modules
     compile(rootProject.ext.dependencies.rn) {
@@ -34,4 +36,5 @@ dependencies {
     compile files('libs/umeng-share-core-6.9.3.jar')
     compile files('libs/umeng-sharetool-6.9.3.jar')
     compile files('libs/umeng-share-wechat-simplify-6.9.3.jar')
+
 }

@@ -10,6 +10,9 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
+/**
+ * 交易密码框
+ */
 export default class Password extends Component {
     static propTypes = {
         style: PropTypes.style,
@@ -57,13 +60,14 @@ export default class Password extends Component {
                         ref='textInput'
                         maxLength={this.props.maxLength}
                         autoFocus={false}
-                        keyboardType="number-pad"
+                        keyboardType="numeric"
                         onChangeText={
                             (text) => {
-                                this.setState({ text });
-                                this.props.onChange(text);
-                                if (text.length === this.props.maxLength) {
-                                    this.props.onEnd(text);
+                                const newText = text.replace(/[^\d]+/, '');
+                                this.setState({ text: newText });
+                                this.props.onChange(newText);
+                                if (newText.length === this.props.maxLength) {
+                                    this.props.onEnd(newText);
                                 }
                             }
                         }

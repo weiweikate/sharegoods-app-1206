@@ -16,6 +16,8 @@
 #import "JRLib.h"
 #import "JRNotiOrKey.h"
 #import "JRCacheManager.h"
+#import "NSObject+Util.h"
+#import <YYKit.h>
 
 
 #endif /* Jure_pch */
