@@ -160,9 +160,8 @@ export default class CommShareModal extends React.Component {
                 onRequestClose = {() => {
                     this.close();
                 }}
-                style = {styles.modalStyle}
             >
-                <View style = {{flex: 1}}/>
+                <View style = {{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}/>
                 <View style = {styles.contentContainer}>
                     <View style = {styles.header}>
                         <View style = {{flex: 1, marginLeft: autoSizeWidth(25), height: 1, backgroundColor: '#EEEEEE'}} />
@@ -219,7 +218,7 @@ export default class CommShareModal extends React.Component {
 
 const styles = StyleSheet.create({
     modalStyle: {
-
+        backgroundColor: 'white'
     },
     contentContainer: {
         backgroundColor: 'white',
