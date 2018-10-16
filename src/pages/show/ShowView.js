@@ -23,7 +23,8 @@ export default class ShowView extends Component {
         return <View key={index} style={styles.item}><TagView text={'最热'}/><Text style={styles.text}>{item.name}</Text></View>
     }
     _goToShow() {
-        console.log('_goToShow')
+        const { navigation } = this.props
+        navigation.navigate('show/ShowListPage')
     }
     render() {
         return <View style={styles.container}>
