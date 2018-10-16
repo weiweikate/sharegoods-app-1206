@@ -7,6 +7,7 @@ import Waterfall from '../../components/ui/WaterFall'
 import ShowBannerView from './ShowBannerView'
 import ShowChoiceView from './ShowChoiceView'
 import ShowFindView from './ShowFindView'
+import ShowHotScrollView from './ShowHotScrollView'
 
 export default class ShowHotView extends Component {
     constructor(props) {
@@ -75,7 +76,7 @@ export default class ShowHotView extends Component {
         )
     }
     renderHeader = () => {
-        return <View><ShowBannerView/><ShowChoiceView/><ShowFindView/></View>
+        return <View><ShowBannerView/><ShowChoiceView/><ShowFindView/><ShowHotScrollView/></View>
     }
     render() {
         return(
