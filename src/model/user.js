@@ -83,7 +83,7 @@ class User {
     @observable
     blockedBalances = null; //冻结金额
     @observable
-    tokenCoin = null;       //代币金额
+    tokenCoin = null;       //一元券数量
     @observable
     blockedCoin = null;     //冻结代币
     @observable
@@ -182,7 +182,7 @@ class User {
         this.upDealerid = info.upDealerid;          //上级
         this.availableBalance = info.availableBalance;//可提现金额
         this.blockedBalances = info.blockedBalances; //冻结金额
-        this.tokenCoin = info.tokenCoin;            //代币金额
+        this.tokenCoin = info.tokenCoin;            //一元券数量
         this.blockedCoin = info.blockedCoin;        //冻结代币
         this.userScore = info.userScore;            //积分
         this.password = info.password;              //密码
