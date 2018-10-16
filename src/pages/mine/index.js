@@ -11,6 +11,7 @@ import setting from './page/setting';
 import MyAddress from './page/myaddress';
 import MyAccount from './page/myaccount';
 import bankCard from './page/bankCard';
+import InviteFriendsPage from './page/Invite/InviteFriendsPage';
 
 export default {
     moduleName: 'mine',    //模块名称
@@ -27,6 +28,7 @@ export default {
         MyAccount,
         bankCard,
         MyDataPage,
-        MyPromotionPage
+        MyPromotionPage,
+        InviteFriendsPage
     }
 };

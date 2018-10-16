@@ -33,20 +33,25 @@ RCT_EXPORT_METHOD(loginWX:(RCTResponseSenderBlock)callback){
 
 //info
 //shareType
-//RCT_EXPORT_METHOD(shareScreen:(id)jsonParam){
-//
-//  dispatch_async(dispatch_get_main_queue(), ^{
-//    UIImage * img = [UIView captureSceenImage:jsonParam[@"info"]];
-//
+RCT_EXPORT_METHOD(saveScreen:(id)jsonParam){
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    UIImage * img = [UIView captureSceenImage:jsonParam];
+    if(img){
+      [[JRShareManager sharedInstance]saveImage:img];
+    } else{
+      [JRLoadingAndToastTool showToast:@"保存失败" andDelyTime:.5f];
+    }
+
 //    if(img){
 //      NSMutableDictionary *dicParam = [NSMutableDictionary dictionaryWithDictionary:jsonParam];
 //      [dicParam setObject:img forKey:@"shareImage"];
-//      [[JRShareManager sharedInstance]beginShare:dicParam];
+//
 //    } else{
 //      [JRLoadingAndToastTool showToast:@"截屏失败" andDelyTime:.5f];
 //    }
-//  });
-//}
+  });
+}
 
 
 /**
@@ -114,6 +119,22 @@ RCT_EXPORT_METHOD(creatShareImage:(id) jsonParam
                                                                  }
                                                                }];
   });
+}
+/**
+@QRCodeStr  二维码字符串
+onSuccess(NSSting) 成功的回调
+onError(NSSting)   失败的回调
+*/
+RCT_EXPORT_METHOD(creatQRCodeImage:(NSString *) QRCodeStr
+                  onSuccess:(RCTResponseSenderBlock) onSuccess
+                  onError:(RCTResponseSenderBlock) onError){
+  [[ShareImageMaker sharedInstance] creatQRCodeImageWithQRCodeStr:QRCodeStr completion:^(NSString *pathStr, NSString *errorStr) {
+    if (errorStr) {
+      onError(@[errorStr]);
+    }else{
+      onSuccess(@[pathStr]);
+    }
+  }];
 }
               
 @end

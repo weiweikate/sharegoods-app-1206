@@ -44,6 +44,9 @@ export default class MembersRow extends Component {
                 {
                     dealerList.map((item, index) => {
                         const { headImg, nickName } = item || {};
+                        if (index > 10) {
+                            return;
+                        }
                         return (<View style={{ alignItems: 'center', marginBottom: (index >= 5) ? 16 : 0 }} key={index}>
                             {headImg ? <Image source={{ uri: headImg }}
                                               style={styles.headerImg}/> :
