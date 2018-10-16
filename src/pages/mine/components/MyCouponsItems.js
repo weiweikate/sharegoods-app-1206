@@ -297,6 +297,7 @@ export default class MyCouponsItems extends Component {
 
     clickItem = (index, item) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
+        // 跳转时type = 99 表示一元券
         if (this.props.fromOrder) {
             this.props.useCoupons(item);
         } else {
