@@ -308,7 +308,7 @@ class MyOrdersDetailPage extends BasePage {
                     <UIText value={'三方付款时间：' + DateUtils.getFormatDate(this.state.viewData.payTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
                 {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
-                    <UIText value={'支付宝交易号：' + this.state.viewData.outTradeNo} style={{
+                    <UIText value={'交易订单号：' + this.state.viewData.outTradeNo} style={{
                         color: color.black_999,
                         fontSize: 13,
                         marginLeft: 16,

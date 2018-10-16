@@ -13,7 +13,7 @@ typedef void(^loginFinshBlock)(id userInfo);
 typedef void(^shareFinshBlock)(NSString *errorStr);
 /*info:包含截屏参数
 shareType : 0图片分享 1 图文链接分享
-platformType: 0 朋友圈 1 会话
+platformType:0 微信好友 1朋友圈 2qq好友 3qq空间 4微博
 title:分享标题(当为图文分享时候使用)
 dec:内容(当为图文分享时候使用)
 linkUrl:(图文分享下的链接)
