@@ -21,6 +21,7 @@ import TopicAPI from './api/TopicApi';
 import bridge from '../../utils/bridge';
 import user from '../../model/user';
 import TopicItemView from './components/TopicItemView';
+import UIText from '../../comm/components/UIText';
 
 @observer
 export default class DownPricePage extends BasePage {
@@ -91,7 +92,6 @@ export default class DownPricePage extends BasePage {
                     {
                         flexDirection: 'row',//设置横向布局
                         flexWrap: 'wrap',  //设置换行显示
-                        // alignItems: 'flex-start',
                         backgroundColor: '#FFFFFF',
                         width: ScreenUtils.width
                     }
