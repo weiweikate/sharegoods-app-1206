@@ -83,12 +83,11 @@ export default class AccountSettingPage extends BasePage {
                     if (res.code === 10000) {
                         user.untiedWechat(data.nickName, data.openid);
                         bridge.$toast('绑定成功');
+                    } else {
+                        bridge.$toast(res.msg);
                     }
                 }).catch((error) => {
-                    if (error.code === 34005) {
-                        this.$navigate('login/login/RegistPage', data);
-                    }
-                    bridge.$toast(data.msg);
+                    bridge.$toast(error.msg);
                 });
             });
         } else {
