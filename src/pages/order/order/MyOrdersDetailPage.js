@@ -308,7 +308,7 @@ class MyOrdersDetailPage extends BasePage {
                     <UIText value={'三方付款时间：' + DateUtils.getFormatDate(this.state.viewData.payTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
                 {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
-                    <UIText value={'支付宝交易号：' + this.state.viewData.outTradeNo} style={{
+                    <UIText value={'交易订单号：' + this.state.viewData.outTradeNo} style={{
                         color: color.black_999,
                         fontSize: 13,
                         marginLeft: 16,
@@ -574,7 +574,7 @@ class MyOrdersDetailPage extends BasePage {
                     isRed: false
                 });
             }
-            if (data[index].status === 3) {
+            if (data[index].status === 3||data[index].status === 4) {
                 afterSaleService.push({
                     id: 1,
                     operation: '退换',
@@ -584,13 +584,20 @@ class MyOrdersDetailPage extends BasePage {
             if (data[index].status === 5) {
                 // 确认收货的状态的订单售后截止时间和当前时间比
                 let now = new Date().getTime();
-                if (data.list[index].finishTime - now > 0) {
+                if (data[index].finishTime - now > 0) {
                     afterSaleService.push({
                         id: 1,
                         operation: '退换',
                         isRed: false
                     });
                 }
+            }
+            if (data[index].status === 7 ||data[index].status === 8||data[index].status === 6) {
+                afterSaleService.push({
+                    id: 4,
+                    operation: '已关闭',
+                    isRed: true
+                });
             }
         } else {
             if (data[index].status === 4||data[index].status === 5) {
@@ -665,7 +672,7 @@ class MyOrdersDetailPage extends BasePage {
                 //     isRed: false
                 // });
             }
-            if (data[index].status === 7 && data[index].returnType) {
+            if (data[index].status === 7 ||data[index].status === 8&& data[index].returnType) {
                 afterSaleService.push({
                     id: 4,
                     operation: '已关闭',
@@ -762,7 +769,7 @@ class MyOrdersDetailPage extends BasePage {
                     break;
                 //卖家已发货 待收货
                 case 3:
-                    // this.startCutDownTime2(response.data.autoReceiveTime);
+                    this.startCutDownTime2(data.autoReceiveTime);
                     pageStateString.sellerTime = "";
                     break;
                 //   确认收货
@@ -827,10 +834,15 @@ class MyOrdersDetailPage extends BasePage {
                 orderProductPrices: data.orderProductList[0].price,//礼包，套餐啥的
                 allData: data
             });
-         console.log("viewDAta"+this.state.viewData);
         }).catch(e => {
+
             Toast.hiddenLoading();
             Toast.$toast(e.msg);
+            if(e.code === 10009){
+                this.$navigate('login/login/LoginPage',{callback:()=>{
+                        this.loadPageData()
+                    }});
+            }
         });
     }
 
