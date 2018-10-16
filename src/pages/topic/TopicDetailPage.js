@@ -18,7 +18,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-import StringUtils from '../../utils/StringUtils';
+//import StringUtils from '../../utils/StringUtils';
 import HomeAPI from '../home/api/HomeAPI';
 import TopicApi from './api/TopicApi';
 import user from '../../model/user';

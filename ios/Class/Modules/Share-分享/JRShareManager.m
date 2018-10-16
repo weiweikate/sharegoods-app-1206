@@ -17,9 +17,7 @@
 
 SINGLETON_FOR_CLASS(JRShareManager)
 /**
- jsonData 参数
-
- shareType : 0 图文链接分享  1图片分享
+ shareType : 0图片分享 1 图文链接分享
  platformType: 0 朋友圈 1 会话
  title:分享标题(当为图文分享时候使用)
  dec:内容(当为图文分享时候使用)
@@ -37,7 +35,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
     platefrom = UMSocialPlatformType_WechatSession;
     
   }
-  if ([shareModel.shareType integerValue] == 0) {//为分享网页
+  if ([shareModel.shareType integerValue] == 1) {//为分享网页
     [self shareWithPlatefrom:platefrom
                        Title:shareModel.title
                     SubTitle:shareModel.dec
@@ -62,7 +60,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
   shareObject.webpageUrl = linkUrl;
   //分享消息对象设置分享内容对象
   message.shareObject = shareObject;
-  [[UMSocialManager defaultManager]shareToPlatform:UMSocialPlatformType_WechatTimeLine messageObject:message currentViewController:self.currentViewController_XG completion:^(id result, NSError *error) {
+  [[UMSocialManager defaultManager]shareToPlatform:platform messageObject:message currentViewController:self.currentViewController_XG completion:^(id result, NSError *error) {
     if(error){
       completion(error.description);
     }else{
