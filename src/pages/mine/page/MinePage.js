@@ -379,7 +379,7 @@ export default class MinePage extends BasePage {
                 this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 3 });
                 break;
             case 3:
-                this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 4 });
+                this.props.navigation.navigate('order/afterSaleService/AfterSaleListPage', { index: 4 });
                 break;
         }
     };
@@ -409,7 +409,7 @@ export default class MinePage extends BasePage {
         // let leftText = ['邀请好友', '活动日历', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹'];
         switch (index) {
             case 0:
-                this.props.navigation.navigate('mine/myAccount/MyAccountPage');
+                this.props.navigation.navigate('mine/InviteFriendsPage');
                 break;
             case 1:
                 this.props.navigation.navigate('coupons/CouponsPage');

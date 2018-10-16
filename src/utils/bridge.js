@@ -83,5 +83,21 @@ export default {
     },
     saveImage(path){
         NativeModules.LoginAndShareModule.saveImage(path);
+    },
+    creatQRCodeImage(QRCodeStr, onSuccess, onError = (errorStr) => {}){
+        NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
+    },
+    /**
+     * 保存当前页面到相册
+     * {
+     * width: number
+     * heigh: number
+     * left: number
+     * top: number
+     * allScreen: bool
+     * }
+     */
+    saveScreen(){
+        NativeModules.LoginAndShareModule.saveScreen({allScreen: true});
     }
 };

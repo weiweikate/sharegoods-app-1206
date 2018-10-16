@@ -138,12 +138,12 @@ export default class CommShareModal extends React.Component {
 
     render() {
         let array = [];
+        array.push({image: CommTabImag.wechat, title: '微信好友', onPress: () => {this.share(0)}});
+        array.push( {image: CommTabImag.pengyouquan, title: '朋友圈', onPress: () => {this.share(1)}});
+        array.push( {image: CommTabImag.qq, title: 'QQ好友', onPress: () => {this.share(2)}});
+        array.push( {image: CommTabImag.kongjian, title: 'QQ好友', onPress: () => {this.share(3)}});
+        array.push( {image: CommTabImag.weibo, title: '微博', onPress: () => {this.share(4)}});
         if(this.props.type === 'Image'){
-            array.push({image: CommTabImag.wechat, title: '微信好友', onPress: () => {this.share(0)}});
-            array.push( {image: CommTabImag.pengyouquan, title: '朋友圈', onPress: () => {this.share(1)}});
-            array.push( {image: CommTabImag.qq, title: 'QQ好友', onPress: () => {this.share(2)}});
-            array.push( {image: CommTabImag.kongjian, title: 'QQ好友', onPress: () => {this.share(3)}});
-            array.push( {image: CommTabImag.weibo, title: '微博', onPress: () => {this.share(4)}});
             if (this.state.shareType === 1){
                 array.push({image: CommTabImag.lianjie, title: '复制链接', onPress: () => {this.copyUrl()}})
                 array.push({image: CommTabImag.baocun, title: '保存图片', onPress: () => {this.changeShareType(0)}});
@@ -160,9 +160,8 @@ export default class CommShareModal extends React.Component {
                 onRequestClose = {() => {
                     this.close();
                 }}
-                style = {styles.modalStyle}
             >
-                <View style = {{flex: 1}}/>
+                <View style = {{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}/>
                 <View style = {styles.contentContainer}>
                     <View style = {styles.header}>
                         <View style = {{flex: 1, marginLeft: autoSizeWidth(25), height: 1, backgroundColor: '#EEEEEE'}} />
@@ -219,7 +218,7 @@ export default class CommShareModal extends React.Component {
 
 const styles = StyleSheet.create({
     modalStyle: {
-
+        backgroundColor: 'white'
     },
     contentContainer: {
         backgroundColor: 'white',
