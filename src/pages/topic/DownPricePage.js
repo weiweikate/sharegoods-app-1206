@@ -140,12 +140,13 @@ export default class DownPricePage extends BasePage {
     _itemActionClick=(itemData)=>{
         if (itemData.productType === 99) {
             this.$navigate('home/product/ProductDetailPage', {
-                productId: itemData.productId
+                productId: itemData.productId,
+                productCode: itemData.prodCode,
             });
         } else if (itemData.productType === 1 || itemData.productType === 2) {
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: itemData.prodCode,
-                productType: itemData.productType
+                activityType: itemData.productType
             });
         } else if (itemData.productId === 5){
             this.$navigate('topic/TopicPage',{
