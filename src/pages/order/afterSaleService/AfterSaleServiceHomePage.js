@@ -89,7 +89,7 @@ class AfterSaleServiceHomePage extends BasePage {
         let productData = this.params.pageData.orderProductList[this.state.index];
         let arr = [];
         for (let i = 0; i < image.length; i++) {
-           if ((productData.restrictions & status[i]) !== productData.restrictions) {
+           if ((productData.restrictions & status[i]) !== status[i]) {
                arr.push(
                    <TouchableOpacity style={{
                        flexDirection: 'row',
