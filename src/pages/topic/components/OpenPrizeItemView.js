@@ -104,6 +104,7 @@ export default class OpenPrizeItemView extends Component {
                             }
                         >
                             {itemData.productName}
+                            {/*测试测试测试测试测试 测试测试测试测试测试 测试测试测试测试测试 测试测试测试测试测试*/}
                         </Text>
                         {/*中部视图 关注或者进度条*/}
                         <View
@@ -282,7 +283,7 @@ const ItemStyles = StyleSheet.create({
         color: ColorUtil.Color_222222,
         width: ScreenUtils.width / 2 - 16,
 
-        height: 38,
+        height: 35,
         fontSize: 12
     },
     itemFolloweTextStyle: {
