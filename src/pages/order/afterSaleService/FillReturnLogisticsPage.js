@@ -11,7 +11,7 @@ import {
     DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import GoodsItem from '../components/GoodsItem';
+import GoodsItem from '../components/GoodsGrayItem';
 import arrow_right from '../res/arrow_right.png';
 import wuxiu_btn_saoma_nor from '../res/wuxiu_btn_saoma_nor.png';
 import {
