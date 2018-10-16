@@ -22,7 +22,8 @@ import ActionSheetView from '../components/ActionSheetView';
 import ReportAlert from '../components/ReportAlert';
 // 图片资源
 import settingLogo from './res/dp_03-02.png';
-import moreLogo from './res/more_icon.png';
+import icons8_Shop_50px from '../shopRecruit/src/icons8_Shop_50px.png';
+import icons9_shop from '../shopRecruit/src/icons9_shop.png';
 
 import onSc_03 from './res/sc_03.png';
 import unSc_03 from './res/wsc_03.png';
@@ -48,9 +49,16 @@ export default class MyShopPage extends BasePage {
         const { myStore, userStatus } = this.state.storeData;
         if (userStatus === 1) {
             return (
-                <TouchableOpacity onPress={this._clickSettingItem} style={styles.rightBarItemContainer}>
-                    <Image style={{ marginRight: 20 }} source={myStore ? settingLogo : moreLogo}/>
-                </TouchableOpacity>
+                <View style={styles.rightBarItemContainer}>
+                    <TouchableOpacity onPress={() => {
+                        this.$navigate('spellShop/recommendSearch/RecommendPage',{havaShop:true})}
+                    }>
+                        <Image style={{ marginRight: 20 }} source={icons8_Shop_50px}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this._clickSettingItem} style={styles.rightBarItemContainer}>
+                        <Image style={{ marginRight: 20 }} source={myStore ? settingLogo : icons9_shop}/>
+                    </TouchableOpacity>
+                </View>
             );
         } else {
             return (
@@ -68,7 +76,7 @@ export default class MyShopPage extends BasePage {
             storeData: {},
             storeId: this.params.storeId || this.props.storeId,
             isLike: false,
-            isRefresh:false
+            isRefresh: false
         };
     }
 
@@ -76,12 +84,12 @@ export default class MyShopPage extends BasePage {
         this._loadPageData();
     }
 
-    _onRefresh = ()=>{
+    _onRefresh = () => {
         this.setState({
-            isRefresh:true
+            isRefresh: true
         });
         this._loadPageData();
-    }
+    };
 
     _loadPageData = () => {
         //店铺信息
@@ -90,12 +98,12 @@ export default class MyShopPage extends BasePage {
             this.setState({
                 storeData: dataTemp,
                 storeId: dataTemp.id,
-                isRefresh:false
+                isRefresh: false
             });
         }).catch((error) => {
             this.$toastShow(error.msg);
             this.setState({
-                isRefresh:false
+                isRefresh: false
             });
         });
 
@@ -258,13 +266,20 @@ export default class MyShopPage extends BasePage {
 
     _renderJoinBtn = () => {
         let btnText;
-        let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2;
+        const { maxUser, storeUserList = [] } = this.state.storeData;
+        let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2 && maxUser > storeUserList.length;
         switch (this.state.storeData.userStatus) {
             case 0: {
                 if (this.state.storeData.recruitStatus === 0) {
                     btnText = '申请加入';
+                    if (!canJoin) {
+                        btnText = '人员已满';
+                    }
                 } else if (this.state.storeData.recruitStatus === 1) {
                     btnText = '加入店铺';
+                    if (!canJoin) {
+                        btnText = '人员已满';
+                    }
                 } else {
                     btnText = '暂不允许加入';
                 }
