@@ -8,9 +8,11 @@ const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
 import { ShowChoiceModules } from './Show'
 import seeImg from '../../comm/res/see.png'
+import maskImg from '../../comm/res/show_mask.png'
 
 const Card = ({item, press}) => <TouchableOpacity style={styles.card} onPress={()=> press && press()}>
     <ImageBackground style={styles.imgView} source={{uri:item.imgUrl}}>
+        <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <Text style={styles.dis}>氨基酸洗面奶，30秒自动起泡清洁力强不伤脸，不含角质合痘痘肌和敏感肌，涂抹在手上等...</Text>
     </ImageBackground>
     <View style={styles.seeRow}>
@@ -155,5 +157,11 @@ let styles = StyleSheet.create({
     time: {
         color: '#666',
         fontSize: px2dp(11)
+    },
+    mask: {
+        position: 'absolute',
+        width: px2dp(325),
+        bottom: 0,
+        height: px2dp(40)
     }
 })

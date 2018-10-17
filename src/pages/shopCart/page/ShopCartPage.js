@@ -46,19 +46,12 @@ const activityString = {
 
 @observer
 export default class ShopCartPage extends BasePage {
-
     // 导航配置
     $navigationBarOptions = {
         title: '购物车',
         leftNavItemHidden: true
 
     };
- /*   $NavBarRenderRightItem = () => {
-        return (
-            <View
-            />
-        );
-    };*/
 
     componentDidMount() {
         shopCartCacheTool.getShopCartGoodsListData();
@@ -66,19 +59,31 @@ export default class ShopCartPage extends BasePage {
 
     constructor(props) {
         super(props);
+
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
-            viewData: [
-            ]
+            viewData: []
         };
+
     }
 
     _render() {
+        let hiddeLeft = true;
+        if (!(this.params.hiddeLeft === undefined)) {
+            hiddeLeft = this.params.hiddeLeft;
+        } else {
+            hiddeLeft = true;
+        }
         return (
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
                 {shopCartStore.data && shopCartStore.data.length > 0 ? this._renderListView() : this._renderEmptyView()}
                 {this._renderShopCartBottomMenu()}
+                {
+                    this.$navigatorBar && this.$navigatorBar.hiddenLeftItem(hiddeLeft)
+                }
             </View>
+
+
         );
     }
 
@@ -126,54 +131,86 @@ export default class ShopCartPage extends BasePage {
     };
 
     _renderShopCartBottomMenu = () => {
+
+        let hiddeLeft = true;
+        if (!(this.params.hiddeLeft === undefined)) {
+            hiddeLeft = this.params.hiddeLeft;
+        } else {
+            hiddeLeft = true;
+        }
+
         return (
-            <View style={styles.CartBottomContainer}>
-                <TouchableOpacity
-                    style={{ flexDirection: 'row', paddingLeft: 19 }}
-                    onPress={() => this._selectAll()}
-                >
-                    <Image
-
-                        source={shopCartStore.computedSelect ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
-                        style={{ width: 22, height: 22 }}/>
-
-                    <UIText
-                        value={'全选'}
-                        style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#999999', marginLeft: 10 }}/>
-                </TouchableOpacity>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <UIText
-                        value={'合计'}
-                        style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: ColorUtil.Color_222222 }}/>
-                    <UIText
-                        value={StringUtils.formatMoneyString(shopCartStore.getTotalMoney)}
-                        style={styles.totalPrice}/>
+            <View
+                style={[{
+                    height: 49,
+                    width: ScreenUtils.width,
+                    backgroundColor:ColorUtil.Color_ffffff
+                },
+                    (!hiddeLeft && ScreenUtils.tabBarHeight > 49)
+                        ?
+                        {height: 83}
+                        :
+                        null
+                ]}
+            >
+                <View style={styles.CartBottomContainer}>
                     <TouchableOpacity
-                        style={styles.selectGoodsNum}
-                        onPress={() => this._toBuyImmediately()}
+                        style={{ flexDirection: 'row', paddingLeft: 19 }}
+                        onPress={() => this._selectAll()}
                     >
+                        <Image
+                            source={shopCartStore.computedSelect ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
+                            style={{ width: 22, height: 22 }}/>
+
                         <UIText
-                            value={`结算(${shopCartStore.getTotalSelectGoodsNum})`}
-                            style={{ color: ColorUtil.Color_ffffff, fontSize: 16 }}
-                        />
+                            value={'全选'}
+                            style={{
+                                fontFamily: 'PingFang-SC-Medium',
+                                fontSize: 13,
+                                color: '#999999',
+                                marginLeft: 10
+                            }}/>
                     </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <UIText
+                            value={'合计'}
+                            style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: ColorUtil.Color_222222 }}/>
+                        <UIText
+                            value={StringUtils.formatMoneyString(shopCartStore.getTotalMoney)}
+                            style={styles.totalPrice}/>
+                        <TouchableOpacity
+                            style={styles.selectGoodsNum}
+                            onPress={() => this._toBuyImmediately()}
+                        >
+                            <UIText
+                                value={`结算(${shopCartStore.getTotalSelectGoodsNum})`}
+                                style={{ color: ColorUtil.Color_ffffff, fontSize: 16 }}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         );
     };
     _toBuyImmediately = () => {
-
         let [...selectArr] = shopCartStore.startSettlement();
         if (selectArr.length <= 0) {
             bridge.$toast('请先选择结算商品~');
         } else {
-            let goodsAllNumber = 0;
-            let allPrice = 0.00;
+            let tempArr = [];
             selectArr.map((goods) => {
-                goodsAllNumber += goods.amount;
-                allPrice += goods.amount * goods.price;
+                tempArr.push({
+                    priceId: goods.priceId,
+                    num: goods.amount,
+                    productId: goods.productId
+                });
             });
-            bridge.$toast('选中商品类型' + selectArr.length + '种,商品数量' + goodsAllNumber + '个,总价:' + StringUtils.formatMoneyString(allPrice));
+            this.$navigate('order/order/ConfirOrderPage', {
+                orderParamVO: {
+                    orderType: 99,
+                    orderProducts: tempArr
+                }
+            });
         }
     };
     _selectAll = () => {
@@ -257,7 +294,7 @@ export default class ShopCartPage extends BasePage {
                                                     ?
                                                     '    ' + itemData.productName
                                                     :
-                                                    ''+itemData.productName
+                                                    '' + itemData.productName
                                             )
                                             :
                                             ''}
@@ -389,7 +426,6 @@ export default class ShopCartPage extends BasePage {
             shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
 
-        // shopCartStore.data[rowId] = itemData;
     };
     /*删除操作*/
     _deleteFromShoppingCartByProductId = (priceId) => {
@@ -397,135 +433,136 @@ export default class ShopCartPage extends BasePage {
     };
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-end'
-    },
-    whatLeft: {  // 组件定义了一个上边框
-        flex: 1,
-        borderTopWidth: 1,
-        borderColor: 'black',
-        backgroundColor: 'green' //每个界面背景颜色不一样
-    },
-    standaloneRowBack: {
-        alignItems: 'center',
-        backgroundColor: ColorUtil.mainRedColor,
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        padding: 15
+const
+    styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            justifyContent: 'flex-end'
+        },
+        whatLeft: {  // 组件定义了一个上边框
+            flex: 1,
+            borderTopWidth: 1,
+            borderColor: 'black',
+            backgroundColor: 'green' //每个界面背景颜色不一样
+        },
+        standaloneRowBack: {
+            alignItems: 'center',
+            backgroundColor: ColorUtil.mainRedColor,
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            padding: 15
 
-    },
-    backUITextWhite: {
-        // flex:1,
-        marginRight: 0,
-        color: '#ffffff'
-    },
-    standaloneRowFront: {
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        height: 130,
-        width: ScreenUtils.width,
-        flexDirection: 'row',
-        marginRight: 16
-    },
-    rectangle: {
-        height: 30,
-        width: 30,
-        justifyContent: 'center',
-        borderWidth: 1,
-        borderColor: ColorUtil.Color_dddddd,
-        alignItems: 'center'
-    },
+        },
+        backUITextWhite: {
+            // flex:1,
+            marginRight: 0,
+            color: '#ffffff'
+        },
+        standaloneRowFront: {
+            alignItems: 'center',
+            backgroundColor: '#fff',
+            height: 130,
+            width: ScreenUtils.width,
+            flexDirection: 'row',
+            marginRight: 16
+        },
+        rectangle: {
+            height: 30,
+            width: 30,
+            justifyContent: 'center',
+            borderWidth: 1,
+            borderColor: ColorUtil.Color_dddddd,
+            alignItems: 'center'
+        },
 
-    validItemContainer: {
-        height: 140,
-        flexDirection: 'row',
-        backgroundColor: ColorUtil.Color_f7f7f7
-    },
-    validProductImg: {
-        width: 80,
-        height: 80,
-        marginLeft: 16,
-        marginRight: 16
-        // marginBottom: 10
-    },
-    validConUITextContainer: {
-        flex: 1,
-        height: 100,
-        justifyContent: 'space-between',
-        marginTop: 10,
-        paddingRight: 15
-    },
+        validItemContainer: {
+            height: 140,
+            flexDirection: 'row',
+            backgroundColor: ColorUtil.Color_f7f7f7
+        },
+        validProductImg: {
+            width: 80,
+            height: 80,
+            marginLeft: 16,
+            marginRight: 16
+            // marginBottom: 10
+        },
+        validConUITextContainer: {
+            flex: 1,
+            height: 100,
+            justifyContent: 'space-between',
+            marginTop: 10,
+            paddingRight: 15
+        },
 
-    invalidItemContainer: {
-        height: 100,
-        flexDirection: 'row',
-        backgroundColor: ColorUtil.Color_ffffff
-    },
-    invalidUITextInvalid: {
-        width: 38,
-        height: 20,
-        borderRadius: 10,
-        backgroundColor: '#999999',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginLeft: 12
-    },
-    invalidProductImg: {
-        width: 80,
-        height: 80,
-        marginLeft: 7,
-        marginRight: 16
-    },
-    invalidUITextContainer: {
-        flex: 1,
-        height: 100,
-        justifyContent: 'space-between',
-        marginTop: 30,
-        paddingRight: 15
-    },
+        invalidItemContainer: {
+            height: 100,
+            flexDirection: 'row',
+            backgroundColor: ColorUtil.Color_ffffff
+        },
+        invalidUITextInvalid: {
+            width: 38,
+            height: 20,
+            borderRadius: 10,
+            backgroundColor: '#999999',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginLeft: 12
+        },
+        invalidProductImg: {
+            width: 80,
+            height: 80,
+            marginLeft: 7,
+            marginRight: 16
+        },
+        invalidUITextContainer: {
+            flex: 1,
+            height: 100,
+            justifyContent: 'space-between',
+            marginTop: 30,
+            paddingRight: 15
+        },
 
-    CartBottomContainer: {
-        width: ScreenUtils.width,
-        height: 49,
-        backgroundColor: ColorUtil.Color_ffffff,
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    totalPrice: {
-        fontFamily: 'PingFang-SC-Medium',
-        fontSize: 13,
-        color: ColorUtil.mainRedColor,
-        marginLeft: 10,
-        marginRight: 10
-    },
-    selectGoodsNum: {
-        width: 110,
-        height: 49,
-        backgroundColor: ColorUtil.mainRedColor,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
+        CartBottomContainer: {
+            width: ScreenUtils.width,
+            height: 49,
+            backgroundColor: ColorUtil.Color_ffffff,
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            alignItems: 'center'
+        },
+        totalPrice: {
+            fontFamily: 'PingFang-SC-Medium',
+            fontSize: 13,
+            color: ColorUtil.mainRedColor,
+            marginLeft: 10,
+            marginRight: 10
+        },
+        selectGoodsNum: {
+            width: 110,
+            height: 49,
+            backgroundColor: ColorUtil.mainRedColor,
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
 
-    TextInputStyle: {
-        paddingTop: 8,
-        height: 30,
-        width: 46,
-        fontSize: 11,
-        color: ColorUtil.Color_222222,
-        alignSelf: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        paddingVertical: 0
-    },
-    validContextContainer: {
-        flex: 1,
-        height: 100,
-        justifyContent: 'space-between',
-        marginTop: 10,
-        paddingRight: 15
-    }
-});
+        TextInputStyle: {
+            paddingTop: 8,
+            height: 30,
+            width: 46,
+            fontSize: 11,
+            color: ColorUtil.Color_222222,
+            alignSelf: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            paddingVertical: 0
+        },
+        validContextContainer: {
+            flex: 1,
+            height: 100,
+            justifyContent: 'space-between',
+            marginTop: 10,
+            paddingRight: 15
+        }
+    });
