@@ -35,7 +35,6 @@ export default class ShowHotView extends Component {
         }, 1000)
     }
     renderItem = (data) => {
-        console.log('item', data)
         const {width, height} = data
         let imgHeight = (height / width) * imgWidth
         // const itemHeight = this._getHeightForItem({item})
