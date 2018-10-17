@@ -85,10 +85,10 @@ export default class AfterSaleListPage extends BasePage<Props> {
                  // onPress={() => this.jumpToProductDetailPage()}
               />
               <View style = {{height: 50, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', borderTopWidth: 0.5, borderTopColor: '#CCCCCC'}}>
-                  <UIImage source = {[refuseMoney, refuseGoodsAndMoney, changeGoods][item.type]}
+                  <UIImage source = {[refuseMoney, refuseGoodsAndMoney, changeGoods][item.type - 1]}
                            style = {styles.image}
                   />
-                  <UIText value = {['仅退款', '退货退款', '换货'][item.type]}
+                  <UIText value = {['仅退款', '退货退款', '换货'][item.type - 1]}
                           style = {styles.text}
                   />
                   <UIText value = {this.getStatusText(item)}
@@ -97,7 +97,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                   <TouchableOpacity onPress = {() => {
                       this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                       returnProductId: item.returnProductId,
-                      pageType: item.type,
+                      pageType: item.type - 1,
                   });}} style = {styles.btnContainer}>
                       <UIText value = {'查看详情'}
                               style = {styles.btnText}
@@ -109,7 +109,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
     }
 
     getStatusText(item){
-     let typeStr = ['仅退款', '退货退款', '换货'][item.type];
+     let typeStr = ['仅退款', '退货退款', '换货'][item.type - 1 ];
      switch (item.status){
          case 1:
          case 2:
