@@ -7,7 +7,7 @@ import ViewPager from '../../components/ui/ViewPager'
 
 const renderPagination = (index, total) => <View style={styles.indexView}>
     <Text style={styles.text}>{index + 1} / {total}</Text>
-</View>   
+</View>
 
 export default class ShowImageView extends Component {
 
