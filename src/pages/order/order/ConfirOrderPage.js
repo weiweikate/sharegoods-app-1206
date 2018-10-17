@@ -180,12 +180,12 @@ export default class ConfirOrderPage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}
-                                  disabled={this.state.viewData.list[0].restrictions & 1 !== 1}
+                                  disabled={(this.state.viewData.list[0].restrictions & 1 )== 1}
                                   onPress={() => this.jumpToCouponsPage()}>
                     <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={this.state.viewData.list[0].restrictions & 1 !== 1 ? '不可使用优惠券' : '选择优惠券'}
+                            value={(this.state.viewData.list[0].restrictions & 1) == 1 ? '不可使用优惠券' : '选择优惠券'}
                             style={[styles.grayText, { marginRight: 15 }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -199,12 +199,12 @@ export default class ConfirOrderPage extends BasePage {
                     justifyContent: 'space-between',
                     alignItems: 'center'
                 }}
-                                  disabled={true}
+                                  disabled={(this.state.viewData.list[0].restrictions) == 2}
                                   onPress={() => this.jumpToCouponsPage('justOne')}>
                     <UIText value={'1元现金券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={this.state.viewData.list[0].restrictions !== 2 ? '不可使用1元现金券' : '选择1元现金券'}
+                            value={(this.state.viewData.list[0].restrictions) == 2 ? '不可使用1元现金券' : '选择1元现金券'}
                             style={[styles.grayText, { marginRight: 15 }]}/>
                         <Image source={arrow_right}/>
                     </View>

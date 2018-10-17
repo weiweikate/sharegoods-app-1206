@@ -432,7 +432,8 @@ export default class MinePage extends BasePage {
                 this.props.navigation.navigate('mine/AddressManagerPage');
                 break;
             case 7:
-                this.props.navigation.navigate('mine/MyAddressBookPage');
+                // this.props.navigation.navigate('mine/MyAddressBookPage');
+                // this.props.navigation.navigate('topic/TopicDetailPage',{activityType:3});
                 break;
             //邀请评分
             case 10:
