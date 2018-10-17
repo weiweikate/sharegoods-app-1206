@@ -266,8 +266,8 @@ export default class MyShopPage extends BasePage {
 
     _renderJoinBtn = () => {
         let btnText;
-        const { maxUser, storeUserList = [] } = this.state.storeData;
-        let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2 && maxUser > storeUserList.length;
+        const { storeMaxUser, storeUserList = [] } = this.state.storeData;
+        let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2 && storeMaxUser > storeUserList.length;
         switch (this.state.storeData.userStatus) {
             case 0: {
                 if (this.state.storeData.recruitStatus === 0) {
