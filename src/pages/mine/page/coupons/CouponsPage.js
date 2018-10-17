@@ -35,9 +35,9 @@ export default class CouponsPage extends BasePage {
         return (
             <View style={styles.container}>
                 {/*<Modal isOpen={this.state.modalVisible} style={{ backgroundColor: 'transparent' }}>*/}
-                    {/*<View style={{ backgroundColor: 'white', marginLeft: 30, marginRight: 30 }}>*/}
+                {/*<View style={{ backgroundColor: 'white', marginLeft: 30, marginRight: 30 }}>*/}
 
-                    {/*</View>*/}
+                {/*</View>*/}
                 {/*</Modal>*/}
                 <ScrollableTabView
                     onChangeTab={(obj) => {
