@@ -104,6 +104,8 @@ class ShopCartCacheTool {
     *  "timestamp": 1536633469102 时间戳(非必须)
     * */
     addGoodItem(goodsItem) {
+        //微商品添加时间戳
+        goodsItem.timestamp = (new Date().getTime())
         if (user.isLogin) {
             //将数据添加到后台服务器
             shopCartStore.addItemToShopCart(goodsItem);
