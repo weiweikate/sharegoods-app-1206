@@ -160,9 +160,10 @@ export default class BasePage extends Component {
                 let router = $routes[$routes.length + step];
                 routerKey = router.key;
             } else if(typeof step === 'string'){
-                for(let i = 0; i < $routes.length; i++){
+                for(let i = 0; i < $routes.length - 1; i++){
+
                     if (step === $routes[i].routeName){
-                        routerKey = $routes[i].key;
+                        routerKey = $routes[i + 1].key;
                         break;
                     }
                 }

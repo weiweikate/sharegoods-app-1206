@@ -31,6 +31,7 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 
 import OrderApi from '../api/orderApi'
 
+
 class ExchangeGoodsDetailPage extends BasePage {
     constructor(props) {
         super(props);
@@ -49,7 +50,7 @@ class ExchangeGoodsDetailPage extends BasePage {
     };
 
     $NavigationBarDefaultLeftPressed = () => {
-     this.$navigateBack('order/afterSaleService/AfterSaleServiceHomePage');
+      this.$navigateBack('order/order/MyOrdersDetailPage');
     }
 
     _bindFunc(){
@@ -109,13 +110,14 @@ class ExchangeGoodsDetailPage extends BasePage {
         }
         if (this.state.pageData.status === 6){
             return this.renderItems(true);
-        } else if (this.state.pageData.status === 3){
+        } else if (this.state.pageData.status === 3 || this.state.pageData.status === 9){
            return(
                <View style={{
                    height: 44,
                    flexDirection: 'row',
                    backgroundColor: color.white,
-                   alignItems: 'center'
+                   alignItems: 'center',
+                   marginLeft: 15,
                }}>
                    <UIText value={'拒绝原因:' + this.state.pageData.refusalReason} style={{ color: color.black_222, fontSize: 13 }}/>
                </View>
@@ -185,7 +187,15 @@ class ExchangeGoodsDetailPage extends BasePage {
         /** 显示物流*/
         let pageType = this.params.pageType;
         let pageData = this.state.pageData;
-        if (pageType === 0 || EmptyUtils.isEmpty(pageData) || pageData.status === 1){//退款无物流
+        if (pageType === 0 ||
+            EmptyUtils.isEmpty(pageData) ||
+            pageData.status === 1 ||
+            pageData.status === 3 ||
+            pageData.status === 9 ||
+            pageData.status === 7
+        ){
+            //退款无物流
+            //申请中、 申请拒绝、商家收到货后拒绝
             return;
         }
         return (
@@ -270,12 +280,13 @@ class ExchangeGoodsDetailPage extends BasePage {
                     <View style={{
                         width: 43,
                         height: 36,
-                        backgroundColor: color.red,
+                        borderColor: 'red',
+                        borderWidth: 0.5,
                         justifyContent: 'center',
                         alignItems: 'center',
                         marginLeft: 16
                     }}>
-                        <UIText value={'寄回\n地址'} style={{ fontSize: 12, color: color.white }}/>
+                        <UIText value={'寄回\n地址'} style={{ fontSize: 12, color: 'red' }}/>
                     </View>
                     <View style={{ backgroundColor: color.gray_EEE, width: 1, height: 40 }}/>
                     <AddressItem height={82}
@@ -441,7 +452,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             titleCommpent = () => {return <UIText value = {titles[pageData.status-1]} style = {styles.header_title}/>};
             if (pageData.status === 3){//拒绝
                 textContaner_marginLeft = 10;
-                imageCommpent = () => {return <UIImage soucre = {refusa_icon} style = {styles.header_image}/>};
+                imageCommpent = () => {return <UIImage source = {refusa_icon} style = {styles.header_image}/>};
                 detialCommpent = () => {return <UIText value = {pageData.refusalReason} style = {styles.header_detail}/>};
             } else if (pageData.status === 6){//已完成
                 detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.payTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
@@ -453,7 +464,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             titleCommpent = () => {return <UIText value = {titles[pageData.status-1]} style = {styles.header_title}/>};
             if (pageData.status === 3 || pageData.status === 9){//拒绝
                 textContaner_marginLeft = 10;
-                imageCommpent = () => {return <UIImage soucre = {refusa_icon} style = {styles.header_image}/>};
+                imageCommpent = () => {return <UIImage source = {refusa_icon} style = {styles.header_image}/>};
                 detialCommpent = () => {return <UIText value = {DateUtils.getFormatDate(pageData.refuseTime / 1000,'yyyy年MM月dd日  hh:mm')	} style = {styles.header_detail}/>};
             } else if (pageData.status === 6){//已完成
                 detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.payTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
@@ -467,7 +478,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             titleCommpent = () => {return <UIText value = {titles[pageData.status-1]} style = {styles.header_title}/>};
             if (pageData.status === 3 || pageData.status === 9){//拒绝
                 textContaner_marginLeft = 10;
-                imageCommpent = () => {return <UIImage soucre = {refusa_icon} style = {styles.header_image}/>};
+                imageCommpent = () => {return <UIImage source = {refusa_icon} style = {styles.header_image}/>};
                 detialCommpent = () => {return <UIText value = {DateUtils.getFormatDate(pageData.refuseTime / 1000,'yyyy年MM月dd日  hh:mm')	} style = {styles.header_detail}/>};
             } else if (pageData.status === 6){//已完成
                 detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.backsendTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
@@ -602,18 +613,20 @@ class ExchangeGoodsDetailPage extends BasePage {
      * @param cancel true -》撤销 、false -》编辑申请
      */
     onPressOperationApply(cancel){
+        let that = this;
         if (cancel){
             this.$loadingShow();
             OrderApi.revokeApply({returnProductId: this.state.pageData.id}).then(result => {
-                this.$loadingDismiss();
+                that.$loadingDismiss();
                 DeviceEventEmitter.emit('OrderNeedRefresh');
-                this.$navigateBack('/order/order/MyOrdersDetailPage');
+                that.$navigateBack('order/order/MyOrdersDetailPage');
             }).catch(error => {
-                this.$loadingDismiss();
-                this.$toastShow(error.msg || '操作失败，请重试');
+                that.$loadingDismiss();
+                that.$toastShow(error.msg || '操作失败，请重试');
             });
         }else {
             let {orderProductId, returnReason, remark, imgList, exchangePriceId, exchangeSpec, exchangeSpecImg, productId} = this.state.pageData;
+            imgList = imgList || [];
             for (let i = 0; i < imgList.length; i++){
                 imgList[i].imageThumbUrl = imgList[i].smallImg;
                 imgList[i].imageUrl =  imgList[i].originalImg

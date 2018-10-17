@@ -9,6 +9,7 @@ import HTML from 'react-native-render-html'
 import showConnectImg from '../../comm/res/show_connect.png'
 import showGoodImg from '../../comm/res/show_good.png'
 // import showDidGoodImg from '../../comm/res/show_did_good.png'
+import seeImg from '../../comm/res/see.png'
 
 const htmlContent = `
     <h1>This HTML snippet is now rendered with native components !</h1>
@@ -53,11 +54,21 @@ export default class ShowDetailPage extends Component {
         }]
         return <View style={styles.container}><ScrollView style={styles.container}>
             <ShowImageView/>
-            <HTML html={htmlContent} imagesMaxWidth={width} containerStyle={{backgroundColor: '#fff'}}/>
+            <View style={styles.profileRow}>
+                <View style={styles.profileLeft}>
+                    <Image style={styles.portrait} source={{url: 'http://hellorfimg.zcool.cn/preview/441745972.jpg'}}/>
+                    <Text style={styles.showName}>上课的</Text>
+                </View>
+                <View style={styles.profileRight}>
+                    <Image source={seeImg}/>
+                    <Text style={styles.number}>2334</Text>
+                </View>
+            </View>
+            <HTML html={htmlContent} imagesMaxWidth={width} containerStyle={{backgroundColor: '#fff', marginLeft: px2dp(15), marginRight: px2dp(15)}}/>
             <View style={styles.goodsView}>
                 {
                     item.map((value, index) => {
-                        return <Goods data={value}/>
+                        return <Goods key={index} data={value}/>
                     })
                 }
             </View>
@@ -162,5 +173,36 @@ let styles = StyleSheet.create({
     },
     connectImg: {
         marginLeft: px2dp(50)
+    },
+    profileRow: {
+        height: px2dp(45),
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    portrait: {
+        width: px2dp(30),
+        height: px2dp(30),
+        borderRadius: px2dp(15)
+    },
+    showName: {
+        color: '#333',
+        marginLeft: px2dp(5),
+        fontSize: px2dp(11)
+    },
+    profileLeft: {
+        flexDirection: 'row',
+        marginLeft: px2dp(15),
+        alignItems: 'center'
+    },
+    profileRight: {
+        flexDirection: 'row',
+        marginRight: px2dp(15),
+        alignItems: 'center'
+    },
+    number: {
+        color: '#333',
+        fontSize: px2dp(11),
+        marginLeft: px2dp(9)
     }
 })

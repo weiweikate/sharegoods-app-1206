@@ -11,7 +11,8 @@
 #import "EasyLoadingGlobalConfig.h"
 #import "JRPay.h"
 #import <QYSDK.h>
-#import <UMSocialCore/UMSocialCore.h>
+#import <UMShare/UMShare.h>
+#import <UMCommon/UMCommon.h>
 
 @implementation AppDelegate (ConfigLib)
 -(void)JR_ConfigLib:(UIApplication *)application  didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -44,7 +45,7 @@
   loadingGlobalConfig.bgColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.9];
 }
 -(void)configUM{
-  [[UMSocialManager defaultManager] setUmSocialAppkey:KUmSocialAppkey];
+  [UMConfigure initWithAppkey:KUmSocialAppkey channel:nil];
   [[UMSocialManager defaultManager] openLog:YES];
   /* 设置微信的appKey和appSecret */
   [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession
