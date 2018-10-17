@@ -156,7 +156,9 @@ export default class SearchResultPage extends BasePage {
     };
 
     _onPressToGwc = () => {
-        this.$navigate('shopCart/ShopCart');
+        this.$navigate('shopCart/ShopCart',{
+            hiddeLeft:false
+        });
     };
     _onPressToTop = () => {
         this.refs.FlatListShow.scrollToOffset({ offset: 0 });
