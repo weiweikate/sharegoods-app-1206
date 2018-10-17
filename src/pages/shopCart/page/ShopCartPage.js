@@ -53,32 +53,46 @@ export default class ShopCartPage extends BasePage {
         leftNavItemHidden: true
 
     };
-
     /*   $NavBarRenderRightItem = () => {
            return (
                <View
                />
            );
        };*/
-
     componentDidMount() {
         shopCartCacheTool.getShopCartGoodsListData();
     }
 
     constructor(props) {
         super(props);
+
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
             viewData: []
         };
+
     }
 
     _render() {
+        let hiddeLeft = true;
+        if (! (this.params.hiddeLeft === undefined)) {
+             hiddeLeft = this.params.hiddeLeft;
+        }else {
+            hiddeLeft = true;
+        }
+        console.log(this.params)
+
+
         return (
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
                 {shopCartStore.data && shopCartStore.data.length > 0 ? this._renderListView() : this._renderEmptyView()}
                 {this._renderShopCartBottomMenu()}
+                {
+                    this.$navigatorBar && this.$navigatorBar.hiddenLeftItem(hiddeLeft)
+                }
             </View>
+
+
         );
     }
 

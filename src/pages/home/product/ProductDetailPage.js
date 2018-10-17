@@ -136,7 +136,9 @@ export default class ProductDetailPage extends BasePage {
     _bottomViewAction = (type) => {
         switch (type) {
             case 'goGwc': {
-                this.$navigate('shopCart/ShopCart');
+                this.$navigate('shopCart/ShopCart',{
+                    hiddeLeft:false
+                });
             }
                 break;
             case 'gwc':
