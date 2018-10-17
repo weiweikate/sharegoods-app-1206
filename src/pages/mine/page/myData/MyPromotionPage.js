@@ -9,7 +9,7 @@ import {
     ScrollView,
     RefreshControl,
     ImageBackground,
-    InteractionManager,
+    Platform,
     TouchableWithoutFeedback
 } from 'react-native';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
@@ -60,7 +60,8 @@ export default class MyPromotionPage extends BasePage {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(this.loadPageData);
+        // InteractionManager.runAfterInteractions(this.loadPageData);
+        this.loadPageData();
     }
 
     loadPageData = () => {
@@ -289,7 +290,10 @@ export default class MyPromotionPage extends BasePage {
     }
 
     _onPressInvite = () => {
-        // this.jr_navigate('mine/myData/InvitationPage');
+        if(Platform.OS === 'ios'){
+            this.props.navigation.navigate('mine/InviteFriendsPage');
+        }
+
     };
 
     // 去购物

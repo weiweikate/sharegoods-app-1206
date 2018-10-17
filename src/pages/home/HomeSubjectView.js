@@ -23,8 +23,9 @@ const MoreItem = ({press}) => <TouchableOpacity style={styles.moreView} onPress=
     </View>
 </TouchableOpacity>
 
-const AcitivyItem = ({data, press}) => {
+const ActivityItem = ({data, press}) => {
     const {imgUrl, topicBannerProductDTOList} = data
+    console.log('ActivityItem', imgUrl)
     let goodsItem = []
     topicBannerProductDTOList && topicBannerProductDTOList.map((value,index) => {
         goodsItem.push(<GoodItems key={index} title={value.productName} money={value.startPrice ? value.startPrice : 0} img={value.specImg ? value.specImg : ''}/>)
@@ -32,7 +33,7 @@ const AcitivyItem = ({data, press}) => {
     return <View>
         <TouchableOpacity style={styles.bannerBox} onPress={()=>{press && press()}}>
             <View style={styles.bannerView}>
-                <Image style={styles.banner} source={{url: imgUrl}}/>
+                <Image style={styles.banner} source={{uri: imgUrl}} resizeMode={'cover'}/>
             </View>
         </TouchableOpacity>
         <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -66,7 +67,7 @@ export default class HomeSubjectView extends Component {
         }
         let items = []
         subjectList.map((item, index) => {
-            items.push(<AcitivyItem data={item} key={index} press={()=>this._subjectActions(item)}/>)
+            items.push(<ActivityItem data={item} key={index} press={()=>this._subjectActions(item)}/>)
         })
         return <View style={styles.container}>
             <View style={styles.titleView}>
