@@ -218,9 +218,10 @@ export class ShowRecommendModules {
     }
 
     @action getMoreRecommendList = () => {
+        let time = new Date().getTime()
         return [
             {
-                id: 5,
+                id: time + 1,
                 remark: 'IPhone X 9月在美国加州福利院上市...',
                 imgUrl: 'http://imgsrc.baidu.com/imgad/pic/item/34fae6cd7b899e51ec89f83949a7d933c8950d9c.jpg',
                 number: 1234,
@@ -231,7 +232,7 @@ export class ShowRecommendModules {
                 height: 300
             },
             {
-                id: 6,
+                id: time + 2,
                 remark: 'IPhone X 9月在美国加州福利院上市...',
                 imgUrl: 'http://img.zcool.cn/community/011ab85707229732f875a9446d74b5.jpg',
                 number: 1234,
@@ -242,7 +243,7 @@ export class ShowRecommendModules {
                 height: 400
             },
             {
-                id: 7,
+                id: time + 3,
                 remark: 'IPhone X 9月在美国加州福利院上市...',
                 imgUrl: 'http://img.zcool.cn/community/011ab85707229732f875a9446d74b5.jpg',
                 number: 1234,
@@ -253,7 +254,7 @@ export class ShowRecommendModules {
                 height: 500
             },
             {
-                id: 8,
+                id: time + 4,
                 remark: 'IPhone X 9月在美国加州福利院上市...',
                 imgUrl: 'http://img.zcool.cn/community/011ab85707229732f875a9446d74b5.jpg',
                 number: 1234,

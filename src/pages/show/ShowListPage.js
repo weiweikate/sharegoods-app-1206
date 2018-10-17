@@ -5,7 +5,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtils
 import ShowHotView from './ShowHotView'
-
+import ShowHotFindView from './ShowHotFindView'
 
 export default class ShowListPage extends BasePage {
     constructor(props) {
@@ -28,7 +28,9 @@ export default class ShowListPage extends BasePage {
                 <View style={styles.container} tabLabel="精选热门" >
                     <ShowHotView/>
                 </View>
-                <View tabLabel="热门发现" />
+                <View style={styles.container}  tabLabel="热门发现" >
+                    <ShowHotFindView/>
+                </View>
             </ScrollableTabView>
         </View>
     }
