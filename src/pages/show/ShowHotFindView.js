@@ -34,12 +34,15 @@ export default class ShowHotView extends Component {
             done()
         }, 1000)
     }
+    _gotoDetail(data) {
+        const { navigation } = this.props
+        navigation.navigate('show/ShowDetailPage')
+    }
     renderItem = (data) => {
-        console.log('item', data)
         const {width, height} = data
         let imgHeight = (height / width) * imgWidth
         // const itemHeight = this._getHeightForItem({item})
-        return <ItemView imageStyle={{height: imgHeight}}  data={data}/>
+        return <ItemView imageStyle={{height: imgHeight}}  data={data} press={()=>this._gotoDetail(data)}/>
     }
     _keyExtractor = (data) => data.id + ''
     render() {
@@ -63,16 +66,7 @@ export default class ShowHotView extends Component {
 
 let styles = StyleSheet.create({
     container: {
-        flex: 1
-    },
-    titleView: {
-        height: px2dp(53),
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    recTitle: {
-        color: '#333',
-        fontSize: px2dp(19),
-        fontWeight: '600'
+        flex: 1,
+        paddingTop: px2dp(12)
     }
 })

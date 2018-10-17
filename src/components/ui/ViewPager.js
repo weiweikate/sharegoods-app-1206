@@ -16,6 +16,9 @@ const ViewPager = props => {
         renderItem,
         swiperShow = false,
         height,
+        showsPagination,
+        onIndexChanged,
+        index,
         ...attributes
     } = props;
 
@@ -52,6 +55,9 @@ const ViewPager = props => {
                                 activeDotColor={activeDotColor}
                                 autoplayTimeout={5}
                                 removeClippedSubviews={false}
+                                showsPagination={showsPagination}
+                                onIndexChanged={onIndexChanged}
+                                index={index}
                                 containerStyle={{
                                     height: height
                                 }}>
@@ -72,6 +78,9 @@ const ViewPager = props => {
                                 activeDotColor={activeDotColor}
                                 autoplayTimeout={5}
                                 removeClippedSubviews={false}
+                                showsPagination={showsPagination}
+                                onIndexChanged={onIndexChanged}
+                                index={index}
                                 containerStyle={{
                                     height: height
                                 }}>
