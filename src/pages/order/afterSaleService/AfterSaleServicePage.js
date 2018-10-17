@@ -67,7 +67,6 @@ class AfterSaleServicePage extends BasePage {
         this.loadPageData();
     }
 
-
     $navigationBarOptions = {
         title: ['申请退款', '申请退货', '申请换货'][this.params.pageType ? this.params.pageType : 0],
         show: true// false则隐藏导航
@@ -502,7 +501,7 @@ class AfterSaleServicePage extends BasePage {
                     DeviceEventEmitter.emit('OrderNeedRefresh');
                     this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                         returnProductId: response.data.id,
-                        pageType: 1,
+                        pageType: 2,
                     });
                 }).catch(e => {
                     this.$loadingDismiss();

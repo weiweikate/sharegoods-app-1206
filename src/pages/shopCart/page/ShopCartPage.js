@@ -46,19 +46,13 @@ const activityString = {
 
 @observer
 export default class ShopCartPage extends BasePage {
-
     // 导航配置
     $navigationBarOptions = {
         title: '购物车',
         leftNavItemHidden: true
 
     };
-    /*   $NavBarRenderRightItem = () => {
-           return (
-               <View
-               />
-           );
-       };*/
+
     componentDidMount() {
         shopCartCacheTool.getShopCartGoodsListData();
     }
@@ -75,14 +69,11 @@ export default class ShopCartPage extends BasePage {
 
     _render() {
         let hiddeLeft = true;
-        if (! (this.params.hiddeLeft === undefined)) {
-             hiddeLeft = this.params.hiddeLeft;
-        }else {
+        if (!(this.params.hiddeLeft === undefined)) {
+            hiddeLeft = this.params.hiddeLeft;
+        } else {
             hiddeLeft = true;
         }
-        console.log(this.params)
-
-
         return (
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
                 {shopCartStore.data && shopCartStore.data.length > 0 ? this._renderListView() : this._renderEmptyView()}
@@ -140,37 +131,63 @@ export default class ShopCartPage extends BasePage {
     };
 
     _renderShopCartBottomMenu = () => {
+
+        let hiddeLeft = true;
+        if (!(this.params.hiddeLeft === undefined)) {
+            hiddeLeft = this.params.hiddeLeft;
+        } else {
+            hiddeLeft = true;
+        }
+
         return (
-            <View style={styles.CartBottomContainer}>
-                <TouchableOpacity
-                    style={{ flexDirection: 'row', paddingLeft: 19 }}
-                    onPress={() => this._selectAll()}
-                >
-                    <Image
-
-                        source={shopCartStore.computedSelect ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
-                        style={{ width: 22, height: 22 }}/>
-
-                    <UIText
-                        value={'全选'}
-                        style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#999999', marginLeft: 10 }}/>
-                </TouchableOpacity>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <UIText
-                        value={'合计'}
-                        style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: ColorUtil.Color_222222 }}/>
-                    <UIText
-                        value={StringUtils.formatMoneyString(shopCartStore.getTotalMoney)}
-                        style={styles.totalPrice}/>
+            <View
+                style={[{
+                    height: 49,
+                    width: ScreenUtils.width,
+                    backgroundColor:ColorUtil.Color_ffffff
+                },
+                    (!hiddeLeft && ScreenUtils.tabBarHeight > 49)
+                        ?
+                        {height: 83}
+                        :
+                        null
+                ]}
+            >
+                <View style={styles.CartBottomContainer}>
                     <TouchableOpacity
-                        style={styles.selectGoodsNum}
-                        onPress={() => this._toBuyImmediately()}
+                        style={{ flexDirection: 'row', paddingLeft: 19 }}
+                        onPress={() => this._selectAll()}
                     >
+                        <Image
+                            source={shopCartStore.computedSelect ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
+                            style={{ width: 22, height: 22 }}/>
+
                         <UIText
-                            value={`结算(${shopCartStore.getTotalSelectGoodsNum})`}
-                            style={{ color: ColorUtil.Color_ffffff, fontSize: 16 }}
-                        />
+                            value={'全选'}
+                            style={{
+                                fontFamily: 'PingFang-SC-Medium',
+                                fontSize: 13,
+                                color: '#999999',
+                                marginLeft: 10
+                            }}/>
                     </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <UIText
+                            value={'合计'}
+                            style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: ColorUtil.Color_222222 }}/>
+                        <UIText
+                            value={StringUtils.formatMoneyString(shopCartStore.getTotalMoney)}
+                            style={styles.totalPrice}/>
+                        <TouchableOpacity
+                            style={styles.selectGoodsNum}
+                            onPress={() => this._toBuyImmediately()}
+                        >
+                            <UIText
+                                value={`结算(${shopCartStore.getTotalSelectGoodsNum})`}
+                                style={{ color: ColorUtil.Color_ffffff, fontSize: 16 }}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         );
