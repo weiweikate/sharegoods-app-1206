@@ -46,9 +46,9 @@ export default class SetShopNamePage extends BasePage {
         super(props);
         if (this.params.storeData) {//修改
             this.state = {
-                text: this.params.storeData.storeName,
-                storeHeadUrl: this.params.storeData.storeHeadUrl,
-                storeHeadUrlOrigin: this.params.storeData.storeHeadUrl
+                text: this.params.storeData.name,
+                storeHeadUrl: this.params.storeData.headUrl,
+                storeHeadUrlOrigin: this.params.storeData.headUrl
             };
         } else {
             this.state = {

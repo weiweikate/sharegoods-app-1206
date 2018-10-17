@@ -81,7 +81,7 @@ export default class ProductDetailPage extends BasePage {
             return;
         }
         HomeAPI.queryByProductId({
-            productId: this.params.productId
+            productId: productId
         }).then((data) => {
             this.$loadingDismiss();
             let dataTemp = data.data || {};
