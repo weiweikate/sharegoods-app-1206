@@ -54,8 +54,13 @@ export default class CategorySearchPage extends BasePage {
             let datas = response.data || {};
             this.setState({
                 sectionArr: [{ title: '热门分类', data: datas.productCategoryList }],
-                bannerData: StringUtils.isEmpty(datas.imgList) ? [] : [datas.imgList]
-            });
+                bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
+                    img: datas.img,
+                    linkType: datas.linkType,
+                    linkTypeCode: datas.linkTypeCode
+                }]
+            })
+            ;
         }).catch((data) => {
             bridge.$toast(data.msg);
         });
@@ -88,11 +93,14 @@ export default class CategorySearchPage extends BasePage {
                     {
                         this.state.nameArr && this.state.nameArr.length > 0 ?
                             <FlatList
-                                style={{ width: 90, backgroundColor: '#EEEEEE' }}
+                                style={{
+                                    width: 90,
+                                    backgroundColor: '#EEEEEE',
+                                    height: ScreenUtils.height - 60 - ScreenUtils.headerHeight //屏幕高减去搜索框以及头部高
+                                }}
                                 renderItem={this._categoryItem}
-                                extraData={this.state}
                                 refreshing={false}
-                                keyExtractor={(item) => item.id + ''}
+                                keyExtractor={(item, index) => index}
                                 showsVerticalScrollIndicator={false}
                                 getItemLayout={(data, index) => (
                                     //行高于分割线高，优化
@@ -112,7 +120,7 @@ export default class CategorySearchPage extends BasePage {
                     }}>
                         <ViewPager swiperShow={this.state.swiperShow && this.state.bannerData.length > 0}
                                    arrayData={this.state.bannerData}
-                                   renderItem={(url) => this.renderViewPageItem(url)}
+                                   renderItem={(item) => this.renderViewPageItem(item.img)}
                                    dotStyle={{
                                        height: 5,
                                        width: 5,
@@ -194,7 +202,11 @@ export default class CategorySearchPage extends BasePage {
                     let datas = response.data || {};
                     this.setState({
                         sectionArr: [{ title: '热门分类', data: datas.productCategoryList }],
-                        bannerData: StringUtils.isEmpty(datas.imgList) ? [] : [datas.imgList],
+                        bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
+                            img: datas.img,
+                            linkType: datas.linkType,
+                            linkTypeCode: datas.linkTypeCode
+                        }],
                         swiperShow: true
                     });
                 }).catch((data) => {
@@ -214,7 +226,11 @@ export default class CategorySearchPage extends BasePage {
                     }
                     this.setState({
                         sectionArr: arr,
-                        bannerData: StringUtils.isEmpty(datas.imgList) ? [] : [datas.imgList],
+                        bannerData: StringUtils.isEmpty(datas.img) ? [] : [{
+                            img: datas.img,
+                            linkType: datas.linkType,
+                            linkTypeCode: datas.linkTypeCode
+                        }],
                         swiperShow: true
                     });
                 }).catch((data) => {

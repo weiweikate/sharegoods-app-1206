@@ -53,24 +53,12 @@ export default class ShopCartPage extends BasePage {
         leftNavItemHidden: true
 
     };
-    $NavBarRenderRightItem = () => {
+ /*   $NavBarRenderRightItem = () => {
         return (
-            <Text style={{
-                fontSize: 15,
-                color: '#666'
-            }} onPress={this.addGoods}>
-                添加商品
-            </Text>
+            <View
+            />
         );
-    };
-    addGoods = () => {
-        shopCartCacheTool.addGoodItem({
-            'amount': 5,
-            'priceId': 9,
-            'productId': 14,
-            'timestamp': 1536633469102
-        });
-    };
+    };*/
 
     componentDidMount() {
         shopCartCacheTool.getShopCartGoodsListData();
@@ -81,8 +69,6 @@ export default class ShopCartPage extends BasePage {
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
             viewData: [
-                { a: 11 }
-
             ]
         };
     }
@@ -369,7 +355,6 @@ export default class ShopCartPage extends BasePage {
                         </View>
                         : null
                 }
-
                 <View
                     style={{ height: 10, backgroundColor: ColorUtil.Color_f7f7f7, width: ScreenUtils.width }}
                 />
