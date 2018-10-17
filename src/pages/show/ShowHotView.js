@@ -40,10 +40,14 @@ export default class ShowHotView extends Component {
             done()
         }, 1000)
     }
+    _gotoDetail() {
+        const { navigation } = this.props
+        navigation.navigate('show/ShowDetailPage')
+    }
     renderItem = (data) => {
         const {width, height} = data
         let imgHeight = (height / width) * imgWidth
-        return <ItemView imageStyle={{height: imgHeight}}  data={data}/>
+        return <ItemView imageStyle={{height: imgHeight}}  data={data} press={()=>{this._gotoDetail(data)}}/>
     }
     renderHeader = () => {
         return <View><ShowBannerView/><ShowChoiceView/><ShowFindView/><ShowHotScrollView/>
