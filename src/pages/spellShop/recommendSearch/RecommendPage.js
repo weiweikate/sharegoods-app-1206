@@ -40,7 +40,7 @@ export default class RecommendPage extends BasePage {
     };
 
     $NavBarRenderRightItem = () => {
-        const showShopItem = SpellStatusModel.canCreateStore && !this.params.havaShop;
+        const showShopItem = SpellStatusModel.canCreateStore;
         return <View style={styles.rightBarItemContainer}>
             {
                 showShopItem ? <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>
@@ -75,9 +75,11 @@ export default class RecommendPage extends BasePage {
 
     // 点击开启店铺页面
     _clickOpenShopItem = () => {
-        if (SpellStatusModel.storeId && !this.params.havaShop) {
+        if (SpellStatusModel.storeStatus === 2) {
             this.$navigate('spellShop/shopSetting/SetShopNamePage');
-        } else {
+        }else if (SpellStatusModel.storeId) {
+            this.props.navigation.popToTop();
+        }else {
             this.$navigate('spellShop/openShop/OpenShopExplainPage');
         }
     };
