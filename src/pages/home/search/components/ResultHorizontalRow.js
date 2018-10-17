@@ -27,6 +27,7 @@ export default class ResultHorizontalRow extends Component {
 
     render() {
         let { product, originalPrice } = this.props.itemData || {};
+        const { supplierName = '', brandName = '', name = '', firstCategoryName = '', secCategoryName = '', thirdCategoryName = '' } = product;
         return (
             <TouchableWithoutFeedback onPress={() => {
                 this.props.onPressAtIndex(product.id);
@@ -34,7 +35,7 @@ export default class ResultHorizontalRow extends Component {
                 <View style={[styles.container]}>
                     <Image style={styles.img} source={{ uri: product.imgUrl }}/>
                     <Text style={{ color: '#222222', fontSize: 13, paddingHorizontal: 10, marginTop: 9 }}
-                          numberOfLines={2}>{product.name}</Text>
+                          numberOfLines={2}>{`${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`}</Text>
                     <View style={{
                         flexDirection: 'row',
                         justifyContent: 'space-between',
