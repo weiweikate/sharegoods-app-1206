@@ -31,7 +31,14 @@ const api = {
     DepreciateMakeSureOrder:'/operator/activityDepreciate/makeSureOrder',
     //降价拍的提交订单 沈耀鑫
     DepreciateSubmitOrder:'/operator/activityDepreciate/submitOrder',
-    // 降价拍提交订单 沈耀鑫
+    //秒杀的确认订单
+    SeckillMakeSureOrder:'/operator/seckill/makeSureOrder',
+    //秒杀的提交订单
+    SeckillSubmitOrder:'/operator/seckill/submitOrder',
+    //礼包的确认订单
+    PackageMakeSureOrder:'/operator/activitypackage/makeSureOrder',
+    //礼包的提交订单
+    PackageSubmitOrder:'/operator/activitypackage/submitOrder',
     /**  售后模块相关接口 huchao */
     //（陈帅）申请退款
     applyRefund: '/order/returnProduct/applyRefund',

@@ -151,26 +151,29 @@ export default class TopicDetailPage extends BasePage {
 
     //选择规格确认 礼包
     _selectionViewPakageConfirm = (amount, selectData) => {
-        let orderProducts = [];
+        let priceList=[];
         selectData.forEach((item) => {
-            orderProducts.push({
+            priceList.push({
                 num: 1,
-                priceId: this.state.data.id,
-                productId: this.state.data.id,
-                priceList: [{
-                    num: 1,
-                    priceId: item.productPriceId,
-                    productId: item.productId,
-                    productName: item.productName,
-                    sourceId: item.id,
-                    spec: item.specValues,
-                    specImg: item.specImg
-                }]
+                priceId: item.productPriceId,
+                productId: item.productId,
+                productName: item.productName,
+                sourceId: item.id,
+                spec: item.specValues,
+                specImg: item.specImg
             });
         });
+
+        let orderProducts = [{
+            num: 1,
+            priceId: this.state.data.id,
+            productId: this.state.data.id,
+            priceList: priceList
+        }];
+
         this.$navigate('order/order/ConfirOrderPage', {
             orderParamVO: {
-                packageCode: this.state.activityData.activityCode,
+                packageCode: this.params.activityCode,
                 orderType: this.state.activityType,
                 orderProducts: orderProducts
             }
