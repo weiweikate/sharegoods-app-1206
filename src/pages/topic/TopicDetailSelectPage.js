@@ -67,100 +67,93 @@ export default class TopicDetailSelectPage extends Component {
 
         return (
             <View style={styles.container}>
-
                 <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
                     <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
                 </TouchableWithoutFeedback>
 
-                <View style={{ backgroundColor: 'white', flex: 1 }}>
-
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{
-                            marginLeft: 10,
-                            marginTop: -20,
-                            height: 110,
-                            width: 110,
+                <View style={{ flex: 1 }}>
+                    <View style={{ backgroundColor: 'transparent' }}>
+                        <Image style={{
+                            height: 107,
+                            width: 107,
                             borderColor: '#EEEEEE',
                             borderWidth: 1,
                             borderRadius: 5,
                             alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            <Image style={{ width: 108, height: 108, borderRadius: 5, backgroundColor: '#eeeeee' }}
-                                   source={{ uri: specImg }}/>
-                        </View>
-                        <View style={{ flex: 1, marginLeft: 16 }}>
-                            <Text style={{
-                                color: '#D51243',
-                                fontSize: 16,
-                                fontFamily: 'PingFang-SC-Medium',
-                                marginTop: 16
-                            }}>{`￥${price}`}</Text>
-                            <Text
-                                style={{
+                            justifyContent: 'center',
+                            position: 'absolute',
+                            top: 0,
+                            left: 15,
+                            zIndex: 1
+                        }} source={{ uri: specImg || '' }}/>
+
+                        <View style={{ backgroundColor: 'white', marginTop: 20, height: 87 }}>
+                            <View style={{ marginLeft: 132 }}>
+                                <Text style={{
+                                    color: '#D51243',
+                                    fontSize: 16,
+                                    fontFamily: 'PingFang-SC-Medium',
+                                    marginTop: 16
+                                }}>{`￥${price}`}</Text>
+                                <Text
+                                    style={{
+                                        color: '#222222',
+                                        fontSize: 13,
+                                        marginTop: 8
+                                    }}>{`库存${surplusNumber}件`}</Text>
+                                <Text style={{
                                     color: '#222222',
                                     fontSize: 13,
                                     marginTop: 8
-                                }}>{`库存${surplusNumber}件`}</Text>
-                            <Text style={{
-                                color: '#222222',
-                                fontSize: 13,
-                                marginTop: 8
-                            }}>{specs}</Text>
-                        </View>
-                        <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
-                            <Image style={{
-                                marginRight: 16,
-                                marginTop: 19,
-                                width: 23,
-                                height: 23
-                            }}/>
-                        </TouchableWithoutFeedback>
-                    </View>
-
-                    < ScrollView>
-                        {this._addSelectionSectionView()}
-                        <View style={[{
-                            flexDirection: 'row',
-                            height: 60,
-                            justifyContent: 'space-between',
-                            alignItems: 'center' }]}>
-                            <Text style={{ color: '#666666', marginLeft: 16, fontSize: 13 }}>购买数量</Text>
-                            <View style={{
-                                flexDirection: 'row',
-                                borderColor: '#dddddd',
-                                borderWidth: 1,
-                                borderRadius: 2,
-                                marginRight: 16
-                            }}>
-                                <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text style={{ color: '#dddddd', fontSize: 15, paddingHorizontal: 11 }}>-</Text>
-                                </TouchableOpacity>
-                                <View style={{ height: 21, width: 1, backgroundColor: '#dddddd' }}/>
-                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text style={{ paddingHorizontal: 15 }}>{1}</Text>
-                                </View>
-                                <View style={{ height: 21, width: 1, backgroundColor: '#dddddd' }}/>
-                                <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text style={{ color: '#222222', fontSize: 15, paddingHorizontal: 11 }}>+</Text>
-                                </TouchableOpacity>
+                                }}>{specs}</Text>
                             </View>
                         </View>
-                    </ScrollView>
+                    </View>
 
-                    <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
-                        <View style={{
-                            height: 49,
-                            backgroundColor: '#D51243',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            <Text style={{ fontSize: 16, color: '#FFFFFF' }}>确认</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
+                    <View style={{ flex: 1, backgroundColor: 'white' }}>
+                        < ScrollView>
+                            {this._addSelectionSectionView()}
+                            <View style={[{
+                                flexDirection: 'row',
+                                height: 60,
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
+                            }]}>
+                                <Text style={{ color: '#666666', marginLeft: 16, fontSize: 13 }}>购买数量</Text>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    borderColor: '#dddddd',
+                                    borderWidth: 1,
+                                    borderRadius: 2,
+                                    marginRight: 16
+                                }}>
+                                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                        <Text style={{ color: '#dddddd', fontSize: 15, paddingHorizontal: 11 }}>-</Text>
+                                    </TouchableOpacity>
+                                    <View style={{ height: 21, width: 1, backgroundColor: '#dddddd' }}/>
+                                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                        <Text style={{ paddingHorizontal: 15 }}>{1}</Text>
+                                    </View>
+                                    <View style={{ height: 21, width: 1, backgroundColor: '#dddddd' }}/>
+                                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                        <Text style={{ color: '#222222', fontSize: 15, paddingHorizontal: 11 }}>+</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </ScrollView>
 
+                        <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
+                            <View style={{
+                                height: 49,
+                                backgroundColor: '#D51243',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                <Text style={{ fontSize: 16, color: '#FFFFFF' }}>确认</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
                 </View>
-
             </View>
         );
     }
