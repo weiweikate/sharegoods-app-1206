@@ -33,11 +33,13 @@ export default class SelectionHeaderView extends Component {
 
         let stock = 0;
         let stockUnit;
+        let specImg = undefined;
         this.props.priceList.forEach((item) => {
             //总库存库存遍历相加
             stock = stock + item.stock;
             //件
             stockUnit = item.stockUnit;
+            specImg = item.specImg;
         });
 
         let selectStrListTemp = this.props.selectStrList.filter((item) => {
@@ -58,10 +60,10 @@ export default class SelectionHeaderView extends Component {
                     top: 0,
                     left: 15,
                     zIndex: 1
-                }} source={{ uri: imgUrl || '' }}/>
+                }} source={{ uri: specImg || imgUrl || '' }}/>
 
                 <View style={{ backgroundColor: 'white', marginTop: 20, height: 87 }}>
-                    <View style={{ marginLeft: 132}}>
+                    <View style={{ marginLeft: 132 }}>
                         <Text style={{
                             color: '#D51243',
                             fontSize: 16,
