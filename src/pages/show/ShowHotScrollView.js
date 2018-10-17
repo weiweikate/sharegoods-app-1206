@@ -7,10 +7,12 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
 import { ShowHotModules } from './Show'
-import seeImg from '../../comm/res/see.png'
+import seeImg from '../../comm/res/see_white.png'
+import maskImg from '../../comm/res/show_mask.png'
 
 const HotItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <ImageBackground style={styles.imgBack} source={{uri: item.imgUrl}}>
+        <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.row}>
             <Text style={styles.remark}>{item.remark}</Text>
             <View style={styles.right}>
@@ -115,5 +117,11 @@ let styles = StyleSheet.create({
     right: {
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    mask: {
+        position: 'absolute',
+        width: px2dp(280),
+        bottom: 0,
+        height: px2dp(40)
     }
 })
