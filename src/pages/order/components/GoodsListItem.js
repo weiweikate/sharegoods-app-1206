@@ -32,9 +32,10 @@ const GoodsListItem = props => {
         clickItem,
         goodsItemClick,
         operationMenuClick,
-        outTrandNo,
+        outTradeNo,
         platformPayTime,
         sendTime,
+        deliverTime,
         finishTime
     } = props;
     this.state = { pageStateString: '27:45:45后自动取消订单' };
@@ -64,7 +65,7 @@ const GoodsListItem = props => {
         for (let i = 0; i < nameArr.length; i++) {
             if (orderStatus == 1) {
                 // this.startCutDownTime2(1539319978000);
-                if (StringUtils.isNoEmpty(outTrandNo)) {
+                if (StringUtils.isNoEmpty(outTradeNo)) {
                     nameArr = [{
                         id: 1,
                         operation: '取消订单',
@@ -224,8 +225,9 @@ const GoodsListItem = props => {
                 break;
 
             case 4:
-                aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(sendTime / 1000)}
+                aboutTime = <UIText value={'确认收货时间：' + DateUtils.getFormatDate(deliverTime / 1000)}
                                     style={{ fontSize: 13, color: color.black_222 }}/>;
+                 break;
             case 5:
                 aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(finishTime / 1000)}
                                     style={{ fontSize: 13, color: color.black_222 }}/>;
