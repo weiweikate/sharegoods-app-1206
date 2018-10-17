@@ -69,7 +69,7 @@ export class Payment {
             Toast.showLoading()
             params.type = paymentType.balance
             params.balance = params.amounts
-            params.amounts= 0
+            params.amounts = 0
             const res = yield this.perpay(params)
             const outTradeNo = res.data.outTradeNo
             const checkRes = yield this.checkPayStatus({outTradeNo: outTradeNo})
@@ -114,7 +114,6 @@ export class Payment {
             const preStr = yield this.perpay(params)
             const prePayStr = preStr.data.prePayStr
             const resultStr = yield PayUtil.appAliPay(prePayStr)
-            console.log('appAliPay:' + JSON.stringify(resultStr))
             Toast.hiddenLoading();
             return {resultStr, preStr}
         } catch (error) {
@@ -132,9 +131,7 @@ export class Payment {
             params.amounts = params.amounts
             const preStr = yield this.perpay(params)
             const prePay = JSON.parse(preStr.data.prePayStr)
-            console.log('prePayStr', prePay)
             const resultStr = yield PayUtil.appWXPay(prePay)
-            console.log('wechat:' + JSON.stringify(resultStr))
             if (parseInt(resultStr.sdkCode, 0) !== 0) {
                 Toast.$toast(resultStr.msg)
                 Toast.hiddenLoading()
@@ -148,4 +145,5 @@ export class Payment {
             console.log(error)
         }
     })
+
 }

@@ -177,7 +177,7 @@ const homeRoute = {
     [homeLinkType.down]: 'topic/TopicDetailPage',
     [homeLinkType.spike]: 'topic/TopicDetailPage',
     [homeLinkType.package]: 'topic/TopicDetailPage',
-    [homeLinkType.store]: 'spellShop/SpellShopPage'
+    [homeLinkType.store]: 'spellShop/MyShop_RecruitPage'
 }
 
 //首页modules
@@ -204,13 +204,20 @@ class HomeModule {
             productType = product.productType
         }
 
+        const { storeDTO} = data
+        let storeId = 0
+        if (storeDTO) {
+            storeId = storeDTO.id
+        }
+
         const {linkType} = data
         return {
             activityType: linkType === 3 ? 2 : linkType === 4 ? 1 : 3,
             activityCode: data.linkTypeCode,
             linkTypeCode: data.linkTypeCode,
             productCode: data.linkTypeCode,
-            productType: productType
+            productType: productType,
+            storeId: storeId
         }
 
     }
