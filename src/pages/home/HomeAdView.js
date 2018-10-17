@@ -42,7 +42,7 @@ export default class HomeAdView extends Component {
                 </TouchableOpacity>)
             }
         })
-       return <View>
+       return <View style={styles.container}>
            {
                items.length > 0
                ?
@@ -59,6 +59,10 @@ export default class HomeAdView extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#fff',
+        marginTop:  ScreenUtils.px2dp(10)
+    },
     featureBox: {
         position: 'relative',
         height: ScreenUtils.px2dp(200),
