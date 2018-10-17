@@ -5,10 +5,10 @@ import backImg  from '../../comm/res/show_detail_back.png'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp, width } = ScreenUtils
 import HTML from 'react-native-render-html'
-import showConnectedImg from '../../comm/res/show_connected.png'
+// import showConnectedImg from '../../comm/res/show_connected.png'
 import showConnectImg from '../../comm/res/show_connect.png'
 import showGoodImg from '../../comm/res/show_good.png'
-import showDidGoodImg from '../../comm/res/show_did_good.png'
+// import showDidGoodImg from '../../comm/res/show_did_good.png'
 
 const htmlContent = `
     <h1>This HTML snippet is now rendered with native components !</h1>
