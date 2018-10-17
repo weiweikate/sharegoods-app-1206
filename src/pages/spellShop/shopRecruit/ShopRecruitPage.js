@@ -19,7 +19,8 @@ import ActionSheetView from '../components/ActionSheetView';
 import ReportAlert from '../components/ReportAlert';
 
 // 图片资源
-import ItemLogo from './src/more_icon.png';
+import icons8_Shop_50px from './src/icons8_Shop_50px.png';
+import icons9_shop from './src/icons9_shop.png';
 import spellStatusModel from '../model/SpellStatusModel';
 
 export default class ShopRecruitPage extends BasePage {
@@ -32,9 +33,14 @@ export default class ShopRecruitPage extends BasePage {
 
     $NavBarRenderRightItem = () => {
         return <View style={styles.rightBarItemContainer}>
-            {<TouchableOpacity onPress={this._clickSettingItem}>
-                <Image style={{ marginRight: 20 }} source={ItemLogo}/>
-            </TouchableOpacity>}
+            <TouchableOpacity onPress={() => {
+                this.$navigate('spellShop/recommendSearch/RecommendPage',{havaShop:true})}
+            }>
+                <Image style={{ marginRight: 20 }} source={icons8_Shop_50px}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this._clickSettingItem}>
+                <Image style={{ marginRight: 20 }} source={icons9_shop}/>
+            </TouchableOpacity>
         </View>;
     };
 
@@ -66,8 +72,12 @@ export default class ShopRecruitPage extends BasePage {
     };
 
     _clickSettingItem = () => {
+        let arr = ['分享店铺', '举报'];
+        if (this.state.storeData.myStore) {
+            arr = ['分享店铺'];
+        }
         this.actionSheetRef.show({
-            items: ['分享店铺']//
+            items: arr
         }, (item, index) => {
             if (index === 0) {
 

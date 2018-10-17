@@ -29,6 +29,7 @@ export default class SearchBar extends Component {
 
     render() {
         let { product, originalPrice } = this.props.itemData || {};
+        const { supplierName = '', brandName = '', name = '', firstCategoryName = '', secCategoryName = '', thirdCategoryName = '' } = product;
         return (
             <TouchableWithoutFeedback onPress={() => {
                 this.props.onPressAtIndex(product.id);
@@ -38,7 +39,7 @@ export default class SearchBar extends Component {
                         <Image style={styles.img} source={{ uri: product.imgUrl || '' }}/>
                         <View style={styles.textContentView}>
                             <Text style={{ color: '#222222', fontSize: 13 }}
-                                  numberOfLines={2}>{product.name || ''}</Text>
+                                  numberOfLines={2}>{`${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`}</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Text style={{
                                     color: '#D51243',

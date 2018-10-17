@@ -249,7 +249,15 @@ let constants = {
             sellerTime:'',
             disNextView:true,
             menu:[
-
+                {
+                    id:7,
+                    operation:'删除订单',
+                    isRed:false,
+                },{
+                    id:8,
+                    operation:'再次购买',
+                    isRed:true,
+                },
             ],
         },{
             index:5,

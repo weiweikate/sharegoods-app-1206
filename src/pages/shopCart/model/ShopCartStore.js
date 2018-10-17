@@ -183,11 +183,12 @@ class ShopCartStore {
     /*加入购物车*/
     addItemToShopCart(item) {
         if (item) {
+            console.log(item);
             ShopCartAPI.addItem({
-                'amount': 10,
-                'priceId': 1,
-                'productId': 1,
-                'timestamp': 1536633469102
+                'amount': item.amount,
+                'priceId': item.priceId,
+                'productId': item.productId,
+                'timestamp':item.timestamp
             }).then((res) => {
                 this.getShopCartListData();
             }).catch((error) => {
