@@ -15,8 +15,6 @@ import Center from './src/yqhy_04.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
-import { PageLoadingState } from '../../../components/pageDecorator/PageState';
-
 const gap = -5;
 
 export default class InvitationToShopPage extends BasePage {

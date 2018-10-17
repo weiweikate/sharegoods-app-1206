@@ -53,7 +53,7 @@ export default class MyShopPage extends BasePage {
             return (
                 <View style={styles.rightBarItemContainer}>
                     <TouchableOpacity onPress={() => {
-                        this.$navigate('spellShop/recommendSearch/RecommendPage', { havaShop: true });
+                        this.$navigate('spellShop/recommendSearch/RecommendPage');
                     }
                     }>
                         <Image style={{ marginRight: 20 }} source={icons8_Shop_50px}/>
