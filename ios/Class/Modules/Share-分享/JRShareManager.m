@@ -66,8 +66,16 @@ SINGLETON_FOR_CLASS(JRShareManager)
                completion:(shareFinshBlock) completion
 {
   UMSocialMessageObject * message = [[UMSocialMessageObject alloc]init];
-  NSString* thumbURL =  linkUrl;
-  UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:title descr:subTitle thumImage:thumbURL];
+  id thumImage = nil;
+
+  if ([imageUrl hasPrefix:@"http"]){
+    thumImage = imageUrl;
+  }else if ([imageUrl hasSuffix:@"/"]){
+    thumImage = [UIImage imageWithContentsOfFile:imageUrl];
+  }else{
+    thumImage = [UIImage imageNamed:imageUrl];
+  }
+  UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:title descr:subTitle thumImage:thumImage];
   //设置网页地址
   shareObject.webpageUrl = linkUrl;
   //分享消息对象设置分享内容对象
@@ -108,14 +116,14 @@ SINGLETON_FOR_CLASS(JRShareManager)
 
 -(void)getUserInfoForPlatform:(UMSocialPlatformType)platformType withCallBackBlock:(loginFinshBlock)finshBlock{
   BOOL wx = [[UIApplication sharedApplication]canOpenURL:[NSURL URLWithString:@"weixin://"]];
-//  if (!wx) {
-//     NSDictionary * dic = @{@"msg":@"未安装微信"};
-//    if (finshBlock) {
-//          finshBlock(@[dic]);
-//      }
-////    [JRLoadingAndToastTool showToast:@"未安装微信" andDelyTime:2];
-////    return;
-//  }
+  //  if (!wx) {
+  //     NSDictionary * dic = @{@"msg":@"未安装微信"};
+  //    if (finshBlock) {
+  //          finshBlock(@[dic]);
+  //      }
+  ////    [JRLoadingAndToastTool showToast:@"未安装微信" andDelyTime:2];
+  ////    return;
+  //  }
   [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_WechatSession currentViewController:self.currentViewController_XG completion:^(id result, NSError *error) {
     UMSocialUserInfoResponse * res = result ;
     NSDictionary *dicData = @{
@@ -142,16 +150,16 @@ SINGLETON_FOR_CLASS(JRShareManager)
 }
 //保存图片到相册
 -(void)saveImage:(UIImage *)image{
-    __block ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
-    [lib writeImageToSavedPhotosAlbum:image.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
-      NSLog(@"assetURL = %@, error = %@", assetURL, error);
-      lib = nil;
-      if (!error) {
-        [JRLoadingAndToastTool showToast:@"图片保存成功" andDelyTime:0.5f];
-      }else{
-        [JRLoadingAndToastTool showToast:@"图片保存失败" andDelyTime:0.5f];
-      }
-    }];
+  __block ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
+  [lib writeImageToSavedPhotosAlbum:image.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+    NSLog(@"assetURL = %@, error = %@", assetURL, error);
+    lib = nil;
+    if (!error) {
+      [JRLoadingAndToastTool showToast:@"图片保存成功" andDelyTime:0.5f];
+    }else{
+      [JRLoadingAndToastTool showToast:@"图片保存失败" andDelyTime:0.5f];
+    }
+  }];
 }
 
 
