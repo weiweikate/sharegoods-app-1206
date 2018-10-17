@@ -204,7 +204,8 @@ export default class MyShopPage extends BasePage {
 
     //加入店铺
     _joinBtnAction = () => {
-        let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2;
+        const { storeMaxUser, storeUserList = [] } = this.state.storeData;
+        let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2 && storeMaxUser > storeUserList.length;
         if (canJoin) {
             this.$loadingShow();
             SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
