@@ -8,14 +8,12 @@ import ShowHotView from './ShowHotView'
 import ShowHotFindView from './ShowHotFindView'
 
 export default class ShowListPage extends BasePage {
-    constructor(props) {
-        super(props)
-    }
     $navigationBarOptions = {
         title: '发现',
         show: true
     }
     _render() {
+        const {navigation} = this.props
         return <View style={styles.container}>
             <ScrollableTabView
                 style={styles.tab}
@@ -26,10 +24,10 @@ export default class ShowListPage extends BasePage {
                 tabBarBackgroundColor={'#fff'}
             >
                 <View style={styles.container} tabLabel="精选热门" >
-                    <ShowHotView/>
+                    <ShowHotView navigation={navigation}/>
                 </View>
                 <View style={styles.container}  tabLabel="热门发现" >
-                    <ShowHotFindView/>
+                    <ShowHotFindView navigation={navigation}/>
                 </View>
             </ScrollableTabView>
         </View>
