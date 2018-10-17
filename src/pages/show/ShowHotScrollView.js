@@ -65,7 +65,8 @@ export default class ShowHotScrollView extends Component {
 
 let styles = StyleSheet.create({
     container: {
-        height: px2dp(233)
+        height: px2dp(200),
+        marginTop: px2dp(10)
     },
     titleView: {
         height: px2dp(53),

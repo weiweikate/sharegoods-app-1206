@@ -23,6 +23,7 @@ export default class ShowListPage extends BasePage {
                 tabBarInactiveTextColor={'#666'}
                 tabBarUnderlineStyle={styles.underline}
                 tabBarTextStyle={styles.tabText}
+                tabBarBackgroundColor={'#fff'}
             >
                 <View style={styles.container} tabLabel="精选热门" >
                     <ShowHotView/>
