@@ -10,6 +10,7 @@ import showConnectImg from '../../comm/res/show_connect.png'
 import showGoodImg from '../../comm/res/show_good.png'
 // import showDidGoodImg from '../../comm/res/show_did_good.png'
 import seeImg from '../../comm/res/see.png'
+import showShareImg from '../../comm/res/show_share.png'
 
 const htmlContent = `
     <h1>This HTML snippet is now rendered with native components !</h1>
@@ -22,6 +23,7 @@ const Goods = ({data}) => <View style={styles.goodsItem}>
     <Image style={styles.goodImg} source={{uri: data.imgUrl}}/>
     <View style={styles.goodDetail}>
         <Text style={styles.name}>{data.name}</Text>
+        <View style={{height: px2dp(4)}}/>
         <Text style={styles.price}>￥ {data.price}</Text>
     </View>
 </View>
@@ -33,6 +35,10 @@ export default class ShowDetailPage extends Component {
     _goBack() {
         const {navigation} = this.props
         navigation.goBack(null)
+    }
+    _goToGoodsPage() {
+        const {navigation} = this.props
+        navigation.push('show/ShowGoodsPage')
     }
     render() {
         let item = [{
@@ -75,6 +81,9 @@ export default class ShowDetailPage extends Component {
             <TouchableOpacity style={styles.backView} onPress={()=>this._goBack()}>
                 <Image source={backImg}/>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.shareView} onPress={()=>{}}>
+                <Image source={showShareImg}/>
+            </TouchableOpacity>
         </ScrollView>
         <View style={styles.bottom}>
             <Image style={styles.bottomGoodImg} source={showGoodImg}/>
@@ -82,7 +91,7 @@ export default class ShowDetailPage extends Component {
             <Image style={styles.connectImg} source={showConnectImg}/>
             <Text style={styles.bottomText}>收藏 . 15</Text>
             <View style={{flex: 1}}/>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={()=>this._goToGoodsPage()}>
                 <Text style={styles.buttonTitle}>可购买商品</Text>
             </TouchableOpacity>
         </View>
@@ -114,6 +123,15 @@ let styles = StyleSheet.create({
         width: px2dp(50),
         height: px2dp(43) + ScreenUtils.statusBarHeight,
         alignItems: 'flex-end',
+        justifyContent: 'flex-end'
+    },
+    shareView: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        width: px2dp(50),
+        height: px2dp(43) + ScreenUtils.statusBarHeight,
+        alignItems: 'flex-start',
         justifyContent: 'flex-end'
     },
     goodsItem: {
