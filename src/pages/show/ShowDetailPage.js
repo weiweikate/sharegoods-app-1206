@@ -68,7 +68,7 @@ export default class ShowDetailPage extends Component {
             <View style={styles.goodsView}>
                 {
                     item.map((value, index) => {
-                        return <Goods data={value}/>
+                        return <Goods key={index} data={value}/>
                     })
                 }
             </View>
