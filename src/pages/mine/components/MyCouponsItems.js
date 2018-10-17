@@ -33,7 +33,7 @@ export default class MyCouponsItems extends Component {
             pageStatus: this.props.pageStatus,
             isEmpty: true,
             currentPage: 1,
-            explainList: []
+            explainList: [],
         };
     }
 
@@ -298,7 +298,13 @@ export default class MyCouponsItems extends Component {
     clickItem = (index, item) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         // 跳转时type = 99 表示一元券
+        // if (item.type === 99) {
+        //     // 一元券，弹出选择数量框
+        //     this.setModalVisible(true);
+        //     return;
+        // }
         if (this.props.fromOrder) {
+
             this.props.useCoupons(item);
         } else {
             this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });

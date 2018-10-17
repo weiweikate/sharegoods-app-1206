@@ -83,7 +83,8 @@ export default {
     androidStatusHeight: getStatusH,
     allStatusBarHeight: getStatusH,
     statusBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 44 : 20) : getStatusH(),
-    headerHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 88 : 64) : 68,
+    // 44为头部不包含状态栏高度
+    headerHeight: (Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 44 : 20) : getStatusH()) + 44,
     tabBarHeight: Platform.OS === 'ios' ? (__ISIPHONEX__ || __ISIPHONEXSMAX__ ? 83 : 49) : 49,
     tabBarHeightMore: this.tabBarHeight - 49,
     isIOS: Platform.OS === 'ios',
@@ -94,6 +95,6 @@ export default {
     safeBottomMax: Platform.OS === 'ios' ? (__ISIPHONEXSMAX__ ? 37 : 0) : 0,
     safeBottomX: Platform.OS === 'ios' ? (__ISIPHONEX__ ? 37 : 0) : 0,
     isIphoneMax: __ISIPHONEXSMAX__,
-    saveMarginBottom: Platform.OS === 'ios' && (Dimensions.get('window').height === 812 || Dimensions.get('window').height === 736) ? 34 : 0,
+    saveMarginBottom: Platform.OS === 'ios' && (Dimensions.get('window').height === 812 || Dimensions.get('window').height === 736) ? 34 : 0
 
 };
