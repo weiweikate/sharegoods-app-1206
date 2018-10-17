@@ -58,6 +58,9 @@ const api = {
     subOrderLookDetial: ['/order/orderProduct/lookDetial',{method:'get'}],
     // 获取物流公司
     findAllExpress: ['/sysExpress/findAllExpress', {method: 'get'}],
+    //售后订单列表 chengjun.wu
+    queryAftermarketOrderList: '/order/queryAftermarketOrderList',
+
 
 
 
