@@ -94,13 +94,19 @@ export default class SearchPage extends BasePage {
     _onSubmitEditing = (text) => {
         this._clickItemAction(text);
     };
-
     //跳转
-    _clickItemAction = (text, hotWordId) => {
+    _clickItemAction = (text, index, hotWordId) => {
         if (!this.state.recentData.includes(text)) {
             this.state.recentData.push(text);
             Storage.set(recentDataKey, this.state.recentData);
             this.forceUpdate();
+        } else {
+            if (index !== 0) {
+                this.state.recentData.splice(index, 1);
+                this.state.recentData.unshift(text);
+                Storage.set(recentDataKey, this.state.recentData);
+                this.forceUpdate()
+            }
         }
         this.$navigate(RouterMap.SearchResultPage, { keywords: text, hotWordId: hotWordId || '' });
     };
