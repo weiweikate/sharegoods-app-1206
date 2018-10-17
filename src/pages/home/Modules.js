@@ -242,14 +242,14 @@ class HomeModule {
             id: 4,
             type: homeType.show
         },{
+            id: 7,
+            type: homeType.starShop
+        },{
             id: 5,
             type: homeType.today
         },{
             id: 6,
             type: homeType.recommend
-        },{
-            id: 7,
-            type: homeType.starShop
         },{
             id: 8,
             type: homeType.subject
