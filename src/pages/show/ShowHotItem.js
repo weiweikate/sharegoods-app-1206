@@ -6,10 +6,12 @@ import React from 'react'
 import { View, Text, TouchableOpacity, ImageBackground, Image, StyleSheet } from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 const {  px2dp } = ScreenUtils
-import seeImg from '../../comm/res/see.png'
+import seeImg from '../../comm/res/see_white.png'
+import maskImg from '../../comm/res/show_mask.png'
 
 export default ({data, press, imageStyle}) => <TouchableOpacity style={styles.item} onPress={()=>{press && press()}}>
     <ImageBackground style={[styles.img, imageStyle]} source={{uri: data.imgUrl}}>
+        <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.numberView}>
             <Image style={styles.seeImg} source={seeImg}/>
             <Text style={styles.number}>{data.number}</Text>
@@ -84,5 +86,11 @@ let styles = StyleSheet.create({
         color: '#939393',
         fontSize: px2dp(11),
         marginRight: px2dp(10)
+    },
+    mask: {
+        position: 'absolute',
+        width: px2dp(168),
+        bottom: 0,
+        height: px2dp(30)
     }
 })

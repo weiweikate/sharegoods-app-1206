@@ -31,19 +31,19 @@ export default class HomeUserView extends Component {
         if (!user.isLogin) {
             return <View/>
         }
-        const {levelName,  experience} = user
+        let {levelName,  experience} = user
         const { memberLevels, totalExp,  levelCount, levelNumber} = this.memberModule
         console.log('experience', experience, levelName,  totalExp, experience / totalExp, levelNumber)
-
+        experience = experience ?  experience : 0
         let items = []
-        let width = px2dp(220) - px2dp(5) * levelCount
-        let left = px2dp(24)
+        let width = 220 / levelCount - 7
+        let left = 19
         memberLevels.map((level, index) => {
             let levelStyle = {left: left}
             console.log('memberLevels', left, levelNumber[index], totalExp, levelNumber[index] / totalExp)
             items.push(<Level key={index} levelStyle={levelStyle} sizeStyle={styles.smallCircle} text={level.name}/>)
             if (index < memberLevels.length - 1) {
-                left +=  width * (levelNumber[index + 1] / totalExp)
+                left +=  width
             }
         })
         return <View>
@@ -56,7 +56,7 @@ export default class HomeUserView extends Component {
                                 <ProgressBar
                                     fillStyle={{backgroundColor:'#E7AE39',height: 4, borderRadius: 2,}}
                                     backgroundStyle={{backgroundColor: '#9B6D26', borderRadius: 2, height:4 }}
-                                    style={{marginTop: 10, width: px2dp(220), height: 4}}
+                                    style={{marginTop: 10, width: 220, height: 4}}
                                     progress={ experience / totalExp}
                                     />
                             </View>
@@ -139,7 +139,7 @@ let styles = StyleSheet.create({
     level: {
         color: '#9B6D26',
         fontSize: px2dp(11),
-        height: px2dp(20)
+        height: px2dp(21)
     },
     see: {
         marginLeft: px2dp(4),

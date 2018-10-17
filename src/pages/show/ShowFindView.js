@@ -7,10 +7,12 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
 import { ShowFindModules } from './Show'
-import seeImg from '../../comm/res/see.png'
+import seeImg from '../../comm/res/see_white.png'
+import maskImg from '../../comm/res/show_mask.png'
 
 const Card = ({item, press}) => <TouchableOpacity style={styles.card} onPress={()=> press && press()}>
     <ImageBackground style={styles.imgView} source={{uri:item.imgUrl}}>
+        <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.seeRow}>
             <Text style={styles.text} numberOfLines={1}>{item.remark}</Text>
             <Image source={seeImg}/>
@@ -136,7 +138,8 @@ let styles = StyleSheet.create({
     },
     number: {
         color: '#fff',
-        fontSize: px2dp(10)
+        fontSize: px2dp(10),
+        marginLeft: px2dp(4)
     },
     rightRow: {
         flexDirection: 'row',
@@ -162,5 +165,11 @@ let styles = StyleSheet.create({
     time: {
         color: '#666',
         fontSize: px2dp(11)
+    },
+    mask: {
+        position: 'absolute',
+        width: px2dp(133),
+        bottom: 0,
+        height: px2dp(40)
     }
 })
