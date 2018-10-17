@@ -23,6 +23,7 @@ import payment from './pages/payment'
 import htmlView from './components/web/HtmlView';
 import message from './pages/message';
 import topic from './pages/topic'
+import show from './pages/show/Index'
 
 const Router = {
     Tab: {
@@ -70,6 +71,7 @@ addSubModule(order);
 addSubModule(message);
 addSubModule(topic);
 addSubModule(payment)
+addSubModule(show)
 
 console.log('Router', Object.keys(Router));
 console.log(Router);

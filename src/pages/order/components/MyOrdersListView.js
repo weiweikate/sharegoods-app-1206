@@ -181,12 +181,13 @@ export default class MyOrdersListView extends Component {
                 platformPayTime={item.platformPayTime}
                 finishTime={item.finishTime}
                 sendTime={item.sendTime}
+                deliverTime={item.deliverTime}
                 clickItem={() => {
                     this.clickItem(index);
                 }}
                 goodsItemClick={() => this.clickItem(index)}
                 operationMenuClick={(menu) => this.operationMenuClick(menu, index)}
-                outTrandNo={item.outTrandNo}
+                outTradeNo={item.outTradeNo}
             />
         );
     };
@@ -330,12 +331,13 @@ export default class MyOrdersListView extends Component {
                     payTime:item.payTime,
                     sendTime:item.sendTime,
                     finishTime:item.finishTime,
+                    deliverTime:item.deliverTime,
                     orderStatus: item.status,
                     freightPrice: item.freightPrice,
                     totalPrice: item.totalPrice,
                     orderProduct: this.getOrderProduct(item.orderProductList),
                     pickedUp: item.pickedUp,
-                    outTrandNo: item.outTrandNo
+                    outTradeNo: item.outTradeNo
                 });
             });
             this.setState({ viewData: arrData });

@@ -351,115 +351,132 @@ export default class ConfirOrderPage extends BasePage {
     componentDidMount() {
         this.loadPageData();
     }
-    loadPageData(){
+
+    async  loadPageData() {
         Toast.showLoading();
-        let viewData=this.state.viewData;
-        if(this.state.orderParam.orderType === 2){
-            OrderApi.DepreciateMakeSureOrder({
-                orderType: this.params.orderParamVO.orderType,
-                code:this.params.orderParamVO.orderProducts[0].code,
-                num:this.params.orderParamVO.orderProducts[0].num,
-            }).then(response =>{
-                Toast.hiddenLoading();
-                let data = response.data;
-                let arrData = [];
-                data.orderProductList.map((item, index) => {
-                    arrData.push({
-                        productId: item.productId,
-                        uri: item.specImg,
-                        goodsName: item.productName,
-                        salePrice: item.price,
-                        category: item.spec,
-                        goodsNum: item.num,
-                        originalPrice: item.originalPrice,
-                        restrictions: item.restrictions
-                        // activityId: item.activityId
-                    });
+        switch (this.state.orderParam.orderType) {
+            case 1://秒杀
+                OrderApi.SeckillMakeSureOrder({
+                    orderType: this.params.orderParamVO.orderType,
+                    code: this.params.orderParamVO.orderProducts[0].code,
+                    num: this.params.orderParamVO.orderProducts[0].num
+                }).then(response => {
+                    Toast.hiddenLoading();
+                    this.handleNetData(response.data);
+                }).catch(err => {
+                    Toast.hiddenLoading();
+                    this.$toastShow(err.msg);
+                    if (err.code === 10009) {
+                        this.$navigate('login/login/LoginPage', {
+                            callback: () => {
+                                this.loadPageData();
+                            }
+                        });
+                    }
                 });
-                if (data.userAddress) {
-                    viewData.express = {
-                        id: data.userAddress.id,
-                        receiverName: data.userAddress.receiver,
-                        receiverNum: data.userAddress.receiverPhone,
-                        receiverAddress: data.userAddress.address,
-                        areaCode: data.userAddress.areaCode,
-                        cityCode: data.userAddress.cityCode,
-                        provinceCode: data.userAddress.provinceCode,
-                        provinceString: data.userAddress.province,
-                        cityString: data.userAddress.city,
-                        areaString: data.userAddress.area
-                    };
-                } else {
-                    viewData.express = {};
-                }
-                viewData.totalAmounts = data.totalAmounts;
-                viewData.totalFreightFee = data.totalFreightFee;
-                viewData.tokenCoin = data.tokenCoin;
-                viewData.list = arrData;
-                this.setState({ viewData });
-            }).catch(err =>{
-                Toast.hiddenLoading();
-                this.$toastShow(err.msg);
-                if (err.code === 10009) {
-                    this.$navigate('login/login/LoginPage',{callback:()=>{
-                            this.loadPageData()
-                        }});
-                }
-            })
-        }else{
-            OrderApi.makeSureOrder({
-                orderType: this.params.orderParamVO.orderType,
-                orderProducts: this.params.orderParamVO.orderProducts
-            }).then((response) => {
-                Toast.hiddenLoading();
-                console.log(response);
-                let data = response.data;
-                let arrData = [];
-                data.orderProductList.map((item, index) => {
-                    arrData.push({
-                        productId: item.productId,
-                        uri: item.specImg,
-                        goodsName: item.productName,
-                        salePrice: item.price,
-                        category: item.spec,
-                        goodsNum: item.num,
-                        originalPrice: item.originalPrice,
-                        restrictions: item.restrictions
-                        // activityId: item.activityId
-                    });
+                break;
+            case 2://降价拍
+                OrderApi.DepreciateMakeSureOrder({
+                    orderType: this.params.orderParamVO.orderType,
+                    code: this.params.orderParamVO.orderProducts[0].code,
+                    num: this.params.orderParamVO.orderProducts[0].num
+                }).then(response => {
+                    Toast.hiddenLoading();
+                    this.handleNetData(response.data);
+                }).catch(err => {
+                    Toast.hiddenLoading();
+                    this.$toastShow(err.msg);
+                    if (err.code === 10009) {
+                        this.$navigate('login/login/LoginPage', {
+                            callback: () => {
+                                this.loadPageData();
+                            }
+                        });
+                    }
                 });
-                if (data.userAddress) {
-                    viewData.express = {
-                        id: data.userAddress.id,
-                        receiverName: data.userAddress.receiver,
-                        receiverNum: data.userAddress.receiverPhone,
-                        receiverAddress: data.userAddress.address,
-                        areaCode: data.userAddress.areaCode,
-                        cityCode: data.userAddress.cityCode,
-                        provinceCode: data.userAddress.provinceCode,
-                        provinceString: data.userAddress.province,
-                        cityString: data.userAddress.city,
-                        areaString: data.userAddress.area
-                    };
-                } else {
-                    viewData.express = {};
-                }
-                viewData.totalAmounts = data.totalAmounts;
-                viewData.totalFreightFee = data.totalFreightFee;
-                viewData.tokenCoin = data.tokenCoin;
-                viewData.list = arrData;
-                this.setState({ viewData });
-            }).catch(err => {
-                Toast.hiddenLoading();
-                this.$toastShow(err.msg);
-                if (err.code === 10009) {
-                    this.$navigate('login/login/LoginPage',{callback:()=>{
-                            this.loadPageData()
-                        }});
-                }
-            });
+                break;
+            case 99:
+                OrderApi.makeSureOrder({
+                    orderType: this.params.orderParamVO.orderType,
+                    orderProducts: this.params.orderParamVO.orderProducts
+                }).then(response => {
+                    Toast.hiddenLoading();
+                    this.handleNetData(response.data);
+                }).catch(err => {
+                    Toast.hiddenLoading();
+                    this.$toastShow(err.msg);
+                    if (err.code === 10009) {
+                        this.$navigate('login/login/LoginPage', {
+                            callback: () => {
+                                this.loadPageData();
+                            }
+                        });
+                    }
+                });
+                break;
+            case 3://礼包
+                console.log(this.params.orderParamVO);
+                OrderApi.PackageMakeSureOrder({
+                    packageCode:this.params.orderParamVO.packageCode,
+                    orderType:5,
+                    orderProducts:this.params.orderParamVO.orderProducts
+                    }).then(
+                    response =>{
+                        console.log(response)
+                    }
+                ).catch(err => {
+                    Toast.hiddenLoading();
+                    this.$toastShow(err.msg);
+                    if (err.code === 10009) {
+                        this.$navigate('login/login/LoginPage', {
+                            callback: () => {
+                                this.loadPageData();
+                            }
+                        });
+                    }
+                })
+                break;
         }
 
+
+    }
+    handleNetData=(data)=>{
+        let arrData = [];
+        let viewData = this.state.viewData;
+        data.orderProductList.map((item, index) => {
+            arrData.push({
+                productId: item.productId,
+                uri: item.specImg,
+                goodsName: item.productName,
+                salePrice: item.price,
+                category: item.spec,
+                goodsNum: item.num,
+                originalPrice: item.originalPrice,
+                restrictions: item.restrictions
+                // activityId: item.activityId
+            });
+        });
+        if (data.userAddress) {
+            viewData.express = {
+                id: data.userAddress.id,
+                receiverName: data.userAddress.receiver,
+                receiverNum: data.userAddress.receiverPhone,
+                receiverAddress: data.userAddress.address,
+                areaCode: data.userAddress.areaCode,
+                cityCode: data.userAddress.cityCode,
+                provinceCode: data.userAddress.provinceCode,
+                provinceString: data.userAddress.province,
+                cityString: data.userAddress.city,
+                areaString: data.userAddress.area
+            };
+        } else {
+            viewData.express = {};
+        }
+        viewData.totalAmounts = data.totalAmounts;
+        viewData.totalFreightFee = data.totalFreightFee;
+        viewData.tokenCoin = data.tokenCoin;
+        viewData.list = arrData;
+        this.setState({ viewData });
     }
 
     clickItem = (index, item) => {
@@ -550,7 +567,7 @@ export default class ConfirOrderPage extends BasePage {
             NativeModules.commModule.toast('请先添加地址');
             return;
         }
-        this.$loadingShow('加载中...');
+        this.$loadingShow();
         let params;
         if (this.state.orderParam && this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2 || this.state.orderParam.orderType === 98) {
             params = {
@@ -559,7 +576,7 @@ export default class ConfirOrderPage extends BasePage {
                 buyerRemark: buyerRemark,
                 cityCode: cityCode,
                 num: this.state.orderParam.orderProducts[0].num,
-                code:this.state.orderParam.orderProducts[0].code,
+                code: this.state.orderParam.orderProducts[0].code,
                 orderType: this.state.orderParam.orderType,
                 provinceCode: provinceCode,
                 receiver: receiver,
@@ -567,7 +584,28 @@ export default class ConfirOrderPage extends BasePage {
             };
             console.log(params);
             if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
-            } else {
+                OrderApi.SeckillSubmitOrder(params).then((response) => {
+                    this.$loadingDismiss();
+                    let data = response.data;
+                    // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
+                    this.$navigate('payment/PaymentMethodPage', {
+                        orderNum: data.orderNum,
+                        amounts: this.state.viewData.totalAmounts,
+                        pageType: 0,
+                        availableBalance: data.user.availableBalance
+                    });
+                }).catch(e => {
+                    this.$loadingDismiss();
+                    console.log(e);
+                    if (e.code === 10009) {
+                        this.$navigate('login/login/LoginPage', {
+                            callback: () => {
+                                this.loadPageData();
+                            }
+                        });
+                    }
+                });
+            } else if(this.state.orderParam && this.state.orderParam.orderType === 2) {
                 OrderApi.DepreciateSubmitOrder(params).then((response) => {
                     this.$loadingDismiss();
                     let data = response.data;
@@ -583,9 +621,11 @@ export default class ConfirOrderPage extends BasePage {
                     this.$loadingDismiss();
                     console.log(e);
                     if (e.code === 10009) {
-                        this.$navigate('login/login/LoginPage',{callback:()=>{
-                                this.loadPageData()
-                            }});
+                        this.$navigate('login/login/LoginPage', {
+                            callback: () => {
+                                this.loadPageData();
+                            }
+                        });
                     }
                 });
             }
@@ -602,9 +642,6 @@ export default class ConfirOrderPage extends BasePage {
                 recevicePhone: recevicePhone,
                 tokenCoin: tokenCoin
             };
-            console.log(params);
-            if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
-            } else {
                 OrderApi.submitOrder(params).then((response) => {
                     this.$loadingDismiss();
                     let data = response.data;
@@ -620,12 +657,14 @@ export default class ConfirOrderPage extends BasePage {
                     this.$loadingDismiss();
                     console.log(e);
                     if (e.code === 10009) {
-                        this.$navigate('login/login/LoginPage',{callback:()=>{
-                                this.loadPageData()
-                            }});
+                        this.$navigate('login/login/LoginPage', {
+                            callback: () => {
+                                this.loadPageData();
+                            }
+                        });
                     }
                 });
-            }
+
         }
     };
     jumpToCouponsPage = (params) => {
@@ -637,7 +676,7 @@ export default class ConfirOrderPage extends BasePage {
                     OrderApi.makeSureOrder({
                         orderType: this.params.orderParamVO.orderType,
                         orderProducts: this.params.orderParamVO.orderProducts,
-                        couponId:data.couponConfigId,
+                        couponId: data.couponConfigId
                     }).then((response) => {
                         Toast.hiddenLoading();
                         console.log(response);
@@ -681,9 +720,11 @@ export default class ConfirOrderPage extends BasePage {
                         Toast.hiddenLoading();
                         this.$toastShow(err.msg);
                         if (err.code === 10009) {
-                            this.$navigate('login/login/LoginPage',{callback:()=>{
-                                    this.loadPageData()
-                                }});
+                            this.$navigate('login/login/LoginPage', {
+                                callback: () => {
+                                    this.loadPageData();
+                                }
+                            });
                         }
                     });
                 } else {
