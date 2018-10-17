@@ -7,14 +7,14 @@ import {
     StyleSheet,
     View,
     Text,
-    TouchableOpacity, ListView, TouchableWithoutFeedback, Image
+    TouchableOpacity, ListView, TouchableWithoutFeedback, Image, ImageBackground
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-import UIImage from '../../../../components/ui/UIImage';
+// import UIImage from '../../../../components/ui/UIImage';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import RefreshList from '../../../../components/ui/RefreshList';
 import NoMessage from '../../../../comm/res/empty_list_message.png';
 import user from '../../../../model/user';
@@ -77,9 +77,9 @@ export default class MyCollectPage extends BasePage {
         }
     };
     isValidItem = (index) => {
-        // let validCode = 0;
-        // return this.state.viewData[index].status == validCode;
-        return true;
+        let inValidCode = 0;
+        return this.state.viewData[index].status !== inValidCode;
+        // return true;
     };
     renderItem = (item, index) => {
         return (
@@ -98,7 +98,7 @@ export default class MyCollectPage extends BasePage {
             }
         }
         return (
-            <TouchableWithoutFeedback onPress={() => this.go2PruductDetailPage(item.storeId)}>
+            <TouchableWithoutFeedback onPress={() => this.go2PruductDetailPage(item.storeId, 0)}>
                 <View style={styles.rowContainer}>
                     {
                         item.headUrl ? <Image source={{ uri: item.headUrl }} style={styles.img}/> :
@@ -129,46 +129,50 @@ export default class MyCollectPage extends BasePage {
         );
     };
     renderInvalidItem = ({ item, index }) => {
+        console.log(item);
+        const storeStar = item.storeStarId;
+        const starsArr = [];
+        if (storeStar && typeof storeStar === 'number') {
+            for (let i = 0; i < (storeStar > 3 ? 3 : storeStar); i++) {
+                starsArr.push(i);
+            }
+        }
         return (
-            <View>
-                <SwipeRow disableRightSwipe={true} leftOpenValue={75} rightOpenValue={-75}
-                          style={{ height: 100, flexDirection: 'row', backgroundColor: color.white }}>
-                    <View style={[styles.standaloneRowBack, { height: 100 }]}>
-                        <UIText style={styles.backTextWhite} value={'删除'} onPress={() => {
-                            this.deleteFromShoppingCartByProductId(index);
-                        }}/>
-                    </View>
-                    <View style={[styles.standaloneRowFront, { height: 100 }]}>
-                        <View style={{
-                            width: 38,
-                            height: 20,
-                            borderRadius: 10,
-                            backgroundColor: '#999999',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            marginLeft: 12
-                        }}>
-                            <UIText value={'失效'}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 12, color: '#ffffff' }}/>
+            <TouchableWithoutFeedback onPress={() => this.go2PruductDetailPage(item.storeId, 1)}>
+                <View style={[styles.rowContainer, { backgroundColor: '#c7c7c7' }]}>
+                    {
+                        item.headUrl ? <ImageBackground source={{ uri: item.headUrl }} style={[{
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }, styles.img]}>
+                                <Text style={{ fontSize: 18 }}>已失效</Text>
+                            </ImageBackground> :
+                            <View style={[{ justifyContent: 'center', alignItems: 'center' }, styles.img]}>
+                                <Text style={{ fontSize: 18 }}>已失效</Text>
+                            </View>
+                    }
+                    <View style={styles.right}>
+                        <View style={styles.row}>
+                            <Text numberOfLines={1} style={styles.title}>{item.name || ''}</Text>
                         </View>
-                        <UIImage source={{ uri: this.state.viewData[index].pictureUrl }}
-                                 style={{ width: 80, height: 80, marginLeft: 7, marginRight: 16, borderRadius: 10 }}/>
-                        <View style={{
-                            flex: 1,
-                            height: 100,
-                            justifyContent: 'space-between',
-                            marginTop: 30,
-                            paddingRight: 15
-                        }}>
-                            <View>
-                                <UIText value={this.state.viewData[index].context}
-                                        style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#999999' }}/>
+
+                        <Text style={[styles.desc, styles.margin]}>{item.userCount || 0}积分</Text>
+                        <View style={styles.bottomRow}>
+                            <Image source={MoneyIcon}/>
+                            <Text style={[styles.desc, { color: '#f39500' }]}>交易额:{item.totalTradeBalance}元</Text>
+                            <View style={{ flex: 1 }}/>
+                            <View style={styles.starContainer}>
+                                {
+                                    starsArr.map((index) => {
+                                        return <Image key={index} style={[index ? { marginLeft: 5 } : null]}
+                                                      source={StarIcon}/>;
+                                    })
+                                }
                             </View>
                         </View>
                     </View>
-                </SwipeRow>
-                <View style={{ height: 2, backgroundColor: color.page_background }}/>
-            </View>
+                </View>
+            </TouchableWithoutFeedback>
         );
     };
 
@@ -202,8 +206,11 @@ export default class MyCollectPage extends BasePage {
         this.getDataFromNetwork();
     };
 
-    go2PruductDetailPage(i) {
-        // this.navigate('product/ProductDetailPage',{productId:i})
+    go2PruductDetailPage(storeId, index) {
+        if (index != 1) {
+            this.$navigate('spellShop/MyShop_RecruitPage', { storeId: storeId });
+        }
+
     }
 
     componentDidMount() {
