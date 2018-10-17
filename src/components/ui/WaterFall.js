@@ -5,7 +5,7 @@ import {
   View,
   ViewPropTypes,
   RefreshControl,
-  // Text
+  Text
 } from 'react-native'
 
 import PropTypes from 'prop-types'
@@ -69,19 +69,19 @@ export class Column extends React.Component {
     }
 }
 
-// class LoadMore extends React.Component {
-//     static propTypes = {
-//       loading: PropTypes.bool.isRequired
-//     }
+class LoadMore extends React.Component {
+    static propTypes = {
+      loading: PropTypes.bool.isRequired
+    }
 
-//     render() {
-//       return (
-//         <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
-//           {this.props.loading ? <Text>加载中...</Text> : <Text>加载更多</Text>}
-//         </View>
-//       )
-//     }
-// }
+    render() {
+      return (
+        <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
+          {this.props.loading ? <Text>加载中...</Text> : <Text>加载更多</Text>}
+        </View>
+      )
+    }
+}
 
 export default class Masonry extends React.Component {
     static propTypes = {
@@ -233,9 +233,9 @@ export default class Masonry extends React.Component {
     }
 
     render() {
-    //   let loadMore = this.props.infinite ?
-    //     (this.props.renderInfinite ? this.props.renderInfinite(this.state.infiniting) : <LoadMore loading={this.state.infiniting}/>)
-    //     : null
+      let loadMore = this.props.infinite ?
+        (this.props.renderInfinite ? this.props.renderInfinite(this.state.infiniting) : <LoadMore loading={this.state.infiniting}/>)
+        : null
 
       return (
         <ScrollView
@@ -262,7 +262,7 @@ export default class Masonry extends React.Component {
                 renderItem={this.props.renderItem.bind(this)}/>
             } )}
           </View>
-          {/* {this.props.hasMore ? loadMore : null} */}
+          {this.props.hasMore ? loadMore : null}
         </ScrollView>
       )
     }

@@ -45,8 +45,11 @@ export default class ShowHotView extends Component {
         this.waterfall.addItems(data)
     }
     infiniting(done) {
+        console.log('load more infiniting', done)
+        
         setTimeout(() => {
-            // this.refs.addItems(this.state.list)
+            let data = this.recommendModules.getMoreRecommendList()
+            this.waterfall.addItems(data)
             done()
         }, 1000)
     }
@@ -54,17 +57,6 @@ export default class ShowHotView extends Component {
         setTimeout(() => {
             done()
         }, 1000)
-    }
-    renderLoadMore(loading) {
-        if (loading) {
-            return (
-            <Text>加载中...</Text>
-            )
-        } else {
-            return (
-            <Text>加载更多</Text>
-            )
-        }
     }
     renderItem = (data) => {
         console.log('item', data)
@@ -88,12 +80,14 @@ export default class ShowHotView extends Component {
                     space={10}
                     ref={(ref)=>{this.waterfall = ref}}
                     columns={2}
-                    infinite={false}
+                    infinite={true}
+                    hasMore={true}
                     renderItem={item => this.renderItem(item)}
-                    renderInfinite={loading => this.renderLoadMore(loading)}
+                    // renderInfinite={loading => this.renderLoadMore(loading)}
                     renderHeader={()=>this.renderHeader()}
                     containerStyle={{marginLeft: 15, marginRight: 15}}
                     keyExtractor={(data) => this._keyExtractor(data)}
+                    infiniting={(done)=>this.infiniting(done)}
                 />
             </View>
         )
