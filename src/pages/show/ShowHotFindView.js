@@ -16,7 +16,7 @@ const imgWidth = px2dp(168)
 export default class ShowHotView extends Component {
     constructor(props) {
         super(props)
-        this.recommendModules = new ShowRecommendModules()      
+        this.recommendModules = new ShowRecommendModules()
     }
     componentDidMount() {
         let data = this.recommendModules.loadRecommendList()

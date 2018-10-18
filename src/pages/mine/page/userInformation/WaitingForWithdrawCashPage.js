@@ -83,7 +83,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                 />
             </View>
         );
-    };
+    }
 
     renderHeader = () => {
         return (
@@ -206,7 +206,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         this.setState({currentPage:1},this.getDataFromNetwork());
     };
     onLoadMore = (page) => {
-        this.setState({currentPage:this.state.currentPage+1},this.getDataFromNetwork());
+        this.setState({currentPage:this.state.currentPage + 1},this.getDataFromNetwork());
     };
 }
 

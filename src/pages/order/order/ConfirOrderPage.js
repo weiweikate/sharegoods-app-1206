@@ -185,7 +185,7 @@ export default class ConfirOrderPage extends BasePage {
                 }
 
                 {this.renderLine()}
-                {(this.state.viewData.list[0].restrictions & 2) == 2 ? null :
+                {!user.tokenCoin ? null :
                     <TouchableOpacity style={{
                         height: 44,
                         flexDirection: 'row',

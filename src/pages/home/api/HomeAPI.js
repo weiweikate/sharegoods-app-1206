@@ -41,7 +41,13 @@ const api = {
     //会员
     getMembers: ['/user/level/get', {method: 'get'}],
     //为你推荐
-    getGoodsInHome: ['/config/advertisement/queryRecommendedPageList']
+    getGoodsInHome: ['/config/advertisement/queryRecommendedPageList'],
+    //查询签到信息
+    querySignList:['/user/userSign/querySignList',{method:'get'}],
+    //用户签到
+    userSign:['/user/userSign/sign',{method:'post'}],
+    //一元优惠券兑换
+    exchangeTokenCoin:['/user/exchangeTokenCoin',{method:'post'}]
 }
 import ApiUtils from '../../../api/network/ApiUtils';
 

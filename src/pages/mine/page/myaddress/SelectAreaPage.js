@@ -54,8 +54,7 @@ export default class SelectAreaPage extends BasePage {
                         //行高于分割线高，优化
                         { length: 48, offset: (48 + 0.5) * index, index }
                     )}
-                    data={this.state.datas}>
-                </FlatList>
+                    data={this.state.datas} />
             </View>
         );
     }

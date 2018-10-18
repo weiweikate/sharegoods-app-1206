@@ -61,9 +61,9 @@ export default class CountDownReact extends Component {
     };
     constructor(props){
         super(props);
-        const date = this.getDateData(parseInt((props.date1-props.date2)/1000));
-        this.state={
-            date: date ? date :{
+        const date = this.getDateData(parseInt((props.date1 - props.date2) / 1000));
+        this.state = {
+            date: date ? date : {
                 years: 0,
                 days: 0,
                 hours: 0,
@@ -82,8 +82,8 @@ export default class CountDownReact extends Component {
        }
         const {date1,date2} = nextProps;
         if(date1 !== this.props.date1 || date2 !== this.props.date2){
-            let diff = parseInt((date1 - date2)/ 1000);
-            if(diff<=0)return;
+            let diff = parseInt((date1 - date2) / 1000);
+            if(diff <= 0){return;}
             this.interval = setInterval(()=> {
 
                 diff--;
@@ -103,8 +103,8 @@ export default class CountDownReact extends Component {
     componentDidMount() {
         //console.log(this.props.date);//"2017-03-29T00:00:00+00:00"
         const {date1,date2} = this.props;
-        let diff = parseInt((date1 - date2)/ 1000);
-       if(date1>0&&date2>0){
+        let diff = parseInt((date1 - date2) / 1000);
+       if(date1 > 0 && date2 > 0){
            this.interval = setInterval(()=> {
                diff--;
                const date = this.getDateData(diff);
@@ -124,7 +124,7 @@ export default class CountDownReact extends Component {
     }
     getDateData(diff) {
 
-        if (diff<=0) {
+        if (diff <= 0) {
             this.props.callback();
             this.stop(); // 倒计时为0的时候, 将计时器清除
             return 0;
@@ -171,7 +171,7 @@ export default class CountDownReact extends Component {
         }else{
             return (
                 <View style={this.props.containerStyle}>
-                    { (countDown.days>0) ? <Text style={this.props.daysStyle}>{ this.leadingZeros(countDown.days)+days}</Text> : null}
+                    { (countDown.days > 0) ? <Text style={this.props.daysStyle}>{ this.leadingZeros(countDown.days) + days}</Text> : null}
                     <Text style={this.props.hoursStyle}>{ this.leadingZeros(countDown.hours)}</Text>
                     <Text style={ this.props.firstColonStyle}>:</Text>
                     <Text style={this.props.minsStyle}>{this.leadingZeros(countDown.min)}</Text>
@@ -201,4 +201,4 @@ export default class CountDownReact extends Component {
         }
         return num_;
     }
-};
+}

@@ -217,8 +217,7 @@ export default class ProductDetailPage extends BasePage {
                     ItemSeparatorComponent={this._renderSeparatorComponent}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => `${index}`}
-                    data={this.state.data.paramList || []}>
-                </FlatList>
+                    data={this.state.data.paramList || []} />
             </View>;
         }
     };
@@ -303,7 +302,7 @@ export default class ProductDetailPage extends BasePage {
                                 }}/>
             </View>
         );
-    };
+    }
 
 }
 

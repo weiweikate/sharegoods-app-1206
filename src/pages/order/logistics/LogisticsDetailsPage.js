@@ -157,11 +157,11 @@ class LogisticsDetailsPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                {this.state.flags?
-                    this.renderEmpty():this.renderSuccess()}
+                {this.state.flags ?
+                    this.renderEmpty() : this.renderSuccess()}
             </View>
         );
-    };
+    }
     renderEmpty(){
         return(
             <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>

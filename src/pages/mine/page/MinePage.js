@@ -361,7 +361,7 @@ export default class MinePage extends BasePage {
                 <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}/>
             </View>
         );
-    };
+    }
 
     //跳转到对应的订单状态页面
     jumpToOrderAccordingStates = (index) => {

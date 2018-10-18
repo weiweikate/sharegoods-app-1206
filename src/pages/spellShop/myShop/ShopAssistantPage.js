@@ -97,7 +97,7 @@ export default class AssistantListPage extends BasePage {
 
     // 删除具体店员
     _clickDeleteAssistant = (userId) => {
-        userId && this.refs['delAlert'] && this.refs['delAlert'].show({
+        userId && this.refs.delAlert && this.refs.delAlert.show({
             title: '确定要将此用户移除?',
             confirmCallBack: () => {
                 SpellShopApi.storeUserRemove({ otherUserId: userId }).then(() => {

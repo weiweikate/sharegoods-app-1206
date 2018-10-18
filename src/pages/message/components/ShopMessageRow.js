@@ -25,7 +25,7 @@ export default class ShopMessageRow extends Component {
         return(
             <View style={{width: ScreenUtils.width}}>
                 <View style={{height: 37, justifyContent: "center", alignItems: 'center'}}>
-                    <Text style = {{color:"#999999",fontSize: 13}}>{DateUtils.getFormatDate(item.createTime/1000)}</Text>
+                    <Text style = {{color:"#999999",fontSize: 13}}>{DateUtils.getFormatDate(item.createTime / 1000)}</Text>
                 </View>
                 <View style={{height: 49, justifyContent: 'center', backgroundColor: "white"}}>
                     <Text style={{marginLeft: 15, fontSize: 16,color:"#222222"}}>{item.title}</Text>
@@ -35,7 +35,7 @@ export default class ShopMessageRow extends Component {
                     style={{ justifyContent: "center", alignItems: 'center', backgroundColor: 'white'}}>
                     <Text style={{marginHorizontal: 15,marginTop:22, fontSize: 15,color:"#222222"}}>{item.content}</Text>
                     <Text style={{marginTop:10,marginBottom:12, fontSize: 13,color:"#999999"
-                                }}>{item.type === 1 ?'邀请':'申请'}时间 {DateUtils.getFormatDate(item.createTime/1000)}
+                                }}>{item.type === 1 ? '邀请' : '申请'}时间 {DateUtils.getFormatDate(item.createTime / 1000)}
                     </Text>
                 </View>
                 <View style={{height: StyleSheet.hairlineWidth, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
@@ -62,7 +62,7 @@ export default class ShopMessageRow extends Component {
                     justifyContent: "space-around",
                     backgroundColor: 'white',height:60,
                 }}>
-                    <TouchableOpacity onPress={()=>{this.props.rejectAction && this.props.rejectAction(item)}} 
+                    <TouchableOpacity onPress={()=>{this.props.rejectAction && this.props.rejectAction(item)}}
                                       style={[styles.selectText,{borderWidth:0.5,borderColor:'red',}]}>
                         <Text style={{
                             fontFamily: "PingFang-SC-Medium",
@@ -70,13 +70,13 @@ export default class ShopMessageRow extends Component {
                             color: "red"
                         }}>拒绝</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{this.props.allowAction && this.props.allowAction(item)}} 
+                    <TouchableOpacity onPress={()=>{this.props.allowAction && this.props.allowAction(item)}}
                                       style={[styles.selectText, {backgroundColor: 'red'}]}>
                         <Text style={{
                             fontFamily: "PingFang-SC-Medium",
                             fontSize: 16,
                             color: "white"
-                        }}>{item.type === 1 ?'加入':'同意'}</Text>
+                        }}>{item.type === 1 ? '加入' : '同意'}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -89,7 +89,7 @@ export default class ShopMessageRow extends Component {
         return(
             <View style={{width: ScreenUtils.width}}>
                 <View style={{height: 37, justifyContent: "center", alignItems: 'center'}}>
-                    <Text style = {{color:"#999999",fontSize: 13}}>{DateUtils.getFormatDate(item.createTime/1000)}</Text>
+                    <Text style = {{color:"#999999",fontSize: 13}}>{DateUtils.getFormatDate(item.createTime / 1000)}</Text>
                 </View>
                 <View style={{height: 49, justifyContent: 'center', backgroundColor: "white"}}>
                     <Text style={{marginLeft: 15, fontSize: 16}}>{item.title}</Text>
@@ -98,7 +98,7 @@ export default class ShopMessageRow extends Component {
                 <View
                     style={{justifyContent: "center", alignItems: 'center', backgroundColor: 'white'}}>
                     <Text style={{marginHorizontal: 15,marginTop:22, fontSize: 15,color:"#222222"}}>{item.content}</Text>
-                    <Text style={{marginTop:10,marginBottom:20, fontSize: 13,color:"#999999"}}>邀请时间 {DateUtils.getFormatDate(item.createTime/1000)}</Text>
+                    <Text style={{marginTop:10,marginBottom:20, fontSize: 13,color:"#999999"}}>邀请时间 {DateUtils.getFormatDate(item.createTime / 1000)}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
                 <View style={{
@@ -113,8 +113,8 @@ export default class ShopMessageRow extends Component {
                             fontSize: 16,
                             color: "#ffffff"
                         }}>{
-                            bydealStatus ? (dealStatus === 2 ?`${"已同意"}`:`${"已拒绝"}`) :
-                                (item.type===7?`${"已同意"}`:`${"已拒绝"}`)
+                            bydealStatus ? (dealStatus === 2 ? `${"已同意"}` : `${"已拒绝"}`) :
+                                (item.type === 7 ? `${"已同意"}` : `${"已拒绝"}`)
                         }</Text>
                     </View>
                 </View>
@@ -126,7 +126,7 @@ export default class ShopMessageRow extends Component {
         return(
             <View style={{width: ScreenUtils.width}}>
                 <View style={{height: 37, justifyContent: "center", alignItems: 'center'}}>
-                    <Text style = {{color:"#999999",fontSize: 13}}>{DateUtils.getFormatDate(item.createTime/1000)}</Text>
+                    <Text style = {{color:"#999999",fontSize: 13}}>{DateUtils.getFormatDate(item.createTime / 1000)}</Text>
                 </View>
                 <View style={{height: 49, justifyContent: 'center', backgroundColor: "white"}}>
                     <Text style={{marginLeft: 15, fontSize: 16}}>{item.title}</Text>

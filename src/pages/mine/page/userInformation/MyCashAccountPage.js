@@ -103,7 +103,7 @@ export default class MyCashAccountPage extends BasePage {
                 />
             </View>
         );
-    };
+    }
 
     renderHeader = () => {
         return (

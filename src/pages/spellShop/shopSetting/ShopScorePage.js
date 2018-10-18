@@ -22,10 +22,10 @@ export default class ShopScorePage extends BasePage {
 
     _render() {
 
-        const storeStar = this.params.storeData.storeStarId||0;
+        const storeStar = this.params.storeData.storeStarId || 0;
         const starsArr = [];
         if(storeStar && typeof storeStar === "number"){
-            for(let i = 0; i<storeStar; i++){
+            for(let i = 0; i < storeStar; i++){
                 i <= 2 && starsArr.push(i);
             }
         }
@@ -45,7 +45,7 @@ export default class ShopScorePage extends BasePage {
                                 })
                             }
                         </View>
-                        <Text style={styles.shopLevel}>{this.params.storeData.starName||'店铺'}</Text>
+                        <Text style={styles.shopLevel}>{this.params.storeData.starName || '店铺'}</Text>
                     </View>
                     <View style={styles.content}>
 

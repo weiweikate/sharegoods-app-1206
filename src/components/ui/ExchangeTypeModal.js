@@ -29,8 +29,8 @@ class ExchangeTypeModal extends Component {
         return arr
     }
     isSelectFinish=()=>{
-        for (let i=0;i<this.state.list.length;i++){
-            if (this.state.currentSelect[i]==-1){
+        for (let i = 0;i < this.state.list.length;i++){
+            if (this.state.currentSelect[i] == -1){
                 return false
             }
         }
@@ -50,8 +50,8 @@ class ExchangeTypeModal extends Component {
     }
 
     renderList=()=>{
-        let arr=[]
-        for (let i=0;i<this.state.list.length;i++){
+        let arr = []
+        for (let i = 0;i < this.state.list.length;i++){
             arr.push(
                 <View style={{paddingLeft:5,paddingRight:15}}>
                     <UIText value={this.state.list[i].title} style={{color:color.gray_666,fontSize:13,marginTop:15,paddingLeft:10}}/>
@@ -64,13 +64,13 @@ class ExchangeTypeModal extends Component {
         return arr
     }
     renderItemList=(index)=>{
-        let arr=[]
-        for (let i=0;i<this.state.list[index].arr.length;i++){
+        let arr = []
+        for (let i = 0;i < this.state.list[index].arr.length;i++){
             arr.push(
-                <View style={this.state.currentSelect[index]==i?styles.viewSelect:styles.viewUnselect}>
-                    <UIText value={this.state.list[index].arr[i]} style={this.state.currentSelect[index]==i?styles.textSelect:styles.textUnselect} onPress={()=>{
-                        let currentSelect=this.state.currentSelect
-                        currentSelect[index]=i
+                <View style={this.state.currentSelect[index] == i ? styles.viewSelect : styles.viewUnselect}>
+                    <UIText value={this.state.list[index].arr[i]} style={this.state.currentSelect[index] == i ? styles.textSelect : styles.textUnselect} onPress={()=>{
+                        let currentSelect = this.state.currentSelect
+                        currentSelect[index] = i
                         this.setState({currentSelect:currentSelect,})
                     }}/>
                 </View>
@@ -126,13 +126,13 @@ class ExchangeTypeModal extends Component {
         }
     }
     add=()=>{
-        let number=this.state.number
-        this.setState({number:number+1})
+        let number = this.state.number
+        this.setState({number:number + 1})
     }
     reduce=()=>{
-        let number=this.state.number
-        if (number>1){
-            this.setState({number:number-1})
+        let number = this.state.number
+        if (number > 1){
+            this.setState({number:number - 1})
         }
     }
 }

@@ -58,8 +58,7 @@ export default class SubDownTimeView extends Component {
                         {
                             marginLeft: this.state.bottomLineMarginLeft
                         }]}
-                >
-                </Animated.View>
+                 />
             </View>
         );
     }

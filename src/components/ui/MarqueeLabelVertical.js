@@ -66,7 +66,7 @@ export default class MarqueeLabelVertical extends Component {
         </View>
         )
     }
-  
+
     render() {
       const {  containerStyle, onPress } = this.props
       return (
@@ -86,7 +86,7 @@ export default class MarqueeLabelVertical extends Component {
       )
     }
   }
-  
+
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',

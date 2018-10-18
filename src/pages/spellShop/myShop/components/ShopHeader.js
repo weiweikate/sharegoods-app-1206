@@ -87,7 +87,7 @@ export default class ShopHeader extends Component {
                         width: 315 / 375 * SCREEN_WIDTH
                     }}>
                         <View style={[styles.progressBg, {
-                        marginLeft: 315 / 375 * SCREEN_WIDTH * 4500/6000,
+                        marginLeft: 315 / 375 * SCREEN_WIDTH * 4500 / 6000,
                         }]}/>
                     </ImageBackground>
 

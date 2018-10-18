@@ -41,15 +41,15 @@ class TakePhotoModal extends Component {
         for (let i = 0; i < nameArr.length; i++) {
             itemArr.push(
                 <View>
-                    <TouchableOpacity key={i} style={{height:48,justifyContent:'center',backgroundColor:this.state.currentSelect==i?color.gray_f7f7:color.white}} onPress={() => {
+                    <TouchableOpacity key={i} style={{height:48,justifyContent:'center',backgroundColor:this.state.currentSelect == i ? color.gray_f7f7 : color.white}} onPress={() => {
                         this.setState({currentSelect:i})
                     }}>
                         <View style={{flexDirection:'row',justifyContent:'space-between',}}>
                             <Text style={{marginLeft:21}}>{nameArr[i]}</Text>
-                            <UIImage source={this.state.currentSelect==i?circleSelect:circleUnselect} style={{width:22,height:22,marginRight:22}}/>
+                            <UIImage source={this.state.currentSelect == i ? circleSelect : circleUnselect} style={{width:22,height:22,marginRight:22}}/>
                         </View>
                     </TouchableOpacity>
-                    <View style={{backgroundColor:color.gray_EEE,height:1}}></View>
+                    <View style={{backgroundColor:color.gray_EEE,height:1}} />
                 </View>
 
             )

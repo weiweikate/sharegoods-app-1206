@@ -78,9 +78,7 @@ export default class RecommendRow extends Component {
                             borderRadius: 2,
                             borderColor: '#D51234',
                             marginTop: 6
-                        }}>
-
-                        </View>
+                        }} />
                     </View>
                     <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
                     <View style={{ width: 44 + 70, alignItems: 'center', justifyContent: 'center' }}>

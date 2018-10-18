@@ -63,7 +63,7 @@ class TotalTopicresultDataModel {
         // };
         //开始组装不同的nav下的sections数据
         const numberOfNav = this.topicNavbarList.slice().length;
-        for (var indexOfNav = 0; indexOfNav < numberOfNav; indexOfNav++) {
+        for (let indexOfNav = 0; indexOfNav < numberOfNav; indexOfNav++) {
             let topicNavListItemArr = this.topicNavbarList.slice();
             let topicNavListItem = topicNavListItemArr[indexOfNav];
 
@@ -108,7 +108,7 @@ class TotalTopicresultDataModel {
             tempArr.push(sections);
             //   console.log(tempArr);
         }
-        ;
+
         this.sectionDataList = tempArr;
         console.log(tempArr);
     }

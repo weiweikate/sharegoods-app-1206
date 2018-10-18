@@ -141,7 +141,7 @@ class AddBankCardPage extends BasePage {
                         onPress={() => this.confirm()}/>
                 </View>
         );
-    };
+    }
 
     renderLine = () => {
         return (

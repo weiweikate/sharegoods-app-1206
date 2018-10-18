@@ -44,7 +44,7 @@ export default class FetchHistoryPage extends BasePage {
     // 渲染行
     _renderItem = ({ item }) => {
         const { responseJson, status, url, requestStamp } = item;
-        const isWrong = status !==200;
+        const isWrong = status !== 200;
         return (<TouchableWithoutFeedback onPress={() => {
             this._clickRequestDetail(item);
         }}>
