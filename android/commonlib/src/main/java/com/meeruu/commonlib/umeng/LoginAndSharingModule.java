@@ -118,21 +118,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void share(ReadableMap params,Callback success,Callback fail) {
-//        /**
-//         * api参考地址：https://developer.umeng.com/docs/66632/detail/66639
-//         jsonData 参数
 //
-//         shareType : 0 图文链接分享  1图片分享
-//         platformType: 0 朋友圈 1 会话
-//         title:分享标题(当为图文分享时候使用)
-//         dec:内容(当为图文分享时候使用)
-//         linkUrl:(图文分享下的链接)
-//         thumImage:(分享图标小图(http链接)图文分享使用)
-//         shareImage:分享的大图(本地URL)图片分享使用
-//         **/
+//         api参考地址：https://developer.umeng.com/docs/66632/detail/66639
+//         jsonData 参数
 
-//        shareType : 0图片分享 1 图文链接分享 2分享小程序
-//        platformType:0 微信好友 1朋友圈 2qq好友 3qq空间 4微博
 //
 //        0图片分享
 //        shareImage:分享的大图(本地URL)图片分享使用
@@ -198,17 +187,17 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             case 2:
                 UMMin umMin = new UMMin(params.getString("linkUrl"));
                 image = new UMImage(getCurrentActivity(), params.getString("thumImage"));//网络图片
-//兼容低版本的网页链接
+                //兼容低版本的网页链接
                 umMin.setThumb(image);
-// 小程序消息封面图片
+                // 小程序消息封面图片
                 umMin.setTitle(params.getString("title"));
-// 小程序消息title
+                // 小程序消息title
                 umMin.setDescription(params.getString("dec"));
-// 小程序消息描述
+                // 小程序消息描述
                 umMin.setPath(params.getString("miniProgramPath"));
-//小程序页面路径
+                //小程序页面路径
                 umMin.setUserName(params.getString("userName"));
-// 小程序原始id,在微信平台查询
+                // 小程序原始id,在微信平台查询
                 new ShareAction(mContext.getCurrentActivity())
                         .withMedia(umMin)
                         .setPlatform(platform)
@@ -336,6 +325,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
             @Override
             public void onFailureImpl(DataSource dataSource) {
+                Log.e("s","s");
                 }
         }, CallerThreadExecutor.getInstance());
 
@@ -347,55 +337,76 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         String price = shareImageBean.getPriceStr();
         String info = shareImageBean.getQRCodeStr();
 
-        int bitmapWidth = bitmap.getWidth();
-        int bitmapHeight = bitmap.getHeight();
-        int titleSize = dp2px(context,26);
-        int priceSize = dp2px(context,24);
-        int titleCount  = (int) ((bitmapWidth*0.57)/titleSize);
-        int priceCount  = (int) ((bitmapWidth*0.57)/priceSize);
-
-        Bitmap result =  Bitmap.createBitmap(bitmapWidth,
-                (int) (bitmapHeight+dp2px(context,160)), Bitmap.Config.ARGB_8888);
+//        int bitmapWidth = bitmap.getWidth();
+//        int bitmapHeight = bitmap.getHeight();
+        int titleSize = 26;
+        int priceSize = 24;
+        int titleCount  = (int) ((500*0.57)/titleSize);
+//        height: autoSizeWidth(650 / 2), width: autoSizeWidth(250)
+        Bitmap result =  Bitmap.createBitmap(500,
+                (int) (660), Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
+        bitmap = Bitmap.createScaledBitmap(bitmap,500,500, true);
         canvas.drawBitmap(bitmap,0,0,paint);
 
         //在图片下边画一个白色矩形块用来放文字，防止文字是透明背景，在有些情况下保存到本地后看不出来
 
         paint.setColor(Color.WHITE);
-        canvas.drawRect(0,bitmapHeight,bitmapWidth,
-                (bitmapHeight+dp2px(context,160)),paint);
+        canvas.drawRect(0,500,500,
+                660,paint);
         paint.setColor(Color.BLACK);
 
         //绘制文字
         paint.setColor(Color.BLACK);
         paint.setTextSize(titleSize);
         Rect bounds = new Rect();
-        for(int i = 0;i<2;i++){
-            String s;
-            if (i == 1) {//如果是最后一行，则结束位置就是文字的长度，别下标越界哦
-//                s = title.substring(i*titleCount, (i+1)*titleCount);
-                s = "";
-            } else {//不是最后一行
-                s = title.substring(i*titleCount, (i+1)*titleCount);
-            }
+        if(title.length() <= titleCount){
+            String s = title.substring(0, title.length());
             //获取文字的字宽高以便把文字与图片中心对齐
             paint.getTextBounds(s,0,s.length(),bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s,dp2px(context,12),
-                    bitmapHeight+dp2px(context,30)+i*titleSize+i*8+bounds.height()/2,paint);
+            canvas.drawText(s,12,
+                    500+30,paint);
+        }
+        if(title.length() <= titleCount*2 && title.length() > titleCount){
+            String s = title.substring(0, title.length());
+            //获取文字的字宽高以便把文字与图片中心对齐
+            paint.getTextBounds(s,0,s.length(),bounds);
+            //画文字的时候高度需要注意文字大小以及文字行间距
+            canvas.drawText(s,12,
+                    500+30,paint);
+
+            s = title.substring(titleCount,title.length());
+
+            canvas.drawText(s,12,
+                    500+30+titleSize+8+bounds.height()/2,paint);
+        }
+
+        if(title.length() > titleCount*2){
+            String s = title.substring(0, title.length());
+            //获取文字的字宽高以便把文字与图片中心对齐
+            paint.getTextBounds(s,0,s.length(),bounds);
+            //画文字的时候高度需要注意文字大小以及文字行间距
+            canvas.drawText(s,12,
+                    500+30,paint);
+
+            s = title.substring(titleCount,titleCount*2-3)+"...";
+
+            canvas.drawText(s,12,
+                    500+30+titleSize+8+bounds.height()/2,paint);
         }
 
         paint.setColor(Color.RED);
         paint.setTextSize(priceSize);
         Rect boundsPrice = new Rect();
         paint.getTextBounds(price,0,price.length(),boundsPrice);
-        canvas.drawText(price,dp2px(context,12),bitmapHeight+dp2px(context,110),paint);
+        canvas.drawText(price,12,610,paint);
 
-        Bitmap qrBitmap = createQRImage(info,dp2px(context,110),dp2px(context,110));
-        canvas.drawBitmap(qrBitmap,bitmapWidth-dp2px(context,140),bitmapHeight+dp2px(context,20),paint);
+        Bitmap qrBitmap = createQRImage(info,120,120);
+        canvas.drawBitmap(qrBitmap,360,520,paint);
         String path = saveImageToCache(context,result);
         if(!TextUtils.isEmpty(path)){
             success.invoke(path);
@@ -483,7 +494,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Bitmap bmp = dView.getDrawingCache();
 
         String path = getDiskCachePath(mContext);
-
         String fileName = "screenshotImage.png";
 
         File file = new File(path, fileName);
@@ -566,17 +576,13 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     private static String saveImageToCache(Context context, Bitmap bitmap) {
 
         String path = getDiskCachePath(context);
-
-        String fileName = "shareImage.png";
-
+        long date = System.currentTimeMillis();
+        String fileName = date+"shareImage.png";
         File file = new File(path, fileName);
-
         if (file.exists()) {
             file.delete();
         }
-
         FileOutputStream fos = null;
-
         try {
             fos = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
@@ -587,7 +593,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return file.getAbsolutePath();
     }
 
@@ -612,9 +617,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
      *
      * 将dp转换为与之相等的px
      */
-    public static int dp2px(Context context, float dipValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5f);
-    }
+//    public static int dp2px(Context context, float dipValue) {
+//        final float scale = context.getResources().getDisplayMetrics().density;
+//        return (int) (dipValue * scale + 0.5f);
+//    }
 
 }
