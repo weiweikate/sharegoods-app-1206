@@ -76,6 +76,13 @@ export default {
      <<<<<<<<<<<  shareType : 0图片分享 <<<<<<<<<<<<<<
      shareImage:分享的大图(本地URL)图片分享使用
 
+     <<<<<<<<<<<  shareType : 2图片分享 <<<<<<<<<<<<<<
+     title
+     dec
+     thumImage
+     linkUrl"兼容微信低版本网页地址";
+     userName //"小程序username，如 gh_3ac2059ac66f";
+     miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
      * @param onSuccess()
      * @param onError(errorStr)
      */
