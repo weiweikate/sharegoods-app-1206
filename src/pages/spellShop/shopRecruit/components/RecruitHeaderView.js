@@ -13,6 +13,7 @@ import WhiteBgImg from '../src/bg_03.png';
 import AdminImg from '../src/dyxx_03.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DateUtils from '../../../../utils/DateUtils';
+import StringUtils from '../../../../utils/StringUtils';
 
 export default class RecommendRow extends Component {
 
@@ -27,7 +28,10 @@ export default class RecommendRow extends Component {
     };
 
     render() {
-        const { headUrl, name, storeNumber, createTime, storeUserName, starName, totalTradeVolume, bonusCount } = this.props.storeData;
+        const { name, storeNumber, storeUserName, starName, totalTradeVolume, bonusCount } = this.props.storeData;
+        let { createTime, headUrl } = this.props.storeData;
+        createTime = StringUtils.isNoEmpty(createTime) ? createTime : '';
+        headUrl = StringUtils.isNoEmpty(headUrl) ? headUrl : '';
         return <View style={styles.bg}>
             <ImageBackground source={HeaderBarBgImg} style={styles.headerBg}>
                 <View style={{ marginTop: 30, flexDirection: 'row' }}>
@@ -70,7 +74,7 @@ export default class RecommendRow extends Component {
                             borderRadius: 22,
                             marginLeft: 20,
                             marginTop: 13
-                        }}/>
+                        }} source={{ uri: headUrl }}/>
                         <View style={{ flex: 1, marginHorizontal: 15, justifyContent: 'center' }}>
 
                             <Text style={{
@@ -85,8 +89,6 @@ export default class RecommendRow extends Component {
                                 color: '#666',
                                 marginTop: 6
                             }}>等级：{starName || ''}</Text>
-
-
                             <Text style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,

@@ -12,6 +12,7 @@ import { observer } from 'mobx-react/native';
 import { NavigationActions } from 'react-navigation';
 import unselectedImg from './res/unselected.png'
 import { Payment, paymentType } from './Payment'
+import PayUtil from './PayUtil'
 
 const PayCell = ({data, isSelected, balance, press, selectedTypes}) => {
     let selected = isSelected
@@ -124,7 +125,7 @@ export default class PaymentMethodPage extends BasePage {
                 passwordInputError={this.state.isShowPaymentModal}
                 bottomText={'忘记支付密码'}
                 inputText={(text) => {
-                    if (text.length == 6) {
+                    if (text.length === 6) {
                         setTimeout(() => {
                             this.setState({ password: text, isShowPaymentModal: false });
                             this.commitOrder();
@@ -140,7 +141,6 @@ export default class PaymentMethodPage extends BasePage {
             <View style={{ height: 1, backgroundColor: color.line }}/>
         );
     };
-
     renderBottomOrder = () => {
         return (
             <View>
@@ -172,9 +172,10 @@ export default class PaymentMethodPage extends BasePage {
                 this.setState({ isShowPaymentModal: true });
                 return;
             }
-            let result = await this.payment.balancePay(params, this.props.navigation)
+            let result = await this.payment.balancePay(params)
             console.log('checkRes', result)
             this._showPayresult(result)
+            this.setState({password: ''})
         }
         else {
             this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
@@ -200,6 +201,47 @@ export default class PaymentMethodPage extends BasePage {
             Toast.$toast('支付失败')
         }
     }
+    async _mixingPay() {
+        const { params } = this.getApiRequestParams();
+        let selectedTypes = this.payment.selectedTypes
+        params.type = 1 + this.payment.selectedTypes.type
+        let otherAmounts = this.payment.availableBalance - params.amounts
+        if (otherAmounts > 0) {
+            params.balance = params.amounts
+            params.amounts = 0
+        } else {
+            params.balance = this.payment.availableBalance
+            params.amounts = params.amounts - this.payment.availableBalance
+        }
+        if (user.hadSalePassword) {
+            if (StringUtils.isEmpty(this.state.password)) {
+                this.setState({ isShowPaymentModal: true });
+                return;
+            }
+            let result = await this.payment.perpay(params)
+            console.log('result', result)
+            if (params.amounts === 0 && parseInt(result.code, 0) === 10000) {
+                this._showPayresult(result)
+                return
+            }
+            if (selectedTypes.type === paymentType.alipay) {
+                const prePayStr = result.data.prePayStr
+                const resultStr = await PayUtil.appAliPay(prePayStr)
+                console.log('resultStr', resultStr)
+                return
+            }
+    
+            if (selectedTypes.type === paymentType.wechat) {
+                const prePayStr = result.data.prePayStr
+                const resultStr = await PayUtil.appAliPay(prePayStr)
+                console.log('resultStr', resultStr)
+                return
+            }
+        }
+        else {
+            this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
+        }
+    }
     _showPayresult(result) {
         if ( parseInt(result.code, 0) === 10000) {
             Alert.alert('支付提示','支付成功', [
@@ -223,14 +265,23 @@ export default class PaymentMethodPage extends BasePage {
         }
     }
     commitOrder = () => {
-        const {selectedBalace} = this.payment
+        const { selectedBalace } = this.payment
+        const { selectedTypes } = this.payment
+        if (selectedTypes && selectedTypes.type === paymentType.bank) {
+            Toast.$toast('银行卡支付，暂不支持')
+            return
+        }
+
+        if (selectedBalace && selectedTypes) {
+            this._mixingPay()
+            return
+        }
 
         if (selectedBalace) {
             this._balancePay()
             return
         }
-        const { selectedTypes } = this.payment
-
+        
         if (!selectedTypes) {
             Toast.$toast('请选择支付方式')
             return
@@ -246,7 +297,7 @@ export default class PaymentMethodPage extends BasePage {
             return
         }
 
-        Toast.$toast('暂不支持')
+       
 
     };
     //需要在当前选择的支付方式能完成支付的情况下，才保证调用该方法返回的数据有效性
