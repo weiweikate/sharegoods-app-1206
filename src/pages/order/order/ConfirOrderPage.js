@@ -62,8 +62,9 @@ export default class ConfirOrderPage extends BasePage {
                 canUseScore: true,
                 totalFreightFee: 0,
                 totalAmounts: 0,
-                tokenCoin: 0
             },
+            tokenCoin: 0,
+            couponId:null,
             orderParam: this.params.orderParamVO ? this.params.orderParamVO : []
 
         };
@@ -477,7 +478,6 @@ export default class ConfirOrderPage extends BasePage {
         }
         viewData.totalAmounts = data.totalAmounts;
         viewData.totalFreightFee = data.totalFreightFee;
-        viewData.tokenCoin = data.tokenCoin;
         viewData.list = arrData;
         this.setState({ viewData });
     };
@@ -537,7 +537,8 @@ export default class ConfirOrderPage extends BasePage {
         let provinceCode;//N:收货省code	number
         let receiver;//	Y:收货人	string
         let recevicePhone;//Y:收货人手机号	number
-        let tokenCoin = this.state.viewData.tokenCoin;//N：使用积分	string
+        let tokenCoin = this.state.tokenCoin;//N：使用积分	string
+        let couponId = this.state.couponId;
 
         address = this.state.viewData.express.receiverAddress;
         areaCode = this.state.viewData.express.areaCode;
@@ -562,7 +563,9 @@ export default class ConfirOrderPage extends BasePage {
                 orderType: this.state.orderParam.orderType,
                 provinceCode: provinceCode,
                 receiver: receiver,
-                recevicePhone: recevicePhone
+                recevicePhone: recevicePhone,
+                tokenCoin: tokenCoin,
+                couponId:couponId
             };
             console.log(params);
             if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
@@ -621,7 +624,9 @@ export default class ConfirOrderPage extends BasePage {
                     receiver: receiver,
                     recevicePhone: recevicePhone,
                     orderProducts:this.state.orderParam.orderProducts,
-                    packageCode:this.state.orderParam.packageCode
+                    packageCode:this.state.orderParam.packageCode,
+                    tokenCoin: tokenCoin,
+                    couponId:couponId
                 }
                 OrderApi.PackageSubmitOrder(params1).then((response) => {
                     this.$loadingDismiss();
@@ -631,7 +636,7 @@ export default class ConfirOrderPage extends BasePage {
                         orderNum: data.orderNum,
                         amounts: this.state.viewData.totalAmounts,
                         pageType: 0,
-                        availableBalance: data.user.availableBalance
+                        availableBalance: data.user.availableBalance,
                     });
                 }).catch(e => {
                     this.$loadingDismiss();
@@ -657,7 +662,8 @@ export default class ConfirOrderPage extends BasePage {
                 provinceCode: provinceCode,
                 receiver: receiver,
                 recevicePhone: recevicePhone,
-                tokenCoin: tokenCoin
+                tokenCoin: tokenCoin,
+                couponId:couponId
             };
             OrderApi.submitOrder(params).then((response) => {
                 this.$loadingDismiss();
@@ -686,21 +692,27 @@ export default class ConfirOrderPage extends BasePage {
     };
     //选择优惠券
     jumpToCouponsPage = (params) => {
-        this.$navigate('mine/coupons/CouponsPage', {
-            fromOrder: 1, productIds: this.state.viewData.list[0].productId,
-            orderParam: this.state.orderParam, callBack: (data) => {
-                if (data && data.id) {
-                    let params = { couponId: data.id };
+        if(params=='justOne'){
+            this.$navigate('mine/coupons/CouponsPage', {justOne:'justOne',callBack:(data)=>{
+                if(data>0){
+                let params={tokenCoin:data};
+                this.setState({tokenCoin:data});
                     this.loadPageData(params);
-                } else {
-                    // console.log(oldViewData);
-                    // this.setState({ viewData: oldViewData, priceList: oldPriceList });
-
                 }
-
-
-            }
-        });
+                }});
+        }else{
+            this.$navigate('mine/coupons/CouponsPage', {
+                fromOrder: 1, productIds: this.state.viewData.list[0].productId,
+                orderParam: this.state.orderParam, callBack: (data) => {
+                    if (data && data.id) {
+                        let params = { couponId: data.id };
+                        this.setState({couponId:data.id})
+                        this.loadPageData(params);
+                    } else {
+                    }
+                }
+            });
+        }
     };
 
     componentWillUnmount() {

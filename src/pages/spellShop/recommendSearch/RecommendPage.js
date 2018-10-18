@@ -107,17 +107,21 @@ export default class RecommendPage extends BasePage {
 
     // 点击轮播图广告
     _clickItem = (item) => {
-        let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
         if (item.linkType === 1) {
             this.$navigate('home/product/ProductDetailPage', {
                 productCode: item.linkTypeCode
+            });
+        } else if (item.linkType === 2) {
+            this.$navigate('topic/DownPricePage', {
+                linkTypeCode: item.linkTypeCode
             });
         } else if (item.linkType === 6) {
             this.$navigate('HtmlPage', {
                 title: '详情',
                 uri: item.linkTypeCode
             });
-        } else if (type === 1 || type === 2 || type === 3) {
+        } else if (item.linkType === 3 || item.linkType === 4 || item.linkType === 5) {
+            let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: item.linkTypeCode,
                 activityType: type
