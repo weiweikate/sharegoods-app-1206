@@ -695,7 +695,8 @@ export default class ConfirOrderPage extends BasePage {
         if(params=='justOne'){
             this.$navigate('mine/coupons/CouponsPage', {justOne:'justOne',callBack:(data)=>{
                 if(data>0){
-                let params={tokenCoin:data}
+                let params={tokenCoin:data};
+                this.setState({tokenCoin:data});
                     this.loadPageData(params);
                 }
                 }});
