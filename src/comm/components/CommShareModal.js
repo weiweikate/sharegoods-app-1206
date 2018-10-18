@@ -30,9 +30,9 @@
        miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
        }
  */
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
 
 import {
     StyleSheet,
@@ -40,8 +40,9 @@ import {
     TouchableWithoutFeedback,
     Animated,
     Modal,
-    Platform
-} from "react-native";
+    Platform,
+    TouchableOpacity
+} from 'react-native';
 
 import {
     UIText, UIImage
@@ -51,8 +52,8 @@ import ScreenUtils from '../../utils/ScreenUtils';
 //const saveMarginBottom = ScreenUtils.saveMarginBottom;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
-import CommTabImag from '../res/CommTabImag'
-import bridge from '../../utils/bridge'
+import CommTabImag from '../res/CommTabImag';
+import bridge from '../../utils/bridge';
 
 export default class CommShareModal extends React.Component {
 
@@ -64,28 +65,31 @@ export default class CommShareModal extends React.Component {
 
         this.state = {
             modalVisible: false,
-            shareType:  this.defaultShareType, //如果是type小程序分享，默认分享方式是小程序分享。其余的type，默认分享类型是web图文
+            shareType: this.defaultShareType, //如果是type小程序分享，默认分享方式是小程序分享。其余的type，默认分享类型是web图文
             path: '',
             scale: new Animated.Value(0.5),
-            y:  new Animated.Value(autoSizeWidth(340)),
+            y: new Animated.Value(autoSizeWidth(340))
         };
     }
+
     /** public*/
-    open(){
-        this.setState({modalVisible: true, shareType: this.defaultShareType});
+    open() {
+        this.setState({ modalVisible: true, shareType: this.defaultShareType });
         this.state.y.setValue(autoSizeWidth(340));
         Animated.spring(
             // Animate value over time
             this.state.y, // The value to drive
             {
                 toValue: 0,
-                duration: 500,
+                duration: 500
             }
         ).start();
     }
-    close(){
-        this.setState({modalVisible: false});
+
+    close() {
+        this.setState({ modalVisible: false });
     }
+
     /** public end */
     _bind() {
         this.open = this.open.bind(this);
@@ -95,6 +99,7 @@ export default class CommShareModal extends React.Component {
     componentDidMount() {
 
     }
+
     /**
      jsonData 参数
      info:包含截屏参数
@@ -106,19 +111,19 @@ export default class CommShareModal extends React.Component {
      thumImage:(分享图标小图(http链接)图文分享使用)
      shareImage:分享的大图(本地URL)图片分享使用
      **/
-    share(platformType){
+    share(platformType) {
         this.close();
-        let params = {shareType: this.state.shareType, platformType: platformType};
-        if (this.state.shareType === 0){//图片分享
+        let params = { shareType: this.state.shareType, platformType: platformType };
+        if (this.state.shareType === 0) {//图片分享
             params.shareImage = this.state.path;
-        } else if(this.state.shareType === 1){//图文链接分享
-            let {title, dec, linkUrl, thumImage} = this.props.webJson;
+        } else if (this.state.shareType === 1) {//图文链接分享
+            let { title, dec, linkUrl, thumImage } = this.props.webJson;
             params.title = title;
             params.dec = dec;
             params.linkUrl = linkUrl;
             params.thumImage = thumImage;
-        }else if(this.state.shareType === 2){
-            let {title, dec, linkUrl, thumImage, userName, miniProgramPath} = this.props.miniProgramJson;
+        } else if (this.state.shareType === 2) {
+            let { title, dec, linkUrl, thumImage, userName, miniProgramPath } = this.props.miniProgramJson;
             params.title = title;
             params.dec = dec;
             params.linkUrl = linkUrl;
@@ -133,98 +138,156 @@ export default class CommShareModal extends React.Component {
         });
     }
 
-    saveImage(path){
+    saveImage(path) {
         bridge.saveImage(path);
     }
 
-    copyUrl(){
+    copyUrl() {
         this.close();
     }
 
-    changeShareType(shareType){
-        this.setState({shareType: shareType});
+    changeShareType(shareType) {
+        this.setState({ shareType: shareType });
 
-        if (this.state.path.length === 0 && shareType === 0){
+        if (this.state.path.length === 0 && shareType === 0) {
             bridge.creatShareImage(this.props.imageJson, (path) => {
-                this.setState({path:Platform.OS === 'android' ? 'file://' + path : '' + path});
+                this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path });
                 this.startAnimated();
-            })
-        }else {
+            });
+        } else {
             this.startAnimated();
         }
     }
 
-    startAnimated(){
+    startAnimated() {
         this.state.scale.setValue(0.5);
         Animated.spring(
             // Animate value over time
             this.state.scale, // The value to drive
             {
                 toValue: 1,
-                duration: 500,
+                duration: 500
             }
         ).start();
     }
 
     render() {
         let array = [];
-        array.push({image: CommTabImag.wechat, title: '微信好友', onPress: () => {this.share(0)}});
-        array.push( {image: CommTabImag.pengyouquan, title: '朋友圈', onPress: () => {this.share(1)}});
-        array.push( {image: CommTabImag.qq, title: 'QQ好友', onPress: () => {this.share(2)}});
-        array.push( {image: CommTabImag.kongjian, title: 'QQ好友', onPress: () => {this.share(3)}});
-        array.push( {image: CommTabImag.weibo, title: '微博', onPress: () => {this.share(4)}});
-        if(this.props.type === 'Image'){
-            if (this.state.shareType === 1){
-                array.push({image: CommTabImag.lianjie, title: '复制链接', onPress: () => {this.copyUrl()}})
-                array.push({image: CommTabImag.baocun, title: '保存图片', onPress: () => {this.changeShareType(0)}});
+        array.push({
+            image: CommTabImag.wechat, title: '微信好友', onPress: () => {
+                this.share(0);
             }
-            if (this.state.shareType === 0){
-                array.push({image: CommTabImag.download, title: '下载图片', onPress: () => {this.saveImage(this.state.path)}});
+        });
+        array.push({
+            image: CommTabImag.pengyouquan, title: '朋友圈', onPress: () => {
+                this.share(1);
+            }
+        });
+        array.push({
+            image: CommTabImag.qq, title: 'QQ好友', onPress: () => {
+                this.share(2);
+            }
+        });
+        array.push({
+            image: CommTabImag.kongjian, title: 'QQ好友', onPress: () => {
+                this.share(3);
+            }
+        });
+        array.push({
+            image: CommTabImag.weibo, title: '微博', onPress: () => {
+                this.share(4);
+            }
+        });
+        if (this.props.type === 'Image') {
+            if (this.state.shareType === 1) {
+                array.push({
+                    image: CommTabImag.lianjie, title: '复制链接', onPress: () => {
+                        this.copyUrl();
+                    }
+                });
+                array.push({
+                    image: CommTabImag.baocun, title: '保存图片', onPress: () => {
+                        this.changeShareType(0);
+                    }
+                });
+            }
+            if (this.state.shareType === 0) {
+                array.push({
+                    image: CommTabImag.download, title: '下载图片', onPress: () => {
+                        this.saveImage(this.state.path);
+                    }
+                });
             }
         }
         return (
             <Modal onRequestClose={this.close}
-                   visible = {this.state.modalVisible}
+                   visible={this.state.modalVisible}
                    transparent={true}
             >
-                <View style = {{
-                    backgroundColor: 'rgba(0,0,0,0.3)',
+                <View style={{
+                    backgroundColor: 'rgba(0,0,0,0.5)',
                     top: 0,
                     left: 0,
                     bottom: 0,
                     right: 0,
-                    position: 'absolute',
+                    position: 'absolute'
                 }}
-                                  onPress={() => {this.close()}}
                 >
-                    <View style = {{flex: 1 }}/>
-                    <Animated.View style={{transform: [{translateY: this.state.y}]}}>
-                        <View style = {[styles.contentContainer]}>
-                            <View style = {styles.header}>
-                                <View style = {{flex: 1, marginLeft: autoSizeWidth(25), height: 1, backgroundColor: '#EEEEEE'}} />
-                                <UIText value = {'分享到'} style = {{color: '#4D4D4D', fontSize: autoSizeWidth(17), marginHorizontal: 7}}/>
-                                <View style = {{flex: 1, marginRight: autoSizeWidth(25), height: 1, backgroundColor: '#EEEEEE'}} />
+                    <TouchableOpacity style={{ flex: 1 }} onPress={() => {
+                        this.close();
+                    }}/>
+                    <Animated.View style={{ transform: [{ translateY: this.state.y }] }}>
+                        <View style={[styles.contentContainer]}>
+                            <View style={styles.header}>
+                                <View style={{
+                                    flex: 1,
+                                    marginLeft: autoSizeWidth(25),
+                                    height: 1,
+                                    backgroundColor: '#EEEEEE'
+                                }}/>
+                                <UIText value={'分享到'}
+                                        style={{ color: '#4D4D4D', fontSize: autoSizeWidth(17), marginHorizontal: 7 }}/>
+                                <View style={{
+                                    flex: 1,
+                                    marginRight: autoSizeWidth(25),
+                                    height: 1,
+                                    backgroundColor: '#EEEEEE'
+                                }}/>
                             </View>
-                            <View style ={{flexWrap: 'wrap', flexDirection: 'row'}}>
+                            <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
                                 {
                                     array.map((item, index) => {
-                                        return(
-                                            <TouchableWithoutFeedback key = {index + 'item'} onPress = {item.onPress}>
-                                                <View style = {styles.item}>
-                                                    <UIImage source = {item.image} style = {{height: autoSizeWidth(47),width: autoSizeWidth(47)}}/>
-                                                    <UIText value = {item.title} style = {{marginTop: 5, color: '#4D4D4D', fontSize: autoSizeWidth(11)}}/>
+                                        return (
+                                            <TouchableWithoutFeedback key={index + 'item'} onPress={item.onPress}>
+                                                <View style={styles.item}>
+                                                    <UIImage source={item.image} style={{
+                                                        height: autoSizeWidth(47),
+                                                        width: autoSizeWidth(47)
+                                                    }}/>
+                                                    <UIText value={item.title} style={{
+                                                        marginTop: 5,
+                                                        color: '#4D4D4D',
+                                                        fontSize: autoSizeWidth(11)
+                                                    }}/>
                                                 </View>
                                             </TouchableWithoutFeedback>
-                                        )
+                                        );
                                     })
                                 }
                             </View>
                         </View>
-                        <View style = {{marginHorizontal: autoSizeWidth(25), height: 1, backgroundColor: '#EEEEEE', justifySelf: 'flex-end'}}/>
-                        <TouchableWithoutFeedback onPress = {() =>{this.close()}}
+                        <View style={{
+                            marginHorizontal: autoSizeWidth(25),
+                            height: 1,
+                            backgroundColor: '#EEEEEE',
+                            justifySelf: 'flex-end'
+                        }}/>
+                        <TouchableWithoutFeedback onPress={() => {
+                            this.close();
+                        }}
                         >
-                            <View style = {[styles.bottomBtn,{ justifySelf: 'flex-end'}]}>
-                                <UIText value = {'取消'} style = {{color: '#4D4D4D', fontSize: autoSizeWidth(16)}}/>
+                            <View style={[styles.bottomBtn, { justifySelf: 'flex-end' }]}>
+                                <UIText value={'取消'} style={{ color: '#4D4D4D', fontSize: autoSizeWidth(16) }}/>
                             </View>
                         </TouchableWithoutFeedback>
                     </Animated.View>
@@ -242,12 +305,16 @@ export default class CommShareModal extends React.Component {
                                 borderWidth: 0.5,
                                 overflow: 'hidden',
                                 shadowColor: '#CCCCCC',
-                                transform: [{scale: this.state.scale}]
+                                transform: [{ scale: this.state.scale }]
 
                             }}>
                                 <UIImage source={{ uri: this.state.path }}
                                          resizeMode={'contain'}
-                                         style={{ height: autoSizeWidth(650 / 2), width: autoSizeWidth(250),backgroundColor:'transparent'}}/>
+                                         style={{
+                                             height: autoSizeWidth(650 / 2),
+                                             width: autoSizeWidth(250),
+                                             backgroundColor: 'transparent'
+                                         }}/>
                             </Animated.View> : null
                     }
                 </View>
@@ -264,22 +331,22 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         height: autoSizeWidth(295)
     },
-    header:{
+    header: {
         flexDirection: 'row',
-        height:autoSizeWidth(45),
-        alignItems: 'center',
+        height: autoSizeWidth(45),
+        alignItems: 'center'
     },
     bottomBtn: {
         height: autoSizeWidth(45),
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white',
+        backgroundColor: 'white'
     },
     item: {
         width: ScreenUtils.width / 4 - 0.1,
         height: autoSizeWidth(187.5 / 2),
         marginTop: autoSizeWidth(20),
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     }
 });
