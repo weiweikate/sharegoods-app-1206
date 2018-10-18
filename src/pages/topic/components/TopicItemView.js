@@ -28,7 +28,7 @@ export default class TopicItemView extends Component {
                         Styles.itemBgStyle,
                         {
                             width: ScreenUtils.width / numOfColum,
-                            height: ScreenUtils.width / numOfColum + 70
+                            height: ScreenUtils.width / numOfColum + 55
                         }
                     ]}>
                     <View style={Styles.itemContentStyle}>
@@ -65,7 +65,7 @@ export default class TopicItemView extends Component {
                                         width: ScreenUtils.width / numOfColum - 16
                                     }
                                 ]}
-                            number={2}
+                            numberOfLines={2}
                         >
                             {itemData.productName}
                         </Text>
@@ -118,13 +118,12 @@ const Styles = StyleSheet.create({
     itemBottomTextStyle: {
         marginTop: 10,
         color: ColorUtil.Color_222222,
-
-        height: 28,
+        height: 25,
         fontSize: 12
     },
     itemBottomPriceTextStyle: {
         color: ColorUtil.Color_d51243,
         fontSize: 16,
-        marginTop: 10
+        marginTop: 5
     }
 });
