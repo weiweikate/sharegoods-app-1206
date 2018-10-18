@@ -1047,7 +1047,7 @@ class MyOrdersDetailPage extends BasePage {
                         productId:  response.data.orderProducts[0].productId,
                     }
                     shopCartCacheTool.addGoodItem(params);
-                    this.$navigate('shopCart/ShopCart');
+                    this.$navigate('shopCart/ShopCart',{  hiddeLeft:false});
                 }).catch(e=>{
                     Toast.hiddenLoading();
                     NativeModules.commModule.toast(e.msg)
