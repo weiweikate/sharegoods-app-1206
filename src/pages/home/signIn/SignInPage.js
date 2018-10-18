@@ -168,7 +168,7 @@ export default class SignInPage extends BasePage {
                 return (
                     <View key={'circle'+index}  style={styles.signInItemWrapper}>
                         <View style={{backgroundColor:index<4 ?'white' : '#c6b478',height:px2dp(2), flex: 1}}/>
-                        <SignInCircleView count={!EmptyUtils.isEmpty(item.reward) ? item.reward : item.canReward} kind={kind}/>
+                        <SignInCircleView count={count} kind={kind}/>
                     </View>
                 );
             }
