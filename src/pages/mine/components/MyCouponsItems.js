@@ -2,7 +2,7 @@
  * Created by xiangchen on 2018/7/23.
  */
 import React, { Component } from 'react';
-import { StyleSheet, View, ImageBackground, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, ImageBackground, Text, TouchableOpacity, Image, Modal } from 'react-native';
 import RefreshList from './../../../components/ui/RefreshList';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
@@ -34,6 +34,8 @@ export default class MyCouponsItems extends Component {
             isEmpty: true,
             currentPage: 1,
             explainList: [],
+            showDialogModal: false,
+            tokenCoinNum: 1
         };
     }
 
@@ -103,6 +105,124 @@ export default class MyCouponsItems extends Component {
             </TouchableOpacity>
         );
     };
+    onRequestClose = () => {
+        this.setState({ showDialogModal: false });
+    };
+
+    renderDialogModal() {
+        return (
+            <Modal
+                animationType='fade'
+                transparent={true}
+                onRequestClose={() => this.onRequestClose()}
+                visible={this.state.showDialogModal}>
+                <View style={styles.modalStyle}>
+                    {this.renderContent()}
+                </View>
+            </Modal>
+        );
+    }
+
+    renderContent = () => {
+        return (
+            <View style={{
+                marginTop: ScreenUtils.height / 6,
+                marginRight: px2dp(44),
+                width: ScreenUtils.width - px2dp(88),
+                marginLeft: px2dp(44),
+                height: px2dp(165),
+                backgroundColor: 'white',
+                borderRadius: 8,
+                justifyContent: 'flex-end',
+                alignItems: 'center'
+            }}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{
+                        marginTop: px2dp(20),
+                        width: px2dp(123),
+                        height: px2dp(24),
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <Text style={{ fontSize: px2dp(17), color: 'black' }}>请选择券数</Text>
+                    </View>
+
+                    <View style={{
+                        marginTop: px2dp(24),
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <View style={{
+                            borderColor: 'grey',
+                            width: px2dp(24),
+                            height: px2dp(24),
+                            marginLeft: px2dp(39)
+                            , borderWidth: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <UIText value={'-'} style={{ fontSize: px2dp(15) }} onPress={this.reduceTokenCoin}/>
+                        </View>
+                        <View style={{
+                            marginLeft: 5,
+                            marginRight: 5,
+                            borderColor: '#4D4D4D',
+                            borderWidth: 1,
+                            height: px2dp(24),
+                            width: px2dp(136)
+                        }}>
+                            <Text>{this.state.tokenCoinNum}</Text>
+                        </View>
+                        <View style={{
+                            borderColor: 'grey',
+                            width: px2dp(24),
+                            height: px2dp(24),
+                            marginRight: px2dp(39)
+                            , borderWidth: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <UIText value={'+'} style={{ fontSize: px2dp(15) }} onPress={this.plusTokenCoin}/>
+                        </View>
+                    </View>
+                </View>
+
+                <View style={{ width: '100%', height: 0.5, backgroundColor: 'grey' }}/>
+                <View style={{ height: px2dp(43), flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
+                                      onPress={this.quitTokenCoin}>
+                        <Text style={{ color: '#0076FF', fontSize: px2dp(17) }}>取消</Text>
+                    </TouchableOpacity>
+                    <View style={{ height: '100%', width: 0.5, backgroundColor: 'grey' }}/>
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
+                                      onPress={this.commitTokenCoin}>
+                        <Text style={{ color: '#0076FF', fontSize: px2dp(17) }}>确定</Text>
+                    </TouchableOpacity>
+                </View>
+
+            </View>
+        );
+    };
+    quitTokenCoin = () => {
+        this.setState({ showDialogModal: false });
+    };
+    commitTokenCoin = () => {
+        this.props.useCoupons(this.state.tokenCoinNum);
+    };
+    reduceTokenCoin = () => {
+        let num = this.state.tokenCoinNum;
+        if (num >= 1) {
+            this.setState({ tokenCoinNum: (num - 1) });
+        }
+    };
+    plusTokenCoin = () => {
+        let num = this.state.tokenCoinNum;
+        if (num <= (user.tokenCoin - 1)) {
+            this.setState({ tokenCoinNum: (num + 1) });
+        }
+
+    };
 
     render() {
         return (
@@ -119,6 +239,7 @@ export default class MyCouponsItems extends Component {
                     isEmpty={this.state.isEmpty}
                     isHideFooter={true}
                 />
+                {this.renderDialogModal()}
                 {this.props.isgiveup ?
                     <View style={{
                         position: 'absolute',
@@ -245,7 +366,22 @@ export default class MyCouponsItems extends Component {
                 }
                 UI.$toast(result.msg);
             });
-        } else {
+        } else if (this.props.justOne && status == 0) {
+            let arrData = [];
+            if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0) {
+                arrData.push({
+                    status: 0,
+                    name: '可叠加使用',
+                    timeStr: '无时间限制',
+                    value: 1,
+                    limit: '全品类：无金额门槛',
+                    remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
+                    type: 99 //以type=99表示1元券
+                });
+            }
+            this.setState({ viewData: arrData });
+        }
+        else {
             API.userCouponList({
                 page,
                 status,
@@ -304,10 +440,14 @@ export default class MyCouponsItems extends Component {
         //     return;
         // }
         if (this.props.fromOrder) {
-
             this.props.useCoupons(item);
+        } else if (this.props.justOne) {
+            this.setState({ showDialogModal: true });
         } else {
             this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
+            // if (index == 0) {
+            //     this.setState({ showDialogModal: true });
+            // }
         }
     };
 }
@@ -329,6 +469,11 @@ const styles = StyleSheet.create(
         couponHeader: {
             width: px2dp(105),
             alignItems: 'center'
+        },
+        modalStyle: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            alignItems: 'center',
+            flex: 1
         }
     }
 );
