@@ -45,7 +45,7 @@ class SpellStatusModel {
         this.allowCreateStore = data.allowCreateStore;
         this.allowGroupStore = data.allowGroupStore;
         this.storeId = data.storeId;
-        this.storeStatus = data.storeId;
+        this.storeStatus = data.storeStatus;
     }
 
     @action //错误
