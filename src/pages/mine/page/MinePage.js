@@ -25,7 +25,6 @@ import waitReceive from '../res/homeBaseImg/icon1-03.png';
 import hasFinished from '../res/homeBaseImg/icon3_03-06.png';
 import headBg from '../res/homeBaseImg/bg3_01.png';
 import inviteFr from '../res/homeBaseImg/icon3_16.png';
-import calendar from '../res/homeBaseImg/icon3_16-08.png';
 import coupons from '../res/homeBaseImg/icon3_16-09.png';
 import myData from '../res/homeBaseImg/icon3_16-10.png';
 import myCollet from '../res/homeBaseImg/icon3_31.png';
@@ -39,7 +38,7 @@ import service from '../res/homeBaseImg/icon02.png';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineApi from '../api/MineApi';
 import { observer } from 'mobx-react/native';
-import showImg from '../res/homeBaseImg/icon_faxian.png'
+import showImg from '../res/homeBaseImg/icon_faxian.png';
 
 @observer
 export default class MinePage extends BasePage {
@@ -150,23 +149,23 @@ export default class MinePage extends BasePage {
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <NoMoreClick onPress={this.jumpToUserInformationPage}>
-                        <ImageBackground style={{
-                            height: 60,
-                            width: 60,
-                            marginLeft: 21,
-                            marginTop: 5,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }} source={leftBg}>
-                            {
-                                StringUtils.isEmpty(user.headImg) ? null :
-                                    <Image source={{ uri: user.headImg ? user.headImg : '' }} style={{
-                                        height: 50,
-                                        width: 50,
-                                        borderRadius: 25
-                                    }}/>
-                            }
-                        </ImageBackground>
+                            <ImageBackground style={{
+                                height: 60,
+                                width: 60,
+                                marginLeft: 21,
+                                marginTop: 5,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }} source={leftBg}>
+                                {
+                                    StringUtils.isEmpty(user.headImg) ? null :
+                                        <Image source={{ uri: user.headImg ? user.headImg : '' }} style={{
+                                            height: 50,
+                                            width: 50,
+                                            borderRadius: 25
+                                        }}/>
+                                }
+                            </ImageBackground>
                         </NoMoreClick>
                         <View style={{
                             marginLeft: 20,
@@ -318,8 +317,8 @@ export default class MinePage extends BasePage {
         return arr;
     };
     renderMenu = () => {
-        let leftImage = [inviteFr, calendar, coupons, myData, myCollet, myHelper, address, track, showImg];
-        let leftText = ['邀请好友', '活动日历', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹', '发现收藏'];
+        let leftImage = [inviteFr, coupons, myData, myCollet, myHelper, address, track, showImg];
+        let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹', '发现收藏'];
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
             arr.push(
@@ -406,37 +405,33 @@ export default class MinePage extends BasePage {
         // if (!user.isLogin) {
         //     this.props.navigation.navigate('login/login/LoginPage');
         //     return;
-        // }
-        // let leftText = ['邀请好友', '活动日历', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹'];
+        //let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹', '发现收藏'];
         switch (index) {
             case 0:
                 this.props.navigation.navigate('mine/InviteFriendsPage');
                 break;
             case 1:
-                this.props.navigation.navigate('coupons/CouponsPage');
-                break;
-            case 2:
                 this.props.navigation.navigate('mine/coupons/CouponsPage');
                 break;
-            case 3:
+            case 2:
                 this.props.navigation.navigate('mine/MyPromotionPage');
                 break;
-            case 4:
+            case 3:
                 // this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });
                 this.props.navigation.navigate('mine/MyCollectPage');
                 break;
-            case 5:
+            case 4:
                 // this.props.navigation.navigate('mine/MyCollectPage');
                 this.props.navigation.navigate('mine/helper/MyHelperPage');
                 break;
-            case 6:
+            case 5:
                 this.props.navigation.navigate('mine/AddressManagerPage');
                 break;
-            case 7:
+            case 6:
                 // this.props.navigation.navigate('mine/MyAddressBookPage');
                 // this.props.navigation.navigate('topic/TopicDetailPage',{activityType:3});
                 break;
-            case 8:
+            case 7:
                 this.props.navigation.navigate('show/ShowConnectPage');
                 break;
             //邀请评分
