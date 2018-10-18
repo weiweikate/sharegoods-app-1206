@@ -17,6 +17,7 @@ import MasterRow from './components/MasterRow';
 
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
+import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 
 const sectionsArr = [
     'master',
@@ -96,10 +97,15 @@ export default class AssistantListPage extends BasePage {
 
     // 删除具体店员
     _clickDeleteAssistant = (userId) => {
-        SpellShopApi.storeUserRemove({ otherUserId: userId }).then(() => {
-            this.loadPageData();
-        }).catch((error) => {
-            this.$toastShow(error.msg);
+        userId && this.refs['delAlert'] && this.refs['delAlert'].show({
+            title: '确定要将此用户移除?',
+            confirmCallBack: () => {
+                SpellShopApi.storeUserRemove({ otherUserId: userId }).then(() => {
+                    this.loadPageData();
+                }).catch((error) => {
+                    this.$toastShow(error.msg);
+                });
+            }
         });
     };
 
@@ -108,7 +114,7 @@ export default class AssistantListPage extends BasePage {
     };
 
     // 渲染行
-    _renderItem = ( {item} ) => {
+    _renderItem = ({ item }) => {
         if (item.roleType === 0) {//0店主
             return <MasterRow item={item} onPress={this._clickAssistantDetail}/>;
         } else {//1店员
@@ -124,7 +130,7 @@ export default class AssistantListPage extends BasePage {
         this.setState({ refreshing: true }, this.loadPageData);
     };
 
-    _renderSectionHeader = ( {section} ) => {
+    _renderSectionHeader = ({ section }) => {
         const { title, data } = section || {};
         if (title === 'master' || !title || !data || !data.length) {
             return null;
@@ -166,6 +172,7 @@ export default class AssistantListPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 {this._renderList()}
+                <ConfirmAlert ref="delAlert"/>
             </View>
         );
     }

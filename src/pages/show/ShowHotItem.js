@@ -9,7 +9,7 @@ const {  px2dp } = ScreenUtils
 import seeImg from '../../comm/res/see_white.png'
 import maskImg from '../../comm/res/show_mask.png'
 
-export default ({data, press, imageStyle}) => <TouchableOpacity style={styles.item} onPress={()=>{press && press()}}>
+export default ({data, press, imageStyle, isSelected, selectedAction}) => <TouchableOpacity style={styles.item} onPress={()=>{press && press()}}>
     <ImageBackground style={[styles.img, imageStyle]} source={{uri: data.imgUrl}}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.numberView}>

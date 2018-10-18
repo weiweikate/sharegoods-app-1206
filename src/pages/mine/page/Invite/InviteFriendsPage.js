@@ -26,7 +26,7 @@ import bg from '../../res/customerservice/bg.png'
 const autoSizeWidth =  ScreenUtils.autoSizeWidth;
 import CommShareModal from '../../../../comm/components/CommShareModal'
 import bridge from '../../../../utils/bridge'
-import BaseUrl from '../../../../api/BaseUrl'
+// import BaseUrl from '../../../../api/BaseUrl'
 
 type Props = {};
 export default class InviteFriendsPage extends BasePage<Props> {
@@ -118,7 +118,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                                 webJson={{
                                     title: '分享标题(当为图文分享时候使用)',
                                     dec: '内容(当为图文分享时候使用)',
-                                    linkUrl: BaseUrl + '/#/register',
+                                    linkUrl: 'http://testh5.sharegoodsmall.com/#/register',
                                     thumImage: 'logo.png'
                                 }}/>
             </View>
