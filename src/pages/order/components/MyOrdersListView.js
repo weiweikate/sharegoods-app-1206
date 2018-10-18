@@ -584,7 +584,7 @@ export default class MyOrdersListView extends Component {
                         productId:  response.data.orderProducts[0].productId,
                     }
                     shopCartCacheTool.addGoodItem(params);
-                    this.props.nav('shopCart/ShopCart');
+                    this.props.nav('shopCart/ShopCart',{hiddeLeft:false});
                 }).catch(e => {
                     Toast.hiddenLoading();
                     NativeModules.commModule.toast(e.msg);
