@@ -18,6 +18,7 @@ import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+import SMSTool from '../../../utils/SMSTool';
 
 class CommModel {
 
@@ -228,10 +229,15 @@ export default class CommRegistView extends Component {
             return;
         }
         if (StringUtils.checkPhone(this.registModel.phoneNumber)) {
-            (new TimeDownUtils()).startDown((time) => {
-                this.registModel.dowTime = time;
-            });
-            bridge.$toast('验证码已发送请注意查收');
+            SMSTool.sendVerificationCode(1,this.registModel.phoneNumber).then(result => {
+                (new TimeDownUtils()).startDown((time) => {
+                    this.registModel.dowTime = time;
+                });
+                bridge.$toast('验证码已发送请注意查收');
+            }).catch(error=>{
+                bridge.$toast(error.msg);
+            })
+
         } else {
             bridge.$toast('手机格式不对');
         }
