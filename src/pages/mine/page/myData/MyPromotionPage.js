@@ -290,10 +290,7 @@ export default class MyPromotionPage extends BasePage {
     }
 
     _onPressInvite = () => {
-        if(Platform.OS === 'ios'){
-            this.props.navigation.navigate('mine/InviteFriendsPage');
-        }
-
+        this.props.navigation.navigate('mine/InviteFriendsPage');
     };
 
     // 去购物

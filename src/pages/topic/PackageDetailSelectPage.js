@@ -75,10 +75,12 @@ export default class TopicDetailSelectPage extends Component {
         let tagList = [];
         let indexOfTop = 0;
         for (let key in specPriceList) {
+            let tempArr = specPriceList[key];
+            let obj = tempArr[0] || {};
             tagList.push(
                 <View>
                     <View style={styles.headerContainer}>
-                        <Text style={styles.headerText}>{key}</Text>
+                        <Text style={styles.headerText}>{obj.productName || ''}</Text>
                     </View>
                     <View style={styles.containerView}>
                         {this.rendTag(specPriceList[key], indexOfTop)}
