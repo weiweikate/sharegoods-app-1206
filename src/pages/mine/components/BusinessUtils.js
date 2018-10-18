@@ -42,7 +42,7 @@ export default {
                 let datas = {
                     type: 'image/png',
                     uri: response.uri,
-                    name: new Date().getTime()+'c.png'
+                    name: new Date().getTime() + 'c.png'
                 };
                 let formData = new FormData();
                 formData.append('file', datas);

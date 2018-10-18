@@ -1,14 +1,43 @@
 package com.meeruu.commonlib.umeng;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.common.executors.CallerThreadExecutor;
+import com.facebook.common.references.CloseableReference;
+import com.facebook.datasource.DataSource;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
+import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.google.gson.Gson;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.meeruu.commonlib.bean.WXLoginBean;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
@@ -16,8 +45,14 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMMin;
 import com.umeng.socialize.media.UMWeb;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Hashtable;
 import java.util.Map;
 
 public class LoginAndSharingModule extends ReactContextBaseJavaModule {
@@ -82,28 +117,77 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void share(ReadableMap params) {
-        /**
-         * api参考地址：https://developer.umeng.com/docs/66632/detail/66639
-         jsonData 参数
+    public void share(ReadableMap params,Callback success,Callback fail) {
+//        /**
+//         * api参考地址：https://developer.umeng.com/docs/66632/detail/66639
+//         jsonData 参数
+//
+//         shareType : 0 图文链接分享  1图片分享
+//         platformType: 0 朋友圈 1 会话
+//         title:分享标题(当为图文分享时候使用)
+//         dec:内容(当为图文分享时候使用)
+//         linkUrl:(图文分享下的链接)
+//         thumImage:(分享图标小图(http链接)图文分享使用)
+//         shareImage:分享的大图(本地URL)图片分享使用
+//         **/
 
-         shareType : 0 图文链接分享  1图片分享
-         platformType: 0 朋友圈 1 会话
-         title:分享标题(当为图文分享时候使用)
-         dec:内容(当为图文分享时候使用)
-         linkUrl:(图文分享下的链接)
-         thumImage:(分享图标小图(http链接)图文分享使用)
-         shareImage:分享的大图(本地URL)图片分享使用
-         **/
+//        shareType : 0图片分享 1 图文链接分享 2分享小程序
+//        platformType:0 微信好友 1朋友圈 2qq好友 3qq空间 4微博
+//
+//        0图片分享
+//        shareImage:分享的大图(本地URL)图片分享使用
+//
+//        1 图文链接分享
+//        title:分享标题(当为图文分享时候使用)
+//        dec:内容(当为图文分享时候使用)
+//        linkUrl:(图文分享下的链接)
+//                thumImage:(分享图标小图 图文分享使用)
+//        支持 1.本地路径RUL如（/user/logo.png）2.网络URL如(http//:logo.png) 3.项目里面的图片 如（logo.png）
+//                2分享小程序
+//                title
+//                dec
+//                thumImage
+//                linkUrl"兼容微信低版本网页地址";
+//        userName //"小程序username，如 gh_3ac2059ac66f";
+//                miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
+
+
         int shareType = params.getInt("shareType");
-        SHARE_MEDIA platform = params.getInt("platformType") == 1 ? SHARE_MEDIA.WEIXIN : SHARE_MEDIA.WEIXIN_CIRCLE;
+        SHARE_MEDIA platform = SHARE_MEDIA.WEIXIN;;
+        switch (params.getInt("platformType")){
+            case 0:
+                platform = SHARE_MEDIA.WEIXIN;
+                break;
+            case 1:
+                platform = SHARE_MEDIA.WEIXIN_CIRCLE;
+                break;
+            case 2:
+                platform = SHARE_MEDIA.QQ;
+                break;
+            case 3:
+                platform = SHARE_MEDIA.QZONE;
+                break;
+            case 4:
+                platform = SHARE_MEDIA.SINA;
+                break;
+        }
+
+
         switch (shareType) {
             case 0:
                 UMImage image = new UMImage(getCurrentActivity(), params.getString("thumImage"));//网络图片
-                UMWeb web = new UMWeb("http://www.baidu.com");
+                new ShareAction(getCurrentActivity())
+                        .setPlatform(platform)//传入平台
+                        .withMedia(image)
+                        .setCallback(umShareListener)//回调监听器
+                        .share();
+                break;
+            case 1:
+                image = new UMImage(getCurrentActivity(), params.getString("thumImage"));//网络图片
+                UMWeb web = new UMWeb(params.getString("linkUrl"));
                 web.setTitle(params.getString("title"));//标题
                 web.setThumb(image);  //缩略图
-                web.setDescription("my description");//描述
+                web.setDescription(params.getString("dec"));//描述
                 new ShareAction(getCurrentActivity())
                         .setPlatform(platform)//传入平台
                         .withMedia(web)
@@ -111,14 +195,25 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         .setCallback(umShareListener)//回调监听器
                         .share();
                 break;
-            case 1:
+            case 2:
+                UMMin umMin = new UMMin(params.getString("linkUrl"));
                 image = new UMImage(getCurrentActivity(), params.getString("thumImage"));//网络图片
-                new ShareAction(getCurrentActivity())
-                        .setPlatform(platform)//传入平台
-                        .withMedia(image)
-                        .setCallback(umShareListener)//回调监听器
-                        .share();
-                break;
+//兼容低版本的网页链接
+                umMin.setThumb(image);
+// 小程序消息封面图片
+                umMin.setTitle(params.getString("title"));
+// 小程序消息title
+                umMin.setDescription(params.getString("dec"));
+// 小程序消息描述
+                umMin.setPath(params.getString("miniProgramPath"));
+//小程序页面路径
+                umMin.setUserName(params.getString("userName"));
+// 小程序原始id,在微信平台查询
+                new ShareAction(mContext.getCurrentActivity())
+                        .withMedia(umMin)
+                        .setPlatform(platform)
+                        .setCallback(umShareListener).share();
+
         }
     }
 
@@ -208,7 +303,318 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void shareScreen(final Callback callback) {
+    public void creatShareImage(ReadableMap json,Callback success,Callback fail){
+        ShareImageBean shareImageBean = parseParam(json);
+        if(shareImageBean == null){
+            fail.invoke("参数出错");
+            return;
+        }
+
+        getBitmap(mContext,shareImageBean,success,fail);
+
 
     }
+
+
+    public static void getBitmap(final Context context, final ShareImageBean shareImageBean,final  Callback success,final Callback fail) {
+        Fresco.initialize(context);
+
+        ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(shareImageBean.getImageUrlStr()))
+                .setProgressiveRenderingEnabled(true).build();
+
+
+        DataSource<CloseableReference<CloseableImage>> dataSource = Fresco.getImagePipeline()
+                .fetchDecodedImage(imageRequest, context);
+
+        dataSource.subscribe(new BaseBitmapDataSubscriber() {
+
+            @Override
+            public void onNewResultImpl(Bitmap bitmap) {
+
+                draw(context,bitmap,shareImageBean,success,fail);
+            }
+
+            @Override
+            public void onFailureImpl(DataSource dataSource) {
+                }
+        }, CallerThreadExecutor.getInstance());
+
+    }
+
+    public static void draw(Context context,Bitmap bitmap,ShareImageBean shareImageBean,Callback success,Callback fail){
+
+        String title = shareImageBean.getTitleStr();
+        String price = shareImageBean.getPriceStr();
+        String info = shareImageBean.getQRCodeStr();
+
+        int bitmapWidth = bitmap.getWidth();
+        int bitmapHeight = bitmap.getHeight();
+        int titleSize = dp2px(context,26);
+        int priceSize = dp2px(context,24);
+        int titleCount  = (int) ((bitmapWidth*0.57)/titleSize);
+        int priceCount  = (int) ((bitmapWidth*0.57)/priceSize);
+
+        Bitmap result =  Bitmap.createBitmap(bitmapWidth,
+                (int) (bitmapHeight+dp2px(context,160)), Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(result);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        canvas.drawBitmap(bitmap,0,0,paint);
+
+        //在图片下边画一个白色矩形块用来放文字，防止文字是透明背景，在有些情况下保存到本地后看不出来
+
+        paint.setColor(Color.WHITE);
+        canvas.drawRect(0,bitmapHeight,bitmapWidth,
+                (bitmapHeight+dp2px(context,160)),paint);
+        paint.setColor(Color.BLACK);
+
+        //绘制文字
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(titleSize);
+        Rect bounds = new Rect();
+        for(int i = 0;i<2;i++){
+            String s;
+            if (i == 1) {//如果是最后一行，则结束位置就是文字的长度，别下标越界哦
+//                s = title.substring(i*titleCount, (i+1)*titleCount);
+                s = "";
+            } else {//不是最后一行
+                s = title.substring(i*titleCount, (i+1)*titleCount);
+            }
+            //获取文字的字宽高以便把文字与图片中心对齐
+            paint.getTextBounds(s,0,s.length(),bounds);
+            //画文字的时候高度需要注意文字大小以及文字行间距
+            canvas.drawText(s,dp2px(context,12),
+                    bitmapHeight+dp2px(context,30)+i*titleSize+i*8+bounds.height()/2,paint);
+        }
+
+        paint.setColor(Color.RED);
+        paint.setTextSize(priceSize);
+        Rect boundsPrice = new Rect();
+        paint.getTextBounds(price,0,price.length(),boundsPrice);
+        canvas.drawText(price,dp2px(context,12),bitmapHeight+dp2px(context,110),paint);
+
+        Bitmap qrBitmap = createQRImage(info,dp2px(context,110),dp2px(context,110));
+        canvas.drawBitmap(qrBitmap,bitmapWidth-dp2px(context,140),bitmapHeight+dp2px(context,20),paint);
+        String path = saveImageToCache(context,result);
+        if(!TextUtils.isEmpty(path)){
+            success.invoke(path);
+        }else {
+            fail.invoke("图片生成失败");
+        }
+    }
+
+    private ShareImageBean parseParam(ReadableMap map){
+        ShareImageBean shareImageBean = new ShareImageBean();
+        if (map.hasKey("imageUrlStr")) {
+            shareImageBean.setImageUrlStr(map.getString("imageUrlStr"));
+        }else {
+            return null;
+        }
+
+        if (map.hasKey("titleStr")) {
+            shareImageBean.setTitleStr(map.getString("titleStr"));
+        }else {
+            return null;
+        }
+
+        if (map.hasKey("priceStr")) {
+            shareImageBean.setPriceStr(map.getString("priceStr"));
+        }else {
+            return null;
+        }
+
+        if (map.hasKey("QRCodeStr")) {
+            shareImageBean.setQRCodeStr(map.getString("QRCodeStr"));
+        }else {
+            return null;
+        }
+        return shareImageBean;
+    }
+
+    @ReactMethod
+    public void saveImage(String path) {
+        try {
+            MediaStore.Images.Media.insertImage(mContext.getContentResolver(),
+                    path, path, null);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        // 最后通知图库更新
+        mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(path)));
+    }
+
+    @ReactMethod
+    public void creatQRCodeImage(String QRCodeStr,final Callback success,final Callback fail){
+        Bitmap bitmap = createQRImage(QRCodeStr,100,100);
+        if(bitmap == null){
+            fail.invoke("二维码生成失败！");
+            bitmap.recycle();
+            return;
+        }
+        String path = saveImageToCache(mContext,bitmap);
+        if(TextUtils.isEmpty(path)){
+            fail.invoke("图片保存失败！");
+        }else {
+            success.invoke(path);
+        }
+
+        bitmap.recycle();
+    }
+
+    @ReactMethod
+    public void saveScreen(ReadableMap params){
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(mContext.getCurrentActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 54);
+            Log.i("-->", "权限申请");
+        } else {
+            screenshot();
+        }
+    }
+
+    /**
+     * 获取屏幕
+     */
+    private void screenshot() {
+        // 获取屏幕
+        View dView = mContext.getCurrentActivity().getWindow().getDecorView();
+        dView.setDrawingCacheEnabled(true);
+        dView.buildDrawingCache();
+        Bitmap bmp = dView.getDrawingCache();
+
+        String path = getDiskCachePath(mContext);
+
+        String fileName = "screenshotImage.png";
+
+        File file = new File(path, fileName);
+
+        if (bmp != null) {
+            try {
+                if (file.exists()) {
+                    file.delete();
+                }
+
+
+                FileOutputStream os = new FileOutputStream(file);
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
+                os.flush();
+                os.close();
+                long currentTime=System.currentTimeMillis();
+                String name = "shot"+currentTime;
+                String mUri = MediaStore.Images.Media.insertImage(mContext.getContentResolver(), file.getPath(), file.getName(), null);
+
+                if (mUri != null) {
+                    Toast.makeText(mContext, "截图成功", Toast.LENGTH_SHORT).show();
+                    // 最后通知图库更新
+                    Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    Uri uri = Uri.fromFile(new File(mUri));
+                    intent.setData(uri);
+                    mContext.sendBroadcast(intent);
+                } else {
+                    Toast.makeText(mContext, "截图失败", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
+
+    /**
+     * 生成二维码 要转换的地址或字符串,可以是中文
+     *
+     * @param url
+     * @param width
+     * @param height
+     * @return
+     */
+    public static Bitmap createQRImage(String url, final int width, final int height) {
+        try {
+            // 判断URL合法性
+            if (url == null || "".equals(url) || url.length() < 1) {
+                return null;
+            }
+            Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();
+            hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+            // 图像数据转换，使用了矩阵转换
+            BitMatrix bitMatrix = new QRCodeWriter().encode(url,
+                    BarcodeFormat.QR_CODE, width, height, hints);
+            int[] pixels = new int[width * height];
+            // 下面这里按照二维码的算法，逐个生成二维码的图片，
+            // 两个for循环是图片横列扫描的结果
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    if (bitMatrix.get(x, y)) {
+                        pixels[y * width + x] = 0xff000000;
+                    } else {
+                        pixels[y * width + x] = 0xffffffff;
+                    }
+                }
+            }
+            // 生成二维码图片的格式，使用ARGB_8888
+            Bitmap bitmap = Bitmap.createBitmap(width, height,
+                    Bitmap.Config.ARGB_8888);
+            bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+            return bitmap;
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static String saveImageToCache(Context context, Bitmap bitmap) {
+
+        String path = getDiskCachePath(context);
+
+        String fileName = "shareImage.png";
+
+        File file = new File(path, fileName);
+
+        if (file.exists()) {
+            file.delete();
+        }
+
+        FileOutputStream fos = null;
+
+        try {
+            fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return file.getAbsolutePath();
+    }
+
+    /**
+     * 获取cache路径
+     *
+     * @param context
+     * @return
+     */
+    public static String getDiskCachePath(Context context) {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            return context.getExternalCacheDir().getPath();
+        } else {
+            return context.getCacheDir().getPath();
+        }
+    }
+
+
+    /**
+     * convert dp to its equivalent px
+     *
+     * 将dp转换为与之相等的px
+     */
+    public static int dp2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
+    }
+
 }

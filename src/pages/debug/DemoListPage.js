@@ -67,7 +67,7 @@ export default class DemoListPage extends BasePage {
                     <Button onPress={this.hideToast} title={'hide toast'} />
                 </View>
                 <View>
-                    <Button onPress={this.changeState} title={this.state.nickName}></Button>
+                    <Button onPress={this.changeState} title={this.state.nickName} />
                 </View>
             </ScrollView>
         );

@@ -139,8 +139,7 @@ export default class SearchPage extends BasePage {
                         renderItem={this._renderItem}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => `${index}`}
-                        data={this.state.keywordsArr}>
-                    </FlatList>}
+                        data={this.state.keywordsArr} />}
 
                 </View>);
         }

@@ -191,7 +191,7 @@ export default class DebugPanelPage extends BasePage {
                         <Text style={styles.topDescText}>{TopTitle}</Text>
                     </View>
                     <View>
-                        <Button onPress={this.changeState} title={this.state.nickName}></Button>
+                        <Button onPress={this.changeState} title={this.state.nickName} />
                     </View>
                     {this.renderLinks(InfoArr)}
                     {this.renderEventRows(EventArr)}

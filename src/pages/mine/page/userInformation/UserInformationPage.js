@@ -151,14 +151,14 @@ export default class UserInformationPage extends BasePage {
         });
         MineApi.updateUserById({ type: 3, provinceId: provinceCode,cityId:cityCode,areaId:areaCode }).then(res => {
             if (res.code === 10000) {
-                user.address=areaText;
+                user.address = areaText;
             }
         }).catch(err => {
             if (err.code == 10009) {
                 this.props.navigation.navigate('login/login/LoginPage');
             }
         });
-    };
+    }
 }
 
 const styles = StyleSheet.create({

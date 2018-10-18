@@ -126,7 +126,7 @@ export default class ShopRecruitPage extends BasePage {
 
     //加入店铺
     _joinStore = () => {
-        this.refs['delAlert'] && this.refs['delAlert'].show({
+        this.refs.delAlert && this.refs.delAlert.show({
             title: `·该店铺为新发起店铺，需满足人员招募后才会正式开启;\n·如开启成功，则自动加入;\n·如开启不成功，则可以选择加入其他店铺`,
             confirmCallBack: () => {
                 this.$loadingShow();

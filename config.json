@@ -11,6 +11,10 @@
       "name": "开发环境-zb",
       "host": "http://172.16.10.41:8180/gateway"
     },
+      "dev_wkl": {
+      "name": "开发环境-wkl",
+      "host": "http://172.16.10.111:8180/gateway"
+    },
     "dev": {
       "name": "开发环境",
       "host": "http://devapi.sharegoodsmall.com/gateway"

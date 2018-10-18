@@ -6,7 +6,7 @@
  * @flow
  * @format
  * Created by huchao on 2018/10/15.
- * props type 'Image'(有分享图片和web) 'nomal'（分享web）
+ * props type 'Image'(有分享图片和web) 'nomal'（分享web） 'miniProgram'小程序
  *
  *     imageJson:{
  *     imageUrlStr: 'http//：xxxx.png',
@@ -20,6 +20,15 @@
       linkUrl:(图文分享下的链接)
       thumImage:(分享图标小图(http链接)图文分享使用)
  *     }
+ *     miniProgramJson:
+ *     {
+ *     title
+       dec
+       thumImage
+       linkUrl"兼容微信低版本网页地址";
+       userName //"小程序username，如 gh_3ac2059ac66f";
+       miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
+       }
  */
 "use strict";
 
@@ -31,7 +40,7 @@ import {
     TouchableWithoutFeedback,
     Animated,
     Modal,
-    TouchableOpacity
+    TouchableOpacity, Platform
 } from "react-native";
 
 import {
@@ -51,10 +60,11 @@ export default class CommShareModal extends React.Component {
         super(props);
 
         this._bind();
+        this.defaultShareType = props.type === 'miniProgram' ? 2 : 1;
 
         this.state = {
             modalVisible: false,
-            shareType: 1,
+            shareType:  this.defaultShareType, //如果是type小程序分享，默认分享方式是小程序分享。其余的type，默认分享类型是web图文
             path: '',
             scale: new Animated.Value(0.5),
             y:  new Animated.Value(autoSizeWidth(340)),
@@ -62,7 +72,7 @@ export default class CommShareModal extends React.Component {
     }
     /** public*/
     open(){
-        this.setState({modalVisible: true, shareType: 1,});
+        this.setState({modalVisible: true, shareType: this.defaultShareType});
         this.state.y.setValue(autoSizeWidth(340));
         Animated.spring(
             // Animate value over time
@@ -97,6 +107,7 @@ export default class CommShareModal extends React.Component {
     /** public end */
     _bind() {
         this.open = this.open.bind(this);
+        this.close = this.close.bind(this);
     }
 
     componentDidMount() {
@@ -105,7 +116,7 @@ export default class CommShareModal extends React.Component {
     /**
      jsonData 参数
      info:包含截屏参数
-     shareType : 0图片分享 1 图文链接分享
+     shareType : 0图片分享 1 图文链接分享 3小程序
      platformType: 0 朋友圈 1 会话
      title:分享标题(当为图文分享时候使用)
      dec:内容(当为图文分享时候使用)
@@ -124,6 +135,14 @@ export default class CommShareModal extends React.Component {
             params.dec = dec;
             params.linkUrl = linkUrl;
             params.thumImage = thumImage;
+        }else if(this.state.shareType === 2){
+            let {title, dec, linkUrl, thumImage, userName, miniProgramPath} = this.props.miniProgramJson;
+            params.title = title;
+            params.dec = dec;
+            params.linkUrl = linkUrl;
+            params.thumImage = thumImage;
+            params.userName = userName;
+            params.miniProgramPath = miniProgramPath;
         }
         bridge.share(params, () => {
 
@@ -145,7 +164,7 @@ export default class CommShareModal extends React.Component {
 
         if (this.state.path.length === 0 && shareType === 0){
             bridge.creatShareImage(this.props.imageJson, (path) => {
-                this.setState({path: path});
+                this.setState({path:Platform.OS === 'android' ? 'file://' + path : '' + path});
                 this.startAnimated();
             })
         }else {
@@ -245,7 +264,7 @@ export default class CommShareModal extends React.Component {
 
                             }}>
                                 <UIImage source={{ uri: this.state.path }}
-                                         style={{ height: autoSizeWidth(650 / 2), width: autoSizeWidth(250)}}/>
+                                         style={{ height: autoSizeWidth(650 / 2), width: autoSizeWidth(250),backgroundColor:'red'}}/>
                             </Animated.View> : null
                     }
                 </TouchableOpacity>
@@ -274,8 +293,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     item: {
-        width: ScreenUtils.width/4 - 0.1,
-        height: autoSizeWidth(187.5/2),
+        width: ScreenUtils.width / 4 - 0.1,
+        height: autoSizeWidth(187.5 / 2),
         marginTop: autoSizeWidth(20),
         alignItems: 'center',
         justifyContent: 'center',

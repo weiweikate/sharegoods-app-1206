@@ -13,7 +13,8 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    Platform
 } from "react-native";
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -58,7 +59,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
 
     creatQRCodeImage(QRCodeStr){
        bridge.creatQRCodeImage(QRCodeStr, (path) => {
-           this.setState({path});
+           this.setState({path:Platform.OS === 'android' ? 'file://' + path : '' + path});
        }) ;
     }
 
@@ -68,15 +69,15 @@ export default class InviteFriendsPage extends BasePage<Props> {
                 <UIImage source = {bg_01}
                          style = {{
                              width: autoSizeWidth(375),
-                             height: autoSizeWidth(567/2.0),
+                             height: autoSizeWidth(567 / 2.0),
                              top: 0,
                              left: 0,
                              position: 'absolute',
                          }}/>
                 <UIImage source = {bg}
                          style = {{
-                             width: autoSizeWidth(486/2),
-                             height: autoSizeWidth(582/2.0),
+                             width: autoSizeWidth(486 / 2),
+                             height: autoSizeWidth(582 / 2.0),
                              marginTop: autoSizeWidth(140),
                          }}/>
                 <UIImage source = {{uri: this.state.path}}
@@ -108,7 +109,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     <View style = {{flex: 1}}/>
                 </View>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
-                               // type={'Image'}
+                                // type={'miniProgram'}
                                //  imageJson={{
                                //      imageUrlStr: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1539577593172&di=c87eead9eb2e2073b50758daf6194c62&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F59c914525c484566292f8d8d3d29c964ca59c7ca.jpg',
                                //      titleStr: '商品标题',
@@ -120,7 +121,15 @@ export default class InviteFriendsPage extends BasePage<Props> {
                                     dec: '内容(当为图文分享时候使用)',
                                     linkUrl: 'http://testh5.sharegoodsmall.com/#/register',
                                     thumImage: 'logo.png'
-                                }}/>
+                                }}
+                                // miniProgramJson = {{
+                                //     title: '分享小程序title',
+                                //     dec: '分享小程序子标题',
+                                //     thumImage: 'logo.png',
+                                //     linkUrl: 'https://testapi.sharegoodsmall.com/pages/index/index',
+                                //     userName: 'gh_3ac2059ac66f',
+                                //     miniProgramPath: 'pages/index/index'}}
+                />
             </View>
         );
     }

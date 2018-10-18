@@ -32,8 +32,7 @@ export default class ForgetPasswordPage extends BasePage {
                     marginTop: 20,
                     height: 11,
                     width: ScreenUtils.width
-                }}>
-                </View>
+                }} />
             </View>
 
 

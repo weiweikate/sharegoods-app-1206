@@ -151,7 +151,7 @@ export default class TopicDetailPage extends BasePage {
 
     //选择规格确认 礼包
     _selectionViewPakageConfirm = (amount, selectData) => {
-        let priceList=[];
+        let priceList = [];
         selectData.forEach((item) => {
             priceList.push({
                 num: 1,
@@ -231,8 +231,7 @@ export default class TopicDetailPage extends BasePage {
                     ItemSeparatorComponent={this._renderSeparatorComponent}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => `${index}`}
-                    data={this.state.activityType === 3 ? this.state.data.paramValueList || [] : this.state.data.paramList || []}>
-                </FlatList>
+                    data={this.state.activityType === 3 ? this.state.data.paramValueList || [] : this.state.data.paramList || []} />
             </View>;
         }
     };
@@ -350,7 +349,7 @@ export default class TopicDetailPage extends BasePage {
                 </Modal>
             </View>
         );
-    };
+    }
 
 }
 

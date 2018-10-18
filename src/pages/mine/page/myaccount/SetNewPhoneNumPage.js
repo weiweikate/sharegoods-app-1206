@@ -50,7 +50,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                         placeholderTextColor={'#C8C8C8'}
                     />
                 </View>
-                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15, marginRight: 15 }}></View>
+                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15, marginRight: 15 }} />
                 <View style={{
                     height: 44,
                     flexDirection: 'row',

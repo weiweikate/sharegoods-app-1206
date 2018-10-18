@@ -9,7 +9,6 @@ import {
     ScrollView,
     RefreshControl,
     ImageBackground,
-    Platform,
     TouchableWithoutFeedback
 } from 'react-native';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';

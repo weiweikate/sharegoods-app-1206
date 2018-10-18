@@ -104,7 +104,7 @@ export default class AnnouncementListPage extends BasePage {
     };
 
     _delItem = ({ id }) => {
-        id && this.refs['delAlert'] && this.refs['delAlert'].show({
+        id && this.refs.delAlert && this.refs.delAlert.show({
             title: '确定要删除此条公告？',
             confirmCallBack: () => {
                 SpellShopApi.deleteById({ id: id }).then(() => {

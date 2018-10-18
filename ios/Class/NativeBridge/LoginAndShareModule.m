@@ -56,14 +56,26 @@ RCT_EXPORT_METHOD(saveScreen:(id)jsonParam){
 
 /**
  jsonData 参数
- shareType : 0图片分享 1 图文链接分享
+ shareType : 0图片分享 1 图文链接分享 2分享小程序
  platformType:0 微信好友 1朋友圈 2qq好友 3qq空间 4微博
+ 
+ 0图片分享
+ shareImage:分享的大图(本地URL)图片分享使用
+ 
+ 1 图文链接分享
  title:分享标题(当为图文分享时候使用)
  dec:内容(当为图文分享时候使用)
  linkUrl:(图文分享下的链接)
  thumImage:(分享图标小图 图文分享使用)
            支持 1.本地路径RUL如（/user/logo.png）2.网络URL如(http//:logo.png) 3.项目里面的图片 如（logo.png）
- shareImage:分享的大图(本地URL)图片分享使用
+ 2分享小程序
+ title
+ dec
+ thumImage
+ linkUrl"兼容微信低版本网页地址";
+ userName //"小程序username，如 gh_3ac2059ac66f";
+ miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
+ 
  **/
 RCT_EXPORT_METHOD(share:(id)jsonParam
                   onSuccess:(RCTResponseSenderBlock) onSuccess

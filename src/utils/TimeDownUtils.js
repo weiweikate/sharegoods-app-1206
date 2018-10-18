@@ -17,7 +17,7 @@ export class TimeDownUtils {
      * 创建定时器
      */
     //one 单位 秒(每秒回掉一次)
-     settimer(callbak,cutDownTime=this.downTime) {
+     settimer(callbak,cutDownTime = this.downTime) {
         let countdownDate = new Date(new Date().getTime() + cutDownTime * 1000)
         this.interval = setInterval(() => {
             let time = this.getDateData2(countdownDate)
@@ -65,7 +65,7 @@ export class TimeDownUtils {
     //         }, 1000)
     // }
     getDateTime(countdownDate){
-        let diff = (Date.parse(new Date(countdownDate)) - Date.parse(new Date)) / 1000;
+        let diff = (Date.parse(new Date(countdownDate)) - Date.parse(new Date())) / 1000;
         if (diff <= 0) {
             this.downTime = 0;
             this.stop(); // 倒计时为0的时候, 将计时器清除
@@ -111,7 +111,7 @@ export class TimeDownUtils {
      * @return {*}
      */
     getDateData(countdownDate) {
-        let diff = (Date.parse(new Date(countdownDate)) - Date.parse(new Date)) / 1000;
+        let diff = (Date.parse(new Date(countdownDate)) - Date.parse(new Date())) / 1000;
         if (diff <= 0) {
             this.downTime = 0;
             this.stop(); // 倒计时为0的时候, 将计时器清除
@@ -159,9 +159,9 @@ export class TimeDownUtils {
      * @return {*} 对象
      */
      getDateData2(countdownDate) {
-        let diff = (Date.parse(new Date(countdownDate)) - Date.parse(new Date)) / 1000;
+        let diff = (Date.parse(new Date(countdownDate)) - Date.parse(new Date())) / 1000;
         if (diff <= 0) {
-            this.sec=0
+            this.sec = 0
             this.stop() // 倒计时为0的时候, 将计时器清除
             return 0;
         }
@@ -189,7 +189,7 @@ export class TimeDownUtils {
             timeLeft.min = Math.floor(diff / 60);
             diff -= timeLeft.min * 60;
         }
-        this.sec=diff
+        this.sec = diff
         timeLeft.sec = diff;
         return timeLeft;
     }

@@ -196,7 +196,7 @@ export default class AddressEditAndAddPage extends BasePage {
             areaCode: areaCode,
             areaName: areaName
         });
-    };
+    }
 }
 
 const styles = StyleSheet.create({

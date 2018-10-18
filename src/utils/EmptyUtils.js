@@ -30,7 +30,7 @@ const EmptyUtils = {
     },
 
     isEmptyObject: (obj: Object) => {
-        for (var name in obj) {
+        for (let name in obj) {
             return false;
         }
         return true;
