@@ -36,6 +36,7 @@ import leftBg from '../res/homeBaseImg/bg_03.png';
 import levelBg from '../res/homeBaseImg/icon3_03-02.png';
 import setting from '../res/homeBaseImg/icon_03.png';
 import service from '../res/homeBaseImg/icon02.png';
+import promotion from '../res/homeBaseImg/me_icon_tuiguang_nor.png';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineApi from '../api/MineApi';
 import { observer } from 'mobx-react/native';
@@ -318,8 +319,8 @@ export default class MinePage extends BasePage {
         return arr;
     };
     renderMenu = () => {
-        let leftImage = [inviteFr, calendar, coupons, myData, myCollet, myHelper, address, track, showImg];
-        let leftText = ['邀请好友', '活动日历', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹', '发现收藏'];
+        let leftImage = [inviteFr, calendar, coupons, myData, myCollet, myHelper, address, track, promotion , showImg];
+        let leftText = ['邀请好友', '活动日历', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹', '我的推广','发现收藏'];
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
             arr.push(
@@ -437,6 +438,9 @@ export default class MinePage extends BasePage {
                 // this.props.navigation.navigate('topic/TopicDetailPage',{activityType:3});
                 break;
             case 8:
+                this.props.navigation.navigate('mine/promotion/UserPromotionPage');
+                break;
+            case 9:
                 this.props.navigation.navigate('show/ShowConnectPage');
                 break;
             //邀请评分
