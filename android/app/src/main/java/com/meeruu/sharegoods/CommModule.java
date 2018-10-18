@@ -10,6 +10,8 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.Toast;
 
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -19,6 +21,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.modules.fresco.ReactNetworkImageRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.meeruu.commonlib.bean.IdNameBean;
@@ -468,4 +471,5 @@ public class CommModule extends ReactContextBaseJavaModule {
         event.setCallback(callback);
         EventBus.getDefault().post(event);
     }
+
 }

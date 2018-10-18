@@ -31,7 +31,7 @@ export default class PreLoadImage extends Component {
         if (imageUri){
            source  = { uri: imageUri };
         } else {
-            source= undefined;
+            source = undefined;
         }
         if (this.state.type === 1) {
             source = errImage;

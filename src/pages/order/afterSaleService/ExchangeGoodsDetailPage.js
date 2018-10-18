@@ -217,7 +217,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         alignItems: 'center'
                     }}>
                         <UIText
-                            value={EmptyUtils.isEmpty(pageData.expressNo) === false ? `${pageData.expressName}(${pageData.expressNo})`: '请填写寄回物流信息'}
+                            value={EmptyUtils.isEmpty(pageData.expressNo) === false ? `${pageData.expressName}(${pageData.expressNo})` : '请填写寄回物流信息'}
                             style={{
                                 color: EmptyUtils.isEmpty(pageData.expressNo) === false ? color.black_222 : color.gray_c8c,
                                 fontSize: 12,
@@ -248,16 +248,16 @@ class ExchangeGoodsDetailPage extends BasePage {
             return;
         }
         let status = pageData.status;
-       // let returnAddress = pageData.returnAddress || {}
+        let returnAddress = pageData.returnAddress || {}
         if (this.params.pageType === 0){
             return;
         } else if (this.params.pageType === 1){
-            if (status === 1 || status === 3){
+            if (status === 1 || status === 3 || status === 7){
                 //退货 状态为申请中、申请已拒绝，不显示寄回地址
                 return;
             }
         } else if (this.params.pageType === 2){
-            if (status === 1 || status === 3){
+            if (status === 1 || status === 3 || status === 7){
                 //退货 状态为申请中、申请已拒绝，不显示寄回地址
                 return;
             }
@@ -268,9 +268,9 @@ class ExchangeGoodsDetailPage extends BasePage {
                     this.params.pageType === 2 ?
                     <View>
                         <AddressItem
-                            name={'收货人：' + pageData.backReceiver}
-                            phone={pageData.bakcRecevicePhone}
-                            address={pageData.backRreceiveAddress}
+                            name={'收货人：' + pageData.receiver}
+                            phone={pageData.receivePhone}
+                            address={pageData.receiveAddress}
                         />
                         < UIImage source = { addressLine } style={{width: ScreenUtils.width, height: 3}}/>
                         {this.renderWideLine()}
@@ -297,15 +297,15 @@ class ExchangeGoodsDetailPage extends BasePage {
                                      alignItems: 'center',
                                      backgroundColor: color.white
                                  }}
-                                 // name={'收货人：' + returnAddress.receiver}
-                                 // phone={returnAddress.recevicePhone}
-                                 // address={returnAddress.provinceName +
-                                 // returnAddress.cityName +
-                                 // returnAddress.areaName +
-                                 // returnAddress.address
-                                 name={'收货人：' + pageData.receiver}
-                                 phone={pageData.recevicePhone || ''}
-                                 address={pageData.receiveAddress || ''}
+                                 name={'收货人：' + returnAddress.receiver}
+                                 phone={returnAddress.recevicePhone}
+                                 address={returnAddress.provinceName +
+                                 returnAddress.cityName +
+                                 returnAddress.areaName +
+                                 returnAddress.address}
+                                 // name={'收货人：' + pageData.receiver}
+                                 // phone={pageData.recevicePhone || ''}
+                                 // address={pageData.receiveAddress || ''}
                     />
                 </View>
                 {this.renderWideLine()}
@@ -449,7 +449,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         if (this.params.pageType === 0){//退款详情
 
             let titles = ['商家退款审核中', '*-商家同意退款', '商家拒绝退款', '*-发货中', '*-云仓库发货中', '退款完成', '已关闭', '超时关闭', '商家拒绝退款'];
-            titleCommpent = () => {return <UIText value = {titles[pageData.status-1]} style = {styles.header_title}/>};
+            titleCommpent = () => {return <UIText value = {titles[pageData.status - 1]} style = {styles.header_title}/>};
             if (pageData.status === 3){//拒绝
                 textContaner_marginLeft = 10;
                 imageCommpent = () => {return <UIImage source = {refusa_icon} style = {styles.header_image}/>};
@@ -461,7 +461,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             }
         } else if (this.params.pageType === 1) {//退货详情
             let titles = ['等待商家处理', '请退货给商家', '商家拒绝退货申请', '等待商家确认', '等待商家确认', '退货退款成功', '已关闭', '退货退款超时关闭', '商家拒绝退货'];
-            titleCommpent = () => {return <UIText value = {titles[pageData.status-1]} style = {styles.header_title}/>};
+            titleCommpent = () => {return <UIText value = {titles[pageData.status - 1]} style = {styles.header_title}/>};
             if (pageData.status === 3 || pageData.status === 9){//拒绝
                 textContaner_marginLeft = 10;
                 imageCommpent = () => {return <UIImage source = {refusa_icon} style = {styles.header_image}/>};
@@ -475,7 +475,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             }
         } else if (this.params.pageType === 2) {//换货详情
             let titles = ['等待商家处理', '商家已同意', '商家拒绝换货申请', '等待商家确认', '云仓库发货中', '换货完成', '已关闭', '超时关闭', '商家拒绝换货', '等待买家确认'];
-            titleCommpent = () => {return <UIText value = {titles[pageData.status-1]} style = {styles.header_title}/>};
+            titleCommpent = () => {return <UIText value = {titles[pageData.status - 1]} style = {styles.header_title}/>};
             if (pageData.status === 3 || pageData.status === 9){//拒绝
                 textContaner_marginLeft = 10;
                 imageCommpent = () => {return <UIImage source = {refusa_icon} style = {styles.header_image}/>};
@@ -517,11 +517,19 @@ class ExchangeGoodsDetailPage extends BasePage {
     };
 
     //**********************************BusinessPart******************************************
-    loadPageData() {
+    loadPageData(callBack) {
         this.$loadingShow();
         OrderApi.returnProductLookDetail({returnProductId:this.params.returnProductId}).then((response)=>{
             this.$loadingDismiss()
             let pageData = response.data;
+            if (callBack){
+                if (pageData.status === 1) {
+                    callBack();
+                    return;
+                }else {
+                    this.$toastShow('订单状态已修改');
+                }
+            }
             if (pageData.status === 3 && pageData.expressName && pageData.expressNo) {
                 /** 将原来的拒绝状态（3），分成 3 -》 商家拒绝申请 和 9 -》 表示寄出商品后商家拒绝退款
                  * 状态为已拒绝，且有寄出物流的信息，新增加状态 9 -》 表示寄出商品后商家拒绝退款
@@ -598,10 +606,10 @@ class ExchangeGoodsDetailPage extends BasePage {
                     <UIText value = {'您已成功发起' + typeStr + '申请，请耐心等待商家处理'} style = {{ color: '#222222', fontSize: 15, marginLeft: 15}}/>
                 </View>
                 <View style = {{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-                    <TouchableOpacity onPress = {() => {this.onPressOperationApply(true)}} style ={[styles.borderButton, {borderColor: '#666666'}]}>
+                    <TouchableOpacity onPress = {() => {this.loadPageData(() => this.onPressOperationApply(true))}} style ={[styles.borderButton, {borderColor: '#666666'}]}>
                         <UIText value = {'撤销申请'} style = {{fontSize: 16, color: '#666666'}}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress = {() => {this.onPressOperationApply(false)}} style ={styles.borderButton}>
+                    <TouchableOpacity onPress = {() => {this.loadPageData(() => this.onPressOperationApply(false))}} style ={styles.borderButton}>
                         <UIText value = {'编辑申请'} style = {{fontSize: 16, color: '#D51243'}}/>
                     </TouchableOpacity>
                 </View>
@@ -743,7 +751,7 @@ const styles = StyleSheet.create({
     header_image: {
         height: 35,
         width: 35,
-        marginRight: 15,
+        marginLeft: 15,
     }
 });
 

@@ -19,6 +19,8 @@ dec:内容(当为图文分享时候使用)
 linkUrl:(图文分享下的链接)
 thumImage:(分享图标小图(http链接)图文分享使用)
 shareImage:分享的大图(本地URL)图片分享使用
+ userName //"小程序username，如 gh_3ac2059ac66f";
+ miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
 **/
 @interface JRShareModel : NSObject
 @property(nonatomic, strong)NSDictionary *info;
@@ -29,6 +31,9 @@ shareImage:分享的大图(本地URL)图片分享使用
 @property(nonatomic, copy)NSString *linkUrl;
 @property(nonatomic, copy)NSString *thumImage;
 @property(nonatomic, copy)NSString *shareImage;
+@property(nonatomic, copy)NSString *userName;
+@property(nonatomic, copy)NSString *miniProgramPath;
+
 
 @end
 @interface JRShareManager : NSObject

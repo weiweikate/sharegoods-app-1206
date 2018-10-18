@@ -93,7 +93,7 @@ export default class SearchResultPage extends BasePage {
             id: productId
         }).then((data) => {
             this.$loadingDismiss();
-            data.data = data.data||{}
+            data.data = data.data || {}
             const { specMap, priceList } = data.data;
             //修改specMap每个元素首尾增加'，'
             for (let key in specMap) {
@@ -181,7 +181,7 @@ export default class SearchResultPage extends BasePage {
                 <ResultSearchNav goBack={this._goBack}
                                  onSubmitEditing={this._onSubmitEditing}
                                  changeLayout={this._changeLayout} isHorizontal={this.state.isHorizontal}
-                                 value={this.params.keywords ||this.params.name ||''}/>
+                                 value={this.params.keywords || this.params.name || ''}/>
                 <ResultSegmentView segmentOnPressAtIndex={this._segmentOnPressAtIndex}/>
                 <FlatList
                     ref='FlatListShow'
@@ -191,8 +191,7 @@ export default class SearchResultPage extends BasePage {
                     keyExtractor={(item, index) => `${index}`}
                     numColumns={this.state.isHorizontal ? 2 : 1}
                     key={this.state.isHorizontal ? 'hShow' : 'vShow'}
-                    data={this.state.productList}>
-                </FlatList>
+                    data={this.state.productList} />
 
                 <View style={{ position: 'absolute', right: 15, bottom: 15 }}>
                     <TouchableWithoutFeedback onPress={this._onPressToGwc}>

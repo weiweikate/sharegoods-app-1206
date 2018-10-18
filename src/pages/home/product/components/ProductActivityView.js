@@ -39,7 +39,7 @@ export default class ActivityView extends Component {
                 });
             }, Math.floor((end - start) / 1000));
         }
-    };
+    }
 
     saveActivityViewData(activityData, activityType) {
         const { date, beginTime, endTime } = activityData;

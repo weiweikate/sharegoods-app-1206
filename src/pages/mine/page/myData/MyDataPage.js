@@ -24,8 +24,8 @@ const colors = [
 ];
 
 const ScreenWidth = Dimensions.get('window').width;
-const ArtWidth = 124/375*ScreenWidth;
-const InlineArtWidth = 21.5/375*ScreenWidth;
+const ArtWidth = 124 / 375 * ScreenWidth;
+const InlineArtWidth = 21.5 / 375 * ScreenWidth;
 const BtnWidth = (Dimensions.get('window').width - 44) / 2;
 const BtnHeight = BtnWidth * 75 / 168;
 
@@ -40,7 +40,7 @@ export default class MyDataPage extends Component{
 
     constructor(props){
         super(props);
-        this.state={
+        this.state = {
             total: 0,
             list: [],
             refreshing: false,
@@ -65,9 +65,9 @@ export default class MyDataPage extends Component{
     loadPageData = ()=>{
         // 我的数据
         MineApi.getUserLevelInfo().then(response=>{
-            if(response.code===10000){
+            if(response.code === 10000){
                 response.data.list = response.data.list.map((item,index)=>{
-                    return {...item,color: colors[index] || ('#'+Math.floor(Math.random()*0xffffff).toString(16))};
+                    return {...item,color: colors[index] || ('#' + Math.floor(Math.random() * 0xffffff).toString(16))};
                 });
                 this.setState({
                     list: response.data.list,
@@ -155,7 +155,7 @@ export default class MyDataPage extends Component{
     };
 
     _onPressTeam = ()=>{
-        if(!this.state.list || this.state.list.length === 0)return;
+        if(!this.state.list || this.state.list.length === 0){return;}
         this.jr_navigate('mine/myData/TeamDataPage',{
             list: this.state.list,
             total: this.state.total,

@@ -96,8 +96,7 @@ export default class Password extends Component {
                     <View key={i}
                           style={[styles.inputItem, styles.inputItemBorderLeftWidth, this.props.inputItemStyle]}>
                         {i < text.length ?
-                            <View style={[styles.iconStyle, this.props.iconStyle]}>
-                            </View> : null}
+                            <View style={[styles.iconStyle, this.props.iconStyle]} /> : null}
                     </View>);
             }
         }

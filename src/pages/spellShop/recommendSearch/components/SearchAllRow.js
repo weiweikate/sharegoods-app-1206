@@ -48,7 +48,7 @@ export default class RecommendRow extends Component {
                     <Text style={[styles.desc, styles.margin]}>{item.storeUserNum || 0}成员</Text>
                     <View style={styles.bottomRow}>
                         <Image source={MoneyIcon}/>
-                        <Text style={[styles.desc, { color: '#f39500' }]}>{`交易额:${item.totalTradeVolume||0}元`}</Text>
+                        <Text style={[styles.desc, { color: '#f39500' }]}>{`交易额:${item.totalTradeVolume || 0}元`}</Text>
                         <View style={{ flex: 1 }}/>
                         <View style={styles.starContainer}>
                             {

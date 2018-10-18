@@ -46,7 +46,7 @@ let styles = StyleSheet.create({
         height: px2dp(50)
     },
     tabText: {
-        fontSize: 14, 
+        fontSize: 14,
         paddingTop: 10
     }
 })

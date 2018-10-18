@@ -167,10 +167,10 @@ export default class MyHelperPage extends BasePage {
     }
 
      componentDidMount(){
-        let list=[];
+        let list = [];
          MineApi.queryHelpQuestionList().then(res => {
              console.log(res);
-             if(res.code==10000){
+             if(res.code == 10000){
                  Object.keys(res.data).forEach(item=>{
                      list.push({
                          name:item,

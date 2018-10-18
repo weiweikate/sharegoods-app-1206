@@ -24,7 +24,7 @@ export default class SetOrEditPayPwdPage extends BasePage {
         return <View style={{ flexDirection: 'column', alignItems: 'center' }}>
             <UIText value={this.state.tips} style={{ fontSize: 17, color: '#222222', marginTop: 120 }}/>
             <Password maxLength={6} style={{ width: 345, marginTop: 30 }}
-                      onEnd={(pwd) => this._onext(pwd)}></Password>
+                      onEnd={(pwd) => this._onext(pwd)} />
         </View>;
     }
 

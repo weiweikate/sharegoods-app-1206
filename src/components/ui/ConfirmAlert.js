@@ -32,7 +32,7 @@ export default class ConfirmAlert extends Component {
             confirmCallBack: props.confirmCallBack,
             //私有state
             modalVisible: false, //是否显示
-            top: new Animated.Value(- PANNELHEIGHT), //白色面板顶部距离屏幕底部
+            top: new Animated.Value(-PANNELHEIGHT), //白色面板顶部距离屏幕底部
             backOpacity: new Animated.Value(0), //背景颜色
             alignType:'center'
         };
@@ -56,7 +56,7 @@ export default class ConfirmAlert extends Component {
                 //透明度
                 this.state.top,
                 {
-                    toValue: (MAX_SCREEN - this.state.height)/2,
+                    toValue: (MAX_SCREEN - this.state.height) / 2,
                     duration: Animated_Duration
                 }
             ),

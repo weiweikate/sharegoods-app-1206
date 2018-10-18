@@ -57,7 +57,7 @@ export default class BottomSingleSelectModal extends Component {
                                      style={{ width: 22, height: 22, marginRight: 22 }}/>
                         </View>
                     </TouchableOpacity>
-                    <View style={{ backgroundColor: color.gray_EEE, height: 1 }}></View>
+                    <View style={{ backgroundColor: color.gray_EEE, height: 1 }} />
                 </View>
             );
         }

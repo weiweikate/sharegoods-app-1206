@@ -20,7 +20,7 @@ class  InputTransactionPasswordModal extends Component {
         super(props)
         this.state = {
             passwordInputError:this.props.passwordInputError,
-            bottomText:this.props.bottomText?this.props.bottomText:'',
+            bottomText:this.props.bottomText ? this.props.bottomText : '',
         }
         this.updateView()
     }
@@ -54,27 +54,27 @@ class  InputTransactionPasswordModal extends Component {
                     style={{width:220,height:38,}}
                     maxLength={6}
                     onChange={value => this.props.inputText(value)}/>
-                <UIText value={this.state.passwordInputError?this.state.bottomText:''} style={{fontSize: 15, color: "#14b6eb",marginTop:9}} onPress={()=>this.props.forgetPassword()}/>
+                <UIText value={this.state.passwordInputError ? this.state.bottomText : ''} style={{fontSize: 15, color: "#14b6eb",marginTop:9}} onPress={()=>this.props.forgetPassword()}/>
             </View>
         )
     }
     renderContext=()=>{
-        return(this.props.isContextRed?
+        return(this.props.isContextRed ?
         <View style={{justifyContent:'center'}}>
             <UIText value={this.props.detail.context} style={[styles.redTextStyle,{marginTop:10}]}/>
-        </View>:
-            <Text style={this.props.useSmallTextStyle?styles.smallTextStyle:styles.contentTextStyle}>{this.props.detail.context}</Text>
+        </View> :
+            <Text style={this.props.useSmallTextStyle ? styles.smallTextStyle : styles.contentTextStyle}>{this.props.detail.context}</Text>
         )
     }
     renderContent(){
         return(
             <View style={{flex:1,justifyContent:'center',alignContent:'center'}}>
                 <View style={{justifyContent:'center',flexDirection:'row'}}>
-                    <ImageBackground source={this.props.backgroundImg?this.props.backgroundImg:BonusExchangeSucceedBackground} style={{height:272,width:295,alignItems:'flex-end'}}>
+                    <ImageBackground source={this.props.backgroundImg ? this.props.backgroundImg : BonusExchangeSucceedBackground} style={{height:272,width:295,alignItems:'flex-end'}}>
                             <UIImage source={bonusClose} style={{width:32,height:32,marginTop:43}} onPress={()=>this.props.closeWindow()}/>
                         <View style={{height:212,width:295,justifyContent:'space-between'}}>
                             <View style={{flex:1,alignContent:'center',alignItems:'center',marginTop:30,paddingLeft:26,paddingRight:26}}>
-                                <Text style={this.props.useSmallTextStyle?styles.smallTextStyle:styles.titleTextStyle}>{this.props.detail.title}</Text>
+                                <Text style={this.props.useSmallTextStyle ? styles.smallTextStyle : styles.titleTextStyle}>{this.props.detail.title}</Text>
                                 {this.renderContext()}
                             </View>
                             {this.renderPasswordInput()}

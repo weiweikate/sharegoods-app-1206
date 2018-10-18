@@ -30,8 +30,7 @@ export default class SetPasswordPage extends BasePage {
                     marginTop: 20,
                     height: 11,
                     width: ScreenUtils.width
-                }}>
-                </View>
+                }} />
             </View>
 
 
@@ -43,7 +42,7 @@ export default class SetPasswordPage extends BasePage {
         console.warn(this.params);
         this.$loadingShow();
         LoginAPI.existedUserLogin({
-            authcode:this.params.code?this.params.code:'',
+            authcode:this.params.code ? this.params.code : '',
             code: code,
             device:this.params.device ? this.params.device : 'eeeeee',
             headImg:'',
