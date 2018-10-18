@@ -71,7 +71,7 @@ export class ClassifyModules {
             icon: signinImg,
             name: '签到',
             id: 1,
-            route: 'home/search/CategorySearchPage'
+            route: 'home/signIn/SignInPage'
         },{
             icon: schoolImg,
             name: '学院',
