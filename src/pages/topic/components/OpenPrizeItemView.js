@@ -144,9 +144,9 @@ export default class OpenPrizeItemView extends Component {
                                     {
                                         itemData.productType === 2
                                             ?
-                                            '¥'+itemData[typeName[itemData.productType][itemData.status]]
+                                            '¥' + itemData[typeName[itemData.productType][itemData.status]]
                                             :
-                                            '¥'+itemData[typeName[itemData.productType]]
+                                            '¥' + itemData[typeName[itemData.productType]]
                                     }
                                 </Text>
                                 <Text style={{

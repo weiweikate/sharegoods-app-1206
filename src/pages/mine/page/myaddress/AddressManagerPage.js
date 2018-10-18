@@ -79,8 +79,7 @@ export default class AddressManagerPage extends BasePage {
                         //行高于分割线高，优化
                         { length: 120, offset: (120 + 10) * index, index }
                     )}
-                    data={this.state.datas}>
-                </FlatList>
+                    data={this.state.datas} />
             </View>
         );
     }

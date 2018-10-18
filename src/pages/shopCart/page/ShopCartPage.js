@@ -115,7 +115,7 @@ export default class ShopCartPage extends BasePage {
                             rowMap[`${secId}${rowId}`].closeRow();
                             this._deleteFromShoppingCartByProductId(data.priceId);
                         }}>
-                        <UIText style={styles.backUITextWhite} value='删除'></UIText>
+                        <UIText style={styles.backUITextWhite} value='删除' />
                     </TouchableOpacity>
                 )}
                 rightOpenValue={-75}

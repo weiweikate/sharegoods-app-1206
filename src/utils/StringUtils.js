@@ -167,10 +167,10 @@ const checkIsPositionNumber = (num) => {
 };
 
 //剪切板
-const clipboardSetString=(content)=>{
+const clipboardSetString = (content)=>{
     Clipboard.setString(content)
 }
-const clipboardGetString=()=>{
+const clipboardGetString = ()=>{
     return Clipboard.getString()
 }
 export default {

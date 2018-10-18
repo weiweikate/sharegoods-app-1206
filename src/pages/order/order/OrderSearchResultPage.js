@@ -41,7 +41,7 @@ class OrderSearchResultPage extends BasePage {
                 />
             </View>
         );
-    };
+    }
 
     renderWideLine = () => {
         return (

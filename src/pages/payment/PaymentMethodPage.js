@@ -230,7 +230,7 @@ export default class PaymentMethodPage extends BasePage {
                 console.log('resultStr', resultStr)
                 return
             }
-    
+
             if (selectedTypes.type === paymentType.wechat) {
                 const prePayStr = result.data.prePayStr
                 const resultStr = await PayUtil.appAliPay(prePayStr)
@@ -281,7 +281,7 @@ export default class PaymentMethodPage extends BasePage {
             this._balancePay()
             return
         }
-        
+
         if (!selectedTypes) {
             Toast.$toast('请选择支付方式')
             return
@@ -297,7 +297,7 @@ export default class PaymentMethodPage extends BasePage {
             return
         }
 
-       
+
 
     };
     //需要在当前选择的支付方式能完成支付的情况下，才保证调用该方法返回的数据有效性

@@ -128,7 +128,7 @@ export default class LoginTopView extends Component {
                 <View style={[Styles.loginBtnStyle, this.LoginModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]}>
                     <TouchableOpacity
                         onPress={this.clickLoginBtn}
-                        activeOpacity={this.LoginModel.isCanClick?0.6:1}
+                        activeOpacity={this.LoginModel.isCanClick ? 0.6 : 1}
                     >
                         <Text style={Styles.loginBtnTextStyle}>
                             登录

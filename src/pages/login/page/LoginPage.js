@@ -217,7 +217,7 @@ export default class LoginPage extends BasePage {
 
         }
     };
-};
+}
 
 const Styles = StyleSheet.create(
     {

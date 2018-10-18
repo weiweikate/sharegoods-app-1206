@@ -26,27 +26,27 @@ export default class PayMessagePage extends BasePage {
         show: true // false则隐藏导航
     };
     loadPageData(){
-        let paymeth='';
-        console.log(this.params.id+`${this.params.type}`)
+        let paymeth = '';
+        console.log(this.params.id + `${this.params.type}`)
         HomeApi.findMessageDetail({id:this.params.id,type:this.params.type}).then(res => {
             console.log(res);
             if(res.ok){
-                if(typeof res.data ==='object'){
+                if(typeof res.data === 'object'){
                     switch(res.data.pay_type){
                         case 1:
-                           paymeth='纯平台';
+                           paymeth = '纯平台';
                             break;
                         case 2:
-                            paymeth='微信(小程序)';
+                            paymeth = '微信(小程序)';
                             break;
                         case 4:
-                            paymeth='微信(APP)';
+                            paymeth = '微信(APP)';
                             break;
                         case 8:
-                            paymeth='支付宝';
+                            paymeth = '支付宝';
                             break;
                         case 16:
-                            paymeth='银联';
+                            paymeth = '银联';
                             break;
                     }
                 }
@@ -123,12 +123,12 @@ export default class PayMessagePage extends BasePage {
                 </View>
                 <View style={{height:10}}/>
                 <NewsDetailItem titles={"退款账户"} rightmg={this.state.paymt} isshow={false}/>
-                {this.state.data.token_coin?
-                    <NewsDetailItem titles={"代币金额"} rightmg={StringUtils.formatMoneyString(this.state.data.token_coin)} isshow={false}/>:null}
-                {this.state.data.balance?
-                <NewsDetailItem titles={"余额账户"} rightmg={StringUtils.formatMoneyString(this.state.data.balance)} isshow={false}/>:null}
+                {this.state.data.token_coin ?
+                    <NewsDetailItem titles={"代币金额"} rightmg={StringUtils.formatMoneyString(this.state.data.token_coin)} isshow={false}/> : null}
+                {this.state.data.balance ?
+                <NewsDetailItem titles={"余额账户"} rightmg={StringUtils.formatMoneyString(this.state.data.balance)} isshow={false}/> : null}
                 <View style={{height:10}}/>
-                <NewsDetailItem titles={"退款时间"} rightmg={DateUtils.getFormatDate(this.state.data.create_time/1000)} isshow={false}/>
+                <NewsDetailItem titles={"退款时间"} rightmg={DateUtils.getFormatDate(this.state.data.create_time / 1000)} isshow={false}/>
                 <NewsDetailItem titles={"订单号"} rightmg={this.state.data.order_num} isshow={false}/>
                 <View style={{height:10}}/>
                 <NewsDetailItem titles={"订单疑问"} isshow={true} onPresses={()=>this.showTitle()}/>
@@ -159,7 +159,7 @@ class NewsDetailItem extends Component {
             <View style={[styles.textitems, {flexDirection: 'row', justifyContent: 'space-between',alignItems:"center"}]}>
                 <Text style={styles.textsingle}>{this.props.titles}</Text>
                 <Text style={styles.textsingle}>{this.props.rightmg}</Text>
-                {this.props.isshow? <UIImage onPress={()=>this.props.onPresses()} source={arrow_right} style={{width:7,height:10,marginRight:13}}/>:null}
+                {this.props.isshow ? <UIImage onPress={()=>this.props.onPresses()} source={arrow_right} style={{width:7,height:10,marginRight:13}}/> : null}
             </View>
                 <View style={{height:1,backgroundColor:"#f7f7f7",width:ScreenUtils.width}}/>
                 </View>
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     },
     bohuicontainerStyle:{
         margin:15,
-        width: ScreenUtils.width-30,
+        width: ScreenUtils.width - 30,
         height: 111,
         borderRadius: 10,
         backgroundColor: "#ffffff",

@@ -198,7 +198,7 @@ export default class CommRegistView extends Component {
                 }>
                     <TouchableOpacity
                         onPress={this.loginClick}
-                        activeOpacity={this.registModel.isCanClick?0.6:1}
+                        activeOpacity={this.registModel.isCanClick ? 0.6 : 1}
 
                     >
                         <Text style={{

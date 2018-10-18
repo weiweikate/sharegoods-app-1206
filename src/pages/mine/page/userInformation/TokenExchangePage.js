@@ -64,21 +64,21 @@ export default class TokenExchangePage extends BasePage {
         return(
             <UIButton
                 value={'提交兑换'}
-                style={{marginTop: 16, backgroundColor: color.red,width:ScreenUtils.width-96,height:48,marginLeft:48,marginRight:48}}
+                style={{marginTop: 16, backgroundColor: color.red,width:ScreenUtils.width - 96,height:48,marginLeft:48,marginRight:48}}
                 onPress={() => this.commit()}/>
         )
     }
     onChangeText=(text)=>{
         if (!StringUtils.checkIsPositionNumber(text)){
-            this.setState({money: text.substring(0,text.length-1)})
+            this.setState({money: text.substring(0,text.length - 1)})
 
         }else{
-            if (parseInt(text)>parseInt(this.state.tokenCanWithdraw)){
-                NativeModules.commModule.toast('您目前可兑换秀豆数为'+this.state.tokenCanWithdraw)
+            if (parseInt(text) > parseInt(this.state.tokenCanWithdraw)){
+                NativeModules.commModule.toast('您目前可兑换秀豆数为' + this.state.tokenCanWithdraw)
             }else{
                 this.setState({
                     money:text,
-                    restTokenCanWithdraw:parseInt(this.state.tokenCanWithdraw)-parseInt(text)
+                    restTokenCanWithdraw:parseInt(this.state.tokenCanWithdraw) - parseInt(text)
                 })
             }
         }
@@ -101,7 +101,7 @@ export default class TokenExchangePage extends BasePage {
                 <View style={{height:1,backgroundColor:color.white,}}>
                     <View style={{height:1,backgroundColor:color.line,marginLeft:15}}/>
                 </View>
-                <UIText value={'剩余可兑换：'+this.state.restTokenCanWithdraw+'枚'} style={{color:color.black_light,fontSize:15,marginLeft:15,height:30}}/>
+                <UIText value={'剩余可兑换：' + this.state.restTokenCanWithdraw + '枚'} style={{color:color.black_light,fontSize:15,marginLeft:15,height:30}}/>
             </View>
         )
     }
@@ -115,7 +115,7 @@ export default class TokenExchangePage extends BasePage {
                 }}
                 yes={()=>{
                     NativeModules.commModule.toast('马上兑换')
-                    if (this.state.tokenCanWithdraw==0){
+                    if (this.state.tokenCanWithdraw == 0){
                         NativeModules.commModule.toast('暂无可提现秀豆')
                         return
                     }
@@ -139,7 +139,7 @@ export default class TokenExchangePage extends BasePage {
         )
     }
     returnIntegerString=(object)=>{
-        let str=object+''
+        let str = object + ''
         if (StringUtils.isEmpty(str)){
             return 0
         }else{
@@ -152,8 +152,8 @@ export default class TokenExchangePage extends BasePage {
                 <View style={{flexDirection:'row',alignItems:'center',}}>
                     <UIImage source={CashImg} style={{width:49,height:49,marginLeft:16}}/>
                     <View style={{marginLeft:10,alignItems:'center'}}>
-                        <UIText value={'有待提现金：'+StringUtils.formatMoneyString(this.state.waitingForWithdrawMoney,false)+'元'} style={{fontSize:15,color:color.black000}}/>
-                        <UIText value={'可兑换代币：'+this.state.tokenCanWithdraw+'枚'} style={{fontSize:13,color:color.black_999}}/>
+                        <UIText value={'有待提现金：' + StringUtils.formatMoneyString(this.state.waitingForWithdrawMoney,false) + '元'} style={{fontSize:15,color:color.black000}}/>
+                        <UIText value={'可兑换代币：' + this.state.tokenCanWithdraw + '枚'} style={{fontSize:13,color:color.black_999}}/>
                     </View>
                 </View>
                 <View style={{justifyContent:'center',marginRight:15}}>

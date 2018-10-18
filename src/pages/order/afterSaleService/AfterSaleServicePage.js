@@ -332,7 +332,7 @@ class AfterSaleServicePage extends BasePage {
                 {this.renderModal()}
             </View>
         );
-    };
+    }
 
     renderLine = () => {
         return (
@@ -374,7 +374,7 @@ class AfterSaleServicePage extends BasePage {
             id: this.params.productId
         }).then((data) => {
             this.$loadingDismiss();
-            data.data = data.data||{}
+            data.data = data.data || {}
             const { specMap, priceList } = data.data;
             //修改specMap每个元素首尾增加'，'
             for (let key in specMap) {

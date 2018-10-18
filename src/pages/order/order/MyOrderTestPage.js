@@ -5,7 +5,7 @@ import {View,Image,Text ,TouchableOpacity} from 'react-native';
 export default class MyOrderTestPage extends Component{
     constructor(props){
         super(props);
-        this.state={
+        this.state = {
 
         }
     }

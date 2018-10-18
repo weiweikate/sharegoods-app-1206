@@ -21,32 +21,32 @@ const LogisticsDetailItem = props => {
         isBottom,
     } = props
 
-    this.renderLine=()=>{
+    this.renderLine = ()=>{
         return(
             <View style={{flex:1,height:1,backgroundColor:color.line,marginTop:10,marginBottom:10,alignItems:'center',marginLeft:20,marginRight:20}}/>
         );
     }
-    this.renderLine2=()=>{
+    this.renderLine2 = ()=>{
         return(
             <View style={{flex:1,height:1,backgroundColor:color.line,marginTop:10,marginBottom:10,alignItems:'center',}}/>
         );
     }
-    this.renderMiddleImage=()=>{
-        return(!middleImage?
+    this.renderMiddleImage = ()=>{
+        return(!middleImage ?
             <UIText value={'·'} style={{fontSize:40,marginLeft:40,marginTop:-15}}/> :
             <UIImage source={middleImage} style={{width:28,height:28,marginLeft:30,opacity:1}}/>
         )
     }
-    this.renderMiddleLine=()=>{
-        return(!isBottom?
-                <View style={{width:1,backgroundColor:color.gray_DDD,marginLeft:5,marginRight:5,marginTop:isTop?21:0,}}/>:
-                <View style={{width:1,backgroundColor:color.gray_DDD,marginLeft:5,marginRight:5,marginTop:isTop?21:0,height:30}}/>
+    this.renderMiddleLine = ()=>{
+        return(!isBottom ?
+                <View style={{width:1,backgroundColor:color.gray_DDD,marginLeft:5,marginRight:5,marginTop:isTop ? 21 : 0,}}/> :
+                <View style={{width:1,backgroundColor:color.gray_DDD,marginLeft:5,marginRight:5,marginTop:isTop ? 21 : 0,height:30}}/>
         )
     }
-    this.renderTitle=()=>{
-        return(title&&title!=''?
+    this.renderTitle = ()=>{
+        return(title && title != '' ?
             <UIText value={title} style={{fontSize:14,color:color.black_222,marginLeft:15}}/>
-        :null)
+        : null)
     }
     return (
         <TouchableOpacity style={{paddingLeft:16,paddingRight:16,flexDirection:'row'}}>

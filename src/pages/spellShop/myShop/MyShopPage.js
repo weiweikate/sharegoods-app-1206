@@ -212,7 +212,7 @@ export default class MyShopPage extends BasePage {
         const { storeMaxUser, storeUserList = [], name } = this.state.storeData;
         let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2 && storeMaxUser > storeUserList.length;
         if (canJoin) {
-            this.refs['delAlert'] && this.refs['delAlert'].show({
+            this.refs.delAlert && this.refs.delAlert.show({
                 title: `确定要申请${name}吗?`,
                 confirmCallBack: () => {
                     this.$loadingShow();
