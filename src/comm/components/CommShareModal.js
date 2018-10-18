@@ -31,7 +31,7 @@ import {
     TouchableWithoutFeedback,
     Animated,
     Modal,
-    TouchableOpacity
+    TouchableOpacity, Platform
 } from "react-native";
 
 import {
@@ -145,7 +145,7 @@ export default class CommShareModal extends React.Component {
 
         if (this.state.path.length === 0 && shareType === 0){
             bridge.creatShareImage(this.props.imageJson, (path) => {
-                this.setState({path: path});
+                this.setState({path:Platform.OS === 'android' ? 'file://' + path : '' + path});
                 this.startAnimated();
             })
         }else {
@@ -245,7 +245,7 @@ export default class CommShareModal extends React.Component {
 
                             }}>
                                 <UIImage source={{ uri: this.state.path }}
-                                         style={{ height: autoSizeWidth(650 / 2), width: autoSizeWidth(250)}}/>
+                                         style={{ height: autoSizeWidth(650 / 2), width: autoSizeWidth(250),backgroundColor:'red'}}/>
                             </Animated.View> : null
                     }
                 </TouchableOpacity>

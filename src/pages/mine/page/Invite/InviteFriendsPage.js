@@ -13,7 +13,8 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    Platform
 } from "react-native";
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -58,7 +59,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
 
     creatQRCodeImage(QRCodeStr){
        bridge.creatQRCodeImage(QRCodeStr, (path) => {
-           this.setState({path});
+           this.setState({path:Platform.OS === 'android' ? 'file://' + path : '' + path});
        }) ;
     }
 
