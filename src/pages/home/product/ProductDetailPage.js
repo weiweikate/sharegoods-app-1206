@@ -253,7 +253,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _render() {
-        const {  price = 0, product = {} } = this.props.data || {};
+        const {  price = 0, product = {} } = this.state.data || {};
         const { supplierName = '', brandName = '', name = '', firstCategoryName = '', secCategoryName = '', thirdCategoryName = '' ,imgUrl} = product;
 
         return (
@@ -299,7 +299,7 @@ export default class ProductDetailPage extends BasePage {
                                 }}
                                 webJson={{
                                     title: `${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`,
-                                    dec: '内容(当为图文分享时候使用)',
+                                    dec: '商品详情',
                                     linkUrl: `http://testh5.sharegoodsmall.com/#/product?id=${product.id}`,
                                     thumImage: imgUrl
                                 }}/>
