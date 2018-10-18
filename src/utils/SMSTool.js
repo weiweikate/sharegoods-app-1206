@@ -2,14 +2,14 @@ import ApiUtils from '../api/network/ApiUtils';
 
 const SMSInterface = {
     //登陆验证码
-    SMSLogin: ['/sms/sendLoginMessage',{method:'get'}],
+    SMSLogin: ['/sms/sendLoginMessage', { method: 'get' }],
     //注册验证码
-    SMSReg: ['/sms/sendRegMessage',{method:'get'}]
+    SMSReg: ['/sms/sendRegMessage', { method: 'get' }]
 };
 const SMSType = {
-    LoginType:0,
-    RegType:1
-}
+    LoginType: 0,
+    RegType: 1
+};
 const SMSAPI = ApiUtils(SMSInterface);
 const SMSTool = {
     /**
