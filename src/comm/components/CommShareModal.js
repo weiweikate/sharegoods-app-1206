@@ -309,11 +309,9 @@ export default class CommShareModal extends React.Component {
 
                             }}>
                                 <UIImage source={{ uri: this.state.path }}
-                                         resizeMode={'contain'}
                                          style={{
                                              height: autoSizeWidth(650 / 2),
-                                             width: autoSizeWidth(250),
-                                             backgroundColor: 'transparent'
+                                             width: autoSizeWidth(250)
                                          }}/>
                             </Animated.View> : null
                     }
