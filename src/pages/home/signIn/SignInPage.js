@@ -102,7 +102,10 @@ export default class SignInPage extends BasePage {
     }
 
     showMore = () =>{
-        alert("跳转到规则页");
+        this.$navigate('HtmlPage', {
+            title: '签到规则',
+            uri: 'http://www.baidu.com'
+        });
     }
 
     //签到
@@ -285,7 +288,7 @@ export default class SignInPage extends BasePage {
                     {reminder}
                 </Text>
                 <View style={{flex:1}}/>
-                <TouchableWithoutFeedback onPress={()=>alert('跳转到优惠券列表')}>
+                <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate('mine/coupons/CouponsPage')}>
                     <View>
                         <Text style={styles.couponsTextStyle}>
                             已有{user.tokenCoin ? user.tokenCoin : 0}张现金券>

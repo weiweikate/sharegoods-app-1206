@@ -11,10 +11,13 @@
 'use strict';
 import React from 'react';
 import {
-  StyleSheet,
-  View
+    StyleSheet,
+    View,
+    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../../BasePage';
+import ScreenUtils from "../../../../utils/ScreenUtils";
+const { px2dp } = ScreenUtils;
 
 type Props = {};
 export default  class UserPromotionPage  extends BasePage<Props> {
@@ -39,7 +42,33 @@ export default  class UserPromotionPage  extends BasePage<Props> {
 
   loadPageData() {
   }
-  /******/
+  /**************************viewpart********************************/
+
+  _itemRender(){
+      return(
+          <View>
+              <View>
+                  <View>
+                      <Text>
+                          50元推广试用套餐
+                      </Text>
+                      <Text>
+                          剩余推广金额￥20.03
+                      </Text>
+
+                      <TouchableWithoutFeedback>
+                          <View style={styles.grayButtonStyle}>
+                              <Text >
+                                  推广详情
+                              </Text>
+                          </View>
+
+                      </TouchableWithoutFeedback>
+                  </View>
+              </View>
+          </View>
+      )
+  }
 
   _render() {
     return (
@@ -50,7 +79,31 @@ export default  class UserPromotionPage  extends BasePage<Props> {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
+    container: {
+        flex: 1
+    },
+    grayButtonWrapper:{
+        borderColor:'#DDDDDD',
+        borderWidth:px2dp(1),
+        borderRadius:px2dp(10),
+        width:px2dp(160),
+        height:px2dp(70),
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    redButtonWrapper:{
+        borderColor:'#D51243',
+        borderWidth:px2dp(1),
+        borderRadius:px2dp(5),
+        width:px2dp(80),
+        height:px2dp(35),
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    itemInfoWrapper:{
+        justifyContent:'center',
+        marginLeft:px2dp(15),
+    }
+
+
 });
