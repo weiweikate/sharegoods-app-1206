@@ -136,7 +136,7 @@ export default class DownPricePage extends BasePage {
                 activityCode: itemData.prodCode,
                 activityType: itemData.productType
             });
-        } else if (itemData.productId === 5) {
+        } else if (itemData.productType === 5) {
             this.$navigate('topic/TopicPage', {
                 linkTypeCode: itemData.prodCode
             });
@@ -150,10 +150,9 @@ export default class DownPricePage extends BasePage {
         } else {
 
         }
-        const { imgUrl } = this.dataModel;
-        // const {linkTypeCode} = this.params;
+        const { imgUrl,name } = this.dataModel;
+        this.$NavigationBarResetTitle(name || '专题')
         return (
-
             <ScrollView
                 alwaysBounceVertical={true}
                 contentContainerStyle={Styles.list}
@@ -214,6 +213,11 @@ export default class DownPricePage extends BasePage {
             return 0;
         }
     };
+    /**
+     * 获取专题模板列数
+     * @returns {number}
+     * @private
+     */
     _getColumNum = () => {
         if (this.dataModel.templateId === 3 ||
             this.dataModel.templateId === 4) {

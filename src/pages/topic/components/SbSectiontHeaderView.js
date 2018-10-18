@@ -10,6 +10,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
 import SubSwichView from './SubSwichView';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+import ColorUtil from '../../../utils/ColorUtil';
 
 
 class SbSectiontHeaderView extends Component {
@@ -57,7 +58,7 @@ class ActivityOneView extends Component {
 
     render() {
         const { imageUrl } = this.props;
-        console.log(imageUrl);
+        // console.log('++++++' + temp);
         return (
             <View>
                 <PreLoadImage
@@ -73,7 +74,7 @@ const ActivityOneViewStyles = StyleSheet.create({
     bgImageStyle: {
         height: 100,
         width: ScreenUtils.width,
-        backgroundColor: 'blue'
+        backgroundColor: ColorUtil.Color_ffffff
     }
 });
 

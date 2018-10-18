@@ -32,14 +32,17 @@ export default class ShopPageSettingPage extends BasePage {
     _managerShop = () => {
         //店铺管理是修改店铺的基础信息并保存在店铺中显示
         //异常：仅店长才能修改此功能
-        this.$navigate('spellShop/shopSetting/SetShopNamePage', { storeData: this.state.storeData });
+        this.$navigate('spellShop/shopSetting/SetShopNamePage', {
+            storeData: this.state.storeData,
+            myShopCallBack: this.params.myShopCallBack
+        });
     };
 
     // 邀请设置
     _inviteSetting = () => {
         //店铺邀请会有几种条件在里面，设置某种条件就会有对应的条件设置才能邀请进来
         //异常：通过条件才能进入到店铺
-        this.$navigate('spellShop/shopSetting/InvitationSettingPage',{ storeData: this.state.storeData });
+        this.$navigate('spellShop/shopSetting/InvitationSettingPage', { storeData: this.state.storeData });
     };
 
     // 公告管理
@@ -51,7 +54,7 @@ export default class ShopPageSettingPage extends BasePage {
 
     // 店铺评分
     _scoreShop = () => {
-        this.$navigate('spellShop/shopSetting/ShopScorePage',{ storeData: this.state.storeData });
+        this.$navigate('spellShop/shopSetting/ShopScorePage', { storeData: this.state.storeData });
     };
 
     _render() {

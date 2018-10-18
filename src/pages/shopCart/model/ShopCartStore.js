@@ -180,20 +180,27 @@ class ShopCartStore {
         }
     };
 
+
     /*加入购物车*/
     addItemToShopCart(item) {
         if (item) {
-            console.log(item);
-            ShopCartAPI.addItem({
-                'amount': item.amount,
-                'priceId': item.priceId,
-                'productId': item.productId,
-                'timestamp':item.timestamp
-            }).then((res) => {
-                this.getShopCartListData();
-            }).catch((error) => {
-                bridge.$toast(error.msg);
-            });
+            if (item instanceof Array && item.length > 0) {
+                bridge.$toast('批量加入购物车未对接');
+            }else {
+                //加入单个商品
+                console.log(item);
+                ShopCartAPI.addItem({
+                    'amount': item.amount,
+                    'priceId': item.priceId,
+                    'productId': item.productId,
+                    'timestamp':item.timestamp
+                }).then((res) => {
+                    this.getShopCartListData();
+                }).catch((error) => {
+                    bridge.$toast(error.msg);
+                });
+            }
+
         } else {
             bridge.$toast('添加商品不能为空');
         }
