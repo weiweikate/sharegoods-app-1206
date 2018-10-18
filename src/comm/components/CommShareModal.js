@@ -29,7 +29,9 @@ import {
     StyleSheet,
     View,
     TouchableWithoutFeedback,
-    Animated
+    Animated,
+    Modal,
+    TouchableOpacity
 } from "react-native";
 
 import {
@@ -90,7 +92,7 @@ export default class CommShareModal extends React.Component {
                     duration: 300,
                 }
             ).start();
-        } 
+        }
     }
     /** public end */
     _bind() {
@@ -164,9 +166,6 @@ export default class CommShareModal extends React.Component {
     }
 
     render() {
-        if (this.state.modalVisible === false){
-            return(<View />)
-        }
         let array = [];
         array.push({image: CommTabImag.wechat, title: '微信好友', onPress: () => {this.share(0)}});
         array.push( {image: CommTabImag.pengyouquan, title: '朋友圈', onPress: () => {this.share(1)}});
@@ -183,47 +182,51 @@ export default class CommShareModal extends React.Component {
             }
         }
         return (
-            <View
-                style = {{
-                    position: 'absolute',
+            <Modal onRequestClose={this.close}
+                   visible = {this.state.modalVisible}
+                   transparent={true}
+            >
+                <TouchableOpacity style = {{
+                    backgroundColor: 'rgba(0,0,0,0.3)',
                     top: 0,
                     left: 0,
                     bottom: 0,
                     right: 0,
-                    backgroundColor: 'rgba(0,0,0,0.3)'
+                    position: 'absolute',
                 }}
-            >
-                <View style = {{flex: 1}}/>
-                <Animated.View style = {{transform: [{translateY: this.state.y}]}}>
-                    <View style = {styles.contentContainer}>
-                        <View style = {styles.header}>
-                            <View style = {{flex: 1, marginLeft: autoSizeWidth(25), height: 1, backgroundColor: '#EEEEEE'}} />
-                            <UIText value = {'分享到'} style = {{color: '#4D4D4D', fontSize: autoSizeWidth(17), marginHorizontal: 7}}/>
-                            <View style = {{flex: 1, marginRight: autoSizeWidth(25), height: 1, backgroundColor: '#EEEEEE'}} />
+                                  onPress={() => {this.close()}}
+                >
+                    <View style = {{flex: 1 }}/>
+                    <Animated.View style={{transform: [{translateY: this.state.y}]}}>
+                        <View style = {[styles.contentContainer]}>
+                            <View style = {styles.header}>
+                                <View style = {{flex: 1, marginLeft: autoSizeWidth(25), height: 1, backgroundColor: '#EEEEEE'}} />
+                                <UIText value = {'分享到'} style = {{color: '#4D4D4D', fontSize: autoSizeWidth(17), marginHorizontal: 7}}/>
+                                <View style = {{flex: 1, marginRight: autoSizeWidth(25), height: 1, backgroundColor: '#EEEEEE'}} />
+                            </View>
+                            <View style ={{flexWrap: 'wrap', flexDirection: 'row'}}>
+                                {
+                                    array.map((item, index) => {
+                                        return(
+                                            <TouchableWithoutFeedback key = {index + 'item'} onPress = {item.onPress}>
+                                                <View style = {styles.item}>
+                                                    <UIImage source = {item.image} style = {{height: autoSizeWidth(47),width: autoSizeWidth(47)}}/>
+                                                    <UIText value = {item.title} style = {{marginTop: 5, color: '#4D4D4D', fontSize: autoSizeWidth(11)}}/>
+                                                </View>
+                                            </TouchableWithoutFeedback>
+                                        )
+                                    })
+                                }
+                            </View>
                         </View>
-                        <View style ={{flexWrap: 'wrap', flexDirection: 'row'}}>
-                            {
-                                array.map((item, index) => {
-                                    return(
-                                        <TouchableWithoutFeedback key = {index + 'item'} onPress = {item.onPress}>
-                                            <View style = {styles.item}>
-                                                <UIImage source = {item.image} style = {{height: autoSizeWidth(47),width: autoSizeWidth(47)}}/>
-                                                <UIText value = {item.title} style = {{marginTop: 5, color: '#4D4D4D', fontSize: autoSizeWidth(11)}}/>
-                                            </View>
-                                        </TouchableWithoutFeedback>
-                                    )
-                                })
-                            }
-                        </View>
-                    </View>
-                    <View style = {{marginHorizontal: autoSizeWidth(25), height: 1, backgroundColor: '#EEEEEE', justifySelf: 'flex-end'}}/>
-                    <TouchableWithoutFeedback onPress = {() =>{this.close()}}
-                    >
-                        <View style = {[styles.bottomBtn,{ justifySelf: 'flex-end'}]}>
-                            <UIText value = {'取消'} style = {{color: '#4D4D4D', fontSize: autoSizeWidth(16)}}/>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </Animated.View>
+                        <View style = {{marginHorizontal: autoSizeWidth(25), height: 1, backgroundColor: '#EEEEEE', justifySelf: 'flex-end'}}/>
+                        <TouchableWithoutFeedback onPress = {() =>{this.close()}}
+                        >
+                            <View style = {[styles.bottomBtn,{ justifySelf: 'flex-end'}]}>
+                                <UIText value = {'取消'} style = {{color: '#4D4D4D', fontSize: autoSizeWidth(16)}}/>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </Animated.View>
                     {
                         this.state.shareType === 0 ?
                             <Animated.View style={{
@@ -245,7 +248,8 @@ export default class CommShareModal extends React.Component {
                                          style={{ height: autoSizeWidth(650 / 2), width: autoSizeWidth(250)}}/>
                             </Animated.View> : null
                     }
-            </View>
+                </TouchableOpacity>
+            </Modal>
         );
     }
 }

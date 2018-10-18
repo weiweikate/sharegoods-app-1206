@@ -66,12 +66,17 @@ export default class CategorySearchPage extends BasePage {
         });
     }
 
-    renderViewPageItem = (url) => {
+    renderViewPageItem = (item) => {
         return (
-            <UIImage
-                source={{ uri: url }}
-                style={{ width: bannerW, height: 118, borderRadius: 5 }}
-            />);
+            <TouchableOpacity onPress={() => {
+                this.clickBanner(item);
+            }}>
+                <UIImage
+                    source={{ uri: item.img }}
+                    style={{ width: bannerW, height: 118, borderRadius: 5 }}
+                />
+            </TouchableOpacity>
+        );
     };
 
     go2SearchPage = () => {
@@ -102,12 +107,8 @@ export default class CategorySearchPage extends BasePage {
                                 refreshing={false}
                                 keyExtractor={(item, index) => index}
                                 showsVerticalScrollIndicator={false}
-                                getItemLayout={(data, index) => (
-                                    //行高于分割线高，优化
-                                    { length: 45, offset: 45 * index, index }
-                                )}
-                                data={this.state.nameArr}>
-                            </FlatList> : null
+                                data={this.state.nameArr}
+                            /> : null
                     }
 
                     <View style={{
@@ -120,7 +121,7 @@ export default class CategorySearchPage extends BasePage {
                     }}>
                         <ViewPager swiperShow={this.state.swiperShow && this.state.bannerData.length > 0}
                                    arrayData={this.state.bannerData}
-                                   renderItem={(item) => this.renderViewPageItem(item.img)}
+                                   renderItem={(item) => this.renderViewPageItem(item)}
                                    dotStyle={{
                                        height: 5,
                                        width: 5,
@@ -182,6 +183,10 @@ export default class CategorySearchPage extends BasePage {
                 </View>
             </TouchableOpacity>
         );
+    };
+
+    clickBanner = (item) => {
+        // banner点击跳转
     };
 
     _onCategoryClick = (item, index) => {
