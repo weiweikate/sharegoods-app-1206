@@ -19,7 +19,7 @@ import { UIText, UIImage } from '../../../components/ui';
 import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import GoodsItem from '../components/GoodsItem';
+import GoodsItem from '../components/GoodsGrayItem';
 import applyRefundMessage from '../res/applyRefundMessage.png';
 import applyRefundPhone from '../res/applyRefundPhone.png';
 import right_arrow from '../res/arrow_right.png';
@@ -30,6 +30,7 @@ import refusa_icon from '../res/tuikuan_icon_jujue_nor.png';
 import EmptyUtils from '../../../utils/EmptyUtils';
 
 import OrderApi from '../api/orderApi'
+
 
 class ExchangeGoodsDetailPage extends BasePage {
     constructor(props) {
@@ -49,7 +50,7 @@ class ExchangeGoodsDetailPage extends BasePage {
     };
 
     $NavigationBarDefaultLeftPressed = () => {
-     this.$navigateBack('order/afterSaleService/AfterSaleServiceHomePage');
+      this.$navigateBack('order/order/MyOrdersDetailPage');
     }
 
     _bindFunc(){
@@ -109,13 +110,14 @@ class ExchangeGoodsDetailPage extends BasePage {
         }
         if (this.state.pageData.status === 6){
             return this.renderItems(true);
-        } else if (this.state.pageData.status === 3){
+        } else if (this.state.pageData.status === 3 || this.state.pageData.status === 9){
            return(
                <View style={{
                    height: 44,
                    flexDirection: 'row',
                    backgroundColor: color.white,
-                   alignItems: 'center'
+                   alignItems: 'center',
+                   marginLeft: 15,
                }}>
                    <UIText value={'拒绝原因:' + this.state.pageData.refusalReason} style={{ color: color.black_222, fontSize: 13 }}/>
                </View>
@@ -185,7 +187,15 @@ class ExchangeGoodsDetailPage extends BasePage {
         /** 显示物流*/
         let pageType = this.params.pageType;
         let pageData = this.state.pageData;
-        if (pageType === 0 || EmptyUtils.isEmpty(pageData) || pageData.status === 1){//退款无物流
+        if (pageType === 0 ||
+            EmptyUtils.isEmpty(pageData) ||
+            pageData.status === 1 ||
+            pageData.status === 3 ||
+            pageData.status === 9 ||
+            pageData.status === 7
+        ){
+            //退款无物流
+            //申请中、 申请拒绝、商家收到货后拒绝
             return;
         }
         return (
@@ -207,7 +217,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         alignItems: 'center'
                     }}>
                         <UIText
-                            value={EmptyUtils.isEmpty(pageData.expressNo) === false ? `${pageData.expressName}(${pageData.expressNo})`: '请填写寄回物流信息'}
+                            value={EmptyUtils.isEmpty(pageData.expressNo) === false ? `${pageData.expressName}(${pageData.expressNo})` : '请填写寄回物流信息'}
                             style={{
                                 color: EmptyUtils.isEmpty(pageData.expressNo) === false ? color.black_222 : color.gray_c8c,
                                 fontSize: 12,
@@ -238,7 +248,7 @@ class ExchangeGoodsDetailPage extends BasePage {
             return;
         }
         let status = pageData.status;
-        let returnAddress = pageData.returnAddress || {}
+       // let returnAddress = pageData.returnAddress || {}
         if (this.params.pageType === 0){
             return;
         } else if (this.params.pageType === 1){
@@ -258,9 +268,9 @@ class ExchangeGoodsDetailPage extends BasePage {
                     this.params.pageType === 2 ?
                     <View>
                         <AddressItem
-                            name={'收货人：' + pageData.receiver}
-                            phone={pageData.recevicePhone || ''}
-                            address={pageData.receiveAddress || ''}
+                            name={'收货人：' + pageData.backReceiver}
+                            phone={pageData.bakcRecevicePhone}
+                            address={pageData.backRreceiveAddress}
                         />
                         < UIImage source = { addressLine } style={{width: ScreenUtils.width, height: 3}}/>
                         {this.renderWideLine()}
@@ -270,12 +280,13 @@ class ExchangeGoodsDetailPage extends BasePage {
                     <View style={{
                         width: 43,
                         height: 36,
-                        backgroundColor: color.red,
+                        borderColor: 'red',
+                        borderWidth: 0.5,
                         justifyContent: 'center',
                         alignItems: 'center',
                         marginLeft: 16
                     }}>
-                        <UIText value={'寄回\n地址'} style={{ fontSize: 12, color: color.white }}/>
+                        <UIText value={'寄回\n地址'} style={{ fontSize: 12, color: 'red' }}/>
                     </View>
                     <View style={{ backgroundColor: color.gray_EEE, width: 1, height: 40 }}/>
                     <AddressItem height={82}
@@ -286,13 +297,15 @@ class ExchangeGoodsDetailPage extends BasePage {
                                      alignItems: 'center',
                                      backgroundColor: color.white
                                  }}
-                                 name={'收货人：' + returnAddress.receiver}
-                                 phone={returnAddress.recevicePhone}
-                                 address={returnAddress.provinceName +
-                                 returnAddress.cityName +
-                                 returnAddress.areaName +
-                                 returnAddress.address
-                                 }
+                                 // name={'收货人：' + returnAddress.receiver}
+                                 // phone={returnAddress.recevicePhone}
+                                 // address={returnAddress.provinceName +
+                                 // returnAddress.cityName +
+                                 // returnAddress.areaName +
+                                 // returnAddress.address
+                                 name={'收货人：' + pageData.receiver}
+                                 phone={pageData.recevicePhone || ''}
+                                 address={pageData.receiveAddress || ''}
                     />
                 </View>
                 {this.renderWideLine()}
@@ -436,10 +449,10 @@ class ExchangeGoodsDetailPage extends BasePage {
         if (this.params.pageType === 0){//退款详情
 
             let titles = ['商家退款审核中', '*-商家同意退款', '商家拒绝退款', '*-发货中', '*-云仓库发货中', '退款完成', '已关闭', '超时关闭', '商家拒绝退款'];
-            titleCommpent = () => {return <UIText value = {titles[pageData.status-1]} style = {styles.header_title}/>};
+            titleCommpent = () => {return <UIText value = {titles[pageData.status - 1]} style = {styles.header_title}/>};
             if (pageData.status === 3){//拒绝
                 textContaner_marginLeft = 10;
-                imageCommpent = () => {return <UIImage soucre = {refusa_icon} style = {styles.header_image}/>};
+                imageCommpent = () => {return <UIImage source = {refusa_icon} style = {styles.header_image}/>};
                 detialCommpent = () => {return <UIText value = {pageData.refusalReason} style = {styles.header_detail}/>};
             } else if (pageData.status === 6){//已完成
                 detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.payTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
@@ -448,10 +461,10 @@ class ExchangeGoodsDetailPage extends BasePage {
             }
         } else if (this.params.pageType === 1) {//退货详情
             let titles = ['等待商家处理', '请退货给商家', '商家拒绝退货申请', '等待商家确认', '等待商家确认', '退货退款成功', '已关闭', '退货退款超时关闭', '商家拒绝退货'];
-            titleCommpent = () => {return <UIText value = {titles[pageData.status-1]} style = {styles.header_title}/>};
+            titleCommpent = () => {return <UIText value = {titles[pageData.status - 1]} style = {styles.header_title}/>};
             if (pageData.status === 3 || pageData.status === 9){//拒绝
                 textContaner_marginLeft = 10;
-                imageCommpent = () => {return <UIImage soucre = {refusa_icon} style = {styles.header_image}/>};
+                imageCommpent = () => {return <UIImage source = {refusa_icon} style = {styles.header_image}/>};
                 detialCommpent = () => {return <UIText value = {DateUtils.getFormatDate(pageData.refuseTime / 1000,'yyyy年MM月dd日  hh:mm')	} style = {styles.header_detail}/>};
             } else if (pageData.status === 6){//已完成
                 detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.payTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
@@ -462,10 +475,10 @@ class ExchangeGoodsDetailPage extends BasePage {
             }
         } else if (this.params.pageType === 2) {//换货详情
             let titles = ['等待商家处理', '商家已同意', '商家拒绝换货申请', '等待商家确认', '云仓库发货中', '换货完成', '已关闭', '超时关闭', '商家拒绝换货', '等待买家确认'];
-            titleCommpent = () => {return <UIText value = {titles[pageData.status-1]} style = {styles.header_title}/>};
+            titleCommpent = () => {return <UIText value = {titles[pageData.status - 1]} style = {styles.header_title}/>};
             if (pageData.status === 3 || pageData.status === 9){//拒绝
                 textContaner_marginLeft = 10;
-                imageCommpent = () => {return <UIImage soucre = {refusa_icon} style = {styles.header_image}/>};
+                imageCommpent = () => {return <UIImage source = {refusa_icon} style = {styles.header_image}/>};
                 detialCommpent = () => {return <UIText value = {DateUtils.getFormatDate(pageData.refuseTime / 1000,'yyyy年MM月dd日  hh:mm')	} style = {styles.header_detail}/>};
             } else if (pageData.status === 6){//已完成
                 detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.backsendTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
@@ -600,18 +613,20 @@ class ExchangeGoodsDetailPage extends BasePage {
      * @param cancel true -》撤销 、false -》编辑申请
      */
     onPressOperationApply(cancel){
+        let that = this;
         if (cancel){
             this.$loadingShow();
             OrderApi.revokeApply({returnProductId: this.state.pageData.id}).then(result => {
-                this.$loadingDismiss();
+                that.$loadingDismiss();
                 DeviceEventEmitter.emit('OrderNeedRefresh');
-                this.$navigateBack('/order/order/MyOrdersDetailPage');
+                that.$navigateBack('order/order/MyOrdersDetailPage');
             }).catch(error => {
-                this.$loadingDismiss();
-                this.$toastShow(error.msg || '操作失败，请重试');
+                that.$loadingDismiss();
+                that.$toastShow(error.msg || '操作失败，请重试');
             });
         }else {
             let {orderProductId, returnReason, remark, imgList, exchangePriceId, exchangeSpec, exchangeSpecImg, productId} = this.state.pageData;
+            imgList = imgList || [];
             for (let i = 0; i < imgList.length; i++){
                 imgList[i].imageThumbUrl = imgList[i].smallImg;
                 imgList[i].imageUrl =  imgList[i].originalImg

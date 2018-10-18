@@ -61,7 +61,7 @@ export default class ReportAlert extends Component {
                 //透明度
                 this.state.top,
                 {
-                    toValue: (MAX_SCREEN - this.state.height) / 2,
+                    toValue: (MAX_SCREEN - this.state.height) / 2 - 45,
                     duration: Animated_Duration
                 }
             ),
@@ -138,8 +138,12 @@ export default class ReportAlert extends Component {
                     />
 
                     <Animated.View
-                        style={[
-                            styles.whitePanel,
+                        style={[{
+                            position: 'absolute',
+                            left: 40,
+                            right: 40,
+                            height: PANNELHEIGHT,
+                        },
                             {
                                 top: this.state.top,
                                 opacity: this.state.backOpacity,
@@ -147,25 +151,27 @@ export default class ReportAlert extends Component {
                             }
                         ]}
                     >
-                        <Image style={{ marginTop: -45 }} source={KeFuIcon}/>
-                        <View style={styles.inputContainer}>
-                            <TextInput
-                                autoFocus
-                                multiline
-                                underlineColorAndroid={'transparent'}
-                                placeholder='请输入其他举报内容'
-                                placeholderTextColor='#c8c8c8'
-                                value={this.state.text}
-                                onChangeText={this._onChangeText}
-                                style={styles.input}/>
-                        </View>
-                        <View style={styles.btnContainer}>
-                            <TouchableOpacity onPress={this._clickOk} style={styles.submitContainer}>
-                                <Text style={styles.submitTitle}>提交</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={this._closeAnimated} style={styles.cancelContainer}>
-                                <Text style={styles.cancelTitleText}>取消</Text>
-                            </TouchableOpacity>
+                        <Image style={{position: 'absolute',top:0 ,zIndex:1,alignSelf:'center'}} source={KeFuIcon}/>
+                        <View style={styles.whitePanel}>
+                            <View style={styles.inputContainer}>
+                                <TextInput
+                                    autoFocus
+                                    multiline
+                                    underlineColorAndroid={'transparent'}
+                                    placeholder='请输入其他举报内容'
+                                    placeholderTextColor='#c8c8c8'
+                                    value={this.state.text}
+                                    onChangeText={this._onChangeText}
+                                    style={styles.input}/>
+                            </View>
+                            <View style={styles.btnContainer}>
+                                <TouchableOpacity onPress={this._clickOk} style={styles.submitContainer}>
+                                    <Text style={styles.submitTitle}>提交</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={this._closeAnimated} style={styles.cancelContainer}>
+                                    <Text style={styles.cancelTitleText}>取消</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </Animated.View>
                 </View>
@@ -197,15 +203,14 @@ const styles = StyleSheet.create({
         color: '#333'
     },
     whitePanel: {
-        position: 'absolute',
-        left: 40,
-        right: 40,
-        height: PANNELHEIGHT,
+        flex:1,
+        marginTop: 31,
         backgroundColor: 'white',
         alignItems: 'center',
         borderRadius: 5
     },
     inputContainer: {
+        marginTop: 62,
         flex: 1,
         backgroundColor: '#eeeeee',
         padding: 10
@@ -213,7 +218,6 @@ const styles = StyleSheet.create({
     input: {
         textAlignVertical: 'top',
         width: 235 / 375 * MIN_SCREEN,
-        height: 185,
         borderRadius: 2,
         backgroundColor: '#eeeeee',
         color: '#333'
@@ -249,7 +253,7 @@ const styles = StyleSheet.create({
     cancelTitleText: {
         fontFamily: 'PingFang-SC-Medium',
         fontSize: 16,
-        color: "#999999"
+        color: '#999999'
     }
 });
 

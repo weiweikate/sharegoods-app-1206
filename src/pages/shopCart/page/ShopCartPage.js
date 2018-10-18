@@ -8,7 +8,6 @@ import {
     TouchableOpacity,
     ListView, TouchableHighlight,
     Text
-
 } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
@@ -24,32 +23,34 @@ import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import bridge from '../../../utils/bridge';
 
+
+const activityCode = {
+    skill: 1,//秒杀
+    makeDown: 2,//降价拍
+    discount: 3,//优惠套餐
+    helpFree: 4,//助力免费领
+    payGift: 5,//支付有礼
+    fullReduce: 6,//满减
+    guaguaLe: 7//呱呱乐
+};
+
+const activityString = {
+    [activityCode.skill]: '秒',
+    [activityCode.makeDown]: '降',
+    [activityCode.discount]: '优',
+    [activityCode.helpFree]: '助',
+    [activityCode.payGift]: '支',
+    [activityCode.fullReduce]: '满',
+    [activityCode.guaguaLe]: '刮'
+};
+
 @observer
 export default class ShopCartPage extends BasePage {
-
     // 导航配置
     $navigationBarOptions = {
         title: '购物车',
         leftNavItemHidden: true
 
-    };
-    $NavBarRenderRightItem = () => {
-        return (
-            <Text style={{
-                fontSize: 15,
-                color: '#666'
-            }} onPress={this.addGoods}>
-                添加商品
-            </Text>
-        );
-    };
-    addGoods = () => {
-        shopCartCacheTool.addGoodItem({
-            'amount': 5,
-            'priceId': 9,
-            'productId': 14,
-            'timestamp': 1536633469102
-        });
     };
 
     componentDidMount() {
@@ -58,21 +59,31 @@ export default class ShopCartPage extends BasePage {
 
     constructor(props) {
         super(props);
+
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
-            viewData: [
-                { a: 11 }
-
-            ]
+            viewData: []
         };
+
     }
 
     _render() {
+        let hiddeLeft = true;
+        if (!(this.params.hiddeLeft === undefined)) {
+            hiddeLeft = this.params.hiddeLeft;
+        } else {
+            hiddeLeft = true;
+        }
         return (
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
                 {shopCartStore.data && shopCartStore.data.length > 0 ? this._renderListView() : this._renderEmptyView()}
                 {this._renderShopCartBottomMenu()}
+                {
+                    this.$navigatorBar && this.$navigatorBar.hiddenLeftItem(hiddeLeft)
+                }
             </View>
+
+
         );
     }
 
@@ -95,14 +106,14 @@ export default class ShopCartPage extends BasePage {
     _renderListView = () => {
         return (
             <SwipeListView
-                style={{backgroundColor:ColorUtil.Color_f7f7f7}}
+                style={{ backgroundColor: ColorUtil.Color_f7f7f7 }}
                 dataSource={this.ds.cloneWithRows(shopCartStore.data.slice())}
                 disableRightSwipe={true}
                 // renderRow={ data => (
                 //     data.status==validCode? this._renderValidItem(data): this._renderInvalidItem(data)
                 // )}
                 renderRow={(rowData, secId, rowId, rowMap) => (
-                    this._renderValidItem(rowData, rowId,rowMap)
+                    this._renderValidItem(rowData, rowId, rowMap)
                 )}
                 renderHiddenRow={(data, secId, rowId, rowMap) => (
                     <TouchableOpacity
@@ -111,7 +122,7 @@ export default class ShopCartPage extends BasePage {
                             rowMap[`${secId}${rowId}`].closeRow();
                             this._deleteFromShoppingCartByProductId(data.priceId);
                         }}>
-                        <UIText style={styles.backUITextWhite} value='删除'></UIText>
+                        <UIText style={styles.backUITextWhite} value='删除' />
                     </TouchableOpacity>
                 )}
                 rightOpenValue={-75}
@@ -120,72 +131,101 @@ export default class ShopCartPage extends BasePage {
     };
 
     _renderShopCartBottomMenu = () => {
+
+        let hiddeLeft = true;
+        if (!(this.params.hiddeLeft === undefined)) {
+            hiddeLeft = this.params.hiddeLeft;
+        } else {
+            hiddeLeft = true;
+        }
+
         return (
-            <View style={styles.CartBottomContainer}>
-                <TouchableOpacity
-                    style={{ flexDirection: 'row', paddingLeft: 19 }}
-                    onPress={() => this._selectAll()}
-                >
-                    <Image
-
-                        source={shopCartStore.computedSelect ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
-                        style={{ width: 22, height: 22 }}/>
-
-                    <UIText
-                        value={'全选'}
-                        style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#999999', marginLeft: 10 }}/>
-                </TouchableOpacity>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <UIText
-                        value={'合计'}
-                        style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: ColorUtil.Color_222222 }}/>
-                    <UIText
-                        value={StringUtils.formatMoneyString(shopCartStore.getTotalMoney)}
-                        style={styles.totalPrice}/>
+            <View
+                style={[{
+                    height: 49,
+                    width: ScreenUtils.width,
+                    backgroundColor:ColorUtil.Color_ffffff
+                },
+                    (!hiddeLeft && ScreenUtils.tabBarHeight > 49)
+                        ?
+                        {height: 83}
+                        :
+                        null
+                ]}
+            >
+                <View style={styles.CartBottomContainer}>
                     <TouchableOpacity
-                        style={styles.selectGoodsNum}
-                        onPress={() => this._toBuyImmediately()}
+                        style={{ flexDirection: 'row', paddingLeft: 19 }}
+                        onPress={() => this._selectAll()}
                     >
+                        <Image
+                            source={shopCartStore.computedSelect ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
+                            style={{ width: 22, height: 22 }}/>
+
                         <UIText
-                            value={`结算(${shopCartStore.getTotalSelectGoodsNum})`}
-                            style={{ color: ColorUtil.Color_ffffff, fontSize: 16 }}
-                        />
+                            value={'全选'}
+                            style={{
+                                fontFamily: 'PingFang-SC-Medium',
+                                fontSize: 13,
+                                color: '#999999',
+                                marginLeft: 10
+                            }}/>
                     </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <UIText
+                            value={'合计'}
+                            style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: ColorUtil.Color_222222 }}/>
+                        <UIText
+                            value={StringUtils.formatMoneyString(shopCartStore.getTotalMoney)}
+                            style={styles.totalPrice}/>
+                        <TouchableOpacity
+                            style={styles.selectGoodsNum}
+                            onPress={() => this._toBuyImmediately()}
+                        >
+                            <UIText
+                                value={`结算(${shopCartStore.getTotalSelectGoodsNum})`}
+                                style={{ color: ColorUtil.Color_ffffff, fontSize: 16 }}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         );
     };
-    _toBuyImmediately = () =>{
-
-        let [...selectArr] = shopCartStore.startSettlement()
-        if (selectArr.length <=0){
-            bridge.$toast('请先选择结算商品~')
+    _toBuyImmediately = () => {
+        let [...selectArr] = shopCartStore.startSettlement();
+        if (selectArr.length <= 0) {
+            bridge.$toast('请先选择结算商品~');
         } else {
-            let goodsAllNumber = 0;
-            let allPrice = 0.00;
-            selectArr.map((goods) =>{
-                goodsAllNumber += goods.amount
-                allPrice += goods.amount * goods.price
-            })
-            bridge.$toast('选中商品类型'+selectArr.length+'种,商品数量'+goodsAllNumber+'个,总价:'+StringUtils.formatMoneyString(allPrice));
+            let tempArr = [];
+            selectArr.map((goods) => {
+                tempArr.push({
+                    priceId: goods.priceId,
+                    num: goods.amount,
+                    productId: goods.productId
+                });
+            });
+            this.$navigate('order/order/ConfirOrderPage', {
+                orderParamVO: {
+                    orderType: 99,
+                    orderProducts: tempArr
+                }
+            });
         }
-    }
+    };
     _selectAll = () => {
         shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
     };
-    _renderValidItem = (itemData, rowId,rowMap) => {
+    _renderValidItem = (itemData, rowId, rowMap) => {
         return (
             <View>
                 <TouchableHighlight
-                    onPress={() =>{
-                        rowMap
-                        this._jumpToProductDetailPage(itemData.productId)
-                    } }
+                    onPress={() => {
+                        rowMap;
+                        this._jumpToProductDetailPage(itemData);
+                    }}
                     style={styles.itemContainer}>
-
-                    {/*<View style={{backgroundColor:ColorUtil.Color_f7f7f7,width:ScreenUtils.width,height:10}}/>*/}
                     <View style={styles.standaloneRowFront}>
-
                         <UIImage
                             source={itemData.isSelected ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
                             style={{ width: 22, height: 22, marginLeft: 10 }}
@@ -196,34 +236,39 @@ export default class ShopCartPage extends BasePage {
                                 shopCartStore.data = tempValues;
                             }}
                         />
-
-
                         <UIImage
                             source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}
                             style={[styles.validProductImg]}
                         />
-                        <UIText
-                        value={'降'}
-                        style={
-                            {
-                                position:'absolute',
-                                padding:2,
-                                left:50,
-                                top:20,
-                                fontSize:11,
-                                color:ColorUtil.mainRedColor,
-                                borderWidth:1,
-                                borderRadius:4,
-                                borderColor:ColorUtil.mainRedColor
-                            }
+                        {
+                            activityString[itemData.activityCode]
+                                ?
+                                <UIText
+                                    value={
+                                        activityString[itemData.activityCode]
+                                    }
+                                    style={
+                                        {
+                                            position: 'absolute',
+                                            padding: 2,
+                                            left: 140,
+                                            top: 20,
+                                            fontSize: 11,
+                                            color: ColorUtil.mainRedColor,
+                                            borderWidth: 1,
+                                            borderRadius: 4,
+                                            borderColor: ColorUtil.mainRedColor
+                                        }
+                                    }
+                                />
+                                : null
                         }
-                        />
 
-                       {/*<UIImage*/}
-                           {/*source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}*/}
-                           {/*style={[styles.validProductImg]}*/}
-                       {/*/>*/}
 
+                        {/*<UIImage*/}
+                        {/*source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}*/}
+                        {/*style={[styles.validProductImg]}*/}
+                        {/*/>*/}
                         {
                             itemData.state === 1 ?
                                 <UIImage
@@ -241,8 +286,18 @@ export default class ShopCartPage extends BasePage {
                         <View style={styles.validContextContainer}>
                             <View>
                                 <UIText
-                                    value={itemData.productName ? itemData.productName : ''}
-                                    // value={"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"}
+                                    value={
+                                        itemData.productName
+                                            ?
+                                            (
+                                                activityString[itemData.activityCode]
+                                                    ?
+                                                    '    ' + itemData.productName
+                                                    :
+                                                    '' + itemData.productName
+                                            )
+                                            :
+                                            ''}
                                     numberOfLines={2}
                                     style={{
                                         marginTop: 0,
@@ -311,19 +366,48 @@ export default class ShopCartPage extends BasePage {
                         </View>
                     </View>
                 </TouchableHighlight>
+
+                {
+                    itemData.activityCode === 2
+                        ?
+                        <View
+                            style={
+                                [{
+                                    height: 13,
+                                    backgroundColor: ColorUtil.mainRedColor,
+                                    width: ScreenUtils.width,
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }]
+                            }
+                        >
+                            <Text style={{
+                                flex: 1,
+                                textAlign: 'center',
+                                color: ColorUtil.Color_ffffff,
+                                fontSize: 11
+                            }}>
+                                该商品正在进行秒杀活动,快去看看~
+                            </Text>
+                        </View>
+                        : null
+                }
                 <View
-                    style={{height:10,backgroundColor:ColorUtil.Color_f7f7f7,width:ScreenUtils.width}}
+                    style={{ height: 10, backgroundColor: ColorUtil.Color_f7f7f7, width: ScreenUtils.width }}
                 />
             </View>
         );
     };
-    _jumpToProductDetailPage = (productId) => {
+    _jumpToProductDetailPage = (itemData) => {
         //跳转产品详情
+        this.$navigate('home/product/ProductDetailPage', {
+            productId: itemData.productId,
+            productCode: itemData.productId
+        });
     };
     /*action*/
     /*减号操作*/
     _reduceProductNum = (itemData, rowId) => {
-
         if (itemData.amount > 1) {
             itemData.amount--;
             shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
@@ -337,12 +421,11 @@ export default class ShopCartPage extends BasePage {
 
         if (itemData.amount >= itemData.stock) {
             bridge.$toast('已达商品库存最大数');
-        }else {
+        } else {
             itemData.amount++;
             shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
 
-        // shopCartStore.data[rowId] = itemData;
     };
     /*删除操作*/
     _deleteFromShoppingCartByProductId = (priceId) => {
@@ -350,135 +433,136 @@ export default class ShopCartPage extends BasePage {
     };
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-end'
-    },
-    whatLeft: {  // 组件定义了一个上边框
-        flex: 1,
-        borderTopWidth: 1,
-        borderColor: 'black',
-        backgroundColor: 'green' //每个界面背景颜色不一样
-    },
-    standaloneRowBack: {
-        alignItems: 'center',
-        backgroundColor: ColorUtil.mainRedColor,
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        padding: 15
+const
+    styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            justifyContent: 'flex-end'
+        },
+        whatLeft: {  // 组件定义了一个上边框
+            flex: 1,
+            borderTopWidth: 1,
+            borderColor: 'black',
+            backgroundColor: 'green' //每个界面背景颜色不一样
+        },
+        standaloneRowBack: {
+            alignItems: 'center',
+            backgroundColor: ColorUtil.mainRedColor,
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            padding: 15
 
-    },
-    backUITextWhite: {
-        // flex:1,
-        marginRight: 0,
-        color: '#ffffff'
-    },
-    standaloneRowFront: {
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        height: 130,
-        width: ScreenUtils.width,
-        flexDirection: 'row',
-        marginRight: 16
-    },
-    rectangle: {
-        height: 30,
-        width: 30,
-        justifyContent: 'center',
-        borderWidth: 1,
-        borderColor: ColorUtil.Color_dddddd,
-        alignItems: 'center'
-    },
+        },
+        backUITextWhite: {
+            // flex:1,
+            marginRight: 0,
+            color: '#ffffff'
+        },
+        standaloneRowFront: {
+            alignItems: 'center',
+            backgroundColor: '#fff',
+            height: 130,
+            width: ScreenUtils.width,
+            flexDirection: 'row',
+            marginRight: 16
+        },
+        rectangle: {
+            height: 30,
+            width: 30,
+            justifyContent: 'center',
+            borderWidth: 1,
+            borderColor: ColorUtil.Color_dddddd,
+            alignItems: 'center'
+        },
 
-    validItemContainer: {
-        height: 140,
-        flexDirection: 'row',
-        backgroundColor: ColorUtil.Color_f7f7f7
-    },
-    validProductImg: {
-        width: 80,
-        height: 80,
-        marginLeft: 16,
-        marginRight: 16
-        // marginBottom: 10
-    },
-    validConUITextContainer: {
-        flex: 1,
-        height: 100,
-        justifyContent: 'space-between',
-        marginTop: 10,
-        paddingRight: 15
-    },
+        validItemContainer: {
+            height: 140,
+            flexDirection: 'row',
+            backgroundColor: ColorUtil.Color_f7f7f7
+        },
+        validProductImg: {
+            width: 80,
+            height: 80,
+            marginLeft: 16,
+            marginRight: 16
+            // marginBottom: 10
+        },
+        validConUITextContainer: {
+            flex: 1,
+            height: 100,
+            justifyContent: 'space-between',
+            marginTop: 10,
+            paddingRight: 15
+        },
 
-    invalidItemContainer: {
-        height: 100,
-        flexDirection: 'row',
-        backgroundColor: ColorUtil.Color_ffffff
-    },
-    invalidUITextInvalid: {
-        width: 38,
-        height: 20,
-        borderRadius: 10,
-        backgroundColor: '#999999',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginLeft: 12
-    },
-    invalidProductImg: {
-        width: 80,
-        height: 80,
-        marginLeft: 7,
-        marginRight: 16
-    },
-    invalidUITextContainer: {
-        flex: 1,
-        height: 100,
-        justifyContent: 'space-between',
-        marginTop: 30,
-        paddingRight: 15
-    },
+        invalidItemContainer: {
+            height: 100,
+            flexDirection: 'row',
+            backgroundColor: ColorUtil.Color_ffffff
+        },
+        invalidUITextInvalid: {
+            width: 38,
+            height: 20,
+            borderRadius: 10,
+            backgroundColor: '#999999',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginLeft: 12
+        },
+        invalidProductImg: {
+            width: 80,
+            height: 80,
+            marginLeft: 7,
+            marginRight: 16
+        },
+        invalidUITextContainer: {
+            flex: 1,
+            height: 100,
+            justifyContent: 'space-between',
+            marginTop: 30,
+            paddingRight: 15
+        },
 
-    CartBottomContainer: {
-        width: ScreenUtils.width,
-        height: 49,
-        backgroundColor: ColorUtil.Color_ffffff,
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    totalPrice: {
-        fontFamily: 'PingFang-SC-Medium',
-        fontSize: 13,
-        color: ColorUtil.mainRedColor,
-        marginLeft: 10,
-        marginRight: 10
-    },
-    selectGoodsNum: {
-        width: 110,
-        height: 49,
-        backgroundColor: ColorUtil.mainRedColor,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
+        CartBottomContainer: {
+            width: ScreenUtils.width,
+            height: 49,
+            backgroundColor: ColorUtil.Color_ffffff,
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            alignItems: 'center'
+        },
+        totalPrice: {
+            fontFamily: 'PingFang-SC-Medium',
+            fontSize: 13,
+            color: ColorUtil.mainRedColor,
+            marginLeft: 10,
+            marginRight: 10
+        },
+        selectGoodsNum: {
+            width: 110,
+            height: 49,
+            backgroundColor: ColorUtil.mainRedColor,
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
 
-    TextInputStyle: {
-        paddingTop: 8,
-        height: 30,
-        width: 46,
-        fontSize: 11,
-        color: ColorUtil.Color_222222,
-        alignSelf: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        paddingVertical: 0
-    },
-    validContextContainer: {
-        flex: 1,
-        height: 100,
-        justifyContent: 'space-between',
-        marginTop: 10,
-        paddingRight: 15
-    }
-});
+        TextInputStyle: {
+            paddingTop: 8,
+            height: 30,
+            width: 46,
+            fontSize: 11,
+            color: ColorUtil.Color_222222,
+            alignSelf: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            paddingVertical: 0
+        },
+        validContextContainer: {
+            flex: 1,
+            height: 100,
+            justifyContent: 'space-between',
+            marginTop: 10,
+            paddingRight: 15
+        }
+    });

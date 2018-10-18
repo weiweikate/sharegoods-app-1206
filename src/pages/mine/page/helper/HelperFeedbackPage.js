@@ -99,14 +99,14 @@ export default class HelperFeedbackPage extends BasePage {
             originalImg: orignImgs
         }).then(res => {
             console.log(res);
-            if (res.code==10000) {
+            if (res.code == 10000) {
                 this.setState({ isShowFinishModal: true });
 
             } else {
                 this.$toastShow(res.msg);
             }
         }).catch(err=>{
-            if(err.code==10009){
+            if(err.code == 10009){
                 this.$navigate('login/login/LoginPage')
             }
 

@@ -5,7 +5,7 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ImageBackground, Image,DeviceEventEmitter
+    ImageBackground, Image, DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import {
@@ -153,17 +153,17 @@ class MyOrdersDetailPage extends BasePage {
                         <UIText value={this.state.pageStateString.buyState} style={{
                             color: color.white,
                             fontSize: 18,
-                            marginLeft: 10,
+                            marginLeft: 10
                         }}/>
-                        {StringUtils.isNoEmpty(this.state.pageStateString.moreDetail)?
-                        <UIText value={this.state.pageStateString.moreDetail}
-                            style={{ color: color.white, fontSize: 13, marginLeft: 10 }}/> :null
+                        {StringUtils.isNoEmpty(this.state.pageStateString.moreDetail) ?
+                            <UIText value={this.state.pageStateString.moreDetail}
+                                    style={{ color: color.white, fontSize: 13, marginLeft: 10 }}/> : null
                         }
                     </View>
                 </ImageBackground>
                 <View style={styles.whiteRectangle}>
-                    <View style={{ flexDirection: 'row' ,alignItems:'center'}}>
-                        <UIImage source={position} style={{ height: 19, width: 19, marginLeft: 21, }}/>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <UIImage source={position} style={{ height: 19, width: 19, marginLeft: 21 }}/>
                         <View>
                             <UIText value={this.state.pageStateString.sellerState} style={{
                                 color: color.black_222,
@@ -171,10 +171,15 @@ class MyOrdersDetailPage extends BasePage {
                                 marginLeft: 10,
                                 marginRight: 46
                             }}/>
-                            {StringUtils.isNoEmpty(this.state.pageStateString.sellerTime)?
+                            {StringUtils.isNoEmpty(this.state.pageStateString.sellerTime) ?
                                 <UIText value={this.state.pageStateString.sellerTime}
-                                        style={{ color: color.black_999, fontSize: 13, marginLeft: 10, marginRight: 46 }}/>
-                            :null}
+                                        style={{
+                                            color: color.black_999,
+                                            fontSize: 13,
+                                            marginLeft: 10,
+                                            marginRight: 46
+                                        }}/>
+                                : null}
 
                         </View>
                     </View>
@@ -187,7 +192,7 @@ class MyOrdersDetailPage extends BasePage {
     };
 
     componentDidMount() {
-        DeviceEventEmitter.addListener('OrderNeedRefresh',()=>this.loadPageData());
+        DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.loadPageData());
         this.loadPageData();
     }
 
@@ -301,21 +306,21 @@ class MyOrdersDetailPage extends BasePage {
                 </View>
                 <UIText value={'创建时间：' + DateUtils.getFormatDate(this.state.viewData.createTime / 1000)}
                         style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>
-                {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
+                {StringUtils.isEmpty(this.state.viewData.platformPayTime) ? null :
                     <UIText value={'平台付款时间：' + DateUtils.getFormatDate(this.state.viewData.platformPayTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
-                {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
+                {StringUtils.isEmpty(this.state.viewData.payTime) ? null :
                     <UIText value={'三方付款时间：' + DateUtils.getFormatDate(this.state.viewData.payTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
-                {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
-                    <UIText value={'支付宝交易号：' + this.state.viewData.outTradeNo} style={{
+                {StringUtils.isEmpty(this.state.viewData.outTradeNo) ? null :
+                    <UIText value={'交易订单号：' + this.state.viewData.outTradeNo} style={{
                         color: color.black_999,
                         fontSize: 13,
                         marginLeft: 16,
                         marginTop: 10,
                         marginBottom: 10
                     }}/>}
-                {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
+                {StringUtils.isEmpty(this.state.viewData.sendTime) ? null :
                     <UIText value={'发货时间：' + DateUtils.getFormatDate(this.state.viewData.sendTime / 1000)} style={{
                         color: color.black_999,
                         fontSize: 13,
@@ -394,31 +399,26 @@ class MyOrdersDetailPage extends BasePage {
                         this.setState({ isShowDeleteOrderModal: false });
                         if (this.state.menu.id === 7) {
                             Toast.hiddenLoading();
-                            // OrderApi.deleteOrder({orderId:this.state.orderId}).then((response)=>{
-                            //     Toast.hiddenLoading()
-                            //     if(response.ok ){
-                            //         NativeModules.commModule.toast('订单已删除')
-                            //         this.getDataFromNetwork()
-                            //     } else {
-                            //         NativeModules.commModule.toast(response.msg)
-                            //     }
-                            // }).catch(e=>{
-                            //     Toast.hiddenLoading()
-                            // });
+                            Toast.showLoading();
+                            OrderApi.deleteCompletedOrder({ orderNum: this.state.viewData.orderNum }).then((response) => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast('订单已删除');
+                                this.loadPageData();
+                            }).catch(e => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast(e.msg);
+                            });
 
                         } else if (this.state.menu.id === 9) {
-                            // Toast.showLoading()
-                            // OrderApi.deleteClosedOrder({orderId:this.state.orderId}).then((response)=>{
-                            //     Toast.hiddenLoading()
-                            //     if(response.ok && typeof response.data ==== 'object'){
-                            //         NativeModules.commModule.toast('订单已删除')
-                            //         this.getDataFromNetwork()
-                            //     } else {
-                            //         NativeModules.commModule.toast(response.msg)
-                            //     }
-                            // }).catch(e=>{
-                            //     Toast.hiddenLoading()
-                            // });
+                            Toast.showLoading();
+                            OrderApi.deleteClosedOrder({ orderNum: this.state.viewData.orderNum }).then((response) => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast('订单已删除');
+                                this.loadPageData();
+                            }).catch(e => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast(e.msg);
+                            });
                         } else {
                             NativeModules.commModule.toast('状态值异常，暂停操作');
                         }
@@ -436,10 +436,10 @@ class MyOrdersDetailPage extends BasePage {
                     yes={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
                         Toast.showLoading();
-                        OrderApi.confirmReceipt({ orderId: this.state.orderId }).then((response) => {
+                        OrderApi.confirmReceipt({ orderNum: this.state.viewData.orderNum }).then((response) => {
                             Toast.hiddenLoading();
                             NativeModules.commModule.toast('确认收货成功');
-                            this.getDataFromNetwork();
+                            this.loadPageData();
                         }).catch(e => {
                             Toast.hiddenLoading();
                             this.$toastShow(e.msg);
@@ -566,70 +566,60 @@ class MyOrdersDetailPage extends BasePage {
     getAfterSaleService = (data, index) => {
         //售后状态
         let afterSaleService = [];
-        if (StringUtils.isEmpty(data[index].returnProductStatus)) {
-            if (data[index].status === 2) {
-                afterSaleService.push({
-                    id: 0,
-                    operation: '退款',
-                    isRed: false
-                });
-            }
-            if (data[index].status === 3) {
-                afterSaleService.push({
-                    id: 1,
-                    operation: '退换',
-                    isRed: false
-                });
-            }
-            if (data[index].status === 5) {
-                // 确认收货的状态的订单售后截止时间和当前时间比
-                let now = new Date().getTime();
-                if (data.list[index].finishTime - now > 0) {
+        let statusArr = [4, 16, 8];
+        switch (data[index].status) {
+            case 2:
+                if ((data[index].restrictions & statusArr[0]) == statusArr[0] && (data[index].restrictions & statusArr[1]) == statusArr[1] &&
+                    (data[index].restrictions & statusArr[2]) == statusArr[2]) {
+                    afterSaleService.push();
+                } else {
                     afterSaleService.push({
-                        id: 1,
-                        operation: '退换',
+                        id: 0,
+                        operation: '退款',
                         isRed: false
                     });
                 }
-            }
-        } else {
-            if (data[index].status === 4||data[index].status === 5) {
-                switch (data[index].returnType) {
-                    case 1://申请退款
-                        afterSaleService.push({
-                            id: 2,
-                            operation: '退款中',
-                            isRed: false
-                        });
-                        break;
-                    case 2://申请退货
-                        afterSaleService.push({
-                            id: 3,
-                            operation: '退货中',
-                            isRed: false
-                        });
-                        break;
-                    case 3://申请换货
-                        afterSaleService.push({
-                            id: 6,
-                            operation: '换货中',
-                            isRed: false
-                        });
-                        break;
-                    default:
-                        afterSaleService.push({
-                            id: 1,
-                            operation: '退换',
-                            isRed: false
-                        });
+
+                break;
+            case 3:
+            case 4:
+            case 5:
+                if ((data[index].restrictions & statusArr[0]) == statusArr[0] && (data[index].restrictions & statusArr[1]) == statusArr[1] &&
+                    (data[index].restrictions & statusArr[2]) == statusArr[2]) {
+                    afterSaleService.push();
+                } else {
+                    switch (data[index].returnType) {
+                        case 1://申请退款
+                            afterSaleService.push({
+                                id: 2,
+                                operation: '退款中',
+                                isRed: false
+                            });
+                            break;
+                        case 2://申请退货
+                            afterSaleService.push({
+                                id: 3,
+                                operation: '退货中',
+                                isRed: false
+                            });
+                            break;
+                        case 3://申请换货
+                            afterSaleService.push({
+                                id: 6,
+                                operation: '换货中',
+                                isRed: false
+                            });
+                            break;
+                        default:
+                            afterSaleService.push({
+                                id: 1,
+                                operation: '退换',
+                                isRed: false
+                            });
+                    }
                 }
-                // afterSaleService.push({
-                //     id: 2,
-                //     operation: '退换',
-                //     isRed: false
-                // });
-            }
-            if (data[index].status === 6) {
+                break;
+            case 6:
                 switch (data[index].returnType) {
                     case 1://申请退款
                         afterSaleService.push({
@@ -659,20 +649,132 @@ class MyOrdersDetailPage extends BasePage {
                             isRed: false
                         });
                 }
-                // afterSaleService.push({
-                //     id: 1,
-                //     operation: '退换',
-                //     isRed: false
-                // });
-            }
-            if (data[index].status === 7 && data[index].returnType) {
+                break;
+            case 7:
+            case 8:
                 afterSaleService.push({
                     id: 4,
                     operation: '已关闭',
                     isRed: true
                 });
-            }
+                break;
+
+
         }
+        // if (StringUtils.isEmpty(data[index].returnProductStatus)) {
+        //     if (data[index].status === 2) {
+        //         afterSaleService.push({
+        //             id: 0,
+        //             operation: '退款',
+        //             isRed: false
+        //         });
+        //     }
+        //     if (data[index].status === 3||data[index].status === 4) {
+        //         afterSaleService.push({
+        //             id: 1,
+        //             operation: '退换',
+        //             isRed: false
+        //         });
+        //     }
+        //     if (data[index].status === 5) {
+        //         // 确认收货的状态的订单售后截止时间和当前时间比
+        //         let now = new Date().getTime();
+        //         if (data[index].finishTime - now > 0) {
+        //             afterSaleService.push({
+        //                 id: 1,
+        //                 operation: '退换',
+        //                 isRed: false
+        //             });
+        //         }
+        //     }
+        //     if (data[index].status === 7 ||data[index].status === 8||data[index].status === 6) {
+        //         afterSaleService.push({
+        //             id: 4,
+        //             operation: '已关闭',
+        //             isRed: true
+        //         });
+        //     }
+        // } else {
+        //     if (data[index].status === 4||data[index].status === 5) {
+        //         switch (data[index].returnType) {
+        //             case 1://申请退款
+        //                 afterSaleService.push({
+        //                     id: 2,
+        //                     operation: '退款中',
+        //                     isRed: false
+        //                 });
+        //                 break;
+        //             case 2://申请退货
+        //                 afterSaleService.push({
+        //                     id: 3,
+        //                     operation: '退货中',
+        //                     isRed: false
+        //                 });
+        //                 break;
+        //             case 3://申请换货
+        //                 afterSaleService.push({
+        //                     id: 6,
+        //                     operation: '换货中',
+        //                     isRed: false
+        //                 });
+        //                 break;
+        //             default:
+        //                 afterSaleService.push({
+        //                     id: 1,
+        //                     operation: '退换',
+        //                     isRed: false
+        //                 });
+        //         }
+        //         // afterSaleService.push({
+        //         //     id: 2,
+        //         //     operation: '退换',
+        //         //     isRed: false
+        //         // });
+        //     }
+        //     if (data[index].status === 6) {
+        //         switch (data[index].returnType) {
+        //             case 1://申请退款
+        //                 afterSaleService.push({
+        //                     id: 2,
+        //                     operation: '退款完成',
+        //                     isRed: false
+        //                 });
+        //                 break;
+        //             case 2://申请退货
+        //                 afterSaleService.push({
+        //                     id: 3,
+        //                     operation: '退货完成',
+        //                     isRed: false
+        //                 });
+        //                 break;
+        //             case 3://申请换货
+        //                 afterSaleService.push({
+        //                     id: 6,
+        //                     operation: '换货完成',
+        //                     isRed: false
+        //                 });
+        //                 break;
+        //             default:
+        //                 afterSaleService.push({
+        //                     id: 1,
+        //                     operation: '退换',
+        //                     isRed: false
+        //                 });
+        //         }
+        //         // afterSaleService.push({
+        //         //     id: 1,
+        //         //     operation: '退换',
+        //         //     isRed: false
+        //         // });
+        //     }
+        //     if (data[index].status === 7 ||data[index].status === 8&& data[index].returnType) {
+        //         afterSaleService.push({
+        //             id: 4,
+        //             operation: '已关闭',
+        //             isRed: true
+        //         });
+        //     }
+        // }
         return afterSaleService;
     };
 
@@ -688,7 +790,7 @@ class MyOrdersDetailPage extends BasePage {
             let data = response.data;
             let arr = [];
             data.orderProductList.map((item, index) => {
-                console.log('orderProductList',item);
+                console.log('orderProductList', item);
                 arr.push({
                     id: item.id,
                     orderId: item.orderId,
@@ -702,7 +804,7 @@ class MyOrdersDetailPage extends BasePage {
                     afterSaleService: this.getAfterSaleService(data.orderProductList, index)
                 });
             });
-            console.log('orderProductList',data, arr);
+            console.log('orderProductList', data, arr);
             if (data.orderType === 3 || data.orderType === 98) {//礼包。。。
                 // let  lowerarr=data.list[0].orderProductPrices
             }
@@ -762,8 +864,8 @@ class MyOrdersDetailPage extends BasePage {
                     break;
                 //卖家已发货 待收货
                 case 3:
-                    // this.startCutDownTime2(response.data.autoReceiveTime);
-                    pageStateString.sellerTime = "";
+                    this.startCutDownTime2(data.autoReceiveTime);
+                    pageStateString.sellerTime = '';
                     break;
                 //   确认收货
                 case 4:
@@ -815,9 +917,9 @@ class MyOrdersDetailPage extends BasePage {
                     payTime: data.payTime,//三方付款时间
                     outTradeNo: data.outTradeNo,//三方交易号
                     sendTime: data.sendTime,//发货时间
-                    finishTime: '',//成交时间
+                    finishTime: data.finishTime,//成交时间
                     autoConfirmTime: data.autoReceiveTime,//自动确认时间
-                    pickedUp: data.pickedUp,//
+                    pickedUp: data.pickedUp//
                 },
                 pageStateString: pageStateString,
                 expressNo: data.expressNo,
@@ -827,10 +929,18 @@ class MyOrdersDetailPage extends BasePage {
                 orderProductPrices: data.orderProductList[0].price,//礼包，套餐啥的
                 allData: data
             });
-         console.log("viewDAta"+this.state.viewData);
+            console.log(this.state.viewData);
         }).catch(e => {
+
             Toast.hiddenLoading();
             Toast.$toast(e.msg);
+            if (e.code === 10009) {
+                this.$navigate('login/login/LoginPage', {
+                    callback: () => {
+                        this.loadPageData();
+                    }
+                });
+            }
         });
     }
 
@@ -981,10 +1091,10 @@ class MyOrdersDetailPage extends BasePage {
         //                 isRed:true,
         //             },
         // {
-            //                 id:6,
-            //                 operation:'换货中',
-            //                 isRed:true,
-            //             },
+        //                 id:6,
+        //                 operation:'换货中',
+        //                 isRed:true,
+        //             },
         //         ],
         switch (menu.id) {
             case 0:
@@ -1004,13 +1114,13 @@ class MyOrdersDetailPage extends BasePage {
             case 2:
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 0,
-                    returnProductId: this.state.viewData.list[index].returnProductId,
+                    returnProductId: this.state.viewData.list[index].returnProductId
                     // index: index
                 });
                 break;
             case 3:
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    pageType:1,
+                    pageType: 1,
                     // pageData: this.state.viewData,
                     returnProductId: this.state.viewData.list[index].returnProductId
                     // index: index
@@ -1034,7 +1144,7 @@ class MyOrdersDetailPage extends BasePage {
                 break;
             case 6:
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    pageType:2,
+                    pageType: 2,
                     // pageData: this.state.viewData,
                     returnProductId: this.state.viewData.list[index].returnProductId
                     // index: index
@@ -1055,7 +1165,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 22,
         position: 'absolute',
-        alignItems:'center'
+        alignItems: 'center'
     }, whiteRectangle: {
         height: 81,
         marginTop: 69,

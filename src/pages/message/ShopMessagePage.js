@@ -38,13 +38,13 @@ export default class ShopMessagePage extends BasePage {
         show: true // false则隐藏导航
     };
     go2DetailPage(id,type,ids) {
-        if(type==1||type==7||type==8){
+        if(type == 1 || type == 7 || type == 8){
             this.$navigate("message/PayMessagePage", {id:id,type:type})
-        }else if(type==16){
+        }else if(type == 16){
             this.$navigate('product/ProductDetailPage',{productId:id,ids:ids,activityCode:5})
-        }else if(type==17){
+        }else if(type == 17){
             this.$navigate('product/ProductDetailPage',{productId:id,ids:ids,id:5})
-        }else if(type==2||type==3||type==2||type==3){
+        }else if(type == 2 || type == 3 || type == 2 || type == 3){
             this.$navigate('order/order/MyOrdersDetailPage',{orderId:ids})
         }
     }
@@ -83,7 +83,7 @@ export default class ShopMessagePage extends BasePage {
                     arrData.push(item);
                 });
                 if(!EmptyUtils.isEmptyArr(arrData)){
-                    this.createdTime = arrData[arrData.length-1].createdTime;
+                    this.createdTime = arrData[arrData.length - 1].createdTime;
                 }
                 this.setState({viewData: arrData})
             }else{
@@ -208,7 +208,7 @@ export default class ShopMessagePage extends BasePage {
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
                 <View style={{height: 120, backgroundColor: 'white'}}>
                     <View style={styles.typecontent2}>
-                        {undefined==item.totalPrice?null:<View style={{flexDirection:"row",alignItems:'center'}}>
+                        {undefined == item.totalPrice ? null : <View style={{flexDirection:"row",alignItems:'center'}}>
                             <Text style={{marginLeft: 1, fontSize: 11}}>退款金额</Text>
                             <Text style={{marginLeft: 5, fontSize: 19, color: color.red}}>{StringUtils.formatMoneyString(item.totalPrice)}</Text></View>}
                     </View>
@@ -356,7 +356,7 @@ export default class ShopMessagePage extends BasePage {
                     <TouchableWithoutFeedback onPress={()=>{alert(item.param)}}>
                         <View style={{height:33,width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white'}}>
                             <Text style={{color:'#666666',fontSize:px2dp(13)}}>
-                                {item.buttonName+">>"}
+                                {item.buttonName + ">>"}
                             </Text>
                         </View>
                     </TouchableWithoutFeedback>

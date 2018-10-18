@@ -98,7 +98,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "${PODS_ROOT}/SandBoxPreviewTool/沙盒查看工具/SandBoxPreviewTool/iconSource/GenericFolderIcon.png"
   install_resource "${PODS_ROOT}/SandBoxPreviewTool/沙盒查看工具/SandBoxPreviewTool/iconSource/lj_Pictures.png"
   install_resource "${PODS_ROOT}/SandBoxPreviewTool/沙盒查看工具/SandBoxPreviewTool/iconSource/lj_unknow_icon.png"
-  install_resource "${PODS_ROOT}/UMengUShare/UShareSDK/UMSocialSDK/UMSocialSDKPromptResources.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "${PODS_ROOT}/QIYU_iOS_SDK/SDK/QYResource.bundle"
@@ -107,7 +106,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "${PODS_ROOT}/SandBoxPreviewTool/沙盒查看工具/SandBoxPreviewTool/iconSource/GenericFolderIcon.png"
   install_resource "${PODS_ROOT}/SandBoxPreviewTool/沙盒查看工具/SandBoxPreviewTool/iconSource/lj_Pictures.png"
   install_resource "${PODS_ROOT}/SandBoxPreviewTool/沙盒查看工具/SandBoxPreviewTool/iconSource/lj_unknow_icon.png"
-  install_resource "${PODS_ROOT}/UMengUShare/UShareSDK/UMSocialSDK/UMSocialSDKPromptResources.bundle"
 fi
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

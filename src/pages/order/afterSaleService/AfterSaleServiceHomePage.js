@@ -13,7 +13,7 @@ import StringUtils from '../../../utils/StringUtils';
 import changeGoods from '../res/shouhou_icon_huanhuo_nor.png';
 import refuseGoodsAndMoney from '../res/shouhou_icon_tuihuo_nor.png';
 import refuseMoney from '../res/shouhou_icon_tuikuan_nor.png';
-import GoodsItem from '../components/GoodsItem';
+import GoodsItem from '../components/GoodsGrayItem';
 import DateUtils from '../../../utils/DateUtils';
 
 class AfterSaleServiceHomePage extends BasePage {
@@ -89,7 +89,7 @@ class AfterSaleServiceHomePage extends BasePage {
         let productData = this.params.pageData.orderProductList[this.state.index];
         let arr = [];
         for (let i = 0; i < image.length; i++) {
-           if ((productData.restrictions & status[i]) !== productData.restrictions) {
+           if ((productData.restrictions & status[i]) !== status[i]) {
                arr.push(
                    <TouchableOpacity style={{
                        flexDirection: 'row',

@@ -268,6 +268,7 @@ export default class IDVertify2Page extends BasePage {
             }
         }).catch(e => {
             this.$loadingDismiss();
+            this.$toastShow(e.msg);
         });
     };
     agreeAggreement = () => {

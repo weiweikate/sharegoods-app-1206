@@ -64,7 +64,7 @@ export default class SubSwichView extends Component {
                     tempTitleArr.slice().map((titleItem, titleItemIndex) => {
                         return <View
                         style={{
-                            width:ScreenUtils.width/2,
+                            width:ScreenUtils.width / 2,
                             justifyContent:'center',
                             flexDirection:'column',
                             // alignItems:'center'
@@ -91,7 +91,7 @@ export default class SubSwichView extends Component {
                                         style={
                                             {
                                                 width:70,
-                                                marginLeft:(ScreenUtils.width/2 - 70)/2,
+                                                marginLeft:(ScreenUtils.width / 2 - 70) / 2,
                                                 marginTop:10,
                                                 height:1,
                                                 backgroundColor:ColorUtil.mainRedColor
@@ -123,7 +123,7 @@ export default class SubSwichView extends Component {
         this.setState({
             selectState: index
         });
-        this.props.navItemClick&&this.props.navItemClick(index)
+        this.props.navItemClick && this.props.navItemClick(index)
     };
 }
 
@@ -140,7 +140,7 @@ const SwichStyles = StyleSheet.create({
             paddingTop: 15,
             color: ColorUtil.Color_d51243,
             fontSize: 16,
-            width:ScreenUtils.width/2,
+            width:ScreenUtils.width / 2,
             textAlign:'center'
         },
         bottomLineViewStyle: {

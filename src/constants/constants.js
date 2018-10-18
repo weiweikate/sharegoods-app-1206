@@ -247,9 +247,17 @@ let constants = {
             moreDetail:'',
              sellerState:'已签收',
             sellerTime:'',
-            disNextView:false,
+            disNextView:true,
             menu:[
-
+                {
+                    id:7,
+                    operation:'删除订单',
+                    isRed:false,
+                },{
+                    id:8,
+                    operation:'再次购买',
+                    isRed:true,
+                },
             ],
         },{
             index:5,

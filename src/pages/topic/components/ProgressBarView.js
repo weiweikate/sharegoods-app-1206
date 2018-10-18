@@ -32,7 +32,7 @@ export default class ProgressBarView extends Component {
     render() {
         const {statue } = this.props;
         return (
-            this.statueRender[statue] ? this.statueRender[statue]():null
+            this.statueRender[statue] ? this.statueRender[statue]() : null
         );
     }
     _renderProgress = () => {
@@ -56,9 +56,7 @@ export default class ProgressBarView extends Component {
                     alignItems: 'flex-start',
                     justifyContent: 'center',
                     position: 'absolute'
-                }}>
-
-                </View>
+                }} />
                 <Text style={{ fontSize: 11, marginLeft: 5, color: ColorUtil.Color_ffffff }}>
                     {'已抢' + haveRobNum + '件'}
                 </Text>

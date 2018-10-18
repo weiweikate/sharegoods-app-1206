@@ -31,8 +31,7 @@ export default class RequestDetailPage extends BasePage {
             <WebView source={{ uri: this.state.uri }}
                      javaScriptEnabled={true}
                      domStorageEnabled={true}
-                     scalesPageToFit={true}>
-            </WebView>
+                     scalesPageToFit={true} />
         );
     }
 }

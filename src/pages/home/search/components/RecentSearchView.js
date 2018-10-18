@@ -34,11 +34,13 @@ export default class RecentSearchView extends Component {
         } else {
             let tagList = [];
             for (let index = 0; index < this.props.listData.length; index++) {
+                let textshow = this.props.listData[index];
+                textshow = textshow.length > 10 ? textshow.substr(0, 10) + '...' : textshow;
                 tagList.push(
                     <View key={index}>
                         <TouchableOpacity style={styles.btn}
-                                          onPress={() => this.props.clickItemAction(this.props.listData[index])}>
-                            <Text style={styles.btnText}>{this.props.listData[index]}</Text>
+                                          onPress={() => this.props.clickItemAction(this.props.listData[index], index)}>
+                            <Text style={styles.btnText}>{textshow}</Text>
                         </TouchableOpacity>
                     </View>
                 );

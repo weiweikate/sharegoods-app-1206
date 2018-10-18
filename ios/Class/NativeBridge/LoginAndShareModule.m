@@ -33,31 +33,36 @@ RCT_EXPORT_METHOD(loginWX:(RCTResponseSenderBlock)callback){
 
 //info
 //shareType
-//RCT_EXPORT_METHOD(shareScreen:(id)jsonParam){
-//
-//  dispatch_async(dispatch_get_main_queue(), ^{
-//    UIImage * img = [UIView captureSceenImage:jsonParam[@"info"]];
-//
+RCT_EXPORT_METHOD(saveScreen:(id)jsonParam){
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    UIImage * img = [UIView captureSceenImage:jsonParam];
+    if(img){
+      [[JRShareManager sharedInstance]saveImage:img];
+    } else{
+      [JRLoadingAndToastTool showToast:@"保存失败" andDelyTime:.5f];
+    }
+
 //    if(img){
 //      NSMutableDictionary *dicParam = [NSMutableDictionary dictionaryWithDictionary:jsonParam];
 //      [dicParam setObject:img forKey:@"shareImage"];
-//      [[JRShareManager sharedInstance]beginShare:dicParam];
+//
 //    } else{
 //      [JRLoadingAndToastTool showToast:@"截屏失败" andDelyTime:.5f];
 //    }
-//  });
-//}
+  });
+}
 
 
 /**
  jsonData 参数
-// info:包含截屏参数
  shareType : 0图片分享 1 图文链接分享
- platformType: 0 朋友圈 1 会话
+ platformType:0 微信好友 1朋友圈 2qq好友 3qq空间 4微博
  title:分享标题(当为图文分享时候使用)
  dec:内容(当为图文分享时候使用)
  linkUrl:(图文分享下的链接)
- thumImage:(分享图标小图(http链接)图文分享使用)
+ thumImage:(分享图标小图 图文分享使用)
+           支持 1.本地路径RUL如（/user/logo.png）2.网络URL如(http//:logo.png) 3.项目里面的图片 如（logo.png）
  shareImage:分享的大图(本地URL)图片分享使用
  **/
 RCT_EXPORT_METHOD(share:(id)jsonParam
@@ -114,6 +119,22 @@ RCT_EXPORT_METHOD(creatShareImage:(id) jsonParam
                                                                  }
                                                                }];
   });
+}
+/**
+@QRCodeStr  二维码字符串
+onSuccess(NSSting) 成功的回调
+onError(NSSting)   失败的回调
+*/
+RCT_EXPORT_METHOD(creatQRCodeImage:(NSString *) QRCodeStr
+                  onSuccess:(RCTResponseSenderBlock) onSuccess
+                  onError:(RCTResponseSenderBlock) onError){
+  [[ShareImageMaker sharedInstance] creatQRCodeImageWithQRCodeStr:QRCodeStr completion:^(NSString *pathStr, NSString *errorStr) {
+    if (errorStr) {
+      onError(@[errorStr]);
+    }else{
+      onSuccess(@[pathStr]);
+    }
+  }];
 }
               
 @end

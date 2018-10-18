@@ -131,7 +131,7 @@ export default class RequestDetailPage extends BasePage {
     };
 
     foldAtIndex = (index) => {
-        if (index < 3) return;
+        if (index < 3) {return;}
         const obj = {};
         obj[index] = !this.state[index];
         this.setState({ ...obj });

@@ -235,8 +235,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     item: {
-        width: autoSizeWidth(187.5/2),
-        height: autoSizeWidth(187.5/2),
+        width: autoSizeWidth(187.5 / 2),
+        height: autoSizeWidth(187.5 / 2),
         marginTop: autoSizeWidth(20),
         alignItems: 'center',
         justifyContent: 'center',

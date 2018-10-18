@@ -11,7 +11,7 @@ import {
     DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import GoodsItem from '../components/GoodsItem';
+import GoodsItem from '../components/GoodsGrayItem';
 import arrow_right from '../res/arrow_right.png';
 import wuxiu_btn_saoma_nor from '../res/wuxiu_btn_saoma_nor.png';
 import {
@@ -62,7 +62,7 @@ export default class FillReturnLogisticsPage extends BasePage {
                     <View style = {styles.item_container}>
                         <UIText style = {styles.item_title}
                                 value = {'物流公司'}/>
-                        <UIText style = {this.state.logisticsCompanyName? styles.item_detail : styles.item_placeholder}
+                        <UIText style = {this.state.logisticsCompanyName ? styles.item_detail : styles.item_placeholder}
                                 value = {this.state.logisticsCompanyName || '请选择物流公司'}/>
                         <UIImage source={arrow_right} style = {{height: 9, width: 9, marginRight: 20}}/>
                     </View>
@@ -108,10 +108,15 @@ export default class FillReturnLogisticsPage extends BasePage {
             this.$toastShow('请填写物流单号')
             return;
         }
+        let returnAddress = this.params.pageData.returnAddress || {}
+        let {receiver, recevicePhone, provinceName, cityName, areaName, address} = returnAddress;
         let parmas = {
             expressNo: this.state.logisticsNum,
             expressName: this.state.logisticsCompanyName,
-            id: this.params.pageData.id
+            id: this.params.pageData.id,
+            backAddress: provinceName + cityName + areaName + address,
+            backPhone: recevicePhone,
+            backReceiver: receiver,
         };
         this.$loadingShow();
         OrderApi.fillSendInfo(parmas).then(result => {

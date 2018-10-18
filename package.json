@@ -11,7 +11,9 @@
         "lint:fix": "eslint --ext .js ./src --fix",
         "mock:server": "node ./src/mock/server.js",
         "run-ios": "react-native run-ios",
-        "run-android": "react-native run-android"
+        "run-android": "react-native run-android",
+        "bundle:android": "cd android && ./gradlew assembleRelease && npm run deploy:android",
+        "deploy:android": "curl -F \"file=@./android/app/build/outputs/apk/app-release.apk\" -F \"_api_key=13949a533c6ab385526ee2a960e88c71\" https://www.pgyer.com/apiv2/app/upload"
     },
     "lint-staged": {
         "src/**/*.js": "eslint"
@@ -28,9 +30,11 @@
         "react-native-animatable": "1.3.0",
         "react-native-autoheight-webview": "0.6.1",
         "react-native-deprecated-custom-components": "0.1.2",
+        "react-native-ezswiper": "^1.2.2",
         "react-native-image-picker": "0.26.10",
         "react-native-modalbox": "1.6.0",
         "react-native-qrcode": "0.2.7",
+        "react-native-render-html": "^3.10.0",
         "react-native-scrollable-tab-view": "0.8.0",
         "react-native-svg": "6.5.2",
         "react-native-swipe-list-view": "1.3.0",

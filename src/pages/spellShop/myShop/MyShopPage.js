@@ -22,7 +22,8 @@ import ActionSheetView from '../components/ActionSheetView';
 import ReportAlert from '../components/ReportAlert';
 // 图片资源
 import settingLogo from './res/dp_03-02.png';
-import moreLogo from './res/more_icon.png';
+import icons8_Shop_50px from '../shopRecruit/src/icons8_Shop_50px.png';
+import icons9_shop from '../shopRecruit/src/icons9_shop.png';
 
 import onSc_03 from './res/sc_03.png';
 import unSc_03 from './res/wsc_03.png';
@@ -36,6 +37,8 @@ import SpellShopApi from '../api/SpellShopApi';
 import DateUtils from '../../../utils/DateUtils';
 import StringUtils from '../../../utils/StringUtils';
 import spellStatusModel from '../model/SpellStatusModel';
+import ConfirmAlert from '../../../components/ui/ConfirmAlert';
+import CommShareModal from '../../../comm/components/CommShareModal';
 
 @observer
 export default class MyShopPage extends BasePage {
@@ -48,9 +51,17 @@ export default class MyShopPage extends BasePage {
         const { myStore, userStatus } = this.state.storeData;
         if (userStatus === 1) {
             return (
-                <TouchableOpacity onPress={this._clickSettingItem} style={styles.rightBarItemContainer}>
-                    <Image style={{ marginRight: 20 }} source={myStore ? settingLogo : moreLogo}/>
-                </TouchableOpacity>
+                <View style={styles.rightBarItemContainer}>
+                    <TouchableOpacity onPress={() => {
+                        this.$navigate('spellShop/recommendSearch/RecommendPage', { havaShop: true });
+                    }
+                    }>
+                        <Image style={{ marginRight: 20 }} source={icons8_Shop_50px}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this._clickSettingItem} style={styles.rightBarItemContainer}>
+                        <Image style={{ marginRight: 20 }} source={myStore ? settingLogo : icons9_shop}/>
+                    </TouchableOpacity>
+                </View>
             );
         } else {
             return (
@@ -68,7 +79,7 @@ export default class MyShopPage extends BasePage {
             storeData: {},
             storeId: this.params.storeId || this.props.storeId,
             isLike: false,
-            isRefresh:false
+            isRefresh: false
         };
     }
 
@@ -76,12 +87,12 @@ export default class MyShopPage extends BasePage {
         this._loadPageData();
     }
 
-    _onRefresh = ()=>{
+    _onRefresh = () => {
         this.setState({
-            isRefresh:true
+            isRefresh: true
         });
         this._loadPageData();
-    }
+    };
 
     _loadPageData = () => {
         //店铺信息
@@ -90,12 +101,12 @@ export default class MyShopPage extends BasePage {
             this.setState({
                 storeData: dataTemp,
                 storeId: dataTemp.id,
-                isRefresh:false
+                isRefresh: false
             });
         }).catch((error) => {
             this.$toastShow(error.msg);
             this.setState({
-                isRefresh:false
+                isRefresh: false
             });
         });
 
@@ -142,7 +153,7 @@ export default class MyShopPage extends BasePage {
                 items: ['分享店铺', '举报店铺', '退出店铺']//
             }, (item, index) => {
                 if (index === 0) {
-
+                    this.shareModal.open();
                 } else if (index === 1) {
                     // 举报弹框
                     setTimeout(() => {
@@ -196,23 +207,29 @@ export default class MyShopPage extends BasePage {
 
     //加入店铺
     _joinBtnAction = () => {
-        let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2;
+        const { storeMaxUser, storeUserList = [], name } = this.state.storeData;
+        let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2 && storeMaxUser > storeUserList.length;
         if (canJoin) {
-            this.$loadingShow();
-            SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
-                //加入肯定是推荐搜索来的   刷新首页和当前页
-                this._loadPageData();
+            this.refs.delAlert && this.refs.delAlert.show({
+                title: `确定要申请${name}吗?`,
+                confirmCallBack: () => {
+                    this.$loadingShow();
+                    SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
+                        //加入肯定是推荐搜索来的   刷新首页和当前页
+                        this._loadPageData();
 
-                if (!this.props.propReload) {
-                    //不是首页刷新当前页面
-                    this._loadPageData();
+                        if (!this.props.propReload) {
+                            //不是首页刷新当前页面
+                            this._loadPageData();
+                        }
+                        //刷新首页
+                        spellStatusModel.getUser(2);
+                        this.$loadingDismiss();
+                    }).catch((error) => {
+                        this.$toastShow(error.msg);
+                        this.$loadingDismiss();
+                    });
                 }
-                //刷新首页
-                spellStatusModel.getUser(2);
-                this.$loadingDismiss();
-            }).catch((error) => {
-                this.$toastShow(error.msg);
-                this.$loadingDismiss();
             });
         }
     };
@@ -258,13 +275,20 @@ export default class MyShopPage extends BasePage {
 
     _renderJoinBtn = () => {
         let btnText;
-        let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2;
+        const { storeMaxUser, storeUserList = [] } = this.state.storeData;
+        let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2 && storeMaxUser > storeUserList.length;
         switch (this.state.storeData.userStatus) {
             case 0: {
                 if (this.state.storeData.recruitStatus === 0) {
                     btnText = '申请加入';
+                    if (!canJoin) {
+                        btnText = '人员已满';
+                    }
                 } else if (this.state.storeData.recruitStatus === 1) {
                     btnText = '加入店铺';
+                    if (!canJoin) {
+                        btnText = '人员已满';
+                    }
                 } else {
                     btnText = '暂不允许加入';
                 }
@@ -334,6 +358,21 @@ export default class MyShopPage extends BasePage {
                 <ReportAlert ref={ref => {
                     this.reportAlert = ref;
                 }}/>
+                <ConfirmAlert ref="delAlert"/>
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                type={'Image'}
+                                imageJson={{
+                                    imageUrlStr: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1539577593172&di=c87eead9eb2e2073b50758daf6194c62&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F59c914525c484566292f8d8d3d29c964ca59c7ca.jpg',
+                                    titleStr: '商品标题',
+                                    priceStr: '¥100.00',
+                                    QRCodeStr: '分享的链接'
+                                }}
+                                webJson={{
+                                    title: '分享标题(当为图文分享时候使用)',
+                                    dec: '内容(当为图文分享时候使用)',
+                                    linkUrl: '(图文分享下的链接)',
+                                    thumImage: '(分享图标小图(http链接)图文分享使用)'
+                                }}/>
             </View>
         );
     }

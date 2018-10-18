@@ -17,6 +17,9 @@ import usedRIcon from '../res/couponsImg/youhuiquan_icon_yishiyong_nor.png';
 import API from '../../../api';
 import UI from '../../../utils/bridge';
 import { observer } from 'mobx-react';
+import StringUtils from '../../../utils/StringUtils';
+import user from '../../../model/user';
+import UIText from '../../../components/ui/UIText';
 
 const { px2dp } = ScreenUtils;
 
@@ -30,7 +33,7 @@ export default class MyCouponsItems extends Component {
             pageStatus: this.props.pageStatus,
             isEmpty: true,
             currentPage: 1,
-            explainList: []
+            explainList: [],
         };
     }
 
@@ -84,10 +87,13 @@ export default class MyCouponsItems extends Component {
                             <Text style={{
                                 fontSize: 11,
                                 color: '#999999',
-                                marginTop: 5
-                            }}>使用有效期：{this.fmtDate(item.startTime)}-{this.fmtDate(item.outTime)}</Text>
+                                marginTop: 6
+                            }}>使用有效期：{item.timeStr}</Text>
                         </View>
                         <Image style={{ marginRight: 5, width: px2dp(70), height: px2dp(70) }} source={BGR}/>
+                        {item.type === 99 ?
+                            <UIText value={'x' + user.tokenCoin}
+                                    style={{ marginRight: 15, marginTop: 15, fontSize: 14, color: '#222' }}/> : null}
                     </View>
 
                     <View style={{ height: px2dp(33), justifyContent: 'center', marginLeft: 10 }}>
@@ -171,15 +177,24 @@ export default class MyCouponsItems extends Component {
     };
     parseData = (dataList) => {
         let arrData = [];
+        if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0) {
+            arrData.push({
+                status: 0,
+                name: '可叠加使用',
+                timeStr: '无时间限制',
+                value: 1,
+                limit: '全品类：无金额门槛',
+                remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
+                type: 99 //以type=99表示1元券
+            });
+        }
         dataList.map((item) => {
             arrData.push({
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                startTime: item.startTime,
-                outTime: item.expireTime,
+                timeStr: this.fmtDate(item.startTime) + '-' + this.fmtDate(item.outTime),
                 value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n抵扣' : item.value),
-                useConditions: item.useConditions,
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
                 remarks: item.remarks,
@@ -282,15 +297,19 @@ export default class MyCouponsItems extends Component {
 
     clickItem = (index, item) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
+        // 跳转时type = 99 表示一元券
+        // if (item.type === 99) {
+        //     // 一元券，弹出选择数量框
+        //     this.setModalVisible(true);
+        //     return;
+        // }
         if (this.props.fromOrder) {
+
             this.props.useCoupons(item);
         } else {
             this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
         }
-
-
     };
-
 }
 
 const styles = StyleSheet.create(

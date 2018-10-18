@@ -187,7 +187,7 @@ export default class SelectionPage extends Component {
 
         let priceId = priceArr.join(',');
         priceId = `,${priceId},`;
-        let id = undefined;
+        let id;
         const { priceList = [] } = this.props.data;
         priceList.forEach((item) => {
             if (item.specIds === priceId) {
@@ -224,32 +224,31 @@ export default class SelectionPage extends Component {
                     <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
                 </TouchableWithoutFeedback>
 
-                <View style={{ backgroundColor: 'white', flex: 1 }}>
-
+                <View style={{ flex: 1 }}>
                     <SelectionHeaderView product={this.state.product}
                                          price={this.state.price}
                                          selectList={this.state.selectList}
                                          selectStrList={this.state.selectStrList}
                                          priceList={this.state.priceList}/>
+                    <View style={{ flex: 1,backgroundColor:'white' }}>
+                        <ScrollView>
+                            {this._addSelectionSectionView()}
+                            <SelectionAmountView style={{ marginTop: 30 }} amountClickAction={this._amountClickAction}/>
+                        </ScrollView>
 
-                    <ScrollView>
-                        {this._addSelectionSectionView()}
-                        <SelectionAmountView style={{ marginTop: 30 }} amountClickAction={this._amountClickAction}/>
-                    </ScrollView>
+                        <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
+                            <View style={{
+                                height: 49,
+                                backgroundColor: '#D51243',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                <Text style={{ fontSize: 16, color: '#FFFFFF' }}>确认</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
 
-                    <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
-                        <View style={{
-                            height: 49,
-                            backgroundColor: '#D51243',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            <Text style={{ fontSize: 16, color: '#FFFFFF' }}>确认</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-
+                    </View>
                 </View>
-
             </View>
         );
     }

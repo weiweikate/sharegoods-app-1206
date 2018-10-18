@@ -104,10 +104,10 @@ export default class MessageCenterPage extends BasePage {
         }
     }
     renderBodyView=()=>{
-        let leftImage=[noticeIcon,newsIcon,spellIcon];
-        let leftText=['通知','消息','拼店消息'];
-        let arr=[];
-        for (let i=0;i<leftImage.length;i++){
+        let leftImage = [noticeIcon,newsIcon,spellIcon];
+        let leftText = ['通知','消息','拼店消息'];
+        let arr = [];
+        for (let i = 0;i < leftImage.length;i++){
             let count;
             if(i === 0){
                 count = this.state.noticeCount;
@@ -128,7 +128,7 @@ export default class MessageCenterPage extends BasePage {
                             <UIText value={leftText[i]} style={[{fontSize:15,marginLeft:5}]}/>
                         </View>
                         <View style={{flexDirection:'row',alignItems:'center'}}>
-                            {count? <View style={{marginRight:7,backgroundColor:color.red,borderRadius:px2dp(8.5),height:px2dp(17),paddingHorizontal:px2dp(9),alignItems:'center',justifyContent:'center'}}>
+                            {count ? <View style={{marginRight:7,backgroundColor:color.red,borderRadius:px2dp(8.5),height:px2dp(17),paddingHorizontal:px2dp(9),alignItems:'center',justifyContent:'center'}}>
                                 <Text style={{color:"white",includeFontPadding:false, fontSize: px2dp(13)}}>{count}</Text>
                             </View> : null}
                             <Image source={arrow_right} style={{height:14,}} resizeMode={'contain'}/>

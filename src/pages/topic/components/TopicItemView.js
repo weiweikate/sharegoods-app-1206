@@ -21,7 +21,7 @@ export default class TopicItemView extends Component {
         const { itemData, numOfColum } = this.props;
         return (
             <TouchableOpacity onPress={() => {
-                this.props.itemClickAction&&this.props.itemClickAction();
+                this.props.itemClickAction && this.props.itemClickAction();
             }}>
                 <View style={
                     [

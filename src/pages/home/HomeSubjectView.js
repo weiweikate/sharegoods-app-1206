@@ -7,7 +7,7 @@ import {View , ScrollView, StyleSheet, Text, Image, TouchableOpacity} from 'reac
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
-import { subjectModule, homeModule } from './Modules'
+import { SubjectModule, homeModule } from './Modules'
 
 const GoodItems = ({img, title, money}) => <View style={styles.goodsView}>
     <Image style={styles.goodImg} source={{uri:img}}/>
@@ -23,8 +23,9 @@ const MoreItem = ({press}) => <TouchableOpacity style={styles.moreView} onPress=
     </View>
 </TouchableOpacity>
 
-const AcitivyItem = ({data, press}) => {
+const ActivityItem = ({data, press}) => {
     const {imgUrl, topicBannerProductDTOList} = data
+    console.log('ActivityItem', imgUrl)
     let goodsItem = []
     topicBannerProductDTOList && topicBannerProductDTOList.map((value,index) => {
         goodsItem.push(<GoodItems key={index} title={value.productName} money={value.startPrice ? value.startPrice : 0} img={value.specImg ? value.specImg : ''}/>)
@@ -32,7 +33,7 @@ const AcitivyItem = ({data, press}) => {
     return <View>
         <TouchableOpacity style={styles.bannerBox} onPress={()=>{press && press()}}>
             <View style={styles.bannerView}>
-                <Image style={styles.banner} source={{url: imgUrl}}/>
+                <Image style={styles.banner} source={{uri: imgUrl}} resizeMode={'cover'}/>
             </View>
         </TouchableOpacity>
         <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -47,17 +48,17 @@ const AcitivyItem = ({data, press}) => {
 export default class HomeSubjectView extends Component {
     constructor(props) {
         super(props)
-        subjectModule.loadSubjectList()
+        this.subjectModule = new SubjectModule()
+        this.subjectModule.loadSubjectList()
     }
     _subjectActions(item) {
-        subjectModule.selectedSubjectAction(item)
         const { navigation } = this.props
         let params = homeModule.paramsNavigate(item)
         const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
         navigation.navigate(router,  params)
     }
     render() {
-        const { subjectList } = subjectModule
+        const { subjectList } = this.subjectModule
         if (!subjectList) {
             return <View/>
         }
@@ -66,7 +67,7 @@ export default class HomeSubjectView extends Component {
         }
         let items = []
         subjectList.map((item, index) => {
-            items.push(<AcitivyItem data={item} key={index} press={()=>this._subjectActions(item)}/>)
+            items.push(<ActivityItem data={item} key={index} press={()=>this._subjectActions(item)}/>)
         })
         return <View style={styles.container}>
             <View style={styles.titleView}>

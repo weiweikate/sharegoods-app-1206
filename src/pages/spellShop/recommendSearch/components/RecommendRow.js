@@ -78,9 +78,7 @@ export default class RecommendRow extends Component {
                             borderRadius: 2,
                             borderColor: '#D51234',
                             marginTop: 6
-                        }}>
-
-                        </View>
+                        }} />
                     </View>
                     <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
                     <View style={{ width: 44 + 70, alignItems: 'center', justifyContent: 'center' }}>
@@ -93,7 +91,7 @@ export default class RecommendRow extends Component {
                         </View>
                         <Text style={{ marginTop: 9, color: '#939393', fontSize: 14 }}>店铺等级</Text>
                         <TouchableOpacity style={styles.joinBtn} onPress={() => {
-                            this.props.RecommendRowOnPress();
+                            this._onPress();
                         }}>
                             <Text style={styles.joinText}>+加入我们</Text>
                         </TouchableOpacity>

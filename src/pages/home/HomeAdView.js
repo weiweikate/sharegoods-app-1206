@@ -14,7 +14,8 @@ export default class HomeAdView extends Component {
     _adAction(value) {
         const router =  homeModule.homeNavigate(value.linkType, value.linkTypeCode)
         const {navigation} = this.props
-        navigation.navigate(router, {linkTypeCode : value.linkTypeCode})
+        const params = homeModule.paramsNavigate(value)
+        navigation.navigate(router, params)
     }
     render() {
         const {ad} = this.adModules
@@ -42,7 +43,7 @@ export default class HomeAdView extends Component {
                 </TouchableOpacity>)
             }
         })
-       return <View>
+       return <View style={styles.container}>
            {
                items.length > 0
                ?
@@ -59,6 +60,10 @@ export default class HomeAdView extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#fff',
+        marginTop:  ScreenUtils.px2dp(10)
+    },
     featureBox: {
         position: 'relative',
         height: ScreenUtils.px2dp(200),

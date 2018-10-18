@@ -146,7 +146,7 @@ export default class SignInPage extends BasePage {
         let circlesView = this.state.signInData.map((item,index)=>{
             let kind,count;
             count = item.reward ? item.reward : item.canReward;
-            if(index <3){
+            if(index < 3){
                 if(item.continuous > 0){
                     kind = 'signedIn';
                 }else {
@@ -163,11 +163,11 @@ export default class SignInPage extends BasePage {
                 kind = 'willSignIn';
             }
             if(index === 0){
-                return <SignInCircleView key={'circle'+index}  count={!EmptyUtils.isEmpty(item.reward)  ? item.reward : item.canReward} kind={kind}/>
+                return <SignInCircleView key={'circle' + index}  count={!EmptyUtils.isEmpty(item.reward)  ? item.reward : item.canReward} kind={kind}/>
             }else {
                 return (
-                    <View key={'circle'+index}  style={styles.signInItemWrapper}>
-                        <View style={{backgroundColor:index<4 ?'white' : '#c6b478',height:px2dp(2), flex: 1}}/>
+                    <View key={'circle' + index}  style={styles.signInItemWrapper}>
+                        <View style={{backgroundColor:index < 4 ? 'white' : '#c6b478',height:px2dp(2), flex: 1}}/>
                         <SignInCircleView count={count} kind={kind}/>
                     </View>
                 );
@@ -176,7 +176,7 @@ export default class SignInPage extends BasePage {
 
         let datesView = this.state.signInData.map((item,index)=>{
             return(
-                <Text key={'date'+index} style={styles.dateTextStyle}>
+                <Text key={'date' + index} style={styles.dateTextStyle}>
                     {item.signDate.replace('-','.')}
                 </Text>
             );
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
     },
     couponBgStyle:{
         height:px2dp(94),
-        width:ScreenUtils.width-px2dp(30),
+        width:ScreenUtils.width - px2dp(30),
         marginLeft:px2dp(15),
         alignItems:'center',
         marginTop:px2dp(15),
@@ -386,7 +386,7 @@ const styles = StyleSheet.create({
     convertWrapper:{
         alignItems:'center',
         marginRight:px2dp(10),
-        height:px2dp(94)-px2dp(30),
+        height:px2dp(94) - px2dp(30),
         justifyContent:'space-between',
     },
     convertButtonStyle:{

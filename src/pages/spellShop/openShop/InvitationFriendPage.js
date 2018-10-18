@@ -14,6 +14,7 @@ import Banner from './src/yqhy_03.png';
 import Center from './src/yqhy_04.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
+import SpellShopApi from '../api/SpellShopApi';
 
 const gap = -5;
 
@@ -26,9 +27,23 @@ export default class InvitationToShopPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            params: this.props.navigation.state.params || {}
+            data: {}
         };
     }
+
+    componentDidMount() {
+        this._loadPageData();
+    }
+
+    _loadPageData = () => {
+        SpellShopApi.getById().then((data) => {
+            this.setState({
+                data: data.data || {}
+            });
+        }).catch((error) => {
+            this.$toastShow(error.msg);
+        });
+    };
 
     info = {};
     // 保存部分截屏
@@ -61,7 +76,6 @@ export default class InvitationToShopPage extends BasePage {
                     <View style={{ alignItems: 'center' }}>
 
 
-
                         <ImageBackground onLayout={this._onLayout} style={[styles.imgBg]}
                                          source={Center}>
                             <View style={styles.topContainer}>
@@ -86,12 +100,11 @@ export default class InvitationToShopPage extends BasePage {
                             <Text style={styles.wxTip}>分享至微信，为您的店铺增添活力</Text>
 
 
-
                         </ImageBackground>
 
                         <Image style={{
-                            position:'absolute',
-                            top:40,
+                            position: 'absolute',
+                            top: 40
                         }} onLayout={this._onLayoutImg} source={Banner}/>
 
                         <View style={{ flexDirection: 'row', marginTop: 50, justifyContent: 'center' }}>
@@ -120,7 +133,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     imgBg: {
-        marginTop:95,
+        marginTop: 95,
         alignItems: 'center',
         width: ScreenUtils.autoSizeWidth(279),
         height: ScreenUtils.autoSizeWidth(370),

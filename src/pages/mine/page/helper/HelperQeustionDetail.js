@@ -97,7 +97,7 @@ export default class HelperQuestionDetail extends BasePage {
         MineApi.updateHelpQuestionToClick({id:this.params.id,hadHelp:0}).then(res=>{
             this.$toastShow(res.msg)
         }).catch(err=>{
-            if(err.code==10009){
+            if(err.code == 10009){
                 this.$navigate('login/login/LoginPage')
             }
         })
@@ -107,7 +107,7 @@ export default class HelperQuestionDetail extends BasePage {
         MineApi.updateHelpQuestionToClick({id:this.params.id,hadHelp:1}).then(res=>{
             this.$toastShow(res.msg)
         }).catch(err=>{
-           if(err.code==10009){
+           if(err.code == 10009){
                this.$navigate('login/login/LoginPage')
            }
         })

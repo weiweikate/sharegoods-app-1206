@@ -20,7 +20,8 @@ import logisticsBottom from '../res/logisticsBottom.png';
 import copy from '../res/copy.png';
 import logisticsIcon from '../res/logisticsIcon.png';
 import LogisticsDetailItem from '../components/LogisticsDetailItem';
-import tryIcon from '../res/car.png';
+// import tryIcon from '../res/car.png';
+import Nowuliu from '../res/no_wuliu.png';
 import Toast from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
 
@@ -44,38 +45,39 @@ class LogisticsDetailsPage extends BasePage {
             orderId: this.params.orderId ? this.params.orderId : 0,
             expressNo: this.params.expressNo ? this.params.expressNo : '',
             expressName: '',
-            loadingState: 'success',
+            loadingState: 'loading',
+            flags:false,
             viewData: [
-                {
-                    time: '',
-                    middleImage: tryIcon,
-                    title: '',
-                    content1: '[收货地址]浙江省杭州市萧山区 宁围镇鸿宁街道望京商务中心C2-502'
-
-                }, {
-                    time: '06-01\n07:25',
-                    middleImage: tryIcon,
-                    title: '已签收',
-                    content1: '[自提柜]已签收，签收人凭取货码签收。感谢使用ZJ望京国际丰巢【自提柜】，期待再次为您服务。'
-                }, {
-                    time: '06-01\n07:25',
-                    middleImage: tryIcon,
-                    title: '派送中',
-                    content1: '[杭州市] 杭州萧山派件员：杨二萌',
-                    content2: '185158675566',
-                    content3: '正在为您派件'
-                }, {
-                    time: '06-01\n07:25',
-                    content1: '[杭州市] 杭州萧山派件员：杨二萌'
-                },
-                {
-                    time: '06-01\n07:25',
-                    content1: '[杭州市] 杭州萧山派件员：杨二萌'
-                },
-                {
-                    time: '06-01\n07:25',
-                    content1: '[杭州市] 杭州萧山派件员：杨二萌'
-                }
+                // {
+                //     time: '',
+                //     middleImage: tryIcon,
+                //     title: '',
+                //     content1: '[收货地址]浙江省杭州市萧山区 宁围镇鸿宁街道望京商务中心C2-502'
+                //
+                // }, {
+                //     time: '06-01\n07:25',
+                //     middleImage: tryIcon,
+                //     title: '已签收',
+                //     content1: '[自提柜]已签收，签收人凭取货码签收。感谢使用ZJ望京国际丰巢【自提柜】，期待再次为您服务。'
+                // }, {
+                //     time: '06-01\n07:25',
+                //     middleImage: tryIcon,
+                //     title: '派送中',
+                //     content1: '[杭州市] 杭州萧山派件员：杨二萌',
+                //     content2: '185158675566',
+                //     content3: '正在为您派件'
+                // }, {
+                //     time: '06-01\n07:25',
+                //     content1: '[杭州市] 杭州萧山派件员：杨二萌'
+                // },
+                // {
+                //     time: '06-01\n07:25',
+                //     content1: '[杭州市] 杭州萧山派件员：杨二萌'
+                // },
+                // {
+                //     time: '06-01\n07:25',
+                //     content1: '[杭州市] 杭州萧山派件员：杨二萌'
+                // }
 
             ]
         };
@@ -155,21 +157,37 @@ class LogisticsDetailsPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                {this.renderLogisticsNumber()}
-                <RefreshList
-                    ListHeaderComponent={this.renderHeader}
-                    ListFooterComponent={this.renderFootder}
-                    data={this.state.viewData}
-                    renderItem={this.renderItem}
-                    onRefresh={this.onRefresh}
-                    onLoadMore={this.onLoadMore}
-                    extraData={this.state}
-                    isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无数据'}
-                />
+                {this.state.flags ?
+                    this.renderEmpty() : this.renderSuccess()}
             </View>
         );
-    };
+    }
+    renderEmpty(){
+        return(
+            <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                <Image source={Nowuliu} style={{width:92,height:61}}/>
+                <Text style={{color:'#909090',fontSize:15,marginTop:25}}>暂无物流信息</Text>
+            </View>
+        )
+    }
+    renderSuccess(){
+        return(
+            <View style={styles.container}>
+            {this.renderLogisticsNumber()}
+        <RefreshList
+            ListHeaderComponent={this.renderHeader}
+            ListFooterComponent={this.renderFootder}
+            data={this.state.viewData}
+            renderItem={this.renderItem}
+            onRefresh={this.onRefresh}
+            onLoadMore={this.onLoadMore}
+            extraData={this.state}
+            isEmpty={this.state.isEmpty}
+            emptyTip={'暂无数据'}
+        />
+            </View>
+        )
+    }
 
     renderLine = () => {
         return (
@@ -191,8 +209,12 @@ class LogisticsDetailsPage extends BasePage {
             if (!response.data.showapi_res_body.flag) {
                 NativeModules.commModule.toast('查询出错');
                 this.setState({
-                    loadingState: 'fail'
-                });
+                    flags:true,
+                    loadingState: 'success'
+                })
+                // this.setState({
+                //     loadingState: 'fail'
+                // });
                 return;
             }
             response.data.showapi_res_body.data.map((item, index) => {
@@ -209,7 +231,10 @@ class LogisticsDetailsPage extends BasePage {
             });
         }).catch(e => {
             Toast.hiddenLoading();
-            console.log(e);
+            this.$toastShow(e.msg)
+            this.setState({
+                loadingState: 'fail'
+            });
         });
     }
 

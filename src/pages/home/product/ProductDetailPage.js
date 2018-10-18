@@ -21,7 +21,7 @@ import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-import CommShareModal from '../../../comm/components/CommShareModal '
+import CommShareModal from '../../../comm/components/CommShareModal';
 
 export default class ProductDetailPage extends BasePage {
 
@@ -35,7 +35,10 @@ export default class ProductDetailPage extends BasePage {
             modalVisible: false,
             data: {},
             goType: '',
-            selectedIndex: 0
+            selectedIndex: 0,
+            //活动数据
+            activityData: {},
+            activityType: 0
         };
     }
 
@@ -50,38 +53,92 @@ export default class ProductDetailPage extends BasePage {
     //数据
     _getProductDetail = () => {
         this.$loadingShow();
-        HomeAPI.getProductDetail({
-            id: this.params.productId
+        if (this.params.productId) {
+            HomeAPI.getProductDetail({
+                id: this.params.productId
+            }).then((data) => {
+                this.$loadingDismiss();
+                this._savaData(data.data || {});
+            }).catch((error) => {
+                this.$loadingDismiss();
+                this.$toastShow(error.msg);
+            });
+        } else {
+            HomeAPI.getProductDetailByCode({
+                code: this.params.productCode
+            }).then((data) => {
+                this.$loadingDismiss();
+                this._savaData(data.data || {});
+            }).catch((error) => {
+                this.$loadingDismiss();
+                this.$toastShow(error.msg);
+            });
+        }
+    };
+
+    _getQueryByProductId = (productId) => {
+        if (!productId) {
+            return;
+        }
+        HomeAPI.queryByProductId({
+            productId: productId
         }).then((data) => {
             this.$loadingDismiss();
-            data.data = data.data||{}
-            const { specMap, priceList } = data.data;
-            //修改specMap每个元素首尾增加'，'
-            for (let key in specMap) {
-                specMap[key].forEach((item) => {
-                    if (String(item.id).indexOf(',') === -1) {
-                        item.id = `,${item.id},`;
-                    }
+            let dataTemp = data.data || {};
+            this.state.activityType = dataTemp.activityType;
+            if (dataTemp.activityType === 2 && dataTemp.depreciate) {
+                this.setState({
+                    activityData: dataTemp.depreciate
+                });
+            } else if (dataTemp.activityType === 1 && dataTemp.seckill) {
+                this.setState({
+                    activityData: dataTemp.seckill
                 });
             }
-            //修改priceList中的specIds首尾增加','
-            priceList.forEach((item) => {
-                item.specIds = `,${item.specIds},`;
-            });
-            this.setState({
-                data: data.data
-            });
+            // this.DetailHeaderView.updateTime(this.state.activityData, this.state.activityType);
         }).catch((error) => {
             this.$loadingDismiss();
             this.$toastShow(error.msg);
         });
     };
 
+    _savaData = (data) => {
+        const { product = {} } = data;
+        this._getQueryByProductId(product.id);
+        const { specMap, priceList } = data;
+        //修改specMap每个元素首尾增加'，'
+        for (let key in specMap) {
+            specMap[key].forEach((item) => {
+                if (String(item.id).indexOf(',') === -1) {
+                    item.id = `,${item.id},`;
+                }
+            });
+        }
+        //修改priceList中的specIds首尾增加','
+        priceList.forEach((item) => {
+            item.specIds = `,${item.specIds},`;
+        });
+        this.setState({
+            data: data
+        });
+    };
+
+    _productActivityViewAction = () => {
+        if (this.state.activityType === 1 || this.state.activityType === 2) {
+            this.$navigate('topic/TopicDetailPage', {
+                activityCode: this.state.activityData.activityCode,
+                activityType: this.state.activityType
+            });
+        }
+    };
+
     //去购物车
     _bottomViewAction = (type) => {
         switch (type) {
             case 'goGwc': {
-                this.$navigate('shopCart/ShopCart');
+                this.$navigate('shopCart/ShopCart',{
+                    hiddeLeft:false
+                });
             }
                 break;
             case 'gwc':
@@ -135,7 +192,10 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        return <DetailHeaderView data={this.state.data}/>;
+        return <DetailHeaderView ref={(e) => {
+            this.DetailHeaderView = e;
+        }} data={this.state.data} activityData={this.state.activityData} activityType={this.state.activityType}
+                                 productActivityViewAction={this._productActivityViewAction}/>;
     };
 
     _renderSectionHeader = () => {
@@ -157,8 +217,7 @@ export default class ProductDetailPage extends BasePage {
                     ItemSeparatorComponent={this._renderSeparatorComponent}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => `${index}`}
-                    data={this.state.data.paramList || []}>
-                </FlatList>
+                    data={this.state.data.paramList || []} />
             </View>;
         }
     };
@@ -203,7 +262,9 @@ export default class ProductDetailPage extends BasePage {
                     }}>
                         <Image source={xiangqing_btn_return_nor}/>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress = {() => {this.shareModal.open()}}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.shareModal.open();
+                    }}>
                         <Image source={xiangqing_btn_more_nor}/>
                     </TouchableWithoutFeedback>
                 </View>
@@ -225,24 +286,23 @@ export default class ProductDetailPage extends BasePage {
                     <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
                                    selectionViewClose={this._selectionViewClose} data={this.state.data}/>
                 </Modal>
-                <CommShareModal ref = {(ref) => this.shareModal = ref}
-                                type = {'Image'}
-                                imageJson = {{
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                type={'Image'}
+                                imageJson={{
                                     imageUrlStr: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1539577593172&di=c87eead9eb2e2073b50758daf6194c62&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F59c914525c484566292f8d8d3d29c964ca59c7ca.jpg',
                                     titleStr: '商品标题',
                                     priceStr: '¥100.00',
-                                    QRCodeStr: '分享的链接'}}
-                                webJson = {{
+                                    QRCodeStr: '分享的链接'
+                                }}
+                                webJson={{
                                     title: '分享标题(当为图文分享时候使用)',
                                     dec: '内容(当为图文分享时候使用)',
                                     linkUrl: '(图文分享下的链接)',
-                                    thumImage: '(分享图标小图(http链接)图文分享使用)',
-                                       }}
-
-                />
+                                    thumImage: '(分享图标小图(http链接)图文分享使用)'
+                                }}/>
             </View>
         );
-    };
+    }
 
 }
 

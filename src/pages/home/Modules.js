@@ -12,12 +12,15 @@ export const homeType = {
     other: 'other',
     classify: 'classify',
     goodsTitle: 'goodsTitle',
-    user: 'user'
+    user: 'user',
+    show: 'show'            //秀场
 }
 
 export class BannerModules {
     @observable bannerList = []
     @computed get bannerCount() { return this.bannerList.length }
+
+    @action
     loadBannerList = flow(function * () {
         try {
             const res = yield HomeApi.getSwipers({type: homeType.swiper})
@@ -68,7 +71,7 @@ export class ClassifyModules {
             icon: signinImg,
             name: '签到',
             id: 1,
-            route: 'home/signIn/SignInPage'
+            route: 'home/search/CategorySearchPage'
         },{
             icon: schoolImg,
             name: '学院',
@@ -146,7 +149,7 @@ export class RecommendModule {
     })
 }
 //专题
-class SubjectModule {
+export class SubjectModule {
     @observable subjectList = []
     //记载专题
     loadSubjectList = flow(function * () {
@@ -157,19 +160,7 @@ class SubjectModule {
             console.log(error)
         }
     })
-
-    //选择专题
-    @action
-    selectedSubjectAction = (subject) => {
-        this.selectedSubject = {
-            subjectCode : subject.linkTypeCode,
-            createTime: subject.createTime
-        }
-    }
 }
-
-export const subjectModule = new SubjectModule()
-
 
 const homeLinkType = {
     good: 1,
@@ -186,7 +177,7 @@ const homeRoute = {
     [homeLinkType.down]: 'topic/TopicDetailPage',
     [homeLinkType.spike]: 'topic/TopicDetailPage',
     [homeLinkType.package]: 'topic/TopicDetailPage',
-    [homeLinkType.store]: 'spellShop/SpellShopPage'
+    [homeLinkType.store]: 'spellShop/MyShop_RecruitPage'
 }
 
 //首页modules
@@ -213,13 +204,20 @@ class HomeModule {
             productType = product.productType
         }
 
+        const { storeDTO} = data
+        let storeId = 0
+        if (storeDTO) {
+            storeId = storeDTO.id
+        }
+
         const {linkType} = data
         return {
-            activityType: linkType===3?2:linkType===4?1:3,
+            activityType: linkType === 3 ? 2 : linkType === 4 ? 1 : 3,
             activityCode: data.linkTypeCode,
             linkTypeCode: data.linkTypeCode,
-            productId: data.linkTypeCode,
-            productType: productType
+            productCode: data.linkTypeCode,
+            productType: productType,
+            storeId: storeId
         }
 
     }
@@ -242,13 +240,16 @@ class HomeModule {
             type: homeType.ad
         },{
             id: 4,
-            type: homeType.today
-        },{
-            id: 5,
-            type: homeType.recommend
+            type: homeType.show
         },{
             id: 7,
             type: homeType.starShop
+        },{
+            id: 5,
+            type: homeType.today
+        },{
+            id: 6,
+            type: homeType.recommend
         },{
             id: 8,
             type: homeType.subject

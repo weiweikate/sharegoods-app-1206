@@ -65,7 +65,7 @@ export default class App extends Component {
                     index: routes.length - 1
                 };
             }
-            
+
             return defaultStateAction(action, state);
         };
         const getCurrentRouteName = (navigationState) => {
@@ -80,7 +80,7 @@ export default class App extends Component {
         };
         return (
             <View style={styles.container}>
-                <Navigator screenProps={this.props.params} 
+                <Navigator screenProps={this.props.params}
                            ref='Navigator'
                            onNavigationStateChange={(prevState, currentState) => {
                                let curRouteName = getCurrentRouteName(currentState);

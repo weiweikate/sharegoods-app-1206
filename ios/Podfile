@@ -19,20 +19,22 @@ pod 'Bugly', '2.5.0'
 #微信支付
 pod 'WechatOpenSDK'
 #友盟统计
-pod 'UMCCommon', '1.5.0'
-pod 'UMCAnalytics', '5.5.0'
-pod 'UMCSecurityPlugins', '1.0.6'
+pod 'UMCCommon'
+pod 'UMCAnalytics'
+pod 'UMCSecurityPlugins'
 #友盟分享
 
-pod 'UMengUShare/Social/ReducedWeChat'
-pod 'UMengUShare/Social/ReducedQQ'
-pod 'WechatOpenSDK'
+pod 'UMCShare/Social/ReducedWeChat'
+pod 'UMCShare/Social/ReducedQQ'
+pod 'UMCShare/Social/ReducedSina'
 #七鱼
 pod 'QIYU_iOS_SDK',   '~> 4.2.1'
 
-#绘图和icon
-pod 'RNSVG', :path => '../node_modules/react-native-svg'
-pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+##绘图和icon
+#pod 'RNSVG', :path => '../node_modules/react-native-svg'
+#pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+end
 
 #    暂时未用,先注释已被后期使用
 #    pod 'UMCShare/Social', '6.9.1'

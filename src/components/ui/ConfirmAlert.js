@@ -32,14 +32,16 @@ export default class ConfirmAlert extends Component {
             confirmCallBack: props.confirmCallBack,
             //私有state
             modalVisible: false, //是否显示
-            top: new Animated.Value(- PANNELHEIGHT), //白色面板顶部距离屏幕底部
-            backOpacity: new Animated.Value(0) //背景颜色
+            top: new Animated.Value(-PANNELHEIGHT), //白色面板顶部距离屏幕底部
+            backOpacity: new Animated.Value(0), //背景颜色
+            alignType:'center'
         };
     }
 
-    show = ({confirmCallBack,title,height})=>{
+    show = ({confirmCallBack,title,height,alignType})=>{
         this.setState({
             height: height || PANNELHEIGHT,
+            alignType:alignType,
             title: title || this.state.title,
             confirmCallBack: confirmCallBack || this.state.confirmCallBack,
             modalVisible: true
@@ -54,7 +56,7 @@ export default class ConfirmAlert extends Component {
                 //透明度
                 this.state.top,
                 {
-                    toValue: (MAX_SCREEN - this.state.height)/2,
+                    toValue: (MAX_SCREEN - this.state.height) / 2,
                     duration: Animated_Duration
                 }
             ),
@@ -137,10 +139,10 @@ export default class ConfirmAlert extends Component {
                             <Text style={{
                                 fontFamily: "PingFang-SC-Medium",
                                 fontSize: 15,
-                                marginTop: 45,
                                 color: "#666666",
-                                textAlign: 'center',
+                                textAlign: this.state.alignType,
                                 marginHorizontal: 15,
+                                marginVertical:30,
                             }}>{this.state.title}</Text>
                         </View>
                         <View style={{flexDirection: 'row',alignItems: 'center',marginBottom: 27}}>
