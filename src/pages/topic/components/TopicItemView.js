@@ -10,6 +10,7 @@ import ColorUtil from '../../../utils/ColorUtil';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import PropTypes from 'prop-types';
+import StringUtils from '../../../utils/StringUtils';
 
 export default class TopicItemView extends Component {
 
@@ -21,14 +22,14 @@ export default class TopicItemView extends Component {
         const { itemData, numOfColum } = this.props;
         return (
             <TouchableOpacity onPress={() => {
-                this.props.itemClickAction&&this.props.itemClickAction();
+                this.props.itemClickAction && this.props.itemClickAction();
             }}>
                 <View style={
                     [
                         Styles.itemBgStyle,
                         {
                             width: ScreenUtils.width / numOfColum,
-                            height: ScreenUtils.width / numOfColum + 70
+                            height: ScreenUtils.width / numOfColum + 55
                         }
                     ]}>
                     <View style={Styles.itemContentStyle}>
@@ -45,17 +46,17 @@ export default class TopicItemView extends Component {
                             imageUri={itemData.specImg}
                         />
                         {/*<View style={*/}
-                            {/*[Styles.itemTipBgViewStyle,*/}
-                                {/*{*/}
-                                    {/*marginTop: ScreenUtils.width / numOfColum - 16 - 16,*/}
-                                    {/*width: ScreenUtils.width / numOfColum - 16*/}
-                                {/*}*/}
-                            {/*]*/}
+                        {/*[Styles.itemTipBgViewStyle,*/}
+                        {/*{*/}
+                        {/*marginTop: ScreenUtils.width / numOfColum - 16 - 16,*/}
+                        {/*width: ScreenUtils.width / numOfColum - 16*/}
+                        {/*}*/}
+                        {/*]*/}
 
                         {/*}>*/}
-                            {/*/!*<Text style={Styles.itemTipTextStyle}>*!/*/}
-                                {/*/!*测试测试测试测试*!/*/}
-                            {/*/!*</Text>*!/*/}
+                        {/*/!*<Text style={Styles.itemTipTextStyle}>*!/*/}
+                        {/*/!*测试测试测试测试*!/*/}
+                        {/*/!*</Text>*!/*/}
                         {/*</View>*/}
                         <Text
                             style={
@@ -65,13 +66,13 @@ export default class TopicItemView extends Component {
                                         width: ScreenUtils.width / numOfColum - 16
                                     }
                                 ]}
-                            number={2}
+                            numberOfLines={2}
                         >
                             {itemData.productName}
                         </Text>
 
                         <Text style={Styles.itemBottomPriceTextStyle}>
-                            {itemData.originalPrice + '起'}
+                            {StringUtils.formatMoneyString(itemData.originalPrice) + '起'}
                         </Text>
 
                     </View>
@@ -83,7 +84,7 @@ export default class TopicItemView extends Component {
 TopicItemView.propTypes = {
     itemData: PropTypes.object.isRequired,
     numOfColum: PropTypes.number.isRequired,
-    itemClickAction:PropTypes.func.isRequired,
+    itemClickAction: PropTypes.func.isRequired
 };
 
 const Styles = StyleSheet.create({
@@ -118,13 +119,12 @@ const Styles = StyleSheet.create({
     itemBottomTextStyle: {
         marginTop: 10,
         color: ColorUtil.Color_222222,
-
-        height: 28,
+        height: 25,
         fontSize: 12
     },
     itemBottomPriceTextStyle: {
         color: ColorUtil.Color_d51243,
         fontSize: 16,
-        marginTop: 10
+        marginTop: 5
     }
 });

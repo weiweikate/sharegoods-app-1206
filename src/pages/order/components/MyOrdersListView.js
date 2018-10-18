@@ -9,6 +9,7 @@ import CommonTwoChoiceModal from './CommonTwoChoiceModal';
 import Toast from '../../../utils/bridge';
 import user from '../../../model/user';
 import OrderApi from '../api/orderApi';
+import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 
 export default class MyOrdersListView extends Component {
     constructor(props) {
@@ -231,7 +232,7 @@ export default class MyOrdersListView extends Component {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast(e.msg);
                             });
-                        } else if ( this.state.menu.id === 7 ) {
+                        } else if (this.state.menu.id === 7) {
                             Toast.showLoading();
                             OrderApi.deleteCompletedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
                                 Toast.hiddenLoading();
@@ -327,11 +328,11 @@ export default class MyOrdersListView extends Component {
                     orderNum: item.orderNum,
                     expressNo: item.expressNo,
                     orderCreateTime: item.createTime,
-                    platformPayTime:item.platformPayTime,
-                    payTime:item.payTime,
-                    sendTime:item.sendTime,
-                    finishTime:item.finishTime,
-                    deliverTime:item.deliverTime,
+                    platformPayTime: item.platformPayTime,
+                    payTime: item.payTime,
+                    sendTime: item.sendTime,
+                    finishTime: item.finishTime,
+                    deliverTime: item.deliverTime,
                     orderStatus: item.status,
                     freightPrice: item.freightPrice,
                     totalPrice: item.totalPrice,
@@ -369,11 +370,13 @@ export default class MyOrdersListView extends Component {
                 }).catch(e => {
                     Toast.hiddenLoading();
                     console.log(e);
-                     if(e.code === 10009){
-                         this.$navigate('login/login/LoginPage',{callback:()=>{
-                                 this.loadPageData()
-                             }});
-                     }
+                    if (e.code === 10009) {
+                        this.$navigate('login/login/LoginPage', {
+                            callback: () => {
+                                this.loadPageData();
+                            }
+                        });
+                    }
                 });
                 break;
             case 1:
@@ -384,10 +387,12 @@ export default class MyOrdersListView extends Component {
                 }).catch(e => {
                     Toast.hiddenLoading();
                     NativeModules.commModule.toast(e.msg);
-                    if(e.code === 10009){
-                        this.$navigate('login/login/LoginPage',{callback:()=>{
-                                this.loadPageData()
-                            }});
+                    if (e.code === 10009) {
+                        this.$navigate('login/login/LoginPage', {
+                            callback: () => {
+                                this.loadPageData();
+                            }
+                        });
                     }
                 });
                 break;
@@ -400,10 +405,12 @@ export default class MyOrdersListView extends Component {
                 }).catch(e => {
                     Toast.hiddenLoading();
                     NativeModules.commModule.toast(e.msg);
-                    if(e.code === 10009){
-                        this.$navigate('login/login/LoginPage',{callback:()=>{
-                                this.loadPageData()
-                            }});
+                    if (e.code === 10009) {
+                        this.$navigate('login/login/LoginPage', {
+                            callback: () => {
+                                this.loadPageData();
+                            }
+                        });
                     }
                 });
                 break;
@@ -416,10 +423,12 @@ export default class MyOrdersListView extends Component {
                 }).catch(e => {
                     Toast.hiddenLoading();
                     NativeModules.commModule.toast(e.msg);
-                    if(e.code === 10009){
-                        this.$navigate('login/login/LoginPage',{callback:()=>{
-                                this.loadPageData()
-                            }});
+                    if (e.code === 10009) {
+                        this.$navigate('login/login/LoginPage', {
+                            callback: () => {
+                                this.loadPageData();
+                            }
+                        });
                     }
                 });
                 break;
@@ -432,10 +441,12 @@ export default class MyOrdersListView extends Component {
                 }).catch(e => {
                     Toast.hiddenLoading();
                     NativeModules.commModule.toast(e.msg);
-                    if(e.code === 10009){
-                        this.$navigate('login/login/LoginPage',{callback:()=>{
-                                this.loadPageData()
-                            }});
+                    if (e.code === 10009) {
+                        this.$navigate('login/login/LoginPage', {
+                            callback: () => {
+                                this.loadPageData();
+                            }
+                        });
                     }
                 });
                 break;
@@ -552,30 +563,32 @@ export default class MyOrdersListView extends Component {
                 this.setState({ isShowDeleteOrderModal: true });
                 break;
             case 8:
-                // Toast.showLoading();
-                // OrderApi.orderOneMore({orderId:this.state.viewData[index].id}).then((response)=>{
-                //     if(response.ok ){
-                //         let cartData=[]
-                //         response.data.map((item, index)=>{
-                //             cartData.push({sareSpecId:item.id,productNumber:item.num})
-                //         })
-                //         OrderApi.shoppingCartFormCookieToSession({jsonString: JSON.stringify(cartData)}).then((response)=>{
-                //             Toast.hiddenLoading()
-                //             if(response.ok ){
-                //                 Toast.hiddenLoading()
-                //                 this.props.nav('shopCart/CartPage',{isInnerPage:true})
-                //             } else {
-                //                 NativeModules.commModule.toast(response.msg)
-                //             }
-                //         }).catch(e=>{
-                //             Toast.hiddenLoading()
-                //         });
-                //     } else {
-                //         NativeModules.commModule.toast(response.msg)
-                //     }
-                // }).catch(e=>{
-                //     Toast.hiddenLoading()
-                // });
+                Toast.showLoading();
+                OrderApi.againOrder({
+                    orderNum: this.state.viewData[index].orderNum,
+                    id: this.state.viewData[index].id
+                }).then((response) => {
+                    Toast.hiddenLoading();
+                    let cartData = [];
+                    /**
+                     * 'amount': item.amount,
+                     'priceId': item.priceId,
+                     'productId': item.productId,
+                     */
+                    response.data.orderProducts.map((item, index) => {
+                        cartData.push({ productId: item.productId, priceId: item.priceId, amount: item.num });
+                    });
+                    let params={
+                        amount:  response.data.orderProducts[0].num,
+                        priceId:  response.data.orderProducts[0].priceId,
+                        productId:  response.data.orderProducts[0].productId,
+                    }
+                    shopCartCacheTool.addGoodItem(params);
+                    this.props.nav('shopCart/ShopCart');
+                }).catch(e => {
+                    Toast.hiddenLoading();
+                    NativeModules.commModule.toast(e.msg);
+                });
                 break;
             case 9:
                 this.setState({ isShowDeleteOrderModal: true });

@@ -11,13 +11,14 @@ import {
 } from 'react-native';
 import SuccessImg from './src/xz_03.png';
 import BasePage from '../../../BasePage';
+import SpellShopApi from '../api/SpellShopApi';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export default class OpenShopSuccessPage extends BasePage {
 
     $navigationBarOptions = {
-        title: '开店成功',
+        title: '开店成功'
     };
 
     _clickEnterShop = () => {
@@ -25,8 +26,15 @@ export default class OpenShopSuccessPage extends BasePage {
     };
 
     _clickInvite = () => {
-        //邀请好友页面
-        this.$navigate('spellShop/openShop/InvitationFriendPage')
+        this.$loadingShow();
+        SpellShopApi.getById().then((data) => {
+            //邀请好友页面
+            this.$loadingDismiss()
+            this.$navigate('spellShop/openShop/InvitationFriendPage', { shareInfo: data.data || {} });
+        }).catch((error) => {
+            this.$loadingDismiss()
+            this.$toastShow(error.msg);
+        });
     };
 
     _render() {

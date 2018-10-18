@@ -58,13 +58,15 @@ export default class SetShopNamePage extends BasePage {
             };
         }
     }
-    _checkIsHasSpecialStr(str){
+
+    _checkIsHasSpecialStr(str) {
         let myReg = /[~!@#$%^&*()/\|,.<>?"'();:_+-=\[\]{}]/;
-        if(myReg.test(str)) {
+        if (myReg.test(str)) {
             return true;
         }
         return false;
     }
+
     _complete = () => {
         if (this._checkIsHasSpecialStr(this.state.text)) {
             this.$toastShow('店铺名称不能包含特殊字符');
@@ -88,6 +90,7 @@ export default class SetShopNamePage extends BasePage {
                 headUrl: this.state.storeHeadUrlOrigin
             }).then(() => {
                 this.$toastShow('修改成功');
+                this.params.myShopCallBack && this.params.myShopCallBack();
                 this.$navigateBack();
             }).catch((error) => {
                 this.$toastShow(error.msg);

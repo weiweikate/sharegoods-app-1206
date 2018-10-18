@@ -104,46 +104,58 @@ class ShopCartCacheTool {
     *  "timestamp": 1536633469102 时间戳(非必须)
     * */
     addGoodItem(goodsItem) {
-        //微商品添加时间戳
-        goodsItem.timestamp = (new Date().getTime())
-        if (user.isLogin) {
-            //将数据添加到后台服务器
-            shopCartStore.addItemToShopCart(goodsItem);
+        if (goodsItem instanceof Array && goodsItem.length > 0){
+            goodsItem.map((good,index)=>{
+                good.timestamp = (new Date().getTime())
+                goodsItem[index] = good
+            })
+            if (user.isLogin){
+                //批量加入购物车
+                shopCartStore.addItemToShopCart(goodsItem)
+            }
         } else {
-            //缓存本地
-            Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
-                let [...localValue] = res;
-                if (localValue && (localValue instanceof Array)) {
-                    let isHave = false;
-                    localValue.map((localItem, indexPath) => {
-                        if (localItem.priceId === goodsItem.priceId &&
-                            localItem.productId === goodsItem.productId ) {
-                            localValue[indexPath] = goodsItem;
-                            isHave = true;
+            //为商品添加时间戳
+            goodsItem.timestamp = (new Date().getTime())
+            if (user.isLogin) {
+                //将数据添加到后台服务器
+                shopCartStore.addItemToShopCart(goodsItem);
+            } else {
+                //缓存本地
+                Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
+                    let [...localValue] = res;
+                    if (localValue && (localValue instanceof Array)) {
+                        let isHave = false;
+                        localValue.map((localItem, indexPath) => {
+                            if (localItem.priceId === goodsItem.priceId &&
+                                localItem.productId === goodsItem.productId ) {
+                                localValue[indexPath] = goodsItem;
+                                isHave = true;
+                            }
+                        });
+                        if (!isHave) {
+                            localValue.push(goodsItem);
                         }
-                    });
-                    if (!isHave) {
+                    } else {
+                        localValue = [];
                         localValue.push(goodsItem);
                     }
-                } else {
-                    localValue = [];
-                    localValue.push(goodsItem);
-                }
-                Storage.set(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
-                    //存入成功后,从后台拉取详细信息
-                    shopCartStore.getShopCartListWithNoLogin(localValue);
-                    // Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
-                    //
-                    // }).catch(error => {
-                    //
-                    // });
-                }).catch(() => {
-                    bridge.$toast('本地加入购物车失败');
-                });
-            }).catch(error => {
+                    Storage.set(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
+                        //存入成功后,从后台拉取详细信息
+                        shopCartStore.getShopCartListWithNoLogin(localValue);
+                        // Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
+                        //
+                        // }).catch(error => {
+                        //
+                        // });
+                    }).catch(() => {
+                        bridge.$toast('本地加入购物车失败');
+                    });
+                }).catch(error => {
 
-            });
+                });
+            }
         }
+
     }
 
     /*获取购物车数据 总入口*/

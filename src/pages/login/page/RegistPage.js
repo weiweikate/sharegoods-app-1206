@@ -81,16 +81,15 @@ export default class RegistPage extends BasePage {
                 </View>
             </View>
 
-
         );
     }
-
     //点击下一步
     clickNext = (phone, code, password) => {
         if (!this.state.gouxuan) {
             bridge.$toast('请先勾选用户协议');
             return;
         }
+        console.log(this.params)
         this.$loadingShow();
         LoginApi.findMemberByPhone({
             code: code,
@@ -100,7 +99,8 @@ export default class RegistPage extends BasePage {
             password: password,
             phone: phone,
             systemVersion: this.params.systemVersion ? this.params.systemVersion : '',
-            wechatVersion: ''
+            wechatVersion: '',
+            nickname:this.params.nickName
         }).then((data) => {
             if (data.code === 10000) {
                 user.saveUserInfo(data.data);

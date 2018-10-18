@@ -97,7 +97,7 @@ export default class SearchPage extends BasePage {
     //跳转
     _clickItemAction = (text, index, hotWordId) => {
         if (!this.state.recentData.includes(text)) {
-            this.state.recentData.push(text);
+            this.state.recentData.unshift(text);
             Storage.set(recentDataKey, this.state.recentData);
             this.forceUpdate();
         } else {
