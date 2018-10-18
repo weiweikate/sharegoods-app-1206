@@ -244,7 +244,7 @@ export default class ShopCartPage extends BasePage {
                                             padding: 2,
                                             left: 140,
                                             top: 20,
-                                            fontSize: 11,
+                                            fontSize: 10,
                                             color: ColorUtil.mainRedColor,
                                             borderWidth: 1,
                                             borderRadius: 4,
@@ -261,7 +261,7 @@ export default class ShopCartPage extends BasePage {
                         {/*style={[styles.validProductImg]}*/}
                         {/*/>*/}
                         {
-                            itemData.state === 1 ?
+                            itemData.status === 0 ?
                                 <UIImage
                                     source={ShopCartRes.invalidGoodImg}
                                     style={{
@@ -271,7 +271,8 @@ export default class ShopCartPage extends BasePage {
                                         width: 60,
                                         height: 60
                                     }}
-                                /> : null
+                                />
+                                : null
                         }
 
                         <View style={styles.validContextContainer}>
@@ -360,7 +361,7 @@ export default class ShopCartPage extends BasePage {
 
                 {
                     (
-                        itemData.activityType === 1 &&
+                        (itemData.activityType === 1 || itemData.activityType === 2)&&
                         this._getSkillIsBegin(itemData) === 1
                     )
                         ?
@@ -382,7 +383,7 @@ export default class ShopCartPage extends BasePage {
                                 fontSize: 11
                             }}>
                                 {
-                                    '该商品正在进行秒杀活动,快去看看~'
+                                    itemData.activityType === 1?  '该商品正在进行秒杀活动,快去看看~':'该商品正在进行降价拍活动,快去看看~'
                                 }
                             </Text>
                         </View>
