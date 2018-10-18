@@ -39,6 +39,8 @@ const api = {
     PackageMakeSureOrder:'/operator/activitypackage/makeSureOrder',
     //礼包的提交订单
     PackageSubmitOrder:'/operator/activitypackage/submitOrder',
+    //（陈帅）再来一单
+    againOrder:'/order/againOrder',
     /**  售后模块相关接口 huchao */
     //（陈帅）申请退款
     applyRefund: '/order/returnProduct/applyRefund',
