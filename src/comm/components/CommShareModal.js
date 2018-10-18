@@ -40,7 +40,7 @@ import {
     TouchableWithoutFeedback,
     Animated,
     Modal,
-    TouchableOpacity, Platform
+    Platform
 } from "react-native";
 
 import {
@@ -84,25 +84,7 @@ export default class CommShareModal extends React.Component {
         ).start();
     }
     close(){
-        Animated.spring(
-            // Animate value over time
-            this.state.y, // The value to drive
-            {
-                toValue: autoSizeWidth(340),
-                duration: 300,
-            }
-        ).start(() => {this.setState({modalVisible: false})});
-        if (this.state.shareType === 0){
-            this.state.scale.setValue(1);
-            Animated.spring(
-                // Animate value over time
-                this.state.scale, // The value to drive
-                {
-                    toValue: 0,
-                    duration: 300,
-                }
-            ).start();
-        }
+        this.setState({modalVisible: false});
     }
     /** public end */
     _bind() {
@@ -205,7 +187,7 @@ export default class CommShareModal extends React.Component {
                    visible = {this.state.modalVisible}
                    transparent={true}
             >
-                <TouchableOpacity style = {{
+                <View style = {{
                     backgroundColor: 'rgba(0,0,0,0.3)',
                     top: 0,
                     left: 0,
@@ -252,7 +234,7 @@ export default class CommShareModal extends React.Component {
                                 height: autoSizeWidth(650 / 2),
                                 width: autoSizeWidth(250),
                                 position: 'absolute',
-                                top: autoSizeWidth(90),
+                                top: ScreenUtils.height - autoSizeWidth(285) - autoSizeWidth(650 / 2),
                                 left: autoSizeWidth(125 / 2),
                                 borderRadius: 8,
                                 borderColor: '#CCCCCC',
@@ -267,7 +249,7 @@ export default class CommShareModal extends React.Component {
                                          style={{ height: autoSizeWidth(650 / 2), width: autoSizeWidth(250),backgroundColor:'red'}}/>
                             </Animated.View> : null
                     }
-                </TouchableOpacity>
+                </View>
             </Modal>
         );
     }

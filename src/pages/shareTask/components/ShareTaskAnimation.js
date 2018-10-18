@@ -13,39 +13,82 @@
 import React from "react";
 
 import {
-  StyleSheet,
-  View,
-  TouchableOpacity
+    StyleSheet,
+    View,
+    Modal,
+    Animated
 } from "react-native";
 
-import {
-  UIText,
-  UIImage
-} from "../../../components/ui";
 
 export default class ShareTaskAnimation extends React.Component {
 
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this._bind();
+        this._bind();
 
-    this.state = {};
-  }
+        this.state = {
+            modalVisible: false,
+            scale: new Animated.Value(0),
+        };
+    }
 
-  _bind() {
+    _bind() {
+        this.open =  this.open.bind(this);
+        this.close =  this.close.bind(this);
+    }
 
-  }
+    open(){
+        this.setState({modalVisible: true});
+        this.state.scale.setValue(0);
+        Animated.spring(
+            this.state.scale, // The value to drive
+            {
+                toValue: 1,
+                duration: 500,
+            }
+        ).start();
+    }
 
-  componentDidMount() {
-  }
+    close(){
+        this.setState({modalVisible: true});
+    }
+
+    componentDidMount() {
+    }
 
 
-  render() {
-    return (
+    render() {
+        return (
+            <Modal onRequestClose={this.close}
+                   visible = {this.state.modalVisible}
+                   transparent={true}
+            >
+                <View style = {styles.container}
+                      onPress={() => {this.close()}}
+                >
+                    <Animated.View style={{
+                        transform: [{scale: this.state.scale}]
 
-    );
-  }
+                    }}>
+                        {this.props.children}
+                    </Animated.View>
+                </View>
+            </Modal>
+
+        );
+    }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
+});
