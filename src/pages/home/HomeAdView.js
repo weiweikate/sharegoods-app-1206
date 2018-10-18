@@ -1,11 +1,12 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {View, StyleSheet, Image, TouchableOpacity} from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 import { AdModules , homeModule} from './Modules'
 import {observer} from 'mobx-react';
+import BasePage from '../../BasePage'
 
 @observer
-export default class HomeAdView extends Component {
+export default class HomeAdView extends BasePage {
     constructor(props) {
         super(props)
         this.adModules = new AdModules()
