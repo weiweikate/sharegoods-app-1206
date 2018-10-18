@@ -16,6 +16,7 @@ import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+import SMSTool from '../../../utils/SMSTool';
 
 const dismissKeyboard = require('dismissKeyboard');
 
@@ -182,10 +183,14 @@ export default class LoginTopView extends Component {
             return;
         }
         if (StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
-            (new TimeDownUtils()).startDown((time) => {
-                this.LoginModel.dowTime = time;
-            });
-            bridge.$toast('验证码已发送请注意查收');
+            SMSTool.sendVerificationCode(0,this.LoginModel.phoneNumber).then(result => {
+                (new TimeDownUtils()).startDown((time) => {
+                    this.LoginModel.dowTime = time;
+                });
+                bridge.$toast('验证码发送成功,注意查收');
+            }).catch(error => {
+                bridge.$toast(error.msg)
+            })
         } else {
             bridge.$toast('手机格式不对');
         }
