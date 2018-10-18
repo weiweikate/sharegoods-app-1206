@@ -167,8 +167,8 @@ export default class LoginPage extends BasePage {
         this.$loadingShow();
         if (loginType === 0) {
             LoginAPI.codeLogin({
-                authcode: '22',
-                code: '微信code',
+                authcode: '',
+                code: LoginParam.code,
                 device: '设备名称',
                 password: LoginParam.password,
                 phone: LoginParam.phoneNumber,
@@ -178,7 +178,6 @@ export default class LoginPage extends BasePage {
                 wechatVersion: ''
             }).then((data) => {
                 this.$loadingDismiss();
-                // console.log(data);
                 UserModel.saveUserInfo(data.data);
                 bridge.$toast('登陆成功');
                 this.params.callback && this.params.callback();
@@ -187,7 +186,7 @@ export default class LoginPage extends BasePage {
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
                 /*未注册*/
-                if (data.code === 34005) {
+                if (data.code === 34001) {
                     this.registBtnClick();
                 }
             });

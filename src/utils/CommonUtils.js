@@ -40,7 +40,8 @@ const CommonUtils = {
             return copy;
         }
         return obj;
-    }
+    },
+
 }
 
 export default  CommonUtils;

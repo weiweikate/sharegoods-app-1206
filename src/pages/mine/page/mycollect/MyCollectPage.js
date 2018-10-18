@@ -82,6 +82,7 @@ export default class MyCollectPage extends BasePage {
         // return true;
     };
     renderItem = (item, index) => {
+        console.log(item);
         return (
             this.isValidItem(index) ? this.renderValidItem(item, index) : this.renderInvalidItem({ item, index })
         );
@@ -236,7 +237,8 @@ export default class MyCollectPage extends BasePage {
                         storeStarId: item.storeStarId,
                         totalTradeBalance: item.totalTradeBalance,
                         userCount: item.userCount,
-                        userId: item.userId
+                        userId: item.userId,
+                        status:item.status,
                     });
                 });
                 console.log(arr);
