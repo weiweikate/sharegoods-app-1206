@@ -35,6 +35,7 @@ import leftBg from '../res/homeBaseImg/bg_03.png';
 import levelBg from '../res/homeBaseImg/icon3_03-02.png';
 import setting from '../res/homeBaseImg/icon_03.png';
 import service from '../res/homeBaseImg/icon02.png';
+import promotion from '../res/homeBaseImg/me_icon_tuiguang_nor.png';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineApi from '../api/MineApi';
 import { observer } from 'mobx-react/native';
@@ -317,190 +318,196 @@ export default class MinePage extends BasePage {
         return arr;
     };
     renderMenu = () => {
-        let leftImage = [inviteFr, coupons, myData, myCollet, myHelper, address, track, showImg];
-        let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹', '发现收藏'];
+        let leftImage = [inviteFr, coupons, myData, myCollet, myHelper, address, track, promotion , showImg];
+        let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹', '我的推广','发现收藏'];
+
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
             arr.push(
                 <NoMoreClick style={{
                     width: '25%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: 10,
-                    marginBottom: 10
-                }} onPress={() => this.orderMenuJump(i)} key={i}>
-                    <Image source={leftImage[i]}
-                           style={{ height: 24, width: 24, marginBottom: 10 }}/>
-                    <UIText value={leftText[i]} style={styles.greyText}/>
-                </NoMoreClick>
-            );
-        }
-        return arr;
-    };
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 10
+    }} onPress={() => this.orderMenuJump(i)} key={i}>
+        <Image source={leftImage[i]}
+               style={{ height: 24, width: 24, marginBottom: 10 }}/>
+        <UIText value={leftText[i]} style={styles.greyText}/>
+    </NoMoreClick>
+    );
+}
+return arr;
+};
 
-    renderMyWallet() {
-        return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                <NoMoreClick style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}
-                             onPress={() => this.go2CashDetailPage(1)}>
+renderMyWallet() {
+    return (
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <NoMoreClick style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}
+                         onPress={() => this.go2CashDetailPage(1)}>
+                <Text style={{
+                    fontSize: 14,
+                    color: '#212121'
+                }}>{StringUtils.formatMoneyString(this.state.availableBalance)}元</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={{
-                        fontSize: 14,
-                        color: '#212121'
-                    }}>{StringUtils.formatMoneyString(this.state.availableBalance)}元</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 11,
-                            color: '#666666',
-                            marginTop: 8
-                        }}>现金余额</Text>
-                        <Image source={arrowRight} style={{ width: 5, height: 8, marginLeft: 4, marginTop: 8 }}/>
-                    </View>
-                </NoMoreClick>
-                <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}/>
-            </View>
-        );
+                        fontFamily: 'PingFang-SC-Medium',
+                        fontSize: 11,
+                        color: '#666666',
+                        marginTop: 8
+                    }}>现金余额</Text>
+                    <Image source={arrowRight} style={{ width: 5, height: 8, marginLeft: 4, marginTop: 8 }}/>
+                </View>
+            </NoMoreClick>
+            <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}/>
+        </View>
+    );
+}
+
+//跳转到对应的订单状态页面
+jumpToOrderAccordingStates = (index) => {
+    if (!user.isLogin) {
+        this.props.navigation.navigate('login/login/LoginPage');
+        return;
     }
-
-    //跳转到对应的订单状态页面
-    jumpToOrderAccordingStates = (index) => {
-        if (!user.isLogin) {
-            this.props.navigation.navigate('login/login/LoginPage');
-            return;
-        }
-        switch (index) {
-            case 0:
-                this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 1 });
-                break;
-            case 1:
-                this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });
-                break;
-            case 2:
-                this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 3 });
-                break;
-            case 3:
-                this.props.navigation.navigate('order/afterSaleService/AfterSaleListPage', { index: 4 });
-                break;
-        }
-    };
-
-    //跳转到对应的账户页面
-    go2CashDetailPage(i) {
-        switch (i) {
-            case 1:
-                this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: this.state.availableBalance });
-                break;
-            case 2:
-                this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: this.state.userScore ? this.state.userScore : 0 });
-                break;
-            case 3:
-                this.$navigate('mine/userInformation/WaitingForWithdrawCashPage', { blockedBalance: this.state.blockedBalance ? this.state.blockedBalance : 0 });
-                break;
-            default:
-            // this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
-        }
+    switch (index) {
+        case 0:
+            this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 1 });
+            break;
+        case 1:
+            this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });
+            break;
+        case 2:
+            this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 3 });
+            break;
+        case 3:
+            this.props.navigation.navigate('order/afterSaleService/AfterSaleListPage', { index: 4 });
+            break;
     }
+};
 
-    orderMenuJump = (index) => {
-        // if (!user.isLogin) {
-        //     this.props.navigation.navigate('login/login/LoginPage');
-        //     return;
-        //let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹', '发现收藏'];
-        switch (index) {
-            case 0:
-                this.props.navigation.navigate('mine/InviteFriendsPage');
-                break;
-            case 1:
-                this.props.navigation.navigate('mine/coupons/CouponsPage');
-                break;
-            case 2:
-                this.props.navigation.navigate('mine/MyPromotionPage');
-                break;
-            case 3:
-                // this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });
-                this.props.navigation.navigate('mine/MyCollectPage');
-                break;
-            case 4:
-                // this.props.navigation.navigate('mine/MyCollectPage');
-                this.props.navigation.navigate('mine/helper/MyHelperPage');
-                break;
-            case 5:
-                this.props.navigation.navigate('mine/AddressManagerPage');
-                break;
-            case 6:
-                // this.props.navigation.navigate('mine/MyAddressBookPage');
-                // this.props.navigation.navigate('topic/TopicDetailPage',{activityType:3});
-                break;
-            case 7:
-                this.props.navigation.navigate('show/ShowConnectPage');
-                break;
+//跳转到对应的账户页面
+go2CashDetailPage(i) {
+    switch (i) {
+        case 1:
+            this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: this.state.availableBalance });
+            break;
+        case 2:
+            this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: this.state.userScore ? this.state.userScore : 0 });
+            break;
+        case 3:
+            this.$navigate('mine/userInformation/WaitingForWithdrawCashPage', { blockedBalance: this.state.blockedBalance ? this.state.blockedBalance : 0 });
+            break;
+        default:
+        // this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
+    }
+}
+
+orderMenuJump = (index) => {
+    // if (!user.isLogin) {
+    //     this.props.navigation.navigate('login/login/LoginPage');
+    //     return;
+    //let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹', '发现收藏'];
+    switch (index) {
+        case 0:
+            this.props.navigation.navigate('mine/InviteFriendsPage');
+            break;
+        case 1:
+            this.props.navigation.navigate('mine/coupons/CouponsPage');
+            break;
+        case 2:
+            this.props.navigation.navigate('mine/MyPromotionPage');
+            break;
+        case 3:
+            // this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });
+            this.props.navigation.navigate('mine/MyCollectPage');
+            break;
+        case 4:
+            // this.props.navigation.navigate('mine/MyCollectPage');
+            this.props.navigation.navigate('mine/helper/MyHelperPage');
+            break;
+        case 5:
+            this.props.navigation.navigate('mine/AddressManagerPage');
+            break;
+        case 6:
+            // this.props.navigation.navigate('mine/MyAddressBookPage');
+            // this.props.navigation.navigate('topic/TopicDetailPage',{activityType:3});
+            break;
+        case 7:
+            this.props.navigation.navigate('mine/promotion/UserPromotionPage');
+            break;
+        case 8:
+            this.props.navigation.navigate('show/ShowConnectPage');
+            break;
+            case 9:
+
             //邀请评分
             case 10:
                 //
                 const appId = '1';
-                const url = `https://itunes.apple.com/cn/app/id${appId}?mt=8`;
-                Platform.OS === 'ios' && Linking.canOpenURL(url).then(() => {
-                    Linking.openURL(url);
-                }).catch(e => {
-                    console.warn(e);
-                    // Toast.toast('无法前往AppStore');
-                });
-                break;
-            default:
+        const url = `https://itunes.apple.com/cn/app/id${appId}?mt=8`;
+        Platform.OS === 'ios' && Linking.canOpenURL(url).then(() => {
+            Linking.openURL(url);
+        }).catch(e => {
+            console.warn(e);
+            // Toast.toast('无法前往AppStore');
+        });
+        break;
+        default:
 
-                break;
+        break;
         }
-    };
+        };
 
-    jumpToAllOrder = () => {
-        if (!user.isLogin) {
+        jumpToAllOrder = () => {
+            if (!user.isLogin) {
             this.props.navigation.navigate('login/login/LoginPage');
             return;
         }
-        this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 0 });
-    };
-    jumpToServicePage = () => {
-        if (!user.isLogin) {
+            this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 0 });
+        };
+        jumpToServicePage = () => {
+            if (!user.isLogin) {
             this.props.navigation.navigate('login/login/LoginPage');
             return;
         }
-        this.props.navigation.navigate('message/MessageCenterPage');
-    };
+            this.props.navigation.navigate('message/MessageCenterPage');
+        };
 
-    jumpToSettingPage = () => {
-        // if (!user.isLogin) {
-        //     this.props.navigation.navigate('login/login/LoginPage');
-        //     return;
-        // }
-        this.props.navigation.navigate('mine/SettingPage', { callBack: () => this.loadPageData() });
+        jumpToSettingPage = () => {
+            // if (!user.isLogin) {
+            //     this.props.navigation.navigate('login/login/LoginPage');
+            //     return;
+            // }
+            this.props.navigation.navigate('mine/SettingPage', { callBack: () => this.loadPageData() });
 
-    };
-}
-const styles = StyleSheet.create({
-    container: {
-        flex: 1
-        // marginTop: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 0
-    },
-    whatLeft: {  // 组件定义了一个上边框
-        flex: 1,
-        borderTopWidth: 1,
-        borderColor: 'black',
-        backgroundColor: 'green' //每个界面背景颜色不一样
-    },
-    whiteText: {
-        fontSize: 15,
-        color: '#ffffff'
-    },
-    greyText: {
-        fontFamily: 'PingFang-SC-Regular',
-        fontSize: 12,
-        color: '#212121'
-    },
-    blackText: {
-        fontFamily: 'PingFang-SC-Medium',
-        fontSize: 13,
-        color: '#000000'
-    }
+        };
+        }
+        const styles = StyleSheet.create({
+            container: {
+            flex: 1
+            // marginTop: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 0
+        },
+            whatLeft: {  // 组件定义了一个上边框
+            flex: 1,
+            borderTopWidth: 1,
+            borderColor: 'black',
+            backgroundColor: 'green' //每个界面背景颜色不一样
+        },
+            whiteText: {
+            fontSize: 15,
+            color: '#ffffff'
+        },
+            greyText: {
+            fontFamily: 'PingFang-SC-Regular',
+            fontSize: 12,
+            color: '#212121'
+        },
+            blackText: {
+            fontFamily: 'PingFang-SC-Medium',
+            fontSize: 13,
+            color: '#000000'
+        }
 
-});
+        });
 
