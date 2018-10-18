@@ -165,6 +165,7 @@ export class ShowHotModules {
 
 export class ShowRecommendModules {
     @observable recommendList = []
+    @observable selectedList = new Map()
     @computed get recommendCount() {
         return this.recommendList.length
     }
@@ -265,5 +266,17 @@ export class ShowRecommendModules {
                 height: 400
             }
         ]
+    }
+
+    @action selectedAction = (data) => {
+        data.selected = !data.selected
+        // let index = this.selectedList.findIndex((value) => data.id === value.id)
+        // console.log('selectedAction', data, index)
+        // if (this.selectedList.has(data.id)) {
+        //     this.selectedList.delete(data.id)
+        // } else {
+        //     this.selectedList.set(data.id, true)
+        // }
+        // console.log('this.selectedList', this.selectedList.toJS())
     }
 }
