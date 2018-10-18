@@ -60,8 +60,8 @@ export default class SetShopNamePage extends BasePage {
     }
 
     _checkIsHasSpecialStr(str) {
-        let myReg = /[~!@#$%^&*()/\|,.<>?"'();:_+-=\[\]{}]/;
-        if (myReg.test(str)) {
+        let myReg = /^[a-zA-Z0-9_\u4e00-\u9fa5]{1,}$/;
+        if (!myReg.test(str)) {
             return true;
         }
         return false;
