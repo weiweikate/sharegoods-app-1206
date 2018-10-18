@@ -8,7 +8,8 @@ import {
     View,
     TouchableWithoutFeedback,
     TextInput,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    ScrollView
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import GoodsItem from '../components/GoodsGrayItem';
@@ -50,35 +51,36 @@ export default class FillReturnLogisticsPage extends BasePage {
     _render() {
         return(
             <View style = {styles.container}>
-                <GoodsItem
-                    uri={this.state.pageData.specImg}
-                    goodsName={this.state.pageData.productName}
-                    salePrice={StringUtils.formatMoneyString(this.state.pageData.price)}
-                    category={this.state.pageData.spec}
-                    goodsNum={this.state.pageData.num}
-                    // onPress={() => this.jumpToProductDetailPage(this.state.pageData.list[this.state.index].productId)}
-                />
-                <TouchableWithoutFeedback onPress = {this.selectLogisticsCompany}>
+                <ScrollView>
+                    <GoodsItem
+                        uri={this.state.pageData.specImg}
+                        goodsName={this.state.pageData.productName}
+                        salePrice={StringUtils.formatMoneyString(this.state.pageData.price)}
+                        category={this.state.pageData.spec}
+                        goodsNum={this.state.pageData.num}
+                        // onPress={() => this.jumpToProductDetailPage(this.state.pageData.list[this.state.index].productId)}
+                    />
+                    <TouchableWithoutFeedback onPress = {this.selectLogisticsCompany}>
+                        <View style = {styles.item_container}>
+                            <UIText style = {styles.item_title}
+                                    value = {'物流公司'}/>
+                            <UIText style = {this.state.logisticsCompanyName? styles.item_detail : styles.item_placeholder}
+                                    value = {this.state.logisticsCompanyName || '请选择物流公司'}/>
+                            <UIImage source={arrow_right} style = {{height: 9, width: 9, marginRight: 20}}/>
+                        </View>
+                    </TouchableWithoutFeedback>
                     <View style = {styles.item_container}>
                         <UIText style = {styles.item_title}
-                                value = {'物流公司'}/>
-                        <UIText style = {this.state.logisticsCompanyName ? styles.item_detail : styles.item_placeholder}
-                                value = {this.state.logisticsCompanyName || '请选择物流公司'}/>
-                        <UIImage source={arrow_right} style = {{height: 9, width: 9, marginRight: 20}}/>
+                                value = {'物流单号'}/>
+                        <TextInput underlineColorAndroid = {'transparent'}
+                                   placeholder = {'请填写物流单号'}
+                                   style = {styles.item_detail}
+                                   onChangeText = {(text) => {this.setState({logisticsNum: text})}}
+                                   keyboardType = {'number-pad'}
+                        />
+                        <UIImage source={wuxiu_btn_saoma_nor} style = {{height: 22, width: 22, marginRight: 20}}/>
                     </View>
-                </TouchableWithoutFeedback>
-                <View style = {styles.item_container}>
-                    <UIText style = {styles.item_title}
-                            value = {'物流单号'}/>
-                    <TextInput underlineColorAndroid = {'transparent'}
-                               placeholder = {'请填写物流单号'}
-                               style = {styles.item_detail}
-                               onChangeText = {(text) => {this.setState({logisticsNum: text})}}
-                               keyboardType = {'number-pad'}
-                    />
-                    <UIImage source={wuxiu_btn_saoma_nor} style = {{height: 22, width: 22, marginRight: 20}}/>
-                </View>
-                <View style = {{flex: 1}}/>
+                </ScrollView>
                 <TouchableWithoutFeedback onPress = {this.submit}>
                     <View style = {{backgroundColor: '#D51243', height: 50, alignItems: 'center', justifyContent: 'center'}}>
                         <UIText value = {'提交'} style = {{color: '#FFFFFF', fontSize: 16}}/>
@@ -100,10 +102,10 @@ export default class FillReturnLogisticsPage extends BasePage {
     }
 
     submit(){
-      if (EmptyUtils.isEmpty(this.state.logisticsCompanyName)){
-          this.$toastShow('请选择物流公司')
-          return;
-      }
+        if (EmptyUtils.isEmpty(this.state.logisticsCompanyName)){
+            this.$toastShow('请选择物流公司')
+            return;
+        }
         if (EmptyUtils.isEmpty(this.state.logisticsNum)){
             this.$toastShow('请填写物流单号')
             return;

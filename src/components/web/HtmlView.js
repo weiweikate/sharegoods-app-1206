@@ -1,8 +1,9 @@
 import React from 'react';
 import {
-    WebView,
+    WebView
 } from 'react-native';
 import BasePage from '../../BasePage';
+import StringUtils from '../../utils/StringUtils';
 
 export default class RequestDetailPage extends BasePage {
 
@@ -17,7 +18,7 @@ export default class RequestDetailPage extends BasePage {
         const { uri, title } = params;
         this.state = {
             title: title,
-            uri: uri,
+            uri: uri
         };
     }
 
@@ -31,8 +32,16 @@ export default class RequestDetailPage extends BasePage {
             <WebView source={{ uri: this.state.uri }}
                      javaScriptEnabled={true}
                      domStorageEnabled={true}
-                     scalesPageToFit={true} />
+                     scalesPageToFit={true}
+                     onNavigationStateChange={(event) => this.onNavigationStateChange(event)}>
+            </WebView>
         );
     }
+
+    onNavigationStateChange = (event) => {
+        if (!StringUtils.isEmpty(event.title)) {
+            this.$NavigationBarResetTitle(event.title);
+        }
+    };
 }
 

@@ -35,6 +35,7 @@ import moreIcon from '../../spellShop/myShop/res/more_icon.png';
 import GoodsItem from '../components/GoodsItem';
 import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
+import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 
 class MyOrdersDetailPage extends BasePage {
     constructor(props) {
@@ -1032,29 +1033,25 @@ class MyOrdersDetailPage extends BasePage {
                 this.setState({ isShowDeleteOrderModal: true });
                 break;
             case 8:
-                // Toast.showLoading()
-                // OrderApi.orderOneMore({orderId:this.state.viewData.list[0].orderId}).then((response)=>{
-                //     if(response.ok ){
-                //         let cartData=[]
-                //         response.data.map((item, index)=>{
-                //             cartData.push({sareSpecId:item.id,productNumber:item.num})
-                //         })
-                //         OrderApi.shoppingCartFormCookieToSession({jsonString: JSON.stringify(cartData)}).then((response)=>{
-                //             Toast.hiddenLoading()
-                //             if(response.ok){
-                //                 this.navigate('shopCart/CartPage',{isInnerPage:true})
-                //             } else {
-                //                 NativeModules.commModule.toast(response.msg)
-                //             }
-                //         }).catch(e=>{
-                //             NativeModules.commModule.toast(e)
-                //         });
-                //     } else {
-                //         NativeModules.commModule.toast(response.msg)
-                //     }
-                // }).catch(e=>{
-                //     NativeModules.commModule.toast(e)
-                // });
+                Toast.showLoading()
+                OrderApi.againOrder({orderNum: this.state.viewData.orderNum,
+                    id: this.state.orderId}).then((response)=>{
+                        let cartData=[];
+                    Toast.hiddenLoading();
+                    response.data.orderProducts.map((item, index) => {
+                        cartData.push({ productId: item.productId, priceId: item.priceId, amount: item.num });
+                    });
+                    let params={
+                        amount:  response.data.orderProducts[0].num,
+                        priceId:  response.data.orderProducts[0].priceId,
+                        productId:  response.data.orderProducts[0].productId,
+                    }
+                    shopCartCacheTool.addGoodItem(params);
+                    this.$navigate('shopCart/ShopCart',{  hiddeLeft:false});
+                }).catch(e=>{
+                    Toast.hiddenLoading();
+                    NativeModules.commModule.toast(e.msg)
+                });
                 break;
         }
     };

@@ -39,6 +39,7 @@ import service from '../res/homeBaseImg/icon02.png';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineApi from '../api/MineApi';
 import { observer } from 'mobx-react/native';
+import showImg from '../res/homeBaseImg/icon_faxian.png'
 
 @observer
 export default class MinePage extends BasePage {
@@ -317,8 +318,8 @@ export default class MinePage extends BasePage {
         return arr;
     };
     renderMenu = () => {
-        let leftImage = [inviteFr, calendar, coupons, myData, myCollet, myHelper, address, track];
-        let leftText = ['邀请好友', '活动日历', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹'];
+        let leftImage = [inviteFr, calendar, coupons, myData, myCollet, myHelper, address, track, showImg];
+        let leftText = ['邀请好友', '活动日历', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹', '发现收藏'];
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
             arr.push(
@@ -434,6 +435,9 @@ export default class MinePage extends BasePage {
             case 7:
                 // this.props.navigation.navigate('mine/MyAddressBookPage');
                 // this.props.navigation.navigate('topic/TopicDetailPage',{activityType:3});
+                break;
+            case 8:
+                this.props.navigation.navigate('show/ShowConnectPage');
                 break;
             //邀请评分
             case 10:

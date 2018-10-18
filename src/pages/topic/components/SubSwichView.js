@@ -37,9 +37,9 @@ export default class SubSwichView extends Component {
             //当标题为一个是不显示
             tempTitleArr.length > 1
                 ?
-            <View style={SwichStyles.swichBgStyle}>
-                {this._renderTitleItem()}
-            </View>
+                <View style={SwichStyles.swichBgStyle}>
+                    {this._renderTitleItem()}
+                </View>
                 :
                 null
         );
@@ -48,27 +48,29 @@ export default class SubSwichView extends Component {
     _renderTitleItem = () => {
         const { topicNavTitleList } = this.props.headerData || [];
         let tempTitleArr = topicNavTitleList || [];
+        let titleWidth = tempTitleArr.length > 5 ? ScreenUtils.width / 5 : ScreenUtils.width / tempTitleArr.length;
         return (
             <ScrollView
-                        ref="scroll"
-                        style={{
-                            width: ScreenUtils.width,
-                        }}
-                        contentContainerStyle={
-                            SwichStyles.titleBgStyle
-                        }
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
+                ref="scroll"
+                style={{
+                    width: ScreenUtils.width
+                }}
+                contentContainerStyle={
+                    SwichStyles.titleBgStyle
+                }
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
             >
                 {
                     tempTitleArr.slice().map((titleItem, titleItemIndex) => {
                         return <View
-                        style={{
-                            width:ScreenUtils.width / 2,
-                            justifyContent:'center',
-                            flexDirection:'column',
-                            // alignItems:'center'
-                        }}
+                            style={{
+                                // width: ScreenUtils.width / 2,
+                                width:titleWidth,
+                                justifyContent: 'center',
+                                flexDirection: 'column'
+                                // alignItems:'center'
+                            }}
                         >
                             <UIText
                                 onPress={() => {
@@ -77,11 +79,15 @@ export default class SubSwichView extends Component {
                                 style={[SwichStyles.titleItemStyle,
                                     this.state.selectState === titleItemIndex ?
                                         {
-                                            color: ColorUtil.mainRedColor
+                                            color: ColorUtil.mainRedColor,
+                                            width:titleWidth
                                         }
                                         :
-                                        { color: ColorUtil.Color_666666 }
+                                        {
+                                            color: ColorUtil.Color_666666 ,
+                                            width:titleWidth
 
+                                        }
                                 ]}
                                 value={titleItem.title}
                             />
@@ -90,11 +96,11 @@ export default class SubSwichView extends Component {
                                     <View
                                         style={
                                             {
-                                                width:70,
-                                                marginLeft:(ScreenUtils.width / 2 - 70) / 2,
-                                                marginTop:10,
-                                                height:1,
-                                                backgroundColor:ColorUtil.mainRedColor
+                                                width: 50,
+                                                marginLeft: (titleWidth - 50) / 2,
+                                                marginTop: 10,
+                                                height: 1,
+                                                backgroundColor: ColorUtil.mainRedColor
                                             }
                                         }
                                     />
@@ -102,9 +108,9 @@ export default class SubSwichView extends Component {
                                     <View
                                         style={
                                             {
-                                                marginTop:10,
-                                                height:1,
-                                                backgroundColor:ColorUtil.Color_ffffff
+                                                marginTop: 10,
+                                                height: 1,
+                                                backgroundColor: ColorUtil.Color_ffffff
                                             }
                                         }
                                     />
@@ -123,7 +129,7 @@ export default class SubSwichView extends Component {
         this.setState({
             selectState: index
         });
-        this.props.navItemClick && this.props.navItemClick(index)
+        this.props.navItemClick && this.props.navItemClick(index);
     };
 }
 
@@ -134,20 +140,20 @@ const SwichStyles = StyleSheet.create({
         },
         titleBgStyle: {
             height: 47,
-            flexDirection: 'row',
+            flexDirection: 'row'
         },
         titleItemStyle: {
             paddingTop: 15,
             color: ColorUtil.Color_d51243,
             fontSize: 16,
-            width:ScreenUtils.width / 2,
-            textAlign:'center'
+            width: ScreenUtils.width / 2,
+            textAlign: 'center'
         },
         bottomLineViewStyle: {
             height: 2,
             backgroundColor: ColorUtil.Color_d51243,
             width: 50,
             marginLeft: (ScreenUtils.width - 70 * 2) / 4
-        },
+        }
     }
 );

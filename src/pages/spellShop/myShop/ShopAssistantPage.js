@@ -145,7 +145,7 @@ export default class AssistantListPage extends BasePage {
 
     _renderHeaderComponent = () => {
         return <View style={styles.headerBg}>
-            <SearchBar placeholder={'搜索用户名和授权码'}
+            <SearchBar placeholder={'搜索用户名'}
                        style={{ marginBottom: 10 }}
                        onChangeText={this._onChangeText}
                        title={this.state.searchText}/>

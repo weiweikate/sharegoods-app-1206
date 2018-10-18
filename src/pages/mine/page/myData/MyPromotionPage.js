@@ -9,7 +9,6 @@ import {
     ScrollView,
     RefreshControl,
     ImageBackground,
-    Platform,
     TouchableWithoutFeedback
 } from 'react-native';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
@@ -290,10 +289,7 @@ export default class MyPromotionPage extends BasePage {
     }
 
     _onPressInvite = () => {
-        if(Platform.OS === 'ios'){
-            this.props.navigation.navigate('mine/InviteFriendsPage');
-        }
-
+        this.props.navigation.navigate('mine/InviteFriendsPage');
     };
 
     // 去购物

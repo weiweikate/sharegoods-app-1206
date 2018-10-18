@@ -14,7 +14,8 @@ import Banner from './src/yqhy_03.png';
 import Center from './src/yqhy_04.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
-import SpellShopApi from '../api/SpellShopApi';
+import CommShareModal from '../../../comm/components/CommShareModal';
+import bridge from '../../../utils/bridge';
 
 const gap = -5;
 
@@ -26,33 +27,27 @@ export default class InvitationToShopPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = {
-            data: {}
-        };
+        this.state = {};
     }
-
-    componentDidMount() {
-        this._loadPageData();
-    }
-
-    _loadPageData = () => {
-        SpellShopApi.getById().then((data) => {
-            this.setState({
-                data: data.data || {}
-            });
-        }).catch((error) => {
-            this.$toastShow(error.msg);
-        });
-    };
 
     info = {};
-    // 保存部分截屏
-    _saveImg = () => {
+    componentDidMount() {
+        this.creatQRCodeImage('二维码链接');
+    }
 
+    creatQRCodeImage(QRCodeStr){
+        bridge.creatQRCodeImage(QRCodeStr, (path) => {
+            this.setState({path});
+        }) ;
+    }
+
+    //截屏
+    _saveImg = () => {
+        bridge.saveScreen();
     };
 
     _shareImg = () => {
-
+        this.shareModal.open();
     };
 
     _onLayout = ({ nativeEvent }) => {
@@ -69,13 +64,11 @@ export default class InvitationToShopPage extends BasePage {
 
     _render() {
         // 需要分享的参数信息
-        const shareInfo = this.state.params.shareInfo || {};
+        const shareInfo = this.params.shareInfo || {};
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ alignItems: 'center' }}>
-
-
                         <ImageBackground onLayout={this._onLayout} style={[styles.imgBg]}
                                          source={Center}>
                             <View style={styles.topContainer}>
@@ -86,8 +79,8 @@ export default class InvitationToShopPage extends BasePage {
                                 }
                                 <View style={{ justifyContent: 'space-between' }}>
                                     <Text style={styles.text}>{shareInfo.name || ''}</Text>
-                                    <Text style={styles.text}>店铺ID：{shareInfo.id || ''}</Text>
-                                    <Text style={styles.text}>店主：{shareInfo.nickname || ''}</Text>
+                                    <Text style={styles.text}>店铺ID：{shareInfo.storeNumber || ''}</Text>
+                                    <Text style={styles.text}>店主：{shareInfo.storeUserName || ''}</Text>
                                 </View>
                             </View>
                             <View style={styles.qrContainer}>
@@ -97,11 +90,8 @@ export default class InvitationToShopPage extends BasePage {
                                     bgColor='#333'
                                     fgColor='white'/>
                             </View>
-                            <Text style={styles.wxTip}>分享至微信，为您的店铺增添活力</Text>
-
-
+                            <Text style={styles.wxTip}>分享为您的店铺增添活力</Text>
                         </ImageBackground>
-
                         <Image style={{
                             position: 'absolute',
                             top: 40
@@ -123,6 +113,13 @@ export default class InvitationToShopPage extends BasePage {
                     </View>
 
                 </ScrollView>
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                webJson={{
+                                    title: '分享标题(当为图文分享时候使用)',
+                                    dec: '内容(当为图文分享时候使用)',
+                                    linkUrl: 'http://testh5.sharegoodsmall.com/#/register',
+                                    thumImage: 'logo.png'
+                                }}/>
             </View>
         );
     }

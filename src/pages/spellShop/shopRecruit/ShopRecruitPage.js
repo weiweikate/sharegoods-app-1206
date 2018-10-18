@@ -36,7 +36,7 @@ export default class ShopRecruitPage extends BasePage {
     $NavBarRenderRightItem = () => {
         return <View style={styles.rightBarItemContainer}>
             <TouchableOpacity onPress={() => {
-                this.$navigate('spellShop/recommendSearch/RecommendPage', { havaShop: true });
+                this.$navigate('spellShop/recommendSearch/RecommendPage');
             }
             }>
                 <Image style={{ marginRight: 20 }} source={icons8_Shop_50px}/>
@@ -83,7 +83,9 @@ export default class ShopRecruitPage extends BasePage {
             items: arr
         }, (item, index) => {
             if (index === 0) {
-                this.shareModal.open();
+                setTimeout(() => {
+                    this.shareModal.open();
+                }, 500);
             } else if (index === 1) {
                 // 举报弹框
                 setTimeout(() => {
@@ -242,18 +244,11 @@ export default class ShopRecruitPage extends BasePage {
                 <ConfirmAlert ref="delAlert"/>
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
-                                type={'Image'}
-                                imageJson={{
-                                    imageUrlStr: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1539577593172&di=c87eead9eb2e2073b50758daf6194c62&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F59c914525c484566292f8d8d3d29c964ca59c7ca.jpg',
-                                    titleStr: '商品标题',
-                                    priceStr: '¥100.00',
-                                    QRCodeStr: '分享的链接'
-                                }}
                                 webJson={{
                                     title: '分享标题(当为图文分享时候使用)',
                                     dec: '内容(当为图文分享时候使用)',
-                                    linkUrl: '(图文分享下的链接)',
-                                    thumImage: '(分享图标小图(http链接)图文分享使用)'
+                                    linkUrl: 'http://testh5.sharegoodsmall.com/#/register',
+                                    thumImage: 'logo.png'
                                 }}/>
             </View>
         );
