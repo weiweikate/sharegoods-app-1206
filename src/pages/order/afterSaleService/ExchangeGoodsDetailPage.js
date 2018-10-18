@@ -517,11 +517,19 @@ class ExchangeGoodsDetailPage extends BasePage {
     };
 
     //**********************************BusinessPart******************************************
-    loadPageData() {
+    loadPageData(callBack) {
         this.$loadingShow();
         OrderApi.returnProductLookDetail({returnProductId:this.params.returnProductId}).then((response)=>{
             this.$loadingDismiss()
             let pageData = response.data;
+            if (callBack){
+                if (pageData.status === 1) {
+                    callBack();
+                    return;
+                }else {
+                    this.$toastShow('订单状态已修改');
+                }
+            }
             if (pageData.status === 3 && pageData.expressName && pageData.expressNo) {
                 /** 将原来的拒绝状态（3），分成 3 -》 商家拒绝申请 和 9 -》 表示寄出商品后商家拒绝退款
                  * 状态为已拒绝，且有寄出物流的信息，新增加状态 9 -》 表示寄出商品后商家拒绝退款
@@ -598,10 +606,10 @@ class ExchangeGoodsDetailPage extends BasePage {
                     <UIText value = {'您已成功发起' + typeStr + '申请，请耐心等待商家处理'} style = {{ color: '#222222', fontSize: 15, marginLeft: 15}}/>
                 </View>
                 <View style = {{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-                    <TouchableOpacity onPress = {() => {this.onPressOperationApply(true)}} style ={[styles.borderButton, {borderColor: '#666666'}]}>
+                    <TouchableOpacity onPress = {() => {this.loadPageData(() => this.onPressOperationApply(true))}} style ={[styles.borderButton, {borderColor: '#666666'}]}>
                         <UIText value = {'撤销申请'} style = {{fontSize: 16, color: '#666666'}}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress = {() => {this.onPressOperationApply(false)}} style ={styles.borderButton}>
+                    <TouchableOpacity onPress = {() => {this.loadPageData(() => this.onPressOperationApply(false))}} style ={styles.borderButton}>
                         <UIText value = {'编辑申请'} style = {{fontSize: 16, color: '#D51243'}}/>
                     </TouchableOpacity>
                 </View>
@@ -743,7 +751,7 @@ const styles = StyleSheet.create({
     header_image: {
         height: 35,
         width: 35,
-        marginRight: 15,
+        marginLeft: 15,
     }
 });
 
