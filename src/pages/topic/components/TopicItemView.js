@@ -10,6 +10,7 @@ import ColorUtil from '../../../utils/ColorUtil';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import PropTypes from 'prop-types';
+import StringUtils from '../../../utils/StringUtils';
 
 export default class TopicItemView extends Component {
 
@@ -21,7 +22,7 @@ export default class TopicItemView extends Component {
         const { itemData, numOfColum } = this.props;
         return (
             <TouchableOpacity onPress={() => {
-                this.props.itemClickAction&&this.props.itemClickAction();
+                this.props.itemClickAction && this.props.itemClickAction();
             }}>
                 <View style={
                     [
@@ -45,17 +46,17 @@ export default class TopicItemView extends Component {
                             imageUri={itemData.specImg}
                         />
                         {/*<View style={*/}
-                            {/*[Styles.itemTipBgViewStyle,*/}
-                                {/*{*/}
-                                    {/*marginTop: ScreenUtils.width / numOfColum - 16 - 16,*/}
-                                    {/*width: ScreenUtils.width / numOfColum - 16*/}
-                                {/*}*/}
-                            {/*]*/}
+                        {/*[Styles.itemTipBgViewStyle,*/}
+                        {/*{*/}
+                        {/*marginTop: ScreenUtils.width / numOfColum - 16 - 16,*/}
+                        {/*width: ScreenUtils.width / numOfColum - 16*/}
+                        {/*}*/}
+                        {/*]*/}
 
                         {/*}>*/}
-                            {/*/!*<Text style={Styles.itemTipTextStyle}>*!/*/}
-                                {/*/!*测试测试测试测试*!/*/}
-                            {/*/!*</Text>*!/*/}
+                        {/*/!*<Text style={Styles.itemTipTextStyle}>*!/*/}
+                        {/*/!*测试测试测试测试*!/*/}
+                        {/*/!*</Text>*!/*/}
                         {/*</View>*/}
                         <Text
                             style={
@@ -71,7 +72,7 @@ export default class TopicItemView extends Component {
                         </Text>
 
                         <Text style={Styles.itemBottomPriceTextStyle}>
-                            {itemData.originalPrice + '起'}
+                            {StringUtils.formatMoneyString(itemData.originalPrice) + '起'}
                         </Text>
 
                     </View>
@@ -83,7 +84,7 @@ export default class TopicItemView extends Component {
 TopicItemView.propTypes = {
     itemData: PropTypes.object.isRequired,
     numOfColum: PropTypes.number.isRequired,
-    itemClickAction:PropTypes.func.isRequired,
+    itemClickAction: PropTypes.func.isRequired
 };
 
 const Styles = StyleSheet.create({
