@@ -295,12 +295,12 @@ export default class ProductDetailPage extends BasePage {
                                     imageUrlStr: imgUrl,
                                     titleStr: `${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`,
                                     priceStr: `￥${price}`,
-                                    QRCodeStr: `http://testh5.sharegoodsmall.com/#/product?id=${this.state.data.product.id}`
+                                    QRCodeStr: `http://testh5.sharegoodsmall.com/#/product?id=${product.id}`
                                 }}
                                 webJson={{
                                     title: `${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`,
                                     dec: '内容(当为图文分享时候使用)',
-                                    linkUrl: `http://testh5.sharegoodsmall.com/#/product?id=${this.state.data.product.id}`,
+                                    linkUrl: `http://testh5.sharegoodsmall.com/#/product?id=${product.id}`,
                                     thumImage: imgUrl
                                 }}/>
             </View>
