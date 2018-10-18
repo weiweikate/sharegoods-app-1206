@@ -7,7 +7,6 @@ import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MyCouponsItems from './../../components/MyCouponsItems';
 import User from '../../../../model/user';
-// import Modal from 'react-native-modalbox';
 
 export default class CouponsPage extends BasePage {
     constructor(props) {
@@ -34,11 +33,6 @@ export default class CouponsPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                {/*<Modal isOpen={this.state.modalVisible} style={{ backgroundColor: 'transparent' }}>*/}
-                    {/*<View style={{ backgroundColor: 'white', marginLeft: 30, marginRight: 30 }}>*/}
-
-                    {/*</View>*/}
-                {/*</Modal>*/}
                 <ScrollableTabView
                     onChangeTab={(obj) => {
                         this.setState({ selectTab: obj.i });
