@@ -82,8 +82,6 @@ export default class ShopCartPage extends BasePage {
                     this.$navigatorBar && this.$navigatorBar.hiddenLeftItem(hiddeLeft)
                 }
             </View>
-
-
         );
     }
 
@@ -241,11 +239,11 @@ export default class ShopCartPage extends BasePage {
                             style={[styles.validProductImg]}
                         />
                         {
-                            activityString[itemData.activityCode]
+                            activityString[itemData.activityType]
                                 ?
                                 <UIText
                                     value={
-                                        activityString[itemData.activityCode]
+                                        activityString[itemData.activityType]
                                     }
                                     style={
                                         {
@@ -290,7 +288,7 @@ export default class ShopCartPage extends BasePage {
                                         itemData.productName
                                             ?
                                             (
-                                                activityString[itemData.activityCode]
+                                                activityString[itemData.activityType]
                                                     ?
                                                     '    ' + itemData.productName
                                                     :
@@ -368,7 +366,10 @@ export default class ShopCartPage extends BasePage {
                 </TouchableHighlight>
 
                 {
-                    itemData.activityCode === 2
+                    (
+                        itemData.activityType === 1 &&
+                        this._getSkillIsBegin(itemData) === 1
+                    )
                         ?
                         <View
                             style={
@@ -387,7 +388,9 @@ export default class ShopCartPage extends BasePage {
                                 color: ColorUtil.Color_ffffff,
                                 fontSize: 11
                             }}>
-                                该商品正在进行秒杀活动,快去看看~
+                                {
+                                        '该商品正在进行秒杀活动,快去看看~'
+                                }
                             </Text>
                         </View>
                         : null
@@ -398,6 +401,26 @@ export default class ShopCartPage extends BasePage {
             </View>
         );
     };
+    /**
+     * 获取秒杀是否开始或者结束
+     * @param itemData
+     * @private
+     *
+     * return 0 未开始 1进行中 2已结束
+     */
+    _getSkillIsBegin=(itemData)=>{
+       if(( new Date().getTime()) < itemData.activityBeginTime) {
+           return 1;
+       }else if (
+           (new Date().getTime()) > itemData.activityBeginTime &&
+           (new Date().getTime()) < itemData.activityEndTime
+       ){
+           return 1;
+       }else {
+           return 2;
+       }
+
+    }
     _jumpToProductDetailPage = (itemData) => {
         //跳转产品详情
         this.$navigate('home/product/ProductDetailPage', {
