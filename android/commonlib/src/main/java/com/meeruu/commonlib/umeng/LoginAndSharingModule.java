@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.loginAndSharing;
+package com.meeruu.commonlib.umeng;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -29,7 +29,8 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.meeruu.sharegoods.bean.WXLoginBean;
+import com.meeruu.commonlib.bean.WXLoginBean;
+import com.meeruu.commonlib.umeng.ShareImageBean;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;

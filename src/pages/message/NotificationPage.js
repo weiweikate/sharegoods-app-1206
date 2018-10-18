@@ -12,7 +12,7 @@ import StringUtils from '../../utils/StringUtils';
 import RefreshList from '../../components/ui/RefreshList';
 import BasePage from '../../BasePage';
 import arrorw_rightIcon from '../order/res/arrow_right.png';
-import HomeApi from '../home/api/HomeAPI';
+import MessageApi from './api/MessageApi';
 import Toast from '../../utils/bridge';
 
 export default class NotificationPage extends BasePage {
@@ -30,8 +30,9 @@ export default class NotificationPage extends BasePage {
         show: true // false则隐藏导航
     };
 
-    _componentWillUnmount() {
+    componentDidMount() {
         DeviceEventEmitter.emit('contentViewed');
+        this.loadPageData();
     }
 
     go2Questionnaire() {
@@ -39,15 +40,13 @@ export default class NotificationPage extends BasePage {
     }
 
     renderItem = ({ item, index }) => {
-        return (
-            !this.isNoticeItem(index) ? this.renderAnnouncementItem({ item, index }) : this.renderNoticeItem({
-                item,
-                index
-            })
-        );
+        return (this.renderNoticeItem({
+            item,
+            index
+        }));
     };
     isNoticeItem = (index) => {
-        let noticeCode = 2;
+        let noticeCode = 200;
         return this.state.viewData[index].status === noticeCode;
     };
 
@@ -73,41 +72,44 @@ export default class NotificationPage extends BasePage {
         return (
             <View style={{ height: 168, width: ScreenUtils.width }}>
                 <View style={styles.itemContents}>
-                    <Text>{DateUtils.getFormatDate(item.pushTime / 1000)}</Text>
+                    <Text>{DateUtils.getFormatDate(item.startTime / 1000,'MM/dd hh:mm')}</Text>
                 </View>
                 <View style={{ height: 49, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
-                    <Text style={{ marginLeft: 15, fontSize: 15, color: color.red }}>通知</Text>
+                    <Text style={{ marginLeft: 15, fontSize: 15, color: '#222222' }}>{item.title}</Text>
                 </View>
                 <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
-                <View style={{ height: 79, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
-                    <Text style={{ marginLeft: 5, fontSize: 15 }}>{item.content}</Text>
+                <View style={{ height: 79, justifyContent: 'center', backgroundColor: 'white' }}>
+                    <Text style={{ marginLeft: 15, fontSize: 15 }}>{item.content}</Text>
                 </View>
                 <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
             </View>
         );
     };
 
-    loadPageData() {
-        HomeApi.queryNoticeMessage({ page: 1, pageSize: 15 }).then(res => {
-            if (res.ok && typeof res.data === 'object' && StringUtils.isNoEmpty(res.data.data)) {
+
+    //type:200
+
+    loadPageData =()=> {
+        Toast.showLoading()
+        MessageApi.queryNotice({ page: 1, pageSize: 15,type:200 }).then(res => {
+            if (StringUtils.isNoEmpty(res.data.data)) {
                 let arrs = [];
                 res.data.data.map((item, index) => {
                     arrs.push({
-                        pushTime: item.orderTime,
-                        title: item.title,
-                        noticeId: item.noticeId,
-                        nType: item.nType,
+                        startTime: item.startTime,
                         content: item.content,
-                        status: item.status
+                        title: item.title,
+                        type: item.type,
                     });
                 });
                 this.setState({
                     viewData: arrs
                 });
-            } else {
-                Toast.toast(res.msg);
-                this.setState({ isEmpty: true });
             }
+        }).catch(error=>{
+            Toast.hiddenLoading()
+            this.setState({isEmpty:true})
+            this.$toastShow(error.msg);
         });
     }
 
@@ -126,19 +128,16 @@ export default class NotificationPage extends BasePage {
         this.getDataFromNetwork();
     };
 
-    getDataFromNetwork() {
-        HomeApi.queryNoticeMessage({ page: this.state.currentPage, pageSize: 15 }).then(res => {
+    getDataFromNetwork =()=> {
+        MessageApi.queryNotice({ page: this.state.currentPage, pageSize: 15 ,type:200}).then(res => {
             if (res.ok && typeof res.data === 'object' && StringUtils.isNoEmpty(res.data.data)) {
                 let arrs = this.state.currentPage == 1 ? [] : this.state.viewData;
                 res.data.data.map((item, index) => {
                     arrs.push({
-                        pushId: item.pushId,
-                        pushTime: item.pushTime,
-                        title: item.title,
-                        noticeId: item.noticeId,
-                        nType: item.nType,
+                        startTime: item.startTime,
                         content: item.content,
-                        status: item.status
+                        title: item.title,
+                        type: item.type,
                     });
                 });
                 this.setState({

@@ -1,9 +1,11 @@
 /**
- * Created by xiangchen on 2018/7/24.
+ * @author xzm
+ * @date 2018/10/16
  */
+
 import React from 'react';
 import {
-     StyleSheet, View, Text, Image,  DeviceEventEmitter,
+    StyleSheet, View, Text, Image,  DeviceEventEmitter,
     TouchableOpacity,
     TouchableWithoutFeedback
 } from 'react-native'
@@ -14,23 +16,22 @@ import DateUtils from '../../utils/DateUtils';
 import BasePage from '../../BasePage';
 import {RefreshList} from "../../components/ui";
 import arrorw_rightIcon from "../order/res/arrow_right.png";
-import MessageAPI from '../message/api/MessageApi';
 import Toast from '../../utils/bridge';
-import EmptyUtils from "../../utils/EmptyUtils";
+import EmptyUtils from '../../utils/EmptyUtils'
+import MessageAPI from "./api/MessageApi";
 const { px2dp } = ScreenUtils;
 import CommonUtils from 'CommonUtils'
 
 
-export default class MessageGatherPage extends BasePage {
+export default class ShopMessagePage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
             viewData: [],
             isEmpty: false,
-            // currentPage: 1,
+            currentPage: 1,
         }
         this.createdTime = null;
-        this.currentPage = 1;
     }
     $navigationBarOptions = {
         title:'消息',
@@ -57,109 +58,24 @@ export default class MessageGatherPage extends BasePage {
         DeviceEventEmitter.emit("contentViewed");
     }
 
+    confirmMessage = (id,confirm,index) =>{
+        MessageAPI.confirmMessage({confirm:confirm,id:id}).then(res=>{
+            let arr = CommonUtils.deepClone(this.state.viewData);
+            arr[index].confirm = confirm;
+            this.setState({
+                viewData:arr
+            });
+
+        }).catch(error=>{
+            this.$toastShow(error.msg)
+        })
+    }
+
     //100普通，200拼店
     /*加载数据*/
-    // loadPageData =()=> {
-    //     Toast.showLoading()
-    //     MessageAPI.queryMessage({page: 1, pageSize: 30, type:this.props.navigation.state.params.type}).then(res => {
-    //         Toast.hiddenLoading()
-    //         if(res.ok&&typeof res.data==='object'&&StringUtils.isNoEmpty(res.data.data)){
-    //
-    //             let arrData = [];
-    //             res.data.data.map((item, index) => {
-    //                 let obj = {
-    //                     title:'',
-    //                     creatTime: item.creatTime,
-    //                     id: item.id,
-    //                     type: item.type,
-    //                     tdId: item.tdId,
-    //                     content: item.content,
-    //                     pushTime:item.pushTime
-    //                 };
-    //                 switch (item.type) {
-    //                     case 1://支付成功
-    //                         obj.payType = item.payType;
-    //                         obj.title = "支付成功";
-    //                         obj.totalPrice = item.totalPrice;
-    //                         obj.orderNum = item.orderNum;
-    //                         break;
-    //                     case 2://订单发货
-    //                         obj.title = "订单发货";
-    //                         obj.orderNum = item.orderNum;
-    //                         break;
-    //                     case 3://订单超时
-    //                         obj.title = "订单超时";
-    //                         obj.orderNum = item.orderNum;
-    //                         break;
-    //                     case 4://退款申请
-    //                         obj.title = "退款申请";
-    //                         obj.orderNum = item.orderNum;
-    //                         break;
-    //                     case 5:    //退货申请
-    //                         obj.title = "退货申请";
-    //                         obj.orderNum = item.orderNum;
-    //                         break;
-    //                     case 6://换货申请
-    //                         obj.title = "换货申请";
-    //                         obj.orderNum = item.orderNum;
-    //                         break;
-    //                     case 7://退款成功
-    //                         obj.title = "退款成功";
-    //                         obj.orderNum = item.orderNum;
-    //                         break;
-    //                     case 8://提现申请驳回
-    //                         obj.title = "提现申请驳回";
-    //                         obj.totalPrice = item.totalPrice;
-    //                         break;
-    //                     case 9://提现申请成功
-    //                         obj.title = "提现申请成功";
-    //                         obj.totalPrice = item.totalPrice;
-    //                         break;
-    //                     case 10://提交提现申请
-    //                         obj.title = "提交提现申请";
-    //                         obj.totalPrice = item.totalPrice;
-    //                         break;
-    //                     case 11://余额提现到账
-    //                         obj.title = "余额提现到账";
-    //                         obj.totalPrice = item.totalPrice;
-    //                         break;
-    //                     case 12://代币提现到账
-    //                         obj.title = "代币提现到账";
-    //                         break;
-    //                     case 13://身份认证成功
-    //                         obj.title = "身份认证成功";
-    //                         break;
-    //                     case 14://身份认证失败
-    //                         obj.title = "身份认证失败";
-    //                         break;
-    //                     case 15://优惠券
-    //                         obj.title = "优惠券";
-    //                         break;
-    //                     case 16://秒杀
-    //                         obj.title="秒杀";
-    //                         obj.productId = item.orderNum;
-    //                         obj.tdId=item.tdId;
-    //                         break;
-    //                     case 17://降价拍
-    //                         obj.title="降价拍";
-    //                         obj.productId = item.orderNum;
-    //                         obj.tdId=item.tdId;
-    //                         break;
-    //                 }
-    //                 arrData.push(obj);
-    //             });
-    //             this.setState({viewData: arrData})
-    //         }else{
-    //             Toast.toast(res.msg);
-    //             this.setState({isEmpty:true})
-    //         }
-    //     });
-    // }
-
-
     loadPageData =()=> {
         Toast.showLoading()
-        MessageAPI.queryMessage({page: 1, pageSize: 30, type:100}).then(res => {
+        MessageAPI.queryMessage({page: 1, pageSize: 30, type:200}).then(res => {
             Toast.hiddenLoading()
             if(StringUtils.isNoEmpty(res.data.data)){
                 let arrData = [];
@@ -174,13 +90,13 @@ export default class MessageGatherPage extends BasePage {
                 Toast.toast(res.msg);
                 this.setState({isEmpty:true})
             }
-        }).catch(error=>{
-            this.$toastShow(error.msg);
-            this.setState({isEmpty:true})
+        }).catch((error)=>{
             Toast.hiddenLoading()
-
+            this.setState({isEmpty:true})
+            this.$toastShow(error.msg);
         });
     }
+
     renderPaySuccessItem = ({item, index})=> {
 
         return (
@@ -380,52 +296,77 @@ export default class MessageGatherPage extends BasePage {
             </View>
         )
     }
-    renderItem = ({item, index})=> {
-        // switch (item.type) {
-        //     case 1://支付成功
-        //         return this.renderPaySuccessItem({item, index});
-        //         break;
-        //     case 2://订单发货
-        //     case 3://订单超时
-        //     case 4://退款申请
-        //     case 5://退货申请
-        //     case 6://换货申请
-        //     case 7://退款成功
-        //         return this.renderForProductItem({item, index});
-        //         break;
-        //     case 8://提现申请驳回
-        //     case 9://提现申请成功
-        //     case 10://提交提现申请
-        //         return this.renderCashItem({item, index});
-        //         break;
-        //     case 11://余额提现到账
-        //     case 12://代币提现到账
-        //         return this.render2AccontItem({item, index});
-        //         break;
-        //     case 13://身份认证成功
-        //     case 14://身份认证失败
-        //     case 15://优惠券
-        //         return this.rendSingleItem({item, index});
-        //         break;
-        //     case 16://秒杀
-        //     case 17://降价拍
-        //         return this.rendActivityItem({item, index});
-        //         break;
-        //
-        // }
-        // return (
-        //     this.renderNoticeItem({item, index})
-        // )
 
-        let btn = (
-            <TouchableWithoutFeedback onPress={()=>{alert(item.param)}}>
-                <View style={{height:33,width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white'}}>
-                    <Text style={{color:'#666666',fontSize:px2dp(13)}}>
-                        {item.buttonName+">>"}
-                    </Text>
-                </View>
-            </TouchableWithoutFeedback>
-        );
+    itemBottomRender(item,index){
+        if(item.messageType === 100){
+            return null;
+        }
+
+        if(item.messageType === 200){
+            if(EmptyUtils.isEmpty(item.confirm)){
+               return(
+                   <View style={styles.itemBottomWrapper}>
+                       <TouchableWithoutFeedback onPress={()=>{
+                           this.confirmMessage(item.id,false,index)
+                       }}>
+                           <View style={styles.whiteButtonStyle}>
+                               <Text style={{color:'#D51243',fontSize:px2dp(16)}}>
+                                   拒绝
+                               </Text>
+                           </View>
+                       </TouchableWithoutFeedback>
+                       <TouchableWithoutFeedback onPress={()=>{
+                           this.confirmMessage(item.id,true,index)
+                       }}>
+                           <View style={styles.redButtonStyle}>
+                               <Text style={{color:'white',fontSize:px2dp(16)}}>
+                                   同意
+                               </Text>
+                           </View>
+                       </TouchableWithoutFeedback>
+                   </View>
+               );
+            }else if(item.confirm === true){
+                return(
+                    <View style={styles.itemBottomWrapper}>
+                        <View style={styles.grayButtonStyle}>
+                            <Text style={{color:'#D51243',fontSize:px2dp(16)}}>
+                                已同意
+                            </Text>
+                        </View>
+                    </View>
+                    );
+
+            }else {
+                return(
+                    <View style={styles.itemBottomWrapper}>
+                        <View style={styles.grayButtonStyle}>
+                            <Text style={{color:'white',fontSize:px2dp(16)}}>
+                                已拒绝
+                            </Text>
+                        </View>
+                    </View>
+                    )
+            }
+        }
+
+        if(item.messageType === 300){
+            return (
+
+                    <TouchableWithoutFeedback onPress={()=>{alert(item.param)}}>
+                        <View style={{height:33,width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white'}}>
+                            <Text style={{color:'#666666',fontSize:px2dp(13)}}>
+                                {item.buttonName+">>"}
+                            </Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+
+            )
+        }
+    }
+
+    renderItem = ({item, index})=> {
+
 
         return (
             <View style={{ width: ScreenUtils.width,backgroundColor:'white' }}>
@@ -439,139 +380,37 @@ export default class MessageGatherPage extends BasePage {
                     <Text style={{ marginLeft: 15, fontSize: 13,color:'#666666' }}>{item.content}</Text>
                 </View>
                 <View style={{ height:!EmptyUtils.isEmpty(item.param) ? 1 : 0, width: ScreenUtils.width, backgroundColor: '#DDDDDD' }}/>
-                {item.messageType === 200 ? btn : null}
+                {this.itemBottomRender(item,index)}
             </View>
         );
     };
-
     onLoadMore = () => {
-        // this.setState({
-        //     currentPage: this.state.currentPage + 1
-        // });
-        this.currentPage++;
-        this.getDataFromNetwork();
+        this.setState({
+            currentPage: this.state.currentPage + 1
+        });
+        this.getDataFromNetwork()
     }
     onRefresh = () => {
-        // this.setState({
-        //     currentPage: 1,
-        // })
-        this.currentPage = 1;
+        this.setState({
+            currentPage: 1
+        });
         this.createdTime = null;
         this.getDataFromNetwork()
     }
 
-    getDataFromNetwork = ()=> {
-        MessageAPI.queryMessage({page: this.currentPage, pageSize: 15,type:100,createdTime:this.createdTime}).then(res => {
-            if(!EmptyUtils.isEmpty(res)){
-                let arrData = CommonUtils.deepClone(this.state.viewData);
+    getDataFromNetwork() {
+        MessageAPI.queryMessage({page: this.state.currentPage, pageSize: 15, type:200,createdTime: this.createdTime}).then(res => {
+            if(StringUtils.isNoEmpty(res.data.data)){
+                let arrData = this.state.viewData;
                 res.data.data.map((item, index) => {
                     arrData.push(item);
                 });
-
-                if(!EmptyUtils.isEmptyArr(arrData)){
-                    this.createdTime = arrData[arrData.length-1].createdTime;
-                }
                 this.setState({viewData: arrData})
             }
         }).catch((error)=>{
-            this.$toastShow(error.msg)
+            this.$toastShow(error.msg);
         })
     }
-
-    // getDataFromNetwork() {
-    //
-    //     MessageAPI.queryMessage({page: this.state.currentPage, pageSize: 15,type:100}).then(res => {
-    //         if(res.ok&&typeof res.data==='object'&&res.data.data.length>0){
-    //             let arrData = [];
-    //             res.data.data.map((item, index) => {
-    //                 let obj = {
-    //                     creatTime: item.creatTime,
-    //                     id: item.id,
-    //                     type: item.type,
-    //                     tdId: item.tdId,
-    //                     content: item.content,
-    //                     pushTime:item.pushTime
-    //                 };
-    //                 switch (item.type) {
-    //                     case 1://支付成功
-    //                         obj.payType = item.payType;
-    //                         obj.title = "支付成功";
-    //                         obj.totalPrice = item.totalPrice;
-    //                         obj.orderNum = item.orderNum;
-    //                         break;
-    //                     case 2://订单发货
-    //                         obj.title = "订单发货";
-    //                         obj.orderNum = item.orderNum;
-    //                         break;
-    //                     case 3://订单超时
-    //                         obj.title = "订单超时";
-    //                         obj.orderNum = item.orderNum;
-    //                         break;
-    //                     case 4://退款申请
-    //                         obj.title = "退款申请";
-    //                         obj.orderNum = item.orderNum;
-    //                         break;
-    //                     case 5:    //退货申请
-    //                         obj.title = "退货申请";
-    //                         obj.orderNum = item.orderNum;
-    //                         break;
-    //                     case 6://换货申请
-    //                         obj.title = "换货申请";
-    //                         obj.orderNum = item.orderNum;
-    //                         break;
-    //                     case 7://退款成功
-    //                         obj.title = "退款成功";
-    //                         obj.orderNum = item.orderNum;
-    //                         break;
-    //                     case 8://提现申请驳回
-    //                         obj.title = "提现申请驳回";
-    //                         obj.totalPrice = item.totalPrice;
-    //                         break;
-    //                     case 9://提现申请成功
-    //                         obj.title = "提现申请成功";
-    //                         obj.totalPrice = item.totalPrice;
-    //                         break;
-    //                     case 10://提交提现申请
-    //                         obj.title = "提交提现申请";
-    //                         obj.totalPrice = item.totalPrice;
-    //                         break;
-    //                     case 11://余额提现到账
-    //                         obj.title = "余额提现到账";
-    //                         obj.totalPrice = item.totalPrice;
-    //                         obj.tokenCoin = item.tokenCoin;
-    //                         break;
-    //                     case 12://代币提现到账
-    //                         obj.title = "代币提现到账";
-    //                         obj.tokenCoin = item.tokenCoin;
-    //                         break;
-    //                     case 13://身份认证成功
-    //                         obj.title = "身份认证成功";
-    //                         break;
-    //                     case 14://身份认证失败
-    //                         obj.title = "身份认证失败";
-    //                         break;
-    //                     case 15://优惠券
-    //                         obj.title = "优惠券";
-    //                         break;
-    //                     case 16://秒杀
-    //                         obj.title="秒杀";
-    //                         obj.productId = item.orderNum;
-    //                         obj.tdId=item.tdId;
-    //                         break;
-    //                     case 17://降价拍
-    //                         obj.title="降价拍";
-    //                         obj.productId = item.orderNum;
-    //                         obj.tdId=item.tdId;
-    //                         break;
-    //                 }
-    //                 arrData.push(obj);
-    //             });
-    //             this.setState({viewData: arrData})
-    //         }else{
-    //             Toast.toast(res.msg);
-    //         }
-    //     })
-    // }
 
     _render() {
         return (
@@ -738,5 +577,43 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor:'#F7F7F7'
+    },
+    itemBottomWrapper:{
+        height:px2dp(60),
+        width:ScreenUtils.width,
+        backgroundColor:'white',
+        alignItems:'center',
+        justifyContent:'space-around',
+        flexDirection:'row'
+    },
+    whiteButtonStyle:{
+        backgroundColor:'white',
+        width:px2dp(138),
+        height:px2dp(40),
+        borderWidth:1,
+        borderRadius:px2dp(5),
+        borderColor:'#D51243',
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    redButtonStyle:{
+        backgroundColor:'#D51243',
+        width:px2dp(138),
+        height:px2dp(40),
+        borderWidth:1,
+        borderRadius:px2dp(5),
+        borderColor:'#D51243',
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    grayButtonStyle:{
+        backgroundColor:'#DDDDDD',
+        width:px2dp(138),
+        height:px2dp(40),
+        borderWidth:1,
+        borderRadius:px2dp(5),
+        borderColor:'#DDDDDD',
+        alignItems:'center',
+        justifyContent:'center'
     }
 });

@@ -24,7 +24,8 @@ import HomeAPI from '../api/HomeAPI';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import user from '../../../model/user'
 import { observer } from 'mobx-react/native';
-
+import EmptyUtils from '../../../utils/EmptyUtils'
+import MineApi from "../../mine/api/MineApi";
 @observer
 export default class SignInPage extends BasePage {
     constructor(props) {
@@ -63,8 +64,9 @@ export default class SignInPage extends BasePage {
         this.loadPageData();
     }
 
-    loadPageData() {
+    loadPageData =()=> {
         this.getSignData();
+        this.reSaveUserInfo();
     }
 
     getSignData = () => {
@@ -86,11 +88,45 @@ export default class SignInPage extends BasePage {
         });
     }
 
-    showMore = ()=>{
+    reSaveUserInfo = ()=>{
+        MineApi.getUser().then(res => {
+            if (res.code == 10000) {
+                let data = res.data;
+                user.saveUserInfo(data);
+            }
+        }).catch(err => {
+            if (err.code === 10009) {
+                this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
+            }
+        });
+    }
+
+    showMore = () =>{
         alert("跳转到规则页");
     }
 
-    //**********************************ViewPart******************************************
+    //签到
+    userSign = ()=>{
+        HomeAPI.userSign().then((data) => {
+            this.$toastShow(`签到成功 +${this.state.signInData[3].reward}秀豆`);
+            this.getSignData();
+            this.reSaveUserInfo();
+        }).catch((error) => {
+            this.$toastShow(error.msg)
+        });
+    }
+
+    //兑换一元优惠券
+    exchangeCoupon = ()=>{
+        HomeAPI.exchangeTokenCoin().then((data) => {
+            this.$toastShow('成功兑换一张1元抵扣券');
+            this.reSaveUserInfo();
+        }).catch((error) => {
+            this.$toastShow(error.msg)
+        });
+    }
+
+   //**********************************ViewPart******************************************
     _signInButtonRender(){
         return (
             <View style={styles.signInButtonWrapper}>
@@ -108,7 +144,8 @@ export default class SignInPage extends BasePage {
 
     _signInInfoRender(){
         let circlesView = this.state.signInData.map((item,index)=>{
-            let kind;
+            let kind,count;
+            count = item.reward ? item.reward : item.canReward;
             if(index <3){
                 if(item.continuous > 0){
                     kind = 'signedIn';
@@ -120,17 +157,18 @@ export default class SignInPage extends BasePage {
                     kind = 'signingIn';
                 }else {
                     kind = 'willSignIn';
+                    count = item.canReward;
                 }
             }else if(index > 3){
                 kind = 'willSignIn';
             }
             if(index === 0){
-                return <SignInCircleView key={'circle'+index}  count={item.reward >= 0 ? item.reward : item.canReward} kind={kind}/>
+                return <SignInCircleView key={'circle'+index}  count={!EmptyUtils.isEmpty(item.reward)  ? item.reward : item.canReward} kind={kind}/>
             }else {
                 return (
                     <View key={'circle'+index}  style={styles.signInItemWrapper}>
                         <View style={{backgroundColor:index<4 ?'white' : '#c6b478',height:px2dp(2), flex: 1}}/>
-                        <SignInCircleView count={item.reward || item.reward >= 0 ? item.reward : item.canReward} kind={kind}/>
+                        <SignInCircleView count={!EmptyUtils.isEmpty(item.reward) ? item.reward : item.canReward} kind={kind}/>
                     </View>
                 );
             }
@@ -180,7 +218,7 @@ export default class SignInPage extends BasePage {
                     <Text style={{color:'#D51243',fontSize:px2dp(12),includeFontPadding:false}}>
                         -- 100 --
                     </Text>
-                    <TouchableWithoutFeedback onPress={()=>{alert('aa')}}>
+                    <TouchableWithoutFeedback onPress={this.exchangeCoupon}>
                         <View style={styles.convertButtonStyle}>
                             <Text style={styles.convertTextStyle}>
                                 立即兑换
@@ -192,7 +230,14 @@ export default class SignInPage extends BasePage {
         )
     }
 
-    _render(){
+    _headerIconRender(){
+        let hasSign = !EmptyUtils.isEmpty(this.state.signInData[3].continuous);
+        let view = hasSign ? this._hasSignRender() : this._willSignRender();
+        return view;
+
+    }
+
+    _hasSignRender = ()=> {
         let count;
         if(this.state.signInData[3].continuous){
             count = this.state.signInData[3].continuous;
@@ -200,23 +245,47 @@ export default class SignInPage extends BasePage {
             count = this.state.signInData[2].continuous ? this.state.signInData[2].continuous : 0;
         }
         return(
+            <ImageBackground
+                source={signInImageBg}
+                style={styles.headerImageStyle}
+                resizeMode={'stretch'}>
+                {this._signInButtonRender()}
+                <Text style={styles.signInCountTextStyle}>
+                    {`累计签到${count}天`}
+                </Text>
+            </ImageBackground>
+        );
+    }
+
+    _willSignRender = ()=> {
+        return(
+            <ImageBackground
+                source={signInImageBg}
+                style={styles.headerImageStyle}
+                resizeMode={'stretch'}>
+                <TouchableWithoutFeedback onPress={this.userSign}>
+                    <View style={styles.signInButtonWrapper}>
+                        <Text style={styles.willSignTextStyle}>
+                            签
+                        </Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            </ImageBackground>
+        );
+    }
+
+    _render(){
+
+        return(
             <View style={styles.container}>
-                <ImageBackground
-                    source={signInImageBg}
-                    style={styles.headerImageStyle}
-                    resizeMode={'stretch'}>
-                    {this._signInButtonRender()}
-                    <Text style={styles.signInCountTextStyle}>
-                        {`累计签到${count}天`}
-                    </Text>
-                </ImageBackground>
+                {this._headerIconRender()}
                 {this.state.signInData ? this._signInInfoRender() : null}
                 {this._couponRender()}
                 <Text style={styles.reminderStyle}>
                     {reminder}
                 </Text>
                 <View style={{flex:1}}/>
-                <TouchableWithoutFeedback onPress={()=>{alert('bb')}}>
+                <TouchableWithoutFeedback onPress={()=>alert('跳转到优惠券列表')}>
                     <View>
                         <Text style={styles.couponsTextStyle}>
                             已有{user.tokenCoin ? user.tokenCoin : 0}张现金券>
@@ -344,6 +413,10 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         marginBottom:px2dp(15),
         includeFontPadding:false
+    },
+    willSignTextStyle:{
+        fontSize:px2dp(30),
+        color:'white',
     }
 
 });
