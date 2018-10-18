@@ -7,7 +7,7 @@ import {
 import ColorUtil from '../../../utils/ColorUtil';
 import BasePage from '../../../BasePage';
 
-export default class GetRedpacket extends BasePage {
+export default class GetRedpacketPage extends BasePage {
     constructor(props) {
         super(props);
     }

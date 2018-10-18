@@ -3,6 +3,7 @@ import OldUserLoginPage from './OldUserLoginPage';
 import SetPasswordPage from './SetPasswordPage';
 import RegistPage from './RegistPage';
 import ForgetPasswordPage from './ForgetPasswordPage';
+import GetRedpacketPage from './GetRedpacketPage'
 import TestNav from './testNav'
 
 
@@ -15,7 +16,8 @@ export default {
         SetPasswordPage,
         RegistPage,
         ForgetPasswordPage,
-        TestNav
+        GetRedpacketPage,
+        TestNav,
     }
 };
 
