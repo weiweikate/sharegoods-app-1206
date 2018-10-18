@@ -14,7 +14,8 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    Platform
+    Platform,
+    TouchableWithoutFeedback
 } from "react-native";
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -28,6 +29,7 @@ const autoSizeWidth =  ScreenUtils.autoSizeWidth;
 import CommShareModal from '../../../../comm/components/CommShareModal'
 import bridge from '../../../../utils/bridge'
 // import BaseUrl from '../../../../api/BaseUrl'
+import fanhui from '../../res/homeBaseImg/fanhui.png'
 
 type Props = {};
 export default class InviteFriendsPage extends BasePage<Props> {
@@ -80,6 +82,23 @@ export default class InviteFriendsPage extends BasePage<Props> {
                              height: autoSizeWidth(582 / 2.0),
                              marginTop: autoSizeWidth(140),
                          }}/>
+                <TouchableWithoutFeedback onPress = {() => {this.$navigateBack()}}>
+                    <View style = {{
+                        width: 44,
+                        height: 44,
+                        top: ScreenUtils.statusBarHeight,
+                        left: 0,
+                        position: 'absolute',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}>
+                    <UIImage source = {fanhui}
+                             style = {{
+                                 width: 13,
+                                 height: 22
+                             }}/>
+                    </View>
+                </TouchableWithoutFeedback>
                 <UIImage source = {{uri: this.state.path}}
                          style = {{
                              width: autoSizeWidth(160),
