@@ -36,11 +36,17 @@ const ActivityItem = ({data, press}) => {
                 <Image style={styles.banner} source={{uri: imgUrl}} resizeMode={'cover'}/>
             </View>
         </TouchableOpacity>
-        <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
+        {
+            topicBannerProductDTOList && topicBannerProductDTOList.length > 0
+            ?
+            <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
             {goodsItem}
-            <MoreItem press={()=>{press && press()}}/>
-            <View style={styles.space}/>
-        </ScrollView>
+                <MoreItem press={()=>{press && press()}}/>
+                <View style={styles.space}/>
+            </ScrollView>
+            :
+            <View style={{height: px2dp(20)}}/>
+        }
     </View>
 }
 
