@@ -190,6 +190,7 @@ export default class LoginTopView extends Component {
                 bridge.$toast('验证码发送成功,注意查收');
             }).catch(error => {
                 bridge.$toast(error.msg)
+                console.log(error);
             })
         } else {
             bridge.$toast('手机格式不对');
