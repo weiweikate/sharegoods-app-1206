@@ -14,12 +14,12 @@ import unselectedImg from './res/unselected.png'
 import { Payment, paymentType } from './Payment'
 import PayUtil from './PayUtil'
 
-const PayCell = ({data, isSelected, balance, press, selectedTypes}) => {
+const PayCell = ({data, isSelected, balance, press, selectedTypes, disabled}) => {
     let selected = isSelected
     if (data.type !== paymentType.balance && selectedTypes) {
         selected = selectedTypes.type === data.type
     }
-    return <TouchableOpacity style={styles.cell} onPress={()=>press && press()}>
+    return <TouchableOpacity style={styles.cell} disabled={disabled} onPress={()=>press && press()}>
         <View style={{ flexDirection: 'row', alignItems: 'center' ,flex:1}}>
             <Image source={data.icon} style={{ height: 33 }} resizeMode={'contain'}/>
             <Text style={[styles.blackText, { marginLeft: 5 }]}>{data.name}</Text>
@@ -101,12 +101,12 @@ export default class PaymentMethodPage extends BasePage {
             if (value.type === paymentType.section) {
                 items.push(<Section key={index + ''} data={value}/>)
             } else {
-                items.push(<PayCell key={index + ''}  selectedTypes={selectedTypes} data={value} balance={availableBalance} press={()=>this._selectedPayType(value)}/>)
+                items.push(<PayCell disabled={value.type !== paymentType.balance && this.state.paymentPageParams.shouldPayMoney  === 0} key={index + ''}  selectedTypes={selectedTypes} data={value} balance={availableBalance} press={()=>this._selectedPayType(value)}/>)
             }
         })
 
         return  <View  style={styles.container}><ScrollView style={styles.container}>
-            <PayCell data={balancePayment} isSelected={selectedBalace} balance={availableBalance} press={()=>this._selectedBalancePay(balancePayment)}/>
+            <PayCell data={balancePayment} isSelected={selectedBalace || this.state.paymentPageParams.shouldPayMoney  === 0} balance={availableBalance} press={()=>this._selectedBalancePay(balancePayment)}/>
             {items}
         </ScrollView>
         {this.renderBottomOrder()}
@@ -296,9 +296,6 @@ export default class PaymentMethodPage extends BasePage {
             this._wechat()
             return
         }
-
-
-
     };
     //需要在当前选择的支付方式能完成支付的情况下，才保证调用该方法返回的数据有效性
     getApiRequestParams = () => {
