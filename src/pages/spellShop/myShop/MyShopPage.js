@@ -147,7 +147,7 @@ export default class MyShopPage extends BasePage {
     _clickSettingItem = () => {
         const { myStore } = this.state.storeData;
         if (myStore) {
-            this.$navigate('spellShop/shopSetting/ShopPageSettingPage', { storeData: this.state.storeData });
+            this.$navigate('spellShop/shopSetting/ShopPageSettingPage', { storeData: this.state.storeData,myShopCallBack:this._loadPageData});
         } else {
             this.actionSheetRef.show({
                 items: ['分享店铺', '举报店铺', '退出店铺']//
