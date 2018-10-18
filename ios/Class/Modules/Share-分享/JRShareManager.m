@@ -29,7 +29,13 @@ SINGLETON_FOR_CLASS(JRShareManager)
        completion:(shareFinshBlock) completion
 {
   UMSocialPlatformType platefrom = [self getUMSocialPlatformType:[shareModel.platformType  integerValue]];
-  if ([shareModel.shareType integerValue] == 1) {//为分享网页
+  if ([shareModel.shareType integerValue] == 1 || [shareModel.shareType integerValue] == 2) {//为分享网页
+    
+    if ([shareModel.shareType integerValue] == 2 && platefrom == UMSocialPlatformType_WechatSession) {
+      [self shareMiniProgramWithModel:shareModel completion:completion];
+      return;
+      
+    }
     [self shareWithPlatefrom:platefrom
                        Title:shareModel.title
                     SubTitle:shareModel.dec
@@ -39,6 +45,64 @@ SINGLETON_FOR_CLASS(JRShareManager)
   }else{//分享图片
     [self shareImage:platefrom imageUrl:shareModel.shareImage completion: completion];
   }
+}
+-(void)shareMiniProgramWithModel:(JRShareModel *)shareModel
+                      completion:(shareFinshBlock) completion{
+  //创建分享消息对象
+  UMSocialMessageObject *message = [UMSocialMessageObject messageObject];
+  id thumImage = [self getImageWithPath:shareModel.thumImage];
+  UMShareMiniProgramObject *shareObject = [UMShareMiniProgramObject shareObjectWithTitle:shareModel.title descr:shareModel.dec thumImage:thumImage];
+  shareObject.webpageUrl = shareModel.linkUrl;
+  shareObject.userName = shareModel.userName;
+  shareObject.path = shareModel.miniProgramPath;
+  message.shareObject = shareObject;
+  shareObject.hdImageData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"logo" ofType:@"png"]];
+   [self shareWithMessageObject:message platform:UMSocialPlatformType_WechatSession completion:completion];
+  
+}
+-(void)shareWithPlatefrom:(UMSocialPlatformType)platform
+                    Title:(NSString *)title
+                 SubTitle:(NSString *)subTitle
+                    Image:(NSString *)imageUrl
+                  LinkUrl:(NSString *)linkUrl
+               completion:(shareFinshBlock) completion
+{
+  UMSocialMessageObject * message = [[UMSocialMessageObject alloc]init];
+  id thumImage = [self getImageWithPath:imageUrl];
+  UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:title descr:subTitle thumImage:thumImage];
+  //设置网页地址
+  shareObject.webpageUrl = linkUrl;
+  //分享消息对象设置分享内容对象
+  message.shareObject = shareObject;
+  
+   [self shareWithMessageObject:message platform:platform completion:completion];
+
+}
+
+-(void)shareImage:(UMSocialPlatformType)platform
+         imageUrl:(NSString *)imageStr
+       completion:(shareFinshBlock) completion
+{
+  UMSocialMessageObject * message = [[UMSocialMessageObject alloc]init];
+  UMShareImageObject *imageObject = [UMShareImageObject shareObjectWithTitle:nil descr:nil thumImage:nil];
+  //分享消息对象设置分享内容对象
+  imageObject.shareImage = [imageStr isKindOfClass:[UIImage class]]?imageStr :  [UIImage imageWithContentsOfFile:imageStr];
+  message.shareObject = imageObject;
+  
+  [self shareWithMessageObject:message platform:platform completion:completion];
+}
+
+- (void)shareWithMessageObject: (UMSocialMessageObject *) message
+                      platform:(UMSocialPlatformType)platform
+                    completion:(shareFinshBlock) completion{
+  
+  [[UMSocialManager defaultManager]shareToPlatform:platform messageObject:message currentViewController:self.currentViewController_XG completion:^(id result, NSError *error) {
+    if(error){
+      completion(error.description);
+    }else{
+      completion(nil);
+    }
+  }];
 }
 
 - (UMSocialPlatformType)getUMSocialPlatformType:(NSInteger) platefrom {
@@ -58,62 +122,18 @@ SINGLETON_FOR_CLASS(JRShareManager)
       break;
   }
 }
--(void)shareWithPlatefrom:(UMSocialPlatformType)platform
-                    Title:(NSString *)title
-                 SubTitle:(NSString *)subTitle
-                    Image:(NSString *)imageUrl
-                  LinkUrl:(NSString *)linkUrl
-               completion:(shareFinshBlock) completion
-{
-  UMSocialMessageObject * message = [[UMSocialMessageObject alloc]init];
-  id thumImage = nil;
 
+- (id)getImageWithPath:(NSString *)imageUrl{
   if ([imageUrl hasPrefix:@"http"]){
-    thumImage = imageUrl;
+    return imageUrl;
   }else if ([imageUrl hasSuffix:@"/"]){
-    thumImage = [UIImage imageWithContentsOfFile:imageUrl];
+    return [UIImage imageWithContentsOfFile:imageUrl];
   }else{
-    thumImage = [UIImage imageNamed:imageUrl];
+   return [UIImage imageNamed:imageUrl];
   }
-  UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:title descr:subTitle thumImage:thumImage];
-  //设置网页地址
-  shareObject.webpageUrl = linkUrl;
-  //分享消息对象设置分享内容对象
-  message.shareObject = shareObject;
-  [[UMSocialManager defaultManager]shareToPlatform:platform messageObject:message currentViewController:self.currentViewController_XG completion:^(id result, NSError *error) {
-    if(error){
-      completion(error.description);
-    }else{
-      completion(nil);
-    }
-  }];
 }
 
--(void)shareImage:(UMSocialPlatformType)platform
-         imageUrl:(NSString *)imageStr
-       completion:(shareFinshBlock) completion
-{
-  UMSocialMessageObject * message = [[UMSocialMessageObject alloc]init];
-  UMShareImageObject *imageObject = [UMShareImageObject shareObjectWithTitle:nil descr:nil thumImage:nil];
-  //分享消息对象设置分享内容对象
-  imageObject.shareImage = [imageStr isKindOfClass:[UIImage class]]?imageStr :  [UIImage imageWithContentsOfFile:imageStr];
-  message.shareObject = imageObject;
-  [[UMSocialManager defaultManager]shareToPlatform:platform messageObject:message currentViewController:self.currentViewController_XG completion:^(id result, NSError *error) {
-    if(error){
-      completion(error.description);
-    }else{
-      completion(nil);
-    }
-  }];
-}
-//分享小程序
-//-(void)shareMin:(NSDictionary *)minInfo{
-//  UMShareMiniProgramObject *minShareObj = [[UMShareMiniProgramObject alloc]init];
-//  minShareObj.userName = @"小程序";
-//  minShareObj.path = @"pages/index/index";
-//}
-
-
+#pragma 微信登陆
 -(void)getUserInfoForPlatform:(UMSocialPlatformType)platformType withCallBackBlock:(loginFinshBlock)finshBlock{
   BOOL wx = [[UIApplication sharedApplication]canOpenURL:[NSURL URLWithString:@"weixin://"]];
   //  if (!wx) {

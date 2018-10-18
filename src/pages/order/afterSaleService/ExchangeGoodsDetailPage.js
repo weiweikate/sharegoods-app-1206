@@ -248,16 +248,16 @@ class ExchangeGoodsDetailPage extends BasePage {
             return;
         }
         let status = pageData.status;
-       // let returnAddress = pageData.returnAddress || {}
+        let returnAddress = pageData.returnAddress || {}
         if (this.params.pageType === 0){
             return;
         } else if (this.params.pageType === 1){
-            if (status === 1 || status === 3){
+            if (status === 1 || status === 3 || status === 7){
                 //退货 状态为申请中、申请已拒绝，不显示寄回地址
                 return;
             }
         } else if (this.params.pageType === 2){
-            if (status === 1 || status === 3){
+            if (status === 1 || status === 3 || status === 7){
                 //退货 状态为申请中、申请已拒绝，不显示寄回地址
                 return;
             }
@@ -268,9 +268,9 @@ class ExchangeGoodsDetailPage extends BasePage {
                     this.params.pageType === 2 ?
                     <View>
                         <AddressItem
-                            name={'收货人：' + pageData.backReceiver}
-                            phone={pageData.bakcRecevicePhone}
-                            address={pageData.backRreceiveAddress}
+                            name={'收货人：' + pageData.receiver}
+                            phone={pageData.receivePhone}
+                            address={pageData.receiveAddress}
                         />
                         < UIImage source = { addressLine } style={{width: ScreenUtils.width, height: 3}}/>
                         {this.renderWideLine()}
@@ -297,15 +297,15 @@ class ExchangeGoodsDetailPage extends BasePage {
                                      alignItems: 'center',
                                      backgroundColor: color.white
                                  }}
-                                 // name={'收货人：' + returnAddress.receiver}
-                                 // phone={returnAddress.recevicePhone}
-                                 // address={returnAddress.provinceName +
-                                 // returnAddress.cityName +
-                                 // returnAddress.areaName +
-                                 // returnAddress.address
-                                 name={'收货人：' + pageData.receiver}
-                                 phone={pageData.recevicePhone || ''}
-                                 address={pageData.receiveAddress || ''}
+                                 name={'收货人：' + returnAddress.receiver}
+                                 phone={returnAddress.recevicePhone}
+                                 address={returnAddress.provinceName +
+                                 returnAddress.cityName +
+                                 returnAddress.areaName +
+                                 returnAddress.address}
+                                 // name={'收货人：' + pageData.receiver}
+                                 // phone={pageData.recevicePhone || ''}
+                                 // address={pageData.receiveAddress || ''}
                     />
                 </View>
                 {this.renderWideLine()}
