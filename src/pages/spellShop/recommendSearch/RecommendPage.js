@@ -112,15 +112,15 @@ export default class RecommendPage extends BasePage {
             this.$navigate('home/product/ProductDetailPage', {
                 productCode: item.linkTypeCode
             });
+        } else if (item.linkType === 6) {
+            this.$navigate('HtmlPage', {
+                title: '详情',
+                uri: item.linkTypeCode
+            });
         } else if (type === 1 || type === 2 || type === 3) {
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: item.linkTypeCode,
                 activityType: type
-            });
-        } else if (type === 6) {
-            this.$navigate('HtmlPage', {
-                title: '详情',
-                uri: item.linkTypeCode
             });
         }
     };
