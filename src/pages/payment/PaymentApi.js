@@ -10,7 +10,9 @@ const api = {
     //继续去支付
     continueToPay:['/order/payRecord/continueToPay',{method:'get'}],
     //检查订单状态
-    checkOrderStatus: ['/order/lookDetail']
+    checkOrderStatus: ['/order/lookDetail'],
+    //店铺保证金
+    storePayment:['/user/store/deposit', {method:'get'}]
 };
 import ApiUtils from '../../api/network/ApiUtils';
 

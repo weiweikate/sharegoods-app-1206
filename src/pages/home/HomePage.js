@@ -42,7 +42,7 @@ export default class HomePage extends Component {
 
     // 滑动头部透明度渐变
     _onScroll = (event) => {
-        let Y = event.nativeEvent.contentOffset.y;
+        let Y = event.nativeEvent.contentOffset.y
         if (bannerModule.bannerList.length <= 0) {
             this._refHeader.setNativeProps({
                 opacity: 1
