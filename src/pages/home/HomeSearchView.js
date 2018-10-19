@@ -10,6 +10,7 @@ const { px2dp, statusBarHeight } = ScreenUtils;
 import logoImg from './res/icons/logo.png';
 import searchImg from './res/icon_search.png';
 import msgImg from './res/icons/msg.png';
+import UIText from '../../components/ui/UIText';
 
 export default ({ navigation }) =>
     <View style={styles.navBar}>
@@ -17,7 +18,7 @@ export default ({ navigation }) =>
         <TouchableOpacity style={styles.searchBox}
                           onPress={() => navigation.navigate('home/search/SearchPage')}>
             <Image source={searchImg} style={styles.searchIcon}/>
-            <View style={styles.inputText}/>
+            <UIText style={styles.inputText} value={'请输入关键词搜索'}/>
         </TouchableOpacity>
         <Image source={msgImg} style={styles.scanIcon}
                onPress={() => navigation.navigate('message/MessageCenterPage')}/>
@@ -65,7 +66,7 @@ let styles = StyleSheet.create({
     },
     inputText: {
         flex: 1,
-        backgroundColor: '#666666',
-        padding: 0
+        color: '#666666',
+        fontSize: 14
     }
 });
