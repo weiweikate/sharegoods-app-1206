@@ -96,7 +96,7 @@ export default class CommRegistView extends Component {
                     <View style={{
                         marginLeft: 30,
                         marginRight: 20,
-                        marginTop: 60,
+                        marginTop: 50,
                         flexDirection: 'row',
                         alignItems: 'center'
                     }}>
