@@ -10,53 +10,57 @@ import {
     Image,
     Text
 } from 'react-native';
-import PropTypes from 'prop-types'
-import {observer} from 'mobx-react'
-import {ClassifyModules} from './Modules'
-import ScreenUtils from '../../utils/ScreenUtils'
-const { px2dp } = ScreenUtils
+import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
+import { ClassifyModules } from './Modules';
+import ScreenUtils from '../../utils/ScreenUtils';
 
-const Item = ({data,  onPress}) => <TouchableOpacity style={styles.item} onPress={()=> onPress(data)}>
+const { px2dp } = ScreenUtils;
+
+const Item = ({ data, onPress }) => <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
     <Image style={styles.icon} source={(data.icon)}/>
     <View style={styles.space}/>
     <Text style={styles.name}>{data.name}</Text>
-</TouchableOpacity>
+</TouchableOpacity>;
 
 @observer
 export default class HomeClassifyView extends Component {
 
     constructor(props) {
-        super(props)
-        this.classifyModule = new ClassifyModules()
-        this.classifyModule.loadClassifyList()
+        super(props);
+        this.classifyModule = new ClassifyModules();
+        this.classifyModule.loadClassifyList();
     }
 
     _onItemPress = (data) => {
-        console.log('_onItemPress', data)
-        const {navigation} = this.props
-        navigation.navigate(data.route)
-    }
+        console.log('_onItemPress', data);
+        const { navigation } = this.props;
+        navigation.navigate(data.route);
+    };
 
     renderItems = () => {
-        const { classifyList } = this.classifyModule
-        let itemViews = []
-        classifyList.map((value, index)=> {
-            itemViews.push( <Item key={index} data={value} onPress={(data)=> {this._onItemPress(data)}}/>)
-        })
-        return itemViews
-    }
+        const { classifyList } = this.classifyModule;
+        let itemViews = [];
+        classifyList.map((value, index) => {
+            itemViews.push(<Item key={index} data={value} onPress={(data) => {
+                this._onItemPress(data);
+            }}/>);
+        });
+        return itemViews;
+    };
 
     render() {
-        return (<View style={styles.container}>
-            {this.renderItems()}
-        </View>
-        )
+        return (<View
+                style={styles.container}>
+                {this.renderItems()}
+            </View>
+        );
     }
 }
 
 HomeClassifyView.propTypes = {
     navigation: PropTypes.object
-}
+};
 
 const styles = StyleSheet.create({
     container: {

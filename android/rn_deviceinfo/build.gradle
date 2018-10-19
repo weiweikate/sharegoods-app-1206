@@ -1,0 +1,33 @@
+apply plugin: 'com.android.library'
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+    google()
+    maven {
+        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+        url "$projectDir/../../../node_modules/react-native/android"
+    }
+}
+
+dependencies {
+    //noinspection GradleDynamicVersion
+    api rootProject.ext.dependencies.support
+    // From node_modules
+    api(rootProject.ext.dependencies.rn) {
+        exclude group: 'com.android.support'
+    }
+    api project(path: ':commonlib')
+}
