@@ -5,7 +5,7 @@ import {
     View,
     Text,
     TouchableOpacity,
-    ImageBackground, Image, DeviceEventEmitter
+    ImageBackground, Image, DeviceEventEmitter, Alert
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import {
@@ -808,7 +808,10 @@ class MyOrdersDetailPage extends BasePage {
                     category: item.spec,
                     goodsNum: item.num,
                     returnProductId: item.returnProductId,
-                    afterSaleService: this.getAfterSaleService(data.orderProductList, index)
+                    afterSaleService: this.getAfterSaleService(data.orderProductList, index),
+                    returnProductStatus:item.returnProductStatus,
+                    returnType:item.returnType,
+                    status:item.returnType
                 });
             });
             console.log('orderProductList', data, arr);
@@ -1006,14 +1009,14 @@ class MyOrdersDetailPage extends BasePage {
             case 2:
                 this.$navigate('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
-                    amounts: this.state.viewData.totalPrice
+                    amounts: this.state.viewData.orderTotalPrice
                     // orderType: this.state.viewData.pickedUp - 1
                 });
                 break;
             case 3:
                 this.$navigate('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
-                    amounts: this.state.viewData.totalPrice,
+                    amounts: this.state.viewData.orderTotalPrice,
                     outTrandNo: this.state.viewData.outTrandNo
                 });
                 break;
@@ -1033,7 +1036,36 @@ class MyOrdersDetailPage extends BasePage {
                 });
                 break;
             case 6:
-                this.setState({ isShowReceiveGoodsModal: true });
+                console.log(this.state.viewData.list);
+                let returnTypeArr = ['', '退款', '退货', '换货'];
+                this.state.viewData.list.forEach((item, index) => {
+                    let returnProductStatus = item.returnProductStatus || 99999;
+                    if (returnProductStatus < 6 && returnProductStatus != 3) {
+                        let content = '确认收货将关闭' + returnTypeArr[item.returnType] + '申请，确认收货吗？';
+                        Alert.alert('提示',`${ content }`, [
+                            {
+                                text: '取消', onPress: () => {
+                                }
+                            },
+                            {
+                                text: '确定', onPress: () => {
+                                    Toast.showLoading();
+                                    OrderApi.confirmReceipt({ orderNum: this.state.viewData.orderNum }).then((response) => {
+                                        Toast.hiddenLoading();
+                                        NativeModules.commModule.toast('确认收货成功');
+                                        this.getDataFromNetwork();
+                                    }).catch(e => {
+                                        Toast.hiddenLoading();
+                                        NativeModules.commModule.toast(e.msg);
+                                    });
+                                }
+                            }
+                        ], { cancelable: true });
+                    } else {
+                        this.setState({ isShowReceiveGoodsModal: true });
+                    }
+                });
+                // this.setState({ isShowReceiveGoodsModal: true });
                 break;
             case 7:
                 this.setState({ isShowDeleteOrderModal: true });

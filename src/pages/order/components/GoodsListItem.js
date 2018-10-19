@@ -36,7 +36,8 @@ const GoodsListItem = props => {
         platformPayTime,
         sendTime,
         deliverTime,
-        finishTime
+        finishTime,
+        shutOffTime
     } = props;
     this.state = { pageStateString: '27:45:45后自动取消订单' };
 
@@ -45,18 +46,15 @@ const GoodsListItem = props => {
         if (autoConfirmTime < 0) {
             return;
         }
-        (new TimeDownUtils()).settimer(time => {
-            this.state.pageStateString = time.days + '天' + time.hours + ':' + time.min + ':' + time.sec + '后自动关闭';
-            console.log(this.state.pageStateString);
+        (new TimeDownUtils()).getDateData2(time => {
+           let str= time.days + '天' + time.hours + ':' + time.min + ':' + time.sec + '后自动关闭';
+           return str;
             if (time.hours === undefined && time.min === undefined && time.sec === undefined) {
-                this.setState({
-                    pageStateString: ''
-                });
                 if (this.params.callBack) {
                     this.params.callBack();
                 }
             }
-        }, autoConfirmTime);
+        });
     };
     //28:45:45后自动取消订单
     this.renderMenu = () => {
@@ -64,7 +62,7 @@ const GoodsListItem = props => {
         let itemArr = [];
         for (let i = 0; i < nameArr.length; i++) {
             if (orderStatus == 1) {
-                // this.startCutDownTime2(1539319978000);
+
                 if (StringUtils.isNoEmpty(outTradeNo)) {
                     nameArr = [{
                         id: 1,
@@ -97,10 +95,8 @@ const GoodsListItem = props => {
                         alignItems: 'center',
                         justifyContent: 'space-between'
                     }}>
-
-
                         <View style={{ marginLeft: 5, flexDirection: 'row' }}>
-                            <Text style={{ color: '#D51243', fontSize: 13 }}>00:21:43后自动取消</Text>
+                            <Text style={{ color: '#D51243', fontSize: 13 }}>{this.startCutDownTime2(shutOffTime)}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             {nameArr.map((item, i) => {
