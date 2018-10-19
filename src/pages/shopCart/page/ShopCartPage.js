@@ -221,9 +221,14 @@ export default class ShopCartPage extends BasePage {
                             source={itemData.isSelected ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
                             style={{ width: 22, height: 22, marginLeft: 10 }}
                             onPress={() => {
-                                console.warn();
+
                                 let [...tempValues] = shopCartStore.data;
-                                tempValues[rowId].isSelected = !tempValues[rowId].isSelected;
+
+                                if ( tempValues[rowId].status === 0){
+                                    bridge.$toast('失效商品不可结算');
+                                }else {
+                                    tempValues[rowId].isSelected = !tempValues[rowId].isSelected;
+                                }
                                 shopCartStore.data = tempValues;
                             }}
                         />
