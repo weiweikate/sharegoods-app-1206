@@ -19,7 +19,6 @@ import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
 import appData from './model/appData';
-import { __await } from 'tslib';
 
 
 export default class App extends Component {
