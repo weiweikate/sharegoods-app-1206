@@ -5,17 +5,13 @@ import android.support.multidex.MultiDex;
 
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactApplication;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.horcrux.svg.SvgPackage;
-import com.imagepicker.ImagePickerPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.horcrux.svg.SvgPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.qiyu.imService.QiyuImageLoader;
@@ -59,11 +55,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
             return Arrays.<ReactPackage>asList(
                     new RNPackage(),
                     new MainReactPackage(),
-            new VectorIconsPackage(),
-            new SvgPackage(),
-            new ImagePickerPackage(),
-            new RNDeviceInfo(),
-            new AutoHeightWebViewPackage(),
+                    new RNDeviceInfo(),
                     new LinearGradientPackage(),
 //                    new ReactVideoPackage(),
                     new VectorIconsPackage(),

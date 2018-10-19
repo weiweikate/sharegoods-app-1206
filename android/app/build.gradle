@@ -77,17 +77,13 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-vector-icons')
-    compile project(':react-native-svg')
-    compile project(':react-native-image-picker')
-    compile project(':react-native-device-info')
-    compile project(':react-native-autoheight-webview')
     api fileTree(include: ['*.jar'], dir: 'libs')
     api project(':react-native-autoheight-webview')
     api project(':react-native-vector-icons')
     api project(':react-native-svg')
     api project(':react-native-image-picker')
     api project(':react-native-linear-gradient')
+    compile project(':rn_deviceinfo')
     api project(path: ':commonlib')
     api project(path: ':qiyu_service')
 

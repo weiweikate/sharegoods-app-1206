@@ -54,49 +54,63 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.Hashtable;
 import java.util.Map;
 
 public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "LoginAndShareModule";
-    private UMShareListener umShareListener = new UMShareListener() {
-        /**
-         * @descrption 分享开始的回调
-         * @param platform 平台类型
-         */
-        @Override
-        public void onStart(SHARE_MEDIA platform) {
+
+    private static class ShareListener implements UMShareListener {
+        Callback success;
+        Callback fail;
+        WeakReference<Context> contextWeakReference;
+
+        public ShareListener(Context context, Callback success, Callback fail) {
+            this.success = success;
+            this.fail = fail;
+            this.contextWeakReference = new WeakReference<>(context);
         }
 
-        /**
-         * @descrption 分享成功的回调
-         * @param platform 平台类型
-         */
         @Override
-        public void onResult(SHARE_MEDIA platform) {
-            Toast.makeText(getCurrentActivity(), "成功了", Toast.LENGTH_LONG).show();
+        public void onStart(SHARE_MEDIA share_media) {
+
         }
 
-        /**
-         * @descrption 分享失败的回调
-         * @param platform 平台类型
-         * @param t 错误原因
-         */
         @Override
-        public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(getCurrentActivity(), "失败" + t.getMessage(), Toast.LENGTH_LONG).show();
+        public void onResult(SHARE_MEDIA share_media) {
+            Context context = contextWeakReference.get();
+            if (null != context) {
+                Toast.makeText(context, "成功了", Toast.LENGTH_LONG).show();
+            }
+            if (success != null) {
+                success.invoke();
+            }
         }
 
-        /**
-         * @descrption 分享取消的回调
-         * @param platform 平台类型
-         */
         @Override
-        public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(getCurrentActivity(), "取消了", Toast.LENGTH_LONG).show();
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+            Context context = contextWeakReference.get();
+            if (null != context) {
+                Toast.makeText(context, "失败" + throwable.getMessage(), Toast.LENGTH_LONG).show();
+            }
+            if (fail != null) {
+                fail.invoke("失败" + throwable.getMessage());
+            }
         }
-    };
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+            Context context = contextWeakReference.get();
+            if (null != context) {
+                Toast.makeText(context, "取消了", Toast.LENGTH_LONG).show();
+            }
+            if (fail != null) {
+                fail.invoke("取消了");
+            }
+        }
+    }
 
     /**
      * 构造方法必须实现
@@ -119,11 +133,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void share(ReadableMap params,Callback success,Callback fail) {
+    public void share(ReadableMap params, Callback success, Callback fail) {
 //
 //         api参考地址：https://developer.umeng.com/docs/66632/detail/66639
 //         jsonData 参数
-
 //
 //        0图片分享
 //        shareImage:分享的大图(本地URL)图片分享使用
@@ -142,10 +155,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 //        userName //"小程序username，如 gh_3ac2059ac66f";
 //                miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
 
-
+        ShareListener umShareListener = new ShareListener(mContext, success, fail);
         int shareType = params.getInt("shareType");
         SHARE_MEDIA platform = null;
-        switch (params.getInt("platformType")){
+        switch (params.getInt("platformType")) {
             case 0:
                 platform = SHARE_MEDIA.WEIXIN;
                 break;
@@ -162,7 +175,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 platform = SHARE_MEDIA.SINA;
                 break;
             default:
-                fail.invoke("获取分享平台失败！");
+                if (fail != null) {
+                    fail.invoke("获取分享平台失败！");
+                }
                 break;
         }
 
@@ -170,10 +185,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         switch (shareType) {
             case 0:
                 UMImage image = fixThumImage(params.getString("thumImage"));
-                new ShareAction(getCurrentActivity())
-                        .setPlatform(platform)//传入平台
-                        .withMedia(image)
-                        .setCallback(umShareListener)//回调监听器
+                new ShareAction(getCurrentActivity()).setPlatform(platform)//传入平台
+                        .withMedia(image).setCallback(umShareListener)//回调监听器
                         .share();
                 break;
             case 1:
@@ -182,10 +195,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 web.setTitle(params.getString("title"));//标题
                 web.setThumb(image);  //缩略图
                 web.setDescription(params.getString("dec"));//描述
-                new ShareAction(getCurrentActivity())
-                        .setPlatform(platform)//传入平台
-                        .withMedia(web)
-                        .withText(params.getString("dec"))//分享内容
+                new ShareAction(getCurrentActivity()).setPlatform(platform)//传入平台
+                        .withMedia(web).withText(params.getString("dec"))//分享内容
                         .setCallback(umShareListener)//回调监听器
                         .share();
                 break;
@@ -203,35 +214,37 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 //小程序页面路径
                 umMin.setUserName(params.getString("userName"));
                 // 小程序原始id,在微信平台查询
-                new ShareAction(mContext.getCurrentActivity())
-                        .withMedia(umMin)
-                        .setPlatform(platform)
-                        .setCallback(umShareListener).share();
+                new ShareAction(mContext.getCurrentActivity()).withMedia(umMin).setPlatform(platform).setCallback(umShareListener).share();
 
         }
     }
 
     //本地路径RUL如（/user/logo.png）2.网络URL如(http//:logo.png) 3.项目里面的图片 如（logo.png）
-    private UMImage fixThumImage(String url){
-        if(TextUtils.isEmpty(url)){
+    private UMImage fixThumImage(String url) {
+        if (TextUtils.isEmpty(url)) {
             return null;
         }
-        if(url.startsWith("http")){
+        if (url.startsWith("http")) {
             return new UMImage(getCurrentActivity(), url);//网络图片
-        }else if(url.startsWith("/")){
+        } else if (url.startsWith("/")) {
             File file = new File(url);
             return new UMImage(mContext, file);//本地文件
-        }else {
-            if(url.endsWith(".png") || url.endsWith(".jpg")){
-                url = url.substring(0,url.length()-4);
+        } else {
+            if (url.endsWith(".png") || url.endsWith(".jpg")) {
+                url = url.substring(0, url.length() - 4);
             }
-            return new UMImage(mContext, getRes(url));//资源文件
+            int res = getRes(url);
+            if (res == 0) {
+                return null;
+            } else {
+                return new UMImage(mContext, getRes(url));//资源文件
+            }
         }
     }
 
     public int getRes(String name) {
         ApplicationInfo appInfo = mContext.getApplicationInfo();
-        int resID = mContext.getResources().getIdentifier(name, "drawable",appInfo.packageName);
+        int resID = mContext.getResources().getIdentifier(name, "drawable", appInfo.packageName);
         return resID;
     }
 
@@ -321,45 +334,43 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void creatShareImage(ReadableMap json,Callback success,Callback fail){
+    public void creatShareImage(ReadableMap json, Callback success, Callback fail) {
         ShareImageBean shareImageBean = parseParam(json);
-        if(shareImageBean == null){
+        if (shareImageBean == null) {
             fail.invoke("参数出错");
             return;
         }
 
-        getBitmap(mContext,shareImageBean,success,fail);
+        getBitmap(mContext, shareImageBean, success, fail);
 
 
     }
 
 
-    public static void getBitmap(final Context context, final ShareImageBean shareImageBean,final  Callback success,final Callback fail) {
+    public static void getBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
         Fresco.initialize(context);
 
-        ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(shareImageBean.getImageUrlStr()))
-                .setProgressiveRenderingEnabled(true).build();
+        ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(shareImageBean.getImageUrlStr())).setProgressiveRenderingEnabled(true).build();
 
 
-        DataSource<CloseableReference<CloseableImage>> dataSource = Fresco.getImagePipeline()
-                .fetchDecodedImage(imageRequest, context);
+        DataSource<CloseableReference<CloseableImage>> dataSource = Fresco.getImagePipeline().fetchDecodedImage(imageRequest, context);
 
         dataSource.subscribe(new BaseBitmapDataSubscriber() {
 
             @Override
             public void onNewResultImpl(Bitmap bitmap) {
 
-                draw(context,bitmap,shareImageBean,success,fail);
+                draw(context, bitmap, shareImageBean, success, fail);
             }
 
             @Override
             public void onFailureImpl(DataSource dataSource) {
-                }
+            }
         }, CallerThreadExecutor.getInstance());
 
     }
 
-    public static void draw(Context context,Bitmap bitmap,ShareImageBean shareImageBean,Callback success,Callback fail){
+    public static void draw(Context context, Bitmap bitmap, ShareImageBean shareImageBean, Callback success, Callback fail) {
 
         String title = shareImageBean.getTitleStr();
         String price = shareImageBean.getPriceStr();
@@ -367,103 +378,96 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         int titleSize = 26;
         int priceSize = 24;
-        int titleCount  = (int) ((500*0.57)/titleSize);
+        int titleCount = (int) ((500 * 0.57) / titleSize);
 //        height: autoSizeWidth(650 / 2), width: autoSizeWidth(250)
-        Bitmap result =  Bitmap.createBitmap(500,
-                (int) (660), Bitmap.Config.ARGB_8888);
+        Bitmap result = Bitmap.createBitmap(500, (int) (660), Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        bitmap = Bitmap.createScaledBitmap(bitmap,500,500, true);
-        canvas.drawBitmap(bitmap,0,0,paint);
+        bitmap = Bitmap.createScaledBitmap(bitmap, 500, 500, true);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
 
         //在图片下边画一个白色矩形块用来放文字，防止文字是透明背景，在有些情况下保存到本地后看不出来
 
         paint.setColor(Color.WHITE);
-        canvas.drawRect(0,500,500,
-                660,paint);
+        canvas.drawRect(0, 500, 500, 660, paint);
         paint.setColor(Color.BLACK);
 
         //绘制文字
         paint.setColor(Color.BLACK);
         paint.setTextSize(titleSize);
         Rect bounds = new Rect();
-        if(title.length() <= titleCount){
+        if (title.length() <= titleCount) {
             String s = title.substring(0, title.length());
             //获取文字的字宽高以便把文字与图片中心对齐
-            paint.getTextBounds(s,0,s.length(),bounds);
+            paint.getTextBounds(s, 0, s.length(), bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s,12,
-                    500+30,paint);
+            canvas.drawText(s, 12, 500 + 30, paint);
         }
-        if(title.length() <= titleCount*2 && title.length() > titleCount){
+        if (title.length() <= titleCount * 2 && title.length() > titleCount) {
             String s = title.substring(0, titleCount);
             //获取文字的字宽高以便把文字与图片中心对齐
-            paint.getTextBounds(s,0,titleCount,bounds);
+            paint.getTextBounds(s, 0, titleCount, bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s,12,
-                    500+30,paint);
+            canvas.drawText(s, 12, 500 + 30, paint);
 
-            s = title.substring(titleCount,title.length());
+            s = title.substring(titleCount, title.length());
 
-            canvas.drawText(s,12,
-                    500+30+titleSize+8+bounds.height()/2,paint);
+            canvas.drawText(s, 12, 500 + 30 + titleSize + 8 + bounds.height() / 2, paint);
         }
 
-        if(title.length() > titleCount*2){
+        if (title.length() > titleCount * 2) {
             String s = title.substring(0, titleCount);
             //获取文字的字宽高以便把文字与图片中心对齐
-            paint.getTextBounds(s,0,titleCount,bounds);
+            paint.getTextBounds(s, 0, titleCount, bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
-            canvas.drawText(s,12,
-                    500+30,paint);
+            canvas.drawText(s, 12, 500 + 30, paint);
 
-            s = title.substring(titleCount,titleCount*2-3)+"...";
+            s = title.substring(titleCount, titleCount * 2 - 3) + "...";
 
-            canvas.drawText(s,12,
-                    500+30+titleSize+8+bounds.height()/2,paint);
+            canvas.drawText(s, 12, 500 + 30 + titleSize + 8 + bounds.height() / 2, paint);
         }
 
         paint.setColor(Color.RED);
         paint.setTextSize(priceSize);
         Rect boundsPrice = new Rect();
-        paint.getTextBounds(price,0,price.length(),boundsPrice);
-        canvas.drawText(price,12,610,paint);
+        paint.getTextBounds(price, 0, price.length(), boundsPrice);
+        canvas.drawText(price, 12, 610, paint);
 
-        Bitmap qrBitmap = createQRImage(info,120,120);
-        canvas.drawBitmap(qrBitmap,360,520,paint);
-        String path = saveImageToCache(context,result);
-        if(!TextUtils.isEmpty(path)){
+        Bitmap qrBitmap = createQRImage(info, 120, 120);
+        canvas.drawBitmap(qrBitmap, 360, 520, paint);
+        String path = saveImageToCache(context, result);
+        if (!TextUtils.isEmpty(path)) {
             success.invoke(path);
-        }else {
+        } else {
             fail.invoke("图片生成失败");
         }
     }
 
-    private ShareImageBean parseParam(ReadableMap map){
+    private ShareImageBean parseParam(ReadableMap map) {
         ShareImageBean shareImageBean = new ShareImageBean();
         if (map.hasKey("imageUrlStr")) {
             shareImageBean.setImageUrlStr(map.getString("imageUrlStr"));
-        }else {
+        } else {
             return null;
         }
 
         if (map.hasKey("titleStr")) {
             shareImageBean.setTitleStr(map.getString("titleStr"));
-        }else {
+        } else {
             return null;
         }
 
         if (map.hasKey("priceStr")) {
             shareImageBean.setPriceStr(map.getString("priceStr"));
-        }else {
+        } else {
             return null;
         }
 
         if (map.hasKey("QRCodeStr")) {
             shareImageBean.setQRCodeStr(map.getString("QRCodeStr"));
-        }else {
+        } else {
             return null;
         }
         return shareImageBean;
@@ -472,8 +476,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void saveImage(String path) {
         try {
-            MediaStore.Images.Media.insertImage(mContext.getContentResolver(),
-                    path, path, null);
+            MediaStore.Images.Media.insertImage(mContext.getContentResolver(), path, path, null);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -482,17 +485,17 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void creatQRCodeImage(String QRCodeStr,final Callback success,final Callback fail){
-        Bitmap bitmap = createQRImage(QRCodeStr,100,100);
-        if(bitmap == null){
+    public void creatQRCodeImage(String QRCodeStr, final Callback success, final Callback fail) {
+        Bitmap bitmap = createQRImage(QRCodeStr, 100, 100);
+        if (bitmap == null) {
             fail.invoke("二维码生成失败！");
             bitmap.recycle();
             return;
         }
-        String path = saveImageToCache(mContext,bitmap);
-        if(TextUtils.isEmpty(path)){
+        String path = saveImageToCache(mContext, bitmap);
+        if (TextUtils.isEmpty(path)) {
             fail.invoke("图片保存失败！");
-        }else {
+        } else {
             success.invoke(path);
         }
 
@@ -500,7 +503,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void saveScreen(ReadableMap params){
+    public void saveScreen(ReadableMap params) {
         if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(mContext.getCurrentActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 54);
             Log.i("-->", "权限申请");
@@ -535,8 +538,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
                 os.flush();
                 os.close();
-                long currentTime=System.currentTimeMillis();
-                String name = "shot"+currentTime;
+                long currentTime = System.currentTimeMillis();
+                String name = "shot" + currentTime;
                 String mUri = MediaStore.Images.Media.insertImage(mContext.getContentResolver(), file.getPath(), file.getName(), null);
 
                 if (mUri != null) {
@@ -574,8 +577,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();
             hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
             // 图像数据转换，使用了矩阵转换
-            BitMatrix bitMatrix = new QRCodeWriter().encode(url,
-                    BarcodeFormat.QR_CODE, width, height, hints);
+            BitMatrix bitMatrix = new QRCodeWriter().encode(url, BarcodeFormat.QR_CODE, width, height, hints);
             int[] pixels = new int[width * height];
             // 下面这里按照二维码的算法，逐个生成二维码的图片，
             // 两个for循环是图片横列扫描的结果
@@ -589,8 +591,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 }
             }
             // 生成二维码图片的格式，使用ARGB_8888
-            Bitmap bitmap = Bitmap.createBitmap(width, height,
-                    Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
             return bitmap;
         } catch (WriterException e) {
@@ -603,7 +604,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         String path = getDiskCachePath(context);
         long date = System.currentTimeMillis();
-        String fileName = date+"shareImage.png";
+        String fileName = date + "shareImage.png";
         File file = new File(path, fileName);
         if (file.exists()) {
             file.delete();
@@ -629,23 +630,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
      * @return
      */
     public static String getDiskCachePath(Context context) {
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-                || !Environment.isExternalStorageRemovable()) {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable()) {
             return context.getExternalCacheDir().getPath();
         } else {
             return context.getCacheDir().getPath();
         }
     }
 
-
-    /**
-     * convert dp to its equivalent px
-     *
-     * 将dp转换为与之相等的px
-     */
-//    public static int dp2px(Context context, float dipValue) {
-//        final float scale = context.getResources().getDisplayMetrics().density;
-//        return (int) (dipValue * scale + 0.5f);
-//    }
 
 }
