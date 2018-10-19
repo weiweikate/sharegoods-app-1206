@@ -73,14 +73,14 @@ export default class SignInPage extends BasePage {
         HomeAPI.querySignList().then((data) => {
             this.setState({
                 signInData:  data.data,
-                loading: false,
+                // loading: false,
                 refreshing: false,
                 netFailedInfo: null,
                 loadingState: PageLoadingState.success,
             });
         }).catch((error) => {
             this.setState({
-                loading: false,
+                // loading: false,
                 refreshing: false,
                 netFailedInfo: error,
                 loadingState: PageLoadingState.fail
@@ -102,7 +102,7 @@ export default class SignInPage extends BasePage {
     }
 
     showMore = () =>{
-        alert("跳转到规则页");
+        this.$navigate('home/signIn/SignRulePage');
     }
 
     //签到
@@ -142,10 +142,10 @@ export default class SignInPage extends BasePage {
         return(<View style={{backgroundColor:color,height:px2dp(2),width:px2dp(15)}}/>);
     }
 
-    _signInInfoRender(){
+    _signInInfoRender=()=>{
         let circlesView = this.state.signInData.map((item,index)=>{
             let kind,count;
-            count = item.reward ? item.reward : item.canReward;
+            count = !EmptyUtils.isEmpty(item.reward) ? item.reward : item.canReward;
             if(index < 3){
                 if(item.continuous > 0){
                     kind = 'signedIn';
@@ -163,7 +163,7 @@ export default class SignInPage extends BasePage {
                 kind = 'willSignIn';
             }
             if(index === 0){
-                return <SignInCircleView key={'circle' + index}  count={!EmptyUtils.isEmpty(item.reward)  ? item.reward : item.canReward} kind={kind}/>
+                return <SignInCircleView key={'circle' + index}  count={count} kind={kind}/>
             }else {
                 return (
                     <View key={'circle' + index}  style={styles.signInItemWrapper}>
@@ -180,7 +180,7 @@ export default class SignInPage extends BasePage {
                     {item.signDate.replace('-','.')}
                 </Text>
             );
-        })
+        });
 
         return (
             <View style={styles.signInInfoWrapper}>
@@ -285,7 +285,7 @@ export default class SignInPage extends BasePage {
                     {reminder}
                 </Text>
                 <View style={{flex:1}}/>
-                <TouchableWithoutFeedback onPress={()=>alert('跳转到优惠券列表')}>
+                <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate('mine/coupons/CouponsPage')}>
                     <View>
                         <Text style={styles.couponsTextStyle}>
                             已有{user.tokenCoin ? user.tokenCoin : 0}张现金券>

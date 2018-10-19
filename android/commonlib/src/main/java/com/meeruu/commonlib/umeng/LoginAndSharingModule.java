@@ -3,6 +3,7 @@ package com.meeruu.commonlib.umeng;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -38,6 +39,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.bean.WXLoginBean;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
@@ -142,7 +144,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
 
         int shareType = params.getInt("shareType");
-        SHARE_MEDIA platform = SHARE_MEDIA.WEIXIN;;
+        SHARE_MEDIA platform = null;
         switch (params.getInt("platformType")){
             case 0:
                 platform = SHARE_MEDIA.WEIXIN;
@@ -159,12 +161,15 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             case 4:
                 platform = SHARE_MEDIA.SINA;
                 break;
+            default:
+                fail.invoke("获取分享平台失败！");
+                break;
         }
 
 
         switch (shareType) {
             case 0:
-                UMImage image = new UMImage(getCurrentActivity(), params.getString("thumImage"));//网络图片
+                UMImage image = fixThumImage(params.getString("thumImage"));
                 new ShareAction(getCurrentActivity())
                         .setPlatform(platform)//传入平台
                         .withMedia(image)
@@ -172,7 +177,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         .share();
                 break;
             case 1:
-                image = new UMImage(getCurrentActivity(), params.getString("thumImage"));//网络图片
+                image = fixThumImage(params.getString("thumImage"));
                 UMWeb web = new UMWeb(params.getString("linkUrl"));
                 web.setTitle(params.getString("title"));//标题
                 web.setThumb(image);  //缩略图
@@ -186,7 +191,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 break;
             case 2:
                 UMMin umMin = new UMMin(params.getString("linkUrl"));
-                image = new UMImage(getCurrentActivity(), params.getString("thumImage"));//网络图片
+                image = fixThumImage(params.getString("thumImage"));
                 //兼容低版本的网页链接
                 umMin.setThumb(image);
                 // 小程序消息封面图片
@@ -204,6 +209,30 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         .setCallback(umShareListener).share();
 
         }
+    }
+
+    //本地路径RUL如（/user/logo.png）2.网络URL如(http//:logo.png) 3.项目里面的图片 如（logo.png）
+    private UMImage fixThumImage(String url){
+        if(TextUtils.isEmpty(url)){
+            return null;
+        }
+        if(url.startsWith("http")){
+            return new UMImage(getCurrentActivity(), url);//网络图片
+        }else if(url.startsWith("/")){
+            File file = new File(url);
+            return new UMImage(mContext, file);//本地文件
+        }else {
+            if(url.endsWith(".png") || url.endsWith(".jpg")){
+                url = url.substring(0,url.length()-4);
+            }
+            return new UMImage(mContext, getRes(url));//资源文件
+        }
+    }
+
+    public int getRes(String name) {
+        ApplicationInfo appInfo = mContext.getApplicationInfo();
+        int resID = mContext.getResources().getIdentifier(name, "drawable",appInfo.packageName);
+        return resID;
     }
 
     @ReactMethod
@@ -325,7 +354,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
             @Override
             public void onFailureImpl(DataSource dataSource) {
-                Log.e("s","s");
                 }
         }, CallerThreadExecutor.getInstance());
 
@@ -337,8 +365,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         String price = shareImageBean.getPriceStr();
         String info = shareImageBean.getQRCodeStr();
 
-//        int bitmapWidth = bitmap.getWidth();
-//        int bitmapHeight = bitmap.getHeight();
         int titleSize = 26;
         int priceSize = 24;
         int titleCount  = (int) ((500*0.57)/titleSize);
@@ -372,9 +398,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                     500+30,paint);
         }
         if(title.length() <= titleCount*2 && title.length() > titleCount){
-            String s = title.substring(0, title.length());
+            String s = title.substring(0, titleCount);
             //获取文字的字宽高以便把文字与图片中心对齐
-            paint.getTextBounds(s,0,s.length(),bounds);
+            paint.getTextBounds(s,0,titleCount,bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
             canvas.drawText(s,12,
                     500+30,paint);
@@ -386,9 +412,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
 
         if(title.length() > titleCount*2){
-            String s = title.substring(0, title.length());
+            String s = title.substring(0, titleCount);
             //获取文字的字宽高以便把文字与图片中心对齐
-            paint.getTextBounds(s,0,s.length(),bounds);
+            paint.getTextBounds(s,0,titleCount,bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
             canvas.drawText(s,12,
                     500+30,paint);

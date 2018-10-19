@@ -673,7 +673,8 @@ export default class ConfirOrderPage extends BasePage {
                     orderNum: data.orderNum,
                     amounts: this.state.viewData.totalAmounts,
                     pageType: 0,
-                    availableBalance: data.user.availableBalance
+                    availableBalance: data.user.availableBalance,
+
                 });
 
             }).catch(e => {

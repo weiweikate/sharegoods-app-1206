@@ -197,7 +197,7 @@ export default class CategorySearchPage extends BasePage {
             });
         } else if (item.linkType === 6) {
             this.$navigate('HtmlPage', {
-                title: '详情',
+                title: '',
                 uri: item.linkTypeCode
             });
         } else if (item.linkType === 3 || item.linkType === 4 || item.linkType === 5) {

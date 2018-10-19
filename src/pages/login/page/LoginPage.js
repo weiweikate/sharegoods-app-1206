@@ -156,12 +156,16 @@ export default class LoginPage extends BasePage {
 
     /*老用户登陆*/
     oldUserLoginClick = () => {
+        // this.$navigate('login/login/SetPasswordPage', {
+        // });
         this.props.navigation.navigate('login/login/OldUserLoginPage');
     };
     /*注册*/
     registBtnClick = () => {
         this.$navigate('login/login/RegistPage');
+        // this.$navigate('login/login/GetRedpacketPage')
     };
+
     /*登陆*/
     loginClick = (loginType, LoginParam) => {
         this.$loadingShow();
