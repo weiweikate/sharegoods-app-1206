@@ -6,7 +6,6 @@ import ForgetPasswordPage from './ForgetPasswordPage';
 import GetRedpacketPage from './GetRedpacketPage'
 import TestNav from './testNav'
 
-
 // 访问路径 'Login/Demo1'
 export default {
     moduleName: 'login',    //模块名称
