@@ -102,10 +102,7 @@ export default class SignInPage extends BasePage {
     }
 
     showMore = () =>{
-        this.$navigate('HtmlPage', {
-            title: '签到规则',
-            uri: 'http://www.baidu.com'
-        });
+        this.$navigate('home/signIn/SignRulePage');
     }
 
     //签到
