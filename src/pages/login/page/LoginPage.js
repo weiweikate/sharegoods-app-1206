@@ -142,6 +142,7 @@ export default class LoginPage extends BasePage {
                     this.$navigate('login/login/RegistPage', data);
                 } else if (res.code === 10000) {
                     UserModel.saveUserInfo(res.data);
+                    UserModel.saveToken(res.data.token)
                     bridge.$toast('登陆成功');
                     this.$navigateBack();
                 }
@@ -183,6 +184,7 @@ export default class LoginPage extends BasePage {
             }).then((data) => {
                 this.$loadingDismiss();
                 UserModel.saveUserInfo(data.data);
+                UserModel.saveToken(data.data.token)
                 bridge.$toast('登陆成功');
                 this.params.callback && this.params.callback();
                 this.$navigateBack();
@@ -207,8 +209,9 @@ export default class LoginPage extends BasePage {
                 wechatVersion: ''
             }).then((data) => {
                 this.$loadingDismiss();
-                console.log(data);
+                console.log('password login', data);
                 UserModel.saveUserInfo(data.data);
+                UserModel.saveToken(data.data.token)
                 bridge.$toast('登陆成功');
                 this.params.callback && this.params.callback();
                 this.$navigateBack();

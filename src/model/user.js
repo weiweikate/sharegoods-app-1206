@@ -5,12 +5,13 @@ import shopCartCacheTool from '../pages/shopCart/model/ShopCartCacheTool';
 
 const USERINFOCACHEKEY = 'UserInfo';
 const CARTDATA = 'cartData';
+const USERTOKEN = 'USERTOKEN'
 
 class User {
 
     @computed
     get isLogin() {
-        return !!(this.id);
+        return this.token;
     }
 
     @computed
@@ -132,17 +133,40 @@ class User {
     @observable
     needWaiting = false;   //提供BasePage中repeatClick()
 
+    @observable
+    token = ''
+
+    @action getToken = () => this.token
 
     // 从缓存磁盘读取用户上一次使用的信息记录
     async readUserInfoFromDisk() {
         AsyncStorage.getItem(USERINFOCACHEKEY).then(infoStr => {
             if (infoStr && typeof infoStr === 'string') {
                 const info = JSON.parse(infoStr);
+                console.log('readUserInfoFromDisk', info)
                 this.saveUserInfo(info, false);
             }
         }).catch(err => {
             console.warn('Error: user.readUserInfoFromDisk()\n' + err.toString());
         });
+    }
+
+    @action
+    async readToken() {
+        AsyncStorage.getItem(USERTOKEN).then(token => {
+            this.token = token
+        }).catch(err => {
+            console.warn('Error: user.readUserInfoFromDisk()\n' + err.toString());
+        });
+    }
+
+    @action saveToken(token) {
+        console.log('saveToken',token)
+        if (!token) {
+            return
+        }
+        this.token = token
+        AsyncStorage.setItem(USERTOKEN, token).catch(e => {});
     }
 
     // 设置用户信息

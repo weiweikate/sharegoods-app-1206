@@ -89,14 +89,14 @@ export default class AssistantListPage extends BasePage {
             this.setState({
                 refreshing: false,
                 list,
-                pageLoading: false,
+                loadingState: PageLoadingState.success,
                 netFailedInfo: null
             });
         }).catch((error) => {
             this.setState({
                 refreshing: false,
                 list: [],
-                pageLoading: false,
+                loadingState: PageLoadingState.success,
                 netFailedInfo: error
             }, () => {
                 this.$toastShow(error.msg);
