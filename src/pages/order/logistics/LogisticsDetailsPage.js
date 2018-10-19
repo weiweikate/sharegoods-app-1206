@@ -47,39 +47,7 @@ class LogisticsDetailsPage extends BasePage {
             expressName: '',
             loadingState: 'loading',
             flags:false,
-            viewData: [
-                // {
-                //     time: '',
-                //     middleImage: tryIcon,
-                //     title: '',
-                //     content1: '[收货地址]浙江省杭州市萧山区 宁围镇鸿宁街道望京商务中心C2-502'
-                //
-                // }, {
-                //     time: '06-01\n07:25',
-                //     middleImage: tryIcon,
-                //     title: '已签收',
-                //     content1: '[自提柜]已签收，签收人凭取货码签收。感谢使用ZJ望京国际丰巢【自提柜】，期待再次为您服务。'
-                // }, {
-                //     time: '06-01\n07:25',
-                //     middleImage: tryIcon,
-                //     title: '派送中',
-                //     content1: '[杭州市] 杭州萧山派件员：杨二萌',
-                //     content2: '185158675566',
-                //     content3: '正在为您派件'
-                // }, {
-                //     time: '06-01\n07:25',
-                //     content1: '[杭州市] 杭州萧山派件员：杨二萌'
-                // },
-                // {
-                //     time: '06-01\n07:25',
-                //     content1: '[杭州市] 杭州萧山派件员：杨二萌'
-                // },
-                // {
-                //     time: '06-01\n07:25',
-                //     content1: '[杭州市] 杭州萧山派件员：杨二萌'
-                // }
-
-            ]
+            viewData: []
         };
     }
 
@@ -157,7 +125,7 @@ class LogisticsDetailsPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                {this.state.flags ?
+                {this.state.flags|| StringUtils.isEmpty(this.state.expressNo)?
                     this.renderEmpty() : this.renderSuccess()}
             </View>
         );
@@ -201,41 +169,46 @@ class LogisticsDetailsPage extends BasePage {
     //**********************************BusinessPart******************************************
     loadPageData() {
         console.log(this.params);
-        Toast.showLoading();
-        OrderApi.findLogisticsDetail({ expNum: this.state.expressNo }).then((response) => {
-            Toast.hiddenLoading();
-            console.log(response);
-            let arrData = [];
-            if (!response.data.showapi_res_body.flag) {
-                NativeModules.commModule.toast('查询出错');
+        if(StringUtils.isNoEmpty(this.state.expressNo)){
+            Toast.showLoading();
+            OrderApi.findLogisticsDetail({ expNum: this.state.expressNo }).then((response) => {
+                Toast.hiddenLoading();
+                console.log(response);
+                let arrData = [];
+                if (!response.data.showapi_res_body.flag) {
+                    NativeModules.commModule.toast('查询出错');
+                    this.setState({
+                        flags:true,
+                        loadingState: 'success'
+                    })
+                    // this.setState({
+                    //     loadingState: 'fail'
+                    // });
+                    return;
+                }
+                response.data.showapi_res_body.data.map((item, index) => {
+                    let time = item.time;
+                    arrData.push({
+                        time: time.replace(' ', '\n'),
+                        content1: item.context
+                    });
+                });
                 this.setState({
-                    flags:true,
+                    expressName: response.data.showapi_res_body.expTextName,
+                    viewData: arrData,
                     loadingState: 'success'
-                })
-                // this.setState({
-                //     loadingState: 'fail'
-                // });
-                return;
-            }
-            response.data.showapi_res_body.data.map((item, index) => {
-                let time = item.time;
-                arrData.push({
-                    time: time.replace(' ', '\n'),
-                    content1: item.context
+                });
+            }).catch(e => {
+                Toast.hiddenLoading();
+                this.$toastShow(e.msg)
+                this.setState({
+                    loadingState: 'fail'
                 });
             });
-            this.setState({
-                expressName: response.data.showapi_res_body.expTextName,
-                viewData: arrData,
-                loadingState: 'success'
-            });
-        }).catch(e => {
-            Toast.hiddenLoading();
-            this.$toastShow(e.msg)
-            this.setState({
-                loadingState: 'fail'
-            });
-        });
+        }else{
+            this.setState({loadingState: 'success'})
+        }
+
     }
 
     copyToClipboard = () => {

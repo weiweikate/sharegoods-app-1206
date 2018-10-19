@@ -464,6 +464,9 @@ export default class MessageGatherPage extends BasePage {
         MessageAPI.queryMessage({page: this.currentPage, pageSize: 15,type:100,createdTime:this.createdTime}).then(res => {
             if(!EmptyUtils.isEmpty(res)){
                 let arrData = CommonUtils.deepClone(this.state.viewData);
+                if(this.currentPage === 1){
+                    arrData = [];
+                }
                 res.data.data.map((item, index) => {
                     arrData.push(item);
                 });

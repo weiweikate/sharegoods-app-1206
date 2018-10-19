@@ -162,7 +162,13 @@ class MyOrdersDetailPage extends BasePage {
                         }
                     </View>
                 </ImageBackground>
-                <View style={styles.whiteRectangle}>
+                <TouchableOpacity style={styles.whiteRectangle} onPress={()=>{
+                    this.$navigate('order/logistics/LogisticsDetailsPage', {
+                        orderNum: this.state.viewData.orderNum,
+                        orderId: this.state.orderId,
+                        expressNo: this.state.expressNo
+                    });
+                }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIImage source={position} style={{ height: 19, width: 19, marginLeft: 21 }}/>
                         <View>
@@ -186,7 +192,7 @@ class MyOrdersDetailPage extends BasePage {
                     </View>
                     <UIImage source={arrow_right} style={{ height: 19, width: 19, marginRight: 11 }}
                              resizeMode={'contain'}/>
-                </View>
+                </TouchableOpacity>
             </View>
 
         );
