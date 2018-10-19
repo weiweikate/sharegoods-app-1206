@@ -161,6 +161,7 @@ class User {
     }
 
     @action saveToken(token) {
+        console.log('saveToken',token)
         if (!token) {
             return
         }
