@@ -136,8 +136,8 @@ export default class ProductDetailPage extends BasePage {
     _bottomViewAction = (type) => {
         switch (type) {
             case 'goGwc': {
-                this.$navigate('shopCart/ShopCart',{
-                    hiddeLeft:false
+                this.$navigate('shopCart/ShopCart', {
+                    hiddeLeft: false
                 });
             }
                 break;
@@ -217,7 +217,7 @@ export default class ProductDetailPage extends BasePage {
                     ItemSeparatorComponent={this._renderSeparatorComponent}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => `${index}`}
-                    data={this.state.data.paramList || []} />
+                    data={this.state.data.paramList || []}/>
             </View>;
         }
     };
@@ -253,8 +253,8 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _render() {
-        const {  price = 0, product = {} } = this.state.data || {};
-        const { supplierName = '', brandName = '', name = '', firstCategoryName = '', secCategoryName = '', thirdCategoryName = '' ,imgUrl} = product;
+        const { price = 0, product = {} } = this.state.data || {};
+        const { name = '', imgUrl } = product;
 
         return (
             <View style={styles.container}>
@@ -293,12 +293,12 @@ export default class ProductDetailPage extends BasePage {
                                 type={'Image'}
                                 imageJson={{
                                     imageUrlStr: imgUrl,
-                                    titleStr: `${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`,
+                                    titleStr: `${name}`,
                                     priceStr: `￥${price}`,
                                     QRCodeStr: `http://testh5.sharegoodsmall.com/#/product/${product.id}`
                                 }}
                                 webJson={{
-                                    title: `${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`,
+                                    title: `${name}`,
                                     dec: '商品详情',
                                     linkUrl: `http://testh5.sharegoodsmall.com/#/product/${product.id}`,
                                     thumImage: imgUrl

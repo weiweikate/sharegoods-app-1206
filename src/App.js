@@ -33,6 +33,7 @@ export default class App extends Component {
     }
 
     async componentDidMount() {
+        await user.readToken()
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
         global.$navigator = this.refs.Navigator;

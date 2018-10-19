@@ -20,7 +20,7 @@ export default class CashExplainPage extends BasePage {
 
 
     _clickOpen = () => {
-        this.$navigate('spellShop/openShop/TestPay');
+        this.$navigate('payment/PaymentMethodPage', {payStore: true});
     };
 
     _renderRow = (title, index, maxIndex) => {

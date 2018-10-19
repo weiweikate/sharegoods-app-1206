@@ -5,7 +5,7 @@
 *
 * 路由跳转的名字为(push or navigate)  模块名+内部文件夹名+page的名字
 * 如:如果想跳转home模块下的HomePage  则为 ...navigate(home/HomePage)
-*
+*import TabNav from './pages/shareTask/page/ShareTaskIntroducePage'
 * */
 
 // // 基础模块
@@ -24,6 +24,7 @@ import htmlView from './components/web/HtmlView';
 import message from './pages/message';
 import topic from './pages/topic'
 import show from './pages/show/Index'
+import shareTask from './pages/shareTask'
 
 const Router = {
     Tab: {
@@ -70,8 +71,9 @@ addSubModule(login);
 addSubModule(order);
 addSubModule(message);
 addSubModule(topic);
-addSubModule(payment)
-addSubModule(show)
+addSubModule(payment);
+addSubModule(show);
+addSubModule(shareTask);
 
 console.log('Router', Object.keys(Router));
 console.log(Router);

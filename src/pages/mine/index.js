@@ -12,6 +12,7 @@ import MyAddress from './page/myaddress';
 import MyAccount from './page/myaccount';
 import bankCard from './page/bankCard';
 import InviteFriendsPage from './page/Invite/InviteFriendsPage';
+import promotion from './page/promotion';
 
 export default {
     moduleName: 'mine',    //模块名称
@@ -29,6 +30,7 @@ export default {
         bankCard,
         MyDataPage,
         MyPromotionPage,
-        InviteFriendsPage
+        InviteFriendsPage,
+        promotion
     }
 };

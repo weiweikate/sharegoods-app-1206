@@ -28,7 +28,7 @@ export default class RecommendRow extends Component {
     };
 
     render() {
-        const { name, storeNumber, storeUserName, starName, totalTradeVolume, bonusCount } = this.props.storeData;
+        const { name, storeNumber, storeUserName, starName, totalTradeVolume, bonusCount, manager = {} } = this.props.storeData;
         let { createTime, headUrl } = this.props.storeData;
         createTime = StringUtils.isNoEmpty(createTime) ? createTime : '';
         headUrl = StringUtils.isNoEmpty(headUrl) ? headUrl : '';
@@ -81,20 +81,20 @@ export default class RecommendRow extends Component {
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,
                                 color: '#222222'
-                            }}>店长：{storeUserName || ''}</Text>
+                            }}>店长：{manager.nickname || ''}</Text>
 
                             <Text style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,
                                 color: '#666',
                                 marginTop: 6
-                            }}>等级：{starName || ''}</Text>
+                            }}>等级：{manager.levelName || ''}</Text>
                             <Text style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,
                                 color: '#666',
                                 marginTop: 6
-                            }}>参与平台{'3天'}</Text>
+                            }}>{`参与平台${Math.floor((new Date().getTime() - manager.regTime) / (24 * 3600 * 1000))}天`}</Text>
                         </View>
                     </View>
                     <View style={{

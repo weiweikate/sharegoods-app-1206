@@ -94,7 +94,7 @@ export default class TopicDetailSelectPage extends Component {
     };
 
     render() {
-        const { imgUrl = '', levelPrice = '', surplusNumber = 1 } = this.props.data || {};
+        const { imgUrl = '', levelPrice = '', surplusNumber = '' } = this.props.data || {};
         let specs = this.state.selectStrList.join(',');
         return (
             <View style={styles.container}>
