@@ -71,7 +71,7 @@ export default class PaymentMethodPage extends BasePage {
                 //0:订单 1:拼店 and etc (页面来源,默认值为1拼店)
                 pageType: this.params.openShopPay ? 1 : 0,
                 //需要支付的金额
-                shouldPayMoney: this.params.amounts ? this.params.amounts : 0,
+                shouldPayMoney: 1.00,//this.params.amounts ? this.params.amounts : 0,
                 //example:2表示两个代币兑换1个余额
                 //-1表示该参数未初始化,不能完成支付 todo 做支付拦截
                 tokenCoinToBalance: this.params.tokenCoinToBalance ? this.params.tokenCoinToBalance : -1,
@@ -85,6 +85,7 @@ export default class PaymentMethodPage extends BasePage {
             }
         };
         this.payment = new Payment()
+        this.payment.payStore = this.params.payStore
     }
     _selectedPayType(value) {
         this.payment.selectPaymentType(value)
@@ -115,6 +116,8 @@ export default class PaymentMethodPage extends BasePage {
     }
     //支付方式弹窗
     renderPaymentModal = () => {
+        const {  payStore } = this.payment
+        
         return (
             <InputTransactionPasswordModal
                 isShow={this.state.isShowPaymentModal}
@@ -126,9 +129,20 @@ export default class PaymentMethodPage extends BasePage {
                 bottomText={'忘记支付密码'}
                 inputText={(text) => {
                     if (text.length === 6) {
+                        this.setState({isShowPaymentModal: false})
                         setTimeout(() => {
-                            this.setState({ password: text, isShowPaymentModal: false });
-                            this.commitOrder();
+                            if (payStore) {
+                                this.payment.payStoreActoin().then(result => {
+                                    if (result.sdkCode === 0) {
+                                        this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                                    } else {
+                                        Toast.$toast('支付失败')
+                                    }
+                                })
+                            } else {
+                                this.setState({ password: text, isShowPaymentModal: false });
+                                this.commitOrder();
+                            }
                         }, 100);
                     }
                 }}
@@ -265,10 +279,33 @@ export default class PaymentMethodPage extends BasePage {
         }
     }
     commitOrder = () => {
-        const { selectedBalace } = this.payment
-        const { selectedTypes } = this.payment
+        const { selectedBalace, selectedTypes, payStore } = this.payment
         if (selectedTypes && selectedTypes.type === paymentType.bank) {
             Toast.$toast('银行卡支付，暂不支持')
+            return
+        }
+
+        if (payStore) {
+            if (selectedBalace) {
+                if (user.hadSalePassword) {
+                    if (StringUtils.isEmpty(this.state.password)) {
+                        this.setState({ isShowPaymentModal: true });
+                        return;
+                    }
+                    this.setState({password: ''})
+                }
+                else {
+                    this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
+                }
+                return
+            }
+             this.payment.payStoreActoin().then(result => {
+                if (result.sdkCode === 0) {
+                    this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                } else {
+                    Toast.$toast('支付失败')
+                }
+            })
             return
         }
 
