@@ -22,7 +22,7 @@ ext {
             rn      : 'com.facebook.react:react-native:+',
             gson    : 'com.google.code.gson:gson:+',
             design  : 'com.android.support:design:27.1.1',
-            eventbus: 'org.greenrobot:eventbus:+',
+            eventbus: 'org.greenrobot:eventbus:3.0.0',
             zxing   : 'com.google.zxing:core:3.+',
             wechat  : 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+',
             multidex: 'com.android.support:multidex:1.0.3',
