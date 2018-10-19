@@ -132,6 +132,10 @@ class User {
     @observable
     needWaiting = false;   //提供BasePage中repeatClick()
 
+    @observable
+    token = ''
+
+    @action getToken = () => this.token
 
     // 从缓存磁盘读取用户上一次使用的信息记录
     async readUserInfoFromDisk() {
@@ -203,6 +207,8 @@ class User {
         this.area = info.area;                      //
         this.storeBonusDto = info.storeBonusDto;    //
         this.realnameStatus = info.realnameStatus;    //
+        this.token = info.token
+        console.log('this.token', this.token)
         if (saveToDisk) {
             AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
             });
