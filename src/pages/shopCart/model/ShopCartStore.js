@@ -66,7 +66,7 @@ class ShopCartStore {
         }
         let flag = true;
         this.data.map(item => {
-            if (!item.isSelected) {
+            if (item.status === 1 && !item.isSelected) {
                 flag = false;
             }
         });
@@ -96,7 +96,11 @@ class ShopCartStore {
     isSelectAllItem = (isSelectAll) => {
         if (isSelectAll) {
             this.data.slice().map(item => {
-                item.isSelected = true;
+                if (item.status === 0){
+                    item.isSelected = false;
+                } else {
+                    item.isSelected = true;
+                }
             });
         } else {
             this.data.slice().map(item => {
