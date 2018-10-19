@@ -54,7 +54,7 @@ export default class DetailHeaderView extends Component {
     render() {
         const { activityType } = this.props;
         const { productImgList = [{}], freight = 0, monthSaleTotal = 0, price = 0, originalPrice = 0, product = {} } = this.props.data || {};
-        const { supplierName = '', brandName = '', name = '', firstCategoryName = '', secCategoryName = '', thirdCategoryName = '' } = product;
+        const { name = '' } = product;
         return (
             <View>
                 <ViewPager style={styles.ViewPager}
@@ -78,14 +78,15 @@ export default class DetailHeaderView extends Component {
                            autoplay={true}/>
                 {activityType === 1 || activityType === 2 ? <ProductActivityView ref={(e) => {
                     this.ActivityView = e;
-                }} activityData={this.props.activityData} activityType={activityType} productActivityViewAction={this.props.productActivityViewAction}/> : null}
+                }} activityData={this.props.activityData} activityType={activityType}
+                                                                                 productActivityViewAction={this.props.productActivityViewAction}/> : null}
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{
                             marginTop: 14,
                             color: '#222222',
                             fontSize: 15
-                        }}>{`${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`}</Text>
+                        }}>{`${name}`}</Text>
                         <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
                             <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${price}起`}</Text>
                             <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${originalPrice}`}</Text>
