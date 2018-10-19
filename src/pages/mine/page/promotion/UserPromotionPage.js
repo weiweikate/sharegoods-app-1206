@@ -13,7 +13,8 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Text
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from "../../../../utils/ScreenUtils";
@@ -48,17 +49,17 @@ export default  class UserPromotionPage  extends BasePage<Props> {
       return(
           <View>
               <View>
-                  <View>
-                      <Text>
+                  <View style={styles.itemInfoWrapper}>
+                      <Text style={styles.blackTextStyle}>
                           50元推广试用套餐
                       </Text>
-                      <Text>
+                      <Text style={styles.grayTextStyle}>
                           剩余推广金额￥20.03
                       </Text>
 
                       <TouchableWithoutFeedback>
                           <View style={styles.grayButtonStyle}>
-                              <Text >
+                              <Text style={styles.grayTextStyle}>
                                   推广详情
                               </Text>
                           </View>
@@ -101,9 +102,21 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     itemInfoWrapper:{
-        justifyContent:'center',
+        justifyContent:'space-between',
         marginLeft:px2dp(15),
-    }
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    blackTextStyle:{
+        color:'#222222',
+        fontSize:px2dp(16),
+    },
+    grayTextStyle:{
+        color:'#999999',
+        fontSize:px2dp(13),
+    },
+
+
 
 
 });

@@ -144,7 +144,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
 
         int shareType = params.getInt("shareType");
-        SHARE_MEDIA platform = SHARE_MEDIA.WEIXIN;;
+        SHARE_MEDIA platform = null;
         switch (params.getInt("platformType")){
             case 0:
                 platform = SHARE_MEDIA.WEIXIN;
@@ -160,6 +160,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 break;
             case 4:
                 platform = SHARE_MEDIA.SINA;
+                break;
+            default:
+                fail.invoke("获取分享平台失败！");
                 break;
         }
 
@@ -210,6 +213,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     //本地路径RUL如（/user/logo.png）2.网络URL如(http//:logo.png) 3.项目里面的图片 如（logo.png）
     private UMImage fixThumImage(String url){
+        if(TextUtils.isEmpty(url)){
+            return null;
+        }
         if(url.startsWith("http")){
             return new UMImage(getCurrentActivity(), url);//网络图片
         }else if(url.startsWith("/")){
@@ -392,9 +398,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                     500+30,paint);
         }
         if(title.length() <= titleCount*2 && title.length() > titleCount){
-            String s = title.substring(0, title.length());
+            String s = title.substring(0, titleCount);
             //获取文字的字宽高以便把文字与图片中心对齐
-            paint.getTextBounds(s,0,s.length(),bounds);
+            paint.getTextBounds(s,0,titleCount,bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
             canvas.drawText(s,12,
                     500+30,paint);
@@ -406,9 +412,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
 
         if(title.length() > titleCount*2){
-            String s = title.substring(0, title.length());
+            String s = title.substring(0, titleCount);
             //获取文字的字宽高以便把文字与图片中心对齐
-            paint.getTextBounds(s,0,s.length(),bounds);
+            paint.getTextBounds(s,0,titleCount,bounds);
             //画文字的时候高度需要注意文字大小以及文字行间距
             canvas.drawText(s,12,
                     500+30,paint);
