@@ -77,6 +77,11 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-svg')
+    compile project(':react-native-image-picker')
+    compile project(':react-native-device-info')
+    compile project(':react-native-autoheight-webview')
     api fileTree(include: ['*.jar'], dir: 'libs')
     api project(':react-native-autoheight-webview')
     api project(':react-native-vector-icons')

@@ -5,6 +5,11 @@ import android.support.multidex.MultiDex;
 
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.horcrux.svg.SvgPackage;
+import com.imagepicker.ImagePickerPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -54,6 +59,11 @@ public class MainApplication extends BaseApplication implements ReactApplication
             return Arrays.<ReactPackage>asList(
                     new RNPackage(),
                     new MainReactPackage(),
+            new VectorIconsPackage(),
+            new SvgPackage(),
+            new ImagePickerPackage(),
+            new RNDeviceInfo(),
+            new AutoHeightWebViewPackage(),
                     new LinearGradientPackage(),
 //                    new ReactVideoPackage(),
                     new VectorIconsPackage(),
