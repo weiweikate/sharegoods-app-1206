@@ -59,11 +59,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
             return Arrays.<ReactPackage>asList(
                     new RNPackage(),
                     new MainReactPackage(),
-            new VectorIconsPackage(),
-            new SvgPackage(),
-            new ImagePickerPackage(),
-            new RNDeviceInfo(),
-            new AutoHeightWebViewPackage(),
+                    new RNDeviceInfo(),
                     new LinearGradientPackage(),
 //                    new ReactVideoPackage(),
                     new VectorIconsPackage(),
