@@ -24,6 +24,8 @@ export class Payment {
         icon: balanceImg,
         hasBalance: true
     }
+    //是否支付店铺保证金
+    @observable payStore = false
     @observable paymentList = [
         {
             type: paymentType.section,
@@ -140,6 +142,55 @@ export class Payment {
 
             Toast.hiddenLoading()
             return {resultStr, preStr}
+        } catch (error) {
+            Toast.showLoading()
+            console.log(error)
+        }
+    })
+
+    //店铺保证金
+    @action
+    payStoreActoin = flow(function * () {
+        try {
+            let type = (this.selectedBalace ? 1 : 0)
+            if (this.selectedTypes) {
+                type += this.selectedTypes.type
+            }
+            Toast.showLoading()
+            const result = yield PaymentApi.storePayment({type: type})
+
+            if (!this.selectedTypes && parseInt(result.code, 0) === 10000) {
+                Toast.hiddenLoading()
+                result.sdkCode = 0
+                return result
+            }
+
+            if (parseInt(result.code, 0) === 10000) {
+                if (this.paymentType.type === paymentType.wechat) {
+                    const resultStr = yield PayUtil.appWXPay(result.data)
+                    Toast.hiddenLoading()
+                    if (parseInt(resultStr.sdkCode, 0) !== 0) {
+                        Toast.$toast(resultStr.msg)
+                        return
+                    }
+                    console.log('resultStr',resultStr)
+                    return resultStr
+                } else {
+                    const resultStr = yield PayUtil.appAliPay(result.data)
+                    Toast.hiddenLoading()
+                    if (parseInt(resultStr.code, 0) !== 0) {
+                        Toast.$toast(resultStr.msg)
+                        return
+                    }
+                    result.sdkCode = 0
+                    console.log('resultStr',resultStr)
+                    return resultStr
+                }
+                
+            } else {
+                Toast.hiddenLoading()
+                return ''
+            }
         } catch (error) {
             Toast.showLoading()
             console.log(error)
