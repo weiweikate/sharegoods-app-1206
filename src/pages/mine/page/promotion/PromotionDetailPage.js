@@ -5,7 +5,7 @@
  *
  * @flow
  *
- * Created by xzm on 2018/10/18.
+ * Created by xzm on 2018/10/19.
  *
  */
 "use strict";
@@ -20,9 +20,8 @@ import BasePage from "../../../../BasePage";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 
 const { px2dp } = ScreenUtils;
-
 type Props = {};
-export default class UserPromotionPage extends BasePage<Props> {
+export default class PromotionDetailPage extends BasePage<Props> {
     constructor(props) {
         super(props);
         this.state = {};
@@ -45,7 +44,6 @@ export default class UserPromotionPage extends BasePage<Props> {
     loadPageData() {
     }
 
-
     /**************************viewpart********************************/
 
     _itemRender() {
@@ -54,30 +52,25 @@ export default class UserPromotionPage extends BasePage<Props> {
                 <View style={{
                     flexDirection: "row",
                     alignItems: "center",
+                    height: px2dp(45),
                     justifyContent: "space-between",
                     paddingHorizontal: px2dp(15),
                     borderBottomColor: "#DDDDDD",
                     borderBottomWidth: px2dp(0.5)
                 }}>
-                    <View style={styles.itemInfoWrapper}>
-                        <Text style={styles.blackTextStyle}>
-                            50元推广试用套餐
+                    <Text style={styles.blackTextStyle}>
+                        陈佳丽
+                    </Text>
+                    <Text style={styles.grayTextStyle}>
+                        领取红包
+                        <Text style={styles.redTextStyle}>
+                            2.5元
                         </Text>
-                        <Text style={styles.grayTextStyle}>
-                            剩余推广金额￥20.03
-                        </Text>
-                    </View>
-                    <TouchableWithoutFeedback>
-                        <View style={styles.grayButtonWrapper}>
-                            <Text style={styles.grayTextStyle}>
-                                推广详情
-                            </Text>
-                        </View>
-                    </TouchableWithoutFeedback>
+                    </Text>
                 </View>
                 <View style={styles.bottomTextWrapper}>
                     <Text style={styles.bottomTextStyle}>
-                        购买时间：2018-09-18 10:38:56
+                        领取时间：2018-09-18 10:38:56
                     </Text>
                 </View>
             </View>
@@ -89,7 +82,7 @@ export default class UserPromotionPage extends BasePage<Props> {
             <TouchableWithoutFeedback onPress={() => alert("a")}>
                 <View style={styles.bottomButtonWrapper}>
                     <Text style={styles.bottomButtonTextStyle}>
-                        发起邀请推广
+                        分享我的推广
                     </Text>
                 </View>
             </TouchableWithoutFeedback>
@@ -139,10 +132,15 @@ const styles = StyleSheet.create({
     },
     blackTextStyle: {
         color: "#222222",
-        fontSize: px2dp(16)
+        fontSize: px2dp(16),
+        fontWeight: "bold"
     },
     grayTextStyle: {
         color: "#999999",
+        fontSize: px2dp(13)
+    },
+    redTextStyle: {
+        color: "#D51243",
         fontSize: px2dp(13)
     },
     bottomTextWrapper: {
@@ -168,6 +166,4 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: px2dp(13)
     }
-
-
 });
