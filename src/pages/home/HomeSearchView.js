@@ -12,7 +12,7 @@ import searchImg from './res/icon_search.png';
 import msgImg from './res/icons/msg.png';
 
 export default ({ navigation }) =>
-    <View style={[styles.navBar, { opacity: 0.8 }]}>
+    <View style={styles.navBar}>
         <Image source={logoImg} style={styles.logo}/>
         <TouchableOpacity style={styles.searchBox}
                           onPress={() => navigation.navigate('home/search/SearchPage')}>
@@ -36,7 +36,6 @@ let styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         right: 0,
-        opacity: 0.8,
         zIndex: 3
     },
     logo: {
@@ -51,7 +50,8 @@ let styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         marginLeft: 8,
-        marginRight: 10
+        marginRight: 10,
+        opacity: 0.8
     },
     scanIcon: {
         height: 24,
