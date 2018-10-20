@@ -23,6 +23,10 @@ export class BannerModules {
         return this.bannerList.length;
     }
 
+    // @computed get opacity() {
+    //     return
+    // }
+
     @action
     loadBannerList = flow(function* (homeHeader) {
         try {
