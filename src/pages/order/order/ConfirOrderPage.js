@@ -164,8 +164,7 @@ export default class ConfirOrderPage extends BasePage {
     renderDetail = () => {
         return (
             <View style={{ backgroundColor: 'white' }}>
-                {this.state.orderParam && this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 ? null
-                    : <TouchableOpacity style={{
+                    <TouchableOpacity style={{
                         height: 44,
                         flexDirection: 'row',
                         paddingLeft: 15,
@@ -173,17 +172,16 @@ export default class ConfirOrderPage extends BasePage {
                         justifyContent: 'space-between',
                         alignItems: 'center'
                     }}
-                                        disabled={(this.state.viewData.list[0].restrictions & 1) == 1}
+                                        disabled={(this.state.viewData.list[0].restrictions & 1) == 1||this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 }
                                         onPress={() => this.jumpToCouponsPage()}>
                         <UIText value={'优惠券'} style={styles.blackText}/>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <UIText
-                                value={(this.state.viewData.list[0].restrictions & 1) == 1 ? '不可使用优惠券' : '选择优惠券'}
+                                value={(this.state.viewData.list[0].restrictions & 1) == 1 ||this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 ? '不可使用优惠券' : (this.state.couponName?this.state.couponName:'选择优惠券')}
                                 style={[styles.grayText, { marginRight: 15 }]}/>
                             <Image source={arrow_right}/>
                         </View>
                     </TouchableOpacity>
-                }
 
                 {this.renderLine()}
                 {!user.tokenCoin ? null :
@@ -695,8 +693,9 @@ export default class ConfirOrderPage extends BasePage {
     jumpToCouponsPage = (params) => {
         if(params=='justOne'){
             this.$navigate('mine/coupons/CouponsPage', {justOne:'justOne',callBack:(data)=>{
-                if(data>0){
-                let params={tokenCoin:data};
+                console.log(typeof data);
+                if(parseInt(data)>0){
+                let params={tokenCoin:parseInt(data),couponId:this.state.couponId};
                 this.setState({tokenCoin:data});
                     this.loadPageData(params);
                 }
@@ -706,10 +705,12 @@ export default class ConfirOrderPage extends BasePage {
                 fromOrder: 1, productIds: this.state.viewData.list[0].productId,
                 orderParam: this.state.orderParam, callBack: (data) => {
                     if (data && data.id) {
-                        let params = { couponId: data.id };
-                        this.setState({couponId:data.id})
+                        let params = { couponId: data.id ,tokenCoin:this.state.tokenCoin};
+                        this.setState({couponId:data.id,couponName:data.name})
                         this.loadPageData(params);
-                    } else {
+                    } else if(data=='giveUp') {
+                        this.setState({couponId:null,couponName:null})
+                        this.loadPageData();
                     }
                 }
             });

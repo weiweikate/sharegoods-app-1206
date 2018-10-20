@@ -17,10 +17,7 @@ import StringUtils from '../../../utils/StringUtils';
 import DateUtils from '../../../utils/DateUtils';
 import constants from '../../../constants/constants';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
-// import { CountDownReact } from '../../../components/ui';
-//  <CountDownReact date1={(new Date().valueOf())+1000*60*30}
-//                                             date2={new Date().valueOf()}
-//                                             callback={()=>console.log('22')}/>
+
 const GoodsListItem = props => {
     const {
         orderNum,
@@ -36,27 +33,28 @@ const GoodsListItem = props => {
         platformPayTime,
         sendTime,
         deliverTime,
-        finishTime
+        finishTime,
+        shutOffTime,
+        callBack
     } = props;
     this.state = { pageStateString: '27:45:45后自动取消订单' };
 
     this.startCutDownTime2 = (autoConfirmTime2) => {
+        let str = '1';
         let autoConfirmTime = Math.round((autoConfirmTime2 - new Date().valueOf()) / 1000);
         if (autoConfirmTime < 0) {
-            return;
+            return '';
         }
-        (new TimeDownUtils()).settimer(time => {
-            this.state.pageStateString = time.days + '天' + time.hours + ':' + time.min + ':' + time.sec + '后自动关闭';
-            console.log(this.state.pageStateString);
-            if (time.hours === undefined && time.min === undefined && time.sec === undefined) {
-                this.setState({
-                    pageStateString: ''
-                });
-                if (this.params.callBack) {
-                    this.params.callBack();
-                }
+        let time = (new TimeDownUtils()).getDateData2(autoConfirmTime2);
+        if (time.hours === undefined && time.min === undefined && time.sec === undefined) {
+            if (callBack) {
+                callBack();
+                return '';
             }
-        }, autoConfirmTime);
+        } else {
+            str = '' + time.days + '天' + time.hours + ':' + time.min + ':' + time.sec + '后自动关闭';
+            return str;
+        }
     };
     //28:45:45后自动取消订单
     this.renderMenu = () => {
@@ -64,7 +62,7 @@ const GoodsListItem = props => {
         let itemArr = [];
         for (let i = 0; i < nameArr.length; i++) {
             if (orderStatus == 1) {
-                // this.startCutDownTime2(1539319978000);
+
                 if (StringUtils.isNoEmpty(outTradeNo)) {
                     nameArr = [{
                         id: 1,
@@ -97,10 +95,9 @@ const GoodsListItem = props => {
                         alignItems: 'center',
                         justifyContent: 'space-between'
                     }}>
-
-
                         <View style={{ marginLeft: 5, flexDirection: 'row' }}>
-                            <Text style={{ color: '#D51243', fontSize: 13 }}>00:21:43后自动取消</Text>
+                            <Text
+                                style={{ color: '#D51243', fontSize: 13 }}>{this.startCutDownTime2(shutOffTime)}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             {nameArr.map((item, i) => {
@@ -227,7 +224,7 @@ const GoodsListItem = props => {
             case 4:
                 aboutTime = <UIText value={'确认收货时间：' + DateUtils.getFormatDate(deliverTime / 1000)}
                                     style={{ fontSize: 13, color: color.black_222 }}/>;
-                 break;
+                break;
             case 5:
                 aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(finishTime / 1000)}
                                     style={{ fontSize: 13, color: color.black_222 }}/>;
