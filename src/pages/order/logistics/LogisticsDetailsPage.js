@@ -176,7 +176,7 @@ class LogisticsDetailsPage extends BasePage {
                 console.log(response);
                 let arrData = [];
                 if (!response.data.showapi_res_body.flag) {
-                    NativeModules.commModule.toast('查询出错');
+                    // NativeModules.commModule.toast('查询出错');
                     this.setState({
                         flags:true,
                         loadingState: 'success'

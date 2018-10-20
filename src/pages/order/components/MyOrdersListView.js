@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, NativeModules } from 'react-native';
+import { View, NativeModules, Alert } from 'react-native';
 import RefreshList from '../../../components/ui/RefreshList';
 import constants from '../../../constants/constants';
 import StringUtils from '../../../utils/StringUtils';
@@ -15,140 +15,8 @@ export default class MyOrdersListView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            viewData: [
-                {
-                    id: 49,
-                    orderNum: '2018070250371039050793800',
-                    expressNo: '',
-                    orderCreateTime: 1530470345000,
-                    orderStatus: 1,
-                    freightPrice: 2092,
-                    totalPrice: 3000,
-                    orderProduct: [
-                        {
-                            id: 52,
-                            productId: 2,
-                            productName: 'Alixe',
-                            spec: '175kg-22cm-狂野',
-                            imgUrl: 'http://juretest.oss-cn-hangzhou.aliyuncs.com/jure/jure_crm/test/362d0cfb-b195-4005-8d89-4d436e5d75f4_1530869113480.jpg',
-                            price: 1600,
-                            num: 2,
-                            status: 1
-                        }
-                    ],
-                    pickedUp: 2//2为自提，1为快递
-                },
-                {
-                    id: 49,
-                    orderNum: '2018070250371039050793800',
-                    expressNo: '',
-                    orderCreateTime: 1530470345000,
-                    orderStatus: 2,
-                    freightPrice: 2092,
-                    totalPrice: 3000,
-                    orderProduct: [
-                        {
-                            id: 52,
-                            productId: null,
-                            productName: null,
-                            spec: '175kg-22cm-狂野',
-                            imgUrl: 'http://juretest.oss-cn-hangzhou.aliyuncs.com/jure/jure_crm/test/362d0cfb-b195-4005-8d89-4d436e5d75f4_1530869113480.jpg',
-                            price: 1600,
-                            num: 2,
-                            status: 1
-                        }
-                    ],
-                    pickedUp: 2//2为自提，1为快递
-                },
-                {
-                    id: 49,
-                    orderNum: '2018070250371039050793800',
-                    expressNo: '',
-                    orderCreateTime: 1530470345000,
-                    orderStatus: 3,
-                    freightPrice: 2092,
-                    totalPrice: 3000,
-                    orderProduct: [
-                        {
-                            id: 52,
-                            productId: null,
-                            productName: null,
-                            spec: '175kg-22cm-狂野',
-                            imgUrl: 'http://juretest.oss-cn-hangzhou.aliyuncs.com/jure/jure_crm/test/362d0cfb-b195-4005-8d89-4d436e5d75f4_1530869113480.jpg',
-                            price: 1600,
-                            num: 2,
-                            status: 1
-                        }
-                    ],
-                    pickedUp: 2//2为自提，1为快递
-                },
-                {
-                    id: 49,
-                    orderNum: '2018070250371039050793800',
-                    expressNo: '',
-                    orderCreateTime: 1530470345000,
-                    orderStatus: 7,
-                    freightPrice: 2092,
-                    totalPrice: 3000,
-                    orderProduct: [
-                        {
-                            id: 52,
-                            productId: null,
-                            productName: null,
-                            spec: '175kg-22cm-狂野',
-                            imgUrl: 'http://juretest.oss-cn-hangzhou.aliyuncs.com/jure/jure_crm/test/362d0cfb-b195-4005-8d89-4d436e5d75f4_1530869113480.jpg',
-                            price: 1600,
-                            num: 2,
-                            status: 1
-                        }
-                    ],
-                    pickedUp: 2//2为自提，1为快递
-                },
-                {
-                    id: 49,
-                    orderNum: '2018070250371039050793800',
-                    expressNo: '',
-                    orderCreateTime: 1530470345000,
-                    orderStatus: 4,
-                    freightPrice: 2092,
-                    totalPrice: 3000,
-                    orderProduct: [
-                        {
-                            id: 52,
-                            productId: 2,
-                            productName: 'Alixe',
-                            spec: '175kg-22cm-狂野',
-                            imgUrl: 'http://juretest.oss-cn-hangzhou.aliyuncs.com/jure/jure_crm/test/362d0cfb-b195-4005-8d89-4d436e5d75f4_1530869113480.jpg',
-                            price: 1600,
-                            num: 2,
-                            status: 1
-                        }
-                    ],
-                    pickedUp: 2//2为自提，1为快递
-                },
-                {
-                    id: 49,
-                    orderNum: '2018070250371039050793800',
-                    expressNo: '',
-                    orderCreateTime: 1530470345000,
-                    orderStatus: 5,
-                    freightPrice: 2092,
-                    totalPrice: 3000,
-                    orderProduct: [
-                        {
-                            id: 52,
-                            productId: 2,
-                            productName: 'Alixe',
-                            spec: '175kg-22cm-狂野',
-                            imgUrl: 'http://juretest.oss-cn-hangzhou.aliyuncs.com/jure/jure_crm/test/362d0cfb-b195-4005-8d89-4d436e5d75f4_1530869113480.jpg',
-                            price: 1600,
-                            num: 2,
-                            status: 1
-                        }
-                    ],
-                    pickedUp: 2//2为自提，1为快递
-                }
-            ],
+            timeOff:[],//待付款时间
+            viewData: [],
             pageStatus: this.props.pageStatus,
             isEmpty: false,
             currentPage: 1,
@@ -183,6 +51,7 @@ export default class MyOrdersListView extends Component {
                 finishTime={item.finishTime}
                 sendTime={item.sendTime}
                 deliverTime={item.deliverTime}
+                shutOffTime={item.shutOffTime}
                 clickItem={() => {
                     this.clickItem(index);
                 }}
@@ -314,7 +183,9 @@ export default class MyOrdersListView extends Component {
                 imgUrl: item.specImg,
                 price: StringUtils.formatMoneyString(item.price),
                 num: item.num,
-                status: item.status
+                status: item.status,
+                returnProductStatus:item.returnProductStatus,
+                returnType:item.returnType
             });
         });
         return arrData;
@@ -335,11 +206,13 @@ export default class MyOrdersListView extends Component {
                     deliverTime: item.deliverTime,
                     orderStatus: item.status,
                     freightPrice: item.freightPrice,
-                    totalPrice: item.totalPrice,
+                    totalPrice: item.needPrice,
                     orderProduct: this.getOrderProduct(item.orderProductList),
                     pickedUp: item.pickedUp,
-                    outTradeNo: item.outTradeNo
+                    outTradeNo: item.outTradeNo,
+                    shutOffTime:item.shutOffTime,
                 });
+
             });
             this.setState({ viewData: arrData });
         } else {
@@ -350,7 +223,18 @@ export default class MyOrdersListView extends Component {
     componentDidMount() {
         //网络请求，业务处理
         this.getDataFromNetwork();
+        this.timeDown();
     }
+    timeDown(){
+        this.interval = setInterval(()=> {
+             let timeunit=new Date().valueOf();
+             this.setState({timeOff:timeunit});
+        }, 1000);
+    }
+    componentWillUnmount(){
+        this.interval && clearInterval(this.interval);
+    }
+
 
     getDataFromNetwork = () => {
         let params = {
@@ -557,7 +441,36 @@ export default class MyOrdersListView extends Component {
                 });
                 break;
             case 6:
-                this.setState({ isShowReceiveGoodsModal: true });
+                console.log(this.state.viewData[index]);
+                let returnTypeArr = ['', '退款', '退货', '换货'];
+                this.state.viewData[index].orderProduct.forEach((item, index) => {
+                    let returnProductStatus = item.returnProductStatus || 99999;
+                    if (returnProductStatus < 6 && returnProductStatus != 3) {
+                        let content = '确认收货将关闭' + returnTypeArr[item.returnType] + '申请，确认收货吗？';
+                        Alert.alert('提示',{ content }, [
+                            {
+                                text: '取消', onPress: () => {
+                                }
+                            },
+                            {
+                                text: '确定', onPress: () => {
+                                    Toast.showLoading();
+                                    OrderApi.confirmReceipt({ orderNum: this.state.viewData[index].orderNum }).then((response) => {
+                                        Toast.hiddenLoading();
+                                        NativeModules.commModule.toast('确认收货成功');
+                                        this.getDataFromNetwork();
+                                    }).catch(e => {
+                                        Toast.hiddenLoading();
+                                        NativeModules.commModule.toast(e.msg);
+                                    });
+                                }
+                            }
+                        ], { cancelable: true });
+                    } else {
+                        this.setState({ isShowReceiveGoodsModal: true });
+                    }
+                });
+
                 break;
             case 7:
                 this.setState({ isShowDeleteOrderModal: true });
@@ -578,13 +491,13 @@ export default class MyOrdersListView extends Component {
                     response.data.orderProducts.map((item, index) => {
                         cartData.push({ productId: item.productId, priceId: item.priceId, amount: item.num });
                     });
-                    let params={
-                        amount:  response.data.orderProducts[0].num,
-                        priceId:  response.data.orderProducts[0].priceId,
-                        productId:  response.data.orderProducts[0].productId,
-                    }
+                    let params = {
+                        amount: response.data.orderProducts[0].num,
+                        priceId: response.data.orderProducts[0].priceId,
+                        productId: response.data.orderProducts[0].productId
+                    };
                     shopCartCacheTool.addGoodItem(params);
-                    this.props.nav('shopCart/ShopCart',{hiddeLeft:false});
+                    this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
                 }).catch(e => {
                     Toast.hiddenLoading();
                     NativeModules.commModule.toast(e.msg);
