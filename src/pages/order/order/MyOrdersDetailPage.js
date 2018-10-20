@@ -209,7 +209,7 @@ class MyOrdersDetailPage extends BasePage {
                 <RefreshList
                     ListHeaderComponent={this.renderHeader}
                     ListFooterComponent={this.renderFootder}
-                    data={this.state.orderType === 3 || this.state.orderType === 98 ? this.state.orderProductPrices : this.state.viewData.list}
+                    data={this.state.orderType === 3 || this.state.orderType === 98 ? this.state.viewData.list: this.state.viewData.list}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
@@ -796,28 +796,46 @@ class MyOrdersDetailPage extends BasePage {
             Toast.hiddenLoading();
             let data = response.data;
             let arr = [];
-            data.orderProductList.map((item, index) => {
-                console.log('orderProductList', item);
-                arr.push({
-                    id: item.id,
-                    orderId: item.orderId,
-                    productId: item.productId,
-                    uri: item.specImg,
-                    goodsName: item.productName,
-                    salePrice: StringUtils.isNoEmpty(item.price) ? item.price : 0,
-                    category: item.spec,
-                    goodsNum: item.num,
-                    returnProductId: item.returnProductId,
-                    afterSaleService: this.getAfterSaleService(data.orderProductList, index),
-                    returnProductStatus:item.returnProductStatus,
-                    returnType:item.returnType,
-                    status:item.returnType
-                });
-            });
-            console.log('orderProductList', data, arr);
             if (data.orderType === 3 || data.orderType === 98) {//礼包。。。
-                // let  lowerarr=data.list[0].orderProductPrices
+                data.orderProductList[0].orderProductPriceList.map((item,index) =>{
+                    arr.push({
+                        id: item.id,
+                        orderId: item.orderProductId,
+                        productId: item.productId,
+                        uri: item.specImg,
+                        goodsName: item.productName,
+                        salePrice: StringUtils.isNoEmpty(item.originalPrice) ? item.originalPrice : 0,
+                        category: item.spec,
+                        goodsNum: item.productNum,
+                        // returnProductId: data.orderProductList[0].returnProductId,
+                        // afterSaleService: this.getAfterSaleService(data.orderProductList, index),
+                        // returnProductStatus:data.orderProductList[0].returnProductStatus,
+                        // returnType:data.orderProductList[0].returnType,
+                        // status:data.orderProductList[0].status
+                    });
+                })
+            }else{
+                data.orderProductList.map((item, index) => {
+                    console.log('orderProductList', item);
+                    arr.push({
+                        id: item.id,
+                        orderId: item.orderId,
+                        productId: item.productId,
+                        uri: item.specImg,
+                        goodsName: item.productName,
+                        salePrice: StringUtils.isNoEmpty(item.price) ? item.price : 0,
+                        category: item.spec,
+                        goodsNum: item.num,
+                        returnProductId: item.returnProductId,
+                        afterSaleService: this.getAfterSaleService(data.orderProductList, index),
+                        returnProductStatus:item.returnProductStatus,
+                        returnType:item.returnType,
+                        status:item.status,
+                    });
+                })
             }
+          ;
+
             let pageStateString = constants.pageStateString[parseInt(data.status)];
             /*
              * operationMenuCheckList
