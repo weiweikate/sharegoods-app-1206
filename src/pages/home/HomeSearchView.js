@@ -37,7 +37,7 @@ let styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         right: 0,
-        zIndex: 3
+        zIndex: 4
     },
     logo: {
         height: 27,
