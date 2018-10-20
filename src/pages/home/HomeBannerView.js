@@ -16,7 +16,7 @@ const bannerHeight = px2dp(220);
 export default class HomeBannerView extends Component {
     constructor(props) {
         super(props);
-        bannerModule.loadBannerList();
+        bannerModule.loadBannerList(this.props.refHeader);
     }
 
     _bannerAction(item, index) {
