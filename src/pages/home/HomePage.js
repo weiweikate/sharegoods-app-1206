@@ -43,6 +43,9 @@ export default class HomePage extends Component {
     // 滑动头部透明度渐变
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
+        if (!this._refHeader) {
+            return;
+        }
         if (bannerModule.bannerList.length <= 0) {
             this.st = 1;
             this._refHeader.setNativeProps({
@@ -64,7 +67,7 @@ export default class HomePage extends Component {
     _renderItem = (item) => {
         let data = item.item;
         if (data.type === homeType.swiper) {
-            return <HomeBannerView navigation={this.props.navigation} refHeader={this._refHeader}/>;
+            return <HomeBannerView navigation={this.props.navigation}/>;
         } else if (data.type === homeType.classify) {
             return <HomeClassifyView navigation={this.props.navigation}/>;
         } else if (data.type === homeType.ad) {
@@ -97,7 +100,7 @@ export default class HomePage extends Component {
 
     _onRefresh() {
         homeModule.loadHomeList();
-        bannerModule.loadBannerList(this._refHeader);
+        bannerModule.loadBannerList();
     }
 
     render() {
@@ -123,12 +126,11 @@ export default class HomePage extends Component {
                     showsVerticalScrollIndicator={false}
                     style={{ marginTop: bannerModule.bannerList.length > 0 ? 0 : statusBarHeight + 44 }}
                 />
-                {/*滑动渐变层 */}
-                <View style={styles.navBarBg} ref={e => this._refHeader = e}/>
-                {/*透明阴影层 */}
+                <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
+                      ref={e => this._refHeader = e}/>
                 <LinearGradient colors={['#000000', 'transparent']}
                                 style={[styles.navBar, { height: this.headerH + 14, opacity: 0.5 }]}/>
-                {/*首页搜索框 */}
+
                 <HomeSearchView navigation={this.props.navigation}/>
             </View>
         );
@@ -155,7 +157,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         right: 0,
-        opacity: 1,
         zIndex: 2
     },
     // header

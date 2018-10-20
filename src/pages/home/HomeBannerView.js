@@ -16,7 +16,7 @@ const bannerHeight = px2dp(220);
 export default class HomeBannerView extends Component {
     constructor(props) {
         super(props);
-        bannerModule.loadBannerList(this.props.refHeader);
+        bannerModule.loadBannerList();
     }
 
     _bannerAction(item, index) {
@@ -42,6 +42,9 @@ export default class HomeBannerView extends Component {
 
     render() {
         const { bannerList } = bannerModule;
+        if (bannerList.length === 0) {
+            return null;
+        }
         let items = [];
         bannerList.map((value, index) => {
             items.push(value.imgUrl);
