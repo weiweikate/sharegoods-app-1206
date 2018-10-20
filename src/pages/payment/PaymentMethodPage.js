@@ -71,7 +71,7 @@ export default class PaymentMethodPage extends BasePage {
                 //0:订单 1:拼店 and etc (页面来源,默认值为1拼店)
                 pageType: this.params.openShopPay ? 1 : 0,
                 //需要支付的金额
-                shouldPayMoney: 1.00,//this.params.amounts ? this.params.amounts : 0,
+                shouldPayMoney: this.params.amounts ? this.params.amounts : 0,
                 //example:2表示两个代币兑换1个余额
                 //-1表示该参数未初始化,不能完成支付 todo 做支付拦截
                 tokenCoinToBalance: this.params.tokenCoinToBalance ? this.params.tokenCoinToBalance : -1,
