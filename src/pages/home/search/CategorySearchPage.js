@@ -108,13 +108,14 @@ export default class CategorySearchPage extends BasePage {
                                 keyExtractor={(item, index) => index}
                                 showsVerticalScrollIndicator={false}
                                 data={this.state.nameArr}
-                            /> : null
+                            /> : <View style={{ width: 90 }}/>
                     }
 
                     <View style={{
                         width: bannerW + 20,
                         flexDirection: 'column',
-                        backgroundColor: 'white'
+                        backgroundColor: 'white',
+                        height: ScreenUtils.height - 60 - ScreenUtils.headerHeight //屏幕高减去搜索框以及头部高
                     }}>
                         <ViewPager swiperShow={this.state.swiperShow && this.state.bannerData.length > 0}
                                    arrayData={this.state.bannerData}
@@ -136,10 +137,14 @@ export default class CategorySearchPage extends BasePage {
                                    height={118}
                                    style={{ marginBottom: 10, marginLeft: 10, marginRight: 10 }}
                         />
-                        <SectionList style={{ marginTop: 10, marginLeft: 10, marginRight: 10 }}
+                        <SectionList style={{
+                            marginTop: 10,
+                            marginLeft: 10,
+                            marginRight: 10
+                        }}
                                      contentContainerStyle={{
-                                         flexDirection: 'row',
-                                         flexWrap: 'wrap'
+                                         flexWrap: 'wrap',
+                                         flexDirection: 'row'
                                      }}
                                      renderItem={this._sectionItem}
                                      renderSectionHeader={this._sectionHeader}
@@ -338,3 +343,4 @@ const styles = StyleSheet.create({
         padding: 5
     }
 });
+
