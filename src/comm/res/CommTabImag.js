@@ -30,7 +30,7 @@ const CommTabImag = {
     lianjie: require('./share_icon_lianjie_nor.png'),
     baocun: require('./share_icon_baocun_nor.png'),
     download: require('./share_btn_download_nor.png'),
-
+    closeImg: require('./tongyong_btn_close_white.png')
 
 };
 

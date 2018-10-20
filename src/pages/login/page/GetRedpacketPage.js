@@ -4,11 +4,14 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    Image
+    Image,
+    ImageBackground
 } from 'react-native';
 import ColorUtil from '../../../utils/ColorUtil';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import LoginAndRegistRes from '../res/LoginAndRegistRes';
+import bridge from '../../../utils/bridge';
 
 export default class GetRedpacketPage extends BasePage {
     constructor(props) {
@@ -41,26 +44,46 @@ export default class GetRedpacketPage extends BasePage {
                 </View>
                 <View
                     style={Styles.bottomViewStyle}
-                />
+                >
+                    <Text
+                        onPress={
+                            ()=>this.jumpToWriteCodePage()
+                        }
+                        style={{
+                            color:'#979797',
+                            height:20,
+                            width:100,
+                            fontSize:13,
+                            borderWidth:1,
+                            borderRadius:10,
+                            textAlign:'center',
+                            borderColor:'#979797',
+                            paddingTop:2,
+                        }}
+
+                    >
+                        填写授权码
+                    </Text>
+                </View>
             </View>
         );
     }
 
-    _renderTopText=()=>{
-        return(
+    _renderTopText = () => {
+        return (
             <View
                 style={{
-                    flexDirection:'row',
-                    justifyContent:'space-between',
-                    marginTop:40,
-                    backgroundColor:ColorUtil.Color_ffffff
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 40,
+                    backgroundColor: ColorUtil.Color_f7f7f7
                 }}
             >
                 <Text
                     style={{
-                        fontSize:13,
-                        color:'#333',
-                        marginLeft:15
+                        fontSize: 13,
+                        color: '#333',
+                        marginLeft: 15
                     }}
                 >
                     请选择一个红包
@@ -69,99 +92,159 @@ export default class GetRedpacketPage extends BasePage {
                 <TouchableOpacity>
                     <View
                         style={{
-                            flexDirection:'row',
-                            justifyContent:'center',
-                            alignItems:'center',
-                            marginRight:15
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginRight: 15
 
                         }}
                     >
                         <Image
                             style={{
-                                width:16,
-                                height:16,
-                                backgroundColor:'red',
+                                width: 16,
+                                height: 16
                             }}
+                            source={LoginAndRegistRes.reg_Refresh}
                         />
                         <Text
                             style={{
-                                fontSize:13,
-                                color:'#666',
-                                marginLeft:5
+                                fontSize: 13,
+                                color: '#666',
+                                marginLeft: 5
                             }}
+                            onPress={
+                                ()=>this._changeRedpacket()
+                            }
                         >
                             换一批
                         </Text>
                     </View>
                 </TouchableOpacity>
             </View>
-        )
+        );
+    };
+    /**
+     *
+     */
+    _changeRedpacket=()=>{
+        bridge.$toast('换一批');
     }
-
-    _renderRedPacketList=()=>{
-        return(
+    /**
+     * 渲染红包列表
+     * @return {*}
+     * @private
+     */
+    _renderRedPacketList = () => {
+        return (
             <View
-            style={{
-                flex:1,
-                justifyContent:'center',
-                alignItems:'center'
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center'
 
-            }}
+                }}
             >
                 <View
-                style={{
-                    // flex:1,
-                    width:240,
-                    backgroundColor:'blue',
-                    justifyContent:'space-between',
-                    flexDirection:'row',
-                    flexWrap: 'wrap',  //设置换行显示
-                }}
+                    style={{
+                        // flex:1,
+                        width: 240,
+                        justifyContent: 'space-between',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap'  //设置换行显示
+                    }}
                 >
                     {
-                        this._getredPackageListItem().map((redItemView,index)=>{
-                            return redItemView
+                        this._getredPackageListItem().map((redItemView, index) => {
+                                return redItemView;
                             }
                         )
                     }
 
                 </View>
             </View>
-        )
-    }
-
-    _getredPackageListItem=()=>{
+        );
+    };
+    /**
+     * 渲染红包item
+     * @return {Array}
+     * @private
+     */
+    _getredPackageListItem = () => {
         let tempArr = [];
-        for (let index = 0;index < 4;index++){
+        for (let index = 0; index < 4; index++) {
             tempArr.push(
                 <TouchableOpacity
-                key={index}
+                    key={index}
+                    onPress={
+                        ()=>{
+                          this.redPacketClick(index)
+                        }
+                    }
                 >
                     <View
-                    style={{
-                        backgroundColor:'red',
-                        width:90,
-                        height:160,
-                        marginTop:30
-                    }}
+                        style={{
+                            width: 100,
+                            height: 142,
+                            marginTop: 30
+                        }}
                     >
+                        <ImageBackground
+                            style={
+                                {
+                                    flex: 1,
+                                    // justifyContent:'center',
 
+                                    alignItems: 'center'
+                                }
+                            }
+                            source={LoginAndRegistRes.reg_norRedPacketBg}
+                        >
+                            <Text
+                                style={{
+                                    marginTop: 20,
+                                    height: 30,
+                                    color: ColorUtil.Color_ffffff,
+                                    textAlign:'center'
+                                }}
+                            >
+                                赠送红包
+                            </Text>
+                            <Text
+                                style={{
+                                    width: 30,
+                                    height: 30,
+                                    marginTop: 35,
+                                    color: '#80522A',
+                                    fontSize: 13,
+                                    textAlign:'center',
+                                }}
 
+                            >
+                                领
+                            </Text>
+                        </ImageBackground>
                     </View>
                 </TouchableOpacity>
-            )
+            );
 
         }
         return tempArr;
 
-    }
+    };
 
-
-    /*跳过*/
+    //Action
+    /**
+     * 跳过函数
+     */
     jump = () => {
         this.$navigate('login/login/RegistPage');
     };
-
+    jumpToWriteCodePage=()=>{
+        bridge.$toast('跳转填写邀请码页面');
+    }
+    redPacketClick=(redPacketIndex)=>{
+      bridge.$toast('点击了第'+redPacketIndex+'红包');
+    }
 }
 
 const Styles = StyleSheet.create(
@@ -179,14 +262,15 @@ const Styles = StyleSheet.create(
             color: '#666'
         },
         topViewStyle: {
-            height: ScreenUtils.px2dp(430),
-            backgroundColor:ColorUtil.Color_222222
+            height: ScreenUtils.px2dp(430)
+            // backgroundColor:ColorUtil.Color_222222
 
         },
         bottomViewStyle: {
-            backgroundColor: 'blue',
-            height: 100
-        },
+            height: 100,
+            justifyContent:'center',
+            alignItems:'center'
+        }
 
     }
 );

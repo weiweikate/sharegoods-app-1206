@@ -16,7 +16,7 @@ const bannerHeight = px2dp(220);
 export default class HomeBannerView extends Component {
     constructor(props) {
         super(props);
-        bannerModule.loadBannerList();
+        bannerModule.loadBannerList(this.props.refHeader);
     }
 
     _bannerAction(item, index) {
@@ -42,9 +42,6 @@ export default class HomeBannerView extends Component {
 
     render() {
         const { bannerList } = bannerModule;
-        if (bannerList.length === 0) {
-            return <View style={styles.emptyBanner}/>;
-        }
         let items = [];
         bannerList.map((value, index) => {
             items.push(value.imgUrl);
@@ -78,8 +75,5 @@ const styles = StyleSheet.create({
     img: {
         height: bannerHeight,
         width: ScreenUtils.width
-    },
-    emptyBanner: {
-        height: ScreenUtils.statusBarHeight + 44
     }
 });

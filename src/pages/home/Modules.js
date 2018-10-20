@@ -24,9 +24,12 @@ export class BannerModules {
     }
 
     @action
-    loadBannerList = flow(function* () {
+    loadBannerList = flow(function* (homeHeader) {
         try {
             const res = yield HomeApi.getSwipers({ type: homeType.swiper });
+            homeHeader.setNativeProps({
+                opacity: res.data && res.data.length > 0 ? 0 : 1
+            });
             this.bannerList = res.data;
         } catch (error) {
             console.log(error);
