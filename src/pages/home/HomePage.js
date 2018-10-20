@@ -44,8 +44,9 @@ export default class HomePage extends Component {
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
         if (bannerModule.bannerList.length <= 0) {
+            this.st = 1;
             this._refHeader.setNativeProps({
-                opacity: 1
+                opacity: this.st
             });
             return;
         }

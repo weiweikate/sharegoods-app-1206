@@ -114,9 +114,6 @@ export default class CategorySearchPage extends BasePage {
                     <View style={{
                         width: bannerW + 20,
                         flexDirection: 'column',
-                        paddingRight: 10,
-                        paddingLeft: 10,
-                        paddingBottom: 20,
                         backgroundColor: 'white'
                     }}>
                         <ViewPager swiperShow={this.state.swiperShow && this.state.bannerData.length > 0}
@@ -137,9 +134,9 @@ export default class CategorySearchPage extends BasePage {
                                    }}
                                    autoplay={true}
                                    height={118}
-                                   style={{ marginBottom: 10 }}
+                                   style={{ marginBottom: 10, marginLeft: 10, marginRight: 10 }}
                         />
-                        <SectionList style={{ marginTop: 10 }}
+                        <SectionList style={{ marginTop: 10, marginLeft: 10, marginRight: 10 }}
                                      contentContainerStyle={{
                                          flexDirection: 'row',
                                          flexWrap: 'wrap'
@@ -303,18 +300,18 @@ export default class CategorySearchPage extends BasePage {
 
     _listFooter = ({ section }) => {
         return (
-
-            <View style={{
-                width: ScreenUtils.width - 110,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: 30
-            }}>
-                <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginRight: 10 }}/>
-                <UIText value={'没有更多啦～'} style={{ fontSize: 12, color: '#999999' }}/>
-                <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginLeft: 10 }}/>
-            </View>
+            this.state.sectionArr.length > 0 ?
+                <View style={{
+                    width: ScreenUtils.width - 110,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 30
+                }}>
+                    <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginRight: 10 }}/>
+                    <UIText value={'没有更多啦～'} style={{ fontSize: 12, color: '#999999' }}/>
+                    <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginLeft: 10 }}/>
+                </View> : null
         );
     };
 
