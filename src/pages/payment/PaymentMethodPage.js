@@ -187,9 +187,9 @@ export default class PaymentMethodPage extends BasePage {
                 return;
             }
             let result = await this.payment.balancePay(params)
+            this.setState({password: ''})
             console.log('checkRes', result)
             this._showPayresult(result)
-            this.setState({password: ''})
         }
         else {
             this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
