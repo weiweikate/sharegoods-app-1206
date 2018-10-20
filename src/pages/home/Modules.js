@@ -23,17 +23,13 @@ export class BannerModules {
         return this.bannerList.length;
     }
 
-    // @computed get opacity() {
-    //     return
-    // }
+    @observable opacity = 1;
 
     @action
-    loadBannerList = flow(function* (homeHeader) {
+    loadBannerList = flow(function* () {
         try {
             const res = yield HomeApi.getSwipers({ type: homeType.swiper });
-            homeHeader.setNativeProps({
-                opacity: res.data && res.data.length > 0 ? 0 : 1
-            });
+            this.opacity = res.data && res.data.length > 0 ? 0 : 1;
             this.bannerList = res.data;
         } catch (error) {
             console.log(error);
