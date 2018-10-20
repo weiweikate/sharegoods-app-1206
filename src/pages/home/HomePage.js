@@ -120,6 +120,7 @@ export default class HomePage extends Component {
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={0.1}
                     showsVerticalScrollIndicator={false}
+                    style={{ marginTop: bannerModule.bannerList.length > 0 ? 0 : statusBarHeight + 44 }}
                 />
                 {/*滑动渐变层 */}
                 <View style={styles.navBarBg} ref={e => this._refHeader = e}/>
