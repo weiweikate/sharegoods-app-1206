@@ -101,7 +101,7 @@ export default class SearchPage extends BasePage {
             if (!this.state.recentData.includes(text)) {
                 this.state.recentData.unshift(text);
             } else {
-                if (index !== 0) {
+                if (index && index !== 0) {
                     this.state.recentData.splice(index, 1);
                     this.state.recentData.unshift(text);
                 }
