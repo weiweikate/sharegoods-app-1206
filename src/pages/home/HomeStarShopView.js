@@ -7,6 +7,7 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { StarShopModule, homeModule } from './Modules'
+import User from '../../model/user'
 
 const Banner = ({backImage, title, press}) => <View style={styles.bannerContainer}>
     <ImageBackground style={styles.bannerImg}  source={backImage}>
@@ -61,6 +62,10 @@ export default class HomeStarShopView extends Component {
     _shopPress(shop) {
         console.log('_shopPress')
         const { navigation } = this.props
+        if (!User.isLogin) {
+            navigation.navigate('login/login/LoginPage')
+            return
+        }
         let route  = homeModule.homeNavigate(8)
         let params = homeModule.paramsNavigate(shop)
         navigation.navigate(route, params)
