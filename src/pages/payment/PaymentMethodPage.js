@@ -177,7 +177,7 @@ export default class PaymentMethodPage extends BasePage {
     };
     forgetTransactionPassword = () => {
         this.setState({ isShowPaymentModal: false });
-        this.navigate('mine/transactionPassword/SettingTransactionPasswordStep2Page');
+        this.$navigate('mine/account/SetOrEditPayPwdPage')
     };
     async _balancePay() {
         const { params } = this.getApiRequestParams();
