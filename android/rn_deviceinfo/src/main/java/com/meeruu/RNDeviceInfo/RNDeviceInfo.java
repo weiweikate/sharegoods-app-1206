@@ -1,4 +1,4 @@
-package com.learnium.RNDeviceInfo;
+package com.meeruu.RNDeviceInfo;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;

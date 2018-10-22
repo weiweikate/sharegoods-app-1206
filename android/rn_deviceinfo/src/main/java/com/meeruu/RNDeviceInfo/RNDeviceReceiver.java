@@ -1,4 +1,4 @@
-package com.learnium.RNDeviceInfo;
+package com.meeruu.RNDeviceInfo;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
