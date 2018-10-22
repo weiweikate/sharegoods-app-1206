@@ -332,8 +332,10 @@ class User {
         this.area = null;            //
         this.storeBonusDto = null;   //
         this.realnameStatus = null;   //
+        this.token = null
         // todo 清空cookie
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
+        AsyncStorage.removeItem(USERTOKEN)
         return AsyncStorage.removeItem(USERINFOCACHEKEY).catch(e => {
         });
     }
