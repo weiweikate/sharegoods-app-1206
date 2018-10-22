@@ -140,6 +140,7 @@ class ShopCartCacheTool {
                         localValue.push(goodsItem);
                     }
                     Storage.set(ShopCartCacheTool.shopCartLocalStorageKey, localValue).then(() => {
+                        bridge.$toast('加入购物车成功');
                         //存入成功后,从后台拉取详细信息
                         shopCartStore.getShopCartListWithNoLogin(localValue);
                         // Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {

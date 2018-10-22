@@ -43,7 +43,7 @@ export default class HomeBannerView extends Component {
     render() {
         const { bannerList } = bannerModule;
         if (bannerList.length === 0) {
-            return <View style={styles.emptyBanner}/>;
+            return null;
         }
         let items = [];
         bannerList.map((value, index) => {
@@ -78,8 +78,5 @@ const styles = StyleSheet.create({
     img: {
         height: bannerHeight,
         width: ScreenUtils.width
-    },
-    emptyBanner: {
-        height: ScreenUtils.statusBarHeight + 44
     }
 });
