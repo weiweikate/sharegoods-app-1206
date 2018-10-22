@@ -16,7 +16,8 @@ import {
     StyleSheet,
     View,
     Modal,
-    Animated
+    Animated,
+    TouchableWithoutFeedback
 } from "react-native";
 
 
@@ -29,51 +30,59 @@ export default class ShareTaskAnimation extends React.Component {
 
         this.state = {
             modalVisible: false,
-            scale: new Animated.Value(0),
+            scale: new Animated.Value(1)
         };
     }
 
     _bind() {
-        this.open =  this.open.bind(this);
-        this.close =  this.close.bind(this);
+        this.open = this.open.bind(this);
+        this.close = this.close.bind(this);
     }
 
-    open(){
-        this.setState({modalVisible: true});
+    open() {
+        this.setState({ modalVisible: true });
         this.state.scale.setValue(0);
         Animated.spring(
             this.state.scale, // The value to drive
             {
                 toValue: 1,
-                duration: 500,
+                duration: 500
             }
         ).start();
     }
 
-    close(){
-        this.setState({modalVisible: true});
+    close() {
+        this.setState({ modalVisible: false });
     }
 
     componentDidMount() {
     }
 
-
     render() {
         return (
             <Modal onRequestClose={this.close}
-                   visible = {this.state.modalVisible}
+                   visible={this.state.modalVisible}
                    transparent={true}
             >
-                <View style = {styles.container}
-                      onPress={() => {this.close()}}
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        this.close();
+                    }}
                 >
-                    <Animated.View style={{
-                        transform: [{scale: this.state.scale}]
+                    <View style={styles.container}>
+                        <Animated.View style={[
+                            { transform: [{ scale: this.state.scale }] },
+                            this.props.contentStyle]}
+                        >
+                            <TouchableWithoutFeedback>
+                                <View>
+                                    {this.props.children}
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </Animated.View>
+                    </View>
+                </TouchableWithoutFeedback>
 
-                    }}>
-                        {this.props.children}
-                    </Animated.View>
-                </View>
             </Modal>
 
         );
@@ -82,13 +91,13 @@ export default class ShareTaskAnimation extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'rgba(0,0,0,0.3)',
+        backgroundColor: "rgba(0,0,0,0.3)",
         top: 0,
         left: 0,
         bottom: 0,
         right: 0,
-        position: 'absolute',
-        alignItems: 'center',
-        justifyContent: 'center',
+        position: "absolute",
+        alignItems: "center",
+        justifyContent: "center"
     }
 });

@@ -52,7 +52,7 @@ const GoodsListItem = props => {
                 return '';
             }
         } else {
-            str = '' + time.days + '天' + time.hours + ':' + time.min + ':' + time.sec + '后自动关闭';
+            str = '' +time.hours + ':' + time.min + ':' + time.sec + '后自动关闭';
             return str;
         }
     };

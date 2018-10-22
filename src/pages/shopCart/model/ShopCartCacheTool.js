@@ -124,6 +124,11 @@ class ShopCartCacheTool {
                 Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
                     let [...localValue] = res;
                     if (localValue && (localValue instanceof Array)) {
+                        //检测购物车数量是否已够80
+                        if(localValue.length >= 80){
+                            bridge.$toast('本地购物车商品类型已达80种上限')
+                            return;
+                        }
                         let isHave = false;
                         localValue.map((localItem, indexPath) => {
                             if (localItem.priceId === goodsItem.priceId &&
