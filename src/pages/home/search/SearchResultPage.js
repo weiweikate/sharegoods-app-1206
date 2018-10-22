@@ -19,6 +19,7 @@ import DateUtils from '../../../utils/DateUtils';
 import SelectionPage from '../product/SelectionPage';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
+import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 
 export default class SearchResultPage extends BasePage {
 
@@ -32,7 +33,8 @@ export default class SearchResultPage extends BasePage {
         this.state = {
             isHorizontal: false,
             modalVisible: false,
-
+            loadingState: PageLoadingState.loading,
+            netFailedInfo: {},
             //排序类型(1.综合 2.销量 3. 价格)
             sortType: 1,
             //排序方式 (1.升序 2.降序)
@@ -55,6 +57,15 @@ export default class SearchResultPage extends BasePage {
         this._productList();
     }
 
+    _getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: this._productList
+            }
+        };
+    };
     //数据
     _productList = () => {
         let param = {};
@@ -78,12 +89,18 @@ export default class SearchResultPage extends BasePage {
         this.$loadingShow();
         HomeAPI.productList(param).then((data) => {
             this.$loadingDismiss();
+            data = data.data || {};
+            let dataArr = data.data || [];
             this.setState({
-                productList: data.data.data
+                loadingState: dataArr.length === 0 ? PageLoadingState.empty : PageLoadingState.success,
+                productList: dataArr
             });
-        }).catch((data) => {
+        }).catch((error) => {
             this.$loadingDismiss();
-            this.$toastShow(data.msg);
+            this.setState({
+                loadingState: PageLoadingState.fail,
+                netFailedInfo: error
+            });
         });
     };
 
@@ -93,7 +110,7 @@ export default class SearchResultPage extends BasePage {
             id: productId
         }).then((data) => {
             this.$loadingDismiss();
-            data.data = data.data || {}
+            data.data = data.data || {};
             const { specMap, priceList } = data.data;
             //修改specMap每个元素首尾增加'，'
             for (let key in specMap) {
@@ -110,7 +127,7 @@ export default class SearchResultPage extends BasePage {
             this.setState({
                 selectionData: data.data,
                 modalVisible: !this.state.modalVisible,
-                productId:productId
+                productId: productId
             });
         }).catch((data) => {
             this.$loadingDismiss();
@@ -156,8 +173,8 @@ export default class SearchResultPage extends BasePage {
     };
 
     _onPressToGwc = () => {
-        this.$navigate('shopCart/ShopCart',{
-            hiddeLeft:false
+        this.$navigate('shopCart/ShopCart', {
+            hiddeLeft: false
         });
     };
     _onPressToTop = () => {
@@ -175,6 +192,18 @@ export default class SearchResultPage extends BasePage {
         }
     };
 
+    _renderListView = () => {
+        return <FlatList
+            ref='FlatListShow'
+            style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
+            renderItem={this._renderItem}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item, index) => `${index}`}
+            numColumns={this.state.isHorizontal ? 2 : 1}
+            key={this.state.isHorizontal ? 'hShow' : 'vShow'}
+            data={this.state.productList}/>;
+    };
+
     _render() {
         return (
             <View style={{ flex: 1 }}>
@@ -183,16 +212,7 @@ export default class SearchResultPage extends BasePage {
                                  changeLayout={this._changeLayout} isHorizontal={this.state.isHorizontal}
                                  value={this.params.keywords || this.params.name || ''}/>
                 <ResultSegmentView segmentOnPressAtIndex={this._segmentOnPressAtIndex}/>
-                <FlatList
-                    ref='FlatListShow'
-                    style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
-                    renderItem={this._renderItem}
-                    showsVerticalScrollIndicator={false}
-                    keyExtractor={(item, index) => `${index}`}
-                    numColumns={this.state.isHorizontal ? 2 : 1}
-                    key={this.state.isHorizontal ? 'hShow' : 'vShow'}
-                    data={this.state.productList} />
-
+                {renderViewByLoadingState(this._getPageStateOptions(), this._renderListView)}
                 <View style={{ position: 'absolute', right: 15, bottom: 15 }}>
                     <TouchableWithoutFeedback onPress={this._onPressToGwc}>
                         <Image source={toGwc}/>
@@ -201,12 +221,10 @@ export default class SearchResultPage extends BasePage {
                         <Image style={{ marginTop: 5 }} source={toTop}/>
                     </TouchableWithoutFeedback>
                 </View>
-
-
                 <Modal
                     animationType="none"
                     transparent={true}
-                     onRequestClose={()=>this.setState({modalVisible:false})}
+                    onRequestClose={() => this.setState({ modalVisible: false })}
                     visible={this.state.modalVisible}>
                     <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
                                    selectionViewClose={this._selectionViewClose} data={this.state.selectionData}/>
