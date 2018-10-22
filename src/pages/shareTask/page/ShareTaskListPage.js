@@ -11,45 +11,54 @@
 "use strict";
 import React from "react";
 import {
-  StyleSheet,
-  View
+    StyleSheet,
+    View
 } from "react-native";
 import BasePage from "../../../BasePage";
+import ShareTaskResultAlert from "../components/ShareTaskResultAlert";
 
 type Props = {};
 export default class ShareTaskListPage extends BasePage<Props> {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this._bind();
-  }
+    constructor(props) {
+        super(props);
+        this.state = {};
+        this._bind();
+    }
 
-  $navigationBarOptions = {
-    title: "",
-    show: true// false则隐藏导航
-  };
+    $navigationBarOptions = {
+        title: "我的任务",
+        show: true// false则隐藏导航
+    };
 
-  _bind() {
-    this.loadPageData = this.loadPageData.bind(this);
-  }
+    _bind() {
+        this.loadPageData = this.loadPageData.bind(this);
+    }
 
-  componentDidMount() {
-    this.loadPageData();
-  }
+    componentDidMount() {
+        this.loadPageData();
+        this.shareModal.open();
+    }
 
-  loadPageData() {
-  }
+    loadPageData() {
+    }
 
-  _render() {
-    return (
-      <View style={styles.container}>
-      </View>
-    );
-  }
+    _render() {
+        return (
+            <View style={styles.container}>
+                <ShareTaskResultAlert ref={(ref) => this.shareModal = ref}
+                                      success={true}
+                                      money={25}
+                                      shareValue={18}
+                                      onPress={() => {
+                                          this.$navigate('mine/userInformation/MyCashAccountPage');
+                                      }}/>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
+    container: {
+        flex: 1
+    }
 });

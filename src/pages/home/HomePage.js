@@ -18,6 +18,7 @@ import HomeAdView from './HomeAdView'
 import HomeGoodsView from './HomeGoodsView'
 import HomeUserView from './HomeUserView'
 import ShowView from '../show/ShowView'
+import ShareTaskHomeAlert from '../shareTask/components/ShareTaskHomeAlert'
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 
@@ -84,7 +85,9 @@ export default class HomePage extends Component {
     _onRefresh() {
         homeModule.loadHomeList()
     }
-
+    componentDidMount() {
+        this.shareModal.open();
+    }
     render() {
         const { homeList } = homeModule
         return (
@@ -110,6 +113,8 @@ export default class HomePage extends Component {
                 <View style={styles.navBar}>
                     <HomeSearchView navigation={this.props.navigation}/>
                 </View>
+                <ShareTaskHomeAlert ref={(ref) => this.shareModal = ref}
+                                    onPress = {() => {this.props.navigation.navigate('shareTask/ShareTaskListPage')}}/>
             </View>
         );
     }
