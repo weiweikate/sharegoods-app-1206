@@ -39,7 +39,7 @@ export default class TopicDetailSelectPage extends Component {
                 isAll = false;
             }
         });
-        if (this.state.selectList.length === specPriceList.length && isAll) {
+        if (this.state.selectList.length === Object.keys(specPriceList).length && isAll) {
             this.props.selectionViewConfirm(1, this.state.selectData);
             this.props.selectionViewClose();
         }else {
