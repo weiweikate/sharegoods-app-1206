@@ -96,19 +96,23 @@ export default class SearchPage extends BasePage {
     };
     //跳转
     _clickItemAction = (text, index, hotWordId) => {
-        if (!this.state.recentData.includes(text)) {
-            this.state.recentData.unshift(text);
-        } else {
-            if (index !== 0) {
-                this.state.recentData.splice(index, 1);
+        text = StringUtils.trim(text);
+        if (StringUtils.isNoEmpty(text)) {
+            if (!this.state.recentData.includes(text)) {
                 this.state.recentData.unshift(text);
+            } else {
+                if (index !== 0) {
+                    this.state.recentData.splice(index, 1);
+                    this.state.recentData.unshift(text);
+                }
             }
+            if (this.state.recentData.length > 10) {
+                this.state.recentData = this.state.recentData.slice(0, 10);
+            }
+            Storage.set(recentDataKey, this.state.recentData);
+            this.forceUpdate();
         }
-        if (this.state.recentData.length > 10) {
-            this.state.recentData = this.state.recentData.slice(0, 10);
-        }
-        Storage.set(recentDataKey, this.state.recentData);
-        this.forceUpdate();
+
         this.$navigate(RouterMap.SearchResultPage, { keywords: text, hotWordId: hotWordId || '' });
     };
 
