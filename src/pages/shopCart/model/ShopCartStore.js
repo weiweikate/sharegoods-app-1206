@@ -50,14 +50,12 @@ class ShopCartStore {
 
     @computed
     get isCanAddItem() {
-
         if (this.data.slice().length >= 110) {
             return false;
         } else {
             return true;
         }
     }
-
 
     @computed
     get computedSelect() {
@@ -72,6 +70,7 @@ class ShopCartStore {
         });
         return flag;
     }
+
 
     /**
      * 开始结算

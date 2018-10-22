@@ -64,10 +64,12 @@ export default class InvitePromotionPage extends BasePage<Props> {
 
     _itemRender({item}) {
         return(
-            <View>
-                <Text>
-                    {item}
-                </Text>
+            <View style={{height:px2dp(63),width:ScreenUtils.width}}>
+                <View style={styles.itemWrapper}>
+                    <Text style={styles.itemTextStyle}>
+                        {item}
+                    </Text>
+                </View>
             </View>
         )
     }
@@ -88,6 +90,7 @@ export default class InvitePromotionPage extends BasePage<Props> {
                 </ImageBackground>
                 <FlatList data={promotions}
                           renderItem={this._itemRender}
+                          style={{marginTop:px2dp(15)}}
                 />
             </View>
         );
@@ -109,6 +112,21 @@ const styles = StyleSheet.create({
         paddingBottom:px2dp(32)
     },
     itemWrapper:{
-
+        backgroundColor:'white',
+        height:px2dp(48),
+        width:ScreenUtils.width - px2dp(30),
+        justifyContent:'center',
+        alignItems:'center',
+        alignSelf:'center',
+        elevation:2,
+        borderRadius:px2dp(5),
+        shadowColor:'#000000',
+        shadowOffset:{h:2,w:2},
+        shadowRadius:px2dp(6),
+        shadowOpacity:0.1,
+    },
+    itemTextStyle:{
+        color:'black',
+        fontSize:px2dp(13),
     }
 });
