@@ -31,14 +31,15 @@ export default class InvitationToShopPage extends BasePage {
     }
 
     info = {};
+
     componentDidMount() {
         this.creatQRCodeImage('二维码链接');
     }
 
-    creatQRCodeImage(QRCodeStr){
+    creatQRCodeImage(QRCodeStr) {
         bridge.creatQRCodeImage(QRCodeStr, (path) => {
-            this.setState({path});
-        }) ;
+            this.setState({ path });
+        });
     }
 
     //截屏
@@ -65,6 +66,7 @@ export default class InvitationToShopPage extends BasePage {
     _render() {
         // 需要分享的参数信息
         const shareInfo = this.params.shareInfo || {};
+        const { manager = {} } = shareInfo;
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -80,7 +82,7 @@ export default class InvitationToShopPage extends BasePage {
                                 <View style={{ justifyContent: 'space-between' }}>
                                     <Text style={styles.text}>{shareInfo.name || ''}</Text>
                                     <Text style={styles.text}>店铺ID：{shareInfo.storeNumber || ''}</Text>
-                                    <Text style={styles.text}>店主：{shareInfo.storeUserName || ''}</Text>
+                                    <Text style={styles.text}>店主：{manager.nickname || ''}</Text>
                                 </View>
                             </View>
                             <View style={styles.qrContainer}>
@@ -115,10 +117,10 @@ export default class InvitationToShopPage extends BasePage {
                 </ScrollView>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 webJson={{
-                                    title: '分享标题(当为图文分享时候使用)',
-                                    dec: '内容(当为图文分享时候使用)',
+                                    title: `加入店铺:${shareInfo.name}`,
+                                    dec: '店铺',
                                     linkUrl: 'http://testh5.sharegoodsmall.com/#/register',
-                                    thumImage: 'logo.png'
+                                    thumImage: `${shareInfo.headUrl}`
                                 }}/>
             </View>
         );

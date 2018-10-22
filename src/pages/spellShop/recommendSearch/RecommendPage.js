@@ -7,7 +7,8 @@ import {
     Image,
     StyleSheet,
     SectionList,
-    TouchableOpacity
+    TouchableOpacity,
+    RefreshControl
 } from 'react-native';
 
 //source
@@ -23,13 +24,22 @@ import ViewPager from '../../../components/ui/ViewPager';
 import UIImage from '../../../components/ui/UIImage';
 import SpellShopApi from '../api/SpellShopApi';
 import HomeAPI from '../../home/api/HomeAPI';
+import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 
 export default class RecommendPage extends BasePage {
 
     constructor(props) {
         super(props);
         this.state = {
-            segmentIndex: '1',
+            //刷新
+            refreshing: false,//是否显示下拉的菊花
+            noMore: false,//是否能加载更多
+            loadingMore: false,//是否显示加载更多的菊花
+            loadingMoreError: null,//加载更多是否报错
+            page: 1,
+
+            segmentIndex: 1,
+            //data
             dataList: [],
             adList: []
         };
@@ -58,21 +68,38 @@ export default class RecommendPage extends BasePage {
         this._loadPageData();
     }
 
-    _loadPageData = () => {
+    _getSize = () => {
+        const segmentIndex = this.state.segmentIndex;
+        return segmentIndex === 1 ? 5 : segmentIndex === 2 ? 8 : 5;
+    };
+    _refreshing = () => {
+        this.setState({
+            refreshing: true
+        }, () => {
+            this._loadPageData();
+        });
+    };
 
+    _loadPageData = () => {
+        this.state.page = 1;
         SpellShopApi.queryHomeStore({
-            page: 1,
-            size: 10,
+            page: this.state.page,
+            size: this._getSize(),
             type: this.state.segmentIndex
         }).then((data) => {
+            this.state.page++;
             let dataTemp = data.data || {};
             this.setState({
+                refreshing: false,
+                noMore: dataTemp.data.length < this._getSize(),
                 dataList: dataTemp.data || []
             });
         }).catch((error) => {
+            this.setState({
+                refreshing: false
+            });
             this.$toastShow(error.msg);
         });
-
         HomeAPI.getSwipers({
             type: 9
         }).then((data) => {
@@ -80,9 +107,37 @@ export default class RecommendPage extends BasePage {
                 adList: data.data || []
             });
         }).catch((error) => {
-            this.$toastShow(error.msg);
         });
     };
+
+    _loadPageDataMore = () => {
+        this.onEndReached = true;
+        this.setState({
+            loadingMore: true
+        }, () => {
+            SpellShopApi.queryHomeStore({
+                page: this.state.page,
+                size: this._getSize(),
+                type: this.state.segmentIndex
+            }).then((data) => {
+                this.state.page++;
+                this.onEndReached = false;
+                let dataTemp = data.data || {};
+                this.setState({
+                    noMore: dataTemp.data.length < this._getSize(),
+                    loadingMore: false,
+                    loadingMoreError: null,
+                    dataList: this.state.dataList.concat(dataTemp.data || [])
+                });
+            }).catch((error) => {
+                this.setState({
+                    loadingMore: false,
+                    loadingMoreError: error.msg
+                });
+            });
+        });
+    };
+
 
     // 点击开启店铺页面
     _clickOpenShopItem = () => {
@@ -107,17 +162,21 @@ export default class RecommendPage extends BasePage {
 
     // 点击轮播图广告
     _clickItem = (item) => {
-        let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
         if (item.linkType === 1) {
             this.$navigate('home/product/ProductDetailPage', {
                 productCode: item.linkTypeCode
+            });
+        } else if (item.linkType === 2) {
+            this.$navigate('topic/DownPricePage', {
+                linkTypeCode: item.linkTypeCode
             });
         } else if (item.linkType === 6) {
             this.$navigate('HtmlPage', {
                 title: '详情',
                 uri: item.linkTypeCode
             });
-        } else if (type === 1 || type === 2 || type === 3) {
+        } else if (item.linkType === 3 || item.linkType === 4 || item.linkType === 5) {
+            let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: item.linkTypeCode,
                 activityType: type
@@ -126,8 +185,12 @@ export default class RecommendPage extends BasePage {
     };
 
     _segmentPressAtIndex = (index) => {
-        this.state.segmentIndex = index;
-        this._loadPageData();
+        this.setState({
+            dataList: [],
+            segmentIndex: index
+        }, () => {
+            this._loadPageData();
+        });
     };
 
     _renderListHeader = () => {
@@ -172,21 +235,43 @@ export default class RecommendPage extends BasePage {
         return (<RecommendRow RecommendRowItem={item} RecommendRowOnPress={this._RecommendRowOnPress}/>);
     };
 
+    _ListFooterComponent = () => {
+        if (this.state.dataList.length === 0) {
+            return null;
+        }
+        return <ListFooter loadingMore={this.state.loadingMore}
+                           errorDesc={this.state.loadingMoreError}
+                           onPressLoadError={this._onEndReached}/>;
+    };
+    _onEndReached = () => {
+        if (this.onEndReached || !this.state.dataList.length || this.state.noMore) {
+            return;
+        }
+        this._loadPageDataMore();
+    };
+
     _render() {
         return (
             <View style={{ flex: 1 }}>
-                <SectionList refreshing={this.state.refreshing}
-                             onRefresh={this._onRefresh}
+                <SectionList keyExtractor={(item, index) => `${index}`}
+                             refreshControl={
+                                 <RefreshControl
+                                     refreshing={this.state.refreshing}
+                                     onRefresh={this._refreshing.bind(this)}
+                                     title="下拉刷新"
+                                     tintColor="#999"
+                                     titleColor="#999"/>}
+                             onEndReached={this._onEndReached.bind(this)}
+                             onEndReachedThreshold={0.1}
+                             ListFooterComponent={this._ListFooterComponent}
+                             stickySectionHeadersEnabled={false}
+                             showsVerticalScrollIndicator={false}
                              ListHeaderComponent={this._renderListHeader}
                              renderSectionHeader={this._renderSectionHeader}
                              renderItem={this._renderItem}
-                             keyExtractor={(item, index) => `${index}`}
-                             stickySectionHeadersEnabled={false}
-                             showsVerticalScrollIndicator={false}
                              sections={[{ data: this.state.dataList }]}/>
             </View>
-        )
-            ;
+        );
     }
 }
 

@@ -1,49 +1,54 @@
 /**
  * 首页轮播图
  */
-import React, { Component } from 'react'
-import { View , StyleSheet, Image, TouchableOpacity } from 'react-native'
-import ScreenUtils from '../../utils/ScreenUtils'
-const { px2dp } = ScreenUtils
-import {observer} from 'mobx-react';
-import { BannerModules, homeModule } from './Modules'
-import ViewPager from '../../components/ui/ViewPager'
+import React, { Component } from 'react';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import ScreenUtils from '../../utils/ScreenUtils';
 
-const bannerHeight = px2dp(220)
+const { px2dp } = ScreenUtils;
+import { observer } from 'mobx-react';
+import { bannerModule, homeModule } from './Modules';
+import ViewPager from '../../components/ui/ViewPager';
+
+const bannerHeight = px2dp(220);
 
 @observer
 export default class HomeBannerView extends Component {
     constructor(props) {
-        super(props)
-        this.bannerModule = new BannerModules()
-        this.bannerModule.loadBannerList()
+        super(props);
+        bannerModule.loadBannerList();
     }
 
     _bannerAction(item, index) {
-        const {bannerList} = this.bannerModule
-        const banner = bannerList[index]
-        const router =  homeModule.homeNavigate(banner.linkType, banner.linkTypeCode)
-        let params = homeModule.paramsNavigate(banner)
-        const {navigation} = this.props
-        navigation.navigate(router, params)
+        const { bannerList } = bannerModule;
+        const banner = bannerList[index];
+        const router = homeModule.homeNavigate(banner.linkType, banner.linkTypeCode);
+        let params = homeModule.paramsNavigate(banner);
+        const { navigation } = this.props;
+        navigation.navigate(router, params);
     }
 
     _renderViewPageItem = (item, index) => {
-        return <TouchableOpacity onPress={()=>{this._bannerAction(item,index)}}>
+        return <TouchableOpacity onPress={() => {
+            this._bannerAction(item, index);
+        }}>
             <Image
                 source={{ uri: item }}
                 style={styles.img}
                 resizeMode="cover"
             />
-        </TouchableOpacity>
-    }
+        </TouchableOpacity>;
+    };
 
     render() {
-        const {bannerList} = this.bannerModule
-        let items = []
+        const { bannerList } = bannerModule;
+        if (bannerList.length === 0) {
+            return null;
+        }
+        let items = [];
         bannerList.map((value, index) => {
-            items.push(value.imgUrl)
-        })
+            items.push(value.imgUrl);
+        });
         return <View>
             <ViewPager
                 swiperShow={true}
@@ -65,7 +70,7 @@ export default class HomeBannerView extends Component {
                 autoplay={true}
                 height={bannerHeight}
             />
-        </View>
+        </View>;
     }
 }
 
@@ -74,4 +79,4 @@ const styles = StyleSheet.create({
         height: bannerHeight,
         width: ScreenUtils.width
     }
-})
+});

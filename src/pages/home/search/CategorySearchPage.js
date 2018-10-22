@@ -108,16 +108,14 @@ export default class CategorySearchPage extends BasePage {
                                 keyExtractor={(item, index) => index}
                                 showsVerticalScrollIndicator={false}
                                 data={this.state.nameArr}
-                            /> : null
+                            /> : <View style={{ width: 90 }}/>
                     }
 
                     <View style={{
                         width: bannerW + 20,
                         flexDirection: 'column',
-                        paddingRight: 10,
-                        paddingLeft: 10,
-                        paddingBottom: 20,
-                        backgroundColor: 'white'
+                        backgroundColor: 'white',
+                        height: ScreenUtils.height - 60 - ScreenUtils.headerHeight //屏幕高减去搜索框以及头部高
                     }}>
                         <ViewPager swiperShow={this.state.swiperShow && this.state.bannerData.length > 0}
                                    arrayData={this.state.bannerData}
@@ -137,12 +135,16 @@ export default class CategorySearchPage extends BasePage {
                                    }}
                                    autoplay={true}
                                    height={118}
-                                   style={{ marginBottom: 10 }}
+                                   style={{ marginBottom: 10, marginLeft: 10, marginRight: 10 }}
                         />
-                        <SectionList style={{ marginTop: 10 }}
+                        <SectionList style={{
+                            marginTop: 10,
+                            marginLeft: 10,
+                            marginRight: 10
+                        }}
                                      contentContainerStyle={{
-                                         flexDirection: 'row',
-                                         flexWrap: 'wrap'
+                                         flexWrap: 'wrap',
+                                         flexDirection: 'row'
                                      }}
                                      renderItem={this._sectionItem}
                                      renderSectionHeader={this._sectionHeader}
@@ -187,17 +189,21 @@ export default class CategorySearchPage extends BasePage {
 
     clickBanner = (item) => {
         // banner点击跳转
-        let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
         if (item.linkType === 1) {
             this.$navigate('home/product/ProductDetailPage', {
                 productCode: item.linkTypeCode
+            });
+        } else if (item.linkType === 2) {
+            this.$navigate('topic/DownPricePage', {
+                linkTypeCode: item.linkTypeCode
             });
         } else if (item.linkType === 6) {
             this.$navigate('HtmlPage', {
                 title: '',
                 uri: item.linkTypeCode
             });
-        } else if (type === 1 || type === 2 || type === 3) {
+        } else if (item.linkType === 3 || item.linkType === 4 || item.linkType === 5) {
+            let type = item.linkType === 3 ? 2 : item.linkType === 4 ? 1 : 3;
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: item.linkTypeCode,
                 activityType: type
@@ -299,18 +305,18 @@ export default class CategorySearchPage extends BasePage {
 
     _listFooter = ({ section }) => {
         return (
-
-            <View style={{
-                width: ScreenUtils.width - 110,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: 30
-            }}>
-                <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginRight: 10 }}/>
-                <UIText value={'没有更多啦～'} style={{ fontSize: 12, color: '#999999' }}/>
-                <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginLeft: 10 }}/>
-            </View>
+            this.state.sectionArr.length > 0 ?
+                <View style={{
+                    width: ScreenUtils.width - 110,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 30
+                }}>
+                    <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginRight: 10 }}/>
+                    <UIText value={'没有更多啦～'} style={{ fontSize: 12, color: '#999999' }}/>
+                    <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginLeft: 10 }}/>
+                </View> : null
         );
     };
 
@@ -337,3 +343,4 @@ const styles = StyleSheet.create({
         padding: 5
     }
 });
+

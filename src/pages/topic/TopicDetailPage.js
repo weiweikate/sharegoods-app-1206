@@ -23,6 +23,7 @@ import TopicApi from './api/TopicApi';
 import user from '../../model/user';
 import TopicDetailSelectPage from './TopicDetailSelectPage';
 import PackageDetailSelectPage from './PackageDetailSelectPage';
+import CommShareModal from '../../comm/components/CommShareModal';
 
 export default class TopicDetailPage extends BasePage {
 
@@ -231,7 +232,7 @@ export default class TopicDetailPage extends BasePage {
                     ItemSeparatorComponent={this._renderSeparatorComponent}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => `${index}`}
-                    data={this.state.activityType === 3 ? this.state.data.paramValueList || [] : this.state.data.paramList || []} />
+                    data={this.state.activityType === 3 ? this.state.data.paramValueList || [] : this.state.data.paramList || []}/>
             </View>;
         }
     };
@@ -297,6 +298,23 @@ export default class TopicDetailPage extends BasePage {
                 bottomTittle = '已结束';
             }
         }
+
+        let productPrice, productName, productImgUrl, productId;
+        if (this.state.activityType === 3) {
+            const { name, levelPrice, imgUrl, id } = this.state.data || {};
+            productPrice = levelPrice;
+            productName = name;
+            productImgUrl = imgUrl;
+            productId = id;
+        } else {
+            const { price = 0, product = {} } = this.state.data || {};
+            const {  name = '', imgUrl, id } = product;
+            productPrice = price;
+            productName = `${name}`;
+            productImgUrl = imgUrl;
+            productId = id;
+        }
+
         return (
             <View style={styles.container}>
                 <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
@@ -306,7 +324,9 @@ export default class TopicDetailPage extends BasePage {
                     }}>
                         <Image source={xiangqing_btn_return_nor}/>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.shareModal.open();
+                    }}>
                         <Image source={xiangqing_btn_more_nor}/>
                     </TouchableWithoutFeedback>
                 </View>
@@ -347,6 +367,21 @@ export default class TopicDetailPage extends BasePage {
                                                activityType={this.state.activityType}/>}
 
                 </Modal>
+
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                type={'Image'}
+                                imageJson={{
+                                    imageUrlStr: productImgUrl,
+                                    titleStr: productName,
+                                    priceStr: `￥${productPrice}`,
+                                    QRCodeStr: `http://testh5.sharegoodsmall.com/#/product/${productId}`
+                                }}
+                                webJson={{
+                                    title: productName,
+                                    dec: '商品详情',
+                                    linkUrl: `http://testh5.sharegoodsmall.com/#/product/${productId}`,
+                                    thumImage: productImgUrl
+                                }}/>
             </View>
         );
     }

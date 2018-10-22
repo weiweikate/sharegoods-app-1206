@@ -2,27 +2,27 @@
 * 首页查询
 */
 
-import React from 'react'
-import {View, StyleSheet, Image, TouchableOpacity, TouchableHighlight} from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
-import ScreenUtils from '../../utils/ScreenUtils'
-const { px2dp, statusBarHeight } = ScreenUtils
-import logoImg from './res/icons/logo.png'
-import searchImg from './res/icon_search.png'
-import msgImg from './res/icons/msg.png'
+import React from 'react';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import ScreenUtils from '../../utils/ScreenUtils';
 
-export default ({navigation}) =>
-    <LinearGradient colors={['#000000', 'transparent']}
-            style={styles.navBar}>
+const { px2dp, statusBarHeight } = ScreenUtils;
+import logoImg from './res/icons/logo.png';
+import searchImg from './res/icon_search.png';
+import msgImg from './res/icons/msg.png';
+import UIText from '../../components/ui/UIText';
+
+export default ({ navigation }) =>
+    <View style={styles.navBar}>
         <Image source={logoImg} style={styles.logo}/>
-        <TouchableOpacity style={styles.searchBox} onPress={()=> navigation.navigate('home/search/SearchPage')}>
-        <Image source={searchImg} style={styles.searchIcon}/>
-        <View style={styles.inputText}/>
+        <TouchableOpacity style={styles.searchBox}
+                          onPress={() => navigation.navigate('home/search/SearchPage')}>
+            <Image source={searchImg} style={styles.searchIcon}/>
+            <UIText style={styles.inputText} value={'请输入关键词搜索'}/>
         </TouchableOpacity>
-        <TouchableHighlight onPress={() => navigation.navigate('message/MessageCenterPage')}>
-            <Image source={msgImg} style={styles.scanIcon}/>
-        </TouchableHighlight>
-    </LinearGradient>
+        <Image source={msgImg} style={styles.scanIcon}
+               onPress={() => navigation.navigate('message/MessageCenterPage')}/>
+    </View>
 
 
 let styles = StyleSheet.create({
@@ -37,7 +37,7 @@ let styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         right: 0,
-        opacity: 0.5
+        zIndex: 4
     },
     logo: {
         height: 27,
@@ -51,7 +51,8 @@ let styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         marginLeft: 8,
-        marginRight: 10
+        marginRight: 10,
+        opacity: 0.8
     },
     scanIcon: {
         height: 24,
@@ -65,7 +66,7 @@ let styles = StyleSheet.create({
     },
     inputText: {
         flex: 1,
-        backgroundColor: '#666666',
-        padding: 0
+        color: '#666666',
+        fontSize: 14
     }
-})
+});

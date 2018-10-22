@@ -286,6 +286,10 @@ let constants = {
             disNextView:true,
             menu:[
                 {
+                    id:7,
+                    operation:'删除订单',
+                    isRed:false,
+                },{
                     id:8,
                     operation:'再次购买',
                     isRed:false,
@@ -300,6 +304,10 @@ let constants = {
             disNextView:true,
             menu:[
                 {
+                    id:7,
+                    operation:'删除订单',
+                    isRed:false,
+                },{
                     id:8,
                     operation:'再次购买',
                     isRed:false,
@@ -314,6 +322,10 @@ let constants = {
             disNextView:false,
             menu:[
                 {
+                    id:7,
+                    operation:'删除订单',
+                    isRed:false,
+                },{
                     id:8,
                     operation:'再次购买',
                     isRed:false,
@@ -328,6 +340,10 @@ let constants = {
             disNextView:true,
             menu:[
                 {
+                    id:7,
+                    operation:'删除订单',
+                    isRed:false,
+                },{
                     id:8,
                     operation:'再次购买',
                     isRed:false,

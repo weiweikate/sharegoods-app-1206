@@ -76,10 +76,10 @@ export default class TopicDetailHeaderView extends Component {
             monthSale = saleNum;
         } else {
             const { productImgList = [{}], freight, monthSaleTotal, product = {} } = this.props.data || {};
-            const { supplierName, brandName, name, firstCategoryName, secCategoryName, thirdCategoryName } = product;
+            const { name } = product;
 
             bannerImgList = productImgList;
-            tittle = `${supplierName} ${brandName} ${name} ${firstCategoryName} ${secCategoryName} ${thirdCategoryName}`;
+            tittle = `${name}`;
             freightValue = freight;
             monthSale = monthSaleTotal;
         }
@@ -114,10 +114,11 @@ export default class TopicDetailHeaderView extends Component {
                             color: '#222222',
                             fontSize: 15
                         }}>{tittle}</Text>
-                        {activityType === 3 ? <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
-                            <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
-                            <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${oldPrice}`}</Text>
-                        </View> : null}
+                        {activityType === 3 ?
+                            <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
+                                <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
+                                <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${oldPrice}`}</Text>
+                            </View> : null}
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text style={{
                                 color: '#BBBBBB',

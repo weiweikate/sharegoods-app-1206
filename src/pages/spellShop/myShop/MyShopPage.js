@@ -39,9 +39,24 @@ import StringUtils from '../../../utils/StringUtils';
 import spellStatusModel from '../model/SpellStatusModel';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 
 @observer
 export default class MyShopPage extends BasePage {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            loadingState: PageLoadingState.loading,
+            netFailedInfo: {},
+            isRefresh: false,
+
+            storeData: {},
+            storeId: this.params.storeId || this.props.storeId,
+            isLike: false
+        };
+    }
+
     // 导航配置
     $navigationBarOptions = {
         title: '我的店铺',
@@ -73,19 +88,22 @@ export default class MyShopPage extends BasePage {
         }
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            storeData: {},
-            storeId: this.params.storeId || this.props.storeId,
-            isLike: false,
-            isRefresh: false
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: () => {
+                    this._loadPageData();
+                }
+            }
         };
-    }
+    };
 
     componentDidMount() {
         this._loadPageData();
     }
+
 
     _onRefresh = () => {
         this.setState({
@@ -99,13 +117,16 @@ export default class MyShopPage extends BasePage {
         SpellShopApi.getById({ id: this.state.storeId }).then((data) => {
             let dataTemp = data.data || {};
             this.setState({
+                loadingState: PageLoadingState.success,
+                isRefresh: false,
                 storeData: dataTemp,
-                storeId: dataTemp.id,
-                isRefresh: false
+                storeId: dataTemp.id
             });
         }).catch((error) => {
             this.$toastShow(error.msg);
             this.setState({
+                loadingState: PageLoadingState.fail,
+                netFailedInfo: error,
                 isRefresh: false
             });
         });
@@ -147,7 +168,10 @@ export default class MyShopPage extends BasePage {
     _clickSettingItem = () => {
         const { myStore } = this.state.storeData;
         if (myStore) {
-            this.$navigate('spellShop/shopSetting/ShopPageSettingPage', { storeData: this.state.storeData,myShopCallBack:this._loadPageData});
+            this.$navigate('spellShop/shopSetting/ShopPageSettingPage', {
+                storeData: this.state.storeData,
+                myShopCallBack: this._loadPageData
+            });
         } else {
             this.actionSheetRef.show({
                 items: ['分享店铺', '举报店铺', '退出店铺']//
@@ -363,10 +387,10 @@ export default class MyShopPage extends BasePage {
                 <ConfirmAlert ref="delAlert"/>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 webJson={{
-                                    title: '分享标题(当为图文分享时候使用)',
-                                    dec: '内容(当为图文分享时候使用)',
+                                    title: `加入店铺:${this.state.storeData.name}`,
+                                    dec: '店铺',
                                     linkUrl: 'http://testh5.sharegoodsmall.com/#/register',
-                                    thumImage: 'logo.png'
+                                    thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>
         );

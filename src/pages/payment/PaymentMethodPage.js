@@ -14,12 +14,12 @@ import unselectedImg from './res/unselected.png'
 import { Payment, paymentType } from './Payment'
 import PayUtil from './PayUtil'
 
-const PayCell = ({data, isSelected, balance, press, selectedTypes}) => {
+const PayCell = ({data, isSelected, balance, press, selectedTypes, disabled}) => {
     let selected = isSelected
     if (data.type !== paymentType.balance && selectedTypes) {
         selected = selectedTypes.type === data.type
     }
-    return <TouchableOpacity style={styles.cell} onPress={()=>press && press()}>
+    return <TouchableOpacity style={styles.cell} disabled={disabled} onPress={()=>press && press()}>
         <View style={{ flexDirection: 'row', alignItems: 'center' ,flex:1}}>
             <Image source={data.icon} style={{ height: 33 }} resizeMode={'contain'}/>
             <Text style={[styles.blackText, { marginLeft: 5 }]}>{data.name}</Text>
@@ -85,6 +85,7 @@ export default class PaymentMethodPage extends BasePage {
             }
         };
         this.payment = new Payment()
+        this.payment.payStore = this.params.payStore
     }
     _selectedPayType(value) {
         this.payment.selectPaymentType(value)
@@ -101,12 +102,12 @@ export default class PaymentMethodPage extends BasePage {
             if (value.type === paymentType.section) {
                 items.push(<Section key={index + ''} data={value}/>)
             } else {
-                items.push(<PayCell key={index + ''}  selectedTypes={selectedTypes} data={value} balance={availableBalance} press={()=>this._selectedPayType(value)}/>)
+                items.push(<PayCell disabled={value.type !== paymentType.balance && this.state.paymentPageParams.shouldPayMoney  === 0} key={index + ''}  selectedTypes={selectedTypes} data={value} balance={availableBalance} press={()=>this._selectedPayType(value)}/>)
             }
         })
 
         return  <View  style={styles.container}><ScrollView style={styles.container}>
-            <PayCell data={balancePayment} isSelected={selectedBalace} balance={availableBalance} press={()=>this._selectedBalancePay(balancePayment)}/>
+            <PayCell data={balancePayment} isSelected={selectedBalace || this.state.paymentPageParams.shouldPayMoney  === 0} balance={availableBalance} press={()=>this._selectedBalancePay(balancePayment)}/>
             {items}
         </ScrollView>
         {this.renderBottomOrder()}
@@ -115,6 +116,8 @@ export default class PaymentMethodPage extends BasePage {
     }
     //支付方式弹窗
     renderPaymentModal = () => {
+        const {  payStore } = this.payment
+        
         return (
             <InputTransactionPasswordModal
                 isShow={this.state.isShowPaymentModal}
@@ -126,9 +129,20 @@ export default class PaymentMethodPage extends BasePage {
                 bottomText={'忘记支付密码'}
                 inputText={(text) => {
                     if (text.length === 6) {
+                        this.setState({isShowPaymentModal: false})
                         setTimeout(() => {
-                            this.setState({ password: text, isShowPaymentModal: false });
-                            this.commitOrder();
+                            if (payStore) {
+                                this.payment.payStoreActoin().then(result => {
+                                    if (result.sdkCode === 0) {
+                                        this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                                    } else {
+                                        Toast.$toast('支付失败')
+                                    }
+                                })
+                            } else {
+                                this.setState({ password: text, isShowPaymentModal: false });
+                                this.commitOrder();
+                            }
                         }, 100);
                     }
                 }}
@@ -173,9 +187,9 @@ export default class PaymentMethodPage extends BasePage {
                 return;
             }
             let result = await this.payment.balancePay(params)
+            this.setState({password: ''})
             console.log('checkRes', result)
             this._showPayresult(result)
-            this.setState({password: ''})
         }
         else {
             this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
@@ -265,10 +279,33 @@ export default class PaymentMethodPage extends BasePage {
         }
     }
     commitOrder = () => {
-        const { selectedBalace } = this.payment
-        const { selectedTypes } = this.payment
+        const { selectedBalace, selectedTypes, payStore } = this.payment
         if (selectedTypes && selectedTypes.type === paymentType.bank) {
             Toast.$toast('银行卡支付，暂不支持')
+            return
+        }
+
+        if (payStore) {
+            if (selectedBalace) {
+                if (user.hadSalePassword) {
+                    if (StringUtils.isEmpty(this.state.password)) {
+                        this.setState({ isShowPaymentModal: true });
+                        return;
+                    }
+                    this.setState({password: ''})
+                }
+                else {
+                    this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
+                }
+                return
+            }
+             this.payment.payStoreActoin().then(result => {
+                if (result.sdkCode === 0) {
+                    this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                } else {
+                    Toast.$toast('支付失败')
+                }
+            })
             return
         }
 
@@ -296,9 +333,6 @@ export default class PaymentMethodPage extends BasePage {
             this._wechat()
             return
         }
-
-
-
     };
     //需要在当前选择的支付方式能完成支付的情况下，才保证调用该方法返回的数据有效性
     getApiRequestParams = () => {

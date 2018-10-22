@@ -66,7 +66,7 @@ class ShopCartStore {
         }
         let flag = true;
         this.data.map(item => {
-            if (!item.isSelected) {
+            if (item.status === 1 && !item.isSelected) {
                 flag = false;
             }
         });
@@ -96,7 +96,11 @@ class ShopCartStore {
     isSelectAllItem = (isSelectAll) => {
         if (isSelectAll) {
             this.data.slice().map(item => {
-                item.isSelected = true;
+                if (item.status === 0){
+                    item.isSelected = false;
+                } else {
+                    item.isSelected = true;
+                }
             });
         } else {
             this.data.slice().map(item => {
@@ -152,10 +156,13 @@ class ShopCartStore {
     /*请求购物车商品*/
     getShopCartListData = () => {
         ShopCartAPI.list().then(result => {
+            bridge.hiddenLoading();
             //组装购物车数据
             this.packingShopCartGoodsData(result.data);
         }).then(error => {
+            bridge.hiddenLoading();
             bridge.$toast(error.msg);
+
         });
     };
     /*组装打包购物车数据*/
@@ -189,15 +196,19 @@ class ShopCartStore {
             }else {
                 //加入单个商品
                 console.log(item);
+                bridge.showLoading()
                 ShopCartAPI.addItem({
                     'amount': item.amount,
                     'priceId': item.priceId,
                     'productId': item.productId,
                     'timestamp':item.timestamp
                 }).then((res) => {
+                    bridge.hiddenLoading()
+                    bridge.$toast('加入购物车成功');
                     this.getShopCartListData();
                 }).catch((error) => {
-                    bridge.$toast(error.msg);
+                    bridge.$toast(error.msg||'加入购物车失败');
+                    bridge.hiddenLoading();
                 });
             }
 

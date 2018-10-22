@@ -3,6 +3,9 @@ import configureResponseError from './interceptors/ResponseError';
 import configureTimeout from './interceptors/timeout';
 import fetchHistory from '../../model/FetchHistory';
 import apiEnvironment from '../ApiEnvironment';
+import user from '../../model/user'
+import DeviceInfo from 'react-native-device-info'
+// console.log('user token', user.getToken())
 
 const Qs = require('qs');
 
@@ -19,6 +22,9 @@ export function setToken(data) {
 
 // 这是默认post
 axios.defaults.headers.post['Content-Type'] = 'application/json';
+// axios.defaults.headers.common['sg-token'] =  user && user.getToken() ? user.getToken : ''
+axios.defaults.headers.common.device = DeviceInfo && DeviceInfo.getUniqueID() + ''
+axios.defaults.headers.common.platform = DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion()
 axios.interceptors.response.use(null, configureResponseError);
 axios.interceptors.request.use(configureTimeout, err => {
 
@@ -74,7 +80,7 @@ export default class HttpUtils {
             }
         }
         let timeLineStart = +new Date();
-        return axios.get(url).then(response => {
+        return axios.get(url, {headers: {'sg-token': user && user.getToken() ? user.getToken() : ''}}).then(response => {
             let data = response.data;
             let history = createHistory(response, timeLineStart);
 
@@ -97,6 +103,7 @@ export default class HttpUtils {
             ...defaultData,
             ...data
         };
+        config.headers =  {'sg-token': user && user.getToken() ? user.getToken() : ''}
         let timeLineStart = +new Date();
         return axios.post(url, data, config)
             .then(response => {

@@ -7,7 +7,7 @@ import {
     StyleSheet,
     View,
     Text,
-    TouchableOpacity, ListView, TouchableWithoutFeedback, Image, ImageBackground
+    TouchableOpacity, ListView, TouchableWithoutFeedback, Image,
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -21,6 +21,7 @@ import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import MoneyIcon from '../../../spellShop/recommendSearch/src/je_07.png';
 import StarIcon from '../../../spellShop/recommendSearch/src/xj_10.png';
+import invalidIcon from '../../res/setting/shoucang_icon_shixiao_nor.png'
 import { observer } from 'mobx-react/native';
 
 
@@ -82,6 +83,7 @@ export default class MyCollectPage extends BasePage {
         // return true;
     };
     renderItem = (item, index) => {
+        console.log(item);
         return (
             this.isValidItem(index) ? this.renderValidItem(item, index) : this.renderInvalidItem({ item, index })
         );
@@ -140,16 +142,16 @@ export default class MyCollectPage extends BasePage {
         return (
             <TouchableWithoutFeedback onPress={() => this.go2PruductDetailPage(item.storeId, 1)}>
                 <View style={[styles.rowContainer, { backgroundColor: '#c7c7c7' }]}>
+                    <View style={{position:'absolute',left:0,top:0,width:'100%',height:'100%',justifyContent:'center',alignItems:'center'}}>
+                        <Image source={invalidIcon} style={{flex:1}} />
+                    </View>
                     {
-                        item.headUrl ? <ImageBackground source={{ uri: item.headUrl }} style={[{
+                        item.headUrl ? <Image source={{ uri: item.headUrl }} style={[{
                                 justifyContent: 'center',
                                 alignItems: 'center'
-                            }, styles.img]}>
-                                <Text style={{ fontSize: 18 }}>已失效</Text>
-                            </ImageBackground> :
-                            <View style={[{ justifyContent: 'center', alignItems: 'center' }, styles.img]}>
-                                <Text style={{ fontSize: 18 }}>已失效</Text>
-                            </View>
+                            }, styles.img]}/>
+                          :
+                            <View style={[{ justifyContent: 'center', alignItems: 'center' }, styles.img]}/>
                     }
                     <View style={styles.right}>
                         <View style={styles.row}>
@@ -236,7 +238,8 @@ export default class MyCollectPage extends BasePage {
                         storeStarId: item.storeStarId,
                         totalTradeBalance: item.totalTradeBalance,
                         userCount: item.userCount,
-                        userId: item.userId
+                        userId: item.userId,
+                        status:item.status,
                     });
                 });
                 console.log(arr);

@@ -1,6 +1,5 @@
 import {
     View,
-    Image,
     StyleSheet,
     TouchableOpacity,
     ScrollView
@@ -13,7 +12,6 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
 import ColorUtil from '../../../utils/ColorUtil';
 import UIText from '../../../comm/components/UIText';
-import SbResTool from '../res/SbResTool';
 
 export default class SbOpenPrizeHeader extends Component {
 
@@ -40,6 +38,7 @@ export default class SbOpenPrizeHeader extends Component {
     render() {
         const { imgUrl, topicNavTitleList } = this.props.headerData;
         const NavWidth = topicNavTitleList.length > 5 ? ScreenUtils.width / 5 : ScreenUtils.width / topicNavTitleList.length;
+        // const NavWidth = ScreenUtils.width / 5;
         console.log(imgUrl);
         return (
             <View>
@@ -59,7 +58,7 @@ export default class SbOpenPrizeHeader extends Component {
                                 ref="scroll"
                                 style={{
                                     position: 'absolute',
-                                    height: 55,
+                                    height: 60,
                                     width: ScreenUtils.width,
                                     left: 0,
                                     top: 0
@@ -71,11 +70,12 @@ export default class SbOpenPrizeHeader extends Component {
                                 horizontal={true}
                                 showsHorizontalScrollIndicator={false}
                             >
-                                <Image
-                                    source={SbResTool.miaosha_qianggouzhong_img}
+                                <View
+                                    // source={SbResTool.miaosha_qianggouzhong_img}
                                     style={[itemViewStyle.itemBgImageStyle,
                                         {
-                                            left: this.state.selectSate * NavWidth
+                                            left: this.state.selectSate * NavWidth,
+                                            width:NavWidth
                                         }]}
                                 />
                                 {this._getDownTimeItemView().map(itemView => {
@@ -92,6 +92,7 @@ export default class SbOpenPrizeHeader extends Component {
     _getDownTimeItemView = () => {
         const { topicNavTitleList } = this.props.headerData;
         const NavWidth = topicNavTitleList.length > 5 ? ScreenUtils.width / 5 : ScreenUtils.width / topicNavTitleList.length;
+        // const NavWidth = ScreenUtils.width / 5;
         console.log(topicNavTitleList);
         if (topicNavTitleList instanceof Array && topicNavTitleList.length > 0) {
             let tempCompoentArr = [];
@@ -173,12 +174,13 @@ const SbOpenPrizeHeaderStyles = StyleSheet.create({
 const itemViewStyle = StyleSheet.create({
     itemBgStyle: {
         width: ScreenUtils.width / 5,
-        height: 48
+        height: 55
     },
     itemBgImageStyle: {
         position: 'absolute',
         width: ScreenUtils.width / 5,
-        height: 55
+        height: 50,
+        backgroundColor:ColorUtil.mainRedColor
     },
     itemTopTextStyle: {
         flex: 1,
@@ -187,7 +189,7 @@ const itemViewStyle = StyleSheet.create({
         color: ColorUtil.Color_222222,
         textAlign: 'center',
         fontWeight: '800',
-        fontSize: 18
+        fontSize: 17
     },
     itemBottomTextStyle: {
         flex: 1,

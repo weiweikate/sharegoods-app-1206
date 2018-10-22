@@ -136,8 +136,8 @@ export default class ProductDetailPage extends BasePage {
     _bottomViewAction = (type) => {
         switch (type) {
             case 'goGwc': {
-                this.$navigate('shopCart/ShopCart',{
-                    hiddeLeft:false
+                this.$navigate('shopCart/ShopCart', {
+                    hiddeLeft: false
                 });
             }
                 break;
@@ -217,7 +217,7 @@ export default class ProductDetailPage extends BasePage {
                     ItemSeparatorComponent={this._renderSeparatorComponent}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => `${index}`}
-                    data={this.state.data.paramList || []} />
+                    data={this.state.data.paramList || []}/>
             </View>;
         }
     };
@@ -253,6 +253,9 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _render() {
+        const { price = 0, product = {} } = this.state.data || {};
+        const { name = '', imgUrl } = product;
+
         return (
             <View style={styles.container}>
                 <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
@@ -289,16 +292,16 @@ export default class ProductDetailPage extends BasePage {
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'Image'}
                                 imageJson={{
-                                    imageUrlStr: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1539577593172&di=c87eead9eb2e2073b50758daf6194c62&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F59c914525c484566292f8d8d3d29c964ca59c7ca.jpg',
-                                    titleStr: '商品标题',
-                                    priceStr: '¥100.00',
-                                    QRCodeStr: '分享的链接'
+                                    imageUrlStr: imgUrl,
+                                    titleStr: `${name}`,
+                                    priceStr: `￥${price}`,
+                                    QRCodeStr: `http://testh5.sharegoodsmall.com/#/product/${product.id}`
                                 }}
                                 webJson={{
-                                    title: '分享标题(当为图文分享时候使用)',
-                                    dec: '内容(当为图文分享时候使用)',
-                                    linkUrl: '(图文分享下的链接)',
-                                    thumImage: '(分享图标小图(http链接)图文分享使用)'
+                                    title: `${name}`,
+                                    dec: '商品详情',
+                                    linkUrl: `http://testh5.sharegoodsmall.com/#/product/${product.id}`,
+                                    thumImage: imgUrl
                                 }}/>
             </View>
         );

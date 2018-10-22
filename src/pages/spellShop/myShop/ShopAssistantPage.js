@@ -18,6 +18,7 @@ import MasterRow from './components/MasterRow';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 
 const sectionsArr = [
     'master',
@@ -36,13 +37,26 @@ export default class AssistantListPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            refreshing: false,
+            loadingState: PageLoadingState.loading,
+            netFailedInfo: {},
+
             list: [],
             searchText: '',
-            refreshing: false,
-            pageLoading: true,
-            netFailedInfo: null
         };
     }
+
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: () => {
+                    this.loadPageData();
+                }
+            }
+        };
+    };
 
     componentDidMount() {
         this.loadPageData();
@@ -75,14 +89,14 @@ export default class AssistantListPage extends BasePage {
             this.setState({
                 refreshing: false,
                 list,
-                pageLoading: false,
+                loadingState: PageLoadingState.success,
                 netFailedInfo: null
             });
         }).catch((error) => {
             this.setState({
                 refreshing: false,
                 list: [],
-                pageLoading: false,
+                loadingState: PageLoadingState.success,
                 netFailedInfo: error
             }, () => {
                 this.$toastShow(error.msg);

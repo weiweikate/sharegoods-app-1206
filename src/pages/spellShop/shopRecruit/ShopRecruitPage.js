@@ -245,10 +245,10 @@ export default class ShopRecruitPage extends BasePage {
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 webJson={{
-                                    title: '分享标题(当为图文分享时候使用)',
-                                    dec: '内容(当为图文分享时候使用)',
+                                    title: `加入店铺:${this.state.storeData.name}`,
+                                    dec: '店铺',
                                     linkUrl: 'http://testh5.sharegoodsmall.com/#/register',
-                                    thumImage: 'logo.png'
+                                    thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>
         );

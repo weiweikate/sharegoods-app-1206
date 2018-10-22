@@ -40,7 +40,7 @@ public class BaseApplication extends MultiDexApplication {
             SoLoader.init(this, /* native exopackage */ false);
             // umeng初始化
             RNUMConfigure.init(this, "5b7663a3f29d9830cb0000d8"
-                    , "umeng", UMConfigure.DEVICE_TYPE_PHONE, null);//58edcfeb310c93091c000be2 5965ee00734be40b580001a0
+                    , "umeng", UMConfigure.DEVICE_TYPE_PHONE, null);
             PlatformConfig.setWeixin("wx401bc973f010eece", "405dede82bb1c57e0b63056c8d2274c1");
         }
     }
