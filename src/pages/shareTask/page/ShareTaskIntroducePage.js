@@ -18,12 +18,10 @@ import {
     Image
 } from "react-native";
 import BasePage from "../../../BasePage";
-import ShareTaskHomeAlert from "../components/ShareTaskHomeAlert";
 import {
     UIText
 } from "../../../components/ui";
 import ScreenUtils from "../../../utils/ScreenUtils";
-import ShareTaskListPage from "./ShareTaskListPage";
 
 type Props = {};
 export default class ShareTaskIntroducePage extends BasePage<Props> {
