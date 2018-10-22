@@ -26,7 +26,7 @@ export default class ResultHorizontalRow extends Component {
     }
 
     render() {
-        let { product, originalPrice } = this.props.itemData || {};
+        let { product={}, originalPrice } = this.props.itemData || {};
         const { name = '' } = product;
         return (
             <TouchableWithoutFeedback onPress={() => {
