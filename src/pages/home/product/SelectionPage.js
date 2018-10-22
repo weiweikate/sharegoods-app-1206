@@ -12,6 +12,7 @@ import SelectionHeaderView from './components/SelectionHeaderView';
 import SelectionSectionView from './components/SelectionSectionView';
 import SelectionAmountView from './components/SelectionAmountView';
 import StringUtils from '../../../utils/StringUtils';
+import bridge from '../../../utils/bridge';
 
 
 export default class SelectionPage extends Component {
@@ -141,6 +142,52 @@ export default class SelectionPage extends Component {
 
     };
 
+    _selelctSpe = ()=>{
+        let priceArr = [];
+        let [...selectList] = this.state.selectList || [];
+        const { specMap = {} } = this.props.data;
+
+        selectList.forEach((item, index) => {
+            if (StringUtils.isEmpty(item)) {
+            } else {
+                priceArr.push(item.replace(/,/g, ''));
+            }
+        });
+
+        if (!isAll || this.state.selectList.length !== Object.keys(specMap).length) {
+            bridge.$toast('请选择规格');
+            return;
+        }
+
+        //冒泡specId从小到大
+        for (let i = 0; i < priceArr.length - 1; i++) {
+            for (let j = 0; j < priceArr.length - 1 - i; j++) {
+                if (priceArr[j] > priceArr[j + 1]) {
+                    let tmp = priceArr[j + 1];
+                    priceArr[j + 1] = priceArr[j];
+                    priceArr[j] = tmp;
+                }
+            }
+        }
+
+        let priceId = priceArr.join(',');
+        priceId = `,${priceId},`;
+        let id;
+        const { priceList = [] } = this.props.data;
+        priceList.forEach((item) => {
+            if (item.specIds === priceId) {
+                id = item.id;
+                return;
+            }
+        });
+        if (!id) {
+            return;
+        }
+        this.props.selectionViewConfirm(this.state.amount, id);
+        this.props.selectionViewClose();
+    }
+
+
     _clickItemAction = (item, indexOfProp, tittle) => {
         if (item.isSelected) {
             this.state.selectList[indexOfProp] = undefined;
@@ -161,8 +208,11 @@ export default class SelectionPage extends Component {
 
     _selectionViewConfirm = () => {
         let priceArr = [];
-        let [...selectList] = this.state.selectList || [];
         let isAll = true;
+
+        let [...selectList] = this.state.selectList || [];
+        const { specMap = {} } = this.props.data;
+
         selectList.forEach((item, index) => {
             if (StringUtils.isEmpty(item)) {
                 isAll = false;
@@ -171,10 +221,12 @@ export default class SelectionPage extends Component {
             }
         });
 
-        if (!isAll) {
+        if (!isAll || this.state.selectList.length !== Object.keys(specMap).length) {
+            bridge.$toast('请选择规格');
             return;
         }
 
+        //冒泡specId从小到大
         for (let i = 0; i < priceArr.length - 1; i++) {
             for (let j = 0; j < priceArr.length - 1 - i; j++) {
                 if (priceArr[j] > priceArr[j + 1]) {
@@ -230,7 +282,7 @@ export default class SelectionPage extends Component {
                                          selectList={this.state.selectList}
                                          selectStrList={this.state.selectStrList}
                                          priceList={this.state.priceList}/>
-                    <View style={{ flex: 1,backgroundColor:'white' }}>
+                    <View style={{ flex: 1, backgroundColor: 'white' }}>
                         <ScrollView>
                             {this._addSelectionSectionView()}
                             <SelectionAmountView style={{ marginTop: 30 }} amountClickAction={this._amountClickAction}/>

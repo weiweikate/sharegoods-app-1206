@@ -10,6 +10,8 @@ import {
     Image
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
+import StringUtils from '../../utils/StringUtils';
+import bridge from '../../utils/bridge';
 
 export default class TopicDetailSelectPage extends Component {
 
@@ -30,9 +32,19 @@ export default class TopicDetailSelectPage extends Component {
     }
 
     _selectionViewConfirm = () => {
-
-        this.props.selectionViewConfirm(1, this.state.selectData);
-        this.props.selectionViewClose();
+        const { specPriceList = {} } = this.props.data || {};
+        let isAll = true;
+        this.state.selectList.forEach((item, index) => {
+            if (StringUtils.isEmpty(item)) {
+                isAll = false;
+            }
+        });
+        if (this.state.selectList.length === Object.keys(specPriceList).length && isAll) {
+            this.props.selectionViewConfirm(1, this.state.selectData);
+            this.props.selectionViewClose();
+        }else {
+            bridge.$toast('请选择规格');
+        }
     };
 
     _clickItemAction = (item, indexOfTop) => {
