@@ -44,6 +44,7 @@ export default class SelectionPage extends Component {
 
             selectList: [],//选择的规格id数组
             selectStrList: [],//选择的规格名称值
+            selectSpecList: [],//选择规格所对应的库存
             amount: 1
         };
 
@@ -136,29 +137,20 @@ export default class SelectionPage extends Component {
             this._priceListAll(indexOfProp);
             this._specMap(indexOfProp);
         } else {
+            this._selelctSpe();
             this.state.specMap = specMap;
             this.forceUpdate();
         }
 
     };
 
-    _selelctSpe = ()=>{
+    _selelctSpe = () => {
         let priceArr = [];
-        let [...selectList] = this.state.selectList || [];
-        const { specMap = {} } = this.props.data;
-
-        selectList.forEach((item, index) => {
-            if (StringUtils.isEmpty(item)) {
-            } else {
+        this.state.selectList.forEach((item) => {
+            if (StringUtils.isNoEmpty(item)) {
                 priceArr.push(item.replace(/,/g, ''));
             }
         });
-
-        if (!isAll || this.state.selectList.length !== Object.keys(specMap).length) {
-            bridge.$toast('请选择规格');
-            return;
-        }
-
         //冒泡specId从小到大
         for (let i = 0; i < priceArr.length - 1; i++) {
             for (let j = 0; j < priceArr.length - 1 - i; j++) {
@@ -169,23 +161,15 @@ export default class SelectionPage extends Component {
                 }
             }
         }
-
         let priceId = priceArr.join(',');
         priceId = `,${priceId},`;
-        let id;
+
         const { priceList = [] } = this.props.data;
-        priceList.forEach((item) => {
-            if (item.specIds === priceId) {
-                id = item.id;
-                return;
-            }
+        this.state.selectSpecList = priceList.filter((item) => {
+            return item.specIds.indexOf(priceId) !== -1;
         });
-        if (!id) {
-            return;
-        }
-        this.props.selectionViewConfirm(this.state.amount, id);
-        this.props.selectionViewClose();
-    }
+
+    };
 
 
     _clickItemAction = (item, indexOfProp, tittle) => {
@@ -210,10 +194,9 @@ export default class SelectionPage extends Component {
         let priceArr = [];
         let isAll = true;
 
-        let [...selectList] = this.state.selectList || [];
         const { specMap = {} } = this.props.data;
 
-        selectList.forEach((item, index) => {
+        this.state.selectList.forEach((item) => {
             if (StringUtils.isEmpty(item)) {
                 isAll = false;
             } else {
@@ -281,7 +264,7 @@ export default class SelectionPage extends Component {
                                          price={this.state.price}
                                          selectList={this.state.selectList}
                                          selectStrList={this.state.selectStrList}
-                                         priceList={this.state.priceList}/>
+                                         selectSpecList={this.state.selectSpecList}/>
                     <View style={{ flex: 1, backgroundColor: 'white' }}>
                         <ScrollView>
                             {this._addSelectionSectionView()}
