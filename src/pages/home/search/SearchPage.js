@@ -98,16 +98,17 @@ export default class SearchPage extends BasePage {
     _clickItemAction = (text, index, hotWordId) => {
         if (!this.state.recentData.includes(text)) {
             this.state.recentData.unshift(text);
-            Storage.set(recentDataKey, this.state.recentData);
-            this.forceUpdate();
         } else {
             if (index !== 0) {
                 this.state.recentData.splice(index, 1);
                 this.state.recentData.unshift(text);
-                Storage.set(recentDataKey, this.state.recentData);
-                this.forceUpdate()
             }
         }
+        if (this.state.recentData.length > 10) {
+            this.state.recentData = this.state.recentData.slice(0, 10);
+        }
+        Storage.set(recentDataKey, this.state.recentData);
+        this.forceUpdate();
         this.$navigate(RouterMap.SearchResultPage, { keywords: text, hotWordId: hotWordId || '' });
     };
 
@@ -139,7 +140,7 @@ export default class SearchPage extends BasePage {
                         renderItem={this._renderItem}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => `${index}`}
-                        data={this.state.keywordsArr} />}
+                        data={this.state.keywordsArr}/>}
 
                 </View>);
         }
