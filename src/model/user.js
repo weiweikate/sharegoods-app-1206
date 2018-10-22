@@ -332,12 +332,16 @@ class User {
         this.area = null;            //
         this.storeBonusDto = null;   //
         this.realnameStatus = null;   //
-        this.token = null
         // todo 清空cookie
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
-        AsyncStorage.removeItem(USERTOKEN)
+        
         return AsyncStorage.removeItem(USERINFOCACHEKEY).catch(e => {
         });
+    }
+
+    @action clearToken() {
+        this.token = null
+        AsyncStorage.removeItem(USERTOKEN)
     }
 
     // 清空离线购物车信息
