@@ -66,8 +66,8 @@ export default class AddressManagerPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <FlatList
-                    ref={(flatList) => this._flatList = flatList}
                     ListHeaderComponent={this._header}
+                    ListFooterComponent={this._footer}
                     ItemSeparatorComponent={this._separator}
                     renderItem={this._renderItem}
                     extraData={this.state}
@@ -75,11 +75,8 @@ export default class AddressManagerPage extends BasePage {
                     refreshing={false}
                     keyExtractor={(item) => item.id + ''}
                     showsVerticalScrollIndicator={false}
-                    getItemLayout={(data, index) => (
-                        //行高于分割线高，优化
-                        { length: 120, offset: (120 + 10) * index, index }
-                    )}
-                    data={this.state.datas} />
+                    initialNumToRender={5}
+                    data={this.state.datas}/>
             </View>
         );
     }
@@ -192,6 +189,10 @@ export default class AddressManagerPage extends BasePage {
 
     _header = () => {
         return <View style={{ height: 10, backgroundColor: 'transparent' }}/>;
+    };
+
+    _footer = () => {
+        return <View style={{ height: 20, backgroundColor: 'transparent' }}/>;
     };
 
     _separator = () => {

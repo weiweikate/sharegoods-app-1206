@@ -334,8 +334,14 @@ class User {
         this.realnameStatus = null;   //
         // todo 清空cookie
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
+        
         return AsyncStorage.removeItem(USERINFOCACHEKEY).catch(e => {
         });
+    }
+
+    @action clearToken() {
+        this.token = null
+        AsyncStorage.removeItem(USERTOKEN)
     }
 
     // 清空离线购物车信息
