@@ -44,7 +44,8 @@ export default class SelectionPage extends Component {
 
             selectList: [],//选择的规格id数组
             selectStrList: [],//选择的规格名称值
-            selectSpecList: [],//选择规格所对应的库存
+            selectSpecList: [],//选择规格所对应的库存,
+            maxStock: 0,//最大库存
             amount: 1
         };
 
@@ -162,13 +163,22 @@ export default class SelectionPage extends Component {
             }
         }
         let priceId = priceArr.join(',');
-        priceId = `,${priceId},`;
-
         const { priceList = [] } = this.props.data;
-        this.state.selectSpecList = priceList.filter((item) => {
-            return item.specIds.indexOf(priceId) !== -1;
-        });
+        if (StringUtils.isEmpty(priceId)) {
+            this.state.selectSpecList = priceList;
+        } else {
+            priceId = `,${priceId},`;
+            this.state.selectSpecList = priceList.filter((item) => {
+                return item.specIds.indexOf(priceId) !== -1;
+            });
+        }
 
+        let stock = 0;
+        this.state.selectSpecList.forEach((item) => {
+            //总库存库存遍历相加
+            stock = stock + item.stock;
+        });
+        this.state.maxStock = stock;
     };
 
 
@@ -268,7 +278,7 @@ export default class SelectionPage extends Component {
                     <View style={{ flex: 1, backgroundColor: 'white' }}>
                         <ScrollView>
                             {this._addSelectionSectionView()}
-                            <SelectionAmountView style={{ marginTop: 30 }} amountClickAction={this._amountClickAction}/>
+                            <SelectionAmountView style={{ marginTop: 30 }} amountClickAction={this._amountClickAction} maxCount={this.state.maxStock}/>
                         </ScrollView>
 
                         <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
