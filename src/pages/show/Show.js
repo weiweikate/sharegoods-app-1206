@@ -3,7 +3,7 @@ import ShowApi from './ShowApi'
 import Toast from '../../utils/bridge'
 
 //推广 1：精选 2：热门 3：推荐 4：最新 全部则不传
-const tag = {
+export const tag = {
     'Featured': 1,
     'Hot': 2,
     'Recommend': 3,
@@ -96,21 +96,26 @@ export class ShowRecommendModules {
     @observable recommendList = []
     @observable selectedList = new Map()
     @observable page = 1
+    @observable collectPage = 1
     @computed get recommendCount() {
         return this.recommendList.length
     }
 
-    @action loadRecommendList = () => {
+    @action loadRecommendList = (params) => {
         let currentDate = new Date()
         this.page = 1
-        return ShowApi.showQuery({page: this.page}).then(result => {
+        return ShowApi.showQuery({...params, page: this.page}).then(result => {
             if (parseInt(result.code, 0) === 10000) {
                 this.page += 1
                 let data = result.data.data
-                data.map(value => {
-                    value.currentDate = currentDate
-                })
-                return Promise.resolve(data)
+                if (data && data.length > 0) {
+                    data.map(value => {
+                        value.currentDate = currentDate
+                    })
+                    return Promise.resolve(data)
+                } else {
+                    return Promise.resolve([])
+                }
             } else {
                 return Promise.reject('获取列表错误')
             }
@@ -119,9 +124,9 @@ export class ShowRecommendModules {
         })
     }
 
-    @action getMoreRecommendList = () => {
+    @action getMoreRecommendList = (params) => {
         let currentDate = new Date()
-        return ShowApi.showQuery({page: this.page}).then(result => {
+        return ShowApi.showQuery({page: this.page, ...params}).then(result => {
             if (parseInt(result.code, 0) === 10000) {
                 let data = result.data.data
                 if (data && data.length !== 0) {
@@ -152,6 +157,53 @@ export class ShowRecommendModules {
         // }
         // console.log('this.selectedList', this.selectedList.toJS())
     }
+
+    @action loadCollect = () => {
+        let currentDate = new Date()
+        this.collectPage = 1
+        return ShowApi.showCollectList({page: this.collectPage}).then(result => {
+            if (parseInt(result.code, 0) === 10000) {
+                this.collectPage += 1
+                let data = result.data.data
+                if (data && data.length !== 0) {
+                    data.map(value => {
+                        value.currentDate = currentDate
+                    })
+                    return Promise.resolve(data)
+                } else {
+                    return Promise.resolve([])
+                }
+            } else {
+                return Promise.reject('获取列表错误')
+            }
+        }).catch(error => {
+            return Promise.reject(error)
+        })
+    }
+
+    @action getMoreCollect = () => {
+        let currentDate = new Date()
+        return ShowApi.showCollectList({page: this.collectPage}).then(result => {
+            if (parseInt(result.code, 0) === 10000) {
+                let data = result.data.data
+                if (data && data.length !== 0) {
+                    this.collectPage += 1
+                    data.map(value => {
+                        value.currentDate = currentDate
+                    })
+                    return Promise.resolve(data)
+                } else {
+                    return Promise.resolve([])
+                }
+            } else {
+                return Promise.reject('获取列表错误')
+            }
+        }).catch(error => {
+            return Promise.reject(error)
+        })
+    }
+
+    batchCancelConnected = (selectedIds) =>  ShowApi.showCollectCancel({articleId: '', type: 1, articleIds: selectedIds})        
 }
 
 export class ShowDetail {
@@ -173,9 +225,9 @@ export class ShowDetail {
             this.isGoodActioning = true
             let result = {}
             if (this.detail.hadLike) {
-                result = yield ShowApi.showGoodCancel({articleId: this.detail.id, type: 1, articleIds: [this.detail.id]})
+                result = yield ShowApi.showGoodCancel({articleId: this.detail.id, type: 2, articleIds: [this.detail.id]})
             } else {
-                result = yield ShowApi.showGood({articleId: this.detail.id, type: 1, articleIds: [this.detail.id]})
+                result = yield ShowApi.showGood({articleId: this.detail.id, type: 2, articleIds: [this.detail.id]})
             }
             this.isGoodActioning = false
             if (parseInt(result.code, 0) === 10000) {
@@ -198,9 +250,9 @@ export class ShowDetail {
             this.isCollecting = true
             let result = {}
             if (!this.detail.hadCollect) {
-                result = yield ShowApi.showConnect({articleId: this.detail.id, type: 2, articleIds: [this.detail.id]})
+                result = yield ShowApi.showConnect({articleId: this.detail.id, type: 1, articleIds: [this.detail.id]})
             } else {
-                result = yield ShowApi.showCollectCancel({articleId: this.detail.id, type: 2, articleIds: [this.detail.id]})
+                result = yield ShowApi.showCollectCancel({articleId: this.detail.id, type: 1, articleIds: [this.detail.id]})
             }
             this.isCollecting = false
             if (parseInt(result.code, 0) === 10000) {
@@ -217,6 +269,5 @@ export class ShowDetail {
             Toast.$toast(error.msg)
         }
     })
-
 
 }

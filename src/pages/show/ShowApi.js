@@ -10,7 +10,9 @@ const api = {
    //收藏
    showConnect: '/discover/count/save',
    // 取消收藏
-   showCollectCancel: '/discover/count/cancel'
+   showCollectCancel: '/discover/count/cancel',
+   // 收藏列表
+   showCollectList: ['/discover/queryCollect', {method: 'get'}]
 };
 import ApiUtils from '../../api/network/ApiUtils'
 
