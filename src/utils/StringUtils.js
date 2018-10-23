@@ -25,7 +25,7 @@ const formatMoneyString = (num, needSymbol = true) => {
     return temp;
 };
 const checkPhone = (str) => {
-    let myreg = /^[1][3,4,5,6,7,8][0-9]{9}$/;
+    let myreg = /^[1][0-9][0-9]{9}$/;
     if (!myreg.test(str)) {
         return false;
     } else {
