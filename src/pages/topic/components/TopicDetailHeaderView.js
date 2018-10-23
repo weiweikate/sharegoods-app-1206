@@ -114,14 +114,12 @@ export default class TopicDetailHeaderView extends Component {
                             <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
                                 <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
                                 <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${oldPrice}`}</Text>
-                                {
-                                    isNoEmpty(user.levelId) ? <Text style={{
-                                        marginLeft: 5,
-                                        backgroundColor: 'red',
-                                        color: '#FFFFFF',
-                                        fontSize: 10, paddingHorizontal: 5
-                                    }}>{`v${user.levelId}价`}</Text> : null
-                                }
+                                <Text style={{
+                                    marginLeft: 5,
+                                    backgroundColor: 'red',
+                                    color: '#FFFFFF',
+                                    fontSize: 10, paddingHorizontal: 5
+                                }}>{isNoEmpty(user.levelId) ? `v${user.levelId}价` : '原价'}</Text> : null
                             </View> : null}
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text style={{

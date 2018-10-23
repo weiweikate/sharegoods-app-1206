@@ -88,15 +88,12 @@ export default class DetailHeaderView extends Component {
                         <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
                             <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${price}起`}</Text>
                             <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${originalPrice}`}</Text>
-                            {
-                                spellStatusModel.storeId && spellStatusModel.storeStatus === 1 || isNoEmpty(user.levelId) ?
-                                    <Text style={{
-                                        marginLeft: 5,
-                                        backgroundColor: 'red',
-                                        color: '#FFFFFF',
-                                        fontSize: 10, paddingHorizontal: 5
-                                    }}>{spellStatusModel.storeId && spellStatusModel.storeStatus === 1 ? '拼店价' : `v${user.levelId}价`}</Text> : null
-                            }
+                            <Text style={{
+                                marginLeft: 5,
+                                backgroundColor: 'red',
+                                color: '#FFFFFF',
+                                fontSize: 10, paddingHorizontal: 5
+                            }}>{spellStatusModel.storeId && spellStatusModel.storeStatus === 1 ? '拼店价' : isNoEmpty(user.levelId) ? `v${user.levelId}价` : '原价'}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text
