@@ -10,7 +10,7 @@ const api = {
     //获取未读消息数量
     getNewNoticeMessageCount:['/notice/newNoticeMessageCount',{method:'get'}],
     //同意拒绝 拼店消息
-    confirmMessage:['/message/confirmMessage',{method:'get'}]
+    confirmMessage:['/user/storeUser/agreeOrDisAgreeJoin',{method:'post'}]
 };
 import ApiUtils from '../../../api/network/ApiUtils';
 
