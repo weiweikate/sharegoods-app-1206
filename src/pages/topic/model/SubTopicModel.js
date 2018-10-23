@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import TopicAPI from '../api/TopicApi';
 import bridge from '../../../utils/bridge';
 
@@ -27,6 +27,12 @@ class TotalTopicresultDataModel {
     /*不同导航下的数据*/
     @observable
     sectionDataList = [];
+
+
+    @computed
+    get topicTitle() {
+        return this.name || '专题';
+    }
 
     /**
      * 存储专题数据
