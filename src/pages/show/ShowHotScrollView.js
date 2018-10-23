@@ -11,13 +11,13 @@ import seeImg from '../../comm/res/see_white.png'
 import maskImg from '../../comm/res/show_mask.png'
 
 const HotItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
-    <ImageBackground style={styles.imgBack} source={{uri: item.imgUrl}}>
+    <ImageBackground style={styles.imgBack} source={{uri: item.img}}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.row}>
-            <Text style={styles.remark}>{item.remark}</Text>
+            <Text style={styles.remark}>{item.title}</Text>
             <View style={styles.right}>
                 <Image source={seeImg}/>
-                <Text style={styles.number}>{item.number}</Text>
+                <Text style={styles.number}>{item.click ? item.click : 0}</Text>
             </View>
         </View>
     </ImageBackground>
@@ -112,7 +112,8 @@ let styles = StyleSheet.create({
     },
     number: {
         color: '#fff',
-        fontSize: px2dp(10)
+        fontSize: px2dp(10),
+        marginLeft: px2dp(5)
     },
     right: {
         flexDirection: 'row',

@@ -11,13 +11,8 @@ import showGoodImg from '../../comm/res/show_good.png'
 // import showDidGoodImg from '../../comm/res/show_did_good.png'
 import seeImg from '../../comm/res/see.png'
 import showShareImg from '../../comm/res/show_share.png'
-
-const htmlContent = `
-    <h1>This HTML snippet is now rendered with native components !</h1>
-    <h2>Enjoy a webview-free and blazing fast application</h2>
-    <img src="https://i.imgur.com/dHLmxfO.jpg?2" />
-    <em style="textAlign: center;">Look at how happy this native cat is</em>
-`;
+import { ShowDetail } from './Show'
+import {observer} from 'mobx-react'
 
 const Goods = ({data}) => <View style={styles.goodsItem}>
     <Image style={styles.goodImg} source={{uri: data.imgUrl}}/>
@@ -28,9 +23,13 @@ const Goods = ({data}) => <View style={styles.goodsItem}>
     </View>
 </View>
 
+@observer
 export default class ShowDetailPage extends Component {
     constructor(props) {
         super(props)
+        this.params = this.props.navigation.state.params || {};
+        this.showDetailModule = new ShowDetail()
+        this.showDetailModule.loadDetail(this.params.id)
     }
     _goBack() {
         const {navigation} = this.props
@@ -41,6 +40,11 @@ export default class ShowDetailPage extends Component {
         navigation.push('show/ShowGoodsPage')
     }
     render() {
+        const { detail } = this.showDetailModule
+        if (!detail) {
+            return <View style={styles.container}/>
+        }
+        let content = `<div>${detail.content}</div>`
         let item = [{
             imgUrl: 'http://hellorfimg.zcool.cn/preview/441745972.jpg',
             name: 'OLAY隔离小白伞ProX都市护护颜隔离防晒露清爽防紫外线…',
@@ -70,7 +74,7 @@ export default class ShowDetailPage extends Component {
                     <Text style={styles.number}>2334</Text>
                 </View>
             </View>
-            <HTML html={htmlContent} imagesMaxWidth={width} containerStyle={{backgroundColor: '#fff', marginLeft: px2dp(15), marginRight: px2dp(15)}}/>
+            <HTML html={content} imagesMaxWidth={width} containerStyle={{backgroundColor: '#fff', marginLeft: px2dp(15), marginRight: px2dp(15)}}/>
             <View style={styles.goodsView}>
                 {
                     item.map((value, index) => {
@@ -86,14 +90,15 @@ export default class ShowDetailPage extends Component {
             </TouchableOpacity>
         </ScrollView>
         <View style={styles.bottom}>
+            <View style={styles.bottomBtn}>
             <Image style={styles.bottomGoodImg} source={showGoodImg}/>
-            <Text style={styles.bottomText}>赞 . 15</Text>
+            <Text style={styles.bottomText}>赞 · {detail.likeCount}</Text>
+            </View>
+            <View style={styles.line}/>
+            <View style={styles.bottomBtn}>
             <Image style={styles.connectImg} source={showConnectImg}/>
-            <Text style={styles.bottomText}>收藏 . 15</Text>
-            <View style={{flex: 1}}/>
-            <TouchableOpacity style={styles.button} onPress={()=>this._goToGoodsPage()}>
-                <Text style={styles.buttonTitle}>可购买商品</Text>
-            </TouchableOpacity>
+            <Text style={styles.bottomText}>收藏 · {detail.collectCount}</Text>
+            </View>
         </View>
         </View>
     }
@@ -182,7 +187,7 @@ let styles = StyleSheet.create({
         fontSize: px2dp(15)
     },
     bottomGoodImg: {
-        marginLeft: px2dp(17)
+        
     },
     bottomText: {
         marginLeft: px2dp(8),
@@ -190,7 +195,7 @@ let styles = StyleSheet.create({
         fontSize: px2dp(11)
     },
     connectImg: {
-        marginLeft: px2dp(50)
+        
     },
     profileRow: {
         height: px2dp(45),
@@ -222,5 +227,16 @@ let styles = StyleSheet.create({
         color: '#333',
         fontSize: px2dp(11),
         marginLeft: px2dp(9)
+    },
+    bottomBtn: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    line: {
+        width: 1,
+        height: px2dp(16),
+        backgroundColor: '#eee'
     }
 })

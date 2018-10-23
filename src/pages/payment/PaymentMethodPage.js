@@ -86,6 +86,9 @@ export default class PaymentMethodPage extends BasePage {
         };
         this.payment = new Payment()
         this.payment.payStore = this.params.payStore
+        if (this.state.paymentPageParams.shouldPayMoney === 0) {
+            this.payment.selectedBalace = true
+        }
     }
     _selectedPayType(value) {
         this.payment.selectPaymentType(value)
@@ -301,7 +304,8 @@ export default class PaymentMethodPage extends BasePage {
             }
              this.payment.payStoreActoin().then(result => {
                 if (result.sdkCode === 0) {
-                    this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                    this.$navigate('spellShop/shopSetting/SetShopNamePage')
+                    Toast.$toast('支付成功')
                 } else {
                     Toast.$toast('支付失败')
                 }
