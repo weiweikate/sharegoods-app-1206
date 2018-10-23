@@ -95,11 +95,11 @@ export default class MessageCenterPage extends BasePage {
               this.$navigate("message/NotificationPage");
                 break;
             case 1:
-                this.$navigate("message/MessageGatherPage",{type:100});
+                this.$navigate("message/MessageGatherPage");
                 break;
 
             case 2:
-                this.$navigate("message/ShopMessagePage",{type:200});
+                this.$navigate("message/ShopMessagePage");
                 break;
         }
     }
