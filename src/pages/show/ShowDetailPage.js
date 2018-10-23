@@ -13,15 +13,16 @@ import seeImg from '../../comm/res/see.png'
 import showShareImg from '../../comm/res/show_share.png'
 import { ShowDetail } from './Show'
 import {observer} from 'mobx-react'
+import CommShareModal from '../../comm/components/CommShareModal'
 
-const Goods = ({data}) => <View style={styles.goodsItem}>
+const Goods = ({data, press}) => <TouchableOpacity style={styles.goodsItem} onPress={()=>{press && press()}}>
     <Image style={styles.goodImg} source={{uri: data.headImg ? data.headImg: ''}}/>
     <View style={styles.goodDetail}>
         <Text style={styles.name}>{data.name}</Text>
         <View style={{height: px2dp(4)}}/>
         <Text style={styles.price}>￥ {data.price}</Text>
     </View>
-</View>
+</TouchableOpacity>
 
 @observer
 export default class ShowDetailPage extends Component {
@@ -35,15 +36,20 @@ export default class ShowDetailPage extends Component {
         const {navigation} = this.props
         navigation.goBack(null)
     }
-    _goToGoodsPage() {
+    _goToGoodsPage(good) {
         const {navigation} = this.props
-        navigation.push('show/ShowGoodsPage')
+        navigation.push('home/product/ProductDetailPage', {
+            productCode: good.code
+        });
     }
     _goodAction() {
         this.showDetailModule.showGoodAction()
     }
     _collectAction() {
         this.showDetailModule.showConnectAction()
+    }
+    _goToShare() {
+        this.shareModal && this.shareModal.open()
     }
     render() {
         const { detail, isGoodActioning, isCollecting } = this.showDetailModule
@@ -68,14 +74,14 @@ export default class ShowDetailPage extends Component {
             <View style={styles.goodsView}>
                 {
                     products.map((value, index) => {
-                        return <Goods key={index} data={value}/>
+                        return <Goods key={index} data={value} press={()=>{this._goToGoodsPage(value)}}/>
                     })
                 }
             </View>
             <TouchableOpacity style={styles.backView} onPress={()=>this._goBack()}>
                 <Image source={backImg}/>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.shareView} onPress={()=>{}}>
+            <TouchableOpacity style={styles.shareView} onPress={()=>{this._goToShare()}}>
                 <Image source={showShareImg}/>
             </TouchableOpacity>
         </ScrollView>
@@ -106,6 +112,16 @@ export default class ShowDetailPage extends Component {
                 </TouchableOpacity>
             }
         </View>
+        <CommShareModal ref={(ref) => this.shareModal = ref}
+                type={'miniProgram'}
+                miniProgramJson = {{
+                    title: detail.title,
+                    dec: '分享小程序子标题',
+                    thumImage: 'logo.png',
+                    linkUrl: 'https://testapi.sharegoodsmall.com/pages/index/index',
+                    userName: 'gh_3ac2059ac66f',
+                    miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}`}}
+        />
         </View>
     }
 }
