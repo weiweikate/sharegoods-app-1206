@@ -9,19 +9,19 @@ const {  px2dp } = ScreenUtils
 import seeImg from '../../comm/res/see_white.png'
 import maskImg from '../../comm/res/show_mask.png'
 
-export default ({data, press, imageStyle, isSelected, selectedAction}) => <TouchableOpacity style={styles.item} onPress={()=>{press && press()}}>
-    <ImageBackground style={[styles.img, imageStyle]} source={{uri: data.imgUrl}}>
+export default ({data, press, imageStyle}) => <TouchableOpacity style={styles.item} onPress={()=>{press && press()}}>
+    <ImageBackground style={[styles.img, imageStyle]} source={{uri: data.img}}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.numberView}>
             <Image style={styles.seeImg} source={seeImg}/>
-            <Text style={styles.number}>{data.number}</Text>
+            <Text style={styles.number}>{data.click}</Text>
         </View>
     </ImageBackground>
     <View style={styles.profile}>
-        <Text numberOfLines={2} style={styles.title}>{data.remark}</Text>
+        <Text numberOfLines={2} style={styles.title}>{data.title}</Text>
         <View style={styles.row}>
-            <Image style={styles.portrait} source={{uri:data.portrait}}/>
-            <Text style={styles.name}>{data.name}</Text>
+            <Image style={styles.portrait} source={{uri:data.userHeadImg ? data.userHeadImg : ''}}/>
+            <Text style={styles.name}>{data.userName}</Text>
             <View style={{flex: 1}}/>
             <Text style={styles.time}>{data.time}</Text>
         </View>

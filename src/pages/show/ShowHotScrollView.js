@@ -33,10 +33,8 @@ export default class ShowHotScrollView extends Component {
     }
 
     _hotItemAction(item) {
-        // let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
-        // let params = homeModule.paramsNavigate(item)
-        // const {navigation} = this.props
-        // navigation && navigation.navigate(router,  params)
+        const { navigation } = this.props
+        navigation.navigate('show/ShowDetailPage', {id: item.id})
     }
 
     render() {

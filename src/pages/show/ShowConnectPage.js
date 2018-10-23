@@ -2,7 +2,7 @@
 * 发现收藏
 */
 import React from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, Image, Alert } from 'react-native'
 import Waterfall from '../../components/ui/WaterFall'
 import {observer} from 'mobx-react'
 import { ShowRecommendModules } from './Show'
@@ -20,7 +20,8 @@ export default class ShowConnectPage extends BasePage {
     state = {
         select: false,
         selectedList: {},
-        allSelected: false
+        allSelected: false,
+        collectData: []
     }
     $navigationBarOptions = {
         title: '发现收藏',
@@ -35,14 +36,50 @@ export default class ShowConnectPage extends BasePage {
     };
    constructor(props) {
        super(props)
-       this.recommendModules = new ShowRecommendModules()   
+       this.recommendModules = new ShowRecommendModules()
    }
    componentDidMount() {
-       let data = this.recommendModules.loadRecommendList()
-       this.waterfall.addItems(data)
+        this._refreshData()
    }
+
+   _refreshData() {
+        this.recommendModules.loadCollect().then(data => {
+            this.waterfall.clear()
+            if (data && data.length > 0) {
+                this.waterfall.addItems(data)
+            } else {
+                this.waterfall.addItems([])
+            }
+            this.state.collectData = data
+        })
+   }
+
+   _deleteSelected() {
+        const { selectedList, allSelected } = this.state
+        let ids = []
+        if (allSelected) {
+            this.state.collectData.map(value => {
+                ids.push(value.id)
+            })
+        } else {
+            ids = Object.keys(selectedList)
+        }
+        this.recommendModules.batchCancelConnected(ids).then(data => {
+            this._refreshData()
+            this.setState({select: false})
+        })
+   }
+
    _delete() {
-       
+        Alert.alert(
+            '',
+            '确定删除？',
+            [
+            {text: '取消', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text: '确定', onPress: () => {this._deleteSelected()}},
+            ],
+            { cancelable: false }
+        )
    }
    _onSelectedAction() {
         const {select} = this.state
@@ -50,19 +87,22 @@ export default class ShowConnectPage extends BasePage {
    }
    infiniting(done) {
        setTimeout(() => {
-           let data = this.recommendModules.getMoreRecommendList()
-           this.waterfall.addItems(data)
+           this.recommendModules.getMoreCollect().then(data=>{
+                this.waterfall.addItems(data)
+                this.state.collectData = [...this.state.collectData, ...data]
+           })
            done()
        }, 1000)
    }
    refreshing(done) {
        setTimeout(() => {
+            this._refreshData()
            done()
        }, 1000)
    }
    _gotoDetail(data) {
        const { navigation } = this.props
-       navigation.navigate('show/ShowDetailPage')
+       navigation.navigate('show/ShowDetailPage', {id: data.id})
    }
    _selectedAction(data) {
        const { selectedList } = this.state
@@ -78,8 +118,9 @@ export default class ShowConnectPage extends BasePage {
         this.setState({allSelected: !allSelected, selectedList: []})
    }
    renderItem = (data) => {
-       const {width, height} = data
-       let imgHeight = (height / width) * imgWidth
+        let imgWide = data.imgWide ? data.imgWide : 1
+        let imgHigh = data.imgHigh ? data.imgHigh : 1
+        let imgHeight = (imgHigh / imgWide) * imgWidth
        const { select, allSelected, selectedList } = this.state
        return <View><ItemView
             isSelected={select}
@@ -114,6 +155,7 @@ export default class ShowConnectPage extends BasePage {
                    containerStyle={{marginLeft: 15, marginRight: 15}}
                    keyExtractor={(data) => this._keyExtractor(data)}
                    infiniting={(done)=>this.infiniting(done)}
+                   refreshing={(done)=>this.refreshing(done)}
                />
                {
                 select
