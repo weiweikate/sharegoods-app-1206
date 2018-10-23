@@ -1,21 +1,21 @@
 import React, {Component} from 'react'
-import { StyleSheet, ScrollView, Image, TouchableOpacity, View, Text } from 'react-native'
+import { StyleSheet, ScrollView, Image, TouchableOpacity, View, Text, ActivityIndicator } from 'react-native'
 import ShowImageView from './ShowImageView'
 import backImg  from '../../comm/res/show_detail_back.png'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp, width } = ScreenUtils
 import HTML from 'react-native-render-html'
-// import showConnectedImg from '../../comm/res/show_connected.png'
+import showConnectedImg from '../../comm/res/show_connected.png'
 import showConnectImg from '../../comm/res/show_connect.png'
 import showGoodImg from '../../comm/res/show_good.png'
-// import showDidGoodImg from '../../comm/res/show_did_good.png'
+import showDidGoodImg from '../../comm/res/show_did_good.png'
 import seeImg from '../../comm/res/see.png'
 import showShareImg from '../../comm/res/show_share.png'
 import { ShowDetail } from './Show'
 import {observer} from 'mobx-react'
 
 const Goods = ({data}) => <View style={styles.goodsItem}>
-    <Image style={styles.goodImg} source={{uri: data.imgUrl}}/>
+    <Image style={styles.goodImg} source={{uri: data.headImg ? data.headImg: ''}}/>
     <View style={styles.goodDetail}>
         <Text style={styles.name}>{data.name}</Text>
         <View style={{height: px2dp(4)}}/>
@@ -39,45 +39,35 @@ export default class ShowDetailPage extends Component {
         const {navigation} = this.props
         navigation.push('show/ShowGoodsPage')
     }
+    _goodAction() {
+        this.showDetailModule.showGoodAction()
+    }
+    _collectAction() {
+        this.showDetailModule.showConnectAction()
+    }
     render() {
-        const { detail } = this.showDetailModule
+        const { detail, isGoodActioning, isCollecting } = this.showDetailModule
         if (!detail) {
-            return <View style={styles.container}/>
+            return <View style={styles.loading}><ActivityIndicator size='large'/></View>
         }
         let content = `<div>${detail.content}</div>`
-        let item = [{
-            imgUrl: 'http://hellorfimg.zcool.cn/preview/441745972.jpg',
-            name: 'OLAY隔离小白伞ProX都市护护颜隔离防晒露清爽防紫外线…',
-            price: '1566'
-        },{
-            imgUrl: 'http://hellorfimg.zcool.cn/preview/441745972.jpg',
-            name: 'OLAY隔离小白伞ProX都市护护颜隔离防晒露清爽防紫外线…',
-            price: '1566'
-        },{
-            imgUrl: 'http://hellorfimg.zcool.cn/preview/441745972.jpg',
-            name: 'OLAY隔离小白伞ProX都市护护颜隔离防晒露清爽防紫外线…',
-            price: '1566'
-        },{
-            imgUrl: 'http://hellorfimg.zcool.cn/preview/441745972.jpg',
-            name: 'OLAY隔离小白伞ProX都市护护颜隔离防晒露清爽防紫外线…',
-            price: '1566'
-        }]
+        let products = detail.products
         return <View style={styles.container}><ScrollView style={styles.container}>
-            <ShowImageView/>
+            <ShowImageView items={detail.imgs}/>
             <View style={styles.profileRow}>
                 <View style={styles.profileLeft}>
-                    <Image style={styles.portrait} source={{url: 'http://hellorfimg.zcool.cn/preview/441745972.jpg'}}/>
-                    <Text style={styles.showName}>上课的</Text>
+                    <Image style={styles.portrait} source={{uri: detail.userHeadImg ? detail.userHeadImg : ''}}/>
+                    <Text style={styles.showName}>{detail.userName ? detail.userName: ''}</Text>
                 </View>
                 <View style={styles.profileRight}>
                     <Image source={seeImg}/>
-                    <Text style={styles.number}>2334</Text>
+                    <Text style={styles.number}>{detail.click}</Text>
                 </View>
             </View>
             <HTML html={content} imagesMaxWidth={width} containerStyle={{backgroundColor: '#fff', marginLeft: px2dp(15), marginRight: px2dp(15)}}/>
             <View style={styles.goodsView}>
                 {
-                    item.map((value, index) => {
+                    products.map((value, index) => {
                         return <Goods key={index} data={value}/>
                     })
                 }
@@ -90,15 +80,31 @@ export default class ShowDetailPage extends Component {
             </TouchableOpacity>
         </ScrollView>
         <View style={styles.bottom}>
-            <View style={styles.bottomBtn}>
-            <Image style={styles.bottomGoodImg} source={showGoodImg}/>
-            <Text style={styles.bottomText}>赞 · {detail.likeCount}</Text>
-            </View>
+            {
+                isGoodActioning
+                ?
+                <View style={styles.bottomBtn}>
+                    <ActivityIndicator size='small'/>
+                </View>
+                :
+                <TouchableOpacity style={styles.bottomBtn} onPress={()=>this._goodAction()}>
+                    <Image style={styles.bottomGoodImg} source={detail.hadLike ? showDidGoodImg : showGoodImg}/>
+                    <Text style={styles.bottomText}>赞 · {detail.likeCount}</Text>
+                </TouchableOpacity>
+            }
             <View style={styles.line}/>
-            <View style={styles.bottomBtn}>
-            <Image style={styles.connectImg} source={showConnectImg}/>
-            <Text style={styles.bottomText}>收藏 · {detail.collectCount}</Text>
-            </View>
+            {
+                isCollecting
+                ?
+                <View style={styles.bottomBtn}>
+                    <ActivityIndicator size='small'/>
+                </View>
+                :
+                <TouchableOpacity style={styles.bottomBtn} onPress={()=>this._collectAction()}>
+                    <Image style={styles.bottomGoodImg} source={detail.hadCollect ? showConnectedImg : showConnectImg}/>
+                    <Text style={styles.bottomText}>收藏 · {detail.collectCount}</Text>
+                </TouchableOpacity>
+            }
         </View>
         </View>
     }
@@ -108,6 +114,12 @@ let styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff'
+    },
+    loading: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     scroll: {
         flex: 1
