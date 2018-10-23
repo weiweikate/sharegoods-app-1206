@@ -10,6 +10,7 @@ import {
 //source
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
+import SpellShopApi from '../api/SpellShopApi';
 
 export default class CashExplainPage extends BasePage {
 
@@ -20,7 +21,11 @@ export default class CashExplainPage extends BasePage {
 
 
     _clickOpen = () => {
-        this.$navigate('payment/PaymentMethodPage', {payStore: true});
+        SpellShopApi.getMoney().then((data) => {
+            this.$navigate('payment/PaymentMethodPage', { payStore: true, amounts: data.data });
+        }).catch((error) => {
+            this.$toastShow(error.msg);
+        });
     };
 
     _renderRow = (title, index, maxIndex) => {
