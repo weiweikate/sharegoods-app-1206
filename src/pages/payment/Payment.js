@@ -150,51 +150,48 @@ export class Payment {
 
     //店铺保证金
     @action
-    payStoreActoin = flow(function * () {
-        try {
-            let type = (this.selectedBalace ? 1 : 0)
-            if (this.selectedTypes) {
-                type += this.selectedTypes.type
-            }
-            Toast.showLoading()
-            const result = yield PaymentApi.storePayment({type: type})
+    payStoreActoin = () => {
+        let type = (this.selectedBalace ? 1 : 0)
+        if (this.selectedTypes) {
+            type += this.selectedTypes.type
+        }
+        Toast.showLoading()
 
+        console.log('payStoreActoin', type)
+
+        return PaymentApi.storePayment({type: type}).then(result => {
             if (!this.selectedTypes && parseInt(result.code, 0) === 10000) {
                 Toast.hiddenLoading()
                 result.sdkCode = 0
-                return result
+                return Promise.resolve(result)
             }
 
             if (parseInt(result.code, 0) === 10000) {
                 if (this.paymentType.type === paymentType.wechat) {
-                    const resultStr = yield PayUtil.appWXPay(result.data)
-                    Toast.hiddenLoading()
-                    if (parseInt(resultStr.sdkCode, 0) !== 0) {
-                        Toast.$toast(resultStr.msg)
-                        return
-                    }
-                    console.log('resultStr',resultStr)
-                    return resultStr
+                    PayUtil.appWXPay(result.data).then(resultStr => {
+                        Toast.hiddenLoading()
+                        if (parseInt(resultStr.sdkCode, 0) !== 0) {
+                            return Promise.reject(resultStr)
+                        }
+                        return Promise.resolve(resultStr)
+                    })
                 } else {
-                    const resultStr = yield PayUtil.appAliPay(result.data)
-                    Toast.hiddenLoading()
-                    if (parseInt(resultStr.code, 0) !== 0) {
-                        Toast.$toast(resultStr.msg)
-                        return
-                    }
-                    result.sdkCode = 0
-                    console.log('resultStr',resultStr)
-                    return resultStr
+                    PayUtil.appAliPay(result.data).then(resultStr => {
+                        Toast.hiddenLoading()
+                        if (parseInt(resultStr.code, 0) !== 0) {
+                            return Promise.reject(resultStr)
+                        }
+                        result.sdkCode = 0
+                        return Promise.resolve(resultStr)
+                    })
                 }
-                
-            } else {
-                Toast.hiddenLoading()
-                return ''
             }
-        } catch (error) {
-            Toast.showLoading()
-            console.log(error)
-        }
-    })
-
+            Toast.hiddenLoading()
+            return Promise.reject(result)
+        }).catch(error => {
+            console.log('payStoreActoin error', error)
+            Toast.$toast(error.msg)
+            Toast.hiddenLoading()
+        })
+    }
 }
