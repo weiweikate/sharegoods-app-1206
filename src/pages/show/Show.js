@@ -1,34 +1,40 @@
-import { observable, computed, action } from "mobx"
+import { observable, computed, action, flow } from "mobx"
+import ShowApi from './ShowApi'
+
+//推广 1：精选 2：热门 3：推荐 4：最新 全部则不传
+const tag = {
+    'Featured': 1,
+    'Hot': 2,
+    'Recommend': 3,
+    'New': 4
+}
+
+export const tagName = {
+    [tag.Featured]: '精选',
+    [tag.Hot]: '热门',
+    [tag.Recommend]: '推荐',
+    [tag.New]: '最新'
+}
+
 
 export class HomeShowModules {
     @observable showList = []
     @computed get showImage() {
         if (this.showList.length > 0) {
-            return this.showList[0].imgUrl
+            return this.showList[0].img
         } else {
             return ''
         }
      }
-    @action loadShowList = () => {
-        this.showList = [
-            {
-                name: 'IPhone X 9月在美国加州福利院上市...',
-                imgUrl: 'http://is2.mzstatic.com/image/thumb/Purple128/v4/21/a5/41/21a541ae-b7d1-0bba-22b3-0e6a343f2f37/source/512x512bb.jpg'
-            },
-            {
-                name: 'IPhone X 9月在美国加州福利院上市...',
-                imgUrl: 'http://is2.mzstatic.com/image/thumb/Purple128/v4/21/a5/41/21a541ae-b7d1-0bba-22b3-0e6a343f2f37/source/512x512bb.jpg'
-            },
-            {
-                name: 'IPhone X 9月在美国加州福利院上市...',
-                imgUrl: 'http://is2.mzstatic.com/image/thumb/Purple128/v4/21/a5/41/21a541ae-b7d1-0bba-22b3-0e6a343f2f37/source/512x512bb.jpg'
-            },
-            {
-                name: 'IPhone X 9月在美国加州福利院上市...',
-                imgUrl: 'http://is2.mzstatic.com/image/thumb/Purple128/v4/21/a5/41/21a541ae-b7d1-0bba-22b3-0e6a343f2f37/source/512x512bb.jpg'
-            }
-        ]
-    }
+
+    @action loadShowList = flow(function * (params) {
+        try {
+            const result = yield ShowApi.showQuery()
+            this.showList = result.data.data
+        } catch (error) {
+            console.log(error)
+        }
+    })
 }
 
 export class ShowBannerModules {

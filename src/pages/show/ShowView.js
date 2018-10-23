@@ -4,7 +4,7 @@ import MarqueeLabelVertical from '../../components/ui/MarqueeLabelVertical'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
-import { HomeShowModules } from './Show'
+import { HomeShowModules, tagName } from './Show'
 import homeShowImg from '../../comm/res/home_show.png'
 
 const TagView = ({text}) => <View style={styles.tagView}>
@@ -19,14 +19,19 @@ export default class ShowView extends Component {
         this.showModules.loadShowList()
     }
     _renderItems(item, index) {
-        console.log('_renderItems', item, index)
-        return <View key={index} style={styles.item}><TagView text={'最热'}/><Text style={styles.text}>{item.name}</Text></View>
+        return <View key={index} style={styles.item}><TagView text={tagName[item.generalize]}/><Text style={styles.text}>{item.title}</Text></View>
     }
     _goToShow() {
         const { navigation } = this.props
         navigation.navigate('show/ShowListPage')
     }
+    _showEnd() {
+        this.showModules.loadShowList()
+    }
     render() {
+        if (this.showModules.showList.length === 0) {
+            return <View/>
+        }
         return <View style={styles.container}>
             <View style={styles.titleView}>
                 <Text style={styles.title} numberOfLine={2}>秀场头条</Text>
@@ -37,6 +42,7 @@ export default class ShowView extends Component {
                 containerStyle={styles.marquee}
                 dataSource={this.showModules.showList}
                 renderItems={(item, index)=>this._renderItems(item, index)}
+                showEnd={()=>this._showEnd()}
             />
             {
                 this.showModules.showImage
