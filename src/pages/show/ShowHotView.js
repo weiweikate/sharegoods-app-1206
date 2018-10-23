@@ -51,7 +51,7 @@ export default class ShowHotView extends Component {
     renderHeader = () => {
         return <View><ShowBannerView/>
         <ShowChoiceView navigation={this.props.navigation}/>
-        <ShowHotScrollView/>
+        <ShowHotScrollView navigation={this.props.navigation}/>
             <View style={styles.titleView}>
                 <Text style={styles.recTitle}>推荐</Text>
             </View>
