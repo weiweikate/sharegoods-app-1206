@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import {
     StyleSheet,
     Text,
-    View
+    View,
+    Image
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import ViewPager from '../../../../components/ui/ViewPager';
-import UIImage from '../../../../components/ui/UIImage';
 import ProductActivityView from './ProductActivityView';
 
 /**
@@ -34,19 +34,14 @@ export default class DetailHeaderView extends Component {
             this.setState({
                 swiperShow: true
             });
-        }, 0);
+        }, 100);
     }
 
-    _clickItem = () => {
-
-    };
     renderViewPageItem = (item) => {
         const { originalImg } = item;
         return (
-            <UIImage
-                source={{ uri: originalImg || '' }}
+            <Image source={{ uri: originalImg || '' }}
                 style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
-                onPress={this._clickItem}
                 resizeMode="cover"
             />);
     };
