@@ -17,7 +17,7 @@ import TopicDetailSegmentView from './components/TopicDetailSegmentView';
 import ScreenUtils from '../../utils/ScreenUtils';
 import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
-import AutoHeightWebView from 'react-native-autoheight-webview';
+import HTML from 'react-native-render-html';
 import HomeAPI from '../home/api/HomeAPI';
 import TopicApi from './api/TopicApi';
 import user from '../../model/user';
@@ -218,12 +218,9 @@ export default class TopicDetailPage extends BasePage {
     };
 
     _renderItem = () => {
-        let { product = {} } = this.state.data;
         if (this.state.selectedIndex === 0) {
-            return <View>
-                <AutoHeightWebView
-                    source={{ html: this.state.activityType === 3 ? this.state.data.content : product.content }}/>
-            </View>;
+            return <HTML html={this.state.data.content} imagesMaxWidth={ScreenUtils.maxWidth}
+                         containerStyle={{ backgroundColor: '#fff' }}/>;
         } else {
             return <View style={{ backgroundColor: 'white' }}>
                 <FlatList
@@ -308,7 +305,7 @@ export default class TopicDetailPage extends BasePage {
             productId = id;
         } else {
             const { price = 0, product = {} } = this.state.data || {};
-            const {  name = '', imgUrl, id } = product;
+            const { name = '', imgUrl, id } = product;
             productPrice = price;
             productName = `${name}`;
             productImgUrl = imgUrl;
