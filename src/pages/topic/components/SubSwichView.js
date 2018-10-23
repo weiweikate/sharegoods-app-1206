@@ -35,7 +35,7 @@ export default class SubSwichView extends Component {
         let tempTitleArr = topicNavTitleList || [];
         return (
             //当标题为一个是不显示
-            tempTitleArr.length > 1
+            tempTitleArr.length > 0
                 ?
                 <View style={SwichStyles.swichBgStyle}>
                     {this._renderTitleItem()}
