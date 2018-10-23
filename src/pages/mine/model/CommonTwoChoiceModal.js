@@ -4,13 +4,14 @@ import {
     View,
     Text,
     Image,
-    Modal,
+    // Modal,
     TouchableOpacity
 } from 'react-native';
 import { color } from '../../../constants/Theme';
 import BonusExchangeSucceedBackground from '../res/userInfoImg/BonusExchangeSucceedBackground.png';
 import bonusClose from '../res/userInfoImg/bonusClose.png';
 import UIImage from '../../../components/ui/UIImage';
+import CommModal from 'CommModal'
 /*
 * usage:
 * renderModal = () => {
@@ -44,7 +45,7 @@ export default class CommonTwoChoiceModal extends Component {
 
     render() {
         return (
-            <Modal
+            <CommModal
                 animationType='fade'
                 transparent={true}
                 onRequestClose={() => this.onRequestClose()}
@@ -52,7 +53,7 @@ export default class CommonTwoChoiceModal extends Component {
                 <View style={styles.modalStyle}>
                     {this.renderContent()}
                 </View>
-            </Modal>
+            </CommModal>
         );
     }
 
@@ -152,7 +153,6 @@ export default class CommonTwoChoiceModal extends Component {
 
 const styles = StyleSheet.create({
     modalStyle: {
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'flex-end',
         flex: 1
     }, smallTextStyle: {
