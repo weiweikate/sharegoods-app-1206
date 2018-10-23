@@ -3,6 +3,9 @@ import TopicAPI from '../api/TopicApi';
 import bridge from '../../../utils/bridge';
 
 class TotalTopicresultDataModel {
+
+    @observable
+    isFirstLoad = true;
     @observable
     checkIndex = 0;
     @observable
@@ -40,7 +43,14 @@ class TotalTopicresultDataModel {
      */
     @action
     saveResultDataWith(resultData) {
-        this.checkIndex = resultData.checkIndex;
+        /**
+         * 如果为第一次加载则启用服务其返回的索引
+         */
+        if (this.isFirstLoad) {
+            this.checkIndex = resultData.checkIndex;
+            this.isFirstLoad = false;
+        }
+
         this.id = resultData.id;
         this.code = resultData.code;
         this.name = resultData.name;
