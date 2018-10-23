@@ -101,7 +101,6 @@ export default class HomePage extends Component {
 
     _onRefresh() {
         homeModule.loadHomeList();
-        bannerModule.loadBannerList();
     }
 
     componentDidMount() {
@@ -136,7 +135,7 @@ export default class HomePage extends Component {
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
                 <LinearGradient colors={['#000000', 'transparent']}
-                                style={[styles.navBar, { height: this.headerH + 14, opacity: 0.5 }]}/>
+                                style={[styles.navBar, { height: this.headerH + 14, opacity: 0.4 }]}/>
 
                 <HomeSearchView navigation={this.props.navigation}/>
                 <ShareTaskHomeAlert ref={(ref) => this.shareModal = ref}
