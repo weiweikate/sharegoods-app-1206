@@ -67,6 +67,8 @@ const api = {
     queryCollection: ['/user/storeCollection/queryCollection', { method: 'get' }],
     //我的晋升
     getUserLevelInfo: ['/user/getUserLevelInfo', { method: 'get' }],
+    // 获取下一等级的层级信息
+    getNextLevelInfo: ['/user/level/getNextLevelInfo', { method: 'get' }],
     // 验证idCard是否正确
     judgeIdCard: ['/user/judgeIdCard', { method: 'post' }],
     // 设置初始交易密码

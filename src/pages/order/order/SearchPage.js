@@ -4,13 +4,14 @@ import BasePage from '../../../BasePage';
 import { HotSearch, RecentSearch, SearchInput } from './../../../components/ui';
 import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
+import Storage from '../../../utils/storage';
 
 const dismissKeyboard = require('dismissKeyboard');
 //全局变量，历史搜索记录,因为是递加的
 let array = [];
 // import ProductApi from 'ProductApi';
 // import Toast from '../../../utils/bridge';
-
+const recentDataKey = 'orderRecentDataKey';
 class SearchPage extends BasePage {
     constructor(props) {
         super(props);
@@ -35,7 +36,9 @@ class SearchPage extends BasePage {
     $navigationBarOptions = {
         show: false// false则隐藏导航
     };
-
+    componentDidMount(){
+        this.loadPageData();
+    }
     loadPageData() {
         this.getRecentSearch();
         switch (this.state.pageType) {
@@ -115,15 +118,12 @@ class SearchPage extends BasePage {
 
     //从本地拿到最近搜索记录
     getRecentSearch = () => {
-        NativeModules.commModule.getNativeStore(this.state.saveString[this.state.pageType], (data) => {
-            if (data.length > 0) {
-                array = JSON.parse(data);
-                // console.log('从本地拿到最近搜索记录=' + array)
-                this.setState({ recentData: array });
-            } else {
-
+        Storage.get(recentDataKey, []).then((value) => {
+                this.setState({
+                    recentData: value
+                });
             }
-        });
+        );
     };
     //根据是否有历史搜索数据展示历史搜索布局
     renderRecentSearch = () => {
@@ -131,8 +131,11 @@ class SearchPage extends BasePage {
             // console.log('最近搜索记录=' + this.state.recentData)
             return (
                 <RecentSearch recentData={this.state.recentData} clearHistory={() => {
-                    this.setState({ recentData: [] });
-                    array = [];
+                    this.setState({
+                        recentData: []
+                    }, () => {
+                        Storage.set(recentDataKey, this.state.recentData);
+                    });
                 }}/>
             );
         }
@@ -159,20 +162,19 @@ class SearchPage extends BasePage {
             NativeModules.commModule.toast('请输入搜索内容');
             return;
         }
-
         //把搜索框里的值存起来
         if (StringUtils.isNoEmpty(inputText)) {
-            if (array.indexOf(inputText) === -1) {//数组去重
-                if (array.length < 10) {
-                    array.push(inputText);
+            if (this.state.recentData.indexOf(inputText) === -1) {//数组去重
+                if (this.state.recentData.length < 10) {
+                    this.state.recentData.push(inputText);
                 } else {
-                    array.shift(array);
-                    array.push(inputText);
+                    this.state.recentData.shift(array);
+                    this.state.recentData.push(inputText);
                 }
             }
             console.log('最近搜索记录=' + array);
-            let data = JSON.stringify(array);
-            NativeModules.commModule.putNativeStore(this.state.saveString[this.state.pageType], data);
+            // let data = JSON.stringify(array);
+            Storage.set(recentDataKey, this.state.recentData);
             this.getRecentSearch();
         }
         //
@@ -183,11 +185,11 @@ class SearchPage extends BasePage {
             //跳转到下一个搜索界面
             switch (this.state.pageType) {
                 case 0:
-                    this.$navigate('product/SearchResultPage', {
-                        keyWord: inputText, callBack: () => {
-                            this.getRecentSearch();
-                        }
-                    });
+                    // this.$navigate('product/SearchResultPage', {
+                    //     keyWord: inputText, callBack: () => {
+                    //         this.getRecentSearch();
+                    //     }
+                    // });
                     break;
                 case 1:
                     this.$navigate('order/order/OrderSearchResultPage', {

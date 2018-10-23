@@ -117,7 +117,7 @@ export default class PaymentMethodPage extends BasePage {
     //支付方式弹窗
     renderPaymentModal = () => {
         const {  payStore } = this.payment
-        
+
         return (
             <InputTransactionPasswordModal
                 isShow={this.state.isShowPaymentModal}
@@ -272,7 +272,7 @@ export default class PaymentMethodPage extends BasePage {
                 },
                 {
                     text: '回到订单', onPress: () => {
-                        this.props.navigation.navigate('order/order/MyOrdersListPage',{index:0})
+                        this.props.navigation.navigate('order/order/MyOrdersListPage',{index:2})
                     }
                 }
             ], { cancelable: true });

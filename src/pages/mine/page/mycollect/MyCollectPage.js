@@ -53,7 +53,7 @@ export default class MyCollectPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '店铺收藏',
+        title: '收藏店铺',
         show: true // false则隐藏导航
     };
     //**********************************ViewPart******************************************
@@ -111,7 +111,7 @@ export default class MyCollectPage extends BasePage {
                             <Text numberOfLines={1} style={styles.title}>{item.name || ''}</Text>
                         </View>
 
-                        <Text style={[styles.desc, styles.margin]}>{item.userCount || 0}积分</Text>
+                        <Text style={[styles.desc, styles.margin]}>{item.userCount || 0}成员</Text>
                         <View style={styles.bottomRow}>
                             <Image source={MoneyIcon}/>
                             <Text style={[styles.desc, { color: '#f39500' }]}>交易额:{item.totalTradeBalance}元</Text>
@@ -158,7 +158,7 @@ export default class MyCollectPage extends BasePage {
                             <Text numberOfLines={1} style={styles.title}>{item.name || ''}</Text>
                         </View>
 
-                        <Text style={[styles.desc, styles.margin]}>{item.userCount || 0}积分</Text>
+                        <Text style={[styles.desc, styles.margin]}>{item.userCount || 0}成员</Text>
                         <View style={styles.bottomRow}>
                             <Image source={MoneyIcon}/>
                             <Text style={[styles.desc, { color: '#f39500' }]}>交易额:{item.totalTradeBalance}元</Text>

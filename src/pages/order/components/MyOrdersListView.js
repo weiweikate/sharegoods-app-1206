@@ -52,12 +52,14 @@ export default class MyOrdersListView extends Component {
                 sendTime={item.sendTime}
                 deliverTime={item.deliverTime}
                 shutOffTime={item.shutOffTime}
+                cancelTime={item.cancelTime}
                 clickItem={() => {
                     this.clickItem(index);
                 }}
                 goodsItemClick={() => this.clickItem(index)}
                 operationMenuClick={(menu) => this.operationMenuClick(menu, index)}
                 outTradeNo={item.outTradeNo}
+                callBack={()=>{this.getDataFromNetwork()}}
             />
         );
     };
@@ -207,6 +209,7 @@ export default class MyOrdersListView extends Component {
                     orderStatus: item.status,
                     freightPrice: item.freightPrice,
                     totalPrice: item.needPrice,
+                    cancelTime:item.cancelTime?item.cancelTime:null,
                     orderProduct: this.getOrderProduct(item.orderProductList),
                     pickedUp: item.pickedUp,
                     outTradeNo: item.outTradeNo,
@@ -243,6 +246,26 @@ export default class MyOrdersListView extends Component {
             size: constants.PAGESIZE
         };
         Toast.showLoading();
+        if(this.props.orderNum){
+            OrderApi.queryPage({ orderNum:this.props.orderNum, page: 1,
+                size: constants.PAGESIZE }).then((response) => {
+                Toast.hiddenLoading();
+                this.getList(response.data);
+                this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+            }).catch(e => {
+                Toast.hiddenLoading();
+                // NativeModules.commModule.toast(e.msg);
+                if (e.code === 10009) {
+                    this.$navigate('login/login/LoginPage', {
+                        callback: () => {
+                            this.loadPageData();
+                        }
+                    });
+                }
+            });
+
+            return;
+        }
         switch (this.state.pageStatus) {
             case 0:
                 OrderApi.queryPage(params).then((response) => {
@@ -270,7 +293,7 @@ export default class MyOrdersListView extends Component {
                     this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
                 }).catch(e => {
                     Toast.hiddenLoading();
-                    NativeModules.commModule.toast(e.msg);
+                    //NativeModules.commModule.toast(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -288,7 +311,7 @@ export default class MyOrdersListView extends Component {
 
                 }).catch(e => {
                     Toast.hiddenLoading();
-                    NativeModules.commModule.toast(e.msg);
+                   // NativeModules.commModule.toast(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -306,7 +329,7 @@ export default class MyOrdersListView extends Component {
 
                 }).catch(e => {
                     Toast.hiddenLoading();
-                    NativeModules.commModule.toast(e.msg);
+                   // NativeModules.commModule.toast(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -324,7 +347,7 @@ export default class MyOrdersListView extends Component {
 
                 }).catch(e => {
                     Toast.hiddenLoading();
-                    NativeModules.commModule.toast(e.msg);
+                   // NativeModules.commModule.toast(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -335,23 +358,6 @@ export default class MyOrdersListView extends Component {
                 });
                 break;
             default:
-                // let orderNum=this.props.orderNum
-                // OrderApi.queryAllOrderPageList({
-                //     dealerId:user.id,
-                //     page:this.state.currentPage,
-                //     pageSize:constants.PAGESIZE,
-                //     condition:orderNum,
-                // }).then((response)=>{
-                //     Toast.hiddenLoading()
-                //     if(response.ok ){
-                //         this.getList(response.data)
-                //         this.setState({isEmpty:response.data&&StringUtils.isNoEmpty(response.data)&&response.data.length!=0})
-                //     } else {
-                //         NativeModules.commModule.toast(response.msg)
-                //     }
-                // }).catch(e=>{
-                //     NativeModules.commModule.toast(e)
-                // });
                 break;
         }
     };
