@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ViewPager from '../../../components/ui/ViewPager';
-import UIImage from '../../../components/ui/UIImage';
 import xjt_03 from '../res/xjt_03.png';
 import ActivityView from './ActivityView';
 import { isNoEmpty } from '../../../utils/StringUtils';
@@ -40,23 +39,19 @@ export default class TopicDetailHeaderView extends Component {
             this.setState({
                 swiperShow: true
             });
-        }, 0);
+        }, 100);
     }
 
     updateTime(activityData, activityType) {
         this.ActivityView.saveActivityViewData(activityData, activityType);
     }
 
-    _clickItem = () => {
-
-    };
     renderViewPageItem = (item) => {
         const { originalImg } = item;
         return (
-            <UIImage
+            <Image
                 source={{ uri: originalImg || '' }}
                 style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
-                onPress={this._clickItem}
                 resizeMode="cover"
             />);
     };

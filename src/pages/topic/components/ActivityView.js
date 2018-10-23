@@ -5,7 +5,7 @@ import {
     Text
 } from 'react-native';
 import { isNoEmpty } from '../../../utils/StringUtils';
-import { getFormatDate } from '../../../utils/DateUtils';
+import { formatDate } from '../../../utils/DateUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 
 export default class MyShop_RecruitPage extends Component {
@@ -54,18 +54,21 @@ export default class MyShop_RecruitPage extends Component {
     }
 
     _timeDif(usedTime) {
-        //两个时间戳相差的毫秒数
+        //天数
+        let days = Math.floor(usedTime / (24 * 3600));
+        //去除天数
+        let leave1 = usedTime % (24 * 3600);
+        //小时
+        let hours = Math.floor(leave1 / 3600);
+        //去除小时
+        let leave2 = leave1 % 3600;
+        //分钟
+        let minutes = Math.floor(leave2 / 60);
+        //去除分钟
+        let leave3 = leave2 % 60;
+        //秒
+        let second = Math.floor(leave3);
 
-        let days = Math.floor(usedTime / (24 * 3600 * 1000));
-        //计算出小时数
-        let leave1 = usedTime % (24 * 3600 * 1000);    //计算天数后剩余的毫秒数
-        let hours = Math.floor(leave1 / (3600 * 1000));
-        //计算相差分钟数
-        let leave2 = leave1 % (3600 * 1000);        //计算小时数后剩余的毫秒数
-        let minutes = Math.floor(leave2 / (60 * 1000));
-
-        let leave3 = leave2 % (60 * 1000);        //计算小时数后剩余的毫秒数
-        let second = Math.floor(leave3 / (1000));
         let time = days + ':' + hours + ':' + minutes + ':' + second;
         return time;
     }
@@ -94,7 +97,7 @@ export default class MyShop_RecruitPage extends Component {
                 one = '起拍价';
                 two = `原价￥${originalPrice}|${reseCount}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime)}`;
-                four = `${getFormatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
+                four = `${formatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
             } else {
                 price = markdownPrice;
                 one = `原价￥${originalPrice}`;
@@ -109,7 +112,7 @@ export default class MyShop_RecruitPage extends Component {
                 one = '秒杀价';
                 two = `原价￥${isNoEmpty(productPrice) ? productPrice : ''}|${isNoEmpty(subscribeCount) ? subscribeCount : ''}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${getFormatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
+                four = `${formatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
             } else {
                 one = `原价￥${isNoEmpty(productPrice) ? productPrice : ''}`;
                 two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '秒杀价'}`;
