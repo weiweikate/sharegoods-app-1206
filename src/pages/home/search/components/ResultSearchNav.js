@@ -27,7 +27,7 @@ export default class ResultSearchNav extends Component {
                         <Image source={navBack}/>
                     </TouchableOpacity>
                     <View style={styles.inputView}>
-                        <TextInput style={{ marginLeft: 24, color: '#212121' }}
+                        <TextInput style={{ marginLeft: 24, padding: 0, color: '#212121' }}
                                    keyboardType='web-search'
                                    underlineColorAndroid='transparent'
                                    placeholder={'请输入关键词搜索'}
