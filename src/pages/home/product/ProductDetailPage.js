@@ -22,6 +22,7 @@ import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
+import DetailNavShowModal from './components/DetailNavShowModal';
 
 export default class ProductDetailPage extends BasePage {
 
@@ -265,7 +266,19 @@ export default class ProductDetailPage extends BasePage {
                         <Image source={xiangqing_btn_return_nor}/>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
-                        this.shareModal.open();
+                        this.DetailNavShowModal.show((item) => {
+                            switch (item.index) {
+                                case 0:
+                                    this.$navigate('message/MessageCenterPage');
+                                    break;
+                                case 1:
+                                    this.props.navigation.popToTop();
+                                    break;
+                                case 2:
+                                    this.shareModal.open();
+                                    break;
+                            }
+                        });
                     }}>
                         <Image source={xiangqing_btn_more_nor}/>
                     </TouchableWithoutFeedback>
@@ -302,6 +315,7 @@ export default class ProductDetailPage extends BasePage {
                                     linkUrl: `http://testh5.sharegoodsmall.com/#/product/${product.id}`,
                                     thumImage: imgUrl
                                 }}/>
+                <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
             </View>
         );
     }

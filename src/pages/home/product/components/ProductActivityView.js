@@ -35,8 +35,11 @@ export default class ActivityView extends Component {
     }
 
     saveActivityViewData(activityData, activityType) {
-        const { date, beginTime, endTime } = activityData;
-        let begin = beginTime > date;
+        //	integer($int32)
+        // example: 1
+        // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
+        const { date, beginTime, endTime, status } = activityData;
+        let begin = status === 1;
         if (begin) {
             this._time(date, beginTime);
         } else {
@@ -91,10 +94,10 @@ export default class ActivityView extends Component {
         // surplusNumber 剩余数量 totalNumber总
         // endTime活动结束时间
         const { activityType } = this.props;
-        const { surplusNumber = '', date, beginTime, endTime } = this.props.activityData;
+        const { surplusNumber = '', beginTime, status } = this.props.activityData;
         let price = '', one = '', two = '', three = '', four = '';
-        let begin = beginTime > date;
-        let end = date > endTime;
+        let begin = status === 1;
+        let end = status === 4 || status === 5;
         if (activityType === 2) {
             const {
                 startPrice, markdownPrice = '', reseCount = '', floorPrice
@@ -148,7 +151,7 @@ export default class ActivityView extends Component {
             </View>
             <View style={{ marginRight: 15 }}>
                 {end ?
-                    <Text style={{ color: '#FFFC00', fontSize: 13 }}>活动结束</Text>
+                    <Text style={{ color: '#FFFC00', fontSize: 13 }}>活动已结束</Text>
                     :
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View>

@@ -216,9 +216,8 @@ export default class ShopRecruitPage extends BasePage {
                             <Text style={{ fontSize: 16, color: '#e60012' }}>{'退出拼店'}</Text>
                         </TouchableOpacity>
                         :
-
-                        <TouchableOpacity onPress={this._joinStore}
-                                          style={[styles.OutStore]}>
+                        spellStatusModel.storeId ? null : <TouchableOpacity onPress={this._joinStore}
+                                                                            style={[styles.OutStore]}>
                             <Text style={{ fontSize: 16, color: 'white' }}>{'加入拼店'}</Text>
                         </TouchableOpacity>
                 }

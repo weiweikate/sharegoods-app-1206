@@ -276,15 +276,17 @@ export default class TopicDetailPage extends BasePage {
             bottomTittle = '立即购买';
             colorType = 2;
         } else {
-            const { notifyFlag, surplusNumber, limitNumber, limitFlag, beginTime, date, endTime } = this.state.activityData;
-            if (beginTime > date) {
+            const { notifyFlag, surplusNumber, limitNumber, limitFlag, status } = this.state.activityData;
+            if (status === 1) {
                 if (notifyFlag === 1) {
                     bottomTittle = '开始前3分钟提醒';
                 } else {
                     bottomTittle = '设置提醒';
                     colorType = 1;
                 }
-            } else if (endTime > date) {
+            } else if (status === 4 || status === 5) {
+                bottomTittle = '已结束';
+            } else {
                 if (surplusNumber === 0) {
                     bottomTittle = '已抢光';
                 } else if (limitNumber !== -1 && limitFlag === 1) {
@@ -293,8 +295,6 @@ export default class TopicDetailPage extends BasePage {
                     bottomTittle = '立即拍';
                     colorType = 2;
                 }
-            } else if (date > endTime) {
-                bottomTittle = '已结束';
             }
         }
 
