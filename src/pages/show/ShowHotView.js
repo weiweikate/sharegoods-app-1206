@@ -8,7 +8,7 @@ import ShowBannerView from './ShowBannerView'
 import ShowChoiceView from './ShowChoiceView'
 import ShowHotScrollView from './ShowHotScrollView'
 import {observer} from 'mobx-react'
-import { ShowRecommendModules } from './Show'
+import { ShowRecommendModules, tag } from './Show'
 import ScreenUtils from '../../utils/ScreenUtils'
 const {  px2dp } = ScreenUtils
 import ItemView from './ShowHotItem'
@@ -22,15 +22,17 @@ export default class ShowHotView extends Component {
         this.recommendModules = new ShowRecommendModules()
     }
     componentDidMount() {
-        let data = this.recommendModules.loadRecommendList()
-        this.waterfall.addItems(data)
+        this.recommendModules.loadRecommendList({generalize: tag.Recommend}).then(data => {
+            this.waterfall.addItems(data)
+        })
     }
     infiniting(done) {
         console.log('load more infiniting', done)
 
         setTimeout(() => {
-            let data = this.recommendModules.getMoreRecommendList()
-            this.waterfall.addItems(data)
+            this.recommendModules.getMoreRecommendList({generalize: tag.Recommend}).then(data => {
+                this.waterfall.addItems(data)
+            })
             done()
         }, 1000)
     }
@@ -44,14 +46,15 @@ export default class ShowHotView extends Component {
         navigation.navigate('show/ShowDetailPage')
     }
     renderItem = (data) => {
-        const {width, height} = data
-        let imgHeight = (height / width) * imgWidth
+        let imgWide = data.imgWide ? data.imgWide : 1
+        let imgHigh = data.imgHigh ? data.imgHigh : 1
+        let imgHeight = (imgHigh / imgWide) * imgWidth
         return <ItemView imageStyle={{height: imgHeight}}  data={data} press={()=>{this._gotoDetail(data)}}/>
     }
     renderHeader = () => {
         return <View><ShowBannerView/>
         <ShowChoiceView navigation={this.props.navigation}/>
-        <ShowHotScrollView/>
+        <ShowHotScrollView navigation={this.props.navigation}/>
             <View style={styles.titleView}>
                 <Text style={styles.recTitle}>推荐</Text>
             </View>
