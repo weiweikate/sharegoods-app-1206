@@ -10,6 +10,9 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import ViewPager from '../../../../components/ui/ViewPager';
 import ProductActivityView from './ProductActivityView';
+import spellStatusModel from '../../../spellShop/model/SpellStatusModel';
+import user from '../../../../model/user';
+import { isNoEmpty } from '../../../../utils/StringUtils';
 
 /**
  * 商品详情头部view
@@ -41,8 +44,8 @@ export default class DetailHeaderView extends Component {
         const { originalImg } = item;
         return (
             <Image source={{ uri: originalImg || '' }}
-                style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
-                resizeMode="cover"
+                   style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
+                   resizeMode="cover"
             />);
     };
 
@@ -85,12 +88,15 @@ export default class DetailHeaderView extends Component {
                         <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
                             <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${price}起`}</Text>
                             <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${originalPrice}`}</Text>
-                            <Text style={{
-                                marginLeft: 5,
-                                backgroundColor: 'red',
-                                color: '#FFFFFF',
-                                fontSize: 10
-                            }}>拼店价</Text>
+                            {
+                                spellStatusModel.storeId && spellStatusModel.storeStatus === 1 || isNoEmpty(user.levelId) ?
+                                    <Text style={{
+                                        marginLeft: 5,
+                                        backgroundColor: 'red',
+                                        color: '#FFFFFF',
+                                        fontSize: 10, paddingHorizontal: 5
+                                    }}>{spellStatusModel.storeId && spellStatusModel.storeStatus === 1 ? '拼店价' : `v${user.levelId}价`}</Text> : null
+                            }
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text

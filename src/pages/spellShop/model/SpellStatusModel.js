@@ -22,7 +22,7 @@ class SpellStatusModel {
     @observable
     storeId = null;//是否有店
     @observable
-    storeStatus = null;//店铺状态
+    storeStatus = null;//店铺状态	integer($int32)状态 0-关闭 1-正常 2-已缴纳保证金 3-招募中
     /******************************【computed】******************************************/
 
     @computed//可以去开店

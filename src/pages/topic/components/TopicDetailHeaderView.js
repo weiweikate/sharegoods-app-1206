@@ -13,6 +13,7 @@ import ViewPager from '../../../components/ui/ViewPager';
 import xjt_03 from '../res/xjt_03.png';
 import ActivityView from './ActivityView';
 import { isNoEmpty } from '../../../utils/StringUtils';
+import user from '../../../model/user';
 
 /**
  * 商品详情头部view
@@ -113,6 +114,14 @@ export default class TopicDetailHeaderView extends Component {
                             <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
                                 <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
                                 <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${oldPrice}`}</Text>
+                                {
+                                    isNoEmpty(user.levelId) ? <Text style={{
+                                        marginLeft: 5,
+                                        backgroundColor: 'red',
+                                        color: '#FFFFFF',
+                                        fontSize: 10, paddingHorizontal: 5
+                                    }}>{`v${user.levelId}价`}</Text> : null
+                                }
                             </View> : null}
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text style={{
