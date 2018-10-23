@@ -41,9 +41,8 @@ export default class ShowDetailPage extends Component {
     }
     render() {
         const { detail } = this.showDetailModule
-        console.log('ShowDetailPage', detail)
         if (!detail) {
-            return <View/>
+            return <View style={styles.container}/>
         }
         let content = `<div>${detail.content}</div>`
         let item = [{
