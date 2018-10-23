@@ -4,8 +4,10 @@ import {
     View,
     Text,
     StyleSheet,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    Image
 } from 'react-native';
+import upDown from '../res/updown.png';
 
 export default class SearchSegmentView extends Component {
 
@@ -21,7 +23,7 @@ export default class SearchSegmentView extends Component {
     }
 
     _onPress = (index) => {
-        if (index === this.state.selIndex) {
+        if (this.state.selIndex === index && index !== 2) {
             return;
         }
         this.setState({
@@ -38,6 +40,7 @@ export default class SearchSegmentView extends Component {
             <View style={styles.btnContainer}>
                 <Text
                     style={[styles.title, { color: this.state.selIndex === index ? '#e60012' : '#999999' }]}>{title}</Text>
+                {index===2&&<Image source={upDown}/>}
             </View>
         </TouchableWithoutFeedback>;
     };
@@ -61,7 +64,8 @@ const styles = StyleSheet.create({
     btnContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        flexDirection: 'row'
     },
     title: {
         fontFamily: 'PingFang-SC-Medium',
