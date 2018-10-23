@@ -10,7 +10,7 @@ import UIText from '../../../components/ui/UIText';
 import UIImage from '../../../components/ui/UIImage';
 import StringUtils from '../../../utils/StringUtils';
 
-const itemImgW = (ScreenUtils.width - 110 - 2 * 30 - 2 * 20) / 3;
+const itemImgW = (ScreenUtils.width - 110 - 2 * 10.5 - 2 * 30) / 3;
 const bannerW = ScreenUtils.width - 110;
 export default class CategorySearchPage extends BasePage {
 
@@ -90,7 +90,7 @@ export default class CategorySearchPage extends BasePage {
                 <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={styles.searchBox} onPress={() => this.go2SearchPage()}>
                         <Image source={require('../res/icon_search.png')}
-                               style={{ width: 22, height: 21, marginLeft: 20 }} resizeMode={'center'}/>
+                               style={{ width: 22, height: 21, marginLeft: 20 }}/>
                         <View style={styles.inputText}/>
                     </TouchableOpacity>
                 </View>
@@ -152,6 +152,7 @@ export default class CategorySearchPage extends BasePage {
                                      sections={this.state.sectionArr}
                                      initialNumToRender={9}
                                      removeClippedSubviews={false}
+                                     stickySectionHeadersEnabled={false}
                                      showsVerticalScrollIndicator={false}
                                      keyExtractor={(item) => item.id + ''}/>
                     </View>
@@ -272,8 +273,8 @@ export default class CategorySearchPage extends BasePage {
             <View style={{
                 flexDirection: 'column',
                 width: itemImgW,
-                marginRight: (item.index % 3 == 0 || item.index % 3 == 1) ? 10 : 28,
-                marginLeft: (item.index % 3 == 1 || item.index % 3 == 2) ? 10 : 28,
+                marginRight: (item.index % 3 == 0 || item.index % 3 == 1) ? 15 : 10,
+                marginLeft: (item.index % 3 == 1 || item.index % 3 == 2) ? 15 : 10,
                 alignItems: 'center'
             }}>
                 <PreLoadImage imageUri={item.item.img}
@@ -281,25 +282,25 @@ export default class CategorySearchPage extends BasePage {
                                   height: itemImgW,
                                   width: itemImgW
                               }}
-                              resizeMode={'cover'}
+                              resizeMode={'contain'}
                               onClickAction={() => this.go2ResultPage(item.item.id, item.item.name)}/>
                 <UIText value={item.item.name}
-                        style={{ fontSize: 13, color: '#222222', marginTop: 12, marginBottom: 16 }}/>
+                        style={{
+                            textAlign: 'center',
+                            height: 30,
+                            fontSize: 13,
+                            color: '#222222',
+                            marginTop: 10,
+                            marginBottom: 22
+                        }}/>
             </View>
         );
     };
 
     _sectionHeader = ({ section }) => {
         return (
-            <View style={{
-                width: ScreenUtils.width - 110,
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: 10
-            }}>
-                <View style={{ width: 10, height: 10, marginRight: 3, borderRadius: 5, backgroundColor: 'black' }}/>
-                <UIText value={section.title} style={{ fontSize: 13, color: '#222222' }}/>
-            </View>
+            <UIText value={section.title}
+                    style={{ fontSize: 13, width: ScreenUtils.width - 110, color: '#222222', marginBottom: 20 }}/>
         );
     };
 
@@ -311,7 +312,8 @@ export default class CategorySearchPage extends BasePage {
                     flexDirection: 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginTop: 30
+                    marginTop: 30,
+                    marginBottom: 30
                 }}>
                     <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginRight: 10 }}/>
                     <UIText value={'没有更多啦～'} style={{ fontSize: 12, color: '#999999' }}/>

@@ -4,7 +4,8 @@ import BasePage from '../../BasePage';
 import {
     View,
     StyleSheet,
-    ScrollView
+    ScrollView,
+    RefreshControl
 } from 'react-native';
 import { observer } from 'mobx-react';
 import ColorUtil from '../../utils/ColorUtil';
@@ -16,7 +17,9 @@ import TotalTopicDataModel from './model/SubTopicModel';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
+import { homeModule } from '../home/Modules';
 
+const { statusBarHeight } = ScreenUtils;
 @observer
 export default class DownPricePage extends BasePage {
 
@@ -39,11 +42,11 @@ export default class DownPricePage extends BasePage {
         // this.$NavigationBarResetTitle(this.dataModel.name)
     }
 
-    async loadData(linkTypeCode){
-        await  this.dataModel.loadTopicData(linkTypeCode);
-        const {name } = this.dataModel;
-        this.$NavigationBarResetTitle(name || '专题')
-    }
+    // async loadData(linkTypeCode){
+    //     await  this.dataModel.loadTopicData(linkTypeCode);
+    //     const {name } = this.dataModel;
+    //     this.$NavigationBarResetTitle(name || '专题')
+    // }
 
     /**
      * 渲染底部组列表
@@ -69,10 +72,13 @@ export default class DownPricePage extends BasePage {
                         return this._renderSection(section, sectionIndex);
                     })
                 }
-
             </View>
         );
 
+    }
+    _onRefresh=()=>{
+        const { linkTypeCode } = this.params;
+        this.dataModel.loadTopicData(linkTypeCode)
     }
 
     /**
@@ -166,6 +172,17 @@ export default class DownPricePage extends BasePage {
                 style={{
                     width: ScreenUtils.width
                 }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={homeModule.isRefreshing}
+                        onRefresh={this._onRefresh.bind(this)}
+                        progressViewOffset={statusBarHeight + 44}
+                        colors={['#d51243']}
+                        title="下拉刷新"
+                        tintColor="#999"
+                        titleColor="#999"
+                    />
+                }
             >
                 <PreLoadImage
                     imageUri={imgUrl}

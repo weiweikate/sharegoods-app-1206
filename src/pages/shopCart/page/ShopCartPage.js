@@ -355,7 +355,7 @@ export default class ShopCartPage extends BasePage {
                                             // onEndEditing={text => this.onNumberTextChange(itemData,text,rowId)}
                                             // onSubmitEditing={text => this.onNumberTextChange(itemData,text,rowId)}
                                             placeholder='0'
-                                            keyboardType='default'
+                                            keyboardType='numeric'
                                         />
                                     </View>
                                     <TouchableOpacity
@@ -435,6 +435,10 @@ export default class ShopCartPage extends BasePage {
     };
 
     _jumpToProductDetailPage = (itemData) => {
+        if(itemData.status === 0){
+            //失效商品不可进入详情
+          return;
+        }
         //跳转产品详情
         this.$navigate('home/product/ProductDetailPage', {
             productId: itemData.productId,
