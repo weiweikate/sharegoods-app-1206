@@ -26,6 +26,12 @@ const statues = {
     timeOver: 4,
     handOver: 5
 };
+const statuesString = {
+    [statues.isBeginning]:'马上抢',
+    [statues.haveSoldOut]:'已抢光',
+    [statues.timeOver]:'已结束',
+    [statues.handOver]:'已结束',
+}
 // 1.秒杀 2.降价拍 3.礼包 4.助力免费领 5.专题 99.普通产品
 const productTypes = {
     skill: 1,
@@ -221,9 +227,7 @@ export default class OpenPrizeItemView extends Component {
                                             }
                                         >
                                             {
-                                                (itemData.status === 3 || itemData.status === 4 || itemData.status === 5) ?
-                                                    '已抢光' :
-                                                    '马上抢'
+                                                statuesString[itemData.status]
                                             }
                                         </Text>
 
