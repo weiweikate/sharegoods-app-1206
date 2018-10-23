@@ -13,20 +13,16 @@ import maskImg from '../../comm/res/show_mask.png'
 const Card = ({item, press}) => <TouchableOpacity style={styles.card} onPress={()=> press && press()}>
     <ImageBackground style={styles.imgView} source={{uri:item.coverImg}} resizeMode={'cover'}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
-        <Text style={styles.dis}>氨基酸洗面奶，30秒自动起泡清洁力强不伤脸，不含角质合痘痘肌和敏感肌，涂抹在手上等...</Text>
+        <Text style={styles.dis}>{item.title}</Text>
     </ImageBackground>
-    <View style={styles.seeRow}>
-        <Text style={styles.text} numberOfLines={1}>{item.title}</Text>
+    <View style={styles.profileView}>
+        <Image style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg: ''}}/>
+        <Text style={styles.name}>{item.userName}</Text>
+        <View style={{flex: 1}}/>
         <View style={styles.rightRow}>
             <Image source={seeImg}/>
             <Text style={styles.number}>{item.click ? item.click : 0}</Text>
         </View>
-    </View>
-    <View style={styles.profileView}>
-        <Image style={styles.portrait} source={{uri:item.portrait}}/>
-        <Text style={styles.name}>{item.name}</Text>
-        <View style={{flex: 1}}/>
-        <Text style={styles.time}>{item.time}</Text>
     </View>
 </TouchableOpacity>
 
@@ -83,7 +79,9 @@ let styles = StyleSheet.create({
         height: px2dp(163),
         borderRadius: px2dp(5),
         overflow: 'hidden',
-        margin: px2dp(10),
+        marginLeft: px2dp(10),
+        marginTop: px2dp(10),
+        marginRight: px2dp(10),
         justifyContent: 'flex-end'
     },
     item: {
@@ -111,7 +109,7 @@ let styles = StyleSheet.create({
     card: {
         marginLeft: px2dp(15),
         marginRight: px2dp(15),
-        height: px2dp(254),
+        height: px2dp(224),
         marginBottom: px2dp(10),
         backgroundColor: '#fff',
         borderRadius: px2dp(5)
@@ -137,7 +135,7 @@ let styles = StyleSheet.create({
         marginRight: px2dp(10)
     },
     profileView: {
-        height: px2dp(60),
+        height: px2dp(53),
         flexDirection: 'row',
         alignItems: 'center'
     },
