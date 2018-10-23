@@ -1,100 +1,127 @@
 import React, {Component} from 'react'
-import { StyleSheet, ScrollView, Image, TouchableOpacity, View, Text } from 'react-native'
+import { StyleSheet, ScrollView, Image, TouchableOpacity, View, Text, ActivityIndicator } from 'react-native'
 import ShowImageView from './ShowImageView'
 import backImg  from '../../comm/res/show_detail_back.png'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp, width } = ScreenUtils
 import HTML from 'react-native-render-html'
-// import showConnectedImg from '../../comm/res/show_connected.png'
+import showConnectedImg from '../../comm/res/show_connected.png'
 import showConnectImg from '../../comm/res/show_connect.png'
 import showGoodImg from '../../comm/res/show_good.png'
-// import showDidGoodImg from '../../comm/res/show_did_good.png'
+import showDidGoodImg from '../../comm/res/show_did_good.png'
 import seeImg from '../../comm/res/see.png'
 import showShareImg from '../../comm/res/show_share.png'
+import { ShowDetail } from './Show'
+import {observer} from 'mobx-react'
+import CommShareModal from '../../comm/components/CommShareModal'
 
-const htmlContent = `
-    <h1>This HTML snippet is now rendered with native components !</h1>
-    <h2>Enjoy a webview-free and blazing fast application</h2>
-    <img src="https://i.imgur.com/dHLmxfO.jpg?2" />
-    <em style="textAlign: center;">Look at how happy this native cat is</em>
-`;
-
-const Goods = ({data}) => <View style={styles.goodsItem}>
-    <Image style={styles.goodImg} source={{uri: data.imgUrl}}/>
+const Goods = ({data, press}) => <TouchableOpacity style={styles.goodsItem} onPress={()=>{press && press()}}>
+    <Image style={styles.goodImg} source={{uri: data.headImg ? data.headImg: ''}}/>
     <View style={styles.goodDetail}>
         <Text style={styles.name}>{data.name}</Text>
         <View style={{height: px2dp(4)}}/>
         <Text style={styles.price}>￥ {data.price}</Text>
     </View>
-</View>
+</TouchableOpacity>
 
+@observer
 export default class ShowDetailPage extends Component {
     constructor(props) {
         super(props)
+        this.params = this.props.navigation.state.params || {};
+        this.showDetailModule = new ShowDetail()
+        this.showDetailModule.loadDetail(this.params.id)
     }
     _goBack() {
         const {navigation} = this.props
         navigation.goBack(null)
     }
-    _goToGoodsPage() {
+    _goToGoodsPage(good) {
         const {navigation} = this.props
-        navigation.push('show/ShowGoodsPage')
+        navigation.push('home/product/ProductDetailPage', {
+            productCode: good.code
+        });
+    }
+    _goodAction() {
+        this.showDetailModule.showGoodAction()
+    }
+    _collectAction() {
+        this.showDetailModule.showConnectAction()
+    }
+    _goToShare() {
+        this.shareModal && this.shareModal.open()
     }
     render() {
-        let item = [{
-            imgUrl: 'http://hellorfimg.zcool.cn/preview/441745972.jpg',
-            name: 'OLAY隔离小白伞ProX都市护护颜隔离防晒露清爽防紫外线…',
-            price: '1566'
-        },{
-            imgUrl: 'http://hellorfimg.zcool.cn/preview/441745972.jpg',
-            name: 'OLAY隔离小白伞ProX都市护护颜隔离防晒露清爽防紫外线…',
-            price: '1566'
-        },{
-            imgUrl: 'http://hellorfimg.zcool.cn/preview/441745972.jpg',
-            name: 'OLAY隔离小白伞ProX都市护护颜隔离防晒露清爽防紫外线…',
-            price: '1566'
-        },{
-            imgUrl: 'http://hellorfimg.zcool.cn/preview/441745972.jpg',
-            name: 'OLAY隔离小白伞ProX都市护护颜隔离防晒露清爽防紫外线…',
-            price: '1566'
-        }]
+        const { detail, isGoodActioning, isCollecting } = this.showDetailModule
+        if (!detail) {
+            return <View style={styles.loading}><ActivityIndicator size='large'/></View>
+        }
+        let content = `<div>${detail.content}</div>`
+        let products = detail.products
         return <View style={styles.container}><ScrollView style={styles.container}>
-            <ShowImageView/>
+            <ShowImageView items={detail.imgs}/>
             <View style={styles.profileRow}>
                 <View style={styles.profileLeft}>
-                    <Image style={styles.portrait} source={{url: 'http://hellorfimg.zcool.cn/preview/441745972.jpg'}}/>
-                    <Text style={styles.showName}>上课的</Text>
+                    <Image style={styles.portrait} source={{uri: detail.userHeadImg ? detail.userHeadImg : ''}}/>
+                    <Text style={styles.showName}>{detail.userName ? detail.userName: ''}</Text>
                 </View>
                 <View style={styles.profileRight}>
                     <Image source={seeImg}/>
-                    <Text style={styles.number}>2334</Text>
+                    <Text style={styles.number}>{detail.click}</Text>
                 </View>
             </View>
-            <HTML html={htmlContent} imagesMaxWidth={width} containerStyle={{backgroundColor: '#fff', marginLeft: px2dp(15), marginRight: px2dp(15)}}/>
+            <HTML html={content} imagesMaxWidth={width} containerStyle={{backgroundColor: '#fff', marginLeft: px2dp(15), marginRight: px2dp(15)}}/>
             <View style={styles.goodsView}>
                 {
-                    item.map((value, index) => {
-                        return <Goods key={index} data={value}/>
+                    products.map((value, index) => {
+                        return <Goods key={index} data={value} press={()=>{this._goToGoodsPage(value)}}/>
                     })
                 }
             </View>
             <TouchableOpacity style={styles.backView} onPress={()=>this._goBack()}>
                 <Image source={backImg}/>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.shareView} onPress={()=>{}}>
+            <TouchableOpacity style={styles.shareView} onPress={()=>{this._goToShare()}}>
                 <Image source={showShareImg}/>
             </TouchableOpacity>
         </ScrollView>
         <View style={styles.bottom}>
-            <Image style={styles.bottomGoodImg} source={showGoodImg}/>
-            <Text style={styles.bottomText}>赞 . 15</Text>
-            <Image style={styles.connectImg} source={showConnectImg}/>
-            <Text style={styles.bottomText}>收藏 . 15</Text>
-            <View style={{flex: 1}}/>
-            <TouchableOpacity style={styles.button} onPress={()=>this._goToGoodsPage()}>
-                <Text style={styles.buttonTitle}>可购买商品</Text>
-            </TouchableOpacity>
+            {
+                isGoodActioning
+                ?
+                <View style={styles.bottomBtn}>
+                    <ActivityIndicator size='small'/>
+                </View>
+                :
+                <TouchableOpacity style={styles.bottomBtn} onPress={()=>this._goodAction()}>
+                    <Image style={styles.bottomGoodImg} source={detail.hadLike ? showDidGoodImg : showGoodImg}/>
+                    <Text style={styles.bottomText}>赞 · {detail.likeCount}</Text>
+                </TouchableOpacity>
+            }
+            <View style={styles.line}/>
+            {
+                isCollecting
+                ?
+                <View style={styles.bottomBtn}>
+                    <ActivityIndicator size='small'/>
+                </View>
+                :
+                <TouchableOpacity style={styles.bottomBtn} onPress={()=>this._collectAction()}>
+                    <Image style={styles.bottomGoodImg} source={detail.hadCollect ? showConnectedImg : showConnectImg}/>
+                    <Text style={styles.bottomText}>收藏 · {detail.collectCount}</Text>
+                </TouchableOpacity>
+            }
         </View>
+        <CommShareModal ref={(ref) => this.shareModal = ref}
+                type={'miniProgram'}
+                miniProgramJson = {{
+                    title: detail.title,
+                    dec: '分享小程序子标题',
+                    thumImage: 'logo.png',
+                    linkUrl: 'https://testapi.sharegoodsmall.com/pages/index/index',
+                    userName: 'gh_3ac2059ac66f',
+                    miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}`}}
+        />
         </View>
     }
 }
@@ -103,6 +130,12 @@ let styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff'
+    },
+    loading: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     scroll: {
         flex: 1
@@ -182,7 +215,7 @@ let styles = StyleSheet.create({
         fontSize: px2dp(15)
     },
     bottomGoodImg: {
-        marginLeft: px2dp(17)
+        
     },
     bottomText: {
         marginLeft: px2dp(8),
@@ -190,7 +223,7 @@ let styles = StyleSheet.create({
         fontSize: px2dp(11)
     },
     connectImg: {
-        marginLeft: px2dp(50)
+        
     },
     profileRow: {
         height: px2dp(45),
@@ -222,5 +255,16 @@ let styles = StyleSheet.create({
         color: '#333',
         fontSize: px2dp(11),
         marginLeft: px2dp(9)
+    },
+    bottomBtn: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    line: {
+        width: 1,
+        height: px2dp(16),
+        backgroundColor: '#eee'
     }
 })

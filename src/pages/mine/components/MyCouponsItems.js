@@ -169,12 +169,12 @@ export default class MyCouponsItems extends Component {
                             onChangeText={this._onChangeText}
                             style={{
                                 padding: 0,
-                                paddingLeft:5,
+                                paddingLeft: 5,
                                 alignItems: 'center',
                                 marginLeft: 5,
                                 marginRight: 5,
                                 borderColor: '#4D4D4D',
-                                backgroundColor:'white',
+                                backgroundColor: 'white',
                                 borderWidth: 1,
                                 height: px2dp(24),
                                 width: px2dp(136),
@@ -298,12 +298,12 @@ export default class MyCouponsItems extends Component {
         else if ((cat1.length + cat2.length + cat3.length) > 1) {
             return `限品类：限指定品类商品可用`;
         } else {
-            return '';
+            return '全品类：全场通用券';
         }
     };
     parseData = (dataList) => {
         let arrData = [];
-        if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0&&!this.props.fromOrder) {
+        if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
             arrData.push({
                 status: 0,
                 name: '可叠加使用',

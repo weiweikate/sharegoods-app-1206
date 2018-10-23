@@ -26,7 +26,7 @@ export default class ResultHorizontalRow extends Component {
     }
 
     render() {
-        let { product, originalPrice } = this.props.itemData || {};
+        let { product={}, price } = this.props.itemData || {};
         const { name = '' } = product;
         return (
             <TouchableWithoutFeedback onPress={() => {
@@ -45,7 +45,7 @@ export default class ResultHorizontalRow extends Component {
                         marginTop: 21
                     }}>
                         <Text
-                            style={{ color: '#D51243', fontSize: 17 }}>{`￥${originalPrice}起`}</Text>
+                            style={{ color: '#D51243', fontSize: 17 }}>{`￥${price}起`}</Text>
                     </View>
                     <TouchableWithoutFeedback onPress={() => {
                         this.props.storeProduct(product.id);

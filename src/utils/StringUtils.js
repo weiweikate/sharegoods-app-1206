@@ -25,7 +25,7 @@ const formatMoneyString = (num, needSymbol = true) => {
     return temp;
 };
 const checkPhone = (str) => {
-    let myreg = /^[1][3,4,5,6,7,8][0-9]{9}$/;
+    let myreg = /^[1][0-9][0-9]{9}$/;
     if (!myreg.test(str)) {
         return false;
     } else {
@@ -173,6 +173,20 @@ const clipboardSetString = (content)=>{
 const clipboardGetString = ()=>{
     return Clipboard.getString()
 }
+
+//去左空格
+function ltrim(s){
+    return s.replace( /^\s*/, "");
+}
+//去右空格
+function rtrim(s){
+    return s.replace( /\s*$/, "");
+}
+//去左右空格
+function trim(s){
+    return rtrim(ltrim(s));
+}
+
 export default {
     isEmpty,
     isNoEmpty,
@@ -186,7 +200,8 @@ export default {
     checkBankCard,
     checkIsPositionNumber,
     clipboardSetString,
-    clipboardGetString
+    clipboardGetString,
+    trim
 };
 
 

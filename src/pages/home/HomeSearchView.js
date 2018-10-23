@@ -2,39 +2,40 @@
 * 首页查询
 */
 
-import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
+import React from "react";
+import { View, StyleSheet, Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import ScreenUtils from "../../utils/ScreenUtils";
 
 const { px2dp, statusBarHeight } = ScreenUtils;
-import logoImg from './res/icons/logo.png';
-import searchImg from './res/icon_search.png';
-import msgImg from './res/icons/msg.png';
-import UIText from '../../components/ui/UIText';
+import logoImg from "./res/icons/logo.png";
+import searchImg from "./res/icon_search.png";
+import msgImg from "./res/icons/msg.png";
+import UIText from "../../components/ui/UIText";
 
 export default ({ navigation }) =>
     <View style={styles.navBar}>
         <Image source={logoImg} style={styles.logo}/>
         <TouchableOpacity style={styles.searchBox}
-                          onPress={() => navigation.navigate('home/search/SearchPage')}>
+                          onPress={() => navigation.navigate("home/search/SearchPage")}>
             <Image source={searchImg} style={styles.searchIcon}/>
-            <UIText style={styles.inputText} value={'请输入关键词搜索'}/>
+            <UIText style={styles.inputText} value={"请输入关键词搜索"}/>
         </TouchableOpacity>
-        <Image source={msgImg} style={styles.scanIcon}
-               onPress={() => navigation.navigate('message/MessageCenterPage')}/>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("message/MessageCenterPage")}>
+            <Image source={msgImg} style={styles.scanIcon}/>
+        </TouchableWithoutFeedback>
     </View>
 
 
 let styles = StyleSheet.create({
     navBar: {
-        flexDirection: 'row',
+        flexDirection: "row",
         paddingLeft: px2dp(10),
         paddingRight: px2dp(10),
         height: statusBarHeight + 44,
         paddingTop: statusBarHeight,
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
+        alignItems: "center",
+        justifyContent: "center",
+        position: "absolute",
         left: 0,
         right: 0,
         zIndex: 4
@@ -45,11 +46,11 @@ let styles = StyleSheet.create({
     },
     searchBox: {
         height: 30,
-        flexDirection: 'row',
+        flexDirection: "row",
         flex: 1,  // 类似于android中的layout_weight,设置为1即自动拉伸填充
         borderRadius: 15,  // 设置圆角边
-        backgroundColor: 'white',
-        alignItems: 'center',
+        backgroundColor: "white",
+        alignItems: "center",
         marginLeft: 8,
         marginRight: 10,
         opacity: 0.8
@@ -66,7 +67,7 @@ let styles = StyleSheet.create({
     },
     inputText: {
         flex: 1,
-        color: '#666666',
+        color: "#666666",
         fontSize: 14
     }
 });

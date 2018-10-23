@@ -14,6 +14,9 @@ const api = {
     //test-------------test店铺支付成功
     depositTest: ['/user/store/deposit', { method: 'get' }],
 
+    //获取保证金金额
+    getMoney: ['/common/config/getMoney', { method: 'get' }],
+
     // 缴纳完保证金后 初始化店铺post
     initStore: '/user/store/initStore',
     // 开启店铺post

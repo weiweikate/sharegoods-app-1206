@@ -19,6 +19,7 @@ import Toast from '../../utils/bridge';
 import EmptyUtils from "../../utils/EmptyUtils";
 const { px2dp } = ScreenUtils;
 import CommonUtils from 'CommonUtils'
+import MessageUtils from './utils/MessageUtils'
 
 
 export default class MessageGatherPage extends BasePage {
@@ -418,10 +419,10 @@ export default class MessageGatherPage extends BasePage {
         // )
 
         let btn = (
-            <TouchableWithoutFeedback onPress={()=>{alert(item.param)}}>
+            <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.props.navigation,item.paramType,item.param,item.createdTime)}}>
                 <View style={{height:33,width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white'}}>
                     <Text style={{color:'#666666',fontSize:px2dp(13)}}>
-                        {item.buttonName + ">>"}
+                        查看详情>>
                     </Text>
                 </View>
             </TouchableWithoutFeedback>
@@ -445,16 +446,10 @@ export default class MessageGatherPage extends BasePage {
     };
 
     onLoadMore = () => {
-        // this.setState({
-        //     currentPage: this.state.currentPage + 1
-        // });
         this.currentPage++;
         this.getDataFromNetwork();
     }
     onRefresh = () => {
-        // this.setState({
-        //     currentPage: 1,
-        // })
         this.currentPage = 1;
         this.createdTime = null;
         this.getDataFromNetwork()

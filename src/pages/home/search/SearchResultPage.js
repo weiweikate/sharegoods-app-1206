@@ -4,7 +4,8 @@ import {
     FlatList,
     Image,
     TouchableWithoutFeedback,
-    Modal
+    Modal,
+    Text
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ResultSearchNav from './components/ResultSearchNav';
@@ -19,6 +20,7 @@ import DateUtils from '../../../utils/DateUtils';
 import SelectionPage from '../product/SelectionPage';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
+import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 
 export default class SearchResultPage extends BasePage {
 
@@ -32,7 +34,8 @@ export default class SearchResultPage extends BasePage {
         this.state = {
             isHorizontal: false,
             modalVisible: false,
-
+            loadingState: PageLoadingState.loading,
+            netFailedInfo: {},
             //排序类型(1.综合 2.销量 3. 价格)
             sortType: 1,
             //排序方式 (1.升序 2.降序)
@@ -40,10 +43,14 @@ export default class SearchResultPage extends BasePage {
             //页码
             page: 1,
 
-            productList: [],
-            selectionData: {},
+            productList: [],//列表数据
+            selectionData: {},//规格数据
 
-            productId: ''
+            onFocus: false,
+            textInput: this.params.keywords || this.params.name || '',
+            keywordsArr: [],//列表搜索关键词
+
+            productId: ''//选择规格确定时使用
         };
     }
 
@@ -55,6 +62,15 @@ export default class SearchResultPage extends BasePage {
         this._productList();
     }
 
+    _getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: this._productList
+            }
+        };
+    };
     //数据
     _productList = () => {
         let param = {};
@@ -78,12 +94,18 @@ export default class SearchResultPage extends BasePage {
         this.$loadingShow();
         HomeAPI.productList(param).then((data) => {
             this.$loadingDismiss();
+            data = data.data || {};
+            let dataArr = data.data || [];
             this.setState({
-                productList: data.data.data
+                loadingState: dataArr.length === 0 ? PageLoadingState.empty : PageLoadingState.success,
+                productList: dataArr
             });
-        }).catch((data) => {
+        }).catch((error) => {
             this.$loadingDismiss();
-            this.$toastShow(data.msg);
+            this.setState({
+                loadingState: PageLoadingState.fail,
+                netFailedInfo: error
+            });
         });
     };
 
@@ -93,7 +115,7 @@ export default class SearchResultPage extends BasePage {
             id: productId
         }).then((data) => {
             this.$loadingDismiss();
-            data.data = data.data || {}
+            data.data = data.data || {};
             const { specMap, priceList } = data.data;
             //修改specMap每个元素首尾增加'，'
             for (let key in specMap) {
@@ -110,16 +132,12 @@ export default class SearchResultPage extends BasePage {
             this.setState({
                 selectionData: data.data,
                 modalVisible: !this.state.modalVisible,
-                productId:productId
+                productId: productId
             });
         }).catch((data) => {
             this.$loadingDismiss();
             this.$toastShow(data.msg);
         });
-    };
-
-    _goBack = () => {
-        this.$navigateBack();
     };
 
     _changeLayout = () => {
@@ -156,14 +174,68 @@ export default class SearchResultPage extends BasePage {
     };
 
     _onPressToGwc = () => {
-        this.$navigate('shopCart/ShopCart',{
-            hiddeLeft:false
+        this.$navigate('shopCart/ShopCart', {
+            hiddeLeft: false
         });
     };
     _onPressToTop = () => {
         this.refs.FlatListShow.scrollToOffset({ offset: 0 });
     };
 
+    //getKeywords数据
+    _onChangeText = (text) => {
+        HomeAPI.getKeywords({ keyword: text }).then((data) => {
+            this.setState({
+                keywordsArr: data.data || [],
+                textInput: text
+            });
+        }).catch((data) => {
+            this.$toastShow(data.msg);
+        });
+    };
+
+    //跳转
+    _clickItemAction = (text, index, hotWordId) => {
+        this.params.categoryId = undefined;
+        this.params.hotWordId = undefined;
+        this.params.keywords = text;
+        this.setState({ onFocus: false, textInput: text }, () => {
+            this._productList();
+        });
+    };
+
+    _renderKeyItem = ({ item }) => {
+        return (
+            <TouchableWithoutFeedback onPress={() => {
+                this._clickItemAction(item);
+            }}>
+                <View>
+                    <Text style={{ fontSize: 13, color: '#222222', marginLeft: 16, paddingVertical: 15 }}>{item}</Text>
+                    <View style={{ height: 1, backgroundColor: '#DDDDDD', marginLeft: 16 }}/>
+                </View>
+            </TouchableWithoutFeedback>);
+    };
+
+    _renderContainer = () => {
+        if (this.state.onFocus) {
+            return (
+                <View style={{ backgroundColor: 'white', flex: 1 }}>
+                    {this.state.keywordsArr.length === 0 ? null : <FlatList
+                        renderItem={this._renderKeyItem}
+                        showsVerticalScrollIndicator={false}
+                        keyExtractor={(item, index) => `${index}`}
+                        data={this.state.keywordsArr}/>}
+
+                </View>);
+        } else {
+            return (
+                <View>
+                    <ResultSegmentView segmentOnPressAtIndex={this._segmentOnPressAtIndex}/>
+                    {renderViewByLoadingState(this._getPageStateOptions(), this._renderListView)}
+                </View>
+            );
+        }
+    };
 
     _renderItem = ({ item }) => {
         if (this.state.isHorizontal) {
@@ -175,23 +247,36 @@ export default class SearchResultPage extends BasePage {
         }
     };
 
+    _renderListView = () => {
+        return <FlatList
+            ref='FlatListShow'
+            style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
+            renderItem={this._renderItem}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item, index) => `${index}`}
+            numColumns={this.state.isHorizontal ? 2 : 1}
+            key={this.state.isHorizontal ? 'hShow' : 'vShow'}
+            data={this.state.productList}/>;
+    };
+
     _render() {
         return (
             <View style={{ flex: 1 }}>
-                <ResultSearchNav goBack={this._goBack}
-                                 onSubmitEditing={this._onSubmitEditing}
-                                 changeLayout={this._changeLayout} isHorizontal={this.state.isHorizontal}
-                                 value={this.params.keywords || this.params.name || ''}/>
-                <ResultSegmentView segmentOnPressAtIndex={this._segmentOnPressAtIndex}/>
-                <FlatList
-                    ref='FlatListShow'
-                    style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
-                    renderItem={this._renderItem}
-                    showsVerticalScrollIndicator={false}
-                    keyExtractor={(item, index) => `${index}`}
-                    numColumns={this.state.isHorizontal ? 2 : 1}
-                    key={this.state.isHorizontal ? 'hShow' : 'vShow'}
-                    data={this.state.productList} />
+                <ResultSearchNav changeLayout={this._changeLayout}
+                                 goBack={() => {
+                                     this.$navigateBack();
+                                 }}
+                                 isHorizontal={this.state.isHorizontal}
+                                 textInput={this.state.textInput}
+                                 onFocus={() => {
+                                     this.setState({ onFocus: true });
+                                 }}
+                                 onChangeText={this._onChangeText}
+                                 onEndEditing={()=>{
+                                     this._clickItemAction(this.state.textInput)
+                                 }}
+                />
+                {this._renderContainer()}
 
                 <View style={{ position: 'absolute', right: 15, bottom: 15 }}>
                     <TouchableWithoutFeedback onPress={this._onPressToGwc}>
@@ -201,12 +286,10 @@ export default class SearchResultPage extends BasePage {
                         <Image style={{ marginTop: 5 }} source={toTop}/>
                     </TouchableWithoutFeedback>
                 </View>
-
-
                 <Modal
                     animationType="none"
                     transparent={true}
-                     onRequestClose={()=>this.setState({modalVisible:false})}
+                    onRequestClose={() => this.setState({ modalVisible: false })}
                     visible={this.state.modalVisible}>
                     <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
                                    selectionViewClose={this._selectionViewClose} data={this.state.selectionData}/>

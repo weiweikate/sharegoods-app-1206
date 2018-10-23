@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
+    TextInput,
     Text,
     View,
     TouchableOpacity
 } from 'react-native';
+import bridge from '../../../../utils/bridge';
+import StringUtils from '../../../../utils/StringUtils';
 
 /**
  * 选择数量view
@@ -37,11 +40,33 @@ export default class RecentSearchView extends Component {
     };
 
     _rightAction = () => {
+        if (this.props.maxCount === this.state.amount) {
+            bridge.$toast('超出最大库存~');
+            return;
+        }
         this.setState({
             amount: this.state.amount + 1
         }, () => {
             this.props.amountClickAction(this.state.amount);
         });
+    };
+
+    _onChangeText = (amount) => {
+        if (StringUtils.isEmpty(amount)) {
+            amount = 1;
+        }
+        this.setState({ amount: parseInt(amount) }, () => {
+            this.props.amountClickAction(this.state.amount);
+        });
+    };
+
+    _onEndEditing = () => {
+        if (this.state.amount > this.props.maxCount) {
+            this.setState({ amount: 1 }, () => {
+                this.props.amountClickAction(this.state.amount);
+            });
+            bridge.$toast('超出最大库存~');
+        }
     };
 
     render() {
@@ -67,7 +92,13 @@ export default class RecentSearchView extends Component {
                     </TouchableOpacity>
                     <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ paddingHorizontal: 15 }}>{this.state.amount}</Text>
+                        <TextInput
+                            style={{ width: 92 / 2.0 }}
+                            onChangeText={this._onChangeText}
+                            value={`${this.state.amount}`}
+                            onEndEditing={this._onEndEditing}
+                            keyboardType='numeric'
+                        />
                     </View>
                     <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}

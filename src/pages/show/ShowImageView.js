@@ -20,10 +20,10 @@ export default class ShowImageView extends Component {
         return <Image style={styles.image} source={{uri: item}}/>
     }
     render() {
-        let items = [
-            'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1539754888357&di=e52675f86a6d03e6bb591d5e68482e12&imgtype=0&src=http%3A%2F%2Fshihuo.hupucdn.com%2Fucditor%2F20180902%2F800x800_0bcf380510a1d6652d4fbd0ce31deb82.jpeg',
-            'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=412515265,3749340971&fm=26&gp=0.jpg'
-        ]
+        let items = this.props.items
+        if (!items) {
+            return <View/>
+        }
         return <View style={styles.wrapper}>
             <ViewPager
                 swiperShow={true}
