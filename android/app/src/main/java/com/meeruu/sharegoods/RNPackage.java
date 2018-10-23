@@ -1,15 +1,18 @@
 package com.meeruu.sharegoods;
 
+import com.BV.LinearGradient.LinearGradientManager;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
+import com.meeruu.PopModal.PopModalManager;
 import com.meeruu.commonlib.umeng.LoginAndSharingModule;
 import com.meeruu.qiyu.imService.QYChatModule;
 import com.meeruu.sharegoods.appPay.AppPayModule;
 import com.meeruu.sharegoods.qrCode.QRCodeModule;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,6 +27,7 @@ public class RNPackage implements ReactPackage {
     public QYChatModule qyChatModule;
     public AppPayModule appPayModule;
     public LoginAndSharingModule loginAndSharingModule;
+    public PopModalManager popModalManager;
 
     /**
      * 创建Native Module
@@ -50,7 +54,9 @@ public class RNPackage implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        return Collections.emptyList();
+        popModalManager = new PopModalManager();
+        return Arrays.<ViewManager>asList(
+                popModalManager);
     }
 
 }
