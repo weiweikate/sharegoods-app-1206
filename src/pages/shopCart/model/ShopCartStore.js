@@ -57,6 +57,8 @@ class ShopCartStore {
         });
 
         return totalMoney;
+
+
     }
 
     @computed

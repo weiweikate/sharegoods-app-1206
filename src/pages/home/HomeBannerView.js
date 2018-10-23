@@ -59,7 +59,7 @@ export default class HomeBannerView extends Component {
                     width: px2dp(5),
                     borderRadius: px2dp(5),
                     backgroundColor: '#fff',
-                    opacity: 0.4
+                    opacity: 0.6
                 }}
                 activeDotStyle={{
                     height: px2dp(5),

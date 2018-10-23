@@ -10,7 +10,7 @@ export default class MarqueeLabelVertical extends Component {
       this.showHeadBar(0, props.dataSource.length + 1)
     }
     componentWillReceiveProps(props) {
-      if(props.dataSource  && props.dataSource.length !== this.props.dataSource.length){
+      if(props.dataSource  && props.dataSource[0].title !== this.props.dataSource[0].title){
           this.state.translateY.setValue(0)
           Animated.timing(
             this.state.translateY
@@ -19,6 +19,7 @@ export default class MarqueeLabelVertical extends Component {
       }
     }
     showHeadBar(index, count, height) {
+      const { showEnd } = this.props
       index++
       Animated.timing(this.state.translateY, {
         toValue: -18 * index, //40为文本View的高度
@@ -32,6 +33,7 @@ export default class MarqueeLabelVertical extends Component {
         if (index >= count - 2) {
           index = 0
           this.state.translateY.setValue(0)
+          showEnd && showEnd()
         }
         this.showHeadBar(index, count) //循环动画
       })
