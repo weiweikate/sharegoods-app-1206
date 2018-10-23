@@ -21,7 +21,6 @@ import TopicItemView from './components/TopicItemView';
 export default class DownPricePage extends BasePage {
 
     $navigationBarOptions = {
-        title: '专题',
         show: true
     };
 
@@ -30,7 +29,6 @@ export default class DownPricePage extends BasePage {
         this.dataModel = new TotalTopicDataModel();
         this.state = {
             selectNav: 0,
-            // linkTypeCode: 'ZT20180002'
         };
     }
 
@@ -38,6 +36,13 @@ export default class DownPricePage extends BasePage {
         const { linkTypeCode } = this.params;
         console.log('-----' + linkTypeCode);
         this.dataModel.loadTopicData(linkTypeCode);
+        // this.$NavigationBarResetTitle(this.dataModel.name)
+    }
+
+    async loadData(linkTypeCode){
+        await  this.dataModel.loadTopicData(linkTypeCode);
+        const {name } = this.dataModel;
+        this.$NavigationBarResetTitle(name || '专题')
     }
 
     /**
@@ -150,9 +155,11 @@ export default class DownPricePage extends BasePage {
         } else {
 
         }
-        const { imgUrl,name } = this.dataModel;
-        this.$NavigationBarResetTitle(name || '专题')
+        const { imgUrl} = this.dataModel;
+        this.$NavigationBarResetTitle(this.dataModel.topicTitle || '专题')
         return (
+
+
             <ScrollView
                 alwaysBounceVertical={true}
                 contentContainerStyle={Styles.list}

@@ -10,6 +10,8 @@ import {
     Image
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
+import StringUtils from '../../utils/StringUtils';
+import bridge from '../../utils/bridge';
 
 export default class TopicDetailSelectPage extends Component {
 
@@ -30,12 +32,25 @@ export default class TopicDetailSelectPage extends Component {
     }
 
     _selectionViewConfirm = () => {
-
-        this.props.selectionViewConfirm(1, this.state.selectData);
-        this.props.selectionViewClose();
+        const { specPriceList = {} } = this.props.data || {};
+        let isAll = true;
+        this.state.selectList.forEach((item, index) => {
+            if (StringUtils.isEmpty(item)) {
+                isAll = false;
+            }
+        });
+        if (this.state.selectList.length === Object.keys(specPriceList).length && isAll) {
+            this.props.selectionViewConfirm(1, this.state.selectData);
+            this.props.selectionViewClose();
+        } else {
+            bridge.$toast('请选择规格');
+        }
     };
 
     _clickItemAction = (item, indexOfTop) => {
+        if (!item.canSelected) {
+            return;
+        }
         if (item.isSelected) {
             this.state.selectList[indexOfTop] = undefined;
             this.state.selectStrList[indexOfTop] = undefined;
@@ -94,7 +109,17 @@ export default class TopicDetailSelectPage extends Component {
     };
 
     render() {
-        const { imgUrl = '', levelPrice = '', surplusNumber = '' } = this.props.data || {};
+        let tagList = [];
+        const { specPriceList = {} } = this.props.data || {};
+        for (let key in specPriceList) {
+            let tempArr = specPriceList[key];
+            tempArr.forEach((item) => {
+                tagList.push(item.surplusNumber);
+            });
+        }
+        let surplusNumber = Math.min.apply(Math, tagList );
+
+        const { imgUrl = '', levelPrice = '' } = this.props.data || {};
         let specs = this.state.selectStrList.join(',');
         return (
             <View style={styles.container}>

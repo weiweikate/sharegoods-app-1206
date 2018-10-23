@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.bridge.Promise;
+import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.StatusBarUtils;
@@ -24,7 +25,6 @@ import com.meeruu.sharegoods.event.ScanQRCodeEvent;
 import com.meeruu.sharegoods.utils.AndroidPermission;
 import com.meeruu.sharegoods.utils.CaptureScreenImageUtils;
 import com.meeruu.sharegoods.utils.LoadingDialog;
-import com.meeruu.sharegoods.utils.Utils;
 import com.meeruu.sharegoods.zxing.activity.CaptureActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -72,7 +72,6 @@ public class MainActivity extends ReactActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        Log.e("package", Utils.getAppPackageName(this));
         fullScreen(MainActivity.this);
         View decorView = getWindow().getDecorView();
         //重点：SYSTEM_UI_FLAG_LIGHT_STATUS_BAR

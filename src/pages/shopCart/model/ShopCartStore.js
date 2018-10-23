@@ -16,6 +16,7 @@ class ShopCartStore {
         this.data = [];
     }
 
+
     @action
     addItemToData(item) {
         if (this.isCanAddItem()) {
@@ -23,6 +24,16 @@ class ShopCartStore {
         } else {
             bridge.$toast('购物车数量已达最大数量');
         }
+    }
+
+    @computed
+    get getAllGoodsClassNumber(){
+        if (this.data.slice() instanceof Array && this.data.slice().length > 0 ){
+            return this.data.slice().length;
+        }else {
+            return 0
+        }
+
     }
 
     @computed
@@ -46,18 +57,18 @@ class ShopCartStore {
         });
 
         return totalMoney;
+
+
     }
 
     @computed
     get isCanAddItem() {
-
         if (this.data.slice().length >= 110) {
             return false;
         } else {
             return true;
         }
     }
-
 
     @computed
     get computedSelect() {
@@ -72,6 +83,7 @@ class ShopCartStore {
         });
         return flag;
     }
+
 
     /**
      * 开始结算

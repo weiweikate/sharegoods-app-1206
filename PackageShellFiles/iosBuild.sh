@@ -137,6 +137,7 @@ buildIpa(){
         echo 暂不自动上传到appstore
         #sh ios/uploadToAppStore.sh ${exportPath}/${projectName}.ipa
     fi
+
 }
 
 #1.先打印编译时的基础信息. 2.再创建文件目录以及安装描述文件 3.打包ipa并自动上传包管理平台

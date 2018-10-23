@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text,
+    TextInput,
     StyleSheet,
     TouchableOpacity,
     Image
@@ -14,24 +14,10 @@ import horizontalRow from '../res/horizontalRow.png';
 
 export default class ResultSearchNav extends Component {
 
-    static propTypes = {
-        goBack: PropTypes.func.isRequired,
-        value: PropTypes.string,
-        changeLayout: PropTypes.func.isRequired,
-        isHorizontal: PropTypes.bool,
-    };
-
     constructor(props) {
         super(props);
-        this.state = {
-        };
+        this.state = {};
     }
-
-    _selectedLayoutType = () => {
-        if (this.props.changeLayout) {
-            this.props.changeLayout();
-        }
-    };
 
     render() {
         return (
@@ -41,9 +27,18 @@ export default class ResultSearchNav extends Component {
                         <Image source={navBack}/>
                     </TouchableOpacity>
                     <View style={styles.inputView}>
-                        <Text style={{ marginLeft: 24 ,color:'#212121'}}>{this.props.value}</Text>
+                        <TextInput style={{ marginLeft: 24, color: '#212121' }}
+                                   keyboardType='web-search'
+                                   underlineColorAndroid='transparent'
+                                   placeholder={'请输入关键词搜索'}
+                                   placeholderTextColor='#C8C8C8'
+                                   value={this.props.textInput}
+                                   onChangeText={this.props.onChangeText}
+                                   onEndEditing={this.props.onEndEditing}
+                                   onFocus={this.props.onFocus}
+                        />
                     </View>
-                    <TouchableOpacity style={styles.styleTypeBtn} onPress={this._selectedLayoutType}>
+                    <TouchableOpacity style={styles.styleTypeBtn} onPress={this.props.changeLayout}>
                         <Image source={this.props.isHorizontal ? horizontalRow : verticalRow}/>
                     </TouchableOpacity>
                 </View>

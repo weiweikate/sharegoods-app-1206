@@ -25,7 +25,7 @@ PODS:
   - QIYU_iOS_SDK (4.2.1)
   - SandBoxPreviewTool (1.1)
   - UICKeyChainStore (2.1.1)
-  - UMCAnalytics (5.5.1):
+  - UMCAnalytics (5.5.0):
     - UMCCommon
   - UMCCommon (1.5.2)
   - UMCSecurityPlugins (1.0.6)
@@ -86,7 +86,7 @@ SPEC CHECKSUMS:
   QIYU_iOS_SDK: 9dc5cb1dee3abdccca56cc282ecbfc841e366680
   SandBoxPreviewTool: 2d837db4409c74c9a8047838f5b320c08161fad1
   UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
-  UMCAnalytics: 0aff87e39008e2a650e5917430db0da2de2f8495
+  UMCAnalytics: 4667788559a72f2fa5077117d1b8802a3b6eb6bb
   UMCCommon: 4392868ac47ff1b101663106bb114ba616fabbad
   UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
   UMCShare: aa233aecad67979930fe43f3a2f676023b669439

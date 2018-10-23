@@ -155,7 +155,7 @@ export default class OpenPrizeItemView extends Component {
                                     textDecorationLine: 'line-through',
                                     color: ColorUtil.Color_999999
                                 }}>
-                                    {itemData.originalPrice + '起'}
+                                    {itemData.originalPrice}
                                 </Text>
                             </View>
                             {/*右下角按钮*/}

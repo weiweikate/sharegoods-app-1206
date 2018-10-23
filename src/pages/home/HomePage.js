@@ -11,7 +11,7 @@ import {
     RefreshControl
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
-import ShareTaskHomeAlert from '../shareTask/components/ShareTaskHomeAlert'
+import ShareTaskHomeAlert from '../shareTask/components/ShareTaskHomeAlert';
 import { observer } from 'mobx-react';
 import { homeType, homeModule, bannerModule } from './Modules';
 import HomeSearchView from './HomeSearchView';
@@ -101,11 +101,12 @@ export default class HomePage extends Component {
 
     _onRefresh() {
         homeModule.loadHomeList();
-        bannerModule.loadBannerList();
     }
+
     componentDidMount() {
         this.shareModal.open();
     }
+
     render() {
         const { homeList } = homeModule;
         return (
@@ -119,6 +120,8 @@ export default class HomePage extends Component {
                         <RefreshControl
                             refreshing={homeModule.isRefreshing}
                             onRefresh={this._onRefresh.bind(this)}
+                            progressViewOffset={statusBarHeight + 44}
+                            colors={['#d51243']}
                             title="下拉刷新"
                             tintColor="#999"
                             titleColor="#999"
@@ -129,17 +132,16 @@ export default class HomePage extends Component {
                     showsVerticalScrollIndicator={false}
                     style={{ marginTop: bannerModule.bannerList.length > 0 ? 0 : statusBarHeight + 44 }}
                 />
-                <View style={styles.navBarBg} ref={e => this._refHeader = e} />
-                <View style={styles.navBar}>
-                    <HomeSearchView navigation={this.props.navigation}/>
-                </View>
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
                 <LinearGradient colors={['#000000', 'transparent']}
-                                style={[styles.navBar, { height: this.headerH + 14, opacity: 0.5 }]}/>
+                                style={[styles.navBar, { height: this.headerH + 14, opacity: 0.4 }]}/>
+
                 <HomeSearchView navigation={this.props.navigation}/>
                 <ShareTaskHomeAlert ref={(ref) => this.shareModal = ref}
-                                    onPress = {() => {this.props.navigation.navigate('shareTask/ShareTaskListPage')}}/>
+                                    onPress={() => {
+                                        this.props.navigation.navigate('shareTask/ShareTaskListPage');
+                                    }}/>
             </View>
         );
     }

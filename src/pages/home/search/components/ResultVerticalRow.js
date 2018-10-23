@@ -28,7 +28,7 @@ export default class SearchBar extends Component {
 
 
     render() {
-        let { product, originalPrice } = this.props.itemData || {};
+        let { product={}, price } = this.props.itemData || {};
         const { name = '' } = product;
         return (
             <TouchableWithoutFeedback onPress={() => {
@@ -44,7 +44,7 @@ export default class SearchBar extends Component {
                                 <Text style={{
                                     color: '#D51243',
                                     fontSize: 17
-                                }}>{`￥${originalPrice || ' '}`}<Text
+                                }}>{`￥${price || ' '}`}<Text
                                     style={{ fontSize: 12 }}>起</Text>
                                 </Text>
                             </View>

@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import addrSelectedImg from '../../res/address/dizhi_btn_moren_sel.png';
@@ -179,12 +179,23 @@ export default class AddressManagerPage extends BasePage {
     };
 
     _onDelAddress = (item) => {
-        // 删除地址,刷新页面
-        MineAPI.delAddress({ id: item.id }).then((response) => {
-            this.refreshing();
-        }).catch((data) => {
-            bridge.$toast(data.msg);
-        });
+        Alert.alert('', '是否确认删除此地址？', [
+            {
+                text: '取消', onPress: () => {
+                    style: 'cancel';
+                }
+            },
+            {
+                text: '确定', onPress: () => {
+                    // 删除地址,刷新页面
+                    MineAPI.delAddress({ id: item.id }).then((response) => {
+                        this.refreshing();
+                    }).catch((data) => {
+                        bridge.$toast(data.msg);
+                    });
+                }
+            }
+        ]);
     };
 
     _header = () => {
