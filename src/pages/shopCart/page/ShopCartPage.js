@@ -176,9 +176,7 @@ export default class ShopCartPage extends BasePage {
                         >
                             <UIText
                                 value={`结算(${shopCartStore.getTotalSelectGoodsNum})`}
-                                // value={`结算(${shopCartStore.getAllGoodsClassNumber})`}
                                 style={{ color: ColorUtil.Color_ffffff, fontSize: 16 }}
-
                             />
                         </TouchableOpacity>
                     </View>
