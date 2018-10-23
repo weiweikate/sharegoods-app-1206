@@ -100,115 +100,45 @@ export class ShowRecommendModules {
         return this.recommendList.length
     }
 
-    @action loadRecommendList = flow(function * (params) {
+    @action loadRecommendList = () => {
+        let currentDate = new Date()
         this.page = 1
-        try {
-            const result = yield ShowApi.showQuery({page: this.page})
-            this.recommendList = result.data.data
-        } catch (error) {
-            console.log(error)
-        }
-    })
-
-    // @action loadRecommendList = () => {
-    //     this.page = 1
-
-    //     return [
-    //         {
-    //             id: 1,
-    //             remark: 'IPhone X 9月在美国加州福利院上市...',
-    //             imgUrl: 'http://imgsrc.baidu.com/imgad/pic/item/34fae6cd7b899e51ec89f83949a7d933c8950d9c.jpg',
-    //             number: 1234,
-    //             portrait: 'http://a.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=0179844a868ba61edfbbc02b7404bb3c/64380cd7912397dd11081a845d82b2b7d0a28739.jpg',
-    //             name: '上课了',
-    //             time: '1分钟',
-    //             width: 300,
-    //             height: 300
-    //         },
-    //         {
-    //             id: 2,
-    //             remark: 'IPhone X 9月在美国加州福利院上市...',
-    //             imgUrl: 'http://img.zcool.cn/community/011ab85707229732f875a9446d74b5.jpg',
-    //             number: 1234,
-    //             portrait: 'https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=b7155dd0b7fd5266a77e34129b28bb13/e1fe9925bc315c6002763ad48cb1cb134954772d.jpg',
-    //             name: '上课了',
-    //             time: '1分钟',
-    //             width: 300,
-    //             height: 400
-    //         },
-    //         {
-    //             id: 3,
-    //             remark: 'IPhone X 9月在美国加州福利院上市...',
-    //             imgUrl: 'http://img.zcool.cn/community/011ab85707229732f875a9446d74b5.jpg',
-    //             number: 1234,
-    //             portrait: 'https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=b7155dd0b7fd5266a77e34129b28bb13/e1fe9925bc315c6002763ad48cb1cb134954772d.jpg',
-    //             name: '上课了',
-    //             time: '1分钟',
-    //             width: 400,
-    //             height: 500
-    //         },
-    //         {
-    //             id: 4,
-    //             remark: 'IPhone X 9月在美国加州福利院上市...',
-    //             imgUrl: 'http://img.zcool.cn/community/011ab85707229732f875a9446d74b5.jpg',
-    //             number: 1234,
-    //             portrait: 'https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=b7155dd0b7fd5266a77e34129b28bb13/e1fe9925bc315c6002763ad48cb1cb134954772d.jpg',
-    //             name: '上课了',
-    //             time: '1分钟',
-    //             width: 300,
-    //             height: 400
-    //         }
-    //     ]
-    // }
+        return ShowApi.showQuery({page: this.page}).then(result => {
+            if (parseInt(result.code, 0) === 10000) {
+                this.page += 1
+                let data = result.data.data
+                data.map(value => {
+                    value.currentDate = currentDate
+                })
+                return Promise.resolve(data)
+            } else {
+                return Promise.reject('获取列表错误')
+            }
+        }).catch(error => {
+            return Promise.reject(error)
+        })
+    }
 
     @action getMoreRecommendList = () => {
-        let time = new Date().getTime()
-        return [
-            {
-                id: time + 1,
-                remark: 'IPhone X 9月在美国加州福利院上市...',
-                imgUrl: 'http://imgsrc.baidu.com/imgad/pic/item/34fae6cd7b899e51ec89f83949a7d933c8950d9c.jpg',
-                number: 1234,
-                portrait: 'http://a.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=0179844a868ba61edfbbc02b7404bb3c/64380cd7912397dd11081a845d82b2b7d0a28739.jpg',
-                name: '上课了',
-                time: '1分钟',
-                width: 300,
-                height: 300
-            },
-            {
-                id: time + 2,
-                remark: 'IPhone X 9月在美国加州福利院上市...',
-                imgUrl: 'http://img.zcool.cn/community/011ab85707229732f875a9446d74b5.jpg',
-                number: 1234,
-                portrait: 'https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=b7155dd0b7fd5266a77e34129b28bb13/e1fe9925bc315c6002763ad48cb1cb134954772d.jpg',
-                name: '上课了',
-                time: '1分钟',
-                width: 300,
-                height: 400
-            },
-            {
-                id: time + 3,
-                remark: 'IPhone X 9月在美国加州福利院上市...',
-                imgUrl: 'http://img.zcool.cn/community/011ab85707229732f875a9446d74b5.jpg',
-                number: 1234,
-                portrait: 'https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=b7155dd0b7fd5266a77e34129b28bb13/e1fe9925bc315c6002763ad48cb1cb134954772d.jpg',
-                name: '上课了',
-                time: '1分钟',
-                width: 400,
-                height: 500
-            },
-            {
-                id: time + 4,
-                remark: 'IPhone X 9月在美国加州福利院上市...',
-                imgUrl: 'http://img.zcool.cn/community/011ab85707229732f875a9446d74b5.jpg',
-                number: 1234,
-                portrait: 'https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=b7155dd0b7fd5266a77e34129b28bb13/e1fe9925bc315c6002763ad48cb1cb134954772d.jpg',
-                name: '上课了',
-                time: '1分钟',
-                width: 300,
-                height: 400
+        let currentDate = new Date()
+        return ShowApi.showQuery({page: this.page}).then(result => {
+            if (parseInt(result.code, 0) === 10000) {
+                let data = result.data.data
+                if (data && data.length !== 0) {
+                    this.page += 1
+                    data.map(value => {
+                        value.currentDate = currentDate
+                    })
+                    return Promise.resolve(data)
+                } else {
+                    return Promise.resolve([])
+                }
+            } else {
+                return Promise.reject('获取列表错误')
             }
-        ]
+        }).catch(error => {
+            return Promise.reject(error)
+        })
     }
 
     @action selectedAction = (data) => {
