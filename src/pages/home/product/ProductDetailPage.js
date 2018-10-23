@@ -20,8 +20,8 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
 import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-import AutoHeightWebView from 'react-native-autoheight-webview';
 import CommShareModal from '../../../comm/components/CommShareModal';
+import HTML from 'react-native-render-html';
 
 export default class ProductDetailPage extends BasePage {
 
@@ -206,9 +206,8 @@ export default class ProductDetailPage extends BasePage {
         let { product } = this.state.data;
         product = product || {};
         if (this.state.selectedIndex === 0) {
-            return <View>
-                <AutoHeightWebView source={{ html: product.content }}/>
-            </View>;
+            return <HTML html={product.content} imagesMaxWidth={ScreenUtils.maxWidth}
+                         containerStyle={{ backgroundColor: '#fff' }}/>;
         } else {
             return <View style={{ backgroundColor: 'white' }}>
                 <FlatList
