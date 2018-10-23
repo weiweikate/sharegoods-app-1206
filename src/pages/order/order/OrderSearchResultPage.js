@@ -36,7 +36,7 @@ class OrderSearchResultPage extends BasePage {
             <View style={styles.container}>
                 {this.renderWideLine()}
                 <MyOrdersListView
-                    nav={this.navigate}
+                    nav={this.$navigate}
                     orderNum={this.state.keyWord}
                 />
             </View>
@@ -47,16 +47,6 @@ class OrderSearchResultPage extends BasePage {
         return (
             <View style={{ height: 10, backgroundColor: color.page_background }}/>
         );
-    };
-
-    //**********************************BusinessPart******************************************
-    loadPageData() {
-        this.getDataFromNetwork();
-        // queryAllOrderPageList
-    }
-
-    getDataFromNetwork = () => {
-
     };
 }
 

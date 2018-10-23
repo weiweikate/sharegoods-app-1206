@@ -30,7 +30,7 @@ export default class IDVertify2Page extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            agreeAggreement: false,
+            agreeAggreement: true,
             isShowTakePhotoModal: false,
             name: '',
             idNumber: '',
@@ -139,7 +139,11 @@ export default class IDVertify2Page extends BasePage {
                             <UIText value={'提交认证代表您已同意'}
                                     style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#999999' }}/>
                             <UIText value={'《实名认证协议》'}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#D62B56' }}/>
+                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#D62B56' }}
+                                     onPress={()=>{this.$navigate('HtmlPage', {
+                                         title: '用户协议内容',
+                                         uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
+                                     })}}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -223,6 +227,10 @@ export default class IDVertify2Page extends BasePage {
     }
 
     commit = () => {
+        if(!this.state.agreeAggreement){
+            NativeModules.commModule.toast('请先勾选实名认证协议');
+            return;
+        }
         if (StringUtils.isEmpty(this.state.name)) {
             NativeModules.commModule.toast('请输入姓名');
             return;

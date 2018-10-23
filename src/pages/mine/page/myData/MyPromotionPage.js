@@ -67,7 +67,6 @@ export default class MyPromotionPage extends BasePage {
         // 当前等级
         MineApi.getUserLevelInfo().then(response => {
             console.log(response);
-            if (response.code === 10000) {
                 // console.warn(JSON.stringify(response,null,4));
                 const { data } = response;
                 this.setState({
@@ -82,14 +81,6 @@ export default class MyPromotionPage extends BasePage {
                     loadingState: PageLoadingState.success,
                     ...data
                 });
-            } else {
-                this.setState({
-                    loading: false,
-                    refreshing: false,
-                    netFailedInfo: response,
-                    loadingState: PageLoadingState.fail
-                });
-            }
         }).catch(err => {
             this.setState({
                 loading: false,
@@ -101,6 +92,12 @@ export default class MyPromotionPage extends BasePage {
                 this.props.navigation.navigate('login/login/LoginPage');
             }
         });
+        MineApi.getNextLevelInfo().then(res =>{
+            const {data} =res;
+            this.setState({
+                nextArr:data.content
+            })
+        })
     };
 
 
@@ -215,8 +212,21 @@ export default class MyPromotionPage extends BasePage {
         </View>;
     };
 
+    /**
+     *  {this.state.nextArr.map((item, index) => {
+                    return <View key={index} style={{ justifyContent: 'center', height: 44, backgroundColor: '#fff' }}>
+                        <Text style={{
+                            marginLeft: 14,
+                            fontFamily: 'PingFang-SC-Medium',
+                            fontSize: 13,
+                            color: '#666666'
+                        }}>{item}</Text>
+                    </View>;
+                })}
+     * @returns {*}
+     */
     renderWelfare() {
-        const arr = ['分红增加', '分红增加', '分红增加', '分红增加'];
+        // const arr = ['分红增加', '分红增加', '分红增加', '分红增加'];
         return (
             <View>
                 <View style={{ justifyContent: 'center', height: 44, backgroundColor: '#fff' }}>
@@ -228,16 +238,14 @@ export default class MyPromotionPage extends BasePage {
                     }}>预计晋升后可获得哪些福利？</Text>
                 </View>
                 {this.renderSepLine()}
-                {arr.map((item, index) => {
-                    return <View key={index} style={{ justifyContent: 'center', height: 44, backgroundColor: '#fff' }}>
-                        <Text style={{
-                            marginLeft: 14,
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 13,
-                            color: '#666666'
-                        }}>{item}</Text>
-                    </View>;
-                })}
+                <View  style={{ justifyContent: 'center', height: 44, backgroundColor: '#fff' }}>
+                    <Text style={{
+                        marginLeft: 14,
+                        fontFamily: 'PingFang-SC-Medium',
+                        fontSize: 13,
+                        color: '#666666'
+                    }}>{this.state.nextArr}</Text>
+                </View>
             </View>
         );
     }

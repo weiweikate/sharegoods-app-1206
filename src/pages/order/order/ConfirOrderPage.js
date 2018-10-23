@@ -65,6 +65,7 @@ export default class ConfirOrderPage extends BasePage {
             },
             tokenCoin: 0,
             couponId:null,
+            tokenCoinText:null,
             orderParam: this.params.orderParamVO ? this.params.orderParamVO : []
 
         };
@@ -198,7 +199,7 @@ export default class ConfirOrderPage extends BasePage {
                         <UIText value={'1元现金券'} style={styles.blackText}/>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <UIText
-                                value={(this.state.viewData.list[0].restrictions & 2) == 2 ? '不可使用1元现金券' : '选择1元现金券'}
+                                value={(this.state.viewData.list[0].restrictions & 2) == 2 ? '不可使用1元现金券' : (this.state.tokenCoinText?this.state.tokenCoinText:'选择一元现金券')}
                                 style={[styles.grayText, { marginRight: 15 }]}/>
                             <Image source={arrow_right}/>
                         </View>
@@ -692,11 +693,11 @@ export default class ConfirOrderPage extends BasePage {
     //选择优惠券
     jumpToCouponsPage = (params) => {
         if(params=='justOne'){
-            this.$navigate('mine/coupons/CouponsPage', {justOne:'justOne',callBack:(data)=>{
+            this.$navigate('mine/coupons/CouponsPage', {justOne:parseInt(this.state.viewData.totalAmounts),callBack:(data)=>{
                 console.log(typeof data);
                 if(parseInt(data)>0){
                 let params={tokenCoin:parseInt(data),couponId:this.state.couponId};
-                this.setState({tokenCoin:data});
+                this.setState({tokenCoin:data,tokenCoinText:'-'+data});
                     this.loadPageData(params);
                 }
                 }});

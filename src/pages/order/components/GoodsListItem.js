@@ -35,6 +35,7 @@ const GoodsListItem = props => {
         deliverTime,
         finishTime,
         shutOffTime,
+        cancelTime,
         callBack
     } = props;
     this.state = { pageStateString: '27:45:45后自动取消订单' };
@@ -52,7 +53,7 @@ const GoodsListItem = props => {
                 return '';
             }
         } else {
-            str = '' +time.hours + ':' + time.min + ':' + time.sec + '后自动关闭';
+            str = '' + time.hours + ':' + time.min + ':' + time.sec + '后自动关闭';
             return str;
         }
     };
@@ -205,8 +206,6 @@ const GoodsListItem = props => {
         let aboutTime;
         switch (orderStatus) {
             case 1:
-            case 6:
-            case 7:
             case 8:
                 aboutTime = <UIText value={'创建时间：' + DateUtils.getFormatDate(orderCreateTime / 1000)}
                                     style={{ fontSize: 13, color: color.black_222 }}/>;
@@ -226,7 +225,12 @@ const GoodsListItem = props => {
                                     style={{ fontSize: 13, color: color.black_222 }}/>;
                 break;
             case 5:
+            case 6:
                 aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(finishTime / 1000)}
+                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                break;
+            case 7:
+                aboutTime = <UIText value={'取消时间：' + DateUtils.getFormatDate(cancelTime / 1000)}
                                     style={{ fontSize: 13, color: color.black_222 }}/>;
                 break;
 
