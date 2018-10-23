@@ -11,15 +11,15 @@ import seeImg from '../../comm/res/see.png'
 import maskImg from '../../comm/res/show_mask.png'
 
 const Card = ({item, press}) => <TouchableOpacity style={styles.card} onPress={()=> press && press()}>
-    <ImageBackground style={styles.imgView} source={{uri:item.imgUrl}}>
+    <ImageBackground style={styles.imgView} source={{uri:item.coverImg}} resizeMode={'cover'}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <Text style={styles.dis}>氨基酸洗面奶，30秒自动起泡清洁力强不伤脸，不含角质合痘痘肌和敏感肌，涂抹在手上等...</Text>
     </ImageBackground>
     <View style={styles.seeRow}>
-        <Text style={styles.text} numberOfLines={1}>{item.remark}</Text>
+        <Text style={styles.text} numberOfLines={1}>{item.title}</Text>
         <View style={styles.rightRow}>
             <Image source={seeImg}/>
-            <Text style={styles.number}>{item.number}</Text>
+            <Text style={styles.number}>{item.click ? item.click : 0}</Text>
         </View>
     </View>
     <View style={styles.profileView}>
@@ -40,10 +40,8 @@ export default class ShowChoiceView extends Component {
     }
 
     _onChoiceAction(item) {
-        // let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
-        // const {navigation} = this.props
-        // let params = homeModule.paramsNavigate(item)
-        // navigation && navigation.navigate(router,  params)
+        const { navigation } = this.props
+        navigation.navigate('show/ShowDetailPage', {id: item.id})
     }
 
     render() {

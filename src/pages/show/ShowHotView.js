@@ -6,7 +6,6 @@ import { View, StyleSheet, Text } from 'react-native'
 import Waterfall from '../../components/ui/WaterFall'
 import ShowBannerView from './ShowBannerView'
 import ShowChoiceView from './ShowChoiceView'
-import ShowFindView from './ShowFindView'
 import ShowHotScrollView from './ShowHotScrollView'
 import {observer} from 'mobx-react'
 import { ShowRecommendModules } from './Show'
@@ -50,7 +49,9 @@ export default class ShowHotView extends Component {
         return <ItemView imageStyle={{height: imgHeight}}  data={data} press={()=>{this._gotoDetail(data)}}/>
     }
     renderHeader = () => {
-        return <View><ShowBannerView/><ShowChoiceView/><ShowFindView/><ShowHotScrollView/>
+        return <View><ShowBannerView/>
+        <ShowChoiceView navigation={this.props.navigation}/>
+        <ShowHotScrollView/>
             <View style={styles.titleView}>
                 <Text style={styles.recTitle}>推荐</Text>
             </View>
