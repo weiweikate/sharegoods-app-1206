@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@interface QRCodeModule : NSObject
+#import <React/RCTBridgeModule.h>
+@interface QRCodeModule : NSObject<RCTBridgeModule>
 
 @end

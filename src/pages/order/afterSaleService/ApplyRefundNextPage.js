@@ -47,7 +47,7 @@ export default class ApplyRefundNextPage extends BasePage {
                 // apply_time:1532568808000,
                 // outRefundNo:'7802201807260933275286636',
             },
-            sellerPhone: -1,
+            sellerPhone: '',
             index: this.params.index ? this.params.index : 0,
             pageData: this.params.pageData ? this.params.pageData : {},
             returnProductId: this.params.returnProductId ? this.params.returnProductId : this.params.pageData.list[this.params.index].returnProductId,

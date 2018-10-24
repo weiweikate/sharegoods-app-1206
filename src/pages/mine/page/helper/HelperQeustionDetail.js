@@ -10,8 +10,7 @@ import {
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { color } from '../../../../constants/Theme';
-// const headerbar='<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <title>Title</title> </head> <body><div>';
-// const botombar='</div></body></html>';
+import HTML from 'react-native-render-html';
 import MineApi from '../../api/MineApi';
 
 export default class HelperQuestionDetail extends BasePage {
@@ -44,15 +43,8 @@ export default class HelperQuestionDetail extends BasePage {
     _render() {
         return (
             <View style={{ backgroundColor: '#F6F6F6', flex: 1 }}>
-                <View>
-                    <Text style={{
-                        fontWeight: 'bold',
-                        fontSize: 18,
-                        marginTop: 10,
-                        marginBottom: 20
-                    }}>{this.state.title}</Text>
-                    <Text style={{ fontSize: 16 }}>  {this.state.content}</Text>
-                </View>
+                <HTML html={this.state.content} imagesMaxWidth={ScreenUtils.width}
+                      containerStyle={{ backgroundColor: '#fff' }}/>
                 <View style={{
                     width: ScreenUtils.width,
                     height: 80,
