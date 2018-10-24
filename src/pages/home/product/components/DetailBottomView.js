@@ -9,7 +9,10 @@ import {
 } from 'react-native';
 import xiangqing_btn_gouwuche_nor from '../res/xiangqing_btn_gouwuche_nor.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import ShopCartStore from '../../../shopCart/model/ShopCartStore';
+import { observer } from 'mobx-react';
 
+@observer
 export default class DetailBottomView extends Component {
 
     static propTypes = {
@@ -29,6 +32,17 @@ export default class DetailBottomView extends Component {
                                   onPress={()=>this.props.bottomViewAction('goGwc')}>
                     <Image style={{ marginBottom: 6 }} source={xiangqing_btn_gouwuche_nor}/>
                     <Text>购物车</Text>
+                    {ShopCartStore.getAllGoodsClassNumber === 0 ? null : <View style={{
+                        position: 'absolute', top: 4, left: 4, height: 16,
+                        paddingHorizontal: 4,
+                        backgroundColor: '#D51243',
+                        borderRadius: 8, justifyContent: 'center', alignItems: 'center'
+                    }}>
+                        <Text style={{
+                            color: 'white',
+                            fontSize: 10
+                        }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
+                    </View>}
                 </TouchableOpacity>
                 <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                                   onPress={()=>this.props.bottomViewAction('buy')}>
