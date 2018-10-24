@@ -327,7 +327,7 @@ export default class MyShopPage extends BasePage {
                 btnText = '取消申请';
                 break;
         }
-        if (!StringUtils.isEmpty(this.state.storeData.userStatus) && this.state.storeData.userStatus !== 1) {
+        if (!StringUtils.isEmpty(this.state.storeData.userStatus) && this.state.storeData.userStatus !== 1 && !spellStatusModel.storeId) {
             return <TouchableOpacity style={{
                 height: 48,
                 width: 150,

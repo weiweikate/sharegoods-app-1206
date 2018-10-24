@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ViewPager from '../../../components/ui/ViewPager';
-import UIImage from '../../../components/ui/UIImage';
 import xjt_03 from '../res/xjt_03.png';
 import ActivityView from './ActivityView';
 import { isNoEmpty } from '../../../utils/StringUtils';
+import user from '../../../model/user';
 
 /**
  * 商品详情头部view
@@ -40,23 +40,19 @@ export default class TopicDetailHeaderView extends Component {
             this.setState({
                 swiperShow: true
             });
-        }, 0);
+        }, 100);
     }
 
     updateTime(activityData, activityType) {
         this.ActivityView.saveActivityViewData(activityData, activityType);
     }
 
-    _clickItem = () => {
-
-    };
     renderViewPageItem = (item) => {
         const { originalImg } = item;
         return (
-            <UIImage
+            <Image
                 source={{ uri: originalImg || '' }}
                 style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
-                onPress={this._clickItem}
                 resizeMode="cover"
             />);
     };
@@ -118,6 +114,12 @@ export default class TopicDetailHeaderView extends Component {
                             <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
                                 <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
                                 <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${oldPrice}`}</Text>
+                                <Text style={{
+                                    marginLeft: 5,
+                                    backgroundColor: 'red',
+                                    color: '#FFFFFF',
+                                    fontSize: 10, paddingHorizontal: 5
+                                }}>{isNoEmpty(user.levelId) ? `v${user.levelId}价` : '原价'}</Text> : null
                             </View> : null}
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text style={{
