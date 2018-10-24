@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Platform, StyleSheet, TouchableOpacity, Image, Alert, ScrollView} from 'react-native';
+import { View, Text, Platform, StyleSheet, TouchableOpacity, Image, ScrollView} from 'react-native';
 import BasePage from '../../BasePage';
 import { UIText } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
@@ -9,10 +9,10 @@ import Toast from '../../utils/bridge';
 import InputTransactionPasswordModal from './InputTransactionPasswordModal';
 import user from '../../model/user';
 import { observer } from 'mobx-react/native';
-import { NavigationActions } from 'react-navigation';
 import unselectedImg from './res/unselected.png'
 import { Payment, paymentType } from './Payment'
 import PayUtil from './PayUtil'
+import PaymentResultView, {PaymentResult} from './PaymentResultView'
 
 const PayCell = ({data, isSelected, balance, press, selectedTypes, disabled}) => {
     let selected = isSelected
@@ -64,32 +64,32 @@ export default class PaymentMethodPage extends BasePage {
         this.state = {
             isShowPaymentModal: false,
             password: '',
-            /*
-            * 用于支付页面的相关数据展示与页面控制,这里展示最大子集(可拓展)，并不需要全部传完
-            * */
-            paymentPageParams: {
-                //0:订单 1:拼店 and etc (页面来源,默认值为1拼店)
-                pageType: this.params.openShopPay ? 1 : 0,
-                //需要支付的金额
-                shouldPayMoney: this.params.amounts ? this.params.amounts : 0,
-                //example:2表示两个代币兑换1个余额
-                //-1表示该参数未初始化,不能完成支付 todo 做支付拦截
-                tokenCoinToBalance: this.params.tokenCoinToBalance ? this.params.tokenCoinToBalance : -1,
-                //订单支付的参数
-                orderPayParams: {
-                    //订单编号
-                    orderNum: this.params.orderNum ? this.params.orderNum : 0
-                    // //订单 0:快递订单 1:自提订单
-                    // orderType:this.params.orderType?this.params.orderType:0,
-                }
-            }
+            //需要支付的金额
+            shouldPayMoney: this.params.amounts ? this.params.amounts : 0,
+            //example:2表示两个代币兑换1个余额
+            //-1表示该参数未初始化,不能完成支付 todo 做支付拦截
+            tokenCoinToBalance: this.params.tokenCoinToBalance ? this.params.tokenCoinToBalance : -1,
+            //订单支付的参数
+            orderNum: this.params.orderNum ? this.params.orderNum : 0
         };
         this.payment = new Payment()
         this.payment.payStore = this.params.payStore
-        if (this.state.paymentPageParams.shouldPayMoney === 0) {
+        if (this.state.shouldPayMoney === 0) {
             this.payment.selectedBalace = true
         }
+        if (this.params.outTradeNo) {
+            this.payment.outTradeNo = this.params.outTradeNo
+            this.payment.continueToPay({outTradeNo: this.params.outTradeNo}).then(data => {
+                this.setState({shouldPayMoney: data.data.amounts})
+            })
+        } else {
+            this.payment.outTradeNo = ''
+        }
+        user.updateUserData().then(data => {
+            this.payment.availableBalance = data.availableBalance
+        })
     }
+
     _selectedPayType(value) {
         this.payment.selectPaymentType(value)
     }
@@ -105,18 +105,23 @@ export default class PaymentMethodPage extends BasePage {
             if (value.type === paymentType.section) {
                 items.push(<Section key={index + ''} data={value}/>)
             } else {
-                items.push(<PayCell disabled={value.type !== paymentType.balance && this.state.paymentPageParams.shouldPayMoney  === 0} key={index + ''}  selectedTypes={selectedTypes} data={value} balance={availableBalance} press={()=>this._selectedPayType(value)}/>)
+                items.push(<PayCell disabled={value.type !== paymentType.balance && this.state.shouldPayMoney  === 0} key={index + ''}  selectedTypes={selectedTypes} data={value} balance={availableBalance} press={()=>this._selectedPayType(value)}/>)
             }
         })
 
         return  <View  style={styles.container}><ScrollView style={styles.container}>
-            <PayCell data={balancePayment} isSelected={selectedBalace || this.state.paymentPageParams.shouldPayMoney  === 0} balance={availableBalance} press={()=>this._selectedBalancePay(balancePayment)}/>
+            <PayCell disabled={this.params.outTradeNo} data={balancePayment} isSelected={selectedBalace || this.state.shouldPayMoney  === 0} balance={availableBalance} press={()=>this._selectedBalancePay(balancePayment)}/>
             {items}
         </ScrollView>
         {this.renderBottomOrder()}
         {this.renderPaymentModal()}
+        {this.renderPayResult()}
         </View>
     }
+    renderPayResult() {
+        return <PaymentResultView ref={(ref) => {this.paymentResultView = ref}} navigation={this.props.navigation}/>
+    }
+
     //支付方式弹窗
     renderPaymentModal = () => {
         const {  payStore } = this.payment
@@ -126,7 +131,7 @@ export default class PaymentMethodPage extends BasePage {
                 isShow={this.state.isShowPaymentModal}
                 detail={{ title: '平台支付密码', context: '请输入平台的支付密码' }}
                 closeWindow={() => {
-                    this.setState({ isShowPaymentModal: false });
+                    this.setState({ isShowPaymentModal: false })
                 }}
                 passwordInputError={this.state.isShowPaymentModal}
                 bottomText={'忘记支付密码'}
@@ -165,7 +170,7 @@ export default class PaymentMethodPage extends BasePage {
                 <View style={{ height: 49, flexDirection: 'row' }}>
                     <View style={styles.bottomStyleContainer}>
                         <UIText value={'合计：'} style={styles.bottomUiText}/>
-                        <UIText value={`${this.state.paymentPageParams.shouldPayMoney || 0}元`}
+                        <UIText value={`${this.state.shouldPayMoney || 0}元`}
                                 style={styles.bottomUitext1}/>
                     </View>
                     <TouchableOpacity
@@ -180,7 +185,7 @@ export default class PaymentMethodPage extends BasePage {
     };
     forgetTransactionPassword = () => {
         this.setState({ isShowPaymentModal: false });
-        this.$navigate('mine/account/SetOrEditPayPwdPage')
+        this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: true })
     };
     async _balancePay() {
         const { params } = this.getApiRequestParams();
@@ -189,7 +194,8 @@ export default class PaymentMethodPage extends BasePage {
                 this.setState({ isShowPaymentModal: true });
                 return;
             }
-            let result = await this.payment.balancePay(params)
+            
+            let result = await this.payment.balancePay(params, this.paymentResultView)
             this.setState({password: ''})
             console.log('checkRes', result)
             this._showPayresult(result)
@@ -200,20 +206,18 @@ export default class PaymentMethodPage extends BasePage {
     }
     async _alipay() {
         const { params } = this.getApiRequestParams()
-        const {resultStr, preStr} = await this.payment.alipay(params)
+        const resultStr = await this.payment.alipay(params, this.paymentResultView)
         if (resultStr.code === 0) {
-            let checkResult = await this.payment.checkPayStatus({outTradeNo: preStr.data.outTradeNo})
-            this._showPayresult(checkResult)
+            this._showPayresult(resultStr)
         } else {
             Toast.$toast('支付失败')
         }
     }
     async _wechat() {
         const { params } = this.getApiRequestParams()
-        const {resultStr, preStr} = await this.payment.appWXPay(params)
-        if (resultStr.sdkCode === 0) {
-            let checkResult = await this.payment.checkPayStatus({outTradeNo: preStr.data.outTradeNo})
-            this._showPayresult(checkResult)
+        const resultStr = await this.payment.appWXPay(params, this.paymentResultView)
+        if (resultStr.code == 10000) {
+            this._showPayresult(resultStr)
         } else {
             Toast.$toast('支付失败')
         }
@@ -237,6 +241,7 @@ export default class PaymentMethodPage extends BasePage {
             }
             let result = await this.payment.perpay(params)
             console.log('result', result)
+            this.setState({"password": ''})
             if (params.amounts === 0 && parseInt(result.code, 0) === 10000) {
                 this._showPayresult(result)
                 return
@@ -245,13 +250,18 @@ export default class PaymentMethodPage extends BasePage {
                 const prePayStr = result.data.prePayStr
                 const resultStr = await PayUtil.appAliPay(prePayStr)
                 console.log('resultStr', resultStr)
+                const checkStr = await this.payment.alipayCheck({outTradeNo:result.data.outTradeNo , type:paymentType.alipay})
+                this._showPayresult(checkStr)
                 return
             }
 
             if (selectedTypes.type === paymentType.wechat) {
                 const prePayStr = result.data.prePayStr
-                const resultStr = await PayUtil.appAliPay(prePayStr)
+                const prePay = JSON.parse(prePayStr)
+                const resultStr = await PayUtil.appWXPay(prePay)
                 console.log('resultStr', resultStr)
+                const checkStr = await this.payment.wechatCheck({outTradeNo:result.data.outTradeNo , type:2})
+                this._showPayresult(checkStr.resultStr)
                 return
             }
         }
@@ -261,24 +271,7 @@ export default class PaymentMethodPage extends BasePage {
     }
     _showPayresult(result) {
         if ( parseInt(result.code, 0) === 10000) {
-            Alert.alert('支付提示','支付成功', [
-                {
-                    text: '返回首页', onPress: () => {
-                        let resetAction = NavigationActions.reset({
-                            index: 0,
-                            actions: [
-                                NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                            ]
-                        });
-                        this.props.navigation.dispatch(resetAction);
-                    }
-                },
-                {
-                    text: '回到订单', onPress: () => {
-                        this.props.navigation.navigate('order/order/MyOrdersListPage',{index:2})
-                    }
-                }
-            ], { cancelable: true });
+            this.paymentResultView.show(PaymentResult.sucess)
         }
     }
     commitOrder = () => {
@@ -342,8 +335,8 @@ export default class PaymentMethodPage extends BasePage {
     getApiRequestParams = () => {
         //对应的leftShouldPayMoney后端也会计算
         let params = {
-            amounts: this.state.paymentPageParams.shouldPayMoney,//N:第三方金额	number
-            orderNum: this.state.paymentPageParams.orderPayParams.orderNum,//N:订单号	string
+            amounts: this.state.shouldPayMoney,//N:第三方金额	number
+            orderNum: this.state.orderNum,//N:订单号	string
             salePsw: this.state.password,//Y:交易密码	string
             // type: type//N:支付方式	number 1:纯平台  2：微信小程序   4：微信app   8：支付宝   16：银联卡
         };

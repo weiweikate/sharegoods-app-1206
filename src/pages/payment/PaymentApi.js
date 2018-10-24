@@ -12,7 +12,11 @@ const api = {
     //检查订单状态
     checkOrderStatus: ['/order/lookDetail'],
     //店铺保证金
-    storePayment:['/user/store/deposit', {method:'get'}]
+    storePayment:['/user/store/deposit', {method:'get'}],
+    //支付宝查账
+    alipayCheck: ['/aliPay/aliPayQuery'],
+    //微信支付查账
+    wechatCheck: ['/weChatPay/weChatQuery', {method: 'get'}]
 };
 import ApiUtils from '../../api/network/ApiUtils';
 
