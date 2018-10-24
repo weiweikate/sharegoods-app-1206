@@ -10,7 +10,7 @@ import {observer} from 'mobx-react'
 import { SubjectModule, homeModule } from './Modules'
 
 const GoodItems = ({img, title, money}) => <View style={styles.goodsView}>
-    <Image style={styles.goodImg} source={{uri:img}}/>
+    <Image style={styles.goodImg} source={{uri:img ? img : ''}}/>
     <Text style={styles.goodsTitle} numberOfLines={2}>{title}</Text>
     <Text style={styles.money}>¥ {money}</Text>
 </View>
@@ -33,7 +33,7 @@ const ActivityItem = ({data, press}) => {
     return <View>
         <TouchableOpacity style={styles.bannerBox} onPress={()=>{press && press()}}>
             <View style={styles.bannerView}>
-                <Image style={styles.banner} source={{uri: imgUrl}} resizeMode={'cover'}/>
+                <Image style={styles.banner} source={{uri: imgUrl ? imgUrl : ''}} resizeMode={'cover'}/>
             </View>
         </TouchableOpacity>
         {
