@@ -9,6 +9,7 @@ import bridge from '../../../../utils/bridge';
 import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
+import SMSTool from '../../../../utils/SMSTool';
 
 export default class SetNewPhoneNumPage extends BasePage {
 
@@ -39,13 +40,16 @@ export default class SetNewPhoneNumPage extends BasePage {
                     <TextInput
                         style={styles.itemRightInput}
                         underlineColorAndroid={'transparent'}
-                        onChangeText={(text) => this.setState({ telText: text })}
+                        onChangeText={(text) => {
+                            const newText = text.replace(/[^\d]+/, '');
+                            this.setState({ telText: newText });
+                        }}
                         value={this.state.telText}
                         placeholder={'请输入手机号'}
                         placeholderTextColor={'#C8C8C8'}
                     />
                 </View>
-                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15 }} />
+                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15 }}/>
                 <View style={{
                     height: 44,
                     flexDirection: 'row',
@@ -56,7 +60,10 @@ export default class SetNewPhoneNumPage extends BasePage {
                                style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 20 }}
                                placeholder={'请输入验证码'}
                                placeholderTextColor={'#C8C8C8'}
-                               onChangeText={(text) => this.setState({ code: text })}
+                               onChangeText={(text) => {
+                                   const newText = text.replace(/[^\d]+/, '');
+                                   this.setState({ code: newText });
+                               }}
                                value={this.state.code}
                                keyboardType={'phone-pad'}/>
                     <TouchableOpacity onPress={() => this._onGetCode(this.state.telText)}
@@ -86,12 +93,16 @@ export default class SetNewPhoneNumPage extends BasePage {
     _onGetCode = (tel) => {
         //获取验证码
         if (StringUtils.checkPhone(tel)) {
-            (new TimeDownUtils()).startDown((time) => {
-                this.setState({
-                    vertifyCodeTime: time
+            SMSTool.sendVerificationCode(SMSTool.SMSType.SalePwdType, tel).then((data) => {
+                (new TimeDownUtils()).startDown((time) => {
+                    this.setState({
+                        vertifyCodeTime: time
+                    });
                 });
+                bridge.$toast('验证码已发送请注意查收');
+            }).catch((data) => {
+                bridge.$toast(data.msg);
             });
-            bridge.$toast('验证码已发送请注意查收');
         } else {
             bridge.$toast('手机格式不对');
         }
