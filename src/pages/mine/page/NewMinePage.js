@@ -24,7 +24,7 @@ import waitPay from "../res/homeBaseImg/icon_03-04.png";
 import waitDelivery from "../res/homeBaseImg/icon_03-05.png";
 import waitReceive from "../res/homeBaseImg/icon1-03.png";
 import hasFinished from "../res/homeBaseImg/icon3_03-06.png";
-import headBg from "../res/homeBaseImg/bg3_01.png";
+// import headBg from "../res/homeBaseImg/bg3_01.png";
 import inviteFr from "../res/homeBaseImg/icon3_16.png";
 import coupons from "../res/homeBaseImg/icon3_16-09.png";
 import myData from "../res/homeBaseImg/icon3_16-10.png";
@@ -40,9 +40,9 @@ import NoMoreClick from "../../../components/ui/NoMoreClick";
 import MineApi from "../api/MineApi";
 import { observer } from "mobx-react/native";
 import showImg from "../res/homeBaseImg/icon_faxian.png";
+import bgImg from "../res/homeBaseImg/bg_img_user.png";
 
 const { px2dp } = ScreenUtils;
-
 @observer
 export default class MinePage extends BasePage {
     constructor(props) {
@@ -286,7 +286,7 @@ export default class MinePage extends BasePage {
 
     renderUserHead = () => {
         return (
-            <ImageBackground style={styles.headerBgStyle} source={headBg}>
+            <ImageBackground style={styles.headerBgStyle} source={bgImg}>
                 <View style={{
                     flexDirection: "row",
                     alignItems: "center",
@@ -309,10 +309,11 @@ export default class MinePage extends BasePage {
                 <View style={{ height: px2dp(54), marginBottom: px2dp(43), flexDirection: "row" }}>
                     <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
 
-                    {
-                        StringUtils.isEmpty(user.headImg) ? <Image style={styles.userIconStyle}/> :
-                            <Image source={{ uri: user.headImg ? user.headImg : "" }} style={styles.userIconStyle}/>
-                    }
+                        {
+                            StringUtils.isEmpty(user.headImg) ?
+                                <View style={[styles.userIconStyle, { backgroundColor: "gray" }]}/> :
+                                <Image source={{ uri: user.headImg }} style={styles.userIconStyle}/>
+                        }
                     </TouchableWithoutFeedback>
                     <View style={{
                         paddingVertical: px2dp(8),
@@ -320,12 +321,14 @@ export default class MinePage extends BasePage {
                         marginLeft: px2dp(8),
                         justifyContent: "space-between"
                     }}>
-                        <Text style={{ color: "#666666", fontSize: px2dp(18), includeFontPadding: false }}>
-                            {`${user.nickname ? user.nickname : (user.phone ? user.phone : 1234)}  `}
-                            <Text style={{ color: "#999999", fontSize: px2dp(18), includeFontPadding: false }}>
-                                >
+                        <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
+                            <Text style={{ color: "#666666", fontSize: px2dp(18), includeFontPadding: false }}>
+                                {`${user.nickname ? user.nickname : (user.phone ? user.phone : 1234)}  `}
+                                <Text style={{ color: "#999999", fontSize: px2dp(18), includeFontPadding: false }}>
+                                    >
+                                </Text>
                             </Text>
-                        </Text>
+                        </TouchableWithoutFeedback>
 
                         <ImageBackground style={{ width: 53, height: 14, alignItems: "center", marginTop: 2 }}
                                          source={levelBg}>
@@ -368,40 +371,48 @@ export default class MinePage extends BasePage {
                     paddingHorizontal: px2dp(15),
                     justifyContent: "space-between"
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(this.state.availableBalance), "现金账户", "#FF4F6E")}
-                    {this.accountItemView(this.state.userScore ? this.state.userScore : 0, "秀豆账户", "#FFC079")}
-                    {this.accountItemView(StringUtils.formatMoneyString(this.state.blockedBalance), "待提现账户", "#8EC7FF")}
+                    {this.accountItemView(StringUtils.formatMoneyString(this.state.availableBalance), "现金账户", "#FF4F6E", () => {
+                        this.go2CashDetailPage(1);
+                    })}
+                    {this.accountItemView(this.state.userScore ? this.state.userScore : 0, "秀豆账户", "#FFC079", () => {
+                        this.go2CashDetailPage(2);
+                    })}
+                    {this.accountItemView(StringUtils.formatMoneyString(this.state.blockedBalance), "待提现账户", "#8EC7FF", () => {
+                        this.go2CashDetailPage(3);
+                    })}
                 </View>
             </View>
         );
     };
 
-    accountItemView(num, text, color) {
+    accountItemView(num, text, color, onPress) {
         return (
-            <View style={{
-                backgroundColor: color,
-                width: px2dp(110),
-                height: px2dp(62),
-                borderRadius: px2dp(5),
-                elevation: 2,
-                shadowColor: "#000000",
-                shadowOffset: { h: 2, w: 2 },
-                shadowRadius: px2dp(6),
-                shadowOpacity: 0.1,
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingTop: px2dp(16),
-                paddingBottom: px2dp(11),
-            }}>
-                <Text style={{ color: "white", fontSize: px2dp(19), includeFontPadding: false }}>
-                    {num}
-                </Text>
+            <TouchableWithoutFeedback onPress={onPress}>
+                <View style={{
+                    backgroundColor: color,
+                    width: px2dp(110),
+                    height: px2dp(62),
+                    borderRadius: px2dp(5),
+                    elevation: 2,
+                    shadowColor: "#000000",
+                    shadowOffset: { h: 2, w: 2 },
+                    shadowRadius: px2dp(6),
+                    shadowOpacity: 0.1,
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingTop: px2dp(16),
+                    paddingBottom: px2dp(11)
+                }}>
+                    <Text style={{ color: "white", fontSize: px2dp(19), includeFontPadding: false }}>
+                        {num}
+                    </Text>
 
-                <Text style={{ color: "white", fontSize: px2dp(11), includeFontPadding: false }}>
-                    {text}
-                </Text>
+                    <Text style={{ color: "white", fontSize: px2dp(11), includeFontPadding: false }}>
+                        {text}
+                    </Text>
 
-            </View>
+                </View>
+            </TouchableWithoutFeedback>
         );
     }
 
@@ -449,17 +460,17 @@ export default class MinePage extends BasePage {
         );
     }
 
-    utilsRender(){
-        return(
+    utilsRender() {
+        return (
             <View style={{
                 flexDirection: "row",
                 backgroundColor: color.white,
                 flexWrap: "wrap",
-                marginTop:px2dp(10)
+                marginVertical: px2dp(10)
             }}>
                 <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: "center" }}>
                     <Text style={{ color: "#666666", fontSize: px2dp(16) }}>
-                        我的资产
+                        常用工具
                     </Text>
                 </View>
                 <View style={{
@@ -470,7 +481,7 @@ export default class MinePage extends BasePage {
                 }}/>
                 {this.renderMenu()}
             </View>
-        )
+        );
     }
 
     renderBodyView = () => {
@@ -715,7 +726,6 @@ const styles = StyleSheet.create({
         width: px2dp(54),
         height: px2dp(54),
         borderRadius: px2dp(27),
-        backgroundColor: "red",
         marginLeft: px2dp(23)
     },
     saveMoneyWrapper: {
