@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
 import MineApi from '../../api/MineApi';
+import HTML from 'react-native-render-html';
 // 图片资源
 import HeaderBarBgImg from './res/txbg_02.png';
 import WhiteBtImg from './res/dz_03-02.png';
@@ -22,6 +23,7 @@ import ProgressImg from './res/jdt_05.png';
 // import {NavigationActions} from "react-navigation";
 import BasePage from '../../../../BasePage';
 import { NavigationActions } from 'react-navigation';
+import ScreenUtils from '../../../../utils/ScreenUtils';
 // 常量
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -238,14 +240,8 @@ export default class MyPromotionPage extends BasePage {
                     }}>预计晋升后可获得哪些福利？</Text>
                 </View>
                 {this.renderSepLine()}
-                <View  style={{ justifyContent: 'center', height: 44, backgroundColor: '#fff' }}>
-                    <Text style={{
-                        marginLeft: 14,
-                        fontFamily: 'PingFang-SC-Medium',
-                        fontSize: 13,
-                        color: '#666666'
-                    }}>{this.state.nextArr}</Text>
-                </View>
+                <HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
+                      containerStyle={{ backgroundColor: '#fff' }}/>
             </View>
         );
     }
