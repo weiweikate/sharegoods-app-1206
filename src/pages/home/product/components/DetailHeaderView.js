@@ -93,7 +93,7 @@ export default class DetailHeaderView extends Component {
                                 backgroundColor: 'red',
                                 color: '#FFFFFF',
                                 fontSize: 10, paddingHorizontal: 5
-                            }}>{spellStatusModel.storeId && spellStatusModel.storeStatus === 1 ? '拼店价' : isNoEmpty(user.levelId) ? `v${user.levelId}价` : '原价'}</Text>
+                            }}>{spellStatusModel.storeId && spellStatusModel.storeStatus === 1 ? '拼店价' : isNoEmpty(user.levelName) ? `${user.levelName}价` : '原价'}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text
