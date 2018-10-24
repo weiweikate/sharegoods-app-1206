@@ -243,7 +243,7 @@ class MyOrdersDetailPage extends BasePage {
                         goodsName={item.goodsName}
                         salePrice={'￥' + StringUtils.formatMoneyString(item.salePrice, false)}
                         category={item.category}
-                        goodsNum={'X' + item.goodsNum}
+                        goodsNum={item.goodsNum}
                         clickItem={() => {
                             this.clickItem(index, item);
                         }}
@@ -927,7 +927,7 @@ class MyOrdersDetailPage extends BasePage {
                 this.$navigate('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
                     amounts: this.state.viewData.orderTotalPrice,
-                    outTrandNo: this.state.viewData.outTrandNo
+                    outTradeNo: this.state.viewData.outTradeNo
                 });
                 break;
             case 4:
