@@ -24,6 +24,7 @@ import user from '../../model/user';
 import TopicDetailSelectPage from './TopicDetailSelectPage';
 import PackageDetailSelectPage from './PackageDetailSelectPage';
 import CommShareModal from '../../comm/components/CommShareModal';
+import TopicDetailShowModal from './components/TopicDetailShowModal';
 
 export default class TopicDetailPage extends BasePage {
 
@@ -53,6 +54,9 @@ export default class TopicDetailPage extends BasePage {
 
     loadPageData() {
         this._getActivityData();
+        if (this.state.activityType === 3) {
+            this.TopicDetailShowModal.show('温馨提示');
+        }
     }
 
     //数据
@@ -207,10 +211,15 @@ export default class TopicDetailPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        return <TopicDetailHeaderView ref={(e) => {
-            this.TopicDetailHeaderView = e;
-        }} data={this.state.data} activityType={this.state.activityType}
-                                      activityData={this.state.activityData}/>;
+        return <TopicDetailHeaderView data={this.state.data}
+                                      ref={(e) => {
+                                          this.TopicDetailHeaderView = e;
+                                      }}
+                                      activityType={this.state.activityType}
+                                      activityData={this.state.activityData}
+                                      showDetailModal={() => {
+                                          this.TopicDetailShowModal.show('降价拍规则');
+                                      }}/>;
     };
 
     _renderSectionHeader = () => {
@@ -381,6 +390,7 @@ export default class TopicDetailPage extends BasePage {
                                     linkUrl: `http://testh5.sharegoodsmall.com/#/product/${productId}`,
                                     thumImage: productImgUrl
                                 }}/>
+                <TopicDetailShowModal ref={(ref) => this.TopicDetailShowModal = ref}/>
             </View>
         );
     }

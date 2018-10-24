@@ -63,12 +63,12 @@ export default class TopicDetailHeaderView extends Component {
         let nowPrice, oldPrice;
 
         if (activityType === 3) {
-            const { imgFileList = [{}], name, levelPrice, originalPrice, freight, saleNum } = this.props.data || {};
+            const { imgFileList = [{}], name, levelPrice, originalPrice, freightTemplatePrice, saleNum } = this.props.data || {};
             bannerImgList = imgFileList;
             tittle = name;
             nowPrice = levelPrice;
             oldPrice = originalPrice;
-            freightValue = freight;
+            freightValue = freightTemplatePrice;
             monthSale = saleNum;
         } else {
             const { productImgList = [{}], freight, monthSaleTotal, product = {} } = this.props.data || {};
@@ -119,13 +119,13 @@ export default class TopicDetailHeaderView extends Component {
                                     backgroundColor: 'red',
                                     color: '#FFFFFF',
                                     fontSize: 10, paddingHorizontal: 5
-                                }}>{isNoEmpty(user.levelId) ? `v${user.levelId}价` : '原价'}</Text> : null
+                                }}>{isNoEmpty(user.levelName) ? `${user.levelName}价` : '原价'}</Text>
                             </View> : null}
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text style={{
                                 color: '#BBBBBB',
                                 fontSize: 11
-                            }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : 0}元`}</Text>
+                            }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : ''}元`}</Text>
                             <Text style={{
                                 color: '#666666',
                                 fontSize: 13,
@@ -141,7 +141,7 @@ export default class TopicDetailHeaderView extends Component {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                             alignItems: 'center'
-                        }}>
+                        }} onPress={this.props.showDetailModal}>
                             <Text style={{ color: '#666666', fontSize: 13, marginLeft: 16 }}>抢拍规则</Text>
                             <Image style={{ marginRight: 16 }} source={xjt_03}/>
                         </TouchableOpacity>
