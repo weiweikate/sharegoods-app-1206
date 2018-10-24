@@ -1,7 +1,8 @@
 import { TabNavigator } from 'react-navigation';
 import React from 'react';
 import Home from './pages/home/HomePage';
-import Mine from './pages/mine/page/MinePage';
+// import Mine from './pages/mine/page/MinePage';
+import Mine from './pages/mine/page/NewMinePage';
 import ShopCart from './pages/shopCart/page/ShopCartPage';
 import SpellShop from './pages/spellShop/SpellShopPage';
 import {
