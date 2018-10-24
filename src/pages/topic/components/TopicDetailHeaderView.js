@@ -119,7 +119,7 @@ export default class TopicDetailHeaderView extends Component {
                                     backgroundColor: 'red',
                                     color: '#FFFFFF',
                                     fontSize: 10, paddingHorizontal: 5
-                                }}>{isNoEmpty(user.levelId) ? `v${user.levelId}价` : '原价'}</Text> : null
+                                }}>{isNoEmpty(user.levelName) ? `${user.levelName}价` : '原价'}</Text>
                             </View> : null}
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text style={{
@@ -141,7 +141,7 @@ export default class TopicDetailHeaderView extends Component {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                             alignItems: 'center'
-                        }}>
+                        }} onPress={this.props.showDetailModal}>
                             <Text style={{ color: '#666666', fontSize: 13, marginLeft: 16 }}>抢拍规则</Text>
                             <Image style={{ marginRight: 16 }} source={xjt_03}/>
                         </TouchableOpacity>
