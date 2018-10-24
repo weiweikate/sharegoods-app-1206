@@ -20,6 +20,7 @@ import {
 } from '../../../components/ui';
 import StringUtils from "../../../utils/StringUtils";
 import EmptyUtils from '../../../utils/EmptyUtils';
+import bridge from '../../../utils/bridge';
 import OrderApi from '../api/orderApi'
 
 
@@ -76,9 +77,12 @@ export default class FillReturnLogisticsPage extends BasePage {
                                    placeholder = {'请填写物流单号'}
                                    style = {styles.item_detail}
                                    onChangeText = {(text) => {this.setState({logisticsNum: text})}}
+                                   value = {this.state.logisticsNum}
                                    keyboardType = {'number-pad'}
                         />
+                        <TouchableWithoutFeedback onPress = {this.scanQRCode.bind(this)}>
                         <UIImage source={wuxiu_btn_saoma_nor} style = {{height: 22, width: 22, marginRight: 20}}/>
+                        </TouchableWithoutFeedback>
                     </View>
                 </ScrollView>
                 <TouchableWithoutFeedback onPress = {this.submit}>
@@ -95,6 +99,13 @@ export default class FillReturnLogisticsPage extends BasePage {
      */
     selectLogisticsCompany(){
         this.$navigate('order/afterSaleService/SelectLogisticsCompanyPage',{callBack: this.callBack});
+    }
+
+    scanQRCode(){
+        let that = this;
+       bridge.scanQRCode((logisticsNum) => {
+           that.setState({logisticsNum: logisticsNum});
+       })
     }
 
     callBack(logisticsCompanyName, logisticsNum){

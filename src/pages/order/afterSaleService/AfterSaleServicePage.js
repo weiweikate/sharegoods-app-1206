@@ -201,7 +201,7 @@ class AfterSaleServicePage extends BasePage {
                         onChangeText={text => this.setState({ remark: text })}
                         defaultValue = {this.state.remark}
                         placeholder={'填写说明文字...'}
-                        maxLength={100}
+                        maxLength={120}
                         underlineColorAndroid={'transparent'}
                     />
                     <View style={{
@@ -209,7 +209,7 @@ class AfterSaleServicePage extends BasePage {
                         right: 5,
                         bottom: 11
                     }}>
-                        <UIText value={this.state.remark.length + '/100'}
+                        <UIText value={this.state.remark.length + '/120'}
                                 style={{ color: color.black_222, fontSize: 13, marginLeft: 16, width: 50 }}/>
                     </View>
                 </View>
