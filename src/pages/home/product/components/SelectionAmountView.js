@@ -53,7 +53,7 @@ export default class RecentSearchView extends Component {
 
     _onChangeText = (amount) => {
         if (StringUtils.isEmpty(amount)) {
-            amount = 1;
+            amount = 0;
         }
         this.setState({ amount: parseInt(amount) }, () => {
             this.props.amountClickAction(this.state.amount);
@@ -61,11 +61,14 @@ export default class RecentSearchView extends Component {
     };
 
     _onEndEditing = () => {
-        if (this.state.amount > this.props.maxCount) {
+        //空0或者最大库存
+        if (this.state.amount > this.props.maxCount || StringUtils.isEmpty(this.state.amount) || this.state.amount === 0) {
             this.setState({ amount: 1 }, () => {
                 this.props.amountClickAction(this.state.amount);
             });
-            bridge.$toast('超出最大库存~');
+            if (this.state.amount > this.props.maxCount) {
+                bridge.$toast('超出最大库存~');
+            }
         }
     };
 
@@ -93,7 +96,9 @@ export default class RecentSearchView extends Component {
                     <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <TextInput
-                            style={{ width: 92 / 2.0 }}
+                            style={{ width: 92 / 2.0, padding: 0 }}
+                            textAlign={'center'}
+                            underlineColorAndroid='transparent'
                             onChangeText={this._onChangeText}
                             value={`${this.state.amount}`}
                             onEndEditing={this._onEndEditing}

@@ -231,7 +231,7 @@ export default class TopicDetailPage extends BasePage {
         let { product = {} } = this.state.data;
         if (this.state.selectedIndex === 0) {
             return <HTML html={this.state.activityType === 3 ? this.state.data.content : product.content}
-                         imagesMaxWidth={ScreenUtils.maxWidth}
+                         imagesMaxWidth={ScreenUtils.width}
                          containerStyle={{ backgroundColor: '#fff' }}/>;
         } else {
             return <View style={{ backgroundColor: 'white' }}>
