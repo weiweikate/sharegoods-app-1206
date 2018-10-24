@@ -42,11 +42,7 @@ export default class DownPricePage extends BasePage {
         // this.$NavigationBarResetTitle(this.dataModel.name)
     }
 
-    // async loadData(linkTypeCode){
-    //     await  this.dataModel.loadTopicData(linkTypeCode);
-    //     const {name } = this.dataModel;
-    //     this.$NavigationBarResetTitle(name || '专题')
-    // }
+ 
 
     /**
      * 渲染底部组列表
