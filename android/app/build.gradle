@@ -74,6 +74,13 @@ android {
             }
         }
     }
+
+    repositories {
+        maven {
+            // sophix
+            url "http://maven.aliyun.com/nexus/content/repositories/releases"
+        }
+    }
 }
 
 dependencies {
@@ -87,11 +94,17 @@ dependencies {
     api project(path: ':commonlib')
     api project(path: ':qiyu_service')
 
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.+'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.+'
+    // Optional, if you use support library fragments:
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.+'
     api rootProject.ext.dependencies.support
 
     api rootProject.ext.dependencies.eventbus
     api rootProject.ext.dependencies.zxing
-
     api rootProject.ext.dependencies.wechat
+    implementation (rootProject.ext.dependencies.sophix){
+        exclude(module: 'alicloud-android-utdid')
+    }
     api files('libs/alipaySdk-20180601.jar')
 }

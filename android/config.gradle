@@ -27,6 +27,8 @@ ext {
             wechat  : 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+',
             multidex: 'com.android.support:multidex:1.0.3',
             uapp    : 'com.umeng.sdk:analytics:latest.integration',
-            ucommon : 'com.umeng.sdk:common:latest.integration'
+            ucommon : 'com.umeng.sdk:common:latest.integration',
+            walle   : 'com.meituan.android.walle:library:+',
+            sophix  : 'com.aliyun.ams:alicloud-android-hotfix:3.+',
     ]
 }

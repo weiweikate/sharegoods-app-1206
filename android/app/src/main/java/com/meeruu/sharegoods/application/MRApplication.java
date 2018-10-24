@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods;
+package com.meeruu.sharegoods.application;
 
 import android.content.Context;
 import android.support.multidex.MultiDex;
@@ -15,22 +15,58 @@ import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.qiyu.imService.QiyuImageLoader;
+import com.meeruu.sharegoods.BuildConfig;
+import com.meeruu.sharegoods.RNPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
+import com.squareup.leakcanary.LeakCanary;
+import com.taobao.sophix.PatchStatus;
+import com.taobao.sophix.SophixManager;
+import com.taobao.sophix.listener.PatchLoadStatusListener;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class MainApplication extends BaseApplication implements ReactApplication {
+public class MRApplication extends BaseApplication implements ReactApplication {
 
+    private int patchStatus;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        ForegroundCallbacks.init(this);
+        final SophixManager instance = SophixManager.getInstance();
+        instance.setPatchLoadStatusStub(new PatchLoadStatusListener() {
+            @Override
+            public void onLoad(final int mode, final int code, final String info, final int handlePatchVersion) {
+                patchStatus = code;
+            }
+        });
+        ForegroundCallbacks.get().addListener(new ForegroundCallbacks.Listener() {
+            @Override
+            public void onBecameForeground() {
+                // 启动到前台时检测是否有新补丁
+                instance.queryAndLoadNewPatch();
+            }
+
+            @Override
+            public void onBecameBackground() {
+                // 应用处于后台，如果补丁存在应用结束掉，重启
+                if (patchStatus == PatchStatus.CODE_LOAD_RELAUNCH) {
+                    // 应用处于后台时结束程序
+                    if (ForegroundCallbacks.get().isBackground()) {
+                        instance.killProcessSafely();
+                    }
+                }
+            }
+        });
+        // 检测内存泄漏
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
         if (getProcessName(this).equals(getPackageName())) {
             // 七鱼初始化
             Unicorn.init(this, "aa15b0b8c2a1bc1bf0341e244c049961", options(), new QiyuImageLoader(this));
