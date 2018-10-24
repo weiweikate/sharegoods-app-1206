@@ -63,12 +63,12 @@ export default class TopicDetailHeaderView extends Component {
         let nowPrice, oldPrice;
 
         if (activityType === 3) {
-            const { imgFileList = [{}], name, levelPrice, originalPrice, freight, saleNum } = this.props.data || {};
+            const { imgFileList = [{}], name, levelPrice, originalPrice, freightTemplatePrice, saleNum } = this.props.data || {};
             bannerImgList = imgFileList;
             tittle = name;
             nowPrice = levelPrice;
             oldPrice = originalPrice;
-            freightValue = freight;
+            freightValue = freightTemplatePrice;
             monthSale = saleNum;
         } else {
             const { productImgList = [{}], freight, monthSaleTotal, product = {} } = this.props.data || {};
@@ -125,7 +125,7 @@ export default class TopicDetailHeaderView extends Component {
                             <Text style={{
                                 color: '#BBBBBB',
                                 fontSize: 11
-                            }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : 0}元`}</Text>
+                            }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : ''}元`}</Text>
                             <Text style={{
                                 color: '#666666',
                                 fontSize: 13,
