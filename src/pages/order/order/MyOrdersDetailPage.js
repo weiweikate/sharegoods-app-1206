@@ -243,7 +243,7 @@ class MyOrdersDetailPage extends BasePage {
                         goodsName={item.goodsName}
                         salePrice={'￥' + StringUtils.formatMoneyString(item.salePrice, false)}
                         category={item.category}
-                        goodsNum={'X' + item.goodsNum}
+                        goodsNum={item.goodsNum}
                         clickItem={() => {
                             this.clickItem(index, item);
                         }}

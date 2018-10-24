@@ -12,7 +12,8 @@ import { color } from '../../../constants/Theme';
 import {
     UIText
 } from '../../../components/ui';
-import GoodsItem from './GoodsItem';
+// import GoodsItem from './GoodsItem';
+import GoodsGrayItem from './GoodsGrayItem'
 import StringUtils from '../../../utils/StringUtils';
 import DateUtils from '../../../utils/DateUtils';
 import constants from '../../../constants/constants';
@@ -158,13 +159,13 @@ const GoodsListItem = props => {
         let itemArr = [];
         for (let i = 0; i < orderProduct.length; i++) {
             itemArr.push(
-                <GoodsItem
+                <GoodsGrayItem
                     key={i}
                     uri={orderProduct[i].imgUrl}
                     goodsName={orderProduct[i].productName}
                     salePrice={orderProduct[i].price}
                     category={orderProduct[i].spec}
-                    goodsNum={'X' + orderProduct[i].num}
+                    goodsNum={orderProduct[i].num}
                     onPress={goodsItemClick}
                 />
             );

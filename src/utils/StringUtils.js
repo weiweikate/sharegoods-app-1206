@@ -1,4 +1,4 @@
-import {Clipboard} from "react-native";
+import { Clipboard } from 'react-native';
 
 const isEmpty = (param) => {
     let input = param + '';
@@ -18,6 +18,9 @@ const formatMoneyString = (num, needSymbol = true) => {
     }
     if ((temp.indexOf('.') + 3) < temp.length) {
         temp = temp.substr(0, temp.indexOf('.') + 3);
+    }
+    if ((temp.indexOf('.') + 2 == temp.length)) {
+        temp += '0';
     }
     if (needSymbol && temp.indexOf('¥') === -1) {
         temp = '¥' + temp;
@@ -167,23 +170,25 @@ const checkIsPositionNumber = (num) => {
 };
 
 //剪切板
-const clipboardSetString = (content)=>{
-    Clipboard.setString(content)
-}
-const clipboardGetString = ()=>{
-    return Clipboard.getString()
-}
+const clipboardSetString = (content) => {
+    Clipboard.setString(content);
+};
+const clipboardGetString = () => {
+    return Clipboard.getString();
+};
 
 //去左空格
-function ltrim(s){
-    return s.replace( /^\s*/, "");
+function ltrim(s) {
+    return s.replace(/^\s*/, '');
 }
+
 //去右空格
-function rtrim(s){
-    return s.replace( /\s*$/, "");
+function rtrim(s) {
+    return s.replace(/\s*$/, '');
 }
+
 //去左右空格
-function trim(s){
+function trim(s) {
     return rtrim(ltrim(s));
 }
 
