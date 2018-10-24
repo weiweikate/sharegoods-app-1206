@@ -93,7 +93,9 @@ export default class RecentSearchView extends Component {
                     <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <TextInput
-                            style={{ width: 92 / 2.0 }}
+                            style={{ width: 92 / 2.0, padding: 0}}
+                            textAlign={'center'}
+                            underlineColorAndroid='transparent'
                             onChangeText={this._onChangeText}
                             value={`${this.state.amount}`}
                             onEndEditing={this._onEndEditing}
