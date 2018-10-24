@@ -21,8 +21,8 @@ export default class NotificationPage extends BasePage {
         this.state = {
             viewData: [],
             isEmpty: false,
-            currentPage: 1
         };
+        this.currentPage = 1;
     }
 
     $navigationBarOptions = {
@@ -92,6 +92,7 @@ export default class NotificationPage extends BasePage {
     loadPageData =()=> {
         Toast.showLoading()
         MessageApi.queryNotice({ page: 1, pageSize: 15,type:200 }).then(res => {
+            Toast.hiddenLoading()
             if (StringUtils.isNoEmpty(res.data.data)) {
                 let arrs = [];
                 res.data.data.map((item, index) => {
@@ -115,23 +116,19 @@ export default class NotificationPage extends BasePage {
 
     //下拉加载更多
     onLoadMore = () => {
-        this.setState({
-            currentPage: this.state.currentPage + 1
-        });
+        this.currentPage++;
         this.getDataFromNetwork();
     };
     //刷新
     onRefresh = () => {
-        this.setState({
-            currentPage: 1
-        });
+        this.currentPage = 1;
         this.getDataFromNetwork();
     };
 
     getDataFromNetwork =()=> {
-        MessageApi.queryNotice({ page: this.state.currentPage, pageSize: 15 ,type:200}).then(res => {
+        MessageApi.queryNotice({ page: this.currentPage, pageSize: 15 ,type:200}).then(res => {
             if (res.ok && typeof res.data === 'object' && StringUtils.isNoEmpty(res.data.data)) {
-                let arrs = this.state.currentPage == 1 ? [] : this.state.viewData;
+                let arrs = this.currentPage == 1 ? [] : this.state.viewData;
                 res.data.data.map((item, index) => {
                     arrs.push({
                         startTime: item.startTime,

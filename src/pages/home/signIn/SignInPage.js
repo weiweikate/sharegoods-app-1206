@@ -108,7 +108,7 @@ export default class SignInPage extends BasePage {
     //签到
     userSign = ()=>{
         HomeAPI.userSign().then((data) => {
-            this.$toastShow(`签到成功 +${this.state.signInData[3].reward}秀豆`);
+            this.$toastShow(`签到成功 +${this.state.signInData[3].canReward}秀豆`);
             this.getSignData();
             this.reSaveUserInfo();
         }).catch((error) => {

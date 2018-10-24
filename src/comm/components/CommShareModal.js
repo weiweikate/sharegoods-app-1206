@@ -189,7 +189,7 @@ export default class CommShareModal extends React.Component {
             }
         });
         array.push({
-            image: CommTabImag.kongjian, title: 'QQ好友', onPress: () => {
+            image: CommTabImag.kongjian, title: 'QQ空间', onPress: () => {
                 this.share(3);
             }
         });

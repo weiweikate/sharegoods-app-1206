@@ -10,6 +10,6 @@ export default {
         HomePage,
         search,
         product,
-        signIn
+        signIn,
     }
 }
