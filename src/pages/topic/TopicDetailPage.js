@@ -54,9 +54,6 @@ export default class TopicDetailPage extends BasePage {
 
     loadPageData() {
         this._getActivityData();
-        if (this.state.activityType === 3) {
-            this.TopicDetailShowModal.show('温馨提示');
-        }
     }
 
     //数据
@@ -93,6 +90,10 @@ export default class TopicDetailPage extends BasePage {
                 this.$loadingDismiss();
                 this.setState({
                     data: data.data || {}
+                },()=>{
+                    if (this.state.data.type === 2) {//1普通礼包  2升级礼包
+                        this.TopicDetailShowModal.show('温馨提示');
+                    }
                 });
             }).catch((error) => {
                 this.$loadingDismiss();
