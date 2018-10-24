@@ -20,7 +20,9 @@ import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge' ;
+import { observer } from "mobx-react/native";
 
+@observer
 export default class MyIntegralAccountPage extends BasePage {
     constructor(props) {
         super(props);
@@ -105,7 +107,7 @@ export default class MyIntegralAccountPage extends BasePage {
                         fontSize: 25,
                         marginTop: 10,
                         color: color.white
-                    }}>{this.state.restMoney}</Text>
+                    }}>{user.userScore}</Text>
                 </View>
                 <TouchableOpacity style={styles.rectangleStyle} onPress={() => {
                     this.$navigate('home/signIn/SignInPage')
@@ -151,10 +153,10 @@ export default class MyIntegralAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '注册赠送', '活动赠送', '秀豆消费'];
+        let use_type = ['', '注册赠送', '活动赠送', '秀豆消费','1元券兑换','签到'];
 
-        let use_type_symbol = ['', '+', '+', '-'];
-        let use_let_img = ['', registeredImg, activityPresent, xiaofei];
+        let use_type_symbol = ['', '+', '+', '-','-','+'];
+        let use_let_img = ['', registeredImg, activityPresent, xiaofei,xiaofei,activityPresent];
         let arrData = this.state.currentPage === 1 ? [] : this.state.viewData;
         Toast.showLoading();
         MineApi.userScoreQuery({
@@ -170,7 +172,7 @@ export default class MyIntegralAccountPage extends BasePage {
                     arrData.push({
                         type: use_type[item.useType],
                         time: DataUtils.getFormatDate(item.createTime / 1000),
-                        serialNumber: '',
+                        serialNumber: item.serialNo,
                         capital: use_type_symbol[item.useType] + item.userScore,
                         iconImage: use_let_img[item.useType],
                         capitalRed: use_type_symbol[item.useType] === '-'

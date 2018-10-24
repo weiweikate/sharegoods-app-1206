@@ -86,17 +86,8 @@ export default class MinePage extends BasePage {
         this.$loadingShow("加载中...", { timeout: 1, timeoutCallBack: () => this.timeoutCallBack });
         MineApi.getUser().then(res => {
             this.$loadingDismiss();
-            if (res.code == 10000) {
                 let data = res.data;
-                // user.saveUserInfo(data);
-                this.setState({
-                    availableBalance: data.availableBalance,
-                    headImg: data.headImg,
-                    levelName: data.levelName,
-                    userScore: data.userScore,
-                    blockedBalance: data.blockedBalance
-                });
-            }
+                user.saveUserInfo(data);
         }).catch(err => {
             if (err.code === 10009) {
                 this.props.navigation.navigate("login/login/LoginPage", { callback: this.refresh });
@@ -185,7 +176,7 @@ export default class MinePage extends BasePage {
                                 <Text style={{
                                     fontSize: 9,
                                     color: "#ffa351"
-                                }}>{this.state.levelName ? this.state.levelName : `${"VO"}`}</Text>
+                                }}>{user.levelName ? user.levelName : `${"VO"}`}</Text>
                             </ImageBackground>
                             <UIText value={"已帮你省：0.00元"} style={{
                                 fontFamily: "PingFang-SC-Medium",
@@ -202,7 +193,7 @@ export default class MinePage extends BasePage {
                                 fontFamily: "PingFang-SC-Medium",
                                 fontSize: 14,
                                 color: "#ffffff"
-                            }}>{this.state.userScore ? this.state.userScore : 0}</Text>
+                            }}>{user.userScore ? user.userScore : 0}</Text>
                             <Text style={{
                                 fontFamily: "PingFang-SC-Medium",
                                 fontSize: 11,
@@ -216,7 +207,7 @@ export default class MinePage extends BasePage {
                                 fontFamily: "PingFang-SC-Medium",
                                 fontSize: 14,
                                 color: "#ffffff"
-                            }}>{StringUtils.formatMoneyString(this.state.blockedBalance)}元</Text>
+                            }}>{StringUtils.formatMoneyString(user.blockedBalances)}元</Text>
                             <Text style={{
                                 fontFamily: "PingFang-SC-Medium",
                                 fontSize: 11,
@@ -347,7 +338,7 @@ export default class MinePage extends BasePage {
                     <Text style={{
                         fontSize: 14,
                         color: "#212121"
-                    }}>{StringUtils.formatMoneyString(this.state.availableBalance)}元</Text>
+                    }}>{StringUtils.formatMoneyString(user.availableBalance)}元</Text>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Text style={{
                             fontFamily: "PingFang-SC-Medium",
@@ -389,13 +380,13 @@ export default class MinePage extends BasePage {
     go2CashDetailPage(i) {
         switch (i) {
             case 1:
-                this.$navigate("mine/userInformation/MyCashAccountPage", { availableBalance: this.state.availableBalance });
+                this.$navigate("mine/userInformation/MyCashAccountPage", { availableBalance: user.availableBalance });
                 break;
             case 2:
-                this.$navigate("mine/userInformation/MyIntegralAccountPage", { userScore: this.state.userScore ? this.state.userScore : 0 });
+                this.$navigate("mine/userInformation/MyIntegralAccountPage", { userScore: user.userScore ? user.userScore : 0 });
                 break;
             case 3:
-                this.$navigate("mine/userInformation/WaitingForWithdrawCashPage", { blockedBalance: this.state.blockedBalance ? this.state.blockedBalance : 0 });
+                this.$navigate("mine/userInformation/WaitingForWithdrawCashPage", { blockedBalance: user.blockedBalance ? user.blockedBalance : 0 });
                 break;
             default:
             // this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
