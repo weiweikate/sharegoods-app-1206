@@ -84,7 +84,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-gesture-handler')
     api fileTree(include: ['*.jar'], dir: 'libs')
     api project(':react-native-autoheight-webview')
     api project(':react-native-vector-icons')
@@ -104,7 +103,7 @@ dependencies {
     api rootProject.ext.dependencies.eventbus
     api rootProject.ext.dependencies.zxing
     api rootProject.ext.dependencies.wechat
-    implementation (rootProject.ext.dependencies.sophix){
+    implementation(rootProject.ext.dependencies.sophix) {
         exclude(module: 'alicloud-android-utdid')
     }
     api files('libs/alipaySdk-20180601.jar')
