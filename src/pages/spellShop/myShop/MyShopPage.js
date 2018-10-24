@@ -233,31 +233,28 @@ export default class MyShopPage extends BasePage {
 
     //加入店铺
     _joinBtnAction = () => {
-        const { storeMaxUser, storeUserList = [], name } = this.state.storeData;
-        let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2 && storeMaxUser > storeUserList.length;
-        if (canJoin) {
-            this.refs.delAlert && this.refs.delAlert.show({
-                title: `确定要申请${name}吗?`,
-                confirmCallBack: () => {
-                    this.$loadingShow();
-                    SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
-                        //加入肯定是推荐搜索来的   刷新首页和当前页
-                        this._loadPageData();
+        const { name } = this.state.storeData;
+        this.refs.delAlert && this.refs.delAlert.show({
+            title: `确定要申请${name}吗?`,
+            confirmCallBack: () => {
+                this.$loadingShow();
+                SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
+                    //加入肯定是推荐搜索来的   刷新首页和当前页
+                    this._loadPageData();
 
-                        if (!this.props.propReload) {
-                            //不是首页刷新当前页面
-                            this._loadPageData();
-                        }
-                        //刷新首页
-                        spellStatusModel.getUser(2);
-                        this.$loadingDismiss();
-                    }).catch((error) => {
-                        this.$toastShow(error.msg);
-                        this.$loadingDismiss();
-                    });
-                }
-            });
-        }
+                    if (!this.props.propReload) {
+                        //不是首页刷新当前页面
+                        this._loadPageData();
+                    }
+                    //刷新首页
+                    spellStatusModel.getUser(2);
+                    this.$loadingDismiss();
+                }).catch((error) => {
+                    this.$toastShow(error.msg);
+                    this.$loadingDismiss();
+                });
+            }
+        });
     };
 
     renderHeader = () => {
@@ -300,49 +297,53 @@ export default class MyShopPage extends BasePage {
     };
 
     _renderJoinBtn = () => {
-        let btnText;
-        const { storeMaxUser, storeUserList = [] } = this.state.storeData;
-        let canJoin = this.state.storeData.userStatus === 0 && this.state.storeData.recruitStatus !== 2 && storeMaxUser > storeUserList.length;
-        switch (this.state.storeData.userStatus) {
-            case 0: {
-                if (this.state.storeData.recruitStatus === 0) {
-                    btnText = '申请加入';
-                    if (!canJoin) {
+        const { storeMaxUser, storeUserList = [], recruitStatus, userStatus } = this.state.storeData;
+        //有店或者已经加入或者为空
+        if (spellStatusModel.storeId || userStatus === 1 || StringUtils.isEmpty(userStatus)) {
+            return null;
+        }
+        let btnText = undefined;
+        //2,10 允许加入,人数未满
+        let canJoin = (userStatus !== 10 && userStatus !== 2) && (recruitStatus === 0 || recruitStatus === 1) && storeMaxUser > storeUserList.length;
+        switch (userStatus) {
+            case 2:
+                btnText = '申请中';
+                break;
+            case 10:
+                btnText = '店铺关闭';
+                break;
+            default:
+                if (recruitStatus === 0) {
+                    if (canJoin) {
+                        btnText = '申请加入';
+                    } else {
                         btnText = '人员已满';
                     }
-                } else if (this.state.storeData.recruitStatus === 1) {
-                    btnText = '加入店铺';
-                    if (!canJoin) {
+                } else if (recruitStatus === 1) {
+                    if (canJoin) {
+                        btnText = '加入店铺';
+                    } else {
                         btnText = '人员已满';
+
                     }
                 } else {
                     btnText = '暂不允许加入';
                 }
-            }
                 break;
-            case 2:
-                btnText = '已提交申请';
-                break;
-            case 4:
-                btnText = '取消申请';
-                break;
-        }
-        if (!StringUtils.isEmpty(this.state.storeData.userStatus) && this.state.storeData.userStatus !== 1 && !spellStatusModel.storeId) {
-            return <TouchableOpacity style={{
-                height: 48,
-                width: 150,
-                backgroundColor: canJoin ? '#D51243' : 'rgb(221,109,140)',
-                borderRadius: 5,
-                marginTop: 30,
-                alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
-            }}
-                                     onPress={this._joinBtnAction}>
-                <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{btnText}</Text>
-            </TouchableOpacity>;
-        } else {
-            return null;
         }
 
+        return <TouchableOpacity onPress={this._joinBtnAction}
+                                 disabled={!canJoin}
+                                 style={{
+                                     height: 48,
+                                     width: 150,
+                                     backgroundColor: canJoin ? '#D51243' : 'rgb(221,109,140)',
+                                     borderRadius: 5,
+                                     marginTop: 30,
+                                     alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
+                                 }}>
+            <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{btnText}</Text>
+        </TouchableOpacity>;
     };
 
     renderSepLine = () => {

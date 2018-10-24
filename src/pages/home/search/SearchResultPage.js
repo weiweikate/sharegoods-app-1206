@@ -4,6 +4,7 @@ import {
     FlatList,
     Image,
     TouchableWithoutFeedback,
+    TouchableOpacity,
     Modal,
     Text
 } from 'react-native';
@@ -20,8 +21,11 @@ import DateUtils from '../../../utils/DateUtils';
 import SelectionPage from '../product/SelectionPage';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
+import ShopCartStore from '../../shopCart/model/ShopCartStore';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
+import { observer } from 'mobx-react';
 
+@observer
 export default class SearchResultPage extends BasePage {
 
 
@@ -287,12 +291,23 @@ export default class SearchResultPage extends BasePage {
                 {this._renderContainer()}
 
                 <View style={{ position: 'absolute', right: 15, bottom: 15 }}>
-                    <TouchableWithoutFeedback onPress={this._onPressToGwc}>
+                    <TouchableOpacity onPress={this._onPressToGwc}>
                         <Image source={toGwc}/>
-                    </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={this._onPressToTop}>
+                        {ShopCartStore.getAllGoodsClassNumber === 0 ? null : <View style={{
+                            position: 'absolute', top: 4, left: 4, height: 16,
+                            paddingHorizontal: 4,
+                            backgroundColor: '#D51243',
+                            borderRadius: 8, justifyContent: 'center', alignItems: 'center'
+                        }}>
+                            <Text style={{
+                                color: 'white',
+                                fontSize: 10
+                            }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
+                        </View>}
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this._onPressToTop}>
                         <Image style={{ marginTop: 5 }} source={toTop}/>
-                    </TouchableWithoutFeedback>
+                    </TouchableOpacity>
                 </View>
                 <Modal
                     animationType="none"
