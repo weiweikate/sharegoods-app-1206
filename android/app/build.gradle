@@ -77,6 +77,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-gesture-handler')
     api fileTree(include: ['*.jar'], dir: 'libs')
     api project(':react-native-autoheight-webview')
     api project(':react-native-vector-icons')

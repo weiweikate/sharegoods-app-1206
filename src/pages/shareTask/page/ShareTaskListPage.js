@@ -8,14 +8,16 @@
  * Created by huchao on 2018/10/19.
  *
  */
-"use strict";
-import React from "react";
+'use strict';
+import React from 'react';
 import {
     StyleSheet,
-    View
-} from "react-native";
-import BasePage from "../../../BasePage";
-import ShareTaskResultAlert from "../components/ShareTaskResultAlert";
+    View,
+    Text
+} from 'react-native';
+import BasePage from '../../../BasePage';
+import ShareTaskResultAlert from '../components/ShareTaskResultAlert';
+// import RefreshLargeList from 'RefreshLargeList';
 
 type Props = {};
 export default class ShareTaskListPage extends BasePage<Props> {
@@ -26,7 +28,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
     }
 
     $navigationBarOptions = {
-        title: "我的任务",
+        title: '我的任务',
         show: true// false则隐藏导航
     };
 
@@ -36,7 +38,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
 
     componentDidMount() {
         this.loadPageData();
-        this.shareModal.open();
+        // this.shareModal.open();
     }
 
     loadPageData() {
@@ -45,6 +47,14 @@ export default class ShareTaskListPage extends BasePage<Props> {
     _render() {
         return (
             <View style={styles.container}>
+                {/*<RefreshLargeList*/}
+                {/*style={{height: 400, width: 100, marginTop: 100}}*/}
+                {/*ref = {(ref) => {this.list = ref}}*/}
+                {/*heightForSection={() => 50}*/}
+                {/*renderSection={this._renderSection}*/}
+                {/*heightForCell={() => 50}*/}
+                {/*renderItem={this._renderIndexPath}*/}
+                {/*/>*/}
                 <ShareTaskResultAlert ref={(ref) => this.shareModal = ref}
                                       success={true}
                                       money={25}
@@ -55,10 +65,43 @@ export default class ShareTaskListPage extends BasePage<Props> {
             </View>
         );
     }
+
+
+    _renderSection = ({section}) => {
+        return (
+            <View style={styles.section}>
+                <Text>
+                    {section}
+                </Text>
+            </View>
+        );
+    };
+
+    _renderIndexPath = ({section, row}) => {
+        return (
+            <View style={styles.row}>
+                <Text>
+                    {'section' + section + ',row:' + row}
+                </Text>
+                <View style={styles.line}/>
+            </View>
+        );
+    };
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+    },
+    section: {
+        flex: 1,
+        backgroundColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    row: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
