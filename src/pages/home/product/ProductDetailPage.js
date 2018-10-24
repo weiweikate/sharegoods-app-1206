@@ -207,7 +207,7 @@ export default class ProductDetailPage extends BasePage {
         let { product } = this.state.data;
         product = product || {};
         if (this.state.selectedIndex === 0) {
-            return <HTML html={product.content} imagesMaxWidth={ScreenUtils.maxWidth}
+            return <HTML html={product.content} imagesMaxWidth={ScreenUtils.width}
                          containerStyle={{ backgroundColor: '#fff' }}/>;
         } else {
             return <View style={{ backgroundColor: 'white' }}>

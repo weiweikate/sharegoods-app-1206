@@ -24,6 +24,7 @@ import user from '../../model/user';
 import TopicDetailSelectPage from './TopicDetailSelectPage';
 import PackageDetailSelectPage from './PackageDetailSelectPage';
 import CommShareModal from '../../comm/components/CommShareModal';
+import TopicDetailShowModal from './components/TopicDetailShowModal';
 
 export default class TopicDetailPage extends BasePage {
 
@@ -89,6 +90,10 @@ export default class TopicDetailPage extends BasePage {
                 this.$loadingDismiss();
                 this.setState({
                     data: data.data || {}
+                },()=>{
+                    if (this.state.data.type === 2) {//1普通礼包  2升级礼包
+                        this.TopicDetailShowModal.show('温馨提示');
+                    }
                 });
             }).catch((error) => {
                 this.$loadingDismiss();
@@ -207,10 +212,15 @@ export default class TopicDetailPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        return <TopicDetailHeaderView ref={(e) => {
-            this.TopicDetailHeaderView = e;
-        }} data={this.state.data} activityType={this.state.activityType}
-                                      activityData={this.state.activityData}/>;
+        return <TopicDetailHeaderView data={this.state.data}
+                                      ref={(e) => {
+                                          this.TopicDetailHeaderView = e;
+                                      }}
+                                      activityType={this.state.activityType}
+                                      activityData={this.state.activityData}
+                                      showDetailModal={() => {
+                                          this.TopicDetailShowModal.show('降价拍规则');
+                                      }}/>;
     };
 
     _renderSectionHeader = () => {
@@ -221,7 +231,7 @@ export default class TopicDetailPage extends BasePage {
         let { product = {} } = this.state.data;
         if (this.state.selectedIndex === 0) {
             return <HTML html={this.state.activityType === 3 ? this.state.data.content : product.content}
-                         imagesMaxWidth={ScreenUtils.maxWidth}
+                         imagesMaxWidth={ScreenUtils.width}
                          containerStyle={{ backgroundColor: '#fff' }}/>;
         } else {
             return <View style={{ backgroundColor: 'white' }}>
@@ -381,6 +391,7 @@ export default class TopicDetailPage extends BasePage {
                                     linkUrl: `http://testh5.sharegoodsmall.com/#/product/${productId}`,
                                     thumImage: productImgUrl
                                 }}/>
+                <TopicDetailShowModal ref={(ref) => this.TopicDetailShowModal = ref}/>
             </View>
         );
     }
