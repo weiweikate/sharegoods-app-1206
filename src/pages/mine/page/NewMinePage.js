@@ -8,7 +8,8 @@ import {
     Platform,
     Linking,
     Text,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    RefreshControl
 } from "react-native";
 import BasePage from "../../../BasePage";
 import UIText from "../../../components/ui/UIText";
@@ -18,21 +19,18 @@ import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
 import { PageLoadingState } from "../../../components/pageDecorator/PageState";
 import user from "../../../model/user";
-// import whiteArrowRight from "../res/homeBaseImg/icon3_03.png";
 import arrowRight from "../res/homeBaseImg/icon3_07.png";
 import waitPay from "../res/homeBaseImg/icon_03-04.png";
 import waitDelivery from "../res/homeBaseImg/icon_03-05.png";
 import waitReceive from "../res/homeBaseImg/icon1-03.png";
 import hasFinished from "../res/homeBaseImg/icon3_03-06.png";
-// import headBg from "../res/homeBaseImg/bg3_01.png";
 import inviteFr from "../res/homeBaseImg/icon3_16.png";
 import coupons from "../res/homeBaseImg/icon3_16-09.png";
 import myData from "../res/homeBaseImg/icon3_16-10.png";
 import myCollet from "../res/homeBaseImg/icon3_31.png";
 import myHelper from "../res/homeBaseImg/icon_31-12.png";
 import address from "../res/homeBaseImg/icon31-13.png";
-// import leftBg from "../res/homeBaseImg/bg_03.png";
-import levelBg from "../res/homeBaseImg/icon3_03-02.png";
+import levelBg from "../res/homeBaseImg/me_bg_vip_nor.png";
 import setting from "../res/homeBaseImg/icon_03.png";
 import service from "../res/homeBaseImg/icon02.png";
 import promotion from "../res/homeBaseImg/me_icon_tuiguang_nor.png";
@@ -41,8 +39,9 @@ import MineApi from "../api/MineApi";
 import { observer } from "mobx-react/native";
 import showImg from "../res/homeBaseImg/icon_faxian.png";
 import bgImg from "../res/homeBaseImg/bg_img_user.png";
+import rightIcon from "../res/homeBaseImg/me_icon_jinru_nor.png";
 
-const { px2dp } = ScreenUtils;
+const { px2dp ,statusBarHeight} = ScreenUtils;
 @observer
 export default class MinePage extends BasePage {
     constructor(props) {
@@ -85,13 +84,29 @@ export default class MinePage extends BasePage {
         this.refresh();
     }
 
+    _onScroll = (event) => {
+        let Y = event.nativeEvent.contentOffset.y;
+        if (Y < 40) {
+            this.st = Y / (40);
+        } else {
+            this.st = 1;
+        }
+
+        let opacity = parseInt(255 * this.st);
+        let opacityStr = opacity.toString(16);
+
+        this.headerBg.setNativeProps({
+            backgroundColor: `#ffffff${opacityStr}`
+        });
+    };
+
     refresh = () => {
         this.$loadingShow("加载中...", { timeout: 1, timeoutCallBack: () => this.timeoutCallBack });
         MineApi.getUser().then(res => {
             this.$loadingDismiss();
             if (res.code == 10000) {
                 let data = res.data;
-                // user.saveUserInfo(data);
+                user.saveUserInfo(data);
                 this.setState({
                     availableBalance: data.availableBalance,
                     headImg: data.headImg,
@@ -107,15 +122,66 @@ export default class MinePage extends BasePage {
         });
     };
 
-    _reload() {
-        alert("relod");
-    }
+    _reload = () => {
+        this.setState({
+            isRefreshing: true
+        });
+        MineApi.getUser().then(res => {
+            if (res.code == 10000) {
+                let data = res.data;
+                user.saveUserInfo(data);
+                this.setState({
+                    availableBalance: data.availableBalance,
+                    headImg: data.headImg,
+                    levelName: data.levelName,
+                    userScore: data.userScore,
+                    blockedBalance: data.blockedBalance,
+                    isRefreshing: false
+                });
+            }
+        }).catch(err => {
+            this.setState({
+                isRefreshing: false
+            });
+            if (err.code === 10009) {
+                this.props.navigation.navigate("login/login/LoginPage", { callback: this.refresh });
+            }
+        });
+    };
 
     //**********************************ViewPart******************************************
     _render() {
         return (
             <View style={styles.container}>
                 {this.renderBodyView()}
+                <View ref={(ref) => this.headerBg = ref}
+                      style={{ backgroundColor: "#ffffff00", position: "absolute", top: 0, left: 0, right: 0 }}>
+                    <View style={{ height: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 20 }}/>
+                    <View style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        paddingRight: px2dp(15),
+                        height: 40
+                    }}>
+                        <View style={{ flex: 1 }}/>
+                        <Text style={{ justifySelf: "center", color: "#212121", fontSize: px2dp(17) }}>
+                            我的
+                        </Text>
+                        <View style={{
+                            flex: 1,
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                            flexDirection: "row"
+                        }}>
+                            <UIImage tintColor={"#222222"} source={setting}
+                                     style={{ height: px2dp(17), width: px2dp(17), marginRight: 15 }}
+                                     onPress={() => this.jumpToSettingPage()}/>
+                            <UIImage tintColor={"#222222"} source={service}
+                                     style={{ height: px2dp(16), width: px2dp(20) }}
+                                     onPress={() => this.jumpToServicePage()}/>
+                        </View>
+                    </View>
+                </View>
             </View>
         );
     }
@@ -287,24 +353,7 @@ export default class MinePage extends BasePage {
     renderUserHead = () => {
         return (
             <ImageBackground style={styles.headerBgStyle} source={bgImg}>
-                <View style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    paddingRight: px2dp(15),
-                    height: 40
-                }}>
-                    <View style={{ flex: 1 }}/>
-                    <Text style={{ justifySelf: "center", color: "#212121", fontSize: px2dp(17) }}>
-                        我的
-                    </Text>
-                    <View style={{ flex: 1, alignItems: "center", justifyContent: "flex-end", flexDirection: "row" }}>
-                        <UIImage tintColor={"#222222"} source={setting}
-                                 style={{ height: px2dp(17), width: px2dp(17), marginRight: 15 }}
-                                 onPress={() => this.jumpToSettingPage()}/>
-                        <UIImage tintColor={"#222222"} source={service} style={{ height: px2dp(16), width: px2dp(20) }}
-                                 onPress={() => this.jumpToServicePage()}/>
-                    </View>
-                </View>
+
                 <View style={{ flex: 1 }}/>
                 <View style={{ height: px2dp(54), marginBottom: px2dp(43), flexDirection: "row" }}>
                     <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
@@ -322,19 +371,30 @@ export default class MinePage extends BasePage {
                         justifyContent: "space-between"
                     }}>
                         <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
-                            <Text style={{ color: "#666666", fontSize: px2dp(18), includeFontPadding: false }}>
-                                {`${user.nickname ? user.nickname : (user.phone ? user.phone : 1234)}  `}
-                                <Text style={{ color: "#999999", fontSize: px2dp(18), includeFontPadding: false }}>
-                                    >
+                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                <Text style={{ color: "#666666", fontSize: px2dp(18), includeFontPadding: false }}>
+                                    {`${user.nickname ? user.nickname : (user.phone ? user.phone : 1234)}`}
                                 </Text>
-                            </Text>
+                                <Image source={rightIcon}
+                                       style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(16) }}
+                                       resizeMode={"stretch"}/>
+
+                            </View>
                         </TouchableWithoutFeedback>
 
-                        <ImageBackground style={{ width: 53, height: 14, alignItems: "center", marginTop: 2 }}
+                        <ImageBackground style={{
+                            width: px2dp(44),
+                            height: px2dp(24),
+                            alignItems: "center",
+                            justifyContent: "center"
+                        }}
                                          source={levelBg}>
                             <Text style={{
-                                fontSize: 9,
-                                color: "white"
+                                fontSize: px2dp(12),
+                                color: "white",
+                                includeFontPadding: false,
+                                marginLeft: px2dp(4.5),
+                                marginTop: px2dp(-3)
                             }}>{this.state.levelName ? this.state.levelName : `${"VO"}`}</Text>
                         </ImageBackground>
                     </View>
@@ -486,7 +546,19 @@ export default class MinePage extends BasePage {
 
     renderBodyView = () => {
         return (
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView showsVerticalScrollIndicator={false}
+                        onScroll={this._onScroll.bind(this)}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={this._reload}
+                                 progressViewOffset={statusBarHeight + 44}
+                                colors={["#d51243"]}
+                                title="下拉刷新"
+                                tintColor="#999"
+                                titleColor="#999"
+                            />}
+            >
                 {this.renderUserHead()}
                 {this.accountRender()}
                 {this.orderRender()}
@@ -505,21 +577,21 @@ export default class MinePage extends BasePage {
                              onPress={() => this.jumpToOrderAccordingStates(i)} key={i}>
                     <ImageBackground source={statesImage[i]}
                                      style={{ height: 24, width: 24, marginBottom: 10, overflow: "visible" }}>
-                        <View style={{
-                            width: px2dp(18),
-                            height: px2dp(18),
-                            borderRadius: px2dp(9),
-                            position: "absolute",
-                            top: px2dp(-10),
-                            right: px2dp(-10),
-                            backgroundColor: "#D51243",
-                            alignItems: "center",
-                            justifyContent: "center"
-                        }}>
-                            <Text style={{ includeFontPadding: false, color: "white", fontSize: px2dp(10) }}>
-                                1
-                            </Text>
-                        </View>
+                        {/*<View style={{*/}
+                        {/*width: px2dp(16),*/}
+                        {/*height: px2dp(16),*/}
+                        {/*borderRadius: px2dp(8),*/}
+                        {/*position: "absolute",*/}
+                        {/*top: px2dp(-10),*/}
+                        {/*right: px2dp(-10),*/}
+                        {/*backgroundColor: "#D51243",*/}
+                        {/*alignItems: "center",*/}
+                        {/*justifyContent: "center"*/}
+                        {/*}}>*/}
+                        {/*<Text style={{ includeFontPadding: false, color: "white", fontSize: px2dp(10) }}>*/}
+                        {/*1*/}
+                        {/*</Text>*/}
+                        {/*</View>*/}
 
                     </ImageBackground>
                     <UIText value={statesText[i]}
@@ -576,7 +648,7 @@ export default class MinePage extends BasePage {
         );
     }
 
-//跳转到对应的订单状态页面
+    //跳转到对应的订单状态页面
     jumpToOrderAccordingStates = (index) => {
         if (!user.isLogin) {
             this.props.navigation.navigate("login/login/LoginPage");
@@ -598,7 +670,7 @@ export default class MinePage extends BasePage {
         }
     };
 
-//跳转到对应的账户页面
+    //跳转到对应的账户页面
     go2CashDetailPage(i) {
         switch (i) {
             case 1:
@@ -720,7 +792,7 @@ const styles = StyleSheet.create({
     headerBgStyle: {
         width: ScreenUtils.width,
         height: ScreenUtils.getImgHeightWithWidth(headerBgSize),
-        paddingTop: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 20
+        paddingTop: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 84 : 60) : 60
     },
     userIconStyle: {
         width: px2dp(54),
@@ -740,7 +812,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         paddingLeft: px2dp(22)
     }
-
 
 });
 

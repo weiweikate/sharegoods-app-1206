@@ -60,6 +60,13 @@ const MessageUtils = {
                     pageType: 2,
                 });
                 break
+            case 202:
+            case 203:
+            case 204:
+            case 206:
+            case 207:
+                navigation.navigate("spellShop/MyShop_RecruitPage", params);
+                break;
             case 212://招募
                 navigation.navigate("spellShop/MyShop_RecruitPage", params);
                 break;

@@ -40,7 +40,7 @@ import {
     View,
     TouchableWithoutFeedback,
     Animated,
-    Modal,
+    // Modal,
     Platform,
     TouchableOpacity
 } from 'react-native';
@@ -52,6 +52,7 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 //const saveMarginBottom = ScreenUtils.saveMarginBottom;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
+import CommModal from 'CommModal'
 
 import CommTabImag from '../res/CommTabImag';
 import bridge from '../../utils/bridge';
@@ -221,7 +222,7 @@ export default class CommShareModal extends React.Component {
             }
         }
         return (
-            <Modal onRequestClose={this.close}
+            <CommModal onRequestClose={this.close}
                    visible={this.state.modalVisible}
                    transparent={true}
             >
@@ -316,7 +317,7 @@ export default class CommShareModal extends React.Component {
                             </Animated.View> : null
                     }
                 </View>
-            </Modal>
+            </CommModal>
         );
     }
 }
