@@ -119,7 +119,7 @@ let constants = {
             menuData2:['退换','退换中','售后完成']
         },{
             index:6,
-            orderStatus:'退货关闭',
+            orderStatus:'已关闭',
             menuData:[{
                 id:7,
                 operation:'删除订单',
@@ -132,7 +132,7 @@ let constants = {
             menuData2:['']
         },{
             index:7,
-            orderStatus:'用户关闭',
+            orderStatus:'已关闭',
             menuData:[{
                 id:7,
                 operation:'删除订单',
@@ -145,7 +145,7 @@ let constants = {
             menuData2:['',]
         },{
             index:8,
-            orderStatus:'超时关闭',
+            orderStatus:'已关闭',
             menuData:[{
                 id:9,
                 operation:'删除订单',
@@ -279,7 +279,7 @@ let constants = {
             ],
         },{
             index:6,
-            buyState:'退货中/退货完成',
+            buyState:'已完成',
             moreDetail:'',
             sellerState:'已签收',
             // sellerTime:'2018-04-25 12:45:45',
@@ -297,7 +297,7 @@ let constants = {
             ],
         },{
             index:7,
-            buyState:'已完成',
+            buyState:'交易关闭',
             moreDetail:'',
             sellerState:'已签收',
             // sellerTime:'2018-04-25 12:45:45',

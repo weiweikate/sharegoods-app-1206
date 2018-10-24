@@ -39,7 +39,7 @@ export default class MyCouponsItems extends Component {
             currentPage: 1,
             explainList: [],
             showDialogModal: false,
-            tokenCoinNum: user.tokenCoin
+            tokenCoinNum: this.props.justOne
         };
     }
 
