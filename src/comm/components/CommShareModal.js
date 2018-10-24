@@ -42,8 +42,10 @@ import {
     Animated,
     Modal,
     Platform,
-    TouchableOpacity
-} from 'react-native';
+    TouchableOpacity,
+    Clipboard,
+    NativeModules
+} from "react-native";
 
 import {
     UIText, UIImage
@@ -144,7 +146,8 @@ export default class CommShareModal extends React.Component {
     }
 
     copyUrl() {
-        this.close();
+        Clipboard.setString(this.props.webJson.linkUrl);
+        NativeModules.commModule.toast('复制链接成功');
     }
 
     changeShareType(shareType) {
