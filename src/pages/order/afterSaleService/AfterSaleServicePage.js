@@ -261,17 +261,18 @@ class AfterSaleServicePage extends BasePage {
         );
     };
     renderModal = () => {
+        let returnReasons = ['多拍/错拍/不想要', '快递/物流一直未收到', '未按约定时间发货', '商品/破损/少件/污渍等', '货物破损已拒签', '假冒品牌/产品', '退运费', '发票问题', '其他'];
         return (
             <View>
                 <BottomSingleSelectModal
                     isShow={this.state.isShowSingleSelctionModal}
-                    detail={['不喜欢/不想要了', '空包裹', '快递/物流一直未送到', '货物破损已拒签']}
+                    detail={returnReasons}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
                     }}
                     commit={(index) => {
                         this.setState({ isShowSingleSelctionModal: false });
-                        this.setState({ returnReason: ['不喜欢/不想要了', '空包裹', '快递/物流一直未送到', '货物破损已拒签'][index] });
+                        this.setState({ returnReason: returnReasons[index]});
                     }}
                 />
                 <TakePhoneModal
