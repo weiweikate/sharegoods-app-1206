@@ -33,11 +33,12 @@ const GoodsListItem = props => {
         outTradeNo,
         platformPayTime,
         sendTime,
-        deliverTime,
         finishTime,
         shutOffTime,
         cancelTime,
-        callBack
+        callBack,
+        autoReceiveTime,
+        //deliverTime,
     } = props;
     this.state = { pageStateString: '27:45:45后自动取消订单' };
 
@@ -222,7 +223,7 @@ const GoodsListItem = props => {
                 break;
 
             case 4:
-                aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(deliverTime / 1000)}
+                aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(autoReceiveTime / 1000)}
                                     style={{ fontSize: 13, color: color.black_222 }}/>;
                 break;
             case 5:
