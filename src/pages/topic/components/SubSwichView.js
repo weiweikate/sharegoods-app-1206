@@ -71,6 +71,7 @@ export default class SubSwichView extends Component {
                                 flexDirection: 'column'
                                 // alignItems:'center'
                             }}
+                            key={titleItemIndex}
                         >
                             <UIText
                                 onPress={() => {
