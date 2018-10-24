@@ -2,6 +2,7 @@ import { AsyncStorage } from 'react-native';
 import { action, computed, observable } from 'mobx';
 import shopCartCacheTool from '../pages/shopCart/model/ShopCartCacheTool';
 //import apiEnvironment from '../api/ApiEnvironment';
+import UserApi from './userApi'
 
 const USERINFOCACHEKEY = 'UserInfo';
 const CARTDATA = 'cartData';
@@ -365,6 +366,17 @@ class User {
         } else {
             // TODO 跳转到登录页面，登录成功以后再调用action
         }
+    }
+
+    
+    @action updateUserData() {
+        return UserApi.getUser().then(res => {
+            if (res.code == 10000) {
+                let data = res.data;
+                this.saveUserInfo(data)
+            }
+            return res.data
+        })
     }
 
 
