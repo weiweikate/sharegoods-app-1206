@@ -79,7 +79,7 @@ const UserSingleItem = props => {
     };
 
     return (
-        <TouchableOpacity style={itemHeightStyle ? itemHeightStyle : styles.containerStyle} onPress={onPress}>
+        <TouchableOpacity style={[styles.containerStyle, itemHeightStyle]} onPress={onPress}>
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}>
                 <View style={{ justifyContent: 'center', marginLeft: marginLeft }}>
                     <Text style={leftTextStyle && leftTextStyle}>{leftText}</Text>

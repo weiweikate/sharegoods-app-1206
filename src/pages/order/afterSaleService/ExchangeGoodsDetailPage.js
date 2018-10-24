@@ -362,7 +362,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         <UIImage source={applyRefundMessage} style={{ width: 25, height: 23, marginBottom: 10 }}/>
                         <View style={{ marginLeft: 10 }}>
                             <UIText value={'联系客服'} style={{ fontSize: 16, color: color.black_222 }}/>
-                            <UIText value={'9:00-17:00'} style={{ fontSize: 12, color: color.black_999 }}/>
+                            <UIText value={'9:00-17:00'} style={{ fontSize: 12, color: color.black_999, marginTop: 3}}/>
                         </View>
                     </TouchableOpacity>
                     <View style={{ width: 1, justifyContent: 'center' }}>
@@ -379,7 +379,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         <UIImage source={applyRefundPhone} style={{ width: 25, height: 23, marginBottom: 10 }}/>
                         <View style={{ marginLeft: 10 }}>
                             <UIText value={'拨打电话'} style={{ fontSize: 16, color: color.black_222 }}/>
-                            <UIText value={'9:00-17:00'} style={{ fontSize: 12, color: color.black_999 }}/>
+                            <UIText value={'9:00-17:00'} style={{ fontSize: 12, color: color.black_999, marginTop: 3}}/>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -393,7 +393,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         }
         let typeStr = ['退款', '退货', '换货'][this.params.pageType];
         return (
-            <View>
+            <View style={{backgroundColor: color.white}}>
                 {this.renderLine()}
                 <UIText value={typeStr + '原因：' + pageData.returnReason} style={styles.refundReason}/>
                 <UIText value={typeStr + '金额：' + StringUtils.formatMoneyString(pageData.totalRefundPrice)}
@@ -558,10 +558,10 @@ class ExchangeGoodsDetailPage extends BasePage {
     }
 
     callPhone = () => {
-        if (this.state.sellerPhone === -1) {
-            NativeModules.commModule.toast('电话号码不存在');
-        } else {
+        if (this.state.sellerPhone) {
             BusinessUtils.callPhone(this.state.sellerPhone);
+        } else {
+            NativeModules.commModule.toast('电话号码不存在');
         }
     };
     contactSeller = () => {

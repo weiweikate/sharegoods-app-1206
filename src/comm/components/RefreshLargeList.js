@@ -17,7 +17,8 @@ import {
     Text,
     ActivityIndicator,
     StyleSheet,
-    Image
+    Image,
+    NativeModules
 } from "react-native";
 import PropTypes from "prop-types";
 import { LargeList } from "react-native-largelist";
@@ -316,6 +317,7 @@ export default class RefreshLargeList extends React.Component {
                 onEndRefresh && onEndRefresh();
 
             }
+            NativeModules.commModule.toast(error.msg || '请求失败');
             that.setState({
                 refreshing: false,
                 loadingMore: false,
