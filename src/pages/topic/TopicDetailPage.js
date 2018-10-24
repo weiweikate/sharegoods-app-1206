@@ -344,7 +344,7 @@ export default class TopicDetailPage extends BasePage {
                         backgroundColor: colorType === 1 ? '#33B4FF' : (colorType === 2 ? '#D51243' : '#CCCCCC'),
                         justifyContent: 'center',
                         alignItems: 'center'
-                    }} onPress={() => this._bottomAction(colorType)}>
+                    }} onPress={() => this._bottomAction(colorType)} disabled={!(colorType === 1 || colorType === 2)}>
                         <Text style={{
                             color: 'white',
                             fontSize: 14
