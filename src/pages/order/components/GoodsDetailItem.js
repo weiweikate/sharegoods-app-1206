@@ -6,7 +6,8 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { color } from '../../../constants/Theme';
-import GoodsItem from './GoodsItem';
+// import GoodsItem from './GoodsItem';
+import GoodsGrayItem from './GoodsGrayItem'
 // status,//账单状态：0出账中，1待支付，2已支付，3逾期
 const GoodsDetailItem = props => {
     const {
@@ -73,7 +74,7 @@ const GoodsDetailItem = props => {
     };
     return (
         <View>
-            <GoodsItem
+            <GoodsGrayItem
                 uri={uri}
                 goodsName={goodsName}
                 salePrice={salePrice}

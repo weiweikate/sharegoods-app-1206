@@ -51,47 +51,7 @@ class MyOrdersDetailPage extends BasePage {
             viewData: {
                 expressNo: '',
                 orderId: 1235,
-                list: [
-                    {
-                        id: 1,
-                        productId: 1,
-                        orderId: 1,
-                        uri: 'https://ws2.sinaimg.cn/large/006tNc79gy1fsvlm591zyj30om056dl8.jpg',
-                        goodsName: 'CHEERIOBAN 慵懒随意春装2018新款女毛呢格纹编制流苏小香风外套',
-                        salePrice: '150',
-                        category: '通勤通勤: 复古衣长: 中长款袖长: 长袖',
-                        goodsNum: '1',
-                        returnProductId: 1,
-                        afterSaleService: [
-                            {
-                                id: 0,
-                                operation: '退款',
-                                isRed: false
-                            }, {
-                                id: 1,
-                                operation: '退换',
-                                isRed: false
-                            }, {
-                                id: 2,
-                                operation: '退款中',
-                                isRed: false
-                            }, {
-                                id: 3,
-                                operation: '退换中',
-                                isRed: false
-                            },
-                            {
-                                id: 4,
-                                operation: '售后完成',
-                                isRed: true
-                            }, {
-                                id: 5,
-                                operation: '售后失败',
-                                isRed: true
-                            }
-                        ]
-                    }
-                ],
+                list: [],
                 receiverName: '赵信',
                 receiverNum: '18254569878',
                 receiverAddress: '浙江省杭州市萧山区宁围镇鸿宁路望京商务C2-502',
@@ -243,7 +203,7 @@ class MyOrdersDetailPage extends BasePage {
                         goodsName={item.goodsName}
                         salePrice={'￥' + StringUtils.formatMoneyString(item.salePrice, false)}
                         category={item.category}
-                        goodsNum={'X' + item.goodsNum}
+                        goodsNum={item.goodsNum}
                         clickItem={() => {
                             this.clickItem(index, item);
                         }}
@@ -341,7 +301,7 @@ class MyOrdersDetailPage extends BasePage {
                         marginBottom: 10
                     }}/>}
                 {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
-                    <UIText value={'成交时间：' + DateUtils.getFormatDate(this.state.viewData.finishTime / 1000)} style={{
+                    <UIText value={'完成时间：' + DateUtils.getFormatDate(this.state.viewData.finishTime / 1000)} style={{
                         color: color.black_999,
                         fontSize: 13,
                         marginLeft: 16,
@@ -927,7 +887,7 @@ class MyOrdersDetailPage extends BasePage {
                 this.$navigate('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
                     amounts: this.state.viewData.orderTotalPrice,
-                    outTrandNo: this.state.viewData.outTrandNo
+                    outTradeNo: this.state.viewData.outTradeNo
                 });
                 break;
             case 4:

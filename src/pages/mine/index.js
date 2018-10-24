@@ -1,4 +1,5 @@
 import Mine from './page/MinePage';
+import NewMinePage from './page/NewMinePage';
 import MyCollectPage from './page/mycollect/MyCollectPage';
 import userInformation from './page/userInformation';
 import Coupons from './page/coupons';
@@ -31,6 +32,7 @@ export default {
         MyDataPage,
         MyPromotionPage,
         InviteFriendsPage,
-        promotion
+        promotion,
+        NewMinePage
     }
 };

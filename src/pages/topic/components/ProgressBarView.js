@@ -53,7 +53,7 @@ export default class ProgressBarView extends Component {
                 marginTop: 5
             }}>
                 <View style={{
-                    width: progressValue / 100 * (ScreenUtils.width / 2 - 40),
+                    width: progressValue * (ScreenUtils.width / 2 - 40),
                     height: 12,
                     borderRadius: 6,
                     backgroundColor: ColorUtil.Color_d51243,
@@ -69,7 +69,7 @@ export default class ProgressBarView extends Component {
                     marginRight: 5,
                     color: ColorUtil.Color_ffffff
                 }}>
-                    {progressValue + '%'}
+                    {progressValue * 100 + '%'}
                 </Text>
 
             </View>

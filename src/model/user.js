@@ -83,7 +83,7 @@ class User {
     @observable
     availableBalance = null;//可提现金额
     @observable
-    blockedBalances = null; //冻结金额
+    blockedBalance = null; //冻结金额
     @observable
     tokenCoin = null;       //一元券数量
     @observable
@@ -335,7 +335,7 @@ class User {
         this.realnameStatus = null;   //
         // todo 清空cookie
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
-        
+
         return AsyncStorage.removeItem(USERINFOCACHEKEY).catch(e => {
         });
     }
