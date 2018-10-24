@@ -53,6 +53,7 @@ export default class MyOrdersListView extends Component {
                 deliverTime={item.deliverTime}
                 shutOffTime={item.shutOffTime}
                 cancelTime={item.cancelTime}
+                autoReceiveTime={item.autoReceiveTime}
                 clickItem={() => {
                     this.clickItem(index);
                 }}
@@ -206,6 +207,7 @@ export default class MyOrdersListView extends Component {
                     sendTime: item.sendTime,
                     finishTime: item.finishTime,
                     deliverTime: item.deliverTime,
+                    autoReceiveTime:item.autoReceiveTime?item.autoReceiveTime:item.sendTime,
                     orderStatus: item.status,
                     freightPrice: item.freightPrice,
                     totalPrice: item.needPrice,
@@ -428,7 +430,7 @@ export default class MyOrdersListView extends Component {
                 this.props.nav('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData[index].orderNum,
                     amounts: this.state.viewData[index].totalPrice,
-                    outTrandNo: this.state.viewData[index].outTrandNo
+                    outTradeNo: this.state.viewData[index].outTradeNo
                     // amounts: this.state.viewData[index].totalPrice + this.state.viewData[index].freightPrice,
                     // orderType: this.state.viewData[index].pickedUp - 1
                 });
