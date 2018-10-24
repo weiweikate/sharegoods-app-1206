@@ -7,8 +7,12 @@ import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.facebook.soloader.SoLoader;
-import com.meeruu.commonlib.umeng.RNUMConfigure;
-import com.umeng.commonsdk.UMConfigure;
+import com.meeruu.commonlib.callback.ForegroundCallbacks;
+import com.meeruu.commonlib.handler.CrashHandler;
+import com.meeruu.commonlib.umeng.UApp;
+import com.meeruu.commonlib.umeng.UShare;
+import com.meeruu.commonlib.utils.Utils;
+import com.meituan.android.walle.WalleChannelReader;
 import com.umeng.socialize.PlatformConfig;
 
 import java.util.List;
@@ -34,14 +38,31 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         appContext = this;
+        // activity生命周期，onCreate之后
+        ForegroundCallbacks.init(this);
         if (getProcessName(this).equals(getPackageName())) {
             // 捕获闪退日志
 //            CrashHandler.getInstance().init(this);
             SoLoader.init(this, /* native exopackage */ false);
             // umeng初始化
-            RNUMConfigure.init(this, "5b7663a3f29d9830cb0000d8"
-                    , "umeng", UMConfigure.DEVICE_TYPE_PHONE, null);
-            PlatformConfig.setWeixin("wx401bc973f010eece", "405dede82bb1c57e0b63056c8d2274c1");
+            String channel = WalleChannelReader.getChannel(this, "guanwang");
+            String umKey = "5b7663a3f29d9830cb0000d8";
+            UApp.init(this, umKey, channel);
+            if (Utils.isApkInDebug(this)) {
+                // jpush debug
+//                JPushInterface.setDebugMode(true);
+                // umeng debug
+                UApp.debug();
+                // 禁止极光捕获crash
+//                JPushInterface.stopCrashHandler(this);
+            } else {
+                // 捕获闪退日志
+                CrashHandler.getInstance().init(this);
+            }
+            // 初始化分享
+            UShare.init(this, umKey);
+            // 初始化极光
+//            JPushInterface.init(this);
         }
     }
 
