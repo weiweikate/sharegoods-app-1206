@@ -55,7 +55,6 @@ const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 import CommTabImag from '../res/CommTabImag';
 import bridge from '../../utils/bridge';
-import { color } from "../../constants/Theme";
 
 export default class CommShareModal extends React.Component {
 

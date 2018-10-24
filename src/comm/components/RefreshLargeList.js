@@ -21,7 +21,8 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import { LargeList } from "react-native-largelist";
-import defaultNoData from '../res/defaultNoData.png'
+import defaultNoData from "../res/defaultNoData.png";
+
 export default class RefreshLargeList extends React.Component {
     static propTypes = {
         sectionKey: PropTypes.string, //如果sectionKey = '' 等价于 sectionKey = 'data'
@@ -58,8 +59,8 @@ export default class RefreshLargeList extends React.Component {
         onStartRefresh: PropTypes.func,
         onEndRefresh: PropTypes.func,
         onStartLoadMore: PropTypes.func,
-        onEndLoadMore: PropTypes.func,
-       // data: PropTypes.array
+        onEndLoadMore: PropTypes.func
+        // data: PropTypes.array
     };
 
     static defaultProps = {
@@ -72,7 +73,7 @@ export default class RefreshLargeList extends React.Component {
         defaultPage: 1,
         params: {},
         defaultEmptyImage: defaultNoData,
-        defaultEmptyText: '没有数据'
+        defaultEmptyText: "没有数据"
     };
 
     constructor(props) {
@@ -84,7 +85,7 @@ export default class RefreshLargeList extends React.Component {
             refreshing: false,
             loadingMore: false,
             footerStatus: "idle",
-            height: 0,
+            height: 0
         };
         this.data = [];
         this.page = props.defaultPage;
@@ -115,22 +116,22 @@ export default class RefreshLargeList extends React.Component {
         // });
     }
 
-    _renderEmpty(){
-        if (this.props.renderEmpty){
+    _renderEmpty() {
+        if (this.props.renderEmpty) {
             return this.props.renderEmpty();
         } else {
-            return(
-                <View style = {{height: this.state.height - 40 , alignItems: 'center', justifyContent: 'center'}}>
-                    <Image source = {this.props.defaultEmptyImage} style = {{width: 100, height: 100}}/>
-                    <Text style ={{marginTop: 10, color: '#666666'}}>{this.props.defaultEmptyText}</Text>
+            return (
+                <View style={{ height: this.state.height - 40, alignItems: "center", justifyContent: "center" }}>
+                    <Image source={this.props.defaultEmptyImage} style={{ width: 100, height: 100 }}/>
+                    <Text style={{ marginTop: 10, color: "#666666" }}>{this.props.defaultEmptyText}</Text>
                 </View>
-            )
+            );
         }
     }
 
-    onLayout(e){
-        let {height} = e.nativeEvent.layout;
-        this.setState({height: height})
+    onLayout(e) {
+        let { height } = e.nativeEvent.layout;
+        this.setState({ height: height });
     }
 
     _getItem(section, row) {
@@ -242,13 +243,13 @@ export default class RefreshLargeList extends React.Component {
     _onRefresh() {
         this.setState({ refreshing: true, footerStatus: "idle" });
         this.allLoadCompleted = false;
-        let { onStartRefresh, url, params, defaultPage , onEndRefresh} = this.props;
+        let { onStartRefresh, url, params, defaultPage, onEndRefresh } = this.props;
         this.page = defaultPage;
         onStartRefresh && onStartRefresh();
 
         if (url) {
             this._getData(url, params, true);
-        }else {
+        } else {
             onEndRefresh && onEndRefresh();
         }
     }
@@ -263,13 +264,13 @@ export default class RefreshLargeList extends React.Component {
         onStartLoadMore && onStartLoadMore();
         if (url) {
             this._getData(url, params, false);
-        }else {
+        } else {
             onStartLoadMore && onStartLoadMore();
         }
     }
 
     _getData(url, params, isRefresh) {
-        let { pageKey, sizeKey, pageSize, handleRequestResult, isSupportLoadingMore, onEndRefresh, onEndLoadMore} = this.props;
+        let { pageKey, sizeKey, pageSize, handleRequestResult, isSupportLoadingMore, onEndRefresh, onEndLoadMore } = this.props;
         let that = this;
         if (isSupportLoadingMore) {
             params[pageKey] = this.page;
@@ -342,7 +343,7 @@ export default class RefreshLargeList extends React.Component {
                        renderLoadingMore={() => <View/>}
                        renderLoadCompleted={() => <View/>}
                        renderEmpty={this._renderEmpty}
-                       onLayout = {this.onLayout.bind(this)}
+                       onLayout={this.onLayout.bind(this)}
             />
         );
     }
