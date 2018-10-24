@@ -23,7 +23,7 @@ export default class ShowView extends Component {
     }
     _goToShow() {
         const { navigation } = this.props
-        navigation.navigate('show/ShowListPage')
+        navigation.navigate('show/ShowListPage', {fromHome: true})
     }
     _showEnd() {
         this.showModules.loadShowList()
