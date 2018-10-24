@@ -72,8 +72,21 @@ function getStatusH() {
     return appData.androidStatusH > 0 ? appData.androidStatusH : 24;
 }
 
+
+export type Size = {
+    width: number;
+    height: number;
+};
+function getImgHeightWithWidth(size: Size, width: number = screenW): number {
+    if (!size || !size.width || !size.height) {
+        return 0;
+    }
+    return size.height * width / size.width;
+}
+
 export default {
     px2dp,
+    getImgHeightWithWidth,
     autoSizeWidth: autoSizeWidth,
     autoSizeHeight: autoSizeHeight,
     width: Dimensions.get('window').width,

@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import {
     View,
     Text,
-    Modal,
+    // Modal,
     Animated,
     StyleSheet,
     Dimensions,
     TouchableOpacity,
 } from 'react-native';
+import Modal from 'CommModal'
+
 const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const PANNELHEIGHT = 203;
 const Animated_Duration = 300; //默认的动画持续时间
@@ -113,7 +115,7 @@ export default class ConfirmAlert extends Component {
             return null;
         }
         return (
-            <Modal onRequestClose={this._closeAnimated} transparent={true} style={styles.container}>
+            <Modal visible={this.state.modalVisible} onRequestClose={this._closeAnimated} transparent={true} style={styles.container}>
                 <View style={[styles.container, { backgroundColor: 'transparent' }]}>
                     <Animated.View
                         style={[
