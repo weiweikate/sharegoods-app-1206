@@ -7,7 +7,8 @@ import {
     Image,
     TouchableOpacity,
     ListView, TouchableHighlight,
-    Text
+    Text,
+    TextInput
 } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
@@ -341,9 +342,20 @@ export default class ShopCartPage extends BasePage {
                                         borderLeftWidth: 0,
                                         borderRightWidth: 0
                                     }]}>
-                                        <UIText
+                                        {/*<UIText*/}
+                                            {/*style={styles.TextInputStyle}*/}
+                                            {/*value={itemData.amount}*/}
+                                        {/*/>*/}
+                                        <TextInput
                                             style={styles.TextInputStyle}
-                                            value={itemData.amount}
+                                            value={itemData.amount?''+itemData.amount:''+0}
+                                            underlineColorAndroid={"transparent"}
+                                            // onChangeText={(text) => this.setState({text})}
+                                            onChangeText={text => this.onNumberTextChange(itemData,text,rowId)}
+                                            // onEndEditing={text => this.onNumberTextChange(itemData,text,rowId)}
+                                            // onSubmitEditing={text => this.onNumberTextChange(itemData,text,rowId)}
+                                            placeholder='0'
+                                            keyboardType='numeric'
                                         />
                                     </View>
                                     <TouchableOpacity
@@ -400,6 +412,7 @@ export default class ShopCartPage extends BasePage {
             </View>
         );
     };
+
     /**
      * 获取秒杀是否开始或者结束
      * @param itemData
@@ -420,13 +433,32 @@ export default class ShopCartPage extends BasePage {
         }
 
     };
+
     _jumpToProductDetailPage = (itemData) => {
+        if(itemData.status === 0){
+            //失效商品不可进入详情
+          return;
+        }
         //跳转产品详情
         this.$navigate('home/product/ProductDetailPage', {
             productId: itemData.productId,
             productCode: itemData.productId
         });
     };
+    onNumberTextChange=(itemData,text,rowId)=>{
+        console.log('------在执行');
+        console.log('------'+text)
+
+        if (StringUtils.isEmpty(text)){
+            itemData.amount = 1
+            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+        }
+
+       if(StringUtils.checkIsPositionNumber(parseInt(text))) {
+           itemData.amount = parseInt(text)
+           shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+       }
+    }
     /*action*/
     /*减号操作*/
     _reduceProductNum = (itemData, rowId) => {
@@ -570,7 +602,8 @@ const
         },
 
         TextInputStyle: {
-            paddingTop: 8,
+            padding:0,
+            paddingTop: 5,
             height: 30,
             width: 46,
             fontSize: 11,

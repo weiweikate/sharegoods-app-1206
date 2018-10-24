@@ -1,8 +1,11 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import TopicAPI from '../api/TopicApi';
 import bridge from '../../../utils/bridge';
 
 class TotalTopicresultDataModel {
+
+    @observable
+    isFirstLoad = true;
     @observable
     checkIndex = 0;
     @observable
@@ -28,13 +31,26 @@ class TotalTopicresultDataModel {
     @observable
     sectionDataList = [];
 
+
+    @computed
+    get topicTitle() {
+        return this.name || '专题';
+    }
+
     /**
      * 存储专题数据
      * @param resultData
      */
     @action
     saveResultDataWith(resultData) {
-        this.checkIndex = resultData.checkIndex;
+        /**
+         * 如果为第一次加载则启用服务其返回的索引
+         */
+        if (this.isFirstLoad) {
+            this.checkIndex = resultData.checkIndex;
+            this.isFirstLoad = false;
+        }
+
         this.id = resultData.id;
         this.code = resultData.code;
         this.name = resultData.name;

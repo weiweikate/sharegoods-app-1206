@@ -21,7 +21,7 @@ import EmptyUtils from '../../utils/EmptyUtils'
 import MessageAPI from "./api/MessageApi";
 const { px2dp } = ScreenUtils;
 import CommonUtils from 'CommonUtils'
-
+import MessageUtils from './utils/MessageUtils'
 
 export default class ShopMessagePage extends BasePage {
     constructor(props) {
@@ -29,9 +29,10 @@ export default class ShopMessagePage extends BasePage {
         this.state = {
             viewData: [],
             isEmpty: false,
-            currentPage: 1,
+            // currentPage: 1,
         }
         this.createdTime = null;
+        this.currentPage = 1
     }
     $navigationBarOptions = {
         title:'消息',
@@ -58,8 +59,11 @@ export default class ShopMessagePage extends BasePage {
         DeviceEventEmitter.emit("contentViewed");
     }
 
-    confirmMessage = (id,confirm,index) =>{
-        MessageAPI.confirmMessage({confirm:confirm,id:id}).then(res=>{
+    confirmMessage = (id,confirm,createdBy,index) =>{
+        //otherUserId 消息来源的人员ID
+        //messageId 这条消息的ID
+        //status    同意或拒绝 0拒绝 1同意
+        MessageAPI.confirmMessage({status:confirm ? 1 : 0,messageId:id,otherUserId:createdBy}).then(res=>{
             let arr = CommonUtils.deepClone(this.state.viewData);
             arr[index].confirm = confirm;
             this.setState({
@@ -303,11 +307,25 @@ export default class ShopMessagePage extends BasePage {
         }
 
         if(item.messageType === 200){
+            return (
+
+                <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.props.navigation,item.paramType,item.param)}}>
+                    <View style={{height:33,width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white',borderTopColor:'#DDDDDD',borderTopWidth:px2dp(0,5)}}>
+                        <Text style={{color:'#666666',fontSize:px2dp(13)}}>
+                             查看详情>>
+                        </Text>
+                    </View>
+                </TouchableWithoutFeedback>
+
+            )
+        }
+
+        if(item.messageType === 300){
             if(EmptyUtils.isEmpty(item.confirm)){
                return(
                    <View style={styles.itemBottomWrapper}>
                        <TouchableWithoutFeedback onPress={()=>{
-                           this.confirmMessage(item.id,false,index)
+                           this.confirmMessage(item.id,false,item.createdBy,index)
                        }}>
                            <View style={styles.whiteButtonStyle}>
                                <Text style={{color:'#D51243',fontSize:px2dp(16)}}>
@@ -316,7 +334,7 @@ export default class ShopMessagePage extends BasePage {
                            </View>
                        </TouchableWithoutFeedback>
                        <TouchableWithoutFeedback onPress={()=>{
-                           this.confirmMessage(item.id,true,index)
+                           this.confirmMessage(item.id,true,item.createdBy,index)
                        }}>
                            <View style={styles.redButtonStyle}>
                                <Text style={{color:'white',fontSize:px2dp(16)}}>
@@ -330,7 +348,7 @@ export default class ShopMessagePage extends BasePage {
                 return(
                     <View style={styles.itemBottomWrapper}>
                         <View style={styles.grayButtonStyle}>
-                            <Text style={{color:'#D51243',fontSize:px2dp(16)}}>
+                            <Text style={{color:'white',fontSize:px2dp(16)}}>
                                 已同意
                             </Text>
                         </View>
@@ -350,20 +368,25 @@ export default class ShopMessagePage extends BasePage {
             }
         }
 
-        if(item.messageType === 300){
-            return (
-
-                    <TouchableWithoutFeedback onPress={()=>{alert(item.param)}}>
-                        <View style={{height:33,width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white'}}>
-                            <Text style={{color:'#666666',fontSize:px2dp(13)}}>
-                                {item.buttonName + ">>"}
-                            </Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-
-            )
-        }
     }
+
+    /**
+     * STORE_APPLY(201, "申请加入店铺"),
+     OUT(202, "请出消息"),
+     IN(203, "招募消息"),
+     STORE_SUCCESS(204, "拼店成功"),
+     STORE_FAILED(205, "拼店失败)"),
+     APPLY_SUCCESS(206, "申请的店铺已同意"),
+     APPLY_FAILED(207, "申请的店铺拒绝了您"),
+     TRANSFER_APPLY(208, "转让请求"),
+     STORE_DISSOLVE(209, "店铺解散消息)"),
+     TRANSFER_SUCCESS(210, "店铺转让成功"),
+     TRANSFER_FAILED(211, "店铺转让失败"),
+     STORE_START(212, "您的招募店铺“XXX小店”已满足招募要求，马上去开启"),
+     * @param item
+     * @param index
+     * @returns {*}
+     */
 
     renderItem = ({item, index})=> {
 
@@ -385,23 +408,31 @@ export default class ShopMessagePage extends BasePage {
         );
     };
     onLoadMore = () => {
-        this.setState({
-            currentPage: this.state.currentPage + 1
-        });
+        // this.setState({
+        //     currentPage: this.state.currentPage + 1
+        // });
+        this.currentPage++;
         this.getDataFromNetwork()
     }
     onRefresh = () => {
-        this.setState({
-            currentPage: 1
-        });
+        // this.setState({
+        //     currentPage: 1
+        // });
+        this.currentPage = 1;
         this.createdTime = null;
         this.getDataFromNetwork()
     }
 
     getDataFromNetwork() {
-        MessageAPI.queryMessage({page: this.state.currentPage, pageSize: 15, type:200,createdTime: this.createdTime}).then(res => {
+        MessageAPI.queryMessage({page: this.currentPage, pageSize: 15, type:200,createdTime: this.createdTime}).then(res => {
             if(StringUtils.isNoEmpty(res.data.data)){
+                if(!EmptyUtils.isEmptyArr(arrData)){
+                    this.createdTime = res.data.data[res.data.data.length - 1].createdTime;
+                }
                 let arrData = this.state.viewData;
+                if(this.currentPage === 1){
+                    arrData = [];
+                }
                 res.data.data.map((item, index) => {
                     arrData.push(item);
                 });
@@ -584,7 +615,9 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         alignItems:'center',
         justifyContent:'space-around',
-        flexDirection:'row'
+        flexDirection:'row',
+        borderTopWidth:px2dp(0.5),
+        borderTopColor:'#DDDDDD'
     },
     whiteButtonStyle:{
         backgroundColor:'white',

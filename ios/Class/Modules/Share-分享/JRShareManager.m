@@ -55,6 +55,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
   shareObject.webpageUrl = shareModel.linkUrl;
   shareObject.userName = shareModel.userName;
   shareObject.path = shareModel.miniProgramPath;
+  shareObject.miniProgramType = UShareWXMiniProgramTypePreview;
   message.shareObject = shareObject;
   shareObject.hdImageData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"logo" ofType:@"png"]];
    [self shareWithMessageObject:message platform:UMSocialPlatformType_WechatSession completion:completion];

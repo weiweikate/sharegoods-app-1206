@@ -30,20 +30,16 @@ export default class ActivityView extends Component {
         this.timer.stop();
     }
 
-
-    _time(start, end) {
-        if (isNoEmpty(start) && isNoEmpty(end)) {
-            this.timer.startDown((time) => {
-                this.setState({
-                    countTime: time
-                });
-            }, Math.floor((end - start) / 1000));
-        }
+    componentDidMount() {
+        this.saveActivityViewData(this.props.activityData, this.props.activityType);
     }
 
     saveActivityViewData(activityData, activityType) {
-        const { date, beginTime, endTime } = activityData;
-        let begin = beginTime > date;
+        //	integer($int32)
+        // example: 1
+        // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
+        const { date, beginTime, endTime, status } = activityData;
+        let begin = status === 1;
         if (begin) {
             this._time(date, beginTime);
         } else {
@@ -56,19 +52,33 @@ export default class ActivityView extends Component {
         }
     }
 
+
+    _time(start, end) {
+        if (isNoEmpty(start) && isNoEmpty(end)) {
+            this.timer.startDown((time) => {
+                this.setState({
+                    countTime: time
+                });
+            }, Math.floor((end - start) / 1000));
+        }
+    }
+
     _timeDif(usedTime) {
-        //两个时间戳相差的毫秒数
+        //天数
+        let days = Math.floor(usedTime / (24 * 3600));
+        //去除天数
+        let leave1 = usedTime % (24 * 3600);
+        //小时
+        let hours = Math.floor(leave1 / 3600);
+        //去除小时
+        let leave2 = leave1 % 3600;
+        //分钟
+        let minutes = Math.floor(leave2 / 60);
+        //去除分钟
+        let leave3 = leave2 % 60;
+        //秒
+        let second = Math.floor(leave3);
 
-        let days = Math.floor(usedTime / (24 * 3600 * 1000));
-        //计算出小时数
-        let leave1 = usedTime % (24 * 3600 * 1000);    //计算天数后剩余的毫秒数
-        let hours = Math.floor(leave1 / (3600 * 1000));
-        //计算相差分钟数
-        let leave2 = leave1 % (3600 * 1000);        //计算小时数后剩余的毫秒数
-        let minutes = Math.floor(leave2 / (60 * 1000));
-
-        let leave3 = leave2 % (60 * 1000);        //计算小时数后剩余的毫秒数
-        let second = Math.floor(leave3 / (1000));
         let time = days + ':' + hours + ':' + minutes + ':' + second;
         return time;
     }
@@ -84,10 +94,10 @@ export default class ActivityView extends Component {
         // surplusNumber 剩余数量 totalNumber总
         // endTime活动结束时间
         const { activityType } = this.props;
-        const { surplusNumber = '', date, beginTime, endTime } = this.props.activityData;
+        const { surplusNumber = '', beginTime, status } = this.props.activityData;
         let price = '', one = '', two = '', three = '', four = '';
-        let begin = beginTime > date;
-        let end = date > endTime;
+        let begin = status === 1;
+        let end = status === 4 || status === 5;
         if (activityType === 2) {
             const {
                 startPrice, markdownPrice = '', reseCount = '', floorPrice
@@ -126,7 +136,7 @@ export default class ActivityView extends Component {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between'
-        }} onPress = {()=>this.props.productActivityViewAction()}>
+        }} onPress={() => this.props.productActivityViewAction()}>
             <View style={{ marginLeft: 11, flexDirection: 'row', paddingVertical: 10 }}>
                 <Text style={{ color: 'white', fontSize: 18 }}>￥<Text
                     style={{ fontSize: 40 }}>{price}</Text></Text>
@@ -141,9 +151,9 @@ export default class ActivityView extends Component {
             </View>
             <View style={{ marginRight: 15 }}>
                 {end ?
-                    <Text style={{ color: '#FFFC00', fontSize: 13 }}>活动结束</Text>
+                    <Text style={{ color: '#FFFC00', fontSize: 13 }}>活动已结束</Text>
                     :
-                    <View style = {{flexDirection:'row',alignItems:'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View>
                             <Text style={{ color: '#1B7BB3', fontSize: 11 }}>{three}</Text>
                             <View style={{

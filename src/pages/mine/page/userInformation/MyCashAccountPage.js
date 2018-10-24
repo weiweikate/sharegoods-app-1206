@@ -135,7 +135,7 @@ export default class MyCashAccountPage extends BasePage {
                     type={item.type}
                     time={item.time}
                     serialNumber={item.serialNumber}
-                    capital={item.capital}
+                    capital={StringUtils.formatMoneyString(item.capital,false)}
                     iconImage={item.iconImage}
                     clickItem={() => {
                         this.clickItem(index);
@@ -180,7 +180,7 @@ export default class MyCashAccountPage extends BasePage {
                         arrData.push({
                             type: use_type[item.useType],
                             time: DataUtils.getFormatDate(item.createTime / 1000),
-                            serialNumber: '流水号：' + item.serialNo,
+                            serialNumber: '编号：' + item.serialNo,
                             capital: use_type_symbol[item.useType] + item.balance,
                             iconImage: useLeftImg[item.useType],
                             capitalRed: use_type_symbol[item.useType] === '-'

@@ -17,7 +17,7 @@ export default class SelectionHeaderView extends Component {
         product: PropTypes.object.isRequired,
         price: PropTypes.any.isRequired,
 
-        priceList: PropTypes.array.isRequired,
+        selectSpecList: PropTypes.array.isRequired,
         selectList: PropTypes.array.isRequired,
         selectStrList: PropTypes.array.isRequired
     };
@@ -29,17 +29,17 @@ export default class SelectionHeaderView extends Component {
 
     render() {
         const { imgUrl } = this.props.product || {};
-        const price = this.props.price || 0;
-
+        let price = this.props.price || 0;
         let stock = 0;
         let stockUnit;
-        let specImg;
-        this.props.priceList.forEach((item) => {
+        let specImg = undefined;
+        this.props.selectSpecList.forEach((item) => {
             //总库存库存遍历相加
             stock = stock + item.stock;
             //件
             stockUnit = item.stockUnit;
             specImg = item.specImg;
+            price = item.price;
         });
 
         let selectStrListTemp = this.props.selectStrList.filter((item) => {

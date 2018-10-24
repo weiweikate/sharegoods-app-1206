@@ -86,6 +86,9 @@ export default class PaymentMethodPage extends BasePage {
         };
         this.payment = new Payment()
         this.payment.payStore = this.params.payStore
+        if (this.state.paymentPageParams.shouldPayMoney === 0) {
+            this.payment.selectedBalace = true
+        }
     }
     _selectedPayType(value) {
         this.payment.selectPaymentType(value)
@@ -117,7 +120,7 @@ export default class PaymentMethodPage extends BasePage {
     //支付方式弹窗
     renderPaymentModal = () => {
         const {  payStore } = this.payment
-        
+
         return (
             <InputTransactionPasswordModal
                 isShow={this.state.isShowPaymentModal}
@@ -177,7 +180,7 @@ export default class PaymentMethodPage extends BasePage {
     };
     forgetTransactionPassword = () => {
         this.setState({ isShowPaymentModal: false });
-        this.navigate('mine/transactionPassword/SettingTransactionPasswordStep2Page');
+        this.$navigate('mine/account/SetOrEditPayPwdPage')
     };
     async _balancePay() {
         const { params } = this.getApiRequestParams();
@@ -272,7 +275,7 @@ export default class PaymentMethodPage extends BasePage {
                 },
                 {
                     text: '回到订单', onPress: () => {
-                        this.props.navigation.navigate('order/order/MyOrdersListPage',{index:0})
+                        this.props.navigation.navigate('order/order/MyOrdersListPage',{index:2})
                     }
                 }
             ], { cancelable: true });
@@ -301,7 +304,8 @@ export default class PaymentMethodPage extends BasePage {
             }
              this.payment.payStoreActoin().then(result => {
                 if (result.sdkCode === 0) {
-                    this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                    this.$navigate('spellShop/shopSetting/SetShopNamePage')
+                    Toast.$toast('支付成功')
                 } else {
                     Toast.$toast('支付失败')
                 }

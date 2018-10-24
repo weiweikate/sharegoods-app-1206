@@ -29,6 +29,10 @@ export default class ProgressBarView extends Component {
             [statues.handOver]:this._renderHaveSoltOut,
         };
     }
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('shouldComponentUpdate --nextProps' + nextProps + '===nextState' + nextState)
+        return true
+    }
     render() {
         const {statue } = this.props;
         return (
@@ -74,6 +78,7 @@ export default class ProgressBarView extends Component {
     };
     _noBeginTextRender = () => {
         const {itemData} = this.props;
+        console.log('测试item----'+itemData)
           return(
               <View>
                   <Text

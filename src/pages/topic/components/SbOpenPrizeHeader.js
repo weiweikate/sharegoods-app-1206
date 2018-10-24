@@ -43,7 +43,7 @@ export default class SbOpenPrizeHeader extends Component {
         return (
             <View>
                 {
-                    (topicNavTitleList instanceof Array && topicNavTitleList.length > 1) ?
+                    (topicNavTitleList instanceof Array && topicNavTitleList.length > 0) ?
                         <View style={SbOpenPrizeHeaderStyles.bottomDownViewBgStyle}>
                             <View
                                 style={

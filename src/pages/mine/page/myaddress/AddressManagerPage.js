@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import addrSelectedImg from '../../res/address/dizhi_btn_moren_sel.png';
@@ -66,8 +66,8 @@ export default class AddressManagerPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <FlatList
-                    ref={(flatList) => this._flatList = flatList}
                     ListHeaderComponent={this._header}
+                    ListFooterComponent={this._footer}
                     ItemSeparatorComponent={this._separator}
                     renderItem={this._renderItem}
                     extraData={this.state}
@@ -75,11 +75,8 @@ export default class AddressManagerPage extends BasePage {
                     refreshing={false}
                     keyExtractor={(item) => item.id + ''}
                     showsVerticalScrollIndicator={false}
-                    getItemLayout={(data, index) => (
-                        //行高于分割线高，优化
-                        { length: 120, offset: (120 + 10) * index, index }
-                    )}
-                    data={this.state.datas} />
+                    initialNumToRender={5}
+                    data={this.state.datas}/>
             </View>
         );
     }
@@ -182,16 +179,31 @@ export default class AddressManagerPage extends BasePage {
     };
 
     _onDelAddress = (item) => {
-        // 删除地址,刷新页面
-        MineAPI.delAddress({ id: item.id }).then((response) => {
-            this.refreshing();
-        }).catch((data) => {
-            bridge.$toast(data.msg);
-        });
+        Alert.alert('', '是否确认删除此地址？', [
+            {
+                text: '取消', onPress: () => {
+                    style: 'cancel';
+                }
+            },
+            {
+                text: '确定', onPress: () => {
+                    // 删除地址,刷新页面
+                    MineAPI.delAddress({ id: item.id }).then((response) => {
+                        this.refreshing();
+                    }).catch((data) => {
+                        bridge.$toast(data.msg);
+                    });
+                }
+            }
+        ]);
     };
 
     _header = () => {
         return <View style={{ height: 10, backgroundColor: 'transparent' }}/>;
+    };
+
+    _footer = () => {
+        return <View style={{ height: 20, backgroundColor: 'transparent' }}/>;
     };
 
     _separator = () => {

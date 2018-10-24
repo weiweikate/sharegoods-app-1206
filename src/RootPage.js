@@ -1,6 +1,4 @@
 import { TabNavigator } from 'react-navigation';
-// import FriendPage from './pages/demo/FriendPage';
-// import Home from './pages/demo/Home';
 import React from 'react';
 import Home from './pages/home/HomePage';
 import Mine from './pages/mine/page/MinePage';
@@ -8,11 +6,11 @@ import ShopCart from './pages/shopCart/page/ShopCartPage';
 import SpellShop from './pages/spellShop/SpellShopPage';
 import {
     StyleSheet,
-    Image
+    Image, Platform, NativeModules
 } from 'react-native';
 import CommTabImag from './comm/res/CommTabImag';
 import ColorUtil from './utils/ColorUtil';
-import ScreenUtils from './utils/ScreenUtils'
+import ScreenUtils from './utils/ScreenUtils';
 
 export const TabNav = TabNavigator(
     {
@@ -22,6 +20,9 @@ export const TabNav = TabNavigator(
                 tabBarLabel: '主页',
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
+                        if (Platform.OS !== 'ios') {
+                            NativeModules.commModule.setStatusMode('HomePage');
+                        }
                         return (
                             <Image style={styles.tabBarIcon} source={CommTabImag.home_Tab_img.img_Sel}/>
                         );
@@ -30,9 +31,7 @@ export const TabNav = TabNavigator(
                         <Image style={styles.tabBarIcon} source={CommTabImag.home_Tab_img.img_Nor}/>
                     );
                 }
-
             }
-
         },
         SpellShopPage: {
             screen: SpellShop,
@@ -72,7 +71,6 @@ export const TabNav = TabNavigator(
                 {
                     tabBarLabel: '我的',
                     tabBarIcon: ({ focused }) => {
-
                         if (focused) {
                             return (
                                 <Image style={styles.tabBarIcon} source={CommTabImag.mine_Tab_img.img_Sel}/>
@@ -81,7 +79,7 @@ export const TabNav = TabNavigator(
                         return (
                             <Image style={styles.tabBarIcon} source={CommTabImag.mine_Tab_img.img_Nor}/>
                         );
-                    },
+                    }
                 }
 
         }

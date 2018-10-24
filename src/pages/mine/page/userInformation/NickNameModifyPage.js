@@ -34,6 +34,7 @@ export default class NickNameModifyPage extends BasePage {
                     style={styles.inputTextStyle}
                     onChangeText={text => this.setState({ nickName: text })}
                     placeholder={this.state.nickName}
+                    maxLength={8}
                     value={this.state.nickName}
                     underlineColorAndroid={'transparent'}
                 />
@@ -60,12 +61,15 @@ export default class NickNameModifyPage extends BasePage {
     };
     save = () => {
         MineAPI.updateUserById({ type: 2, nickname: this.state.nickName }).then(res => {
-            if (res.code === 10000) {
-                user.nickname = this.state.nickName;
-                this.$navigateBack();
+            let length = this.state.nickName.trim().length;
+            if (length < 2 || length > 8) {
+                this.$toastShow('昵称长度位2-8位');
+                return;
             }
+            user.nickname = this.state.nickName;
+            this.$navigateBack();
         }).catch(err => {
-            console.log(err);
+            this.$toastShow(err.msg);
         });
     };
 }

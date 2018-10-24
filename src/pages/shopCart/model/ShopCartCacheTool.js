@@ -124,6 +124,11 @@ class ShopCartCacheTool {
                 Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
                     let [...localValue] = res;
                     if (localValue && (localValue instanceof Array)) {
+                        //检测购物车数量是否已够80
+                        if(localValue.length >= 80){
+                            bridge.$toast('本地购物车商品类型已达80种上限')
+                            return;
+                        }
                         let isHave = false;
                         localValue.map((localItem, indexPath) => {
                             if (localItem.priceId === goodsItem.priceId &&
@@ -179,14 +184,24 @@ class ShopCartCacheTool {
     /*更新购物车数据*/
     updateShopCartDataLocalOrService(itemData, rowId) {
         // if (shopCartStore.data.splice().length > rowId) {
+        //判断商品是否有效
+        if (itemData.status === 0){
+            bridge.$toast('此商品已下架~');
+            return;
+        }
+
         if (user.isLogin) {
             shopCartStore.updateCartItem(itemData, rowId);
         } else {
+            //判断商品数量
+            if (itemData.amount>200){
+                itemData.amount=200
+                bridge.$toast('单个商品最大数量上限为200个')
+            }
             /*未登录状态登录状态更新本地*/
             Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
                 let [...localValue] = res;
                 localValue.map((localItemGood, indexPath) => {
-
                     if (localItemGood.priceId === itemData.priceId &&
                         localItemGood.productId === itemData.productId ) {
                         localValue[indexPath] = itemData;

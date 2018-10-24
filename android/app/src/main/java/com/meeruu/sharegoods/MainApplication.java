@@ -12,7 +12,7 @@ import com.facebook.react.shell.MainReactPackage;
 import com.horcrux.svg.SvgPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.qiyu.imService.QiyuImageLoader;

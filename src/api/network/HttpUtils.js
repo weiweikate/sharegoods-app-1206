@@ -24,7 +24,6 @@ export function setToken(data) {
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 // axios.defaults.headers.common['sg-token'] =  user && user.getToken() ? user.getToken : ''
 axios.defaults.headers.common.device = DeviceInfo && DeviceInfo.getUniqueID() + ''
-axios.defaults.headers.common.platform = DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion()
 axios.interceptors.response.use(null, configureResponseError);
 axios.interceptors.request.use(configureTimeout, err => {
 
@@ -80,7 +79,15 @@ export default class HttpUtils {
             }
         }
         let timeLineStart = +new Date();
-        return axios.get(url, {headers: {'sg-token': user && user.getToken() ? user.getToken() : ''}}).then(response => {
+
+        let config = {
+            headers: {
+                'sg-token': user && user.getToken() ? user.getToken() : '',
+                'platform': DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion()
+            }
+        }
+
+        return axios.get(url, config).then(response => {
             let data = response.data;
             let history = createHistory(response, timeLineStart);
 
@@ -103,7 +110,12 @@ export default class HttpUtils {
             ...defaultData,
             ...data
         };
-        config.headers =  {'sg-token': user && user.getToken() ? user.getToken() : ''}
+
+        config.headers = {
+            'sg-token': user && user.getToken() ? user.getToken() : '',
+            'platform': DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion()
+        }
+        
         let timeLineStart = +new Date();
         return axios.post(url, data, config)
             .then(response => {

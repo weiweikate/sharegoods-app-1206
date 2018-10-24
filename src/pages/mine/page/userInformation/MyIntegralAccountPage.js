@@ -33,32 +33,30 @@ export default class MyIntegralAccountPage extends BasePage {
             phoneError: false,
             passwordError: false,
             viewData: [
-                {
-                    type: '秀豆消费',
-
-                    time: '2018-05-25 12:15:45',
-                    serialNumber: '流水号：123456787653234567',
-                    capital: '-200',
-                    iconImage: xiaofei,
-                    capitalRed: true
-
-
-                },
-                {
-                    type: '秀豆消费',
-
-                    time: '2018-05-25 12:15:45',
-                    serialNumber: '流水号：123456787653234567',
-                    capital: '-200',
-                    iconImage: xiaofei,
-                    capitalRed: true
-                }
-
-
+                // {
+                //     type: '秀豆消费',
+                //
+                //     time: '2018-05-25 12:15:45',
+                //     serialNumber: '流水号：123456787653234567',
+                //     capital: '-200',
+                //     iconImage: xiaofei,
+                //     capitalRed: true
+                //
+                //
+                // },
+                // {
+                //     type: '秀豆消费',
+                //
+                //     time: '2018-05-25 12:15:45',
+                //     serialNumber: '流水号：123456787653234567',
+                //     capital: '-200',
+                //     iconImage: xiaofei,
+                //     capitalRed: true
+                // }
             ],
             restMoney: this.params.userScore,
 
-            blockMoney: 256.00,
+            blockMoney: 0.00,
             currentPage: 1,
             isEmpty: false
         };
@@ -93,6 +91,7 @@ export default class MyIntegralAccountPage extends BasePage {
         return (
             <View style={styles.container}>
                 <Image style={styles.imageBackgroundStyle} source={consumePointPage}/>
+                <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',marginRight:15}}>
                 <View style={styles.viewStyle}>
                     <Text style={{
                         marginLeft: 25,
@@ -100,14 +99,19 @@ export default class MyIntegralAccountPage extends BasePage {
                         fontSize: 13,
                         color: color.white,
                         fontFamily: 'PingFangSC-Light'
-                    }}>秀豆账户</Text>
+                    }}>秀豆账户(枚)</Text>
                     <Text style={{
                         marginLeft: 25,
                         fontSize: 25,
                         marginTop: 10,
                         color: color.white
                     }}>{this.state.restMoney}</Text>
-
+                </View>
+                <TouchableOpacity style={styles.rectangleStyle} onPress={() => {
+                    this.$navigate('home/signIn/SignInPage')
+                }}>
+                    <Text style={{ fontSize: 15, color: color.white }}>兑换1元现金券</Text>
+                </TouchableOpacity>
                 </View>
             </View>
 
@@ -213,18 +217,18 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderRadius: 15
     }, rectangleStyle: {
-        width: 100,
+        width: 120,
         height: 44,
         borderWidth: 1,
         borderRadius: 5,
         borderColor: color.white,
+        marginLeft: 15,
         marginRight: 15,
         justifyContent: 'center',
-        marginTop: 20,
-        alignItems: 'center'
+        alignItems: 'center',
+        padding:3
     }, viewStyle: {
         height: 95,
-
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 15,

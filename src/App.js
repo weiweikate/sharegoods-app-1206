@@ -6,9 +6,11 @@
 
 import React, { Component } from 'react';
 import {
+    NativeModules,
+    Platform,
     StyleSheet,
     Text,
-    View,
+    View
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
@@ -33,7 +35,7 @@ export default class App extends Component {
     }
 
     async componentDidMount() {
-        await user.readToken()
+        await user.readToken();
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
         global.$navigator = this.refs.Navigator;
@@ -85,6 +87,10 @@ export default class App extends Component {
                            ref='Navigator'
                            onNavigationStateChange={(prevState, currentState) => {
                                let curRouteName = getCurrentRouteName(currentState);
+                               // 拦截当前router的名称
+                               if (Platform.OS !== 'ios') {
+                                   NativeModules.commModule.setStatusMode(curRouteName);
+                               }
                                console.log(curRouteName);
                                const currentScreen = getCurrentRouteName(currentState);
                                const prevScreen = getCurrentRouteName(prevState);

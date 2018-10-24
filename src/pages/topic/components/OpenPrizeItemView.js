@@ -26,6 +26,12 @@ const statues = {
     timeOver: 4,
     handOver: 5
 };
+const statuesString = {
+    [statues.isBeginning]:'马上抢',
+    [statues.haveSoldOut]:'已抢光',
+    [statues.timeOver]:'已结束',
+    [statues.handOver]:'已结束',
+}
 // 1.秒杀 2.降价拍 3.礼包 4.助力免费领 5.专题 99.普通产品
 const productTypes = {
     skill: 1,
@@ -63,7 +69,10 @@ export default class OpenPrizeItemView extends Component {
         itemData: PropTypes.object.isRequired,
         itemClick: PropTypes.func.isRequired
     };
-
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('shouldComponentUpdate --nextProps' + nextProps + '===nextState' + nextState)
+        return true
+    }
     render() {
         const itemData = this.state.itemData;
         return (
@@ -101,11 +110,11 @@ export default class OpenPrizeItemView extends Component {
                         <Text
                             style={ItemStyles.itemBottomTextStyle}
                             number={2}
-                            onLayout={(e) => {
-                                if (e.nativeEvent.layout.height > 25) {//多于一行时改为红色
-                                }
-                            }
-                            }
+                            // onLayout={(e) => {
+                            //     if (e.nativeEvent.layout.height > 25) {//多于一行时改为红色
+                            //     }
+                            // }
+                            // }
                         >
                             {itemData.productName}
                         </Text>
@@ -155,7 +164,7 @@ export default class OpenPrizeItemView extends Component {
                                     textDecorationLine: 'line-through',
                                     color: ColorUtil.Color_999999
                                 }}>
-                                    {itemData.originalPrice + '起'}
+                                    {itemData.originalPrice}
                                 </Text>
                             </View>
                             {/*右下角按钮*/}
@@ -173,22 +182,31 @@ export default class OpenPrizeItemView extends Component {
                                             onPress={() => {
                                                 this._followAction();
                                             }
-
                                             }
                                         >
+                                            <View
+                                            style={{
+                                                backgroundColor:'#33B4FF',
+                                                height: 30,
+                                                width: (ScreenUtils.width / 2 - 16) / 2,
+                                                borderRadius: 5,
+                                            }}
+                                            >
                                             <Text
                                                 style={
                                                     {
-                                                        color: ColorUtil.Color_999999,
+                                                        color: ColorUtil.Color_ffffff,
                                                         textAlign: 'center',
                                                         height: 30,
                                                         paddingTop: 8,
-                                                        fontSize: 12
+                                                        fontSize: 12,
+
                                                     }
                                                 }
                                             >
-                                                {this.state.itemData.notifyFlag ? '取消关注' : '关注'}
+                                                {this.state.itemData.notifyFlag ? '取消提醒' : '提醒我'}
                                             </Text>
+                                            </View>
                                         </TouchableOpacity>
                                     </View>
                                     :
@@ -198,7 +216,6 @@ export default class OpenPrizeItemView extends Component {
                                             height: 30,
                                             width: (ScreenUtils.width / 2 - 16) / 2,
                                             borderRadius: 5,
-                                            borderRadius: 5
                                         },
                                             (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
                                                 ? { backgroundColor: ColorUtil.Color_f7f7f7 }
@@ -221,9 +238,7 @@ export default class OpenPrizeItemView extends Component {
                                             }
                                         >
                                             {
-                                                (itemData.status === 3 || itemData.status === 4 || itemData.status === 5) ?
-                                                    '已抢光' :
-                                                    '马上抢'
+                                                statuesString[itemData.status]
                                             }
                                         </Text>
 
@@ -254,8 +269,14 @@ export default class OpenPrizeItemView extends Component {
             param
         ).then(result => {
             itemData.notifyFlag = type;
+            if (type === 1){
+                itemData.reseCount++
+            }else {
+                itemData.reseCount--
+            }
             this.setState({
                 itemData: itemData
+
             });
         }).catch(error => {
             bridge.$toast(error.msg);
@@ -279,12 +300,12 @@ const ItemStyles = StyleSheet.create({
         width: ScreenUtils.width / 2 - 16,
         height: ScreenUtils.width / 2 - 16
     },
+
     itemBottomTextStyle: {
         padding: 10,
         color: ColorUtil.Color_222222,
         width: ScreenUtils.width / 2 - 16,
-
-        height: 35,
+        height: 37,
         fontSize: 12
     },
     itemFolloweTextStyle: {

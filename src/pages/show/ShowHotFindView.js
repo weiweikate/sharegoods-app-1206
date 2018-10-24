@@ -19,32 +19,42 @@ export default class ShowHotView extends Component {
         this.recommendModules = new ShowRecommendModules()
     }
     componentDidMount() {
-        let data = this.recommendModules.loadRecommendList()
-        this.waterfall.addItems(data)
+        this.recommendModules.loadRecommendList().then(data => {
+            this.waterfall.addItems(data)
+        })
     }
     infiniting(done) {
         setTimeout(() => {
-            let data = this.recommendModules.getMoreRecommendList()
-            this.waterfall.addItems(data)
+            this.recommendModules.getMoreRecommendList().then(data=>{
+                console.log('infiniting'. data)
+                if (data.length !== 0) {
+                    this.waterfall.addItems(data)
+                }
+            })
             done()
         }, 1000)
     }
     refreshing(done) {
         setTimeout(() => {
+            this.recommendModules.loadRecommendList().then(data => {
+                this.waterfall.clear()
+                this.waterfall.addItems(data)
+            })
             done()
         }, 1000)
     }
     _gotoDetail(data) {
         const { navigation } = this.props
-        navigation.navigate('show/ShowDetailPage')
+        navigation.navigate('show/ShowDetailPage',  {id: data.id})
     }
     renderItem = (data) => {
-        const {width, height} = data
-        let imgHeight = (height / width) * imgWidth
+        let imgWide = data.imgWide ? data.imgWide : 1
+        let imgHigh = data.imgHigh ? data.imgHigh : 1
+        let imgHeight = (imgHigh / imgWide) * imgWidth
         // const itemHeight = this._getHeightForItem({item})
         return <ItemView imageStyle={{height: imgHeight}}  data={data} press={()=>this._gotoDetail(data)}/>
     }
-    _keyExtractor = (data) => data.id + ''
+    _keyExtractor = (data) => data.id + '' + data.currentDate
     render() {
         return(
             <View style={styles.container}>
@@ -58,6 +68,7 @@ export default class ShowHotView extends Component {
                     containerStyle={{marginLeft: 15, marginRight: 15}}
                     keyExtractor={(data) => this._keyExtractor(data)}
                     infiniting={(done)=>this.infiniting(done)}
+                    refreshing={(done)=>this.refreshing(done)}
                 />
             </View>
         )
