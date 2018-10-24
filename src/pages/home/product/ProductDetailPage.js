@@ -39,7 +39,7 @@ export default class ProductDetailPage extends BasePage {
             selectedIndex: 0,
             //活动数据
             activityData: {},
-            activityType: 0
+            activityType: 0,//请求到数据查看类型
         };
     }
 
@@ -307,12 +307,12 @@ export default class ProductDetailPage extends BasePage {
                                     imageUrlStr: imgUrl,
                                     titleStr: `${name}`,
                                     priceStr: `￥${price}`,
-                                    QRCodeStr: `http://testh5.sharegoodsmall.com/#/product/${product.id}`
+                                    QRCodeStr: `http://testh5.sharegoodsmall.com/99/${product.id}`
                                 }}
                                 webJson={{
                                     title: `${name}`,
                                     dec: '商品详情',
-                                    linkUrl: `http://testh5.sharegoodsmall.com/#/product/${product.id}`,
+                                    linkUrl: `http://testh5.sharegoodsmall.com/99/${product.id}`,
                                     thumImage: imgUrl
                                 }}/>
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
