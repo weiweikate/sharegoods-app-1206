@@ -201,6 +201,10 @@ export default class SelectionPage extends Component {
     };
 
     _selectionViewConfirm = () => {
+        if (this.state.amount === 0) {
+            bridge.$toast('请选择数量');
+            return;
+        }
         let priceArr = [];
         let isAll = true;
 
@@ -278,7 +282,8 @@ export default class SelectionPage extends Component {
                     <View style={{ flex: 1, backgroundColor: 'white' }}>
                         <ScrollView>
                             {this._addSelectionSectionView()}
-                            <SelectionAmountView style={{ marginTop: 30 }} amountClickAction={this._amountClickAction} maxCount={this.state.maxStock}/>
+                            <SelectionAmountView style={{ marginTop: 30 }} amountClickAction={this._amountClickAction}
+                                                 maxCount={this.state.maxStock}/>
                         </ScrollView>
 
                         <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>

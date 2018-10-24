@@ -29,6 +29,10 @@ export default class ShowView extends Component {
         this.showModules.loadShowList()
     }
     render() {
+        const { showList } = this.showModules
+        if (!showList) {
+            return <View/>
+        }
         if (this.showModules.showList.length === 0) {
             return <View/>
         }

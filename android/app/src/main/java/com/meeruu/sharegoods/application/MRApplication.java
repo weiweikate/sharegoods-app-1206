@@ -5,6 +5,7 @@ import android.support.multidex.MultiDex;
 
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactApplication;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -91,6 +92,7 @@ public class MRApplication extends BaseApplication implements ReactApplication {
             return Arrays.<ReactPackage>asList(
                     new RNPackage(),
                     new MainReactPackage(),
+            new RNGestureHandlerPackage(),
                     new RNDeviceInfo(),
                     new LinearGradientPackage(),
 //                    new ReactVideoPackage(),
