@@ -93,7 +93,7 @@ let constants = {
             menuData2:['退换','退换中','售后完成']
         },{
             index:4,
-            orderStatus:'已确认收货',
+            orderStatus:'已完成',
             menuData:[{
                 id:7,
                 operation:'删除订单',
