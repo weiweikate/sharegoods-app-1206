@@ -28,6 +28,7 @@ import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 import refusa_icon from '../res/tuikuan_icon_jujue_nor.png';
 import EmptyUtils from '../../../utils/EmptyUtils';
+import QYChatUtil from '../../mine/page/helper/QYChatModel';
 
 import OrderApi from '../api/orderApi'
 
@@ -564,7 +565,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         }
     };
     contactSeller = () => {
-        //QYChatUtil.qiYUChat()
+        QYChatUtil.qiYUChat()
     };
     jumpToProductDetailPage = (productId) => {
         this.navigate('product/ProductDetailPage', { productId: productId });

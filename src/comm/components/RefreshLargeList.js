@@ -219,7 +219,7 @@ export default class RefreshLargeList extends React.Component {
         let { renderFooter, isSupportLoadingMore, renderLoadMoreComponent } = this.props;
         let loadMoreComponent = null;
         let footer = null;
-        if (isSupportLoadingMore && this.state.refreshing === false) {
+        if (isSupportLoadingMore && this.state.refreshing === false && this.data.length > 0) {
             if (renderLoadMoreComponent) {
                 footer = renderLoadMoreComponent(this.state.footerStatus);
             } else {
@@ -309,7 +309,19 @@ export default class RefreshLargeList extends React.Component {
                     footerStatus
                 });
             }, dalay);
-        }));
+        })).catch((error) => {
+            if (isRefresh === false) {
+                onEndLoadMore && onEndLoadMore();
+            } else {
+                onEndRefresh && onEndRefresh();
+
+            }
+            that.setState({
+                refreshing: false,
+                loadingMore: false,
+            });
+        })
+        ;
     }
 
     render() {
