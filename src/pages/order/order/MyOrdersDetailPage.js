@@ -927,7 +927,7 @@ class MyOrdersDetailPage extends BasePage {
                 this.$navigate('payment/PaymentMethodPage', {
                     orderNum: this.state.viewData.orderNum,
                     amounts: this.state.viewData.orderTotalPrice,
-                    outTrandNo: this.state.viewData.outTrandNo
+                    outTradeNo: this.state.viewData.outTradeNo
                 });
                 break;
             case 4:
