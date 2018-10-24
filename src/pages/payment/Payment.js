@@ -192,7 +192,7 @@ export class Payment {
             const resultStr = yield PaymentApi.wechatCheck(params)
             return {resultStr}
         } catch (error) {
-            Toast.showLoading()
+            Toast.hiddenLoading()
             console.log(error)
         }
     })

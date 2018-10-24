@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Platform, StyleSheet, TouchableOpacity, Image, ScrollView} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView} from 'react-native';
 import BasePage from '../../BasePage';
 import { UIText } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
@@ -13,6 +13,7 @@ import unselectedImg from './res/unselected.png'
 import { Payment, paymentType } from './Payment'
 import PayUtil from './PayUtil'
 import PaymentResultView, {PaymentResult} from './PaymentResultView'
+import ScreenUtils from '../../utils/ScreenUtils';
 
 const PayCell = ({data, isSelected, balance, press, selectedTypes, disabled}) => {
     let selected = isSelected
@@ -158,16 +159,11 @@ export default class PaymentMethodPage extends BasePage {
             />
         );
     };
-    renderLine = () => {
-        return (
-            <View style={{ height: 1, backgroundColor: color.line }}/>
-        );
-    };
     renderBottomOrder = () => {
         return (
-            <View>
-                {this.renderLine()}
-                <View style={{ height: 49, flexDirection: 'row' }}>
+            <View style={{paddingBottom: ScreenUtils.safeBottom }}>
+                <View style={{ height: ScreenUtils.onePixel, backgroundColor: color.line }}/>
+                <View style={{ height: ScreenUtils.px2dp(49), flexDirection: 'row'}}>
                     <View style={styles.bottomStyleContainer}>
                         <UIText value={'合计：'} style={styles.bottomUiText}/>
                         <UIText value={`${this.state.shouldPayMoney || 0}元`}
@@ -207,7 +203,7 @@ export default class PaymentMethodPage extends BasePage {
     async _alipay() {
         const { params } = this.getApiRequestParams()
         const resultStr = await this.payment.alipay(params, this.paymentResultView)
-        if (resultStr.code === 0) {
+        if (resultStr.code == 10000) {
             this._showPayresult(resultStr)
         } else {
             Toast.$toast('支付失败')
@@ -248,10 +244,11 @@ export default class PaymentMethodPage extends BasePage {
             }
             if (selectedTypes.type === paymentType.alipay) {
                 const prePayStr = result.data.prePayStr
+                console.log('prePayStr', prePayStr)
                 const resultStr = await PayUtil.appAliPay(prePayStr)
                 console.log('resultStr', resultStr)
                 const checkStr = await this.payment.alipayCheck({outTradeNo:result.data.outTradeNo , type:paymentType.alipay})
-                this._showPayresult(checkStr)
+                this._showPayresult(checkStr.resultStr)
                 return
             }
 
@@ -366,32 +363,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         flex: 1
     },
-    pcontainer: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        borderWidth: 1,
-        borderColor: '#ccc',
-        backgroundColor: '#fff',
-        marginLeft: Platform.OS == 'ios' ? 22 : 40,
-        marginRight: Platform.OS == 'ios' ? 22 : 40,
-        marginBottom: 22
-    },
-    inputItem: {
-        height: 35,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    inputItemBorderLeftWidth: {
-        borderLeftWidth: 1,
-        borderColor: '#ccc'
-    },
-    iconStyle: {
-        width: 16,
-        height: 16,
-        backgroundColor: '#222',
-        borderRadius: 8
-    },
     bottomStyleContainer: {
         width: 264,
         flexDirection: 'row',
@@ -415,7 +386,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        height: 44,
+        height: ScreenUtils.px2dp(44),
         paddingLeft: 21,
         paddingRight: 28,
         backgroundColor: color.white,
