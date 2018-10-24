@@ -147,6 +147,15 @@ export default class SearchResultPage extends BasePage {
     };
 
     _segmentOnPressAtIndex = (index) => {
+        if (index === 2 && this.state.sortType === 3) {
+            if (this.state.sortModel === 1) {
+                this.state.sortModel = 2;
+            } else {
+                this.state.sortModel = 1;
+            }
+        } else {
+            this.state.sortModel = 1;
+        }
         this.state.sortType = index + 1;
         this._productList();
     };
@@ -272,8 +281,8 @@ export default class SearchResultPage extends BasePage {
                                      this.setState({ onFocus: true });
                                  }}
                                  onChangeText={this._onChangeText}
-                                 onEndEditing={()=>{
-                                     this._clickItemAction(this.state.textInput)
+                                 onEndEditing={() => {
+                                     this._clickItemAction(this.state.textInput);
                                  }}
                 />
                 {this._renderContainer()}

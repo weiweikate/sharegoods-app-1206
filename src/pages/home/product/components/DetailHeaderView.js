@@ -4,12 +4,15 @@ import PropTypes from 'prop-types';
 import {
     StyleSheet,
     Text,
-    View
+    View,
+    Image
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import ViewPager from '../../../../components/ui/ViewPager';
-import UIImage from '../../../../components/ui/UIImage';
 import ProductActivityView from './ProductActivityView';
+import spellStatusModel from '../../../spellShop/model/SpellStatusModel';
+import user from '../../../../model/user';
+import { isNoEmpty } from '../../../../utils/StringUtils';
 
 /**
  * 商品详情头部view
@@ -34,20 +37,15 @@ export default class DetailHeaderView extends Component {
             this.setState({
                 swiperShow: true
             });
-        }, 0);
+        }, 100);
     }
 
-    _clickItem = () => {
-
-    };
     renderViewPageItem = (item) => {
         const { originalImg } = item;
         return (
-            <UIImage
-                source={{ uri: originalImg || '' }}
-                style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
-                onPress={this._clickItem}
-                resizeMode="cover"
+            <Image source={{ uri: originalImg || '' }}
+                   style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
+                   resizeMode="cover"
             />);
     };
 
@@ -94,8 +92,8 @@ export default class DetailHeaderView extends Component {
                                 marginLeft: 5,
                                 backgroundColor: 'red',
                                 color: '#FFFFFF',
-                                fontSize: 10
-                            }}>拼店价</Text>
+                                fontSize: 10, paddingHorizontal: 5
+                            }}>{spellStatusModel.storeId && spellStatusModel.storeStatus === 1 ? '拼店价' : isNoEmpty(user.levelId) ? `v${user.levelId}价` : '原价'}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text
