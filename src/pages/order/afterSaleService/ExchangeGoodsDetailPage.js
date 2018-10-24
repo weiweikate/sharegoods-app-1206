@@ -89,7 +89,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     /> : null}
                     {this.renderReason()}
                 </ScrollView>
-                {/*{this.renderContact()}*/}
+                {this.renderContact()}
             </View>
         );
     }
@@ -347,7 +347,7 @@ class ExchangeGoodsDetailPage extends BasePage {
     };
     renderContact = () => {
         return (
-            <View style={{ height: 61, backgroundColor: color.white }}>
+            <View style={{ height: 61, backgroundColor: color.white , marginBottom: ScreenUtils.safeBottom}}>
                 {this.renderLine()}
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity style={{
@@ -448,7 +448,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         let textContaner_marginLeft = 15;
         if (this.params.pageType === 0){//退款详情
 
-            let titles = ['商家退款审核中', '*-商家同意退款', '商家拒绝退款', '*-发货中', '*-云仓库发货中', '退款完成', '已关闭', '超时关闭', '商家拒绝退款'];
+            let titles = ['商家退款审核中', '*-商家同意退款', '商家拒绝退款', '*-发货中', '*-云仓库发货中', '退款成功', '已关闭', '超时关闭', '商家拒绝退款'];
             titleCommpent = () => {return <UIText value = {titles[pageData.status - 1]} style = {styles.header_title}/>};
             if (pageData.status === 3){//拒绝
                 textContaner_marginLeft = 10;
@@ -610,15 +610,15 @@ class ExchangeGoodsDetailPage extends BasePage {
                         <UIText value = {'撤销申请'} style = {{fontSize: 16, color: '#666666'}}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress = {() => {this.loadPageData(() => this.onPressOperationApply(false))}} style ={styles.borderButton}>
-                        <UIText value = {'编辑申请'} style = {{fontSize: 16, color: '#D51243'}}/>
+                        <UIText value = {'修改申请'} style = {{fontSize: 16, color: '#D51243'}}/>
                     </TouchableOpacity>
                 </View>
             </View>
         )
     }
     /**
-     * 撤销、编辑申请
-     * @param cancel true -》撤销 、false -》编辑申请
+     * 撤销、修改
+     * @param cancel true -》撤销 、false -》修改申请
      */
     onPressOperationApply(cancel){
         let that = this;
@@ -712,7 +712,7 @@ class ExchangeGoodsDetailPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: color.white,
+        flex: 1, backgroundColor: color.gray_f7f7,
         justifyContent: 'flex-end'
     },
     refundReason: {
