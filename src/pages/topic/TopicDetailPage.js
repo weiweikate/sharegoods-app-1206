@@ -90,7 +90,7 @@ export default class TopicDetailPage extends BasePage {
                 this.$loadingDismiss();
                 this.setState({
                     data: data.data || {}
-                },()=>{
+                }, () => {
                     if (this.state.data.type === 2) {//1普通礼包  2升级礼包
                         this.TopicDetailShowModal.show('温馨提示');
                     }
@@ -231,7 +231,7 @@ export default class TopicDetailPage extends BasePage {
         let { product = {} } = this.state.data;
         if (this.state.selectedIndex === 0) {
             return <HTML html={this.state.activityType === 3 ? this.state.data.content : product.content}
-                         imagesMaxWidth={ScreenUtils.maxWidth}
+                         imagesMaxWidth={ScreenUtils.width}
                          containerStyle={{ backgroundColor: '#fff' }}/>;
         } else {
             return <View style={{ backgroundColor: 'white' }}>
@@ -308,20 +308,18 @@ export default class TopicDetailPage extends BasePage {
             }
         }
 
-        let productPrice, productName, productImgUrl, productId;
+        let productPrice, productName, productImgUrl;
         if (this.state.activityType === 3) {
-            const { name, levelPrice, imgUrl, id } = this.state.data || {};
+            const { name, levelPrice, imgUrl } = this.state.data || {};
             productPrice = levelPrice;
             productName = name;
             productImgUrl = imgUrl;
-            productId = id;
         } else {
             const { price = 0, product = {} } = this.state.data || {};
-            const { name = '', imgUrl, id } = product;
+            const { name = '', imgUrl } = product;
             productPrice = price;
             productName = `${name}`;
             productImgUrl = imgUrl;
-            productId = id;
         }
 
         return (
@@ -383,12 +381,12 @@ export default class TopicDetailPage extends BasePage {
                                     imageUrlStr: productImgUrl,
                                     titleStr: productName,
                                     priceStr: `￥${productPrice}`,
-                                    QRCodeStr: `http://testh5.sharegoodsmall.com/#/product/${productId}`
+                                    QRCodeStr: `http://testh5.sharegoodsmall.com/${this.params.activityType}/${this.params.activityCode}`
                                 }}
                                 webJson={{
                                     title: productName,
                                     dec: '商品详情',
-                                    linkUrl: `http://testh5.sharegoodsmall.com/#/product/${productId}`,
+                                    linkUrl: `http://testh5.sharegoodsmall.com/${this.params.activityType}/${this.params.activityCode}`,
                                     thumImage: productImgUrl
                                 }}/>
                 <TopicDetailShowModal ref={(ref) => this.TopicDetailShowModal = ref}/>

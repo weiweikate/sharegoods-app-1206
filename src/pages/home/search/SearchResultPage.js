@@ -257,15 +257,14 @@ export default class SearchResultPage extends BasePage {
     };
 
     _renderListView = () => {
-        return <FlatList
-            ref='FlatListShow'
-            style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
-            renderItem={this._renderItem}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item, index) => `${index}`}
-            numColumns={this.state.isHorizontal ? 2 : 1}
-            key={this.state.isHorizontal ? 'hShow' : 'vShow'}
-            data={this.state.productList}/>;
+        return <FlatList ref='FlatListShow'
+                         style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
+                         renderItem={this._renderItem}
+                         showsVerticalScrollIndicator={false}
+                         keyExtractor={(item, index) => `${index}`}
+                         numColumns={this.state.isHorizontal ? 2 : 1}
+                         key={this.state.isHorizontal ? 'hShow' : 'vShow'}
+                         data={this.state.productList}/>;
     };
 
     _render() {
