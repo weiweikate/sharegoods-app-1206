@@ -16,24 +16,23 @@ import { observer } from 'mobx-react';
 export default class DetailBottomView extends Component {
 
     static propTypes = {
-        bottomViewAction: PropTypes.func.isRequired,
+        bottomViewAction: PropTypes.func.isRequired
     };
 
     constructor(props) {
         super(props);
-        this.state = {
-        };
+        this.state = {};
     }
 
     render() {
-        return (<View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49 ,backgroundColor: 'white'}}>
+        return (<View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49, backgroundColor: 'white' }}>
             <View style={styles.container}>
                 <TouchableOpacity style={{ width: 63, justifyContent: 'center', alignItems: 'center' }}
-                                  onPress={()=>this.props.bottomViewAction('goGwc')}>
+                                  onPress={() => this.props.bottomViewAction('goGwc')}>
                     <Image style={{ marginBottom: 6 }} source={xiangqing_btn_gouwuche_nor}/>
-                    <Text>购物车</Text>
+                    <Text style={{ fontSize: 11, color: '#999999' }}>购物车</Text>
                     {ShopCartStore.getAllGoodsClassNumber === 0 ? null : <View style={{
-                        position: 'absolute', top: 4, left: 4, height: 16,
+                        position: 'absolute', top: 4, right: 4, height: 16,
                         paddingHorizontal: 4,
                         backgroundColor: '#D51243',
                         borderRadius: 8, justifyContent: 'center', alignItems: 'center'
@@ -44,13 +43,14 @@ export default class DetailBottomView extends Component {
                         }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
                     </View>}
                 </TouchableOpacity>
+                <View style = {{width:0.5,height:49,backgroundColor:'#eee'}}/>
                 <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                                  onPress={()=>this.props.bottomViewAction('buy')}>
+                                  onPress={() => this.props.bottomViewAction('buy')}>
                     <Text>立即购买</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={{ flex: 1, backgroundColor: '#D51243', justifyContent: 'center', alignItems: 'center' }}
-                    onPress={()=>this.props.bottomViewAction('gwc')}>
+                    onPress={() => this.props.bottomViewAction('gwc')}>
                     <Text style={{ color: 'white' }}>加入购物车</Text>
                 </TouchableOpacity>
             </View>
