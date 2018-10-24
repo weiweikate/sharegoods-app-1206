@@ -47,8 +47,8 @@ const Profile = ({avatar, name, level, member, income, allIncome}) => <View styl
 </View>
 
 const Cell = ({data, store, press}) => <View style={styles.cell}>
-    <Banner backImage={{uri:data.imgUrl}} title={data.title} press={()=>press && press()}/>
-    <Profile avatar={{uri:store.headUrl}} name={store.name} level={store.starName} member={store.storeUserNum} income={store.tradeBalance} allIncome={store.totalTradeBalance}/>
+    <Banner backImage={{uri:data.imgUrl ? data.imgUrl : ''}} title={data.title} press={()=>press && press()}/>
+    <Profile avatar={{uri:store.headUrl ? store.headUrl : ''}} name={store.name} level={store.starName} member={store.storeUserNum} income={store.tradeBalance} allIncome={store.totalTradeBalance}/>
 </View>
 
 
