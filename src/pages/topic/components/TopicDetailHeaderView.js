@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ViewPager from '../../../components/ui/ViewPager';
-import UIImage from '../../../components/ui/UIImage';
 import xjt_03 from '../res/xjt_03.png';
 import ActivityView from './ActivityView';
 import { isNoEmpty } from '../../../utils/StringUtils';
+import user from '../../../model/user';
 
 /**
  * 商品详情头部view
@@ -40,23 +40,19 @@ export default class TopicDetailHeaderView extends Component {
             this.setState({
                 swiperShow: true
             });
-        }, 0);
+        }, 100);
     }
 
     updateTime(activityData, activityType) {
         this.ActivityView.saveActivityViewData(activityData, activityType);
     }
 
-    _clickItem = () => {
-
-    };
     renderViewPageItem = (item) => {
         const { originalImg } = item;
         return (
-            <UIImage
+            <Image
                 source={{ uri: originalImg || '' }}
                 style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
-                onPress={this._clickItem}
                 resizeMode="cover"
             />);
     };
@@ -67,12 +63,12 @@ export default class TopicDetailHeaderView extends Component {
         let nowPrice, oldPrice;
 
         if (activityType === 3) {
-            const { imgFileList = [{}], name, levelPrice, originalPrice, freight, saleNum } = this.props.data || {};
+            const { imgFileList = [{}], name, levelPrice, originalPrice, freightTemplatePrice, saleNum } = this.props.data || {};
             bannerImgList = imgFileList;
             tittle = name;
             nowPrice = levelPrice;
             oldPrice = originalPrice;
-            freightValue = freight;
+            freightValue = freightTemplatePrice;
             monthSale = saleNum;
         } else {
             const { productImgList = [{}], freight, monthSaleTotal, product = {} } = this.props.data || {};
@@ -118,12 +114,18 @@ export default class TopicDetailHeaderView extends Component {
                             <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
                                 <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
                                 <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${oldPrice}`}</Text>
+                                <Text style={{
+                                    marginLeft: 5,
+                                    backgroundColor: 'red',
+                                    color: '#FFFFFF',
+                                    fontSize: 10, paddingHorizontal: 5
+                                }}>{isNoEmpty(user.levelName) ? `${user.levelName}价` : '原价'}</Text>
                             </View> : null}
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text style={{
                                 color: '#BBBBBB',
                                 fontSize: 11
-                            }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : 0}元`}</Text>
+                            }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : ''}元`}</Text>
                             <Text style={{
                                 color: '#666666',
                                 fontSize: 13,
@@ -139,7 +141,7 @@ export default class TopicDetailHeaderView extends Component {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                             alignItems: 'center'
-                        }}>
+                        }} onPress={this.props.showDetailModal}>
                             <Text style={{ color: '#666666', fontSize: 13, marginLeft: 16 }}>抢拍规则</Text>
                             <Image style={{ marginRight: 16 }} source={xjt_03}/>
                         </TouchableOpacity>

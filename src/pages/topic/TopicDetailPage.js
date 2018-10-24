@@ -24,6 +24,7 @@ import user from '../../model/user';
 import TopicDetailSelectPage from './TopicDetailSelectPage';
 import PackageDetailSelectPage from './PackageDetailSelectPage';
 import CommShareModal from '../../comm/components/CommShareModal';
+import TopicDetailShowModal from './components/TopicDetailShowModal';
 
 export default class TopicDetailPage extends BasePage {
 
@@ -89,6 +90,10 @@ export default class TopicDetailPage extends BasePage {
                 this.$loadingDismiss();
                 this.setState({
                     data: data.data || {}
+                }, () => {
+                    if (this.state.data.type === 2) {//1普通礼包  2升级礼包
+                        this.TopicDetailShowModal.show('温馨提示');
+                    }
                 });
             }).catch((error) => {
                 this.$loadingDismiss();
@@ -207,10 +212,15 @@ export default class TopicDetailPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        return <TopicDetailHeaderView ref={(e) => {
-            this.TopicDetailHeaderView = e;
-        }} data={this.state.data} activityType={this.state.activityType}
-                                      activityData={this.state.activityData}/>;
+        return <TopicDetailHeaderView data={this.state.data}
+                                      ref={(e) => {
+                                          this.TopicDetailHeaderView = e;
+                                      }}
+                                      activityType={this.state.activityType}
+                                      activityData={this.state.activityData}
+                                      showDetailModal={() => {
+                                          this.TopicDetailShowModal.show('降价拍规则');
+                                      }}/>;
     };
 
     _renderSectionHeader = () => {
@@ -221,7 +231,7 @@ export default class TopicDetailPage extends BasePage {
         let { product = {} } = this.state.data;
         if (this.state.selectedIndex === 0) {
             return <HTML html={this.state.activityType === 3 ? this.state.data.content : product.content}
-                         imagesMaxWidth={ScreenUtils.maxWidth}
+                         imagesMaxWidth={ScreenUtils.width}
                          containerStyle={{ backgroundColor: '#fff' }}/>;
         } else {
             return <View style={{ backgroundColor: 'white' }}>
@@ -276,15 +286,17 @@ export default class TopicDetailPage extends BasePage {
             bottomTittle = '立即购买';
             colorType = 2;
         } else {
-            const { notifyFlag, surplusNumber, limitNumber, limitFlag, beginTime, date, endTime } = this.state.activityData;
-            if (beginTime > date) {
+            const { notifyFlag, surplusNumber, limitNumber, limitFlag, status } = this.state.activityData;
+            if (status === 1) {
                 if (notifyFlag === 1) {
                     bottomTittle = '开始前3分钟提醒';
                 } else {
                     bottomTittle = '设置提醒';
                     colorType = 1;
                 }
-            } else if (endTime > date) {
+            } else if (status === 4 || status === 5) {
+                bottomTittle = '已结束';
+            } else {
                 if (surplusNumber === 0) {
                     bottomTittle = '已抢光';
                 } else if (limitNumber !== -1 && limitFlag === 1) {
@@ -293,25 +305,21 @@ export default class TopicDetailPage extends BasePage {
                     bottomTittle = '立即拍';
                     colorType = 2;
                 }
-            } else if (date > endTime) {
-                bottomTittle = '已结束';
             }
         }
 
-        let productPrice, productName, productImgUrl, productId;
+        let productPrice, productName, productImgUrl;
         if (this.state.activityType === 3) {
-            const { name, levelPrice, imgUrl, id } = this.state.data || {};
+            const { name, levelPrice, imgUrl } = this.state.data || {};
             productPrice = levelPrice;
             productName = name;
             productImgUrl = imgUrl;
-            productId = id;
         } else {
             const { price = 0, product = {} } = this.state.data || {};
-            const { name = '', imgUrl, id } = product;
+            const { name = '', imgUrl } = product;
             productPrice = price;
             productName = `${name}`;
             productImgUrl = imgUrl;
-            productId = id;
         }
 
         return (
@@ -344,7 +352,7 @@ export default class TopicDetailPage extends BasePage {
                         backgroundColor: colorType === 1 ? '#33B4FF' : (colorType === 2 ? '#D51243' : '#CCCCCC'),
                         justifyContent: 'center',
                         alignItems: 'center'
-                    }} onPress={() => this._bottomAction(colorType)}>
+                    }} onPress={() => this._bottomAction(colorType)} disabled={!(colorType === 1 || colorType === 2)}>
                         <Text style={{
                             color: 'white',
                             fontSize: 14
@@ -373,14 +381,15 @@ export default class TopicDetailPage extends BasePage {
                                     imageUrlStr: productImgUrl,
                                     titleStr: productName,
                                     priceStr: `￥${productPrice}`,
-                                    QRCodeStr: `http://testh5.sharegoodsmall.com/#/product/${productId}`
+                                    QRCodeStr: `http://testh5.sharegoodsmall.com/${this.params.activityType}/${this.params.activityCode}`
                                 }}
                                 webJson={{
                                     title: productName,
                                     dec: '商品详情',
-                                    linkUrl: `http://testh5.sharegoodsmall.com/#/product/${productId}`,
+                                    linkUrl: `http://testh5.sharegoodsmall.com/${this.params.activityType}/${this.params.activityCode}`,
                                     thumImage: productImgUrl
                                 }}/>
+                <TopicDetailShowModal ref={(ref) => this.TopicDetailShowModal = ref}/>
             </View>
         );
     }

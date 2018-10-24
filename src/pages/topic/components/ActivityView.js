@@ -5,7 +5,7 @@ import {
     Text
 } from 'react-native';
 import { isNoEmpty } from '../../../utils/StringUtils';
-import { getFormatDate } from '../../../utils/DateUtils';
+import { formatDate } from '../../../utils/DateUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 
 export default class MyShop_RecruitPage extends Component {
@@ -39,8 +39,8 @@ export default class MyShop_RecruitPage extends Component {
     }
 
     saveActivityViewData(activityData, activityType) {
-        const { date, beginTime, endTime } = activityData;
-        let begin = beginTime > date;
+        const { date, beginTime, endTime, status } = activityData;
+        let begin = status === 1;
         if (begin) {
             this._time(date, beginTime);
         } else {
@@ -54,18 +54,21 @@ export default class MyShop_RecruitPage extends Component {
     }
 
     _timeDif(usedTime) {
-        //两个时间戳相差的毫秒数
+        //天数
+        let days = Math.floor(usedTime / (24 * 3600));
+        //去除天数
+        let leave1 = usedTime % (24 * 3600);
+        //小时
+        let hours = Math.floor(leave1 / 3600);
+        //去除小时
+        let leave2 = leave1 % 3600;
+        //分钟
+        let minutes = Math.floor(leave2 / 60);
+        //去除分钟
+        let leave3 = leave2 % 60;
+        //秒
+        let second = Math.floor(leave3);
 
-        let days = Math.floor(usedTime / (24 * 3600 * 1000));
-        //计算出小时数
-        let leave1 = usedTime % (24 * 3600 * 1000);    //计算天数后剩余的毫秒数
-        let hours = Math.floor(leave1 / (3600 * 1000));
-        //计算相差分钟数
-        let leave2 = leave1 % (3600 * 1000);        //计算小时数后剩余的毫秒数
-        let minutes = Math.floor(leave2 / (60 * 1000));
-
-        let leave3 = leave2 % (60 * 1000);        //计算小时数后剩余的毫秒数
-        let second = Math.floor(leave3 / (1000));
         let time = days + ':' + hours + ':' + minutes + ':' + second;
         return time;
     }
@@ -81,10 +84,11 @@ export default class MyShop_RecruitPage extends Component {
         // surplusNumber 剩余数量 totalNumber总
         // endTime活动结束时间
         const { activityType } = this.props;
-        const { surplusNumber = '', totalNumber, date, beginTime, endTime } = this.props.activityData;
+        //状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
+        const { surplusNumber = '', totalNumber, beginTime, status } = this.props.activityData;
         let price = '', one = '', two = '', three = '', four = '';
-        let begin = beginTime > date;
-        let end = date > endTime;
+        let begin = status === 1;
+        let end = status === 4 || status === 5;
         if (activityType === 2) {
             const {
                 startPrice, markdownPrice = '', originalPrice = '', reseCount = '', floorPrice
@@ -94,7 +98,7 @@ export default class MyShop_RecruitPage extends Component {
                 one = '起拍价';
                 two = `原价￥${originalPrice}|${reseCount}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime)}`;
-                four = `${getFormatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
+                four = `${formatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
             } else {
                 price = markdownPrice;
                 one = `原价￥${originalPrice}`;
@@ -103,15 +107,15 @@ export default class MyShop_RecruitPage extends Component {
                 four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;
             }
         } else {
-            const { productPrice, seckillPrice = '', subscribeCount = '' } = this.props.activityData;
+            const { originalPrice, seckillPrice = '', reseCount = '' } = this.props.activityData;
             price = seckillPrice;
             if (begin) {
                 one = '秒杀价';
-                two = `原价￥${isNoEmpty(productPrice) ? productPrice : ''}|${isNoEmpty(subscribeCount) ? subscribeCount : ''}人关注`;
+                two = `原价￥${isNoEmpty(originalPrice) ? originalPrice : ''}|${isNoEmpty(reseCount) ? reseCount : ''}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${getFormatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
+                four = `${formatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
             } else {
-                one = `原价￥${isNoEmpty(productPrice) ? productPrice : ''}`;
+                one = `原价￥${isNoEmpty(originalPrice) ? originalPrice : ''}`;
                 two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '秒杀价'}`;
                 three = `距结束 ${this._timeDif(this.state.countTime) || ''}`;
                 four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;
@@ -138,7 +142,7 @@ export default class MyShop_RecruitPage extends Component {
             </View>
             <View style={{ marginRight: 15 }}>
                 {end ?
-                    <Text style={{ color: '#FFFC00', fontSize: 13 }}>活动结束</Text>
+                    <Text style={{ color: '#FFFC00', fontSize: 13 }}>活动已结束</Text>
                     :
                     <View>
                         <Text style={{ color: begin ? '#1B7BB3' : '#FFFC00', fontSize: 11 }}>{three}</Text>

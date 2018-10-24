@@ -30,6 +30,7 @@
        miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
        }
  */
+
 'use strict';
 
 import React from 'react';
@@ -236,7 +237,7 @@ export default class CommShareModal extends React.Component {
                     <TouchableOpacity style={{ flex: 1 }} onPress={() => {
                         this.close();
                     }}/>
-                    <Animated.View style={{ transform: [{ translateY: this.state.y }] }}>
+                    <Animated.View style={{ transform: [{ translateY: this.state.y }], paddingBottom: ScreenUtils.safeBottom, backgroundColor: '#FFFFFF'}}>
                         <View style={[styles.contentContainer]}>
                             <View style={styles.header}>
                                 <View style={{
@@ -276,17 +277,16 @@ export default class CommShareModal extends React.Component {
                                 }
                             </View>
                         </View>
+                        <View style = {{flex: 1}}/>
                         <View style={{
-                            marginHorizontal: autoSizeWidth(25),
                             height: 1,
                             backgroundColor: '#EEEEEE',
-                            justifySelf: 'flex-end'
                         }}/>
                         <TouchableWithoutFeedback onPress={() => {
                             this.close();
                         }}
                         >
-                            <View style={[styles.bottomBtn, { justifySelf: 'flex-end' }]}>
+                            <View style={styles.bottomBtn}>
                                 <UIText value={'取消'} style={{ color: '#4D4D4D', fontSize: autoSizeWidth(16) }}/>
                             </View>
                         </TouchableWithoutFeedback>
@@ -297,7 +297,7 @@ export default class CommShareModal extends React.Component {
                                 height: autoSizeWidth(650 / 2),
                                 width: autoSizeWidth(250),
                                 position: 'absolute',
-                                top: ScreenUtils.height - autoSizeWidth(285) - autoSizeWidth(650 / 2),
+                                top: ScreenUtils.height - autoSizeWidth(autoSizeWidth(265)) - autoSizeWidth(650 / 2) - ScreenUtils.safeBottom,
                                 left: autoSizeWidth(125 / 2),
                                 borderRadius: 8,
                                 borderColor: '#CCCCCC',
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         backgroundColor: 'white',
-        height: autoSizeWidth(295)
+        height: autoSizeWidth(295),
     },
     header: {
         flexDirection: 'row',

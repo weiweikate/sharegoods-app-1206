@@ -16,9 +16,7 @@ import {
     TouchableOpacity,
 } from "react-native";
 import BasePage from "../../../BasePage";
-import RefreshList from '../../../components/ui/RefreshList'
 import orderApi from  '../api/orderApi'
-import EmptyUtils from '../../../utils/EmptyUtils'
 import GoodsGrayItem from '../components/GoodsGrayItem'
 import StringUtils from "../../../utils/StringUtils";
 import {
@@ -27,6 +25,7 @@ import {
 import changeGoods from '../res/shouhou_icon_huanhuo_nor.png';
 import refuseGoodsAndMoney from '../res/shouhou_icon_tuihuo_nor.png';
 import refuseMoney from '../res/shouhou_icon_tuikuan_nor.png';
+import RefreshLargeList from 'RefreshLargeList'
 
 type Props = {};
 export default class AfterSaleListPage extends BasePage<Props> {
@@ -45,32 +44,13 @@ export default class AfterSaleListPage extends BasePage<Props> {
   };
 
   _bind() {
-      this.onRefresh = this.onRefresh.bind(this);
-      this.onLoadMore = this.onLoadMore.bind(this);
       this.renderItem = this.renderItem.bind(this);
   }
 
   componentDidMount() {
-    this.onRefresh();
+
   }
 
-    onRefresh() {
-      this.page = 1;
-      orderApi.queryAftermarketOrderList({page: 1, status: 0, size: 10}).then((result) => {
-          this.setState({pageData: result.data.data})
-      }).catch((error) => {
-
-      });
-  }
-
-    onLoadMore(){
-       this.page ++ ;
-        orderApi.queryAftermarketOrderList({page: this.page, status: 0, size: 10}).then((result) => {
-            this.setState({pageData: this.state.pageData.concat(result.data.data)})
-        }).catch((error) => {
-
-        });
-    }
 
     renderItem({item}){
       return(
@@ -130,17 +110,17 @@ export default class AfterSaleListPage extends BasePage<Props> {
   _render() {
     return (
       <View style={styles.container}>
-          <RefreshList
-              data={this.state.pageData}
+          <RefreshLargeList
+              style={styles.container}
+              url={orderApi.queryAftermarketOrderList}
               renderItem={this.renderItem}
-              onRefresh={this.onRefresh}
-              onLoadMore={this.onLoadMore}
-              isEmpty={EmptyUtils.isEmpty(this.state.pageData)}
-              emptyTip={'暂无数据'}
+              params={{status: 0}}
+              heightForCell={() => 160}
           />
       </View>
     );
   }
+
 }
 
 const styles = StyleSheet.create({

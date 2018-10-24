@@ -221,7 +221,7 @@ const GoodsListItem = props => {
                 break;
 
             case 4:
-                aboutTime = <UIText value={'确认收货时间：' + DateUtils.getFormatDate(deliverTime / 1000)}
+                aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(deliverTime / 1000)}
                                     style={{ fontSize: 13, color: color.black_222 }}/>;
                 break;
             case 5:
