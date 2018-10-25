@@ -52,6 +52,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                         value={this.state.telText}
                         placeholder={'请输入新手机号'}
                         placeholderTextColor={'#C8C8C8'}
+                        keyboardType={'numeric'}
                     />
                 </View>
                 <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15, marginRight: 15 }}/>
@@ -70,7 +71,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                                    this.setState({ code: newText });
                                }}
                                value={this.state.code}
-                               keyboardType={'num'}/>
+                               keyboardType={'numeric'}/>
                     <TouchableOpacity onPress={() => this._onGetCode(this.state.telText)}
                                       disabled={this.state.vertifyCodeTime > 0 ? true : false}>
                         <UIText value={this.state.vertifyCodeTime > 0 ? this.state.vertifyCodeTime + '秒后重新获取' : '获取验证码'}
