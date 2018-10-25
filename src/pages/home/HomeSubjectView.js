@@ -28,7 +28,7 @@ const ActivityItem = ({data, press}) => {
     console.log('ActivityItem', imgUrl)
     let goodsItem = []
     topicBannerProductDTOList && topicBannerProductDTOList.map((value,index) => {
-        goodsItem.push(<GoodItems key={index} title={value.productName} money={value.startPrice ? value.startPrice : 0} img={value.specImg ? value.specImg : ''}/>)
+        goodsItem.push(<GoodItems key={index} title={value.productName} money={value.originalPrice ? value.originalPrice : 0} img={value.specImg ? value.specImg : ''}/>)
     })
     return <View>
         <TouchableOpacity style={styles.bannerBox} onPress={()=>{press && press()}}>
@@ -125,7 +125,8 @@ let styles = StyleSheet.create({
     },
     goodsView: {
         width: px2dp(100),
-        height: px2dp(170)
+        height: px2dp(170),
+        marginRight: px2dp(10)
     },
     goodImg: {
         width: px2dp(100),
