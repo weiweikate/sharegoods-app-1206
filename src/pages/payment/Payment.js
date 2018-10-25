@@ -135,11 +135,14 @@ export class Payment {
             }
             const prePayStr = preStr.data.prePayStr
             const resultStr = yield PayUtil.appAliPay(prePayStr)
+            // if (resultStr.sdkCode != 9000) {
+            //     throw error
+            // }
             console.log('resultStr', resultStr)
             const checkStr = yield this.alipayCheck({outTradeNo:preStr.data.outTradeNo , type:paymentType.alipay})
             console.log('checkStr', checkStr)
             Toast.hiddenLoading();
-            return checkStr
+            return checkStr.resultStr
         } catch (error) {
             Toast.hiddenLoading()
             console.log(error)
