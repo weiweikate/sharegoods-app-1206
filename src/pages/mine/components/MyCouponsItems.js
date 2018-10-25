@@ -165,7 +165,7 @@ export default class MyCouponsItems extends Component {
                             keyboardType={'numeric'}
                             underlineColorAndroid='transparent'
                             autoFocus={true}
-                            defaultValue={'' + this.state.tokenCoinNum}
+                            defaultValue={'' + (this.state.tokenCoinNum<user.tokenCoin?this.state.tokenCoinNum:user.tokenCoin)}
                             onChangeText={this._onChangeText}
                             style={{
                                 padding: 0,
