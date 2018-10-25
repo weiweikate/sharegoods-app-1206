@@ -47,7 +47,9 @@ const api = {
     //用户签到
     userSign:['/user/userSign/sign',{method:'post'}],
     //一元优惠券兑换
-    exchangeTokenCoin:['/user/exchangeTokenCoin',{method:'post'}]
+    exchangeTokenCoin:['/user/exchangeTokenCoin',{method:'post'}],
+    //首页分类
+    classify: ['/config/advertisement/queryCategoryList', {method: 'get'}]
 }
 import ApiUtils from '../../../api/network/ApiUtils';
 

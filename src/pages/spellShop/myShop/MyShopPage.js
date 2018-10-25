@@ -298,8 +298,8 @@ export default class MyShopPage extends BasePage {
 
     _renderJoinBtn = () => {
         const { storeMaxUser, storeUserList = [], recruitStatus, userStatus, status } = this.state.storeData;
-        //有店或者已经加入或者为空
-        if (spellStatusModel.storeId || userStatus === 1 || StringUtils.isEmpty(userStatus)) {
+        //有店并且没关闭或者已经加入或者为空
+        if ((spellStatusModel.storeId && spellStatusModel.storeStatus !== 0) || userStatus === 1 || StringUtils.isEmpty(userStatus)) {
             return null;
         }
         let btnText = undefined;

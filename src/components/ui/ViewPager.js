@@ -60,7 +60,8 @@ const ViewPager = props => {
                                 index={index}
                                 containerStyle={{
                                     height: height
-                                }}>
+                                }}
+                                {...attributes}>
                             {renderItems()}
                         </Swiper>);
                 }
@@ -83,7 +84,8 @@ const ViewPager = props => {
                                 index={index}
                                 containerStyle={{
                                     height: height
-                                }}>
+                                }}
+                                {...attributes}>
                             {renderItems()}
                         </Swiper>);
                 }
@@ -92,7 +94,7 @@ const ViewPager = props => {
     };
 
     return (
-        <View  {...attributes}>
+        <View>
             {renderSwiper()}
         </View>
     );

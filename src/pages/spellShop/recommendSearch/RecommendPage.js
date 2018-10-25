@@ -143,7 +143,7 @@ export default class RecommendPage extends BasePage {
     _clickOpenShopItem = () => {
         if (SpellStatusModel.storeStatus === 2) {
             this.$navigate('spellShop/shopSetting/SetShopNamePage');
-        } else if (SpellStatusModel.storeId) {
+        } else if (SpellStatusModel.storeId && SpellStatusModel.storeStatus !== 0) {
             this.props.navigation.popToTop();
         } else {
             this.$navigate('spellShop/openShop/OpenShopExplainPage');

@@ -8,6 +8,7 @@ const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { StarShopModule, homeModule } from './Modules'
 import User from '../../model/user'
+import starImg from './res/star.png'
 
 const Banner = ({backImage, title, press}) => <View style={styles.bannerContainer}>
     <ImageBackground style={styles.bannerImg}  source={backImage}>
@@ -25,9 +26,9 @@ const Profile = ({avatar, name, level, member, income, allIncome}) => <View styl
     <View style={styles.nameBox}>
         <View style={styles.nameView}>
             <Text style={styles.name}>{name}</Text>
-            <View style={styles.level}>
+            <ImageBackground style={styles.level} source={starImg}>
                 <Text style={styles.levelText}>{level}</Text>
-            </View>
+            </ImageBackground>
         </View>
         <View style={styles.space}/>
         <Text style={styles.text}>成员：<Text style={styles.member}>{member}</Text></Text>
@@ -48,7 +49,7 @@ const Profile = ({avatar, name, level, member, income, allIncome}) => <View styl
 
 const Cell = ({data, store, press}) => <View style={styles.cell}>
     <Banner backImage={{uri:data.imgUrl ? data.imgUrl : ''}} title={data.title} press={()=>press && press()}/>
-    <Profile avatar={{uri:store.headUrl ? store.headUrl : ''}} name={store.name} level={store.starName} member={store.storeUserNum} income={store.tradeBalance} allIncome={store.totalTradeBalance}/>
+    <Profile avatar={{uri:store.headUrl ? store.headUrl : ''}} name={store.name} level={store.starName ? store.starName : 0} member={store.storeUserNum} income={store.tradeBalance} allIncome={store.totalTradeBalance}/>
 </View>
 
 
@@ -137,10 +138,8 @@ let styles = StyleSheet.create({
         fontSize: px2dp(12)
     },
     level: {
-        backgroundColor: '#F2D3A2',
         width: px2dp(14),
         height: px2dp(14),
-        borderRadius: px2dp(7),
         marginLeft: px2dp(5),
         alignItems: 'center',
         justifyContent: 'center'
@@ -154,7 +153,8 @@ let styles = StyleSheet.create({
         flex: 1
     },
     nameView: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     text: {
         color: '#666',

@@ -43,7 +43,7 @@ export default class SpellShopPage extends BasePage {
     };
     _renderContainer = () => {
         //加入了店铺 或者 店铺状态不为关闭
-        if (SpellStatusModel.storeId || SpellStatusModel.storeStatus && SpellStatusModel.storeStatus !== 0) {
+        if (SpellStatusModel.storeId && SpellStatusModel.storeStatus && SpellStatusModel.storeStatus !== 0) {
             return (<MyShop_RecruitPage navigation={this.props.navigation}/>);
         } else if (SpellStatusModel.canSeeGroupStore) {
             // 能看见推荐店铺页面

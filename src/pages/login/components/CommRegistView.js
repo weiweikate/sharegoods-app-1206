@@ -83,8 +83,9 @@ export default class CommRegistView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            viewType: props.viewType
+            viewType: props.viewType,
         };
+        this.registModel.phoneNumber = this.props.phone || ''
     }
     changeSelectState(){
         this.registModel.isSelectProtocl = !this.registModel.isSelectProtocl;
