@@ -122,6 +122,11 @@ export default class LoginTopView extends Component {
                         placeholder='请输入手机号'
                         underlineColorAndroid={'transparent'}
                         keyboardType='numeric'
+                        onEndEditing={()=>{
+                           if(!StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
+                               bridge.$toast('手机号格式不对');
+                           }
+                        }}
                     />
                     <CommSpaceLine style={Styles.lineStyle}/>
                 </View>

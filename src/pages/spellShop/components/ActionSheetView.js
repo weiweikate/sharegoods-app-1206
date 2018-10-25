@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
     View,
     Text,
-    Modal,
+    // Modal,
     Platform,
     StatusBar,
     Keyboard,
@@ -12,6 +12,7 @@ import {
     StyleSheet,
     TouchableWithoutFeedback,
 } from 'react-native';
+import Modal from 'CommModal'
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width,Dimensions.get('window').height);
 const MIN_SCREENT = Math.min(Dimensions.get('window').width,Dimensions.get('window').height);
@@ -186,7 +187,7 @@ export default class ActionSheetView extends Component {
             this._closeAnimated(this.state.cancelCallBack);
         };
         return (
-            <Modal onRequestClose={clickHidden} transparent={true}>
+            <Modal onRequestClose={clickHidden} transparent={true} visible={this.state.modalVisible}>
                 <TouchableWithoutFeedback disabled={!this.state.modalVisible} onPress={clickHidden}>
                     <View style={[styles.container, {backgroundColor: 'transparent'}]}>
 

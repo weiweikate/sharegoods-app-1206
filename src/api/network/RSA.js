@@ -24,11 +24,11 @@ const RSA = {
         let client = rsa_config.client;
         let version = rsa_config.version;
         let map = {
-            nonce,
-            timestamp,
-            client,
-            version,
-            ...params
+            nonce,//16位随机字符串
+            timestamp,//当前时间戳
+            client,//客户端
+            version,//版本
+            ...params//参数
         };
         for (let key in map) {
             result.push(key + '=' + map[key]);
@@ -50,7 +50,7 @@ const RSA = {
                 sign: jsrsasign.hex2b64(s)
             };
         } catch (e) {
-            return '';
+            console.log('签名失败---参数---'+params)
         }
 
     }

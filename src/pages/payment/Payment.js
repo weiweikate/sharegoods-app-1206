@@ -1,12 +1,12 @@
 import { observable, action, flow } from "mobx"
 import PaymentApi from './PaymentApi'
-import user from '../../model/user'
 import balanceImg from './res/balance.png'
 import bankImg from './res/bank.png'
 import wechatImg from './res/wechat.png'
 import alipayImg from './res/alipay.png'
 import Toast from '../../utils/bridge'
 import PayUtil from './PayUtil'
+import user from '../../model/user'
 
 export const paymentType = {
     balance: 1, //余额支付
@@ -17,13 +17,14 @@ export const paymentType = {
 }
 
 export class Payment {
-    @observable availableBalance = user.availableBalance ? user.availableBalance : 0
+    @observable availableBalance = 0
     @observable balancePayment = {
         type: paymentType.balance,
         name: '余额支付',
         icon: balanceImg,
         hasBalance: true
     }
+    @observable outTradeNo = ''
     //是否支付店铺保证金
     @observable payStore = false
     @observable paymentList = [
@@ -66,7 +67,7 @@ export class Payment {
         }
     }
     //余额支付
-    balancePay = flow(function * (params) {
+    @action balancePay = flow(function * (params, ref) {
         try {
             Toast.showLoading()
             params.type = paymentType.balance
@@ -74,29 +75,43 @@ export class Payment {
             params.amounts = 0
             const res = yield this.perpay(params)
             const outTradeNo = res.data.outTradeNo
-            const checkRes = yield this.checkPayStatus({outTradeNo: outTradeNo})
+            const checkRes = yield this.paySuccess({...params, outTradeNo: outTradeNo})
+            user.updateUserData()
             Toast.hiddenLoading()
             return checkRes
         } catch (error) {
             Toast.hiddenLoading();
-            Toast.$toast(error.msg);
-            console.log(error)
+            // Toast.$toast(error.msg);
+            console.log('PaymentResultView',error.msg)
+            ref && ref.show(2, error.msg)
+            return error
         }
     })
 
     //预支付
-    perpay  = flow(function * (params) {
+    @action perpay  = flow(function * (params) {
         try {
             const res = yield PaymentApi.prePay(params)
             return res
         } catch (error) {
-            Toast.$toast(error.msg);
+            // Toast.$toast(error.msg);
+            console.log(error)
+            return error
+        }
+    })
+    
+    //继续支付
+    @action continuePay = flow(function *(params) {
+        try {
+            const res = yield PaymentApi.continuePay(params)
+            return res
+        } catch (error) {
             console.log(error)
         }
     })
 
-    //检查是否支付成功
-    checkPayStatus = flow(function * (params) {
+
+    @action continueToPay = flow(function * (params) {
         try {
             const res = yield PaymentApi.continueToPay(params)
             return res
@@ -106,51 +121,92 @@ export class Payment {
     })
 
     //支付宝支付
-    alipay = flow(function * (params) {
+    @action alipay = flow(function * (params, ref) {
         try {
             Toast.showLoading()
-            params.type = paymentType.alipay
-            params.balance = 0
-            params.amounts = params.amounts
-            // params
-            const preStr = yield this.perpay(params)
+            let preStr = ''
+            if (this.outTradeNo) {
+                preStr = yield this.continuePay({type: paymentType.alipay, outTradeNo: this.outTradeNo})
+            } else {
+                params.type = paymentType.alipay
+                params.balance = 0
+                params.amounts = params.amounts
+                preStr = yield this.perpay(params)
+            }
             const prePayStr = preStr.data.prePayStr
+            this.outTradeNo = preStr.data.outTradeNo
             const resultStr = yield PayUtil.appAliPay(prePayStr)
+            // if (resultStr.sdkCode != 9000) {
+            //     throw error
+            // }
+            // console.log('resultStr', resultStr)
+            // const checkStr = yield this.alipayCheck({outTradeNo:preStr.data.outTradeNo , type:paymentType.alipay})
+            // console.log('checkStr', checkStr)
             Toast.hiddenLoading();
-            return {resultStr, preStr}
+            return  resultStr
         } catch (error) {
-            Toast.showLoading()
+            Toast.hiddenLoading()
             console.log(error)
+            ref && ref.show(2, error.msg)
+            return error
+        }
+    })
+
+    //支付宝支付查账
+    @action alipayCheck = flow(function * (params) {
+        try {
+            const resultStr = yield PaymentApi.alipayCheck(params)
+            return {resultStr}
+        } catch (error) {
+            Toast.hiddenLoading()
+            console.log(error)
+            return error
         }
     })
 
     //微信支付
-    appWXPay = flow(function * (params) {
+    @action appWXPay = flow(function * (params, ref) {
         try {
             Toast.showLoading()
-            params.type = paymentType.wechat
-            params.balance = 0
-            params.amounts = params.amounts
-            const preStr = yield this.perpay(params)
+            let preStr = ''
+            if (this.outTradeNo) {
+                preStr = yield this.continuePay({type: paymentType.wechat, outTradeNo: this.outTradeNo})
+            } else {
+                params.type = paymentType.wechat
+                params.balance = 0
+                params.amounts = params.amounts
+                preStr = yield this.perpay(params)
+            }
             const prePay = JSON.parse(preStr.data.prePayStr)
             const resultStr = yield PayUtil.appWXPay(prePay)
-            if (parseInt(resultStr.sdkCode, 0) !== 0) {
-                Toast.$toast(resultStr.msg)
+            this.outTradeNo = preStr.data.outTradeNo
+           if (parseInt(resultStr.sdkCode, 0) !== 0) {
+                ref && ref.show(2, resultStr.msg)
                 Toast.hiddenLoading()
-                return
+                return ''
             }
-
+            // const checkStr = yield PaymentApi.wechatCheck({outTradeNo:preStr.data.outTradeNo , type:2})
             Toast.hiddenLoading()
-            return {resultStr, preStr}
+            return resultStr
         } catch (error) {
-            Toast.showLoading()
+            Toast.hiddenLoading()
+            ref && ref.show(2, error.msg)
+            console.log(error)
+        }
+    })
+
+    @action wechatCheck = flow(function * (params) {
+        try {
+            const resultStr = yield PaymentApi.wechatCheck(params)
+            return {resultStr}
+        } catch (error) {
+            Toast.hiddenLoading()
             console.log(error)
         }
     })
 
     //店铺保证金
-    @action
-    payStoreActoin = () => {
+    @action payStoreActoin = () => {
         let type = (this.selectedBalace ? 1 : 0)
         if (this.selectedTypes) {
             type += this.selectedTypes.type
@@ -194,4 +250,15 @@ export class Payment {
             Toast.hiddenLoading()
         })
     }
+
+    //检查是否支付成功
+    @action paySuccess = flow(function * (params) {
+        try {
+            const res = yield PaymentApi.paySuccess(params)
+            return res
+        } catch (error) {
+            Toast.$toast(error.msg);
+            console.log(error)
+        }
+    })
 }

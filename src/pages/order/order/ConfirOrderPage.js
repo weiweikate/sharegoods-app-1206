@@ -22,6 +22,7 @@ import user from '../../../model/user';
 import Toast from '../../../utils/bridge';
 import BasePage from '../../../BasePage';
 import OrderApi from './../api/orderApi';
+import MineApi from '../../mine/api/MineApi';
 
 // let oldViewData, oldPriceList;
 export default class ConfirOrderPage extends BasePage {
@@ -37,35 +38,20 @@ export default class ConfirOrderPage extends BasePage {
             viewData: {
                 express: {},
                 list: [
-                    {
-                        // productId: 1,
-                        // uri: 'https://ws2.sinaimg.cn/large/006tNc79gy1fsvlm591zyj30om056dl8.jpg',
-                        // goodsName: 'CHEERIOBAN 慵懒随意春装2018新款女毛呢格纹编制流苏小香风外套',
-                        // salePrice: '150',
-                        // category: '通勤通勤: 复古衣长: 中长款袖长: 长袖',
-                        // goodsNum: '1'
-                    }
+                    {}
                 ],
                 priceList: [
-                    {
-                        'productId': 6,
-                        'priceId': 39,
-                        'num': 1,
-                        'sourceId': 4,
-                        'spec': '仙踪绿-6+128GB',
-                        'specImg': 'https://juretest.oss-cn-hangzhou.aliyuncs.com/jure/jure_crm/test/0989d6f0-4273-4441-a7e7-afa55fd7bf63_1534744994907.png',
-                        'productName': 'Meitu/美图 T9美图T9手机新款 双卡双待美颜拍照手机 美图手机正品 F4明星同款手机'
-                    }
+                    {}
                 ],
                 userScore: 0,
                 reducePrice: 0,
                 canUseScore: true,
                 totalFreightFee: 0,
-                totalAmounts: 0,
+                totalAmounts: 0
             },
             tokenCoin: 0,
-            couponId:null,
-            tokenCoinText:null,
+            couponId: null,
+            tokenCoinText: null,
             orderParam: this.params.orderParamVO ? this.params.orderParamVO : []
 
         };
@@ -165,24 +151,24 @@ export default class ConfirOrderPage extends BasePage {
     renderDetail = () => {
         return (
             <View style={{ backgroundColor: 'white' }}>
-                    <TouchableOpacity style={{
-                        height: 44,
-                        flexDirection: 'row',
-                        paddingLeft: 15,
-                        paddingRight: 15,
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
-                    }}
-                                        disabled={(this.state.viewData.list[0].restrictions & 1) == 1||this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 }
-                                        onPress={() => this.jumpToCouponsPage()}>
-                        <UIText value={'优惠券'} style={styles.blackText}/>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <UIText
-                                value={(this.state.viewData.list[0].restrictions & 1) == 1 ||this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 ? '不可使用优惠券' : (this.state.couponName?this.state.couponName:'选择优惠券')}
-                                style={[styles.grayText, { marginRight: 15 }]}/>
-                            <Image source={arrow_right}/>
-                        </View>
-                    </TouchableOpacity>
+                <TouchableOpacity style={{
+                    height: 44,
+                    flexDirection: 'row',
+                    paddingLeft: 15,
+                    paddingRight: 15,
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                }}
+                                  disabled={(this.state.viewData.list[0].restrictions & 1) == 1 || this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2}
+                                  onPress={() => this.jumpToCouponsPage()}>
+                    <UIText value={'优惠券'} style={styles.blackText}/>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <UIText
+                            value={(this.state.viewData.list[0].restrictions & 1) == 1 || this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 ? '不可使用优惠券' : (this.state.couponName ? this.state.couponName : '选择优惠券')}
+                            style={[styles.grayText, { marginRight: 15 }]}/>
+                        <Image source={arrow_right}/>
+                    </View>
+                </TouchableOpacity>
 
                 {this.renderLine()}
                 {!user.tokenCoin ? null :
@@ -199,7 +185,7 @@ export default class ConfirOrderPage extends BasePage {
                         <UIText value={'1元现金券'} style={styles.blackText}/>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <UIText
-                                value={(this.state.viewData.list[0].restrictions & 2) == 2 ? '不可使用1元现金券' : (this.state.tokenCoinText?this.state.tokenCoinText:'选择一元现金券')}
+                                value={(this.state.viewData.list[0].restrictions & 2) == 2 ? '不可使用1元现金券' : (this.state.tokenCoinText ? this.state.tokenCoinText : '选择一元现金券')}
                                 style={[styles.grayText, { marginRight: 15 }]}/>
                             <Image source={arrow_right}/>
                         </View>
@@ -491,7 +477,7 @@ export default class ConfirOrderPage extends BasePage {
                 activityCode: this.state.orderParam.orderProducts[0].code,
                 activityType: this.state.orderParam.orderType
             });
-        }else if(this.state.orderParam.orderType === 3){
+        } else if (this.state.orderParam.orderType === 3) {
             this.$navigate('topic/TopicDetailPage', {
                 activityCode: this.state.orderParam.packageCode,
                 activityType: this.state.orderParam.orderType
@@ -551,7 +537,7 @@ export default class ConfirOrderPage extends BasePage {
         }
         this.$loadingShow();
         let params;
-        if (this.state.orderParam && this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2 || this.state.orderParam.orderType === 98||this.state.orderParam.orderType === 3) {
+        if (this.state.orderParam && this.state.orderParam.orderType === 1 || this.state.orderParam.orderType === 2 || this.state.orderParam.orderType === 98 || this.state.orderParam.orderType === 3) {
             params = {
                 address: address,
                 areaCode: areaCode,
@@ -564,14 +550,22 @@ export default class ConfirOrderPage extends BasePage {
                 receiver: receiver,
                 recevicePhone: recevicePhone,
                 tokenCoin: tokenCoin,
-                couponId:couponId
+                couponId: couponId
             };
             console.log(params);
             if (this.state.orderParam && this.state.orderParam.orderType === 1) {//如果是秒杀的下单
                 OrderApi.SeckillSubmitOrder(params).then((response) => {
                     this.$loadingDismiss();
                     let data = response.data;
-                    // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
+                    MineApi.getUser().then(res => {
+                        this.$loadingDismiss();
+                        let data = res.data;
+                        user.saveUserInfo(data);
+                    }).catch(err => {
+                        if (err.code === 10009) {
+                            this.props.navigation.navigate("login/login/LoginPage", { callback: this.loadPageData });
+                        }
+                    })
                     this.$navigate('payment/PaymentMethodPage', {
                         orderNum: data.orderNum,
                         amounts: this.state.viewData.totalAmounts,
@@ -593,7 +587,15 @@ export default class ConfirOrderPage extends BasePage {
                 OrderApi.DepreciateSubmitOrder(params).then((response) => {
                     this.$loadingDismiss();
                     let data = response.data;
-                    // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
+                    MineApi.getUser().then(res => {
+                        this.$loadingDismiss();
+                        let data = res.data;
+                        user.saveUserInfo(data);
+                    }).catch(err => {
+                        if (err.code === 10009) {
+                            this.props.navigation.navigate("login/login/LoginPage", { callback: this.loadPageData });
+                        }
+                    })
                     this.$navigate('payment/PaymentMethodPage', {
                         orderNum: data.orderNum,
                         amounts: this.state.viewData.totalAmounts,
@@ -612,8 +614,8 @@ export default class ConfirOrderPage extends BasePage {
                     }
                 });
             }
-            else if(this.state.orderParam && this.state.orderParam.orderType === 3){
-                let params1={
+            else if (this.state.orderParam && this.state.orderParam.orderType === 3) {
+                let params1 = {
                     address: address,
                     areaCode: areaCode,
                     buyerRemark: buyerRemark,
@@ -622,20 +624,28 @@ export default class ConfirOrderPage extends BasePage {
                     provinceCode: provinceCode,
                     receiver: receiver,
                     recevicePhone: recevicePhone,
-                    orderProducts:this.state.orderParam.orderProducts,
-                    packageCode:this.state.orderParam.packageCode,
+                    orderProducts: this.state.orderParam.orderProducts,
+                    packageCode: this.state.orderParam.packageCode,
                     tokenCoin: tokenCoin,
-                    couponId:couponId
-                }
+                    couponId: couponId
+                };
                 OrderApi.PackageSubmitOrder(params1).then((response) => {
                     this.$loadingDismiss();
                     let data = response.data;
-                    // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
+                    MineApi.getUser().then(res => {
+                        this.$loadingDismiss();
+                        let data = res.data;
+                        user.saveUserInfo(data);
+                    }).catch(err => {
+                        if (err.code === 10009) {
+                            this.props.navigation.navigate("login/login/LoginPage", { callback: this.loadPageData });
+                        }
+                    })
                     this.$navigate('payment/PaymentMethodPage', {
                         orderNum: data.orderNum,
                         amounts: this.state.viewData.totalAmounts,
                         pageType: 0,
-                        availableBalance: data.user.availableBalance,
+                        availableBalance: data.user.availableBalance
                     });
                 }).catch(e => {
                     this.$loadingDismiss();
@@ -662,17 +672,25 @@ export default class ConfirOrderPage extends BasePage {
                 receiver: receiver,
                 recevicePhone: recevicePhone,
                 tokenCoin: tokenCoin,
-                couponId:couponId
+                couponId: couponId
             };
             OrderApi.submitOrder(params).then((response) => {
                 this.$loadingDismiss();
                 let data = response.data;
-                // let amounts=this.state.useScore?this.state.viewData.totalAmounts+this.state.reducePrice:this.state.viewData.totalAmounts
+                MineApi.getUser().then(res => {
+                    this.$loadingDismiss();
+                    let data = res.data;
+                    user.saveUserInfo(data);
+                }).catch(err => {
+                    if (err.code === 10009) {
+                        this.props.navigation.navigate("login/login/LoginPage", { callback: this.loadPageData });
+                    }
+                })
                 this.$navigate('payment/PaymentMethodPage', {
                     orderNum: data.orderNum,
                     amounts: this.state.viewData.totalAmounts,
                     pageType: 0,
-                    availableBalance: data.user.availableBalance,
+                    availableBalance: data.user.availableBalance
 
                 });
 
@@ -692,25 +710,27 @@ export default class ConfirOrderPage extends BasePage {
     };
     //选择优惠券
     jumpToCouponsPage = (params) => {
-        if(params=='justOne'){
-            this.$navigate('mine/coupons/CouponsPage', {justOne:parseInt(this.state.viewData.totalAmounts),callBack:(data)=>{
-                console.log(typeof data);
-                if(parseInt(data)>0){
-                let params={tokenCoin:parseInt(data),couponId:this.state.couponId};
-                this.setState({tokenCoin:data,tokenCoinText:'-'+data});
-                    this.loadPageData(params);
+        if (params == 'justOne') {
+            this.$navigate('mine/coupons/CouponsPage', {
+                justOne: this.state.viewData.totalAmounts?this.state.viewData.totalAmounts:1, callBack: (data) => {
+                    console.log(typeof data);
+                    if (parseInt(data) > 0) {
+                        let params = { tokenCoin: parseInt(data), couponId: this.state.couponId };
+                        this.setState({ tokenCoin: data, tokenCoinText: '-' + data });
+                        this.loadPageData(params);
+                    }
                 }
-                }});
-        }else{
+            });
+        } else {
             this.$navigate('mine/coupons/CouponsPage', {
                 fromOrder: 1, productIds: this.state.viewData.list[0].productId,
                 orderParam: this.state.orderParam, callBack: (data) => {
                     if (data && data.id) {
-                        let params = { couponId: data.id ,tokenCoin:this.state.tokenCoin};
-                        this.setState({couponId:data.id,couponName:data.name})
+                        let params = { couponId: data.id, tokenCoin: this.state.tokenCoin };
+                        this.setState({ couponId: data.id, couponName: data.name });
                         this.loadPageData(params);
-                    } else if(data=='giveUp') {
-                        this.setState({couponId:null,couponName:null})
+                    } else if (data == 'giveUp') {
+                        this.setState({ couponId: null, couponName: null });
                         this.loadPageData();
                     }
                 }

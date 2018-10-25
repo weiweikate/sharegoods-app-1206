@@ -93,15 +93,14 @@ export default class MyShop_RecruitPage extends Component {
             const {
                 startPrice, markdownPrice = '', originalPrice = '', reseCount = '', floorPrice
             } = this.props.activityData;
+            one = `原价￥${originalPrice}`;
             if (begin) {
                 price = startPrice;
-                one = '起拍价';
-                two = `原价￥${originalPrice}|${reseCount}人关注`;
+                two = `起拍价|${reseCount}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime)}`;
-                four = `${formatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
+                four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开拍`;
             } else {
                 price = markdownPrice;
-                one = `原价￥${originalPrice}`;
                 two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '起拍价'}`;
                 three = markdownPrice === floorPrice ? `距结束 ${this._timeDif(this.state.countTime) || ''}` : `距下次降价 ${this._timeDif(this.state.countTime) || ''}`;
                 four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;
@@ -109,13 +108,12 @@ export default class MyShop_RecruitPage extends Component {
         } else {
             const { originalPrice, seckillPrice = '', reseCount = '' } = this.props.activityData;
             price = seckillPrice;
+            one = `原价￥${isNoEmpty(originalPrice) ? originalPrice : ''}`;
             if (begin) {
-                one = '秒杀价';
-                two = `原价￥${isNoEmpty(originalPrice) ? originalPrice : ''}|${isNoEmpty(reseCount) ? reseCount : ''}人关注`;
+                two = `秒杀价|${isNoEmpty(reseCount) ? reseCount : ''}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${formatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
+                four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开拍`;
             } else {
-                one = `原价￥${isNoEmpty(originalPrice) ? originalPrice : ''}`;
                 two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '秒杀价'}`;
                 three = `距结束 ${this._timeDif(this.state.countTime) || ''}`;
                 four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;
@@ -132,7 +130,7 @@ export default class MyShop_RecruitPage extends Component {
                 <Text style={{ color: 'white', fontSize: 18 }}>￥<Text
                     style={{ fontSize: 40 }}>{price}</Text></Text>
                 <View style={{ marginLeft: 10, justifyContent: 'center' }}>
-                    <Text style={{ color: '#F7F7F7', fontSize: 12 }}>{one}</Text>
+                    <Text style={{ color: '#F7F7F7', fontSize: 12, textDecorationLine: 'line-through' }}>{one}</Text>
                     <Text style={{
                         color: '#F7F7F7',
                         fontSize: 10,

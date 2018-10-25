@@ -16,7 +16,7 @@ import com.meeruu.commonlib.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.qiyu.imService.QiyuImageLoader;
 import com.meeruu.sharegoods.BuildConfig;
-import com.meeruu.sharegoods.RNPackage;
+import com.meeruu.sharegoods.rn.RNPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;

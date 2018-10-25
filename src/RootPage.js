@@ -1,7 +1,8 @@
 import { TabNavigator } from 'react-navigation';
 import React from 'react';
 import Home from './pages/home/HomePage';
-import Mine from './pages/mine/page/MinePage';
+// import Mine from './pages/mine/page/MinePage';
+import Mine from './pages/mine/page/NewMinePage';
 import ShopCart from './pages/shopCart/page/ShopCartPage';
 import SpellShop from './pages/spellShop/SpellShopPage';
 import {
@@ -11,6 +12,7 @@ import {
 import CommTabImag from './comm/res/CommTabImag';
 import ColorUtil from './utils/ColorUtil';
 import ScreenUtils from './utils/ScreenUtils';
+import ShowListPage from './pages/show/ShowListPage'
 
 export const TabNav = TabNavigator(
     {
@@ -37,6 +39,22 @@ export const TabNav = TabNavigator(
             screen: SpellShop,
             navigationOptions: {
                 tabBarLabel: '拼店',
+                tabBarIcon: ({ focused }) => {
+                    if (focused) {
+                        return (
+                            <Image style={styles.tabBarIcon} source={CommTabImag.spellShop_Tab_img.img_Sel}/>
+                        );
+                    }
+                    return (
+                        <Image style={styles.tabBarIcon} source={CommTabImag.spellShop_Tab_img.img_Nor}/>
+                    );
+                }
+            }
+        },
+        ShowListPage: {
+            screen: ShowListPage,
+            navigationOptions: {
+                tabBarLabel: '发现',
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
                         return (
