@@ -6,6 +6,7 @@ import wechatImg from './res/wechat.png'
 import alipayImg from './res/alipay.png'
 import Toast from '../../utils/bridge'
 import PayUtil from './PayUtil'
+import user from '../../model/user'
 
 export const paymentType = {
     balance: 1, //余额支付
@@ -75,6 +76,7 @@ export class Payment {
             const res = yield this.perpay(params)
             const outTradeNo = res.data.outTradeNo
             const checkRes = yield this.paySuccess({...params, outTradeNo: outTradeNo})
+            user.updateUserData()
             Toast.hiddenLoading()
             return checkRes
         } catch (error) {
@@ -135,6 +137,7 @@ export class Payment {
             const resultStr = yield PayUtil.appAliPay(prePayStr)
             console.log('resultStr', resultStr)
             const checkStr = yield this.alipayCheck({outTradeNo:preStr.data.outTradeNo , type:paymentType.alipay})
+            console.log('checkStr', checkStr)
             Toast.hiddenLoading();
             return checkStr
         } catch (error) {

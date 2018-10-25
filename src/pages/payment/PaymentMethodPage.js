@@ -236,6 +236,8 @@ export default class PaymentMethodPage extends BasePage {
                 return;
             }
             let result = await this.payment.perpay(params)
+
+            user.updateUserData()
             console.log('result', result)
             this.setState({"password": ''})
             if (params.amounts === 0 && parseInt(result.code, 0) === 10000) {
