@@ -310,7 +310,7 @@ export default class ShopMessagePage extends BasePage {
             return (
 
                 <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.props.navigation,item.paramType,item.param)}}>
-                    <View style={{height:33,width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white',borderTopColor:'#DDDDDD',borderTopWidth:px2dp(0,5)}}>
+                    <View style={{height:px2dp(33),width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white',borderTopColor:'#DDDDDD',borderTopWidth:px2dp(0,5)}}>
                         <Text style={{color:'#666666',fontSize:px2dp(13)}}>
                              查看详情>>
                         </Text>
@@ -402,7 +402,6 @@ export default class ShopMessagePage extends BasePage {
                 <View style={{ backgroundColor: 'white',marginVertical:px2dp(15) }}>
                     <Text style={{ marginLeft: 15, fontSize: 13,color:'#666666' }}>{item.content}</Text>
                 </View>
-                <View style={{ height:!EmptyUtils.isEmpty(item.param) ? 1 : 0, width: ScreenUtils.width, backgroundColor: '#DDDDDD' }}/>
                 {this.itemBottomRender(item,index)}
             </View>
         );

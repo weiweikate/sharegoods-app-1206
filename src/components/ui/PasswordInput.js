@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 /**
  * 交易密码框
  */
-export default class Password extends Component {
+export default class PasswordInput extends Component {
     static propTypes = {
         style: PropTypes.style,
         inputItemStyle: PropTypes.style,
