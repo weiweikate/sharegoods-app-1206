@@ -59,9 +59,9 @@ class MyOrdersListPage extends BasePage {
                     style={{ width: ScreenUtils.width, justifyContent: 'center', height: 60 }}
                     //进界面的时候打算进第几个
                     initialPage={parseInt(this.state.index)}
-                    tabBarActiveTextColor='red'
-                    tabBarTextStyle={{ fontSize: 30, color: 'white' }}
-
+                    tabBarActiveTextColor='#D51243'
+                    tabBarInactiveTextColor='#999999'
+                    tabBarTextStyle={{ fontSize: 15, color: 'white' }}
                     renderTabBar={() => (
                         this.renterTabBar()
                     )}>
@@ -70,19 +70,19 @@ class MyOrdersListPage extends BasePage {
                         selectTab={this.state.selectTab}/>
 
                     <MyOrdersListView
-                        tabLabel={{ label: '待支付', }} pageStatus={1}
+                        tabLabel={{ label: '待支付' }} pageStatus={1}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
                     <MyOrdersListView
-                        tabLabel={{ label: '待发货',}} pageStatus={2}
+                        tabLabel={{ label: '待发货' }} pageStatus={2}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
                     <MyOrdersListView
-                        tabLabel={{ label: '待收货',}} pageStatus={3}
+                        tabLabel={{ label: '待收货' }} pageStatus={3}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
                     <MyOrdersListView
-                        tabLabel={{ label: '已完成', }} pageStatus={4}
+                        tabLabel={{ label: '已完成' }} pageStatus={4}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
 
@@ -94,9 +94,8 @@ class MyOrdersListPage extends BasePage {
     renterTabBar = () => {
         return (
             <TabBar
-                underlineColor='red'
+                underlineColor='#D51243'
                 backgroundColor='white'
-                tabMargin={35}
                 style={{
                     alignItems: 'center',
                     justifyContent: 'center',

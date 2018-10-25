@@ -107,7 +107,7 @@ export default class ActivityView extends Component {
                 one = '起拍价';
                 two = `${reseCount}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime)}`;
-                four = `${formatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
+                four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开拍`;
             } else {
                 price = markdownPrice;
                 one = '起拍价';
@@ -122,7 +122,7 @@ export default class ActivityView extends Component {
                 one = '秒杀价';
                 two = `${isNoEmpty(subscribeCount) ? subscribeCount : ''}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${formatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
+                four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开拍`;
             } else {
                 one = '秒杀价';
                 two = `${isNoEmpty(subscribeCount) ? subscribeCount : ''}人关注`;

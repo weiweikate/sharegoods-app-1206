@@ -74,10 +74,13 @@ export default class DetailHeaderView extends Component {
                            }}
                            height={ScreenUtils.autoSizeWidth(377)}
                            autoplay={true}/>
-                {activityType === 1 || activityType === 2 ? <ProductActivityView ref={(e) => {
-                    this.ActivityView = e;
-                }} activityData={this.props.activityData} activityType={activityType}
-                                                                                 productActivityViewAction={this.props.productActivityViewAction}/> : null}
+                {activityType === 1 || activityType === 2 ?
+                    <ProductActivityView activityType={activityType}
+                                         ref={(e) => {
+                                             this.ActivityView = e;
+                                         }}
+                                         activityData={this.props.activityData}
+                                         productActivityViewAction={this.props.productActivityViewAction}/> : null}
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{
@@ -87,7 +90,12 @@ export default class DetailHeaderView extends Component {
                         }}>{`${name}`}</Text>
                         <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
                             <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${price}起`}</Text>
-                            <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${originalPrice}`}</Text>
+                            <Text style={{
+                                marginLeft: 5,
+                                color: '#BBBBBB',
+                                fontSize: 10,
+                                textDecorationLine: 'line-through'
+                            }}>{`￥${originalPrice}`}</Text>
                             <Text style={{
                                 marginLeft: 5,
                                 backgroundColor: 'red',
