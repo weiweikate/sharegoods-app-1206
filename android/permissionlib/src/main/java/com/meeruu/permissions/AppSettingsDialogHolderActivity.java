@@ -1,4 +1,4 @@
-package com.smartstudy.permissions;
+package com.meeruu.permissions;
 
 import android.app.Activity;
 import android.content.Context;
