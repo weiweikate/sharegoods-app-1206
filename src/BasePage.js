@@ -13,6 +13,7 @@ import {
 } from './components/pageDecorator/BaseView';
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';
+import NoNetHighComponent, { netStatus } from "./comm/components/NoNetHighComponent";
 
 
 export default class BasePage extends Component {
@@ -26,10 +27,32 @@ export default class BasePage extends Component {
         show: true
     };
 
+    componentDidMount(){
+        if (netStatus.isConnected === false){
+            return;
+        }
+    }
+
+    $refreshData() {
+    }
+
+    $isMonitorNetworkStatus() {
+        return true;
+    }
+
+    renderContianer(){
+        let controlParams = this.$getPageStateOptions ? this.$getPageStateOptions() : null;
+       return(
+           controlParams ? renderViewByLoadingState(controlParams, () => {
+        return this._render();
+        }) : this._render()
+        )
+    }
+
     render() {
         let navigationBarOptions = this.$navigationBarOptions || {};
         let isShowNavBar = navigationBarOptions.show !== undefined ? navigationBarOptions.show : true;
-        let controlParams = this.$getPageStateOptions ? this.$getPageStateOptions() : null;
+         // let controlParams = this.$getPageStateOptions ? this.$getPageStateOptions() : null;
 
         return (
             <View style={styles.container}>
@@ -43,11 +66,9 @@ export default class BasePage extends Component {
                                                   this.$navigatorBar = bar;
                                               }}/>
             }
-            {
-                controlParams ? renderViewByLoadingState(controlParams, () => {
-                    return this._render();
-                }) : this._render()
-            }
+            {this.$isMonitorNetworkStatus() ? <Container _render={this.renderContianer.bind(this)}
+                                                       $refreshData={this.$refreshData.bind(this)}
+            />:this.renderContianer()}
             <ToastView ref={(toast) => {
                 this.$toast = toast;
             }}/>
@@ -205,6 +226,14 @@ export default class BasePage extends Component {
         }
         this.$loadingHub.dismiss(typeof callBack === 'function' ? callBack : null);
     };
+}
+
+@NoNetHighComponent
+class Container extends Component  {
+
+     render(){
+         return(this.props._render());
+     }
 }
 
 const styles = StyleSheet.create({

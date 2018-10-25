@@ -52,7 +52,7 @@ export default class ShowHotView extends Component {
         return <ItemView imageStyle={{height: imgHeight}}  data={data} press={()=>{this._gotoDetail(data)}}/>
     }
     renderHeader = () => {
-        return <View><ShowBannerView/>
+        return <View><ShowBannerView navigation={this.props.navigation}/>
         <ShowChoiceView navigation={this.props.navigation}/>
         <ShowHotScrollView navigation={this.props.navigation}/>
             <View style={styles.titleView}>

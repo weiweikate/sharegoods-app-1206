@@ -33,7 +33,7 @@ const PayCell = ({data, isSelected, balance, press, selectedTypes, disabled}) =>
                     marginRight: 7,
                     color: '#999999',
                     fontSize: 13
-                }}>可用余额: {balance}</Text>
+                }}>可用余额: {balance ? balance : 0}</Text>
             :
             null
         }
@@ -107,11 +107,13 @@ export default class PaymentMethodPage extends BasePage {
                this.payment.alipayCheck({outTradeNo: this.payment.outTradeNo, type: paymentType.alipay, payType: 1}).then(checkStr => {
                     console.log('_handleAppStateChange', state, checkStr)
                     this._showPayresult(checkStr.resultStr)
+                    AppState.removeEventListener("change", this._handleAppStateChange);
                })
             } else {
                 this.payment.wechatCheck({outTradeNo: this.payment.outTradeNo, type: 2, payType: 1}).then(checkStr=> {
                     console.log('_handleAppStateChange', state, checkStr)
                     this._showPayresult(checkStr.resultStr)
+                    AppState.removeEventListener("change", this._handleAppStateChange);
                 })
             }
         }
