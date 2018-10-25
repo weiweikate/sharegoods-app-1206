@@ -19,7 +19,7 @@ export default class ShowView extends Component {
         this.showModules.loadShowList()
     }
     _renderItems(item, index) {
-        return <View key={index} style={styles.item}><TagView text={tagName[item.generalize]}/><Text style={styles.text}>{item.title}</Text></View>
+        return <View key={index} style={styles.item}><TagView text={tagName[item.generalize ? item.generalize : 0]}/><Text numberOfLines={1} style={styles.text}>{item.title}</Text></View>
     }
     _goToShow() {
         const { navigation } = this.props
@@ -47,7 +47,7 @@ export default class ShowView extends Component {
             {
                 this.showModules.showImage
                 ?
-                <Image style={styles.icon} source={{uri:this.showModules.showImage}}/>
+                <Image style={styles.icon} source={{uri:this.showModules.showImage ? this.showModules.showImage : null}}/>
                 :
                 null
             }

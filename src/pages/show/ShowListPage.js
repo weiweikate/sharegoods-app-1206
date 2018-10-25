@@ -6,17 +6,21 @@ import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtils
 import ShowHotView from './ShowHotView'
 import ShowHotFindView from './ShowHotFindView'
-import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar'
 export default class ShowListPage extends BasePage {
     $navigationBarOptions = {
         title: '发现',
-        show: false
+        leftNavItemHidden: true
+    }
+
+    constructor(props) {
+        super(props)
+        this.$navigationBarOptions.leftNavItemHidden = this.params.fromHome ? false : true
     }
 
     _render() {
         const {navigation} = this.props
+        console.log('this.params.fromHome', this.params.fromHome)
         return <View style={styles.container}>
-            <NavigatorBar leftNavItemHidden={this.params.fromHome} title={'拼店'}/>
             <ScrollableTabView
                 style={styles.tab}
                 tabBarActiveTextColor={'#D51234'}
