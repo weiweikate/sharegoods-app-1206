@@ -289,7 +289,6 @@ export default class ProductDetailPage extends BasePage {
                              renderSectionHeader={this._renderSectionHeader}
                              renderItem={this._renderItem}
                              keyExtractor={(item, index) => `${index}`}
-                             showsVerticalScrollIndicator={false}
                              sections={[{ data: [{}] }]}
                              scrollEventThrottle={10}/>
                 <DetailBottomView bottomViewAction={this._bottomViewAction}/>
@@ -307,12 +306,12 @@ export default class ProductDetailPage extends BasePage {
                                     imageUrlStr: imgUrl,
                                     titleStr: `${name}`,
                                     priceStr: `￥${price}`,
-                                    QRCodeStr: `http://testh5.sharegoodsmall.com/99/${product.id}`
+                                    QRCodeStr: `http://testh5.sharegoodsmall.com/product/99/${product.id}`
                                 }}
                                 webJson={{
                                     title: `${name}`,
                                     dec: '商品详情',
-                                    linkUrl: `http://testh5.sharegoodsmall.com/99/${product.id}`,
+                                    linkUrl: `http://testh5.sharegoodsmall.com/product/99/${product.id}`,
                                     thumImage: imgUrl
                                 }}/>
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>

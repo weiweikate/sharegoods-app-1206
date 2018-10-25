@@ -381,12 +381,12 @@ export default class TopicDetailPage extends BasePage {
                                     imageUrlStr: productImgUrl,
                                     titleStr: productName,
                                     priceStr: `￥${productPrice}`,
-                                    QRCodeStr: `http://testh5.sharegoodsmall.com/${this.params.activityType}/${this.params.activityCode}`
+                                    QRCodeStr: `http://testh5.sharegoodsmall.com/product/${this.params.activityType}/${this.params.activityCode}`
                                 }}
                                 webJson={{
                                     title: productName,
                                     dec: '商品详情',
-                                    linkUrl: `http://testh5.sharegoodsmall.com/${this.params.activityType}/${this.params.activityCode}`,
+                                    linkUrl: `http://testh5.sharegoodsmall.com/product/${this.params.activityType}/${this.params.activityCode}`,
                                     thumImage: productImgUrl
                                 }}/>
                 <TopicDetailShowModal ref={(ref) => this.TopicDetailShowModal = ref}/>
