@@ -3,14 +3,13 @@
  */
 import React from 'react';
 import {
-    StyleSheet, View, Text, TouchableOpacity, DeviceEventEmitter,
+    StyleSheet, View, Text,  DeviceEventEmitter,
     ImageBackground, Image
 } from 'react-native';
 
 import BasePage from '../../../../BasePage';
 
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import { color } from '../../../../constants/Theme';
 import usedBg from '../../res/couponsImg/youhuiquan_bg_zhihui.png';
 import unuesdBg from '../../res/couponsImg/youhuiquan_bg_nor.png';
 import tobeActive from '../../res/couponsImg/youhuiquan_icon_daijihuo_nor.png';
@@ -135,16 +134,6 @@ export default class CouponsDetailPage extends BasePage {
                 </View>
                 <View
                     style={{ width: ScreenUtils.width, height: 180, alignItems: 'center', justifyContent: 'flex-end' }}>
-                    <TouchableOpacity activeOpacity={0.9} style={{
-                        width: 290,
-                        height: 48,
-                        borderRadius: 5,
-                        backgroundColor: this.state.viewData.status === 0 ? color.red : '#dddddd',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }} onPress={() => this.go2OrderPage()}>
-                        <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.explain}</Text>
-                    </TouchableOpacity>
                 </View>
             </View>
         );

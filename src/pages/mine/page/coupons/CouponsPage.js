@@ -28,7 +28,7 @@ export default class CouponsPage extends BasePage {
             //this.$navigate('login/login/LoginPage');
         }
         console.log(this.params.orderParam);
-        console.log(typeof this.params.orderParam);
+        console.log('justone',this.params.justOne);
     }
 
     _render() {
