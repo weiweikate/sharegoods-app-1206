@@ -12,7 +12,6 @@ const RecommendItem = ({item, press}) => <TouchableOpacity style={styles.item} o
     <View style={styles.imgView}>
         <Image style={styles.img}  source={{uri:item.imgUrl}}/>
     </View>
-    <Text style={styles.text} numberOfLines={1}>{item.remark}</Text>
 </TouchableOpacity>
 
 @observer
@@ -59,7 +58,7 @@ export default class HomeRecommendView extends Component {
 
 let styles = StyleSheet.create({
     container: {
-        height: px2dp(230),
+        height: px2dp(207),
         backgroundColor: '#fff',
         marginTop: px2dp(10)
     },
@@ -88,7 +87,7 @@ let styles = StyleSheet.create({
     },
     item: {
         width: px2dp(280),
-        height: px2dp(175),
+        height: px2dp(145),
         marginLeft: px2dp(10)
     },
     space: {

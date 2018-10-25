@@ -38,27 +38,70 @@ export class HomeShowModules {
     })
 }
 
+const homeLinkType = {
+    good: 1,
+    subject: 2,
+    down: 3,
+    spike: 4,
+    package: 5,
+    store: 8
+};
+
+const bannerRoute = {
+    [homeLinkType.good]: 'home/product/ProductDetailPage',
+    [homeLinkType.subject]: 'topic/DownPricePage',
+    [homeLinkType.down]: 'topic/TopicDetailPage',
+    [homeLinkType.spike]: 'topic/TopicDetailPage',
+    [homeLinkType.package]: 'topic/TopicDetailPage',
+    [homeLinkType.store]: 'spellShop/MyShop_RecruitPage'
+};
+
 export class ShowBannerModules {
     @observable bannerList = []
     @computed get bannerCount() {
         return this.bannerList.length
     }
     @action loadBannerList = () => {
-        this.bannerList = [
-            {
-                remark: 'IPhone X 9月在美国加州福利院上市...',
-                imgUrl: 'http://imgsrc.baidu.com/imgad/pic/item/34fae6cd7b899e51ec89f83949a7d933c8950d9c.jpg'
-            },
-            {
-                remark: 'IPhone X 9月在美国加州福利院上市...',
-                imgUrl: 'http://img.zcool.cn/community/011ab85707229732f875a9446d74b5.jpg'
-            },
-            {
-                remark: 'IPhone X 9月在美国加州福利院上市...',
-                imgUrl: 'http://img.zcool.cn/community/011ab85707229732f875a9446d74b5.jpg'
+        this.bannerList = []
+        ShowApi.showSwper({type: 11}).then(res => {
+            if (res.code === 10000 && res.data) {
+                this.bannerList = res.data
             }
-        ]
+        })
     }
+
+    @action bannerNavigate = (linkType, linkTypeCode) => {
+        this.selectedTypeCode = linkTypeCode;
+        return bannerRoute[linkType];
+    }
+
+    @action paramsNavigate = (data) => {
+        const { topicBannerProductDTOList } = data;
+        let product = null;
+        let productType = '';
+        if (topicBannerProductDTOList) {
+            product = topicBannerProductDTOList[0];
+            productType = product.productType;
+        }
+
+        const { storeDTO } = data;
+        let storeId = 0;
+        if (storeDTO) {
+            storeId = storeDTO.id;
+        }
+
+        const { linkType } = data;
+        return {
+            activityType: linkType === 3 ? 2 : linkType === 4 ? 1 : 3,
+            activityCode: data.linkTypeCode,
+            linkTypeCode: data.linkTypeCode,
+            productCode: data.linkTypeCode,
+            productType: productType,
+            storeId: storeId
+        };
+
+    }
+
 }
 
 export class ShowChoiceModules {

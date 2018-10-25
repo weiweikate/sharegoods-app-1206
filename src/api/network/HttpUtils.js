@@ -5,6 +5,7 @@ import fetchHistory from '../../model/FetchHistory';
 import apiEnvironment from '../ApiEnvironment';
 import user from '../../model/user'
 import DeviceInfo from 'react-native-device-info'
+import { RSA } from './RSA';
 // console.log('user token', user.getToken())
 
 const Qs = require('qs');
@@ -78,10 +79,16 @@ export default class HttpUtils {
                 url = url + '?' + Qs.stringify(params);
             }
         }
-        let timeLineStart = +new Date();
 
+        /**
+         * @type {*|{nonce, timestamp, client, version, sign}}
+         * 加签相关,如果为GET需要对url中的参数进行加签,不要对请求体参数加签
+         */
+        let signParam = RSA.sign(params)
+        let timeLineStart = +new Date();
         let config = {
             headers: {
+                ...signParam,
                 'sg-token': user && user.getToken() ? user.getToken() : '',
                 'platform': DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion()
             }
@@ -105,17 +112,21 @@ export default class HttpUtils {
     static post(uri, data, config) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
-
+        /**
+         * @type {*|{nonce, timestamp, client, version, sign}}
+         * 加签相关,如果为GET需要对url中的参数进行加签,不要对请求体参数加签
+         */
+        let signParam = RSA.sign()
         data = {
             ...defaultData,
             ...data
         };
-
         config.headers = {
             'sg-token': user && user.getToken() ? user.getToken() : '',
-            'platform': DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion()
+            'platform': DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion(),
+            ...signParam
         }
-        
+
         let timeLineStart = +new Date();
         return axios.post(url, data, config)
             .then(response => {
