@@ -17,11 +17,15 @@ import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtils;
 
-const Item = ({ data, onPress }) => <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
-    <Image style={styles.icon} source={(data.icon)}/>
-    <View style={styles.space}/>
-    <Text style={styles.name}>{data.name}</Text>
-</TouchableOpacity>;
+const Item = ({ data, onPress }) => {
+    const {icon, img} = data
+    let source = icon ? icon : {uri: img}
+    return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
+        <Image style={styles.icon} source={source}/>
+        <View style={styles.space}/>
+        <Text style={styles.name} numberOfLines={1}>{data.name}</Text>
+    </TouchableOpacity>
+}
 
 @observer
 export default class HomeClassifyView extends Component {

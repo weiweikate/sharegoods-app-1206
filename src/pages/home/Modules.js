@@ -56,11 +56,7 @@ import makemoneyImg from './res/makemoney.png';
 import shareImg from './res/share.png';
 import signinImg from './res/signin.png';
 import spikeImg from './res/spike.png';
-import computerImg from './res/computer.png';
-import iphoneImg from './res/iphone.png';
 import allImg from './res/all.png';
-import makeupsImg from './res/makeups.png';
-import clothImg from './res/cloth.png';
 
 export class ClassifyModules {
     @observable classifyList = [];
@@ -90,32 +86,18 @@ export class ClassifyModules {
             name: '秒杀',
             id: 1,
             route: 'home/search/CategorySearchPage'
-        }, {
-            icon: iphoneImg,
-            name: '手机相册',
-            id: 1,
-            route: 'home/search/CategorySearchPage'
-        }, {
-            icon: computerImg,
-            name: '电脑家电',
-            id: 1,
-            route: 'home/search/CategorySearchPage'
-        }, {
-            icon: clothImg,
-            name: '品质男装',
-            id: 1,
-            route: 'home/search/CategorySearchPage'
-        }, {
-            icon: makeupsImg,
-            name: '美妆个护',
-            id: 1,
-            route: 'home/search/CategorySearchPage'
-        }, {
-            icon: allImg,
-            name: '全部分类',
-            id: 1,
-            route: 'home/search/CategorySearchPage'
         }];
+
+        HomeApi.classify().then(res => {
+            if (res.code === 10000 && res.data) {
+                this.classifyList = [...this.classifyList, ...res.data, {icon: allImg,
+                    name: '全部分类',
+                    id: 1,
+                    route: 'home/search/CategorySearchPage'}]
+
+                console.log('load this.classifyList', this.classifyList)
+            }
+        })
     };
 }
 
@@ -279,7 +261,6 @@ class HomeModule {
                 type: homeType.goodsTitle
             }];
             let itemData = [];
-
             for (let i = 0; i < list.length; i++) {
                 if (i % 2 === 1) {
                     let good = list[i];
@@ -293,6 +274,13 @@ class HomeModule {
                 } else {
                     itemData.push(list[i]);
                 }
+            }
+            if (itemData.length > 0) {
+                home.push({
+                    itemData: itemData,
+                    type: homeType.goods,
+                    id: 'goods'
+                })
             }
             this.homeList = [...this.homeList, ...home];
             this.isFetching = false;
