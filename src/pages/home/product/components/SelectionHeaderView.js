@@ -31,7 +31,7 @@ export default class SelectionHeaderView extends Component {
         const { imgUrl } = this.props.product || {};
         let price = this.props.price || 0;
         let stock = 0;
-        let stockUnit;
+        let stockUnit = '';
         let specImg = undefined;
         this.props.selectSpecList.forEach((item) => {
             //总库存库存遍历相加
