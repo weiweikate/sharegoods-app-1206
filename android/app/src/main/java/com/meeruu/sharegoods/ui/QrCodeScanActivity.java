@@ -1,5 +1,6 @@
 package com.meeruu.sharegoods.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class QrCodeScanActivity extends CodeScanActivity implements PermissionUtil.PermissionCallbacks {
 
+    public static final int SCAN_RESULT_CODE = 501;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,10 @@ public class QrCodeScanActivity extends CodeScanActivity implements PermissionUt
     public void handleResult(final String result) {
         super.handleResult(result);
         //TODO
-
+        Intent intent = new Intent();
+        intent.putExtra("isSuccess",true);
+        intent.putExtra("ScanInfo",result);
+        setResult(SCAN_RESULT_CODE,intent);
         finish();
     }
 
@@ -50,6 +55,9 @@ public class QrCodeScanActivity extends CodeScanActivity implements PermissionUt
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
+        Intent intent = new Intent();
+        intent.putExtra("isSuccess",false);
+        setResult(SCAN_RESULT_CODE,intent);
         finish();
     }
 }
