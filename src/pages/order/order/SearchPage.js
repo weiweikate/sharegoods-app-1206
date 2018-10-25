@@ -25,11 +25,12 @@ class SearchPage extends BasePage {
             /*
             * 0 :商品搜索
             * 1 :订单搜索
+            * 2 :售后
             * */
             //  pageType: this.params.pageType ? this.params.pageType : 0,
-            pageType: 1,
-            saveString: ['input', 'orderInput'],
-            searchString: ['搜索', '搜订单']
+            pageType: this.params.pageType || 1,
+            saveString: ['input', 'orderInput', 'afterOrder'],
+            searchString: ['搜索', '搜订单', '搜索']
         };
     }
 
@@ -196,6 +197,12 @@ class SearchPage extends BasePage {
                         keyWord: inputText, callBack: () => {
                             this.getRecentSearch();
                         }
+                    });
+                    break;
+                case 2:
+                    this.$navigate('order/afterSaleService/AfterSaleListPage', {
+                        orderNum: inputText,
+                        type: 'search'
                     });
                     break;
             }

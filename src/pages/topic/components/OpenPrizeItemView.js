@@ -16,6 +16,8 @@ import TopicAPI from '../api/TopicApi';
 import user from '../../../model/user';
 import bridge from '../../../utils/bridge';
 import ShopCartRes from '../../shopCart/res/ShopCartRes';
+import SbResTool from '../res/SbResTool';
+
 
 // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
 const statues = {
@@ -26,6 +28,12 @@ const statues = {
     timeOver: 4,
     handOver: 5
 };
+
+const statuesImg = {
+    [statues.haveSoldOut]:ShopCartRes.noGoodImg,
+    [statues.timeOver]:SbResTool.zhuanti_jieshu,
+    [statues.handOver]:SbResTool.zhuanti_jieshu
+}
 const statuesString = {
     [statues.isBeginning]:'马上抢',
     [statues.haveSoldOut]:'已抢光',
@@ -93,7 +101,7 @@ export default class OpenPrizeItemView extends Component {
                         {
                             (itemData.status === 3 || itemData.status === 4 || itemData.status === 5) ?
                                 <Image
-                                    source={ShopCartRes.noGoodImg}
+                                    source={statuesImg[itemData.status]}
                                     style={
                                         {
                                             position: 'absolute',

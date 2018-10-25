@@ -21,6 +21,9 @@ const api = {
     initStore: '/user/store/initStore',
     // 开启店铺post
     startStore: '/user/store/startStore',
+    // 关闭店铺
+    closeStore: '/user/store/closeStore',
+
 
 
     // 根据id查询店铺

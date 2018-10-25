@@ -14,6 +14,8 @@ import spellStatusModel from '../../../spellShop/model/SpellStatusModel';
 import user from '../../../../model/user';
 import { isNoEmpty } from '../../../../utils/StringUtils';
 
+const { px2dp } = ScreenUtils;
+
 /**
  * 商品详情头部view
  */
@@ -40,44 +42,40 @@ export default class DetailHeaderView extends Component {
         }, 100);
     }
 
-    renderViewPageItem = (item) => {
+    _renderViewPageItem = (item) => {
         const { originalImg } = item;
         return (
-            <Image source={{ uri: originalImg || '' }}
+            <Image source={{ uri: originalImg }}
                    style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
                    resizeMode="cover"
-            />);
+            />
+        );
     };
+
+    _renderPagination = (index, total) => <View style={styles.indexView}>
+        <Text style={styles.text}>{index + 1} / {total}</Text>
+    </View>;
 
     render() {
         const { activityType } = this.props;
         const { productImgList = [{}], freight = 0, monthSaleTotal = 0, price = 0, originalPrice = 0, product = {} } = this.props.data || {};
-        const { name = '' } = product;
+        const { name = '', afterSaleServiceDays } = product;
         return (
             <View>
-                <ViewPager style={styles.ViewPager}
-                           arrayData={productImgList}
-                           renderItem={(item) => this.renderViewPageItem(item)}
-                           dotStyle={{
-                               height: 5,
-                               width: 5,
-                               borderRadius: 5,
-                               backgroundColor: '#eeeeee',
-                               opacity: 0.4
-                           }}
-                           swiperShow={this.state.swiperShow}
-                           activeDotStyle={{
-                               height: 5,
-                               width: 30,
-                               borderRadius: 5,
-                               backgroundColor: '#eeeeee'
-                           }}
-                           height={ScreenUtils.autoSizeWidth(377)}
-                           autoplay={true}/>
-                {activityType === 1 || activityType === 2 ? <ProductActivityView ref={(e) => {
-                    this.ActivityView = e;
-                }} activityData={this.props.activityData} activityType={activityType}
-                                                                                 productActivityViewAction={this.props.productActivityViewAction}/> : null}
+                {productImgList.length > 0 && this.state.swiperShow ? <ViewPager swiperShow={true}
+                                                                                 loop={false}
+                                                                                 height={ScreenUtils.autoSizeWidth(377)}
+                                                                                 arrayData={productImgList}
+                                                                                 renderItem={this._renderViewPageItem}
+                                                                                 renderPagination={this._renderPagination}/> :
+                    <View style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}/>}
+                {activityType === 1 || activityType === 2 ?
+                    <ProductActivityView activityType={activityType}
+                                         ref={(e) => {
+                                             this.ActivityView = e;
+                                         }}
+                                         activityData={this.props.activityData}
+                                         productActivityViewAction={this.props.productActivityViewAction}/> : null}
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{
@@ -87,7 +85,12 @@ export default class DetailHeaderView extends Component {
                         }}>{`${name}`}</Text>
                         <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
                             <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${price}起`}</Text>
-                            <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${originalPrice}`}</Text>
+                            <Text style={{
+                                marginLeft: 5,
+                                color: '#BBBBBB',
+                                fontSize: 10,
+                                textDecorationLine: 'line-through'
+                            }}>{`￥${originalPrice}`}</Text>
                             <Text style={{
                                 marginLeft: 5,
                                 backgroundColor: 'red',
@@ -97,7 +100,10 @@ export default class DetailHeaderView extends Component {
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text
-                                style={{ color: '#BBBBBB', fontSize: 11 }}>{freight === 0 ? '包邮' : `${freight}元`}</Text>
+                                style={{
+                                    color: '#BBBBBB',
+                                    fontSize: 11
+                                }}>快递：{freight === 0 ? '包邮' : `${freight}元`}</Text>
                             <Text style={{
                                 color: '#666666',
                                 fontSize: 13,
@@ -115,7 +121,11 @@ export default class DetailHeaderView extends Component {
                         alignItems: 'center'
                     }}>
                         <Text style={{ color: '#D51243', fontSize: 13 }}>服务</Text>
-                        <Text style={{ marginLeft: 11, color: '#666666', fontSize: 13 }}>正品保证·急速发货 7天无理由退换</Text>
+                        <Text style={{
+                            marginLeft: 11,
+                            color: '#666666',
+                            fontSize: 13
+                        }}>{`正品保证·急速发货 ${afterSaleServiceDays}天无理由退换`}</Text>
                     </View>
                 </View>
             </View>
@@ -124,9 +134,19 @@ export default class DetailHeaderView extends Component {
 }
 
 const styles = StyleSheet.create({
-    ViewPager: {
-        // height: ScreenUtils.autoSizeWidth(377),
-        backgroundColor: 'rgba(255, 255, 255, 0.7)',
-        width: ScreenUtils.width
+    indexView: {
+        position: 'absolute',
+        height: px2dp(20),
+        borderRadius: px2dp(10),
+        right: px2dp(14),
+        bottom: px2dp(20),
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    text: {
+        color: '#fff',
+        fontSize: px2dp(10),
+        paddingHorizontal: 8
     }
 });

@@ -42,9 +42,9 @@ export default class SpellShopPage extends BasePage {
         };
     };
     _renderContainer = () => {
-        //加入了店铺 或者 店铺状态不为 0-关闭 1-正常 2-已缴纳保证金 3-招募中
-        if (SpellStatusModel.storeId || SpellStatusModel.storeStatus&&SpellStatusModel.storeStatus !== 0) {
-            return (<MyShop_RecruitPage storeId={SpellStatusModel.storeId} navigation={this.props.navigation} leftNavItemHidden = {true} isHome={true}/>);
+        //加入了店铺 或者 店铺状态不为关闭
+        if (SpellStatusModel.storeId && SpellStatusModel.storeStatus && SpellStatusModel.storeStatus !== 0) {
+            return (<MyShop_RecruitPage navigation={this.props.navigation}/>);
         } else if (SpellStatusModel.canSeeGroupStore) {
             // 能看见推荐店铺页面
             return (<RecommendPage navigation={this.props.navigation} leftNavItemHidden={true}/>);

@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, TouchableWithoutFeedback, Animated, Easing} from 'react-native'
 
+let index = 0
 export default class MarqueeLabelVertical extends Component {
     constructor(props) {
       super(props)
       this.state = {
         translateY: new Animated.Value(0)
       }
-      this.showHeadBar(0, props.dataSource.length + 1)
+      this.showHeadBar(props.dataSource.length + 1)
+      index = 0
     }
     componentWillReceiveProps(props) {
       if(props.dataSource  && props.dataSource[0].title !== this.props.dataSource[0].title){
@@ -15,10 +17,11 @@ export default class MarqueeLabelVertical extends Component {
           Animated.timing(
             this.state.translateY
           ).stop();
-        this.showHeadBar(0, props.dataSource.length + 1, 65)
+          index = 0
+        this.showHeadBar(props.dataSource.length + 1, 65)
       }
     }
-    showHeadBar(index, count, height) {
+    showHeadBar(count, height) {
       const { showEnd } = this.props
       index++
       Animated.timing(this.state.translateY, {
@@ -35,7 +38,7 @@ export default class MarqueeLabelVertical extends Component {
           this.state.translateY.setValue(0)
           showEnd && showEnd()
         }
-        this.showHeadBar(index, count) //循环动画
+        this.showHeadBar(count, 65) //循环动画
       })
     }
     _renderMarqueeView () {

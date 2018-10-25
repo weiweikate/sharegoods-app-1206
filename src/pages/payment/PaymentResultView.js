@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
     },
     message: {
         color: '#999',
-        fontSize: px2dp(10)
+        fontSize: px2dp(13),
+        marginTop: px2dp(10)
     }
 })

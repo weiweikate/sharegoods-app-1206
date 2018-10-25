@@ -14,7 +14,7 @@ import xjt_03 from '../res/xjt_03.png';
 import ActivityView from './ActivityView';
 import { isNoEmpty } from '../../../utils/StringUtils';
 import user from '../../../model/user';
-
+const { px2dp } = ScreenUtils;
 /**
  * 商品详情头部view
  */
@@ -51,11 +51,14 @@ export default class TopicDetailHeaderView extends Component {
         const { originalImg } = item;
         return (
             <Image
-                source={{ uri: originalImg || '' }}
+                source={{ uri: originalImg }}
                 style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
                 resizeMode="cover"
             />);
     };
+    _renderPagination = (index, total) => <View style={styles.indexView}>
+        <Text style={styles.text}>{index + 1} / {total}</Text>
+    </View>;
 
     render() {
         const { activityType } = this.props;
@@ -81,25 +84,13 @@ export default class TopicDetailHeaderView extends Component {
         }
         return (
             <View>
-                <ViewPager style={styles.ViewPager}
-                           arrayData={bannerImgList}
-                           renderItem={(item) => this.renderViewPageItem(item)}
-                           dotStyle={{
-                               height: 5,
-                               width: 5,
-                               borderRadius: 5,
-                               backgroundColor: '#eeeeee',
-                               opacity: 0.4
-                           }}
-                           swiperShow={this.state.swiperShow}
-                           activeDotStyle={{
-                               height: 5,
-                               width: 30,
-                               borderRadius: 5,
-                               backgroundColor: '#eeeeee'
-                           }}
-                           height={ScreenUtils.autoSizeWidth(377)}
-                           autoplay={true}/>
+                {bannerImgList.length > 0 && this.state.swiperShow ? <ViewPager swiperShow={true}
+                                                                                loop={false}
+                                                                                height={ScreenUtils.autoSizeWidth(377)}
+                                                                                arrayData={bannerImgList}
+                                                                                renderItem={this.renderViewPageItem}
+                                                                                renderPagination={this._renderPagination}/> :
+                    <View style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}/>}
                 {activityType === 3 ? null : <ActivityView ref={(e) => {
                     this.ActivityView = e;
                 }} activityData={this.props.activityData} activityType={activityType}/>}
@@ -113,7 +104,12 @@ export default class TopicDetailHeaderView extends Component {
                         {activityType === 3 ?
                             <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
                                 <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
-                                <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${oldPrice}`}</Text>
+                                <Text style={{
+                                    marginLeft: 5,
+                                    color: '#BBBBBB',
+                                    fontSize: 10,
+                                    textDecorationLine: 'line-through'
+                                }}>{`￥${oldPrice}`}</Text>
                                 <Text style={{
                                     marginLeft: 5,
                                     backgroundColor: 'red',
@@ -165,8 +161,19 @@ export default class TopicDetailHeaderView extends Component {
 }
 
 const styles = StyleSheet.create({
-    ViewPager: {
-        backgroundColor: 'rgba(255, 255, 255, 0.7)',
-        width: ScreenUtils.width
+    indexView: {
+        position: 'absolute',
+        height: px2dp(20),
+        borderRadius: px2dp(10),
+        right: px2dp(14),
+        bottom: px2dp(20),
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    text: {
+        color: '#fff',
+        fontSize: px2dp(10),
+        paddingHorizontal: 8
     }
 });

@@ -1,5 +1,6 @@
 const api = {
-    getUser: ['/user/getUser', { method: 'get' }]
+    getUser: ['/user/getUser', { method: 'get' }],
+    getUserOrderNum:['/order/countUserOrderNum',{method:'post'}]
 };
 import ApiUtils from '../api/network/ApiUtils'
 

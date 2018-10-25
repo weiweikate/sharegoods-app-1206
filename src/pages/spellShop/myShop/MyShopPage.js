@@ -297,14 +297,14 @@ export default class MyShopPage extends BasePage {
     };
 
     _renderJoinBtn = () => {
-        const { storeMaxUser, storeUserList = [], recruitStatus, userStatus } = this.state.storeData;
-        //有店或者已经加入或者为空
-        if (spellStatusModel.storeId || userStatus === 1 || StringUtils.isEmpty(userStatus)) {
+        const { storeMaxUser, storeUserList = [], recruitStatus, userStatus, status } = this.state.storeData;
+        //有店并且没关闭或者已经加入或者为空
+        if ((spellStatusModel.storeId && spellStatusModel.storeStatus !== 0) || userStatus === 1 || StringUtils.isEmpty(userStatus)) {
             return null;
         }
         let btnText = undefined;
-        //2,10 允许加入,人数未满
-        let canJoin = (userStatus !== 10 && userStatus !== 2) && (recruitStatus === 0 || recruitStatus === 1) && storeMaxUser > storeUserList.length;
+        //2,10 允许加入,人数未满,店铺未没关闭
+        let canJoin = (userStatus !== 10 && userStatus !== 2 && status !== 0) && (recruitStatus === 0 || recruitStatus === 1) && storeMaxUser > storeUserList.length;
         switch (userStatus) {
             case 2:
                 btnText = '申请中';
@@ -330,6 +330,10 @@ export default class MyShopPage extends BasePage {
                     btnText = '暂不允许加入';
                 }
                 break;
+        }
+
+        if (status === 0) {
+            btnText = '店铺已关闭';
         }
 
         return <TouchableOpacity onPress={this._joinBtnAction}
