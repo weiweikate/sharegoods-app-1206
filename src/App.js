@@ -21,6 +21,7 @@ import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
 import appData from './model/appData';
+import { netStatus } from "./comm/components/NoNetHighComponent";
 
 
 export default class App extends Component {
@@ -35,11 +36,13 @@ export default class App extends Component {
     }
 
     async componentDidMount() {
+        netStatus.startMonitorNetworkStatus();
         await user.readToken();
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
         global.$navigator = this.refs.Navigator;
         global.$routes = [];
+
     }
 
     render() {
