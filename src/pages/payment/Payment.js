@@ -6,6 +6,7 @@ import wechatImg from './res/wechat.png'
 import alipayImg from './res/alipay.png'
 import Toast from '../../utils/bridge'
 import PayUtil from './PayUtil'
+import user from '../../model/user'
 
 export const paymentType = {
     balance: 1, //余额支付
@@ -75,6 +76,7 @@ export class Payment {
             const res = yield this.perpay(params)
             const outTradeNo = res.data.outTradeNo
             const checkRes = yield this.paySuccess({...params, outTradeNo: outTradeNo})
+            user.updateUserData()
             Toast.hiddenLoading()
             return checkRes
         } catch (error) {
@@ -132,11 +134,16 @@ export class Payment {
                 preStr = yield this.perpay(params)
             }
             const prePayStr = preStr.data.prePayStr
+            this.outTradeNo = preStr.data.outTradeNo
             const resultStr = yield PayUtil.appAliPay(prePayStr)
-            console.log('resultStr', resultStr)
-            const checkStr = yield this.alipayCheck({outTradeNo:preStr.data.outTradeNo , type:paymentType.alipay})
+            // if (resultStr.sdkCode != 9000) {
+            //     throw error
+            // }
+            // console.log('resultStr', resultStr)
+            // const checkStr = yield this.alipayCheck({outTradeNo:preStr.data.outTradeNo , type:paymentType.alipay})
+            // console.log('checkStr', checkStr)
             Toast.hiddenLoading();
-            return checkStr
+            return  resultStr
         } catch (error) {
             Toast.hiddenLoading()
             console.log(error)
@@ -172,14 +179,15 @@ export class Payment {
             }
             const prePay = JSON.parse(preStr.data.prePayStr)
             const resultStr = yield PayUtil.appWXPay(prePay)
+            this.outTradeNo = preStr.data.outTradeNo
            if (parseInt(resultStr.sdkCode, 0) !== 0) {
                 Toast.$toast(resultStr.msg)
                 Toast.hiddenLoading()
                 return ''
             }
-            const checkStr = yield PaymentApi.wechatCheck({outTradeNo:preStr.data.outTradeNo , type:2})
+            // const checkStr = yield PaymentApi.wechatCheck({outTradeNo:preStr.data.outTradeNo , type:2})
             Toast.hiddenLoading()
-            return checkStr
+            return resultStr
         } catch (error) {
             Toast.hiddenLoading()
             ref && ref.show(2, error.msg)

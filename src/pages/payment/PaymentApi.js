@@ -14,7 +14,7 @@ const api = {
     //店铺保证金
     storePayment:['/user/store/deposit', {method:'get'}],
     //支付宝查账
-    alipayCheck: ['/aliPay/aliPayQuery'],
+    alipayCheck: ['/aliPay/aliPayQuery', {method:'get'}],
     //微信支付查账
     wechatCheck: ['/weChatPay/weChatQuery', {method: 'get'}]
 };
