@@ -3,7 +3,7 @@ import {
     View,
     StyleSheet,
     SectionList,
-    Modal,
+    // Modal,
     Image,
     FlatList,
     Text,
@@ -23,7 +23,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
 import DetailNavShowModal from './components/DetailNavShowModal';
-
+import Modal from 'CommModal';
 export default class ProductDetailPage extends BasePage {
 
     $navigationBarOptions = {
