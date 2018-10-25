@@ -77,7 +77,7 @@ export default class MyShop_RecruitPage extends BasePage {
 
     _renderContainer = () => {
         const { status, myStore } = this.state.data;
-        if (spellStatusModel.canSeeGroupStore && this.state.login) {
+        if (this.params.storeId ? spellStatusModel.canSeeGroupStore && this.state.login : this.state.login) {
             //首页搜索和推荐过来的this.params.storeId
             switch (status) {
                 case 0:
@@ -89,7 +89,7 @@ export default class MyShop_RecruitPage extends BasePage {
                 case 3://招募中的店铺
                     return <ShopRecruitPage navigation={this.props.navigation}
                                             leftNavItemHidden={!this.params.storeId}
-                                            storeId={this.props.storeId}
+                                            storeId={this.params.storeId}
                                             propReload={myStore && this._loadPageData}/>;
                 case 2://店铺已缴纳保证金
                     return (
