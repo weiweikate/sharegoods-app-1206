@@ -21,6 +21,7 @@ import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
 import appData from './model/appData';
+import { netStatus } from "./comm/components/NoNetHighComponent";
 import signTestTool from './signTestTool';
 
 
@@ -36,6 +37,7 @@ export default class App extends Component {
     }
 
     async componentDidMount() {
+        netStatus.startMonitorNetworkStatus();
         await user.readToken();
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
