@@ -16,4 +16,6 @@ public class ParameterUtils {
     public static final String GET_DATA_FAILED = "获取数据失败,请稍候重试!";
     public static final String NET_ERR = "请检查网络连接状态!";
 
+    public static final int REQUEST_CODE_CAMERA = 9; //拍摄照片请求码
+
 }
