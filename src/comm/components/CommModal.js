@@ -23,6 +23,7 @@ import {
     AppState,
     requireNativeComponent
 } from "react-native";
+
 const NativeModalAndroid = requireNativeComponent("ModalAndroid");//内部使用popwindow实现全屏
 
 export default class CommModal extends Component {
@@ -80,7 +81,7 @@ export default class CommModal extends Component {
                     <TouchableOpacity
                         style={{ flex: 1 }}
                         activeOpacity={1}
-                        onPress={this.close}
+
                     >
                         <View style={styles.container}>
                             {this.props.children}
@@ -98,7 +99,7 @@ export default class CommModal extends Component {
                 visible={[this.state.visible, this.state.update]}>
                 <TouchableOpacity
                     activeOpacity={1}
-                    onPress={this.close}>
+                >
                     <View style={styles.container}>
                         {this.props.children}
                     </View>

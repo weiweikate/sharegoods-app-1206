@@ -10,6 +10,7 @@ import StringUtils from '../../../../utils/StringUtils';
 import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import bridge from '../../../../utils/bridge';
 import MineAPI from '../../api/MineApi';
+import SMSTool from '../../../../utils/SMSTool';
 
 export default class EditPhoneNumPage extends BasePage {
 
@@ -48,9 +49,12 @@ export default class EditPhoneNumPage extends BasePage {
                 <TextInput underlineColorAndroid={'transparent'}
                            style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 20 }}
                            placeholder={'请输入验证码'} placeholderTextColor={'#C8C8C8'}
-                           onChangeText={(text) => this.setState({ code: text })}
+                           onChangeText={(text) => {
+                               const newText = text.replace(/[^\d]+/, '');
+                               this.setState({ code: newText });
+                           }}
                            value={this.state.code}
-                           keyboardType={'phone-pad'}/>
+                           keyboardType={'numeric'}/>
                 <TouchableOpacity onPress={() => this._onGetCode(oldNum)}
                                   disabled={this.state.vertifyCodeTime > 0 ? true : false}>
                     <UIText value={this.state.vertifyCodeTime > 0 ? this.state.vertifyCodeTime + '秒后重新获取' : '获取验证码'}
@@ -77,12 +81,16 @@ export default class EditPhoneNumPage extends BasePage {
     _onGetCode = (oldNum) => {
         //获取验证码
         if (StringUtils.checkPhone(oldNum)) {
-            (new TimeDownUtils()).startDown((time) => {
-                this.setState({
-                    vertifyCodeTime: time
+            SMSTool.sendVerificationCode(SMSTool.SMSType.OldPhoneType, oldNum).then((data) => {
+                (new TimeDownUtils()).startDown((time) => {
+                    this.setState({
+                        vertifyCodeTime: time
+                    });
                 });
+                bridge.$toast('验证码已发送请注意查收');
+            }).catch((data) => {
+                bridge.$toast(data.msg);
             });
-            bridge.$toast('验证码已发送请注意查收');
         } else {
             bridge.$toast('手机格式不对');
         }
