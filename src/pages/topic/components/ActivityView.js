@@ -98,7 +98,7 @@ export default class MyShop_RecruitPage extends Component {
                 one = '起拍价';
                 two = `原价￥${originalPrice}|${reseCount}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime)}`;
-                four = `${formatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
+                four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开拍`;
             } else {
                 price = markdownPrice;
                 one = `原价￥${originalPrice}`;
@@ -113,7 +113,7 @@ export default class MyShop_RecruitPage extends Component {
                 one = '秒杀价';
                 two = `原价￥${isNoEmpty(originalPrice) ? originalPrice : ''}|${isNoEmpty(reseCount) ? reseCount : ''}人关注`;
                 three = `距开抢 ${this._timeDif(this.state.countTime) || ''}`;
-                four = `${formatDate(beginTime, 'MM月dd日hh:mm')}开拍`;
+                four = `${formatDate(beginTime, 'MM月dd日HH:mm')}开拍`;
             } else {
                 one = `原价￥${isNoEmpty(originalPrice) ? originalPrice : ''}`;
                 two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '秒杀价'}`;
