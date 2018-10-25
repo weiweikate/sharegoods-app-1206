@@ -43,7 +43,7 @@ export default class SearchResultPage extends BasePage {
             //排序类型(1.综合 2.销量 3. 价格)
             sortType: 1,
             //排序方式 (1.升序 2.降序)
-            sortModel: 1,
+            sortModel: 2,
             //页码
             page: 1,
 
@@ -158,7 +158,7 @@ export default class SearchResultPage extends BasePage {
                 this.state.sortModel = 1;
             }
         } else {
-            this.state.sortModel = 1;
+            this.state.sortModel = 2;
         }
         this.state.sortType = index + 1;
         this._productList();
