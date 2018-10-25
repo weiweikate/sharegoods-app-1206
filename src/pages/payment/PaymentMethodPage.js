@@ -33,7 +33,7 @@ const PayCell = ({data, isSelected, balance, press, selectedTypes, disabled}) =>
                     marginRight: 7,
                     color: '#999999',
                     fontSize: 13
-                }}>可用余额: {balance}</Text>
+                }}>可用余额: {balance ? balance : 0}</Text>
             :
             null
         }
