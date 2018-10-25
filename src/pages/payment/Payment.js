@@ -134,15 +134,16 @@ export class Payment {
                 preStr = yield this.perpay(params)
             }
             const prePayStr = preStr.data.prePayStr
+            this.outTradeNo = preStr.data.outTradeNo
             const resultStr = yield PayUtil.appAliPay(prePayStr)
             // if (resultStr.sdkCode != 9000) {
             //     throw error
             // }
-            console.log('resultStr', resultStr)
-            const checkStr = yield this.alipayCheck({outTradeNo:preStr.data.outTradeNo , type:paymentType.alipay})
-            console.log('checkStr', checkStr)
+            // console.log('resultStr', resultStr)
+            // const checkStr = yield this.alipayCheck({outTradeNo:preStr.data.outTradeNo , type:paymentType.alipay})
+            // console.log('checkStr', checkStr)
             Toast.hiddenLoading();
-            return checkStr.resultStr
+            return  resultStr
         } catch (error) {
             Toast.hiddenLoading()
             console.log(error)
@@ -178,14 +179,15 @@ export class Payment {
             }
             const prePay = JSON.parse(preStr.data.prePayStr)
             const resultStr = yield PayUtil.appWXPay(prePay)
+            this.outTradeNo = preStr.data.outTradeNo
            if (parseInt(resultStr.sdkCode, 0) !== 0) {
                 Toast.$toast(resultStr.msg)
                 Toast.hiddenLoading()
                 return ''
             }
-            const checkStr = yield PaymentApi.wechatCheck({outTradeNo:preStr.data.outTradeNo , type:2})
+            // const checkStr = yield PaymentApi.wechatCheck({outTradeNo:preStr.data.outTradeNo , type:2})
             Toast.hiddenLoading()
-            return checkStr
+            return resultStr
         } catch (error) {
             Toast.hiddenLoading()
             ref && ref.show(2, error.msg)

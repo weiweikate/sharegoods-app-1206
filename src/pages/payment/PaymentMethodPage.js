@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, AppState } from 'react-native';
 import BasePage from '../../BasePage';
 import { UIText } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
@@ -90,6 +90,32 @@ export default class PaymentMethodPage extends BasePage {
             this.payment.availableBalance = data.availableBalance
         })
     }
+
+    componentDidMount() {
+        AppState.addEventListener("change", this._handleAppStateChange);
+    }
+
+    componentWillUnmount() {
+        AppState.removeEventListener("change", this._handleAppStateChange);
+    }
+
+    _handleAppStateChange = (state) => {
+        console.log("_handleAppStateChange AppState", state);
+        const { selectedTypes } = this.payment
+        if (state === 'active' && this.payment.outTradeNo) {
+            if (selectedTypes.type === paymentType.alipay ) {
+               this.payment.alipayCheck({outTradeNo: this.payment.outTradeNo, type: paymentType.alipay, payType: 1}).then(checkStr => {
+                    console.log('_handleAppStateChange', state, checkStr)
+                    this._showPayresult(checkStr.resultStr)
+               })
+            } else {
+                this.payment.wechatCheck({outTradeNo: this.payment.outTradeNo, type: 2, payType: 1}).then(checkStr=> {
+                    console.log('_handleAppStateChange', state, checkStr)
+                    this._showPayresult(checkStr.resultStr)
+                })
+            }
+        }
+    };
 
     _selectedPayType(value) {
         this.payment.selectPaymentType(value)
@@ -200,23 +226,23 @@ export default class PaymentMethodPage extends BasePage {
             this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
         }
     }
-    async _alipay() {
+    _alipay() {
         const { params } = this.getApiRequestParams()
-        const resultStr = await this.payment.alipay(params, this.paymentResultView)
-        if (resultStr.code == 10000) {
-            this._showPayresult(resultStr)
-        } else {
-            Toast.$toast('支付失败')
-        }
+        this.payment.alipay(params, this.paymentResultView)
+        // if (resultStr.code == 10000) {
+        //     this._showPayresult(resultStr)
+        // } else {
+        //     Toast.$toast('支付失败')
+        // }
     }
-    async _wechat() {
+    _wechat() {
         const { params } = this.getApiRequestParams()
-        const resultStr = await this.payment.appWXPay(params, this.paymentResultView)
-        if (resultStr.code == 10000) {
-            this._showPayresult(resultStr)
-        } else {
-            Toast.$toast('支付失败')
-        }
+        this.payment.appWXPay(params, this.paymentResultView)
+        // if (resultStr.code == 10000) {
+        //     this._showPayresult(resultStr)
+        // } else {
+        //     Toast.$toast('支付失败')
+        // }
     }
     async _mixingPay() {
         const { params } = this.getApiRequestParams();
@@ -228,7 +254,7 @@ export default class PaymentMethodPage extends BasePage {
             params.amounts = 0
         } else {
             params.balance = this.payment.availableBalance
-            params.amounts = params.amounts - this.payment.availableBalance
+            params.amounts = (params.amounts - this.payment.availableBalance).toFixed(2)
         }
         if (user.hadSalePassword) {
             if (StringUtils.isEmpty(this.state.password)) {
@@ -244,13 +270,14 @@ export default class PaymentMethodPage extends BasePage {
                 this._showPayresult(result)
                 return
             }
+            this.payment.outTradeNo = result.data.outTradeNo
             if (selectedTypes.type === paymentType.alipay) {
                 const prePayStr = result.data.prePayStr
                 console.log('prePayStr', prePayStr)
                 const resultStr = await PayUtil.appAliPay(prePayStr)
                 console.log('resultStr', resultStr)
-                const checkStr = await this.payment.alipayCheck({outTradeNo:result.data.outTradeNo , type:paymentType.alipay})
-                this._showPayresult(checkStr.resultStr)
+                // const checkStr = await this.payment.alipayCheck({outTradeNo:result.data.outTradeNo , type:paymentType.alipay})
+                // this._showPayresult(checkStr.resultStr)
                 return
             }
 
@@ -259,8 +286,8 @@ export default class PaymentMethodPage extends BasePage {
                 const prePay = JSON.parse(prePayStr)
                 const resultStr = await PayUtil.appWXPay(prePay)
                 console.log('resultStr', resultStr)
-                const checkStr = await this.payment.wechatCheck({outTradeNo:result.data.outTradeNo , type:2})
-                this._showPayresult(checkStr.resultStr)
+                // const checkStr = await this.payment.wechatCheck({outTradeNo:result.data.outTradeNo , type:2})
+                // this._showPayresult(checkStr.resultStr)
                 return
             }
         }
@@ -334,7 +361,7 @@ export default class PaymentMethodPage extends BasePage {
     getApiRequestParams = () => {
         //对应的leftShouldPayMoney后端也会计算
         let params = {
-            amounts: this.state.shouldPayMoney,//N:第三方金额	number
+            amounts: (this.state.shouldPayMoney).toFixed(2),//N:第三方金额	number
             orderNum: this.state.orderNum,//N:订单号	string
             salePsw: this.state.password,//Y:交易密码	string
             // type: type//N:支付方式	number 1:纯平台  2：微信小程序   4：微信app   8：支付宝   16：银联卡
