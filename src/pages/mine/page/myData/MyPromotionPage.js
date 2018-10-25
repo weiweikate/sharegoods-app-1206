@@ -214,23 +214,10 @@ export default class MyPromotionPage extends BasePage {
         </View>;
     };
 
-    /**
-     *  {this.state.nextArr.map((item, index) => {
-                    return <View key={index} style={{ justifyContent: 'center', height: 44, backgroundColor: '#fff' }}>
-                        <Text style={{
-                            marginLeft: 14,
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 13,
-                            color: '#666666'
-                        }}>{item}</Text>
-                    </View>;
-                })}
-     * @returns {*}
-     */
     renderWelfare() {
         // const arr = ['分红增加', '分红增加', '分红增加', '分红增加'];
         return (
-            <View>
+            <View style={{marginBottom:50}}>
                 <View style={{ justifyContent: 'center', height: 44, backgroundColor: '#fff' }}>
                     <Text style={{
                         marginLeft: 14,
@@ -270,6 +257,7 @@ export default class MyPromotionPage extends BasePage {
                         />}>
                 {this.renderHeader()}
                 {this.renderWelfare()}
+                <View style={{backgroundColor:'f7f7f7',height:2}}/>
             </ScrollView>
         );
     };
