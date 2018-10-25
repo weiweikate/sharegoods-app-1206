@@ -439,29 +439,31 @@ export default class MinePage extends BasePage {
         let statesText = ["待付款", "待发货", "待收货", "售后/退款"];
         let arr = [];
         for (let i = 0; i < statesImage.length; i++) {
-            // let num = 0;
+             let num = this.getOrderNum(i);
+             let numView = num ? (
+                     <View style={{
+                         width: px2dp(16),
+                         height: px2dp(16),
+                         borderRadius: px2dp(8),
+                         position: "absolute",
+                         top: px2dp(-10),
+                         right: px2dp(-10),
+                         backgroundColor: "#D51243",
+                         alignItems: "center",
+                         justifyContent: "center"
+                     }}>
+                         <Text style={{ includeFontPadding: false, color: "white", fontSize: px2dp(10) }}>
+                             1
+                         </Text>
+                     </View>
+                 ) : null;
 
             arr.push(
                 <NoMoreClick style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingTop: px2dp(30) }}
                              onPress={() => this.jumpToOrderAccordingStates(i)} key={i}>
                     <ImageBackground source={statesImage[i]}
                                      style={{ height: 24, width: 24, marginBottom: 10, overflow: "visible" }}>
-                        {/*<View style={{*/}
-                        {/*width: px2dp(16),*/}
-                        {/*height: px2dp(16),*/}
-                        {/*borderRadius: px2dp(8),*/}
-                        {/*position: "absolute",*/}
-                        {/*top: px2dp(-10),*/}
-                        {/*right: px2dp(-10),*/}
-                        {/*backgroundColor: "#D51243",*/}
-                        {/*alignItems: "center",*/}
-                        {/*justifyContent: "center"*/}
-                        {/*}}>*/}
-                        {/*<Text style={{ includeFontPadding: false, color: "white", fontSize: px2dp(10) }}>*/}
-                        {/*1*/}
-                        {/*</Text>*/}
-                        {/*</View>*/}
-
+                        {numView}
                     </ImageBackground>
                     <UIText value={statesText[i]}
                             style={{ color: "#212121", includeFontPadding: false, fontSize: px2dp(12) }}/>
@@ -471,7 +473,25 @@ export default class MinePage extends BasePage {
         return arr;
     };
 
-
+    getOrderNum(index){
+        switch (index){
+            case 0:
+                return userOrderNum.waitPayNum
+                break;
+            case 1:
+                return userOrderNum.waitSendNum
+                break;
+            case 2:
+                return userOrderNum.waitReceiveNum
+                break;
+            case 3:
+                return userOrderNum.afterSaleServiceNum
+                break;
+            default:
+                return 0;
+                break
+        }
+    }
 
     renderMenu = () => {
         let leftImage = [inviteFr, coupons, myData, myCollet, myHelper, address, promotion, showImg];

@@ -23,6 +23,7 @@ public class RNPackage implements ReactPackage {
     public AppPayModule appPayModule;
     public LoginAndSharingModule loginAndSharingModule;
     public PopModalManager popModalManager;
+    public QRCodeModule qrCodeModule;
 
     /**
      * 创建Native Module
@@ -37,10 +38,12 @@ public class RNPackage implements ReactPackage {
         qyChatModule = new QYChatModule(reactContext);
         appPayModule = new AppPayModule(reactContext);
         loginAndSharingModule = new LoginAndSharingModule(reactContext);
+        qrCodeModule = new QRCodeModule(reactContext);
         modules.add(mModule);
         modules.add(qyChatModule);
         modules.add(appPayModule);
         modules.add(loginAndSharingModule);
+        modules.add(qrCodeModule);
         return modules;
     }
 
