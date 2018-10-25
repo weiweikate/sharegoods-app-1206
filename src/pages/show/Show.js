@@ -38,6 +38,24 @@ export class HomeShowModules {
     })
 }
 
+const homeLinkType = {
+    good: 1,
+    subject: 2,
+    down: 3,
+    spike: 4,
+    package: 5,
+    store: 8
+};
+
+const bannerRoute = {
+    [homeLinkType.good]: 'home/product/ProductDetailPage',
+    [homeLinkType.subject]: 'topic/DownPricePage',
+    [homeLinkType.down]: 'topic/TopicDetailPage',
+    [homeLinkType.spike]: 'topic/TopicDetailPage',
+    [homeLinkType.package]: 'topic/TopicDetailPage',
+    [homeLinkType.store]: 'spellShop/MyShop_RecruitPage'
+};
+
 export class ShowBannerModules {
     @observable bannerList = []
     @computed get bannerCount() {
@@ -51,6 +69,39 @@ export class ShowBannerModules {
             }
         })
     }
+
+    @action bannerNavigate = (linkType, linkTypeCode) => {
+        this.selectedTypeCode = linkTypeCode;
+        return bannerRoute[linkType];
+    }
+
+    @action paramsNavigate = (data) => {
+        const { topicBannerProductDTOList } = data;
+        let product = null;
+        let productType = '';
+        if (topicBannerProductDTOList) {
+            product = topicBannerProductDTOList[0];
+            productType = product.productType;
+        }
+
+        const { storeDTO } = data;
+        let storeId = 0;
+        if (storeDTO) {
+            storeId = storeDTO.id;
+        }
+
+        const { linkType } = data;
+        return {
+            activityType: linkType === 3 ? 2 : linkType === 4 ? 1 : 3,
+            activityCode: data.linkTypeCode,
+            linkTypeCode: data.linkTypeCode,
+            productCode: data.linkTypeCode,
+            productType: productType,
+            storeId: storeId
+        };
+
+    }
+
 }
 
 export class ShowChoiceModules {

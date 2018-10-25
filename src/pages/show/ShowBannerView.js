@@ -36,8 +36,10 @@ export default class ShowBannerView extends Component {
     }
 
     onPressRow(item) {
-        const { navigation } = this.props
-        navigation.navigate('show/ShowDetailPage', {id: item.articelId})
+        const router = this.bannerModule.bannerNavigate(item.linkType, item.linkTypeCode);
+        let params = this.bannerModule.paramsNavigate(item);
+        const { navigation } = this.props;
+        navigation.navigate(router, params);
     }
 
     onDidChange(item, index) {

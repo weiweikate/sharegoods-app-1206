@@ -39,8 +39,13 @@ export default class HomeClassifyView extends Component {
     _onItemPress = (data) => {
         console.log('_onItemPress', data);
         const { navigation } = this.props;
-        navigation.navigate(data.route);
-    };
+
+        if (data.img) {
+            navigation.navigate('home/search/SearchResultPage', { categoryId: data.id, name: data.name })
+        } else {
+            navigation.navigate(data.route)
+        }
+    }
 
     renderItems = () => {
         const { classifyList } = this.classifyModule;
