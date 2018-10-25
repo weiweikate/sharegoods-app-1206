@@ -11,7 +11,7 @@ import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
 import SMSTool from '../../../../utils/SMSTool';
 
-export default class SetNewPhoneNumPage extends BasePage {
+export default class JudgePhoneNumPage extends BasePage {
 
     // 构造
     constructor(props) {
@@ -93,7 +93,7 @@ export default class SetNewPhoneNumPage extends BasePage {
     _onGetCode = (tel) => {
         //获取验证码
         if (StringUtils.checkPhone(tel)) {
-            SMSTool.sendVerificationCode(SMSTool.SMSType.SalePwdType, tel).then((data) => {
+            SMSTool.sendVerificationCode(SMSTool.SMSType.OldPhoneType, tel).then((data) => {
                 (new TimeDownUtils()).startDown((time) => {
                     this.setState({
                         vertifyCodeTime: time

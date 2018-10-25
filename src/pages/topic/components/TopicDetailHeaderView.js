@@ -113,7 +113,12 @@ export default class TopicDetailHeaderView extends Component {
                         {activityType === 3 ?
                             <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
                                 <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
-                                <Text style={{ marginLeft: 5, color: '#BBBBBB', fontSize: 10 }}>{`￥${oldPrice}`}</Text>
+                                <Text style={{
+                                    marginLeft: 5,
+                                    color: '#BBBBBB',
+                                    fontSize: 10,
+                                    textDecorationLine: 'line-through'
+                                }}>{`￥${oldPrice}`}</Text>
                                 <Text style={{
                                     marginLeft: 5,
                                     backgroundColor: 'red',

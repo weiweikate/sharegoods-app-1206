@@ -90,10 +90,10 @@ export default class UserInformationPage extends BasePage {
                                 rightTextStyle={styles.grayText} leftTextStyle={styles.blackText} isLine={false}
                                 onPress={() => this.renderGetCityPicker()}/>
                 {this.renderWideLine()}
-                <UserSingleItem leftText={'实名认证'} rightText={user.isRealNameRegistration ? '已实名认证' : '未实名认证'}
+                <UserSingleItem leftText={'实名认证'} rightText={!!user.realname? '已实名认证' : '未实名认证'}
                                 rightTextStyle={[styles.grayText, { color: color.white }]}
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={false}
-                                circleStyle={user.isRealNameRegistration ? styles.hasVertifyID : styles.notVertifyID}
+                                circleStyle={!!user.realname ? styles.hasVertifyID : styles.notVertifyID}
                                 onPress={() => this.jumpToIDVertify2Page()}/>
 
             </View>

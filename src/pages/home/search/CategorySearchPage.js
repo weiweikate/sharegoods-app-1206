@@ -179,6 +179,7 @@ export default class CategorySearchPage extends BasePage {
                 }}>
                     <Text style={{
                         fontSize: 13,
+                        fontWeight: item.index === this.state.leftIndex ? 'bold' : 'normal',
                         color: '#222222'
                     }}>
                         {item.item.name.length > 4 ? item.item.name.substr(0, 4) + '...' : item.item.name}
@@ -289,7 +290,7 @@ export default class CategorySearchPage extends BasePage {
                             textAlign: 'center',
                             height: 30,
                             fontSize: 13,
-                            color: '#222222',
+                            color: '#333',
                             marginTop: 10,
                             marginBottom: 22
                         }}/>
@@ -300,7 +301,13 @@ export default class CategorySearchPage extends BasePage {
     _sectionHeader = ({ section }) => {
         return (
             <UIText value={section.title}
-                    style={{ fontSize: 13, width: ScreenUtils.width - 110, color: '#222222', marginBottom: 20 }}/>
+                    style={{
+                        fontWeight: 'bold',
+                        fontSize: 13,
+                        width: ScreenUtils.width - 110,
+                        color: '#333',
+                        marginBottom: 20
+                    }}/>
         );
     };
 

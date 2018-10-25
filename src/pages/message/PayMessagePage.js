@@ -10,6 +10,8 @@ import StringUtils from "../../utils/StringUtils";
 import BasePage from "../../BasePage";
 import arrow_right from "../order/res/arrow_right.png";
 import DateUtils from "../../utils/DateUtils";
+const payTypes = [1,2,4,8,16];
+const payTexts = ['纯平台','微信(小程序)','微信(APP)','支付宝','银联'];
 
 export default class PayMessagePage extends BasePage {
     constructor(props) {
@@ -28,23 +30,12 @@ export default class PayMessagePage extends BasePage {
 
     getPayType(type) {
         let way = "";
-        switch (type) {
-            case 1:
-                way = "纯平台";
-                break;
-            case 2:
-                way = "微信(小程序)";
-                break;
-            case 4:
-                way = "微信(APP)";
-                break;
-            case 8:
-                way = "支付宝";
-                break;
-            case 16:
-                way = "银联";
-                break;
+        for(let i = 0 ; i<payTypes.length;i++){
+            if(type & payTypes[i]){
+                way = way+payTexts[i]+','
+            }
         }
+        way = way.substring(0,way.length-1);
         return way;
     }
 

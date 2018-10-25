@@ -15,11 +15,12 @@ import React from "react";
 import {
     StyleSheet,
     View,
-    Modal,
+    // Modal,
     Animated,
     TouchableWithoutFeedback
 } from "react-native";
 
+import Modal from 'CommModal'
 
 export default class ShareTaskAnimation extends React.Component {
 

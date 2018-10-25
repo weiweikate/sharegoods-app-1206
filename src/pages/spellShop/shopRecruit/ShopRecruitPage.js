@@ -106,8 +106,19 @@ export default class ShopRecruitPage extends BasePage {
         });
     };
     _closeStore = () => {
-
-        this._loadPageData();
+        this.$loadingShow();
+        SpellShopApi.closeStore({ status: 0 }).then((data) => {
+            //不是首页回退
+            if (!this.props.leftNavItemHidden){
+                this.$navigateBack();
+            }
+            //刷新首页
+            spellStatusModel.getUser(2);
+            this.$loadingDismiss();
+        }).catch((error) => {
+            this.$toastShow(error.msg);
+            this.$loadingDismiss();
+        });
     };
 
     //开启店铺
@@ -119,6 +130,8 @@ export default class ShopRecruitPage extends BasePage {
             } else {
                 this.$navigateBack();
             }
+            //刷新首页
+            spellStatusModel.getUser(2);
         }).catch((error) => {
             this.$toastShow(error.msg);
         });
