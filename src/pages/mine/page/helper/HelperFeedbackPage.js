@@ -6,7 +6,7 @@ import {
     StyleSheet,
     View,
     Image,
-    Text, Modal,
+    Text,
     TouchableOpacity,
     ToastAndroid, TouchableWithoutFeedback
 } from 'react-native';
@@ -24,6 +24,7 @@ import deleteImage from '../../res/customerservice/deleteImage.png';
 import BusinessUtils from '../../components/BusinessUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import MineApi from '../../api/MineApi';
+import Modal from 'CommModal';
 
 export default class HelperFeedbackPage extends BasePage {
     constructor(props) {
@@ -121,7 +122,7 @@ export default class HelperFeedbackPage extends BasePage {
                 onRequestClose={() => {
                 }}
                 visible={this.state.isShowFinishModal}>
-                <View style={{ backgroundColor: 'rgba(0,0,0,0.1)', flex: 1 }}>
+                <View style={{flex: 1,width:ScreenUtils.width }}>
                     <View style={{
                         width: ScreenUtils.width / 5 * 3,
                         height: ScreenUtils.height / 3,

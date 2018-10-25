@@ -40,7 +40,7 @@ import { observer } from "mobx-react/native";
 import showImg from "../res/homeBaseImg/icon_faxian.png";
 import bgImg from "../res/homeBaseImg/bg_img_user.png";
 import rightIcon from "../res/homeBaseImg/me_icon_jinru_nor.png";
-
+import userOrderNum from '../../../model/userOrderNum';
 const headerBgSize = { width: 375, height: 200 };
 
 const { px2dp, statusBarHeight } = ScreenUtils;
@@ -85,6 +85,7 @@ export default class MinePage extends BasePage {
             this.props.navigation.navigate("login/login/LoginPage", { callback: this.refresh });
             return;
         }
+        userOrderNum.getUserOrderNum();
         this.refresh();
     }
 
@@ -438,6 +439,8 @@ export default class MinePage extends BasePage {
         let statesText = ["待付款", "待发货", "待收货", "售后/退款"];
         let arr = [];
         for (let i = 0; i < statesImage.length; i++) {
+            // let num = 0;
+
             arr.push(
                 <NoMoreClick style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingTop: px2dp(30) }}
                              onPress={() => this.jumpToOrderAccordingStates(i)} key={i}>
@@ -467,6 +470,9 @@ export default class MinePage extends BasePage {
         }
         return arr;
     };
+
+
+
     renderMenu = () => {
         let leftImage = [inviteFr, coupons, myData, myCollet, myHelper, address, promotion, showImg];
         let leftText = ["邀请好友", "优惠券", "我的数据", "收藏店铺", "帮助", "地址", "我的推广", "发现收藏"];
