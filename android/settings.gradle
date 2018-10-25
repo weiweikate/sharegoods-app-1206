@@ -1,5 +1,5 @@
 rootProject.name = 'sharegoods'
-include ':react-native-linear-gradient', ':qrcode', ':permissionlib'
+include ':react-native-linear-gradient'
 project(':react-native-linear-gradient').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-linear-gradient/android')
 include ':react-native-vector-icons'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
@@ -14,3 +14,5 @@ include ':app'
 include ':commonlib'
 include ':qiyu_service'
 include ':rn_deviceinfo'
+include ':qrcode'
+include ':permissionlib'
