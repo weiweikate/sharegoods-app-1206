@@ -629,11 +629,7 @@ class MyOrdersDetailPage extends BasePage {
                 break;
             case 7:
             case 8:
-                afterSaleService.push({
-                    id: 4,
-                    operation: '已关闭',
-                    isRed: true
-                });
+                afterSaleService.push();
                 break;
         }
         return afterSaleService;

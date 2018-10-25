@@ -222,9 +222,6 @@ export default class IDVertify2Page extends BasePage {
         });
     };
 
-    loadPageData() {
-
-    }
 
     commit = () => {
         if(!this.state.agreeAggreement){
@@ -264,19 +261,22 @@ export default class IDVertify2Page extends BasePage {
         this.$loadingShow();
         MineApi.addUserCertification(params).then((response) => {
             this.$loadingDismiss();
-            if (response.code === 10000) {
                 NativeModules.commModule.toast('实名认证成功');
-                user.realnameStatus = 1;
+                MineApi.getUser().then(res => {
+                    let data = res.data;
+                    user.saveUserInfo(data);
+                }).catch(err => {
+                    if (err.code === 10009) {
+                        this.props.navigation.navigate("login/login/LoginPage");
+                    }
+                });
                 this.$navigateBack();
-            } else {
-                if (response.code == 500) {
-                    this.setState({ disFailedStatus: true });
-                }
-                NativeModules.commModule.toast(response.msg);
-            }
-        }).catch(e => {
+        }).catch(err => {
             this.$loadingDismiss();
-            this.$toastShow(e.msg);
+            this.$toastShow(err.msg);
+            if (err.code === 10009) {
+                this.props.navigation.navigate("login/login/LoginPage");
+            }
         });
     };
     agreeAggreement = () => {
