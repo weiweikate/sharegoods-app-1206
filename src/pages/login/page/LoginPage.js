@@ -193,7 +193,7 @@ export default class LoginPage extends BasePage {
                 bridge.$toast(data.msg);
                 /*未注册*/
                 if (data.code === 34001) {
-                    this.registBtnClick();
+                    this.$navigate('login/login/RegistPage',{phone:LoginParam.phoneNumber});
                 }
             });
         } else {
@@ -209,16 +209,18 @@ export default class LoginPage extends BasePage {
                 wechatVersion: ''
             }).then((data) => {
                 this.$loadingDismiss();
-                console.log('password login', data);
                 UserModel.saveUserInfo(data.data);
                 UserModel.saveToken(data.data.token)
                 bridge.$toast('登陆成功');
                 this.params.callback && this.params.callback();
                 this.$navigateBack();
             }).catch((data) => {
+                console.log(data)
                 this.$loadingDismiss();
-                console.warn(data);
                 bridge.$toast(data.msg);
+                if (data.code === 34001) {
+                    this.$navigate('login/login/RegistPage',{phone:LoginParam.phoneNumber});
+                }
             });
 
         }

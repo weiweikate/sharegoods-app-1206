@@ -36,6 +36,7 @@ export default class RegistPage extends BasePage {
                 <CommRegistView
                     // config={viewType:0}
                     viewType={0}
+                    phone={this.params.phone?this.params.phone:''}
                     loginClick={(phone, code, password) => this.clickNext(phone, code, password)}
                     ref={'topView'}
                 />
