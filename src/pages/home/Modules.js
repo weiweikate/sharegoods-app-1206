@@ -56,7 +56,6 @@ import makemoneyImg from './res/makemoney.png';
 import shareImg from './res/share.png';
 import signinImg from './res/signin.png';
 import spikeImg from './res/spike.png';
-import allImg from './res/all.png';
 
 export class ClassifyModules {
     @observable classifyList = [];
@@ -90,12 +89,7 @@ export class ClassifyModules {
 
         HomeApi.classify().then(res => {
             if (res.code === 10000 && res.data) {
-                this.classifyList = [...this.classifyList, ...res.data, {icon: allImg,
-                    name: '全部分类',
-                    id: 1,
-                    route: 'home/search/CategorySearchPage'}]
-
-                console.log('load this.classifyList', this.classifyList)
+                this.classifyList = [...this.classifyList, ...res.data]
             }
         })
     };
