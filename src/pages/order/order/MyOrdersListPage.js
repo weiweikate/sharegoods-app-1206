@@ -96,6 +96,7 @@ class MyOrdersListPage extends BasePage {
             <TabBar
                 underlineColor='#D51243'
                 backgroundColor='white'
+                tabMargin={35}
                 style={{
                     alignItems: 'center',
                     justifyContent: 'center',

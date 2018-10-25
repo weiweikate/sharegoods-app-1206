@@ -7,7 +7,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import { RefreshList, UIText, UIImage } from '../../../../components/ui';
+import { RefreshList } from '../../../../components/ui';
 import AccountItem from '../../components/AccountItem';
 import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
@@ -15,7 +15,6 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import withdrawMoney from '../../res/userInfoImg/withdrawMoney.png';
 import tuiguang from '../../res/userInfoImg/list_icon_touguang.png';
 import salesCommissions from '../../res/userInfoImg/list_icon_xiaoshouticheng.png';
-import questionImage_white from '../../res/userInfoImg/questionImage_white.png';
 import waitWithdrawCashBg from '../../res/userInfoImg/waitWithdrawCashBg2.png';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
@@ -98,19 +97,6 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 fontSize: 25,
                                 color: color.white
                             }}>{StringUtils.formatMoneyString(this.state.blockedBalance, false)}</Text>
-                        </View>
-                        <View>
-                            <TouchableOpacity style={styles.rectangleStyle}
-                                              onPress={() => this.jumpToWithdrawCashPage()}>
-                                <Text style={{ fontSize: 15, color: color.white }}>兑换秀豆</Text>
-                            </TouchableOpacity>
-                            <View
-                                style={{ flexDirection: 'row', marginTop: 10, paddingLeft: 22, alignItems: 'center' }}>
-                                <UIImage source={questionImage_white}
-                                         style={{ width: 13, height: 13, marginRight: 3 }}/>
-                                <UIText value={'提现说明'}
-                                        style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#ffffff' }}/>
-                            </View>
                         </View>
 
                     </View>

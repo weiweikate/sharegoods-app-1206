@@ -8,7 +8,7 @@ import {
     Image,
     Text, Modal,
     TouchableOpacity,
-    ToastAndroid, TouchableWithoutFeedback
+     TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -90,8 +90,16 @@ export default class HelperFeedbackPage extends BasePage {
         }
         let smallImgs = smallImagarr.join(';');
         let orignImgs = orignImagarr.join(';');
-        if (this.state.selectIndex == -1 || this.state.detailContent == '' || orignImgs.length < 20) {
-            ToastAndroid.show('请完善反馈资料!', ToastAndroid.SHORT);
+        // if (this.state.selectIndex == -1 || this.state.detailContent == '' || orignImgs.length < 20) {
+        //     ToastAndroid.show('请完善反馈资料!', ToastAndroid.SHORT);
+        //     return;
+        // }
+        if(this.state.selectIndex==-1){
+            this.$toastShow('请选择反馈类型!');
+            return;
+        }
+        if (this.state.detailContent&&this.state.detailContent.length<10) {
+            this.$toastShow('反馈内容请大于10个字!');
             return;
         }
         MineApi.addFeedback({
@@ -288,10 +296,9 @@ export default class HelperFeedbackPage extends BasePage {
                     {this.renderAddItem()}
                 </View>
 
-                <View
-                    style={{ width: ScreenUtils.width, height: 180, alignItems: 'center', justifyContent: 'flex-end' }}>
+                <View style={{ width: ScreenUtils.width, height: 180, alignItems: 'center',}}>
                     <TouchableOpacity activeOpacity={0.9}
-                                      style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' ? '#dddddd' : color.red }]
+                                      style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' ||this.state.detailContent.length<10? '#dddddd' : color.red }]
 
                                       } onPress={() => this.feedback2server()}>
                         <Text style={{ fontSize: 16, color: '#fff' }}>提交</Text>
@@ -362,7 +369,8 @@ const styles = StyleSheet.create({
         height: 48,
         borderRadius: 5,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop:50
     },
     containerView1: {
         backgroundColor: 'white',
