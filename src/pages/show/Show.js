@@ -44,20 +44,12 @@ export class ShowBannerModules {
         return this.bannerList.length
     }
     @action loadBannerList = () => {
-        this.bannerList = [
-            {
-                remark: 'IPhone X 9月在美国加州福利院上市...',
-                imgUrl: 'http://imgsrc.baidu.com/imgad/pic/item/34fae6cd7b899e51ec89f83949a7d933c8950d9c.jpg'
-            },
-            {
-                remark: 'IPhone X 9月在美国加州福利院上市...',
-                imgUrl: 'http://img.zcool.cn/community/011ab85707229732f875a9446d74b5.jpg'
-            },
-            {
-                remark: 'IPhone X 9月在美国加州福利院上市...',
-                imgUrl: 'http://img.zcool.cn/community/011ab85707229732f875a9446d74b5.jpg'
+        this.bannerList = []
+        ShowApi.showSwper({type: 11}).then(res => {
+            if (res.code === 10000 && res.data) {
+                this.bannerList = res.data
             }
-        ]
+        })
     }
 }
 

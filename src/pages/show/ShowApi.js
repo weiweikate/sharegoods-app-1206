@@ -12,7 +12,9 @@ const api = {
    // 取消收藏
    showCollectCancel: '/discover/count/cancel',
    // 收藏列表
-   showCollectList: ['/discover/queryCollect', {method: 'get'}]
+   showCollectList: ['/discover/queryCollect', {method: 'get'}],
+   // 轮播图
+   showSwper: ['/config/advertisement/queryAdvertisementList']
 };
 import ApiUtils from '../../api/network/ApiUtils'
 
