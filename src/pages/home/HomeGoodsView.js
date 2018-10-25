@@ -8,10 +8,10 @@ const Goods = ({goods, press}) => <TouchableOpacity style={styles.container} onP
     <View style={styles.image}>
         <Image style={styles.image} source={{uri: goods.imgUrl}}/>
         <View style={styles.titleView}>
-            <Text style={styles.title}>{goods.title}</Text>
+            <Text style={styles.title} numberOfLines={1}>{goods.title}</Text>
         </View>
     </View>
-    <Text style={styles.dis}>{goods.name}</Text>
+    <Text style={styles.dis}  numberOfLines={2}>{goods.name}</Text>
     <Text style={styles.money}>¥ {goods.price}</Text>
 </TouchableOpacity>
 
@@ -75,7 +75,9 @@ let styles = StyleSheet.create({
     dis: {
         color: '#666',
         fontSize: px2dp(12),
-        marginTop: px2dp(20)
+        marginTop: px2dp(20),
+        marginLeft: px2dp(7),
+        marginRight: px2dp(7)
     },
     title: {
         color: '#666',
@@ -84,14 +86,15 @@ let styles = StyleSheet.create({
     money: {
         color: '#D51234',
         fontSize: px2dp(14),
-        marginTop: px2dp(10)
+        marginTop: px2dp(10),
+        marginLeft: px2dp(7)
     },
     cell: {
-        width: ScreenUtils.width,
         backgroundColor: '#fff',
         height: px2dp(273),
         flexDirection: 'row',
-        justifyContent: 'center'
+        marginRight: px2dp(15),
+        marginLeft: px2dp(15)
     },
     space: {
         width: px2dp(5)

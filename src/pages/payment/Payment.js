@@ -181,7 +181,7 @@ export class Payment {
             const resultStr = yield PayUtil.appWXPay(prePay)
             this.outTradeNo = preStr.data.outTradeNo
            if (parseInt(resultStr.sdkCode, 0) !== 0) {
-                Toast.$toast(resultStr.msg)
+                ref && ref.show(2, resultStr.msg)
                 Toast.hiddenLoading()
                 return ''
             }

@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.meeruu.commonlib.utils.ParameterUtils;
+import com.meeruu.permissions.Permission;
+import com.meeruu.permissions.PermissionUtil;
 import com.meeruu.sharegoods.R;
-import com.smartstudy.permissions.Permission;
-import com.smartstudy.permissions.PermissionUtil;
 import com.smartstudy.qrcode.CodeScanActivity;
 
 import java.util.Arrays;

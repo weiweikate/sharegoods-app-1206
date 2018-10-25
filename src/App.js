@@ -21,6 +21,8 @@ import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
 import appData from './model/appData';
+import { netStatus } from "./comm/components/NoNetHighComponent";
+import signTestTool from './signTestTool';
 
 
 export default class App extends Component {
@@ -35,6 +37,7 @@ export default class App extends Component {
     }
 
     async componentDidMount() {
+        netStatus.startMonitorNetworkStatus();
         await user.readToken();
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
@@ -104,8 +107,17 @@ export default class App extends Component {
                     CONFIG.showDebugPanel ? <DebugButton onPress={this.showDebugPage}><Text
                         style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
+                {/*{*/}
+                    {/*CONFIG.showDebugPanel ? <DebugButton onPress={this.signTestFunc}><Text*/}
+                        {/*style={{ color: 'white' }}>验签调试</Text></DebugButton> : null*/}
+                {/*}*/}
             </View>
         );
+    }
+
+    signTestFunc =()=>{
+        // signTestTool.beginTest(); post
+        signTestTool.testSignGet() //get
     }
 
     showDebugPage = () => {
