@@ -368,7 +368,7 @@ class User {
         }
     }
 
-    
+
     @action updateUserData() {
         return UserApi.getUser().then(res => {
             if (res.code == 10000) {
