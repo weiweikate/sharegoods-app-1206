@@ -14,6 +14,7 @@ import { Payment, paymentType } from './Payment'
 import PayUtil from './PayUtil'
 import PaymentResultView, {PaymentResult} from './PaymentResultView'
 import ScreenUtils from '../../utils/ScreenUtils';
+import spellStatusModel from '../spellShop/model/SpellStatusModel';
 
 const PayCell = ({data, isSelected, balance, press, selectedTypes, disabled}) => {
     let selected = isSelected
@@ -171,6 +172,9 @@ export default class PaymentMethodPage extends BasePage {
                             if (payStore) {
                                 this.payment.payStoreActoin().then(result => {
                                     if (result.sdkCode === 0) {
+                                        //刷新拼店状态
+                                        spellStatusModel.storeStatus = 2;
+                                        spellStatusModel.getUser(2);
                                         this.$navigate('spellShop/shopSetting/SetShopNamePage');
                                     } else {
                                         Toast.$toast('支付失败')
@@ -218,7 +222,7 @@ export default class PaymentMethodPage extends BasePage {
                 this.setState({ isShowPaymentModal: true });
                 return;
             }
-            
+
             let result = await this.payment.balancePay(params, this.paymentResultView)
             this.setState({password: ''})
             console.log('checkRes', result)
@@ -325,6 +329,9 @@ export default class PaymentMethodPage extends BasePage {
             }
              this.payment.payStoreActoin().then(result => {
                 if (result.sdkCode === 0) {
+                    //刷新拼店状态
+                    spellStatusModel.storeStatus = 2;
+                    spellStatusModel.getUser(2);
                     this.$navigate('spellShop/shopSetting/SetShopNamePage')
                     Toast.$toast('支付成功')
                 } else {

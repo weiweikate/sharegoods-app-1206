@@ -141,9 +141,10 @@ export default class RecommendPage extends BasePage {
 
     // 点击开启店铺页面
     _clickOpenShopItem = () => {
+        //已缴纳保证金
         if (SpellStatusModel.storeStatus === 2) {
             this.$navigate('spellShop/shopSetting/SetShopNamePage');
-        } else if (SpellStatusModel.storeId && SpellStatusModel.storeStatus !== 0) {
+        } else if (SpellStatusModel.storeId && SpellStatusModel.storeStatus !== 0) {//有店铺店铺没关闭
             this.props.navigation.popToTop();
         } else {
             this.$navigate('spellShop/openShop/OpenShopExplainPage');
