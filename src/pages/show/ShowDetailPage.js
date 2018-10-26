@@ -14,6 +14,7 @@ import showShareImg from '../../comm/res/show_share.png'
 import { ShowDetail } from './Show'
 import {observer} from 'mobx-react'
 import CommShareModal from '../../comm/components/CommShareModal'
+import user from '../../model/user'
 
 const Goods = ({data, press}) => <TouchableOpacity style={styles.goodsItem} onPress={()=>{press && press()}}>
     <Image style={styles.goodImg} source={{uri: data.headImg ? data.headImg: ''}}/>
@@ -43,10 +44,20 @@ export default class ShowDetailPage extends Component {
         });
     }
     _goodAction() {
-        this.showDetailModule.showGoodAction()
+        if (user.isLogin) {
+            this.showDetailModule.showGoodAction()
+        } else {
+            const {navigation} = this.props
+            navigation.push('login/LoginPage')
+        }
     }
     _collectAction() {
-        this.showDetailModule.showConnectAction()
+        if (user.isLogin) {
+            this.showDetailModule.showConnectAction()
+        } else {
+            const {navigation} = this.props
+            navigation.push('login/LoginPage')
+        }
     }
     _goToShare() {
         this.shareModal && this.shareModal.open()
