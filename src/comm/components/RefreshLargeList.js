@@ -56,7 +56,7 @@ export default class RefreshLargeList extends React.Component {
         sizeKey: PropTypes.string,
         pageSize: PropTypes.number,//每页的数据数
         defaultPage: PropTypes.number,// 默认page是从1开始的
-        handleRequestResult: PropTypes.func,// (result) => data 处理请求成功的结果 默认取result.data.data
+        handleRequestResult: PropTypes.func,// (result, isRefresh) => data 处理请求成功的结果 默认取result.data.data
         /** 加载的时机*/
         onStartRefresh: PropTypes.func,
         onEndRefresh: PropTypes.func,
@@ -283,7 +283,7 @@ export default class RefreshLargeList extends React.Component {
             let allLoadCompleted = false;
             let footerStatus = "idle";
             if (handleRequestResult) {
-                netData = handleRequestResult(result);
+                netData = handleRequestResult(result, isRefresh);
             } else {
                 netData = result.data.data;
             }

@@ -27,8 +27,6 @@ export default class ShowHotView extends Component {
         })
     }
     infiniting(done) {
-        console.log('load more infiniting', done)
-
         setTimeout(() => {
             this.recommendModules.getMoreRecommendList({generalize: tag.Recommend}).then(data => {
                 this.waterfall.addItems(data)

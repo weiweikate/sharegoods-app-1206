@@ -14,7 +14,7 @@ export default ({data, press, imageStyle}) => <TouchableOpacity style={styles.it
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.numberView}>
             <Image style={styles.seeImg} source={seeImg}/>
-            <Text style={styles.number}>{data.click}</Text>
+            <Text style={styles.number}>{data.click ? data.click : 0}</Text>
         </View>
     </ImageBackground>
     <View style={styles.profile}>

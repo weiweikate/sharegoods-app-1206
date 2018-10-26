@@ -186,7 +186,7 @@ export default class ConfirOrderPage extends BasePage {
                         <UIText value={'1元现金券'} style={styles.blackText}/>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <UIText
-                                value={(this.state.viewData.list[0].restrictions & 2) == 2 ? '不可使用1元现金券' : (this.state.tokenCoinText ? this.state.tokenCoinText : '选择一元现金券')}
+                                value={(this.state.viewData.list[0].restrictions & 2) == 2 ? '不可使用1元现金券' : (this.state.tokenCoin ? this.state.tokenCoinText : '选择1元现金券')}
                                 style={[styles.grayText, { marginRight: 15 }]}/>
                             <Image source={arrow_right}/>
                         </View>
@@ -302,8 +302,9 @@ export default class ConfirOrderPage extends BasePage {
     _render() {
         return (
             // data={this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98 ? this.state.priceList : this.state.viewData.list}
-            <ScrollView>
+
             <View style={styles.container}>
+                <ScrollView>
                 <RefreshList
                     ListHeaderComponent={this.renderHeader}
                     ListFooterComponent={this.renderFootder}
@@ -311,9 +312,10 @@ export default class ConfirOrderPage extends BasePage {
                     renderItem={this.renderItem}
                     extraData={this.state}
                 />
+                </ScrollView>
                 {this.renderCommitOrder()}
             </View>
-            </ScrollView>
+
         );
     };
 
@@ -360,7 +362,7 @@ export default class ConfirOrderPage extends BasePage {
         this.loadPageData();
     }
 
-    async loadPageData(params) {
+   loadPageData(params) {
         Toast.showLoading();
         switch (this.state.orderParam.orderType) {
             case 1://秒杀
@@ -411,10 +413,13 @@ export default class ConfirOrderPage extends BasePage {
                     orderProducts: this.params.orderParamVO.orderProducts,
                     ...params
                 }).then(response => {
+                   console.log('resa',response);
                     Toast.hiddenLoading();
                     this.handleNetData(response.data);
                 }).catch(err => {
+                    console.log('err',err);
                     Toast.hiddenLoading();
+
                     this.$toastShow(err.msg);
                     if (err.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
@@ -740,7 +745,7 @@ export default class ConfirOrderPage extends BasePage {
             this.$navigate('mine/coupons/CouponsPage', {
                 justOne: this.state.viewData.totalAmounts?this.state.viewData.totalAmounts:1, callBack: (data) => {
                     console.log(typeof data);
-                    if (parseInt(data) > 0) {
+                    if (parseInt(data) >=0) {
                         let params = { tokenCoin: parseInt(data), couponId: this.state.couponId };
                         this.setState({ tokenCoin: data, tokenCoinText: '-' + data });
                         this.loadPageData(params);
@@ -752,8 +757,8 @@ export default class ConfirOrderPage extends BasePage {
                 fromOrder: 1, productIds: this.state.viewData.list[0].productId,
                 orderParam: this.state.orderParam, callBack: (data) => {
                     if (data && data.id) {
-                        let params = { couponId: data.id, tokenCoin: this.state.tokenCoin };
-                        this.setState({ couponId: data.id, couponName: data.name });
+                        let params = { couponId: data.id, tokenCoin: 0 };
+                        this.setState({ couponId: data.id, couponName: data.name,tokenCoin: 0,tokenCoinText:'选择使用1元券' });
                         this.loadPageData(params);
                     } else if (data == 'giveUp') {
                         this.setState({ couponId: null, couponName: null });

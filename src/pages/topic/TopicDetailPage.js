@@ -3,7 +3,6 @@ import {
     View,
     StyleSheet,
     SectionList,
-    Modal,
     Image,
     FlatList,
     Text,
@@ -39,8 +38,6 @@ export default class TopicDetailPage extends BasePage {
             activityType: this.params.activityType,
             //参数还是详情
             selectedIndex: 0,
-            //是否显示规格选择
-            modalVisible: false,
             //数据
             data: {},
             //活动数据
@@ -186,13 +183,6 @@ export default class TopicDetailPage extends BasePage {
         });
     };
 
-    //选择规格关闭
-    _selectionViewClose = () => {
-        this.setState({
-            modalVisible: false
-        });
-    };
-
     //segment 详情0 参数1 选项
     _segmentViewOnPressAtIndex = (index) => {
         this.setState({
@@ -205,9 +195,14 @@ export default class TopicDetailPage extends BasePage {
         if (type === 1) {//设置提醒
             this._followAction();
         } else if (type === 2) {//立即拍
-            this.setState({
-                modalVisible: true
-            });
+            this.state.activityType === 3 ? this.PackageDetailSelectPage.show(
+                this.state.data,
+                this._selectionViewPakageConfirm
+            ) : this.TopicDetailSelectPage.show(
+                this.state.activityData,
+                this.state.activityType,
+                this._selectionViewConfirm
+            );
         }
     };
 
@@ -359,21 +354,10 @@ export default class TopicDetailPage extends BasePage {
                         }}>{bottomTittle}</Text>
                     </TouchableOpacity>
                 </View>
-                <Modal
-                    animationType="none"
-                    transparent={true}
-                    visible={this.state.modalVisible}>
-                    {this.state.activityType === 3 ?
-                        <PackageDetailSelectPage selectionViewConfirm={this._selectionViewPakageConfirm}
-                                                 selectionViewClose={this._selectionViewClose}
-                                                 data={this.state.data}
-                                                 activityType={this.state.activityType}/> :
-                        <TopicDetailSelectPage selectionViewConfirm={this._selectionViewConfirm}
-                                               selectionViewClose={this._selectionViewClose}
-                                               data={this.state.activityData}
-                                               activityType={this.state.activityType}/>}
 
-                </Modal>
+                {this.state.activityType === 3 ?
+                    <PackageDetailSelectPage ref={(ref) => this.PackageDetailSelectPage = ref}/> :
+                    <TopicDetailSelectPage ref={(ref) => this.TopicDetailSelectPage = ref}/>}
 
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'Image'}
