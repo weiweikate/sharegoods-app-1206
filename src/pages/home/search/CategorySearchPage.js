@@ -73,7 +73,7 @@ export default class CategorySearchPage extends BasePage {
             }}>
                 <UIImage
                     source={{ uri: item.img }}
-                    style={{ width: bannerW, height: 118, borderRadius: 5 }}
+                    style={{ width: bannerW, height: 118, borderRadius: 5, marginLeft: 10, marginRight: 10 }}
                 />
             </TouchableOpacity>
         );
@@ -135,7 +135,7 @@ export default class CategorySearchPage extends BasePage {
                                    }}
                                    autoplay={true}
                                    height={118}
-                                   style={{ marginBottom: 10, marginLeft: 10, marginRight: 10 }}
+                                   style={{ alignItems: 'center', marginBottom: 10 }}
                         />
                         <SectionList style={{
                             marginTop: 10,
