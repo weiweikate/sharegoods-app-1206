@@ -12,6 +12,7 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import StringUtils from '../../utils/StringUtils';
 import bridge from '../../utils/bridge';
+import icon_close from '../home/product/res/icon_close.png';
 
 export default class TopicDetailSelectPage extends Component {
 
@@ -163,14 +164,9 @@ export default class TopicDetailSelectPage extends Component {
                                 marginTop: 8
                             }}>{specs}</Text>
                         </View>
-                        <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
-                            <Image style={{
-                                marginRight: 16,
-                                marginTop: 19,
-                                width: 23,
-                                height: 23
-                            }}/>
-                        </TouchableWithoutFeedback>
+                        <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }} onPress = {this.props.selectionViewClose}>
+                            <Image source={icon_close}/>
+                        </TouchableOpacity>
                     </View>
 
                     <ScrollView>

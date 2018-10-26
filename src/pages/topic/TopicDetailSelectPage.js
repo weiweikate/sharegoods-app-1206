@@ -10,6 +10,7 @@ import {
     Image
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
+import icon_close from '../home/product/res/icon_close.png';
 
 export default class TopicDetailSelectPage extends Component {
 
@@ -107,6 +108,9 @@ export default class TopicDetailSelectPage extends Component {
                                     marginTop: 8
                                 }}>{specs}</Text>
                             </View>
+                            <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }} onPress = {this.props.selectionViewClose}>
+                                <Image source={icon_close}/>
+                            </TouchableOpacity>
                         </View>
                     </View>
 

@@ -5,7 +5,6 @@ import {
     TouchableWithoutFeedback,
     Text,
     ScrollView,
-    Modal
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import SelectionHeaderView from './components/SelectionHeaderView';
@@ -13,6 +12,7 @@ import SelectionSectionView from './components/SelectionSectionView';
 import SelectionAmountView from './components/SelectionAmountView';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
+import Modal from 'CommModal';
 
 
 export default class SelectionPage extends Component {
@@ -288,7 +288,8 @@ export default class SelectionPage extends Component {
                                              price={price}
                                              selectList={this.state.selectList}
                                              selectStrList={this.state.selectStrList}
-                                             selectSpecList={this.state.selectSpecList}/>
+                                             selectSpecList={this.state.selectSpecList}
+                                             closeSelectionPage={() => this.setState({ modalVisible: false })}/>
                         <View style={{ flex: 1, backgroundColor: 'white' }}>
                             <ScrollView>
                                 {this._addSelectionSectionView()}
