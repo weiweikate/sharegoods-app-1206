@@ -146,13 +146,13 @@ export default class XQSwiper extends Component {
         const { scaleArray, translateArray } = this.state;
         for (let i = 0; i < this.ezswiper.count + 2; i++) {
             if (i === scrollIndex) {
-                scaleArray[i].setValue(0.8);
+                scaleArray[i].setValue(this.props.ratio);
                 translateArray[i].setValue(this.ezswiper.cardParams.cardTranslate * (currentPageFloat - scrollIndex));
             } else if (i === scrollIndex - 1 || i === scrollIndex + 1) {
-                scaleArray[i].setValue(0.8);
+                scaleArray[i].setValue(this.props.ratio);
                 translateArray[i].setValue((currentPageFloat - i) * this.ezswiper.cardParams.cardTranslate);
             } else {
-                scaleArray[i].setValue(0.8);
+                scaleArray[i].setValue(this.props.ratio);
                 translateArray[i].setValue((currentPageFloat - i) * this.ezswiper.cardParams.cardTranslate);
             }
 
