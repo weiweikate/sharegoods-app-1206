@@ -37,7 +37,7 @@ export default class BasePage extends Component {
     }
 
     $isMonitorNetworkStatus() {
-        return true;
+        return false;
     }
 
     renderContianer(){

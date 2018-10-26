@@ -169,7 +169,7 @@ class ShopCartStore {
             bridge.hiddenLoading();
             //组装购物车数据
             this.packingShopCartGoodsData(result.data);
-        }).then(error => {
+        }).catch(error => {
             bridge.hiddenLoading();
             bridge.$toast(error.msg);
 
