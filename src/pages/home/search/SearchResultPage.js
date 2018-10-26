@@ -5,7 +5,7 @@ import {
     Image,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    // Modal,
+    Modal,
     Text
 } from 'react-native';
 import BasePage from '../../../BasePage';
@@ -24,7 +24,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import ShopCartStore from '../../shopCart/model/ShopCartStore';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import { observer } from 'mobx-react';
-import Modal from 'CommModal';
+// import Modal from 'CommModal';
 @observer
 export default class SearchResultPage extends BasePage {
 
@@ -179,7 +179,7 @@ export default class SearchResultPage extends BasePage {
         });
     };
     _onPressToTop = () => {
-        this.refs.FlatListShow.scrollToOffset({ offset: 0 });
+        this.FlatListShow.scrollToOffset({ offset: 0 });
     };
 
     //getKeywords数据
@@ -248,7 +248,7 @@ export default class SearchResultPage extends BasePage {
     };
 
     _renderListView = () => {
-        return <FlatList ref='FlatListShow'
+        return <FlatList ref={(ref) => this.FlatListShow = ref}
                          style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
                          renderItem={this._renderItem}
                          showsVerticalScrollIndicator={false}
