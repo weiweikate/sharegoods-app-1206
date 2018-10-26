@@ -41,7 +41,8 @@ export default class RecommendPage extends BasePage {
             segmentIndex: 1,
             //data
             dataList: [],
-            adList: []
+            adList: [],
+            swiperShow: false
         };
     }
 
@@ -65,6 +66,11 @@ export default class RecommendPage extends BasePage {
     };
 
     componentDidMount() {
+        setTimeout(() => {
+            this.setState({
+                swiperShow: true
+            });
+        }, 100);
         this._loadPageData();
     }
 
@@ -195,26 +201,30 @@ export default class RecommendPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        return (<ViewPager
-            swiperShow={true}
-            arrayData={this.state.adList}
-            renderItem={this._renderViewPageItem}
-            dotStyle={{
-                height: 5,
-                width: 5,
-                borderRadius: 5,
-                backgroundColor: '#fff',
-                opacity: 0.4
-            }}
-            activeDotStyle={{
-                height: 5,
-                width: 30,
-                borderRadius: 5,
-                backgroundColor: '#fff'
-            }}
-            autoplay={true}
-            height={ScreenUtils.autoSizeWidth(150)}
-        />);
+        if (this.state.adList.length > 0 && this.state.swiperShow) {
+            return <ViewPager
+                swiperShow={true}
+                loop={false}
+                height={ScreenUtils.autoSizeWidth(150)}
+                arrayData={this.state.adList}
+                renderItem={this._renderViewPageItem}
+                dotStyle={{
+                    height: 5,
+                    width: 5,
+                    borderRadius: 5,
+                    backgroundColor: '#eee',
+                    opacity: 0.4
+                }}
+                activeDotStyle={{
+                    height: 5,
+                    width: 30,
+                    borderRadius: 5,
+                    backgroundColor: '#eee'
+                }}
+            />;
+        } else {
+            return <View style={{ height: ScreenUtils.autoSizeWidth(150), width: ScreenUtils.width }}/>;
+        }
     };
 
     _renderViewPageItem = (item) => {
