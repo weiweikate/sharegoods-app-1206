@@ -5,7 +5,6 @@ import {
     Image,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    Modal,
     Text
 } from 'react-native';
 import BasePage from '../../../BasePage';
@@ -24,7 +23,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import ShopCartStore from '../../shopCart/model/ShopCartStore';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import { observer } from 'mobx-react';
-// import Modal from 'CommModal';
+
 @observer
 export default class SearchResultPage extends BasePage {
 
@@ -37,7 +36,6 @@ export default class SearchResultPage extends BasePage {
         super(props);
         this.state = {
             isHorizontal: false,
-            modalVisible: false,
             loadingState: PageLoadingState.loading,
             netFailedInfo: {},
             //排序类型(1.综合 2.销量 3. 价格)
@@ -120,11 +118,8 @@ export default class SearchResultPage extends BasePage {
         }).then((data) => {
             this.$loadingDismiss();
             data.data = data.data || {};
-            this.setState({
-                selectionData: data.data,
-                modalVisible: !this.state.modalVisible,
-                productId: productId
-            });
+            this.state.productId = productId;
+            this.SelectionPage.show(data.data, this._selectionViewConfirm);
         }).catch((data) => {
             this.$loadingDismiss();
             this.$toastShow(data.msg);
@@ -163,14 +158,6 @@ export default class SearchResultPage extends BasePage {
             'productId': this.state.productId
         };
         shopCartCacheTool.addGoodItem(temp);
-    };
-
-    //选择规格关闭
-    _selectionViewClose = () => {
-
-        this.setState({
-            modalVisible: false
-        });
     };
 
     _onPressToGwc = () => {
@@ -296,14 +283,7 @@ export default class SearchResultPage extends BasePage {
                         <Image style={{ marginTop: 5 }} source={toTop}/>
                     </TouchableOpacity>
                 </View>
-                <Modal
-                    animationType="none"
-                    transparent={true}
-                    onRequestClose={() => this.setState({ modalVisible: false })}
-                    visible={this.state.modalVisible}>
-                    <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
-                                   selectionViewClose={this._selectionViewClose} data={this.state.selectionData}/>
-                </Modal>
+                <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </View>
         );
     }
