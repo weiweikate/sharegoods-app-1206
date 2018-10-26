@@ -4,13 +4,14 @@ import {
     View,
     Text,
     Image,
-    Modal,
     TouchableOpacity
 } from 'react-native';
 import { color } from '../../../constants/Theme';
 import BonusExchangeSucceedBackground from '../../mine/res/userInfoImg/BonusExchangeSucceedBackground.png';
 import bonusClose from '../../mine/res/userInfoImg/bonusClose.png';
 import { UIImage } from '../../../components/ui';
+import Modal from 'CommModal';
+import ScreenUtils from "../../../utils/ScreenUtils";
 /*
 * usage:
 * renderModal = () => {
@@ -152,9 +153,9 @@ export default class CommonTwoChoiceModal extends Component {
 
 const styles = StyleSheet.create({
     modalStyle: {
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'flex-end',
-        flex: 1
+        flex: 1,
+        width:ScreenUtils.width
     }, smallTextStyle: {
         fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
