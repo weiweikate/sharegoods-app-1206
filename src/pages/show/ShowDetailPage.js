@@ -31,7 +31,23 @@ export default class ShowDetailPage extends Component {
         super(props)
         this.params = this.props.navigation.state.params || {};
         this.showDetailModule = new ShowDetail()
-        this.showDetailModule.loadDetail(this.params.id)
+        // this.showDetailModule.loadDetail(this.params.id)
+    }
+    componentWillMount() {
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+              const {state } = payload
+              console.log('willFocus', state)
+              if (state && state.routeName === 'show/ShowDetailPage') {
+                    this.showDetailModule.loadDetail(this.params.id)
+              }
+            }
+          );
+    }
+
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove()
     }
     _goBack() {
         const {navigation} = this.props
@@ -44,11 +60,12 @@ export default class ShowDetailPage extends Component {
         });
     }
     _goodAction() {
+        console.log('_goodAction', user.isLogin)
         if (user.isLogin) {
             this.showDetailModule.showGoodAction()
         } else {
             const {navigation} = this.props
-            navigation.push('login/LoginPage')
+            navigation.push('login/login/LoginPage')
         }
     }
     _collectAction() {
@@ -56,7 +73,7 @@ export default class ShowDetailPage extends Component {
             this.showDetailModule.showConnectAction()
         } else {
             const {navigation} = this.props
-            navigation.push('login/LoginPage')
+            navigation.push('login/login/LoginPage')
         }
     }
     _goToShare() {
