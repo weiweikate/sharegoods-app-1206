@@ -163,7 +163,6 @@ class ShopCartCacheTool {
         }
 
     }
-
     /*获取购物车数据 总入口*/
     getShopCartGoodsListData() {
         if (user.isLogin) {
