@@ -148,7 +148,7 @@ const GoodsListItem = props => {
     };
     this.renderLine = () => {
         return (
-            <View style={{ flex: 1, height: 1, backgroundColor: color.line }}/>
+            <View style={{ flex: 1, height: 0.5, backgroundColor: color.line }}/>
         );
     };
     this.renderWideLine = () => {

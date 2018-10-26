@@ -40,7 +40,7 @@ export default class HomeClassifyView extends Component {
         console.log('_onItemPress', data);
         const { navigation } = this.props;
 
-        if (data.img) {
+        if (data.img && data.name !== '全部分类') {
             navigation.navigate('home/search/SearchResultPage', { categoryId: data.id, name: data.name })
         } else {
             navigation.navigate(data.route)

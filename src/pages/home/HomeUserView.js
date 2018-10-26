@@ -36,14 +36,14 @@ export default class HomeUserView extends Component {
         console.log('experience', experience, levelName,  totalExp, experience / totalExp, levelNumber)
         experience = experience ?  experience : 0
         let items = []
-        let width = 220 / levelCount - 7
+        let width = 220 / levelCount
         let left = 19
         memberLevels.map((level, index) => {
             let levelStyle = {left: left}
             console.log('memberLevels', left, levelNumber[index], totalExp, levelNumber[index] / totalExp)
             items.push(<Level key={index} levelStyle={levelStyle} sizeStyle={styles.smallCircle} text={level.name}/>)
             if (index < memberLevels.length - 1) {
-                left +=  width
+                left +=  width - 2
             }
         })
         return <View>
