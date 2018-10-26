@@ -7,8 +7,8 @@ import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
-import { bannerModule, homeModule } from './Modules';
-import ViewPager from '../../components/ui/ViewPager';
+import { bannerModule, homeModule } from './Modules'
+import XGSwiper from '../../components/ui/XGSwiper'
 
 const bannerHeight = px2dp(220);
 
@@ -19,13 +19,12 @@ export default class HomeBannerView extends Component {
         bannerModule.loadBannerList();
     }
 
+    state = {
+        index : 0
+    }
+
     _bannerAction(item, index) {
-        const { bannerList } = bannerModule;
-        const banner = bannerList[index];
-        const router = homeModule.homeNavigate(banner.linkType, banner.linkTypeCode);
-        let params = homeModule.paramsNavigate(banner);
-        const { navigation } = this.props;
-        navigation.navigate(router, params);
+        
     }
 
     _renderViewPageItem = (item, index) => {
@@ -40,6 +39,20 @@ export default class HomeBannerView extends Component {
         </TouchableOpacity>;
     };
 
+    _onDidChange = (item, index) => {
+        console.log('_onDidChange', index)
+        this.setState({index: index})
+    }
+
+    _onPressRow = (item) => {
+        console.log('_onPressRow', item)
+        const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
+        let params = homeModule.paramsNavigate(item);
+        const { navigation } = this.props;
+        navigation.navigate(router, params);
+    }
+
+
     render() {
         const { bannerList } = bannerModule;
         if (bannerList.length === 0) {
@@ -50,27 +63,32 @@ export default class HomeBannerView extends Component {
             items.push(value.imgUrl);
         });
         return <View>
-            <ViewPager
-                swiperShow={true}
-                arrayData={items}
-                renderItem={this._renderViewPageItem.bind(this)}
-                dotStyle={{
-                    height: px2dp(5),
-                    width: px2dp(5),
-                    borderRadius: px2dp(5),
-                    backgroundColor: '#fff',
-                    opacity: 0.6
-                }}
-                activeDotStyle={{
-                    height: px2dp(5),
-                    width: px2dp(30),
-                    borderRadius: px2dp(5),
-                    backgroundColor: '#fff'
-                }}
-                autoplay={true}
-                height={bannerHeight}
-            />
-        </View>;
+            <XGSwiper style={styles.swiper}
+                dataSource={items}
+                width={ ScreenUtils.width }
+                height={ bannerHeight }
+                renderRow={this._renderViewPageItem.bind(this)}
+                onPress={this._onPressRow.bind(this)}
+                onDidChange={this._onDidChange.bind(this)}
+                />
+            {this.renderIndexView()}
+        </View>
+    }
+
+    renderIndexView() {
+        const { index } = this.state
+        const { bannerCount } = bannerModule
+        let items = []
+        for (let i = 0; i < bannerCount; i++) {
+            if (index === i) {
+                items.push(<View key={i} style={styles.activityIndex}/>)
+            } else {
+                items.push(<View key={i} style={styles.index}/>)
+            } 
+        }
+        return  <View style={styles.indexView}>
+            {items}
+        </View>
     }
 }
 
@@ -78,5 +96,30 @@ const styles = StyleSheet.create({
     img: {
         height: bannerHeight,
         width: ScreenUtils.width
+    },
+    indexView: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 0,
+        width: ScreenUtils.width,
+        height: px2dp(15)
+    },
+    activityIndex: {
+        width: px2dp(24),
+        height: px2dp(6),
+        borderRadius: px2dp(3),
+        backgroundColor: '#fff',
+        marginLeft: px2dp(2.5),
+        marginRight: px2dp(2.5)
+    },
+    index: {
+        width: px2dp(6),
+        height: px2dp(6),
+        borderRadius: px2dp(3),
+        backgroundColor: '#f4f4f4',
+        marginLeft: px2dp(2.5),
+        marginRight: px2dp(2.5)
     }
 });
