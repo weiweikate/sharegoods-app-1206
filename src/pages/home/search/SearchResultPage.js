@@ -23,6 +23,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import ShopCartStore from '../../shopCart/model/ShopCartStore';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import { observer } from 'mobx-react';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 @observer
 export default class SearchResultPage extends BasePage {
@@ -35,6 +36,7 @@ export default class SearchResultPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            showTop: false,
             isHorizontal: false,
             loadingState: PageLoadingState.loading,
             netFailedInfo: {},
@@ -236,6 +238,8 @@ export default class SearchResultPage extends BasePage {
 
     _renderListView = () => {
         return <FlatList ref={(ref) => this.FlatListShow = ref}
+                         onScroll={this._onScroll}
+                         scrollEventThrottle={10}
                          style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
                          renderItem={this._renderItem}
                          showsVerticalScrollIndicator={false}
@@ -244,6 +248,22 @@ export default class SearchResultPage extends BasePage {
                          key={this.state.isHorizontal ? 'hShow' : 'vShow'}
                          data={this.state.productList}/>;
     };
+
+    _onScroll = (event) => {
+        let Y = event.nativeEvent.contentOffset.y;
+        let isShow;
+        if (Y < ScreenUtils.height) {
+            isShow = false;
+        } else {
+            isShow = true;
+        }
+        if (isShow !== this.state.showTop) {
+            this.setState({
+                showTop: isShow
+            });
+        }
+    };
+
 
     _render() {
         return (
@@ -279,9 +299,10 @@ export default class SearchResultPage extends BasePage {
                             }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
                         </View>}
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this._onPressToTop}>
+                    {this.state.showTop ? <TouchableOpacity onPress={this._onPressToTop}>
                         <Image style={{ marginTop: 5 }} source={toTop}/>
-                    </TouchableOpacity>
+                    </TouchableOpacity> : null}
+
                 </View>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </View>
