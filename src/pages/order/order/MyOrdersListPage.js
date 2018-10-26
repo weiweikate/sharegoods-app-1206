@@ -11,7 +11,7 @@ class MyOrdersListPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            index: this.props.navigation.state.params.index ? this.props.navigation.state.params.index : 0,
+            index: this.params.index ? this.params.index : 0,
             key: 1,
             // number: this.params.pageParams.number,
             states: {},
@@ -100,7 +100,8 @@ class MyOrdersListPage extends BasePage {
         return (
             <ScrollableTabBar
                 style={{
-                    borderWidth: 0.5
+                    borderWidth: 0.5,
+
                 }}/>
         );
     };
