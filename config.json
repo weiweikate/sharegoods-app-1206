@@ -55,7 +55,7 @@
             "name": "开发环境-杨小猛",
             "host": "http://172.16.10.12:8180/gateway"
         },
-        "pre_yxm": {
+        "pre_release": {
             "name": "预发布环境",
             "host": "http://uatapi.sharegoodsmall.com/gateway"
         }

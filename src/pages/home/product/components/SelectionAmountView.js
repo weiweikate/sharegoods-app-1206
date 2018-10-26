@@ -23,7 +23,7 @@ export default class RecentSearchView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            amount: 1
+            amount: props.type === 'after' ? this.props.afterAmount : 1
         };
     }
 
@@ -73,6 +73,7 @@ export default class RecentSearchView extends Component {
     };
 
     render() {
+        const { type } = this.props;
         return (
             <View style={[{
                 flexDirection: 'row',
@@ -90,7 +91,7 @@ export default class RecentSearchView extends Component {
                     height: 30
                 }}>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
-                                      onPress={this._leftAction}>
+                                      onPress={this._leftAction} disabled={type === 'after'}>
                         <Text style={{ color: '#dddddd', fontSize: 15, paddingHorizontal: 11 }}>-</Text>
                     </TouchableOpacity>
                     <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
@@ -103,11 +104,12 @@ export default class RecentSearchView extends Component {
                             value={`${this.state.amount}`}
                             onEndEditing={this._onEndEditing}
                             keyboardType='numeric'
+                            editable = {type !== 'after'}//false不可编辑
                         />
                     </View>
                     <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
-                                      onPress={this._rightAction}>
+                                      onPress={this._rightAction} disabled={type === 'after'}>
                         <Text style={{ color: '#222222', fontSize: 15, paddingHorizontal: 11 }}>+</Text>
                     </TouchableOpacity>
                 </View>
