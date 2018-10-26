@@ -109,10 +109,10 @@ export default class MinePage extends BasePage {
                 let data = res.data;
                 user.saveUserInfo(data);
                 this.setState({
-                    availableBalance: data.availableBalance,
+                    availableBalance: data.availableBalance+31295111,
                     headImg: data.headImg,
                     levelName: data.levelName,
-                    userScore: data.userScore,
+                    userScore: data.userScore ? data.userScore : 0,
                     blockedBalance: data.blockedBalance
                 });
             }
@@ -135,7 +135,7 @@ export default class MinePage extends BasePage {
                     availableBalance: data.availableBalance,
                     headImg: data.headImg,
                     levelName: data.levelName,
-                    userScore: data.userScore,
+                    userScore: data.userScore ? data.userScore : 0,
                     blockedBalance: data.blockedBalance,
                     isRefreshing: false
                 });
@@ -312,7 +312,14 @@ export default class MinePage extends BasePage {
         );
     };
 
-    accountItemView(num, text, color, onPress) {
+
+    getAdjustsFontSize=(text)=>{
+        let fontSize = Math.sqrt(80*20/text.length);
+        fontSize = Math.min(fontSize,19);
+        return Math.max(fontSize,1);
+    }
+
+    accountItemView=(num, text, color, onPress) => {
         return (
             <TouchableWithoutFeedback onPress={onPress}>
                 <View style={{
@@ -330,7 +337,7 @@ export default class MinePage extends BasePage {
                     paddingTop: px2dp(16),
                     paddingBottom: px2dp(11)
                 }}>
-                    <Text style={{ color: "white", fontSize: px2dp(19), includeFontPadding: false }}>
+                    <Text allowFontScaling={true} style={{ textAlign:'center',color: "white", includeFontPadding: false ,width:80,height:20,fontSize:this.getAdjustsFontSize(num)}}>
                         {num}
                     </Text>
 
@@ -453,7 +460,7 @@ export default class MinePage extends BasePage {
                          justifyContent: "center"
                      }}>
                          <Text style={{ includeFontPadding: false, color: "white", fontSize: px2dp(10) }}>
-                             1
+                             {num}
                          </Text>
                      </View>
                  ) : null;

@@ -47,14 +47,9 @@ export default class MessageCenterPage extends BasePage {
 
     _render(){
         return(
-           // <View style={styles.container}>
-             //   {this.renderBodyView()}
-           // </View>
-
             <ScrollView style={styles.container}>
                 {this.renderBodyView()}
             </ScrollView>
-
         )
     }
     loadPageData(){
@@ -74,21 +69,7 @@ export default class MessageCenterPage extends BasePage {
     componentWillUnmount(){
         DeviceEventEmitter.removeAllListeners();
     }
-    // refreshContentNum=()=>{
-    //     HomeApi.queryPushNum().then(res => {
-    //         if(res.ok&&typeof res.data ==='object'){
-    //             let arrs=[];
-    //             arrs.push(res.data.noticeNum);
-    //             arrs.push(res.data.messageNum);
-    //             arrs.push(res.data.storeMessageNum);
-    //             this.setState({
-    //                 viewData:arrs
-    //             })
-    //         }else{
-    //             Toast.toast(res.msg);
-    //         }
-    //     });
-    // };
+
     orderMenuJump(i){
         switch(i){
             case 0:
