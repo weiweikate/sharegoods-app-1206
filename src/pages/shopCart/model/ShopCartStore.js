@@ -10,7 +10,6 @@ class ShopCartStore {
     allMoney = 0;
     @observable
     isAllSelected;
-
     @action
     clearData() {
         this.data = [];
@@ -35,7 +34,6 @@ class ShopCartStore {
         }
 
     }
-
     @computed
     get getTotalSelectGoodsNum() {
         let totalSelectNum = 0;
@@ -124,7 +122,7 @@ class ShopCartStore {
     updateCartItem = (itemData, rowId) => {
         ShopCartAPI.updateItem(
             itemData
-        ).then(() => {
+        ).then((res) => {
             let [...temDataArr] = this.data.slice();
             temDataArr.map((itemValue, indexPath) => {
                 if (itemValue.priceId === itemData.priceId && itemValue.productId === itemData.productId) {
