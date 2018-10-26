@@ -35,10 +35,40 @@ export default class HomePage extends Component {
 
     st = 0;
     headerH = statusBarHeight + 44;
+    state = {
+        isShow: true
+    }
 
     constructor(props) {
         super(props);
         homeModule.loadHomeList();
+    }
+
+    componentWillMount() {
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+              const {state } = payload
+              if (state && state.routeName === 'HomePage') {
+                  this.setState({isShow: true})
+              }
+            }
+          );
+
+        this.didBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+              const {state } = payload
+              if (state && state.routeName === 'HomePage') {
+                  this.setState({isShow: false})
+              }
+            }
+          );
+    }
+
+    componentWillUnmount() {
+        this.didBlurSubscription && this.didBlurSubscription.remove()
+        this.willFocusSubscription && this.willFocusSubscription.remove()
     }
 
     // 滑动头部透明度渐变
@@ -86,7 +116,14 @@ export default class HomePage extends Component {
         } else if (data.type === homeType.goods) {
             return <HomeGoodsView data={data.itemData} navigation={this.props.navigation}/>;
         } else if (data.type === homeType.show) {
-            return <ShowView navigation={this.props.navigation}/>;
+            const {isShow} = this.state
+            return (<View>{
+                isShow
+                ?
+                <ShowView navigation={this.props.navigation}/>
+                :
+                <View/>
+            }</View>)
         } else if (data.type === homeType.goodsTitle) {
             return <View style={styles.titleView}>
                 <Text style={styles.title}>为你推荐</Text>
