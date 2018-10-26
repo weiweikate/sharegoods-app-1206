@@ -5,7 +5,7 @@ import {
     Image,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    // Modal,
+    Modal,
     Text
 } from 'react-native';
 import BasePage from '../../../BasePage';
@@ -24,7 +24,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import ShopCartStore from '../../shopCart/model/ShopCartStore';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import { observer } from 'mobx-react';
-import Modal from 'CommModal';
+// import Modal from 'CommModal';
 @observer
 export default class SearchResultPage extends BasePage {
 
