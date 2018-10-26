@@ -266,7 +266,7 @@ class AfterSaleServicePage extends BasePage {
         );
     };
     renderModal = () => {
-        let productData = this.state.productData;
+        // let productData = this.state.productData;
         let returnReasons = ['多拍/错拍/不想要', '快递/物流一直未收到', '未按约定时间发货', '商品/破损/少件/污渍等', '货物破损已拒签', '假冒品牌/产品', '退运费', '发票问题', '其他'];
         return (
             <View>

@@ -235,7 +235,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             }
             int res = getRes(url);
             if (res == 0) {
-                return null;
+                return new UMImage(mContext, R.mipmap.ic_launcher);
             } else {
                 return new UMImage(mContext, getRes(url));//资源文件
             }
