@@ -27,7 +27,7 @@ export default class ShowBannerView extends Component {
     renderRow(item) {
         return <View style={styles.imgView}>
             <ImageBackground style={styles.img} source={{uri: item.imgUrl}}>
-                <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
+                <Image style={styles.mask} source={maskImg}/>
                 <View style={styles.textView}>
                 <Text style={styles.text} numberOfLines={1}>{item.remark}</Text>
                 </View>
@@ -71,7 +71,7 @@ export default class ShowBannerView extends Component {
             <XGSwiper style={styles.swiper}
                 dataSource={bannerList}
                 width={ ScreenUtils.width }
-                height={ 150 }
+                height={ px2dp(150) }
                 renderRow={this.renderRow.bind(this)}
                 ratio={0.867}
                 onPress={this.onPressRow.bind(this)}
@@ -94,15 +94,15 @@ let styles = StyleSheet.create({
     },
     swiper: {
         width: ScreenUtils.width,
-        height: 175
+        height: px2dp(175)
     },
     img: {
-        width: ScreenUtil.width - 50,
-        height: (175),
+        width: ScreenUtil.width - px2dp(50),
+        height: px2dp(175),
         justifyContent: 'flex-end'
     },
     imgView: {
-        height: 175,
+        height: px2dp(175),
         borderRadius: px2dp(5),
         overflow: 'hidden',
     },
