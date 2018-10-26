@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.smartstudy.permissions;
+package com.meeruu.permissions;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -36,8 +36,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import pub.devrel.easypermissions.R;
 
 /**
  * Utility to request and check System permissions for apps targeting Android M (API >= 23).

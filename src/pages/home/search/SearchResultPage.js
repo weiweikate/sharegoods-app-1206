@@ -120,19 +120,6 @@ export default class SearchResultPage extends BasePage {
         }).then((data) => {
             this.$loadingDismiss();
             data.data = data.data || {};
-            const { specMap, priceList } = data.data;
-            //修改specMap每个元素首尾增加'，'
-            for (let key in specMap) {
-                specMap[key].forEach((item) => {
-                    if (String(item.id).indexOf(',') === -1) {
-                        item.id = `,${item.id},`;
-                    }
-                });
-            }
-            //修改priceList中的specIds首尾增加','
-            priceList.forEach((item) => {
-                item.specIds = `,${item.specIds},`;
-            });
             this.setState({
                 selectionData: data.data,
                 modalVisible: !this.state.modalVisible,

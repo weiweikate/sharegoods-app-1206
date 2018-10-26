@@ -9,11 +9,11 @@ const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { SubjectModule, homeModule } from './Modules'
 
-const GoodItems = ({img, title, money}) => <View style={styles.goodsView}>
+const GoodItems = ({img, title, money, press}) => <TouchableOpacity style={styles.goodsView} onPress={()=>{press && press()}}>
     <Image style={styles.goodImg} source={{uri:img ? img : ''}}/>
     <Text style={styles.goodsTitle} numberOfLines={2}>{title}</Text>
     <Text style={styles.money}>¥ {money}</Text>
-</View>
+</TouchableOpacity>
 
 const MoreItem = ({press}) => <TouchableOpacity style={styles.moreView} onPress={()=>{press && press()}}>
     <View style={styles.backView}>
@@ -23,12 +23,20 @@ const MoreItem = ({press}) => <TouchableOpacity style={styles.moreView} onPress=
     </View>
 </TouchableOpacity>
 
-const ActivityItem = ({data, press}) => {
+const ActivityItem = ({data, press, goodsPress}) => {
     const {imgUrl, topicBannerProductDTOList} = data
     console.log('ActivityItem', imgUrl)
     let goodsItem = []
     topicBannerProductDTOList && topicBannerProductDTOList.map((value,index) => {
-        goodsItem.push(<GoodItems key={index} title={value.productName} money={value.originalPrice ? value.originalPrice : 0} img={value.specImg ? value.specImg : ''}/>)
+        goodsItem.push(
+        <GoodItems
+            key={index}
+            title={value.productName}
+            money={value.originalPrice ? value.originalPrice : 0}
+            img={value.specImg ? value.specImg : ''}
+            press={()=>{goodsPress && goodsPress(value)}}
+            />
+        )
     })
     return <View>
         <TouchableOpacity style={styles.bannerBox} onPress={()=>{press && press()}}>
@@ -63,6 +71,11 @@ export default class HomeSubjectView extends Component {
         const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
         navigation.navigate(router,  params)
     }
+    _goodAction(good) {
+        const { navigation } = this.props
+        console.log('_goodAction', good.productId)
+        navigation.navigate('home/product/ProductDetailPage', {productId: good.productId })
+    }
     render() {
         const { subjectList } = this.subjectModule
         if (!subjectList) {
@@ -73,7 +86,7 @@ export default class HomeSubjectView extends Component {
         }
         let items = []
         subjectList.map((item, index) => {
-            items.push(<ActivityItem data={item} key={index} press={()=>this._subjectActions(item)}/>)
+            items.push(<ActivityItem data={item} key={index} press={()=>this._subjectActions(item)} goodsPress={(good)=>{this._goodAction(good)}}/>)
         })
         return <View style={styles.container}>
             <View style={styles.titleView}>

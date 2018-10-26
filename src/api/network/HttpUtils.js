@@ -5,7 +5,7 @@ import fetchHistory from '../../model/FetchHistory';
 import apiEnvironment from '../ApiEnvironment';
 import user from '../../model/user'
 import DeviceInfo from 'react-native-device-info'
-import { RSA } from './RSA';
+// import { RSA } from './RSA';
 // console.log('user token', user.getToken())
 
 const Qs = require('qs');
@@ -84,11 +84,11 @@ export default class HttpUtils {
          * @type {*|{nonce, timestamp, client, version, sign}}
          * 加签相关,如果为GET需要对url中的参数进行加签,不要对请求体参数加签
          */
-        let signParam = RSA.sign(params)
+        // let signParam = RSA.sign(params)
         let timeLineStart = +new Date();
         let config = {
             headers: {
-                ...signParam,
+                // ...signParam,
                 'sg-token': user && user.getToken() ? user.getToken() : '',
                 'platform': DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion()
             }
@@ -116,7 +116,7 @@ export default class HttpUtils {
          * @type {*|{nonce, timestamp, client, version, sign}}
          * 加签相关,如果为GET需要对url中的参数进行加签,不要对请求体参数加签
          */
-        let signParam = RSA.sign()
+        // let signParam = RSA.sign()
         data = {
             ...defaultData,
             ...data
@@ -124,7 +124,7 @@ export default class HttpUtils {
         config.headers = {
             'sg-token': user && user.getToken() ? user.getToken() : '',
             'platform': DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion(),
-            ...signParam
+            // ...signParam
         }
 
         let timeLineStart = +new Date();

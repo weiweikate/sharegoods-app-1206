@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import BasePage from '../../../BasePage';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
-import TabBar from 'react-native-underline-tabbar';
+import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import MyOrdersListView from './../components/MyOrdersListView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import search from '../res/search.png';
@@ -56,33 +55,39 @@ class MyOrdersListPage extends BasePage {
                     onChangeTab={(obj) => {
                         this.setState({ selectTab: obj.i });
                     }}
-                    style={{ width: ScreenUtils.width, justifyContent: 'center', height: 60 }}
+                    style={{
+                        width: ScreenUtils.width,
+                        justifyContent: 'center',
+                        height: 60
+                    }}
                     //进界面的时候打算进第几个
                     initialPage={parseInt(this.state.index)}
+                    tabBarBackgroundColor='#fff'
                     tabBarActiveTextColor='#D51243'
                     tabBarInactiveTextColor='#999999'
-                    tabBarTextStyle={{ fontSize: 15, color: 'white' }}
+                    tabBarTextStyle={{ fontSize: 15 }}
+                    tabBarUnderlineStyle={{ backgroundColor: '#D51243', height: 2 }}
                     renderTabBar={() => (
                         this.renterTabBar()
                     )}>
                     <MyOrdersListView
-                        tabLabel={{ label: '全部' }} pageStatus={0} nav={this.props.navigation.navigate}
+                        tabLabel={'全部'} pageStatus={0} nav={this.props.navigation.navigate}
                         selectTab={this.state.selectTab}/>
 
                     <MyOrdersListView
-                        tabLabel={{ label: '待支付' }} pageStatus={1}
+                        tabLabel={'待支付'} pageStatus={1}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
                     <MyOrdersListView
-                        tabLabel={{ label: '待发货' }} pageStatus={2}
+                        tabLabel={'待发货'} pageStatus={2}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
                     <MyOrdersListView
-                        tabLabel={{ label: '待收货' }} pageStatus={3}
+                        tabLabel={'待收货'} pageStatus={3}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
                     <MyOrdersListView
-                        tabLabel={{ label: '已完成' }} pageStatus={4}
+                        tabLabel={'已完成'} pageStatus={4}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
 
@@ -93,17 +98,10 @@ class MyOrdersListPage extends BasePage {
 
     renterTabBar = () => {
         return (
-            <TabBar
-                underlineColor='#D51243'
-                backgroundColor='white'
-                tabMargin={35}
+            <ScrollableTabBar
                 style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    alignContent: 'center',
                     borderWidth: 0.5
                 }}/>
-
         );
     };
     renderWideLine = () => {
