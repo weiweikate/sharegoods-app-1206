@@ -179,7 +179,7 @@ export default class SearchResultPage extends BasePage {
         });
     };
     _onPressToTop = () => {
-        this.refs.FlatListShow.scrollToOffset({ offset: 0 });
+        this.FlatListShow.scrollToOffset({ offset: 0 });
     };
 
     //getKeywords数据
@@ -248,7 +248,7 @@ export default class SearchResultPage extends BasePage {
     };
 
     _renderListView = () => {
-        return <FlatList ref='FlatListShow'
+        return <FlatList ref={(ref) => this.FlatListShow = ref}
                          style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
                          renderItem={this._renderItem}
                          showsVerticalScrollIndicator={false}
