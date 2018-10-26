@@ -47,13 +47,13 @@ export default class MyCouponsItems extends Component {
         return formatDate(obj, 'yyyy.MM.dd');
     }
 
-    renderItem = ({ item, index }) => {
+    renderItem = ({ item, row }) => {
 
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
         let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
         return (
-            <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickItem(index, item)}>
+            <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickItem( item)}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(109),
@@ -302,17 +302,21 @@ export default class MyCouponsItems extends Component {
         }
     };
     parseData = (dataList) => {
-        let arrData = [];
+        let arrData = this.state.viewData||[];
         if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
-            arrData.push({
-                status: 0,
-                name: '可叠加使用',
-                timeStr: '无时间限制',
-                value: 1,
-                limit: '全品类：无金额门槛',
-                remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
-                type: 99 //以type=99表示1元券
-            });
+            if(arrData.length>0&&arrData[0].type==99){
+                //不在重复显示一元券
+            }else{
+                arrData.push({
+                    status: 0,
+                    name: '可叠加使用',
+                    timeStr: '无时间限制',
+                    value: 1,
+                    limit: '全品类：无金额门槛',
+                    remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
+                    type: 99 //以type=99表示1元券
+                });
+            }
         }
         dataList.map((item) => {
             arrData.push({
@@ -350,7 +354,7 @@ export default class MyCouponsItems extends Component {
            "productId": 1
          }
          */
-        let page = this.state.currentPage || 1;
+        let page = this.state.currentPage;
         if (this.props.fromOrder && status == 0) {
             let arr = [];
             // ProductPriceIdPair=this.props.productIds;
@@ -390,7 +394,7 @@ export default class MyCouponsItems extends Component {
             API.userCouponList({
                 page,
                 status,
-                pageSize: 20
+                pageSize: 6
             }).then(result => {
                 let data = result.data || {};
                 let dataList = data.data || [];
@@ -419,7 +423,9 @@ export default class MyCouponsItems extends Component {
     };
 
     onRefresh = () => {
+        alert('refresh');
         this.setState({
+            viewData:[],
             currentPage: 1
         }, () => {
             this.getDataFromNetwork();
@@ -427,9 +433,11 @@ export default class MyCouponsItems extends Component {
 
     };
 
-    onLoadMore = (page) => {
+    onLoadMore = () => {
+        alert('refresh');
+       let currentpage= this.state.currentPage+1;
         this.setState({
-            currentPage: this.state.currentPage + 1
+            currentPage: currentpage
         }, () => {
             this.getDataFromNetwork();
         });
