@@ -5,7 +5,7 @@ import {
     Image,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    // Modal,
+    Modal,
     Text
 } from 'react-native';
 import BasePage from '../../../BasePage';
@@ -24,7 +24,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import ShopCartStore from '../../shopCart/model/ShopCartStore';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import { observer } from 'mobx-react';
-import Modal from 'CommModal';
+// import Modal from 'CommModal';
 @observer
 export default class SearchResultPage extends BasePage {
 
@@ -120,19 +120,6 @@ export default class SearchResultPage extends BasePage {
         }).then((data) => {
             this.$loadingDismiss();
             data.data = data.data || {};
-            const { specMap, priceList } = data.data;
-            //修改specMap每个元素首尾增加'，'
-            for (let key in specMap) {
-                specMap[key].forEach((item) => {
-                    if (String(item.id).indexOf(',') === -1) {
-                        item.id = `,${item.id},`;
-                    }
-                });
-            }
-            //修改priceList中的specIds首尾增加','
-            priceList.forEach((item) => {
-                item.specIds = `,${item.specIds},`;
-            });
             this.setState({
                 selectionData: data.data,
                 modalVisible: !this.state.modalVisible,
@@ -192,7 +179,7 @@ export default class SearchResultPage extends BasePage {
         });
     };
     _onPressToTop = () => {
-        this.refs.FlatListShow.scrollToOffset({ offset: 0 });
+        this.FlatListShow.scrollToOffset({ offset: 0 });
     };
 
     //getKeywords数据
@@ -261,7 +248,7 @@ export default class SearchResultPage extends BasePage {
     };
 
     _renderListView = () => {
-        return <FlatList ref='FlatListShow'
+        return <FlatList ref={(ref) => this.FlatListShow = ref}
                          style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
                          renderItem={this._renderItem}
                          showsVerticalScrollIndicator={false}

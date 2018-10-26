@@ -234,7 +234,7 @@ export default class MyShopPage extends BasePage {
     //加入店铺
     _joinBtnAction = () => {
         const { name } = this.state.storeData;
-        this.refs.delAlert && this.refs.delAlert.show({
+        this.delAlert.show({
             title: `确定要申请${name}吗?`,
             confirmCallBack: () => {
                 this.$loadingShow();
@@ -389,7 +389,7 @@ export default class MyShopPage extends BasePage {
                 <ReportAlert ref={ref => {
                     this.reportAlert = ref;
                 }}/>
-                <ConfirmAlert ref="delAlert"/>
+                <ConfirmAlert ref={(ref) => this.delAlert = ref}/>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,

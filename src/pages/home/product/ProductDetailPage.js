@@ -3,7 +3,7 @@ import {
     View,
     StyleSheet,
     SectionList,
-    // Modal,
+    Modal,
     Image,
     FlatList,
     Text,
@@ -23,7 +23,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
 import DetailNavShowModal from './components/DetailNavShowModal';
-import Modal from 'CommModal';
+// import Modal from 'CommModal';
 export default class ProductDetailPage extends BasePage {
 
     $navigationBarOptions = {
@@ -106,19 +106,6 @@ export default class ProductDetailPage extends BasePage {
     _savaData = (data) => {
         const { product = {} } = data;
         this._getQueryByProductId(product.id);
-        const { specMap, priceList } = data;
-        //修改specMap每个元素首尾增加'，'
-        for (let key in specMap) {
-            specMap[key].forEach((item) => {
-                if (String(item.id).indexOf(',') === -1) {
-                    item.id = `,${item.id},`;
-                }
-            });
-        }
-        //修改priceList中的specIds首尾增加','
-        priceList.forEach((item) => {
-            item.specIds = `,${item.specIds},`;
-        });
         this.setState({
             data: data
         });

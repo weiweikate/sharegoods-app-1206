@@ -110,13 +110,6 @@ class MyOrdersListPage extends BasePage {
             <View style={{ flex: 1, height: 10, backgroundColor: color.page_background }}/>
         );
     };
-    renderModal = () => {
-        return (
-            <View>
-                {/*页面显示弹窗*/}
-            </View>
-        );
-    };
 }
 
 const styles = StyleSheet.create({
