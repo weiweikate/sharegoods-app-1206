@@ -158,16 +158,21 @@ export default class SelectionPage extends Component {
                 }
             }
         }
-        let priceId = priceArr.join(',');
 
         let tempArr = [];
         const { priceList = [] } = this.state;
-        if (StringUtils.isEmpty(priceId)) {
+        if (priceArr.length === 0) {
             tempArr = priceList;
         } else {
-            priceId = `,${priceId},`;
             tempArr = priceList.filter((item) => {
-                return item.specIds.indexOf(priceId) !== -1;
+                let contain = true;
+                priceArr.forEach((priceItem) => {
+                    //item.specIds不包含priceArr中的任意元素
+                    if (item.specIds.indexOf(`,${priceItem},`) == -1) {
+                        contain = false;
+                    }
+                });
+                return contain;
             });
         }
         return tempArr;
