@@ -6,7 +6,7 @@ import {
     Image,
     TextInput as RNTextInput,
     Text,
-    TouchableOpacity
+    TouchableOpacity,ScrollView
 } from 'react-native';
 import {
     UIText, UIImage, RefreshList
@@ -43,6 +43,7 @@ export default class ConfirOrderPage extends BasePage {
                 priceList: [
                     {}
                 ],
+                couponList:null,
                 userScore: 0,
                 reducePrice: 0,
                 canUseScore: true,
@@ -120,21 +121,21 @@ export default class ConfirOrderPage extends BasePage {
                         backgroundColor: '#fff',
                         flexDirection: 'row',
                         alignItems: 'center',
-                        marginLeft: 20
                     }}>
                         <View style={{
                             borderWidth: 1,
                             borderRadius: 5,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            borderColor: '#e60012'
+                            borderColor: '#e60012',
+                            marginLeft: 20
                         }}>
                             <Text style={{
                                 fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 11,
                                 color: '#e60012',
                                 padding: 3
-                            }}>套餐</Text>
+                            }}>礼包</Text>
                         </View>
                         <Text style={{
                             marginLeft: 10,
@@ -246,6 +247,25 @@ export default class ConfirOrderPage extends BasePage {
             </View>
         );
     };
+    renderCouponsPackage =() =>{
+        return(
+            <View style={{borderColor:'#DDDDDD',borderWidth:1}}>
+                {this.state.viewData.couponList?
+                    this.state.viewData.couponList.map((item,index)=>{
+                        return <View style={{backgroundColor:'white'}}>
+                        <View style={{height:34,flexDirection:'row',justifyContent:'space-between',marginLeft:36}}>
+                            <Text style={{color: color.black_999, fontSize: 13,alignSelf:'center'}}>{item.couponName}</Text>
+                            <Text style={{color: color.black_999, fontSize: 13,alignSelf:'center',marginRight:14}}>X1</Text>
+                        </View>
+                            <View style={{marginLeft:36,backgroundColor:'#F7F7F7',height:0.5,width:'100%'}}/>
+                        </View>
+                    })
+                :
+                null}
+                <View style={{backgroundColor:'#F7F7F7',height:10,width:'100%'}}/>
+            </View>
+        )
+    };
     renderCommitOrder = () => {
         return (
             <View>
@@ -282,6 +302,7 @@ export default class ConfirOrderPage extends BasePage {
     _render() {
         return (
             // data={this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98 ? this.state.priceList : this.state.viewData.list}
+            <ScrollView>
             <View style={styles.container}>
                 <RefreshList
                     ListHeaderComponent={this.renderHeader}
@@ -292,6 +313,7 @@ export default class ConfirOrderPage extends BasePage {
                 />
                 {this.renderCommitOrder()}
             </View>
+            </ScrollView>
         );
     };
 
@@ -299,6 +321,7 @@ export default class ConfirOrderPage extends BasePage {
         console.log(item);
         if (this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98) {
             return (
+                <View>
                 <GoodsItem
                     uri={item.uri}
                     goodsName={item.goodsName}
@@ -307,6 +330,8 @@ export default class ConfirOrderPage extends BasePage {
                     goodsNum={'X' + item.goodsNum}
                     onPress={() => this.clickItem(index, item)}
                 />
+                    {this.renderCouponsPackage()}
+                </View>
             );
         } else {
             return (
@@ -464,6 +489,7 @@ export default class ConfirOrderPage extends BasePage {
         viewData.totalAmounts = data.totalAmounts;
         viewData.totalFreightFee = data.totalFreightFee;
         viewData.list = arrData;
+        viewData.couponList=data.couponList?data.couponList:null;
         this.setState({ viewData });
     };
 

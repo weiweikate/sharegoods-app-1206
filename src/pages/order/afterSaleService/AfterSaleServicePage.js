@@ -261,6 +261,7 @@ class AfterSaleServicePage extends BasePage {
         );
     };
     renderModal = () => {
+        let productData = this.state.productData;
         let returnReasons = ['多拍/错拍/不想要', '快递/物流一直未收到', '未按约定时间发货', '商品/破损/少件/污渍等', '货物破损已拒签', '假冒品牌/产品', '退运费', '发票问题', '其他'];
         return (
             <View>
@@ -306,7 +307,11 @@ class AfterSaleServicePage extends BasePage {
                 onRequestClose={()=>this.setState({isShowExchangeTypeModal:false})}
                 visible={this.state.isShowExchangeTypeModal}>
                 <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
-                               selectionViewClose={() => {this.setState({ isShowExchangeTypeModal: false })}} data={this.state.selectionData}/>
+                               selectionViewClose={() => {this.setState({ isShowExchangeTypeModal: false })}} data={this.state.selectionData}
+                               afterAmount={productData.num}
+                               afterPrice={productData.price}
+                               type={'after'}
+                />
             </Modal>
             </View>
 
@@ -314,10 +319,10 @@ class AfterSaleServicePage extends BasePage {
     };
 
     //选择规格确认
-    _selectionViewConfirm = (amount, priceId) => {
+    _selectionViewConfirm = (amount, priceId, exchangeSpec, exchangeSpecImg) => {
         this.setState({ exchangePriceId: priceId,
-            /**warging 写死的，要改*/       exchangeSpec: '红色-1KG-32G',
-            /**warging 写死的，要改*/        exchangeSpecImg: 'https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/pms_1528718750.15896438!560x560.jpg',})
+                    exchangeSpec: exchangeSpec,
+                 exchangeSpecImg: exchangeSpecImg})
     }
 
     _render() {

@@ -1,8 +1,6 @@
-package com.smartstudy.permissions;
+package com.meeruu.permissions;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,21 +8,25 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDialogFragment;
 
 /**
- * {@link DialogFragment} to display rationale for permission requests when the request comes from
- * a Fragment or Activity that can host a Fragment.
+ * {@link AppCompatDialogFragment} to display rationale for permission requests when the request
+ * comes from a Fragment or Activity that can host a Fragment.
  */
-@RequiresApi(Build.VERSION_CODES.HONEYCOMB)
-public class RationaleDialogFragment extends DialogFragment {
+@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+public class RationaleDialogFragmentCompat extends AppCompatDialogFragment {
 
     private PermissionUtil.PermissionCallbacks mPermissionCallbacks;
+
     private AlertDialog mDialog;
 
-    public static RationaleDialogFragment newInstance(@StringRes int positiveButton, @StringRes int negativeButton,
-                                                      @NonNull String rationaleMsg, int requestCode, @NonNull String[] permissions) {
+    static RationaleDialogFragmentCompat newInstance(
+            @StringRes int positiveButton, @StringRes int negativeButton,
+            @NonNull String rationaleMsg, int requestCode, @NonNull String[] permissions) {
+
         // Create new Fragment
-        RationaleDialogFragment dialogFragment = new RationaleDialogFragment();
+        RationaleDialogFragmentCompat dialogFragment = new RationaleDialogFragmentCompat();
 
         // Initialize configuration as arguments
         RationaleDialogConfig config = new RationaleDialogConfig(
@@ -39,27 +41,14 @@ public class RationaleDialogFragment extends DialogFragment {
         return dialogFragment;
     }
 
-    @SuppressLint("NewApi")
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-        // getParentFragment() requires API 17 or higher
-        boolean isAtLeastJellyBeanMR1 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
-
-        if (isAtLeastJellyBeanMR1
-                && getParentFragment() != null
-                && getParentFragment() instanceof PermissionUtil.PermissionCallbacks) {
+        if (getParentFragment() != null && getParentFragment() instanceof PermissionUtil.PermissionCallbacks) {
             mPermissionCallbacks = (PermissionUtil.PermissionCallbacks) getParentFragment();
         } else if (context instanceof PermissionUtil.PermissionCallbacks) {
             mPermissionCallbacks = (PermissionUtil.PermissionCallbacks) context;
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mPermissionCallbacks = null;
     }
 
     @Override
@@ -69,6 +58,12 @@ public class RationaleDialogFragment extends DialogFragment {
             mDialog.dismiss();
             mDialog = null;
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mPermissionCallbacks = null;
     }
 
     @NonNull
@@ -88,5 +83,4 @@ public class RationaleDialogFragment extends DialogFragment {
         }
         return mDialog;
     }
-
 }

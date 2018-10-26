@@ -1,4 +1,4 @@
-package com.smartstudy.permissions;
+package com.meeruu.permissions;
 
 import android.Manifest;
 import android.os.Build;
