@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     compile rootProject.ext.dependencies.support
     compile rootProject.ext.dependencies.multidex
     compile rootProject.ext.dependencies.uapp
@@ -28,14 +28,13 @@ dependencies {
     api rootProject.ext.dependencies.gson
     api rootProject.ext.dependencies.zxing
     api rootProject.ext.dependencies.walle
-
     // From node_modules
     compile(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
-
     compile files('libs/umeng-share-core-6.9.3.jar')
     compile files('libs/umeng-sharetool-6.9.3.jar')
     compile files('libs/umeng-share-wechat-simplify-6.9.3.jar')
-
+    implementation files('libs/umeng-share-QQ-simplify-6.9.3.jar')
+    implementation files('libs/umeng-share-sina-simplify-6.9.3.jar')
 }
