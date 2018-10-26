@@ -26,27 +26,42 @@ export default class SelectionPage extends Component {
     constructor(props) {
         super(props);
 
-        const { specMap } = this.props.data;
+        const { specMap = {}, priceList = [] } = this.props.data;
+        let specMapTemp = { ...specMap };
+        let priceListTemp = [...priceList];
+        //修改specMapTemp每个元素首尾增加'，'
+        for (let key in specMapTemp) {
+            specMapTemp[key].forEach((item) => {
+                if (String(item.id).indexOf(',') === -1) {
+                    item.id = `,${item.id},`;
+                }
+            });
+        }
+        //修改priceListTemp中的specIds首尾增加','
+        priceListTemp.forEach((item) => {
+            item.specIds = `,${item.specIds},`;
+        });
+
         //提取规格处理id
         let tittleList = [];
-        for (let key in specMap) {
+        for (let key in specMapTemp) {
             tittleList.push(key);
         }
 
         this.state = {
+            specMap: specMapTemp,
+            priceList: priceListTemp,
             tittleList: tittleList,
             selectList: [],//选择的id数组
             selectStrList: [],//选择的名称值
             selectSpecList: [],//选择规格所对应的库存,
             maxStock: 0,//最大库存
-            amount: 1
+            amount: 1,
         };
     }
 
     componentDidMount() {
         this._indexCanSelectedItems();
-        this._selelctSpe();
-        this.forceUpdate();
     }
 
     _clickItemAction = (item, indexOfProp) => {
@@ -58,8 +73,6 @@ export default class SelectionPage extends Component {
             this.state.selectStrList[indexOfProp] = item.specValue;
         }
         this._indexCanSelectedItems();
-        this._selelctSpe();
-        this.forceUpdate();
     };
 
     //获取各个列表数据 刷新页面状态
@@ -68,20 +81,39 @@ export default class SelectionPage extends Component {
         this.state.tittleList.forEach((item, index) => {
             tempArr[index] = this._indexCanSelectedItem(index);
         });
-        const { specMap = {} } = this.props.data;
-        let index = 0;
+        const { specMap = {} } = this.state;
+        let index = 0, isFirst = true, needUpdate = false;
+        //总
         for (let key in specMap) {
+            //每行
             specMap[key].forEach((item) => {
+                //item 每个
                 item.isSelected = this.state.selectList.indexOf(item.id) !== -1;
                 item.canSelected = false;
+                //tempArr[index] 每行符合的数据
                 tempArr[index].forEach((item1) => {
-                    //库存中有并且剩余数量为0
+                    //库存中有&&剩余数量不为0
                     if (item1.specIds.indexOf(item.id) !== -1 && item1.stock !== 0) {
                         item.canSelected = true;
+
+                        //可以被选择 && 单规格 && 目前没被选择 && 当前循环第一次
+                        if (specMap[key].length === 1 && !item.isSelected && isFirst) {
+                            isFirst = false;
+                            needUpdate = true;
+                            this.state.selectList[index] = item.id;
+                            this.state.selectStrList[index] = item.specValue;
+                        }
+
                     }
                 });
             });
             index++;
+        }
+        if (needUpdate) {
+            this._indexCanSelectedItems();
+        } else {
+            this._selelctSpe();
+            this.forceUpdate();
         }
     };
     //获取总库存
@@ -95,7 +127,7 @@ export default class SelectionPage extends Component {
         this.state.maxStock = stock;
     };
 
-    //index?获取当前列外的数据:全部数据(符合条件)
+    //index?获取当前列外符合条件的数据:全部数据
     _indexCanSelectedItem = (index) => {
         let [...tempList] = this.state.selectList;
         if (index !== undefined) {
@@ -121,7 +153,7 @@ export default class SelectionPage extends Component {
         let priceId = priceArr.join(',');
 
         let tempArr = [];
-        const { priceList = [] } = this.props.data;
+        const { priceList = [] } = this.state;
         if (StringUtils.isEmpty(priceId)) {
             tempArr = priceList;
         } else {
@@ -151,7 +183,7 @@ export default class SelectionPage extends Component {
         let priceArr = [];
         let isAll = true;
 
-        const { specMap = {} } = this.props.data;
+        const { specMap = {} } = this.state;
 
         this.state.selectList.forEach((item) => {
             if (StringUtils.isEmpty(item)) {
@@ -180,7 +212,7 @@ export default class SelectionPage extends Component {
         let priceId = priceArr.join(',');
         priceId = `,${priceId},`;
         let id = '';
-        const { priceList = [] } = this.props.data;
+        const { priceList = [] } = this.state;
         priceList.forEach((item) => {
             if (item.specIds === priceId) {
                 id = item.id;
@@ -195,7 +227,7 @@ export default class SelectionPage extends Component {
     };
 
     _addSelectionSectionView = () => {
-        const { specMap = {} } = this.props.data;
+        const { specMap = {} } = this.state;
         let tagList = [];
         let index = 0;
         for (let key in specMap) {
