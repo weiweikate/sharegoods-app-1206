@@ -102,6 +102,7 @@ export default class MinePage extends BasePage {
     };
 
     refresh = () => {
+        userOrderNum.getUserOrderNum();
         this.$loadingShow("加载中...", { timeout: 1, timeoutCallBack: () => this.timeoutCallBack });
         MineApi.getUser().then(res => {
             this.$loadingDismiss();
@@ -109,7 +110,7 @@ export default class MinePage extends BasePage {
                 let data = res.data;
                 user.saveUserInfo(data);
                 this.setState({
-                    availableBalance: data.availableBalance+31295111,
+                    availableBalance: data.availableBalance,
                     headImg: data.headImg,
                     levelName: data.levelName,
                     userScore: data.userScore ? data.userScore : 0,
@@ -124,6 +125,7 @@ export default class MinePage extends BasePage {
     };
 
     _reload = () => {
+        userOrderNum.getUserOrderNum();
         this.setState({
             isRefreshing: true
         });
@@ -352,8 +354,6 @@ export default class MinePage extends BasePage {
 
     orderRender() {
         return (
-
-
             <View style={{
                 backgroundColor: color.white,
                 marginTop: px2dp(10)
