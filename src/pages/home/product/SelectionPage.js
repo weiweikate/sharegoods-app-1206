@@ -56,7 +56,7 @@ export default class SelectionPage extends Component {
             selectStrList: [],//选择的名称值
             selectSpecList: [],//选择规格所对应的库存,
             maxStock: 0,//最大库存
-            amount: 1,
+            amount: 1
         };
     }
 
@@ -77,6 +77,9 @@ export default class SelectionPage extends Component {
 
     //获取各个列表数据 刷新页面状态
     _indexCanSelectedItems = () => {
+        //afterPrice
+        //type
+        const { afterPrice, type } = this.props;
         let tempArr = [];
         this.state.tittleList.forEach((item, index) => {
             tempArr[index] = this._indexCanSelectedItem(index);
@@ -94,10 +97,15 @@ export default class SelectionPage extends Component {
                 tempArr[index].forEach((item1) => {
                     //库存中有&&剩余数量不为0
                     if (item1.specIds.indexOf(item.id) !== -1 && item1.stock !== 0) {
-                        item.canSelected = true;
-
-                        //可以被选择 && 单规格 && 目前没被选择 && 当前循环第一次
-                        if (specMap[key].length === 1 && !item.isSelected && isFirst) {
+                        //如果是退换货多一次判断
+                        if (type === 'after' && afterPrice === item.originalPrice) {
+                            item.canSelected = true;
+                        } else {
+                            item.canSelected = true;
+                        }
+                        //单规格默认选中
+                        //可以被选择 && 单规格 && 目前没被选择 && 当前总循环第一次
+                        if (item.canSelected && specMap[key].length === 1 && !item.isSelected && isFirst) {
                             isFirst = false;
                             needUpdate = true;
                             this.state.selectList[index] = item.id;
@@ -172,11 +180,17 @@ export default class SelectionPage extends Component {
 
     //确认订单
     _selectionViewConfirm = () => {
+        const { afterPrice, type } = this.props;
+
         if (this.state.amount === 0) {
             bridge.$toast('请选择数量');
             return;
         }
         if (this.state.amount > this.state.maxStock) {
+            bridge.$toast('超出最大库存~');
+            return;
+        }
+        if (type === 'after' && afterPrice > this.state.maxStock) {
             bridge.$toast('超出最大库存~');
             return;
         }
@@ -211,18 +225,18 @@ export default class SelectionPage extends Component {
 
         let priceId = priceArr.join(',');
         priceId = `,${priceId},`;
-        let id = '';
+        let itemData = undefined;
         const { priceList = [] } = this.state;
         priceList.forEach((item) => {
             if (item.specIds === priceId) {
-                id = item.id;
+                itemData = item;
                 return;
             }
         });
-        if (!id) {
+        if (!itemData) {
             return;
         }
-        this.props.selectionViewConfirm(this.state.amount, id);
+        this.props.selectionViewConfirm(this.state.amount, itemData.id, itemData.spec, itemData.specImg);
         this.props.selectionViewClose();
     };
 
@@ -243,6 +257,7 @@ export default class SelectionPage extends Component {
 
     render() {
         const { product, price } = this.props.data;
+        const { afterAmount, type } = this.props;
         return (
             <View style={styles.container}>
                 <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
@@ -258,7 +273,7 @@ export default class SelectionPage extends Component {
                         <ScrollView>
                             {this._addSelectionSectionView()}
                             <SelectionAmountView style={{ marginTop: 30 }} amountClickAction={this._amountClickAction}
-                                                 maxCount={this.state.maxStock}/>
+                                                 maxCount={this.state.maxStock} afterAmount={afterAmount} type={type}/>
                         </ScrollView>
                         <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
                             <View style={{
