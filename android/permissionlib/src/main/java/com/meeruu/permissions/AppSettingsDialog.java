@@ -1,4 +1,4 @@
-package com.smartstudy.permissions;
+package com.meeruu.permissions;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,7 +22,6 @@ import android.view.WindowManager;
 
 import java.util.List;
 
-import pub.devrel.easypermissions.R;
 
 /**
  * Dialog to prompt the user to go to the app's settings screen and enable permissions. If the

@@ -1,4 +1,4 @@
-package com.smartstudy.permissions;
+package com.meeruu.permissions;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,8 +8,6 @@ import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
-
-import pub.devrel.easypermissions.R;
 
 /**
  * Configuration for either {@link RationaleDialogFragment} or {@link RationaleDialogFragmentCompat}.

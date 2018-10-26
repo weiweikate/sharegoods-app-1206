@@ -141,7 +141,7 @@ export default class HomePage extends Component {
     }
 
     componentDidMount() {
-        this.shareModal.open();
+        //this.shareModal.open();
     }
 
     render() {

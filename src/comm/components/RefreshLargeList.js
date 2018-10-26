@@ -7,7 +7,8 @@
  * @providesModule RefreshLargeList
  * @flow
  * Created by huchao on 2018/10/22.
- *
+ * largelist文档地址
+ * https://github.com/bolan9999/react-native-largelist/blob/V1/README-cn.md
  */
 "use strict";
 
