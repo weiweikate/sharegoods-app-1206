@@ -4,9 +4,9 @@
 import React, { Component } from 'react';
 import {
     StyleSheet, View, ImageBackground,
-    Text, TouchableOpacity, Image, Modal, TextInput
+    Text, TouchableOpacity, Image, Modal, TextInput, FlatList
 } from 'react-native';
-import RefreshList from './../../../components/ui/RefreshList';
+// import RefreshList from './../../../components/ui/RefreshList';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
 import NoMessage from '../res/couponsImg/icon3_03.png';
@@ -35,8 +35,9 @@ export default class MyCouponsItems extends Component {
         this.state = {
             viewData: [],
             pageStatus: this.props.pageStatus,
-            isEmpty: true,
+            refreshing: false,
             currentPage: 1,
+            isEmpty: true,
             explainList: [],
             showDialogModal: false,
             tokenCoinNum: this.props.justOne
@@ -47,13 +48,13 @@ export default class MyCouponsItems extends Component {
         return formatDate(obj, 'yyyy.MM.dd');
     }
 
-    renderItem = ({ item, row }) => {
+    renderItem = ({ item, index }) => {
 
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
         let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
         return (
-            <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickItem( item)}>
+            <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickItem(index, item)}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(109),
@@ -165,8 +166,9 @@ export default class MyCouponsItems extends Component {
                             keyboardType={'numeric'}
                             underlineColorAndroid='transparent'
                             autoFocus={true}
-                            defaultValue={'' + (this.state.tokenCoinNum<user.tokenCoin?this.state.tokenCoinNum:user.tokenCoin)}
+                            defaultValue={'' + (this.state.tokenCoinNum < user.tokenCoin ? this.state.tokenCoinNum : user.tokenCoin)}
                             onChangeText={this._onChangeText}
+                            onFocus={this._onFocus}
                             style={{
                                 padding: 0,
                                 paddingLeft: 5,
@@ -224,25 +226,50 @@ export default class MyCouponsItems extends Component {
         }
     };
     _onChangeText = (num) => {
+        console.log('coupons', num);
         if ((num >= 0) && (num <= user.tokenCoin)) {
             this.setState({ tokenCoinNum: num });
         }
+        if (num == '') {
+            this.setState({ tokenCoinNum: 0 });
+        }
+    };
+    _onFocus = () => {
+        let nums = (this.state.tokenCoinNum < user.tokenCoin) ? this.state.tokenCoinNum : user.tokenCoin;
+        this.setState({
+            tokenCoinNum: parseInt(nums)
+        });
+    };
+    _keyExtractor = (item, index) => index;
+    // 空布局
+    _renderEmptyView = () => {
+        // if (this.state.isEmpty) {
+        //     return (
+        //         <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
+        //             <Text style={{ color: '#999999', fontSize: 15, marginTop: 15 }}>数据加载中...</Text>
+        //         </View>
+        //     )
+        // } else {
+            return (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
+                    <Text style={{ color: '#999999', fontSize: 15, marginTop: 15 }}>暂无优惠券</Text></View>
+            );
+        // }
     };
 
     render() {
         return (
             <View style={styles.container}>
-                <RefreshList
-                    style={{ backgroundColor: '#f7f7f7' }}
+                <FlatList
                     data={this.state.viewData}
+                    keyExtractor={this._keyExtractor}
                     renderItem={this.renderItem}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={this.onLoadMore}
+                    ListEmptyComponent={this._renderEmptyView}
+                    refreshing={this.state.refreshing}
                     onRefresh={this.onRefresh}
-                    onLoadMore={this.onLoadMore}
-                    emptyTip={'暂无优惠券！'}
-                    emptyIcon={NoMessage}
-                    extraData={this.state}
-                    isEmpty={this.state.isEmpty}
-                    isHideFooter={true}
                 />
                 {this.renderDialogModal()}
                 {this.props.isgiveup ?
@@ -302,11 +329,15 @@ export default class MyCouponsItems extends Component {
         }
     };
     parseData = (dataList) => {
-        let arrData = this.state.viewData||[];
+        let arrData;
+         if(this.state.currentPage==1){
+             arrData = this.state.viewData || [];
+         }
+        arrData = this.state.viewData || [];
         if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
-            if(arrData.length>0&&arrData[0].type==99){
+            if (arrData.length > 0 && arrData[0].type == 99) {
                 //不在重复显示一元券
-            }else{
+            } else {
                 arrData.push({
                     status: 0,
                     name: '可叠加使用',
@@ -354,7 +385,6 @@ export default class MyCouponsItems extends Component {
            "productId": 1
          }
          */
-        let page = this.state.currentPage;
         if (this.props.fromOrder && status == 0) {
             let arr = [];
             // ProductPriceIdPair=this.props.productIds;
@@ -365,9 +395,10 @@ export default class MyCouponsItems extends Component {
             };
 
             arr.push(data);
-            API.listAvailable({ page, pageSize: 20, productPriceIds: arr }).then(res => {
+            API.listAvailable({ page: this.state.currentPage, pageSize: 20, productPriceIds: arr }).then(res => {
                 let data = res.data || {};
                 let dataList = data.data || [];
+                this.setState({isEmpty: false},this._renderEmptyView)
                 this.parseData(dataList);
             }).catch(result => {
                 if (result.code === 10009) {
@@ -388,16 +419,17 @@ export default class MyCouponsItems extends Component {
                     type: 99 //以type=99表示1元券
                 });
             }
-            this.setState({ viewData: arrData });
+            this.setState({ viewData: arrData ,isEmpty:false},this._renderEmptyView);
         }
         else {
             API.userCouponList({
-                page,
+                page: this.state.currentPage,
                 status,
-                pageSize: 6
+                pageSize: 10
             }).then(result => {
                 let data = result.data || {};
                 let dataList = data.data || [];
+                this.setState({isEmpty: false,},this._renderEmptyView)
                 this.parseData(dataList);
 
             }).catch(result => {
@@ -423,9 +455,9 @@ export default class MyCouponsItems extends Component {
     };
 
     onRefresh = () => {
-        alert('refresh');
+        console.log('refresh');
         this.setState({
-            viewData:[],
+            // viewData: [],
             currentPage: 1
         }, () => {
             this.getDataFromNetwork();
@@ -434,8 +466,8 @@ export default class MyCouponsItems extends Component {
     };
 
     onLoadMore = () => {
-        alert('refresh');
-       let currentpage= this.state.currentPage+1;
+        console.log('onLoadMore');
+        let currentpage = this.state.currentPage + 1;
         this.setState({
             currentPage: currentpage
         }, () => {
