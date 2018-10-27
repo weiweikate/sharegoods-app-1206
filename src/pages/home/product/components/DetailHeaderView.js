@@ -11,9 +11,7 @@ import {
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import ViewPager from "../../../../components/ui/ViewPager";
 import ProductActivityView from "./ProductActivityView";
-import spellStatusModel from "../../../spellShop/model/SpellStatusModel";
 import user from "../../../../model/user";
-import { isNoEmpty } from "../../../../utils/StringUtils";
 
 const { px2dp } = ScreenUtils;
 
@@ -76,7 +74,7 @@ export default class DetailHeaderView extends Component {
 
     render() {
         const { activityType } = this.props;
-        const { productImgList = [{}], freight = 0, monthSaleTotal = 0, price = 0, originalPrice = 0, product = {} } = this.props.data || {};
+        const { productImgList = [{}], freight = 0, monthSaleTotal = 0, price = 0, originalPrice = 0, product = {} ,priceType=''} = this.props.data || {};
         const { name = "", afterSaleServiceDays } = product;
         return (
             <View>
@@ -114,7 +112,7 @@ export default class DetailHeaderView extends Component {
                                 backgroundColor: "red",
                                 color: "#FFFFFF",
                                 fontSize: 10, paddingHorizontal: 5
-                            }}>{spellStatusModel.storeId && spellStatusModel.storeStatus === 1 ? "拼店价" : isNoEmpty(user.levelName) ? `${user.levelName}价` : "原价"}</Text>
+                            }}>{priceType === 3 ? "拼店价" : priceType === 2 ? `${user.levelName}价` : "原价"}</Text>
                         </View>
                         <View style={{ flexDirection: "row", marginTop: 18, marginBottom: 14, alignItems: "center" }}>
                             <Text

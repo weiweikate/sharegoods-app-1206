@@ -54,30 +54,53 @@ export default class ShopCartPage extends BasePage {
 
     };
 
-    componentDidMount() {
-        shopCartCacheTool.getShopCartGoodsListData();
-    }
-
     constructor(props) {
         super(props);
-        this.isUnFishFirstRender = true;
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-        this.state = {};
+        this.isUnFishFirstRender = true;
+        this.contentList = null;
         let hiddeLeft = true;
         if (!(this.params.hiddeLeft === undefined)) {
             hiddeLeft = this.params.hiddeLeft;
         } else {
             hiddeLeft = true;
         }
-        this.$navigationBarOptions.leftNavItemHidden = hiddeLeft
+        this.$navigationBarOptions.leftNavItemHidden = hiddeLeft;
+    }
+
+    componentDidMount() {
+        this.contentList && this.contentList._updateVisibleRows();
+        this.didBlurSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                console.log('payload is run ----');
+                let offSet = this.contentList ? this.contentList.props.contentOffset : 'meiyou offset';
+                console.log(offSet);
+
+                if (this.isUnFishFirstRender &&
+                    shopCartStore.data.length > 0 &&
+                    this.contentList) {
+                    this.contentList.scrollTo({ x: 0, y: 1, animated: true });
+                    this.isUnFishFirstRender = false;
+                }
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.didBlurSubscription.remove();
+
     }
 
     _render() {
         return (
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
-                {shopCartStore.data && shopCartStore.data.length > 0 ? this._renderListView() : this._renderEmptyView()}
+                {/*{shopCartStore.data && shopCartStore.data.length > 0 ? this._renderListView() : this._renderEmptyView()}*/}
+                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
                 {this._renderShopCartBottomMenu()}
             </View>
+
+
         );
     }
 
@@ -98,10 +121,11 @@ export default class ShopCartPage extends BasePage {
     };
 
     _renderListView = () => {
+        const tempArr = this.ds.cloneWithRows(shopCartStore.cartData);
         return (
             <SwipeListView
                 style={{ backgroundColor: ColorUtil.Color_f7f7f7 }}
-                dataSource={this.ds.cloneWithRows(shopCartStore.data.slice())}
+                dataSource={tempArr}
                 disableRightSwipe={true}
                 // renderRow={ data => (
                 //     data.status==validCode? this._renderValidItem(data): this._renderInvalidItem(data)
@@ -116,9 +140,10 @@ export default class ShopCartPage extends BasePage {
                             rowMap[`${secId}${rowId}`].closeRow();
                             this._deleteFromShoppingCartByProductId(data.priceId);
                         }}>
-                        <UIText style={styles.backUITextWhite} value='删除' />
+                        <UIText style={styles.backUITextWhite} value='删除'/>
                     </TouchableOpacity>
                 )}
+                listViewRef={(listView) => this.contentList = listView}
                 rightOpenValue={-75}
             />
         );
@@ -209,6 +234,9 @@ export default class ShopCartPage extends BasePage {
         shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
     };
     _renderValidItem = (itemData, rowId, rowMap) => {
+        console.log('开始render购物车行');
+        console.log(itemData);
+        console.log('来了render购物车行');
         return (
             <View>
                 <TouchableHighlight
@@ -225,9 +253,9 @@ export default class ShopCartPage extends BasePage {
 
                                 let [...tempValues] = shopCartStore.data;
 
-                                if ( tempValues[rowId].status === 0){
+                                if (tempValues[rowId].status === 0) {
                                     bridge.$toast('失效商品不可结算');
-                                }else {
+                                } else {
                                     tempValues[rowId].isSelected = !tempValues[rowId].isSelected;
                                 }
                                 shopCartStore.data = tempValues;
@@ -343,18 +371,26 @@ export default class ShopCartPage extends BasePage {
                                         borderRightWidth: 0
                                     }]}>
                                         {/*<UIText*/}
-                                            {/*style={styles.TextInputStyle}*/}
-                                            {/*value={itemData.amount}*/}
+                                        {/*style={styles.TextInputStyle}*/}
+                                        {/*value={itemData.amount}*/}
                                         {/*/>*/}
                                         <TextInput
                                             style={styles.TextInputStyle}
-                                            value={itemData.amount?''+itemData.amount:''+0}
-                                            underlineColorAndroid={"transparent"}
+                                            value={itemData.amount ? '' + itemData.amount : ''}
+                                            underlineColorAndroid={'transparent'}
                                             // onChangeText={(text) => this.setState({text})}
-                                            onChangeText={text => this.onNumberTextChange(itemData,text,rowId)}
+                                            onChangeText={text => {
+                                                console.log('输入后的值' + text);
+                                                itemData.amount = parseInt(text);
+                                                let [...tempArr] = shopCartStore.data.slice();
+                                                tempArr[rowId] = itemData;
+                                                shopCartStore.data = tempArr;
+                                            }}
                                             // onEndEditing={text => this.onNumberTextChange(itemData,text,rowId)}
                                             // onSubmitEditing={text => this.onNumberTextChange(itemData,text,rowId)}
-                                            placeholder='0'
+                                            // onEndEditing={text => this.onNumberTextChange(itemData,text,rowId)}
+                                            onEndEditing={text => this.onNumberTextChange(itemData, text, rowId)}
+                                            placeholder=''
                                             keyboardType='numeric'
                                         />
                                     </View>
@@ -378,7 +414,7 @@ export default class ShopCartPage extends BasePage {
 
                 {
                     (
-                        (itemData.activityType === 1 || itemData.activityType === 2)&&
+                        (itemData.activityType === 1 || itemData.activityType === 2) &&
                         this._getSkillIsBegin(itemData) === 1
                     )
                         ?
@@ -400,7 +436,7 @@ export default class ShopCartPage extends BasePage {
                                 fontSize: 11
                             }}>
                                 {
-                                    itemData.activityType === 1?  '该商品正在进行秒杀活动,快去看看~':'该商品正在进行降价拍活动,快去看看~'
+                                    itemData.activityType === 1 ? '该商品正在进行秒杀活动,快去看看~' : '该商品正在进行降价拍活动,快去看看~'
                                 }
                             </Text>
                         </View>
@@ -435,9 +471,9 @@ export default class ShopCartPage extends BasePage {
     };
 
     _jumpToProductDetailPage = (itemData) => {
-        if(itemData.status === 0){
+        if (itemData.status === 0) {
             //失效商品不可进入详情
-          return;
+            return;
         }
         //跳转产品详情
         this.$navigate('home/product/ProductDetailPage', {
@@ -445,20 +481,29 @@ export default class ShopCartPage extends BasePage {
             productCode: itemData.productId
         });
     };
-    onNumberTextChange=(itemData,text,rowId)=>{
-        console.log('------在执行');
-        console.log('------'+text)
-
-        if (StringUtils.isEmpty(text)){
-            itemData.amount = 1
+    onNumberTextChange = (itemData, text, rowId) => {
+        // console.log('------在执行');
+        // console.log(itemData)
+        // console.log(itemData.amount);
+        // console.log(typeof itemData.amount)
+        if (isNaN(itemData.amount)) {
+            console.log('执行了判断内部函数');
+            itemData.amount = 1;
             shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
-
-       if(StringUtils.checkIsPositionNumber(parseInt(text))) {
-           itemData.amount = parseInt(text)
-           shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
-       }
-    }
+        if (itemData.amount >= itemData.stock) {
+            bridge.$toast('已达商品库存最大数');
+            itemData.amount = itemData.stock;
+        }
+        if (itemData.amount <= 0) {
+            itemData.amount = 1;
+        }
+        shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+        // if(StringUtils.checkIsPositionNumber(parseInt(text))) {
+        //     itemData.amount = parseInt(text)
+        //
+        // }
+    };
     /*action*/
     /*减号操作*/
     _reduceProductNum = (itemData, rowId) => {
@@ -479,7 +524,6 @@ export default class ShopCartPage extends BasePage {
             itemData.amount++;
             shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
-
     };
     /*删除操作*/
     _deleteFromShoppingCartByProductId = (priceId) => {
@@ -602,7 +646,7 @@ const
         },
 
         TextInputStyle: {
-            padding:0,
+            padding: 0,
             paddingTop: 5,
             height: 30,
             width: 46,

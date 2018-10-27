@@ -277,7 +277,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         {this.renderWideLine()}
                     </View> : null
                 }
-                <View style={{ flexDirection: 'row', height: 82, alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row', height: 82, alignItems: 'center' ,backgroundColor: '#FFFFFF'}}>
                     <View style={{
                         width: 43,
                         height: 36,

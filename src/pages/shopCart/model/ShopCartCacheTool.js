@@ -47,7 +47,8 @@ class ShopCartCacheTool {
                 ).then(res => {
                     bridge.hiddenLoading();
                     //同步完数据组装
-                    shopCartStore.packingShopCartGoodsData(res.data);
+                    // shopCartStore.packingShopCartGoodsData(res.data);
+                    shopCartStore.getShopCartListData();
                     //同步成功删除本地数据
                     this.deleteAllLocalData();
                 }).catch(error => {
