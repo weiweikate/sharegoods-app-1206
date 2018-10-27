@@ -121,7 +121,7 @@ export default class SearchResultPage extends BasePage {
             this.$loadingDismiss();
             data.data = data.data || {};
             this.state.productId = productId;
-            this.SelectionPage.show(data.data, this._selectionViewConfirm);
+            this.SelectionPage.show(data.data, this._selectionViewConfirm, { needUpdate: true });
         }).catch((data) => {
             this.$loadingDismiss();
             this.$toastShow(data.msg);
