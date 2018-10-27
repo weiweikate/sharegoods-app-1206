@@ -32,7 +32,8 @@ import DateUtils from '../../../utils/DateUtils';
 import Toast from '../../../utils/bridge';
 import productDetailImg from '../res/productDetailImg.png';
 import moreIcon from '../../spellShop/myShop/res/more_icon.png';
-import GoodsItem from '../components/GoodsItem';
+// import GoodsItem from '../components/GoodsItem';
+import GoodsGrayItem from '../components/GoodsGrayItem';
 import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
@@ -73,12 +74,13 @@ class MyOrdersDetailPage extends BasePage {
                 sendTime: 1530499145000,//发货时间
                 finishTime: 1530499145000,//成交时间
                 autoConfirmTime: 1533669382000,//自动确认时间
-                pickedUp: 2
+                pickedUp: 2,
             },
             //todo 这里的初始化仅仅为了减少判空处理的代码，后面会删除
             pageState: 1,
             pageStateString: constants.pageStateString[1],
-            menu: {}
+            menu: {},
+            giftBagCoupons:[]
         };
     }
 
@@ -163,6 +165,9 @@ class MyOrdersDetailPage extends BasePage {
         DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.loadPageData());
         this.loadPageData();
     }
+    componentWillUnmount(){
+        DeviceEventEmitter.removeAllListeners('OrderNeedRefresh')
+    }
 
     _render = () => {
         return (
@@ -170,7 +175,7 @@ class MyOrdersDetailPage extends BasePage {
                 <RefreshList
                     ListHeaderComponent={this.renderHeader}
                     ListFooterComponent={this.renderFootder}
-                    data={this.state.orderType === 3 || this.state.orderType === 98 ? this.state.viewData.list : this.state.viewData.list}
+                    data={this.state.orderType === 5 || this.state.orderType === 98 ? this.state.viewData.list : this.state.viewData.list}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
@@ -183,16 +188,15 @@ class MyOrdersDetailPage extends BasePage {
         );
     };
     renderItem = ({ item, index }) => {
-        console.log('showItem',item);
-        if (this.state.orderType === 3 || this.state.orderType === 98) {
+        if (this.state.orderType === 5 || this.state.orderType === 98) {
             return (
-                <GoodsItem
+                <GoodsGrayItem
                     uri={item.uri}
                     goodsName={item.goodsName}
-                    salePrice={'￥' + StringUtils.formatMoneyString(item.salePrice, false)}
                     category={item.category}
-                    goodsNum={'X' + item.goodsNum}
-                    onPress={() => this.clickItem(index, item)}
+                    salePrice={'￥' + StringUtils.formatMoneyString(item.salePrice, false)}
+                    goodsNum={item.goodsNum}
+                    onPress={() => this.clickItem(item)}
                 />
             );
         } else {
@@ -215,17 +219,73 @@ class MyOrdersDetailPage extends BasePage {
         }
 
     };
+    renderGiftPageHeader=()=>{
+        return(
+            <View style={{marginTop:10}}>
+                {this.state.orderType==5 || this.state.orderType === 98 ?
+
+                    <View style={{
+                        marginTop: 20,
+                        backgroundColor: '#fff',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                    }}>
+                        <View style={{
+                            borderWidth: 1,
+                            borderRadius: 5,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderColor: '#e60012',
+                            marginLeft: 20
+                        }}>
+                            <Text style={{
+                                fontFamily: 'PingFang-SC-Medium',
+                                fontSize: 11,
+                                color: '#e60012',
+                                padding: 3
+                            }}>礼包</Text>
+                        </View>
+                        <Text style={{
+                            marginLeft: 10,
+                            fontFamily: 'PingFang-SC-Medium',
+                            fontSize: 12,
+                            color: '#999999'
+                        }}>{this.state.giftPackageName}</Text>
+                    </View>
+                    :
+                    null}
+            </View>
+        )
+    }
     renderHeader = () => {
         return (
             <View>
                 {this.renderState()}
                 {this.state.pageStateString.disNextView ? this.renderAddress() : null}
+                {this.renderGiftPageHeader()}
             </View>
         );
     };
     renderFootder = () => {
         return (
             <View style={{ backgroundColor: color.white }}>
+                {this.state.orderType==5||this.state==98&&this.state.giftBagCoupons.length>0?
+                    <View>
+                        {this.renderLine()}
+                        {this.state.giftBagCoupons.map((item,index)=>{
+                      return   <View style={{backgroundColor:'white'}}>
+                        <View style={{height:34,flexDirection:'row',justifyContent:'space-between',marginLeft:36}}>
+                        <Text style={{color: color.black_999, fontSize: 13,alignSelf:'center'}}>{item.couponName}</Text>
+                        <Text style={{color: color.black_999, fontSize: 13,alignSelf:'center',marginRight:14}}>x1</Text>
+                        </View>
+                        <View style={{marginLeft:36,backgroundColor:'#F7F7F7',height:0.5,width:'100%'}}/>
+                        </View>
+                    })  }
+                        {this.renderWideLine()}
+                    </View>
+
+                    :
+                    null}
                 <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'商品总价'}
                                 leftTextStyle={{ color: color.black_999 }}
                                 rightText={StringUtils.formatMoneyString(this.state.viewData.goodsPrice)}
@@ -646,7 +706,7 @@ class MyOrdersDetailPage extends BasePage {
             Toast.hiddenLoading();
             let data = response.data;
             let arr = [];
-            if (data.orderType === 3 || data.orderType === 98) {//礼包。。。
+            if (data.orderType === 5 || data.orderType === 98) {//礼包。。。
                 data.orderProductList[0].orderProductPriceList.map((item, index) => {
                     arr.push({
                         id: item.id,
@@ -656,7 +716,7 @@ class MyOrdersDetailPage extends BasePage {
                         goodsName: item.productName,
                         salePrice: StringUtils.isNoEmpty(item.originalPrice) ? item.originalPrice : 0,
                         category: item.spec,
-                        goodsNum: item.productNum
+                        goodsNum: item.productNum,
                         // returnProductId: data.orderProductList[0].returnProductId,
                         // afterSaleService: this.getAfterSaleService(data.orderProductList, index),
                         // returnProductStatus:data.orderProductList[0].returnProductStatus,
@@ -680,6 +740,7 @@ class MyOrdersDetailPage extends BasePage {
                         returnProductStatus: item.returnProductStatus,
                         returnType: item.returnType,
                         status: item.status,
+                        activityCode:item.activityCode
                     });
                 });
             }
@@ -807,7 +868,10 @@ class MyOrdersDetailPage extends BasePage {
                 allData: data,
                 payType:(data.orderPayRecord?data.orderPayRecord.type:null),
                 orderProductPrices: data.orderProductList[0].price,//礼包，套餐啥的,
+                giftPackageName:data.orderType==5||data.orderType==98?data.orderProductList[0].productName:'礼包',
                 status:data.status,//订单状态
+                activityCode:data.orderProductList[0]&&data.orderProductList[0].activityCode?data.orderProductList[0].activityCode:null,//礼包的code
+                giftBagCoupons:data.orderProductList[0]&&data.orderProductList[0].giftBagCoupons?data.orderProductList[0].giftBagCoupons:[]
 
             });
             console.log('setView', this.state.viewData);
@@ -825,29 +889,32 @@ class MyOrdersDetailPage extends BasePage {
     }
 
     clickItem = (index, item) => {
-
+      console.log('clickItem',index,item);
         switch (this.state.orderType) {
             case 1://秒杀
             case 2://降价拍
                 this.$navigate('topic/TopicDetailPage', {
                     activityType: this.state.orderType,
-                    activityCode: this.state.viewData.list[index].code
+                    activityCode: this.state.viewData.list[index].activityCode
                 });
                 break;
-            case 3://礼包
+            case 3://不是礼包，5才是
                 this.$navigate('topic/TopicDetailPage', {
                     activityType: 3,
-                    activityCode: this.state.viewData.orderProductList[0].activityCode,
+                    activityCode: this.state.viewData.list[index].activityCode,
                 });
                 break;
-            case 4:
-
-                break;
-
-            case 98://？？优惠套餐??礼包
+            case 5://普通礼包
                 this.$navigate('topic/TopicDetailPage', {
                     activityType: 3,
-                    activityCode: this.state.viewData.orderProductList[0].activityCode,
+                    activityCode: this.state.activityCode,
+                });
+                break;
+
+            case 98://升级礼包
+                this.$navigate('topic/TopicDetailPage', {
+                    activityType: 3,
+                    activityCode: this.state.activityCode,
                 });
                 break;
 
@@ -928,6 +995,7 @@ class MyOrdersDetailPage extends BasePage {
                                 }
                             }
                         ], { cancelable: true });
+                        return;
                     } else {
                         this.setState({ isShowReceiveGoodsModal: true });
                     }

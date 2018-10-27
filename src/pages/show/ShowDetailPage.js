@@ -21,7 +21,7 @@ const Goods = ({data, press}) => <TouchableOpacity style={styles.goodsItem} onPr
     <View style={styles.goodDetail}>
         <Text style={styles.name}>{data.name}</Text>
         <View style={{height: px2dp(4)}}/>
-        <Text style={styles.price}>￥ {data.price}</Text>
+        <Text style={styles.price}>￥ {data.price}起</Text>
     </View>
 </TouchableOpacity>
 

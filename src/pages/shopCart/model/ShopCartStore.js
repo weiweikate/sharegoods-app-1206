@@ -10,6 +10,7 @@ class ShopCartStore {
     allMoney = 0;
     @observable
     isAllSelected;
+
     @action
     clearData() {
         this.data = [];
@@ -26,14 +27,20 @@ class ShopCartStore {
     }
 
     @computed
-    get getAllGoodsClassNumber(){
-        if (this.data.slice() instanceof Array && this.data.slice().length > 0 ){
+    get cartData() {
+        return this.data.slice();
+    }
+
+    @computed
+    get getAllGoodsClassNumber() {
+        if (this.data.slice() instanceof Array && this.data.slice().length > 0) {
             return this.data.slice().length;
-        }else {
-            return 0
+        } else {
+            return 0;
         }
 
     }
+
     @computed
     get getTotalSelectGoodsNum() {
         let totalSelectNum = 0;
@@ -82,6 +89,30 @@ class ShopCartStore {
         return flag;
     }
 
+    /**
+     * 组装打包购物车数据
+     */
+    @action
+    packingShopCartGoodsData = (response) => {
+        if (response && response instanceof Array && response.length > 0) {
+            let tempArr = [];
+            response.forEach(item => {
+                item.isSelected = false;
+                let [...valueArr] = item.specValues || [];
+                let tempString = '';
+                valueArr.map((string) => {
+                    tempString = tempString + `${string} `;
+                });
+                item.specString = tempString;
+                console.log(item.specString);
+                tempArr.push(item);
+            });
+            this.data = tempArr;
+        } else {
+            this.data = [];
+            //组装元数据错误
+        }
+    };
 
     /**
      * 开始结算
@@ -89,16 +120,16 @@ class ShopCartStore {
      * @constructor
      */
 
-    startSettlement=()=>{
-        let selectItemSet = new Set()
-        let  [...allItems] = this.data.slice()
-        allItems.map((good )=>{
-            if (good.isSelected){
+    startSettlement = () => {
+        let selectItemSet = new Set();
+        let [...allItems] = this.data.slice();
+        allItems.map((good) => {
+            if (good.isSelected) {
                 selectItemSet.add(good);
             }
         });
-        return Array.from(selectItemSet)
-    }
+        return Array.from(selectItemSet);
+    };
     /**
      以下为购物车数据操作相关方法
      */
@@ -106,7 +137,7 @@ class ShopCartStore {
     isSelectAllItem = (isSelectAll) => {
         if (isSelectAll) {
             this.data.slice().map(item => {
-                if (item.status === 0){
+                if (item.status === 0) {
                     item.isSelected = false;
                 } else {
                     item.isSelected = true;
@@ -175,27 +206,6 @@ class ShopCartStore {
 
         });
     };
-    /*组装打包购物车数据*/
-    packingShopCartGoodsData = (response) => {
-        if (response && response instanceof Array && response.length > 0) {
-            let tempArr = [];
-            response.forEach(item => {
-                item.isSelected = false;
-                let [...valueArr] = item.specValues || [];
-                let tempString = '';
-                valueArr.map((string) => {
-                    tempString = tempString + `${string} `;
-                });
-                item.specString = tempString;
-                console.log(item.specString);
-                tempArr.push(item);
-            });
-            this.data = tempArr;
-        } else {
-            this.data = [];
-            //组装元数据错误
-        }
-    };
 
 
     /*加入购物车*/
@@ -203,21 +213,21 @@ class ShopCartStore {
         if (item) {
             if (item instanceof Array && item.length > 0) {
                 bridge.$toast('批量加入购物车未对接');
-            }else {
+            } else {
                 //加入单个商品
                 console.log(item);
-                bridge.showLoading()
+                bridge.showLoading();
                 ShopCartAPI.addItem({
                     'amount': item.amount,
                     'priceId': item.priceId,
                     'productId': item.productId,
-                    'timestamp':item.timestamp
+                    'timestamp': item.timestamp
                 }).then((res) => {
-                    bridge.hiddenLoading()
+                    bridge.hiddenLoading();
                     bridge.$toast('加入购物车成功');
                     this.getShopCartListData();
                 }).catch((error) => {
-                    bridge.$toast(error.msg||'加入购物车失败');
+                    bridge.$toast(error.msg || '加入购物车失败');
                     bridge.hiddenLoading();
                 });
             }

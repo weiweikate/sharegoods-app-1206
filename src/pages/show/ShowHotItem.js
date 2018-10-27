@@ -9,7 +9,8 @@ const {  px2dp } = ScreenUtils
 import seeImg from '../../comm/res/see_white.png'
 import maskImg from '../../comm/res/show_mask.png'
 
-export default ({data, press, imageStyle}) => <TouchableOpacity style={styles.item} onPress={()=>{press && press()}}>
+export default ({data, press, imageStyle}) => {
+    return <TouchableOpacity style={styles.item} onPress={()=>{press && press()}}>
     <ImageBackground style={[styles.img, imageStyle]} source={{uri: data.img}}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.numberView}>
@@ -18,15 +19,16 @@ export default ({data, press, imageStyle}) => <TouchableOpacity style={styles.it
         </View>
     </ImageBackground>
     <View style={styles.profile}>
-        <Text numberOfLines={2} style={styles.title}>{data.title}</Text>
+        <Text numberOfLines={2} style={styles.title}>{data.pureContent ? data.pureContent.slice(0, 100) : ''}</Text>
         <View style={styles.row}>
             <Image style={styles.portrait} source={{uri:data.userHeadImg ? data.userHeadImg : ''}}/>
-            <Text style={styles.name}>{data.userName}</Text>
+            <Text style={styles.name}>{data.userName ? data.userName.slice(0, 5) + '...' : ''}</Text>
             <View style={{flex: 1}}/>
             <Text style={styles.time}>{data.time}</Text>
         </View>
     </View>
 </TouchableOpacity>
+}
 
 let styles = StyleSheet.create({
     item: {

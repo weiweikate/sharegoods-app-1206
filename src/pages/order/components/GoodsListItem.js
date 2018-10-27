@@ -39,6 +39,7 @@ const GoodsListItem = props => {
         callBack,
         // autoReceiveTime,
         deliverTime,//发货时间
+        orderType,
     } = props;
     this.state = { pageStateString: '27:45:45后自动取消订单' };
 
@@ -124,6 +125,13 @@ const GoodsListItem = props => {
                     </View>
                 );
             } else {
+                if(orderType==5||orderType==98){
+                    nameArr = [{
+                        id:7,
+                        operation:'删除订单',
+                        isRed:false,
+                    }]
+                }
                 itemArr.push(
                     <TouchableOpacity key={i} style={{
                         borderWidth: 1,

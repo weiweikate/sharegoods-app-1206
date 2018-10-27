@@ -8,6 +8,7 @@
 #import "PickerManager.h"
 #import <Photos/Photos.h>
 #import <Photos/PHAssetChangeRequest.h>
+#import "XGImageCompression.h"
 
 #define AppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
 
@@ -242,5 +243,16 @@ RCT_EXPORT_METHOD(netWorkState:(RCTResponseSenderBlock)callback){
     callback(@[result]);
     
 }
-    
+
+RCT_EXPORT_METHOD(RN_ImageCompression:(NSString*) path
+                  fileSize:(NSInteger)fileSize
+                  limitSize:(NSInteger)limitSize
+                  callback:(RCTResponseSenderBlock)callback
+                  ){
+  [XGImageCompression RN_ImageCompressionWithPath:path fileSize:fileSize limitSize:limitSize];
+  NSLog(@"执行开始");
+  callback(@[]);
+  NSLog(@"执行结束");
+}
+
 @end

@@ -14,7 +14,7 @@ const HotItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress
     <ImageBackground style={styles.imgBack} source={{uri: item.img}}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.row}>
-            <Text style={styles.remark}>{item.title}</Text>
+            <Text style={styles.remark}>{item.pureContent ? item.pureContent.slice(0, 100) : ''}</Text>
             <View style={styles.right}>
                 <Image source={seeImg}/>
                 <Text style={styles.number}>{item.click ? item.click : 0}</Text>

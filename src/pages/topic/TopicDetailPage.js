@@ -83,6 +83,7 @@ export default class TopicDetailPage extends BasePage {
             this.$loadingShow();
             TopicApi.findActivityPackageDetail({
                 code: this.params.activityCode
+                // code:'TC201810130007',
             }).then((data) => {
                 this.$loadingDismiss();
                 this.setState({
