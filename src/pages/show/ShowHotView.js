@@ -39,9 +39,9 @@ export default class ShowHotView extends Component {
             done()
         }, 1000)
     }
-    _gotoDetail() {
+    _gotoDetail(data) {
         const { navigation } = this.props
-        navigation.navigate('show/ShowDetailPage')
+        navigation.navigate('show/ShowDetailPage',  {id: data.id})
     }
     renderItem = (data) => {
         let imgWide = data.imgWide ? data.imgWide : 1
