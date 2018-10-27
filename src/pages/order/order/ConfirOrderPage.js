@@ -242,6 +242,7 @@ export default class ConfirOrderPage extends BasePage {
     renderFootder = () => {
         return (
             <View>
+                {this.renderCouponsPackage()}
                 {this.renderLine()}
                 {this.renderDetail()}
             </View>
@@ -302,13 +303,13 @@ export default class ConfirOrderPage extends BasePage {
     _render() {
         return (
             // data={this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98 ? this.state.priceList : this.state.viewData.list}
-
+//this.params.orderParamVO.orderProducts
             <View style={styles.container}>
                 <ScrollView>
                 <RefreshList
                     ListHeaderComponent={this.renderHeader}
                     ListFooterComponent={this.renderFootder}
-                    data={this.state.viewData.list}
+                    data={this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98 ? this.params.orderParamVO.orderProducts[0].priceList : this.state.viewData.list}
                     renderItem={this.renderItem}
                     extraData={this.state}
                 />
@@ -325,14 +326,13 @@ export default class ConfirOrderPage extends BasePage {
             return (
                 <View>
                 <GoodsItem
-                    uri={item.uri}
-                    goodsName={item.goodsName}
-                    salePrice={StringUtils.formatMoneyString(item.originalPrice)}
-                    category={item.category}
-                    goodsNum={'X' + item.goodsNum}
+                    uri={item.specImg}
+                    goodsName={item.productName}
+                    category={item.spec}
+                    goodsNum={'X' + item.num}
                     onPress={() => this.clickItem(index, item)}
                 />
-                    {this.renderCouponsPackage()}
+
                 </View>
             );
         } else {
