@@ -21,7 +21,6 @@ import signInImageBg from "./res/qiandao_img_bg_nor.png";
 import showBeanIcon from "./res/showbean_icon.png";
 import couponBackground from "./res/qiandao_bg_youhuiquan_nor.png";
 
-const reminder = "注：100秀豆兑换1张券，无兑换限制，点击即可兑换";
 import HomeAPI from "../api/HomeAPI";
 import { PageLoadingState } from "../../../components/pageDecorator/PageState";
 import user from "../../../model/user";
@@ -298,7 +297,7 @@ export default class SignInPage extends BasePage {
     _reminderRender=()=>{
         return(
             <Text style={styles.reminderStyle}>
-                {reminder}
+                {`注：${this.state.exchangeData*100}秀豆兑换1张券，无兑换限制，点击即可兑换`}
             </Text>
         );
     }
