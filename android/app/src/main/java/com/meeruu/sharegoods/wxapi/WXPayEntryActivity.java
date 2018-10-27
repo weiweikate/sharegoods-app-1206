@@ -2,18 +2,14 @@ package com.meeruu.sharegoods.wxapi;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import com.facebook.react.bridge.ReadableMap;
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
 import com.meeruu.sharegoods.rn.AppPayModule;
-import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.umeng.socialize.weixin.view.WXCallbackActivity;
 
 /**
  * Created by zhanglei on 2018/8/17.
@@ -38,8 +34,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         wxResp.setCode(baseResp.errCode);
         wxResp.setMsg(baseResp.errStr);
         wxResp.setSdkCode(baseResp.openId);
-
-        String json = new Gson().toJson(wxResp,WxResp.class);
+        String json = JSON.toJSONString(wxResp);
         AppPayModule.wxPayPromise.resolve(json);
 
     }

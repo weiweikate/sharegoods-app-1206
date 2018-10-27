@@ -5,37 +5,30 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.google.gson.Gson;
 import com.meeruu.commonlib.bean.IdNameBean;
-import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
-import com.meeruu.sharegoods.event.CaptureScreenImageEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -145,7 +138,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void netCommParas(Callback callback) {
         final NetCommonParamsBean paramsBean = new NetCommonParamsBean();
-        callback.invoke(new Gson().toJson(paramsBean));
+        callback.invoke(JSON.toJSON(paramsBean));
     }
 
     /**
@@ -250,25 +243,25 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     *图片压缩
+     * 图片压缩
      */
     @ReactMethod
     public void RN_ImageCompression(String filePath, int fileSize, int maxSize, Callback callback) {
 
         File file = new File(filePath);
-        if(!file.exists()){
-            Toast.makeText(mContext,"文件不存在",Toast.LENGTH_LONG).show();
+        if (!file.exists()) {
+            Toast.makeText(mContext, "文件不存在", Toast.LENGTH_LONG).show();
             callback.invoke();
             return;
         }
-        if(isVideo(filePath)){
-            Toast.makeText(mContext,"头像不能上传视频",Toast.LENGTH_LONG).show();
+        if (isVideo(filePath)) {
+            Toast.makeText(mContext, "头像不能上传视频", Toast.LENGTH_LONG).show();
             callback.invoke();
             return;
         }
 
-        if(isGIF(filePath)){
-            Toast.makeText(mContext,"头像不支持GIF格式图片",Toast.LENGTH_LONG).show();
+        if (isGIF(filePath)) {
+            Toast.makeText(mContext, "头像不支持GIF格式图片", Toast.LENGTH_LONG).show();
             callback.invoke();
             return;
         }
@@ -306,7 +299,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
     public boolean isVideo(@NonNull String path) {
-        final String[] videoTypes = {"avi","wmv","mpeg","mp4","mov","mkv","flv","f4v","m4v","rmvb","rm","3gp"};
+        final String[] videoTypes = {"avi", "wmv", "mpeg", "mp4", "mov", "mkv", "flv", "f4v", "m4v", "rmvb", "rm", "3gp"};
         String filePath = path.toLowerCase();
         for (int i = 0; i < videoTypes.length; i++) {
             if (filePath.endsWith(videoTypes[i])) {
@@ -319,16 +312,11 @@ public class CommModule extends ReactContextBaseJavaModule {
 
     public Uri getMediaUriFromPath(Context context, String path) {
         Uri mediaUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        Cursor cursor = context.getContentResolver().query(mediaUri,
-                null,
-                MediaStore.Images.Media.DISPLAY_NAME + "= ?",
-                new String[] {path.substring(path.lastIndexOf("/") + 1)},
-                null);
+        Cursor cursor = context.getContentResolver().query(mediaUri, null, MediaStore.Images.Media.DISPLAY_NAME + "= ?", new String[]{path.substring(path.lastIndexOf("/") + 1)}, null);
 
         Uri uri = null;
-        if(cursor.moveToFirst()) {
-            uri = ContentUris.withAppendedId(mediaUri,
-                    cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID)));
+        if (cursor.moveToFirst()) {
+            uri = ContentUris.withAppendedId(mediaUri, cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID)));
         }
         cursor.close();
         return uri;
@@ -359,4 +347,53 @@ public class CommModule extends ReactContextBaseJavaModule {
         }
         return data;
     }
+
+    //    @ReactMethod
+    //    public void updateable(final String downUrl, String version, String des) {
+    //        this.lastVersion = version;
+    //        //提示当前有版本更新
+    //        File apkfile_file = SDCardUtils.getFileDirPath("MR/file");
+    //        String fileName = AppUtils.getAppName(getCurrentActivity()) + "_" + lastVersion + ".apk";
+    //        final String filePath = apkfile_file.getAbsolutePath() + File.separator + fileName;
+    //        final boolean exist = FileUtils.fileIsExists(filePath);
+    //        String positiveTxt = getString(R.string.update_vs_now);
+    //        String title = getString(R.string.version_update);
+    //        if (exist) {
+    //            apkPath = filePath;
+    //            title = getString(R.string.version_install);
+    //            positiveTxt = getString(R.string.install_now);
+    //        }
+    //        updateDialog = DialogCreator.createAppBasicDialog(this, title, des,
+    //                positiveTxt, getString(R.string.not_update), new View.OnClickListener() {
+    //                    @Override
+    //                    public void onClick(View v) {
+    //                        switch (v.getId()) {
+    //                            case R.id.positive_btn:
+    //                                if (exist) {
+    //                                    handleInstallApk();
+    //                                } else {
+    //                                    BaseApplication.getInstance().setDownload(true);
+    //                                    BaseApplication.getInstance().setDownLoadUrl(downUrl);
+    //                                    //开始下载
+    //                                    Intent it = new Intent(SettingActivity.this, VersionUpdateService.class);
+    //                                    it.putExtra("version", lastVersion);
+    //                                    startService(it);
+    //                                    bindService(it, conn, Context.BIND_AUTO_CREATE);
+    //                                }
+    //                                updateDialog.dismiss();
+    //                                break;
+    //                            case R.id.negative_btn:
+    //                                updateDialog.dismiss();
+    //                                break;
+    //                            default:
+    //                                break;
+    //                        }
+    //                    }
+    //                });
+    //        ((TextView) updateDialog.findViewById(R.id.dialog_info)).setGravity(Gravity.CENTER_VERTICAL);
+    //        if (!isFinishing()) {
+    //            updateDialog.show();
+    //        }
+    //    }
+
 }
