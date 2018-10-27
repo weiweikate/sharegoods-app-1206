@@ -3,13 +3,13 @@ import {
     View,
     Image,
     ImageBackground,
-    Modal,
     TouchableOpacity,
     Text
 } from 'react-native';
 import topicShow from '../res/topicShow.png';
 import topicShowClose from '../res/topicShowClose.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import CommModal from 'CommModal'
 
 export default class TopicDetailShowModal extends Component {
 
@@ -37,7 +37,7 @@ export default class TopicDetailShowModal extends Component {
 
     render() {
         return (
-            <Modal onRequestClose={this.close}
+            <CommModal onRequestClose={this.close}
                    visible={this.state.modalVisible}
                    transparent={true}>
                 <View style={{
@@ -86,7 +86,7 @@ export default class TopicDetailShowModal extends Component {
                     </View>
                 </View>
 
-            </Modal>
+            </CommModal>
         );
     }
 }

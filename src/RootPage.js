@@ -13,6 +13,8 @@ import CommTabImag from './comm/res/CommTabImag';
 import ColorUtil from './utils/ColorUtil';
 import ScreenUtils from './utils/ScreenUtils';
 import ShowListPage from './pages/show/ShowListPage'
+import discoverImg from './comm/res/tab_discover_selected.png'
+import undiscoverImg from './comm/res/tab_discover_unselected.png'
 
 export const TabNav = TabNavigator(
     {
@@ -35,26 +37,26 @@ export const TabNav = TabNavigator(
                 }
             }
         },
-        SpellShopPage: {
-            screen: SpellShop,
-            navigationOptions: {
-                tabBarLabel: '拼店',
-                tabBarIcon: ({ focused }) => {
-                    if (focused) {
-                        return (
-                            <Image style={styles.tabBarIcon} source={CommTabImag.spellShop_Tab_img.img_Sel}/>
-                        );
-                    }
-                    return (
-                        <Image style={styles.tabBarIcon} source={CommTabImag.spellShop_Tab_img.img_Nor}/>
-                    );
-                }
-            }
-        },
         ShowListPage: {
             screen: ShowListPage,
             navigationOptions: {
                 tabBarLabel: '发现',
+                tabBarIcon: ({ focused }) => {
+                    if (focused) {
+                        return (
+                            <Image style={styles.tabBarIcon} source={discoverImg}/>
+                        );
+                    }
+                    return (
+                        <Image style={styles.tabBarIcon} source={undiscoverImg}/>
+                    );
+                }
+            }
+        },
+        SpellShopPage: {
+            screen: SpellShop,
+            navigationOptions: {
+                tabBarLabel: '拼店',
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
                         return (
