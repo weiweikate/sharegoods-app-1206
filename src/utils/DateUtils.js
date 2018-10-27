@@ -55,6 +55,7 @@ const isTomorrow = (date = new Date()) => {
     return (date.getTime() >= today && tomorrow >= date.getTime());
 };
 export const getFormatDate = (timestamp, fmt = 'yyyy-MM-dd hh:mm:ss') => {
+    timestamp = parseInt(timestamp.toString());
     timestamp = parseInt(timestamp + '000');
     let newDate = new Date(timestamp);
     Date.prototype.format = function(format) {

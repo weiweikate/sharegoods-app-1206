@@ -19,13 +19,14 @@ import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-public class AppPayModule extends ReactContextBaseJavaModule {
+public class AppPayModule extends ReactContextBaseJavaModule{
 
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "PayTool";
 
     private static final String App_ID = "wx401bc973f010eece";
-    private IWXAPI iwxapi;
+    public IWXAPI api;
+    public static Promise wxPayPromise;
 
     /**
      * 构造方法必须实现
@@ -35,6 +36,8 @@ public class AppPayModule extends ReactContextBaseJavaModule {
     public AppPayModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.mContext = reactContext;
+        api = WXAPIFactory.createWXAPI(reactContext, App_ID);
+        api.registerApp(App_ID);
     }
 
     /**
@@ -134,13 +137,14 @@ public class AppPayModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void appWXPay(final String params1, final Promise promise) {
+        wxPayPromise = promise;
         //通过WXAPIFactory工厂，获取IWXAPI的实例
-        iwxapi = WXAPIFactory.createWXAPI(mContext, App_ID, true);
+//        iwxapi = WXAPIFactory.createWXAPI(mContext, App_ID, true);
         final WXPayBean params = JSON.parseObject(params1, WXPayBean.class);
         //下面是设置必要的参数，也就是前面说的参数,这几个参数从何而来请看上面说明
         //https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_12&index=2
         //将应用的appId注册到微信
-        iwxapi.registerApp(App_ID);
+//        iwxapi.registerApp(App_ID);
         Runnable payRunnable = new Runnable() {  //这里注意要放在子线程
             @Override
             public void run() {
@@ -154,7 +158,7 @@ public class AppPayModule extends ReactContextBaseJavaModule {
                 request.nonceStr = params.getNoncestr();//随机字符串
                 request.timeStamp = params.getTimestamp();//时间戳
                 request.sign = params.getSign();//签名
-                iwxapi.sendReq(request);//发送调起微信的请求
+                api.sendReq(request);//发送调起微信的请求
             }
         };
         Thread payThread = new Thread(payRunnable);

@@ -99,7 +99,7 @@ export class Payment {
             return error
         }
     })
-    
+
     //继续支付
     @action continuePay = flow(function *(params) {
         try {
@@ -178,7 +178,8 @@ export class Payment {
                 preStr = yield this.perpay(params)
             }
             const prePay = JSON.parse(preStr.data.prePayStr)
-            const resultStr = yield PayUtil.appWXPay(prePay)
+            const resultStr = yield PayUtil.appWXPay(prePay);
+            console.log(JSON.stringify(resultStr));
             this.outTradeNo = preStr.data.outTradeNo
            if (parseInt(resultStr.sdkCode, 0) !== 0) {
                 ref && ref.show(2, resultStr.msg)
