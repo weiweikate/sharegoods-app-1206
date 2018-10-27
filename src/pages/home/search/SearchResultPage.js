@@ -218,7 +218,7 @@ export default class SearchResultPage extends BasePage {
                 </View>);
         } else {
             return (
-                <View>
+                <View style={{ flex: 1 }}>
                     <ResultSegmentView segmentOnPressAtIndex={this._segmentOnPressAtIndex}/>
                     {renderViewByLoadingState(this._getPageStateOptions(), this._renderListView)}
                 </View>
