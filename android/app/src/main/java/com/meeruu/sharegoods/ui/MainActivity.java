@@ -1,6 +1,7 @@
 package com.meeruu.sharegoods.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.utils.LoadingDialog;
+import com.umeng.socialize.UMShareAPI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -132,5 +134,13 @@ public class MainActivity extends ReactActivity {
                 window.setAttributes(attributes);
             }
         }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //涉及到分享时必须调用到方法
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

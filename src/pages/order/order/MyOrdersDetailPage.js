@@ -275,13 +275,13 @@ class MyOrdersDetailPage extends BasePage {
                 </View>
                 <UIText value={'创建时间：' + DateUtils.getFormatDate(this.state.viewData.createTime / 1000)}
                         style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>
-                {StringUtils.isEmpty(this.state.viewData.platformPayTime) ? null :
+                {StringUtils.isEmpty(this.state.viewData.platformPayTime)&&this.state.viewData.status>1 ? null :
                     <UIText value={'平台付款时间：' + DateUtils.getFormatDate(this.state.viewData.platformPayTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
                 {StringUtils.isEmpty(this.state.viewData.cancelTime) ? null :
                     <UIText value={'取消时间：' + DateUtils.getFormatDate(this.state.viewData.cancelTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
-                {StringUtils.isNoEmpty(this.state.viewData.payTime) &&(this.state.payType%2==0)?
+                {StringUtils.isNoEmpty(this.state.viewData.payTime) &&(this.state.payType%2==0)&&this.state.viewData.status>1 ?
                     <UIText value={'三方付款时间：' + DateUtils.getFormatDate(this.state.viewData.payTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>:null}
                 {StringUtils.isNoEmpty(this.state.viewData.outTradeNo) &&(this.state.payType%2==0)?
@@ -806,7 +806,8 @@ class MyOrdersDetailPage extends BasePage {
                 orderType: data.orderType,
                 allData: data,
                 payType:(data.orderPayRecord?data.orderPayRecord.type:null),
-                orderProductPrices: data.orderProductList[0].price,//礼包，套餐啥的
+                orderProductPrices: data.orderProductList[0].price,//礼包，套餐啥的,
+                status:data.status,//订单状态
 
             });
             console.log('setView', this.state.viewData);

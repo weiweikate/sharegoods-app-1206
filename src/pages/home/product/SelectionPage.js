@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import {
     View,
     StyleSheet,
     TouchableWithoutFeedback,
     Text,
-    ScrollView
+    ScrollView,
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import SelectionHeaderView from './components/SelectionHeaderView';
@@ -13,28 +12,22 @@ import SelectionSectionView from './components/SelectionSectionView';
 import SelectionAmountView from './components/SelectionAmountView';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
+import Modal from 'CommModal';
 
 
 export default class SelectionPage extends Component {
 
-    static propTypes = {
-        selectionViewConfirm: PropTypes.func.isRequired,
-        selectionViewClose: PropTypes.func.isRequired,
-        data: PropTypes.object.isRequired
-    };
-
     constructor(props) {
         super(props);
-
-        const { specMap } = this.props.data;
-        //提取规格处理id
-        let tittleList = [];
-        for (let key in specMap) {
-            tittleList.push(key);
-        }
-
         this.state = {
-            tittleList: tittleList,
+            modalVisible: false,
+            data: {},
+            callBack: undefined,
+            propData: {},
+            specMap: {},
+            priceList: [],
+            tittleList: [],
+
             selectList: [],//选择的id数组
             selectStrList: [],//选择的名称值
             selectSpecList: [],//选择规格所对应的库存,
@@ -43,11 +36,42 @@ export default class SelectionPage extends Component {
         };
     }
 
-    componentDidMount() {
-        this._indexCanSelectedItems();
-        this._selelctSpe();
-        this.forceUpdate();
-    }
+    show = (data, callBack, propData) => {
+        const { specMap = {}, priceList = [] } = data;
+        let specMapTemp = JSON.parse(JSON.stringify(specMap));
+        let priceListTemp = JSON.parse(JSON.stringify(priceList));
+        //修改specMapTemp每个元素首尾增加'，'
+        for (let key in specMapTemp) {
+            specMapTemp[key].forEach((item) => {
+                if (String(item.id).indexOf(',') === -1) {
+                    item.id = `,${item.id},`;
+                }
+            });
+        }
+        //修改priceListTemp中的specIds首尾增加','
+        priceListTemp.forEach((item) => {
+            item.specIds = `,${item.specIds},`;
+        });
+
+        //提取规格处理id
+        let tittleList = [];
+        for (let key in specMapTemp) {
+            tittleList.push(key);
+        }
+
+        this.setState({
+            modalVisible: true,
+            data: data,
+            callBack: callBack,
+            propData: propData || {},
+            specMap: specMapTemp,
+            priceList: priceListTemp,
+            tittleList: tittleList
+        }, () => {
+            this._indexCanSelectedItems();
+
+        });
+    };
 
     _clickItemAction = (item, indexOfProp) => {
         if (item.isSelected) {
@@ -58,30 +82,55 @@ export default class SelectionPage extends Component {
             this.state.selectStrList[indexOfProp] = item.specValue;
         }
         this._indexCanSelectedItems();
-        this._selelctSpe();
-        this.forceUpdate();
     };
 
     //获取各个列表数据 刷新页面状态
     _indexCanSelectedItems = () => {
+        //afterPrice
+        //type
+        const { afterPrice, type } = this.state.propData;
         let tempArr = [];
         this.state.tittleList.forEach((item, index) => {
             tempArr[index] = this._indexCanSelectedItem(index);
         });
-        const { specMap = {} } = this.props.data;
-        let index = 0;
+        const { specMap = {} } = this.state;
+        let index = 0, isFirst = true, needUpdate = false;
+        //总
         for (let key in specMap) {
+            //每行
             specMap[key].forEach((item) => {
+                //item 每个
                 item.isSelected = this.state.selectList.indexOf(item.id) !== -1;
                 item.canSelected = false;
+                //tempArr[index] 每行符合的数据
                 tempArr[index].forEach((item1) => {
-                    //库存中有并且剩余数量为0
+                    //库存中有&&剩余数量不为0
                     if (item1.specIds.indexOf(item.id) !== -1 && item1.stock !== 0) {
-                        item.canSelected = true;
+                        //如果是退换货多一次判断
+                        if (type === 'after' && afterPrice === item.originalPrice) {
+                            item.canSelected = true;
+                        } else {
+                            item.canSelected = true;
+                        }
+                        //单规格默认选中
+                        //可以被选择 && 单规格 && 目前没被选择 && 当前总循环第一次
+                        if (item.canSelected && specMap[key].length === 1 && !item.isSelected && isFirst) {
+                            isFirst = false;
+                            needUpdate = true;
+                            this.state.selectList[index] = item.id;
+                            this.state.selectStrList[index] = item.specValue;
+                        }
+
                     }
                 });
             });
             index++;
+        }
+        if (needUpdate) {
+            this._indexCanSelectedItems();
+        } else {
+            this._selelctSpe();
+            this.forceUpdate();
         }
     };
     //获取总库存
@@ -95,7 +144,7 @@ export default class SelectionPage extends Component {
         this.state.maxStock = stock;
     };
 
-    //index?获取当前列外的数据:全部数据(符合条件)
+    //index?获取当前列外符合条件的数据:全部数据
     _indexCanSelectedItem = (index) => {
         let [...tempList] = this.state.selectList;
         if (index !== undefined) {
@@ -118,16 +167,21 @@ export default class SelectionPage extends Component {
                 }
             }
         }
-        let priceId = priceArr.join(',');
 
         let tempArr = [];
-        const { priceList = [] } = this.props.data;
-        if (StringUtils.isEmpty(priceId)) {
+        const { priceList = [] } = this.state;
+        if (priceArr.length === 0) {
             tempArr = priceList;
         } else {
-            priceId = `,${priceId},`;
             tempArr = priceList.filter((item) => {
-                return item.specIds.indexOf(priceId) !== -1;
+                let contain = true;
+                priceArr.forEach((priceItem) => {
+                    //item.specIds不包含priceArr中的任意元素
+                    if (item.specIds.indexOf(`,${priceItem},`) == -1) {
+                        contain = false;
+                    }
+                });
+                return contain;
             });
         }
         return tempArr;
@@ -140,6 +194,8 @@ export default class SelectionPage extends Component {
 
     //确认订单
     _selectionViewConfirm = () => {
+        const { afterPrice, type } = this.state.propData;
+
         if (this.state.amount === 0) {
             bridge.$toast('请选择数量');
             return;
@@ -148,10 +204,14 @@ export default class SelectionPage extends Component {
             bridge.$toast('超出最大库存~');
             return;
         }
+        if (type === 'after' && afterPrice > this.state.maxStock) {
+            bridge.$toast('超出最大库存~');
+            return;
+        }
         let priceArr = [];
         let isAll = true;
 
-        const { specMap = {} } = this.props.data;
+        const { specMap = {} } = this.state;
 
         this.state.selectList.forEach((item) => {
             if (StringUtils.isEmpty(item)) {
@@ -179,23 +239,24 @@ export default class SelectionPage extends Component {
 
         let priceId = priceArr.join(',');
         priceId = `,${priceId},`;
-        let id = '';
-        const { priceList = [] } = this.props.data;
+        let itemData = undefined;
+        const { priceList = [] } = this.state;
         priceList.forEach((item) => {
             if (item.specIds === priceId) {
-                id = item.id;
+                itemData = item;
                 return;
             }
         });
-        if (!id) {
+        if (!itemData) {
             return;
         }
-        this.props.selectionViewConfirm(this.state.amount, id);
-        this.props.selectionViewClose();
+        this.setState({ modalVisible: false }, () => {
+            this.state.callBack(this.state.amount, itemData.id, itemData.spec, itemData.specImg);
+        });
     };
 
     _addSelectionSectionView = () => {
-        const { specMap = {} } = this.props.data;
+        const { specMap = {} } = this.state;
         let tagList = [];
         let index = 0;
         for (let key in specMap) {
@@ -210,37 +271,47 @@ export default class SelectionPage extends Component {
     };
 
     render() {
-        const { product, price } = this.props.data;
+        const { product, price } = this.state.data;
+        const { afterAmount, type } = this.state.propData;
         return (
-            <View style={styles.container}>
-                <TouchableWithoutFeedback onPress={this.props.selectionViewClose}>
-                    <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
-                </TouchableWithoutFeedback>
-                <View style={{ flex: 1 }}>
-                    <SelectionHeaderView product={product}
-                                         price={price}
-                                         selectList={this.state.selectList}
-                                         selectStrList={this.state.selectStrList}
-                                         selectSpecList={this.state.selectSpecList}/>
-                    <View style={{ flex: 1, backgroundColor: 'white' }}>
-                        <ScrollView>
-                            {this._addSelectionSectionView()}
-                            <SelectionAmountView style={{ marginTop: 30 }} amountClickAction={this._amountClickAction}
-                                                 maxCount={this.state.maxStock}/>
-                        </ScrollView>
-                        <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
-                            <View style={{
-                                height: 49,
-                                backgroundColor: '#D51243',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }}>
-                                <Text style={{ fontSize: 16, color: '#FFFFFF' }}>确认</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
+            <Modal
+                animationType="none"
+                transparent={true}
+                visible={this.state.modalVisible}
+                onRequestClose={() => this.setState({ modalVisible: false })}>
+                <View style={styles.container}>
+                    <TouchableWithoutFeedback onPress={() => this.setState({ modalVisible: false })}>
+                        <View style={{ height: ScreenUtils.autoSizeHeight(175) }}/>
+                    </TouchableWithoutFeedback>
+                    <View style={{ flex: 1 }}>
+                        <SelectionHeaderView product={product}
+                                             price={price}
+                                             selectList={this.state.selectList}
+                                             selectStrList={this.state.selectStrList}
+                                             selectSpecList={this.state.selectSpecList}
+                                             closeSelectionPage={() => this.setState({ modalVisible: false })}/>
+                        <View style={{ flex: 1, backgroundColor: 'white' }}>
+                            <ScrollView>
+                                {this._addSelectionSectionView()}
+                                <SelectionAmountView style={{ marginTop: 30 }}
+                                                     amountClickAction={this._amountClickAction}
+                                                     maxCount={this.state.maxStock} afterAmount={afterAmount}
+                                                     type={type}/>
+                            </ScrollView>
+                            <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
+                                <View style={{
+                                    height: 49,
+                                    backgroundColor: '#D51243',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}>
+                                    <Text style={{ fontSize: 16, color: '#FFFFFF' }}>确认</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
                     </View>
                 </View>
-            </View>
+            </Modal>
         );
     }
 }
@@ -248,6 +319,7 @@ export default class SelectionPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
         width: ScreenUtils.width
     }
 

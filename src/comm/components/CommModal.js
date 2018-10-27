@@ -73,7 +73,7 @@ export default class CommModal extends Component {
         if (Platform.OS === "ios") {
             return (
                 <Modal
-                    animationType={this.props.animation ? this.props.animation : "slide"}// 进场动画 fade
+                    animationType={this.props.animation ? this.props.animation : "none"}// 进场动画 fade
                     onRequestClose={() => this.close()}
                     visible={this.state.visible}// 是否可见
                     transparent

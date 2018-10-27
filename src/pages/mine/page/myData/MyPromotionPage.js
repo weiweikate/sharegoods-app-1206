@@ -207,7 +207,7 @@ export default class MyPromotionPage extends BasePage {
                         color: '#000',
                         fontSize: 15
                     }}>
-                        {this.state.levelExperience - this.state.experience}
+                        {(this.state.levelExperience - this.state.experience)>0?this.state.levelExperience - this.state.experience:0}
                     </Text>分</Text>
                 </View>
             </ImageBackground>
