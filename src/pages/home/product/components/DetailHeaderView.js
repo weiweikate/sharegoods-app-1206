@@ -13,6 +13,7 @@ import ViewPager from "../../../../components/ui/ViewPager";
 import ProductActivityView from "./ProductActivityView";
 import user from "../../../../model/user";
 
+import VideoView from '../../../../components/ui/video/VideoView'
 const { px2dp } = ScreenUtils;
 
 /**
@@ -66,6 +67,7 @@ export default class DetailHeaderView extends Component {
                 />
             </TouchableWithoutFeedback>
         );
+        {/*<VideoView/>*/}
     };
 
     _renderPagination = (index, total) => <View style={styles.indexView}>
