@@ -19,7 +19,7 @@ import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-public class AppPayModule extends ReactContextBaseJavaModule{
+public class AppPayModule extends ReactContextBaseJavaModule {
 
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "PayTool";
@@ -74,7 +74,7 @@ public class AppPayModule extends ReactContextBaseJavaModule{
                             event.setMsg("支付成功");
                             event.setSdkCode(9000);
                             event.setAliPayResult(null);
-                            promise.resolve(JSON.toJSON(event));
+                            promise.resolve(JSON.toJSONString(event));
                             Toast.makeText(BaseApplication.appContext, "支付成功", Toast.LENGTH_SHORT).show();
                         } else {
                             // 判断resultStatus 为非“9000”则代表可能支付失败
@@ -84,7 +84,7 @@ public class AppPayModule extends ReactContextBaseJavaModule{
                                 event.setMsg("支付结果确认中");
                                 event.setSdkCode(8000);
                                 event.setAliPayResult(null);
-                                promise.resolve(JSON.toJSON(event));
+                                promise.resolve(JSON.toJSONString(event));
                                 Toast.makeText(BaseApplication.appContext, "支付结果确认中", Toast.LENGTH_SHORT).show();
 
                             } else {
@@ -93,7 +93,7 @@ public class AppPayModule extends ReactContextBaseJavaModule{
                                 event.setMsg("支付失败");
                                 event.setSdkCode(0);
                                 event.setAliPayResult(null);
-                                promise.resolve(JSON.toJSON(event));
+                                promise.resolve(JSON.toJSONString(event));
                                 Toast.makeText(BaseApplication.appContext, "支付失败", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -104,7 +104,7 @@ public class AppPayModule extends ReactContextBaseJavaModule{
                         event.setMsg(msg.obj + "");
                         event.setSdkCode(0);
                         event.setAliPayResult(null);
-                        promise.resolve(JSON.toJSON(event));
+                        promise.resolve(JSON.toJSONString(event));
                         Toast.makeText(BaseApplication.appContext, "检查结果为：" + msg.obj, Toast.LENGTH_SHORT).show();
                         break;
                     }
