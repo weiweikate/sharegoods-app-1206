@@ -14,6 +14,7 @@ import showShareImg from '../../comm/res/show_share.png'
 import { ShowDetail } from './Show'
 import {observer} from 'mobx-react'
 import CommShareModal from '../../comm/components/CommShareModal'
+import user from '../../model/user'
 
 const Goods = ({data, press}) => <TouchableOpacity style={styles.goodsItem} onPress={()=>{press && press()}}>
     <Image style={styles.goodImg} source={{uri: data.headImg ? data.headImg: ''}}/>
@@ -30,7 +31,23 @@ export default class ShowDetailPage extends Component {
         super(props)
         this.params = this.props.navigation.state.params || {};
         this.showDetailModule = new ShowDetail()
-        this.showDetailModule.loadDetail(this.params.id)
+        // this.showDetailModule.loadDetail(this.params.id)
+    }
+    componentWillMount() {
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+              const {state } = payload
+              console.log('willFocus', state)
+              if (state && state.routeName === 'show/ShowDetailPage') {
+                    this.showDetailModule.loadDetail(this.params.id)
+              }
+            }
+          );
+    }
+
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove()
     }
     _goBack() {
         const {navigation} = this.props
@@ -43,10 +60,21 @@ export default class ShowDetailPage extends Component {
         });
     }
     _goodAction() {
-        this.showDetailModule.showGoodAction()
+        console.log('_goodAction', user.isLogin)
+        if (user.isLogin) {
+            this.showDetailModule.showGoodAction()
+        } else {
+            const {navigation} = this.props
+            navigation.push('login/login/LoginPage')
+        }
     }
     _collectAction() {
-        this.showDetailModule.showConnectAction()
+        if (user.isLogin) {
+            this.showDetailModule.showConnectAction()
+        } else {
+            const {navigation} = this.props
+            navigation.push('login/login/LoginPage')
+        }
     }
     _goToShare() {
         this.shareModal && this.shareModal.open()
@@ -95,7 +123,7 @@ export default class ShowDetailPage extends Component {
                 :
                 <TouchableOpacity style={styles.bottomBtn} onPress={()=>this._goodAction()}>
                     <Image style={styles.bottomGoodImg} source={detail.hadLike ? showDidGoodImg : showGoodImg}/>
-                    <Text style={styles.bottomText}>赞 · {detail.likeCount}</Text>
+                    <Text style={styles.bottomText}> {detail.hadLike ? '已赞' : '赞'} · {detail.likeCount}</Text>
                 </TouchableOpacity>
             }
             <View style={styles.line}/>
@@ -108,7 +136,7 @@ export default class ShowDetailPage extends Component {
                 :
                 <TouchableOpacity style={styles.bottomBtn} onPress={()=>this._collectAction()}>
                     <Image style={styles.bottomGoodImg} source={detail.hadCollect ? showConnectedImg : showConnectImg}/>
-                    <Text style={styles.bottomText}>收藏 · {detail.collectCount}</Text>
+                    <Text style={styles.bottomText}>{detail.hadCollect ? '已收藏' : '收藏'} · {detail.collectCount}</Text>
                 </TouchableOpacity>
             }
         </View>

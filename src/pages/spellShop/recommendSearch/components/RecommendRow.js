@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import StarImg from '../src/dj_03.png';
+import StringUtils from '../../../../utils/StringUtils';
 
 
 export default class RecommendRow extends Component {
@@ -28,9 +29,9 @@ export default class RecommendRow extends Component {
 
     renderIconItem = ({ item }) => {
         return (<TouchableOpacity onPress={() => {
-        }}>
-            {item.headImg ? <Image style={styles.itemIcon} source={{ uri: item.headImg || '' }}/> : <View
-                style={styles.itemIcon}/>}
+        }} style={[styles.itemIcon, { marginLeft: 15 }]}>
+            {StringUtils.isNoEmpty(item.headImg) ?
+                <Image style={styles.itemIcon} source={{ uri: item.headImg }}/> : null}
         </TouchableOpacity>);
     };
     _onPress = () => {
@@ -72,13 +73,19 @@ export default class RecommendRow extends Component {
                             showsHorizontalScrollIndicator={false}
                         />
                         <View style={{
-                            marginLeft: 100,
-                            width: 100,
-                            height: 5,
-                            borderRadius: 2,
-                            borderColor: '#D51234',
-                            marginTop: 6
-                        }} />
+                            flexDirection: 'row', alignSelf: 'center',
+                            width: ScreenUtils.autoSizeWidth(200), height: 5, marginTop: 6,
+                            borderRadius: 2, borderWidth: 0.5, borderColor: '#D51234'
+                        }}>
+                            <View style={{
+                                width: 44 / 100 * ScreenUtils.autoSizeWidth(200),
+                                backgroundColor: '#D51234'
+                            }}/>
+                        </View>
+                        <Text style={{
+                            marginTop: 8, marginBottom: 14.5, paddingHorizontal: 21.5,
+                            color: '#666666', fontSize: 10
+                        }}>{`距离下一次分红还差${1234}元`}</Text>
                     </View>
                     <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
                     <View style={{ width: 44 + 70, alignItems: 'center', justifyContent: 'center' }}>
@@ -186,7 +193,6 @@ const styles = StyleSheet.create({
     },
     itemIcon: {
         backgroundColor: '#eee',
-        marginLeft: 15,
         width: 40,
         height: 40,
         borderRadius: 20

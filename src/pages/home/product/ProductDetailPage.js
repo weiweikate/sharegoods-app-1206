@@ -3,7 +3,6 @@ import {
     View,
     StyleSheet,
     SectionList,
-    Modal,
     Image,
     FlatList,
     Text,
@@ -23,7 +22,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
 import DetailNavShowModal from './components/DetailNavShowModal';
-// import Modal from 'CommModal';
+
 export default class ProductDetailPage extends BasePage {
 
     $navigationBarOptions = {
@@ -33,13 +32,12 @@ export default class ProductDetailPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            modalVisible: false,
             data: {},
             goType: '',
             selectedIndex: 0,
             //活动数据
             activityData: {},
-            activityType: 0,//请求到数据查看类型
+            activityType: 0//请求到数据查看类型
         };
     }
 
@@ -131,10 +129,8 @@ export default class ProductDetailPage extends BasePage {
                 break;
             case 'gwc':
             case 'buy': {
-                this.setState({
-                    goType: type,
-                    modalVisible: true
-                });
+                this.state.goType = type;
+                this.SelectionPage.show(this.state.data, this._selectionViewConfirm);
             }
                 break;
         }
@@ -164,14 +160,6 @@ export default class ProductDetailPage extends BasePage {
             });
         }
     };
-
-    //选择规格关闭
-    _selectionViewClose = () => {
-        this.setState({
-            modalVisible: false
-        });
-    };
-
     //segment 详情0 参数1 选项
     _segmentViewOnPressAtIndex = (index) => {
         this.setState({
@@ -183,7 +171,7 @@ export default class ProductDetailPage extends BasePage {
         return <DetailHeaderView ref={(e) => {
             this.DetailHeaderView = e;
         }} data={this.state.data} activityData={this.state.activityData} activityType={this.state.activityType}
-                                 productActivityViewAction={this._productActivityViewAction}/>;
+                                 productActivityViewAction={this._productActivityViewAction} navigation={this.props.navigation}/>;
     };
 
     _renderSectionHeader = () => {
@@ -194,8 +182,13 @@ export default class ProductDetailPage extends BasePage {
         let { product } = this.state.data;
         product = product || {};
         if (this.state.selectedIndex === 0) {
-            return <HTML html={product.content} imagesMaxWidth={ScreenUtils.width}
-                         containerStyle={{ backgroundColor: '#fff' }}/>;
+            if (product.content) {
+                return <HTML html={product.content} imagesMaxWidth={ScreenUtils.width}
+                             containerStyle={{ backgroundColor: '#fff' }}/>;
+            } else {
+                return null;
+            }
+
         } else {
             return <View style={{ backgroundColor: 'white' }}>
                 <FlatList
@@ -279,14 +272,7 @@ export default class ProductDetailPage extends BasePage {
                              sections={[{ data: [{}] }]}
                              scrollEventThrottle={10}/>
                 <DetailBottomView bottomViewAction={this._bottomViewAction}/>
-
-                <Modal
-                    animationType="none"
-                    transparent={true}
-                    visible={this.state.modalVisible}>
-                    <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
-                                   selectionViewClose={this._selectionViewClose} data={this.state.data}/>
-                </Modal>
+                <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'Image'}
                                 imageJson={{

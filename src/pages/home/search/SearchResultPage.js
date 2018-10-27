@@ -5,7 +5,6 @@ import {
     Image,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    Modal,
     Text
 } from 'react-native';
 import BasePage from '../../../BasePage';
@@ -24,7 +23,8 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import ShopCartStore from '../../shopCart/model/ShopCartStore';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import { observer } from 'mobx-react';
-// import Modal from 'CommModal';
+import ScreenUtils from '../../../utils/ScreenUtils';
+
 @observer
 export default class SearchResultPage extends BasePage {
 
@@ -36,8 +36,8 @@ export default class SearchResultPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            showTop: false,
             isHorizontal: false,
-            modalVisible: false,
             loadingState: PageLoadingState.loading,
             netFailedInfo: {},
             //排序类型(1.综合 2.销量 3. 价格)
@@ -120,11 +120,8 @@ export default class SearchResultPage extends BasePage {
         }).then((data) => {
             this.$loadingDismiss();
             data.data = data.data || {};
-            this.setState({
-                selectionData: data.data,
-                modalVisible: !this.state.modalVisible,
-                productId: productId
-            });
+            this.state.productId = productId;
+            this.SelectionPage.show(data.data, this._selectionViewConfirm);
         }).catch((data) => {
             this.$loadingDismiss();
             this.$toastShow(data.msg);
@@ -163,14 +160,6 @@ export default class SearchResultPage extends BasePage {
             'productId': this.state.productId
         };
         shopCartCacheTool.addGoodItem(temp);
-    };
-
-    //选择规格关闭
-    _selectionViewClose = () => {
-
-        this.setState({
-            modalVisible: false
-        });
     };
 
     _onPressToGwc = () => {
@@ -229,7 +218,7 @@ export default class SearchResultPage extends BasePage {
                 </View>);
         } else {
             return (
-                <View>
+                <View style={{ flex: 1 }}>
                     <ResultSegmentView segmentOnPressAtIndex={this._segmentOnPressAtIndex}/>
                     {renderViewByLoadingState(this._getPageStateOptions(), this._renderListView)}
                 </View>
@@ -249,6 +238,8 @@ export default class SearchResultPage extends BasePage {
 
     _renderListView = () => {
         return <FlatList ref={(ref) => this.FlatListShow = ref}
+                         onScroll={this._onScroll}
+                         scrollEventThrottle={10}
                          style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
                          renderItem={this._renderItem}
                          showsVerticalScrollIndicator={false}
@@ -257,6 +248,22 @@ export default class SearchResultPage extends BasePage {
                          key={this.state.isHorizontal ? 'hShow' : 'vShow'}
                          data={this.state.productList}/>;
     };
+
+    _onScroll = (event) => {
+        let Y = event.nativeEvent.contentOffset.y;
+        let isShow;
+        if (Y < ScreenUtils.height) {
+            isShow = false;
+        } else {
+            isShow = true;
+        }
+        if (isShow !== this.state.showTop) {
+            this.setState({
+                showTop: isShow
+            });
+        }
+    };
+
 
     _render() {
         return (
@@ -292,18 +299,12 @@ export default class SearchResultPage extends BasePage {
                             }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
                         </View>}
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this._onPressToTop}>
+                    {this.state.showTop ? <TouchableOpacity onPress={this._onPressToTop}>
                         <Image style={{ marginTop: 5 }} source={toTop}/>
-                    </TouchableOpacity>
+                    </TouchableOpacity> : null}
+
                 </View>
-                <Modal
-                    animationType="none"
-                    transparent={true}
-                    onRequestClose={() => this.setState({ modalVisible: false })}
-                    visible={this.state.modalVisible}>
-                    <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
-                                   selectionViewClose={this._selectionViewClose} data={this.state.selectionData}/>
-                </Modal>
+                <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </View>
         );
     }

@@ -11,7 +11,6 @@ import {
     View,
     ScrollView,
     TouchableOpacity,
-    Modal,
     DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../BasePage';
@@ -33,7 +32,7 @@ import BusinessUtils from '../../mine/components/BusinessUtils';
 
 import OrderApi from '../api/orderApi';
 import SelectionPage from '../../home/product/SelectionPage';
-import HomeAPI from "../../home/api/HomeAPI";
+import HomeAPI from '../../home/api/HomeAPI';
 import EmptyUtils from '../../../utils/EmptyUtils';
 
 class AfterSaleServicePage extends BasePage {
@@ -42,7 +41,6 @@ class AfterSaleServicePage extends BasePage {
         this.state = {
             isShowSingleSelctionModal: false,
             isShowTakePhotoModal: false,
-            isShowExchangeTypeModal: false,
             pageType: this.params.pageType ? this.params.pageType : 0, //  0(退款),1(退货退款),2(换货)
             activeProduct: ['', '退回商品需由买家承担运费，请确保不影响商品完好', '仅限更换同款相同价格商品'],
             reason: ['退款原因', '退货原因', '换货原因'],
@@ -57,12 +55,12 @@ class AfterSaleServicePage extends BasePage {
             selectionData: {}, //规格数据
             exchangePriceId: this.params.exchangePriceId,
             exchangeSpec: this.params.exchangeSpec,
-            exchangeSpecImg: this.params.exchangeSpecImg,
+            exchangeSpecImg: this.params.exchangeSpecImg
         };
         this.loadSelectionData = this.loadSelectionData.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
         this.loadPageData();
     }
@@ -136,16 +134,23 @@ class AfterSaleServicePage extends BasePage {
                 return (
                     <View>
                         {this.renderWideLine()}
-                        <TouchableOpacity style={{height:48,backgroundColor:color.white,justifyContent:'space-between',flexDirection:'row',alignItems:'center'}} onPress={()=>this.exchangeType()}>
-                            <UIText value={'更换型号'} style={{color:color.black_222,fontSize:13,marginLeft:16}}/>
-                            <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-                                <UIText style={{color:color.black_222,fontSize:13,marginRight:5}} value={this.state.exchangeSpec || '请选择'}/>
-                                <UIImage source={arrow_right} style={{height:10,width:7,marginRight:15}}/>
+                        <TouchableOpacity style={{
+                            height: 48,
+                            backgroundColor: color.white,
+                            justifyContent: 'space-between',
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }} onPress={() => this.exchangeType()}>
+                            <UIText value={'更换型号'} style={{ color: color.black_222, fontSize: 13, marginLeft: 16 }}/>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                                <UIText style={{ color: color.black_222, fontSize: 13, marginRight: 5 }}
+                                        value={this.state.exchangeSpec || '请选择'}/>
+                                <UIImage source={arrow_right} style={{ height: 10, width: 7, marginRight: 15 }}/>
                             </View>
                         </TouchableOpacity>
-                        <View style = {{height: 30, alignItems: 'center', flexDirection: 'row'}}>
-                            <UIText value = {'*'} style = {{fontSize: 12, color: '#D51243', marginLeft: 15}}/>
-                            <UIText value = {'请确保退换商品不影响二次销售'} style = {{fontSize: 12, color: '#999999'}}/>
+                        <View style={{ height: 30, alignItems: 'center', flexDirection: 'row' }}>
+                            <UIText value={'*'} style={{ fontSize: 12, color: '#D51243', marginLeft: 15 }}/>
+                            <UIText value={'请确保退换商品不影响二次销售'} style={{ fontSize: 12, color: '#999999' }}/>
                         </View>
                         {/*{this.renderWideLine()}*/}
                         {/*<AddressItem*/}
@@ -199,7 +204,7 @@ class AfterSaleServicePage extends BasePage {
                     <AutoExpandingInput
                         style={styles.inputTextStyle}
                         onChangeText={text => this.setState({ remark: text })}
-                        defaultValue = {this.state.remark}
+                        defaultValue={this.state.remark}
                         placeholder={'填写说明文字...'}
                         maxLength={120}
                         underlineColorAndroid={'transparent'}
@@ -238,7 +243,7 @@ class AfterSaleServicePage extends BasePage {
     };
     renderGoodsList = () => {
         let productData = this.state.productData;
-        return(
+        return (
             <GoodsItem
                 uri={productData.specImg}
                 goodsName={productData.productName}
@@ -247,7 +252,7 @@ class AfterSaleServicePage extends BasePage {
                 goodsNum={productData.num}
                 //onPress={() => this.jumpToProductDetailPage(this.params.pageData.productId)}
             />
-        )
+        );
     }
     ;
     renderCommit = () => {
@@ -261,7 +266,7 @@ class AfterSaleServicePage extends BasePage {
         );
     };
     renderModal = () => {
-        let productData = this.state.productData;
+        // let productData = this.state.productData;
         let returnReasons = ['多拍/错拍/不想要', '快递/物流一直未收到', '未按约定时间发货', '商品/破损/少件/污渍等', '货物破损已拒签', '假冒品牌/产品', '退运费', '发票问题', '其他'];
         return (
             <View>
@@ -273,7 +278,7 @@ class AfterSaleServicePage extends BasePage {
                     }}
                     commit={(index) => {
                         this.setState({ isShowSingleSelctionModal: false });
-                        this.setState({ returnReason: returnReasons[index]});
+                        this.setState({ returnReason: returnReasons[index] });
                     }}
                 />
                 <TakePhoneModal
@@ -289,30 +294,19 @@ class AfterSaleServicePage extends BasePage {
                     }}
                 />
                 {/*<ExchangeTypeModal*/}
-                    {/*isShow={this.state.isShowExchangeTypeModal}*/}
-                    {/*detail={[{ title: '颜色分类', arr: ['金色', '红色', '黑色', '银色'] }, {*/}
-                        {/*title: '规格',*/}
-                        {/*arr: ['32G', '64G', '128G', '256G']*/}
-                    {/*}, { title: '型号', arr: ['大陆', '国外', '港版'] }]}*/}
-                    {/*closeWindow={() => {*/}
-                        {/*this.setState({ isShowExchangeTypeModal: false });*/}
-                    {/*}}*/}
-                    {/*commit={(data) => {*/}
-                        {/*this.setState({ isShowExchangeTypeModal: false });*/}
-                    {/*}}*/}
+                {/*isShow={this.state.isShowExchangeTypeModal}*/}
+                {/*detail={[{ title: '颜色分类', arr: ['金色', '红色', '黑色', '银色'] }, {*/}
+                {/*title: '规格',*/}
+                {/*arr: ['32G', '64G', '128G', '256G']*/}
+                {/*}, { title: '型号', arr: ['大陆', '国外', '港版'] }]}*/}
+                {/*closeWindow={() => {*/}
+                {/*this.setState({ isShowExchangeTypeModal: false });*/}
+                {/*}}*/}
+                {/*commit={(data) => {*/}
+                {/*this.setState({ isShowExchangeTypeModal: false });*/}
+                {/*}}*/}
                 {/*/>*/}
-                <Modal
-                animationType="none"
-                transparent={true}
-                onRequestClose={()=>this.setState({isShowExchangeTypeModal:false})}
-                visible={this.state.isShowExchangeTypeModal}>
-                <SelectionPage selectionViewConfirm={this._selectionViewConfirm}
-                               selectionViewClose={() => {this.setState({ isShowExchangeTypeModal: false })}} data={this.state.selectionData}
-                               afterAmount={productData.num}
-                               afterPrice={productData.price}
-                               type={'after'}
-                />
-            </Modal>
+                <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             </View>
 
         );
@@ -320,10 +314,12 @@ class AfterSaleServicePage extends BasePage {
 
     //选择规格确认
     _selectionViewConfirm = (amount, priceId, exchangeSpec, exchangeSpecImg) => {
-        this.setState({ exchangePriceId: priceId,
-                    exchangeSpec: exchangeSpec,
-                 exchangeSpecImg: exchangeSpecImg})
-    }
+        this.setState({
+            exchangePriceId: priceId,
+            exchangeSpec: exchangeSpec,
+            exchangeSpecImg: exchangeSpecImg
+        });
+    };
 
     _render() {
         return (
@@ -353,19 +349,21 @@ class AfterSaleServicePage extends BasePage {
         });
     };
     exchangeType = () => {
-        if (EmptyUtils.isEmpty(this.state.selectionData)){
+        if (EmptyUtils.isEmpty(this.state.selectionData)) {
             this.loadSelectionData();
-            return;
-        }else {
-            this.setState({ isShowExchangeTypeModal: true });
+        } else {
+            this.SelectionPage.show(this.state.selectionData, this._selectionViewConfirm, {
+                afterAmount: this.state.productData.num,
+                afterPrice: this.state.productData.price,
+                type: 'after'
+            });
         }
-
     };
 
     loadPageData() {
         let that = this;
         OrderApi.subOrderLookDetial({ orderProductId: this.params.orderProductId }).then((result) => {
-            that.setState({productData: result.data});
+            that.setState({ productData: result.data });
         }).catch(error => {
 
         });
@@ -380,10 +378,15 @@ class AfterSaleServicePage extends BasePage {
             id: this.params.productId
         }).then((data) => {
             this.$loadingDismiss();
-            data.data = data.data || {}
+            data.data = data.data || {};
             this.setState({
-                selectionData: data.data,
-                isShowExchangeTypeModal: true,
+                selectionData: data.data
+            }, () => {
+                this.SelectionPage.show(this.state.selectionData, this._selectionViewConfirm, {
+                    afterAmount: this.state.productData.num,
+                    afterPrice: this.state.productData.price,
+                    type: 'after'
+                });
             });
         }).catch((data) => {
             this.$loadingDismiss();
@@ -403,13 +406,13 @@ class AfterSaleServicePage extends BasePage {
             // }
             let smallImg = this.state.imageArr[i].smallImg || this.state.imageArr[i].imageThumbUrl;
             let originalImg = this.state.imageArr[i].originalImg || this.state.imageArr[i].imageUrl;
-            imgList.push({originalImg, smallImg});
+            imgList.push({ originalImg, smallImg });
         }
         const params = {
             imgList: imgList,
             orderProductId: this.params.orderProductId,
             remark: this.state.remark,
-            returnReason: this.state.returnReason,
+            returnReason: this.state.returnReason
         };
         // if (StringUtils.isEmpty(params.remark)) {
         //     NativeModules.commModule.toast('请选择说明');
@@ -423,12 +426,12 @@ class AfterSaleServicePage extends BasePage {
         //     NativeModules.commModule.toast('请上传照片');
         //     return;
         // }
-       if(this.params.isEdit){
-           params.returnProductId = this.state.returnProductId;
-       }
+        if (this.params.isEdit) {
+            params.returnProductId = this.state.returnProductId;
+        }
         /** 修改申请*/
-       if (this.params.isEdit){
-            if (this.params.pageType === 2){
+        if (this.params.isEdit) {
+            if (this.params.pageType === 2) {
                 params.exchangePriceId = this.state.exchangePriceId;
                 params.exchangeSpec = this.state.exchangeSpec;
                 params.exchangeSpecImg = this.state.exchangeSpecImg;
@@ -440,11 +443,11 @@ class AfterSaleServicePage extends BasePage {
 
             }).catch(e => {
                 this.$loadingDismiss();
-                this.$toastShow(e.msg)
+                this.$toastShow(e.msg);
             });
             return;
-       }
-       /** 提交申请、提交申请成功要通知订单刷新*/
+        }
+        /** 提交申请、提交申请成功要通知订单刷新*/
         switch (this.params.pageType) {
             /*
             todo 后端返回不规范
@@ -462,12 +465,12 @@ class AfterSaleServicePage extends BasePage {
                     DeviceEventEmitter.emit('OrderNeedRefresh');
                     this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                         returnProductId: response.data.id,
-                        pageType: 0,
+                        pageType: 0
                     });
 
                 }).catch(e => {
                     this.$loadingDismiss();
-                    this.$toastShow(e.msg)
+                    this.$toastShow(e.msg);
                 });
                 break;
             case 1:
@@ -477,11 +480,11 @@ class AfterSaleServicePage extends BasePage {
                     DeviceEventEmitter.emit('OrderNeedRefresh');
                     this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                         returnProductId: response.data.id,
-                        pageType: 1,
+                        pageType: 1
                     });
                 }).catch(e => {
                     this.$loadingDismiss();
-                    this.$toastShow(e.msg)
+                    this.$toastShow(e.msg);
                 });
                 break;
             case 2:
@@ -494,11 +497,11 @@ class AfterSaleServicePage extends BasePage {
                     DeviceEventEmitter.emit('OrderNeedRefresh');
                     this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                         returnProductId: response.data.id,
-                        pageType: 2,
+                        pageType: 2
                     });
                 }).catch(e => {
                     this.$loadingDismiss();
-                    this.$toastShow(e.msg)
+                    this.$toastShow(e.msg);
                 });
                 break;
         }

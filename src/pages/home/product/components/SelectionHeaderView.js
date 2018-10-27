@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import {
     Text,
     View,
-    Image
+    Image,
+    TouchableOpacity
 } from 'react-native';
 import StringUtils from '../../../../utils/StringUtils';
+import icon_close from '../res/icon_close.png';
 
 /**
  * 规格选择头部view
@@ -82,6 +84,9 @@ export default class SelectionHeaderView extends Component {
                             marginTop: 8
                         }}>{selectStrListTemp.join(',')}</Text>
                     </View>
+                    <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }} onPress = {this.props.closeSelectionPage}>
+                        <Image source={icon_close}/>
+                    </TouchableOpacity>
                 </View>
             </View>
         );

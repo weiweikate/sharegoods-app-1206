@@ -37,8 +37,8 @@ const GoodsListItem = props => {
         shutOffTime,
         cancelTime,
         callBack,
-        autoReceiveTime,
-        //deliverTime,
+        // autoReceiveTime,
+        deliverTime,//发货时间
     } = props;
     this.state = { pageStateString: '27:45:45后自动取消订单' };
 
@@ -148,7 +148,7 @@ const GoodsListItem = props => {
     };
     this.renderLine = () => {
         return (
-            <View style={{ flex: 1, height: 1, backgroundColor: color.line }}/>
+            <View style={{ flex: 1, height: 0.5, backgroundColor: color.line }}/>
         );
     };
     this.renderWideLine = () => {
@@ -223,7 +223,7 @@ const GoodsListItem = props => {
                 break;
 
             case 4:
-                aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(autoReceiveTime / 1000)}
+                aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(deliverTime / 1000)}
                                     style={{ fontSize: 13, color: color.black_222 }}/>;
                 break;
             case 5:
