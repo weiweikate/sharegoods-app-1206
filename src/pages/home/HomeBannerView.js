@@ -2,9 +2,8 @@
  * 首页轮播图
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
-
+import { View, StyleSheet, Image } from 'react-native';
+import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
 import { bannerModule, homeModule } from './Modules'
@@ -18,53 +17,29 @@ export default class HomeBannerView extends Component {
         super(props);
         bannerModule.loadBannerList();
     }
-
     state = {
         index : 0
     }
-
-    _bannerAction(item, index) {
-        
-    }
-
     _renderViewPageItem = (item, index) => {
-        return <TouchableOpacity onPress={() => {
-            this._bannerAction(item, index);
-        }}>
-            <Image
-                source={{ uri: item }}
-                style={styles.img}
-                resizeMode="cover"
-            />
-        </TouchableOpacity>;
-    };
-
+        return <Image source={{ uri: item.imgUrl }} style={styles.img} resizeMode="cover"/>
+    }
     _onDidChange = (item, index) => {
-        console.log('_onDidChange', index)
         this.setState({index: index})
     }
-
     _onPressRow = (item) => {
-        console.log('_onPressRow', item)
         const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
         let params = homeModule.paramsNavigate(item);
         const { navigation } = this.props;
         navigation.navigate(router, params);
     }
-
-
     render() {
         const { bannerList } = bannerModule;
         if (bannerList.length === 0) {
             return null;
         }
-        let items = [];
-        bannerList.map((value, index) => {
-            items.push(value.imgUrl);
-        });
         return <View>
             <XGSwiper style={styles.swiper}
-                dataSource={items}
+                dataSource={bannerList}
                 width={ ScreenUtils.width }
                 height={ bannerHeight }
                 renderRow={this._renderViewPageItem.bind(this)}
