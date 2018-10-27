@@ -41,7 +41,6 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.bean.WXLoginBean;
-import com.meeruu.commonlib.utils.LogUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -286,7 +285,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 bean.setOpenid(openid);
                 bean.setSystemVersion(android.os.Build.VERSION.RELEASE);
                 bean.setNickName(name);
-                LogUtils.d("==========" + JSON.toJSONString(bean));
                 callback.invoke(JSON.toJSONString(bean));
             }
 
