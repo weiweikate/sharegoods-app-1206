@@ -4,7 +4,7 @@ import {
     StyleSheet,
     TouchableWithoutFeedback,
     Text,
-    ScrollView,
+    ScrollView
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import SelectionHeaderView from './components/SelectionHeaderView';
@@ -32,11 +32,20 @@ export default class SelectionPage extends Component {
             selectStrList: [],//选择的名称值
             selectSpecList: [],//选择规格所对应的库存,
             maxStock: 0,//最大库存
+
             amount: 1
         };
     }
 
-    show = (data, callBack, propData) => {
+    show = (data, callBack, propData = {}) => {
+        //type
+        //需要重置旧数据
+        if (propData.needUpdate) {
+            this.state.selectList = [];
+            this.state.selectStrList = [];
+            this.state.selectSpecList = [];
+            this.state.maxStock = 0;
+        }
         const { specMap = {}, priceList = [] } = data;
         let specMapTemp = JSON.parse(JSON.stringify(specMap));
         let priceListTemp = JSON.parse(JSON.stringify(priceList));
@@ -63,7 +72,7 @@ export default class SelectionPage extends Component {
             modalVisible: true,
             data: data,
             callBack: callBack,
-            propData: propData || {},
+            propData: propData,
             specMap: specMapTemp,
             priceList: priceListTemp,
             tittleList: tittleList
@@ -107,8 +116,10 @@ export default class SelectionPage extends Component {
                     //库存中有&&剩余数量不为0
                     if (item1.specIds.indexOf(item.id) !== -1 && item1.stock !== 0) {
                         //如果是退换货多一次判断
-                        if (type === 'after' && afterPrice === item.originalPrice) {
-                            item.canSelected = true;
+                        if (type === 'after') {
+                            if (afterPrice === item.originalPrice) {
+                                item.canSelected = true;
+                            }
                         } else {
                             item.canSelected = true;
                         }
@@ -194,20 +205,20 @@ export default class SelectionPage extends Component {
 
     //确认订单
     _selectionViewConfirm = () => {
-        const { afterPrice, type } = this.state.propData;
-
+        const { afterAmount, type } = this.state.propData;
+        if (this.state.amount > 200) {
+            bridge.$toast('最多只能购买200件~');
+            return;
+        }
         if (this.state.amount === 0) {
             bridge.$toast('请选择数量');
             return;
         }
-        if (this.state.amount > this.state.maxStock) {
+        if ((type === 'after' && afterAmount > this.state.maxStock) || this.state.amount > this.state.maxStock) {
             bridge.$toast('超出最大库存~');
             return;
         }
-        if (type === 'after' && afterPrice > this.state.maxStock) {
-            bridge.$toast('超出最大库存~');
-            return;
-        }
+
         let priceArr = [];
         let isAll = true;
 
@@ -271,7 +282,7 @@ export default class SelectionPage extends Component {
     };
 
     render() {
-        const { product, price } = this.state.data;
+        const { product = {}, price = '' } = this.state.data;
         const { afterAmount, type } = this.state.propData;
         return (
             <Modal

@@ -171,7 +171,7 @@ export default class ProductDetailPage extends BasePage {
         return <DetailHeaderView ref={(e) => {
             this.DetailHeaderView = e;
         }} data={this.state.data} activityData={this.state.activityData} activityType={this.state.activityType}
-                                 productActivityViewAction={this._productActivityViewAction}/>;
+                                 productActivityViewAction={this._productActivityViewAction} navigation={this.props.navigation}/>;
     };
 
     _renderSectionHeader = () => {
