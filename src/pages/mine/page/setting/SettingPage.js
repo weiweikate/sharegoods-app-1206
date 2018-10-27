@@ -18,6 +18,7 @@ import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
 import { NavigationActions } from 'react-navigation';
+import CommModal from '../../../../comm/components/CommModal';
 
 
 class SettingPage extends BasePage {
@@ -31,9 +32,15 @@ class SettingPage extends BasePage {
             phoneError: false,
             passwordError: false,
             isShowLoginOutModal: false,
-            memorySize: 0
+            memorySize: 0,
+            showUpdate: false
         };
 
+        NativeModules.commModule.getAppVersion((version) => {
+            this.setState({
+                version
+            });
+        });
     }
 
     $navigationBarOptions = {
@@ -87,6 +94,14 @@ class SettingPage extends BasePage {
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
                         <UIText value={'关于我们'} style={styles.blackText}/>
+                        <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                    </TouchableOpacity>
+                    {this.renderLine()}
+                    <TouchableOpacity style={styles.viewStyle}
+                                      onPress={() => this.getNewVersion()}>
+                        <UIText value={'版本检测'} style={styles.blackText}/>
+                        <UIText value={this.state.version ? 'v' + this.state.version : ''}
+                                style={[styles.blackText]}/>
                         <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                     </TouchableOpacity>
                 </View>
@@ -194,6 +209,14 @@ class SettingPage extends BasePage {
                         this.setState({ isShowLoginOutModal: false });
                     }}
                 />
+                <CommModal
+                    animationType='fade'
+                    transparent={true}
+                    visible={this.state.isShow}>
+                    <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
+                        {this.renderContent()}
+                    </View>
+                </CommModal>
             </View>
 
         );
@@ -208,10 +231,20 @@ class SettingPage extends BasePage {
     jumptToAboutUsPage = () => {
         this.$navigate('mine/setting/AboutUsPage');
     };
-    //账户设置
+    // 账户设置
     jumpToAccountSettingPage = () => {
         this.$navigate('mine/setting/AccountSettingPage');
     };
+
+    // 版本检测
+    // getNewVersion = () => {
+    //     // Android调用原生检测版本
+    //     MineApi.getVersion().then((data) => {
+    //         // 调用原生dialog
+    //     }).catch((data) => {
+    //         bridge.$toast(data.msg);
+    //     });
+    // };
 }
 
 const styles = StyleSheet.create({

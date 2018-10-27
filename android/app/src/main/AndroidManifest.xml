@@ -86,7 +86,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".MainActivity"
             android:clipToPadding="true"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:fitsSystemWindows="true"

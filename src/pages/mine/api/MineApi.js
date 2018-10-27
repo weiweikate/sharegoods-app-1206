@@ -72,7 +72,9 @@ const api = {
     // 验证idCard是否正确
     judgeIdCard: ['/user/judgeIdCard', { method: 'post' }],
     // 设置初始交易密码
-    initSalesPassword: ['/user/initSalesPassword', { method: 'post' }]
+    initSalesPassword: ['/user/initSalesPassword', { method: 'post' }],
+    // 获取app版本
+    getVersion: ['/core/sysAppVsersion/getVersionUpdate', { method: 'get' }]
 
 
 };
