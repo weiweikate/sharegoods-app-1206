@@ -206,7 +206,7 @@ export default class MyOrdersListView extends Component {
                     payTime: item.payTime,
                     sendTime: item.sendTime,
                     finishTime: item.finishTime,
-                    deliverTime: item.deliverTime,
+                    deliverTime: item.deliverTime?item.deliverTime:item.sendTime,
                     autoReceiveTime:item.autoReceiveTime?item.autoReceiveTime:item.sendTime,
                     orderStatus: item.status,
                     freightPrice: item.freightPrice,
