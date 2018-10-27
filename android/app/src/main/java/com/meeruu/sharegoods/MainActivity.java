@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.ui;
+package com.meeruu.sharegoods;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,7 +14,6 @@ import com.facebook.react.ReactActivityDelegate;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.StatusBarUtils;
-import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.utils.LoadingDialog;
 import com.umeng.socialize.UMShareAPI;
