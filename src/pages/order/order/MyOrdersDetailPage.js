@@ -183,7 +183,6 @@ class MyOrdersDetailPage extends BasePage {
         );
     };
     renderItem = ({ item, index }) => {
-        console.log('showItem',item);
         if (this.state.orderType === 3 || this.state.orderType === 98) {
             return (
                 <GoodsItem
@@ -680,6 +679,7 @@ class MyOrdersDetailPage extends BasePage {
                         returnProductStatus: item.returnProductStatus,
                         returnType: item.returnType,
                         status: item.status,
+                        activityCode:item.activityCode
                     });
                 });
             }
@@ -825,16 +825,16 @@ class MyOrdersDetailPage extends BasePage {
     }
 
     clickItem = (index, item) => {
-
+      console.log('clickItem',index,item);
         switch (this.state.orderType) {
             case 1://秒杀
             case 2://降价拍
                 this.$navigate('topic/TopicDetailPage', {
                     activityType: this.state.orderType,
-                    activityCode: this.state.viewData.list[index].code
+                    activityCode: this.state.viewData.list[index].activityCode
                 });
                 break;
-            case 3://礼包
+            case 3://不是礼包，5才是
                 this.$navigate('topic/TopicDetailPage', {
                     activityType: 3,
                     activityCode: this.state.viewData.orderProductList[0].activityCode,
@@ -844,7 +844,7 @@ class MyOrdersDetailPage extends BasePage {
 
                 break;
 
-            case 98://？？优惠套餐??礼包
+            case 98://？？优惠套餐??
                 this.$navigate('topic/TopicDetailPage', {
                     activityType: 3,
                     activityCode: this.state.viewData.orderProductList[0].activityCode,
