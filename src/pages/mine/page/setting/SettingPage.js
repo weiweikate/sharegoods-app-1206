@@ -18,7 +18,6 @@ import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
 import { NavigationActions } from 'react-navigation';
-import CommModal from '../../../../comm/components/CommModal';
 
 
 class SettingPage extends BasePage {
@@ -35,12 +34,6 @@ class SettingPage extends BasePage {
             memorySize: 0,
             showUpdate: false
         };
-
-        NativeModules.commModule.getAppVersion((version) => {
-            this.setState({
-                version
-            });
-        });
     }
 
     $navigationBarOptions = {
@@ -96,14 +89,14 @@ class SettingPage extends BasePage {
                         <UIText value={'关于我们'} style={styles.blackText}/>
                         <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                     </TouchableOpacity>
-                    {this.renderLine()}
-                    <TouchableOpacity style={styles.viewStyle}
-                                      onPress={() => this.getNewVersion()}>
-                        <UIText value={'版本检测'} style={styles.blackText}/>
-                        <UIText value={this.state.version ? 'v' + this.state.version : ''}
-                                style={[styles.blackText]}/>
-                        <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
-                    </TouchableOpacity>
+                    {/*{this.renderLine()}*/}
+                    {/*<TouchableOpacity style={styles.viewStyle}*/}
+                    {/*onPress={() => this.getNewVersion()}>*/}
+                    {/*<UIText value={'版本检测'} style={styles.blackText}/>*/}
+                    {/*<UIText value={'v' + DeviceInfo.getVersion()}*/}
+                    {/*style={[styles.blackText]}/>*/}
+                    {/*<Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>*/}
+                    {/*</TouchableOpacity>*/}
                 </View>
                 <TouchableOpacity style={{
                     marginTop: 42,
@@ -209,14 +202,14 @@ class SettingPage extends BasePage {
                         this.setState({ isShowLoginOutModal: false });
                     }}
                 />
-                <CommModal
-                    animationType='fade'
-                    transparent={true}
-                    visible={this.state.isShow}>
-                    <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
-                        {this.renderContent()}
-                    </View>
-                </CommModal>
+                {/*<CommModal*/}
+                {/*animationType='fade'*/}
+                {/*transparent={true}*/}
+                {/*visible={this.state.isShow}>*/}
+                {/*<View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>*/}
+                {/*{this.renderContent()}*/}
+                {/*</View>*/}
+                {/*</CommModal>*/}
             </View>
 
         );

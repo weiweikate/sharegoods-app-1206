@@ -138,7 +138,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void netCommParas(Callback callback) {
         final NetCommonParamsBean paramsBean = new NetCommonParamsBean();
-        callback.invoke(JSON.toJSON(paramsBean));
+        callback.invoke(JSON.toJSONString(paramsBean));
     }
 
     /**
