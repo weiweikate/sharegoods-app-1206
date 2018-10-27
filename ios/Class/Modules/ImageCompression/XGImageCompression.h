@@ -9,5 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface XGImageCompression : NSObject
-
++(void)RN_ImageCompressionWithPath:(NSString *)path
+                                fileSize:(NSInteger)fileSize
+                               limitSize:(NSInteger)limitSize;
 @end
