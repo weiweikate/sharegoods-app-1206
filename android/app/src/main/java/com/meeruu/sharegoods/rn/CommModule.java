@@ -1,8 +1,18 @@
 package com.meeruu.sharegoods.rn;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.Toast;
@@ -18,6 +28,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.gson.Gson;
 import com.meeruu.commonlib.bean.IdNameBean;
+import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.CaptureScreenImageEvent;
@@ -26,6 +37,7 @@ import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,8 +96,7 @@ public class CommModule extends ReactContextBaseJavaModule {
      * @param msg
      */
     public void nativeCallRn(String msg) {
-        mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(EVENT_NAME, msg);
+        mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(EVENT_NAME, msg);
     }
 
     /**
@@ -143,13 +154,11 @@ public class CommModule extends ReactContextBaseJavaModule {
      * @param //msg
      */
     public void nativeCallRnUpdateHeadImg(String imgUrl) {
-        mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(EVENT_UPDATE_IMG_URL, imgUrl);
+        mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(EVENT_UPDATE_IMG_URL, imgUrl);
     }
 
     public void nativeCallRnLoadPhoto(List<String> photos) {
-        mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(EVENT_ADD_PHOTO, photos);
+        mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(EVENT_ADD_PHOTO, photos);
     }
 
     /**
@@ -158,8 +167,7 @@ public class CommModule extends ReactContextBaseJavaModule {
      * @param //msg
      */
     public void nativeCallRnSelectContacts(String phone) {
-        mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(EVENT_SELECT_CONTACTS, phone);
+        mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(EVENT_SELECT_CONTACTS, phone);
     }
 
     /**
@@ -190,9 +198,7 @@ public class CommModule extends ReactContextBaseJavaModule {
      * @param params       传惨
      */
     public void sendTransMisson(ReactContext reactContext, String eventName, @Nullable WritableMap params) {
-        reactContext
-                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit(eventName, params);
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
 
     }
 
@@ -241,5 +247,116 @@ public class CommModule extends ReactContextBaseJavaModule {
                 StatusBarUtils.setTransparent(getCurrentActivity());
             }
         });
+    }
+
+    /**
+     *图片压缩
+     */
+    @ReactMethod
+    public void RN_ImageCompression(String filePath, int fileSize, int maxSize, Callback callback) {
+
+        File file = new File(filePath);
+        if(!file.exists()){
+            Toast.makeText(mContext,"文件不存在",Toast.LENGTH_LONG).show();
+            callback.invoke();
+            return;
+        }
+        if(isVideo(filePath)){
+            Toast.makeText(mContext,"头像不能上传视频",Toast.LENGTH_LONG).show();
+            callback.invoke();
+            return;
+        }
+
+        if(isGIF(filePath)){
+            Toast.makeText(mContext,"头像不支持GIF格式图片",Toast.LENGTH_LONG).show();
+            callback.invoke();
+            return;
+        }
+
+        if (!TextUtils.isEmpty(filePath)) {
+            callback.invoke();
+//            Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+//            Bitmap newBtp = BitmapUtils.compressBitmap(bitmap,maxSize);
+//            if(BitmapUtils.saveBitmap(newBtp,filePath,mContext)){
+//                callback.invoke();
+//            }else {
+//                callback.invoke();
+//            }
+        }
+    }
+
+
+    public boolean isGIF(String path) {
+        if (path.toLowerCase().endsWith(".gif")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isImage(@NonNull String path) {
+        final String[] imageTypes = {".png", ".jpg", ".jpeg"};
+        String filePath = path.toLowerCase();
+        for (int i = 0; i < imageTypes.length; i++) {
+            if (filePath.endsWith(imageTypes[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isVideo(@NonNull String path) {
+        final String[] videoTypes = {"avi","wmv","mpeg","mp4","mov","mkv","flv","f4v","m4v","rmvb","rm","3gp"};
+        String filePath = path.toLowerCase();
+        for (int i = 0; i < videoTypes.length; i++) {
+            if (filePath.endsWith(videoTypes[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public Uri getMediaUriFromPath(Context context, String path) {
+        Uri mediaUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        Cursor cursor = context.getContentResolver().query(mediaUri,
+                null,
+                MediaStore.Images.Media.DISPLAY_NAME + "= ?",
+                new String[] {path.substring(path.lastIndexOf("/") + 1)},
+                null);
+
+        Uri uri = null;
+        if(cursor.moveToFirst()) {
+            uri = ContentUris.withAppendedId(mediaUri,
+                    cursor.getLong(cursor.getColumnIndex(MediaStore.Images.Media._ID)));
+        }
+        cursor.close();
+        return uri;
+    }
+
+
+    private String getRealFilePath(final Context context, final Uri uri) {
+        if (null == uri) {
+            return null;
+        }
+        final String scheme = uri.getScheme();
+        String data = null;
+        if (scheme == null) {
+            data = uri.getPath();
+        } else if (ContentResolver.SCHEME_FILE.equals(scheme)) {
+            data = uri.getPath();
+        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
+            Cursor cursor = context.getContentResolver().query(uri, new String[]{MediaStore.Images.ImageColumns.DATA}, null, null, null);
+            if (null != cursor) {
+                if (cursor.moveToFirst()) {
+                    int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                    if (index > -1) {
+                        data = cursor.getString(index);
+                    }
+                }
+                cursor.close();
+            }
+        }
+        return data;
     }
 }

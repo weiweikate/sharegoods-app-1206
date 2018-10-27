@@ -80,7 +80,7 @@
         </provider>
 
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name=".wxapi.WXPayEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
