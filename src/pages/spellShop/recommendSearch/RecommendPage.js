@@ -25,6 +25,7 @@ import UIImage from '../../../components/ui/UIImage';
 import SpellShopApi from '../api/SpellShopApi';
 import HomeAPI from '../../home/api/HomeAPI';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
+import StringUtils from '../../../utils/StringUtils';
 
 export default class RecommendPage extends BasePage {
 
@@ -150,7 +151,7 @@ export default class RecommendPage extends BasePage {
         //已缴纳保证金
         if (SpellStatusModel.storeStatus === 2) {
             this.$navigate('spellShop/shopSetting/SetShopNamePage');
-        } else if (SpellStatusModel.storeId && SpellStatusModel.storeStatus !== 0) {//有店铺店铺没关闭
+        } else if (SpellStatusModel.storeId && StringUtils.isNoEmpty(SpellStatusModel.storeStatus) && SpellStatusModel.storeStatus !== 0) {//有店铺店铺没关闭
             this.props.navigation.popToTop();
         } else {
             this.$navigate('spellShop/openShop/OpenShopExplainPage');

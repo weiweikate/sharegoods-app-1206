@@ -13,7 +13,8 @@ import ViewPager from '../../../components/ui/ViewPager';
 import xjt_03 from '../res/xjt_03.png';
 import ActivityView from './ActivityView';
 import { isNoEmpty } from '../../../utils/StringUtils';
-import user from '../../../model/user';
+// import user from '../../../model/user';
+
 const { px2dp } = ScreenUtils;
 /**
  * 商品详情头部view
@@ -63,16 +64,17 @@ export default class TopicDetailHeaderView extends Component {
     render() {
         const { activityType } = this.props;
         let bannerImgList, tittle, freightValue, monthSale;
-        let nowPrice, oldPrice;
+        let nowPrice, oldPrice, levelTypeName;
 
         if (activityType === 3) {
-            const { imgFileList = [{}], name, levelPrice, originalPrice, freightTemplatePrice, saleNum } = this.props.data || {};
+            const { imgFileList = [{}], name, levelPrice, originalPrice, freightTemplatePrice, saleNum, userLevelTypeName } = this.props.data || {};
             bannerImgList = imgFileList;
             tittle = name;
             nowPrice = levelPrice;
             oldPrice = originalPrice;
             freightValue = freightTemplatePrice;
             monthSale = saleNum;
+            levelTypeName = userLevelTypeName;
         } else {
             const { productImgList = [{}], freight, monthSaleTotal, product = {} } = this.props.data || {};
             const { name } = product;
@@ -115,7 +117,7 @@ export default class TopicDetailHeaderView extends Component {
                                     backgroundColor: 'red',
                                     color: '#FFFFFF',
                                     fontSize: 10, paddingHorizontal: 5
-                                }}>{isNoEmpty(user.levelName) ? `${user.levelName}价` : '原价'}</Text>
+                                }}>{levelTypeName}</Text>
                             </View> : null}
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text style={{
