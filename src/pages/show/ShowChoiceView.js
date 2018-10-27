@@ -13,7 +13,7 @@ import maskImg from '../../comm/res/show_mask.png'
 const Card = ({item, press}) => <TouchableOpacity style={styles.card} onPress={()=> press && press()}>
     <ImageBackground style={styles.imgView} source={{uri:item.coverImg}} resizeMode={'cover'}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
-        <Text style={styles.dis}>{item.title}</Text>
+        <Text style={styles.dis} numberOfLines={2}>{item.pureContent ? item.pureContent.slice(0, 100) : ''}</Text>
     </ImageBackground>
     <View style={styles.profileView}>
         <Image style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg: ''}}/>
