@@ -44,6 +44,10 @@ export default class RecentSearchView extends Component {
             bridge.$toast('超出最大库存~');
             return;
         }
+        if (this.state.amount === 200) {
+            bridge.$toast('最多只能购买200件~');
+            return;
+        }
         this.setState({
             amount: this.state.amount + 1
         }, () => {
@@ -61,14 +65,26 @@ export default class RecentSearchView extends Component {
     };
 
     _onEndEditing = () => {
-        //空0或者最大库存
-        if (this.state.amount > this.props.maxCount || StringUtils.isEmpty(this.state.amount) || this.state.amount === 0) {
+        //空0
+        if (StringUtils.isEmpty(this.state.amount) || this.state.amount === 0) {
             this.setState({ amount: 1 }, () => {
                 this.props.amountClickAction(this.state.amount);
             });
-            if (this.state.amount > this.props.maxCount) {
-                bridge.$toast('超出最大库存~');
-            }
+            return true;
+        }
+        //小于最大值&&>200
+        if (this.state.amount > 200 && this.props.maxCount > 200) {
+            bridge.$toast('最多只能购买200件~');
+            this.setState({ amount: 200 }, () => {
+                this.props.amountClickAction(this.state.amount);
+            });
+            return true;
+        } else if (this.state.amount > this.props.maxCount) {//超出库存
+            bridge.$toast('超出最大库存~');
+            this.setState({ amount: this.props.maxCount }, () => {
+                this.props.amountClickAction(this.state.amount);
+            });
+            return true;
         }
     };
 
@@ -104,7 +120,7 @@ export default class RecentSearchView extends Component {
                             value={`${this.state.amount}`}
                             onEndEditing={this._onEndEditing}
                             keyboardType='numeric'
-                            editable = {type !== 'after'}//false不可编辑
+                            editable={type !== 'after'}//false不可编辑
                         />
                     </View>
                     <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>

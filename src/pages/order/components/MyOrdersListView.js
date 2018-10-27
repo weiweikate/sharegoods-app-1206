@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, NativeModules, Alert } from 'react-native';
+import { View, NativeModules, Alert, DeviceEventEmitter } from 'react-native';
 import RefreshList from '../../../components/ui/RefreshList';
 import constants from '../../../constants/constants';
 import StringUtils from '../../../utils/StringUtils';
@@ -37,11 +37,13 @@ export default class MyOrdersListView extends Component {
             }
         };
     };
+
     renderItem = ({ item, index }) => {
         return (
             <GoodsListItem
                 id={item.id}
                 orderNum={item.orderNum}
+                orderType={item.orderType}
                 orderCreateTime={item.orderCreateTime}
                 orderStatus={item.orderStatus}
                 freightPrice={item.freightPrice}
@@ -216,6 +218,7 @@ export default class MyOrdersListView extends Component {
                     pickedUp: item.pickedUp,
                     outTradeNo: item.outTradeNo,
                     shutOffTime:item.shutOffTime,
+                    orderType:item.orderType,
                 });
 
             });
@@ -228,6 +231,7 @@ export default class MyOrdersListView extends Component {
     componentDidMount() {
         //网络请求，业务处理
         this.getDataFromNetwork();
+        DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.getDataFromNetwork());
         this.timeDown();
     }
     timeDown(){
@@ -238,10 +242,12 @@ export default class MyOrdersListView extends Component {
     }
     componentWillUnmount(){
         this.interval && clearInterval(this.interval);
+        DeviceEventEmitter.removeAllListeners('OrderNeedRefresh')
     }
 
 
     getDataFromNetwork = () => {
+        console.log('orderlistrefresh');
         let params = {
             userId: user.id,
             page: this.state.currentPage,
@@ -455,7 +461,7 @@ export default class MyOrdersListView extends Component {
                     let returnProductStatus = item.returnProductStatus || 99999;
                     if (returnProductStatus < 6 && returnProductStatus != 3) {
                         let content = '确认收货将关闭' + returnTypeArr[item.returnType] + '申请，确认收货吗？';
-                        Alert.alert('提示',{ content }, [
+                        Alert.alert('提示',`${ content }`, [
                             {
                                 text: '取消', onPress: () => {
                                 }
@@ -474,6 +480,7 @@ export default class MyOrdersListView extends Component {
                                 }
                             }
                         ], { cancelable: true });
+                        return;
                     } else {
                         this.setState({ isShowReceiveGoodsModal: true });
                     }
