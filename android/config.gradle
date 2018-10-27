@@ -20,7 +20,6 @@ ext {
             //此处是27.+，需要在rn中做排除
             support : 'com.android.support:appcompat-v7:27.1.1',
             rn      : 'com.facebook.react:react-native:+',
-            gson    : 'com.google.code.gson:gson:+',
             design  : 'com.android.support:design:27.1.1',
             eventbus: 'org.greenrobot:eventbus:3.0.0',
             zxing   : 'com.google.zxing:core:3.+',
@@ -30,5 +29,6 @@ ext {
             ucommon : 'com.umeng.sdk:common:latest.integration',
             walle   : 'com.meituan.android.walle:library:+',
             sophix  : 'com.aliyun.ams:alicloud-android-hotfix:3.+',
+            fastjson: 'com.alibaba:fastjson:1.1.68.android'
     ]
 }

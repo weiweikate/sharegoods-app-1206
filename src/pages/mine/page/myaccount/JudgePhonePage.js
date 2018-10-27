@@ -126,7 +126,16 @@ export default class JudgePhoneNumPage extends BasePage {
                 phone: this.state.telText
             }).then((data) => {
                 if (user.hadSalePassword) {
-                    this.$navigate('mine/account/JudgeIDCardPage');
+                    // 暂时不做实名校验
+                    this.$navigate('mine/account/SetOrEditPayPwdPage', {
+                        userName: '',
+                        cardNum: '',
+                        oldPwd: '',
+                        tips: '重新设置新的交易密码',
+                        title: '重置交易密码',
+                        from: 'edit'
+                    });
+                    // this.$navigate('mine/account/JudgeIDCardPage');
                 } else {
                     // 直接设置交易密码
                     this.$navigate('mine/account/SetOrEditPayPwdPage', {

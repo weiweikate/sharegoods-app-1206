@@ -5,15 +5,14 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.alipay.sdk.app.PayTask;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.google.gson.Gson;
 import com.meeruu.commonlib.BaseApplication;
 import com.meeruu.sharegoods.bean.WXPayBean;
-
 import com.meeruu.sharegoods.event.AppPayEvent;
 import com.meeruu.sharegoods.utils.aipay.PayResult;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -58,7 +57,6 @@ public class AppPayModule extends ReactContextBaseJavaModule {
         final Handler mHandler = new Handler() {
             public void handleMessage(Message msg) {
                 AppPayEvent event = new AppPayEvent();
-                Gson gson = new Gson();
                 switch (msg.what) {
                     case SDK_PAY_FLAG: {
                         PayResult payResult = new PayResult((String) msg.obj);
@@ -73,7 +71,7 @@ public class AppPayModule extends ReactContextBaseJavaModule {
                             event.setMsg("支付成功");
                             event.setSdkCode(9000);
                             event.setAliPayResult(null);
-                            promise.resolve(gson.toJson(event));
+                            promise.resolve(JSON.toJSON(event));
                             Toast.makeText(BaseApplication.appContext, "支付成功", Toast.LENGTH_SHORT).show();
                         } else {
                             // 判断resultStatus 为非“9000”则代表可能支付失败
@@ -83,7 +81,7 @@ public class AppPayModule extends ReactContextBaseJavaModule {
                                 event.setMsg("支付结果确认中");
                                 event.setSdkCode(8000);
                                 event.setAliPayResult(null);
-                                promise.resolve(gson.toJson(event));
+                                promise.resolve(JSON.toJSON(event));
                                 Toast.makeText(BaseApplication.appContext, "支付结果确认中", Toast.LENGTH_SHORT).show();
 
                             } else {
@@ -92,7 +90,7 @@ public class AppPayModule extends ReactContextBaseJavaModule {
                                 event.setMsg("支付失败");
                                 event.setSdkCode(0);
                                 event.setAliPayResult(null);
-                                promise.resolve(gson.toJson(event));
+                                promise.resolve(JSON.toJSON(event));
                                 Toast.makeText(BaseApplication.appContext, "支付失败", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -103,7 +101,7 @@ public class AppPayModule extends ReactContextBaseJavaModule {
                         event.setMsg(msg.obj + "");
                         event.setSdkCode(0);
                         event.setAliPayResult(null);
-                        promise.resolve(gson.toJson(event));
+                        promise.resolve(JSON.toJSON(event));
                         Toast.makeText(BaseApplication.appContext, "检查结果为：" + msg.obj, Toast.LENGTH_SHORT).show();
                         break;
                     }
@@ -138,8 +136,7 @@ public class AppPayModule extends ReactContextBaseJavaModule {
     public void appWXPay(final String params1, final Promise promise) {
         //通过WXAPIFactory工厂，获取IWXAPI的实例
         iwxapi = WXAPIFactory.createWXAPI(mContext, App_ID, true);
-        Gson gson = new Gson();
-        final WXPayBean params = gson.fromJson(params1, WXPayBean.class);
+        final WXPayBean params = JSON.parseObject(params1, WXPayBean.class);
         //下面是设置必要的参数，也就是前面说的参数,这几个参数从何而来请看上面说明
         //https://pay.weixin.qq.com/wiki/doc/api/app/app.php?chapter=9_12&index=2
         //将应用的appId注册到微信

@@ -1,43 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="gray">#333333</color>
-    <color name="transparent">#00000000</color>
-    <color name="white">#ffffff</color>
-    <color name="blue">#0fab99</color>
-    <color name="gray_title">#f0f0f0</color>
-    <color name="gray_line">#cccccc</color>
-    <color name="gray_text">#666666</color>
-    <color name="blue_bankcard">#16cab5</color>
-    <color name="red_button">#e76852</color>
-    <color name="gray_f6_white">#f6f6f6</color>
-    <color name="black_text">#333333</color>
-    <color name="gray_text2">#999999</color>
-    <color name="color999999">#999999</color>
-    <color name="red_order">#e76852</color>
-    <color name="sub_text_color">#e5e5e5</color>
-    <color name="bg_Main4">#f1eef5</color>
-    <color name="text_color">#434343</color>
-    <color name="bg_Main">#F5A02D</color>
-    <color name="price">#E76852</color>
-    <color name="red">#FF0000</color>
-    <color name="category2_gray">#959595</color>
-    <color name="floralwhite">#FFFAF0</color>
-    <color name="black">#000000</color>
-    <color name="top">#C7C7CD</color>
-    <color name="del">#FC3C39</color>
-    <color name="red_home_text">#e52301</color>
-    <color name="add_cart">#E67952</color>"
-    <color name="lijigoumai">#E66852</color>
-    <color name="translucent_background">#80000000</color>
-    <color name="yellow">#ffa900</color>
-    <color name="gray_text_order">#ababab</color>
-    <color name="red_text_order">#ff0202</color>
-    <color name="black_text_order">#434242</color>
-    <color name="gray_text_title">#979797</color>
-    <color name="gray_text_title2">#414141</color>
-
+    <!-- 主色调颜色 -->
+    <color name="app_main_color">#D51243</color>
+    <!-- 横向进度跳背景颜色 -->
+    <color name="bg_progress">#F0F0F0</color>
 
 </resources>

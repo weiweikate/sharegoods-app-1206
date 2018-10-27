@@ -7,24 +7,21 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.google.gson.Gson;
 import com.meeruu.commonlib.bean.IdNameBean;
 import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
-import com.meeruu.sharegoods.event.CaptureScreenImageEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,7 +131,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void netCommParas(Callback callback) {
         final NetCommonParamsBean paramsBean = new NetCommonParamsBean();
-        callback.invoke(new Gson().toJson(paramsBean));
+        callback.invoke(JSON.toJSON(paramsBean));
     }
 
     /**
@@ -242,4 +239,52 @@ public class CommModule extends ReactContextBaseJavaModule {
             }
         });
     }
+
+//    @ReactMethod
+//    public void updateable(final String downUrl, String version, String des) {
+//        this.lastVersion = version;
+//        //提示当前有版本更新
+//        File apkfile_file = SDCardUtils.getFileDirPath("MR/file");
+//        String fileName = AppUtils.getAppName(getCurrentActivity()) + "_" + lastVersion + ".apk";
+//        final String filePath = apkfile_file.getAbsolutePath() + File.separator + fileName;
+//        final boolean exist = FileUtils.fileIsExists(filePath);
+//        String positiveTxt = getString(R.string.update_vs_now);
+//        String title = getString(R.string.version_update);
+//        if (exist) {
+//            apkPath = filePath;
+//            title = getString(R.string.version_install);
+//            positiveTxt = getString(R.string.install_now);
+//        }
+//        updateDialog = DialogCreator.createAppBasicDialog(this, title, des,
+//                positiveTxt, getString(R.string.not_update), new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        switch (v.getId()) {
+//                            case R.id.positive_btn:
+//                                if (exist) {
+//                                    handleInstallApk();
+//                                } else {
+//                                    BaseApplication.getInstance().setDownload(true);
+//                                    BaseApplication.getInstance().setDownLoadUrl(downUrl);
+//                                    //开始下载
+//                                    Intent it = new Intent(SettingActivity.this, VersionUpdateService.class);
+//                                    it.putExtra("version", lastVersion);
+//                                    startService(it);
+//                                    bindService(it, conn, Context.BIND_AUTO_CREATE);
+//                                }
+//                                updateDialog.dismiss();
+//                                break;
+//                            case R.id.negative_btn:
+//                                updateDialog.dismiss();
+//                                break;
+//                            default:
+//                                break;
+//                        }
+//                    }
+//                });
+//        ((TextView) updateDialog.findViewById(R.id.dialog_info)).setGravity(Gravity.CENTER_VERTICAL);
+//        if (!isFinishing()) {
+//            updateDialog.show();
+//        }
+//    }
 }
