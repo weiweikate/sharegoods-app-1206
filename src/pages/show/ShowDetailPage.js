@@ -123,7 +123,7 @@ export default class ShowDetailPage extends Component {
                 :
                 <TouchableOpacity style={styles.bottomBtn} onPress={()=>this._goodAction()}>
                     <Image style={styles.bottomGoodImg} source={detail.hadLike ? showDidGoodImg : showGoodImg}/>
-                    <Text style={styles.bottomText}>赞 · {detail.likeCount}</Text>
+                    <Text style={styles.bottomText}> {detail.hadLike ? '已赞' : '赞'} · {detail.likeCount}</Text>
                 </TouchableOpacity>
             }
             <View style={styles.line}/>
@@ -136,7 +136,7 @@ export default class ShowDetailPage extends Component {
                 :
                 <TouchableOpacity style={styles.bottomBtn} onPress={()=>this._collectAction()}>
                     <Image style={styles.bottomGoodImg} source={detail.hadCollect ? showConnectedImg : showConnectImg}/>
-                    <Text style={styles.bottomText}>收藏 · {detail.collectCount}</Text>
+                    <Text style={styles.bottomText}>{detail.hadCollect ? '已收藏' : '收藏'} · {detail.collectCount}</Text>
                 </TouchableOpacity>
             }
         </View>

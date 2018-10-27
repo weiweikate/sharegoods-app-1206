@@ -4,7 +4,7 @@ import {
     StyleSheet,
     TouchableWithoutFeedback,
     Text,
-    ScrollView,
+    ScrollView
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import SelectionHeaderView from './components/SelectionHeaderView';
@@ -271,7 +271,7 @@ export default class SelectionPage extends Component {
     };
 
     render() {
-        const { product, price } = this.state.data;
+        const { product = {}, price = '' } = this.state.data;
         const { afterAmount, type } = this.state.propData;
         return (
             <Modal
