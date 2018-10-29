@@ -51,7 +51,10 @@ const productTypes = {
 };
 const downPriceParam = {
     [statues.noBegin]: 'startPrice',
-    [statues.isBeginning]: 'markdownPrice'
+    [statues.isBeginning]: 'markdownPrice',
+    [statues.haveSoldOut]:'markdownPrice',
+    [statues.timeOver]:'markdownPrice',
+    [statues.handOver]:'markdownPrice'
 };
 const typeName = {
     [productTypes.skill]: 'seckillPrice',
