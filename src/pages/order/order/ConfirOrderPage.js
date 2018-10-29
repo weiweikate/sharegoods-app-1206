@@ -70,11 +70,17 @@ export default class ConfirOrderPage extends BasePage {
                     onPress={() => this.selectAddress()}>
                     <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }}/>
                     <View style={{ flex: 1, marginLeft: 15, marginRight: 20 }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <UIText value={'收货人：' + this.state.viewData.express.receiverName}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 15, color: '#222222' }}/>
-                            <UIText value={this.state.viewData.express.receiverNum}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 15, color: '#222222' }}/>
+                        <View style={{ flexDirection: 'row',alignItems:'center', }}>
+                            <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
+                                <Text style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 15, color: '#222222'}}>收货人:</Text>
+                                <UIText value={ this.state.viewData.express.receiverName}
+                                           style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 15, color: '#222222'}}/>
+                            </View>
+                           <View style={{flex:1,alignItems:'flex-end'}}>
+                               <UIText value={this.state.viewData.express.receiverNum}
+                                       style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 15, color: '#222222'}}/>
+                           </View>
+
                         </View>
                         <UIText
                             value={

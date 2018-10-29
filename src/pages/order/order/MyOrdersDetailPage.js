@@ -740,7 +740,7 @@ class MyOrdersDetailPage extends BasePage {
                         returnProductStatus: item.returnProductStatus,
                         returnType: item.returnType,
                         status: item.status,
-                        activityCode:item.activityCode
+                        activityCode:item.activityCode,
                     });
                 });
             }
@@ -937,9 +937,10 @@ class MyOrdersDetailPage extends BasePage {
         switch (this.state.orderType) {
             case 1://秒杀
             case 2://降价拍
-                this.$navigate('topic/TopicDetailPage', {
+                this.$navigate('home/product/ProductDetailPage', {
                     activityType: this.state.orderType,
-                    activityCode: this.state.viewData.list[index].activityCode
+                    // activityCode: this.state.viewData.list[index].activityCode//
+                    productId: this.state.viewData.list[index].productId
                 });
                 break;
             case 3://不是礼包，5才是
@@ -1015,6 +1016,7 @@ class MyOrdersDetailPage extends BasePage {
                 break;
             case 6:
                 console.log(this.state.viewData.list);
+                let j=0;
                 let returnTypeArr = ['', '退款', '退货', '换货'];
                 this.state.viewData.list.forEach((item, index) => {
                     let returnProductStatus = item.returnProductStatus || 99999;
@@ -1039,11 +1041,13 @@ class MyOrdersDetailPage extends BasePage {
                                 }
                             }
                         ], { cancelable: true });
+                        j++;
                         return;
-                    } else {
-                        this.setState({ isShowReceiveGoodsModal: true });
                     }
                 });
+                if(j==0) {
+                this.setState({ isShowReceiveGoodsModal: true });
+            }
                 // this.setState({ isShowReceiveGoodsModal: true });
                 break;
             case 7:

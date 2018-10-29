@@ -68,6 +68,8 @@ export default class SignInPage extends BasePage {
         this.loadPageData();
     }
 
+
+
     loadPageData = () => {
         this.getSignData();
         this.reSaveUserInfo();
@@ -109,15 +111,12 @@ export default class SignInPage extends BasePage {
     };
 
     reSaveUserInfo = () => {
-        MineApi.getUser().then(res => {
+        MineApi.getUser({},{nav:this.props.navigation,callback: this.loadPageData }).then(res => {
             if (res.code == 10000) {
                 let data = res.data;
                 user.saveUserInfo(data);
             }
         }).catch(err => {
-            if (err.code === 10009) {
-                this.props.navigation.navigate("login/login/LoginPage", { callback: this.refresh });
-            }
         });
     };
 
@@ -224,7 +223,7 @@ export default class SignInPage extends BasePage {
                 </Text>
                 <View style={styles.couponTextWrapper}>
                     <Text style={styles.couponNameTextStyle}>
-                        现金抵扣卷
+                        优惠券
                     </Text>
                     <Text style={styles.couponTagTextStyle}>
                         全程通用/无时间限制
@@ -236,7 +235,7 @@ export default class SignInPage extends BasePage {
                         消耗秀豆
                     </Text>
                     <Text style={{ color: "#D51243", fontSize: px2dp(12), includeFontPadding: false }}>
-                        {`-- ${this.state.exchangeData*100} --`}
+                        {`-- ${this.state.exchangeData} --`}
                     </Text>
                     <TouchableWithoutFeedback onPress={this.exchangeCoupon}>
                         <View style={styles.convertButtonStyle}>
@@ -297,7 +296,7 @@ export default class SignInPage extends BasePage {
     _reminderRender=()=>{
         return(
             <Text style={styles.reminderStyle}>
-                {`注：${this.state.exchangeData*100}秀豆兑换1张券，无兑换限制，点击即可兑换`}
+                {`注：${this.state.exchangeData}秀豆兑换1张券，无兑换限制，点击即可兑换`}
             </Text>
         );
     }
