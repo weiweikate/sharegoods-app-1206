@@ -117,7 +117,7 @@ export default class SelectionPage extends Component {
                     if (item1.specIds.indexOf(item.id) !== -1 && item1.stock !== 0) {
                         //如果是退换货多一次判断
                         if (type === 'after') {
-                            if (afterPrice === item.price) {
+                            if (afterPrice === item1.price) {
                                 item.canSelected = true;
                             }
                         } else {
