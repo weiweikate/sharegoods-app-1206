@@ -8,9 +8,10 @@ import {
     TouchableOpacity,
     ListView, TouchableHighlight,
     Text,
-    TextInput
+    TextInput,
+    RefreshControl
 } from 'react-native';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ColorUtil from '../../../utils/ColorUtil';
@@ -23,6 +24,7 @@ import shopCartStore from '../model/ShopCartStore';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import bridge from '../../../utils/bridge';
+import { homeModule } from '../../home/Modules';
 
 
 const activityCode = {
@@ -85,7 +87,35 @@ export default class ShopCartPage extends BasePage {
                 }
             }
         );
+
+        // const {statusBarHeight} = ScreenUtils
+        // if (this.contentList){
+        //     this.contentList.refreshControl = <RefreshControl
+        //         refreshing={homeModule.isRefreshing}
+        //         onRefresh={this._onRefresh.bind(this)}
+        //         progressViewOffset={statusBarHeight + 44}
+        //         colors={['#d51243']}
+        //         title="下拉刷新"
+        //         tintColor="#999"
+        //         titleColor="#999"
+        //     />
+        // }
     }
+
+    getRefreshController = () => {
+        const { statusBarHeight } = ScreenUtils;
+        return (
+            <RefreshControl
+                refreshing={homeModule.isRefreshing}
+                onRefresh={this._onRefresh.bind(this)}
+                progressViewOffset={statusBarHeight + 44}
+                colors={['#d51243']}
+                title="下拉刷新"
+                tintColor="#999"
+                titleColor="#999"
+            />
+        );
+    };
 
     componentWillUnmount() {
         this.didBlurSubscription.remove();
@@ -122,6 +152,7 @@ export default class ShopCartPage extends BasePage {
 
     _renderListView = () => {
         const tempArr = this.ds.cloneWithRows(shopCartStore.cartData);
+        const { statusBarHeight } = ScreenUtils;
         return (
             <SwipeListView
                 style={{ backgroundColor: ColorUtil.Color_f7f7f7 }}
@@ -145,9 +176,24 @@ export default class ShopCartPage extends BasePage {
                 )}
                 listViewRef={(listView) => this.contentList = listView}
                 rightOpenValue={-75}
+                swipeRefreshControl={
+                    <RefreshControl
+                        refreshing={homeModule.isRefreshing}
+                        onRefresh={() => {
+                            this._refreshFun();
+                        }
+                        }
+                        progressViewOffset={statusBarHeight + 44}
+                        colors={['#d51243']}
+                        title="下拉刷新"
+                        tintColor="#999"
+                        titleColor="#999"
+                    />
+                }
             />
         );
     };
+
 
     _renderShopCartBottomMenu = () => {
         let hiddeLeft = true;
@@ -234,9 +280,6 @@ export default class ShopCartPage extends BasePage {
         shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
     };
     _renderValidItem = (itemData, rowId, rowMap) => {
-        console.log('开始render购物车行');
-        console.log(itemData);
-        console.log('来了render购物车行');
         return (
             <View>
                 <TouchableHighlight
@@ -449,6 +492,7 @@ export default class ShopCartPage extends BasePage {
         );
     };
 
+
     /**
      * 获取秒杀是否开始或者结束
      * @param itemData
@@ -468,6 +512,14 @@ export default class ShopCartPage extends BasePage {
             return 2;
         }
 
+    };
+    /**
+     * 下拉刷新
+     * @param itemData
+     * @private
+     */
+    _refreshFun = () => {
+        shopCartCacheTool.getShopCartGoodsListData();
     };
 
     _jumpToProductDetailPage = (itemData) => {

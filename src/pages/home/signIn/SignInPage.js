@@ -68,6 +68,8 @@ export default class SignInPage extends BasePage {
         this.loadPageData();
     }
 
+
+
     loadPageData = () => {
         this.getSignData();
         this.reSaveUserInfo();
@@ -109,15 +111,12 @@ export default class SignInPage extends BasePage {
     };
 
     reSaveUserInfo = () => {
-        MineApi.getUser().then(res => {
+        MineApi.getUser({},{nav:this.props.navigation,callback: this.loadPageData }).then(res => {
             if (res.code == 10000) {
                 let data = res.data;
                 user.saveUserInfo(data);
             }
         }).catch(err => {
-            if (err.code === 10009) {
-                this.props.navigation.navigate("login/login/LoginPage", { callback: this.refresh });
-            }
         });
     };
 
