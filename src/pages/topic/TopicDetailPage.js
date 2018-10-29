@@ -231,7 +231,7 @@ export default class TopicDetailPage extends BasePage {
                 <HTML html={this.state.activityType === 3 ? this.state.data.content : product.content}
                       imagesMaxWidth={ScreenUtils.width}
                       imagesInitialDimensions={ScreenUtils.width}
-                      containerStyle={{ backgroundColor: '#fff' }}/>;
+                      containerStyle={{ backgroundColor: '#fff' }}/>
                 <View style={{ backgroundColor: 'white' }}>
                     <Text
                         style={{ paddingVertical: 13, marginLeft: 15, fontSize: 15, color: '#222222' }}>价格说明</Text>
