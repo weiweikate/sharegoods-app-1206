@@ -8,7 +8,11 @@ import {
     StyleSheet,
     FlatList,
     Text,
-    RefreshControl
+    RefreshControl,
+    ImageBackground,
+    InteractionManager,
+    TouchableWithoutFeedback,
+    Image
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskHomeAlert from '../shareTask/components/ShareTaskHomeAlert';
@@ -26,9 +30,17 @@ import HomeGoodsView from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
 import ShowView from '../show/ShowView';
 import LinearGradient from 'react-native-linear-gradient';
-
+import Modal from 'CommModal';
+import XQSwiper from '../../components/ui/XGSwiper';
+import MessageApi from '../message/api/MessageApi';
+import EmptyUtils from '../../utils/EmptyUtils';
+import messageModalBg from './res/messageModalBg.png';
+import messageSelected from './res/messageSelected.png';
+import messageUnselected from './res/messageUnselected.png'
+import closeImg from '../shareTask/res/qiandao_btn_return_nor.png'
 const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
+
 
 @observer
 export default class HomePage extends Component {
@@ -36,8 +48,11 @@ export default class HomePage extends Component {
     st = 0;
     headerH = statusBarHeight + 44;
     state = {
-        isShow: true
-    }
+        isShow: true,
+        showMessage: false,
+        messageData: null,
+        messageIndex: 0
+    };
 
     constructor(props) {
         super(props);
@@ -48,27 +63,27 @@ export default class HomePage extends Component {
         this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
-              const {state } = payload
-              if (state && state.routeName === 'HomePage') {
-                  this.setState({isShow: true})
-              }
+                const { state } = payload;
+                if (state && state.routeName === 'HomePage') {
+                    this.setState({ isShow: true });
+                }
             }
-          );
+        );
 
         this.didBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
-              const {state } = payload
-              if (state && state.routeName === 'HomePage') {
-                  this.setState({isShow: false})
-              }
+                const { state } = payload;
+                if (state && state.routeName === 'HomePage') {
+                    this.setState({ isShow: false });
+                }
             }
-          );
+        );
     }
 
     componentWillUnmount() {
-        this.didBlurSubscription && this.didBlurSubscription.remove()
-        this.willFocusSubscription && this.willFocusSubscription.remove()
+        this.didBlurSubscription && this.didBlurSubscription.remove();
+        this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
     // 滑动头部透明度渐变
@@ -116,14 +131,14 @@ export default class HomePage extends Component {
         } else if (data.type === homeType.goods) {
             return <HomeGoodsView data={data.itemData} navigation={this.props.navigation}/>;
         } else if (data.type === homeType.show) {
-            const {isShow} = this.state
+            const { isShow } = this.state;
             return (<View>{
                 isShow
-                ?
-                <ShowView navigation={this.props.navigation}/>
-                :
-                <View/>
-            }</View>)
+                    ?
+                    <ShowView navigation={this.props.navigation}/>
+                    :
+                    <View/>
+            }</View>);
         } else if (data.type === homeType.goodsTitle) {
             return <View style={styles.titleView}>
                 <Text style={styles.title}>为你推荐</Text>
@@ -142,6 +157,80 @@ export default class HomePage extends Component {
 
     componentDidMount() {
         //this.shareModal.open();
+        InteractionManager.runAfterInteractions(() => {
+            this.getMessageData();
+        });
+    }
+
+    getMessageData = () => {
+        MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
+            this.setState({
+                showMessage: true,
+                messageData: [{content:'ssssss'}]
+            })
+            // if(!EmptyUtils.isEmptyArr(res.data.data)){
+            //     this.setState({
+            //         showMessage: true,
+            //         messageData: res.data.data
+            //     })
+            // }
+        });
+    };
+
+    messageModalRender() {
+        return (
+            <Modal visible={this.state.showMessage}>
+                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.setState({
+                            showMessage: false
+                        });
+                    }}>
+                        <Image source={closeImg} style={styles.messageCloseStyle}/>
+                    </TouchableWithoutFeedback>
+
+                    <ImageBackground source={messageModalBg} style={styles.messageBgStyle}>
+                        <XQSwiper
+                            style={{ alignSelf: 'center', marginTop: 71, width: px2dp(230), height: px2dp(211) }}
+                            height={px2dp(230)} width={px2dp(230)} renderRow={this.messageRender}
+                            dataSource={EmptyUtils.isEmptyArr(this.state.messageData) ? [] : this.state.messageData}
+                            loop={false}
+                            onWillChange={(item, index) => {
+                                this.setState({
+                                    messageIndex : index
+                                })
+                            }}
+                        />
+                        <View style={{flex:1}}/>
+                        {this.messageIndexRender()}
+                    </ImageBackground>
+                </View>
+            </Modal>
+        );
+    }
+
+    messageIndexRender(){
+        if(EmptyUtils.isEmptyArr(this.state.messageData)){
+            return null;
+        }
+        let indexs = [];
+        for(var i = 0;i<this.state.messageData.length;i++){
+            let view = i === this.state.messageIndex ? <Image source={messageSelected} style={styles.messageIndexStyle}/> : <Image source={messageUnselected} style={styles.messageIndexStyle}/>;
+            indexs.push(view);
+        }
+        return(
+            <View style={{flexDirection:'row',width:px2dp(120),justifyContent:this.state.messageData.length === 1 ? 'center':'space-between',marginBottom:px2dp(12),height:12,alignSelf:'center'}}>
+                {indexs}
+            </View>
+        )
+    }
+
+    messageRender(item, index) {
+        return (
+            <Text style={{ width: px2dp(230), height: px2dp(211) }}>
+                {item.content}
+            </Text>
+        );
     }
 
     render() {
@@ -179,6 +268,7 @@ export default class HomePage extends Component {
                                     onPress={() => {
                                         this.props.navigation.navigate('shareTask/ShareTaskListPage');
                                     }}/>
+                {this.messageModalRender()}
             </View>
         );
     }
@@ -232,5 +322,21 @@ const styles = StyleSheet.create({
         color: '#333',
         fontSize: px2dp(19),
         fontWeight: '600'
+    },
+    messageBgStyle: {
+        width: px2dp(300),
+        height: px2dp(405),
+        marginTop: px2dp(20)
+    },
+    messageCloseStyle: {
+        width: px2dp(24),
+        height: px2dp(24),
+        marginTop: px2dp(100),
+        alignSelf: 'flex-end',
+        marginRight: ((ScreenUtils.width) - px2dp(300)) / 2
+    },
+    messageIndexStyle:{
+        width:px2dp(12),
+        height:px2dp(12)
     }
 });
