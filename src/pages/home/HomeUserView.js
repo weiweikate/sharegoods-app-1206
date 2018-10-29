@@ -12,7 +12,7 @@ import { MemberModule } from './Modules';
 
 const Circle = ({ sizeStyle }) => <View style={[styles.circle, sizeStyle]}/>;
 
-const Level = ({ levelBox, levelStyle, sizeStyle, text }) => <View style={levelStyle}>
+const Level = ({ levelBox, levelStyle, sizeStyle, text }) => <View style={[styles.levelBox, levelStyle]}>
     <Text style={styles.level}>{text}</Text>
     <Circle sizeStyle={sizeStyle}/>
 </View>;
@@ -39,14 +39,14 @@ export default class HomeUserView extends Component {
         console.log('experience', experience, levelName, totalExp, experience / totalExp, levelNumber);
         experience = experience ? experience : 0;
         let items = [];
-        let width = 220 / levelCount;
-        let left = 19;
+        let width = px2dp(220) / levelCount;
+        let left = px2dp(19);
         memberLevels.map((level, index) => {
-            let levelStyle = { left: left };
-            console.log('memberLevels', left, levelNumber[index], totalExp, levelNumber[index] / totalExp);
+            let levelStyle = { left:  parseInt(left, 0) };
+            console.log('memberLevels', left, levelNumber[index], totalExp);
             items.push(<Level key={index} levelStyle={levelStyle} sizeStyle={styles.smallCircle} text={level.name}/>);
             if (index < memberLevels.length - 1) {
-                left += width - 2;
+                left += width + px2dp(5);
             }
         });
         return <View>
@@ -59,7 +59,7 @@ export default class HomeUserView extends Component {
                                 <ProgressBar
                                     fillStyle={{ backgroundColor: '#E7AE39', height: 4, borderRadius: 2 }}
                                     backgroundStyle={{ backgroundColor: '#9B6D26', borderRadius: 2, height: 4 }}
-                                    style={{ marginTop: 10, width: 220, height: 4 }}
+                                    style={{ marginTop: 10, width: px2dp(220), height: 4 }}
                                     progress={experience / totalExp}
                                 />
                             </View>
@@ -75,9 +75,9 @@ export default class HomeUserView extends Component {
 
                     <View
                         style={[styles.levelBottomTextBg,
-                            (experience > 0 && totalExp > 0)? {
-                                left:50/220 * 220 + 12
-                             }:null
+                            (experience > 0 && totalExp > 0) ? {
+                                left: 50 / 220 * 220 + 12
+                             } : null
                         ]}
                     >
                         <Text
@@ -107,7 +107,7 @@ let styles = StyleSheet.create({
         height: 16,
         width: 38,
         left: 12,
-        top: 65,
+        top: px2dp(70),
         borderRadius: 8,
         backgroundColor: 'white'
     },
