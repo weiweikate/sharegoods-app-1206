@@ -40,6 +40,9 @@ export default class ShowHotScrollView extends Component {
     render() {
         const { hotList } = this.hotModule
         let items = []
+        if (!hotList){
+            return <View/>
+        }
         hotList.map((item, index) => {
             items.push(<HotItem key={index} item={item} press={()=>this._hotItemAction(item)}/>)
         })
