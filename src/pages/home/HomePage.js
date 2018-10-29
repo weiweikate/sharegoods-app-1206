@@ -164,16 +164,12 @@ export default class HomePage extends Component {
 
     getMessageData = () => {
         MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
-            this.setState({
-                showMessage: true,
-                messageData: [{content:'ssssss'}]
-            })
-            // if(!EmptyUtils.isEmptyArr(res.data.data)){
-            //     this.setState({
-            //         showMessage: true,
-            //         messageData: res.data.data
-            //     })
-            // }
+            if(!EmptyUtils.isEmptyArr(res.data.data)){
+                this.setState({
+                    showMessage: true,
+                    messageData: res.data.data
+                })
+            }
         });
     };
 
