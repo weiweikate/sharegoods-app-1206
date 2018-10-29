@@ -202,7 +202,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 break;
             case 2:
                 UMMin umMin = new UMMin(params.getString("linkUrl"));
-                image = fixThumImage(params.getString("thumImage"));
+//                image = fixThumImage(params.getString("thumImage"));
+                image = fixThumImage(params.getString("hdImageURL"));
                 //兼容低版本的网页链接
                 umMin.setThumb(image);
                 // 小程序消息封面图片
@@ -217,6 +218,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 new ShareAction(mContext.getCurrentActivity()).withMedia(umMin).setPlatform(platform).setCallback(umShareListener).share();
 
         }
+    }
+
+    private void downLoadImageAndompress(){
+
     }
 
     //本地路径RUL如（/user/logo.png）2.网络URL如(http//:logo.png) 3.项目里面的图片 如（logo.png）
