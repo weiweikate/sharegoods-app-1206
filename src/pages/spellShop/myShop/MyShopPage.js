@@ -394,7 +394,7 @@ export default class MyShopPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: 'http://testh5.sharegoodsmall.com/#/register',
+                                    linkUrl: 'http://h5.sharegoodsmall.com/#/register',
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>

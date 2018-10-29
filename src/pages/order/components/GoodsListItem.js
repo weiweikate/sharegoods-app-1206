@@ -13,7 +13,7 @@ import {
     UIText
 } from '../../../components/ui';
 // import GoodsItem from './GoodsItem';
-import GoodsGrayItem from './GoodsGrayItem'
+import GoodsGrayItem from './GoodsGrayItem';
 import StringUtils from '../../../utils/StringUtils';
 import DateUtils from '../../../utils/DateUtils';
 import constants from '../../../constants/constants';
@@ -63,8 +63,6 @@ const GoodsListItem = props => {
     //28:45:45后自动取消订单
     this.renderMenu = () => {
         let nameArr = constants.viewOrderStatus[orderStatus].menuData;
-        let itemArr = [];
-        for (let i = 0; i < nameArr.length; i++) {
             if (orderStatus == 1) {
 
                 if (StringUtils.isNoEmpty(outTradeNo)) {
@@ -105,7 +103,7 @@ const GoodsListItem = props => {
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             {nameArr.map((item, i) => {
-                                return <TouchableOpacity key={i} style={{
+                                return <TouchableOpacity style={{
                                     borderWidth: 1,
                                     borderColor: item.isRed ? color.red : color.gray_DDD,
                                     height: 30,
@@ -115,7 +113,7 @@ const GoodsListItem = props => {
                                     paddingLeft: 20,
                                     paddingRight: 20
                                 }} onPress={() => {
-                                    operationMenuClick(item);
+                                    operationMenuClick(item)
                                 }}>
                                     <Text
                                         style={{ color: item.isRed ? color.red : color.gray_666 }}>{item.operation}</Text>
@@ -125,17 +123,18 @@ const GoodsListItem = props => {
                     </View>
                 );
             } else {
-                if(orderType==5||orderType==98){
+                if ((orderType === 5 || orderType === 98)&&orderStatus>4) {
                     nameArr = [{
-                        id:7,
-                        operation:'删除订单',
-                        isRed:false,
-                    }]
+                        id: 7,
+                        operation: '删除订单',
+                        isRed: false
+                    }];
                 }
-                itemArr.push(
-                    <TouchableOpacity key={i} style={{
+              return  <View style={{ flexDirection: 'row' }}>
+                {nameArr.map((item, i) => {
+                    return <TouchableOpacity style={{
                         borderWidth: 1,
-                        borderColor: nameArr[i].isRed ? color.red : color.gray_DDD,
+                        borderColor: item.isRed ? color.red : color.gray_DDD,
                         height: 30,
                         borderRadius: 10,
                         marginRight: 15,
@@ -143,16 +142,17 @@ const GoodsListItem = props => {
                         paddingLeft: 20,
                         paddingRight: 20
                     }} onPress={() => {
-                        operationMenuClick(nameArr[i]);
+                        operationMenuClick(item)
                     }}>
                         <Text
-                            style={{ color: nameArr[i].isRed ? color.red : color.gray_666 }}>{nameArr[i].operation}</Text>
-                    </TouchableOpacity>
-                );
+                            style={{ color: item.isRed ? color.red : color.gray_666 }}>{item.operation}</Text>
+                    </TouchableOpacity>;
+
+                }
+                )}
+              </View>
             }
 
-        }
-        return itemArr;
     };
     this.renderLine = () => {
         return (

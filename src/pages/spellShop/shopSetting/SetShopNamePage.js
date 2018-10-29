@@ -34,7 +34,7 @@ export default class SetShopNamePage extends BasePage {
         if (this.params.storeData) {
             this.$navigateBack();
         } else {
-            this.$navigateReset();
+            this.props.navigation.popToTop();
         }
     };
 
@@ -44,18 +44,28 @@ export default class SetShopNamePage extends BasePage {
 
     constructor(props) {
         super(props);
-        if (this.params.storeData) {//修改
-            this.state = {
-                text: this.params.storeData.name,
-                storeHeadUrl: this.params.storeData.headUrl,
-                storeHeadUrlOrigin: this.params.storeData.headUrl
-            };
-        } else {
-            this.state = {
-                text: null,
-                storeHeadUrl: null,
-                storeHeadUrlOrigin: null
-            };
+        this.state = {
+            text: null,
+            storeHeadUrl: null,
+            storeHeadUrlOrigin: null
+        };
+    }
+
+    componentDidMount() {
+        if (this.params.storeData) {
+            this.$loadingShow();
+            SpellShopApi.getById({ id: this.params.storeData.storeId }).then((data) => {
+                let dataTemp = data.data || {};
+                this.setState({
+                    text: dataTemp.name,
+                    storeHeadUrl: dataTemp.headUrl,
+                    storeHeadUrlOrigin: dataTemp.headUrl
+                });
+                this.$loadingDismiss();
+            }).catch((error) => {
+                this.$toastShow(error.msg);
+                this.$loadingDismiss();
+            });
         }
     }
 

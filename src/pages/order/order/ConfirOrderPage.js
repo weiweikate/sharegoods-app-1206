@@ -181,12 +181,11 @@ export default class ConfirOrderPage extends BasePage {
                         justifyContent: 'space-between',
                         alignItems: 'center'
                     }}
-                                      disabled={(this.state.viewData.list[0].restrictions & 2) == 2}
                                       onPress={() => this.jumpToCouponsPage('justOne')}>
                         <UIText value={'1元现金券'} style={styles.blackText}/>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <UIText
-                                value={(this.state.viewData.list[0].restrictions & 2) == 2 ? '不可使用1元现金券' : (this.state.tokenCoin ? this.state.tokenCoinText : '选择1元现金券')}
+                                value={ this.state.tokenCoin ? this.state.tokenCoinText : '选择1元现金券'}
                                 style={[styles.grayText, { marginRight: 15 }]}/>
                             <Image source={arrow_right}/>
                         </View>
@@ -747,7 +746,7 @@ export default class ConfirOrderPage extends BasePage {
                     console.log(typeof data);
                     if (parseInt(data) >=0) {
                         let params = { tokenCoin: parseInt(data), couponId: this.state.couponId };
-                        this.setState({ tokenCoin: data, tokenCoinText: '-' + data });
+                        this.setState({ tokenCoin: data, tokenCoinText:parseInt(data)>0?'-¥' + parseInt(data) :'选择使用1元券'});
                         this.loadPageData(params);
                     }
                 }

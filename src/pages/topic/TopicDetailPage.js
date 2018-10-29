@@ -229,6 +229,7 @@ export default class TopicDetailPage extends BasePage {
         if (this.state.selectedIndex === 0) {
             return <HTML html={this.state.activityType === 3 ? this.state.data.content : product.content}
                          imagesMaxWidth={ScreenUtils.width}
+                         imagesInitialDimensions={ScreenUtils.width}
                          containerStyle={{ backgroundColor: '#fff' }}/>;
         } else {
             return <View style={{ backgroundColor: 'white' }}>
@@ -367,12 +368,12 @@ export default class TopicDetailPage extends BasePage {
                                     imageUrlStr: productImgUrl,
                                     titleStr: productName,
                                     priceStr: `￥${productPrice}`,
-                                    QRCodeStr: `http://testh5.sharegoodsmall.com/product/${this.params.activityType}/${this.params.activityCode}`
+                                    QRCodeStr: `http://h5.sharegoodsmall.com/product/${this.params.activityType}/${this.params.activityCode}`
                                 }}
                                 webJson={{
                                     title: productName,
                                     dec: '商品详情',
-                                    linkUrl: `http://testh5.sharegoodsmall.com/product/${this.params.activityType}/${this.params.activityCode}`,
+                                    linkUrl: `http://h5.sharegoodsmall.com/product/${this.params.activityType}/${this.params.activityCode}`,
                                     thumImage: productImgUrl
                                 }}/>
                 <TopicDetailShowModal ref={(ref) => this.TopicDetailShowModal = ref}/>

@@ -75,6 +75,11 @@ export default class ShopRecruitPage extends BasePage {
         });
     };
 
+    _clickAllMembers = ()=>{
+        if (this.state.storeData.userStatus === 1) {
+            this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
+        }
+    }
     _clickSettingItem = () => {
         let arr = ['分享店铺', '举报'];
         if (this.state.storeData.myStore) {
@@ -260,7 +265,7 @@ export default class ShopRecruitPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: 'http://testh5.sharegoodsmall.com/#/register',
+                                    linkUrl: 'http://h5.sharegoodsmall.com/#/register',
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>
