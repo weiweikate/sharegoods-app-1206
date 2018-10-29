@@ -69,7 +69,7 @@ export default class SetShopNamePage extends BasePage {
 
     _complete = () => {
         if (this._checkIsHasSpecialStr(this.state.text)) {
-            this.$toastShow('店铺名称不能包含特殊字符');
+            this.$toastShow('此名称带有特殊字符，请重新输入');
             return;
         }
         if (StringUtils.isEmpty(this.state.storeHeadUrlOrigin)) {
