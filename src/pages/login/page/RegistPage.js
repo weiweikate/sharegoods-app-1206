@@ -13,7 +13,6 @@ import CommRegistView from '../components/CommRegistView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LoginApi from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
-import user from '../../../model/user';
 
 @observer
 export default class RegistPage extends BasePage {
