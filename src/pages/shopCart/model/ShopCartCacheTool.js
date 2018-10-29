@@ -134,6 +134,13 @@ class ShopCartCacheTool {
                         localValue.map((localItem, indexPath) => {
                             if (localItem.priceId === goodsItem.priceId &&
                                 localItem.productId === goodsItem.productId ) {
+
+                               let newAmount = localItem.amount + goodsItem.amount ;
+                               if (newAmount > 200){
+                                   goodsItem.amount = 200
+                               } else {
+                                   goodsItem.amount = newAmount
+                               }
                                 localValue[indexPath] = goodsItem;
                                 isHave = true;
                             }
