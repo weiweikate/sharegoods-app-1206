@@ -69,6 +69,8 @@ function createHistory(response, requestStamp) {
 
 export default class HttpUtils {
 
+    platform = ''
+
     static get(uri, params) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
@@ -86,15 +88,21 @@ export default class HttpUtils {
          */
         // let signParam = RSA.sign(params)
         let timeLineStart = +new Date();
-        let config = {
-            headers: {
-                // ...signParam,
-                'sg-token': user && user.getToken() ? user.getToken() : '',
-                'platform': DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion()
-            }
-        }
 
-        return axios.get(url, config).then(response => {
+        if (!this.platform) {
+            this.platform =  DeviceInfo.getSystemName() + ' '  + DeviceInfo.getSystemVersion()
+        }
+        
+        return user.getToken().then(token => {
+            let config = {
+                headers: {
+                    // ...signParam,
+                    'sg-token': token,
+                    'platform': this.platform
+                }
+            }
+            return axios.get(url, config)
+        }).then(response => {
             let data = response.data;
             let history = createHistory(response, timeLineStart);
 
@@ -121,15 +129,20 @@ export default class HttpUtils {
             ...defaultData,
             ...data
         };
-        config.headers = {
-            'sg-token': user && user.getToken() ? user.getToken() : '',
-            'platform': DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion(),
-            // ...signParam
+        
+        if (!this.platform) {
+            this.platform =  DeviceInfo.getSystemName() + ' '  + DeviceInfo.getSystemVersion()
         }
 
         let timeLineStart = +new Date();
-        return axios.post(url, data, config)
-            .then(response => {
+        return user.getToken().then(token => {
+            config.headers = {
+                'sg-token': token,
+                'platform': this.platform
+                // ...signParam
+            }
+            return axios.post(url, data, config)
+            }).then(response => {
                 let history = createHistory(response, timeLineStart);
 
                 fetchHistory.insertData(history);

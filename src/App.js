@@ -34,11 +34,11 @@ export default class App extends Component {
         this.state = {
             load: false
         };
+        user.readToken()
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
         netStatus.startMonitorNetworkStatus();
-        await user.readToken();
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
         global.$navigator = this.refs.Navigator;
