@@ -20,6 +20,13 @@ export const tagName = {
 
 export class HomeShowModules {
     @observable showList = []
+    @computed get firstId() {
+        if (this.showList.length > 0) {
+            return this.showList[0].id
+        } else {
+            return 0
+        }
+    }
     @computed get showImage() {
         if (this.showList.length > 0) {
             return this.showList[0].img
