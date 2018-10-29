@@ -1,6 +1,10 @@
 <resources>
     <!-- 顶部按钮栏高度 -->
     <dimen name="pickerview_topbar_height">44dp</dimen>
+    <!-- 下载更新通知栏logo左外边距  -->
+    <dimen name="notify_img_ml">4dp</dimen>
+    <!-- 下载更新通知栏logo宽高  -->
+    <dimen name="notify_img_wh">38dp</dimen>
 
     <!-- 顶部按钮padding -->
     <dimen name="pickerview_topbar_padding">20dp</dimen>

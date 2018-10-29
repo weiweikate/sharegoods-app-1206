@@ -24,7 +24,7 @@ export default class EditPayPwdPage extends BasePage {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 5
-            }} onPress={() => this._forget()}>
+            }} onPress={() => this._know()}>
                 <Text style={{ fontSize: 14, color: color.red }}>记得原交易密码</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{
@@ -37,20 +37,20 @@ export default class EditPayPwdPage extends BasePage {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 5
-            }} onPress={() => this._doNext()}>
+            }} onPress={() => this._forget()}>
                 <Text style={{ fontSize: 14, color: 'white' }}>忘记原交易密码</Text>
             </TouchableOpacity>
         </View>;
     }
 
-    _forget = () => {
+    _know = () => {
         this.$navigate('mine/account/OldPayPwdPage', {
             oldPwd: '',
             tips: '请输入旧的支付密码'
         });
     };
 
-    _doNext = () => {
+    _forget = () => {
         this.$navigate('mine/account/JudgePhonePage', {
             title: '修改交易密码'
         });

@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
@@ -33,7 +34,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
-import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -285,9 +285,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 bean.setOpenid(openid);
                 bean.setSystemVersion(android.os.Build.VERSION.RELEASE);
                 bean.setNickName(name);
-                Gson gson = new Gson();
-                String s = gson.toJson(bean);
-                callback.invoke(s);
+                callback.invoke(JSON.toJSONString(bean));
             }
 
             @Override

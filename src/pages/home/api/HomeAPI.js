@@ -49,7 +49,9 @@ const api = {
     //一元优惠券兑换
     exchangeTokenCoin:['/user/exchangeTokenCoin',{method:'post'}],
     //首页分类
-    classify: ['/config/advertisement/queryCategoryList', {method: 'get'}]
+    classify: ['/config/advertisement/queryCategoryList', {method: 'get'}],
+    //秀豆兑换比例
+    getExchange:['/common/config/getExchange',{method:'get'}]
 }
 import ApiUtils from '../../../api/network/ApiUtils';
 
