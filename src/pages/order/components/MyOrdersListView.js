@@ -62,6 +62,7 @@ export default class MyOrdersListView extends Component {
                 goodsItemClick={() => this.clickItem(index)}
                 operationMenuClick={(menu) => this.operationMenuClick(menu, index)}
                 outTradeNo={item.outTradeNo}
+                status ={item.status}
                 callBack={()=>{this.getDataFromNetwork()}}
             />
         );
@@ -208,7 +209,7 @@ export default class MyOrdersListView extends Component {
                     payTime: item.payTime,
                     sendTime: item.sendTime,
                     finishTime: item.finishTime,
-                    deliverTime: item.deliverTime?item.deliverTime:item.sendTime,
+                    deliverTime: item.deliverTime?item.deliverTime:item.finishTime,
                     autoReceiveTime:item.autoReceiveTime?item.autoReceiveTime:item.sendTime,
                     orderStatus: item.status,
                     freightPrice: item.freightPrice,
@@ -421,6 +422,7 @@ export default class MyOrdersListView extends Component {
          * 再次购买                 ->  8
          * 删除订单(已关闭(取消))    ->  9
          * */
+        console.log(menu);
         this.setState({ menu: menu, index: index });
         switch (menu.id) {
             case 1:
@@ -456,12 +458,13 @@ export default class MyOrdersListView extends Component {
                 break;
             case 6:
                 console.log(this.state.viewData[index]);
+                let j=0;
                 let returnTypeArr = ['', '退款', '退货', '换货'];
                 this.state.viewData[index].orderProduct.forEach((item, index) => {
                     let returnProductStatus = item.returnProductStatus || 99999;
-                    if (returnProductStatus < 6 && returnProductStatus != 3) {
+                    if (returnProductStatus===1) {
                         let content = '确认收货将关闭' + returnTypeArr[item.returnType] + '申请，确认收货吗？';
-                        Alert.alert('提示',`${ content }`, [
+                        Alert.alert('提示', `${ content }`, [
                             {
                                 text: '取消', onPress: () => {
                                 }
@@ -480,12 +483,13 @@ export default class MyOrdersListView extends Component {
                                 }
                             }
                         ], { cancelable: true });
+                        j++;
                         return;
-                    } else {
-                        this.setState({ isShowReceiveGoodsModal: true });
                     }
                 });
-
+                if(j==0) {
+                    this.setState({ isShowReceiveGoodsModal: true });
+                }
                 break;
             case 7:
                 this.setState({ isShowDeleteOrderModal: true });
