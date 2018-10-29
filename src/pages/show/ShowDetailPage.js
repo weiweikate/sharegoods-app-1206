@@ -147,7 +147,6 @@ export default class ShowDetailPage extends Component {
                     dec: '分享小程序子标题',
                     thumImage: 'logo.png',
                     linkUrl: 'https://testapi.sharegoodsmall.com/pages/index/index',
-                    userName: 'gh_3ac2059ac66f',
                     miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}`}}
         />
         </View>
@@ -243,7 +242,7 @@ let styles = StyleSheet.create({
         fontSize: px2dp(15)
     },
     bottomGoodImg: {
-        
+
     },
     bottomText: {
         marginLeft: px2dp(8),
@@ -251,7 +250,7 @@ let styles = StyleSheet.create({
         fontSize: px2dp(11)
     },
     connectImg: {
-        
+
     },
     profileRow: {
         height: px2dp(45),
