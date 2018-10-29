@@ -134,7 +134,7 @@ export default class CommShareModal extends React.Component {
             params.thumImage = thumImage;
             params.userName = userName || 'gh_aa91c3ea0f6c';
             params.miniProgramPath = miniProgramPath;
-            params.hdImageURL = 'http://desk-fd.zol-img.com.cn/t_s960x600c5/g5/M00/07/07/ChMkJlXw8RuIa562ACDYjgXma80AACdegNqr0wAINim957.jpg';
+            params.hdImageURL = hdImageURL;
         }
         bridge.share(params, () => {
 
