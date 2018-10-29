@@ -240,7 +240,7 @@ export default class HelperFeedbackPage extends BasePage {
                                 return (
                                     <TouchableOpacity key={i} style={{ height: 48, justifyContent: 'center' }}
                                                       activeOpacity={0.6}
-                                                      onPress={() => this.selCourse(item.value, i)}>
+                                                      onPress={() => this.selCourse(item.value, item.detailId)}>
                                         <Text style={{
                                             color: i == this.state.selectIndex ? '#e60012' : '#222222',
                                             fontSize: 15,
