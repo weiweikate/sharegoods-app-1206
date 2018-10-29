@@ -34,7 +34,7 @@ export default class SetShopNamePage extends BasePage {
         if (this.params.storeData) {
             this.$navigateBack();
         } else {
-            this.$navigateReset();
+            this.props.navigation.popToTop();
         }
     };
 
@@ -56,6 +56,22 @@ export default class SetShopNamePage extends BasePage {
                 storeHeadUrl: null,
                 storeHeadUrlOrigin: null
             };
+        }
+    }
+
+    componentDidMount() {
+        if (this.params.storeData) {
+            this.$loadingShow();
+            SpellShopApi.getById({ id: this.params.storeData.storeId }).then((data) => {
+                let dataTemp = data.data || {};
+                this.setState({
+                    selIndex: dataTemp.recruitStatus
+                });
+                this.$loadingDismiss();
+            }).catch((error) => {
+                this.$toastShow(error.msg);
+                this.$loadingDismiss();
+            });
         }
     }
 
