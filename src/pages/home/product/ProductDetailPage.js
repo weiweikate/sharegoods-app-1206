@@ -171,7 +171,8 @@ export default class ProductDetailPage extends BasePage {
         return <DetailHeaderView ref={(e) => {
             this.DetailHeaderView = e;
         }} data={this.state.data} activityData={this.state.activityData} activityType={this.state.activityType}
-                                 productActivityViewAction={this._productActivityViewAction} navigation={this.props.navigation}/>;
+                                 productActivityViewAction={this._productActivityViewAction}
+                                 navigation={this.props.navigation}/>;
     };
 
     _renderSectionHeader = () => {
@@ -184,6 +185,7 @@ export default class ProductDetailPage extends BasePage {
         if (this.state.selectedIndex === 0) {
             if (product.content) {
                 return <HTML html={product.content} imagesMaxWidth={ScreenUtils.width}
+                             imagesInitialDimensions={ScreenUtils.width}
                              containerStyle={{ backgroundColor: '#fff' }}/>;
             } else {
                 return null;
