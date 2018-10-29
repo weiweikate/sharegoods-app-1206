@@ -1015,6 +1015,7 @@ class MyOrdersDetailPage extends BasePage {
                 break;
             case 6:
                 console.log(this.state.viewData.list);
+                let j=0;
                 let returnTypeArr = ['', '退款', '退货', '换货'];
                 this.state.viewData.list.forEach((item, index) => {
                     let returnProductStatus = item.returnProductStatus || 99999;
@@ -1039,11 +1040,13 @@ class MyOrdersDetailPage extends BasePage {
                                 }
                             }
                         ], { cancelable: true });
+                        j++;
                         return;
-                    } else {
-                        this.setState({ isShowReceiveGoodsModal: true });
                     }
                 });
+                if(j==0) {
+                this.setState({ isShowReceiveGoodsModal: true });
+            }
                 // this.setState({ isShowReceiveGoodsModal: true });
                 break;
             case 7:
