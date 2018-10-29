@@ -137,7 +137,16 @@ class User {
     @observable
     token = ''
 
-    @action getToken = () => this.token
+    @action getToken = () => {
+        if (this.token) {
+            return Promise.resolve(this.token)
+        } else {
+            return AsyncStorage.getItem(USERTOKEN).then(token => {
+                this.token = token
+                return Promise.resolve(token)
+            })
+        }
+    }
 
     // 从缓存磁盘读取用户上一次使用的信息记录
     async readUserInfoFromDisk() {

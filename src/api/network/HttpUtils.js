@@ -69,6 +69,7 @@ function createHistory(response, requestStamp) {
 
 export default class HttpUtils {
 
+    platform = ''
     static get(uri,isRSA, params) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
@@ -84,28 +85,27 @@ export default class HttpUtils {
          * @type {*|{nonce, timestamp, client, version, sign}}
          * 加签相关,如果为GET需要对url中的参数进行加签,不要对请求体参数加签
          */
-        let config ;
-            if (isRSA){
-                let signParam = RSA.sign(params)
-                config = {
-                    headers: {
-                        ...signParam,
-                        'sg-token': user && user.getToken() ? user.getToken() : '',
-                        'platform': DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion()
-                    }
-                }
-            } else {
-                config = {
-                    headers: {
-                        'sg-token': user && user.getToken() ? user.getToken() : '',
-                        'platform': DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion()
-                    }
-                }
-            }
 
+         let signParam = {}
+        if (isRSA){
+             signParam = RSA.sign(params)
+        } 
         let timeLineStart = +new Date();
 
-        return axios.get(url, config).then(response => {
+        if (!this.platform) {
+            this.platform =  DeviceInfo.getSystemName() + ' '  + DeviceInfo.getSystemVersion()
+        }
+        
+        return user.getToken().then(token => {
+            let config = {
+                headers: {
+                    ...signParam,
+                    'sg-token': token,
+                    'platform': this.platform
+                }
+            }
+            return axios.get(url, config)
+        }).then(response => {
             let data = response.data;
             let history = createHistory(response, timeLineStart);
 
@@ -128,27 +128,28 @@ export default class HttpUtils {
          * 加签相关,如果为GET需要对url中的参数进行加签,不要对请求体参数加签
          */
 
+        let signParam = {}
         if (isRSA){
-            let signParam = RSA.sign()
-            config.headers = {
-                'sg-token': user && user.getToken() ? user.getToken() : '',
-                'platform': DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion(),
-                ...signParam
-            }
-        } else {
-            config.headers = {
-                'sg-token': user && user.getToken() ? user.getToken() : '',
-                'platform': DeviceInfo && DeviceInfo.getSystemName() +  DeviceInfo && DeviceInfo.getSystemVersion(),
-            }
-        }
+            signParam = RSA.sign()
+        } 
         data = {
             ...defaultData,
             ...data
         };
+        
+        if (!this.platform) {
+            this.platform =  DeviceInfo.getSystemName() + ' '  + DeviceInfo.getSystemVersion()
+        }
 
         let timeLineStart = +new Date();
-        return axios.post(url, data, config)
-            .then(response => {
+        return user.getToken().then(token => {
+            config.headers = {
+                'sg-token': token,
+                'platform': this.platform,
+                ...signParam
+            }
+            return axios.post(url, data, config)
+            }).then(response => {
                 let history = createHistory(response, timeLineStart);
 
                 fetchHistory.insertData(history);

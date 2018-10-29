@@ -14,7 +14,7 @@ const HotItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress
     <ImageBackground style={styles.imgBack} source={{uri: item.img}}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.row}>
-            <Text style={styles.remark}>{item.pureContent ? item.pureContent.slice(0, 100) : ''}</Text>
+            <Text style={styles.remark} numberOfLines={1}>{item.pureContent ? item.pureContent.slice(0, 30).trim() : ''}</Text>
             <View style={styles.right}>
                 <Image source={seeImg}/>
                 <Text style={styles.number}>{item.click ? item.click : 0}</Text>
@@ -109,7 +109,8 @@ let styles = StyleSheet.create({
     },
     remark: {
         color: '#f6f6f6',
-        fontSize: px2dp(12)
+        fontSize: px2dp(12),
+        flex: 1
     },
     number: {
         color: '#fff',
@@ -118,12 +119,14 @@ let styles = StyleSheet.create({
     },
     right: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        width: px2dp(60)
     },
     mask: {
         position: 'absolute',
         width: px2dp(280),
         bottom: 0,
-        height: px2dp(40)
+        height: px2dp(30)
     }
 })
