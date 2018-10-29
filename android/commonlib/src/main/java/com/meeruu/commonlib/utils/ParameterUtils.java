@@ -31,6 +31,7 @@ public class ParameterUtils {
     public static final int MSG_WHAT_REFRESH = 6;
 
     public static final int REQUEST_CODE_CAMERA = 9; //拍摄照片请求码
+    public static final int REQUEST_CODE_PERMISSIONS = 14; //添加权限请求码
 
     public static final int ONLY_NETWORK = 17; //只查询网络数据
     public static final int ONLY_CACHED = 18; //只查询本地缓存

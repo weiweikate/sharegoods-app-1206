@@ -5,15 +5,23 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
+import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.DensityUtils;
+import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.StatusBarUtils;
+import com.meeruu.commonlib.utils.StringUtis;
+import com.meeruu.permissions.AfterPermissionGranted;
+import com.meeruu.permissions.AppSettingsDialog;
+import com.meeruu.permissions.Permission;
+import com.meeruu.permissions.PermissionUtil;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.utils.LoadingDialog;
 import com.umeng.socialize.UMShareAPI;
@@ -22,9 +30,16 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class MainActivity extends ReactActivity {
+import java.util.Arrays;
+import java.util.List;
+
+public class MainActivity extends ReactActivity implements PermissionUtil.PermissionCallbacks {
     private LoadingDialog mLoadingDialog;
     private boolean isShowLoadingDialog;
+    private AppSettingsDialog permissionDialog;
+    protected boolean hasBasePer = false;
+    private static String[] mDenyPerms = StringUtis.concatAll(
+            Permission.STORAGE, Permission.PHONE);
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -75,6 +90,74 @@ public class MainActivity extends ReactActivity {
         StatusBarUtils.setLightMode(this);
     }
 
+    @Override
+    protected void onResume() {
+        requestPermissions();
+        super.onResume();
+    }
+
+    @AfterPermissionGranted(ParameterUtils.REQUEST_CODE_PERMISSIONS)
+    public void requestPermissions() {
+        if (!PermissionUtil.hasPermissions(this, mDenyPerms)) {
+            hasBasePer = false;
+            //申请基本的权限
+            PermissionUtil.requestPermissions(this, Permission.getPermissionContent(Arrays.asList(mDenyPerms)),
+                    ParameterUtils.REQUEST_CODE_PERMISSIONS, mDenyPerms);
+        } else {
+            hasBasePer = true;
+            hasBasePermission();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (permissionDialog != null) {
+            permissionDialog.dialogDismiss();
+            permissionDialog = null;
+        }
+        UShare.release(this);
+        EventBus.getDefault().unregister(this);
+    }
+
+    //获取了100%的基本权限
+    public void hasBasePermission() {
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionUtil.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> denyPerms) {
+        String[] perms = new String[denyPerms.size()];
+        mDenyPerms = denyPerms.toArray(perms);
+        if (PermissionUtil.shouldShowRationale(this, mDenyPerms)) {
+            //继续申请被拒绝了的基本权限
+            PermissionUtil.requestPermissions(this, Permission.getPermissionContent(denyPerms),
+                    requestCode, mDenyPerms);
+        } else {
+            verifyPermission(denyPerms);
+        }
+    }
+
+    public void verifyPermission(List<String> denyPerms) {
+        if (denyPerms != null && denyPerms.size() > 0) {
+            if (permissionDialog != null && permissionDialog.isShowing()) {
+                permissionDialog.dialogDismiss();
+            }
+            permissionDialog = new AppSettingsDialog.Builder(this).build(denyPerms);
+            permissionDialog.show();
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoadingEvent(LoadingDialogEvent event) {
         if (event.isShow()) {
@@ -96,12 +179,6 @@ public class MainActivity extends ReactActivity {
                 mLoadingDialog.dismiss();
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     /**
