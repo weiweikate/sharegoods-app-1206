@@ -43,6 +43,9 @@ export default class ShowChoiceView extends Component {
     render() {
         const { choiceList } = this.choiceModule
         let items = []
+        if (!choiceList) {
+            return <View/>
+        }
         choiceList.map((item, index) => {
             items.push(<Card key={index} item={item} press={()=>this._onChoiceAction(item)}/>)
         })
