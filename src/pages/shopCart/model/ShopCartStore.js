@@ -104,7 +104,6 @@ class ShopCartStore {
                     tempString = tempString + `${string} `;
                 });
                 item.specString = tempString;
-                console.log(item.specString);
                 tempArr.push(item);
             });
             this.data = tempArr;
@@ -215,7 +214,6 @@ class ShopCartStore {
                 bridge.$toast('批量加入购物车未对接');
             } else {
                 //加入单个商品
-                console.log(item);
                 bridge.showLoading();
                 ShopCartAPI.addItem({
                     'amount': item.amount,
