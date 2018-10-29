@@ -22,7 +22,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     compile rootProject.ext.dependencies.support
-    compile rootProject.ext.dependencies.multidex
     compile rootProject.ext.dependencies.uapp
     compile rootProject.ext.dependencies.ucommon
     api rootProject.ext.dependencies.fastjson

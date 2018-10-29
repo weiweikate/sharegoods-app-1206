@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.BV.LinearGradient.LinearGradientPackage;
+import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -29,6 +30,8 @@ import com.taobao.sophix.listener.PatchLoadStatusListener;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
 public class MRApplication extends BaseApplication implements ReactApplication {
 
@@ -97,7 +100,8 @@ public class MRApplication extends BaseApplication implements ReactApplication {
                     new VectorIconsPackage(),
                     new SvgPackage(),
                     new ImagePickerPackage(),
-                    new AutoHeightWebViewPackage()
+                    new AutoHeightWebViewPackage(),
+                    new ReactVideoPackage()
             );
         }
 
