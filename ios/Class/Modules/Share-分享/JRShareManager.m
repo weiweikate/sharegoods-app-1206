@@ -9,6 +9,7 @@
 #import "JRShareManager.h"
 #import "JRDeviceInfo.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <YYKit.h>
 @implementation JRShareModel
 
 @end
@@ -58,7 +59,19 @@ SINGLETON_FOR_CLASS(JRShareManager)
   shareObject.miniProgramType = UShareWXMiniProgramTypePreview;
   message.shareObject = shareObject;
   shareObject.hdImageData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"logo" ofType:@"png"]];
-   [self shareWithMessageObject:message platform:UMSocialPlatformType_WechatSession completion:completion];
+  if (shareModel.hdImageURL) {
+    [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:shareModel.hdImageURL] options:YYWebImageOptionShowNetworkActivity progress:nil transform:^UIImage * _Nullable(UIImage * _Nonnull image, NSURL * _Nonnull url) {
+      return image;
+    } completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+      if (!error) {
+        NSData * data = UIImageJPEGRepresentation(image, 1);
+        shareObject.hdImageData = UIImageJPEGRepresentation(image, 128 * 1024 / (data.length* 1.0));
+      }
+       [self shareWithMessageObject:message platform:UMSocialPlatformType_WechatSession completion:completion];
+    }];
+  }else{
+      [self shareWithMessageObject:message platform:UMSocialPlatformType_WechatSession completion:completion];
+  }
   
 }
 -(void)shareWithPlatefrom:(UMSocialPlatformType)platform
