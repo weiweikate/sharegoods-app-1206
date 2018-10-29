@@ -214,6 +214,7 @@ export default class TopicDetailPage extends BasePage {
                                       }}
                                       activityType={this.state.activityType}
                                       activityData={this.state.activityData}
+                                      navigation = {this.props.navigation}
                                       showDetailModal={() => {
                                           this.TopicDetailShowModal.show('降价拍规则');
                                       }}/>;

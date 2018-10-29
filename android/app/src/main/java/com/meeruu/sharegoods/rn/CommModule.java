@@ -216,19 +216,23 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setStatusMode(String tag) {
         if ("HomePage".equals(tag)) {
-            getCurrentActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    StatusBarUtils.setDarkMode(getCurrentActivity());
-                }
-            });
+            if (getCurrentActivity() != null) {
+                getCurrentActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        StatusBarUtils.setDarkMode(getCurrentActivity());
+                    }
+                });
+            }
         } else {
-            getCurrentActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    StatusBarUtils.setLightMode(getCurrentActivity());
-                }
-            });
+            if (getCurrentActivity() != null) {
+                getCurrentActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        StatusBarUtils.setLightMode(getCurrentActivity());
+                    }
+                });
+            }
         }
     }
 

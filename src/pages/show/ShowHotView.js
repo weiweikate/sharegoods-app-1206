@@ -23,13 +23,14 @@ export default class ShowHotView extends Component {
     }
     componentDidMount() {
         this.recommendModules.loadRecommendList({generalize: tag.Recommend}).then(data => {
-            this.waterfall.addItems(data)
+
+            this.waterfall.addItems(data||[])
         })
     }
     infiniting(done) {
         setTimeout(() => {
             this.recommendModules.getMoreRecommendList({generalize: tag.Recommend}).then(data => {
-                this.waterfall.addItems(data)
+                this.waterfall.addItems(data||[])
             })
             done()
         }, 1000)

@@ -17,7 +17,6 @@ import arrow_right from '../../../mine/res/customerservice/icon_06-03.png';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
-import { NavigationActions } from 'react-navigation';
 
 
 class SettingPage extends BasePage {
@@ -171,32 +170,15 @@ class SettingPage extends BasePage {
                     yes={() => {
                         this.setState({ isShowLoginOutModal: false });
                         this.$loadingShow();
-                        MineApi.signOut().then((response) => {
-                            this.$loadingDismiss();
-                            if (response.code === 10000) {
-                                // 正常退出，或者登录超时，都去清空数据
-                                //this.params.callBack&&this.params.callBack();
-                                user.clearUserInfo();
-                                user.clearToken();
-                                //清空购物车
-                                shopCartStore.data = [];
-                                this.$navigateReset();
-                            }
-                        }).catch(err => {
-                            this.$loadingDismiss();
-                            this.$toastShow(err.msg);
-                            if (err.code === 10009) {
-                                user.clearUserInfo();
-                                // this.$navigate('login/login/LoginPage');
-                                let resetAction = NavigationActions.reset({
-                                    index: 0,
-                                    actions: [
-                                        NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                                    ]
-                                });
-                                this.props.navigation.dispatch(resetAction);
-                            }
-                        });
+                        // 正常退出，或者登录超时，都去清空数据
+                        user.clearUserInfo();
+                        user.clearToken();
+                        //清空购物车
+                        shopCartStore.data = [];
+                        this.$navigateReset();
+                        MineApi.signOut()
+                        this.$loadingDismiss();
+                            
                     }}
                     no={() => {
                         this.setState({ isShowLoginOutModal: false });
