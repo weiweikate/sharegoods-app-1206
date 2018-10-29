@@ -104,10 +104,8 @@ export default class RegistPage extends BasePage {
             nickname:this.params.nickName
         }).then((data) => {
             if (data.code === 10000) {
-                user.saveUserInfo(data.data);
-                user.untiedWechat(this.params.nickName, this.params.openid);
                 this.$navigateBack();
-                bridge.$toast('登录成功');
+                bridge.$toast('注册成功')
             } else {
                 bridge.$toast(data.msg);
             }
