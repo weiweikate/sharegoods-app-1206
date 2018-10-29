@@ -201,9 +201,13 @@ class LogisticsDetailsPage extends BasePage {
             }).catch(e => {
                 Toast.hiddenLoading();
                 this.$toastShow(e.msg)
+                // this.setState({
+                //     loadingState: 'fail'
+                // });
                 this.setState({
-                    loadingState: 'fail'
-                });
+                    flags:true,
+                    loadingState: 'success'
+                })
             });
         }else{
             this.setState({loadingState: 'success'})

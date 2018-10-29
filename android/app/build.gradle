@@ -85,7 +85,7 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-video')
+    api project(':react-native-video')
     api fileTree(include: ['*.jar'], dir: 'libs')
     api project(':react-native-autoheight-webview')
     api project(':react-native-vector-icons')

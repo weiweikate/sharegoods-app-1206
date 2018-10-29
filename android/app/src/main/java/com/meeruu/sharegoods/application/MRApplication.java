@@ -96,7 +96,6 @@ public class MRApplication extends BaseApplication implements ReactApplication {
                     new MainReactPackage(),
                     new RNDeviceInfo(),
                     new LinearGradientPackage(),
-//                    new ReactVideoPackage(),
                     new VectorIconsPackage(),
                     new SvgPackage(),
                     new ImagePickerPackage(),
