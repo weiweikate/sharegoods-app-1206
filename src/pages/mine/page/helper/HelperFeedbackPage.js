@@ -147,19 +147,16 @@ export default class HelperFeedbackPage extends BasePage {
                             <UIText value={`您的反馈我们会认真查看`} style={{
                                 fontSize: 11,
                                 color: '#c6c6c6',
-                                width: ScreenUtils.width / 3,
                                 marginTop: 10
                             }}/>
                             <UIText value={`     并尽量修复及完善`} style={{
                                 fontSize: 11,
                                 color: '#c6c6c6',
-                                width: ScreenUtils.width / 3,
                                 marginTop: 3
                             }}/>
                             <UIText value={`感谢您的一如既往的支持`} style={{
                                 fontSize: 11,
                                 color: '#c6c6c6',
-                                width: ScreenUtils.width / 3,
                                 marginTop: 3
                             }}/>
                         </View>
@@ -243,7 +240,7 @@ export default class HelperFeedbackPage extends BasePage {
                                 return (
                                     <TouchableOpacity key={i} style={{ height: 48, justifyContent: 'center' }}
                                                       activeOpacity={0.6}
-                                                      onPress={() => this.selCourse(item.value, i)}>
+                                                      onPress={() => this.selCourse(item.value, item.detailId)}>
                                         <Text style={{
                                             color: i == this.state.selectIndex ? '#e60012' : '#222222',
                                             fontSize: 15,
@@ -276,16 +273,16 @@ export default class HelperFeedbackPage extends BasePage {
                 <View style={styles.containerView1}>
                     <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>详细说明</Text>
                 </View>
-                <View style={{ width: ScreenUtils.width, height: 130, backgroundColor: 'white' }}>
+                <View style={{height: 130, backgroundColor: 'white' }}>
                     <AutoExpandingInput
                         style={styles.detailAddress}
                         onChangeText={text => this.setState({ detailContent: text, textLength: text.length })}
                         placeholder={'请描述详细问题...'}
-                        maxLength={100}
+                        maxLength={90}
                         defaultValue={''}
                         underlineColorAndroid={'transparent'}
                     />
-                    <Text style={{ position: 'absolute', bottom: 10, right: 10 }}>{this.state.textLength}/100</Text>
+                    <Text style={{ position: 'absolute', bottom: 10, right: 10 }}>{this.state.textLength}/90</Text>
                 </View>
                 <View style={styles.containerView2}>
                     <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>上传图片</Text>

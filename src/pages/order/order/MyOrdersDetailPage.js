@@ -361,7 +361,7 @@ class MyOrdersDetailPage extends BasePage {
                         marginBottom: 10
                     }}/>}
                 {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
-                    <UIText value={'完成时间：' + DateUtils.getFormatDate(this.state.viewData.finishTime / 1000)} style={{
+                    <UIText value={'完成时间：' + DateUtils.getFormatDate(this.state.viewData.finishTime?this.state.viewData.deliverTime/1000:this.state.viewData.finishTime / 1000)} style={{
                         color: color.black_999,
                         fontSize: 13,
                         marginLeft: 16,
@@ -806,18 +806,53 @@ class MyOrdersDetailPage extends BasePage {
                     break;
                 //   确认收货
                 case 4:
+                    if(data.orderType==5||data.orderType==98){
+                        pageStateString.menu = [
+                            {
+                                id:7,
+                                operation:'删除订单',
+                                isRed:false,
+                            },
+
+                        ];
+                    }
                     pageStateString.sellerState = '已签收';
                     break;
                 //订单已完成
                 case 5:
+                    if(data.orderType==5||data.orderType==98){
+                        pageStateString.menu = [
+                            {
+                                id:7,
+                                operation:'删除订单',
+                                isRed:false,
+                            },
+                        ];
+                    }
                     pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
                     break;
                 case 6://退货关闭
-                    //no UI(can't enter this page)
+                    if(data.orderType==5||data.orderType==98){
+                        pageStateString.menu = [
+                            {
+                                id:7,
+                                operation:'删除订单',
+                                isRed:false,
+                            },
+                        ];
+                    }
                     pageStateString.sellerState = '订单已关闭';
                     break;
                 case 7://用户关闭
-                    //no UI(can't enter this page)
+                    if(data.orderType==5||data.orderType==98){
+                        pageStateString.menu = [
+                            {
+                                id:7,
+                                operation:'删除订单',
+                                isRed:false,
+                            },
+                        ];
+                    }
                     pageStateString.sellerState = '订单已关闭';
                     pageStateString.moreDetail = data.buyerRemark;
                     break;
@@ -825,7 +860,15 @@ class MyOrdersDetailPage extends BasePage {
                     pageStateString.sellerState = '收货人：' + data.receiver + '                   ' + data.recevicePhone;
                     pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
                     pageStateString.moreDetail = data.buyerRemark;
-                    //no UI(can't enter this page)
+                    if(data.orderType==5||data.orderType==98){
+                        pageStateString.menu = [
+                            {
+                                id:7,
+                                operation:'删除订单',
+                                isRed:false,
+                            },
+                        ];
+                    }
                     break;
                 case 9:
                     //no UI(can't enter this page)
@@ -857,6 +900,7 @@ class MyOrdersDetailPage extends BasePage {
                     sendTime: data.sendTime,//发货时间
                     finishTime: data.finishTime,//成交时间
                     autoConfirmTime: data.autoReceiveTime,//自动确认时间
+                    deliverTime:data.deliverTime,
                     pickedUp: data.pickedUp,//
                     cancelTime:data.cancelTime?data.cancelTime:null ,//取消时间
                 },
@@ -974,7 +1018,7 @@ class MyOrdersDetailPage extends BasePage {
                 let returnTypeArr = ['', '退款', '退货', '换货'];
                 this.state.viewData.list.forEach((item, index) => {
                     let returnProductStatus = item.returnProductStatus || 99999;
-                    if (returnProductStatus < 6 && returnProductStatus != 3) {
+                    if (returnProductStatus ===1) {
                         let content = '确认收货将关闭' + returnTypeArr[item.returnType] + '申请，确认收货吗？';
                         Alert.alert('提示', `${ content }`, [
                             {
