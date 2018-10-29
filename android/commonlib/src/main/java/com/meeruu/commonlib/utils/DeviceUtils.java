@@ -18,20 +18,18 @@ public class DeviceUtils {
     /**
      * 获取系统版本号
      *
-     * @param context
      * @return
      */
-    public static String getSystemName(Context context) {
+    public static String getSystemName() {
         return Build.VERSION.RELEASE;
     }
 
     /**
      * 获取系统版本号
      *
-     * @param context
      * @return
      */
-    public static int getSystemVersion(Context context) {
+    public static int getSystemVersion() {
         return Build.VERSION.SDK_INT;
     }
 

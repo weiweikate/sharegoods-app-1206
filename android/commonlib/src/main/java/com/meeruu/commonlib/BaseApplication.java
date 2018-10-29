@@ -13,7 +13,6 @@ import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
-import com.umeng.socialize.PlatformConfig;
 
 import java.util.List;
 
@@ -21,7 +20,24 @@ public class BaseApplication extends MultiDexApplication {
 
     private static BaseApplication instance;
     public static Context appContext;
+    private boolean isDownload = false;
+    private String downLoadUrl;
 
+    public boolean isDownload() {
+        return isDownload;
+    }
+
+    public void setDownload(boolean isDownload) {
+        this.isDownload = isDownload;
+    }
+
+    public String getDownLoadUrl() {
+        return downLoadUrl;
+    }
+
+    public void setDownLoadUrl(String downLoadUrl) {
+        this.downLoadUrl = downLoadUrl;
+    }
 
     public static BaseApplication getInstance() {
         if (null == instance) {
@@ -48,7 +64,7 @@ public class BaseApplication extends MultiDexApplication {
             String channel = WalleChannelReader.getChannel(this, "guanwang");
             String umKey = "5b7663a3f29d9830cb0000d8";
             UApp.init(this, umKey, channel);
-            if (Utils.isApkInDebug(this)) {
+            if (Utils.isApkInDebug()) {
                 // jpush debug
 //                JPushInterface.setDebugMode(true);
                 // umeng debug

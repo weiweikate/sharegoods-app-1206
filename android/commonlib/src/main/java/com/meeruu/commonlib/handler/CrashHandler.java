@@ -183,7 +183,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             // crash日志文件名
             String fileName = "meeruu_" + time + "_" + timestamp + ".log";
             // 保存日志文件的相对目录
-            File dir = SDCardUtils.getFileDirPath("Meeruu/crash");
+            File dir = SDCardUtils.getFileDirPath("MR/crash");
             FileOutputStream fos = new FileOutputStream(dir.getAbsolutePath() + File.separator + fileName);
             fos.write(sb.toString().getBytes());
             fos.close();

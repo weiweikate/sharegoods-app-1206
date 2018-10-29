@@ -20,9 +20,9 @@ export default function ApiUtils(Urls) {
         }
     });
     list.forEach(function(item) {
-        let name = item.name, url = item.uri, method = item.method || 'post', filter = item.filter;
+        let name = item.name, url = item.uri, method = item.method || 'post',isRSA=item.isRSA||false, filter = item.filter;
         result[name] = async function(params, config = {}) {
-            const response = await HttpUtils[method](url, params, config);
+            const response = await HttpUtils[method](url,isRSA, params, config);
             // code为0表明请求正常
             if (!response.code || response.code === 10000) {
                 filter && filter(response);

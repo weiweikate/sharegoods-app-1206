@@ -1,4 +1,4 @@
-import { Linking, NativeModules } from 'react-native';
+import { Linking, NativeModules,Platform} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 // import Toast from "../components/Toast"; //第三方相机
 import apiEnvironment from '../../../api/ApiEnvironment';
@@ -22,7 +22,7 @@ export default {
         };
 
         ImagePicker.showImagePicker(photoOptions, (response) => {
-            // console.log('Response = ', response);
+            console.log('Response = ', response);
             if (response.didCancel) {
                 console.log('User cancelled image picker');
                 return;
@@ -37,7 +37,7 @@ export default {
             else {
                 // Toast.showLoading('图片上传中，请稍后');
                 // this.$toastShow('图片上传中，请稍后');
-               NativeModules.commModule.RN_ImageCompression(response.uri, response.fileSize, 1024*1024*3 , () => {
+               NativeModules.commModule.RN_ImageCompression(Platform.OS === "ios" ? response.uri : response.path, response.fileSize, 1024*1024*3 , () => {
                    let datas = {
                        type: 'image/png',
                        uri: response.uri,

@@ -431,7 +431,7 @@ export default class MessageGatherPage extends BasePage {
         return (
             <View style={{ width: ScreenUtils.width,backgroundColor:'white' }}>
                 <View style={styles.itemContents}>
-                    <Text>{DateUtils.getFormatDate(item.createdTime / 1000,'MM/dd hh:mm')}</Text>
+                    <Text>{DateUtils.getFormatDate(item.createdTime /1000 ,'MM/dd hh:mm')}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', marginTop:px2dp(15)}}>
                     <Text style={{ marginLeft: 15, fontSize: 15, color: '#222222' }}>{item.title}</Text>

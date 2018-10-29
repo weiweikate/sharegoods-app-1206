@@ -25,7 +25,7 @@ dependencies {
     compile rootProject.ext.dependencies.multidex
     compile rootProject.ext.dependencies.uapp
     compile rootProject.ext.dependencies.ucommon
-    api rootProject.ext.dependencies.gson
+    api rootProject.ext.dependencies.fastjson
     api rootProject.ext.dependencies.zxing
     api rootProject.ext.dependencies.walle
     // From node_modules
