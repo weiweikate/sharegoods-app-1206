@@ -214,7 +214,7 @@ export default class TopicDetailPage extends BasePage {
                                       }}
                                       activityType={this.state.activityType}
                                       activityData={this.state.activityData}
-                                      navigation = {this.props.navigation}
+                                      navigation={this.props.navigation}
                                       showDetailModal={() => {
                                           this.TopicDetailShowModal.show('降价拍规则');
                                       }}/>;
@@ -281,8 +281,15 @@ export default class TopicDetailPage extends BasePage {
     _render() {
         let bottomTittle, colorType;
         if (this.state.activityType === 3) {
+            //buyTime当前时间是否可购买 userBuy是否有权限
+            //leftBuyNum剩余购买数量 buyLimit限购数量(-1: 不限购)
+            const { buyTime, userBuy, leftBuyNum, buyLimit } = this.state.data;
             bottomTittle = '立即购买';
-            colorType = 2;
+            if (buyTime && userBuy && buyLimit !== -1 && leftBuyNum === 0) {//可以买&&限购&&0
+                bottomTittle = `每人限购${buyLimit}次（您已购买过本商品）`;
+            } else if (buyTime && userBuy) {
+                colorType = 2;
+            }
         } else {
             const { notifyFlag, surplusNumber, limitNumber, limitFlag, status } = this.state.activityData;
             if (status === 1) {
