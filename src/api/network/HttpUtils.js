@@ -5,7 +5,7 @@ import fetchHistory from '../../model/FetchHistory';
 import apiEnvironment from '../ApiEnvironment';
 import user from '../../model/user'
 import DeviceInfo from 'react-native-device-info'
-// import { RSA } from './RSA';
+import { RSA } from './RSA';
 // console.log('user token', user.getToken())
 
 const Qs = require('qs');
@@ -70,8 +70,7 @@ function createHistory(response, requestStamp) {
 export default class HttpUtils {
 
     platform = ''
-
-    static get(uri, params) {
+    static get(uri,isRSA, params) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
         if (params) {
@@ -86,7 +85,11 @@ export default class HttpUtils {
          * @type {*|{nonce, timestamp, client, version, sign}}
          * 加签相关,如果为GET需要对url中的参数进行加签,不要对请求体参数加签
          */
-        // let signParam = RSA.sign(params)
+
+         let signParam = {}
+        if (isRSA){
+             signParam = RSA.sign(params)
+        } 
         let timeLineStart = +new Date();
 
         if (!this.platform) {
@@ -96,7 +99,7 @@ export default class HttpUtils {
         return user.getToken().then(token => {
             let config = {
                 headers: {
-                    // ...signParam,
+                    ...signParam,
                     'sg-token': token,
                     'platform': this.platform
                 }
@@ -117,14 +120,18 @@ export default class HttpUtils {
         });
     }
 
-    static post(uri, data, config) {
+    static post(uri,isRSA, data, config) {
         let host = apiEnvironment.getCurrentHostUrl();
         let url = uri.indexOf('http') > -1 ? uri : (host + uri);
         /**
          * @type {*|{nonce, timestamp, client, version, sign}}
          * 加签相关,如果为GET需要对url中的参数进行加签,不要对请求体参数加签
          */
-        // let signParam = RSA.sign()
+
+        let signParam = {}
+        if (isRSA){
+            signParam = RSA.sign()
+        } 
         data = {
             ...defaultData,
             ...data
@@ -138,8 +145,8 @@ export default class HttpUtils {
         return user.getToken().then(token => {
             config.headers = {
                 'sg-token': token,
-                'platform': this.platform
-                // ...signParam
+                'platform': this.platform,
+                ...signParam
             }
             return axios.post(url, data, config)
             }).then(response => {
