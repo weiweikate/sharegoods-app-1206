@@ -65,7 +65,11 @@ SINGLETON_FOR_CLASS(JRShareManager)
     } completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
       if (!error) {
         NSData * data = UIImageJPEGRepresentation(image, 1);
-        shareObject.hdImageData = UIImageJPEGRepresentation(image, 128 * 1024 / (data.length* 1.0));
+        if (data.length > 128*1024) {
+           shareObject.hdImageData = UIImageJPEGRepresentation(image, 128 * 1024 / (data.length* 1.0));
+        }else{
+          shareObject.hdImageData = data;
+        }
       }
        [self shareWithMessageObject:message platform:UMSocialPlatformType_WechatSession completion:completion];
     }];
