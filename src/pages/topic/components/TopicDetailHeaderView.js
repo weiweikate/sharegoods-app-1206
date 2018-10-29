@@ -6,13 +6,16 @@ import {
     Text,
     View,
     TouchableOpacity,
-    Image
+    Image,
+    TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ViewPager from '../../../components/ui/ViewPager';
 import xjt_03 from '../res/xjt_03.png';
 import ActivityView from './ActivityView';
 import { isNoEmpty } from '../../../utils/StringUtils';
+import StringUtils from '../../../utils/StringUtils';
+import VideoView from '../../../components/ui/video/VideoView';
 // import user from '../../../model/user';
 
 const { px2dp } = ScreenUtils;
@@ -32,7 +35,8 @@ export default class TopicDetailHeaderView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            swiperShow: false
+            swiperShow: false,
+            haveVideo: false
         };
     }
 
@@ -48,14 +52,36 @@ export default class TopicDetailHeaderView extends Component {
         this.ActivityView.saveActivityViewData(activityData, activityType);
     }
 
-    renderViewPageItem = (item) => {
-        const { originalImg } = item;
-        return (
-            <Image
-                source={{ uri: originalImg }}
-                style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
-                resizeMode="cover"
-            />);
+    getImageList = (data) => {
+        if (data) {
+            return data.map((item, index) => {
+                return item.originalImg;
+            });
+        } else {
+            return null;
+        }
+    };
+
+    renderViewPageItem = (item, index) => {
+        const { activityType } = this.props;
+        if (item.videoUrl) {
+            return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover}/>;
+        } else {
+            const { originalImg } = item;
+            let imgList = this.getImageList(activityType === 3 ? this.props.data.imgFileList : this.props.data.productImgList);
+            return (
+                <TouchableWithoutFeedback onPress={() => {
+                    const params = { imageUrls: imgList, index: this.state.haveVideo ? index - 1 : index };
+                    const { navigation } = this.props;
+                    navigation && navigation.navigate('home/product/CheckBigImagesView', params);
+                }}>
+                    <Image source={{ uri: originalImg }}
+                           style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
+                           resizeMode="cover"
+                    />
+                </TouchableWithoutFeedback>
+            );
+        }
     };
     _renderPagination = (index, total) => <View style={styles.indexView}>
         <Text style={styles.text}>{index + 1} / {total}</Text>
@@ -64,25 +90,44 @@ export default class TopicDetailHeaderView extends Component {
     render() {
         const { activityType } = this.props;
         let bannerImgList, tittle, freightValue, monthSale;
-        let nowPrice, oldPrice, levelTypeName;
+        let nowPrice, oldPrice, levelTypeName, afterSaleServiceDaysTT;
 
         if (activityType === 3) {
-            const { imgFileList = [{}], name, levelPrice, originalPrice, freightTemplatePrice, saleNum, userLevelTypeName } = this.props.data || {};
-            bannerImgList = imgFileList;
+            const { imgFileList = [], name, levelPrice, originalPrice, freightTemplatePrice, saleNum, userLevelTypeName, aferServiceDays, videoUrl, imgUrl } = this.props.data || {};
+            //有视频第一个添加为视频
+            let productImgListTemp = [...imgFileList];
+            if (StringUtils.isNoEmpty(videoUrl)) {
+                this.state.haveVideo = true;
+                productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });
+            } else {
+                this.state.haveVideo = false;
+            }
+            bannerImgList = productImgListTemp;
             tittle = name;
             nowPrice = levelPrice;
             oldPrice = originalPrice;
             freightValue = freightTemplatePrice;
             monthSale = saleNum;
             levelTypeName = userLevelTypeName;
+            afterSaleServiceDaysTT = aferServiceDays;
         } else {
-            const { productImgList = [{}], freight, monthSaleTotal, product = {} } = this.props.data || {};
-            const { name } = product;
+            const { productImgList = [], freight, monthSaleTotal, product = {} } = this.props.data || {};
+            const { name, afterSaleServiceDays, videoUrl, imgUrl } = product;
 
-            bannerImgList = productImgList;
+            //有视频第一个添加为视频
+            let productImgListTemp = [...productImgList];
+            if (StringUtils.isNoEmpty(videoUrl)) {
+                this.state.haveVideo = true;
+                productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });
+            } else {
+                this.state.haveVideo = false;
+            }
+
+            bannerImgList = productImgListTemp;
             tittle = `${name}`;
             freightValue = freight;
             monthSale = monthSaleTotal;
+            afterSaleServiceDaysTT = afterSaleServiceDays;
         }
         return (
             <View>
@@ -154,7 +199,11 @@ export default class TopicDetailHeaderView extends Component {
                         alignItems: 'center'
                     }}>
                         <Text style={{ color: '#D51243', fontSize: 13 }}>服务</Text>
-                        <Text style={{ marginLeft: 11, color: '#666666', fontSize: 13 }}>正品保证·急速发货 7天无理由退换</Text>
+                        <Text style={{
+                            marginLeft: 11,
+                            color: '#666666',
+                            fontSize: 13
+                        }}>{`正品保证·急速发货 ${afterSaleServiceDaysTT}天无理由退换`}</Text>
                     </View>
                 </View>
             </View>
