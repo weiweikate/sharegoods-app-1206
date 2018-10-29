@@ -13,7 +13,7 @@ import maskImg from '../../comm/res/show_mask.png'
 const Card = ({item, press}) => <TouchableOpacity style={styles.card} onPress={()=> press && press()}>
     <ImageBackground style={styles.imgView} source={{uri:item.coverImg}} resizeMode={'cover'}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
-        <Text style={styles.dis} numberOfLines={2}>{item.pureContent ? item.pureContent.slice(0, 100) : ''}</Text>
+        <Text style={styles.dis} numberOfLines={2}>{item.pureContent ? item.pureContent.slice(0, 100).trim() : ''}</Text>
     </ImageBackground>
     <View style={styles.profileView}>
         <Image style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg: ''}}/>
@@ -43,6 +43,9 @@ export default class ShowChoiceView extends Component {
     render() {
         const { choiceList } = this.choiceModule
         let items = []
+        if (!choiceList) {
+            return <View/>
+        }
         choiceList.map((item, index) => {
             items.push(<Card key={index} item={item} press={()=>this._onChoiceAction(item)}/>)
         })
@@ -116,6 +119,7 @@ let styles = StyleSheet.create({
     },
     dis: {
         marginLeft: px2dp(10),
+        marginRight: px2dp(10),
         marginBottom: px2dp(5),
         color: '#fff',
         fontSize: px2dp(11)

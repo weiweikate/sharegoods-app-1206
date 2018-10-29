@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     },
     name: {
         marginTop: 5,
-        width: 28 + 20,
+        width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(23) * 2) / 5,
         fontFamily: 'PingFang-SC-Medium',
         fontSize: 11,
         color: '#666666',

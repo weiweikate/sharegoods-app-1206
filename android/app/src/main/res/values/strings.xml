@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">秀购</string>
+    <string name="install_allow">安装apk需要权限，请设置允许安装秀购！</string>
 </resources>

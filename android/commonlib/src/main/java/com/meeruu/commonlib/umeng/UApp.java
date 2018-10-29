@@ -39,7 +39,7 @@ public class UApp {
      * @param eventId 事件Id，对应umeng自定义事件
      */
     public static void actionEvent(Context context, String eventId) {
-        if (!Utils.isApkInDebug(context)) {
+        if (!Utils.isApkInDebug()) {
             MobclickAgent.onEvent(context, eventId);
         }
     }

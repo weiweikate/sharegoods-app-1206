@@ -17,7 +17,6 @@ import arrow_right from '../../../mine/res/customerservice/icon_06-03.png';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
-import { NavigationActions } from 'react-navigation';
 
 
 class SettingPage extends BasePage {
@@ -31,9 +30,9 @@ class SettingPage extends BasePage {
             phoneError: false,
             passwordError: false,
             isShowLoginOutModal: false,
-            memorySize: 0
+            memorySize: 0,
+            showUpdate: false
         };
-
     }
 
     $navigationBarOptions = {
@@ -89,6 +88,14 @@ class SettingPage extends BasePage {
                         <UIText value={'关于我们'} style={styles.blackText}/>
                         <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                     </TouchableOpacity>
+                    {/*{this.renderLine()}*/}
+                    {/*<TouchableOpacity style={styles.viewStyle}*/}
+                    {/*onPress={() => this.getNewVersion()}>*/}
+                    {/*<UIText value={'版本检测'} style={styles.blackText}/>*/}
+                    {/*<UIText value={'v' + DeviceInfo.getVersion()}*/}
+                    {/*style={[styles.blackText]}/>*/}
+                    {/*<Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>*/}
+                    {/*</TouchableOpacity>*/}
                 </View>
                 <TouchableOpacity style={{
                     marginTop: 42,
@@ -163,37 +170,28 @@ class SettingPage extends BasePage {
                     yes={() => {
                         this.setState({ isShowLoginOutModal: false });
                         this.$loadingShow();
-                        MineApi.signOut().then((response) => {
-                            this.$loadingDismiss();
-                            if (response.code === 10000) {
-                                // 正常退出，或者登录超时，都去清空数据
-                                //this.params.callBack&&this.params.callBack();
-                                user.clearUserInfo();
-                                user.clearToken();
-                                //清空购物车
-                                shopCartStore.data = [];
-                                this.$navigateReset();
-                            }
-                        }).catch(err => {
-                            this.$loadingDismiss();
-                            this.$toastShow(err.msg);
-                            if (err.code === 10009) {
-                                user.clearUserInfo();
-                                // this.$navigate('login/login/LoginPage');
-                                let resetAction = NavigationActions.reset({
-                                    index: 0,
-                                    actions: [
-                                        NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                                    ]
-                                });
-                                this.props.navigation.dispatch(resetAction);
-                            }
-                        });
+                        // 正常退出，或者登录超时，都去清空数据
+                        user.clearUserInfo();
+                        user.clearToken();
+                        //清空购物车
+                        shopCartStore.data = [];
+                        this.$navigateReset();
+                        MineApi.signOut()
+                        this.$loadingDismiss();
+                            
                     }}
                     no={() => {
                         this.setState({ isShowLoginOutModal: false });
                     }}
                 />
+                {/*<CommModal*/}
+                {/*animationType='fade'*/}
+                {/*transparent={true}*/}
+                {/*visible={this.state.isShow}>*/}
+                {/*<View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>*/}
+                {/*{this.renderContent()}*/}
+                {/*</View>*/}
+                {/*</CommModal>*/}
             </View>
 
         );
@@ -208,10 +206,20 @@ class SettingPage extends BasePage {
     jumptToAboutUsPage = () => {
         this.$navigate('mine/setting/AboutUsPage');
     };
-    //账户设置
+    // 账户设置
     jumpToAccountSettingPage = () => {
         this.$navigate('mine/setting/AccountSettingPage');
     };
+
+    // 版本检测
+    // getNewVersion = () => {
+    //     // Android调用原生检测版本
+    //     MineApi.getVersion().then((data) => {
+    //         // 调用原生dialog
+    //     }).catch((data) => {
+    //         bridge.$toast(data.msg);
+    //     });
+    // };
 }
 
 const styles = StyleSheet.create({
