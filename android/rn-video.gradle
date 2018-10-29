@@ -1,10 +1,18 @@
 apply plugin: 'com.android.library'
+
+buildscript {
+    repositories {
+        jcenter()
+//        google()
+    }
+}
+
+
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
-        multiDexEnabled true
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
     }
@@ -13,22 +21,15 @@ android {
     }
 }
 
-repositories {
-    mavenLocal()
-    jcenter()
-    google()
-    maven {
-        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-        url "$projectDir/../../../node_modules/react-native/android"
-    }
-}
-
 dependencies {
-    //noinspection GradleDynamicVersion
-    api rootProject.ext.dependencies.support
+    compile rootProject.ext.dependencies.support
     // From node_modules
-    api(rootProject.ext.dependencies.rn) {
+    compile(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
-    api project(path: ':commonlib')
+    implementation rootProject.ext.dependencies.exoplayer
+    compile(rootProject.ext.dependencies.exopOKhttp) {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    }
+    compile 'com.squareup.okhttp3:okhttp:3.9.1'
 }

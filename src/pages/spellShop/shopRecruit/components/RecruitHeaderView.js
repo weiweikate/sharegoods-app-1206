@@ -75,7 +75,7 @@ export default class RecommendRow extends Component {
                             borderRadius: 22,
                             marginLeft: 20,
                             marginTop: 13
-                        }} source={{ uri: headUrl }}/>
+                        }} source={{ uri: manager.headImg }}/>
                         <View style={{ flex: 1, marginHorizontal: 15, justifyContent: 'center' }}>
 
                             <Text style={{
