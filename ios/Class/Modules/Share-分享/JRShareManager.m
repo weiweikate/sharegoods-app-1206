@@ -60,7 +60,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
   message.shareObject = shareObject;
   shareObject.hdImageData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"logo" ofType:@"png"]];
   if (shareModel.hdImageURL) {
-     NSString *imgUrl = [shareModel.hdImageURL  stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+     NSString *imgUrl = [shareModel.hdImageURL  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:imgUrl] options:YYWebImageOptionShowNetworkActivity progress:nil transform:^UIImage * _Nullable(UIImage * _Nonnull image, NSURL * _Nonnull url) {
       return image;
     } completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
