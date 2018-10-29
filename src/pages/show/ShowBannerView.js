@@ -2,14 +2,13 @@
  * 秀场banner
  */
 import React, {Component} from 'react'
-import { View, Image, StyleSheet, ImageBackground, Text } from 'react-native'
+import { View, Image, StyleSheet } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
 import { ShowBannerModules } from './Show'
 import XGSwiper from '../../components/ui/XGSwiper'
 import ScreenUtils from '../../utils/ScreenUtils'
-import maskImg from '../../comm/res/show_mask.png'
 
 @observer
 export default class ShowBannerView extends Component {
@@ -26,12 +25,7 @@ export default class ShowBannerView extends Component {
 
     renderRow(item) {
         return <View style={styles.imgView}>
-            <ImageBackground style={styles.img} source={{uri: item.imgUrl}}>
-                <Image style={styles.mask} source={maskImg}/>
-                <View style={styles.textView}>
-                <Text style={styles.text} numberOfLines={1}>{item.remark}</Text>
-                </View>
-            </ImageBackground>
+            <Image style={styles.img} source={{uri: item.imgUrl}}/>
         </View>
     }
 

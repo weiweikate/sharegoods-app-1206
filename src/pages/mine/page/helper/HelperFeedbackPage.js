@@ -8,7 +8,7 @@ import {
     Image,
     Text,
     TouchableOpacity,
-     TouchableWithoutFeedback
+     TouchableWithoutFeedback,ScrollView
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -263,6 +263,7 @@ export default class HelperFeedbackPage extends BasePage {
             <View style={{ flex: 1, backgroundColor: '#F6F6F6' }}>
                 {this.renderModals()}
                 {this.renderFinishModal()}
+                <ScrollView>
                 <TouchableOpacity style={{
                     flexDirection: 'row', width: ScreenUtils.width, height: 44, backgroundColor: 'white', marginTop: 5,
                     justifyContent: 'space-between', alignItems: 'center'
@@ -302,6 +303,7 @@ export default class HelperFeedbackPage extends BasePage {
                         <Text style={{ fontSize: 16, color: '#fff' }}>提交</Text>
                     </TouchableOpacity>
                 </View>
+                </ScrollView>
             </View>
         );
 

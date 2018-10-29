@@ -146,6 +146,7 @@ export default class ShowDetailPage extends Component {
                     title: detail.title,
                     dec: '分享小程序子标题',
                     thumImage: 'logo.png',
+                    hdImageURL: detail.img,
                     linkUrl: 'https://testapi.sharegoodsmall.com/pages/index/index',
                     miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}`}}
         />

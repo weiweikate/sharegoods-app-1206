@@ -41,7 +41,7 @@ export default class HomeClassifyView extends Component {
         const { navigation } = this.props;
 
         if (data.img && data.name !== '全部分类') {
-            navigation.navigate('home/search/SearchResultPage', { categoryId: data.id, name: data.name })
+            navigation.navigate('home/search/SearchResultPage', { keywords: data.name })
         } else {
             navigation.navigate(data.route)
         }
