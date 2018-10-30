@@ -168,7 +168,7 @@ export default class MyShop_RecruitPage extends Component {
                             overflow: 'hidden'
                         }}>
                             {!begin ? <View style={{
-                                width: surplusNumber / totalNumber * 106,
+                                width: (totalNumber - surplusNumber) / totalNumber * 106,
                                 backgroundColor: '#FFFC00'
                             }}/> : null}
                             <View style={{
