@@ -70,7 +70,6 @@ export default class DownPricePage extends BasePage {
                 }
             </View>
         );
-
     }
     _onRefresh=()=>{
         const { linkTypeCode } = this.params;
@@ -154,14 +153,10 @@ export default class DownPricePage extends BasePage {
         let sectionData = [];
         if (sectionList.length > 0) {
             sectionData = sectionList[this.state.selectNav].sectionDataList || [];
-        } else {
-
         }
         const { imgUrl} = this.dataModel;
         this.$NavigationBarResetTitle(this.dataModel.topicTitle || '专题')
         return (
-
-
             <ScrollView
                 alwaysBounceVertical={true}
                 contentContainerStyle={Styles.list}

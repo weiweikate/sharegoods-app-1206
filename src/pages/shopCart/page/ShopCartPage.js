@@ -24,7 +24,6 @@ import shopCartStore from '../model/ShopCartStore';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import bridge from '../../../utils/bridge';
-import { homeModule } from '../../home/Modules';
 
 
 const activityCode = {
@@ -102,20 +101,6 @@ export default class ShopCartPage extends BasePage {
         // }
     }
 
-    getRefreshController = () => {
-        const { statusBarHeight } = ScreenUtils;
-        return (
-            <RefreshControl
-                refreshing={homeModule.isRefreshing}
-                onRefresh={this._onRefresh.bind(this)}
-                progressViewOffset={statusBarHeight + 44}
-                colors={['#d51243']}
-                title="下拉刷新"
-                tintColor="#999"
-                titleColor="#999"
-            />
-        );
-    };
 
     componentWillUnmount() {
         this.didBlurSubscription.remove();
@@ -178,7 +163,7 @@ export default class ShopCartPage extends BasePage {
                 rightOpenValue={-75}
                 swipeRefreshControl={
                     <RefreshControl
-                        refreshing={homeModule.isRefreshing}
+                        refreshing={shopCartStore.isRefresh}
                         onRefresh={() => {
                             this._refreshFun();
                         }
@@ -519,7 +504,10 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _refreshFun = () => {
+
+        shopCartStore.isRefresh = true;
         shopCartCacheTool.getShopCartGoodsListData();
+
     };
 
     _jumpToProductDetailPage = (itemData) => {

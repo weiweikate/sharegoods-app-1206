@@ -7,9 +7,9 @@ import { View, StyleSheet, Image, TouchableOpacity, TouchableWithoutFeedback } f
 import ScreenUtils from "../../utils/ScreenUtils";
 
 const { px2dp, statusBarHeight } = ScreenUtils;
-import logoImg from "./res/icons/logo.png";
+import logoImg from "./res/logo.png";
 import searchImg from "./res/icon_search.png";
-import msgImg from "./res/icons/msg.png";
+import msgImg from "./res/message.png";
 import UIText from "../../components/ui/UIText";
 
 export default ({ navigation }) =>
