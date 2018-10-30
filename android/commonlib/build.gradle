@@ -5,7 +5,6 @@ android {
     buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
-        multiDexEnabled true
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
     }
@@ -22,12 +21,12 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     compile rootProject.ext.dependencies.support
-    compile rootProject.ext.dependencies.multidex
     compile rootProject.ext.dependencies.uapp
     compile rootProject.ext.dependencies.ucommon
     api rootProject.ext.dependencies.fastjson
     api rootProject.ext.dependencies.zxing
     api rootProject.ext.dependencies.walle
+    api rootProject.ext.dependencies.multidex
     // From node_modules
     compile(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'

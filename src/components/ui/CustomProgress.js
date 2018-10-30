@@ -165,6 +165,7 @@ Object.defineProperty(CustomProgress.prototype, 'buffer', {
 const styles = StyleSheet.create({
     container: {
         height: 4,
-        backgroundColor: 'black'
+        backgroundColor: '#eee',
+        borderRadius:10
     }
 });

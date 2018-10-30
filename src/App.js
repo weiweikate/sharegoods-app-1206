@@ -8,7 +8,9 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
-    View
+    View,
+    Platform,
+    NativeModules
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
@@ -32,11 +34,11 @@ export default class App extends Component {
         this.state = {
             load: false
         };
+        user.readToken();
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
         netStatus.startMonitorNetworkStatus();
-        await user.readToken();
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
         global.$navigator = this.refs.Navigator;
@@ -62,6 +64,10 @@ export default class App extends Component {
         Navigator.router.getStateForAction = (action, state) => {
             if (state && action.type === NavigationActions.BACK && state.routes.length === 1) {
                 console.log('退出RN页面');
+                // Android物理回退键到桌面
+                if (Platform.OS !== 'ios') {
+                    NativeModules.commModule.nativeTaskToBack();
+                }
                 const routes = [...state.routes];
                 return {
                     ...state,

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { View, StyleSheet, Text, Image } from 'react-native'
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
 import MarqueeLabelVertical from '../../components/ui/MarqueeLabelVertical'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
@@ -24,6 +24,10 @@ export default class ShowView extends Component {
     _goToShow() {
         const { navigation } = this.props
         navigation.navigate('show/ShowListPage', {fromHome: true})
+    }
+    _goToDetail() {
+        const { navigation } = this.props
+        navigation.navigate('show/ShowDetailPage',  {id: this.showModules.firstId})
     }
     _showEnd() {
         this.showModules.loadShowList()
@@ -51,7 +55,9 @@ export default class ShowView extends Component {
             {
                 this.showModules.showImage
                 ?
-                <Image style={styles.icon} source={{uri:this.showModules.showImage ? this.showModules.showImage : null}}/>
+                <TouchableOpacity onPress={()=>this._goToDetail()}>
+                    <Image style={styles.icon} source={{uri:this.showModules.showImage ? this.showModules.showImage : null}}/>
+                </TouchableOpacity>
                 :
                 null
             }
@@ -70,7 +76,8 @@ const styles = StyleSheet.create({
     marquee: {
         height: px2dp(34),
         backgroundColor: '#fff',
-        flex: 1
+        flex: 1,
+        marginRight: px2dp(10)
     },
     line: {
         marginLeft: px2dp(6),

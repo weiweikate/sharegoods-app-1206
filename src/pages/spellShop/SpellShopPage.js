@@ -42,7 +42,7 @@ export default class SpellShopPage extends BasePage {
         };
     };
     _renderContainer = () => {
-        //加入了店铺 或者 店铺状态不为关闭
+        //加入了店铺&&店铺状态不为关闭 1正常,2缴纳,3招募中
         if (SpellStatusModel.storeId && SpellStatusModel.storeStatus && SpellStatusModel.storeStatus !== 0) {
             return (<MyShop_RecruitPage navigation={this.props.navigation}/>);
         } else if (SpellStatusModel.canSeeGroupStore) {

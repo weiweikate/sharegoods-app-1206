@@ -127,13 +127,14 @@ export default class CommShareModal extends React.Component {
             params.linkUrl = linkUrl;
             params.thumImage = thumImage;
         } else if (this.state.shareType === 2) {
-            let { title, dec, linkUrl, thumImage, userName, miniProgramPath } = this.props.miniProgramJson;
+            let { title, dec, linkUrl, thumImage, userName, miniProgramPath, hdImageURL } = this.props.miniProgramJson;
             params.title = title;
             params.dec = dec;
             params.linkUrl = linkUrl;
             params.thumImage = thumImage;
-            params.userName = userName;
+            params.userName = userName || 'gh_aa91c3ea0f6c';
             params.miniProgramPath = miniProgramPath;
+            params.hdImageURL = hdImageURL;
         }
         bridge.share(params, () => {
 

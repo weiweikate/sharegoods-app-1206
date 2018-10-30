@@ -15,6 +15,19 @@
 ## 依赖包
 所有依赖包必须固定版本
 
+##接口加签操作
+示例
+ //密码登陆
+  const api={
+   在接口后边加个字段 isRSA:true 所有接口默认不进行验签,如果你的接口需要延签,请进行如下配置,其他使用跟以前一样
+     post接口加签
+     passwordLogin: ['/user/userLogin/passwordLogin',{isRSA:true}],
+     get接口加签
+     passwordLogin: ['/user/userLogin/passwordLogin',{isRSA:true,method:'get'}],
+  } 
+  const LoginAPI = ApiUtils(api);
+  export default LoginAPI;
+
 ##ios自动化本地打包
 在项目根目录下执行  
 1. cd PackageShellFiles

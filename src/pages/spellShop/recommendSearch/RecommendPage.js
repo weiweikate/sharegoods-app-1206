@@ -11,6 +11,7 @@ import {
     RefreshControl
 } from 'react-native';
 
+import { observer } from 'mobx-react';
 //source
 import ShopItemLogo from './src/dp_03.png';
 import SearchItemLogo from './src/pdss_03.png';
@@ -27,6 +28,7 @@ import HomeAPI from '../../home/api/HomeAPI';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import StringUtils from '../../../utils/StringUtils';
 
+@observer
 export default class RecommendPage extends BasePage {
 
     constructor(props) {
@@ -84,6 +86,7 @@ export default class RecommendPage extends BasePage {
             refreshing: true
         }, () => {
             this._loadPageData();
+            SpellStatusModel.getUser(0);
         });
     };
 

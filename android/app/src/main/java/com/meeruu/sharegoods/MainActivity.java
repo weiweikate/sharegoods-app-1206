@@ -187,11 +187,6 @@ public class MainActivity extends ReactActivity implements PermissionUtil.Permis
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
-    }
-
     /**
      * 连接版本下载service
      */
@@ -229,7 +224,10 @@ public class MainActivity extends ReactActivity implements PermissionUtil.Permis
                             @Override
                             public void onFinish(final String path) {
                                 apkPath = path;
-
+                                Message msg = Message.obtain();
+                                msg.what = ParameterUtils.FLAG_UPDATE;
+                                msg.arg1 = 100;
+                                myHandler.sendMessage(msg);
                             }
                         });
                     }
@@ -245,11 +243,14 @@ public class MainActivity extends ReactActivity implements PermissionUtil.Permis
         lastVersion = event.getVersion();
         mContext = event.getContext();
         if (event.isExist()) {
+            if (event.getCallback() != null) {
+                event.getCallback().invoke(true);
+            }
             handleInstallApk();
         } else {
             if (event.isForceUpdate()) {
                 if (event.getCallback() != null) {
-                    event.getCallback().invoke();
+                    event.getCallback().invoke(false);
                 }
             }
             BaseApplication.getInstance().setDownload(true);

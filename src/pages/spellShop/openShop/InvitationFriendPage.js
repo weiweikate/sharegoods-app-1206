@@ -119,7 +119,7 @@ export default class InvitationToShopPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${shareInfo.name}`,
                                     dec: '店铺',
-                                    linkUrl: 'http://testh5.sharegoodsmall.com/#/register',
+                                    linkUrl: 'http://h5.sharegoodsmall.com/#/register',
                                     thumImage: `${shareInfo.headUrl}`
                                 }}/>
             </View>

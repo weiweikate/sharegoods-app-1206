@@ -8,7 +8,11 @@ import {
     StyleSheet,
     FlatList,
     Text,
-    RefreshControl
+    RefreshControl,
+    ImageBackground,
+    InteractionManager,
+    TouchableWithoutFeedback,
+    Image, Platform, NativeModules
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskHomeAlert from '../shareTask/components/ShareTaskHomeAlert';
@@ -26,6 +30,14 @@ import HomeGoodsView from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
 import ShowView from '../show/ShowView';
 import LinearGradient from 'react-native-linear-gradient';
+import Modal from 'CommModal';
+import XQSwiper from '../../components/ui/XGSwiper';
+import MessageApi from '../message/api/MessageApi';
+import EmptyUtils from '../../utils/EmptyUtils';
+import messageModalBg from './res/messageModalBg.png';
+import messageSelected from './res/messageSelected.png';
+import messageUnselected from './res/messageUnselected.png';
+import closeImg from '../shareTask/res/qiandao_btn_return_nor.png';
 import MineApi from '../mine/api/MineApi';
 import VersionUpdateModal from './VersionUpdateModal';
 import DeviceInfo from 'react-native-device-info';
@@ -40,9 +52,13 @@ export default class HomePage extends Component {
     headerH = statusBarHeight + 44;
     state = {
         isShow: true,
+        showMessage: false,
+        messageData: null,
+        messageIndex: 0,
         updateData: {},
         showUpdate: false,
-        forceUpdate: false
+        forceUpdate: false,
+        apkExist: false
     };
 
     constructor(props) {
@@ -51,10 +67,20 @@ export default class HomePage extends Component {
         // 检测版本更新
         MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((res) => {
             if (res.data.upgrade === 1) {
-                this.setState({
-                    updateData: res.data,
-                    showUpdate: true
-                });
+                if (Platform.OS !== 'ios') {
+                    NativeModules.commModule.apkExist(res.data.version, (exist) => {
+                        this.setState({
+                            updateData: res.data,
+                            showUpdate: true,
+                            apkExist: exist
+                        });
+                    });
+                } else {
+                    this.setState({
+                        updateData: res.data,
+                        showUpdate: true
+                    });
+                }
                 if (res.data.forceUpdate === 1) {
                     // 强制更新
                     this.setState({
@@ -163,6 +189,85 @@ export default class HomePage extends Component {
 
     componentDidMount() {
         //this.shareModal.open();
+        InteractionManager.runAfterInteractions(() => {
+            this.getMessageData();
+        });
+    }
+
+    getMessageData = () => {
+        MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
+            if (!EmptyUtils.isEmptyArr(res.data.data)) {
+                this.setState({
+                    showMessage: true,
+                    messageData: res.data.data
+                });
+            }
+        });
+    };
+
+    messageModalRender() {
+        return (
+            <Modal visible={this.state.showMessage}>
+                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.setState({
+                            showMessage: false
+                        });
+                    }}>
+                        <Image source={closeImg} style={styles.messageCloseStyle}/>
+                    </TouchableWithoutFeedback>
+
+                    <ImageBackground source={messageModalBg} style={styles.messageBgStyle}>
+                        <XQSwiper
+                            style={{ alignSelf: 'center', marginTop: 71, width: px2dp(230), height: px2dp(211) }}
+                            height={px2dp(230)} width={px2dp(230)} renderRow={this.messageRender}
+                            dataSource={EmptyUtils.isEmptyArr(this.state.messageData) ? [] : this.state.messageData}
+                            loop={false}
+                            onWillChange={(item, index) => {
+                                this.setState({
+                                    messageIndex: index
+                                });
+                            }}
+                        />
+                        <View style={{ flex: 1 }}/>
+                        {this.messageIndexRender()}
+                    </ImageBackground>
+                </View>
+            </Modal>
+        );
+    }
+
+    messageIndexRender() {
+        if (EmptyUtils.isEmptyArr(this.state.messageData)) {
+            return null;
+        }
+        let indexs = [];
+        for (var i = 0; i < this.state.messageData.length; i++) {
+            let view = i === this.state.messageIndex ?
+                <Image source={messageSelected} style={styles.messageIndexStyle}/> :
+                <Image source={messageUnselected} style={styles.messageIndexStyle}/>;
+            indexs.push(view);
+        }
+        return (
+            <View style={{
+                flexDirection: 'row',
+                width: px2dp(120),
+                justifyContent: this.state.messageData.length === 1 ? 'center' : 'space-between',
+                marginBottom: px2dp(12),
+                height: 12,
+                alignSelf: 'center'
+            }}>
+                {indexs}
+            </View>
+        );
+    }
+
+    messageRender(item, index) {
+        return (
+            <Text style={{ width: px2dp(230), height: px2dp(211) }}>
+                {item.content}
+            </Text>
+        );
     }
 
     render() {
@@ -200,7 +305,9 @@ export default class HomePage extends Component {
                                     onPress={() => {
                                         this.props.navigation.navigate('shareTask/ShareTaskListPage');
                                     }}/>
+                {this.messageModalRender()}
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
+                                    apkExist={this.state.apkExist}
                                     forceUpdate={this.state.forceUpdate} onDismiss={() => {
                     this.setState({ showUpdate: false });
                 }}/>
@@ -257,5 +364,21 @@ const styles = StyleSheet.create({
         color: '#333',
         fontSize: px2dp(19),
         fontWeight: '600'
+    },
+    messageBgStyle: {
+        width: px2dp(300),
+        height: px2dp(405),
+        marginTop: px2dp(20)
+    },
+    messageCloseStyle: {
+        width: px2dp(24),
+        height: px2dp(24),
+        marginTop: px2dp(100),
+        alignSelf: 'flex-end',
+        marginRight: ((ScreenUtils.width) - px2dp(300)) / 2
+    },
+    messageIndexStyle: {
+        width: px2dp(12),
+        height: px2dp(12)
     }
 });

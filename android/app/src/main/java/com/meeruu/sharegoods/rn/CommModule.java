@@ -275,15 +275,11 @@ public class CommModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        if (!TextUtils.isEmpty(filePath)) {
+        if (fileSize > maxSize) {
+            compressBitmap(filePath, maxSize / 1024, filePath);
             callback.invoke();
-//            Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-//            Bitmap newBtp = BitmapUtils.compressBitmap(bitmap, maxSize);
-//            if (BitmapUtils.saveBitmap(newBtp, filePath, mContext)) {
-//                callback.invoke();
-//            } else {
-//                callback.invoke();
-//            }
+        } else {
+            callback.invoke();
         }
     }
 
@@ -361,6 +357,21 @@ public class CommModule extends ReactContextBaseJavaModule {
     public void updateable(String data, boolean force, Callback callback) {
         JSONObject updateObj = JSON.parseObject(data);
         String lastVersion = updateObj.getString("version");
+        VersionUpdateEvent event = updateEvent(lastVersion);
+        event.setExist(event.isExist());
+        event.setApkPath(event.getApkPath());
+        event.setDownUrl(updateObj.getString("url"));
+        event.setVersion(lastVersion);
+        event.setForceUpdate(force);
+        event.setCallback(callback);
+        event.setContext(mContext);
+        EventBus.getDefault().post(event);
+    }
+
+    private VersionUpdateEvent updateEvent(String lastVersion) {
+        if (!TextUtils.isEmpty(lastVersion)) {
+
+        }
         //提示当前有版本更新
         File apkFile = SDCardUtils.getFileDirPath("MR/file");
         String fileName = AppUtils.getAppName(getCurrentActivity()) + "_" + lastVersion + ".apk";
@@ -369,12 +380,16 @@ public class CommModule extends ReactContextBaseJavaModule {
         VersionUpdateEvent event = new VersionUpdateEvent();
         event.setExist(exist);
         event.setApkPath(filePath);
-//        event.setDownUrl(updateObj.getString("url"));
-        event.setDownUrl("https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/安卓.apk");
-        event.setVersion(lastVersion);
-        event.setForceUpdate(force);
-        event.setCallback(callback);
-        event.setContext(mContext);
-        EventBus.getDefault().post(event);
+        return event;
+    }
+
+    @ReactMethod
+    public void apkExist(String version, Callback callback) {
+        callback.invoke(updateEvent(version).isExist());
+    }
+
+    @ReactMethod
+    public void nativeTaskToBack() {
+        getCurrentActivity().moveTaskToBack(true);
     }
 }

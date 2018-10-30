@@ -138,7 +138,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                                 webJson={{
                                     title: '分享标题(当为图文分享时候使用)',
                                     dec: '内容(当为图文分享时候使用)',
-                                    linkUrl: 'http://testh5.sharegoodsmall.com/#/register',
+                                    linkUrl: 'http://h5.sharegoodsmall.com/#/register',//'http://testh5.sharegoodsmall.com/#/register',
                                     thumImage: 'logo.png'
                                 }}
                                 // miniProgramJson = {{

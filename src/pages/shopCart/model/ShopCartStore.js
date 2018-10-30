@@ -5,11 +5,18 @@ import bridge from '../../../utils/bridge';
 
 class ShopCartStore {
     @observable
+    isRefresh = false;
+    @observable
     data = [];
     @observable
     allMoney = 0;
     @observable
     isAllSelected;
+
+    @action
+    setRefresh(refresh){
+        this.isRefresh = refresh
+    }
 
     @action
     clearData() {
@@ -104,7 +111,6 @@ class ShopCartStore {
                     tempString = tempString + `${string} `;
                 });
                 item.specString = tempString;
-                console.log(item.specString);
                 tempArr.push(item);
             });
             this.data = tempArr;
@@ -182,11 +188,12 @@ class ShopCartStore {
             ShopCartAPI.getRichItemList(
                 params
             ).then(res => {
-                //拿到本地缓存的购物车数据
                 this.packingShopCartGoodsData(res.data);
+                this.setRefresh(false)
             }).catch(error => {
+                this.setRefresh(false)
+                bridge.$toast(error.msg)
                 this.data = [];
-                // bridge.$toast(error);
             });
         } else {
             this.data = [];
@@ -200,10 +207,11 @@ class ShopCartStore {
             bridge.hiddenLoading();
             //组装购物车数据
             this.packingShopCartGoodsData(result.data);
+            this.setRefresh(false)
         }).catch(error => {
             bridge.hiddenLoading();
             bridge.$toast(error.msg);
-
+            this.setRefresh(false)
         });
     };
 
@@ -215,7 +223,6 @@ class ShopCartStore {
                 bridge.$toast('批量加入购物车未对接');
             } else {
                 //加入单个商品
-                console.log(item);
                 bridge.showLoading();
                 ShopCartAPI.addItem({
                     'amount': item.amount,

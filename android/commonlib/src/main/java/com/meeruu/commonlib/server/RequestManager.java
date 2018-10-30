@@ -476,7 +476,7 @@ public class RequestManager {
                 FileOutputStream fos = null;
                 try {
                     long total = response.body().contentLength();
-                    LogUtils.e("下载", "total------>" + total);
+                    LogUtils.d("下载", "total------>" + total);
                     long current = 0;
                     is = response.body().byteStream();
                     fos = new FileOutputStream(file);
@@ -513,10 +513,10 @@ public class RequestManager {
      */
     private Map<String, String> getHttpHeaderParams() {
         Map<String, String> params = new HashMap<>();
-        String channel = WalleChannelReader.getChannel(BaseApplication.appContext, "xxd");
+        String channel = WalleChannelReader.getChannel(BaseApplication.appContext, "guanwang");
         params.put("device", DeviceUtils.getUniquePsuedoID());
         params.put("channel", channel);
-        params.put("platform", "Android " + DeviceUtils.getSystemVersion());
+        params.put("platform", "Android " + DeviceUtils.getSystemName());
         return params;
     }
 
