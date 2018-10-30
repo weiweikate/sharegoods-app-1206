@@ -70,20 +70,24 @@ export default class OpenPrizeItemView extends Component {
 
     constructor(props) {
         super(props);
-        const itemData = this.props.itemData;
+        const {itemData} = props;
         this.state = {
             itemData: itemData
         };
     }
 
+    componentWillReceiveProps(nextProps){
+        if (nextProps.itemData) {
+            this.state.itemData = nextProps.itemData
+        }
+    }
+
+
     static propTypes = {
         itemData: PropTypes.object.isRequired,
         itemClick: PropTypes.func.isRequired
     };
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log('shouldComponentUpdate --nextProps' + nextProps + '===nextState' + nextState)
-        return true
-    }
+
     render() {
         const itemData = this.state.itemData;
         return (
