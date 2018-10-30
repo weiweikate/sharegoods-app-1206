@@ -131,7 +131,7 @@ export default class TopicDetailSelectPage extends Component {
                         </View>
 
                         <View style={{ flex: 1, backgroundColor: 'white' }}>
-                            < ScrollView>
+                            <ScrollView>
                                 {this._addSelectionSectionView()}
                                 <View style={[{
                                     flexDirection: 'row',
