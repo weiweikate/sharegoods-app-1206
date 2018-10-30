@@ -5,8 +5,12 @@
 packagePath=$1
 
 #蒲公英配置的参数
-readonly APIKey=94329e916eb4262a6ecbe3632f2d2276
-readonly UserKey=f5b7d971ed1b5a4c24f1ec7a7dd7fb4f
+# readonly APIKey=94329e916eb4262a6ecbe3632f2d2276
+# readonly UserKey=f5b7d971ed1b5a4c24f1ec7a7dd7fb4f
+
+# huyufeng
+readonly APIKey=f8fd88e52443f483f4bb5d7dfb857e02
+readonly UserKey=0ceec8de7f57ef87ef2a7ad14bb728ab
 #蒲公英账号密码
 #地址：https://www.pgyer.com/
 #账号：13735533492
