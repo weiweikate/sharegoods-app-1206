@@ -42,7 +42,7 @@ export default class DownPricePage extends BasePage {
         // this.$NavigationBarResetTitle(this.dataModel.name)
     }
 
- 
+
 
     /**
      * 渲染底部组列表

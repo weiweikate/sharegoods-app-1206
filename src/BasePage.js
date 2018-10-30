@@ -16,7 +16,7 @@ import {
 } from './components/pageDecorator/BaseView';
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';
-import NoNetHighComponent, { netStatus } from "./comm/components/NoNetHighComponent";
+import  { netStatus } from "./comm/components/NoNetHighComponent";
 import CommTabImag from './comm/res/CommTabImag';
 
 
@@ -83,7 +83,7 @@ export default class BasePage extends Component {
                                                   this.$navigatorBar = bar;
                                               }}/>
             }
-            {this.$isMonitorNetworkStatus()&&netStatus.isConnected===false?
+            {this.$isMonitorNetworkStatus() && netStatus.isConnected === false ?
                 this._renderDefaultNoNet() :
                 this.renderContianer()}
             <ToastView ref={(toast) => {
@@ -245,13 +245,13 @@ export default class BasePage extends Component {
     };
 }
 
-@NoNetHighComponent
-class Container extends Component  {
-
-     render(){
-         return(this.props._render());
-     }
-}
+// @NoNetHighComponent
+// class Container extends Component  {
+//
+//      render(){
+//          return(this.props._render());
+//      }
+// }
 
 const styles = StyleSheet.create({
     container: {

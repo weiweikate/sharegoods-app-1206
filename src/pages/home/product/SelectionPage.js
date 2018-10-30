@@ -250,7 +250,7 @@ export default class SelectionPage extends Component {
 
         let priceId = priceArr.join(',');
         priceId = `,${priceId},`;
-        let itemData = undefined;
+        let itemData;
         const { priceList = [] } = this.state;
         priceList.forEach((item) => {
             if (item.specIds === priceId) {

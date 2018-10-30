@@ -210,12 +210,12 @@ export default class HomePage extends Component {
             return null;
         }
         let indexs = [];
-        for(var i = 0;i<this.state.messageData.length;i++){
+        for(let i = 0;i < this.state.messageData.length;i++){
             let view = i === this.state.messageIndex ? <Image source={messageSelected} style={styles.messageIndexStyle}/> : <Image source={messageUnselected} style={styles.messageIndexStyle}/>;
             indexs.push(view);
         }
         return(
-            <View style={{flexDirection:'row',width:px2dp(120),justifyContent:this.state.messageData.length === 1 ? 'center':'space-between',marginBottom:px2dp(12),height:12,alignSelf:'center'}}>
+            <View style={{flexDirection:'row',width:px2dp(120),justifyContent:this.state.messageData.length === 1 ? 'center' : 'space-between',marginBottom:px2dp(12),height:12,alignSelf:'center'}}>
                 {indexs}
             </View>
         )

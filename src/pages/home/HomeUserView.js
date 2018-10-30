@@ -75,9 +75,9 @@ export default class HomeUserView extends Component {
 
                     <View
                         style={[styles.levelBottomTextBg,
-                            (experience > 0 && totalExp > 0)? {
-                                left:50/220 * 220 + 12
-                             }:null
+                            (experience > 0 && totalExp > 0) ? {
+                                left:50 / 220 * 220 + 12
+                             } : null
                         ]}
                     >
                         <Text

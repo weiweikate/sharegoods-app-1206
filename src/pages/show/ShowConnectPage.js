@@ -140,7 +140,7 @@ export default class ShowConnectPage extends BasePage {
         </View>
    }
    _keyExtractor = (data) => data.id + ''
-   
+
    _render() {
        const { allSelected, select } = this.state
        return(

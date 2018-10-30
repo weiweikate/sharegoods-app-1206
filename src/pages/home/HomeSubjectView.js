@@ -50,7 +50,7 @@ const ActivityItem = ({data, press, goodsPress}) => {
             <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
             {goodsItem}
                 {
-                    topicBannerProductDTOList && topicBannerProductDTOList.length > 8?  <MoreItem press={()=>{press && press()}}/>:null
+                    topicBannerProductDTOList && topicBannerProductDTOList.length > 8 ?  <MoreItem press={()=>{press && press()}}/> : null
                 }
                 <View style={styles.space}/>
             </ScrollView>

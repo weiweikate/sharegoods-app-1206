@@ -17,7 +17,7 @@ import CommShareModal from '../../comm/components/CommShareModal'
 import user from '../../model/user'
 
 const Goods = ({data, press}) => <TouchableOpacity style={styles.goodsItem} onPress={()=>{press && press()}}>
-    <Image style={styles.goodImg} source={{uri: data.headImg ? data.headImg: ''}}/>
+    <Image style={styles.goodImg} source={{uri: data.headImg ? data.headImg : ''}}/>
     <View style={styles.goodDetail}>
         <Text style={styles.name}>{data.name}</Text>
         <View style={{height: px2dp(4)}}/>
@@ -91,7 +91,7 @@ export default class ShowDetailPage extends Component {
             <View style={styles.profileRow}>
                 <View style={styles.profileLeft}>
                     <Image style={styles.portrait} source={{uri: detail.userHeadImg ? detail.userHeadImg : ''}}/>
-                    <Text style={styles.showName}>{detail.userName ? detail.userName: ''}</Text>
+                    <Text style={styles.showName}>{detail.userName ? detail.userName : ''}</Text>
                 </View>
                 <View style={styles.profileRight}>
                     <Image source={seeImg}/>
