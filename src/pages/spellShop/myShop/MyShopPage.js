@@ -40,6 +40,7 @@ import spellStatusModel from '../model/SpellStatusModel';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import apiEnvironment from '../../../api/ApiEnvironment';
 
 @observer
 export default class MyShopPage extends BasePage {
@@ -113,6 +114,11 @@ export default class MyShopPage extends BasePage {
     };
 
     _loadPageData = () => {
+        this._requestGetById();
+        this._requestGetByStoreId();
+    };
+
+    _requestGetById = () => {
         //店铺信息
         SpellShopApi.getById({ id: this.state.storeId }).then((data) => {
             let dataTemp = data.data || {};
@@ -130,12 +136,18 @@ export default class MyShopPage extends BasePage {
                 isRefresh: false
             });
         });
+    };
 
+    _requestGetByStoreId = () => {
         //是否收藏店铺
         SpellShopApi.getByStoreId({ storeId: this.state.storeId }).then((data) => {
             if (data.data) {
                 this.setState({
                     isLike: true
+                });
+            } else {
+                this.setState({
+                    isLike: false
                 });
             }
         }).catch((error) => {
@@ -298,12 +310,12 @@ export default class MyShopPage extends BasePage {
 
     _renderJoinBtn = () => {
         const { storeMaxUser, storeUserList = [], recruitStatus, userStatus, status } = this.state.storeData;
-        //有店&&没关闭||已经加入||为空
-        if ((spellStatusModel.storeId && StringUtils.isNoEmpty(spellStatusModel.storeStatus) && spellStatusModel.storeStatus !== 0) || userStatus === 1 || StringUtils.isEmpty(userStatus)) {
+        //有店&&没关闭(需要刷新 需求有待商榷)||已经加入||为空
+        if (userStatus === 1 || StringUtils.isEmpty(userStatus)) {
             return null;
         }
-        let btnText;
-        //2,10 允许加入,人数未满,店铺未没关闭
+        let btnText = undefined;
+        //2,10,店铺未没关闭&&允许加入&&人数未满
         let canJoin = (userStatus !== 10 && userStatus !== 2 && status !== 0) && (recruitStatus === 0 || recruitStatus === 1) && storeMaxUser > storeUserList.length;
         switch (userStatus) {
             case 2:
@@ -394,7 +406,7 @@ export default class MyShopPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: 'http://h5.sharegoodsmall.com/#/register',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/register`,
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>

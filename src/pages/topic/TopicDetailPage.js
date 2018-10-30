@@ -24,6 +24,8 @@ import TopicDetailSelectPage from './TopicDetailSelectPage';
 import PackageDetailSelectPage from './PackageDetailSelectPage';
 import CommShareModal from '../../comm/components/CommShareModal';
 import TopicDetailShowModal from './components/TopicDetailShowModal';
+import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
+import apiEnvironment from '../../api/ApiEnvironment';
 
 export default class TopicDetailPage extends BasePage {
 
@@ -38,9 +40,9 @@ export default class TopicDetailPage extends BasePage {
             activityType: this.params.activityType,
             //参数还是详情
             selectedIndex: 0,
-            //数据
+            //数据 礼包没有活动数据都在data里
             data: {},
-            //活动数据
+            //活动数据  降价拍和秒杀活动数据
             activityData: {}
         };
     }
@@ -83,7 +85,6 @@ export default class TopicDetailPage extends BasePage {
             this.$loadingShow();
             TopicApi.findActivityPackageDetail({
                 code: this.params.activityCode
-                // code:'TC201810130007',
             }).then((data) => {
                 this.$loadingDismiss();
                 this.setState({
@@ -315,7 +316,7 @@ export default class TopicDetailPage extends BasePage {
                 if (surplusNumber === 0) {
                     bottomTittle = '已抢光';
                 } else if (limitNumber !== -1 && limitFlag === 1) {
-                    bottomTittle = `每人限购${limitNumber}次（您已购买过本商品）`;
+                    bottomTittle = `每人限购${limitNumber}次\n(您已购买过本商品）`;
                 } else {
                     bottomTittle = '立即拍';
                     colorType = 2;
@@ -347,7 +348,19 @@ export default class TopicDetailPage extends BasePage {
                         <Image source={xiangqing_btn_return_nor}/>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
-                        this.shareModal.open();
+                        this.DetailNavShowModal.show((item) => {
+                            switch (item.index) {
+                                case 0:
+                                    this.$navigate('message/MessageCenterPage');
+                                    break;
+                                case 1:
+                                    this.props.navigation.popToTop();
+                                    break;
+                                case 2:
+                                    this.shareModal.open();
+                                    break;
+                            }
+                        });
                     }}>
                         <Image source={xiangqing_btn_more_nor}/>
                     </TouchableWithoutFeedback>
@@ -385,15 +398,16 @@ export default class TopicDetailPage extends BasePage {
                                     imageUrlStr: productImgUrl,
                                     titleStr: productName,
                                     priceStr: `￥${productPrice}`,
-                                    QRCodeStr: `http://h5.sharegoodsmall.com/product/${this.params.activityType}/${this.params.activityCode}`
+                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`
                                 }}
                                 webJson={{
                                     title: productName,
                                     dec: '商品详情',
-                                    linkUrl: `http://h5.sharegoodsmall.com/product/${this.params.activityType}/${this.params.activityCode}`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`,
                                     thumImage: productImgUrl
                                 }}/>
                 <TopicDetailShowModal ref={(ref) => this.TopicDetailShowModal = ref}/>
+                <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
             </View>
         );
     }
