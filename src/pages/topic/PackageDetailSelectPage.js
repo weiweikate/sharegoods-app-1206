@@ -151,6 +151,7 @@ export default class TopicDetailSelectPage extends Component {
                                 height: 107,
                                 width: 107,
                                 borderColor: '#EEEEEE',
+                                backgroundColor:'#eee',
                                 borderWidth: 1,
                                 borderRadius: 5,
                                 alignItems: 'center',

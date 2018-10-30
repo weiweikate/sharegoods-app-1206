@@ -92,6 +92,7 @@ export default class TopicDetailSelectPage extends Component {
                             <Image style={{
                                 height: 107,
                                 width: 107,
+                                backgroundColor:'#eee',
                                 borderColor: '#EEEEEE',
                                 borderWidth: 1,
                                 borderRadius: 5,
