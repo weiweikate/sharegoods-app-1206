@@ -315,7 +315,7 @@ export default class TopicDetailPage extends BasePage {
                 if (surplusNumber === 0) {
                     bottomTittle = '已抢光';
                 } else if (limitNumber !== -1 && limitFlag === 1) {
-                    bottomTittle = `每人限购${limitNumber}次（您已购买过本商品）`;
+                    bottomTittle = `每人限购${limitNumber}次\n(您已购买过本商品）`;
                 } else {
                     bottomTittle = '立即拍';
                     colorType = 2;
