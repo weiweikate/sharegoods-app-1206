@@ -19,6 +19,7 @@ const ViewPager = props => {
         showsPagination,
         onIndexChanged,
         index,
+        style,
         ...attributes
     } = props;
 

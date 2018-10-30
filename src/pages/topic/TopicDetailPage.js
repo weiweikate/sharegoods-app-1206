@@ -39,9 +39,9 @@ export default class TopicDetailPage extends BasePage {
             activityType: this.params.activityType,
             //参数还是详情
             selectedIndex: 0,
-            //数据
+            //数据 礼包没有活动数据都在data里
             data: {},
-            //活动数据
+            //活动数据  降价拍和秒杀活动数据
             activityData: {}
         };
     }
@@ -84,7 +84,6 @@ export default class TopicDetailPage extends BasePage {
             this.$loadingShow();
             TopicApi.findActivityPackageDetail({
                 code: this.params.activityCode
-                // code:'TC201810130007',
             }).then((data) => {
                 this.$loadingDismiss();
                 this.setState({
