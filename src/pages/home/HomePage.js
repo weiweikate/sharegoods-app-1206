@@ -49,7 +49,7 @@ export default class HomePage extends Component {
         super(props);
         homeModule.loadHomeList();
         // 检测版本更新
-        MineApi.getVersion({ vsersion: DeviceInfo.getVersion() }).then((res) => {
+        MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((res) => {
             if (res.data.upgrade === 1) {
                 this.setState({
                     updateData: res.data,
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
         height: statusBarHeight + 44,
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
-        backgroundColor: '#d51243',
+        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',

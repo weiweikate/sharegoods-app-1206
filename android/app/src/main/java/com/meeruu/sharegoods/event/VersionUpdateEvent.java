@@ -1,6 +1,7 @@
 package com.meeruu.sharegoods.event;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.ReactApplicationContext;
 
 public class VersionUpdateEvent {
     private boolean exist;
@@ -9,6 +10,7 @@ public class VersionUpdateEvent {
     private String downUrl;
     private boolean forceUpdate;
     private Callback callback;
+    private ReactApplicationContext context;
 
     public boolean isExist() {
         return exist;
@@ -56,5 +58,13 @@ public class VersionUpdateEvent {
 
     public void setCallback(Callback callback) {
         this.callback = callback;
+    }
+
+    public ReactApplicationContext getContext() {
+        return context;
+    }
+
+    public void setContext(ReactApplicationContext context) {
+        this.context = context;
     }
 }

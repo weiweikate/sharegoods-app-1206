@@ -23,7 +23,8 @@ import android.view.WindowManager;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
-import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.OnProgressListener;
 import com.meeruu.commonlib.handler.WeakHandler;
@@ -65,7 +66,7 @@ public class MainActivity extends ReactActivity implements PermissionUtil.Permis
     private ServiceConnection conn;
     private WeakHandler myHandler;
     private String lastVersion;
-    private Callback callback;
+    private ReactApplicationContext mContext;
     private static String[] mDenyPerms = StringUtis.concatAll(
             Permission.STORAGE);
 
@@ -105,9 +106,9 @@ public class MainActivity extends ReactActivity implements PermissionUtil.Permis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        initHandler();
         initStatus();
         initServiceConn();
-        initHandler();
     }
 
     private void initStatus() {
@@ -130,9 +131,8 @@ public class MainActivity extends ReactActivity implements PermissionUtil.Permis
             public boolean handleMessage(Message msg) {
                 switch (msg.what) {
                     case ParameterUtils.FLAG_UPDATE:
-                        if (callback != null) {
-                            callback.invoke(msg.arg1);
-                        }
+                        mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("UpdateEvent", msg.arg1);
                         break;
                     default:
                         break;
@@ -243,12 +243,14 @@ public class MainActivity extends ReactActivity implements PermissionUtil.Permis
         updateType = event.isForceUpdate() ? ParameterUtils.FLAG_UPDATE_NOW : ParameterUtils.FLAG_UPDATE;
         apkPath = event.getApkPath();
         lastVersion = event.getVersion();
+        mContext = event.getContext();
         if (event.isExist()) {
             handleInstallApk();
         } else {
-            this.callback = event.getCallback();
-            if (event.isForceUpdate() && callback != null) {
-                callback.invoke(0);
+            if (event.isForceUpdate()) {
+                if (event.getCallback() != null) {
+                    event.getCallback().invoke();
+                }
             }
             BaseApplication.getInstance().setDownload(true);
             BaseApplication.getInstance().setDownLoadUrl(event.getDownUrl());

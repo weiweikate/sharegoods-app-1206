@@ -6,8 +6,6 @@
 
 import React, { Component } from 'react';
 import {
-    NativeModules,
-    Platform,
     StyleSheet,
     Text,
     View
@@ -21,7 +19,7 @@ import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
 import appData from './model/appData';
-import { netStatus } from "./comm/components/NoNetHighComponent";
+import { netStatus } from './comm/components/NoNetHighComponent';
 import signTestTool from './signTestTool';
 
 
@@ -91,9 +89,6 @@ export default class App extends Component {
                            onNavigationStateChange={(prevState, currentState) => {
                                let curRouteName = getCurrentRouteName(currentState);
                                // 拦截当前router的名称
-                               if (Platform.OS !== 'ios') {
-                                   NativeModules.commModule.setStatusMode(curRouteName);
-                               }
                                console.log(curRouteName);
                                const currentScreen = getCurrentRouteName(currentState);
                                const prevScreen = getCurrentRouteName(prevState);
@@ -108,17 +103,17 @@ export default class App extends Component {
                         style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
                 {/*{*/}
-                    {/*CONFIG.showDebugPanel ? <DebugButton onPress={this.signTestFunc}><Text*/}
-                        {/*style={{ color: 'white' }}>验签调试</Text></DebugButton> : null*/}
+                {/*CONFIG.showDebugPanel ? <DebugButton onPress={this.signTestFunc}><Text*/}
+                {/*style={{ color: 'white' }}>验签调试</Text></DebugButton> : null*/}
                 {/*}*/}
             </View>
         );
     }
 
-    signTestFunc =()=>{
+    signTestFunc = () => {
         // signTestTool.beginTest(); post
-        signTestTool.testSignGet() //get
-    }
+        signTestTool.testSignGet(); //get
+    };
 
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({

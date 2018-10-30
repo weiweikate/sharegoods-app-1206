@@ -369,10 +369,12 @@ public class CommModule extends ReactContextBaseJavaModule {
         VersionUpdateEvent event = new VersionUpdateEvent();
         event.setExist(exist);
         event.setApkPath(filePath);
-        event.setDownUrl(updateObj.getString("url"));
+//        event.setDownUrl(updateObj.getString("url"));
+        event.setDownUrl("https://mr-test-sg.oss-cn-hangzhou.aliyuncs.com/sharegoods/安卓.apk");
         event.setVersion(lastVersion);
-        event.setForceUpdate(updateObj.getIntValue("forceUpdate") == 1);
+        event.setForceUpdate(force);
         event.setCallback(callback);
+        event.setContext(mContext);
         EventBus.getDefault().post(event);
     }
 }

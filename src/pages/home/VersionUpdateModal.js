@@ -1,17 +1,37 @@
 import React from 'react';
 import CommModal from '../../comm/components/CommModal';
-import { NativeModules, Platform, TouchableOpacity, View } from 'react-native';
+import { DeviceEventEmitter, NativeModules, Platform, TouchableOpacity, View } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIText from '../../components/ui/UIText';
-import CustomProgress from './components/CustomProgress';
+import CustomProgress from './../../components/ui/CustomProgress';
 
 export default class VersionUpdateModal extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            showBtn: true
+            showBtn: true,
+            progress: 0
         };
+    }
+
+    componentWillMount() {
+        DeviceEventEmitter.addListener('UpdateEvent', (progress) => {
+            if (progress < 100) {
+                this.setState({
+                    progress: progress
+                });
+            } else {
+                this.setState({
+                    progress: 100,
+                    showBtn: true
+                });
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        DeviceEventEmitter.removeAllListeners('UpdateEvent');
     }
 
     render() {
@@ -42,26 +62,26 @@ export default class VersionUpdateModal extends React.Component {
                         style={{
                             marginTop: 100
                         }}
-                        progress={this.currProgress}
-                        buffer={this.currBuffer}
+                        progress={this.state.progress}
+                        buffer={100}
                     />
-                    <UIText/>
+                    <UIText value={this.state.progress + '%'}/>
                 </View>}
                 {this.state.showBtn ?
                     <View style={{ height: 0.5, backgroundColor: '#eee' }}/> : null}
                 <View style={{ flexDirection: 'row' }}>
                     {
-                        this.props.forceUpdate ? null :
-                            <View style={{ flex: 1, flexDirection: 'row' }}>
-                                <TouchableOpacity
-                                    style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 45 }}
-                                    onPress={() => {
-                                        this.props.onDismiss();
-                                    }}>
-                                    <UIText value={'以后再说'} style={{ color: '#999' }}/>
-                                </TouchableOpacity>
-                                < View style={{ width: 0.5, backgroundColor: '#eee' }}/>
-                            </View>
+                        // this.props.forceUpdate ? null :
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                            <TouchableOpacity
+                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 45 }}
+                                onPress={() => {
+                                    this.props.onDismiss();
+                                }}>
+                                <UIText value={'以后再说'} style={{ color: '#999' }}/>
+                            </TouchableOpacity>
+                            < View style={{ width: 0.5, backgroundColor: '#eee' }}/>
+                        </View>
                     }{
                     this.state.showBtn ?
                         <TouchableOpacity
@@ -91,18 +111,10 @@ export default class VersionUpdateModal extends React.Component {
         } else {
             if (this.props.updateData.forceUpdate === 1) {
                 // 强制更新app
-                this.setState({
-                    showBtn: false
-                });
-                NativeModules.commModule.updateable(JSON.stringify(this.props.updateData), true, (progress) => {
-                    if (progress < 100) {
-
-                    } else {
-                        this.setState({
-                            showBtn: true
-                        });
-                    }
-                    console.log(progress);
+                NativeModules.commModule.updateable(JSON.stringify(this.props.updateData), true, () => {
+                    this.setState({
+                        showBtn: false
+                    });
                 });
             } else {
                 // 关闭弹框
