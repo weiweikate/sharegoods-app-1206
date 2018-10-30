@@ -78,7 +78,13 @@ export default class TopicDetailSelectPage extends Component {
         for (let index = 0; index < data.length; index++) {
             let obj = data[index];
             obj.canSelected = obj.surplusNumber > 0;
+            if (obj.canSelected && data.length === 1) {
+                this.state.selectList[indexOfTop] = obj.id;
+                this.state.selectStrList[indexOfTop] = obj.specValues;
+                this.state.selectData[indexOfTop] = obj;
+            }
             obj.isSelected = obj.id === this.state.selectList[indexOfTop];
+
             tagList.push(
                 <View key={index}>
                     <TouchableOpacity
@@ -151,7 +157,7 @@ export default class TopicDetailSelectPage extends Component {
                                 height: 107,
                                 width: 107,
                                 borderColor: '#EEEEEE',
-                                backgroundColor:'#eee',
+                                backgroundColor: '#eee',
                                 borderWidth: 1,
                                 borderRadius: 5,
                                 alignItems: 'center',
