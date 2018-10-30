@@ -91,7 +91,7 @@ export default class LoginPage extends BasePage {
                     <View style={Styles.lineBgStyle}>
                         <CommSpaceLine style={{ marginTop: 7, width: 80, marginLeft: 5 }}/>
                         <Text style={Styles.otherLoginTextStyle}>
-                            其他登陆方式
+                            其他登录方式
                         </Text>
                         <CommSpaceLine style={{ marginTop: 7, width: 80, marginLeft: 5 }}/>
                     </View>
