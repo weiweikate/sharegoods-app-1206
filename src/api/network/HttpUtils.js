@@ -89,13 +89,13 @@ export default class HttpUtils {
          let signParam = {}
         if (isRSA){
              signParam = RSA.sign(params)
-        } 
+        }
         let timeLineStart = +new Date();
 
         if (!this.platform) {
             this.platform =  DeviceInfo.getSystemName() + ' '  + DeviceInfo.getSystemVersion()
         }
-        
+
         return user.getToken().then(token => {
             let config = {
                 headers: {
@@ -131,12 +131,12 @@ export default class HttpUtils {
         let signParam = {}
         if (isRSA){
             signParam = RSA.sign()
-        } 
+        }
         data = {
             ...defaultData,
             ...data
         };
-        
+
         if (!this.platform) {
             this.platform =  DeviceInfo.getSystemName() + ' '  + DeviceInfo.getSystemVersion()
         }

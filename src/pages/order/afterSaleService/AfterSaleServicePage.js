@@ -355,7 +355,8 @@ class AfterSaleServicePage extends BasePage {
             this.SelectionPage.show(this.state.selectionData, this._selectionViewConfirm, {
                 afterAmount: this.state.productData.num,
                 afterPrice: this.state.productData.price,
-                type: 'after'
+                type: 'after',
+                productPriceId: this.state.productData.productPriceId,
             });
         }
     };

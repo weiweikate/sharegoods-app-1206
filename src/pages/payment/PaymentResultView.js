@@ -90,7 +90,7 @@ export default class PaymentResultView extends Component {
                         </TouchableOpacity>
                     </View>
                 }
-                
+
             </View>
             </View>
             </TouchableWithoutFeedback>

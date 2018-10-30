@@ -3,7 +3,6 @@ import TopicAPI from '../api/TopicApi';
 import bridge from '../../../utils/bridge';
 
 class TotalTopicresultDataModel {
-
     @observable
     isFirstLoad = true;
     @observable

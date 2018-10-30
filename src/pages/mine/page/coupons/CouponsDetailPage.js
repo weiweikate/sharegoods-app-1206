@@ -133,8 +133,7 @@ export default class CouponsDetailPage extends BasePage {
                     <Text style={{ marginTop: 5, color: '#666', lineHeight: 25 }}>{item.remarks}</Text>
                 </View>
                 <View
-                    style={{ width: ScreenUtils.width, height: 180, alignItems: 'center', justifyContent: 'flex-end' }}>
-                </View>
+                    style={{ width: ScreenUtils.width, height: 180, alignItems: 'center', justifyContent: 'flex-end' }} />
             </View>
         );
     };

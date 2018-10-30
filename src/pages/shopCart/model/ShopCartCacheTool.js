@@ -201,8 +201,8 @@ class ShopCartCacheTool {
             shopCartStore.updateCartItem(itemData, rowId);
         } else {
             //判断商品数量
-            if (itemData.amount>200){
-                itemData.amount=200
+            if (itemData.amount > 200){
+                itemData.amount = 200
                 bridge.$toast('单个商品最大数量上限为200个')
             }
             /*未登录状态登录状态更新本地*/
