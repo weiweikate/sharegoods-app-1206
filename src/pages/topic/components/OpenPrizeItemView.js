@@ -17,6 +17,7 @@ import user from '../../../model/user';
 import bridge from '../../../utils/bridge';
 import ShopCartRes from '../../shopCart/res/ShopCartRes';
 import SbResTool from '../res/SbResTool';
+import { getShowPrice } from '../model/TopicMudelTool';
 
 
 // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
@@ -40,40 +41,6 @@ const statuesString = {
     [statues.timeOver]: '已结束',
     [statues.handOver]: '已结束'
 };
-// 1.秒杀 2.降价拍 3.礼包 4.助力免费领 5.专题 99.普通产品
-const productTypes = {
-    skill: 1,
-    down: 2,
-    giftPackage: 3,
-    helpFree: 4,
-    newTopic: 5,
-    normalProduct: 99
-};
-const downPriceParam = {
-    [statues.noBegin]: 'startPrice',
-    [statues.isBeginning]: 'markdownPrice',
-    [statues.haveSoldOut]: 'markdownPrice',
-    [statues.timeOver]: 'markdownPrice',
-    [statues.handOver]: 'markdownPrice'
-};
-const typeName = {
-    [productTypes.skill]: 'seckillPrice',
-    //降价拍需要判断statue 如果为1 则为startPrice 如果为2 则为 markdownPrice
-    [productTypes.down]: downPriceParam,
-    [productTypes.giftPackage]: '暂无',
-    [productTypes.helpFree]: '暂无',
-    [productTypes.newTopic]: '暂无'
-};
-
-function getShowPrice(itemData) {
-    let showPrice = itemData.productType === 2
-        ?
-        '¥' + itemData[typeName[itemData.productType][itemData.status]]
-        :
-        '¥' + itemData[typeName[itemData.productType]];
-    return showPrice;
-}
-
 
 export default class OpenPrizeItemView extends Component {
 
@@ -180,7 +147,7 @@ export default class OpenPrizeItemView extends Component {
                                         //     '¥' + itemData[typeName[itemData.productType][itemData.status]]
                                         //     :
                                         //     '¥' + itemData[typeName[itemData.productType]]
-                                        getShowPrice(itemData)
+                                       getShowPrice(itemData)
                                     }
                                 </Text>
                                 <Text style={{
