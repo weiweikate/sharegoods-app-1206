@@ -24,6 +24,7 @@ import TopicDetailSelectPage from './TopicDetailSelectPage';
 import PackageDetailSelectPage from './PackageDetailSelectPage';
 import CommShareModal from '../../comm/components/CommShareModal';
 import TopicDetailShowModal from './components/TopicDetailShowModal';
+import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
 
 export default class TopicDetailPage extends BasePage {
 
@@ -347,7 +348,19 @@ export default class TopicDetailPage extends BasePage {
                         <Image source={xiangqing_btn_return_nor}/>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
-                        this.shareModal.open();
+                        this.DetailNavShowModal.show((item) => {
+                            switch (item.index) {
+                                case 0:
+                                    this.$navigate('message/MessageCenterPage');
+                                    break;
+                                case 1:
+                                    this.props.navigation.popToTop();
+                                    break;
+                                case 2:
+                                    this.shareModal.open();
+                                    break;
+                            }
+                        });
                     }}>
                         <Image source={xiangqing_btn_more_nor}/>
                     </TouchableWithoutFeedback>
@@ -394,6 +407,7 @@ export default class TopicDetailPage extends BasePage {
                                     thumImage: productImgUrl
                                 }}/>
                 <TopicDetailShowModal ref={(ref) => this.TopicDetailShowModal = ref}/>
+                <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
             </View>
         );
     }

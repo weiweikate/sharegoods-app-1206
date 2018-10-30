@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import { isNoEmpty } from '../../../../utils/StringUtils';
 import { formatDate } from '../../../../utils/DateUtils';
-import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import whiteArrowRight from '../res/icon3_03.png';
 
 export default class ActivityView extends Component {
@@ -20,15 +19,18 @@ export default class ActivityView extends Component {
 
     constructor(props) {
         super(props);
-        this.timer = new TimeDownUtils();
         this.state = {
             countTime: 0
         };
     }
 
     componentWillUnmount() {
-        this.timer.stop();
+        this._stopTime();
     }
+
+    _stopTime = () => {
+        this.interval && clearInterval(this.interval);
+    };
 
     componentDidMount() {
         this.saveActivityViewData(this.props.activityData, this.props.activityType);
@@ -55,31 +57,44 @@ export default class ActivityView extends Component {
 
     _time(start, end) {
         if (isNoEmpty(start) && isNoEmpty(end)) {
-            this.timer.startDown((time) => {
+            let countdownDate = new Date(new Date().getTime() + (end - start));
+            this.interval = setInterval(() => {
+                let diff = countdownDate - new Date().getTime();
+                if (diff <= 0) {
+                    diff = 0;
+                    this._stopTime();
+                }
                 this.setState({
-                    countTime: time
+                    countTime: diff
                 });
-            }, Math.floor((end - start) / 1000));
+            }, 200);
         }
     }
 
     _timeDif(usedTime) {
         //天数
-        let days = Math.floor(usedTime / (24 * 3600));
+        let days = Math.floor(usedTime / (24 * 3600 * 1000));
         //去除天数
-        let leave1 = usedTime % (24 * 3600);
+        let leave1 = usedTime % (24 * 3600 * 1000);
         //小时
-        let hours = Math.floor(leave1 / 3600);
+        let hours = Math.floor(leave1 / (3600 * 1000));
         //去除小时
-        let leave2 = leave1 % 3600;
+        let leave2 = leave1 % (3600 * 1000);
         //分钟
-        let minutes = Math.floor(leave2 / 60);
+        let minutes = Math.floor(leave2 / (60 * 1000));
         //去除分钟
-        let leave3 = leave2 % 60;
+        let leave3 = leave2 % (60 * 1000);
         //秒
-        let second = Math.floor(leave3);
+        let second = Math.floor(leave3 / 1000);
+        //mill
+        let leave4 = Math.floor(leave3 % 1000 / 10);
 
-        let time = days + ':' + hours + ':' + minutes + ':' + second;
+        hours = days * 24 + hours;
+        hours = hours >= 10 ? hours : hours === 0 ? `00` : `0${hours}`;
+        minutes = minutes >= 10 ? minutes : minutes === 0 ? `00` : `0${minutes}`;
+        second = second >= 10 ? second : second === 0 ? `00` : `0${second}`;
+
+        let time = `${hours}:${minutes}:${second}:${leave4}`;
         return time;
     }
 
@@ -158,11 +173,12 @@ export default class ActivityView extends Component {
                             <Text style={{ color: '#1B7BB3', fontSize: 11 }}>{three}</Text>
                             <View style={{
                                 marginTop: 5,
-                                width: 100,
-                                paddingVertical: 2,
+                                height: 15,
+                                width: 102,
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                backgroundColor: '#2B99D9'
+                                backgroundColor: '#2B99D9',
+                                borderRadius: 2.5
                             }}>
                                 <Text style={{ color: '#F7F7F7', fontSize: 11 }}>{four}</Text>
                             </View>
