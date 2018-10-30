@@ -256,8 +256,8 @@ export default class HomePage extends Component {
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
-                <LinearGradient colors={['#000000', 'transparent']}
-                                style={[styles.navBar, { height: this.headerH + 14, opacity: 0.4 }]}/>
+                <LinearGradient colors={['#fff', '#fff']}
+                                style={[styles.navBar, { height: this.headerH + 14, opacity: 0.0 }]}/>
 
                 <HomeSearchView navigation={this.props.navigation}/>
                 <ShareTaskHomeAlert ref={(ref) => this.shareModal = ref}
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
         height: statusBarHeight + 44,
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
-        backgroundColor: '#d51243',
+        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
