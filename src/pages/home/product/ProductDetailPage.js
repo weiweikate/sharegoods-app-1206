@@ -262,6 +262,7 @@ export default class ProductDetailPage extends BasePage {
                             switch (item.index) {
                                 case 0:
                                     this.$navigate('message/MessageCenterPage');
+                                    this.DetailNavShowModal.close();
                                     break;
                                 case 1:
                                     this.props.navigation.popToTop();
