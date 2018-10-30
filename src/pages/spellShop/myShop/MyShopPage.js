@@ -309,12 +309,12 @@ export default class MyShopPage extends BasePage {
 
     _renderJoinBtn = () => {
         const { storeMaxUser, storeUserList = [], recruitStatus, userStatus, status } = this.state.storeData;
-        //有店&&没关闭||已经加入||为空
-        if ((spellStatusModel.storeId && StringUtils.isNoEmpty(spellStatusModel.storeStatus) && spellStatusModel.storeStatus !== 0) || userStatus === 1 || StringUtils.isEmpty(userStatus)) {
+        //有店&&没关闭(需要刷新 需求有待商榷)||已经加入||为空
+        if (userStatus === 1 || StringUtils.isEmpty(userStatus)) {
             return null;
         }
         let btnText = undefined;
-        //2,10 允许加入,人数未满,店铺未没关闭
+        //2,10,店铺未没关闭&&允许加入&&人数未满
         let canJoin = (userStatus !== 10 && userStatus !== 2 && status !== 0) && (recruitStatus === 0 || recruitStatus === 1) && storeMaxUser > storeUserList.length;
         switch (userStatus) {
             case 2:
