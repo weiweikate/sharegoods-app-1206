@@ -160,17 +160,17 @@ export default class MyShop_RecruitPage extends Component {
                         <Text style={{ color: begin ? '#1B7BB3' : '#FFFC00', fontSize: 11 }}>{three}</Text>
                         <View style={{
                             marginTop: 5,
-                            width: 102,
+                            width: 106,
                             height: 12,
                             borderRadius: 6,
                             backgroundColor: begin ? '#2B99D9' : '#F1C11B',
                             flexDirection: 'row',
                             overflow: 'hidden'
                         }}>
-                            <View style={{
-                                width: surplusNumber / totalNumber * 102,
-                                backgroundColor: '#FFFC00',
-                            }}/>
+                            {!begin ? <View style={{
+                                width: surplusNumber / totalNumber * 106,
+                                backgroundColor: '#FFFC00'
+                            }}/> : null}
                             <View style={{
                                 position: 'absolute',
                                 top: 0, bottom: 0, left: 0, right: 0,

@@ -174,7 +174,7 @@ export default class ActivityView extends Component {
                             <View style={{
                                 marginTop: 5,
                                 height: 15,
-                                width: 102,
+                                width: 106,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 backgroundColor: '#2B99D9',

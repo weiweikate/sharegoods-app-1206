@@ -24,7 +24,7 @@ const ViewPager = props => {
     } = props;
 
     const styles = StyleSheet.create({
-        wrapper: {}
+        wrapper: style || {}
     });
 
     const renderItems = () => {
