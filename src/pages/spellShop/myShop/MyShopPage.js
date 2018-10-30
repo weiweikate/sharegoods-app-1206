@@ -40,6 +40,7 @@ import spellStatusModel from '../model/SpellStatusModel';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import apiEnvironment from '../../../api/ApiEnvironment';
 
 @observer
 export default class MyShopPage extends BasePage {
@@ -405,7 +406,7 @@ export default class MyShopPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: 'http://h5.sharegoodsmall.com/#/register',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/register`,
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>
