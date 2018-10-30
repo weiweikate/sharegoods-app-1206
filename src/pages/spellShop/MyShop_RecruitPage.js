@@ -77,9 +77,10 @@ export default class MyShop_RecruitPage extends BasePage {
 
     _renderContainer = () => {
         const { status, myStore } = this.state.data;
+        let statust = this.params.storeId ? status : spellStatusModel.storeStatus;
         if (this.params.storeId ? spellStatusModel.canSeeGroupStore && this.state.login : this.state.login) {
             //首页搜索和推荐过来的this.params.storeId
-            switch (status) {
+            switch (statust) {
                 case 0:
                 case 1://店铺开启中
                     return <MyShopPage navigation={this.props.navigation}
