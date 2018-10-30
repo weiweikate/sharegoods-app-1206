@@ -28,6 +28,9 @@ const ActivityItem = ({data, press, goodsPress}) => {
     console.log('ActivityItem', imgUrl)
     let goodsItem = []
     topicBannerProductDTOList && topicBannerProductDTOList.map((value,index) => {
+        if (index >= 8) {
+            return
+        }
         goodsItem.push(
         <GoodItems
             key={index}
@@ -50,7 +53,7 @@ const ActivityItem = ({data, press, goodsPress}) => {
             <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
             {goodsItem}
                 {
-                    topicBannerProductDTOList && topicBannerProductDTOList.length > 8?  <MoreItem press={()=>{press && press()}}/>:null
+                    topicBannerProductDTOList.length >= 8 ?  <MoreItem press={()=>{press && press()}}/> : null
                 }
                 <View style={styles.space}/>
             </ScrollView>
