@@ -5,6 +5,9 @@ import React, { Component } from 'react';
 import {
     View,
     StyleSheet,
+    TouchableWithoutFeedback,
+    Text,
+    Image
 } from 'react-native';
 import NavigatorBar from './components/pageDecorator/NavigatorBar/index';
 import {
@@ -13,7 +16,8 @@ import {
 } from './components/pageDecorator/BaseView';
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';
-import NoNetHighComponent, { netStatus } from "./comm/components/NoNetHighComponent";
+import  { netStatus } from "./comm/components/NoNetHighComponent";
+import CommTabImag from './comm/res/CommTabImag';
 
 
 export default class BasePage extends Component {
@@ -38,6 +42,19 @@ export default class BasePage extends Component {
 
     $isMonitorNetworkStatus() {
         return false;
+    }
+
+    _renderDefaultNoNet() {
+        return (
+            <View style={[this.props.style, { alignItems: 'center', justifyContent: 'center', flex: 1}]}>
+                <TouchableWithoutFeedback onPress={()=>{if(netStatus.isConnected){this.$refreshData();this.setState({})}}}>
+                    <View>
+                        <Image source={CommTabImag.noNetImg} style={{height: 100, width: 100}}/>
+                        <Text style={{ marginTop: 10, color: "#666666" }}>无网络</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
+        );
     }
 
     renderContianer(){
@@ -66,9 +83,9 @@ export default class BasePage extends Component {
                                                   this.$navigatorBar = bar;
                                               }}/>
             }
-            {this.$isMonitorNetworkStatus() ? <Container _render={this.renderContianer.bind(this)}
-                                                       $refreshData={this.$refreshData.bind(this)}
-            />:this.renderContianer()}
+            {this.$isMonitorNetworkStatus() && netStatus.isConnected === false ?
+                this._renderDefaultNoNet() :
+                this.renderContianer()}
             <ToastView ref={(toast) => {
                 this.$toast = toast;
             }}/>
@@ -228,13 +245,13 @@ export default class BasePage extends Component {
     };
 }
 
-@NoNetHighComponent
-class Container extends Component  {
-
-     render(){
-         return(this.props._render());
-     }
-}
+// @NoNetHighComponent
+// class Container extends Component  {
+//
+//      render(){
+//          return(this.props._render());
+//      }
+// }
 
 const styles = StyleSheet.create({
     container: {

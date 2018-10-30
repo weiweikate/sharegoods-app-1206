@@ -125,7 +125,7 @@ class LogisticsDetailsPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                {this.state.flags|| StringUtils.isEmpty(this.state.expressNo)?
+                {this.state.flags || StringUtils.isEmpty(this.state.expressNo) ?
                     this.renderEmpty() : this.renderSuccess()}
             </View>
         );

@@ -16,7 +16,7 @@ const Card = ({item, press}) => <TouchableOpacity style={styles.card} onPress={(
         <Text style={styles.dis} numberOfLines={2}>{item.pureContent ? item.pureContent.slice(0, 100).trim() : ''}</Text>
     </ImageBackground>
     <View style={styles.profileView}>
-        <Image style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg: ''}}/>
+        <Image style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg : ''}}/>
         <Text style={styles.name}>{item.userName}</Text>
         <View style={{flex: 1}}/>
         <View style={styles.rightRow}>
