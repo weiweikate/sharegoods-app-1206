@@ -43,7 +43,7 @@ export default class ShowGoodsPage extends BasePage {
                 :
                 <View style={styles.good}/>
             }
-            
+
         </View>
     }
     _keyExtractor = (data) => data[0] ? data[0].id : 0 + '' + data[1] ? data[1].id : 0

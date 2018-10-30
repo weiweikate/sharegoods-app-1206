@@ -78,7 +78,7 @@ export default class ProgressBarView extends Component {
     };
     _noBeginTextRender = () => {
         const {itemData} = this.props;
-        console.log('测试item----'+itemData)
+        console.log('测试item----' + itemData)
           return(
               <View>
                   <Text

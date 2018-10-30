@@ -215,7 +215,7 @@ class SwipeListView extends Component {
 					ref={ c => this.setRefs(c) }
 					onScroll={ e => this.onScroll(e) }
 					renderItem={(rowData) => this.renderItem(rowData, this._rows)}
-                    refreshControl={this.props.swipeRefreshControl||null}
+                    refreshControl={this.props.swipeRefreshControl || null}
 				/>
 			);
 		}
@@ -228,7 +228,7 @@ class SwipeListView extends Component {
 					ref={ c => this.setRefs(c) }
 					onScroll={ e => this.onScroll(e) }
 					renderItem={(rowData) => this.renderItem(rowData, this._rows)}
-                    refreshControl={this.props.swipeRefreshControl||null}
+                    refreshControl={this.props.swipeRefreshControl || null}
 				/>
 			);
 		}
@@ -240,7 +240,7 @@ class SwipeListView extends Component {
 				ref={ c => this.setRefs(c) }
 				onScroll={ e => this.onScroll(e) }
 				renderRow={(rowData, secId, rowId) => this.renderRow(rowData, secId, rowId, this._rows)}
-                refreshControl={this.props.swipeRefreshControl||null}
+                refreshControl={this.props.swipeRefreshControl || null}
 			/>
 		)
 	}
