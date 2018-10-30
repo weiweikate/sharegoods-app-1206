@@ -294,7 +294,7 @@ styles = this.getStyle(0, 0);
         this.loadedIndex.set(index, true);
 
         const image = this.props.imageUrls[index];
-        var imageStatus = Object.assign({}, this.state.imageSizes[index]);
+        let imageStatus = Object.assign({}, this.state.imageSizes[index]);
 
         // 保存 imageSize
         const saveImageSize = () => {
@@ -738,7 +738,7 @@ styles = this.getStyle(0, 0);
     }
 
     render() {
-        let childs= null;
+        let childs = null;
 
         childs = (
             <View>

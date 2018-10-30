@@ -243,7 +243,7 @@ export default class GetRedpacketPage extends BasePage {
         bridge.$toast('跳转填写邀请码页面');
     }
     redPacketClick=(redPacketIndex)=>{
-      bridge.$toast('点击了第'+redPacketIndex+'红包');
+      bridge.$toast('点击了第' + redPacketIndex + '红包');
     }
 }
 

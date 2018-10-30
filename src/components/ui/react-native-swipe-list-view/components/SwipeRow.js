@@ -164,24 +164,24 @@ class SwipeRow extends Component {
 		if (this._translateX._value >= 0) {
 			// trying to swipe right
 			if (this.swipeInitialX < this._translateX._value) {
-				if ((this._translateX._value - projectedExtraPixels) > this.props.leftOpenValue * (this.props.swipeToOpenPercent/100)) {
+				if ((this._translateX._value - projectedExtraPixels) > this.props.leftOpenValue * (this.props.swipeToOpenPercent / 100)) {
 					// we're more than halfway
 					toValue = this.props.leftOpenValue;
 				}
 			} else {
-				if ((this._translateX._value - projectedExtraPixels) > this.props.leftOpenValue * (1 - (this.props.swipeToClosePercent/100))) {
+				if ((this._translateX._value - projectedExtraPixels) > this.props.leftOpenValue * (1 - (this.props.swipeToClosePercent / 100))) {
 					toValue = this.props.leftOpenValue;
 				}
 			}
 		} else {
 			// trying to swipe left
 			if (this.swipeInitialX > this._translateX._value) {
-				if ((this._translateX._value - projectedExtraPixels) < this.props.rightOpenValue * (this.props.swipeToOpenPercent/100)) {
+				if ((this._translateX._value - projectedExtraPixels) < this.props.rightOpenValue * (this.props.swipeToOpenPercent / 100)) {
 					// we're more than halfway
 					toValue = this.props.rightOpenValue;
 				}
 			} else {
-				if ((this._translateX._value - projectedExtraPixels) < this.props.rightOpenValue * (1 - (this.props.swipeToClosePercent/100))) {
+				if ((this._translateX._value - projectedExtraPixels) < this.props.rightOpenValue * (1 - (this.props.swipeToClosePercent / 100))) {
 					toValue = this.props.rightOpenValue;
 				}
 			}

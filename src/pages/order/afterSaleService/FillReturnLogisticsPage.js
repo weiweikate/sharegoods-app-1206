@@ -65,7 +65,7 @@ export default class FillReturnLogisticsPage extends BasePage {
                         <View style = {styles.item_container}>
                             <UIText style = {styles.item_title}
                                     value = {'物流公司'}/>
-                            <UIText style = {this.state.logisticsCompanyName? styles.item_detail : styles.item_placeholder}
+                            <UIText style = {this.state.logisticsCompanyName ? styles.item_detail : styles.item_placeholder}
                                     value = {this.state.logisticsCompanyName || '请选择物流公司'}/>
                             <UIImage source={arrow_right} style = {{height: 9, width: 9, marginRight: 20}}/>
                         </View>

@@ -49,7 +49,7 @@ export default class ShowBannerView extends Component {
                 items.push(<View key={i} style={styles.activityIndex}/>)
             } else {
                 items.push(<View key={i} style={styles.index}/>)
-            } 
+            }
         }
         return  <View style={styles.indexView}>
             {items}

@@ -36,8 +36,8 @@ import MessageApi from '../message/api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import messageModalBg from './res/messageModalBg.png';
 import messageSelected from './res/messageSelected.png';
-import messageUnselected from './res/messageUnselected.png';
-import closeImg from '../shareTask/res/qiandao_btn_return_nor.png';
+import messageUnselected from './res/messageUnselected.png'
+import closeImg from '../shareTask/res/qiandao_btn_return_nor.png'
 import MineApi from '../mine/api/MineApi';
 import VersionUpdateModal from './VersionUpdateModal';
 import DeviceInfo from 'react-native-device-info';
@@ -196,11 +196,11 @@ export default class HomePage extends Component {
 
     getMessageData = () => {
         MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
-            if (!EmptyUtils.isEmptyArr(res.data.data)) {
+            if(!EmptyUtils.isEmptyArr(res.data.data)){
                 this.setState({
                     showMessage: true,
                     messageData: res.data.data
-                });
+                })
             }
         });
     };
@@ -225,11 +225,11 @@ export default class HomePage extends Component {
                             loop={false}
                             onWillChange={(item, index) => {
                                 this.setState({
-                                    messageIndex: index
-                                });
+                                    messageIndex : index
+                                })
                             }}
                         />
-                        <View style={{ flex: 1 }}/>
+                        <View style={{flex:1}}/>
                         {this.messageIndexRender()}
                     </ImageBackground>
                 </View>
@@ -237,29 +237,20 @@ export default class HomePage extends Component {
         );
     }
 
-    messageIndexRender() {
-        if (EmptyUtils.isEmptyArr(this.state.messageData)) {
+    messageIndexRender(){
+        if(EmptyUtils.isEmptyArr(this.state.messageData)){
             return null;
         }
         let indexs = [];
-        for (var i = 0; i < this.state.messageData.length; i++) {
-            let view = i === this.state.messageIndex ?
-                <Image source={messageSelected} style={styles.messageIndexStyle}/> :
-                <Image source={messageUnselected} style={styles.messageIndexStyle}/>;
+        for(let i = 0;i < this.state.messageData.length;i++){
+            let view = i === this.state.messageIndex ? <Image source={messageSelected} style={styles.messageIndexStyle}/> : <Image source={messageUnselected} style={styles.messageIndexStyle}/>;
             indexs.push(view);
         }
-        return (
-            <View style={{
-                flexDirection: 'row',
-                width: px2dp(120),
-                justifyContent: this.state.messageData.length === 1 ? 'center' : 'space-between',
-                marginBottom: px2dp(12),
-                height: 12,
-                alignSelf: 'center'
-            }}>
+        return(
+            <View style={{flexDirection:'row',width:px2dp(120),justifyContent:this.state.messageData.length === 1 ? 'center' : 'space-between',marginBottom:px2dp(12),height:12,alignSelf:'center'}}>
                 {indexs}
             </View>
-        );
+        )
     }
 
     messageRender(item, index) {
@@ -297,8 +288,8 @@ export default class HomePage extends Component {
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
-                <LinearGradient colors={['#000000', 'transparent']}
-                                style={[styles.navBar, { height: this.headerH + 14, opacity: 0.4 }]}/>
+                <LinearGradient colors={['#fff', '#fff']}
+                                style={[styles.navBar, { height: this.headerH + 14, opacity: 0.0 }]}/>
 
                 <HomeSearchView navigation={this.props.navigation}/>
                 <ShareTaskHomeAlert ref={(ref) => this.shareModal = ref}
@@ -377,8 +368,8 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         marginRight: ((ScreenUtils.width) - px2dp(300)) / 2
     },
-    messageIndexStyle: {
-        width: px2dp(12),
-        height: px2dp(12)
+    messageIndexStyle:{
+        width:px2dp(12),
+        height:px2dp(12)
     }
 });

@@ -50,7 +50,7 @@ const RSA = {
                 sign: jsrsasign.hex2b64(s)
             };
         } catch (e) {
-            console.log('签名失败---参数---'+params)
+            console.log('签名失败---参数---' + params)
         }
 
     }

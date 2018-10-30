@@ -112,7 +112,7 @@ let styles = StyleSheet.create({
         alignItems: 'center'
     },
     img: {
-        height: 15, 
+        height: 15,
         width: 15
     },
     titleView: {
