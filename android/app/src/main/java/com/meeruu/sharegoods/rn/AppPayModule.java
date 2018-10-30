@@ -11,7 +11,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.meeruu.commonlib.BaseApplication;
+import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.sharegoods.bean.WXPayBean;
 import com.meeruu.sharegoods.event.AppPayEvent;
 import com.meeruu.sharegoods.utils.aipay.PayResult;

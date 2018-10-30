@@ -32,6 +32,7 @@ dependencies {
     compile(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
+    api project(path: ':permissionlib')
     compile files('libs/umeng-share-core-6.9.3.jar')
     compile files('libs/umeng-sharetool-6.9.3.jar')
     compile files('libs/umeng-share-wechat-simplify-6.9.3.jar')

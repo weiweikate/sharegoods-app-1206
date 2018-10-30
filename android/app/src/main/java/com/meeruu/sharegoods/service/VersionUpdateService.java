@@ -17,7 +17,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
-import com.meeruu.commonlib.BaseApplication;
+import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.OnProgressListener;
 import com.meeruu.commonlib.callback.ReqProgressCallBack;
 import com.meeruu.commonlib.handler.WeakHandler;

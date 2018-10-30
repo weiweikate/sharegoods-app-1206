@@ -3,7 +3,7 @@ package com.meeruu.commonlib.utils;
 import android.os.Environment;
 import android.os.StatFs;
 
-import com.meeruu.commonlib.BaseApplication;
+import com.meeruu.commonlib.base.BaseApplication;
 
 import java.io.File;
 

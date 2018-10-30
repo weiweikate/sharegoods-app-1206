@@ -26,6 +26,9 @@ import HomeGoodsView from './HomeGoodsView';
 import HomeUserView from './HomeUserView';
 import ShowView from '../show/ShowView';
 import LinearGradient from 'react-native-linear-gradient';
+import MineApi from '../mine/api/MineApi';
+import VersionUpdateModal from './VersionUpdateModal';
+import DeviceInfo from 'react-native-device-info';
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
@@ -36,39 +39,57 @@ export default class HomePage extends Component {
     st = 0;
     headerH = statusBarHeight + 44;
     state = {
-        isShow: true
-    }
+        isShow: true,
+        updateData: {},
+        showUpdate: false,
+        forceUpdate: false
+    };
 
     constructor(props) {
         super(props);
         homeModule.loadHomeList();
+        // 检测版本更新
+        MineApi.getVersion({ vsersion: DeviceInfo.getVersion() }).then((res) => {
+            if (res.data.upgrade === 1) {
+                this.setState({
+                    updateData: res.data,
+                    showUpdate: true
+                });
+                if (res.data.forceUpdate === 1) {
+                    // 强制更新
+                    this.setState({
+                        forceUpdate: true
+                    });
+                }
+            }
+        });
     }
 
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
-              const {state } = payload
-              if (state && state.routeName === 'HomePage') {
-                  this.setState({isShow: true})
-              }
+                const { state } = payload;
+                if (state && state.routeName === 'HomePage') {
+                    this.setState({ isShow: true });
+                }
             }
-          );
+        );
 
         this.didBlurSubscription = this.props.navigation.addListener(
             'willBlur',
             payload => {
-              const {state } = payload
-              if (state && state.routeName === 'HomePage') {
-                  this.setState({isShow: false})
-              }
+                const { state } = payload;
+                if (state && state.routeName === 'HomePage') {
+                    this.setState({ isShow: false });
+                }
             }
-          );
+        );
     }
 
     componentWillUnmount() {
-        this.didBlurSubscription && this.didBlurSubscription.remove()
-        this.willFocusSubscription && this.willFocusSubscription.remove()
+        this.didBlurSubscription && this.didBlurSubscription.remove();
+        this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
     // 滑动头部透明度渐变
@@ -116,14 +137,14 @@ export default class HomePage extends Component {
         } else if (data.type === homeType.goods) {
             return <HomeGoodsView data={data.itemData} navigation={this.props.navigation}/>;
         } else if (data.type === homeType.show) {
-            const {isShow} = this.state
+            const { isShow } = this.state;
             return (<View>{
                 isShow
-                ?
-                <ShowView navigation={this.props.navigation}/>
-                :
-                <View/>
-            }</View>)
+                    ?
+                    <ShowView navigation={this.props.navigation}/>
+                    :
+                    <View/>
+            }</View>);
         } else if (data.type === homeType.goodsTitle) {
             return <View style={styles.titleView}>
                 <Text style={styles.title}>为你推荐</Text>
@@ -179,6 +200,10 @@ export default class HomePage extends Component {
                                     onPress={() => {
                                         this.props.navigation.navigate('shareTask/ShareTaskListPage');
                                     }}/>
+                <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
+                                    forceUpdate={this.state.forceUpdate} onDismiss={() => {
+                    this.setState({ showUpdate: false });
+                }}/>
             </View>
         );
     }

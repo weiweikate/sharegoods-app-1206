@@ -1,28 +1,47 @@
 package com.meeruu.sharegoods;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.bridge.Callback;
+import com.meeruu.commonlib.base.BaseApplication;
+import com.meeruu.commonlib.callback.OnProgressListener;
+import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.commonlib.utils.StringUtis;
+import com.meeruu.commonlib.utils.ToastUtils;
+import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.permissions.AfterPermissionGranted;
 import com.meeruu.permissions.AppSettingsDialog;
 import com.meeruu.permissions.Permission;
 import com.meeruu.permissions.PermissionUtil;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
+import com.meeruu.sharegoods.event.VersionUpdateEvent;
+import com.meeruu.sharegoods.service.VersionUpdateService;
 import com.meeruu.sharegoods.utils.LoadingDialog;
 import com.umeng.socialize.UMShareAPI;
 
@@ -38,8 +57,17 @@ public class MainActivity extends ReactActivity implements PermissionUtil.Permis
     private boolean isShowLoadingDialog;
     private AppSettingsDialog permissionDialog;
     protected boolean hasBasePer = false;
+    private String apkPath;
+    private int updateType;
+    private VersionUpdateService.DownloadBinder binder;
+    private boolean isBinded;
+    private boolean isDestroy = true;
+    private ServiceConnection conn;
+    private WeakHandler myHandler;
+    private String lastVersion;
+    private Callback callback;
     private static String[] mDenyPerms = StringUtis.concatAll(
-            Permission.STORAGE, Permission.PHONE);
+            Permission.STORAGE);
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -77,6 +105,12 @@ public class MainActivity extends ReactActivity implements PermissionUtil.Permis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        initStatus();
+        initServiceConn();
+        initHandler();
+    }
+
+    private void initStatus() {
         fullScreen(MainActivity.this);
         View decorView = getWindow().getDecorView();
         //重点：SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
@@ -90,11 +124,142 @@ public class MainActivity extends ReactActivity implements PermissionUtil.Permis
         StatusBarUtils.setLightMode(this);
     }
 
+    private void initHandler() {
+        myHandler = new WeakHandler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                switch (msg.what) {
+                    case ParameterUtils.FLAG_UPDATE:
+                        if (callback != null) {
+                            callback.invoke(msg.arg1);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
     @Override
     protected void onResume() {
         requestPermissions();
         super.onResume();
+        //继续下载apk
+        if (isDestroy && BaseApplication.getInstance().isDownload()) {
+            Intent it = new Intent(MainActivity.this, VersionUpdateService.class);
+            it.putExtra("version", lastVersion);
+            startService(it);
+            bindService(it, conn, Context.BIND_AUTO_CREATE);
+        }
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isDestroy = false;
+    }
+
+    /**
+     * 释放资源
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (permissionDialog != null) {
+            permissionDialog.dialogDismiss();
+            permissionDialog = null;
+        }
+        UShare.release(this);
+        EventBus.getDefault().unregister(this);
+        if (isBinded) {
+            unbindService(conn);
+        }
+        if (binder != null && binder.isCanceled()) {
+            Intent it = new Intent(this, VersionUpdateService.class);
+            it.putExtra("version", lastVersion);
+            stopService(it);
+            binder = null;
+        }
+        if (myHandler != null) {
+            myHandler = null;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
+    /**
+     * 连接版本下载service
+     */
+    private void initServiceConn() {
+        if (conn == null) {
+            conn = new ServiceConnection() {
+
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    isBinded = false;
+                }
+
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    binder = (VersionUpdateService.DownloadBinder) service;
+                    // 开始下载
+                    isBinded = true;
+                    binder.start(updateType);
+                    if (updateType == ParameterUtils.FLAG_UPDATE_NOW) {
+                        binder.setOnProgressListener(new OnProgressListener() {
+                            @Override
+                            public void onStart() {
+                            }
+
+                            @Override
+                            public void onProgress(int progress) {
+                                if (progress < 100) {
+                                    Message msg = Message.obtain();
+                                    msg.what = ParameterUtils.FLAG_UPDATE;
+                                    msg.arg1 = progress;
+                                    myHandler.sendMessage(msg);
+                                }
+                            }
+
+                            @Override
+                            public void onFinish(final String path) {
+                                apkPath = path;
+
+                            }
+                        });
+                    }
+                }
+            };
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void versionUpdate(VersionUpdateEvent event) {
+        updateType = event.isForceUpdate() ? ParameterUtils.FLAG_UPDATE_NOW : ParameterUtils.FLAG_UPDATE;
+        apkPath = event.getApkPath();
+        lastVersion = event.getVersion();
+        if (event.isExist()) {
+            handleInstallApk();
+        } else {
+            this.callback = event.getCallback();
+            if (event.isForceUpdate() && callback != null) {
+                callback.invoke(0);
+            }
+            BaseApplication.getInstance().setDownload(true);
+            BaseApplication.getInstance().setDownLoadUrl(event.getDownUrl());
+            //开始下载
+            Intent it = new Intent(MainActivity.this, VersionUpdateService.class);
+            it.putExtra("version", event.getVersion());
+            startService(it);
+            bindService(it, conn, Context.BIND_AUTO_CREATE);
+        }
+    }
+
 
     @AfterPermissionGranted(ParameterUtils.REQUEST_CODE_PERMISSIONS)
     public void requestPermissions() {
@@ -109,23 +274,25 @@ public class MainActivity extends ReactActivity implements PermissionUtil.Permis
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (permissionDialog != null) {
-            permissionDialog.dialogDismiss();
-            permissionDialog = null;
-        }
-        UShare.release(this);
-        EventBus.getDefault().unregister(this);
-    }
-
     //获取了100%的基本权限
     public void hasBasePermission() {
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case ParameterUtils.REQUEST_CODE_INSTALL:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Utils.installApk(getApplicationContext(), apkPath);
+                } else {
+                    ToastUtils.showToast(getString(R.string.install_allow));
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
+                    startActivityForResult(intent, ParameterUtils.REQUEST_CODE_MANAGE_APP_SOURCE);
+                }
+                break;
+            default:
+                break;
+        }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionUtil.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
@@ -216,7 +383,31 @@ public class MainActivity extends ReactActivity implements PermissionUtil.Permis
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case ParameterUtils.REQUEST_CODE_MANAGE_APP_SOURCE:
+                handleInstallApk();
+                break;
+            default:
+                break;
+        }
         //涉及到分享时必须调用到方法
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void handleInstallApk() {
+        if (!TextUtils.isEmpty(apkPath)) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                boolean hasInstallPermission = getPackageManager().canRequestPackageInstalls();
+                if (hasInstallPermission) {
+                    Utils.installApk(getApplicationContext(), apkPath);
+                } else {
+                    //请求安装未知应用来源的权限
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES},
+                            ParameterUtils.REQUEST_CODE_INSTALL);
+                }
+            } else {
+                Utils.installApk(getApplicationContext(), apkPath);
+            }
+        }
     }
 }

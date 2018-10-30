@@ -2,7 +2,7 @@ package com.meeruu.commonlib.utils;
 
 import android.widget.Toast;
 
-import com.meeruu.commonlib.BaseApplication;
+import com.meeruu.commonlib.base.BaseApplication;
 
 public class ToastUtils {
 

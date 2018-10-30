@@ -15,6 +15,7 @@ import android.webkit.CookieSyncManager;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -24,9 +25,13 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.bean.IdNameBean;
+import com.meeruu.commonlib.utils.AppUtils;
+import com.meeruu.commonlib.utils.FileUtils;
+import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.StatusBarUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
+import com.meeruu.sharegoods.event.VersionUpdateEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -273,10 +278,10 @@ public class CommModule extends ReactContextBaseJavaModule {
         if (!TextUtils.isEmpty(filePath)) {
             callback.invoke();
 //            Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-//            Bitmap newBtp = BitmapUtils.compressBitmap(bitmap,maxSize);
-//            if(BitmapUtils.saveBitmap(newBtp,filePath,mContext)){
+//            Bitmap newBtp = BitmapUtils.compressBitmap(bitmap, maxSize);
+//            if (BitmapUtils.saveBitmap(newBtp, filePath, mContext)) {
 //                callback.invoke();
-//            }else {
+//            } else {
 //                callback.invoke();
 //            }
         }
@@ -352,52 +357,22 @@ public class CommModule extends ReactContextBaseJavaModule {
         return data;
     }
 
-    //    @ReactMethod
-    //    public void updateable(final String downUrl, String version, String des) {
-    //        this.lastVersion = version;
-    //        //提示当前有版本更新
-    //        File apkfile_file = SDCardUtils.getFileDirPath("MR/file");
-    //        String fileName = AppUtils.getAppName(getCurrentActivity()) + "_" + lastVersion + ".apk";
-    //        final String filePath = apkfile_file.getAbsolutePath() + File.separator + fileName;
-    //        final boolean exist = FileUtils.fileIsExists(filePath);
-    //        String positiveTxt = getString(R.string.update_vs_now);
-    //        String title = getString(R.string.version_update);
-    //        if (exist) {
-    //            apkPath = filePath;
-    //            title = getString(R.string.version_install);
-    //            positiveTxt = getString(R.string.install_now);
-    //        }
-    //        updateDialog = DialogCreator.createAppBasicDialog(this, title, des,
-    //                positiveTxt, getString(R.string.not_update), new View.OnClickListener() {
-    //                    @Override
-    //                    public void onClick(View v) {
-    //                        switch (v.getId()) {
-    //                            case R.id.positive_btn:
-    //                                if (exist) {
-    //                                    handleInstallApk();
-    //                                } else {
-    //                                    BaseApplication.getInstance().setDownload(true);
-    //                                    BaseApplication.getInstance().setDownLoadUrl(downUrl);
-    //                                    //开始下载
-    //                                    Intent it = new Intent(SettingActivity.this, VersionUpdateService.class);
-    //                                    it.putExtra("version", lastVersion);
-    //                                    startService(it);
-    //                                    bindService(it, conn, Context.BIND_AUTO_CREATE);
-    //                                }
-    //                                updateDialog.dismiss();
-    //                                break;
-    //                            case R.id.negative_btn:
-    //                                updateDialog.dismiss();
-    //                                break;
-    //                            default:
-    //                                break;
-    //                        }
-    //                    }
-    //                });
-    //        ((TextView) updateDialog.findViewById(R.id.dialog_info)).setGravity(Gravity.CENTER_VERTICAL);
-    //        if (!isFinishing()) {
-    //            updateDialog.show();
-    //        }
-    //    }
-
+    @ReactMethod
+    public void updateable(String data, boolean force, Callback callback) {
+        JSONObject updateObj = JSON.parseObject(data);
+        String lastVersion = updateObj.getString("version");
+        //提示当前有版本更新
+        File apkFile = SDCardUtils.getFileDirPath("MR/file");
+        String fileName = AppUtils.getAppName(getCurrentActivity()) + "_" + lastVersion + ".apk";
+        String filePath = apkFile.getAbsolutePath() + File.separator + fileName;
+        boolean exist = FileUtils.fileIsExists(filePath);
+        VersionUpdateEvent event = new VersionUpdateEvent();
+        event.setExist(exist);
+        event.setApkPath(filePath);
+        event.setDownUrl(updateObj.getString("url"));
+        event.setVersion(lastVersion);
+        event.setForceUpdate(updateObj.getIntValue("forceUpdate") == 1);
+        event.setCallback(callback);
+        EventBus.getDefault().post(event);
+    }
 }

@@ -1,7 +1,7 @@
 package com.meeruu.commonlib.server;
 
 import com.alibaba.fastjson.JSON;
-import com.meeruu.commonlib.BaseApplication;
+import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.bean.ResponseInfo;
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.callback.ReqProgressCallBack;
@@ -516,7 +516,7 @@ public class RequestManager {
         String channel = WalleChannelReader.getChannel(BaseApplication.appContext, "xxd");
         params.put("device", DeviceUtils.getUniquePsuedoID());
         params.put("channel", channel);
-        params.put("platform", DeviceUtils.getSystemVersion() + "");
+        params.put("platform", "Android " + DeviceUtils.getSystemVersion());
         return params;
     }
 

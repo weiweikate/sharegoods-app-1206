@@ -79,6 +79,12 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <!-- 版本下载 -->
+        <service
+            android:name=".service.VersionUpdateService"
+            android:enabled="true"
+            android:exported="false" />
+
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
