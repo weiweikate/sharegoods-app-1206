@@ -30,16 +30,16 @@ const statues = {
 };
 
 const statuesImg = {
-    [statues.haveSoldOut]:ShopCartRes.noGoodImg,
-    [statues.timeOver]:SbResTool.zhuanti_jieshu,
-    [statues.handOver]:SbResTool.zhuanti_jieshu
-}
+    [statues.haveSoldOut]: ShopCartRes.noGoodImg,
+    [statues.timeOver]: SbResTool.zhuanti_jieshu,
+    [statues.handOver]: SbResTool.zhuanti_jieshu
+};
 const statuesString = {
-    [statues.isBeginning]:'马上抢',
-    [statues.haveSoldOut]:'已抢光',
-    [statues.timeOver]:'已结束',
-    [statues.handOver]:'已结束',
-}
+    [statues.isBeginning]: '马上抢',
+    [statues.haveSoldOut]: '已抢光',
+    [statues.timeOver]: '已结束',
+    [statues.handOver]: '已结束'
+};
 // 1.秒杀 2.降价拍 3.礼包 4.助力免费领 5.专题 99.普通产品
 const productTypes = {
     skill: 1,
@@ -52,9 +52,9 @@ const productTypes = {
 const downPriceParam = {
     [statues.noBegin]: 'startPrice',
     [statues.isBeginning]: 'markdownPrice',
-    [statues.haveSoldOut]:'markdownPrice',
-    [statues.timeOver]:'markdownPrice',
-    [statues.handOver]:'markdownPrice'
+    [statues.haveSoldOut]: 'markdownPrice',
+    [statues.timeOver]: 'markdownPrice',
+    [statues.handOver]: 'markdownPrice'
 };
 const typeName = {
     [productTypes.skill]: 'seckillPrice',
@@ -65,20 +65,29 @@ const typeName = {
     [productTypes.newTopic]: '暂无'
 };
 
+function getShowPrice(itemData) {
+    let showPrice = itemData.productType === 2
+        ?
+        '¥' + itemData[typeName[itemData.productType][itemData.status]]
+        :
+        '¥' + itemData[typeName[itemData.productType]];
+    return showPrice;
+}
+
 
 export default class OpenPrizeItemView extends Component {
 
     constructor(props) {
         super(props);
-        const {itemData} = props;
+        const { itemData } = props;
         this.state = {
             itemData: itemData
         };
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         if (nextProps.itemData) {
-            this.state.itemData = nextProps.itemData
+            this.state.itemData = nextProps.itemData;
         }
     }
 
@@ -166,11 +175,12 @@ export default class OpenPrizeItemView extends Component {
                                     color: ColorUtil.Color_d51243
                                 }}>
                                     {
-                                        itemData.productType === 2
-                                            ?
-                                            '¥' + itemData[typeName[itemData.productType][itemData.status]]
-                                            :
-                                            '¥' + itemData[typeName[itemData.productType]]
+                                        // itemData.productType === 2
+                                        //     ?
+                                        //     '¥' + itemData[typeName[itemData.productType][itemData.status]]
+                                        //     :
+                                        //     '¥' + itemData[typeName[itemData.productType]]
+                                        getShowPrice(itemData)
                                     }
                                 </Text>
                                 <Text style={{
@@ -200,27 +210,27 @@ export default class OpenPrizeItemView extends Component {
                                             }
                                         >
                                             <View
-                                            style={{
-                                                backgroundColor:'#33B4FF',
-                                                height: 30,
-                                                width: (ScreenUtils.width / 2 - 16) / 2,
-                                                borderRadius: 5,
-                                            }}
+                                                style={{
+                                                    backgroundColor: '#33B4FF',
+                                                    height: 30,
+                                                    width: (ScreenUtils.width / 2 - 16) / 2,
+                                                    borderRadius: 5
+                                                }}
                                             >
-                                            <Text
-                                                style={
-                                                    {
-                                                        color: ColorUtil.Color_ffffff,
-                                                        textAlign: 'center',
-                                                        height: 30,
-                                                        paddingTop: 8,
-                                                        fontSize: 12,
+                                                <Text
+                                                    style={
+                                                        {
+                                                            color: ColorUtil.Color_ffffff,
+                                                            textAlign: 'center',
+                                                            height: 30,
+                                                            paddingTop: 8,
+                                                            fontSize: 12
 
+                                                        }
                                                     }
-                                                }
-                                            >
-                                                {this.state.itemData.notifyFlag ? '取消提醒' : '提醒我'}
-                                            </Text>
+                                                >
+                                                    {this.state.itemData.notifyFlag ? '取消提醒' : '提醒我'}
+                                                </Text>
                                             </View>
                                         </TouchableOpacity>
                                     </View>
@@ -230,7 +240,7 @@ export default class OpenPrizeItemView extends Component {
                                             backgroundColor: ColorUtil.Color_d51243,
                                             height: 30,
                                             width: (ScreenUtils.width / 2 - 16) / 2,
-                                            borderRadius: 5,
+                                            borderRadius: 5
                                         },
                                             (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
                                                 ? { backgroundColor: ColorUtil.Color_f7f7f7 }
@@ -284,10 +294,10 @@ export default class OpenPrizeItemView extends Component {
             param
         ).then(result => {
             itemData.notifyFlag = type;
-            if (type === 1){
-                itemData.reseCount++
-            }else {
-                itemData.reseCount--
+            if (type === 1) {
+                itemData.reseCount++;
+            } else {
+                itemData.reseCount--;
             }
             this.setState({
                 itemData: itemData
