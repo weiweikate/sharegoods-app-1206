@@ -182,6 +182,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         Activity currentActivity = getCurrentActivity();
 //        Context context = currentActivity == null ? getReactContext() : currentActivity;
         popupWindow = new PopupWindow(getCurrentActivity());
+        popupWindow.setFocusable(true);
         popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
         popupWindow.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
         View v = getContentView();
