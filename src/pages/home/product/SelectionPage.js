@@ -38,7 +38,7 @@ export default class SelectionPage extends Component {
     }
 
     show = (data, callBack, propData = {}) => {
-        //type
+        //type afterSpecIds
         //需要重置旧数据
         if (propData.needUpdate) {
             this.state.selectList = [];
@@ -97,7 +97,7 @@ export default class SelectionPage extends Component {
     _indexCanSelectedItems = () => {
         //afterPrice
         //type
-        const { afterPrice, type } = this.state.propData;
+        const { afterPrice, type , productPriceId} = this.state.propData;
         let tempArr = [];
         this.state.tittleList.forEach((item, index) => {
             tempArr[index] = this._indexCanSelectedItem(index);
@@ -117,7 +117,7 @@ export default class SelectionPage extends Component {
                     if (item1.specIds.indexOf(item.id) !== -1 && item1.stock !== 0) {
                         //如果是退换货多一次判断
                         if (type === 'after') {
-                            if (afterPrice === item1.price) {
+                            if (afterPrice >= item1.price || productPriceId === item1.id) {
                                 item.canSelected = true;
                             }
                         } else {
@@ -250,7 +250,7 @@ export default class SelectionPage extends Component {
 
         let priceId = priceArr.join(',');
         priceId = `,${priceId},`;
-        let itemData = undefined;
+        let itemData;
         const { priceList = [] } = this.state;
         priceList.forEach((item) => {
             if (item.specIds === priceId) {

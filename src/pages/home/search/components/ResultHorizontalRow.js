@@ -11,6 +11,7 @@ import {
     Text
 } from 'react-native';
 import gwc from '../res/gwc.png';
+import ScreenUtils from '../../../../utils/ScreenUtils';
 
 export default class ResultHorizontalRow extends Component {
 
@@ -26,7 +27,7 @@ export default class ResultHorizontalRow extends Component {
     }
 
     render() {
-        let { product={}, price } = this.props.itemData || {};
+        let { product = {}, price } = this.props.itemData || {};
         const { name = '' } = product;
         return (
             <TouchableWithoutFeedback onPress={() => {
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginLeft: 5,
         backgroundColor: 'white',
-        flex: 1
+        width: (ScreenUtils.width - 30 - 5) / 2
     },
     img: {
         backgroundColor: '#eeeeee',

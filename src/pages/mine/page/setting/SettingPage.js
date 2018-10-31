@@ -178,7 +178,7 @@ class SettingPage extends BasePage {
                         this.$navigateReset();
                         MineApi.signOut()
                         this.$loadingDismiss();
-                            
+
                     }}
                     no={() => {
                         this.setState({ isShowLoginOutModal: false });

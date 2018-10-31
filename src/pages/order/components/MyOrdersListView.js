@@ -209,12 +209,12 @@ export default class MyOrdersListView extends Component {
                     payTime: item.payTime,
                     sendTime: item.sendTime,
                     finishTime: item.finishTime,
-                    deliverTime: item.deliverTime?item.deliverTime:item.finishTime,
-                    autoReceiveTime:item.autoReceiveTime?item.autoReceiveTime:item.sendTime,
+                    deliverTime: item.deliverTime ? item.deliverTime : item.finishTime,
+                    autoReceiveTime:item.autoReceiveTime ? item.autoReceiveTime : item.sendTime,
                     orderStatus: item.status,
                     freightPrice: item.freightPrice,
                     totalPrice: item.needPrice,
-                    cancelTime:item.cancelTime?item.cancelTime:null,
+                    cancelTime:item.cancelTime ? item.cancelTime : null,
                     orderProduct: this.getOrderProduct(item.orderProductList),
                     pickedUp: item.pickedUp,
                     outTradeNo: item.outTradeNo,
@@ -237,7 +237,7 @@ export default class MyOrdersListView extends Component {
     }
     timeDown(){
         this.interval = setInterval(()=> {
-             let timeunit=new Date().valueOf();
+             let timeunit = new Date().valueOf();
              this.setState({timeOff:timeunit});
         }, 1000);
     }
@@ -458,11 +458,11 @@ export default class MyOrdersListView extends Component {
                 break;
             case 6:
                 console.log(this.state.viewData[index]);
-                let j=0;
+                let j = 0;
                 let returnTypeArr = ['', '退款', '退货', '换货'];
                 this.state.viewData[index].orderProduct.forEach((item, index) => {
                     let returnProductStatus = item.returnProductStatus || 99999;
-                    if (returnProductStatus===1) {
+                    if (returnProductStatus === 1) {
                         let content = '确认收货将关闭' + returnTypeArr[item.returnType] + '申请，确认收货吗？';
                         Alert.alert('提示', `${ content }`, [
                             {
@@ -487,7 +487,7 @@ export default class MyOrdersListView extends Component {
                         return;
                     }
                 });
-                if(j==0) {
+                if(j == 0) {
                     this.setState({ isShowReceiveGoodsModal: true });
                 }
                 break;

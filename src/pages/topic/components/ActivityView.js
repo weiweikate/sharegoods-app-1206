@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import { isNoEmpty } from '../../../utils/StringUtils';
 import { formatDate } from '../../../utils/DateUtils';
-import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 
 export default class MyShop_RecruitPage extends Component {
 
@@ -17,24 +16,32 @@ export default class MyShop_RecruitPage extends Component {
 
     constructor(props) {
         super(props);
-        this.timer = new TimeDownUtils();
         this.state = {
             countTime: 0
         };
     }
 
     componentWillUnmount() {
-        this.timer.stop();
+        this._stopTime();
     }
 
+    _stopTime = () => {
+        this.interval && clearInterval(this.interval);
+    };
 
     _time(start, end) {
         if (isNoEmpty(start) && isNoEmpty(end)) {
-            this.timer.startDown((time) => {
+            let countdownDate = new Date(new Date().getTime() + (end - start));
+            this.interval = setInterval(() => {
+                let diff = countdownDate - new Date().getTime();
+                if (diff <= 0) {
+                    diff = 0;
+                    this._stopTime();
+                }
                 this.setState({
-                    countTime: time
+                    countTime: diff
                 });
-            }, Math.floor((end - start) / 1000));
+            }, 200);
         }
     }
 
@@ -55,21 +62,28 @@ export default class MyShop_RecruitPage extends Component {
 
     _timeDif(usedTime) {
         //天数
-        let days = Math.floor(usedTime / (24 * 3600));
+        let days = Math.floor(usedTime / (24 * 3600 * 1000));
         //去除天数
-        let leave1 = usedTime % (24 * 3600);
+        let leave1 = usedTime % (24 * 3600 * 1000);
         //小时
-        let hours = Math.floor(leave1 / 3600);
+        let hours = Math.floor(leave1 / (3600 * 1000));
         //去除小时
-        let leave2 = leave1 % 3600;
+        let leave2 = leave1 % (3600 * 1000);
         //分钟
-        let minutes = Math.floor(leave2 / 60);
+        let minutes = Math.floor(leave2 / (60 * 1000));
         //去除分钟
-        let leave3 = leave2 % 60;
+        let leave3 = leave2 % (60 * 1000);
         //秒
-        let second = Math.floor(leave3);
+        let second = Math.floor(leave3 / 1000);
+        //mill
+        let leave4 = Math.floor(leave3 % 1000 / 10);
 
-        let time = days + ':' + hours + ':' + minutes + ':' + second;
+        hours = days * 24 + hours;
+        hours = hours >= 10 ? hours : hours === 0 ? `00` : `0${hours}`;
+        minutes = minutes >= 10 ? minutes : minutes === 0 ? `00` : `0${minutes}`;
+        second = second >= 10 ? second : second === 0 ? `00` : `0${second}`;
+
+        let time = `${hours}:${minutes}:${second}:${leave4}`;
         return time;
     }
 
@@ -146,13 +160,28 @@ export default class MyShop_RecruitPage extends Component {
                         <Text style={{ color: begin ? '#1B7BB3' : '#FFFC00', fontSize: 11 }}>{three}</Text>
                         <View style={{
                             marginTop: 5,
-                            width: 100,
-                            paddingVertical: 2,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundColor: begin ? '#2B99D9' : '#FFFC00'
+                            width: 106,
+                            height: 12,
+                            borderRadius: 6,
+                            backgroundColor: begin ? '#2B99D9' : '#F1C11B',
+                            flexDirection: 'row',
+                            overflow: 'hidden'
                         }}>
-                            <Text style={{ color: begin ? '#F7F7F7' : '#D51243', fontSize: 11 }}>{four}</Text>
+                            {!begin ? <View style={{
+                                width: (totalNumber - surplusNumber) / totalNumber * 106,
+                                backgroundColor: '#FFFC00'
+                            }}/> : null}
+                            <View style={{
+                                position: 'absolute',
+                                top: 0, bottom: 0, left: 0, right: 0,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                <Text style={{
+                                    color: begin ? '#F7F7F7' : '#D51243',
+                                    fontSize: 11
+                                }}>{four}</Text>
+                            </View>
                         </View>
                     </View>
                 }

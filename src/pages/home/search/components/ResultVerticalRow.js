@@ -28,7 +28,7 @@ export default class SearchBar extends Component {
 
 
     render() {
-        let { product={}, price } = this.props.itemData || {};
+        let { product = {}, price } = this.props.itemData || {};
         const { name = '' } = product;
         return (
             <TouchableWithoutFeedback onPress={() => {

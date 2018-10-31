@@ -95,11 +95,11 @@ export default class HelperFeedbackPage extends BasePage {
         //     ToastAndroid.show('请完善反馈资料!', ToastAndroid.SHORT);
         //     return;
         // }
-        if(this.state.selectIndex==-1){
+        if(this.state.selectIndex == -1){
             this.$toastShow('请选择反馈类型!');
             return;
         }
-        if (this.state.detailContent&&this.state.detailContent.length<10) {
+        if (this.state.detailContent && this.state.detailContent.length < 10) {
             this.$toastShow('反馈内容请大于10个字!');
             return;
         }
@@ -297,7 +297,7 @@ export default class HelperFeedbackPage extends BasePage {
 
                 <View style={{ width: ScreenUtils.width, height: 180, alignItems: 'center',}}>
                     <TouchableOpacity activeOpacity={0.9}
-                                      style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' ||this.state.detailContent.length<10? '#dddddd' : color.red }]
+                                      style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' || this.state.detailContent.length < 10 ? '#dddddd' : color.red }]
 
                                       } onPress={() => this.feedback2server()}>
                         <Text style={{ fontSize: 16, color: '#fff' }}>提交</Text>

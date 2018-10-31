@@ -22,6 +22,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
 import DetailNavShowModal from './components/DetailNavShowModal';
+import apiEnvironment from '../../../api/ApiEnvironment';
 
 export default class ProductDetailPage extends BasePage {
 
@@ -188,7 +189,7 @@ export default class ProductDetailPage extends BasePage {
                     <HTML html={product.content} imagesMaxWidth={ScreenUtils.width}
                           imagesInitialDimensions={ScreenUtils.width}
                           containerStyle={{ backgroundColor: '#fff' }}/>
-                    <View style = {{backgroundColor:'white'}}>
+                    <View style={{ backgroundColor: 'white' }}>
                         <Text
                             style={{ paddingVertical: 13, marginLeft: 15, fontSize: 15, color: '#222222' }}>价格说明</Text>
                         <View style={{ height: 0.5, marginHorizontal: 0, backgroundColor: '#eee' }}/>
@@ -292,12 +293,12 @@ export default class ProductDetailPage extends BasePage {
                                     imageUrlStr: imgUrl,
                                     titleStr: `${name}`,
                                     priceStr: `￥${price}`,
-                                    QRCodeStr: `http://h5.sharegoodsmall.com/product/99/${product.id}`
+                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`
                                 }}
                                 webJson={{
                                     title: `${name}`,
                                     dec: '商品详情',
-                                    linkUrl: `http://h5.sharegoodsmall.com/product/99/${product.id}`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`,
                                     thumImage: imgUrl
                                 }}/>
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>

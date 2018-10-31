@@ -6,7 +6,8 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
-    Image
+    Image,
+    RefreshControl
 } from 'react-native';
 
 
@@ -25,6 +26,8 @@ import spellStatusModel from '../model/SpellStatusModel';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import StringUtils from '../../../utils/StringUtils';
+import apiEnvironment from '../../../api/ApiEnvironment';
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 
 export default class ShopRecruitPage extends BasePage {
 
@@ -51,35 +54,66 @@ export default class ShopRecruitPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            loadingState: PageLoadingState.loading,
+            netFailedInfo: {},
+            refreshing: false,
+
             storeId: this.params.storeId || this.props.storeId,
             storeData: {},
             canOpen: false
         };
     }
 
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: () => {
+                    this._loadPageData();
+                }
+            }
+        };
+    };
+
     componentDidMount() {
         this._loadPageData();
     }
+
+    _refreshing = () => {
+        this.setState({
+            refreshing: true
+        }, () => {
+            this._loadPageData();
+        });
+    };
 
     _loadPageData = () => {
         SpellShopApi.getById({ id: this.state.storeId }).then((data) => {
             let dataTemp = data.data || {};
             let datalist = dataTemp.storeUserList || [];
             this.setState({
+                loadingState: PageLoadingState.success,
+                refreshing: false,
+
                 storeData: dataTemp,
                 storeId: dataTemp.id,
                 canOpen: dataTemp.maxUser && dataTemp.maxUser <= datalist.length
             });
         }).catch((error) => {
-            this.$toastShow(error.msg);
+            this.setState({
+                loadingState: PageLoadingState.fail,
+                netFailedInfo: error,
+                refreshing: false
+            });
         });
     };
 
-    _clickAllMembers = ()=>{
+    _clickAllMembers = () => {
         if (this.state.storeData.userStatus === 1) {
             this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
         }
-    }
+    };
     _clickSettingItem = () => {
         let arr = ['分享店铺', '举报'];
         if (this.state.storeData.myStore) {
@@ -248,7 +282,14 @@ export default class ShopRecruitPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                <ScrollView showsVerticalScrollIndicator={false}>
+                <ScrollView showsVerticalScrollIndicator={false}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={this._refreshing.bind(this)}
+                                    title="下拉刷新"
+                                    tintColor="#999"
+                                    titleColor="#999"/>}>
                     {this.renderHeader()}
                     {this.renderMembers()}
                     {this.renderOpenShopSetting()}
@@ -265,7 +306,7 @@ export default class ShopRecruitPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: 'http://h5.sharegoodsmall.com/#/register',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/register`,
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>

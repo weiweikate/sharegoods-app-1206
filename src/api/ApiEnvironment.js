@@ -29,6 +29,11 @@ class ApiEnvironment {
         return ApiConfig[this.envType].host;
     }
 
+    // 获取当前H5主机地址host
+    getCurrentH5Url() {
+        return ApiConfig[this.envType].h5;
+    }
+
 
     // 获取所有的主机地址配置
     getAllHostCase() {

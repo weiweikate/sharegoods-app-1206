@@ -323,15 +323,25 @@ export default class RefreshLargeList extends React.Component {
             that.setState({
                 refreshing: false,
                 loadingMore: false,
+                footerStatus: "idle"
             });
         })
         ;
     }
 
+    reloadData = () => {
+        this.list.reloadData();
+    }
+
+    reloadAll = () => {
+        this.list.reloadAll();
+    }
+
     render() {
         let {
             style, renderHeader, scrollEnabled,
-            bounces, onScroll, showsVerticalScrollIndicator
+            bounces, onScroll, showsVerticalScrollIndicator,
+            renderItemSeparator
         } = this.props;
         return (
             <LargeList style={style}
@@ -360,6 +370,7 @@ export default class RefreshLargeList extends React.Component {
                        renderLoadCompleted={() => <View/>}
                        renderEmpty={this._renderEmpty}
                        onLayout={this.onLayout.bind(this)}
+                       renderItemSeparator={renderItemSeparator}
             />
         );
     }
@@ -429,7 +440,7 @@ const styles = StyleSheet.create({
         height: 70,
         alignItems: "center",
         justifyContent: "center",
-        flexDirection: "row"
+        flexDirection: "row",
     },
     footerText: {
         fontSize: 12,
