@@ -14,7 +14,7 @@ import ResultHorizontalRow from './components/ResultHorizontalRow';
 import ResultVerticalRow from './components/ResultVerticalRow';
 import toGwc from './res/toGwc.png';
 import toTop from './res/toTop.png';
-import RouterMap from '../../../RouterMap';
+import RouterMap from 'RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import DateUtils from '../../../utils/DateUtils';
 import SelectionPage from '../product/SelectionPage';
