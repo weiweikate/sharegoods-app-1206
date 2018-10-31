@@ -12,7 +12,10 @@ const api = {
     /*未登录获取购物车详细列表*/
     getRichItemList: "/user/shoppingcart/getRichItemList",
     /*同步购物车本地商品接口*/
-    loginArrange: "/user/shoppingcart/loginArrange"
+    loginArrange: "/user/shoppingcart/loginArrange",
+    /*再来一单**/
+     oneMoreOrder: '/user/shoppingcart/oneMoreOrder'
+
 
 };
 import ApiUtils from "../../../api/network/ApiUtils";
