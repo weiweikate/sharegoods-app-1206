@@ -38,7 +38,7 @@ class RecentSearch extends Component {
     renderDeleteImg = () => {
         if (this.props.recentData.length > 0) {
             return (
-                <TouchableOpacity onPress={() => this.clearHistory()}>
+                <TouchableOpacity onPress={() => this.props.clearHistory()}>
                     <Image
                         style={styles.image}
                         source={require('../../pages/order/res/search_delete.png')}
