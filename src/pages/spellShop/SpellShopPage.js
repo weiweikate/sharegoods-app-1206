@@ -53,7 +53,11 @@ export default class SpellShopPage extends BasePage {
             return (
                 <View>
                     <NavigatorBar leftNavItemHidden={true} title={'拼店'}/>
-                    <ScrollView refreshControl={<RefreshControl refreshing={false} onRefresh={this._onRefresh}/>}
+                    <ScrollView refreshControl={<RefreshControl refreshing={SpellStatusModel.refreshing}
+                                                                onRefresh={()=>{SpellStatusModel.getUser(1)}}
+                                                                title="下拉刷新"
+                                                                tintColor="#999"
+                                                                titleColor="#999"/>}
                                 showsVerticalScrollIndicator={false}>
                         <View style={{ flex: 1 }}>
                             <Image style={styles.levelLow} source={IntroduceImg} resizeMode='stretch'/>
