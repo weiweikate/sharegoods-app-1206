@@ -19,11 +19,12 @@ const ViewPager = props => {
         showsPagination,
         onIndexChanged,
         index,
+        style,
         ...attributes
     } = props;
 
     const styles = StyleSheet.create({
-        wrapper: {}
+        wrapper: style || {}
     });
 
     const renderItems = () => {

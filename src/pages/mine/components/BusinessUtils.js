@@ -37,7 +37,7 @@ export default {
             else {
                 // Toast.showLoading('图片上传中，请稍后');
                 // this.$toastShow('图片上传中，请稍后');
-               NativeModules.commModule.RN_ImageCompression(Platform.OS === "ios" ? response.uri : response.path, response.fileSize, 1024*1024*3 , () => {
+               NativeModules.commModule.RN_ImageCompression(Platform.OS === "ios" ? response.uri : response.path, response.fileSize, 1024 * 1024 * 3 , () => {
                    let datas = {
                        type: 'image/png',
                        uri: response.uri,

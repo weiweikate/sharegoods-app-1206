@@ -16,6 +16,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import bridge from '../../../utils/bridge';
+import apiEnvironment from '../../../api/ApiEnvironment';
 
 const gap = -5;
 
@@ -119,7 +120,7 @@ export default class InvitationToShopPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${shareInfo.name}`,
                                     dec: '店铺',
-                                    linkUrl: 'http://h5.sharegoodsmall.com/#/register',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/register`,
                                     thumImage: `${shareInfo.headUrl}`
                                 }}/>
             </View>

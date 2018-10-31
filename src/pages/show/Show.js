@@ -253,7 +253,7 @@ export class ShowRecommendModules {
         })
     }
 
-    batchCancelConnected = (selectedIds) =>  ShowApi.showCollectCancel({articleId: '', type: 1, articleIds: selectedIds})        
+    batchCancelConnected = (selectedIds) =>  ShowApi.showCollectCancel({articleId: '', type: 1, articleIds: selectedIds})
 }
 
 export class ShowDetail {
