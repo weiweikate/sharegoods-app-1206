@@ -7,14 +7,14 @@ import ShopCart from './pages/shopCart/page/ShopCartPage';
 import SpellShop from './pages/spellShop/SpellShopPage';
 import {
     StyleSheet,
-    Image, Platform, NativeModules
+    Image
 } from 'react-native';
 import CommTabImag from './comm/res/CommTabImag';
 import ColorUtil from './utils/ColorUtil';
 import ScreenUtils from './utils/ScreenUtils';
-import ShowListPage from './pages/show/ShowListPage'
-import discoverImg from './comm/res/tab_discover_selected.png'
-import undiscoverImg from './comm/res/tab_discover_unselected.png'
+import ShowListPage from './pages/show/ShowListPage';
+import discoverImg from './comm/res/tab_discover_selected.png';
+import undiscoverImg from './comm/res/tab_discover_unselected.png';
 
 export const TabNav = TabNavigator(
     {
@@ -24,9 +24,6 @@ export const TabNav = TabNavigator(
                 tabBarLabel: '主页',
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
-                        if (Platform.OS !== 'ios') {
-                            NativeModules.commModule.setStatusMode('HomePage');
-                        }
                         return (
                             <Image style={styles.tabBarIcon} source={CommTabImag.home_Tab_img.img_Sel}/>
                         );

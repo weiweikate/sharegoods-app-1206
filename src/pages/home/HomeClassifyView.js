@@ -75,7 +75,6 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        height: px2dp(174),
         paddingLeft: px2dp(2),
         paddingRight: px2dp(2),
         alignItems: 'center',
