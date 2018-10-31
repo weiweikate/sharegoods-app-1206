@@ -11,11 +11,11 @@ public class AppContants {
     /**
      * 版本下载通知channnelId
      */
-    public static final String XXD_NOTIFY_CHANNEL_ID = "mr_1";
+    public static final String MR_NOTIFY_CHANNEL_ID = "mr_1";
     /**
      * 版本下载通知channnelName
      */
-    public static final String XXD_NOTIFY_CHANNEL_NAME = "秀购";
+    public static final String MR_NOTIFY_CHANNEL_NAME = "秀购";
 
 
 }
