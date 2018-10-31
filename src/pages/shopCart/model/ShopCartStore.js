@@ -14,8 +14,8 @@ class ShopCartStore {
     isAllSelected;
 
     @action
-    setRefresh(refresh){
-        this.isRefresh = refresh
+    setRefresh(refresh) {
+        this.isRefresh = refresh;
     }
 
     @action
@@ -173,6 +173,9 @@ class ShopCartStore {
             if (error.code === 10001) {
                 //登陆失效置空购物车
                 this.data = [];
+            } else if (error.code === 34501) {
+                //商品不存在,重新拉取购物车列表
+                this.getShopCartListData();
             }
             bridge.$toast(error.msg);
         });
@@ -189,10 +192,10 @@ class ShopCartStore {
                 params
             ).then(res => {
                 this.packingShopCartGoodsData(res.data);
-                this.setRefresh(false)
+                this.setRefresh(false);
             }).catch(error => {
-                this.setRefresh(false)
-                bridge.$toast(error.msg)
+                this.setRefresh(false);
+                bridge.$toast(error.msg);
                 this.data = [];
             });
         } else {
@@ -207,11 +210,11 @@ class ShopCartStore {
             bridge.hiddenLoading();
             //组装购物车数据
             this.packingShopCartGoodsData(result.data);
-            this.setRefresh(false)
+            this.setRefresh(false);
         }).catch(error => {
             bridge.hiddenLoading();
             bridge.$toast(error.msg);
-            this.setRefresh(false)
+            this.setRefresh(false);
         });
     };
 
@@ -241,6 +244,23 @@ class ShopCartStore {
 
         } else {
             bridge.$toast('添加商品不能为空');
+        }
+    }
+
+    /**
+     * 在来一单
+     */
+
+    addOneMoreList(oneMoreList) {
+        if (oneMoreList instanceof Array && oneMoreList.length > 0) {
+         ShopCartAPI.oneMoreOrder({
+             cacheList:oneMoreList
+         }).then(result => {
+            //添加完成再次拉取
+             this.getShopCartListData()
+         }).catch(reason => {
+             bridge.$toast(reason.msg)
+         })
         }
     }
 
