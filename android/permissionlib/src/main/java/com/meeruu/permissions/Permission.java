@@ -132,7 +132,7 @@ public class Permission {
             }
         }
         if (!TextUtils.isEmpty(content)) {
-            content = "请在设置－应用－选校帝－权限管理中开启" + content.substring(1) + "权限，以正常使用选校帝功能服务";
+            content = "请在设置－应用－秀购－权限管理中开启" + content.substring(1) + "权限，以正常使用秀购功能服务";
         }
         return content;
     }

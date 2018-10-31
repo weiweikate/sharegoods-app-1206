@@ -228,7 +228,7 @@ public static final int *;
 -keepclassmembers class com.meeruu.sharegoods.application.MRApplication {
     public <init>();
 }
--keepclassmembers class com.meeruu.commonlib.BaseApplication {
+-keepclassmembers class com.meeruu.commonlib.base.BaseApplication {
     public <init>();
 }
 #防止inline
