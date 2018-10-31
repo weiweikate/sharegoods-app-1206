@@ -14,7 +14,8 @@ export default class ActivityView extends Component {
 
     static propTypes = {
         activityData: PropTypes.object.isRequired,
-        activityType: PropTypes.object.isRequired
+        activityType: PropTypes.object.isRequired,
+        callBack:PropTypes.func.isRequired,
     };
 
     constructor(props) {
@@ -39,12 +40,11 @@ export default class ActivityView extends Component {
     saveActivityViewData(activityData, activityType) {
         //	integer($int32)
         // example: 1
-        // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
         const { date, beginTime, endTime, status } = activityData;
-        let begin = status === 1;
-        if (begin) {
+        // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
+        if (status === 1) {
             this._time(date, beginTime);
-        } else {
+        } else if (status === 2 || status === 3) {
             if (activityType === 2) {
                 const { markdownPrice = '', floorPrice, activityTime } = activityData;
                 markdownPrice === floorPrice ? this._time(date, endTime) : this._time(date, activityTime);
@@ -57,12 +57,13 @@ export default class ActivityView extends Component {
 
     _time(start, end) {
         if (isNoEmpty(start) && isNoEmpty(end)) {
-            let countdownDate = new Date(new Date().getTime() + (end - start));
+            let countdownDate = new Date().getTime() + (end - start);
             this.interval = setInterval(() => {
                 let diff = countdownDate - new Date().getTime();
                 if (diff <= 0) {
                     diff = 0;
                     this._stopTime();
+                    this.props.callBack&&this.props.callBack();
                 }
                 this.setState({
                     countTime: diff

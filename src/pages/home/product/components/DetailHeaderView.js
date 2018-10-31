@@ -96,7 +96,7 @@ export default class DetailHeaderView extends Component {
             <View>
                 {productImgListTemp.length > 0 && this.state.swiperShow ? <ViewPager swiperShow={true}
                                                                                      loop={false}
-                                                                                     bounces = {true}
+                                                                                     bounces={true}
                                                                                      height={ScreenUtils.autoSizeWidth(377)}
                                                                                      arrayData={productImgListTemp}
                                                                                      renderItem={(item, index) => this._renderViewPageItem(item, index)}
@@ -104,11 +104,9 @@ export default class DetailHeaderView extends Component {
                     <View style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}/>}
                 {activityType === 1 || activityType === 2 ?
                     <ProductActivityView activityType={activityType}
-                                         ref={(e) => {
-                                             this.ActivityView = e;
-                                         }}
                                          activityData={this.props.activityData}
-                                         productActivityViewAction={this.props.productActivityViewAction}/> : null}
+                                         productActivityViewAction={this.props.productActivityViewAction}
+                                         callBack={this.props.callBack}/> : null}
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{

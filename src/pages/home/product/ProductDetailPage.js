@@ -38,7 +38,7 @@ export default class ProductDetailPage extends BasePage {
             selectedIndex: 0,
             //活动数据
             activityData: {},
-            activityType: 0//请求到数据查看类型
+            activityType: 0//请求到数据才能知道活动类型
         };
     }
 
@@ -76,12 +76,13 @@ export default class ProductDetailPage extends BasePage {
         }
     };
 
-    _getQueryByProductId = (productId) => {
-        if (!productId) {
+    _getQueryByProductId = () => {
+        const { product = {} } = this.state.data;
+        if (!product.id) {
             return;
         }
         HomeAPI.queryByProductId({
-            productId: productId
+            productId: product.id
         }).then((data) => {
             this.$loadingDismiss();
             let dataTemp = data.data || {};
@@ -95,7 +96,6 @@ export default class ProductDetailPage extends BasePage {
                     activityData: dataTemp.seckill
                 });
             }
-            // this.DetailHeaderView.updateTime(this.state.activityData, this.state.activityType);
         }).catch((error) => {
             this.$loadingDismiss();
             this.$toastShow(error.msg);
@@ -103,10 +103,10 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _savaData = (data) => {
-        const { product = {} } = data;
-        this._getQueryByProductId(product.id);
         this.setState({
             data: data
+        },()=>{
+            this._getQueryByProductId();
         });
     };
 
@@ -169,10 +169,11 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        return <DetailHeaderView ref={(e) => {
-            this.DetailHeaderView = e;
-        }} data={this.state.data} activityData={this.state.activityData} activityType={this.state.activityType}
+        return <DetailHeaderView data={this.state.data}
+                                 activityType={this.state.activityType}
+                                 activityData={this.state.activityData}
                                  productActivityViewAction={this._productActivityViewAction}
+                                 callBack={this._getQueryByProductId}
                                  navigation={this.props.navigation}/>;
     };
 
