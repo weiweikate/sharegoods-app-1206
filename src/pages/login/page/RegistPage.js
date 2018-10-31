@@ -14,6 +14,8 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import LoginApi from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import UserModel from '../../../model/user';
+import DeviceInfo from 'react-native-device-info'
+import { NavigationActions } from 'react-navigation';
 
 @observer
 export default class RegistPage extends BasePage {
@@ -101,13 +103,11 @@ export default class RegistPage extends BasePage {
             phone: phone,
             systemVersion: this.params.systemVersion ? this.params.systemVersion : '',
             wechatVersion: '',
-            nickname:this.params.nickName
+            nickname:this.params.nickName,
+            headImg:this.params.headerImg?this.params.headerImg:'',
         }).then((data) => {
             if (data.code === 10000) {
-                this.$navigateBack();
-                bridge.$toast('注册成功')
-
-
+               this.toLogin(phone, code, password)
             } else {
                 bridge.$toast(data.msg);
             }
@@ -127,7 +127,7 @@ export default class RegistPage extends BasePage {
             device: '44',
             password: password,
             phone: phone,
-            systemVersion: '',
+            systemVersion: DeviceInfo.getSystemVersion(),
             username: '',
             wechatCode: '',
             wechatVersion: ''
@@ -136,7 +136,13 @@ export default class RegistPage extends BasePage {
             UserModel.saveUserInfo(data.data);
             UserModel.saveToken(data.data.token)
             bridge.$toast('登陆成功');
-            this.$navigateBack('Tab');
+            let resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [
+                        NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
+                    ]
+                });
+            this.props.navigation.dispatch(resetAction);
         }).catch((data) => {
             this.$loadingDismiss();
             bridge.$toast(data.msg);
