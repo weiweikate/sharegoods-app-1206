@@ -4,6 +4,8 @@ import bridge from '../../../utils/bridge';
 
 
 class ShopCartStore {
+
+    needSelectGoods = []
     @observable
     isRefresh = false;
     @observable
@@ -111,8 +113,18 @@ class ShopCartStore {
                     tempString = tempString + `${string} `;
                 });
                 item.specString = tempString;
+
+                //从订单过来的选中
+                this.needSelectGoods.map(selectGood =>{
+                    if (selectGood.productId === item.productId && selectGood.priceId === item.priceId){
+                        item.isSelected = true
+                    }
+                })
+
                 tempArr.push(item);
             });
+
+
             this.data = tempArr;
         } else {
             this.data = [];
@@ -253,6 +265,9 @@ class ShopCartStore {
 
     addOneMoreList(oneMoreList) {
         if (oneMoreList instanceof Array && oneMoreList.length > 0) {
+
+            this.needSelectGoods = oneMoreList
+
          ShopCartAPI.oneMoreOrder({
              cacheList:oneMoreList
          }).then(result => {

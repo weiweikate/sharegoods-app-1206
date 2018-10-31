@@ -135,8 +135,8 @@ public class VersionUpdateService extends Service {
         });
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(AppContants.XXD_NOTIFY_CHANNEL_ID,
-                    AppContants.XXD_NOTIFY_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel(AppContants.MR_NOTIFY_CHANNEL_ID,
+                    AppContants.MR_NOTIFY_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
             //是否在桌面icon右上角展示小红点
             channel.enableLights(true);
             //是否在久按桌面图标时显示此渠道的通知
@@ -191,7 +191,7 @@ public class VersionUpdateService extends Service {
         CharSequence tickerText = "开始下载";
         long when = System.currentTimeMillis();
         mNotification = new NotificationCompat.Builder(VersionUpdateService.this,
-                AppContants.XXD_NOTIFY_CHANNEL_ID);
+                AppContants.MR_NOTIFY_CHANNEL_ID);
         mNotification.setSmallIcon(icon);
         mNotification.setTicker(tickerText);
         mNotification.setWhen(when);

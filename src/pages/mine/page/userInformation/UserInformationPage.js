@@ -86,7 +86,7 @@ export default class UserInformationPage extends BasePage {
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={false}/>
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'所在区域'}
-                                rightText={user.province+user.city+user.area}
+                                rightText={user.area?user.province+user.city+user.area:''}
                                 rightTextStyle={styles.grayText} leftTextStyle={styles.blackText} isLine={false}
                                 onPress={() => this.renderGetCityPicker()}/>
                 {this.renderWideLine()}
