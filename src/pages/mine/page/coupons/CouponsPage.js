@@ -54,7 +54,7 @@ export default class CouponsPage extends BasePage {
                     <MyCouponsItems tabLabel={'未使用'} pageStatus={0} nav={this.props.navigation}
                                     selectTab={this.state.selectTab} isgiveup={this.params.fromOrder}
                                     fromOrder={this.params.fromOrder} justOne={this.params.justOne}
-                                    productIds={this.params.orderParam} giveupUse={() => {
+                                    orderParam={this.params.orderParam} giveupUse={() => {
                         this.params.callBack('giveUp'), this.$navigateBack();
                     }} useCoupons={(data) => {
                         this.params.callBack(data), this.$navigateBack();

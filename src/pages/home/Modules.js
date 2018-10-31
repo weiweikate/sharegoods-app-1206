@@ -294,6 +294,7 @@ class HomeModule {
 
     //加载为你推荐列表
     loadMoreHomeList = flow(function* () {
+        console.log('loadMoreHomeList', this.isFetching, this.isEnd, this.firstLoad)
         if (this.isFetching) {
             return;
         }
@@ -328,8 +329,17 @@ class HomeModule {
                     itemData.push(list[i]);
                 }
             }
+            if (itemData.length > 0) {
+                home.push({
+                    itemData: itemData,
+                    type: homeType.goods,
+                    id: 'goods'
+                })
+            }
             this.homeList = [...this.homeList, ...home];
             this.page++;
+            this.isFetching = false
+            this.isEnd = false
         } catch (error) {
             console.log(error);
         }

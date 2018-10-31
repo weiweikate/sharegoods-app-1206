@@ -47,7 +47,7 @@ export default class BasePage extends Component {
     _renderDefaultNoNet() {
         return (
             <View style={[this.props.style, { alignItems: 'center', justifyContent: 'center', flex: 1}]}>
-                <TouchableWithoutFeedback onPress={()=>{if(netStatus.isConnected){this.$refreshData();this.setState({})}}}>
+                <TouchableWithoutFeedback onPress={()=>{if(netStatus.isConnected){this.$refreshData();this.setState({isConnected: true})}}}>
                     <View>
                         <Image source={CommTabImag.noNetImg} style={{height: 100, width: 100}}/>
                         <Text style={{ marginTop: 10, color: "#666666" }}>无网络</Text>
