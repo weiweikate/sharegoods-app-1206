@@ -22,6 +22,8 @@ class TotalTopicresultDataModel {
     @observable
     status = '';
     @observable
+    isRefresh = false
+    @observable
     topicNavbarList = [];
     /*导航标题列表*/
     @observable
@@ -34,6 +36,11 @@ class TotalTopicresultDataModel {
     @computed
     get topicTitle() {
         return this.name || '专题';
+    }
+
+    @action
+    setRefresh(statues){
+        this.isRefresh = statues
     }
 
     /**
@@ -150,12 +157,15 @@ class TotalTopicresultDataModel {
      */
     @action
     loadTopicData(topicCode) {
+        this.setRefresh(true)
         TopicAPI.findTopicById({
             code: topicCode
         }).then(result => {
             this.saveResultDataWith(result.data);
+            this.setRefresh(false)
             console.log(result);
         }).catch(error => {
+            this.setRefresh(false)
             bridge.$toast(error.msg);
         });
     }

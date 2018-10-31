@@ -170,8 +170,9 @@ SINGLETON_FOR_CLASS(JRShareManager)
                               @"systemVersion":[JRDeviceInfo systemVersion],
                               @"device":[JRDeviceInfo device],
                               @"nickName":res.name?res.name:@"---",
+                              @"headerImg":res.iconurl
                               };
-    
+    NSLog(@"%@",res);
     if(finshBlock){
       finshBlock(@[dicData]);
     }

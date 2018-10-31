@@ -98,7 +98,7 @@ const Styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     itemTopImageStyle: {
-        backgroundColor: 'red'
+        // backgroundColor: 'red'
 
     },
     itemTipBgViewStyle: {
@@ -119,8 +119,8 @@ const Styles = StyleSheet.create({
     itemBottomTextStyle: {
         marginTop: 10,
         color: ColorUtil.Color_222222,
-        height: 25,
-        fontSize: 12
+        height: 27,
+        fontSize: 11
     },
     itemBottomPriceTextStyle: {
         color: ColorUtil.Color_d51243,
