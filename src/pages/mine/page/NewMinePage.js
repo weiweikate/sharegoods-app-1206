@@ -269,14 +269,14 @@ export default class MinePage extends BasePage {
                         </ImageBackground>
                     </View>
                 </View>
-                <View style={styles.saveMoneyWrapper}>
-                    <Text style={{ color: "white", fontSize: px2dp(14), includeFontPadding: false }}>
-                        21.00元
-                    </Text>
-                    <Text style={{ color: "white", fontSize: px2dp(12), includeFontPadding: false }}>
-                        已帮你省
-                    </Text>
-                </View>
+                {/*<View style={styles.saveMoneyWrapper}>*/}
+                    {/*<Text style={{ color: "white", fontSize: px2dp(14), includeFontPadding: false }}>*/}
+                        {/*21.00元*/}
+                    {/*</Text>*/}
+                    {/*<Text style={{ color: "white", fontSize: px2dp(12), includeFontPadding: false }}>*/}
+                        {/*已帮你省*/}
+                    {/*</Text>*/}
+                {/*</View>*/}
             </ImageBackground>
         );
     };
