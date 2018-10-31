@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
-import RouterMap from './RouterMap';
+import RouterMap from 'RouterMap';
 import user from '../src/model/user';
 import Router from './Router';
 import DebugButton from './components/debug/DebugButton';
