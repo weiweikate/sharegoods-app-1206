@@ -4,23 +4,27 @@ import {
     View,
     Image,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    ImageBackground
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import { RefreshList } from '../../../../components/ui';
+import { RefreshList ,UIImage,UIText} from '../../../../components/ui';
 import AccountItem from '../../components/AccountItem';
 import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import withdrawMoney from '../../res/userInfoImg/withdrawMoney.png';
+// import withdrawMoney from '../../res/userInfoImg/withdrawMoney.png';
 import tuiguang from '../../res/userInfoImg/list_icon_touguang.png';
 import salesCommissions from '../../res/userInfoImg/list_icon_xiaoshouticheng.png';
 import waitWithdrawCashBg from '../../res/userInfoImg/waitWithdrawCashBg2.png';
+import questionImage_white from '../../res/userInfoImg/questionImage_white.png'
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
-
+import topicShow from '../../../topic/res/topicShow.png';
+import topicShowClose from '../../../topic/res/topicShowClose.png';
+import CommModal from 'CommModal'
 
 export default class WaitingForWithdrawCashPage extends BasePage {
     constructor(props) {
@@ -36,28 +40,13 @@ export default class WaitingForWithdrawCashPage extends BasePage {
             phoneError: false,
             passwordError: false,
             viewData: [
-                {
-                    type: '推广提成',
-                    time: '2018-05-25 12:15:45',
-                    capital: '200.00',
-                    iconImage: withdrawMoney,
-                    capitalRed: false
-                },
-                {
-                    type: '折扣支出',
-                    time: '2018-05-25 12:15:45',
-                    serialNumber: '流水号：123456787653234567',
-                    capital: '-200.00',
-                    iconImage: withdrawMoney,
-                    capitalRed: true,
-                    needQuestionImage: true
-                }
             ],
             restMoney: 1600.00,
             isEmpty: false,
             waitingForWithdrawMoney: 0,
             currentPage: 1,
-            blockedBalance: this.params.blockedBalance
+            blockedBalance: this.params.blockedBalance,
+            modalVisible:false
         };
     }
 
@@ -98,13 +87,100 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 color: color.white
                             }}>{StringUtils.formatMoneyString(this.state.blockedBalance, false)}</Text>
                         </View>
-
+                        <View style={{marginRight:20}}>
+                            <TouchableOpacity style={{flexDirection:'row',marginTop:10,paddingLeft:22,alignItems:'center'}}
+                            onPress={()=>this.show()}>
+                                <UIImage source={questionImage_white} style={{width:13,height:13,marginRight:3}}/>
+                                <UIText value={'提现说明'} style={{fontFamily: "PingFang-SC-Medium", fontSize: 11, color: "#ffffff"}}/>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
+                {this.renderShowCommand()}
             </View>
 
         );
     };
+    show = () => {
+        this.setState({
+            modalVisible: true,
+        });
+    };
+    _onPress = () => {
+        this.setState({
+            modalVisible: false
+        });
+    };
+    close=()=>{
+        this.setState({
+            modalVisible: false
+        });
+    }
+    renderShowCommand(){
+        return(
+            <CommModal onRequestClose={this.close}
+                       visible={this.state.modalVisible}
+                       transparent={true}>
+                <View style={{
+                    backgroundColor: 'rgba(0,0,0,0.5)', top: 0,
+                    left: 0,
+                    bottom: 0,
+                    right: 0,
+                    position: 'absolute'
+                }}>
+                    <View style={{
+                        backgroundColor: 'white',
+                        top: ScreenUtils.px2dp(105),
+                        width: ScreenUtils.px2dp(290),
+                        height: ScreenUtils.px2dp(360),
+                        alignSelf: 'center',
+                        position: 'absolute',
+                    }}>
+                        <ImageBackground source={topicShow} style={{
+                            width: ScreenUtils.px2dp(290),
+                            height: ScreenUtils.px2dp(71),
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}>
+                            <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }}>待提现账户说明</Text>
+                        </ImageBackground>
+                        <View style={{marginLeft:ScreenUtils.px2dp(22)}}>
+                        <Text style={{
+                            marginTop: ScreenUtils.px2dp(25),
+                            color: '#000000',
+                            fontSize: ScreenUtils.px2dp(15)
+                        }}>什么是待提现账户？</Text>
+                        <Text style={{
+                            marginTop: ScreenUtils.px2dp(10),
+                            color: '#666666',
+                            fontSize: ScreenUtils.px2dp(13),
+                        }}>{`待提现账户为用户收益明细账户，可通过待提现账户查看收益情况`}</Text>
+                        </View>
+                        <View style={{marginLeft:ScreenUtils.px2dp(22)}}>
+                            <Text style={{
+                                marginTop: ScreenUtils.px2dp(25),
+                                color: '#000000',
+                                fontSize: ScreenUtils.px2dp(15)
+                            }}>为何不能马上提现？</Text>
+                            <Text style={{
+                                marginTop: ScreenUtils.px2dp(10),
+                                color: '#666666',
+                                fontSize: ScreenUtils.px2dp(13),
+                            }}>{`因为您下级或下下级的交易并未完全完成，所以账户中的余额暂时不可马上提现，当交易完成之后，系统回自动提现到您的余额账户`}</Text>
+                        </View>
+                        <TouchableOpacity style={{
+                            top: 0,
+                            right: 0,
+                            position: 'absolute'
+                        }} onPress={this._onPress}>
+                            <Image source={topicShowClose}/>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+            </CommModal>
+        )
+    }
     renderItem = ({ item, index }) => {
         return (
             <TouchableOpacity>

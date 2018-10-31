@@ -17,12 +17,14 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import position from '../res/position.png';
 import arrow_right from '../res/arrow_right.png';
 import colorLine from '../res/addressLine.png';
+import couponIcon from '../../mine/res/couponsImg/dingdan_icon_quan_nor.png'
 import GoodsItem from '../components/GoodsItem';
 import user from '../../../model/user';
 import Toast from '../../../utils/bridge';
 import BasePage from '../../../BasePage';
 import OrderApi from './../api/orderApi';
 import MineApi from '../../mine/api/MineApi';
+import API from '../../../api';
 
 // let oldViewData, oldPriceList;
 export default class ConfirOrderPage extends BasePage {
@@ -53,6 +55,7 @@ export default class ConfirOrderPage extends BasePage {
             tokenCoin: 0,
             couponId: null,
             tokenCoinText: null,
+            couponName:null,
             orderParam: this.params.orderParamVO ? this.params.orderParamVO : []
 
         };
@@ -143,12 +146,6 @@ export default class ConfirOrderPage extends BasePage {
                                 padding: 3
                             }}>礼包</Text>
                         </View>
-                        <Text style={{
-                            marginLeft: 10,
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 12,
-                            color: '#999999'
-                        }}>{this.state.viewData.list[0].goodsName}</Text>
                     </View>
                     :
                     null}
@@ -171,7 +168,7 @@ export default class ConfirOrderPage extends BasePage {
                     <UIText value={'优惠券'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
-                            value={(this.state.viewData.list[0].restrictions & 1) == 1 || this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 ? '不可使用优惠券' : (this.state.couponName ? this.state.couponName : '选择优惠券')}
+                            value={(this.state.viewData.list[0].restrictions & 1) == 1 || this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2 ? '不支持使用优惠券' : (this.state.couponName ? this.state.couponName : '选择优惠券')}
                             style={[styles.grayText, { marginRight: 15 }]}/>
                         <Image source={arrow_right}/>
                     </View>
@@ -259,9 +256,10 @@ export default class ConfirOrderPage extends BasePage {
                 {this.state.viewData.couponList?
                     this.state.viewData.couponList.map((item,index)=>{
                         return <View style={{backgroundColor:'white'}}>
+                            {index==0?<Image source={couponIcon} style={{width:15,height:12,position:'absolute',left:15,top:12}}/>:null}
                         <View style={{height:34,flexDirection:'row',justifyContent:'space-between',marginLeft:36}}>
                             <Text style={{color: color.black_999, fontSize: 13,alignSelf:'center'}}>{item.couponName}</Text>
-                            <Text style={{color: color.black_999, fontSize: 13,alignSelf:'center',marginRight:14}}>X1</Text>
+                            <Text style={{color: color.black_999, fontSize: 13,alignSelf:'center',marginRight:13.5}}>X1</Text>
                         </View>
                             <View style={{marginLeft:36,backgroundColor:'#F7F7F7',height:0.5,width:'100%'}}/>
                         </View>
@@ -314,7 +312,7 @@ export default class ConfirOrderPage extends BasePage {
                 <RefreshList
                     ListHeaderComponent={this.renderHeader}
                     ListFooterComponent={this.renderFootder}
-                    data={this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98 ? this.params.orderParamVO.orderProducts[0].priceList : this.state.viewData.list}
+                    data={ this.state.viewData.list}
                     renderItem={this.renderItem}
                     extraData={this.state}
                 />
@@ -327,20 +325,20 @@ export default class ConfirOrderPage extends BasePage {
 
     renderItem = ({ item, index }) => {
         console.log(item);
-        if (this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98) {
-            return (
-                <View>
-                <GoodsItem
-                    uri={item.specImg}
-                    goodsName={item.productName}
-                    category={item.spec}
-                    goodsNum={'X' + item.num}
-                    onPress={() => this.clickItem(index, item)}
-                />
-
-                </View>
-            );
-        } else {
+        // if (this.state.orderParam && this.state.orderParam.orderType === 3 || this.state.orderParam.orderType === 98) {
+        //     return (
+        //         <View>
+        //         <GoodsItem
+        //             uri={item.specImg}
+        //             goodsName={item.productName}
+        //             category={item.spec}
+        //             goodsNum={'X' + item.num}
+        //             onPress={() => this.clickItem(index, item)}
+        //         />
+        //
+        //         </View>
+        //     );
+        // } else {
             return (
                 <TouchableOpacity>
                     <GoodsItem
@@ -350,11 +348,10 @@ export default class ConfirOrderPage extends BasePage {
                         category={item.category}
                         goodsNum={'X' + item.goodsNum}
                         onPress={() => this.clickItem(index, item)}
-
                     />
                 </TouchableOpacity>
             );
-        }
+        // }
 
     };
     renderLine = () => {
@@ -365,6 +362,25 @@ export default class ConfirOrderPage extends BasePage {
 
     componentDidMount() {
         this.loadPageData();
+        let arr = [];
+        this.state.orderParam.orderProducts.map((item, index) => {
+            arr.push({
+                priceId: item.priceId,
+                productId: item.productId
+            });
+        });
+        API.listAvailable({ page: 1, pageSize: 20, productPriceIds: arr }).then(res => {
+            let data = res.data || {};
+            let dataList = data.data || [];
+            if(dataList.length==0){
+                this.setState({ couponName: '暂无优惠券' });
+            }
+        }).catch(result => {
+            if (result.code === 10009) {
+                this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
+            }
+        });
+
     }
 
    loadPageData(params) {
@@ -759,7 +775,7 @@ export default class ConfirOrderPage extends BasePage {
             });
         } else {
             this.$navigate('mine/coupons/CouponsPage', {
-                fromOrder: 1, productIds: this.state.viewData.list[0].productId,
+                fromOrder: 1,
                 orderParam: this.state.orderParam, callBack: (data) => {
                     if (data && data.id) {
                         let params = { couponId: data.id, tokenCoin: 0 };

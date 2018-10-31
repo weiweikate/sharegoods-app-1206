@@ -171,6 +171,7 @@ const GoodsListItem = props => {
                 <GoodsGrayItem
                     key={i}
                     uri={orderProduct[i].imgUrl}
+                    gift={orderType==5||orderType==98}
                     goodsName={orderProduct[i].productName}
                     salePrice={orderProduct[i].price}
                     category={orderProduct[i].spec}

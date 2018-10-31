@@ -460,10 +460,10 @@ export default class MyOrdersListView extends Component {
                 console.log(this.state.viewData[index]);
                 let j=0;
                 let returnTypeArr = ['', '退款', '退货', '换货'];
-                this.state.viewData[index].orderProduct.forEach((item, index) => {
-                    let returnProductStatus = item.returnProductStatus || 99999;
+                for(let i=0;i<this.state.viewData[index].orderProduct.length;i++){
+                    let returnProductStatus = this.state.viewData[index].orderProduct[i].returnProductStatus || 99999;
                     if (returnProductStatus===1) {
-                        let content = '确认收货将关闭' + returnTypeArr[item.returnType] + '申请，确认收货吗？';
+                        let content = '确认收货将关闭' + returnTypeArr[this.state.viewData[index].orderProduct[i].returnType] + '申请，确认收货吗？';
                         Alert.alert('提示', `${ content }`, [
                             {
                                 text: '取消', onPress: () => {
@@ -484,9 +484,12 @@ export default class MyOrdersListView extends Component {
                             }
                         ], { cancelable: true });
                         j++;
-                        return;
+                        break;
                     }
-                });
+                }
+                // this.state.viewData[index].orderProduct.map((item, index) => {
+
+                // });
                 if(j==0) {
                     this.setState({ isShowReceiveGoodsModal: true });
                 }
@@ -510,12 +513,12 @@ export default class MyOrdersListView extends Component {
                     response.data.orderProducts.map((item, index) => {
                         cartData.push({ productId: item.productId, priceId: item.priceId, amount: item.num });
                     });
-                    let params = {
-                        amount: response.data.orderProducts[0].num,
-                        priceId: response.data.orderProducts[0].priceId,
-                        productId: response.data.orderProducts[0].productId
-                    };
-                    shopCartCacheTool.addGoodItem(params);
+                    // let params = {
+                    //     amount: response.data.orderProducts[0].num,
+                    //     priceId: response.data.orderProducts[0].priceId,
+                    //     productId: response.data.orderProducts[0].productId
+                    // };
+                    shopCartCacheTool.addGoodItem(cartData);
                     this.props.nav('shopCart/ShopCart', { hiddeLeft: false });
                 }).catch(e => {
                     Toast.hiddenLoading();

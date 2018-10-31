@@ -227,8 +227,9 @@ export default class MyPromotionPage extends BasePage {
                     }}>预计晋升后可获得哪些福利？</Text>
                 </View>
                 {this.renderSepLine()}
-                <HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
-                      containerStyle={{ backgroundColor: '#fff' }}/>
+                {this.state.nextArr?<HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
+                                          containerStyle={{ backgroundColor: '#fff' }}/>:null}
+
             </View>
         );
     }

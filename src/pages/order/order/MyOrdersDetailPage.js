@@ -17,6 +17,7 @@ import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import buyerHasPay from '../res/buyerHasPay.png';
+import couponIcon from '../../mine/res/couponsImg/dingdan_icon_quan_nor.png'
 // import car from '../res/car.png';
 import arrow_right from '../res/arrow_right.png';
 import position from '../res/position.png';
@@ -266,14 +267,53 @@ class MyOrdersDetailPage extends BasePage {
             </View>
         );
     };
+    renderMenus = () => {
+        let itemArr = [];
+        console.log(this.state.afterSaleService);
+        for (let i = 0; i < this.state.afterSaleService.length; i++) {
+            itemArr.push(
+                <TouchableOpacity key={i}
+                                  style={[styles.grayView, { borderColor: this.state.afterSaleService[i].isRed ? color.red : color.gray_DDD }]}
+                                  onPress={() => {
+                                      this.afterSaleServiceClick(this.state.afterSaleService[i],i);
+                                  }}>
+                    <Text
+                        style={[styles.grayText, { color: this.state.afterSaleService[i].isRed ? color.red : color.gray_666 }]}>{this.state.afterSaleService[i].operation}</Text>
+                </TouchableOpacity>
+            );
+        }
+        return itemArr;
+    }
+    renderGiftaftersales=()=>{
+          return(
+               <View>
+              {this.state.afterSaleService.length === 0 ? null :
+                <View>
+                        <View style={{
+                            flexDirection: 'row',
+                            height: 48,
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                            backgroundColor: color.white
+                        }}>
+                            {this.renderMenus()}
+                        </View>
+                        {this.renderLine()}
+                </View>
+                }
+               </View>
+          )
+    }
     renderFootder = () => {
         return (
             <View style={{ backgroundColor: color.white }}>
-                {this.state.orderType==5||this.state==98&&this.state.giftBagCoupons.length>0?
+                {this.state.orderType==5?this.renderGiftaftersales():null}
+                {(this.state.orderType==5||this.state.orderType==98)&&this.state.giftBagCoupons.length>0?
                     <View>
                         {this.renderLine()}
                         {this.state.giftBagCoupons.map((item,index)=>{
                       return   <View style={{backgroundColor:'white'}}>
+                          {index==0?<Image source={couponIcon} style={{width:15,height:12,position:'absolute',left:15,top:12}}/>:null}
                         <View style={{height:34,flexDirection:'row',justifyContent:'space-between',marginLeft:36}}>
                         <Text style={{color: color.black_999, fontSize: 13,alignSelf:'center'}}>{item.couponName}</Text>
                         <Text style={{color: color.black_999, fontSize: 13,alignSelf:'center',marginRight:14}}>x1</Text>
@@ -709,7 +749,7 @@ class MyOrdersDetailPage extends BasePage {
             if (data.orderType === 5 || data.orderType === 98) {//礼包。。。
                 data.orderProductList[0].orderProductPriceList.map((item, index) => {
                     arr.push({
-                        id: item.id,
+                        id: data.orderProductList[0].id,
                         orderId: item.orderProductId,
                         productId: item.productId,
                         uri: item.specImg,
@@ -717,11 +757,10 @@ class MyOrdersDetailPage extends BasePage {
                         salePrice: StringUtils.isNoEmpty(item.originalPrice) ? item.originalPrice : 0,
                         category: item.spec,
                         goodsNum: item.productNum,
-                        // returnProductId: data.orderProductList[0].returnProductId,
-                        // afterSaleService: this.getAfterSaleService(data.orderProductList, index),
-                        // returnProductStatus:data.orderProductList[0].returnProductStatus,
-                        // returnType:data.orderProductList[0].returnType,
-                        // status:data.orderProductList[0].status
+                        returnProductId: data.orderProductList[0].returnProductId,
+                        returnType:data.orderProductList[0].returnType,
+                        returnProductStatus:data.orderProductList[0].returnProductStatus,
+                        status:data.orderProductList[0].status,
                     });
                 });
             } else {
@@ -903,7 +942,10 @@ class MyOrdersDetailPage extends BasePage {
                     deliverTime:data.deliverTime,
                     pickedUp: data.pickedUp,//
                     cancelTime:data.cancelTime?data.cancelTime:null ,//取消时间
+
                 },
+                afterSaleService: this.getAfterSaleService(data.orderProductList,0),
+                returnProductStatus:data.orderProductList[0].returnProductStatus,
                 pageStateString: pageStateString,
                 expressNo: data.expressNo,
                 pageState: data.pageState,
@@ -1018,10 +1060,10 @@ class MyOrdersDetailPage extends BasePage {
                 console.log(this.state.viewData.list);
                 let j=0;
                 let returnTypeArr = ['', '退款', '退货', '换货'];
-                this.state.viewData.list.forEach((item, index) => {
-                    let returnProductStatus = item.returnProductStatus || 99999;
-                    if (returnProductStatus ===1) {
-                        let content = '确认收货将关闭' + returnTypeArr[item.returnType] + '申请，确认收货吗？';
+                for(let i=0;i<this.state.viewData.list.length;i++){
+                    let returnProductStatus = this.state.viewData.list[i].returnProductStatus || 99999;
+                    if (returnProductStatus===1) {
+                        let content = '确认收货将关闭' + returnTypeArr[this.state.viewData.list[i].returnType] + '申请，确认收货吗？';
                         Alert.alert('提示', `${ content }`, [
                             {
                                 text: '取消', onPress: () => {
@@ -1030,7 +1072,7 @@ class MyOrdersDetailPage extends BasePage {
                             {
                                 text: '确定', onPress: () => {
                                     Toast.showLoading();
-                                    OrderApi.confirmReceipt({ orderNum: this.state.viewData.orderNum }).then((response) => {
+                                    OrderApi.confirmReceipt({ orderNum:this.state.viewData.orderNum }).then((response) => {
                                         Toast.hiddenLoading();
                                         NativeModules.commModule.toast('确认收货成功');
                                         this.getDataFromNetwork();
@@ -1042,9 +1084,9 @@ class MyOrdersDetailPage extends BasePage {
                             }
                         ], { cancelable: true });
                         j++;
-                        return;
+                        break;
                     }
-                });
+                }
                 if(j==0) {
                 this.setState({ isShowReceiveGoodsModal: true });
             }
@@ -1064,12 +1106,12 @@ class MyOrdersDetailPage extends BasePage {
                     response.data.orderProducts.map((item, index) => {
                         cartData.push({ productId: item.productId, priceId: item.priceId, amount: item.num });
                     });
-                    let params = {
-                        amount: response.data.orderProducts[0].num,
-                        priceId: response.data.orderProducts[0].priceId,
-                        productId: response.data.orderProducts[0].productId
-                    };
-                    shopCartCacheTool.addGoodItem(params);
+                    // let params = {
+                    //     amount: response.data.orderProducts[0].num,
+                    //     priceId: response.data.orderProducts[0].priceId,
+                    //     productId: response.data.orderProducts[0].productId
+                    // };
+                    shopCartCacheTool.addGoodItem(cartData);
                     this.$navigate('shopCart/ShopCart', { hiddeLeft: false });
                 }).catch(e => {
                     Toast.hiddenLoading();
@@ -1120,7 +1162,7 @@ class MyOrdersDetailPage extends BasePage {
             case 0:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 0,
-                    orderProductId: this.state.viewData.list[index].id
+                    orderProductId: this.state.orderType==5||this.state.orderType==98?this.state.viewData.list[0].id:this.state.viewData.list[index].id
                     // index: index,
                     // refleshOrderDetail: () => this.loadPageData()
                 });
@@ -1134,7 +1176,7 @@ class MyOrdersDetailPage extends BasePage {
             case 2:
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 0,
-                    returnProductId: this.state.viewData.list[index].returnProductId
+                    returnProductId: this.state.orderType==5||this.state.orderType==98?this.state.viewData.list[0].returnProductId:this.state.viewData.list[index].returnProductId
                     // index: index
                 });
                 break;
@@ -1142,7 +1184,7 @@ class MyOrdersDetailPage extends BasePage {
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 1,
                     // pageData: this.state.viewData,
-                    returnProductId: this.state.viewData.list[index].returnProductId
+                    returnProductId: this.state.orderType==5||this.state.orderType==98?this.state.viewData.list[0].returnProductId:this.state.viewData.list[index].returnProductId
                     // index: index
                 });
                 break;
@@ -1150,7 +1192,7 @@ class MyOrdersDetailPage extends BasePage {
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 6,
                     // pageData: this.state.viewData,
-                    returnProductId: this.state.viewData.list[index].returnProductId
+                    returnProductId: this.state.orderType==5||this.state.orderType==98?this.state.viewData.list[0].returnProductId:this.state.viewData.list[index].returnProductId
                     // index: index
                 });
                 break;
@@ -1158,7 +1200,7 @@ class MyOrdersDetailPage extends BasePage {
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 7,
                     // pageData: this.state.viewData,
-                    returnProductId: this.state.viewData.list[index].returnProductId,
+                    returnProductId: this.state.orderType==5||this.state.orderType==98?this.state.viewData.list[0].returnProductId:this.state.viewData.list[index].returnProductId,
                     index: index
                 });
                 break;
@@ -1166,7 +1208,7 @@ class MyOrdersDetailPage extends BasePage {
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 2,
                     // pageData: this.state.viewData,
-                    returnProductId: this.state.viewData.list[index].returnProductId
+                    returnProductId: this.state.orderType==5||this.state.orderType==98?this.state.viewData.list[0].returnProductId:this.state.viewData.list[index].returnProductId
                     // index: index
                 });
                 break;
@@ -1196,6 +1238,25 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    grayView: {
+        width: 80,
+        height: 30,
+        borderRadius: 15,
+        backgroundColor: '#ffffff',
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: '#dddddd',
+        marginRight: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingLeft: 10,
+        paddingRight: 10
+    }, grayText: {
+        fontFamily: 'PingFang-SC-Medium',
+        fontSize: 13,
+        lineHeight: 18,
+        color: '#666666'
     }
 });
 

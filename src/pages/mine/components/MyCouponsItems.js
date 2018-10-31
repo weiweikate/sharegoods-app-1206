@@ -250,11 +250,11 @@ export default class MyCouponsItems extends Component {
         //         </View>
         //     )
         // } else {
-            return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
-                    <Text style={{ color: '#999999', fontSize: 15, marginTop: 15 }}>暂无优惠券</Text></View>
-            );
+        return (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
+                <Text style={{ color: '#999999', fontSize: 15, marginTop: 15 }}>暂无优惠券</Text></View>
+        );
         // }
     };
 
@@ -330,9 +330,9 @@ export default class MyCouponsItems extends Component {
     };
     parseData = (dataList) => {
         let arrData;
-         if(this.state.currentPage==1){
-             arrData = this.state.viewData || [];
-         }
+        if (this.state.currentPage == 1) {
+            arrData = [];
+        }
         arrData = this.state.viewData || [];
         if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
             if (arrData.length > 0 && arrData[0].type == 99) {
@@ -389,16 +389,16 @@ export default class MyCouponsItems extends Component {
             let arr = [];
             // ProductPriceIdPair=this.props.productIds;
             // priceId  productId
-            let data = {
-                priceId: this.props.productIds.orderProducts[0].priceId,
-                productId: this.props.productIds.orderProducts[0].productId
-            };
-
-            arr.push(data);
+            this.props.orderParam.orderProducts.map((item, index) => {
+                arr.push({
+                    priceId: item.priceId,
+                    productId: item.productId
+                });
+            });
             API.listAvailable({ page: this.state.currentPage, pageSize: 20, productPriceIds: arr }).then(res => {
                 let data = res.data || {};
                 let dataList = data.data || [];
-                this.setState({isEmpty: false},this._renderEmptyView)
+                this.setState({ isEmpty: false }, this._renderEmptyView);
                 this.parseData(dataList);
             }).catch(result => {
                 if (result.code === 10009) {
@@ -419,7 +419,7 @@ export default class MyCouponsItems extends Component {
                     type: 99 //以type=99表示1元券
                 });
             }
-            this.setState({ viewData: arrData ,isEmpty:false},this._renderEmptyView);
+            this.setState({ viewData: arrData, isEmpty: false }, this._renderEmptyView);
         }
         else {
             API.userCouponList({
@@ -429,7 +429,7 @@ export default class MyCouponsItems extends Component {
             }).then(result => {
                 let data = result.data || {};
                 let dataList = data.data || [];
-                this.setState({isEmpty: false,},this._renderEmptyView)
+                this.setState({ isEmpty: false }, this._renderEmptyView);
                 this.parseData(dataList);
 
             }).catch(result => {
