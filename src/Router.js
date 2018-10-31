@@ -7,7 +7,6 @@
 * 如:如果想跳转home模块下的HomePage  则为 ...navigate(home/HomePage)
 *import TabNav from './pages/shareTask/page/ShareTaskIntroducePage'
 * */
-
 // // 基础模块
 import { TabNav } from './RootPage';
 // import  TabNav  from './pages/shareTask/page/ShareTaskListPage';
@@ -27,6 +26,9 @@ import topic from './pages/topic'
 import show from './pages/show/Index'
 import shareTask from './pages/shareTask'
 
+import LoginNav from './LoginRouter';
+
+
 const Router = {
     Tab: {
         screen: TabNav,
@@ -34,10 +36,16 @@ const Router = {
             header: null
         })
     },
+    //暂时加入,用于后边将登陆注册流程抽取出来
+    LoginModal:{
+        screen:LoginNav
+    },
     HtmlPage: {
         screen: htmlView
     }
 };
+
+
 
 // 添加模块内子路由配置
 function addSubModule(module, prefixPath) {
