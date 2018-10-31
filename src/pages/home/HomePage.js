@@ -36,8 +36,8 @@ import MessageApi from '../message/api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import messageModalBg from './res/messageModalBg.png';
 import messageSelected from './res/messageSelected.png';
-import messageUnselected from './res/messageUnselected.png'
-import closeImg from '../shareTask/res/qiandao_btn_return_nor.png'
+import messageUnselected from './res/messageUnselected.png';
+import closeImg from '../shareTask/res/qiandao_btn_return_nor.png';
 import MineApi from '../mine/api/MineApi';
 import VersionUpdateModal from './VersionUpdateModal';
 import DeviceInfo from 'react-native-device-info';
@@ -49,6 +49,8 @@ const bannerHeight = px2dp(220);
 export default class HomePage extends Component {
 
     st = 0;
+    shadowOpacity = 0.4;
+
     headerH = statusBarHeight + 44;
     state = {
         isShow: true,
@@ -58,7 +60,9 @@ export default class HomePage extends Component {
         updateData: {},
         showUpdate: false,
         forceUpdate: false,
-        apkExist: false
+        apkExist: false,
+        shadowOpacity: this.shadowOpacity,
+        whiteIcon: true
     };
 
     constructor(props) {
@@ -129,15 +133,30 @@ export default class HomePage extends Component {
             this._refHeader.setNativeProps({
                 opacity: this.st
             });
+            this.shadowOpacity = 0;
+            this.setState({
+                shadowOpacity: this.shadowOpacity
+            });
             return;
         }
         if (Y < bannerHeight) {
             this.st = Y / (bannerHeight - this.headerH);
+            this.shadowOpacity = (1 - Y / (bannerHeight - this.headerH)) * 0.4;
+            this.setState({
+                whiteIcon: this.st > 0.7 ? false : true
+            });
         } else {
             this.st = 1;
+            this.shadowOpacity = 0;
+            this.setState({
+                whiteIcon: false
+            });
         }
         this._refHeader.setNativeProps({
             opacity: this.st
+        });
+        this.setState({
+            shadowOpacity: this.shadowOpacity
         });
     };
 
@@ -196,11 +215,11 @@ export default class HomePage extends Component {
 
     getMessageData = () => {
         MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
-            if(!EmptyUtils.isEmptyArr(res.data.data)){
+            if (!EmptyUtils.isEmptyArr(res.data.data)) {
                 this.setState({
                     showMessage: true,
                     messageData: res.data.data
-                })
+                });
             }
         });
     };
@@ -225,11 +244,11 @@ export default class HomePage extends Component {
                             loop={false}
                             onWillChange={(item, index) => {
                                 this.setState({
-                                    messageIndex : index
-                                })
+                                    messageIndex: index
+                                });
                             }}
                         />
-                        <View style={{flex:1}}/>
+                        <View style={{ flex: 1 }}/>
                         {this.messageIndexRender()}
                     </ImageBackground>
                 </View>
@@ -237,20 +256,29 @@ export default class HomePage extends Component {
         );
     }
 
-    messageIndexRender(){
-        if(EmptyUtils.isEmptyArr(this.state.messageData)){
+    messageIndexRender() {
+        if (EmptyUtils.isEmptyArr(this.state.messageData)) {
             return null;
         }
         let indexs = [];
-        for(let i = 0;i < this.state.messageData.length;i++){
-            let view = i === this.state.messageIndex ? <Image source={messageSelected} style={styles.messageIndexStyle}/> : <Image source={messageUnselected} style={styles.messageIndexStyle}/>;
+        for (let i = 0; i < this.state.messageData.length; i++) {
+            let view = i === this.state.messageIndex ?
+                <Image source={messageSelected} style={styles.messageIndexStyle}/> :
+                <Image source={messageUnselected} style={styles.messageIndexStyle}/>;
             indexs.push(view);
         }
-        return(
-            <View style={{flexDirection:'row',width:px2dp(120),justifyContent:this.state.messageData.length === 1 ? 'center' : 'space-between',marginBottom:px2dp(12),height:12,alignSelf:'center'}}>
+        return (
+            <View style={{
+                flexDirection: 'row',
+                width: px2dp(120),
+                justifyContent: this.state.messageData.length === 1 ? 'center' : 'space-between',
+                marginBottom: px2dp(12),
+                height: 12,
+                alignSelf: 'center'
+            }}>
                 {indexs}
             </View>
-        )
+        );
     }
 
     messageRender(item, index) {
@@ -288,10 +316,13 @@ export default class HomePage extends Component {
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
-                <LinearGradient colors={['#fff', '#fff']}
-                                style={[styles.navBar, { height: this.headerH + 14, opacity: 0.0 }]}/>
+                <LinearGradient colors={['#000', 'transparent']}
+                                style={[styles.navBar, {
+                                    height: this.headerH + 14,
+                                    opacity: bannerModule.opacity === 1 ? 0 : this.state.shadowOpacity
+                                }]}/>
 
-                <HomeSearchView navigation={this.props.navigation}/>
+                <HomeSearchView navigation={this.props.navigation} whiteIcon={this.state.whiteIcon}/>
                 <ShareTaskHomeAlert ref={(ref) => this.shareModal = ref}
                                     onPress={() => {
                                         this.props.navigation.navigate('shareTask/ShareTaskListPage');
@@ -368,8 +399,8 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         marginRight: ((ScreenUtils.width) - px2dp(300)) / 2
     },
-    messageIndexStyle:{
-        width:px2dp(12),
-        height:px2dp(12)
+    messageIndexStyle: {
+        width: px2dp(12),
+        height: px2dp(12)
     }
 });
