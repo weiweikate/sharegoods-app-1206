@@ -1,7 +1,7 @@
 package com.meeruu.commonlib.server;
 
 import com.alibaba.fastjson.JSON;
-import com.meeruu.commonlib.BaseApplication;
+import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.bean.ResponseInfo;
 import com.meeruu.commonlib.callback.BaseCallback;
 import com.meeruu.commonlib.callback.ReqProgressCallBack;
@@ -476,7 +476,7 @@ public class RequestManager {
                 FileOutputStream fos = null;
                 try {
                     long total = response.body().contentLength();
-                    LogUtils.e("下载", "total------>" + total);
+                    LogUtils.d("下载", "total------>" + total);
                     long current = 0;
                     is = response.body().byteStream();
                     fos = new FileOutputStream(file);
@@ -513,10 +513,10 @@ public class RequestManager {
      */
     private Map<String, String> getHttpHeaderParams() {
         Map<String, String> params = new HashMap<>();
-        String channel = WalleChannelReader.getChannel(BaseApplication.appContext, "xxd");
+        String channel = WalleChannelReader.getChannel(BaseApplication.appContext, "guanwang");
         params.put("device", DeviceUtils.getUniquePsuedoID());
         params.put("channel", channel);
-        params.put("platform", DeviceUtils.getSystemVersion() + "");
+        params.put("platform", "Android " + DeviceUtils.getSystemName());
         return params;
     }
 

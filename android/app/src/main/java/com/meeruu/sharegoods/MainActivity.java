@@ -1,222 +1,204 @@
 package com.meeruu.sharegoods;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.ViewStub;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.facebook.react.ReactActivity;
-import com.facebook.react.ReactActivityDelegate;
-import com.meeruu.commonlib.umeng.UShare;
-import com.meeruu.commonlib.utils.DensityUtils;
+import com.meeruu.commonlib.base.BaseActivity;
+import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.ParameterUtils;
+import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
-import com.meeruu.commonlib.utils.StatusBarUtils;
-import com.meeruu.commonlib.utils.StringUtis;
-import com.meeruu.permissions.AfterPermissionGranted;
-import com.meeruu.permissions.AppSettingsDialog;
-import com.meeruu.permissions.Permission;
-import com.meeruu.permissions.PermissionUtil;
-import com.meeruu.sharegoods.event.LoadingDialogEvent;
-import com.meeruu.sharegoods.utils.LoadingDialog;
-import com.umeng.socialize.UMShareAPI;
+import com.meeruu.sharegoods.ui.MainRNActivity;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+/**
+ * @author louis
+ * @desc 启动页
+ * @time created at 17/3/30 下午4:50
+ * @company www.smartstudy.com
+ */
+public class MainActivity extends BaseActivity {
 
-import java.util.Arrays;
-import java.util.List;
+    private ImageView ivAdv;
+    private TextView tvGo;
 
-public class MainActivity extends ReactActivity implements PermissionUtil.PermissionCallbacks {
-    private LoadingDialog mLoadingDialog;
-    private boolean isShowLoadingDialog;
-    private AppSettingsDialog permissionDialog;
-    protected boolean hasBasePer = false;
-    private static String[] mDenyPerms = StringUtis.concatAll(
-            Permission.STORAGE, Permission.PHONE);
-
-    /**
-     * Returns the name of the main component registered from JavaScript.
-     * This is used to schedule rendering of the component.
-     */
-    @Override
-    protected String getMainComponentName() {
-        return "sharegoods";
-    }
-
-    @Override
-    protected ReactActivityDelegate createReactActivityDelegate() {
-        return new MyReactDelegate(this, getMainComponentName());
-    }
-
-    //自定义MyReactDelegate
-    class MyReactDelegate extends ReactActivityDelegate {
-
-        public MyReactDelegate(Activity activity, @javax.annotation.Nullable String mainComponentName) {
-            super(activity, mainComponentName);
-        }
-
-        @javax.annotation.Nullable
-        @Override
-        protected Bundle getLaunchOptions() {
-            Bundle bundle = new Bundle();
-            // android状态栏高度
-            bundle.putInt("statusBarHeight", DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
-            return bundle;
-        }
-    }
-
+    private WeakHandler mHandler;
+    private boolean needGo = true;
+    private boolean isFirst = true;
+    private boolean hasGo = false;
+    private String adId;
+    private String title;
+    private String adUrl;
+    private CountDownTimer countDownTimer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setChangeStatusTrans(true);
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
-        fullScreen(MainActivity.this);
-        View decorView = getWindow().getDecorView();
-        //重点：SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-        decorView.setSystemUiVisibility(option);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
-        // 更改状态栏字体颜色
-        StatusBarUtils.setLightMode(this);
-    }
-
-    @Override
-    protected void onResume() {
-        requestPermissions();
-        super.onResume();
-    }
-
-    @AfterPermissionGranted(ParameterUtils.REQUEST_CODE_PERMISSIONS)
-    public void requestPermissions() {
-        if (!PermissionUtil.hasPermissions(this, mDenyPerms)) {
-            hasBasePer = false;
-            //申请基本的权限
-            PermissionUtil.requestPermissions(this, Permission.getPermissionContent(Arrays.asList(mDenyPerms)),
-                    ParameterUtils.REQUEST_CODE_PERMISSIONS, mDenyPerms);
-        } else {
-            hasBasePer = true;
-            hasBasePermission();
-        }
+        setContentView(R.layout.activity_splash);
     }
 
     @Override
     protected void onDestroy() {
+        releaseRes();
         super.onDestroy();
-        if (permissionDialog != null) {
-            permissionDialog.dialogDismiss();
-            permissionDialog = null;
+    }
+
+    private void releaseRes() {
+        if (mHandler != null) {
+            mHandler = null;
         }
-        UShare.release(this);
-        EventBus.getDefault().unregister(this);
-    }
-
-    //获取了100%的基本权限
-    public void hasBasePermission() {
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionUtil.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> denyPerms) {
-        String[] perms = new String[denyPerms.size()];
-        mDenyPerms = denyPerms.toArray(perms);
-        if (PermissionUtil.shouldShowRationale(this, mDenyPerms)) {
-            //继续申请被拒绝了的基本权限
-            PermissionUtil.requestPermissions(this, Permission.getPermissionContent(denyPerms),
-                    requestCode, mDenyPerms);
-        } else {
-            verifyPermission(denyPerms);
+        if (countDownTimer != null) {
+            countDownTimer.onFinish();
+            countDownTimer = null;
         }
     }
 
-    public void verifyPermission(List<String> denyPerms) {
-        if (denyPerms != null && denyPerms.size() > 0) {
-            if (permissionDialog != null && permissionDialog.isShowing()) {
-                permissionDialog.dialogDismiss();
-            }
-            permissionDialog = new AppSettingsDialog.Builder(this).build(denyPerms);
-            permissionDialog.show();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (hasBasePer) {
+//            splashP.getAdInfo();
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onLoadingEvent(LoadingDialogEvent event) {
-        if (event.isShow()) {
-            if (null == mLoadingDialog) {
-                mLoadingDialog = new LoadingDialog(this, R.style.LoadingDialog);
-            }
-            if (isShowLoadingDialog) {
-                return;
+        if (isFirst) {
+            isFirst = false;
+            String imgUrl = (String) SPCacheUtils.get("adImg", "");
+            if (!TextUtils.isEmpty(imgUrl)) {
+                //有广告时延迟时间增加
+                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
             } else {
-                if (!this.isFinishing()) {
-                    isShowLoadingDialog = true;
-                    mLoadingDialog.show();
+                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 500);
+            }
+        } else {
+            if (needGo && hasBasePer) {
+                goIndex();
+            }
+        }
+    }
+
+    @Override
+    protected void initViewAndData() {
+        String imgUrl = (String) SPCacheUtils.get("adImg", "");
+        if (!TextUtils.isEmpty(imgUrl)) {
+            ((ViewStub) findViewById(R.id.vs_adv)).inflate();
+            ivAdv = findViewById(R.id.iv_adv);
+            tvGo = findViewById(R.id.tv_go);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivAdv.getLayoutParams();
+            params.width = ScreenUtils.getScreenWidth();
+            params.height = (ScreenUtils.getScreenWidth() * 7) / 5;
+            ivAdv.setLayoutParams(params);
+//            DisplayImageUtils.formatImgUrlNoHolder(this, imgUrl, ivAdv);
+            findViewById(R.id.iv_splash).setVisibility(View.GONE);
+            initAdvEvent();
+            startTimer();
+        }
+        /**在应用的入口activity加入以下代码，解决首次安装应用，点击应用图标打开应用，点击home健回到桌面，再次点击应用图标，进入应用时多次初始化SplashActivity的问题*/
+        if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
+            finish();
+            return;
+        }
+        if (!isTaskRoot()) {
+            finish();
+            return;
+        }
+    }
+
+    @Override
+    public void initEvent() {
+        mHandler = new WeakHandler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                switch (msg.what) {
+                    case ParameterUtils.EMPTY_WHAT:
+                        needGo = true;
+                        if (hasBasePer) {
+                            if (!hasGo) {
+                                goIndex();
+                            }
+                        }
+                        break;
+                    default:
+                        break;
                 }
-
+                return false;
             }
-        } else {
-            if (null != mLoadingDialog && isShowLoadingDialog) {
-                isShowLoadingDialog = false;
-                mLoadingDialog.dismiss();
-            }
-        }
+        });
     }
 
-    /**
-     * 通过设置全屏，设置状态栏透明
-     *
-     * @param activity
-     */
-    private void fullScreen(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色
-                Window window = activity.getWindow();
-                View decorView = window.getDecorView();
-                //两个 flag 要结合使用，表示让应用的主体内容占用系统状态栏的空间
-                int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-                decorView.setSystemUiVisibility(option);
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(Color.TRANSPARENT);
-                //导航栏颜色也可以正常设置
-//                window.setNavigationBarColor(Color.TRANSPARENT);
-            } else {
-                Window window = activity.getWindow();
-                WindowManager.LayoutParams attributes = window.getAttributes();
-                int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-                int flagTranslucentNavigation = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
-                attributes.flags |= flagTranslucentStatus;
-//                attributes.flags |= flagTranslucentNavigation;
-                window.setAttributes(attributes);
+    private void initAdvEvent() {
+        ivAdv.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (!TextUtils.isEmpty(adUrl)) {
+                    hasGo = true;
+                    //广告页
+                }
+                return false;
             }
-        }
+        });
+        tvGo.setOnClickListener(this);
     }
 
+    //跳转到首页
+    private void goIndex() {
+        startActivity(new Intent(MainActivity.this, MainRNActivity.class));
+        finish();
+    }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void doClick(View v) {
+        if (v.getId() == R.id.tv_go) {
+            hasGo = true;
+            //跳过
+            goIndex();
+        }
+    }
+
+    @Override
+    public void hasBasePermission() {
+        //权限授予成功
+        if (needGo) {
+            goIndex();
+        }
+    }
+
+    protected void startTimer() {
+        countDownTimer = new CountDownTimer(3500, 1000) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                tvGo.setText(String.format(getString(R.string.ad_loop), millisUntilFinished / 1000));
+            }
+
+            @Override
+            public void onFinish() {
+                tvGo.setText(String.format(getString(R.string.ad_loop), 0));
+            }
+        };
+        countDownTimer.start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //涉及到分享时必须调用到方法
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+//        switch (requestCode) {
+//            case ParameterUtils.REQUEST_CODE_WEBVIEW:
+//                goIndex();
+//                break;
+//            default:
+//                break;
+//        }
     }
 }

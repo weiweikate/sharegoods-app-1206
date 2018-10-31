@@ -17,7 +17,6 @@ import TotalTopicDataModel from './model/SubTopicModel';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
-import { homeModule } from '../home/Modules';
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -165,7 +164,7 @@ export default class DownPricePage extends BasePage {
                 }}
                 refreshControl={
                     <RefreshControl
-                        refreshing={homeModule.isRefreshing}
+                        refreshing={this.dataModel.isRefresh}
                         onRefresh={this._onRefresh.bind(this)}
                         progressViewOffset={statusBarHeight + 44}
                         colors={['#d51243']}

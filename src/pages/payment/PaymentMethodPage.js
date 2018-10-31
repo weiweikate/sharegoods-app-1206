@@ -90,6 +90,7 @@ export default class PaymentMethodPage extends BasePage {
         user.updateUserData().then(data => {
             this.payment.availableBalance = data.availableBalance
         })
+        console.log('shouldPayMoney', this.state.shouldPayMoney)
     }
 
     componentDidMount() {
@@ -235,20 +236,10 @@ export default class PaymentMethodPage extends BasePage {
     _alipay() {
         const { params } = this.getApiRequestParams()
         this.payment.alipay(params, this.paymentResultView)
-        // if (resultStr.code == 10000) {
-        //     this._showPayresult(resultStr)
-        // } else {
-        //     Toast.$toast('支付失败')
-        // }
     }
     _wechat() {
         const { params } = this.getApiRequestParams()
         this.payment.appWXPay(params, this.paymentResultView)
-        // if (resultStr.code == 10000) {
-        //     this._showPayresult(resultStr)
-        // } else {
-        //     Toast.$toast('支付失败')
-        // }
     }
     async _mixingPay() {
         const { params } = this.getApiRequestParams();
@@ -283,7 +274,9 @@ export default class PaymentMethodPage extends BasePage {
                 const resultStr = await PayUtil.appAliPay(prePayStr)
                 console.log('resultStr', resultStr)
                 // const checkStr = await this.payment.alipayCheck({outTradeNo:result.data.outTradeNo , type:paymentType.alipay})
-                // this._showPayresult(checkStr.resultStr)
+                if (resultStr.code !== 9000) {
+                    this.paymentResultView && this.paymentResultView.show(PaymentResult.fail, resultStr.msg)
+                }
                 return
             }
 
@@ -293,7 +286,9 @@ export default class PaymentMethodPage extends BasePage {
                 const resultStr = await PayUtil.appWXPay(prePay)
                 console.log('resultStr', resultStr)
                 // const checkStr = await this.payment.wechatCheck({outTradeNo:result.data.outTradeNo , type:2})
-                // this._showPayresult(checkStr.resultStr)
+                if (resultStr.sdkCode !== 0) {
+                    this.paymentResultView && this.paymentResultView.show(PaymentResult.fail, resultStr.msg)
+                }
                 return
             }
         }
@@ -370,7 +365,7 @@ export default class PaymentMethodPage extends BasePage {
     getApiRequestParams = () => {
         //对应的leftShouldPayMoney后端也会计算
         let params = {
-            amounts: (this.state.shouldPayMoney).toFixed(2),//N:第三方金额	number
+            amounts: parseFloat(this.state.shouldPayMoney).toFixed(2),//N:第三方金额	number
             orderNum: this.state.orderNum,//N:订单号	string
             salePsw: this.state.password,//Y:交易密码	string
             // type: type//N:支付方式	number 1:纯平台  2：微信小程序   4：微信app   8：支付宝   16：银联卡

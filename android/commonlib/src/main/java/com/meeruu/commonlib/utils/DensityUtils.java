@@ -1,6 +1,6 @@
 package com.meeruu.commonlib.utils;
 
-import com.meeruu.commonlib.BaseApplication;
+import com.meeruu.commonlib.base.BaseApplication;
 
 /**
  * 常用单位转换的辅助类

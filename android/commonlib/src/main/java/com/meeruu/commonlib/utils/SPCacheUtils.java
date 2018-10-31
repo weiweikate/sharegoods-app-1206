@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.content.SharedPreferencesCompat;
 
-import com.meeruu.commonlib.BaseApplication;
+import com.meeruu.commonlib.base.BaseApplication;
 
 import java.util.Map;
 

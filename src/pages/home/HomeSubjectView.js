@@ -80,11 +80,17 @@ export default class HomeSubjectView extends Component {
     }
     _goodAction(good) {
         const { navigation } = this.props
-        console.log('_goodAction', good.productId)
-        navigation.navigate('topic/TopicDetailPage', {
-            activityType: good.productType,
-            activityCode: good.prodCode,
-        })
+        if (good.productType === 99) {
+            navigation.navigate('home/product/ProductDetailPage', {
+                productId: good.productId,
+                productCode: good.prodCode
+            });
+        } else {
+            navigation.navigate('topic/TopicDetailPage', {
+                activityType: good.productType,
+                activityCode: good.prodCode,
+            })
+        }
     }
     render() {
         const { subjectList } = this.subjectModule
