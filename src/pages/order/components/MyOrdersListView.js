@@ -15,7 +15,7 @@ export default class MyOrdersListView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            timeOff:[],//待付款时间
+            timeOff: [],//待付款时间
             viewData: [],
             pageStatus: this.props.pageStatus,
             isEmpty: false,
@@ -62,8 +62,10 @@ export default class MyOrdersListView extends Component {
                 goodsItemClick={() => this.clickItem(index)}
                 operationMenuClick={(menu) => this.operationMenuClick(menu, index)}
                 outTradeNo={item.outTradeNo}
-                status ={item.status}
-                callBack={()=>{this.getDataFromNetwork()}}
+                status={item.status}
+                callBack={() => {
+                    this.getDataFromNetwork();
+                }}
             />
         );
     };
@@ -190,8 +192,8 @@ export default class MyOrdersListView extends Component {
                 price: StringUtils.formatMoneyString(item.price),
                 num: item.num,
                 status: item.status,
-                returnProductStatus:item.returnProductStatus,
-                returnType:item.returnType
+                returnProductStatus: item.returnProductStatus,
+                returnType: item.returnType
             });
         });
         return arrData;
@@ -209,17 +211,17 @@ export default class MyOrdersListView extends Component {
                     payTime: item.payTime,
                     sendTime: item.sendTime,
                     finishTime: item.finishTime,
-                    deliverTime: item.deliverTime?item.deliverTime:item.finishTime,
-                    autoReceiveTime:item.autoReceiveTime?item.autoReceiveTime:item.sendTime,
+                    deliverTime: item.deliverTime ? item.deliverTime : item.finishTime,
+                    autoReceiveTime: item.autoReceiveTime ? item.autoReceiveTime : item.sendTime,
                     orderStatus: item.status,
                     freightPrice: item.freightPrice,
                     totalPrice: item.needPrice,
-                    cancelTime:item.cancelTime?item.cancelTime:null,
+                    cancelTime: item.cancelTime ? item.cancelTime : null,
                     orderProduct: this.getOrderProduct(item.orderProductList),
                     pickedUp: item.pickedUp,
                     outTradeNo: item.outTradeNo,
-                    shutOffTime:item.shutOffTime,
-                    orderType:item.orderType,
+                    shutOffTime: item.shutOffTime,
+                    orderType: item.orderType
                 });
 
             });
@@ -235,15 +237,17 @@ export default class MyOrdersListView extends Component {
         DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.getDataFromNetwork());
         this.timeDown();
     }
-    timeDown(){
-        this.interval = setInterval(()=> {
-             let timeunit=new Date().valueOf();
-             this.setState({timeOff:timeunit});
+
+    timeDown() {
+        this.interval = setInterval(() => {
+            let timeunit = new Date().valueOf();
+            this.setState({ timeOff: timeunit });
         }, 1000);
     }
-    componentWillUnmount(){
+
+    componentWillUnmount() {
         this.interval && clearInterval(this.interval);
-        DeviceEventEmitter.removeAllListeners('OrderNeedRefresh')
+        DeviceEventEmitter.removeAllListeners('OrderNeedRefresh');
     }
 
 
@@ -255,9 +259,11 @@ export default class MyOrdersListView extends Component {
             size: constants.PAGESIZE
         };
         Toast.showLoading();
-        if(this.props.orderNum){
-            OrderApi.queryPage({ orderNum:this.props.orderNum, page: 1,
-                size: constants.PAGESIZE }).then((response) => {
+        if (this.props.orderNum) {
+            OrderApi.queryPage({
+                orderNum: this.props.orderNum, page: 1,
+                size: constants.PAGESIZE
+            }).then((response) => {
                 Toast.hiddenLoading();
                 this.getList(response.data);
                 this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
@@ -320,7 +326,7 @@ export default class MyOrdersListView extends Component {
 
                 }).catch(e => {
                     Toast.hiddenLoading();
-                   // NativeModules.commModule.toast(e.msg);
+                    // NativeModules.commModule.toast(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -338,7 +344,7 @@ export default class MyOrdersListView extends Component {
 
                 }).catch(e => {
                     Toast.hiddenLoading();
-                   // NativeModules.commModule.toast(e.msg);
+                    // NativeModules.commModule.toast(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -356,7 +362,7 @@ export default class MyOrdersListView extends Component {
 
                 }).catch(e => {
                     Toast.hiddenLoading();
-                   // NativeModules.commModule.toast(e.msg);
+                    // NativeModules.commModule.toast(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -458,11 +464,11 @@ export default class MyOrdersListView extends Component {
                 break;
             case 6:
                 console.log(this.state.viewData[index]);
-                let j=0;
+                let j = 0;
                 let returnTypeArr = ['', '退款', '退货', '换货'];
-                for(let i=0;i<this.state.viewData[index].orderProduct.length;i++){
+                for (let i = 0; i < this.state.viewData[index].orderProduct.length; i++) {
                     let returnProductStatus = this.state.viewData[index].orderProduct[i].returnProductStatus || 99999;
-                    if (returnProductStatus===1) {
+                    if (returnProductStatus === 1) {
                         let content = '确认收货将关闭' + returnTypeArr[this.state.viewData[index].orderProduct[i].returnType] + '申请，确认收货吗？';
                         Alert.alert('提示', `${ content }`, [
                             {
@@ -487,10 +493,7 @@ export default class MyOrdersListView extends Component {
                         break;
                     }
                 }
-                // this.state.viewData[index].orderProduct.map((item, index) => {
-
-                // });
-                if(j==0) {
+                if (j == 0) {
                     this.setState({ isShowReceiveGoodsModal: true });
                 }
                 break;

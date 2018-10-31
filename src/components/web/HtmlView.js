@@ -33,8 +33,7 @@ export default class RequestDetailPage extends BasePage {
                      javaScriptEnabled={true}
                      domStorageEnabled={true}
                      scalesPageToFit={true}
-                     onNavigationStateChange={(event) => this.onNavigationStateChange(event)}>
-            </WebView>
+                     onNavigationStateChange={(event) => this.onNavigationStateChange(event)} />
         );
     }
 

@@ -13,6 +13,7 @@ import CommRegistView from '../components/CommRegistView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LoginApi from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
+import UserModel from '../../../model/user';
 
 @observer
 export default class RegistPage extends BasePage {
@@ -35,7 +36,7 @@ export default class RegistPage extends BasePage {
                 <CommRegistView
                     // config={viewType:0}
                     viewType={0}
-                    phone={this.params.phone?this.params.phone:''}
+                    phone={this.params.phone ? this.params.phone : ''}
                     loginClick={(phone, code, password) => this.clickNext(phone, code, password)}
                     ref={'topView'}
                 />
@@ -105,6 +106,8 @@ export default class RegistPage extends BasePage {
             if (data.code === 10000) {
                 this.$navigateBack();
                 bridge.$toast('注册成功')
+
+
             } else {
                 bridge.$toast(data.msg);
             }
@@ -117,5 +120,28 @@ export default class RegistPage extends BasePage {
         });
 
     };
+    toLogin=(phone ,code,password)=>{
+        LoginApi.passwordLogin({
+            authcode: '22',
+            code: '',
+            device: '44',
+            password: password,
+            phone: phone,
+            systemVersion: '',
+            username: '',
+            wechatCode: '',
+            wechatVersion: ''
+        }).then((data) => {
+            this.$loadingDismiss();
+            UserModel.saveUserInfo(data.data);
+            UserModel.saveToken(data.data.token)
+            bridge.$toast('登陆成功');
+            this.$navigateBack('Tab');
+        }).catch((data) => {
+            this.$loadingDismiss();
+            bridge.$toast(data.msg);
+        });
+
+    }
 }
 

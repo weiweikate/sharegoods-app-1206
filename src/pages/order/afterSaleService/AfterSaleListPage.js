@@ -42,7 +42,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
     }
 
     $navigationBarOptions = {
-        title: this.params.type === 'search'? '搜索结果':'售后退款',
+        title: this.params.type === 'search' ? '搜索结果' : '售后退款',
         show: true// false则隐藏导航
 
     };

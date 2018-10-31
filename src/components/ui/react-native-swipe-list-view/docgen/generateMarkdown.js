@@ -3,15 +3,15 @@
 "use strict";
 
 function stringOfLength(string, length) {
-  var newString = '';
-  for (var i = 0; i < length; i++) {
+  let newString = '';
+  for (let i = 0; i < length; i++) {
     newString += string;
   }
   return newString;
 }
 
 function generateTitle(name) {
-  var title = '`' + name + '` (component)';
+  let title = '`' + name + '` (component)';
   return title + '\n' + stringOfLength('=', title.length) + '\n';
 }
 
@@ -20,7 +20,7 @@ function generateDesciption(description) {
 }
 
 function generatePropType(type) {
-  var values;
+  let values;
   if (Array.isArray(type.value)) {
     values = '(' +
       type.value.map(function(typeValue) {
@@ -31,7 +31,7 @@ function generatePropType(type) {
     values = type.value;
   }
 
-  return 'type: `' + type.name + (values ? values: '') + '`\n';
+  return 'type: `' + type.name + (values ? values : '') + '`\n';
 }
 
 function generatePropDefaultValue(value) {
@@ -50,7 +50,7 @@ function generateProp(propName, prop) {
 }
 
 function generateProps(props) {
-  var title = 'Props';
+  let title = 'Props';
 
   return (
     title + '\n' +
@@ -63,7 +63,7 @@ function generateProps(props) {
 }
 
 function generateMarkdown(name, reactAPI) {
-  var markdownString =
+  let markdownString =
     generateTitle(name) + '\n' +
     generateDesciption(reactAPI.description) + '\n' +
     generateProps(reactAPI.props);

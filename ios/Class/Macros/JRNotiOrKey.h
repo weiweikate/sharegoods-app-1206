@@ -19,8 +19,8 @@
 #define KWechatAppKey    @"wx401bc973f010eece"  //微信key
 #define KWechatAppSecret @"405dede82bb1c57e0b63056c8d2274c1"  //微信secret
 #define KQQAppKey        @"101512141" //qq key
-#define KWeiboKey        @"" //微博 key
-#define KWeiboAppSecret  @"" //微博 secret
+#define KWeiboKey        @"182724926" //微博 key
+#define KWeiboAppSecret  @"ac38535a71796c40d4315ab436784b3e" //微博 secret
 #define KUmSocialAppkey  @"5b73de76f43e4807ff000024"  //友盟key
 
 

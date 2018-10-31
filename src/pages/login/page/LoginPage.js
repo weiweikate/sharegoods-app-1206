@@ -62,6 +62,8 @@ export default class LoginPage extends BasePage {
         );
     };
     $NavBarLeftPressed = () => {
+        // this.$navigateBack('Tab')
+        // return
         if (UserModel.isLogin) {
             this.$navigateBack();
         } else {
@@ -164,6 +166,7 @@ export default class LoginPage extends BasePage {
     /*注册*/
     registBtnClick = () => {
         this.$navigate('login/login/RegistPage');
+        // this.$navigate('registPage');
         // this.$navigate('login/login/GetRedpacketPage')
     };
 
@@ -213,7 +216,18 @@ export default class LoginPage extends BasePage {
                 UserModel.saveToken(data.data.token)
                 bridge.$toast('登陆成功');
                 this.params.callback && this.params.callback();
-                this.$navigateBack();
+                if(this.params.callback){
+                    let resetAction = NavigationActions.reset({
+                        index: 0,
+                        actions: [
+                            NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
+                        ]
+                    });
+                    this.props.navigation.dispatch(resetAction);
+                }else {
+                    this.$navigateBack();
+                }
+
             }).catch((data) => {
                 console.log(data)
                 this.$loadingDismiss();

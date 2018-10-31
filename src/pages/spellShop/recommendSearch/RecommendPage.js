@@ -209,6 +209,7 @@ export default class RecommendPage extends BasePage {
             return <ViewPager
                 swiperShow={true}
                 loop={false}
+                bounces={true}
                 height={ScreenUtils.autoSizeWidth(150)}
                 arrayData={this.state.adList}
                 renderItem={this._renderViewPageItem}

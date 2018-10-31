@@ -210,12 +210,12 @@ export default class HomePage extends Component {
             return null;
         }
         let indexs = [];
-        for(var i = 0;i<this.state.messageData.length;i++){
+        for(let i = 0;i < this.state.messageData.length;i++){
             let view = i === this.state.messageIndex ? <Image source={messageSelected} style={styles.messageIndexStyle}/> : <Image source={messageUnselected} style={styles.messageIndexStyle}/>;
             indexs.push(view);
         }
         return(
-            <View style={{flexDirection:'row',width:px2dp(120),justifyContent:this.state.messageData.length === 1 ? 'center':'space-between',marginBottom:px2dp(12),height:12,alignSelf:'center'}}>
+            <View style={{flexDirection:'row',width:px2dp(120),justifyContent:this.state.messageData.length === 1 ? 'center' : 'space-between',marginBottom:px2dp(12),height:12,alignSelf:'center'}}>
                 {indexs}
             </View>
         )
@@ -256,8 +256,8 @@ export default class HomePage extends Component {
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
-                <LinearGradient colors={['#000000', 'transparent']}
-                                style={[styles.navBar, { height: this.headerH + 14, opacity: 0.4 }]}/>
+                <LinearGradient colors={['#fff', '#fff']}
+                                style={[styles.navBar, { height: this.headerH + 14, opacity: 0.0 }]}/>
 
                 <HomeSearchView navigation={this.props.navigation}/>
                 <ShareTaskHomeAlert ref={(ref) => this.shareModal = ref}
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
         height: statusBarHeight + 44,
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
-        backgroundColor: '#d51243',
+        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',

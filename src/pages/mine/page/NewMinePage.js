@@ -316,7 +316,7 @@ export default class MinePage extends BasePage {
 
 
     getAdjustsFontSize=(text)=>{
-        let fontSize = Math.sqrt(80*20/text.length);
+        let fontSize = Math.sqrt(80 * 20 / text.length);
         fontSize = Math.min(fontSize,19);
         return Math.max(fontSize,1);
     }

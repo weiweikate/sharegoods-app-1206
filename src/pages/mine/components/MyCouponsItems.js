@@ -181,8 +181,7 @@ export default class MyCouponsItems extends Component {
                                 height: px2dp(24),
                                 width: px2dp(136),
                                 fontSize: px2dp(15)
-                            }}>
-                        </TextInput>
+                            }} />
                         <UIImage source={plusIcon} style={{
                             width: px2dp(24),
                             height: px2dp(24),

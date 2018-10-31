@@ -76,16 +76,11 @@ export default class HomeUserView extends Component {
                     <View
                         style={[styles.levelBottomTextBg,
                             (experience > 0 && totalExp > 0) ? {
-                                left: 50 / 220 * 220 + 12
+                                left:  (experience / totalExp) * px2dp(220)
                              } : null
                         ]}
                     >
-                        <Text
-                            style={
-                                styles.levelBottomText
-                            }>
-                            {experience}
-                        </Text>
+                        <Text style={ styles.levelBottomText }> {experience} </Text>
                     </View>
 
                 </LinearGradient>
@@ -105,18 +100,17 @@ let styles = StyleSheet.create({
     levelBottomTextBg: {
         position: 'absolute',
         height: 16,
-        width: 38,
+        width: px2dp(38),
         left: 12,
         top: px2dp(70),
         borderRadius: 8,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     levelBottomText: {
-        flex: 1,
         color: '#9B6D26',
-        fontSize: 11,
-        textAlign: 'center',
-        paddingTop: 2
+        fontSize: 11
     },
     inContainer: {
         flex: 1,

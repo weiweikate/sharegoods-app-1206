@@ -253,7 +253,7 @@ export default class ConfirOrderPage extends BasePage {
     renderCouponsPackage =() =>{
         return(
             <View style={{borderColor:'#DDDDDD',borderWidth:1}}>
-                {this.state.viewData.couponList?
+                {this.state.viewData.couponList ?
                     this.state.viewData.couponList.map((item,index)=>{
                         return <View style={{backgroundColor:'white'}}>
                             {index==0?<Image source={couponIcon} style={{width:15,height:12,position:'absolute',left:15,top:12}}/>:null}
@@ -321,7 +321,7 @@ export default class ConfirOrderPage extends BasePage {
             </View>
 
         );
-    };
+    }
 
     renderItem = ({ item, index }) => {
         console.log(item);
@@ -515,7 +515,7 @@ export default class ConfirOrderPage extends BasePage {
         viewData.totalAmounts = data.totalAmounts;
         viewData.totalFreightFee = data.totalFreightFee;
         viewData.list = arrData;
-        viewData.couponList=data.couponList?data.couponList:null;
+        viewData.couponList = data.couponList ? data.couponList : null;
         this.setState({ viewData });
     };
 
@@ -764,11 +764,11 @@ export default class ConfirOrderPage extends BasePage {
     jumpToCouponsPage = (params) => {
         if (params == 'justOne') {
             this.$navigate('mine/coupons/CouponsPage', {
-                justOne: this.state.viewData.totalAmounts?this.state.viewData.totalAmounts:1, callBack: (data) => {
+                justOne: this.state.viewData.totalAmounts ? this.state.viewData.totalAmounts : 1, callBack: (data) => {
                     console.log(typeof data);
-                    if (parseInt(data) >=0) {
+                    if (parseInt(data) >= 0) {
                         let params = { tokenCoin: parseInt(data), couponId: this.state.couponId };
-                        this.setState({ tokenCoin: data, tokenCoinText:parseInt(data)>0?'-¥' + parseInt(data) :'选择使用1元券'});
+                        this.setState({ tokenCoin: data, tokenCoinText:parseInt(data) > 0 ? '-¥' + parseInt(data) : '选择使用1元券'});
                         this.loadPageData(params);
                     }
                 }

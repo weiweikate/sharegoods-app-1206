@@ -8,11 +8,12 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { SubjectModule, homeModule } from './Modules'
+import { getShowPrice } from '../topic/model/TopicMudelTool'
 
 const GoodItems = ({img, title, money, press}) => <TouchableOpacity style={styles.goodsView} onPress={()=>{press && press()}}>
     <Image style={styles.goodImg} source={{uri:img ? img : ''}}/>
     <Text style={styles.goodsTitle} numberOfLines={2}>{title}</Text>
-    <Text style={styles.money}>¥ {money}</Text>
+    <Text style={styles.money}>{money} 起</Text>
 </TouchableOpacity>
 
 const MoreItem = ({press}) => <TouchableOpacity style={styles.moreView} onPress={()=>{press && press()}}>
@@ -28,11 +29,15 @@ const ActivityItem = ({data, press, goodsPress}) => {
     console.log('ActivityItem', imgUrl)
     let goodsItem = []
     topicBannerProductDTOList && topicBannerProductDTOList.map((value,index) => {
+        if (index >= 8) {
+            return
+        }
+        let price = getShowPrice(value)
         goodsItem.push(
         <GoodItems
             key={index}
             title={value.productName}
-            money={value.originalPrice ? value.originalPrice : 0}
+            money={price ? price : 0}
             img={value.specImg ? value.specImg : ''}
             press={()=>{goodsPress && goodsPress(value)}}
             />
@@ -50,7 +55,7 @@ const ActivityItem = ({data, press, goodsPress}) => {
             <ScrollView style={styles.scroll} horizontal={true} showsHorizontalScrollIndicator={false}>
             {goodsItem}
                 {
-                    topicBannerProductDTOList && topicBannerProductDTOList.length > 8?  <MoreItem press={()=>{press && press()}}/>:null
+                    topicBannerProductDTOList.length >= 8 ?  <MoreItem press={()=>{press && press()}}/> : null
                 }
                 <View style={styles.space}/>
             </ScrollView>
@@ -76,7 +81,10 @@ export default class HomeSubjectView extends Component {
     _goodAction(good) {
         const { navigation } = this.props
         console.log('_goodAction', good.productId)
-        navigation.navigate('home/product/ProductDetailPage', {productId: good.productId })
+        navigation.navigate('topic/TopicDetailPage', {
+            activityType: good.productType,
+            activityCode: good.prodCode,
+        })
     }
     render() {
         const { subjectList } = this.subjectModule

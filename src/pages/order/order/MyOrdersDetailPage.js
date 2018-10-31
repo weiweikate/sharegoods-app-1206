@@ -223,7 +223,7 @@ class MyOrdersDetailPage extends BasePage {
     renderGiftPageHeader=()=>{
         return(
             <View style={{marginTop:10}}>
-                {this.state.orderType==5 || this.state.orderType === 98 ?
+                {this.state.orderType == 5 || this.state.orderType === 98 ?
 
                     <View style={{
                         marginTop: 20,
@@ -375,23 +375,23 @@ class MyOrdersDetailPage extends BasePage {
                 </View>
                 <UIText value={'创建时间：' + DateUtils.getFormatDate(this.state.viewData.createTime / 1000)}
                         style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>
-                {StringUtils.isEmpty(this.state.viewData.platformPayTime)&&this.state.viewData.status>1 ? null :
+                {StringUtils.isEmpty(this.state.viewData.platformPayTime) && this.state.viewData.status > 1 ? null :
                     <UIText value={'平台付款时间：' + DateUtils.getFormatDate(this.state.viewData.platformPayTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
                 {StringUtils.isEmpty(this.state.viewData.cancelTime) ? null :
                     <UIText value={'取消时间：' + DateUtils.getFormatDate(this.state.viewData.cancelTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
-                {StringUtils.isNoEmpty(this.state.viewData.payTime) &&(this.state.payType%2==0)&&this.state.viewData.status>1 ?
+                {StringUtils.isNoEmpty(this.state.viewData.payTime) && (this.state.payType % 2 == 0) && this.state.viewData.status > 1 ?
                     <UIText value={'三方付款时间：' + DateUtils.getFormatDate(this.state.viewData.payTime / 1000)}
-                            style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>:null}
-                {StringUtils.isNoEmpty(this.state.viewData.outTradeNo) &&(this.state.payType%2==0)?
+                            style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/> : null}
+                {StringUtils.isNoEmpty(this.state.viewData.outTradeNo) && (this.state.payType % 2 == 0) ?
                     <UIText value={'交易订单号：' + this.state.viewData.outTradeNo} style={{
                         color: color.black_999,
                         fontSize: 13,
                         marginLeft: 16,
                         marginTop: 10,
                         marginBottom: 10
-                    }}/>:null}
+                    }}/> : null}
                 {StringUtils.isEmpty(this.state.viewData.sendTime) ? null :
                     <UIText value={'发货时间：' + DateUtils.getFormatDate(this.state.viewData.sendTime / 1000)} style={{
                         color: color.black_999,
@@ -401,7 +401,7 @@ class MyOrdersDetailPage extends BasePage {
                         marginBottom: 10
                     }}/>}
                 {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
-                    <UIText value={'完成时间：' + DateUtils.getFormatDate(this.state.viewData.finishTime?this.state.viewData.deliverTime/1000:this.state.viewData.finishTime / 1000)} style={{
+                    <UIText value={'完成时间：' + DateUtils.getFormatDate(this.state.viewData.finishTime ? this.state.viewData.deliverTime / 1000 : this.state.viewData.finishTime / 1000)} style={{
                         color: color.black_999,
                         fontSize: 13,
                         marginLeft: 16,
@@ -482,7 +482,7 @@ class MyOrdersDetailPage extends BasePage {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast('订单已删除');
                                 this.$navigateBack();
-                                this.params.callBack&&this.params.callback();
+                                this.params.callBack && this.params.callback();
                             }).catch(e => {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast(e.msg);
@@ -494,7 +494,7 @@ class MyOrdersDetailPage extends BasePage {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast('订单已删除');
                                 this.$navigateBack();
-                                this.params.callBack&&this.params.callBack();
+                                this.params.callBack && this.params.callBack();
                             }).catch(e => {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast(e.msg);
@@ -545,7 +545,7 @@ class MyOrdersDetailPage extends BasePage {
                             Toast.hiddenLoading();
                                 NativeModules.commModule.toast('订单已取消');
                             this.$navigateBack();
-                            this.params.callBack&&this.params.callBack();
+                            this.params.callBack && this.params.callBack();
                         }).catch(e => {
                             Toast.hiddenLoading();
                             NativeModules.commModule.toast(e.msg);
@@ -783,7 +783,7 @@ class MyOrdersDetailPage extends BasePage {
                     });
                 });
             }
-            ;
+
             let pageStateString = constants.pageStateString[parseInt(data.status)];
             /*
              * operationMenuCheckList
@@ -845,7 +845,7 @@ class MyOrdersDetailPage extends BasePage {
                     break;
                 //   确认收货
                 case 4:
-                    if(data.orderType==5||data.orderType==98){
+                    if(data.orderType == 5 || data.orderType == 98){
                         pageStateString.menu = [
                             {
                                 id:7,
@@ -859,7 +859,7 @@ class MyOrdersDetailPage extends BasePage {
                     break;
                 //订单已完成
                 case 5:
-                    if(data.orderType==5||data.orderType==98){
+                    if(data.orderType == 5 || data.orderType == 98){
                         pageStateString.menu = [
                             {
                                 id:7,
@@ -871,7 +871,7 @@ class MyOrdersDetailPage extends BasePage {
                     pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
                     break;
                 case 6://退货关闭
-                    if(data.orderType==5||data.orderType==98){
+                    if(data.orderType == 5 || data.orderType == 98){
                         pageStateString.menu = [
                             {
                                 id:7,
@@ -883,7 +883,7 @@ class MyOrdersDetailPage extends BasePage {
                     pageStateString.sellerState = '订单已关闭';
                     break;
                 case 7://用户关闭
-                    if(data.orderType==5||data.orderType==98){
+                    if(data.orderType == 5 || data.orderType == 98){
                         pageStateString.menu = [
                             {
                                 id:7,
@@ -899,7 +899,7 @@ class MyOrdersDetailPage extends BasePage {
                     pageStateString.sellerState = '收货人：' + data.receiver + '                   ' + data.recevicePhone;
                     pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
                     pageStateString.moreDetail = data.buyerRemark;
-                    if(data.orderType==5||data.orderType==98){
+                    if(data.orderType == 5 || data.orderType == 98){
                         pageStateString.menu = [
                             {
                                 id:7,
@@ -942,7 +942,6 @@ class MyOrdersDetailPage extends BasePage {
                     deliverTime:data.deliverTime,
                     pickedUp: data.pickedUp,//
                     cancelTime:data.cancelTime?data.cancelTime:null ,//取消时间
-
                 },
                 afterSaleService: this.getAfterSaleService(data.orderProductList,0),
                 returnProductStatus:data.orderProductList[0].returnProductStatus,
@@ -952,12 +951,12 @@ class MyOrdersDetailPage extends BasePage {
                 activityId: data.activityId,
                 orderType: data.orderType,
                 allData: data,
-                payType:(data.orderPayRecord?data.orderPayRecord.type:null),
+                payType:(data.orderPayRecord ? data.orderPayRecord.type : null),
                 orderProductPrices: data.orderProductList[0].price,//礼包，套餐啥的,
-                giftPackageName:data.orderType==5||data.orderType==98?data.orderProductList[0].productName:'礼包',
+                giftPackageName:data.orderType == 5 || data.orderType == 98 ? data.orderProductList[0].productName : '礼包',
                 status:data.status,//订单状态
-                activityCode:data.orderProductList[0]&&data.orderProductList[0].activityCode?data.orderProductList[0].activityCode:null,//礼包的code
-                giftBagCoupons:data.orderProductList[0]&&data.orderProductList[0].giftBagCoupons?data.orderProductList[0].giftBagCoupons:[]
+                activityCode:data.orderProductList[0] && data.orderProductList[0].activityCode ? data.orderProductList[0].activityCode : null,//礼包的code
+                giftBagCoupons:data.orderProductList[0] && data.orderProductList[0].giftBagCoupons ? data.orderProductList[0].giftBagCoupons : []
 
             });
             console.log('setView', this.state.viewData);
@@ -1058,7 +1057,7 @@ class MyOrdersDetailPage extends BasePage {
                 break;
             case 6:
                 console.log(this.state.viewData.list);
-                let j=0;
+                let j = 0;
                 let returnTypeArr = ['', '退款', '退货', '换货'];
                 for(let i=0;i<this.state.viewData.list.length;i++){
                     let returnProductStatus = this.state.viewData.list[i].returnProductStatus || 99999;

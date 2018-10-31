@@ -241,6 +241,8 @@ export default class ShopCartPage extends BasePage {
         );
     };
     _toBuyImmediately = () => {
+        // this.$navigate('LoginModal')
+        // return;
         let [...selectArr] = shopCartStore.startSettlement();
         if (selectArr.length <= 0) {
             bridge.$toast('请先选择结算商品~');
@@ -443,18 +445,23 @@ export default class ShopCartPage extends BasePage {
                 {
                     (
                         (itemData.activityType === 1 || itemData.activityType === 2) &&
-                        this._getSkillIsBegin(itemData) === 1
+                        this._getSkillIsBegin(itemData) === 1 || this._getSkillIsBegin(itemData) === 0
                     )
                         ?
                         <View
                             style={
                                 [{
                                     height: 13,
-                                    backgroundColor: ColorUtil.mainRedColor,
                                     width: ScreenUtils.width,
                                     justifyContent: 'center',
-                                    alignItems: 'center'
-                                }]
+                                    alignItems: 'center',
+                                    backgroundColor:ColorUtil.mainRedColor
+
+                                },
+                                    this._getSkillIsBegin(itemData) === 0?
+                                        {opacity:0.4}:
+                                        {backgroundColor:1}
+                                ]
                             }
                         >
                             <Text style={{
@@ -464,7 +471,9 @@ export default class ShopCartPage extends BasePage {
                                 fontSize: 11
                             }}>
                                 {
-                                    itemData.activityType === 1 ? '该商品正在进行秒杀活动,快去看看~' : '该商品正在进行降价拍活动,快去看看~'
+                                    itemData.activityType === 1 ?
+                                        (this._getSkillIsBegin(itemData) === 0?'秒杀活动未开始,暂不可购买~':'该商品正在进行秒杀活动,快去看看~'):
+                                        '该商品正在进行降价拍活动,快去看看~'
                                 }
                             </Text>
                         </View>
@@ -482,12 +491,11 @@ export default class ShopCartPage extends BasePage {
      * 获取秒杀是否开始或者结束
      * @param itemData
      * @private
-     *
      * return 0 未开始 1进行中 2已结束
      */
     _getSkillIsBegin = (itemData) => {
         if ((new Date().getTime()) < itemData.activityBeginTime) {
-            return 1;
+            return 0;
         } else if (
             (new Date().getTime()) > itemData.activityBeginTime &&
             (new Date().getTime()) < itemData.activityEndTime

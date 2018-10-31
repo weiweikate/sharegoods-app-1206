@@ -63,8 +63,8 @@ export default class XQSwiper extends Component {
             autoplayDirection: autoplayDirection,
         }
 
-        this.scrollIndex = (this.ezswiper.loop ? this.ezswiper.currentIndex + 1 : this.ezswiper.currentIndex)        
-        
+        this.scrollIndex = (this.ezswiper.loop ? this.ezswiper.currentIndex + 1 : this.ezswiper.currentIndex)
+
         const scaleArray = [];
         const translateArray = [];
         for (let i = 0; i < this.ezswiper.count + 2; i++) {
@@ -106,7 +106,7 @@ export default class XQSwiper extends Component {
             autoplayDirection: autoplayDirection,
         }
 
-        this.scrollIndex = (this.ezswiper.loop ? this.ezswiper.currentIndex + 1 : this.ezswiper.currentIndex)        
+        this.scrollIndex = (this.ezswiper.loop ? this.ezswiper.currentIndex + 1 : this.ezswiper.currentIndex)
 
         if (this.props.dataSource.length !== dataSource.length) {
             const scaleArray = [];
