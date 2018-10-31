@@ -31,7 +31,7 @@ export default class ShopHeader extends Component {
 
 
     render() {
-        const { headUrl, name, storeNumber, storeStarId } = this.props.item;
+        const { headUrl, name, storeNumber, storeStarId, userStatus } = this.props.item;
 
         const starsArr = [];
         if (storeStarId && typeof storeStarId === 'number') {
@@ -61,9 +61,11 @@ export default class ShopHeader extends Component {
                         }
                     </View>
                 </View>
-                <TouchableOpacity onPress={this.props.onPressShopAnnouncement} style={styles.announcementContainer}>
-                    <Text style={styles.announcementTitle}>查看公告</Text>
-                </TouchableOpacity>
+                {userStatus === 1 ?
+                    <TouchableOpacity onPress={this.props.onPressShopAnnouncement} style={styles.announcementContainer}>
+                        <Text style={styles.announcementTitle}>查看公告</Text>
+                    </TouchableOpacity> : null}
+
             </ImageBackground>
 
             <ImageBackground source={WhiteBtImg} style={styles.whiteBg}>
@@ -87,7 +89,7 @@ export default class ShopHeader extends Component {
                         width: 315 / 375 * SCREEN_WIDTH
                     }}>
                         <View style={[styles.progressBg, {
-                        marginLeft: 315 / 375 * SCREEN_WIDTH * 4500 / 6000,
+                            marginLeft: 315 / 375 * SCREEN_WIDTH * 4500 / 6000
                         }]}/>
                     </ImageBackground>
 
