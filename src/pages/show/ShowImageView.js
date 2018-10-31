@@ -30,9 +30,11 @@ export default class ShowImageView extends Component {
                 arrayData={items}
                 renderItem={this._renderViewPageItem.bind(this)}
                 autoplay={true}
+                loop={false}
                 height={imageHeight}
                 renderPagination={renderPagination}
                 index={0}
+                scrollsToTop={true}
             />
         </View>
     }
