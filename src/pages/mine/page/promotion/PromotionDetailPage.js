@@ -33,9 +33,11 @@ export default class PromotionDetailPage extends BasePage<Props> {
         super(props);
         this.state = {
             data: [],
-            isEmpty: true,
-            showCountDown:false
+            isEmpty: false,
+            showCountDown: false,
+            countDownStr: ''
         };
+        this.date = null;
         this.currentPage = 1;
     }
 
@@ -47,6 +49,53 @@ export default class PromotionDetailPage extends BasePage<Props> {
 
     componentDidMount() {
         this.getPromotionReceiveRecord();
+        this.startTimer();
+
+    }
+
+    componentWillUnmount() {
+        this.timer && clearTimeout(this.timer);
+    }
+
+    startTimer = () => {
+        if (this.params.status === 0 || this.params.status === 1) {
+            this.date = Date.parse(new Date());
+            if (this.date < this.params.endTime) {
+                this.timer = setInterval(() => {
+                    this.date = this.date + 1000;
+                    if (this.date < this.params.endTime) {
+                        let seconds = parseInt((this.params.endTime - this.date) / 1000);
+                        this.setState({
+                            showCountDown: true,
+                            countDownStr: `剩余推广时间： ${this.timeFormat(seconds)}`
+                        });
+                    } else {
+                        this.setState({
+                            showCountDown: false
+                        });
+                        this.timer && clearTimeout(this.timer);
+                    }
+                }, 1000);
+            }
+
+        }
+    };
+
+    timeFormat(sec) {
+        let days = Math.floor(sec / 24 / 60 / 60);
+        let h = Math.floor(sec / 60 / 60 % 24);
+        let m = Math.floor(sec / 60 % 60);
+        let s = Math.floor(sec % 60);
+        if(s < 10) {
+            s = "0" + s;
+        }
+        if(m < 10) {
+            m = "0" + m;
+        }
+        if(h < 10) {
+            h = "0" + h;
+        }
+        return `${days}天${h}:${m}:${s}`;
     }
 
     getPromotionReceiveRecord = () => {
@@ -132,9 +181,23 @@ export default class PromotionDetailPage extends BasePage<Props> {
         );
     }
 
+    _countDownRender() {
+        return (
+            <View style={{
+                width: ScreenUtils.width, height: px2dp(20), justifyContent: 'center',
+                alignItems: 'center', backgroundColor: '#D51243'
+            }}>
+                <Text style={{ color: 'white', fontSize: px2dp(13), includeFontPadding: false }}>
+                    {this.state.countDownStr}
+                </Text>
+            </View>
+        );
+    }
+
     _render() {
         return (
             <View style={styles.container}>
+                {this.state.showCountDown ? this._countDownRender() : null}
                 <RefreshList
                     data={this.state.data}
                     renderItem={this._itemRender}
@@ -144,7 +207,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
                     isEmpty={this.state.isEmpty}
                     emptyTip={'暂无发起推广'}
                 />
-                {this._bottomButtonRender()}
+                {this.state.showCountDown ? this._bottomButtonRender() : null}
             </View>
         );
     }
@@ -154,7 +217,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f7f7f7',
-        paddingTop: px2dp(10),
         paddingBottom: px2dp(48)
     },
     grayButtonWrapper: {
