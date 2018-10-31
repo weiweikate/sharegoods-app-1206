@@ -8,16 +8,19 @@
  * Created by xzm on 2018/10/18.
  *
  */
-"use strict";
-import React from "react";
+
+'use strict';
+import React from 'react';
 import {
     StyleSheet,
     View,
     TouchableWithoutFeedback,
-    Text
-} from "react-native";
-import BasePage from "../../../../BasePage";
-import ScreenUtils from "../../../../utils/ScreenUtils";
+    Text,
+} from 'react-native';
+import BasePage from '../../../../BasePage';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import MineApi from '../../api/MineApi';
+import RefreshList from '../../../../components/ui/RefreshList';
 
 const { px2dp } = ScreenUtils;
 
@@ -25,12 +28,15 @@ type Props = {};
 export default class UserPromotionPage extends BasePage<Props> {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            data : null
+        };
         this._bind();
+        this.currentPage = 1;
     }
 
     $navigationBarOptions = {
-        title: "我的推广订单",
+        title: '我的推广订单',
         show: true// false则隐藏导航
     };
 
@@ -43,20 +49,40 @@ export default class UserPromotionPage extends BasePage<Props> {
     }
 
     loadPageData() {
+
     }
+
+    getUserPromotionPromoter = () => {
+        MineApi.getUserPromotionPromoter().then((data)=>{
+
+        }).catch((error)=>{
+
+        });
+    };
+
+    //下拉加载更多
+    onLoadMore = () => {
+        this.currentPage++;
+        this.getUserPromotionPromoter();
+    };
+    //刷新
+    onRefresh = () => {
+        this.currentPage = 1;
+        this.getUserPromotionPromoter();
+    };
 
 
     /**************************viewpart********************************/
 
     _itemRender() {
         return (
-            <View style={{ backgroundColor: "white", marginBottom: px2dp(10) }}>
+            <View style={{ backgroundColor: 'white', marginBottom: px2dp(10) }}>
                 <View style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
                     paddingHorizontal: px2dp(15),
-                    borderBottomColor: "#DDDDDD",
+                    borderBottomColor: '#DDDDDD',
                     borderBottomWidth: px2dp(0.5)
                 }}>
                     <View style={styles.itemInfoWrapper}>
@@ -86,7 +112,7 @@ export default class UserPromotionPage extends BasePage<Props> {
 
     _bottomButtonRender() {
         return (
-            <TouchableWithoutFeedback onPress={() => alert("a")}>
+            <TouchableWithoutFeedback onPress={() => alert('a')}>
                 <View style={styles.bottomButtonWrapper}>
                     <Text style={styles.bottomButtonTextStyle}>
                         发起邀请推广
@@ -99,8 +125,16 @@ export default class UserPromotionPage extends BasePage<Props> {
     _render() {
         return (
             <View style={styles.container}>
-                {this._itemRender()}
-                {this._itemRender()}
+                {/*{this._itemRender()}*/}
+                {/*{this._itemRender()}*/}
+                <RefreshList
+                    data={this.state.viewData}
+                    renderItem={this._itemRender}
+                    onRefresh={this.onRefresh}
+                    onLoadMore={this.onLoadMore}
+                    // extraData={this.state}
+                    isEmpty={this.state.isEmpty}
+                />
                 {this._bottomButtonRender()}
             </View>
         );
@@ -110,62 +144,62 @@ export default class UserPromotionPage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#f7f7f7",
+        backgroundColor: '#f7f7f7',
         paddingTop: px2dp(10),
         paddingBottom: px2dp(48)
     },
     grayButtonWrapper: {
-        borderColor: "#DDDDDD",
+        borderColor: '#DDDDDD',
         borderWidth: px2dp(0.5),
         borderRadius: px2dp(5),
         width: px2dp(80),
         height: px2dp(35),
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     redButtonWrapper: {
-        borderColor: "#D51243",
+        borderColor: '#D51243',
         borderWidth: px2dp(1),
         borderRadius: px2dp(5),
         width: px2dp(80),
         height: px2dp(35),
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     itemInfoWrapper: {
-        justifyContent: "space-between",
+        justifyContent: 'space-between',
         height: px2dp(67),
         paddingVertical: px2dp(15)
     },
     blackTextStyle: {
-        color: "#222222",
+        color: '#222222',
         fontSize: px2dp(16)
     },
     grayTextStyle: {
-        color: "#999999",
+        color: '#999999',
         fontSize: px2dp(13)
     },
     bottomTextWrapper: {
         height: px2dp(33),
-        justifyContent: "center",
+        justifyContent: 'center',
         paddingHorizontal: px2dp(15)
     },
     bottomTextStyle: {
-        color: "#999999",
+        color: '#999999',
         fontSize: px2dp(13)
     },
     bottomButtonWrapper: {
         height: px2dp(48),
         width: ScreenUtils.width,
-        justifyContent: "center",
-        alignItems: "center",
-        position: "absolute",
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
         left: 0,
         bottom: 0,
-        backgroundColor: "#D51243"
+        backgroundColor: '#D51243'
     },
     bottomButtonTextStyle: {
-        color: "white",
+        color: 'white',
         fontSize: px2dp(13)
     }
 

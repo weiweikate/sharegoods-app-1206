@@ -74,7 +74,9 @@ const api = {
     // 设置初始交易密码
     initSalesPassword: ['/user/initSalesPassword', { method: 'post' }],
     // 获取app版本
-    getVersion: ['/core/sysAppVsersion/getVersionUpdate', { method: 'get' }]
+    getVersion: ['/core/sysAppVsersion/getVersionUpdate', { method: 'get' }],
+    //分页查询用户购买信息列表
+    getUserPromotionPromoter:['/promotion/promotionPromoter/queryUserBuyPromotionPromoter',{method:'post'}]
 
 
 };
