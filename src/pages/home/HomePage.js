@@ -326,7 +326,8 @@ export default class HomePage extends Component {
                                     opacity: bannerModule.opacity === 1 ? 0 : this.state.shadowOpacity
                                 }]}/>
 
-                <HomeSearchView navigation={this.props.navigation} whiteIcon={this.state.whiteIcon}/>
+                <HomeSearchView navigation={this.props.navigation}
+                                whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}/>
                 <ShareTaskHomeAlert ref={(ref) => this.shareModal = ref}
                                     onPress={() => {
                                         this.props.navigation.navigate('shareTask/ShareTaskListPage');
