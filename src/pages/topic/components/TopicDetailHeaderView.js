@@ -203,8 +203,8 @@ export default class TopicDetailHeaderView extends Component {
                             marginLeft: 11,
                             color: '#666666',
                             fontSize: 13
-                        }}>{`正品保证·急速发货 ${afterSaleServiceDaysTT}天无理由退换`}</Text>
-                    </View>
+                        }}>{`${afterSaleServiceDaysTT === 0 ? `不支持退换货` : `正品保证·急速发货 ${afterSaleServiceDaysTT}天无理由退换`}`}</Text>
+                </View>
                 </View>
             </View>
         );

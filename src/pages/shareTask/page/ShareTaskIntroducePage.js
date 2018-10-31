@@ -22,6 +22,7 @@ import {
     UIText
 } from "../../../components/ui";
 import ScreenUtils from "../../../utils/ScreenUtils";
+import apiEnvironment from '../../../api/ApiEnvironment';
 
 type Props = {};
 export default class ShareTaskIntroducePage extends BasePage<Props> {
@@ -74,7 +75,7 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                 webJson={{
                 title: '分享标题(当为图文分享时候使用)',
                 dec: '内容(当为图文分享时候使用)',
-                linkUrl: 'http://h5.sharegoodsmall.com/register',
+                linkUrl: `${apiEnvironment.getCurrentH5Url()}/register`,
                 thumImage: 'logo.png'
                 }}
                 />

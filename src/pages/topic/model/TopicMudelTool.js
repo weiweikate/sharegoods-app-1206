@@ -31,15 +31,16 @@ const typeName = {
     [productTypes.down]: downPriceParam,
     [productTypes.giftPackage]: '暂无',
     [productTypes.helpFree]: '暂无',
-    [productTypes.newTopic]: '暂无'
+    [productTypes.newTopic]: '暂无',
+    [productTypes.normalProduct] : 'originalPrice'
 };
 
 function getShowPrice(itemData) {
     let showPrice = itemData.productType === 2
         ?
-        '¥' + itemData[typeName[itemData.productType][itemData.status]]
+        '¥ ' + itemData[typeName[itemData.productType][itemData.status]]
         :
-        '¥' + itemData[typeName[itemData.productType]];
+        '¥ ' + itemData[typeName[itemData.productType]];
     return showPrice;
 }
 

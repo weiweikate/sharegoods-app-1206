@@ -37,7 +37,7 @@ export default class SearchResultPage extends BasePage {
         super(props);
         this.state = {
             showTop: false,
-            isHorizontal: false,
+            isHorizontal: true,
             loadingState: PageLoadingState.loading,
             netFailedInfo: {},
             //排序类型(1.综合 2.销量 3. 价格)

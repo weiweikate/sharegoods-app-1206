@@ -51,9 +51,19 @@ export default class App extends Component {
                 initialRouteName: 'Tab',
                 initialRouteParams: {},
                 headerMode: 'none',
-                transitionConfig: () => ({
-                    screenInterpolator: CardStackStyleInterpolator.forHorizontal
-                }),
+                transitionConfig: (transitionProps,prevTransitionProps,isModal) =>{
+
+                    if (transitionProps.scene&&transitionProps.scene.route.routeName === "LoginModal"){
+                        return({
+                            screenInterpolator: CardStackStyleInterpolator.forVertical
+                        })
+                    }else {
+                        return({
+                            screenInterpolator: CardStackStyleInterpolator.forHorizontal
+                        })
+                    }
+                } ,
+                // mode: 'modal',
                 navigationOptions: {
                     gesturesEnabled: true
                 }
