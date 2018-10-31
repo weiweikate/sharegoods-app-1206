@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
     StyleSheet,
     View,
@@ -10,38 +10,39 @@ import {
     Text,
     TouchableWithoutFeedback,
     RefreshControl
-} from "react-native";
-import BasePage from "../../../BasePage";
-import UIText from "../../../components/ui/UIText";
-import UIImage from "../../../components/ui/UIImage";
-import { color } from "../../../constants/Theme";
-import StringUtils from "../../../utils/StringUtils";
-import ScreenUtils from "../../../utils/ScreenUtils";
-import { PageLoadingState } from "../../../components/pageDecorator/PageState";
-import user from "../../../model/user";
-import arrowRight from "../res/homeBaseImg/icon3_07.png";
-import waitPay from "../res/homeBaseImg/icon_03-04.png";
-import waitDelivery from "../res/homeBaseImg/icon_03-05.png";
-import waitReceive from "../res/homeBaseImg/icon1-03.png";
-import hasFinished from "../res/homeBaseImg/icon3_03-06.png";
-import inviteFr from "../res/homeBaseImg/icon3_16.png";
-import coupons from "../res/homeBaseImg/icon3_16-09.png";
-import myData from "../res/homeBaseImg/icon3_16-10.png";
-import myCollet from "../res/homeBaseImg/icon3_31.png";
-import myHelper from "../res/homeBaseImg/icon_31-12.png";
-import address from "../res/homeBaseImg/icon31-13.png";
-import levelBg from "../res/homeBaseImg/me_bg_vip_nor.png";
-import setting from "../res/homeBaseImg/tongyong_icon_shezhi_nor.png";
-import service from "../res/homeBaseImg/tongyong_icon_xiaoxi_nor.png";
-import promotion from "../res/homeBaseImg/me_icon_tuiguang_nor.png";
-import NoMoreClick from "../../../components/ui/NoMoreClick";
-import MineApi from "../api/MineApi";
-import { observer } from "mobx-react/native";
-import showImg from "../res/homeBaseImg/icon_faxian.png";
-import bgImg from "../res/homeBaseImg/bg_img_user.png";
-import rightIcon from "../res/homeBaseImg/me_icon_jinru_nor.png";
+} from 'react-native';
+import BasePage from '../../../BasePage';
+import UIText from '../../../components/ui/UIText';
+import UIImage from '../../../components/ui/UIImage';
+import { color } from '../../../constants/Theme';
+import StringUtils from '../../../utils/StringUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import user from '../../../model/user';
+import arrowRight from '../res/homeBaseImg/icon3_07.png';
+import waitPay from '../res/homeBaseImg/icon_03-04.png';
+import waitDelivery from '../res/homeBaseImg/icon_03-05.png';
+import waitReceive from '../res/homeBaseImg/icon1-03.png';
+import hasFinished from '../res/homeBaseImg/icon3_03-06.png';
+import inviteFr from '../res/homeBaseImg/icon3_16.png';
+import coupons from '../res/homeBaseImg/icon3_16-09.png';
+import myData from '../res/homeBaseImg/icon3_16-10.png';
+import myCollet from '../res/homeBaseImg/icon3_31.png';
+import myHelper from '../res/homeBaseImg/icon_31-12.png';
+import address from '../res/homeBaseImg/icon31-13.png';
+import levelBg from '../res/homeBaseImg/me_bg_vip_nor.png';
+import setting from '../res/homeBaseImg/tongyong_icon_shezhi_nor.png';
+import service from '../res/homeBaseImg/tongyong_icon_xiaoxi_nor.png';
+import promotion from '../res/homeBaseImg/me_icon_tuiguang_nor.png';
+import NoMoreClick from '../../../components/ui/NoMoreClick';
+import MineApi from '../api/MineApi';
+import { observer } from 'mobx-react/native';
+import showImg from '../res/homeBaseImg/icon_faxian.png';
+import bgImg from '../res/homeBaseImg/bg_img_user.png';
+import rightIcon from '../res/homeBaseImg/me_icon_jinru_nor.png';
 import userOrderNum from '../../../model/userOrderNum';
 import RouterMap from 'RouterMap';
+
 const headerBgSize = { width: 375, height: 200 };
 
 const { px2dp, statusBarHeight } = ScreenUtils;
@@ -54,10 +55,10 @@ export default class MinePage extends BasePage {
         this.state = {
             total: 0,
             nickname: user.phone,
-            headImg: "",
+            headImg: '',
             availableBalance: 0,//现金余额
             blockedBalance: 0,//待提现
-            levelName: "V0",
+            levelName: 'V0',
             userScore: 0,//秀豆
             refreshing: false,
             netFailedInfo: null,
@@ -83,7 +84,7 @@ export default class MinePage extends BasePage {
 
     componentDidMount() {
         if (!user.isLogin) {
-            this.props.navigation.navigate("login/login/LoginPage", { callback: this.refresh });
+            this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
             return;
         }
         userOrderNum.getUserOrderNum();
@@ -104,7 +105,7 @@ export default class MinePage extends BasePage {
 
     refresh = () => {
         userOrderNum.getUserOrderNum();
-        this.$loadingShow("加载中...", { timeout: 1, timeoutCallBack: () => this.timeoutCallBack });
+        this.$loadingShow('加载中...', { timeout: 1, timeoutCallBack: () => this.timeoutCallBack });
         MineApi.getUser().then(res => {
             this.$loadingDismiss();
             if (res.code == 10000) {
@@ -120,7 +121,7 @@ export default class MinePage extends BasePage {
             }
         }).catch(err => {
             if (err.code === 10009) {
-                this.props.navigation.navigate("login/login/LoginPage", { callback: this.refresh });
+                this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
             }
         });
     };
@@ -148,17 +149,17 @@ export default class MinePage extends BasePage {
                 isRefreshing: false
             });
             if (err.code === 10009) {
-                this.props.navigation.navigate("login/login/LoginPage", { callback: this.refresh });
+                this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
             }
         });
     };
 
     jumpToUserInformationPage = () => {
         if (!user.isLogin) {
-            this.props.navigation.navigate("login/login/LoginPage");
+            this.props.navigation.navigate('login/login/LoginPage');
             return;
         }
-        this.props.navigation.navigate("mine/userInformation/UserInformationPage");
+        this.props.navigation.navigate('mine/userInformation/UserInformationPage');
     };
 
     //**********************************ViewPart******************************************
@@ -176,8 +177,8 @@ export default class MinePage extends BasePage {
         return (
             <View ref={(ref) => this.headerBg = ref}
                   style={{
-                      backgroundColor: "white",
-                      position: "absolute",
+                      backgroundColor: 'white',
+                      position: 'absolute',
                       top: 0,
                       left: 0,
                       right: 0,
@@ -190,28 +191,28 @@ export default class MinePage extends BasePage {
     navRender() {
         return (
             <View
-                style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
+                style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
                 <View style={{ height: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 20 }}/>
                 <View style={{
-                    flexDirection: "row",
-                    alignItems: "center",
+                    flexDirection: 'row',
+                    alignItems: 'center',
                     paddingRight: px2dp(15),
                     height: 40
                 }}>
                     <View style={{ flex: 1 }}/>
-                    <Text style={{ justifySelf: "center", color: "#212121", fontSize: px2dp(17) }}>
+                    <Text style={{ justifySelf: 'center', color: '#212121', fontSize: px2dp(17) }}>
                         我的
                     </Text>
                     <View style={{
                         flex: 1,
-                        alignItems: "center",
-                        justifyContent: "flex-end",
-                        flexDirection: "row"
+                        alignItems: 'center',
+                        justifyContent: 'flex-end',
+                        flexDirection: 'row'
                     }}>
-                        <UIImage tintColor={"#222222"} source={setting}
+                        <UIImage tintColor={'#222222'} source={setting}
                                  style={{ height: px2dp(17), width: px2dp(17), marginRight: 15 }}
                                  onPress={() => this.jumpToSettingPage()}/>
-                        <UIImage tintColor={"#222222"} source={service}
+                        <UIImage tintColor={'#222222'} source={service}
                                  style={{ height: px2dp(17), width: px2dp(17) }}
                                  onPress={() => this.jumpToServicePage()}/>
                     </View>
@@ -225,12 +226,12 @@ export default class MinePage extends BasePage {
             <ImageBackground style={styles.headerBgStyle} source={bgImg}>
 
                 <View style={{ flex: 1 }}/>
-                <View style={{ height: px2dp(54), marginBottom: px2dp(43), flexDirection: "row" }}>
+                <View style={{ height: px2dp(54), marginBottom: px2dp(43), flexDirection: 'row' }}>
                     <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
 
                         {
                             StringUtils.isEmpty(user.headImg) ?
-                                <View style={[styles.userIconStyle, { backgroundColor: "gray" }]}/> :
+                                <View style={[styles.userIconStyle, { backgroundColor: 'gray' }]}/> :
                                 <Image source={{ uri: user.headImg }} style={styles.userIconStyle}/>
                         }
                     </TouchableWithoutFeedback>
@@ -238,16 +239,16 @@ export default class MinePage extends BasePage {
                         paddingVertical: px2dp(8),
                         height: px2dp(54),
                         marginLeft: px2dp(8),
-                        justifyContent: "space-between"
+                        justifyContent: 'space-between'
                     }}>
                         <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
-                            <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                <Text style={{ color: "#666666", fontSize: px2dp(18), includeFontPadding: false }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={{ color: '#666666', fontSize: px2dp(18), includeFontPadding: false }}>
                                     {`${user.nickname ? user.nickname : (user.phone ? user.phone : 1234)}`}
                                 </Text>
                                 <Image source={rightIcon}
                                        style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(16) }}
-                                       resizeMode={"stretch"}/>
+                                       resizeMode={'stretch'}/>
 
                             </View>
                         </TouchableWithoutFeedback>
@@ -255,27 +256,27 @@ export default class MinePage extends BasePage {
                         <ImageBackground style={{
                             width: px2dp(44),
                             height: px2dp(24),
-                            alignItems: "center",
-                            justifyContent: "center"
+                            alignItems: 'center',
+                            justifyContent: 'center'
                         }}
                                          source={levelBg}>
                             <Text style={{
                                 fontSize: px2dp(12),
-                                color: "white",
+                                color: 'white',
                                 includeFontPadding: false,
                                 marginLeft: px2dp(4.5),
                                 marginTop: px2dp(-3)
-                            }}>{this.state.levelName ? this.state.levelName : `${"VO"}`}</Text>
+                            }}>{this.state.levelName ? this.state.levelName : `${'VO'}`}</Text>
                         </ImageBackground>
                     </View>
                 </View>
                 {/*<View style={styles.saveMoneyWrapper}>*/}
-                    {/*<Text style={{ color: "white", fontSize: px2dp(14), includeFontPadding: false }}>*/}
-                        {/*21.00元*/}
-                    {/*</Text>*/}
-                    {/*<Text style={{ color: "white", fontSize: px2dp(12), includeFontPadding: false }}>*/}
-                        {/*已帮你省*/}
-                    {/*</Text>*/}
+                {/*<Text style={{ color: "white", fontSize: px2dp(14), includeFontPadding: false }}>*/}
+                {/*21.00元*/}
+                {/*</Text>*/}
+                {/*<Text style={{ color: "white", fontSize: px2dp(12), includeFontPadding: false }}>*/}
+                {/*已帮你省*/}
+                {/*</Text>*/}
                 {/*</View>*/}
             </ImageBackground>
         );
@@ -283,31 +284,31 @@ export default class MinePage extends BasePage {
 
     accountRender = () => {
         return (
-            <View style={{ backgroundColor: "white", marginTop: px2dp(11) }}>
-                <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: "center" }}>
-                    <Text style={{ color: "#666666", fontSize: px2dp(16) }}>
+            <View style={{ backgroundColor: 'white', marginTop: px2dp(11) }}>
+                <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
+                    <Text style={{ color: '#666666', fontSize: px2dp(16) }}>
                         我的资产
                     </Text>
                 </View>
                 <View style={{
-                    backgroundColor: "#f3f2f3",
+                    backgroundColor: '#f3f2f3',
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(0.5),
-                    alignSelf: "center"
+                    alignSelf: 'center'
                 }}/>
                 <View style={{
-                    flexDirection: "row",
+                    flexDirection: 'row',
                     paddingVertical: px2dp(22),
                     paddingHorizontal: px2dp(15),
-                    justifyContent: "space-between"
+                    justifyContent: 'space-between'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(this.state.availableBalance), "现金账户", "#FF4F6E", () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(this.state.availableBalance), '现金账户', '#FF4F6E', () => {
                         this.go2CashDetailPage(1);
                     })}
-                    {this.accountItemView(this.state.userScore ? this.state.userScore : 0, "秀豆账户", "#FFC079", () => {
+                    {this.accountItemView(StringUtils.isEmpty(this.state.userScore) ? '0' : this.state.userScore + '', '秀豆账户', '#FFC079', () => {
                         this.go2CashDetailPage(2);
                     })}
-                    {this.accountItemView(StringUtils.formatMoneyString(this.state.blockedBalance), "待提现账户", "#8EC7FF", () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(this.state.blockedBalance), '待提现账户', '#8EC7FF', () => {
                         this.go2CashDetailPage(3);
                     })}
                 </View>
@@ -316,13 +317,14 @@ export default class MinePage extends BasePage {
     };
 
 
-    getAdjustsFontSize=(text)=>{
+    getAdjustsFontSize = (text) => {
         let fontSize = Math.sqrt(80 * 20 / text.length);
-        fontSize = Math.min(fontSize,19);
-        return Math.max(fontSize,1);
-    }
+        fontSize = Math.min(fontSize, 19);
+        return Math.max(fontSize, 1);
+    };
 
-    accountItemView=(num, text, color, onPress) => {
+    accountItemView = (num, text, color, onPress) => {
+        console.log(num);
         return (
             <TouchableWithoutFeedback onPress={onPress}>
                 <View style={{
@@ -331,27 +333,34 @@ export default class MinePage extends BasePage {
                     height: px2dp(62),
                     borderRadius: px2dp(5),
                     elevation: 2,
-                    shadowColor: "#000000",
+                    shadowColor: '#000000',
                     shadowOffset: { h: 2, w: 2 },
                     shadowRadius: px2dp(6),
                     shadowOpacity: 0.1,
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
                     paddingTop: px2dp(16),
                     paddingBottom: px2dp(11)
                 }}>
-                    <Text allowFontScaling={true} style={{ textAlign:'center',color: "white", includeFontPadding: false ,width:80,height:20,fontSize:this.getAdjustsFontSize(num)}}>
+                    <Text allowFontScaling={true} style={{
+                        textAlign: 'center',
+                        color: 'white',
+                        includeFontPadding: false,
+                        width: 80,
+                        height: 20,
+                        fontSize: this.getAdjustsFontSize(num)
+                    }}>
                         {num}
                     </Text>
 
-                    <Text style={{ color: "white", fontSize: px2dp(11), includeFontPadding: false }}>
+                    <Text style={{ color: 'white', fontSize: px2dp(11), includeFontPadding: false }}>
                         {text}
                     </Text>
 
                 </View>
             </TouchableWithoutFeedback>
         );
-    }
+    };
 
     orderRender() {
         return (
@@ -361,33 +370,33 @@ export default class MinePage extends BasePage {
             }}>
                 <View style={{
                     height: px2dp(44),
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between"
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
                 }}>
-                    <View style={{ flexDirection: "row", marginLeft: 15, alignItems: "center" }}>
-                        <UIText value={"我的订单"} style={{ fontSize: px2dp(16), color: "#666666" }}/>
+                    <View style={{ flexDirection: 'row', marginLeft: 15, alignItems: 'center' }}>
+                        <UIText value={'我的订单'} style={{ fontSize: px2dp(16), color: '#666666' }}/>
                     </View>
                     <TouchableWithoutFeedback onPress={this.jumpToAllOrder}>
-                        <View style={{ flexDirection: "row", marginRight: 15, alignItems: "center" }}>
-                            <UIText value={"查看全部"}
+                        <View style={{ flexDirection: 'row', marginRight: 15, alignItems: 'center' }}>
+                            <UIText value={'查看全部'}
                                     style={{
-                                        fontFamily: "PingFang-SC-Medium",
+                                        fontFamily: 'PingFang-SC-Medium',
                                         fontSize: px2dp(12),
-                                        color: "#999999"
+                                        color: '#999999'
                                     }}/>
                             <Image source={arrowRight} style={{ height: 12, marginLeft: 6 }}
-                                   resizeMode={"contain"}/>
+                                   resizeMode={'contain'}/>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={{
-                    backgroundColor: "#f3f2f3",
+                    backgroundColor: '#f3f2f3',
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(0.5),
-                    alignSelf: "center"
+                    alignSelf: 'center'
                 }}/>
-                <View style={{ flex: 1, flexDirection: "row", paddingBottom: px2dp(28) }}>
+                <View style={{ flex: 1, flexDirection: 'row', paddingBottom: px2dp(28) }}>
                     {this.renderOrderStates()}
                 </View>
             </View>
@@ -398,21 +407,21 @@ export default class MinePage extends BasePage {
     utilsRender() {
         return (
             <View style={{
-                flexDirection: "row",
+                flexDirection: 'row',
                 backgroundColor: color.white,
-                flexWrap: "wrap",
+                flexWrap: 'wrap',
                 marginVertical: px2dp(10)
             }}>
-                <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: "center" }}>
-                    <Text style={{ color: "#666666", fontSize: px2dp(16) }}>
+                <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
+                    <Text style={{ color: '#666666', fontSize: px2dp(16) }}>
                         常用工具
                     </Text>
                 </View>
                 <View style={{
-                    backgroundColor: "#f3f2f3",
+                    backgroundColor: '#f3f2f3',
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(0.5),
-                    alignSelf: "center"
+                    alignSelf: 'center'
                 }}/>
                 {this.renderMenu()}
             </View>
@@ -428,7 +437,7 @@ export default class MinePage extends BasePage {
                                 refreshing={this.state.isRefreshing}
                                 onRefresh={this._reload}
                                 progressViewOffset={statusBarHeight + 44}
-                                colors={["#d51243"]}
+                                colors={['#d51243']}
                                 title="下拉刷新"
                                 tintColor="#999"
                                 titleColor="#999"
@@ -444,74 +453,74 @@ export default class MinePage extends BasePage {
 
     renderOrderStates = () => {
         let statesImage = [waitPay, waitDelivery, hasFinished, waitReceive];
-        let statesText = ["待付款", "待发货", "待收货", "售后/退款"];
+        let statesText = ['待付款', '待发货', '待收货', '售后/退款'];
         let arr = [];
         for (let i = 0; i < statesImage.length; i++) {
-             let num = this.getOrderNum(i);
-             let numView = num ? (
-                     <View style={{
-                         width: px2dp(16),
-                         height: px2dp(16),
-                         borderRadius: px2dp(8),
-                         position: "absolute",
-                         top: px2dp(-10),
-                         right: px2dp(-10),
-                         backgroundColor: "#D51243",
-                         alignItems: "center",
-                         justifyContent: "center"
-                     }}>
-                         <Text style={{ includeFontPadding: false, color: "white", fontSize: px2dp(10) }}>
-                             {num}
-                         </Text>
-                     </View>
-                 ) : null;
+            let num = this.getOrderNum(i);
+            let numView = num ? (
+                <View style={{
+                    width: px2dp(16),
+                    height: px2dp(16),
+                    borderRadius: px2dp(8),
+                    position: 'absolute',
+                    top: px2dp(-10),
+                    right: px2dp(-10),
+                    backgroundColor: '#D51243',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(10) }}>
+                        {num}
+                    </Text>
+                </View>
+            ) : null;
 
             arr.push(
-                <NoMoreClick style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingTop: px2dp(30) }}
+                <NoMoreClick style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: px2dp(30) }}
                              onPress={() => this.jumpToOrderAccordingStates(i)} key={i}>
                     <ImageBackground source={statesImage[i]}
-                                     style={{ height: 24, width: 24, marginBottom: 10, overflow: "visible" }}>
+                                     style={{ height: 24, width: 24, marginBottom: 10, overflow: 'visible' }}>
                         {numView}
                     </ImageBackground>
                     <UIText value={statesText[i]}
-                            style={{ color: "#212121", includeFontPadding: false, fontSize: px2dp(12) }}/>
+                            style={{ color: '#212121', includeFontPadding: false, fontSize: px2dp(12) }}/>
                 </NoMoreClick>
             );
         }
         return arr;
     };
 
-    getOrderNum(index){
-        switch (index){
+    getOrderNum(index) {
+        switch (index) {
             case 0:
-                return userOrderNum.waitPayNum
+                return userOrderNum.waitPayNum;
                 break;
             case 1:
-                return userOrderNum.waitSendNum
+                return userOrderNum.waitSendNum;
                 break;
             case 2:
-                return userOrderNum.waitReceiveNum
+                return userOrderNum.waitReceiveNum;
                 break;
             case 3:
-                return userOrderNum.afterSaleServiceNum
+                return userOrderNum.afterSaleServiceNum;
                 break;
             default:
                 return 0;
-                break
+                break;
         }
     }
 
     renderMenu = () => {
         let leftImage = [inviteFr, coupons, myData, myCollet, myHelper, address, promotion, showImg];
-        let leftText = ["邀请好友", "优惠券", "我的数据", "收藏店铺", "帮助与客服", "地址", "我的推广", "发现收藏"];
+        let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助与客服', '地址', '我的推广', '发现收藏'];
 
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
             arr.push(
                 <NoMoreClick style={{
-                    width: "25%",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    width: '25%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     marginTop: 10,
                     marginBottom: 10
                 }} onPress={() => this.orderMenuJump(i)} key={i}>
@@ -528,21 +537,21 @@ export default class MinePage extends BasePage {
     //跳转到对应的订单状态页面
     jumpToOrderAccordingStates = (index) => {
         if (!user.isLogin) {
-            this.props.navigation.navigate("login/login/LoginPage");
+            this.props.navigation.navigate('login/login/LoginPage');
             return;
         }
         switch (index) {
             case 0:
-                this.props.navigation.navigate("order/order/MyOrdersListPage", { index: 1 });
+                this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 1 });
                 break;
             case 1:
-                this.props.navigation.navigate("order/order/MyOrdersListPage", { index: 2 });
+                this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });
                 break;
             case 2:
-                this.props.navigation.navigate("order/order/MyOrdersListPage", { index: 3 });
+                this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 3 });
                 break;
             case 3:
-                this.props.navigation.navigate("order/afterSaleService/AfterSaleListPage", { index: 4 });
+                this.props.navigation.navigate('order/afterSaleService/AfterSaleListPage', { index: 4 });
                 break;
         }
     };
@@ -551,13 +560,13 @@ export default class MinePage extends BasePage {
     go2CashDetailPage(i) {
         switch (i) {
             case 1:
-                this.$navigate("mine/userInformation/MyCashAccountPage", { availableBalance: this.state.availableBalance });
+                this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: this.state.availableBalance });
                 break;
             case 2:
-                this.$navigate("mine/userInformation/MyIntegralAccountPage", { userScore: this.state.userScore ? this.state.userScore : 0 });
+                this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: this.state.userScore ? this.state.userScore : 0 });
                 break;
             case 3:
-                this.$navigate("mine/userInformation/WaitingForWithdrawCashPage", { blockedBalance: this.state.blockedBalance ? this.state.blockedBalance : 0 });
+                this.$navigate('mine/userInformation/WaitingForWithdrawCashPage', { blockedBalance: this.state.blockedBalance ? this.state.blockedBalance : 0 });
                 break;
             default:
             // this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
@@ -601,9 +610,9 @@ export default class MinePage extends BasePage {
             //邀请评分
             case 9:
                 //
-                const appId = "1";
+                const appId = '1';
                 const url = `https://itunes.apple.com/cn/app/id${appId}?mt=8`;
-                Platform.OS === "ios" && Linking.canOpenURL(url).then(() => {
+                Platform.OS === 'ios' && Linking.canOpenURL(url).then(() => {
                     Linking.openURL(url);
                 }).catch(e => {
                     console.warn(e);
@@ -618,17 +627,17 @@ export default class MinePage extends BasePage {
 
     jumpToAllOrder = () => {
         if (!user.isLogin) {
-            this.props.navigation.navigate("login/login/LoginPage");
+            this.props.navigation.navigate('login/login/LoginPage');
             return;
         }
-        this.props.navigation.navigate("order/order/MyOrdersListPage", { index: 0 });
+        this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 0 });
     };
     jumpToServicePage = () => {
         if (!user.isLogin) {
-            this.props.navigation.navigate("login/login/LoginPage");
+            this.props.navigation.navigate('login/login/LoginPage');
             return;
         }
-        this.props.navigation.navigate("message/MessageCenterPage");
+        this.props.navigation.navigate('message/MessageCenterPage');
     };
 
     jumpToSettingPage = () => {
@@ -636,7 +645,7 @@ export default class MinePage extends BasePage {
         //     this.props.navigation.navigate('login/login/LoginPage');
         //     return;
         // }
-        this.props.navigation.navigate("mine/SettingPage", { callBack: () => this.loadPageData() });
+        this.props.navigation.navigate('mine/SettingPage', { callBack: () => this.loadPageData() });
 
     };
 }
@@ -648,22 +657,22 @@ const styles = StyleSheet.create({
     whatLeft: {  // 组件定义了一个上边框
         flex: 1,
         borderTopWidth: 1,
-        borderColor: "black",
-        backgroundColor: "green" //每个界面背景颜色不一样
+        borderColor: 'black',
+        backgroundColor: 'green' //每个界面背景颜色不一样
     },
     whiteText: {
         fontSize: 15,
-        color: "#ffffff"
+        color: '#ffffff'
     },
     greyText: {
-        fontFamily: "PingFang-SC-Regular",
+        fontFamily: 'PingFang-SC-Regular',
         fontSize: 12,
-        color: "#212121"
+        color: '#212121'
     },
     blackText: {
-        fontFamily: "PingFang-SC-Medium",
+        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
-        color: "#000000"
+        color: '#000000'
     },
     headerBgStyle: {
         width: ScreenUtils.width,
@@ -681,11 +690,11 @@ const styles = StyleSheet.create({
         width: px2dp(100),
         borderBottomLeftRadius: px2dp(17),
         borderTopLeftRadius: px2dp(17),
-        backgroundColor: "#FFC079",
-        position: "absolute",
+        backgroundColor: '#FFC079',
+        position: 'absolute',
         right: 0,
         bottom: px2dp(38),
-        justifyContent: "space-between",
+        justifyContent: 'space-between',
         paddingLeft: px2dp(22),
         paddingVertical: px2dp(1)
     }
