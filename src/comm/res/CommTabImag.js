@@ -28,7 +28,7 @@ const CommTabImag = {
     kongjian: require('./share_icon_kongjian_nor.png'),
     weibo: require('./share_icon_weibo_nor.png'),
     lianjie: require('./share_icon_lianjie_nor.png'),
-    baocun: require('./share_icon_baocun_nor.png'),
+    baocun: require('./share_icon_baocun.png'),
     download: require('./share_btn_download_nor.png'),
     closeImg: require('./tongyong_btn_close_white.png'),
     noNetImg: require('./网络异常.png')
