@@ -100,7 +100,7 @@ export default class ProgressBarView extends Component {
                 ]}
                 number={1}
             >
-                {'抢光了' + itemData.totalNumber + '件'}
+                {'抢光了' + itemData.totalNumber-itemData.surplusNumber  + '件'}
             </Text>
         )
 

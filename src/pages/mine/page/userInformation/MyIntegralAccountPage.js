@@ -35,29 +35,7 @@ export default class MyIntegralAccountPage extends BasePage {
             phoneError: false,
             passwordError: false,
             viewData: [
-                // {
-                //     type: '秀豆消费',
-                //
-                //     time: '2018-05-25 12:15:45',
-                //     serialNumber: '流水号：123456787653234567',
-                //     capital: '-200',
-                //     iconImage: xiaofei,
-                //     capitalRed: true
-                //
-                //
-                // },
-                // {
-                //     type: '秀豆消费',
-                //
-                //     time: '2018-05-25 12:15:45',
-                //     serialNumber: '流水号：123456787653234567',
-                //     capital: '-200',
-                //     iconImage: xiaofei,
-                //     capitalRed: true
-                // }
             ],
-            restMoney: this.params.userScore,
-
             blockMoney: 0.00,
             currentPage: 1,
             isEmpty: false
@@ -193,6 +171,14 @@ export default class MyIntegralAccountPage extends BasePage {
     onRefresh = () => {
         this.setState({
             currentPage: 1
+        });
+        MineApi.getUser().then(res => {
+            let data = res.data;
+            user.saveUserInfo(data);
+        }).catch(err => {
+            if (err.code === 10009) {
+                this.props.navigation.navigate("login/login/LoginPage");
+            }
         });
         this.getDataFromNetwork();
     };

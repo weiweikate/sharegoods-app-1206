@@ -86,7 +86,7 @@ export default class UserInformationPage extends BasePage {
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={false}/>
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'所在区域'}
-                                rightText={user.address}
+                                rightText={user.province+user.city+user.area}
                                 rightTextStyle={styles.grayText} leftTextStyle={styles.blackText} isLine={false}
                                 onPress={() => this.renderGetCityPicker()}/>
                 {this.renderWideLine()}
@@ -123,7 +123,7 @@ export default class UserInformationPage extends BasePage {
         });
     };
     jumpToIDVertify2Page = () => {
-        if (!user.isRealNameRegistration) {
+        if (!user.realname) {
             this.props.navigation.navigate('mine/userInformation/IDVertify2Page');
         }
     };
@@ -140,19 +140,12 @@ export default class UserInformationPage extends BasePage {
         });
     };
     setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, areaText) {
-        this.setState({
-            areaText: areaText,
-            provinceCode: provinceCode,
-            provinceName: provinceName,
-            cityCode: cityCode,
-            cityName: cityName,
-            areaCode: areaCode,
-            areaName: areaName
-        });
+            user.province=provinceName;
+            user.city=cityName;
+            user.area=areaName;
+
         MineApi.updateUserById({ type: 3, provinceId: provinceCode,cityId:cityCode,areaId:areaCode }).then(res => {
-            if (res.code === 10000) {
-                user.address = areaText;
-            }
+            this.$toastShow('地址修改成功');
         }).catch(err => {
             if (err.code == 10009) {
                 this.props.navigation.navigate('login/login/LoginPage');
