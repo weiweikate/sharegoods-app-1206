@@ -5,7 +5,7 @@
  *
  *
  * @providesModule DesignRule
- * @flow
+ * @flow111
  * Created by huchao on 2018/10/22.
  */
 
@@ -16,15 +16,15 @@ const autoSizeWidth = ScreenUtils.autoSizeWidth;
 const colors = {
     mainColor: '#FF1A54',
     white: '#FFFFFF',
-    backgroundColor: '#F7F7F7',
-    backgroundColor_btn: '#FF1A54',
-    backgroundColor_btnSelect: '#EF154C',
-    backgroundColor_LVLabel: '#F2D3A2',
-    backgroundColor_redCard: '#FF4F6E',
-    backgroundColor_blueCard: '#8EC7FF',
-    backgroundColor_yellowCard: '#F2D4A2',
-    backgroundColor_grayHeader: '#CCCCCC',
-    backgroundColor_redHeader: '#FF5781',
+    bgColor: '#F7F7F7',
+    bgColor_btn: '#FF1A54',
+    bgColor_btnSelect: '#EF154C',
+    bgColor_LVLabel: '#F2D3A2',
+    bgColor_redCard: '#FF4F6E',
+    bgColor_blueCard: '#8EC7FF',
+    bgColor_yellowCard: '#F2D4A2',
+    bgColor_grayHeader: '#CCCCCC',
+    bgColor_redHeader: '#FF5781',
     lineColor_inColorBg: '#EEEEEE',
     lineColor_inWhiteBg: '#E4E4E4',
     lineColor_inGrayBg: '#D9D9D9',
@@ -62,7 +62,7 @@ const styles = {
     /** 常用的style */
     style_container: {
         flex: 1,
-        backgroundColor: colors.backgroundColor
+        bgColor: colors.bgColor
     },
     style_absoluteFullParent: {
         position: 'absolute',
@@ -76,14 +76,14 @@ const styles = {
         justifyContent: 'center'
     },
     style_bigRedBtn: {
-        backgroundColor: colors.backgroundColor_btn,
+        bgColor: colors.bgColor_btn,
         height: sizes.height_bigBtn,
         alignItems: 'center',
         justifyContent: 'center',
         marginHorizontal: sizes.margin_page
     },
     style_bigRedRadiusBtn: {
-        backgroundColor: colors.backgroundColor_btn,
+        bgColor: colors.bgColor_btn,
         height: sizes.height_bigBtn,
         alignItems: 'center',
         justifyContent: 'center',
@@ -97,11 +97,11 @@ const styles = {
         justifyContent: 'center',
         marginHorizontal: sizes.margin_page,
         borderWidth: 1,
-        borderColor: colors.backgroundColor_btn
+        borderColor: colors.bgColor_btn
     },
     style_btnRedText: {
         fontSize: sizes.fontSize_bigBtnText,
-        color: colors.backgroundColor_btn
+        color: colors.bgColor_btn
     },
     style_btnWhiteText: {
         fontSize: sizes.fontSize_bigBtnText,
