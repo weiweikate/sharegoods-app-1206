@@ -46,29 +46,9 @@ export default class PayMessagePage extends BasePage {
             return this.renderSuccess();
         }
 
-        if (this.params.type === 'pay_success') {
+        if (this.params.type === 'pay_refund') {
             return this.renderFail();
         }
-        // switch(this.state.type){
-        //     case 1:
-        //        return this.renderSuccess();
-        //         break;
-        //     case 7:
-        //        return  this.renderFail();
-        //         break;
-        //     case 8:
-        //       return <View style={styles.bohuicontainerStyle}>
-        //           <View style={styles.typetitleStyle}>
-        //               <Text style={styles.tilteposition}>提现申请驳回</Text>
-        //           </View>
-        //           <View style={{backgroundColor:'#f7f7f7',height:1,width:'100%'}}/>
-        //           <View style={{justifyContent:'center',flex:1}}>
-        //           <Text style={{fontFamily: "PingFang-SC-Medium", fontSize: 14, color: "#666666",marginLeft:14}}>{this.state.data}</Text>
-        //               </View>
-        //           </View>;
-        //         break;
-        //
-        // }
     }
 
     toHelperPage = () => {
@@ -129,23 +109,16 @@ export default class PayMessagePage extends BasePage {
                         fontSize: 24,
                         color: '#222222'
                     }}>+{StringUtils.formatMoneyString(this.params.tradeAmount, false)}</Text>
-                    <View style={{ backgroundColor: color.blue_4a9, borderRadius: 3 }}>
+                    <View style={{ backgroundColor: '#FF7E00', borderRadius: 3 }}>
                         <Text style={{ color: 'white', margin: 1, fontSize: 11 }}>退款成功</Text>
                     </View>
                 </View>
                 <View style={{ height: 10 }}/>
-                <NewsDetailItem titles={'退款账户'} rightmg={this.state.paymt} isshow={false}/>
-                {this.state.data.token_coin ?
-                    <NewsDetailItem titles={'代币金额'} rightmg={StringUtils.formatMoneyString(this.state.data.token_coin)}
-                                    isshow={false}/> : null}
-                {this.state.data.balance ?
-                    <NewsDetailItem titles={'余额账户'} rightmg={StringUtils.formatMoneyString(this.state.data.balance)}
-                                    isshow={false}/> : null}
-                <View style={{ height: 10 }}/>
-                <NewsDetailItem titles={'退款时间'}
-                                rightmg={DateUtils.getFormatDate(this.params.time / 1000, 'MM/dd hh:mm')}
+                <NewsDetailItem titles={'付款方式'} rightmg={this.getPayType(this.params.payType)} isshow={false}/>
+                <NewsDetailItem titles={'创建时间'}
+                                rightmg={DateUtils.getFormatDate(this.params.time / 1000)}
                                 isshow={false}/>
-                <NewsDetailItem titles={'订单号'} rightmg={this.state.data.order_num} isshow={false}/>
+                <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/>
                 <View style={{ height: 10 }}/>
                 <NewsDetailItem titles={'订单疑问'} isshow={true} onPresses={() => this.toHelperPage()}/>
                 <NewsDetailItem titles={'投诉'} isshow={true} onPresses={() => this.commitQuestion()}/>
