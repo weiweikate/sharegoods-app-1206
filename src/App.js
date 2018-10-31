@@ -6,11 +6,11 @@
 
 import React, { Component } from 'react';
 import {
-    NativeModules,
-    Platform,
     StyleSheet,
     Text,
-    View
+    View,
+    Platform,
+    NativeModules
 } from 'react-native';
 import { NavigationActions, StackNavigator } from 'react-navigation';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
@@ -21,7 +21,7 @@ import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
 import appData from './model/appData';
-import { netStatus } from "./comm/components/NoNetHighComponent";
+import { netStatus } from './comm/components/NoNetHighComponent';
 import signTestTool from './signTestTool';
 
 
@@ -34,7 +34,7 @@ export default class App extends Component {
         this.state = {
             load: false
         };
-        user.readToken()
+        user.readToken();
     }
 
     async componentWillMount() {
@@ -74,6 +74,10 @@ export default class App extends Component {
         Navigator.router.getStateForAction = (action, state) => {
             if (state && action.type === NavigationActions.BACK && state.routes.length === 1) {
                 console.log('退出RN页面');
+                // Android物理回退键到桌面
+                if (Platform.OS !== 'ios') {
+                    NativeModules.commModule.nativeTaskToBack();
+                }
                 const routes = [...state.routes];
                 return {
                     ...state,
@@ -101,9 +105,6 @@ export default class App extends Component {
                            onNavigationStateChange={(prevState, currentState) => {
                                let curRouteName = getCurrentRouteName(currentState);
                                // 拦截当前router的名称
-                               if (Platform.OS !== 'ios') {
-                                   NativeModules.commModule.setStatusMode(curRouteName);
-                               }
                                console.log(curRouteName);
                                const currentScreen = getCurrentRouteName(currentState);
                                const prevScreen = getCurrentRouteName(prevState);
@@ -118,17 +119,17 @@ export default class App extends Component {
                         style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
                 {/*{*/}
-                    {/*CONFIG.showDebugPanel ? <DebugButton onPress={this.signTestFunc}><Text*/}
-                        {/*style={{ color: 'white' }}>验签调试</Text></DebugButton> : null*/}
+                {/*CONFIG.showDebugPanel ? <DebugButton onPress={this.signTestFunc}><Text*/}
+                {/*style={{ color: 'white' }}>验签调试</Text></DebugButton> : null*/}
                 {/*}*/}
             </View>
         );
     }
 
-    signTestFunc =()=>{
+    signTestFunc = () => {
         // signTestTool.beginTest(); post
-        signTestTool.testSignGet() //get
-    }
+        signTestTool.testSignGet(); //get
+    };
 
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({

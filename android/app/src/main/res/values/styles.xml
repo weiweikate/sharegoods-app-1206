@@ -3,7 +3,14 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <!--<item name="android:windowBackground">@null</item>-->
     </style>
+
+    <style name="AppSplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- 透明背景，可解决启动黑屏的问题. -->
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
     <style name="CustomDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -11,6 +18,7 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
     </style>
+
     <style name="LoadingDialog" parent="@style/CustomDialog">
         <item name="android:windowBackground">@drawable/dialog_bg</item>
         <item name="android:windowNoTitle">true</item>

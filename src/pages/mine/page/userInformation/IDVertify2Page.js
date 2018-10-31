@@ -7,7 +7,7 @@ import {
     TextInput as RNTextInput,
     Text,
     TouchableOpacity,
-    ScrollView, Button
+    ScrollView
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import {
@@ -111,18 +111,20 @@ export default class IDVertify2Page extends BasePage {
                         {this.renderBackIdCard()}
                         {this.renderFrontIdCard()}
                     </View>
-                    <View style={{
-                        marginTop: 26,
-                        width: ScreenUtils.width - 96,
-                        height: 48,
-                        marginLeft: 48,
-                        marginRight: 48
-                    }}>
-                        <Button
-                            title='提交'
-                            color={color.red}
-                            onPress={() => this.commit()}/>
-                    </View>
+                    <TouchableOpacity style={{
+                        marginTop: 42,
+                        backgroundColor: color.red,
+                        width: ScreenUtils.width - 84,
+                        height: 45,
+                        marginLeft: 42,
+                        marginRight: 42,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 5
+                    }} onPress={() => this.commit()}>
+                        <Text style={{ fontSize: 15, color: 'white' }}
+                              onPress={() => this.toLoginOut()}>提交</Text>
+                    </TouchableOpacity>
                     <View style={{ alignItems: 'center' }}>
                         <UIText value={'（信息仅用户自己可见）'} style={{
                             fontFamily: 'PingFang-SC-Medium',
@@ -140,10 +142,12 @@ export default class IDVertify2Page extends BasePage {
                                     style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#999999' }}/>
                             <UIText value={'《实名认证协议》'}
                                     style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#D62B56' }}
-                                     onPress={()=>{this.$navigate('HtmlPage', {
-                                         title: '用户协议内容',
-                                         uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
-                                     })}}/>
+                                    onPress={() => {
+                                        this.$navigate('HtmlPage', {
+                                            title: '用户协议内容',
+                                            uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
+                                        });
+                                    }}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -224,7 +228,7 @@ export default class IDVertify2Page extends BasePage {
 
 
     commit = () => {
-        if(!this.state.agreeAggreement){
+        if (!this.state.agreeAggreement) {
             NativeModules.commModule.toast('请先勾选实名认证协议');
             return;
         }
@@ -261,21 +265,31 @@ export default class IDVertify2Page extends BasePage {
         this.$loadingShow();
         MineApi.addUserCertification(params).then((response) => {
             this.$loadingDismiss();
-                NativeModules.commModule.toast('实名认证成功');
-                MineApi.getUser().then(res => {
-                    let data = res.data;
-                    user.saveUserInfo(data);
-                }).catch(err => {
-                    if (err.code === 10009) {
-                        this.props.navigation.navigate("login/login/LoginPage");
-                    }
+            NativeModules.commModule.toast('实名认证成功');
+            MineApi.getUser().then(res => {
+                let data = res.data;
+                user.saveUserInfo(data);
+            }).catch(err => {
+                if (err.code === 10009) {
+                    this.props.navigation.navigate('login/login/LoginPage');
+                }
+            });
+            this.$navigateBack();
+            if (this.params.from === 'salePwd') {
+                this.$navigate('mine/account/SetOrEditPayPwdPage', {
+                    userName: this.state.name,
+                    cardNum: this.state.idNumber,
+                    oldPwd: '',
+                    tips: '重新设置新的交易密码',
+                    title: '重置交易密码',
+                    from: 'edit'
                 });
-                this.$navigateBack();
+            }
         }).catch(err => {
             this.$loadingDismiss();
             this.$toastShow(err.msg);
             if (err.code === 10009) {
-                this.props.navigation.navigate("login/login/LoginPage");
+                this.props.navigation.navigate('login/login/LoginPage');
             }
         });
     };
