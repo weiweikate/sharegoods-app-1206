@@ -69,6 +69,10 @@ export default class HomePage extends Component {
         super(props);
         homeModule.loadHomeList();
         // 检测版本更新
+        this.getVersion();
+    }
+
+    getVersion = () => {
         MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((res) => {
             if (res.data.upgrade === 1) {
                 if (Platform.OS !== 'ios') {
@@ -93,7 +97,7 @@ export default class HomePage extends Component {
                 }
             }
         });
-    }
+    };
 
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
