@@ -100,7 +100,7 @@ export default class HttpUtils {
             let config = {
                 headers: {
                     ...signParam,
-                    'sg-token': token,
+                    'sg-token': token ? token : '',
                     'platform': this.platform
                 }
             }
@@ -144,7 +144,7 @@ export default class HttpUtils {
         let timeLineStart = +new Date();
         return user.getToken().then(token => {
             config.headers = {
-                'sg-token': token,
+                'sg-token': token ? token : '',
                 'platform': this.platform,
                 ...signParam
             }
