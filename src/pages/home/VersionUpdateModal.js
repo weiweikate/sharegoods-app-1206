@@ -11,15 +11,17 @@ export default class VersionUpdateModal extends React.Component {
         this.state = {
             showBtn: true,
             progress: 0,
-            exist: false,
-            positiveTxt: this.props.apkExist ? '立即安装' : '立即更新',
-            updateContent: this.props.apkExist ? '是否安装V' + this.props.updateData.version + '版本？' : '是否更新为V' + this.props.updateData.version + '版本？'
+            exist: false
         };
     }
 
     componentWillReceiveProps(nextProps) {
         if (Platform.OS !== 'ios' && nextProps.updateData) {
             this.currProgress = 0;
+            this.setState({
+                positiveTxt: nextProps.apkExist ? '立即安装' : '立即更新',
+                updateContent: nextProps.apkExist ? '是否安装V' + nextProps.updateData.version + '版本？' : '是否更新为V' + nextProps.updateData.version + '版本？'
+            });
         }
     }
 
@@ -106,7 +108,7 @@ export default class VersionUpdateModal extends React.Component {
                                 height: 45,
                                 backgroundColor: '#d51243',
                                 borderBottomRightRadius: 10,
-                                borderBottomLeftRadius: 10
+                                borderBottomLeftRadius: this.props.forceUpdate ? 10 : 0
                             }}
                             onPress={() => {
                                 this.toUpdate();
@@ -121,16 +123,19 @@ export default class VersionUpdateModal extends React.Component {
 
     toUpdate = () => {
         if (Platform.OS === 'ios') {
-            // 前往appstore
+            // TODO 前往appstore
         } else {
+
             if (this.props.updateData.forceUpdate === 1) {
                 // 强制更新app
                 NativeModules.commModule.updateable(JSON.stringify(this.props.updateData), true, (exist) => {
-                    this.setState({
-                        showBtn: false,
-                        positiveTxt: exist ? '立即安装' : '立即更新',
-                        updateContent: exist ? '是否安装V' + this.props.updateData.version + '版本？' : '是否更新为V' + this.props.updateData.version + '版本？'
-                    });
+                    if (this.state.positiveTxt !== '立即安装') {
+                        this.setState({
+                            showBtn: false,
+                            positiveTxt: exist ? '立即安装' : '立即更新',
+                            updateContent: exist ? '是否安装V' + this.props.updateData.version + '版本？' : '是否更新为V' + this.props.updateData.version + '版本？'
+                        });
+                    }
                 });
             } else {
                 // 关闭弹框

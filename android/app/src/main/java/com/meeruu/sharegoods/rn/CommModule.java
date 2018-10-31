@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.Toast;
@@ -429,9 +428,6 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
     private VersionUpdateEvent updateEvent(String lastVersion) {
-        if (!TextUtils.isEmpty(lastVersion)) {
-
-        }
         //提示当前有版本更新
         File apkFile = SDCardUtils.getFileDirPath("MR/file");
         String fileName = AppUtils.getAppName(getCurrentActivity()) + "_" + lastVersion + ".apk";

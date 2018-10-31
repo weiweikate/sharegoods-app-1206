@@ -107,14 +107,14 @@ class SettingPage extends BasePage {
                     marginTop: 42,
                     backgroundColor: color.red,
                     width: ScreenUtils.width - 84,
-                    height: 48,
+                    height: 45,
                     marginLeft: 42,
                     marginRight: 42,
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: 5
                 }} onPress={() => this.toLoginOut()}>
-                    <Text style={{ fontSize: 13, color: 'white' }}
+                    <Text style={{ fontSize: 15, color: 'white' }}
                           onPress={() => this.toLoginOut()}>退出登录</Text>
                 </TouchableOpacity>
             </View>
@@ -182,7 +182,7 @@ class SettingPage extends BasePage {
                         //清空购物车
                         shopCartStore.data = [];
                         this.$navigateReset();
-                        MineApi.signOut()
+                        MineApi.signOut();
                         this.$loadingDismiss();
 
                     }}
