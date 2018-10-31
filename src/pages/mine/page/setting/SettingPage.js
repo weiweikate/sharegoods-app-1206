@@ -17,6 +17,9 @@ import arrow_right from '../../../mine/res/customerservice/icon_06-03.png';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
+import DeviceInfo from 'react-native-device-info';
+import bridge from '../../../../utils/bridge';
+import CommModal from 'CommModal';
 
 
 class SettingPage extends BasePage {
@@ -31,7 +34,10 @@ class SettingPage extends BasePage {
             passwordError: false,
             isShowLoginOutModal: false,
             memorySize: 0,
-            showUpdate: false
+            updateData: {},
+            showUpdate: false,
+            version: DeviceInfo.getVersion(),
+            updateContent: ''
         };
     }
 
@@ -88,27 +94,27 @@ class SettingPage extends BasePage {
                         <UIText value={'关于我们'} style={styles.blackText}/>
                         <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                     </TouchableOpacity>
-                    {/*{this.renderLine()}*/}
-                    {/*<TouchableOpacity style={styles.viewStyle}*/}
-                    {/*onPress={() => this.getNewVersion()}>*/}
-                    {/*<UIText value={'版本检测'} style={styles.blackText}/>*/}
-                    {/*<UIText value={'v' + DeviceInfo.getVersion()}*/}
-                    {/*style={[styles.blackText]}/>*/}
-                    {/*<Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>*/}
-                    {/*</TouchableOpacity>*/}
+                    {this.renderLine()}
+                    <TouchableOpacity style={styles.viewStyle}
+                                      onPress={() => this.getNewVersion()}>
+                        <UIText value={'版本检测'} style={[styles.blackText, { flex: 1 }]}/>
+                        <UIText value={'当前版本v' + this.state.version}
+                                style={{ fontSize: 13, color: '#666666' }}/>
+                        <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                    </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={{
                     marginTop: 42,
                     backgroundColor: color.red,
                     width: ScreenUtils.width - 84,
-                    height: 48,
+                    height: 45,
                     marginLeft: 42,
                     marginRight: 42,
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: 5
                 }} onPress={() => this.toLoginOut()}>
-                    <Text style={{ fontSize: 13, color: 'white' }}
+                    <Text style={{ fontSize: 15, color: 'white' }}
                           onPress={() => this.toLoginOut()}>退出登录</Text>
                 </TouchableOpacity>
             </View>
@@ -176,7 +182,7 @@ class SettingPage extends BasePage {
                         //清空购物车
                         shopCartStore.data = [];
                         this.$navigateReset();
-                        MineApi.signOut()
+                        MineApi.signOut();
                         this.$loadingDismiss();
 
                     }}
@@ -184,14 +190,54 @@ class SettingPage extends BasePage {
                         this.setState({ isShowLoginOutModal: false });
                     }}
                 />
-                {/*<CommModal*/}
-                {/*animationType='fade'*/}
-                {/*transparent={true}*/}
-                {/*visible={this.state.isShow}>*/}
-                {/*<View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>*/}
-                {/*{this.renderContent()}*/}
-                {/*</View>*/}
-                {/*</CommModal>*/}
+                <CommModal
+                    animationType='fade'
+                    transparent={true}
+                    visible={this.state.showUpdate}>
+                    <View style={{
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        backgroundColor: '#fff',
+                        width: ScreenUtils.width - 84,
+                        borderRadius: 10,
+                        borderWidth: 0
+                    }}>
+                        <UIText value={this.state.updateContent}
+                                style={{
+                                    fontSize: 17,
+                                    color: '#333',
+                                    marginTop: 40,
+                                    marginBottom: 40,
+                                    alignSelf: 'center'
+                                }}/>
+                        <View style={{ height: 0.5, backgroundColor: '#eee' }}/>
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity
+                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 45 }}
+                                onPress={() => {
+                                    this.setState({ showUpdate: false });
+                                }}>
+                                <UIText value={'以后再说'} style={{ color: '#999' }}/>
+                            </TouchableOpacity>
+                            <View style={{ width: 0.5, backgroundColor: '#eee' }}/>
+                            <TouchableOpacity
+                                style={{
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    height: 45,
+                                    backgroundColor: '#d51243',
+                                    borderBottomRightRadius: 10
+                                }}
+                                onPress={() => {
+                                    this.toUpdate();
+                                }}>
+                                <UIText value={'立即更新'} style={{ color: '#fff' }}/>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </CommModal>
             </View>
 
         );
@@ -212,14 +258,34 @@ class SettingPage extends BasePage {
     };
 
     // 版本检测
-    // getNewVersion = () => {
-    //     // Android调用原生检测版本
-    //     MineApi.getVersion().then((data) => {
-    //         // 调用原生dialog
-    //     }).catch((data) => {
-    //         bridge.$toast(data.msg);
-    //     });
-    // };
+    getNewVersion = () => {
+        // Android调用原生检测版本
+        MineApi.getVersion({ vsersion: this.state.version }).then((res) => {
+            if (res.data.upgrade === 1) {
+                this.setState({
+                    updateData: res.data,
+                    showUpdate: true,
+                    updateContent: '是否更新为V' + res.data.version + '版本？'
+                });
+            } else {
+                bridge.$toast('当前已是最新版本');
+            }
+        }).catch((data) => {
+            bridge.$toast(data.msg);
+        });
+    };
+
+    toUpdate = () => {
+        this.setState({
+            showUpdate: false
+        });
+        if (Platform.OS === 'ios') {
+            // 前往appstore
+        } else {
+            // 更新app
+            NativeModules.commModule.updateable(JSON.stringify(this.state.updateData), false);
+        }
+    };
 }
 
 const styles = StyleSheet.create({

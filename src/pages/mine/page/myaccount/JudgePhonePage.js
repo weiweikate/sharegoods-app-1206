@@ -126,16 +126,14 @@ export default class JudgePhoneNumPage extends BasePage {
                 phone: this.state.telText
             }).then((data) => {
                 if (user.hadSalePassword) {
-                    // 暂时不做实名校验
-                    this.$navigate('mine/account/SetOrEditPayPwdPage', {
-                        userName: '',
-                        cardNum: '',
-                        oldPwd: '',
-                        tips: '重新设置新的交易密码',
-                        title: '重置交易密码',
-                        from: 'edit'
-                    });
-                    // this.$navigate('mine/account/JudgeIDCardPage');
+                    if (user.idcard) {
+                        this.$navigate('mine/account/JudgeIDCardPage');
+                    } else {
+                        // 跳转到实名认证页面
+                        this.$navigate('mine/userInformation/IDVertify2Page', {
+                            from: 'salePwd'
+                        });
+                    }
                 } else {
                     // 直接设置交易密码
                     this.$navigate('mine/account/SetOrEditPayPwdPage', {
@@ -154,7 +152,6 @@ export default class JudgePhoneNumPage extends BasePage {
             return;
         }
     };
-
 }
 
 const styles = StyleSheet.create({
