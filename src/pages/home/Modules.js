@@ -191,7 +191,9 @@ class HomeModule {
         let productType = '';
         if (topicBannerProductDTOList) {
             product = topicBannerProductDTOList[0];
-            productType = product.productType;
+            if (product) {
+                productType = product.productType;
+            }
         }
 
         const { storeDTO } = data;
