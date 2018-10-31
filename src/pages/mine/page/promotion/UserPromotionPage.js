@@ -9,18 +9,21 @@
  *
  */
 
+
 'use strict';
 import React from 'react';
 import {
     StyleSheet,
     View,
     TouchableWithoutFeedback,
-    Text,
+    Text
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineApi from '../../api/MineApi';
 import RefreshList from '../../../../components/ui/RefreshList';
+import EmptyUtils from '../../../../utils/EmptyUtils';
+import DateUtils from '../../../../utils/DateUtils';
 
 const { px2dp } = ScreenUtils;
 
@@ -29,9 +32,9 @@ export default class UserPromotionPage extends BasePage<Props> {
     constructor(props) {
         super(props);
         this.state = {
-            data : null
+            data: [],
+            isEmpty: false
         };
-        this._bind();
         this.currentPage = 1;
     }
 
@@ -40,23 +43,30 @@ export default class UserPromotionPage extends BasePage<Props> {
         show: true// false则隐藏导航
     };
 
-    _bind() {
-        this.loadPageData = this.loadPageData.bind(this);
-    }
 
     componentDidMount() {
-        this.loadPageData();
-    }
-
-    loadPageData() {
-
+        this.getUserPromotionPromoter();
     }
 
     getUserPromotionPromoter = () => {
-        MineApi.getUserPromotionPromoter().then((data)=>{
-
-        }).catch((error)=>{
-
+        MineApi.getUserPromotionPromoter({ page: this.currentPage, pageSize: 15 }).then(res => {
+            let arrs = this.currentPage == 1 ? [] : this.state.data;
+            if (!EmptyUtils.isEmptyArr(res.data.data)) {
+                res.data.data.map((item, index) => {
+                    arrs.push(item);
+                });
+                this.setState({
+                    data: arrs
+                });
+            } else {
+                if (EmptyUtils.isEmptyArr(this.state.data)) {
+                    this.setState({
+                        isEmpty: true
+                    });
+                }
+            }
+        }).catch((error) => {
+            this.$toastShow(error.msg);
         });
     };
 
@@ -74,7 +84,7 @@ export default class UserPromotionPage extends BasePage<Props> {
 
     /**************************viewpart********************************/
 
-    _itemRender() {
+    _itemRender=({item}) =>{
         return (
             <View style={{ backgroundColor: 'white', marginBottom: px2dp(10) }}>
                 <View style={{
@@ -87,13 +97,16 @@ export default class UserPromotionPage extends BasePage<Props> {
                 }}>
                     <View style={styles.itemInfoWrapper}>
                         <Text style={styles.blackTextStyle}>
-                            50元推广试用套餐
+                            {item.packageName}
                         </Text>
+                        <View style={{height:px2dp(10)}}/>
                         <Text style={styles.grayTextStyle}>
-                            剩余推广金额￥20.03
+                            {`剩余推广金额￥${item.remain * item.price}`}
                         </Text>
                     </View>
-                    <TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={()=>{
+                        this.$navigate('mine/promotion/PromotionDetailPage',item)
+                    }}>
                         <View style={styles.grayButtonWrapper}>
                             <Text style={styles.grayTextStyle}>
                                 推广详情
@@ -103,7 +116,7 @@ export default class UserPromotionPage extends BasePage<Props> {
                 </View>
                 <View style={styles.bottomTextWrapper}>
                     <Text style={styles.bottomTextStyle}>
-                        购买时间：2018-09-18 10:38:56
+                        {`购买时间：${DateUtils.formatDate(item.startTime)}`}
                     </Text>
                 </View>
             </View>
@@ -112,7 +125,7 @@ export default class UserPromotionPage extends BasePage<Props> {
 
     _bottomButtonRender() {
         return (
-            <TouchableWithoutFeedback onPress={() => alert('a')}>
+            <TouchableWithoutFeedback onPress={() => this.$navigate('mine/promotion/InvitePromotionPage')}>
                 <View style={styles.bottomButtonWrapper}>
                     <Text style={styles.bottomButtonTextStyle}>
                         发起邀请推广
@@ -125,16 +138,17 @@ export default class UserPromotionPage extends BasePage<Props> {
     _render() {
         return (
             <View style={styles.container}>
-                {/*{this._itemRender()}*/}
-                {/*{this._itemRender()}*/}
-                <RefreshList
-                    data={this.state.viewData}
-                    renderItem={this._itemRender}
-                    onRefresh={this.onRefresh}
-                    onLoadMore={this.onLoadMore}
-                    // extraData={this.state}
-                    isEmpty={this.state.isEmpty}
-                />
+                <View style={{ flex: 1 }}>
+                    <RefreshList
+                        data={this.state.data}
+                        renderItem={this._itemRender}
+                        onRefresh={this.onRefresh}
+                        onLoadMore={this.onLoadMore}
+                        // extraData={this.state}
+                        isEmpty={this.state.isEmpty}
+                        emptyTip={'暂无发起推广'}
+                    />
+                </View>
                 {this._bottomButtonRender()}
             </View>
         );
@@ -146,7 +160,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#f7f7f7',
         paddingTop: px2dp(10),
-        paddingBottom: px2dp(48)
     },
     grayButtonWrapper: {
         borderColor: '#DDDDDD',
@@ -168,16 +181,18 @@ const styles = StyleSheet.create({
     },
     itemInfoWrapper: {
         justifyContent: 'space-between',
-        height: px2dp(67),
         paddingVertical: px2dp(15)
     },
     blackTextStyle: {
         color: '#222222',
-        fontSize: px2dp(16)
+        fontSize: px2dp(16),
+        fontFamily:'PingFangSC-Regular',
+        includeFontPadding:false
     },
     grayTextStyle: {
         color: '#999999',
-        fontSize: px2dp(13)
+        fontSize: px2dp(13),
+        includeFontPadding:false
     },
     bottomTextWrapper: {
         height: px2dp(33),
@@ -186,16 +201,17 @@ const styles = StyleSheet.create({
     },
     bottomTextStyle: {
         color: '#999999',
-        fontSize: px2dp(13)
+        fontSize: px2dp(13),
+        includeFontPadding:false
     },
     bottomButtonWrapper: {
         height: px2dp(48),
         width: ScreenUtils.width,
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'absolute',
-        left: 0,
-        bottom: 0,
+        // position: 'absolute',
+        // left: 0,
+        // bottom: 0,
         backgroundColor: '#D51243'
     },
     bottomButtonTextStyle: {

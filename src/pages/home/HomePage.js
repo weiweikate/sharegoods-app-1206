@@ -158,7 +158,7 @@ export default class HomePage extends Component {
     componentDidMount() {
         //this.shareModal.open();
         InteractionManager.runAfterInteractions(() => {
-            this.getMessageData();
+            // this.getMessageData();
         });
     }
 
