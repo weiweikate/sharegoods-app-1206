@@ -29,6 +29,8 @@ public class ParameterUtils {
     public static final int MSG_WHAT_ERR = 4;
     public static final int MSG_WHAT_FINISH = 5;
     public static final int MSG_WHAT_REFRESH = 6;
+    //message empty what
+    public static final int EMPTY_WHAT = 7;
 
     public static final int REQUEST_CODE_CAMERA = 9; //拍摄照片请求码
     public static final int REQUEST_CODE_PERMISSIONS = 14; //添加权限请求码
