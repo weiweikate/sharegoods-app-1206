@@ -697,6 +697,13 @@ class MyOrdersDetailPage extends BasePage {
                 }
                 break;
             case 6:
+                if(this.state.status==2&&data[index].returnType){
+                    afterSaleService.push({
+                        id: 2,
+                        operation: '退款完成',
+                        isRed: false
+                    });
+                }
                 switch (data[index].returnType) {
                     case 1://申请退款
                         afterSaleService.push({
@@ -720,11 +727,7 @@ class MyOrdersDetailPage extends BasePage {
                         });
                         break;
                     default:
-                        afterSaleService.push({
-                            id: 1,
-                            operation: '退换',
-                            isRed: false
-                        });
+                        afterSaleService.push();
                 }
                 break;
             case 7:
@@ -1187,22 +1190,22 @@ class MyOrdersDetailPage extends BasePage {
                     // index: index
                 });
                 break;
-            case 4:
-                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    pageType: 6,
-                    // pageData: this.state.viewData,
-                    returnProductId: this.state.orderType==5||this.state.orderType==98?this.state.viewData.list[0].returnProductId:this.state.viewData.list[index].returnProductId
-                    // index: index
-                });
-                break;
-            case 5:
-                this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-                    pageType: 7,
-                    // pageData: this.state.viewData,
-                    returnProductId: this.state.orderType==5||this.state.orderType==98?this.state.viewData.list[0].returnProductId:this.state.viewData.list[index].returnProductId,
-                    index: index
-                });
-                break;
+            // case 4:
+            //     this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+            //         pageType: 6,
+            //         // pageData: this.state.viewData,
+            //         returnProductId: this.state.orderType==5||this.state.orderType==98?this.state.viewData.list[0].returnProductId:this.state.viewData.list[index].returnProductId
+            //         // index: index
+            //     });
+            //     break;
+            // case 5:
+            //     this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
+            //         pageType: 7,
+            //         // pageData: this.state.viewData,
+            //         returnProductId: this.state.orderType==5||this.state.orderType==98?this.state.viewData.list[0].returnProductId:this.state.viewData.list[index].returnProductId,
+            //         index: index
+            //     });
+            //     break;
             case 6:
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 2,
