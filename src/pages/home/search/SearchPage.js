@@ -10,7 +10,7 @@ import BasePage from '../../../BasePage';
 import HotSearchView from './components/HotSearchView';
 import RecentSearchView from './components/RecentSearchView';
 import SearchNav from './components/SearchNav';
-import RouterMap from '../../../RouterMap';
+import RouterMap from 'RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import Storage from '../../../utils/storage';
 import StringUtils from '../../../utils/StringUtils';
