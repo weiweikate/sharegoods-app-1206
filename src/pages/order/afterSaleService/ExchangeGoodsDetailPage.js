@@ -102,6 +102,9 @@ class ExchangeGoodsDetailPage extends BasePage {
         }
         //退款成功的时候页面是和其他状态不一样的
         let isSuccess = this.state.pageData.status === 6 ? true : false;
+        if (this.state.pageData.status === 1){
+            return null;
+        }
         return this.renderItems(isSuccess);
     };
     /**  退货详情专用  中间一段View */
