@@ -90,9 +90,6 @@ export default class PaymentMethodPage extends BasePage {
         user.updateUserData().then(data => {
             this.payment.availableBalance = data.availableBalance
         })
-
-
-        console.log('this.params.amounts', this.params.amounts, this.state.shouldPayMoney)
     }
 
     componentDidMount() {
