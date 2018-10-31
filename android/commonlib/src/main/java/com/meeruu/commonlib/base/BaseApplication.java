@@ -8,7 +8,6 @@ import android.text.TextUtils;
 
 import com.facebook.soloader.SoLoader;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
-import com.meeruu.commonlib.handler.CrashHandler;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.Utils;
@@ -72,8 +71,6 @@ public class BaseApplication extends MultiDexApplication {
                 // 禁止极光捕获crash
 //                JPushInterface.stopCrashHandler(this);
             } else {
-                // 捕获闪退日志
-                CrashHandler.getInstance().init(this);
             }
             // 初始化分享
             UShare.init(this, umKey);

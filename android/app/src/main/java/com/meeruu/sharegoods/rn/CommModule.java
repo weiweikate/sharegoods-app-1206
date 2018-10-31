@@ -5,14 +5,10 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.Toast;
@@ -32,16 +28,14 @@ import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.FileUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
-import com.meeruu.commonlib.utils.StatusBarUtils;
+import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,7 +135,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void toast(final String msg) {
         String message = msg + "";
-        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+        ToastUtils.showToast(message);
     }
 
     /**
@@ -252,7 +246,7 @@ public class CommModule extends ReactContextBaseJavaModule {
         if (fileSize > maxSize) {
             BitmapUtils.compressBitmap(filePath, maxSize / 1024, filePath);
             callback.invoke();
-        }else {
+        } else {
             callback.invoke();
         }
     }

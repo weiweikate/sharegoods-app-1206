@@ -1,14 +1,18 @@
 
-package com.meeruu.commonlib.handler;
+package com.meeruu.sharegoods.handler;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.util.Log;
 
+import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.utils.SDCardUtils;
+import com.meeruu.sharegoods.MainActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -79,12 +83,12 @@ public class CrashHandler implements UncaughtExceptionHandler {
             mDefaultHandler.uncaughtException(thread, ex);
         } else {
             // 应用重启
-//            Intent intent = new Intent(BaseApplication.appContext, SplashActivity.class);
-//            ComponentName componentName = intent.getComponent();
-//            Intent mainIntent = Intent.makeRestartActivityTask(componentName);
-//            BaseApplication.appContext.startActivity(mainIntent);
-//            System.exit(0);
-//            System.gc();
+            Intent intent = new Intent(BaseApplication.appContext, MainActivity.class);
+            ComponentName componentName = intent.getComponent();
+            Intent mainIntent = Intent.makeRestartActivityTask(componentName);
+            BaseApplication.appContext.startActivity(mainIntent);
+            System.exit(0);
+            System.gc();
         }
 
     }
