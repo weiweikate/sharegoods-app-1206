@@ -442,7 +442,7 @@ export default class MinePage extends BasePage {
     };
 
     renderOrderStates = () => {
-        let statesImage = [waitPay, waitDelivery, waitReceive, hasFinished];
+        let statesImage = [waitPay, waitDelivery, hasFinished, waitReceive];
         let statesText = ["待付款", "待发货", "待收货", "售后/退款"];
         let arr = [];
         for (let i = 0; i < statesImage.length; i++) {
@@ -502,7 +502,7 @@ export default class MinePage extends BasePage {
 
     renderMenu = () => {
         let leftImage = [inviteFr, coupons, myData, myCollet, myHelper, address, promotion, showImg];
-        let leftText = ["邀请好友", "优惠券", "我的数据", "收藏店铺", "帮助", "地址", "我的推广", "发现收藏"];
+        let leftText = ["邀请好友", "优惠券", "我的数据", "收藏店铺", "帮助与客服", "地址", "我的推广", "发现收藏"];
 
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
