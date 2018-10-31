@@ -138,8 +138,8 @@ export default class HomePage extends Component {
                 opacity: this.st
             });
             this.shadowOpacity = 0;
-            this.setState({
-                shadowOpacity: this.shadowOpacity
+            this.headerShadow.setNativeProps({
+                opacity: this.shadowOpacity
             });
             return;
         }
@@ -159,8 +159,8 @@ export default class HomePage extends Component {
         this._refHeader.setNativeProps({
             opacity: this.st
         });
-        this.setState({
-            shadowOpacity: this.shadowOpacity
+        this.headerShadow.setNativeProps({
+            opacity: this.shadowOpacity
         });
     };
 
@@ -321,9 +321,10 @@ export default class HomePage extends Component {
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
                 <LinearGradient colors={['#000', 'transparent']}
+                                ref={e => this.headerShadow = e}
                                 style={[styles.navBar, {
                                     height: this.headerH + 14,
-                                    opacity: bannerModule.opacity === 1 ? 0 : this.state.shadowOpacity
+                                    opacity: bannerModule.opacity === 1 ? 0 : 0.4
                                 }]}/>
 
                 <HomeSearchView navigation={this.props.navigation}
