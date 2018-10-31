@@ -44,6 +44,7 @@ const Router = {
         screen: htmlView
     }
 };
+const PageKey = {};
 
 
 
@@ -64,6 +65,7 @@ function addSubModule(module, prefixPath) {
         } else if (typeof item === 'function') {
             const path = `${p}/${pageName}`;
             Router[path] = { screen: item };
+            PageKey[pageName] = path;
         }
     });
 }
@@ -83,8 +85,7 @@ addSubModule(topic);
 addSubModule(payment);
 addSubModule(show);
 addSubModule(shareTask);
-
 console.log('Router', Object.keys(Router));
 console.log(Router);
-
+export {PageKey};
 export default Router;

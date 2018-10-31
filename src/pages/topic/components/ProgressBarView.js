@@ -69,7 +69,9 @@ export default class ProgressBarView extends Component {
                     marginRight: 5,
                     color: ColorUtil.Color_ffffff
                 }}>
-                    {progressValue * 100 + '%'}
+
+                    {progressValue.toFixed(2) * 100 + '%'}
+
                 </Text>
 
             </View>
@@ -100,7 +102,7 @@ export default class ProgressBarView extends Component {
                 ]}
                 number={1}
             >
-                {'抢光了' + itemData.totalNumber + '件'}
+                {'抢光了' + (parseInt(itemData.totalNumber) - parseInt(itemData.surplusNumber))  + '件'}
             </Text>
         )
 

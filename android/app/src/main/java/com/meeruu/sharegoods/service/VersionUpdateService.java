@@ -17,7 +17,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
-import com.meeruu.commonlib.BaseApplication;
+import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.OnProgressListener;
 import com.meeruu.commonlib.callback.ReqProgressCallBack;
 import com.meeruu.commonlib.handler.WeakHandler;
@@ -27,7 +27,7 @@ import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
-import com.meeruu.sharegoods.MainActivity;
+import com.meeruu.sharegoods.ui.MainRNActivity;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.utils.AppContants;
 
@@ -102,7 +102,7 @@ public class VersionUpdateService extends Service {
                             // 下载完毕后变换通知形式
                             mNotification.build().flags = Notification.FLAG_AUTO_CANCEL;
                             mNotification.setContent(null);
-                            Intent intent = new Intent(VersionUpdateService.this, MainActivity.class);
+                            Intent intent = new Intent(VersionUpdateService.this, MainRNActivity.class);
                             // 更新参数,注意flags要使用FLAG_UPDATE_CURRENT
                             PendingIntent contentIntent = PendingIntent.getActivity(VersionUpdateService.this,
                                     0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -135,8 +135,8 @@ public class VersionUpdateService extends Service {
         });
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(AppContants.XXD_NOTIFY_CHANNEL_ID,
-                    AppContants.XXD_NOTIFY_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel(AppContants.MR_NOTIFY_CHANNEL_ID,
+                    AppContants.MR_NOTIFY_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
             //是否在桌面icon右上角展示小红点
             channel.enableLights(true);
             //是否在久按桌面图标时显示此渠道的通知
@@ -191,7 +191,7 @@ public class VersionUpdateService extends Service {
         CharSequence tickerText = "开始下载";
         long when = System.currentTimeMillis();
         mNotification = new NotificationCompat.Builder(VersionUpdateService.this,
-                AppContants.XXD_NOTIFY_CHANNEL_ID);
+                AppContants.MR_NOTIFY_CHANNEL_ID);
         mNotification.setSmallIcon(icon);
         mNotification.setTicker(tickerText);
         mNotification.setWhen(when);
@@ -202,7 +202,7 @@ public class VersionUpdateService extends Service {
         // 指定个性化视图
         mNotification.setContent(mContentView);
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainRNActivity.class);
 
         // 指定内容意图
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent,

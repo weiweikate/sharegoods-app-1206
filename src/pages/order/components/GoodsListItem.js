@@ -123,7 +123,7 @@ const GoodsListItem = props => {
                     </View>
                 );
             } else {
-                if ((orderType === 5 || orderType === 98) && orderStatus > 4) {
+                if ((orderType === 5 || orderType === 98) && orderStatus >= 4) {
                     nameArr = [{
                         id: 7,
                         operation: '删除订单',
@@ -171,6 +171,7 @@ const GoodsListItem = props => {
                 <GoodsGrayItem
                     key={i}
                     uri={orderProduct[i].imgUrl}
+                    gift={orderType==5||orderType==98}
                     goodsName={orderProduct[i].productName}
                     salePrice={orderProduct[i].price}
                     category={orderProduct[i].spec}

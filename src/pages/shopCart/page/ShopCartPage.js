@@ -443,32 +443,33 @@ export default class ShopCartPage extends BasePage {
                 </TouchableHighlight>
 
                 {
-                    (
-                        (itemData.activityType === 1 || itemData.activityType === 2) &&
-                        this._getSkillIsBegin(itemData) === 1 || this._getSkillIsBegin(itemData) === 0
-                    )
+                    // (
+                    //     (itemData.activityType === 1 || itemData.activityType === 2) &&
+                    //     this._getSkillIsBegin(itemData) === 1 || this._getSkillIsBegin(itemData) === 0
+                    // )
+                        true
                         ?
                         <View
                             style={
                                 [{
-                                    height: 13,
+                                    height: 15,
                                     width: ScreenUtils.width,
                                     justifyContent: 'center',
                                     alignItems: 'center',
-                                    backgroundColor:ColorUtil.mainRedColor
-
+                                    // opacity:0.2
                                 },
-                                    this._getSkillIsBegin(itemData) === 0?
-                                        {opacity:0.4}:
-                                        {backgroundColor:1}
+                                    this._getSkillIsBegin(itemData) === 0
+                                        ?
+                                        { backgroundColor:'rgba(213, 18, 67, 0.5)'}
+                                        :
+                                        { backgroundColor:'rgba(213, 18, 67, 1)'}
                                 ]
                             }
                         >
                             <Text style={{
                                 flex: 1,
-                                textAlign: 'center',
                                 color: ColorUtil.Color_ffffff,
-                                fontSize: 11
+                                fontSize: 11,
                             }}>
                                 {
                                     itemData.activityType === 1 ?
@@ -593,7 +594,7 @@ const
         },
         standaloneRowBack: {
             alignItems: 'center',
-            backgroundColor: ColorUtil.mainRedColor,
+            // backgroundColor: ColorUtil.mainRedColor,
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'flex-end',

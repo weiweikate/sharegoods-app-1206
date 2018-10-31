@@ -26,15 +26,17 @@ export default class SbOpenPrizeHeader extends Component {
         const { checkIndex } = props.headerData;
         this.state = {
             selectSate: checkIndex || 0
-        }
+        };
     }
+
     /**/
-    componentDidMount(){
+    componentDidMount() {
         const { topicNavTitleList } = this.props.headerData;
         if (topicNavTitleList instanceof Array && topicNavTitleList.length > 0) {
-            this._downItemViewClick(this.state.selectSate,topicNavTitleList[this.state.selectSate])
+            this._downItemViewClick(this.state.selectSate, topicNavTitleList[this.state.selectSate]);
         }
     }
+
     render() {
         const { imgUrl, topicNavTitleList } = this.props.headerData;
         const NavWidth = topicNavTitleList.length > 5 ? ScreenUtils.width / 5 : ScreenUtils.width / topicNavTitleList.length;
@@ -75,7 +77,7 @@ export default class SbOpenPrizeHeader extends Component {
                                     style={[itemViewStyle.itemBgImageStyle,
                                         {
                                             left: this.state.selectSate * NavWidth,
-                                            width:NavWidth
+                                            width: NavWidth
                                         }]}
                                 />
                                 {this._getDownTimeItemView().map(itemView => {
@@ -93,7 +95,9 @@ export default class SbOpenPrizeHeader extends Component {
         const { topicNavTitleList } = this.props.headerData;
         const NavWidth = topicNavTitleList.length > 5 ? ScreenUtils.width / 5 : ScreenUtils.width / topicNavTitleList.length;
         // const NavWidth = ScreenUtils.width / 5;
+        console.log('topicNavTitleList');
         console.log(topicNavTitleList);
+        console.log('topicNavTitleList');
         if (topicNavTitleList instanceof Array && topicNavTitleList.length > 0) {
             let tempCompoentArr = [];
             topicNavTitleList.map((item, index) => {
@@ -113,18 +117,27 @@ export default class SbOpenPrizeHeader extends Component {
                                             color: ColorUtil.Color_ffffff
                                         } : null]}
                             />
-                            <UIText
-                                value={item.subTitle}
-                                style={
-                                    [
-                                        itemViewStyle.itemBottomTextStyle,
-                                        this.state.selectSate === index ?
-                                            {
-                                                color: ColorUtil.Color_ffffff
-                                            } : null
-                                    ]
-                                }
-                            />
+
+
+                            {
+                                item.subTitle && item.subTitle.length > 0 ?
+                                    <UIText
+                                        value={item.subTitle}
+                                        style={
+                                            [
+                                                itemViewStyle.itemBottomTextStyle,
+                                                this.state.selectSate === index ?
+                                                    {
+                                                        color: ColorUtil.Color_ffffff
+                                                    } : null
+                                            ]
+                                        }
+                                    /> :
+                                    null
+
+                            }
+
+
                         </View>
                     </TouchableOpacity>
                 );
@@ -146,11 +159,11 @@ export default class SbOpenPrizeHeader extends Component {
         });
         if (index > 2) {
             let offsetX = index * (ScreenUtils.width / 5) - (ScreenUtils.width * 2 / 5);
-            this.refs.scroll  && this.refs.scroll.scrollTo({ x: offsetX, y: 0, animated: true });
+            this.refs.scroll && this.refs.scroll.scrollTo({ x: offsetX, y: 0, animated: true });
         } else {
             this.refs.scroll && this.refs.scroll.scrollTo({ x: 0, y: 0, animated: true });
         }
-         this.props.navItemClick(index, item);
+        this.props.navItemClick(index, item);
     };
 }
 
@@ -163,7 +176,7 @@ const SbOpenPrizeHeaderStyles = StyleSheet.create({
         height: ScreenUtils.width * 188 / 375
     },
     bottomDownViewBgStyle: {
-        height: 55,
+        height: 50,
         width: ScreenUtils.width,
         flexDirection: 'row',
         justifyContent: 'space-around',
@@ -172,30 +185,36 @@ const SbOpenPrizeHeaderStyles = StyleSheet.create({
 });
 
 const itemViewStyle = StyleSheet.create({
-    itemBgStyle: {
-        width: ScreenUtils.width / 5,
-        height: 55
-    },
     itemBgImageStyle: {
         position: 'absolute',
+        // width: ScreenUtils.width / 5,
+        // justifyContent:'center',
+        alignItems: 'center',
+        height: 47,
+        backgroundColor: ColorUtil.mainRedColor
+    },
+    itemBgStyle: {
         width: ScreenUtils.width / 5,
         height: 50,
-        backgroundColor:ColorUtil.mainRedColor
+        // marginTop: 5,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     itemTopTextStyle: {
-        flex: 1,
+        // flex: 1,
         zIndex: 20,
-        marginTop: 5,
+        // marginTop: 5,
         color: ColorUtil.Color_222222,
         textAlign: 'center',
         fontWeight: '800',
         fontSize: 17
     },
     itemBottomTextStyle: {
-        flex: 1,
+        // flex: 1,
         zIndex: 20,
         color: ColorUtil.Color_999999,
         textAlign: 'center',
+        fontWeight: '500',
         fontSize: 12
     }
 });

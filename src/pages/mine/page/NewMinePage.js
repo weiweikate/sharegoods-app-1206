@@ -41,6 +41,7 @@ import showImg from "../res/homeBaseImg/icon_faxian.png";
 import bgImg from "../res/homeBaseImg/bg_img_user.png";
 import rightIcon from "../res/homeBaseImg/me_icon_jinru_nor.png";
 import userOrderNum from '../../../model/userOrderNum';
+import RouterMap from 'RouterMap';
 const headerBgSize = { width: 375, height: 200 };
 
 const { px2dp, statusBarHeight } = ScreenUtils;
@@ -268,14 +269,14 @@ export default class MinePage extends BasePage {
                         </ImageBackground>
                     </View>
                 </View>
-                <View style={styles.saveMoneyWrapper}>
-                    <Text style={{ color: "white", fontSize: px2dp(14), includeFontPadding: false }}>
-                        21.00元
-                    </Text>
-                    <Text style={{ color: "white", fontSize: px2dp(12), includeFontPadding: false }}>
-                        已帮你省
-                    </Text>
-                </View>
+                {/*<View style={styles.saveMoneyWrapper}>*/}
+                    {/*<Text style={{ color: "white", fontSize: px2dp(14), includeFontPadding: false }}>*/}
+                        {/*21.00元*/}
+                    {/*</Text>*/}
+                    {/*<Text style={{ color: "white", fontSize: px2dp(12), includeFontPadding: false }}>*/}
+                        {/*已帮你省*/}
+                    {/*</Text>*/}
+                {/*</View>*/}
             </ImageBackground>
         );
     };
@@ -442,7 +443,7 @@ export default class MinePage extends BasePage {
     };
 
     renderOrderStates = () => {
-        let statesImage = [waitPay, waitDelivery, waitReceive, hasFinished];
+        let statesImage = [waitPay, waitDelivery, hasFinished, waitReceive];
         let statesText = ["待付款", "待发货", "待收货", "售后/退款"];
         let arr = [];
         for (let i = 0; i < statesImage.length; i++) {
@@ -502,7 +503,7 @@ export default class MinePage extends BasePage {
 
     renderMenu = () => {
         let leftImage = [inviteFr, coupons, myData, myCollet, myHelper, address, promotion, showImg];
-        let leftText = ["邀请好友", "优惠券", "我的数据", "收藏店铺", "帮助", "地址", "我的推广", "发现收藏"];
+        let leftText = ["邀请好友", "优惠券", "我的数据", "收藏店铺", "帮助与客服", "地址", "我的推广", "发现收藏"];
 
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
@@ -570,30 +571,30 @@ export default class MinePage extends BasePage {
         //let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助', '地址', '足迹', '发现收藏'];
         switch (index) {
             case 0:
-                this.props.navigation.navigate("mine/InviteFriendsPage");
+                this.props.navigation.navigate(RouterMap.InviteFriendsPage);
                 break;
             case 1:
-                this.props.navigation.navigate("mine/coupons/CouponsPage");
+                this.props.navigation.navigate(RouterMap.CouponsPage);
                 break;
             case 2:
-                this.props.navigation.navigate("mine/MyPromotionPage");
+                this.props.navigation.navigate(RouterMap.MyPromotionPage);
                 break;
             case 3:
                 // this.props.navigation.navigate('order/order/MyOrdersListPage', { index: 2 });
-                this.props.navigation.navigate("mine/MyCollectPage");
+                this.props.navigation.navigate(RouterMap.MyCollectPage);
                 break;
             case 4:
                 // this.props.navigation.navigate('mine/MyCollectPage');
-                this.props.navigation.navigate("mine/helper/MyHelperPage");
+                this.props.navigation.navigate(RouterMap.MyHelperPage);
                 break;
             case 5:
-                this.props.navigation.navigate("mine/AddressManagerPage");
+                this.props.navigation.navigate(RouterMap.AddressManagerPage);
                 break;
             case 6:
-                this.props.navigation.navigate("mine/promotion/UserPromotionPage");
+                this.props.navigation.navigate(RouterMap.UserPromotionPage);
                 break;
             case 7:
-                this.props.navigation.navigate("show/ShowConnectPage");
+                this.props.navigation.navigate(RouterMap.ShowConnectPage);
                 break;
             case 8:
 

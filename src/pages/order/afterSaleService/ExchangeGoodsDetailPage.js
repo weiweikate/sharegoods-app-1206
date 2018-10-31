@@ -102,6 +102,9 @@ class ExchangeGoodsDetailPage extends BasePage {
         }
         //退款成功的时候页面是和其他状态不一样的
         let isSuccess = this.state.pageData.status === 6 ? true : false;
+        if (this.state.pageData.status === 1){
+            return null;
+        }
         return this.renderItems(isSuccess);
     };
     /**  退货详情专用  中间一段View */
@@ -456,9 +459,9 @@ class ExchangeGoodsDetailPage extends BasePage {
                 imageCommpent = () => {return <UIImage source = {refusa_icon} style = {styles.header_image}/>};
                 detialCommpent = () => {return <UIText value = {pageData.refusalReason} style = {styles.header_detail}/>};
             } else if (pageData.status === 6){//已完成
-                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.payTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.payTime / 1000,'yyyy年MM月dd日  hh:mm:ss')} style = {styles.header_detail}/>};
             } else if(pageData.status === 1){//申请中 applyTime	Long	1539250433000
-                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.applyTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.applyTime / 1000,'yyyy年MM月dd日  hh:mm:ss')} style = {styles.header_detail}/>};
             }
         } else if (this.params.pageType === 1) {//退货详情
             let titles = ['等待商家处理', '请退货给商家', '商家拒绝退货申请', '等待商家确认', '等待商家确认', '退货退款成功', '已关闭', '退货退款超时关闭', '商家拒绝退货'];
@@ -466,11 +469,11 @@ class ExchangeGoodsDetailPage extends BasePage {
             if (pageData.status === 3 || pageData.status === 9){//拒绝
                 textContaner_marginLeft = 10;
                 imageCommpent = () => {return <UIImage source = {refusa_icon} style = {styles.header_image}/>};
-                detialCommpent = () => {return <UIText value = {DateUtils.getFormatDate(pageData.refuseTime / 1000,'yyyy年MM月dd日  hh:mm')	} style = {styles.header_detail}/>};
+                detialCommpent = () => {return <UIText value = {DateUtils.getFormatDate(pageData.refuseTime / 1000,'yyyy年MM月dd日  hh:mm:ss')	} style = {styles.header_detail}/>};
             } else if (pageData.status === 6){//已完成
-                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.payTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.payTime / 1000,'yyyy年MM月dd日  hh:mm:ss')} style = {styles.header_detail}/>};
             } else if(pageData.status === 1){//申请中
-                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.applyTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.applyTime / 1000,'yyyy年MM月dd日  hh:mm:ss')} style = {styles.header_detail}/>};
             }else if (pageData.status === 2){//同意申请
                 timerCommpent = () =>  {return <UIText value = { this.state.timeStr} style = {styles.header_detail}/>};
             }
@@ -480,11 +483,11 @@ class ExchangeGoodsDetailPage extends BasePage {
             if (pageData.status === 3 || pageData.status === 9){//拒绝
                 textContaner_marginLeft = 10;
                 imageCommpent = () => {return <UIImage source = {refusa_icon} style = {styles.header_image}/>};
-                detialCommpent = () => {return <UIText value = {DateUtils.getFormatDate(pageData.refuseTime / 1000,'yyyy年MM月dd日  hh:mm')	} style = {styles.header_detail}/>};
+                detialCommpent = () => {return <UIText value = {DateUtils.getFormatDate(pageData.refuseTime / 1000,'yyyy年MM月dd日  hh:mm:ss')	} style = {styles.header_detail}/>};
             } else if (pageData.status === 6){//已完成
-                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.backsendTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.backsendTime / 1000,'yyyy年MM月dd日  hh:mm:ss')} style = {styles.header_detail}/>};
             } else if(pageData.status === 1){//申请中 applyTime	Long	1539250433000
-                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.applyTime / 1000,'yyyy年MM月dd日  hh:mm')} style = {styles.header_detail}/>};
+                detialCommpent = () => {return <UIText value = { DateUtils.getFormatDate(pageData.applyTime / 1000,'yyyy年MM月dd日  hh:mm:ss')} style = {styles.header_detail}/>};
             }else if (pageData.status === 2){//同意申请
                 detialCommpent = () => {return <UIText value = { '7天退货，请退货给商家'} style = {styles.header_detail}/>};
                 timerCommpent = () =>  {return <UIText value = { this.state.timeStr} style = {styles.header_detail}/>};

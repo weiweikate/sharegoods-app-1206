@@ -18,6 +18,7 @@ import BasePage from '../../../BasePage';
 import bridge from '../../../utils/bridge';
 import LoginAPI from '../api/LoginApi';
 import { NavigationActions } from 'react-navigation';
+import DeviceInfo from 'react-native-device-info'
 
 export default class LoginPage extends BasePage {
     constructor(props) {
@@ -133,7 +134,7 @@ export default class LoginPage extends BasePage {
             LoginAPI.appWechatLogin({
                 device: data.device,
                 encryptedData: '',
-                headImg: '',
+                headImg: data.headerImg,
                 iv: '',
                 nickname: data.nickName,
                 openid: data.openid,
@@ -180,7 +181,7 @@ export default class LoginPage extends BasePage {
                 device: '设备名称',
                 password: LoginParam.password,
                 phone: LoginParam.phoneNumber,
-                systemVersion: '44',
+                systemVersion: (DeviceInfo.getSystemVersion() + '').length>0?DeviceInfo.getSystemVersion():'暂无',
                 username: '',
                 wechatCode: '',
                 wechatVersion: ''
@@ -189,8 +190,17 @@ export default class LoginPage extends BasePage {
                 UserModel.saveUserInfo(data.data);
                 UserModel.saveToken(data.data.token)
                 bridge.$toast('登陆成功');
-                this.params.callback && this.params.callback();
-                this.$navigateBack();
+                if(this.params.callback){
+                    let resetAction = NavigationActions.reset({
+                        index: 0,
+                        actions: [
+                            NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
+                        ]
+                    });
+                    this.props.navigation.dispatch(resetAction);
+                }else {
+                    this.$navigateBack();
+                }
             }).catch((data) => {
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
@@ -206,10 +216,10 @@ export default class LoginPage extends BasePage {
                 device: '44',
                 password: LoginParam.password,
                 phone: LoginParam.phoneNumber,
-                systemVersion: '44',
+                systemVersion: (DeviceInfo.getSystemVersion() + '').length > 0 ? DeviceInfo.getSystemVersion()+'' : '22' ,
                 username: '',
-                wechatCode: '',
-                wechatVersion: ''
+                wechatCode: '11',
+                wechatVersion: '11'
             }).then((data) => {
                 this.$loadingDismiss();
                 UserModel.saveUserInfo(data.data);

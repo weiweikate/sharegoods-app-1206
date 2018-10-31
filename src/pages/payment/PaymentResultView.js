@@ -31,8 +31,13 @@ export default class PaymentResultView extends Component {
         navigation.dispatch(resetAction)
     }
     _goToOrder() {
-        this.dismiss()
-        this.props.navigation.navigate('order/order/MyOrdersListPage',{index:2})
+        this.dismiss();
+        let replace = NavigationActions.replace( {
+            key:this.props.navigation.state.key ,
+            routeName: 'order/order/MyOrdersListPage',
+            params: {index:2}
+        })
+        this.props.navigation.dispatch(replace)
     }
     show(result, message) {
         this.setState({

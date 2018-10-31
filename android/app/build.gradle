@@ -96,7 +96,6 @@ dependencies {
     api project(path: ':commonlib')
     api project(path: ':qiyu_service')
     api project(path: ':qrcode')
-    api project(path: ':permissionlib')
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.+'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.+'
