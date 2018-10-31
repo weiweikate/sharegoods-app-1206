@@ -442,48 +442,54 @@ export default class ShopCartPage extends BasePage {
                     </View>
                 </TouchableHighlight>
 
-                {
-                    // (
-                    //     (itemData.activityType === 1 || itemData.activityType === 2) &&
-                    //     this._getSkillIsBegin(itemData) === 1 || this._getSkillIsBegin(itemData) === 0
-                    // )
-                        true
-                        ?
-                        <View
-                            style={
-                                [{
-                                    height: 15,
-                                    width: ScreenUtils.width,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    // opacity:0.2
-                                },
-                                    this._getSkillIsBegin(itemData) === 0
-                                        ?
-                                        { backgroundColor:'rgba(213, 18, 67, 0.5)'}
-                                        :
-                                        { backgroundColor:'rgba(213, 18, 67, 1)'}
-                                ]
-                            }
-                        >
-                            <Text style={{
-                                flex: 1,
-                                color: ColorUtil.Color_ffffff,
-                                fontSize: 11,
-                            }}>
-                                {
-                                    itemData.activityType === 1 ?
-                                        (this._getSkillIsBegin(itemData) === 0?'秒杀活动未开始,暂不可购买~':'该商品正在进行秒杀活动,快去看看~'):
-                                        '该商品正在进行降价拍活动,快去看看~'
-                                }
-                            </Text>
-                        </View>
-                        : null
-                }
                 <View
-                    style={{ height: 10, backgroundColor: ColorUtil.Color_f7f7f7, width: ScreenUtils.width }}
-                />
+                style={{
+                    backgroundColor:ColorUtil.Color_f7f7f7
+                }}
+                >
+                    {
+                        (
+                            (itemData.activityType === 1 || itemData.activityType === 2) &&
+                            this._getSkillIsBegin(itemData) === 1 || this._getSkillIsBegin(itemData) === 0
+                        )
+                            ?
+                            <View
+                                style={
+                                    [{
+                                        height: 15,
+                                        width: ScreenUtils.width,
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                        // opacity:0.2
+                                    },
+                                        this._getSkillIsBegin(itemData) === 0
+                                            ?
+                                            { backgroundColor: 'rgba(213, 18, 67, 0.5)' }
+                                            :
+                                            { backgroundColor: 'rgba(213, 18, 67, 1)' }
+                                    ]
+                                }
+                            >
+                                <Text style={{
+                                    flex: 1,
+                                    color: ColorUtil.Color_ffffff,
+                                    fontSize: 11
+                                }}>
+                                    {
+                                        itemData.activityType === 1 ?
+                                            (this._getSkillIsBegin(itemData) === 0 ? '秒杀活动未开始,暂不可购买~' : '该商品正在进行秒杀活动,快去看看~') :
+                                            '该商品正在进行降价拍活动,快去看看~'
+                                    }
+                                </Text>
+                            </View>
+                            : null
+                    }
+                    <View
+                        style={{ height: 10, backgroundColor: ColorUtil.Color_f7f7f7, width: ScreenUtils.width }}
+                    />
+                </View>
             </View>
+
         );
     };
 
@@ -594,7 +600,7 @@ const
         },
         standaloneRowBack: {
             alignItems: 'center',
-            // backgroundColor: ColorUtil.mainRedColor,
+            backgroundColor: ColorUtil.mainRedColor,
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'flex-end',

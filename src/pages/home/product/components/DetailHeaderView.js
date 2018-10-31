@@ -45,6 +45,10 @@ export default class DetailHeaderView extends Component {
         }, 100);
     }
 
+    updateTime(activityData, activityType, callBack) {
+        this.ProductActivityView.saveActivityViewData(activityData, activityType, callBack);
+    }
+
     getImageList = (data) => {
         if (data) {
             return data.map((item, index) => {
@@ -96,6 +100,7 @@ export default class DetailHeaderView extends Component {
             <View>
                 {productImgListTemp.length > 0 && this.state.swiperShow ? <ViewPager swiperShow={true}
                                                                                      loop={false}
+                                                                                     bounces={true}
                                                                                      height={ScreenUtils.autoSizeWidth(377)}
                                                                                      arrayData={productImgListTemp}
                                                                                      renderItem={(item, index) => this._renderViewPageItem(item, index)}
@@ -104,7 +109,7 @@ export default class DetailHeaderView extends Component {
                 {activityType === 1 || activityType === 2 ?
                     <ProductActivityView activityType={activityType}
                                          ref={(e) => {
-                                             this.ActivityView = e;
+                                             this.ProductActivityView = e;
                                          }}
                                          activityData={this.props.activityData}
                                          productActivityViewAction={this.props.productActivityViewAction}/> : null}
@@ -157,7 +162,7 @@ export default class DetailHeaderView extends Component {
                             marginLeft: 11,
                             color: '#666666',
                             fontSize: 13
-                        }}>{`正品保证·急速发货 ${afterSaleServiceDays === 0 ? `不支持退换货` : `${afterSaleServiceDays > 30 ? 30 : afterSaleServiceDays}天无理由退换`}`}</Text>
+                        }}>{`正品保证·急速发货 ${afterSaleServiceDays === 0 ? `无售后服务` : `${afterSaleServiceDays > 30 ? 30 : afterSaleServiceDays || ''}天无理由退换`}`}</Text>
                     </View>
                 </View>
             </View>
