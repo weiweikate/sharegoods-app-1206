@@ -96,6 +96,7 @@ export default class DetailHeaderView extends Component {
             <View>
                 {productImgListTemp.length > 0 && this.state.swiperShow ? <ViewPager swiperShow={true}
                                                                                      loop={false}
+                                                                                     bounces = {true}
                                                                                      height={ScreenUtils.autoSizeWidth(377)}
                                                                                      arrayData={productImgListTemp}
                                                                                      renderItem={(item, index) => this._renderViewPageItem(item, index)}
@@ -157,7 +158,7 @@ export default class DetailHeaderView extends Component {
                             marginLeft: 11,
                             color: '#666666',
                             fontSize: 13
-                        }}>{`正品保证·急速发货 ${afterSaleServiceDays === 0 ? `不支持退换货` : `${afterSaleServiceDays > 30 ? 30 : afterSaleServiceDays}天无理由退换`}`}</Text>
+                        }}>{`正品保证·急速发货 ${afterSaleServiceDays === 0 ? `无售后服务` : `${afterSaleServiceDays > 30 ? 30 : afterSaleServiceDays}天无理由退换`}`}</Text>
                     </View>
                 </View>
             </View>

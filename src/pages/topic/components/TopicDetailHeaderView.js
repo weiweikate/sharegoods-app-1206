@@ -48,8 +48,8 @@ export default class TopicDetailHeaderView extends Component {
         }, 100);
     }
 
-    updateTime(activityData, activityType) {
-        this.ActivityView.saveActivityViewData(activityData, activityType);
+    updateTime(activityData, activityType, callBack) {
+        this.ActivityView.saveActivityViewData(activityData, activityType, callBack);
     }
 
     getImageList = (data) => {
@@ -133,6 +133,7 @@ export default class TopicDetailHeaderView extends Component {
             <View>
                 {bannerImgList.length > 0 && this.state.swiperShow ? <ViewPager swiperShow={true}
                                                                                 loop={false}
+                                                                                bounces={true}
                                                                                 height={ScreenUtils.autoSizeWidth(377)}
                                                                                 arrayData={bannerImgList}
                                                                                 renderItem={this.renderViewPageItem}
@@ -203,7 +204,7 @@ export default class TopicDetailHeaderView extends Component {
                             marginLeft: 11,
                             color: '#666666',
                             fontSize: 13
-                        }}>{`正品保证·急速发货 ${afterSaleServiceDaysTT === 0 ? `不支持退换货` : `${afterSaleServiceDaysTT > 30 ? 30 : afterSaleServiceDaysTT}天无理由退换`}`}</Text>
+                        }}>{`正品保证·急速发货 ${afterSaleServiceDaysTT === 0 ? `无售后服务` : `${afterSaleServiceDaysTT > 30 ? 30 : afterSaleServiceDaysTT}天无理由退换`}`}</Text>
                     </View>
                 </View>
             </View>
