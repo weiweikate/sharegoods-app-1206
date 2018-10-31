@@ -17,6 +17,7 @@ import bridge from '../../../utils/bridge';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import SMSTool from '../../../utils/SMSTool';
+import { netStatusTool } from '../../../api/network/NetStatusTool';
 
 const dismissKeyboard = require('dismissKeyboard');
 
@@ -187,16 +188,16 @@ export default class LoginTopView extends Component {
         if (this.LoginModel.dowTime > 0) {
             return;
         }
+        if (!netStatusTool.isConnected){
+            bridge.$toast('请检查网络是否连接')
+            return;
+        }
         if (StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
-            SMSTool.sendVerificationCode(0,this.LoginModel.phoneNumber).then(result => {
-                (new TimeDownUtils()).startDown((time) => {
-                    this.LoginModel.dowTime = time;
-                });
-                bridge.$toast('验证码发送成功,注意查收');
-            }).catch(error => {
-                bridge.$toast(error.msg)
-                console.log(error);
-            })
+            bridge.$toast('验证码发送成功,注意查收');
+            (new TimeDownUtils()).startDown((time) => {
+                this.LoginModel.dowTime = time;
+            });
+            SMSTool.sendVerificationCode(0,this.LoginModel.phoneNumber)
         } else {
             bridge.$toast('手机格式不对');
         }

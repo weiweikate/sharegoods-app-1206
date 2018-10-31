@@ -19,6 +19,7 @@ import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import SMSTool from '../../../utils/SMSTool';
+import { netStatusTool } from '../../../api/network/NetStatusTool';
 
 class CommModel {
 
@@ -74,7 +75,6 @@ class CommModel {
             return false;
         }
     }
-
 }
 
 @observer
@@ -229,15 +229,17 @@ export default class CommRegistView extends Component {
         if (this.registModel.dowTime > 0) {
             return;
         }
+        if (!netStatusTool.isConnected){
+            bridge.$toast('请检测网络是否连接');
+            return;
+        }
         if (StringUtils.checkPhone(this.registModel.phoneNumber)) {
-            SMSTool.sendVerificationCode(1,this.registModel.phoneNumber).then(result => {
-                (new TimeDownUtils()).startDown((time) => {
-                    this.registModel.dowTime = time;
-                });
-                bridge.$toast('验证码已发送请注意查收');
-            }).catch(error=>{
-                bridge.$toast(error.msg);
-            })
+            bridge.$toast('验证码已发送请注意查收');
+            (new TimeDownUtils()).startDown((time) => {
+                this.registModel.dowTime = time;
+            });
+            SMSTool.sendVerificationCode(1,this.registModel.phoneNumber)
+
 
         } else {
             bridge.$toast('手机格式不对');
@@ -245,7 +247,9 @@ export default class CommRegistView extends Component {
     };
 
     loginClick = () => {
-        this.props.loginClick(this.registModel.phoneNumber, this.registModel.vertifyCode, this.registModel.password);
+        if(this.registModel.isCanClick){
+            this.props.loginClick(this.registModel.phoneNumber, this.registModel.vertifyCode, this.registModel.password);
+        }
     };
 }
 
