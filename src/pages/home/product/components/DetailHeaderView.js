@@ -45,6 +45,10 @@ export default class DetailHeaderView extends Component {
         }, 100);
     }
 
+    updateTime(activityData, activityType, callBack) {
+        this.ProductActivityView.saveActivityViewData(activityData, activityType, callBack);
+    }
+
     getImageList = (data) => {
         if (data) {
             return data.map((item, index) => {
@@ -104,9 +108,11 @@ export default class DetailHeaderView extends Component {
                     <View style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}/>}
                 {activityType === 1 || activityType === 2 ?
                     <ProductActivityView activityType={activityType}
+                                         ref={(e) => {
+                                             this.ProductActivityView = e;
+                                         }}
                                          activityData={this.props.activityData}
-                                         productActivityViewAction={this.props.productActivityViewAction}
-                                         callBack={this.props.callBack}/> : null}
+                                         productActivityViewAction={this.props.productActivityViewAction}/> : null}
                 <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{
@@ -156,7 +162,7 @@ export default class DetailHeaderView extends Component {
                             marginLeft: 11,
                             color: '#666666',
                             fontSize: 13
-                        }}>{`正品保证·急速发货 ${afterSaleServiceDays === 0 ? `无售后服务` : `${afterSaleServiceDays > 30 ? 30 : afterSaleServiceDays}天无理由退换`}`}</Text>
+                        }}>{`正品保证·急速发货 ${afterSaleServiceDays === 0 ? `无售后服务` : `${afterSaleServiceDays > 30 ? 30 : afterSaleServiceDays || ''}天无理由退换`}`}</Text>
                     </View>
                 </View>
             </View>

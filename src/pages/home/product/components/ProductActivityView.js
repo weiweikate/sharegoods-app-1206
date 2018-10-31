@@ -15,7 +15,6 @@ export default class ActivityView extends Component {
     static propTypes = {
         activityData: PropTypes.object.isRequired,
         activityType: PropTypes.object.isRequired,
-        callBack:PropTypes.func.isRequired,
     };
 
     constructor(props) {
@@ -33,11 +32,8 @@ export default class ActivityView extends Component {
         this.interval && clearInterval(this.interval);
     };
 
-    componentDidMount() {
-        this.saveActivityViewData(this.props.activityData, this.props.activityType);
-    }
-
-    saveActivityViewData(activityData, activityType) {
+    saveActivityViewData(activityData, activityType, callBack) {
+        this.callBack = callBack;
         //	integer($int32)
         // example: 1
         const { date, beginTime, endTime, status } = activityData;
@@ -56,6 +52,7 @@ export default class ActivityView extends Component {
 
 
     _time(start, end) {
+        this._stopTime();
         if (isNoEmpty(start) && isNoEmpty(end)) {
             let countdownDate = new Date().getTime() + (end - start);
             this.interval = setInterval(() => {
@@ -63,7 +60,7 @@ export default class ActivityView extends Component {
                 if (diff <= 0) {
                     diff = 0;
                     this._stopTime();
-                    this.props.callBack&&this.props.callBack();
+                    this.callBack&&this.callBack();
                 }
                 this.setState({
                     countTime: diff

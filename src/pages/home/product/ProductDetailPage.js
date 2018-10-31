@@ -90,10 +90,14 @@ export default class ProductDetailPage extends BasePage {
             if (dataTemp.activityType === 2 && dataTemp.depreciate) {
                 this.setState({
                     activityData: dataTemp.depreciate
+                }, () => {
+                    this.DetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this._getQueryByProductId);
                 });
             } else if (dataTemp.activityType === 1 && dataTemp.seckill) {
                 this.setState({
                     activityData: dataTemp.seckill
+                }, () => {
+                    this.DetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this._getQueryByProductId);
                 });
             }
         }).catch((error) => {
@@ -105,7 +109,7 @@ export default class ProductDetailPage extends BasePage {
     _savaData = (data) => {
         this.setState({
             data: data
-        },()=>{
+        }, () => {
             this._getQueryByProductId();
         });
     };
@@ -170,10 +174,12 @@ export default class ProductDetailPage extends BasePage {
 
     _renderListHeader = () => {
         return <DetailHeaderView data={this.state.data}
+                                 ref={(e) => {
+                                     this.DetailHeaderView = e;
+                                 }}
                                  activityType={this.state.activityType}
                                  activityData={this.state.activityData}
                                  productActivityViewAction={this._productActivityViewAction}
-                                 callBack={this._getQueryByProductId}
                                  navigation={this.props.navigation}/>;
     };
 

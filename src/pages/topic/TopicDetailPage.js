@@ -309,13 +309,17 @@ export default class TopicDetailPage extends BasePage {
             }
         } else {
             //状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
-            const { notifyFlag, surplusNumber, limitNumber, limitFlag, status } = this.state.activityData;
+            const { notifyFlag, surplusNumber, limitNumber, limitFlag, status, beginTime } = this.state.activityData;
             if (status === 1) {
-                if (notifyFlag === 1) {
-                    bottomTittle = '开始前3分钟提醒';
-                } else {
-                    bottomTittle = '设置提醒';
-                    colorType = 1;
+                if (beginTime - new Date().getTime() > 3 * 60 * 1000) {
+                    if (notifyFlag === 1) {
+                        bottomTittle = '开始前3分钟提醒';
+                    } else {
+                        bottomTittle = '设置提醒';
+                        colorType = 1;
+                    }
+                }else {
+                    bottomTittle = '即将开始';
                 }
             } else if (status === 4 || status === 5) {
                 bottomTittle = '已结束';

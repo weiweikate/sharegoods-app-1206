@@ -17,7 +17,8 @@ export default class MyShop_RecruitPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            countTime: 0
+            countTime: 0,
+            isFirst: true//只触发一次 3分钟时
         };
     }
 
@@ -30,10 +31,17 @@ export default class MyShop_RecruitPage extends Component {
     };
 
     _time(start, end) {
+        this._stopTime();
         if (isNoEmpty(start) && isNoEmpty(end)) {
             let countdownDate = new Date().getTime() + (end - start);
             this.interval = setInterval(() => {
                 let diff = countdownDate - new Date().getTime();
+                const { status } = this.props.activityData;
+                //第一次小于3分钟并且是未开始状态
+                if (diff < 3 * 60 * 1000 && status === 1 && this.state.isFirst) {
+                    this.state.isFirst = false;
+                    this.callBack && this.callBack();
+                }
                 if (diff <= 0) {
                     diff = 0;
                     this._stopTime();
