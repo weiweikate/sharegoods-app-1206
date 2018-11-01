@@ -7,9 +7,8 @@ import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
 import { bannerModule, homeModule } from './Modules'
-import XGSwiper from '../../components/ui/XGSwiper'
-
-const bannerHeight = px2dp(220);
+import ViewPager from '../../components/ui/ViewPager'
+const bannerHeight = px2dp(220)
 
 @observer
 export default class HomeBannerView extends Component {
@@ -20,8 +19,22 @@ export default class HomeBannerView extends Component {
     state = {
         index : 0
     }
-    _renderViewPageItem = (item, index) => {
-        return <Image source={{ uri: item.imgUrl }} style={styles.img} resizeMode="cover"/>
+    _renderViewPageItem(item) {
+        return <Image style={styles.img} source={{uri: item}}/>
+    }
+    _renderPagination = (index, total) => {
+        const { bannerCount } = bannerModule
+        let items = []
+        for (let i = 0; i < bannerCount; i++) {
+            if (index === i) {
+                items.push(<View key={i} style={styles.activityIndex}/>)
+            } else {
+                items.push(<View key={i} style={styles.index}/>)
+            }
+        }
+        return  <View style={styles.indexView}>
+            {items}
+        </View>
     }
     _onDidChange = (item, index) => {
         this.setState({index: index})
@@ -37,32 +50,24 @@ export default class HomeBannerView extends Component {
         if (bannerList.length === 0) {
             return null;
         }
-        return <View>
-            <XGSwiper style={styles.swiper}
-                dataSource={bannerList}
-                width={ ScreenUtils.width }
-                height={ bannerHeight }
-                renderRow={this._renderViewPageItem.bind(this)}
-                onPress={this._onPressRow.bind(this)}
-                onDidChange={this._onDidChange.bind(this)}
-                />
-            {this.renderIndexView()}
-        </View>
-    }
 
-    renderIndexView() {
-        const { index } = this.state
-        const { bannerCount } = bannerModule
         let items = []
-        for (let i = 0; i < bannerCount; i++) {
-            if (index === i) {
-                items.push(<View key={i} style={styles.activityIndex}/>)
-            } else {
-                items.push(<View key={i} style={styles.index}/>)
-            }
-        }
-        return  <View style={styles.indexView}>
-            {items}
+        bannerList.map(value => {
+            items.push(value.imgUrl)
+        })
+
+        return <View>
+             <ViewPager
+                swiperShow={true}
+                arrayData={items}
+                renderItem={this._renderViewPageItem.bind(this)}
+                autoplay={true}
+                loop={false}
+                height={bannerHeight}
+                renderPagination={this._renderPagination.bind(this)}
+                index={0}
+                scrollsToTop={true}
+            />
         </View>
     }
 }

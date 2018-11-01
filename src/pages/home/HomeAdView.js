@@ -63,7 +63,8 @@ export default class HomeAdView extends BasePage {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        marginTop:  ScreenUtils.px2dp(10)
+        paddingTop:  ScreenUtils.px2dp(10),
+        marginTop: -1
     },
     featureBox: {
         position: 'relative',

@@ -38,6 +38,10 @@ export default class ShowView extends Component {
             return <View/>
         }
         if (this.showModules.showList.length === 0) {
+            return <View/>
+        }
+        const { isShow } = this.props
+        if (!isShow) {
             return <View style={styles.container}/>
         }
         return <View style={styles.container}>
@@ -71,7 +75,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
-        paddingTop: px2dp(2)
+        paddingTop: px2dp(2),
+        marginTop: -1
     },
     marquee: {
         height: px2dp(34),
