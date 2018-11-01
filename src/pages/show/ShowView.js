@@ -35,9 +35,13 @@ export default class ShowView extends Component {
     render() {
         const { showList } = this.showModules
         if (!showList) {
-            return <View style={styles.container}/>
+            return <View/>
         }
         if (this.showModules.showList.length === 0) {
+            return <View/>
+        }
+        const { isShow } = this.props
+        if (!isShow) {
             return <View style={styles.container}/>
         }
         return <View style={styles.container}>
