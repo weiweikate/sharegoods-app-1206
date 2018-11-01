@@ -18,7 +18,10 @@ export default class HelperQuestionDetail extends BasePage {
         super(props);
         this.state = {
             title: '',
-            content: ''
+            content: '',
+            noHelpNum:0,
+            useHelpNum:0,
+            type:null
         };
     }
 
@@ -29,22 +32,24 @@ export default class HelperQuestionDetail extends BasePage {
 
     componentDidMount() {
         MineApi.findHelpQuestionById({ id: this.params.id }).then(res => {
-            if (res.code === 10000) {
                 this.setState({
                     title: res.data.title,
-                    content: res.data.content
+                    content: res.data.content,
+                    type:res.data.type
                 });
-            }
         }).catch(err => {
             console.log(err);
         });
+        this.loadPageData();
+
     }
 
     _render() {
         return (
             <View style={{ backgroundColor: '#F6F6F6', flex: 1 }}>
-                <HTML html={this.state.content} imagesMaxWidth={ScreenUtils.width}
-                      containerStyle={{ backgroundColor: '#fff' }}/>
+                {this.state.content? <HTML html={this.state.content} imagesMaxWidth={ScreenUtils.width}
+                                           containerStyle={{ backgroundColor: '#fff' }}/>:null}
+
                 <View style={{
                     width: ScreenUtils.width,
                     height: 80,
@@ -60,21 +65,24 @@ export default class HelperQuestionDetail extends BasePage {
                         height: 48,
                         borderRadius: 5,
                         borderWidth: 1,
-                        borderColor: color.red,
+                        borderColor: this.state.type===null||this.state.type==1?color.red:color.white,
+                        backgroundColor:this.state.type===null||this.state.type==1?color.white:color.red,
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
-                        <Text style={{ fontSize: 16, color: color.red }}>没啥帮助?</Text>
+                        <Text style={{ fontSize: 16, color: this.state.type===null||this.state.type==1?color.red:color.white }}>{`没啥帮助?  (${this.state.noHelpNum>9999?'9999+':this.state.noHelpNum})`}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.6} onPress={() => this.feedbackGoodUse()} style={{
                         width: 150,
                         height: 48,
                         borderRadius: 5,
-                        backgroundColor: color.red,
+                        backgroundColor: this.state.type===null||this.state.type==0?color.white:color.red,
+                        borderColor: this.state.type===null||this.state.type==0?color.red:color.white,
+                        borderWidth: 1,
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
-                        <Text style={{ fontSize: 16, color: color.white }}>有用</Text>
+                        <Text style={{ fontSize: 16, color: this.state.type===null||this.state.type==0?color.red:color.white }}>{`有用  (${this.state.useHelpNum>9999?'9999+':this.state.useHelpNum})`}</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -83,11 +91,24 @@ export default class HelperQuestionDetail extends BasePage {
     }
 
     loadPageData() {
+        MineApi.findQuestionEffectById({id:this.params.id}).then(res =>{
+            console.log(res);
+            this.setState({
+                useHelpNum:res.data.isHelp,
+                noHelpNum:res.data.notHelp,
+                type:res.data.type
+
+            })
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     feedbackNoUse() {
         MineApi.updateHelpQuestionToClick({id:this.params.id,hadHelp:0}).then(res=>{
-            this.$toastShow(res.msg)
+            this.$toastShow(''+res.data)
+            this.loadPageData();
+
         }).catch(err=>{
             if(err.code == 10009){
                 this.$navigate('login/login/LoginPage')
@@ -97,7 +118,8 @@ export default class HelperQuestionDetail extends BasePage {
 
     feedbackGoodUse() {
         MineApi.updateHelpQuestionToClick({id:this.params.id,hadHelp:1}).then(res=>{
-            this.$toastShow(res.msg)
+            this.$toastShow(''+res.data)
+            this.loadPageData();
         }).catch(err=>{
            if(err.code == 10009){
                this.$navigate('login/login/LoginPage')
