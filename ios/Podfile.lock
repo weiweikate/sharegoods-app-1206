@@ -21,6 +21,7 @@ PODS:
   - CocoaLumberjack/Default (3.4.1)
   - CocoaLumberjack/Extensions (3.4.1):
     - CocoaLumberjack/Default
+  - IQKeyboardManager (6.2.0)
   - MBProgressHUD (1.1.0)
   - QIYU_iOS_SDK (4.2.1)
   - SandBoxPreviewTool (1.1)
@@ -49,6 +50,7 @@ DEPENDENCIES:
   - AFNetworking
   - Bugly (= 2.5.0)
   - CocoaLumberjack (= 3.4.1)
+  - IQKeyboardManager
   - MBProgressHUD
   - QIYU_iOS_SDK (~> 4.2.1)
   - SandBoxPreviewTool
@@ -67,6 +69,7 @@ SPEC REPOS:
     - AFNetworking
     - Bugly
     - CocoaLumberjack
+    - IQKeyboardManager
     - MBProgressHUD
     - QIYU_iOS_SDK
     - SandBoxPreviewTool
@@ -82,6 +85,7 @@ SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   CocoaLumberjack: 2e258a064cacc8eb9a2aca318e24d02a0a7fd56d
+  IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   QIYU_iOS_SDK: 9dc5cb1dee3abdccca56cc282ecbfc841e366680
   SandBoxPreviewTool: 2d837db4409c74c9a8047838f5b320c08161fad1
@@ -93,6 +97,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 676feec516a11173eafd1fe64b10d27babf28701
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 5a0379d6aa1c209c03ff3ad1a99de77283116a65
+PODFILE CHECKSUM: a8f115040464e492329502a0ec52e4d677ff05ce
 
 COCOAPODS: 1.5.3
