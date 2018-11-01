@@ -55,7 +55,7 @@ export default class RecommendPage extends BasePage {
     };
 
     $NavBarRenderRightItem = () => {
-        const showShopItem = SpellStatusModel.canCreateStore;
+        const showShopItem = SpellStatusModel.canCreateStore || SpellStatusModel.storeId && SpellStatusModel.storeStatus && SpellStatusModel.storeStatus !== 0;
         return <View style={styles.rightBarItemContainer}>
             {
                 showShopItem ? <TouchableOpacity style={styles.rightItemBtn} onPress={this._clickOpenShopItem}>

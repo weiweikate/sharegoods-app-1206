@@ -28,7 +28,7 @@ export default class InvitationToShopPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { disable: false };
     }
 
     info = {};
@@ -45,7 +45,23 @@ export default class InvitationToShopPage extends BasePage {
 
     //截屏
     _saveImg = () => {
-        bridge.saveScreen();
+        this.setState({
+            disable: true
+        }, () => {
+            bridge.saveScreen(null, () => {
+                this.$toastShow('保存成功');
+                this.__timer__ = setTimeout(() => {
+                    this.setState({
+                        disable: false
+                    });
+                }, 2500);
+            }, () => {
+                this.$toastShow('保存失败');
+                this.setState({
+                    disable: false
+                });
+            });
+        });
     };
 
     _shareImg = () => {
@@ -101,7 +117,8 @@ export default class InvitationToShopPage extends BasePage {
                         }} onLayout={this._onLayoutImg} source={Banner}/>
 
                         <View style={{ flexDirection: 'row', marginTop: 50, justifyContent: 'center' }}>
-                            <TouchableOpacity style={styles.bottomBtn} onPress={this._saveImg}>
+                            <TouchableOpacity style={styles.bottomBtn} onPress={this._saveImg}
+                                              disabled={this.state.disable}>
                                 <Text style={styles.textBtn}>
                                     保存图片
                                 </Text>

@@ -36,6 +36,7 @@ export default class MyCouponsItems extends Component {
             viewData: [],
             pageStatus: this.props.pageStatus,
             currentPage: 0,
+            isEmpty: true,
             explainList: [],
             showDialogModal: false,
             tokenCoinNum: this.props.justOne
@@ -47,7 +48,7 @@ export default class MyCouponsItems extends Component {
     }
 
     renderItem = ({ item, index }) => {
-
+        console.log('renderItem', item, index)
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
         let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
@@ -248,6 +249,7 @@ export default class MyCouponsItems extends Component {
     };
 
     render() {
+        console.log('render', this.state.viewData)
         return (
             <View style={styles.container}>
                 <FlatList
@@ -260,7 +262,6 @@ export default class MyCouponsItems extends Component {
                     refreshing={false}
                     onRefresh={this.onRefresh}
                     showsVerticalScrollIndicator={false}
-                    removeClippedSubviews={false}
                 />
                 {this.renderDialogModal()}
                 {this.props.isgiveup ?
@@ -320,10 +321,10 @@ export default class MyCouponsItems extends Component {
         }
     };
     parseData = (dataList) => {
-        let arrData;
-        if (this.state.currentPage == 1) {
-            this.setState({ viewData: [] });
-        }
+        let arrData=[];
+        // if (this.state.currentPage == 1) {
+        //     this.setState({ viewData: [] });
+        // }
         arrData = this.state.viewData || [];
         if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
             if (arrData.length > 0 && arrData[0].type == 99) {
@@ -354,14 +355,17 @@ export default class MyCouponsItems extends Component {
             });
 
         });
+
         this.setState({ viewData: arrData });
+        console.log('viewData', arrData, this.state.viewData)
+
     };
 
     // 1表示刷新，2代表加载
     getDataFromNetwork = () => {
         let status = this.state.pageStatus;
 
-        if (this.props.fromOrder && status === 0) {
+        if (this.props.fromOrder && status == 0) {
             let arr = [];
             // ProductPriceIdPair=this.props.productIds;
             // priceId  productId
@@ -374,6 +378,8 @@ export default class MyCouponsItems extends Component {
             API.listAvailable({ page: this.state.currentPage, pageSize: 10, productPriceIds: arr }).then(res => {
                 let data = res.data || {};
                 let dataList = data.data || [];
+                // this.setState({ isEmpty: false }, this._renderEmptyView);
+                console.log('this.props.fromOrder', this.props.fromOrder, dataList)
                 this.parseData(dataList);
             }).catch(result => {
                 if (result.code === 10009) {
@@ -381,7 +387,7 @@ export default class MyCouponsItems extends Component {
                 }
                 UI.$toast(result.msg);
             });
-        } else if (this.props.justOne && status === 0) {
+        } else if (this.props.justOne && status == 0) {
             let arrData = [];
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0) {
                 arrData.push({
@@ -394,7 +400,7 @@ export default class MyCouponsItems extends Component {
                     type: 99 //以type=99表示1元券
                 });
             }
-            this.setState({ viewData: arrData });
+            this.setState({ viewData: arrData, });
         }
         else {
             API.userCouponList({
@@ -404,6 +410,7 @@ export default class MyCouponsItems extends Component {
             }).then(result => {
                 let data = result.data || {};
                 let dataList = data.data || [];
+                // this.setState({ isEmpty: false }, this._renderEmptyView);
                 this.parseData(dataList);
 
             }).catch(result => {
@@ -413,13 +420,9 @@ export default class MyCouponsItems extends Component {
                 UI.$toast(result.msg);
             });
         }
-    };
 
-    componentDidMount() {
-        if (this.props.justOne && this.state.pageStatus === 0) {
-            this.getDataFromNetwork();
-        }
-    }
+
+    };
 
     //当父组件Tab改变的时候让子组件更新
     componentWillReceiveProps(nextProps) {
@@ -435,7 +438,8 @@ export default class MyCouponsItems extends Component {
     onRefresh = () => {
         console.log('refresh');
         this.setState({
-            currentPage: 1
+            currentPage: 1,
+            viewData: []
         }, () => {
             this.getDataFromNetwork();
         });
@@ -467,6 +471,9 @@ export default class MyCouponsItems extends Component {
             this.setState({ showDialogModal: true });
         } else {
             this.props.nav.navigate('mine/coupons/CouponsDetailPage', { item: item });
+            // if (index == 0) {
+            //     this.setState({ showDialogModal: true });
+            // }
         }
     };
 }
