@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
-        paddingTop: px2dp(2)
+        paddingTop: px2dp(2),
+        marginTop: -1
     },
     marquee: {
         height: px2dp(34),
