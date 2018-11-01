@@ -187,13 +187,7 @@ export default class HomePage extends Component {
             return <HomeGoodsView data={data.itemData} navigation={this.props.navigation}/>;
         } else if (data.type === homeType.show) {
             const { isShow } = this.state;
-            return (<View>{
-                isShow
-                    ?
-                    <ShowView navigation={this.props.navigation}/>
-                    :
-                    <View/>
-            }</View>);
+            return  <ShowView navigation={this.props.navigation} isShow={isShow}/>
         } else if (data.type === homeType.goodsTitle) {
             return <View style={styles.titleView}>
                 <Text style={styles.title}>为你推荐</Text>
