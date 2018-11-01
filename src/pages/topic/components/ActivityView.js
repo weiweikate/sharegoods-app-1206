@@ -17,7 +17,8 @@ export default class MyShop_RecruitPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            countTime: 0
+            countTime: 0,
+            isFirst: true//只触发一次 3分钟时
         };
     }
 
@@ -30,13 +31,21 @@ export default class MyShop_RecruitPage extends Component {
     };
 
     _time(start, end) {
+        this._stopTime();
         if (isNoEmpty(start) && isNoEmpty(end)) {
-            let countdownDate = new Date(new Date().getTime() + (end - start));
+            let countdownDate = new Date().getTime() + (end - start);
             this.interval = setInterval(() => {
                 let diff = countdownDate - new Date().getTime();
+                const { status } = this.props.activityData;
+                //第一次小于3分钟并且是未开始状态
+                if (diff < 3 * 60 * 1000 && status === 1 && this.state.isFirst) {
+                    this.state.isFirst = false;
+                    this.callBack && this.callBack();
+                }
                 if (diff <= 0) {
                     diff = 0;
                     this._stopTime();
+                    this.callBack && this.callBack();
                 }
                 this.setState({
                     countTime: diff
@@ -45,12 +54,13 @@ export default class MyShop_RecruitPage extends Component {
         }
     }
 
-    saveActivityViewData(activityData, activityType) {
+    saveActivityViewData(activityData, activityType, callBack) {
+        this.callBack = callBack;
         const { date, beginTime, endTime, status } = activityData;
-        let begin = status === 1;
-        if (begin) {
+        // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
+        if (status === 1) {
             this._time(date, beginTime);
-        } else {
+        } else if (status === 2 || status === 3) {
             if (activityType === 2) {
                 const { markdownPrice = '', floorPrice, activityTime } = activityData;
                 markdownPrice === floorPrice ? this._time(date, endTime) : this._time(date, activityTime);
