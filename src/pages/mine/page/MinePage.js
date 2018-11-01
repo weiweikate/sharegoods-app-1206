@@ -192,13 +192,12 @@ export default class MinePage extends BasePage {
         return (
             <View
                 style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
-                <View style={{ height: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 20 }}/>
+                <View style={{ height: ScreenUtils.statusBarHeight}}/>
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     paddingRight: px2dp(15),
-                    paddingTop: ScreenUtils.statusBarHeight,
-                    height: ScreenUtils.statusBarHeight + 44
+                    height: 44,
                 }}>
                     <View style={{ flex: 1 }}/>
                     <Text style={{ justifySelf: 'center', color: '#212121', fontSize: px2dp(17) }}>
@@ -678,7 +677,7 @@ const styles = StyleSheet.create({
     headerBgStyle: {
         width: ScreenUtils.width,
         height: ScreenUtils.getImgHeightWithWidth(headerBgSize),
-        paddingTop: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 84 : 60) : 60
+        paddingTop: ScreenUtils.statusBarHeight
     },
     userIconStyle: {
         width: px2dp(54),
