@@ -5,7 +5,8 @@ import {
     Image,
     TouchableWithoutFeedback,
     TouchableOpacity,
-    Text
+    Text,
+    RefreshControl
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ResultSearchNav from './components/ResultSearchNav';
@@ -24,6 +25,7 @@ import ShopCartStore from '../../shopCart/model/ShopCartStore';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import { observer } from 'mobx-react';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 
 @observer
 export default class SearchResultPage extends BasePage {
@@ -36,10 +38,17 @@ export default class SearchResultPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            showTop: false,
-            isHorizontal: true,
+            //刷新
+            refreshing: false,//是否显示下拉的菊花
+            noMore: false,//是否能加载更多
+            loadingMore: false,//是否显示加载更多的菊花
+            loadingMoreError: null,//加载更多是否报错
+
             loadingState: PageLoadingState.loading,
             netFailedInfo: {},
+
+            showTop: false,
+            isHorizontal: true,
             //排序类型(1.综合 2.销量 3. 价格)
             sortType: 1,
             //排序方式 (1.升序 2.降序)
@@ -59,10 +68,6 @@ export default class SearchResultPage extends BasePage {
     }
 
     componentDidMount() {
-        this.loadPageData();
-    }
-
-    loadPageData() {
         this._productList();
     }
 
@@ -75,8 +80,8 @@ export default class SearchResultPage extends BasePage {
             }
         };
     };
-    //数据
-    _productList = () => {
+
+    _getParams = (isMore) => {
         let param = {};
         param.page = this.state.page;
         param.pageSize = 10;
@@ -94,21 +99,67 @@ export default class SearchResultPage extends BasePage {
             }
             param.keyword = this.params.keywords || '';
         }
+        return param;
+    };
 
+    _refreshing = () => {
+        this.setState({
+            refreshing: true
+        }, () => {
+            this._productList();
+        });
+    };
+
+    //数据
+    _productList = () => {
+        this.state.page = 1;
+        let param = this._getParams();
         this.$loadingShow();
         HomeAPI.productList(param).then((data) => {
+            this.state.page++;
             this.$loadingDismiss();
             data = data.data || {};
             let dataArr = data.data || [];
             this.setState({
+                refreshing: false,
+                noMore: dataArr.length < 10,
+
                 loadingState: dataArr.length === 0 ? PageLoadingState.empty : PageLoadingState.success,
                 productList: dataArr
             });
         }).catch((error) => {
             this.$loadingDismiss();
             this.setState({
+                refreshing: false,
+
                 loadingState: PageLoadingState.fail,
                 netFailedInfo: error
+            });
+        });
+    };
+
+    _loadPageDataMore = () => {
+        this.onEndReached = true;
+        this.setState({
+            loadingMore: true
+        }, () => {
+            let param = this._getParams(true);
+            HomeAPI.productList(param).then((data) => {
+                this.state.page++;
+                this.onEndReached = false;
+                data = data.data || {};
+                let dataArr = data.data || [];
+                this.setState({
+                    noMore: dataArr.length < 10,
+                    loadingMore: false,
+                    loadingMoreError: null,
+                    productList: this.state.productList.concat(dataArr || [])
+                });
+            }).catch((error) => {
+                this.setState({
+                    loadingMore: false,
+                    loadingMoreError: error.msg
+                });
             });
         });
     };
@@ -236,9 +287,34 @@ export default class SearchResultPage extends BasePage {
         }
     };
 
+    _ListFooterComponent = () => {
+        if (this.state.productList.length === 0) {
+            return null;
+        }
+        return <ListFooter loadingMore={this.state.loadingMore}
+                           errorDesc={this.state.loadingMoreError}
+                           onPressLoadError={this._onEndReached}/>;
+    };
+    _onEndReached = () => {
+        if (this.onEndReached || !this.state.productList.length || this.state.noMore) {
+            return;
+        }
+        this._loadPageDataMore();
+    };
+
     _renderListView = () => {
         return <FlatList ref={(ref) => this.FlatListShow = ref}
+                         refreshControl={
+                             <RefreshControl
+                                 refreshing={this.state.refreshing}
+                                 onRefresh={this._refreshing.bind(this)}
+                                 title="下拉刷新"
+                                 tintColor="#999"
+                                 titleColor="#999"/>}
                          onScroll={this._onScroll}
+                         onEndReached={this._onEndReached.bind(this)}
+                         onEndReachedThreshold={0.1}
+                         ListFooterComponent={this._ListFooterComponent}
                          scrollEventThrottle={10}
                          style={this.state.isHorizontal ? { marginLeft: 10, marginRight: 15 } : null}
                          renderItem={this._renderItem}
