@@ -10,6 +10,7 @@ import Toast from '../../../utils/bridge';
 import user from '../../../model/user';
 import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
+import userOrderNum from '../../../model/userOrderNum';
 
 export default class MyOrdersListView extends Component {
     constructor(props) {
@@ -253,6 +254,7 @@ export default class MyOrdersListView extends Component {
 
     getDataFromNetwork = () => {
         console.log('orderlistrefresh');
+        userOrderNum.getUserOrderNum();
         let params = {
             userId: user.id,
             page: this.state.currentPage,
@@ -273,7 +275,7 @@ export default class MyOrdersListView extends Component {
                 if (e.code === 10009) {
                     this.$navigate('login/login/LoginPage', {
                         callback: () => {
-                            this.loadPageData();
+                            this.getDataFromNetwork();
                         }
                     });
                 }
@@ -295,7 +297,7 @@ export default class MyOrdersListView extends Component {
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
-                                this.loadPageData();
+                                this.getDataFromNetwork();
                             }
                         });
                     }
@@ -312,7 +314,7 @@ export default class MyOrdersListView extends Component {
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
-                                this.loadPageData();
+                                this.getDataFromNetwork();
                             }
                         });
                     }
@@ -330,7 +332,7 @@ export default class MyOrdersListView extends Component {
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
-                                this.loadPageData();
+                                this.getDataFromNetwork();
                             }
                         });
                     }
@@ -348,7 +350,7 @@ export default class MyOrdersListView extends Component {
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
-                                this.loadPageData();
+                                this.getDataFromNetwork();
                             }
                         });
                     }
@@ -366,7 +368,7 @@ export default class MyOrdersListView extends Component {
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
-                                this.loadPageData();
+                                this.getDataFromNetwork();
                             }
                         });
                     }
