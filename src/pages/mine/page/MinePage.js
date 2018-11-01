@@ -197,7 +197,8 @@ export default class MinePage extends BasePage {
                     flexDirection: 'row',
                     alignItems: 'center',
                     paddingRight: px2dp(15),
-                    height: 40
+                    paddingTop: ScreenUtils.statusBarHeight,
+                    height: ScreenUtils.statusBarHeight + 44
                 }}>
                     <View style={{ flex: 1 }}/>
                     <Text style={{ justifySelf: 'center', color: '#212121', fontSize: px2dp(17) }}>
