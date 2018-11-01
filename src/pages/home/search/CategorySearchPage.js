@@ -135,7 +135,7 @@ export default class CategorySearchPage extends BasePage {
                                    }}
                                    autoplay={true}
                                    height={118}
-                                   style={{ alignItems: 'center', marginBottom: 10 }}
+                                   style={{ marginBottom: 10 }}
                         />
                         <SectionList style={{
                             marginTop: 10,
