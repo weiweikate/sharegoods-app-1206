@@ -58,9 +58,9 @@ export default class MyShop_RecruitPage extends Component {
         this.callBack = callBack;
         const { date, beginTime, endTime, status } = activityData;
         // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
-        if (status === 1) {
+        if (status === 1 && beginTime >= date) {//未开始加个时间判断以防止错误数据无限循环
             this._time(date, beginTime);
-        } else if (status === 2 || status === 3) {
+        } else if ((status === 2 || status === 3) && endTime >= date) {//未结束加个时间判断以防止错误数据无限循环
             if (activityType === 2) {
                 const { markdownPrice = '', floorPrice, activityTime } = activityData;
                 markdownPrice === floorPrice ? this._time(date, endTime) : this._time(date, activityTime);
