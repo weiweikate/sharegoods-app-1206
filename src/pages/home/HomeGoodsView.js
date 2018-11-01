@@ -12,7 +12,7 @@ const Goods = ({goods, press}) => <TouchableOpacity style={styles.container} onP
         </View>
     </View>
     <Text style={styles.dis}  numberOfLines={2}>{goods.name}</Text>
-    <Text style={styles.money}>¥ {goods.price}</Text>
+    <Text style={styles.money}>¥ {goods.price} 起</Text>
 </TouchableOpacity>
 
 export default class GoodsCell extends Component {
