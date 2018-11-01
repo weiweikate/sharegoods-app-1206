@@ -1,10 +1,8 @@
 package com.meeruu.commonlib.umeng;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,12 +11,8 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.facebook.common.executors.CallerThreadExecutor;
@@ -41,6 +35,8 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.bean.WXLoginBean;
+import com.meeruu.commonlib.utils.LogUtils;
+import com.meeruu.commonlib.utils.ToastUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -80,10 +76,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         @Override
         public void onResult(SHARE_MEDIA share_media) {
-            Context context = contextWeakReference.get();
-            if (null != context) {
-                Toast.makeText(context, "成功了", Toast.LENGTH_LONG).show();
-            }
             if (success != null) {
                 success.invoke();
             }
@@ -91,10 +83,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-            Context context = contextWeakReference.get();
-            if (null != context) {
-                Toast.makeText(context, "失败" + throwable.getMessage(), Toast.LENGTH_LONG).show();
-            }
+            ToastUtils.showToast("分享失败：" + throwable.getMessage());
             if (fail != null) {
                 fail.invoke("失败" + throwable.getMessage());
             }
@@ -102,10 +91,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         @Override
         public void onCancel(SHARE_MEDIA share_media) {
-            Context context = contextWeakReference.get();
-            if (null != context) {
-                Toast.makeText(context, "取消了", Toast.LENGTH_LONG).show();
-            }
+            ToastUtils.showToast("分享取消");
             if (fail != null) {
                 fail.invoke("取消了");
             }
@@ -259,7 +245,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         UMShareAPI.get(getCurrentActivity()).getPlatformInfo(getCurrentActivity(), SHARE_MEDIA.WEIXIN, new UMAuthListener() {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
-                Log.e(TAG, "onStart授权开始: ");
+                LogUtils.d("onStart授权开始: ");
             }
 
             @Override
@@ -275,15 +261,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 String gender = map.get("gender");//性别
                 String iconurl = map.get("iconurl");//头像地址
 
-                Log.e(TAG, "onStart授权完成: " + openid);
-                Log.e(TAG, "onStart授权完成: " + unionid);
-                Log.e(TAG, "onStart授权完成: " + access_token);
-                Log.e(TAG, "onStart授权完成: " + refresh_token);
-                Log.e(TAG, "onStart授权完成: " + expires_in);
-                Log.e(TAG, "onStart授权完成: " + uid);
-                Log.e(TAG, "onStart授权完成: " + name);
-                Log.e(TAG, "onStart授权完成: " + gender);
-                Log.e(TAG, "onStart授权完成: " + iconurl);
                 umengDeleteOauth(SHARE_MEDIA.WEIXIN);
                 WXLoginBean bean = new WXLoginBean();
                 bean.setDevice(android.os.Build.DEVICE);
@@ -296,14 +273,14 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
             @Override
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-                Toast.makeText(getCurrentActivity(), "授权失败", Toast.LENGTH_LONG).show();
-                Log.e(TAG, "onError: " + "授权失败");
+                ToastUtils.showToast("授权失败");
+                LogUtils.d("onError: " + "授权失败");
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media, int i) {
-                Toast.makeText(getCurrentActivity(), "授权取消", Toast.LENGTH_LONG).show();
-                Log.e(TAG, "onError: " + "授权取消");
+                ToastUtils.showToast("授权取消");
+                LogUtils.d("onError: " + "授权取消");
             }
         });
     }
@@ -314,25 +291,25 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             @Override
             public void onStart(SHARE_MEDIA share_media) {
                 //开始授权
-                Log.e(TAG, "onStart: ");
+                LogUtils.d("onStart: ");
             }
 
             @Override
             public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
                 //取消授权成功 i=1
-                Log.e(TAG, "onComplete: ");
+                LogUtils.d("onComplete: ");
             }
 
             @Override
             public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
                 //授权出错
-                Log.e(TAG, "onError: ");
+                LogUtils.d("onError: ");
             }
 
             @Override
             public void onCancel(SHARE_MEDIA share_media, int i) {
                 //取消授权
-                Log.e(TAG, "onCancel: ");
+                LogUtils.d("onCancel: ");
             }
         });
     }
@@ -508,12 +485,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void saveScreen(ReadableMap params) {
-        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(mContext.getCurrentActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 54);
-            Log.i("-->", "权限申请");
-        } else {
-            screenshot();
-        }
+        screenshot();
     }
 
     /**
@@ -547,18 +519,13 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 String mUri = MediaStore.Images.Media.insertImage(mContext.getContentResolver(), file.getPath(), file.getName(), null);
 
                 if (mUri != null) {
-                    Toast.makeText(mContext, "截图成功", Toast.LENGTH_SHORT).show();
                     // 最后通知图库更新
                     Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     Uri uri = Uri.fromFile(new File(mUri));
                     intent.setData(uri);
                     mContext.sendBroadcast(intent);
-                } else {
-                    Toast.makeText(mContext, "截图失败", Toast.LENGTH_SHORT).show();
                 }
-
             } catch (Exception e) {
-
             }
         }
     }

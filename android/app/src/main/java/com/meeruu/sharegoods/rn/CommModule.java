@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -227,18 +226,18 @@ public class CommModule extends ReactContextBaseJavaModule {
 
         File file = new File(filePath);
         if (!file.exists()) {
-            Toast.makeText(mContext, "文件不存在", Toast.LENGTH_LONG).show();
+            ToastUtils.showToast("文件不存在");
             callback.invoke();
             return;
         }
         if (isVideo(filePath)) {
-            Toast.makeText(mContext, "头像不能上传视频", Toast.LENGTH_LONG).show();
+            ToastUtils.showToast("头像不能上传视频");
             callback.invoke();
             return;
         }
 
         if (isGIF(filePath)) {
-            Toast.makeText(mContext, "头像不支持GIF格式图片", Toast.LENGTH_LONG).show();
+            ToastUtils.showToast("头像不支持GIF格式图片");
             callback.invoke();
             return;
         }
