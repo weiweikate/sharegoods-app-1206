@@ -34,7 +34,7 @@ export default class InvitationToShopPage extends BasePage {
     info = {};
 
     componentDidMount() {
-        this.creatQRCodeImage('二维码链接');
+        this.creatQRCodeImage(`${apiEnvironment.getCurrentH5Url()}/download`);
     }
 
     creatQRCodeImage(QRCodeStr) {
@@ -137,7 +137,7 @@ export default class InvitationToShopPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${shareInfo.name}`,
                                     dec: '店铺',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/register`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download`,
                                     thumImage: `${shareInfo.headUrl}`
                                 }}/>
             </View>
