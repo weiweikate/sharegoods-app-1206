@@ -35,12 +35,12 @@ export default class MyCouponsItems extends Component {
         this.state = {
             viewData: [],
             pageStatus: this.props.pageStatus,
-            currentPage: 0,
             isEmpty: true,
             explainList: [],
             showDialogModal: false,
             tokenCoinNum: this.props.justOne
         };
+        this.currentPage = 0;
     }
 
     fmtDate(obj) {
@@ -248,7 +248,7 @@ export default class MyCouponsItems extends Component {
     };
 
     render() {
-        console.log('render', this.state.viewData)
+        console.log('render', this.state.viewData);
         return (
             <View style={styles.container}>
                 <FlatList
@@ -320,15 +320,10 @@ export default class MyCouponsItems extends Component {
         }
     };
     parseData = (dataList) => {
-        let arrData=[];
-        // if (this.state.currentPage == 1) {
-        //     this.setState({ viewData: [] });
-        // }
-        arrData = this.state.viewData || [];
-        if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
-            if (arrData.length > 0 && arrData[0].type == 99) {
-                //不在重复显示一元券
-            } else {
+
+        let arrData = [];
+        if (this.currentPage === 1) {//refresh
+            if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
                 arrData.push({
                     status: 0,
                     name: '可叠加使用',
@@ -339,28 +334,44 @@ export default class MyCouponsItems extends Component {
                     type: 99 //以type=99表示1元券
                 });
             }
-        }
-        dataList.map((item) => {
-            arrData.push({
-                id: item.id,
-                status: item.status,
-                name: item.name,
-                timeStr: this.fmtDate(item.startTime) + '-' + this.fmtDate(item.expireTime),
-                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n抵扣' : item.value),
-                limit: this.parseCoupon(item),
-                couponConfigId: item.couponConfigId,
-                remarks: item.remarks,
-                type: item.type
+
+            dataList.map((item) => {
+                arrData.push({
+                    id: item.id,
+                    status: item.status,
+                    name: item.name,
+                    timeStr: this.fmtDate(item.startTime) + '-' + this.fmtDate(item.expireTime),
+                    value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n抵扣' : item.value),
+                    limit: this.parseCoupon(item),
+                    couponConfigId: item.couponConfigId,
+                    remarks: item.remarks,
+                    type: item.type
+                });
             });
+            this.setState({ viewData: arrData });
+        } else {//more
+            dataList.map((item) => {
+                arrData.push({
+                    id: item.id,
+                    status: item.status,
+                    name: item.name,
+                    timeStr: this.fmtDate(item.startTime) + '-' + this.fmtDate(item.expireTime),
+                    value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n抵扣' : item.value),
+                    limit: this.parseCoupon(item),
+                    couponConfigId: item.couponConfigId,
+                    remarks: item.remarks,
+                    type: item.type
+                });
+            });
+            this.setState({ viewData: this.state.viewData.concat(arrData) });
 
-        });
-
-        this.setState({ viewData: arrData });
+        }
 
     };
 
     // 1表示刷新，2代表加载
     getDataFromNetwork = () => {
+
         let status = this.state.pageStatus;
 
         if (this.props.fromOrder && status == 0) {
@@ -371,10 +382,10 @@ export default class MyCouponsItems extends Component {
                 arr.push({
                     priceId: item.priceId,
                     productId: item.productId,
-                    amount:item.num
+                    amount: item.num
                 });
             });
-            API.listAvailable({ page: this.state.currentPage, pageSize: 10, productPriceIds: arr }).then(res => {
+            API.listAvailable({ page: this.currentPage, pageSize: 10, productPriceIds: arr }).then(res => {
                 let data = res.data || {};
                 let dataList = data.data || [];
                 // this.setState({ isEmpty: false }, this._renderEmptyView);
@@ -398,18 +409,22 @@ export default class MyCouponsItems extends Component {
                     type: 99 //以type=99表示1元券
                 });
             }
-            this.setState({ viewData: arrData, });
+            this.setState({ viewData: arrData });
         }
         else {
             API.userCouponList({
-                page: this.state.currentPage,
+                page: this.currentPage,
                 status,
                 pageSize: 10
             }).then(result => {
                 let data = result.data || {};
                 let dataList = data.data || [];
                 // this.setState({ isEmpty: false }, this._renderEmptyView);
+                //this.parseData(dataList);
+
+                // this.setState({ viewData: dataList });
                 this.parseData(dataList);
+
 
             }).catch(result => {
                 if (result.code === 10009) {
@@ -435,23 +450,16 @@ export default class MyCouponsItems extends Component {
 
     onRefresh = () => {
         console.log('refresh');
-        this.setState({
-            currentPage: 1,
-            viewData: []
-        }, () => {
-            this.getDataFromNetwork();
-        });
+        this.currentPage = 1;
+        this.getDataFromNetwork();
+
 
     };
 
     onLoadMore = () => {
         console.log('onLoadMore');
-        let currentpage = this.state.currentPage + 1;
-        this.setState({
-            currentPage: currentpage
-        }, () => {
-            this.getDataFromNetwork();
-        });
+        this.currentPage++;
+        this.getDataFromNetwork();
 
     };
 
