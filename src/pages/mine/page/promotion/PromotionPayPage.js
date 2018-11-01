@@ -63,7 +63,9 @@ export default class PromotionPayPage extends BasePage<Props> {
                     <UIText style={{color:'#999999',fontSize:px2dp(12)}} value={'固定金额红包'}/>
                 </View>
                 <View style={styles.itemWrapper}>
-                    <UIText value={`红包金额：2元`}/>
+                    <UIText style={{color:'#222222',fontSize:px2dp(13),includeFontPadding:false}} value={`红包金额：${this.params.price}元`}/>
+                    <UIText  style={{color:'#999999',fontSize:px2dp(11),includeFontPadding:false}} value={`（共发放${this.params.count}个红包）`}/>
+                    <View style={{flex:1}}/>
                     <TouchableOpacity onPress={()=>{
                         this.setState({isSelected : !this.state.isSelected})
                     }}>
@@ -90,7 +92,6 @@ const styles = StyleSheet.create({
         height:px2dp(48),
         width:ScreenUtils.width,
         flexDirection:'row',
-        justifyContent:'space-between',
         alignItems:'center',
         paddingHorizontal:px2dp(15),
         borderTopColor:'#DDDDDD',

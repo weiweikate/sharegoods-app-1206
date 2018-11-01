@@ -61,8 +61,8 @@ export default class RefreshLargeList extends React.Component {
         onStartRefresh: PropTypes.func,
         onEndRefresh: PropTypes.func,
         onStartLoadMore: PropTypes.func,
-        onEndLoadMore: PropTypes.func
-        // data: PropTypes.array
+        onEndLoadMore: PropTypes.func,
+        defaultData: PropTypes.array
     };
 
     static defaultProps = {
@@ -75,7 +75,8 @@ export default class RefreshLargeList extends React.Component {
         defaultPage: 1,
         params: {},
         defaultEmptyImage: defaultNoData,
-        defaultEmptyText: "没有数据"
+        defaultEmptyText: "没有数据",
+        defaultData:[]
     };
 
     constructor(props) {
@@ -89,7 +90,7 @@ export default class RefreshLargeList extends React.Component {
             footerStatus: "idle",
             height: 0
         };
-        this.data = [];
+        this.data = props.defaultData;
         this.page = props.defaultPage;
         this.allLoadCompleted = false;
     }

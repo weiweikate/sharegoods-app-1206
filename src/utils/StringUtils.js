@@ -1,4 +1,5 @@
 import { Clipboard } from 'react-native';
+import EmptyUtils from './EmptyUtils';
 
 const isEmpty = (param) => {
     let input = param + '';
@@ -192,6 +193,19 @@ function trim(s) {
     return rtrim(ltrim(s));
 }
 
+
+//手机号中间4位用*代替
+function encryptPhone(s) {
+    if(EmptyUtils.isEmpty(s)){
+        return s;
+    }
+    if(!checkPhone(s)){
+        return s;
+    }
+
+    return s.substr(0, 3) + '****' + s.substr(7);
+}
+
 export default {
     isEmpty,
     isNoEmpty,
@@ -206,7 +220,8 @@ export default {
     checkIsPositionNumber,
     clipboardSetString,
     clipboardGetString,
-    trim
+    trim,
+    encryptPhone
 };
 
 

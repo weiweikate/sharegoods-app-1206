@@ -15,8 +15,10 @@ import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
 import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
+import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.qiyu.imService.QiyuImageLoader;
 import com.meeruu.sharegoods.BuildConfig;
+import com.meeruu.sharegoods.handler.CrashHandler;
 import com.meeruu.sharegoods.rn.RNPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
@@ -30,8 +32,6 @@ import com.taobao.sophix.listener.PatchLoadStatusListener;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
 public class MRApplication extends BaseApplication implements ReactApplication {
 
@@ -71,6 +71,10 @@ public class MRApplication extends BaseApplication implements ReactApplication {
         }
         LeakCanary.install(this);
         if (getProcessName(this).equals(getPackageName())) {
+            if (!Utils.isApkInDebug()) {
+                // 捕获闪退日志
+                CrashHandler.getInstance().init(this);
+            }
             // 七鱼初始化
             Unicorn.init(this, "aa15b0b8c2a1bc1bf0341e244c049961", options(), new QiyuImageLoader(this));
         }
