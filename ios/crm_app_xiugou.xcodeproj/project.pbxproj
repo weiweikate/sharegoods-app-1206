@@ -1876,6 +1876,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou-resources.sh",
+				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/QIYU_iOS_SDK/SDK/QYResource.bundle",
 				"${PODS_ROOT}/SandBoxPreviewTool/沙盒查看工具/SandBoxPreviewTool/iconSource/back_icon@2x.png",
 				"${PODS_ROOT}/SandBoxPreviewTool/沙盒查看工具/SandBoxPreviewTool/iconSource/back_icon@3x.png",
@@ -1885,6 +1886,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QYResource.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/back_icon@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/back_icon@3x.png",
