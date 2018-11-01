@@ -58,7 +58,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
     }
 
     loadPageData() {
-        this.creatQRCodeImage('二维码链接');
+        this.creatQRCodeImage(`${apiEnvironment.getCurrentH5Url()}/register`);
     }
 
     creatQRCodeImage(QRCodeStr){
