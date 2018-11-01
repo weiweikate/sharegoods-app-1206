@@ -16,6 +16,7 @@ public class WXLoginBean {
     private String openid;
     private String systemVersion;
     private String nickName;
+    private String headerImg;
 
     public String getDevice() {
         return device;
@@ -47,5 +48,13 @@ public class WXLoginBean {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public String getHeaderImg() {
+        return headerImg;
+    }
+
+    public void setHeaderImg(String headerImg) {
+        this.headerImg = headerImg;
     }
 }

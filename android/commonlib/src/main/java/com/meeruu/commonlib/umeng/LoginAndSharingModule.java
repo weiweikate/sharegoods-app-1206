@@ -220,7 +220,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private void downLoadImageAndompress(){
+    private void downLoadImageAndompress() {
 
     }
 
@@ -290,6 +290,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 bean.setOpenid(openid);
                 bean.setSystemVersion(android.os.Build.VERSION.RELEASE);
                 bean.setNickName(name);
+                bean.setHeaderImg(iconurl);
                 callback.invoke(JSON.toJSONString(bean));
             }
 

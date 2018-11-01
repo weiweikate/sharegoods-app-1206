@@ -35,8 +35,7 @@ export default class MyCouponsItems extends Component {
         this.state = {
             viewData: [],
             pageStatus: this.props.pageStatus,
-            refreshing: false,
-            currentPage: 1,
+            currentPage: 0,
             isEmpty: true,
             explainList: [],
             showDialogModal: false,
@@ -181,7 +180,7 @@ export default class MyCouponsItems extends Component {
                                 height: px2dp(24),
                                 width: px2dp(136),
                                 fontSize: px2dp(15)
-                            }} />
+                            }}/>
                         <UIImage source={plusIcon} style={{
                             width: px2dp(24),
                             height: px2dp(24),
@@ -242,19 +241,11 @@ export default class MyCouponsItems extends Component {
     _keyExtractor = (item, index) => index;
     // 空布局
     _renderEmptyView = () => {
-        // if (this.state.isEmpty) {
-        //     return (
-        //         <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
-        //             <Text style={{ color: '#999999', fontSize: 15, marginTop: 15 }}>数据加载中...</Text>
-        //         </View>
-        //     )
-        // } else {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
                 <Text style={{ color: '#999999', fontSize: 15, marginTop: 15 }}>暂无优惠券</Text></View>
         );
-        // }
     };
 
     render() {
@@ -267,8 +258,9 @@ export default class MyCouponsItems extends Component {
                     onEndReachedThreshold={0.1}
                     onEndReached={this.onLoadMore}
                     ListEmptyComponent={this._renderEmptyView}
-                    refreshing={this.state.refreshing}
+                    refreshing={false}
                     onRefresh={this.onRefresh}
+                    showsVerticalScrollIndicator={false}
                 />
                 {this.renderDialogModal()}
                 {this.props.isgiveup ?
@@ -330,7 +322,7 @@ export default class MyCouponsItems extends Component {
     parseData = (dataList) => {
         let arrData;
         if (this.state.currentPage == 1) {
-            arrData = [];
+            this.setState({ viewData: [] });
         }
         arrData = this.state.viewData || [];
         if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
@@ -353,7 +345,7 @@ export default class MyCouponsItems extends Component {
                 id: item.id,
                 status: item.status,
                 name: item.name,
-                timeStr: this.fmtDate(item.startTime) + '-' + this.fmtDate(item.outTime),
+                timeStr: this.fmtDate(item.startTime) + '-' + this.fmtDate(item.expireTime),
                 value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n抵扣' : item.value),
                 limit: this.parseCoupon(item),
                 couponConfigId: item.couponConfigId,
@@ -366,24 +358,10 @@ export default class MyCouponsItems extends Component {
 
     };
 
-    componentDidMount() {
-        //网络请求，业务处理
-        this.getDataFromNetwork();
-
-    }
-
+    // 1表示刷新，2代表加载
     getDataFromNetwork = () => {
         let status = this.state.pageStatus;
-        /**
 
-         "page": 1,
-         "pageSize": 10,
-         "productPriceIds": [
-         {
-           "priceId": 1,
-           "productId": 1
-         }
-         */
         if (this.props.fromOrder && status == 0) {
             let arr = [];
             // ProductPriceIdPair=this.props.productIds;
@@ -394,7 +372,7 @@ export default class MyCouponsItems extends Component {
                     productId: item.productId
                 });
             });
-            API.listAvailable({ page: this.state.currentPage, pageSize: 20, productPriceIds: arr }).then(res => {
+            API.listAvailable({ page: this.state.currentPage, pageSize: 10, productPriceIds: arr }).then(res => {
                 let data = res.data || {};
                 let dataList = data.data || [];
                 this.setState({ isEmpty: false }, this._renderEmptyView);
@@ -456,7 +434,6 @@ export default class MyCouponsItems extends Component {
     onRefresh = () => {
         console.log('refresh');
         this.setState({
-            // viewData: [],
             currentPage: 1
         }, () => {
             this.getDataFromNetwork();

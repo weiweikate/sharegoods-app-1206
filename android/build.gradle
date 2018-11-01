@@ -2,6 +2,7 @@ apply from: "config.gradle"
 
 buildscript {
     repositories {
+        mavenLocal()
         jcenter()
         google()
     }
