@@ -63,7 +63,8 @@ export default class MyShop_RecruitPage extends Component {
         } else if ((status === 2 || status === 3) && endTime >= date) {//未结束加个时间判断以防止错误数据无限循环
             if (activityType === 2) {
                 const { markdownPrice = '', floorPrice, activityTime } = activityData;
-                markdownPrice === floorPrice ? this._time(date, endTime) : this._time(date, activityTime);
+                //活动价和低价相等或者抢光了  取结束时间
+                (markdownPrice === floorPrice || status === 3) ? this._time(date, endTime) : this._time(date, activityTime);
             } else {
                 this._time(date, endTime);
             }
@@ -126,7 +127,7 @@ export default class MyShop_RecruitPage extends Component {
             } else {
                 price = markdownPrice;
                 two = `${surplusNumber === 0 ? `已抢${totalNumber}件` : '起拍价'}`;
-                three = markdownPrice === floorPrice ? `距结束 ${this._timeDif(this.state.countTime) || ''}` : `距下次降价 ${this._timeDif(this.state.countTime) || ''}`;
+                three = (markdownPrice === floorPrice || status === 3) ? `距结束 ${this._timeDif(this.state.countTime) || ''}` : `距下次降价 ${this._timeDif(this.state.countTime) || ''}`;
                 four = `${surplusNumber === 0 ? `已抢100%` : `还剩${surplusNumber}件`}`;
             }
         } else {
@@ -162,40 +163,42 @@ export default class MyShop_RecruitPage extends Component {
                     }}>{two}</Text>
                 </View>
             </View>
-            <View style={{ marginRight: 15 }}>
-                {end ?
-                    <Text style={{ color: '#FFFC00', fontSize: 13 }}>活动已结束</Text>
-                    :
-                    <View>
-                        <Text style={{ color: begin ? '#1B7BB3' : '#FFFC00', fontSize: 11 }}>{three}</Text>
+            {end ?
+                <Text style={{ color: '#FFFC00', fontSize: 13, marginRight: 15 }}>活动已结束</Text>
+                :
+                <View style={{ alignItems: 'flex-end' }}>
+                    <View style={{ width: 106 + 30, alignItems: 'center' }}>
+                        <Text style={{ color: begin ? '#1B7BB3' : '#FFFC00', fontSize: 11 }}
+                              numberOfLines={1}>{three}</Text>
+                    </View>
+                    <View style={{
+                        marginRight: 15,
+                        marginTop: 5,
+                        width: 106,
+                        height: 12,
+                        borderRadius: 6,
+                        backgroundColor: begin ? '#2B99D9' : '#F1C11B',
+                        flexDirection: 'row',
+                        overflow: 'hidden'
+                    }}>
+                        {!begin ? <View style={{
+                            width: (totalNumber - surplusNumber) / totalNumber * 106,
+                            backgroundColor: '#FFFC00'
+                        }}/> : null}
                         <View style={{
-                            marginTop: 5,
-                            width: 106,
-                            height: 12,
-                            borderRadius: 6,
-                            backgroundColor: begin ? '#2B99D9' : '#F1C11B',
-                            flexDirection: 'row',
-                            overflow: 'hidden'
+                            position: 'absolute',
+                            top: 0, bottom: 0, left: 0, right: 0,
+                            alignItems: 'center',
+                            justifyContent: 'center'
                         }}>
-                            {!begin ? <View style={{
-                                width: (totalNumber - surplusNumber) / totalNumber * 106,
-                                backgroundColor: '#FFFC00'
-                            }}/> : null}
-                            <View style={{
-                                position: 'absolute',
-                                top: 0, bottom: 0, left: 0, right: 0,
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }}>
-                                <Text style={{
-                                    color: begin ? '#F7F7F7' : '#D51243',
-                                    fontSize: 11
-                                }}>{four}</Text>
-                            </View>
+                            <Text style={{
+                                color: begin ? '#F7F7F7' : '#D51243',
+                                fontSize: 11
+                            }}>{four}</Text>
                         </View>
                     </View>
-                }
-            </View>
+                </View>
+            }
         </View>;
     }
 }
