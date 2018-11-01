@@ -268,7 +268,6 @@ const Styles = StyleSheet.create(
             position: 'absolute',
             bottom: 10,
             height: 170
-
         },
         lineBgStyle: {
             marginLeft: 30,
