@@ -313,7 +313,7 @@ class MyOrdersDetailPage extends BasePage {
                     <View>
                         {this.renderLine()}
                         {this.state.giftBagCoupons.map((item, index) => {
-                            return <View style={{ backgroundColor: 'white' }}>
+                            return <View style={{ backgroundColor: 'white' }} key={index}>
                                 {index == 0 ? <Image source={couponIcon} style={{
                                     width: 15,
                                     height: 12,
@@ -424,7 +424,7 @@ class MyOrdersDetailPage extends BasePage {
                     }}/>}
                 {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
                     <UIText
-                        value={'完成时间：' + DateUtils.getFormatDate(this.state.viewData.finishTime ? this.state.viewData.deliverTime / 1000 : this.state.viewData.finishTime / 1000)}
+                        value={'完成时间：' + DateUtils.getFormatDate(this.state.viewData.deliverTime ? this.state.viewData.deliverTime / 1000 : this.state.viewData.finishTime / 1000)}
                         style={{
                             color: color.black_999,
                             fontSize: 13,
@@ -693,6 +693,40 @@ class MyOrdersDetailPage extends BasePage {
                 break;
             case 3:
             case 4:
+                if (isAfterSale) {
+                    afterSaleService.push();
+                } else {
+                    switch (data[index].returnType) {
+                        case 1://申请退款
+                            afterSaleService.push({
+                                id: 2,
+                                operation: '退款中',
+                                isRed: false
+                            });
+                            break;
+                        case 2://申请退货
+                            afterSaleService.push({
+                                id: 3,
+                                operation: '退货中',
+                                isRed: false
+                            });
+                            break;
+                        case 3://申请换货
+                            afterSaleService.push({
+                                id: 6,
+                                operation: '换货中',
+                                isRed: false
+                            });
+                            break;
+                        default:
+                            afterSaleService.push({
+                                id: 1,
+                                operation: '退换',
+                                isRed: false
+                            });
+                    }
+                }
+                break;
             case 5:
                 if (isAfterSale) {
                     afterSaleService.push();
