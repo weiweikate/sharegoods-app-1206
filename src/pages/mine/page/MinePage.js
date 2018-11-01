@@ -470,7 +470,7 @@ export default class MinePage extends BasePage {
                     justifyContent: 'center'
                 }}>
                     <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(10) }}>
-                        {num}
+                        {num>99?99:num}
                     </Text>
                 </View>
             ) : null;

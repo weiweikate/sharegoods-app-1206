@@ -48,7 +48,6 @@ export default class MyCouponsItems extends Component {
     }
 
     renderItem = ({ item, index }) => {
-        console.log('renderItem', item, index)
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
         let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
@@ -357,7 +356,6 @@ export default class MyCouponsItems extends Component {
         });
 
         this.setState({ viewData: arrData });
-        console.log('viewData', arrData, this.state.viewData)
 
     };
 
@@ -372,14 +370,14 @@ export default class MyCouponsItems extends Component {
             this.props.orderParam.orderProducts.map((item, index) => {
                 arr.push({
                     priceId: item.priceId,
-                    productId: item.productId
+                    productId: item.productId,
+                    amount:item.num
                 });
             });
             API.listAvailable({ page: this.state.currentPage, pageSize: 10, productPriceIds: arr }).then(res => {
                 let data = res.data || {};
                 let dataList = data.data || [];
                 // this.setState({ isEmpty: false }, this._renderEmptyView);
-                console.log('this.props.fromOrder', this.props.fromOrder, dataList)
                 this.parseData(dataList);
             }).catch(result => {
                 if (result.code === 10009) {

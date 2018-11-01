@@ -367,10 +367,12 @@ export default class ConfirOrderPage extends BasePage {
     componentDidMount() {
         this.loadPageData();
         let arr = [];
+        console.log('loadmore',this.state.orderParam);
         this.state.orderParam.orderProducts.map((item, index) => {
             arr.push({
                 priceId: item.priceId,
-                productId: item.productId
+                productId: item.productId,
+                amount:item.num
             });
         });
         API.listAvailable({ page: 1, pageSize: 20, productPriceIds: arr }).then(res => {
