@@ -484,52 +484,41 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void saveScreen(ReadableMap params,Callback success,Callback fail) {
-        screenshot(success,fail);
+    public void saveScreen(ReadableMap params, Callback success, Callback fail) {
+        screenshot(success, fail);
     }
 
     /**
      * 获取屏幕
      */
-    private void screenshot(Callback success,Callback fail) {
+    private void screenshot(Callback success, Callback fail) {
         // 获取屏幕
         View dView = mContext.getCurrentActivity().getWindow().getDecorView();
         dView.setDrawingCacheEnabled(true);
         dView.buildDrawingCache();
         Bitmap bmp = dView.getDrawingCache();
+        String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "screenshotImage.png";
 
-        String path = getDiskCachePath(mContext);
-        String fileName = "screenshotImage.png";
-
-        File file = new File(path, fileName);
-
+        File file = new File(storePath);
         if (bmp != null) {
             try {
                 if (file.exists()) {
                     file.delete();
                 }
-
-
                 FileOutputStream os = new FileOutputStream(file);
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
                 os.flush();
                 os.close();
                 long currentTime = System.currentTimeMillis();
-                String name = "shot" + currentTime;
-                String mUri = MediaStore.Images.Media.insertImage(mContext.getContentResolver(), file.getPath(), file.getName(), null);
-
-                if (mUri != null) {
-                    // 最后通知图库更新
-                    Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                    Uri uri = Uri.fromFile(new File(mUri));
-                    intent.setData(uri);
-                    mContext.sendBroadcast(intent);
-                }
+                Uri uri = Uri.fromFile(file);
+                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                intent.setData(uri);
+                mContext.sendBroadcast(intent);
                 success.invoke();
             } catch (Exception e) {
                 fail.invoke(e.getMessage());
             }
-        }else {
+        } else {
             fail.invoke();
         }
     }
