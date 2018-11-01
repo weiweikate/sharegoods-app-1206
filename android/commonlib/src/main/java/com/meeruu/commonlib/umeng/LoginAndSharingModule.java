@@ -484,14 +484,14 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void saveScreen(ReadableMap params) {
-        screenshot();
+    public void saveScreen(ReadableMap params,Callback success,Callback fail) {
+        screenshot(success,fail);
     }
 
     /**
      * 获取屏幕
      */
-    private void screenshot() {
+    private void screenshot(Callback success,Callback fail) {
         // 获取屏幕
         View dView = mContext.getCurrentActivity().getWindow().getDecorView();
         dView.setDrawingCacheEnabled(true);
@@ -525,8 +525,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                     intent.setData(uri);
                     mContext.sendBroadcast(intent);
                 }
+                success.invoke();
             } catch (Exception e) {
+                fail.invoke(e.getMessage());
             }
+        }else {
+            fail.invoke();
         }
     }
 
