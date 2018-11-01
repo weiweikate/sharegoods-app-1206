@@ -2,7 +2,7 @@
  * 首页轮播图
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
@@ -20,7 +20,7 @@ export default class HomeBannerView extends Component {
         index : 0
     }
     _renderViewPageItem(item) {
-        return <Image style={styles.img} source={{uri: item}}/>
+        return <TouchableOpacity onPress={()=>this._onPressRow(item)}><Image style={styles.img} source={{uri: item}}/></TouchableOpacity>
     }
     _renderPagination = (index, total) => {
         const { bannerCount } = bannerModule
@@ -36,12 +36,17 @@ export default class HomeBannerView extends Component {
             {items}
         </View>
     }
-    _onDidChange = (item, index) => {
-        this.setState({index: index})
-    }
     _onPressRow = (item) => {
-        const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
-        let params = homeModule.paramsNavigate(item);
+        const { bannerCount, bannerList } = bannerModule
+        let data = null
+        for (let i = 0; i < bannerCount; i++) {
+            if (bannerList[i].imgUrl === item) {
+                data = bannerList[i]
+                break
+            }
+        }
+        const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+        let params = homeModule.paramsNavigate(data);
         const { navigation } = this.props;
         navigation.navigate(router, params);
     }
