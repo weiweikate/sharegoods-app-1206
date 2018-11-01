@@ -45,6 +45,7 @@ export default class HomeBannerView extends Component {
                 renderRow={this._renderViewPageItem.bind(this)}
                 onPress={this._onPressRow.bind(this)}
                 onDidChange={this._onDidChange.bind(this)}
+                loop={false}
                 />
             {this.renderIndexView()}
         </View>
