@@ -38,7 +38,7 @@ export default class ShowView extends Component {
             return <View/>
         }
         if (this.showModules.showList.length === 0) {
-            return <View/>
+            return <View style={styles.container}/>
         }
         return <View style={styles.container}>
             <View style={styles.titleView}>
