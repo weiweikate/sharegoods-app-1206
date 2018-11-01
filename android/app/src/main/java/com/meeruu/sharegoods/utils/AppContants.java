@@ -4,8 +4,6 @@ package com.meeruu.sharegoods.utils;
  * @author yqy
  * @date on 2018/4/12
  * @describe 常量配置类
- * @org xxd.smartstudy.com
- * @email yeqingyu@innobuddy.com
  */
 public class AppContants {
     /**
