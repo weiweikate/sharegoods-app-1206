@@ -214,7 +214,7 @@ class AfterSaleServicePage extends BasePage {
                         right: 5,
                         bottom: 11
                     }}>
-                        <UIText value={this.state.remark.length + '/120'}
+                        <UIText value={this.state.remark.length + '/180'}
                                 style={{ color: color.black_222, fontSize: 13, marginLeft: 16, width: 50 }}/>
                     </View>
                 </View>
