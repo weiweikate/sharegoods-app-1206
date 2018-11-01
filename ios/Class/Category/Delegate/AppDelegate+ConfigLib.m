@@ -13,6 +13,7 @@
 #import <QYSDK.h>
 #import <UMShare/UMShare.h>
 #import <UMCommon/UMCommon.h>
+#import "IQKeyboardManager.h"
 
 @implementation AppDelegate (ConfigLib)
 -(void)JR_ConfigLib:(UIApplication *)application  didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -21,8 +22,19 @@
   [self configQYLib];
 //  [self configAPNS];
   [self configGlobalToastAndLoading];
-  
+  [self IQKeyboardManager];
 }
+
+- (void)IQKeyboardManager{
+  IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
+  // 控制整个功能是否启用
+  manager.enable = YES;
+  // 控制是否显示键盘上的自动工具条,当需要支持内联编辑(Inline Editing), 这就需要隐藏键盘上的工具条(默认打开)
+  manager.enableAutoToolbar = NO;
+  // 启用手势触摸:控制点击背景是否收起键盘。
+  manager.shouldResignOnTouchOutside = YES;
+}
+
 -(void)configGlobalToastAndLoading{
   EasyTextGlobalConfig *textGlobalConfig = [EasyTextGlobalConfig shared];
   textGlobalConfig.superReceiveEvent = YES;
