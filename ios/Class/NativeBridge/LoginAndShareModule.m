@@ -9,6 +9,7 @@
 #import "LoginAndShareModule.h"
 #import "UIView+captureSceen.h"
 #import "ShareImageMaker.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @implementation LoginAndShareModule
 RCT_EXPORT_MODULE()
@@ -33,23 +34,30 @@ RCT_EXPORT_METHOD(loginWX:(RCTResponseSenderBlock)callback){
 
 //info
 //shareType
-RCT_EXPORT_METHOD(saveScreen:(id)jsonParam){
+RCT_EXPORT_METHOD(saveScreen:(id)jsonParam
+                  onSuccess:(RCTResponseSenderBlock)onSuccess
+                  onError:(RCTResponseSenderBlock)onError){
 
   dispatch_async(dispatch_get_main_queue(), ^{
     UIImage * img = [UIView captureSceenImage:jsonParam];
     if(img){
-      [[JRShareManager sharedInstance]saveImage:img];
+      __block ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
+      [lib writeImageToSavedPhotosAlbum:img.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+        NSLog(@"assetURL = %@, error = %@", assetURL, error);
+        lib = nil;
+        if (!error) {
+          if (onSuccess) {
+            onSuccess(@[]);
+          }
+        }else{
+          if (onError) {
+            onError(@[]);
+          }
+        }
+      }];
     } else{
-      [JRLoadingAndToastTool showToast:@"保存失败" andDelyTime:.5f];
+      onError(@[]);
     }
-
-//    if(img){
-//      NSMutableDictionary *dicParam = [NSMutableDictionary dictionaryWithDictionary:jsonParam];
-//      [dicParam setObject:img forKey:@"shareImage"];
-//
-//    } else{
-//      [JRLoadingAndToastTool showToast:@"截屏失败" andDelyTime:.5f];
-//    }
   });
 }
 
