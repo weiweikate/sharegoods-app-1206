@@ -123,8 +123,8 @@ class ShopCartStore {
 
                 tempArr.push(item);
             });
-
-
+            //将需要选中的数组清空
+            this.needSelectGoods = []
             this.data = tempArr;
         } else {
             this.data = [];

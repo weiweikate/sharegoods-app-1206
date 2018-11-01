@@ -124,7 +124,8 @@ export default class LoginTopView extends Component {
                         underlineColorAndroid={'transparent'}
                         keyboardType='numeric'
                         onEndEditing={()=>{
-                           if(!StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
+
+                           if(this.LoginModel.phoneNumber.length>0 && (!StringUtils.checkPhone(this.LoginModel.phoneNumber))) {
                                bridge.$toast('手机号格式不对');
                            }
                         }}
