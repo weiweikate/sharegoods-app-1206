@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import { ClassifyModules } from './Modules';
 import ScreenUtils from '../../utils/ScreenUtils';
+import user from '../../model/user'
 
 const { px2dp } = ScreenUtils;
 
@@ -37,9 +38,11 @@ export default class HomeClassifyView extends Component {
     }
 
     _onItemPress = (data) => {
-        console.log('_onItemPress', data);
-        const { navigation } = this.props;
-
+        const { navigation } = this.props
+        if (data.needLogin && !user.isLogin) {
+            navigation.navigate('login/login/LoginPage')
+            return
+        }
         if (data.img && data.name !== '全部分类') {
             navigation.navigate('home/search/SearchResultPage', { keywords: data.name })
         } else {
