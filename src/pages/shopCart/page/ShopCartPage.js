@@ -553,6 +553,10 @@ export default class ShopCartPage extends BasePage {
         if (itemData.amount <= 0) {
             itemData.amount = 1;
         }
+        if (itemData.amount > 200){
+            itemData.amount = 200
+            bridge.$toast('单个商品最多200件');
+        }
         shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         // if(StringUtils.checkIsPositionNumber(parseInt(text))) {
         //     itemData.amount = parseInt(text)
