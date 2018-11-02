@@ -14,8 +14,8 @@ import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
 import TopicDetailSegmentView from './components/TopicDetailSegmentView';
 import ScreenUtils from '../../utils/ScreenUtils';
-import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
-import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
+import detailBack from '../../comm/res/show_detail_back.png';
+import detailMore from '../../comm/res/show_share.png';
 import HTML from 'react-native-render-html';
 import HomeAPI from '../home/api/HomeAPI';
 import TopicApi from './api/TopicApi';
@@ -372,7 +372,7 @@ export default class TopicDetailPage extends BasePage {
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
-                        <Image source={xiangqing_btn_return_nor}/>
+                        <Image source={detailBack}/>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
                         this.DetailNavShowModal.show((item) => {
@@ -389,7 +389,7 @@ export default class TopicDetailPage extends BasePage {
                             }
                         });
                     }}>
-                        <Image source={xiangqing_btn_more_nor}/>
+                        <Image source={detailMore}/>
                     </TouchableWithoutFeedback>
                 </View>
 

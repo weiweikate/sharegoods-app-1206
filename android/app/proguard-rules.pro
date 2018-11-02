@@ -225,7 +225,7 @@ public static final int *;
 #hotfix
 -keep class com.taobao.sophix.**{*;}
 -keep class com.ta.utdid2.device.**{*;}
--keepclassmembers class com.meeruu.sharegoods.application.MRApplication {
+-keepclassmembers class com.meeruu.sharegoods.MainApplication {
     public <init>();
 }
 -keepclassmembers class com.meeruu.commonlib.base.BaseApplication {
