@@ -52,9 +52,11 @@ class SettingPage extends BasePage {
         this.getAllCachesSize();
     }
 
+
+
     //**********************************ViewPart******************************************
     _render = () => {
-        const desc = ((this.state.memorySize / 1024 / 1024) > 1) ? `${(this.state.memorySize / 1024 / 1024).toFixed(2)}G` : (((this.state.memorySize / 1024) > 1) ? `${(this.state.memorySize / 1024).toFixed(2)}M` : `${(this.state.memorySize).toFixed(2)}kb`);
+        const desc = !ScreenUtils.isIOS ? this.state.memorySize : ((this.state.memorySize / 1024 / 1024) > 1) ? `${(this.state.memorySize / 1024 / 1024).toFixed(2)}G` : (((this.state.memorySize / 1024) > 1) ? `${(this.state.memorySize / 1024).toFixed(2)}M` : `${(this.state.memorySize).toFixed(2)}kb`);
         return (
             <View style={styles.container}>
                 {this.renderModal()}
@@ -136,6 +138,7 @@ class SettingPage extends BasePage {
                                 // NativeModules.commModule.toast('删除成功');
                             });
                         } else {
+                            bridge.clearAllCache(()=>{this.getAllCachesSize();})
                             // NativeModules.commModule.toast('暂未对接缓存模块');
                         }
                     }
@@ -144,11 +147,20 @@ class SettingPage extends BasePage {
         );
     };
     getAllCachesSize = () => {
-        CachesModule && CachesModule.getCachesSize((allSize) => {
-            this.setState({
-                memorySize: allSize
+        if(ScreenUtils.isIOS){
+            CachesModule && CachesModule.getCachesSize((allSize) => {
+                this.setState({
+                    memorySize: allSize
+                });
             });
-        });
+        }else {
+            bridge.getTotalCacheSize((allSize)=>{
+                this.setState({
+                    memorySize: allSize
+                });
+            })
+        }
+
     };
     renderWideLine = () => {
         return (

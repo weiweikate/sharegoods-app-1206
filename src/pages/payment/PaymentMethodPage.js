@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, AppState } from 'react-native';
+import {TouchableWithoutFeedback, View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, AppState } from 'react-native';
 import BasePage from '../../BasePage';
 import { UIText } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
@@ -15,7 +15,8 @@ import PayUtil from './PayUtil'
 import PaymentResultView, {PaymentResult} from './PaymentResultView'
 import ScreenUtils from '../../utils/ScreenUtils';
 import spellStatusModel from '../spellShop/model/SpellStatusModel';
-
+import CommModal from '../../comm/components/CommModal';
+import DesignRule from 'DesignRule'
 const PayCell = ({data, isSelected, balance, press, selectedTypes, disabled}) => {
     let selected = isSelected
     if (data.type !== paymentType.balance && selectedTypes) {
@@ -147,8 +148,42 @@ export default class PaymentMethodPage extends BasePage {
         {this.renderBottomOrder()}
         {this.renderPaymentModal()}
         {this.renderPayResult()}
+        {this.renderPromotion()}
         </View>
     }
+
+    renderPromotion=()=>{
+        return (
+            <CommModal visible={false}>
+                <View style={styles.promotionBgStyle}>
+                    <View style={{width:70,height:70,backgroundColor:'#47C546',marginTop:20}}/>
+                    <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_mediumBtnText,includeFontPadding:false,marginTop:10}}>
+                        支付成功
+                    </Text>
+                    <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_22,includeFontPadding:false,marginTop:15,textAlign:'center'}}>
+                        {`系统会在明天0点进行站内推广\n每成功获取一个下级将收到站内消息推送`}
+                    </Text>
+                    <View style={{width:200,marginHorizontal:24,justifyContent:'space-between',flexDirection:'row',marginTop:20}}>
+                        <TouchableWithoutFeedback onPress={()=>{
+                            this.$navigate('mine/promotion/UserPromotionPage')
+                        }}>
+                        <View style={{borderRadius:5,borderColor:'#D51243',borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
+                            <Text style={{color:'#D51243',fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
+                                我的推广
+                            </Text>
+                        </View>
+                        </TouchableWithoutFeedback>
+                        <View style={{borderRadius:5,borderColor:'#D51243',borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
+                            <Text style={{color:'#D51243',fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
+                                站外分享推广
+                            </Text>
+                        </View>
+                    </View>
+                </View>
+            </CommModal>
+        )
+    }
+
     renderPayResult() {
         return <PaymentResultView ref={(ref) => {this.paymentResultView = ref}} navigation={this.props.navigation}/>
     }
@@ -424,6 +459,13 @@ const styles = StyleSheet.create({
         paddingRight: 28,
         backgroundColor: color.white,
         marginTop: 10
+    },
+    promotionBgStyle:{
+        height:230,
+        width:250,
+        borderRadius:5,
+        backgroundColor:DesignRule.white,
+        alignItems:'center'
     }
 });
 

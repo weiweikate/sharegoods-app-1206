@@ -110,6 +110,14 @@ export default {
     },
     scanQRCode(onSuccess, onError = (errorStr) => {}){
         NativeModules.QRCodeModule.scanQRCode(onSuccess, onError);
+    },
+
+    getTotalCacheSize(callback = ()=>{}){
+        NativeModules.commModule.getTotalCacheSize(callback);
+    },
+
+    clearAllCache(callback = ()=>{}){
+        NativeModules.commModule.clearAllCache(callback);
     }
 
 };

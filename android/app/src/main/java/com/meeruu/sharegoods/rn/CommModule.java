@@ -26,11 +26,13 @@ import com.meeruu.commonlib.bean.IdNameBean;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.FileUtils;
+import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
+import com.meeruu.sharegoods.utils.DataCleanManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -355,5 +357,25 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void nativeTaskToBack() {
         getCurrentActivity().moveTaskToBack(true);
+    }
+
+    @ReactMethod
+    public void getTotalCacheSize(Callback callback){
+        try {
+            String s = DataCleanManager.getTotalCacheSize(mContext);
+            callback.invoke(s);
+        }catch (Exception e){
+            LogUtils.d(e.getMessage());
+        }
+    }
+
+    @ReactMethod
+    public void clearAllCache(Callback callback){
+        try {
+            DataCleanManager.clearAllCache(mContext);
+            callback.invoke();
+        }catch (Exception e){
+            LogUtils.d(e.getMessage());
+        }
     }
 }

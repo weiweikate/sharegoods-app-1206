@@ -6,7 +6,8 @@ import {
     Image,
     FlatList,
     Text,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ImageBackground
 } from 'react-native';
 
 import BasePage from '../../../BasePage';
@@ -23,7 +24,9 @@ import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
 import DetailNavShowModal from './components/DetailNavShowModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
-
+import CommModal from '../../../comm/components/CommModal';
+import redEnvelopeBg from './res/red_envelope_bg.png';
+const { px2dp } = ScreenUtils;
 export default class ProductDetailPage extends BasePage {
 
     $navigationBarOptions = {
@@ -252,6 +255,56 @@ export default class ProductDetailPage extends BasePage {
         });
     };
 
+
+
+    _renderCouponModal(){
+
+        let view = (
+            <View style={{position:'absolute',bottom:18,left:0,right:0,alignItems:'center'}}>
+                <Text style={{color:'white',fontSize:px2dp(24)}}>
+                    领取成功
+                </Text>
+                <Text style={{color:'white',fontSize:px2dp(11),marginTop:px2dp(5)}}>
+                    可前往我的-优惠卷查看
+                </Text>
+            </View>
+        )
+
+        return(
+            <CommModal visible={true}>
+                <ImageBackground source={redEnvelopeBg} style={{
+                    height:px2dp(362),width:px2dp(257),
+                    alignItems:'center'
+                }}>
+                    <Text style={{color:'white',includeFontPadding:false,fontSize:px2dp(14),marginTop:26}}>
+                        139****9934
+                    </Text>
+                    <Text style={{color:'white',includeFontPadding:false,fontSize:px2dp(14)}}>
+                        赠送了你一个红包
+                    </Text>
+
+                        <Text style={{includeFontPadding:false,color:'white',fontSize:px2dp(60),marginTop:20}}>
+                            2
+                            <Text style={{includeFontPadding:false,color:'white',fontSize:px2dp(15)}}>
+                                元
+                            </Text>
+                        </Text>
+                    <Text style={{includeFontPadding:false,color:'white',fontSize:px2dp(14),marginTop:12}}>
+                        红包抵扣金
+                    </Text>
+                    <TouchableWithoutFeedback>
+                        <Text style={{ position: 'absolute',top:px2dp(220),left:px2dp(115),color:'#80522A',fontSize:14}}>
+                            {`立即\n领取`}
+                        </Text>
+                    </TouchableWithoutFeedback>
+
+                    {view}
+                </ImageBackground>
+            </CommModal>
+        )
+    }
+
+
     _render() {
         const { price = 0, product = {} } = this.state.data || {};
         const { name = '', imgUrl } = product;
@@ -309,6 +362,7 @@ export default class ProductDetailPage extends BasePage {
                                     thumImage: imgUrl
                                 }}/>
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
+                {this._renderCouponModal()}
             </View>
         );
     }
