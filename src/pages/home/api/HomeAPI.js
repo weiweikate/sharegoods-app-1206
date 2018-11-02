@@ -51,7 +51,10 @@ const api = {
     //首页分类
     classify: ['/config/advertisement/queryCategoryList', {method: 'get'}],
     //秀豆兑换比例
-    getExchange:['/common/config/getExchange',{method:'get'}]
+    getExchange:['/common/config/getExchange',{method:'get'}],
+    //获取红包  type1:获取红包信息并领取 type2：获取红包信息
+    getReceivePackage:['/promotion/promotionPromoter/userReceivePackage',{method:'get'}],
+    givingPackageToUser:['/promotion/promotionPromoter/givingPackageToUser',{method:'post'}]
 }
 import ApiUtils from '../../../api/network/ApiUtils';
 

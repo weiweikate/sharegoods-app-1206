@@ -135,7 +135,10 @@ class User {
     needWaiting = false;   //提供BasePage中repeatClick()
 
     @observable
-    token = ''
+    token = '';
+
+    @observable
+    upUserid = null;
 
     @action getToken = () => {
         if (this.token) {
@@ -237,6 +240,7 @@ class User {
         this.area = info.area;                      //
         this.storeBonusDto = info.storeBonusDto;    //
         this.realnameStatus = info.realnameStatus;    //
+        this.upUserid = info.upUserid;//上级ID，判断是否可以领推广红包
         if (saveToDisk) {
             AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
             });
@@ -342,6 +346,7 @@ class User {
         this.area = null;            //
         this.storeBonusDto = null;   //
         this.realnameStatus = null;   //
+        this.upUserid = null;
         // todo 清空cookie
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
 

@@ -27,6 +27,10 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import CommModal from '../../../comm/components/CommModal';
 import redEnvelopeBg from './res/red_envelope_bg.png';
 const { px2dp } = ScreenUtils;
+import user from '../../../model/user';
+import EmptyUtils from '../../../utils/EmptyUtils';
+import StringUtils from '../../../utils/StringUtils';
+
 export default class ProductDetailPage extends BasePage {
 
     $navigationBarOptions = {
@@ -41,8 +45,12 @@ export default class ProductDetailPage extends BasePage {
             selectedIndex: 0,
             //活动数据
             activityData: {},
-            activityType: 0//请求到数据才能知道活动类型
+            activityType: 0,//请求到数据才能知道活动类型
+            canGetCoupon:false,
+            couponData:null,
+            hasGetCoupon:false
         };
+        this.couponId = null;
     }
 
     componentDidMount() {
@@ -51,6 +59,34 @@ export default class ProductDetailPage extends BasePage {
 
     loadPageData() {
         this._getProductDetail();
+        this.getPromotion();
+    }
+
+    getPromotion=()=>{
+        if(user.isLogin && EmptyUtils.isEmpty(user.upUserid)){
+            HomeAPI.getReceivePackage({type:2}).then((data)=>{
+                this.setState({
+                    canGetCoupon:true,
+                    couponData:data.data,
+                })
+                this.couponId = data.data.id;
+            });
+        }
+    }
+
+    getCoupon=()=>{
+        if(EmptyUtils.isEmpty(this.couponId)){
+            this.$toastShow('领取失败！')
+        }else {
+            HomeAPI.givingPackageToUser({id:this.couponId}).then((data)=>{
+                this.setState({
+                    hasGetCoupon:true
+                })
+            }).catch((error)=>{
+                this.$toastShow(error.msg);
+            })
+
+        }
     }
 
     //数据
@@ -270,21 +306,29 @@ export default class ProductDetailPage extends BasePage {
             </View>
         )
 
+        let button = (
+            <TouchableWithoutFeedback onPress={this.getCoupon}>
+                <Text style={{ position: 'absolute',top:px2dp(220),left:px2dp(115),color:'#80522A',fontSize:14}}>
+                    {`立即\n领取`}
+                </Text>
+            </TouchableWithoutFeedback>
+        );
+
         return(
-            <CommModal visible={true}>
+            <CommModal visible={this.state.canGetCoupon}>
                 <ImageBackground source={redEnvelopeBg} style={{
                     height:px2dp(362),width:px2dp(257),
                     alignItems:'center'
                 }}>
                     <Text style={{color:'white',includeFontPadding:false,fontSize:px2dp(14),marginTop:26}}>
-                        139****9934
+                        {EmptyUtils.isEmpty(this.state.couponData) ? null :  StringUtils.encryptPhone(this.state.couponData.phone)}
                     </Text>
                     <Text style={{color:'white',includeFontPadding:false,fontSize:px2dp(14)}}>
                         赠送了你一个红包
                     </Text>
 
                         <Text style={{includeFontPadding:false,color:'white',fontSize:px2dp(60),marginTop:20}}>
-                            2
+                            {EmptyUtils.isEmpty(this.state.couponData) ? null : this.state.couponData.price}
                             <Text style={{includeFontPadding:false,color:'white',fontSize:px2dp(15)}}>
                                 元
                             </Text>
@@ -292,13 +336,9 @@ export default class ProductDetailPage extends BasePage {
                     <Text style={{includeFontPadding:false,color:'white',fontSize:px2dp(14),marginTop:12}}>
                         红包抵扣金
                     </Text>
-                    <TouchableWithoutFeedback>
-                        <Text style={{ position: 'absolute',top:px2dp(220),left:px2dp(115),color:'#80522A',fontSize:14}}>
-                            {`立即\n领取`}
-                        </Text>
-                    </TouchableWithoutFeedback>
+                    {this.state.hasGetCoupon ? null : button}
 
-                    {view}
+                    {this.state.hasGetCoupon ? view : null}
                 </ImageBackground>
             </CommModal>
         )

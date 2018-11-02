@@ -8,9 +8,9 @@
 *import TabNav from './pages/shareTask/page/ShareTaskIntroducePage'
 * */
 // // 基础模块
-// import { TabNav } from './RootPage';
+import { TabNav } from './RootPage';
 //  import  TabNav  from './pages/payment/PaymentMethodPage';
- import  TabNav  from './pages/home/product/ProductDetailPage';
+//  import  TabNav  from './pages/home/product/ProductDetailPage';
 // import  TabNav  from './pages/shareTask/page/ShareTaskListPage';
 // import  TabNav  from './pages/mine/page/Invite/InviteFriendsPage';
 // 业务模块
