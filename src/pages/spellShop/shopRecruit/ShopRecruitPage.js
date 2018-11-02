@@ -25,7 +25,6 @@ import icons9_shop from './src/icons9_shop.png';
 import spellStatusModel from '../model/SpellStatusModel';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
-import StringUtils from '../../../utils/StringUtils';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 
