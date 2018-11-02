@@ -6,7 +6,7 @@
  * @flow
  * @format
  * Created by huchao on 2018/10/15.
- * props type 'Image'(有分享图片和web) 'nomal'（分享web） 'miniProgram'小程序
+ * props type 'Image'(有分享图片和web) 'nomal'（分享web） 'miniProgram'小程序 task任务
  *
  *     imageJson:{
  *     imageUrlStr: 'http//：xxxx.png',
@@ -72,7 +72,7 @@ export default class CommShareModal extends React.Component {
             shareType: this.defaultShareType, //如果是type小程序分享，默认分享方式是小程序分享。其余的type，默认分享类型是web图文
             path: '',
             scale: new Animated.Value(0.5),
-            y: new Animated.Value(autoSizeWidth(340))
+            y: new Animated.Value(autoSizeWidth(300))
         };
     }
 
@@ -189,21 +189,23 @@ export default class CommShareModal extends React.Component {
                 this.share(1);
             }
         });
-        array.push({
-            image: CommTabImag.qq, title: 'QQ好友', onPress: () => {
-                this.share(2);
-            }
-        });
-        array.push({
-            image: CommTabImag.kongjian, title: 'QQ空间', onPress: () => {
-                this.share(3);
-            }
-        });
-        array.push({
-            image: CommTabImag.weibo, title: '微博', onPress: () => {
-                this.share(4);
-            }
-        });
+        if (this.props.type !== 'task') {
+            array.push({
+                image: CommTabImag.qq, title: 'QQ好友', onPress: () => {
+                    this.share(2);
+                }
+            });
+            array.push({
+                image: CommTabImag.kongjian, title: 'QQ空间', onPress: () => {
+                    this.share(3);
+                }
+            });
+            array.push({
+                image: CommTabImag.weibo, title: '微博', onPress: () => {
+                    this.share(4);
+                }
+            });
+        }
         if (this.props.type === 'Image') {
             if (this.state.shareType === 1) {
                 array.push({
@@ -332,7 +334,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         backgroundColor: 'white',
-        height: autoSizeWidth(295),
+        height: autoSizeWidth(255),
     },
     header: {
         flexDirection: 'row',
@@ -348,7 +350,7 @@ const styles = StyleSheet.create({
     item: {
         width: ScreenUtils.width / 4 - 0.1,
         height: autoSizeWidth(187.5 / 2),
-        marginTop: autoSizeWidth(20),
+        marginTop: autoSizeWidth(0),
         alignItems: 'center',
         justifyContent: 'center'
     }
