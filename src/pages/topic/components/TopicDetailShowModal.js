@@ -9,7 +9,7 @@ import {
 import topicShow from '../res/topicShow.png';
 import topicShowClose from '../res/topicShowClose.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import CommModal from 'CommModal'
+import CommModal from 'CommModal';
 
 export default class TopicDetailShowModal extends Component {
 
@@ -18,14 +18,16 @@ export default class TopicDetailShowModal extends Component {
         this.state = {
             modalVisible: false,//是否显示,
             tittle: '',
+            name: '',
+            subName: '',
             content: ''
         };
     }
 
-    show = (tittle, content) => {
+    show = (tittle, name, subName, content) => {
         this.setState({
             modalVisible: true,
-            tittle,
+            tittle, name, subName,
             content
         });
     };
@@ -38,8 +40,8 @@ export default class TopicDetailShowModal extends Component {
     render() {
         return (
             <CommModal onRequestClose={this.close}
-                   visible={this.state.modalVisible}
-                   transparent={true}>
+                       visible={this.state.modalVisible}
+                       transparent={true}>
                 <View style={{
                     backgroundColor: 'rgba(0,0,0,0.5)', top: 0,
                     left: 0,
@@ -64,17 +66,19 @@ export default class TopicDetailShowModal extends Component {
                         }}>
                             <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }}>{this.state.tittle}</Text>
                         </ImageBackground>
-                        <Text style={{
-                            marginTop: ScreenUtils.px2dp(55.5),
-                            color: '#000000',
-                            fontSize: ScreenUtils.px2dp(15)
-                        }}>XXX升级礼包为定制产品</Text>
-                        <Text style={{
-                            marginTop: ScreenUtils.px2dp(25),
-                            color: '#666666',
-                            fontSize: ScreenUtils.px2dp(14),
-                            paddingHorizontal: ScreenUtils.px2dp(32)
-                        }}>{`购买后即可升级成为V2级用户，可享 受V2用户\n\n消费权限，该礼包产品不可退换货， 如有产品质量问题，可联系客服进行 申诉`}</Text>
+                        <View style={{ flex: 1, alignItems: 'center' }}>
+                            <Text style={{
+                                marginTop: ScreenUtils.px2dp(31),
+                                color: '#000000',
+                                fontSize: ScreenUtils.px2dp(15), textAlign: 'center'
+                            }}>{`${this.state.name || ''}\n${this.state.subName || ''}`}</Text>
+                            <Text style={{
+                                marginTop: ScreenUtils.px2dp(25),
+                                color: '#666666',
+                                fontSize: ScreenUtils.px2dp(14),
+                                paddingHorizontal: ScreenUtils.px2dp(32),
+                            }}>{`${this.state.content || ''}`}</Text>
+                        </View>
 
                         <TouchableOpacity style={{
                             top: 0,
