@@ -1,16 +1,17 @@
-import React, {Component} from 'react'
-import {Modal,View,  StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, Image} from 'react-native'
-import ScreenUtil from '../../utils/ScreenUtils'
+import React, { Component } from 'react';
+import { Modal, View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
+import ScreenUtil from '../../utils/ScreenUtils';
 import ScreenUtils from '../../utils/ScreenUtils';
-const { px2dp } = ScreenUtil
-import { NavigationActions } from 'react-navigation'
-import failImg from './res/fail.png'
-import successImg from './res/success.png'
+
+const { px2dp } = ScreenUtil;
+import { NavigationActions } from 'react-navigation';
+import failImg from './res/fail.png';
+import successImg from '../../comm/res/tongyon_icon_check_green.png';
 
 export const PaymentResult = {
     sucess: 1,
-    fail:2
-}
+    fail: 2
+};
 
 export default class PaymentResultView extends Component {
     state = {
@@ -18,89 +19,97 @@ export default class PaymentResultView extends Component {
         resultText: '',
         result: 0,
         message: ''
-    }
+    };
+
     _goToHome() {
-        const {navigation} = this.props
-        this.dismiss()
+        const { navigation } = this.props;
+        this.dismiss();
         let resetAction = NavigationActions.reset({
             index: 0,
             actions: [
                 NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
             ]
         });
-        navigation.dispatch(resetAction)
+        navigation.dispatch(resetAction);
     }
+
     _goToOrder() {
         this.dismiss();
-        let replace = NavigationActions.replace( {
-            key:this.props.navigation.state.key ,
+        let replace = NavigationActions.replace({
+            key: this.props.navigation.state.key,
             routeName: 'order/order/MyOrdersListPage',
-            params: {index:2}
-        })
-        this.props.navigation.dispatch(replace)
+            params: { index: 2 }
+        });
+        this.props.navigation.dispatch(replace);
     }
+
     show(result, message) {
         this.setState({
             modalVisible: true,
             resultText: result === PaymentResult.sucess ? '支付成功' : '支付失败',
             result: result,
             message: message
-        })
+        });
     }
+
     dismiss() {
-        this.setState({modalVisible: false, message: ''})
+        this.setState({ modalVisible: false, message: '' });
     }
+
     render() {
-        const {resultText, result, message} = this.state
+        const { resultText, result, message } = this.state;
 
-        console.log('PaymentResultView message', message)
-      return (
-        <Modal
-        style={styles.container}
-        animationType="fade"
-        visible={this.state.modalVisible}
-        transparent={true}
-        onRequestClose={() => {
+        console.log('PaymentResultView message', message);
+        return (
+            <Modal
+                style={styles.container}
+                animationType="fade"
+                visible={this.state.modalVisible}
+                transparent={true}
+                onRequestClose={() => {
 
-        }}>
-            <TouchableWithoutFeedback style={styles.container} onPress={()=>this.dismiss()}>
-            <View style={styles.container}>
-            <View style={styles.content}>
-                <Image style={styles.image} source={result === PaymentResult.sucess ? successImg : failImg}/>
-                <Text style={styles.text}>{resultText}</Text>
-                {
-                    message
-                    ?
-                    <Text style={styles.message}>{message}</Text>
-                    :
-                    null
-                }
-                <View style={{flex: 1}}/>
-                {
-                    result === PaymentResult.sucess
-                    ?
-                    <View style={styles.bottom}>
-                        <TouchableOpacity style={styles.button} onPress={()=>this._goToHome()}>
-                            <Text style={styles.buttonText}>返回首页</Text>
-                        </TouchableOpacity>
-                        <View style={{flex: 1}}/>
-                        <TouchableOpacity style={styles.button} onPress={()=>{this._goToOrder()}}>
-                            <Text style={styles.buttonText}>查看订单</Text>
-                        </TouchableOpacity>
+                }}>
+                <TouchableWithoutFeedback style={styles.container} onPress={() => this.dismiss()}>
+                    <View style={styles.container}>
+                        <View style={styles.content}>
+                            <Image style={styles.image}
+                                   source={result === PaymentResult.sucess ? successImg : failImg}/>
+                            <Text style={styles.text}>{resultText}</Text>
+                            {
+                                message
+                                    ?
+                                    <Text style={styles.message}>{message}</Text>
+                                    :
+                                    null
+                            }
+                            <View style={{ flex: 1 }}/>
+                            {
+                                result === PaymentResult.sucess
+                                    ?
+                                    <View style={styles.bottom}>
+                                        <TouchableOpacity style={styles.button} onPress={() => this._goToHome()}>
+                                            <Text style={styles.buttonText}>返回首页</Text>
+                                        </TouchableOpacity>
+                                        <View style={{ flex: 1 }}/>
+                                        <TouchableOpacity style={styles.button} onPress={() => {
+                                            this._goToOrder();
+                                        }}>
+                                            <Text style={styles.buttonText}>查看订单</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    :
+                                    <View style={styles.bottom}>
+                                        <TouchableOpacity style={styles.button} onPress={() => this.dismiss()}>
+                                            <Text style={styles.buttonText}>重新支付</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                            }
+
+                        </View>
                     </View>
-                    :
-                    <View style={styles.bottom}>
-                        <TouchableOpacity style={styles.button} onPress={()=>this.dismiss()}>
-                            <Text style={styles.buttonText}>重新支付</Text>
-                        </TouchableOpacity>
-                    </View>
-                }
-
-            </View>
-            </View>
-            </TouchableWithoutFeedback>
-        </Modal>
-      )
+                </TouchableWithoutFeedback>
+            </Modal>
+        );
     }
 }
 
@@ -153,4 +162,4 @@ const styles = StyleSheet.create({
         fontSize: px2dp(13),
         marginTop: px2dp(10)
     }
-})
+});
