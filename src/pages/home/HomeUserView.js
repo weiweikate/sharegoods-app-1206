@@ -1,21 +1,13 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import ProgressBar from '../../components/ui/ProgressBar';
 import ScreenUtil from '../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtil;
 import rightImg from './res/right_arrow.png';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
-import { MemberModule } from './Modules';
-
-const Circle = ({ sizeStyle }) => <View style={[styles.circle, sizeStyle]}/>;
-
-const Level = ({ levelBox, levelStyle, sizeStyle, text }) => <View style={[styles.levelBox, levelStyle]}>
-    <Text style={styles.level}>{text}</Text>
-    <Circle sizeStyle={sizeStyle}/>
-</View>;
+import { MemberModule } from './Modules'
 
 @observer
 export default class HomeUserView extends Component {
@@ -34,20 +26,32 @@ export default class HomeUserView extends Component {
         if (!user.isLogin) {
             return <View/>;
         }
-        let { levelName, experience } = user;
-        const { memberLevels, totalExp, levelCount, levelNumber } = this.memberModule;
-        console.log('experience', experience, levelName, totalExp, experience / totalExp, levelNumber);
-        experience = experience ? experience : 0;
+        let { levelName, experience } = user
+        const { memberLevels, totalExp, levelCount, levelNumber } = this.memberModule
+        console.log('experience', experience, levelName, totalExp, experience / totalExp, levelNumber)
+        experience = experience ? experience : 0
         let items = [];
-        let width = px2dp(220) / levelCount;
-        let left = px2dp(19);
+        let levelNames = [];
+        let lastExp = 0
+        let left = 0
+        let total = px2dp(220) / levelCount
         memberLevels.map((level, index) => {
-            let levelStyle = { left:  parseInt(left, 0) };
-            console.log('memberLevels', left, levelNumber[index], totalExp);
-            items.push(<Level key={index} levelStyle={levelStyle} sizeStyle={styles.smallCircle} text={level.name}/>);
-            if (index < memberLevels.length - 1) {
-                left += width + px2dp(5);
+            levelNames.push( <Text style={styles.level} key={'text' + index}>{level.name}</Text>)
+            items.push(<View key={'circle' + index} style={styles.smallCircle}/>)
+            if (index === levelCount - 1) {
+                return
             }
+            if (level.name <= levelName) {
+                left += total
+                let otherExp =  experience - lastExp
+                console.log('experience - level.upgradeExp', experience - lastExp, otherExp)
+                items.push(<View key={'line' + index} style={[styles.progressLine, { backgroundColor: '#E7AE39'}]}>
+                    <View style={{flex: otherExp}}/><View style={{flex: lastExp - otherExp, backgroundColor: '#9B6D26' }}/>
+                </View>)
+            } else {
+                items.push(<View key={'line' + index} style={[styles.progressLine]}/>)
+            }
+            lastExp = level.upgradeExp
         });
         return <View>
             <View style={styles.container}>
@@ -55,15 +59,20 @@ export default class HomeUserView extends Component {
                     <View style={styles.left}>
                         <Text style={styles.title}>尊敬的{levelName}会员您好</Text>
                         <View style={styles.progressView}>
-                            <View style={styles.progress}>
-                                <ProgressBar
-                                    fillStyle={{ backgroundColor: '#E7AE39', height: 4, borderRadius: 2 }}
-                                    backgroundStyle={{ backgroundColor: '#9B6D26', borderRadius: 2, height: 4 }}
-                                    style={{ marginTop: 10, width: px2dp(220), height: 4 }}
-                                    progress={experience / totalExp}
-                                />
+                            <View style={styles.lv}>
+                                {levelNames}
                             </View>
-                            {items}
+                            <View style={styles.progress}>
+                                <View style={[styles.progressLine, {backgroundColor: '#9B6D26'}]}/>
+                            </View>
+                            <View style={styles.progress}>
+                                {items}
+                            </View>
+                            <View style={[styles.experience, {paddingLeft: left}]}>
+                                <View style={[styles.levelBottomTextBg]}>
+                                    <Text style={ styles.levelBottomText }> {experience} </Text>
+                                </View>
+                            </View>
                         </View>
                     </View>
                     <TouchableOpacity style={styles.right} onPress={() => this._goToPromotionPage()}>
@@ -72,17 +81,6 @@ export default class HomeUserView extends Component {
                             <Image style={styles.rightImg} source={rightImg}/>
                         </View>
                     </TouchableOpacity>
-
-                    <View
-                        style={[styles.levelBottomTextBg,
-                            (experience > 0 && totalExp > 0) ? {
-                                left:  (experience / totalExp) * px2dp(220)
-                             } : null
-                        ]}
-                    >
-                        <Text style={ styles.levelBottomText }> {experience} </Text>
-                    </View>
-
                 </LinearGradient>
             </View>
         </View>;
@@ -98,15 +96,13 @@ let styles = StyleSheet.create({
         marginTop: px2dp(10)
     },
     levelBottomTextBg: {
-        position: 'absolute',
         height: 16,
         width: px2dp(38),
-        left: 12,
-        top: px2dp(70),
         borderRadius: 8,
         backgroundColor: 'white',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginLeft: -px2dp(38) / 2
     },
     levelBottomText: {
         color: '#9B6D26',
@@ -135,9 +131,14 @@ let styles = StyleSheet.create({
         alignItems: 'center'
     },
     progressView: {
-        flex: 1,
-        marginLeft: 0,
-        flexDirection: 'row'
+        flex: 1
+    },
+    lv: {
+        height: px2dp(22),
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingLeft: px2dp(14)
     },
     circle: {
         borderColor: '#E7AE39'
@@ -147,7 +148,20 @@ let styles = StyleSheet.create({
         backgroundColor: '#fff',
         width: px2dp(10),
         height: px2dp(10),
-        borderRadius: px2dp(6)
+        borderRadius: px2dp(10) / 2,
+        borderColor: '#E7AE39',
+        overflow: 'hidden'
+    },
+    circleView: {
+        width: px2dp(10),
+        height: px2dp(10),
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    backLine: {
+        height: px2dp(3),
+        backgroundColor: '#E7AE39',
+        width: px2dp(10)
     },
     bigCircle: {
         borderWidth: px2dp(4),
@@ -160,16 +174,18 @@ let styles = StyleSheet.create({
         flexDirection: 'row'
     },
     progress: {
+        height : px2dp(10),
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        left: px2dp(14),
         position: 'absolute',
-        left: px2dp(28),
-        top: px2dp(15),
-        width: px2dp(220),
-        height: px2dp(5)
+        top: px2dp(22),
+        right: px2dp(0)
     },
     level: {
         color: '#9B6D26',
-        fontSize: px2dp(11),
-        height: px2dp(21)
+        fontSize: px2dp(11)
     },
     see: {
         marginLeft: px2dp(4),
@@ -183,5 +199,17 @@ let styles = StyleSheet.create({
     levelBox: {
         position: 'absolute',
         top: 0
+    },
+    progressLine: {
+        flex: 1,
+        height: px2dp(3),
+        padding: -1,
+        flexDirection: 'row'
+    },
+    experience: {
+        flex: 1,
+        marginTop: px2dp(15),
+        marginLeft: px2dp(14),
+        flexDirection: 'row'
     }
 });

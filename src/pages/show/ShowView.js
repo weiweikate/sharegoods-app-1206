@@ -40,6 +40,10 @@ export default class ShowView extends Component {
         if (this.showModules.showList.length === 0) {
             return <View/>
         }
+        const { isShow } = this.props
+        if (!isShow) {
+            return <View style={styles.container}/>
+        }
         return <View style={styles.container}>
             <View style={styles.titleView}>
                 <Text style={styles.title} numberOfLine={2}>秀场头条</Text>
@@ -71,7 +75,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
-        paddingTop: px2dp(2)
+        paddingTop: px2dp(2),
+        marginTop: -1
     },
     marquee: {
         height: px2dp(34),

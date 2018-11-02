@@ -60,7 +60,7 @@ export default class MyShopPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '我的店铺',
+        title: '店铺详情',
         leftNavItemHidden: this.props.leftNavItemHidden
     };
     $NavBarRenderRightItem = () => {
@@ -127,6 +127,11 @@ export default class MyShopPage extends BasePage {
                 isRefresh: false,
                 storeData: dataTemp,
                 storeId: dataTemp.id
+            }, () => {
+                const { userStatus } = dataTemp;
+                if (userStatus === 1) {
+                    this.$NavigationBarResetTitle('我的店铺');
+                }
             });
         }).catch((error) => {
             this.$toastShow(error.msg);

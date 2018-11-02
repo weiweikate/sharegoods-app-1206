@@ -70,7 +70,7 @@ export default class ProgressBarView extends Component {
                     color: ColorUtil.Color_ffffff
                 }}>
 
-                    {progressValue.toFixed(2) * 100 + '%'}
+                    {(progressValue * 100).toFixed(0) + '%'}
 
                 </Text>
 
