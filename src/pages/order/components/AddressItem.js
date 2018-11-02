@@ -40,7 +40,9 @@ const AddressItem = props => {
                     <UIText value={name} style={{ color: color.black_999, fontSize: 15 }}/>
                     <UIText value={phone} style={{ color: color.black_999, fontSize: 15 }}/>
                 </View>
-                <UIText value={address} style={{ color: color.black_999, fontSize: 15 }}/>
+                <UIText value={address} style={{ color: color.black_999, fontSize: 15}}
+                        numberOfLines={2}
+                />
             </View>
             {this.renderRightImage()}
         </TouchableOpacity>

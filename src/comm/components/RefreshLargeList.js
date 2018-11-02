@@ -243,6 +243,9 @@ export default class RefreshLargeList extends React.Component {
     }
 
     _onRefresh() {
+        if (this.state.refreshing === true){
+            return;
+        }
         this.setState({ refreshing: true, footerStatus: "idle" });
         this.allLoadCompleted = false;
         let { onStartRefresh, url, params, defaultPage, onEndRefresh } = this.props;

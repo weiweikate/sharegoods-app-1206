@@ -13,41 +13,139 @@
 import React from 'react';
 
 import {
-  StyleSheet,
-  View,
-  TouchableOpacity
+    StyleSheet,
+    View,
+    TouchableOpacity,
+    Animated,
+    NativeModules
 } from 'react-native';
 
 import {
-  UIText,
-  UIImage
+    UIImage
 } from '../../../components/ui';
-import DesignRule from 'DesignRule';
+import ShareTaskHomeAlert from './ShareTaskHomeAlert';
+import task_icon from '../res/task_icon.png';
+import taskApi from '../api/taskApi';
+import { NavigationActions } from 'react-navigation';
+import RouterMap from 'RouterMap';
 
 export default class ShareTaskIcon extends React.Component {
 
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this._bind();
+        this._bind();
 
-    this.state = {};
-  }
+        this.state = {
+            x: new Animated.Value(40),
+            hasTask: false,
+            data:{},//id: null,type: null, name: null, desc: null,
+        };
+        this.isOpen = false;
+    }
 
-  _bind() {
+    _bind() {
+        this._onPress = this._onPress.bind(this);
+        this.open = this.open.bind(this);
+        this.close = this.close.bind(this);
+        this.queryTask = this.queryTask.bind(this);
+    }
 
-  }
+    componentDidMount() {
+    }
 
-  componentDidMount() {
-  }
+    queryTask() {
+        taskApi.queryTask({}).then((result => {
+            let hasTask = false
+            if (result.data.id !== undefined){
+                hasTask = true;
+            }
+            this.setState({hasTask, data:result.data});
+        })).catch(()=>{});
+    }
+
+    _onPress() {
+        if (this.isOpen === true) {
+            if (this.state.data.receiveFlag === false){//表示任务已经领取
+                this._gotoTaskList();
+            } else {
+                this.alert.open();
+            }
+            this.close();
+        } else {
+            this.open();
+        }
+
+    }
+
+    _gotoTaskList(){
+        global.$navigator.dispatch(NavigationActions.push({ routeName: RouterMap.ShareTaskListPage }));
+    }
+    //领取任务
+    receiveTask(){
+        let that = this;
+        taskApi.reciveTask({}).then((result => {
+            that._gotoTaskList();
+        })).catch((error)=> {
+            NativeModules.commModule.toast(error.msg || '任务领取失败');
+        });
+    }
+
+    open() {
+        Animated.spring(
+            // Animate value over time
+            this.state.x, // The value to drive
+            {
+                toValue: 0,
+                duration: 500,
+                useNativeDriver: true
+            }
+        ).start();
+        this.isOpen = true;
+    }
+
+    close() {
+        if (this.isOpen === true) {
+            Animated.spring(
+                // Animate value over time
+                this.state.x, // The value to drive
+                {
+                    toValue: 40,
+                    duration: 500,
+                    useNativeDriver: true
+                }
+            ).start();
+            this.isOpen = false;
+        }
+    }
 
 
-  render() {
-    return (
-      <View>
-      </View>
-    );
-  }
+    render() {
+        if (this.state.hasTask === false) {
+            return <View/>;
+        }
+        ;
+        return (
+            <Animated.View style={[this.props.style, { transform: [{ translateX: this.state.x}] }]}>
+                <TouchableOpacity onPress={this._onPress.bind(this)}>
+                    <UIImage source={task_icon}
+                             style={styles.image}
+                    />
+                </TouchableOpacity>
+                <ShareTaskHomeAlert ref={(ref) => {
+                    this.alert = ref;
+                }}
+                                    onPress={this.receiveTask.bind(this)}
+                                    data={this.state.data}
+                />
+            </Animated.View>
+        );
+    }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    image: {
+        height: 55,
+        width: 80
+    }
+});

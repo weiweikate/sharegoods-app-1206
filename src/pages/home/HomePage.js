@@ -15,7 +15,7 @@ import {
     Image, Platform, NativeModules
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
-import ShareTaskHomeAlert from '../shareTask/components/ShareTaskHomeAlert';
+import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
 import { homeType, homeModule, bannerModule } from './Modules';
 import HomeSearchView from './HomeSearchView';
@@ -104,9 +104,12 @@ export default class HomePage extends Component {
             'willFocus',
             payload => {
                 const { state } = payload;
+                console.log('willFocusSubscription', state)
                 if (state && state.routeName === 'HomePage') {
+                     //this.shareTaskIcon.queryTask();
                     this.setState({ isShow: true });
                 }
+
             }
         );
 
@@ -163,6 +166,10 @@ export default class HomePage extends Component {
             shadowOpacity: this.shadowOpacity
         });
     };
+
+    _onScrollBeginDrag(){
+        this.shareTaskIcon.close();
+    }
 
     _keyExtractor = (item, index) => item.id + '';
     _renderItem = (item) => {
@@ -317,6 +324,7 @@ export default class HomePage extends Component {
                     onEndReachedThreshold={0.1}
                     showsVerticalScrollIndicator={false}
                     style={{ marginTop: bannerModule.bannerList.length > 0 ? 0 : statusBarHeight + 44 }}
+                    onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
@@ -328,10 +336,9 @@ export default class HomePage extends Component {
 
                 <HomeSearchView navigation={this.props.navigation}
                                 whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}/>
-                <ShareTaskHomeAlert ref={(ref) => this.shareModal = ref}
-                                    onPress={() => {
-                                        this.props.navigation.navigate('shareTask/ShareTaskListPage');
-                                    }}/>
+                <ShareTaskIcon style={{position: 'absolute', right:0, top: px2dp(220) - 40}}
+                               ref={(ref)=>{this.shareTaskIcon = ref}}
+                />
                 {this.messageModalRender()}
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
                                     apkExist={this.state.apkExist}

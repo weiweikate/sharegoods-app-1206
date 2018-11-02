@@ -9,7 +9,7 @@
 * */
 // // 基础模块
 import { TabNav } from './RootPage';
-// import  TabNav  from './pages/shareTask/page/ShareTaskListPage';
+// import  TabNav  from './pages/mine/page/Invite/InviteFriendsPage';
 // 业务模块
 import demo from './pages/demo';
 import debug from './pages/debug';
