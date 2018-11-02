@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.application;
+package com.meeruu.sharegoods;
 
 import android.content.Context;
 import android.support.multidex.MultiDex;
@@ -17,7 +17,6 @@ import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.qiyu.imService.QiyuImageLoader;
-import com.meeruu.sharegoods.BuildConfig;
 import com.meeruu.sharegoods.handler.CrashHandler;
 import com.meeruu.sharegoods.rn.RNPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -33,7 +32,10 @@ import com.taobao.sophix.listener.PatchLoadStatusListener;
 import java.util.Arrays;
 import java.util.List;
 
-public class MRApplication extends BaseApplication implements ReactApplication {
+import cn.reactnative.modules.update.UpdateContext;
+import cn.reactnative.modules.update.UpdatePackage;
+
+public class MainApplication extends BaseApplication implements ReactApplication {
 
     private int patchStatus;
 
@@ -88,6 +90,12 @@ public class MRApplication extends BaseApplication implements ReactApplication {
 
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+
+        @Override
+        protected String getJSBundleFile() {
+            return UpdateContext.getBundleUrl(MainApplication.this);
+        }
+
         @Override
         public boolean getUseDeveloperSupport() {
             return BuildConfig.DEBUG;
@@ -98,6 +106,7 @@ public class MRApplication extends BaseApplication implements ReactApplication {
             return Arrays.<ReactPackage>asList(
                     new RNPackage(),
                     new MainReactPackage(),
+                    new UpdatePackage(),
                     new RNDeviceInfo(),
                     new LinearGradientPackage(),
                     new VectorIconsPackage(),

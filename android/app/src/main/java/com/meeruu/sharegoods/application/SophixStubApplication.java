@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Keep;
 import android.support.multidex.MultiDex;
 
+import com.meeruu.sharegoods.MainApplication;
 import com.taobao.sophix.SophixApplication;
 import com.taobao.sophix.SophixEntry;
 import com.taobao.sophix.SophixManager;
@@ -19,7 +20,7 @@ public class SophixStubApplication extends SophixApplication {
 
     // 此处SophixEntry应指定真正的Application，并且保证RealApplicationStub类名不被混淆。
     @Keep
-    @SophixEntry(MRApplication.class)
+    @SophixEntry(MainApplication.class)
     static class RealApplicationStub {
     }
 
