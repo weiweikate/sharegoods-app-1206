@@ -152,7 +152,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     renderItem={this.renderItem}
                     params={params}
                     heightForCell={() => 160}
-                    ref={(ref) => {this.list = ref}}
+                  //  ref={(ref) => {this.list = ref}}
                 />
             </View>
         );

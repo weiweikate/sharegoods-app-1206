@@ -54,7 +54,7 @@ const api = {
     getExchange:['/common/config/getExchange',{method:'get'}],
     //获取红包  type1:获取红包信息并领取 type2：获取红包信息
     getReceivePackage:['/promotion/promotionPromoter/userReceivePackage',{method:'get'}],
-    givingPackageToUser:['/promotion/promotionPromoter/givingPackageToUser',{method:'post'}]
+    givingPackageToUser:['/promotion/promotionPromoter/givingPackageToUser',{method:'get'}]
 }
 import ApiUtils from '../../../api/network/ApiUtils';
 

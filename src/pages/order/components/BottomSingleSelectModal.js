@@ -8,8 +8,8 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { color } from '../../../constants/Theme';
-import circleSelect from '../../mine/res/userInfoImg/circleSelect.png';
-import circleUnselect from '../../mine/res/userInfoImg/circleUnselect.png';
+import circleSelect from '../../../comm/res/selected_circle_red.png';
+import circleUnselect from '../../../comm/res/unselected_circle.png';
 import {
     UIText, UIImage,UIButton
 } from '../../../components/ui';

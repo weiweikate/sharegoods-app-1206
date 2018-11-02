@@ -3,7 +3,7 @@ import {
     Text, ScrollView, Image, View
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import Logo from '../../res/setting/launcher.png';
+import Logo from '../../../../comm/res/tongyong_logo_nor.png';
 
 export default class AboutUsPage extends BasePage {
 
