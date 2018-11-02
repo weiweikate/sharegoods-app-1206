@@ -10,7 +10,7 @@ const api = {
     //验证码登陆
     codeLogin: '/user/userLogin/codeLogin',
     //密码登陆
-    passwordLogin: ['/user/userLogin/passwordLogin'],
+    passwordLogin: '/user/userLogin/passwordLogin',
     //app微信登陆
     appWechatLogin: '/user/userLogin/appWechatLogin',
     //老用户激活注册
