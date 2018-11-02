@@ -1,8 +1,8 @@
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
-import addrSelectedImg from '../../res/address/dizhi_btn_moren_sel.png';
-import addrUnselectedImg from '../../res/address/dizhi_btn_moren_nor.png';
+import addrSelectedImg from '../../../../comm/res/selected_circle_red.png';
+import addrUnselectedImg from '../../../../comm/res/unselected_circle.png';
 import addrBorderImgN from '../../res/address/dizhi_img_nor.png';
 import addrBorderImgS from '../../res/address/dizhi_img_sel.png';
 import addrRight from '../../res/address/dizhi_icon_moren_sel.png';

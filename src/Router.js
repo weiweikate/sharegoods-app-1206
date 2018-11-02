@@ -12,7 +12,6 @@ import { TabNav } from './RootPage';
 // import  TabNav  from './pages/shareTask/page/ShareTaskListPage';
 // import  TabNav  from './pages/mine/page/Invite/InviteFriendsPage';
 // 业务模块
-import demo from './pages/demo';
 import debug from './pages/debug';
 import home from './pages/home';
 import mine from './pages/mine';
@@ -20,12 +19,12 @@ import shopCart from './pages/shopCart';
 import spellShop from './pages/spellShop';
 import login from './pages/login';
 import order from './pages/order';
-import payment from './pages/payment'
+import payment from './pages/payment';
 import htmlView from './components/web/HtmlView';
 import message from './pages/message';
-import topic from './pages/topic'
-import show from './pages/show/Index'
-import shareTask from './pages/shareTask'
+import topic from './pages/topic';
+import show from './pages/show/Index';
+import shareTask from './pages/shareTask';
 
 import LoginNav from './LoginRouter';
 
@@ -38,15 +37,14 @@ const Router = {
         })
     },
     //暂时加入,用于后边将登陆注册流程抽取出来
-    LoginModal:{
-        screen:LoginNav
+    LoginModal: {
+        screen: LoginNav
     },
     HtmlPage: {
         screen: htmlView
     }
 };
 const PageKey = {};
-
 
 
 // 添加模块内子路由配置
@@ -72,7 +70,6 @@ function addSubModule(module, prefixPath) {
 }
 
 
-addSubModule(demo);
 addSubModule(debug);
 addSubModule(login);
 addSubModule(home);
@@ -88,5 +85,5 @@ addSubModule(show);
 addSubModule(shareTask);
 console.log('Router', Object.keys(Router));
 console.log(Router);
-export {PageKey};
+export { PageKey };
 export default Router;

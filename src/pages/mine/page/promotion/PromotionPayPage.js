@@ -21,7 +21,7 @@ import BasePage from "../../../../BasePage";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 const { px2dp } = ScreenUtils;
 import UIText from "../../../../comm/components/UIText";
-import icon from './res/selected.png'
+import icon from '../../../../comm/res/selected_circle_red.png'
 
 type Props = {};
 export default class PromotionPayPage extends BasePage<Props> {

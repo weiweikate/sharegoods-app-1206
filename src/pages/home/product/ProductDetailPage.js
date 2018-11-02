@@ -16,8 +16,8 @@ import DetailBottomView from './components/DetailBottomView';
 import SelectionPage from './SelectionPage';
 import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
-import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
+import detailBack from '../../../comm/res/show_detail_back.png';
+import detailMore from '../../../comm/res/show_share.png';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
@@ -263,7 +263,7 @@ export default class ProductDetailPage extends BasePage {
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
-                        <Image source={xiangqing_btn_return_nor}/>
+                        <Image source={detailBack}/>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
                         this.DetailNavShowModal.show((item) => {
@@ -281,7 +281,7 @@ export default class ProductDetailPage extends BasePage {
                             }
                         });
                     }}>
-                        <Image source={xiangqing_btn_more_nor}/>
+                        <Image source={detailMore}/>
                     </TouchableWithoutFeedback>
                 </View>
 
