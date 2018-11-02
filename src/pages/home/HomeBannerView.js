@@ -8,7 +8,7 @@ const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
 import { bannerModule, homeModule } from './Modules'
 import ViewPager from '../../components/ui/ViewPager'
-const bannerHeight = px2dp(220)
+const bannerHeight = px2dp(230)
 
 @observer
 export default class HomeBannerView extends Component {

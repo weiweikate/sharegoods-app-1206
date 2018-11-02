@@ -13,6 +13,8 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* crm_app_xiugouTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* crm_app_xiugouTests.m */; };
+		0386E92E218C59CB00697612 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386E92D218C59CA00697612 /* libz.tbd */; };
+		0386E930218C59D900697612 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386E92F218C59D900697612 /* libbz2.1.0.tbd */; };
 		03AD6BDE215A05D70080FA6E /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03AD6BDD215A05B00080FA6E /* libRNImagePicker.a */; };
 		081956136AE44CE8B81938B3 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 120228A31812462B96F8AA63 /* Zocial.ttf */; };
 		1073EFBE21798F5800C202AC /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1073EFBA21798F4900C202AC /* libRNDeviceInfo.a */; };
@@ -455,6 +457,8 @@
 		00E356EE1AD99517003FC87E /* crm_app_xiugouTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = crm_app_xiugouTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* crm_app_xiugouTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = crm_app_xiugouTests.m; sourceTree = "<group>"; };
+		0386E92D218C59CA00697612 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		0386E92F218C59D900697612 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
 		03AD6BB1215A05AF0080FA6E /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		1073EF8D21798F4900C202AC /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		120228A31812462B96F8AA63 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -627,6 +631,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0386E930218C59D900697612 /* libbz2.1.0.tbd in Frameworks */,
+				0386E92E218C59CB00697612 /* libz.tbd in Frameworks */,
 				50216F03218C53C600619C67 /* libbz2.1.0.tbd in Frameworks */,
 				CD11955721870DE1007F602E /* libRCTVideo.a in Frameworks */,
 				1073EFBE21798F5800C202AC /* libRNDeviceInfo.a in Frameworks */,
@@ -818,6 +824,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0386E92F218C59D900697612 /* libbz2.1.0.tbd */,
+				0386E92D218C59CA00697612 /* libz.tbd */,
 				50216F02218C53C600619C67 /* libbz2.1.0.tbd */,
 				5068364721379E2B001AB175 /* Foundation.framework */,
 				5068364521379E1D001AB175 /* CoreFoundation.framework */,
