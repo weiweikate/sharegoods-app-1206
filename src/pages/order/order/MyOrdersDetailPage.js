@@ -621,7 +621,7 @@ class MyOrdersDetailPage extends BasePage {
 
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line }}/>
+            <View style={{ height: 0.5, backgroundColor: color.line }}/>
         );
     };
     renderWideLine = () => {
@@ -766,13 +766,6 @@ class MyOrdersDetailPage extends BasePage {
                 }
                 break;
             case 6:
-                if (this.state.status == 2 && data[index].returnType) {
-                    afterSaleService.push({
-                        id: 2,
-                        operation: '退款完成',
-                        isRed: false
-                    });
-                }
                 switch (data[index].returnType) {
                     case 1://申请退款
                         afterSaleService.push({
