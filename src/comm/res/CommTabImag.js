@@ -22,7 +22,7 @@ const CommTabImag = {
         img_Sel: require('./mine_tab_selected.png')
     },
     comm_back_img: require('./icon_header_back.png'),
-    wechat: require('./share_icon_wechat_nor.png'),
+    wechat: require('./share_icon_wechat_circle.png'),
     pengyouquan: require('./share_icon_pengyouquan_nor.png'),
     qq: require('./share_icon_qq_nor.png'),
     kongjian: require('./share_icon_kongjian_nor.png'),
