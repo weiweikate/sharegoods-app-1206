@@ -117,7 +117,16 @@ SINGLETON_FOR_CLASS(JRShareManager)
   
   [[UMSocialManager defaultManager]shareToPlatform:platform messageObject:message currentViewController:self.currentViewController_XG completion:^(id result, NSError *error) {
     if(error){
-      completion(error.description);
+      NSString *msg =error.userInfo[@"message"];
+      if (error.code == 2008) {
+        if (platform == UMSocialPlatformType_QQ || platform == UMSocialPlatformType_Qzone) {
+          msg = @"QQ未安装";
+        }else if (platform == UMSocialPlatformType_WechatSession || platform == UMSocialPlatformType_WechatTimeLine) {
+          msg = @"微信未安装";
+        }
+      }
+      [JRLoadingAndToastTool showToast:msg andDelyTime:1.5f];
+      completion(msg);
     }else{
       completion(nil);
     }
@@ -170,8 +179,9 @@ SINGLETON_FOR_CLASS(JRShareManager)
                               @"systemVersion":[JRDeviceInfo systemVersion],
                               @"device":[JRDeviceInfo device],
                               @"nickName":res.name?res.name:@"---",
+                              @"headerImg":res.iconurl
                               };
-    
+    NSLog(@"%@",res);
     if(finshBlock){
       finshBlock(@[dicData]);
     }

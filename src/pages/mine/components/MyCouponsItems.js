@@ -35,13 +35,12 @@ export default class MyCouponsItems extends Component {
         this.state = {
             viewData: [],
             pageStatus: this.props.pageStatus,
-            refreshing: false,
-            currentPage: 1,
             isEmpty: true,
             explainList: [],
             showDialogModal: false,
             tokenCoinNum: this.props.justOne
         };
+        this.currentPage = 0;
     }
 
     fmtDate(obj) {
@@ -49,7 +48,6 @@ export default class MyCouponsItems extends Component {
     }
 
     renderItem = ({ item, index }) => {
-
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
         let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
@@ -181,7 +179,7 @@ export default class MyCouponsItems extends Component {
                                 height: px2dp(24),
                                 width: px2dp(136),
                                 fontSize: px2dp(15)
-                            }} />
+                            }}/>
                         <UIImage source={plusIcon} style={{
                             width: px2dp(24),
                             height: px2dp(24),
@@ -242,22 +240,15 @@ export default class MyCouponsItems extends Component {
     _keyExtractor = (item, index) => index;
     // 空布局
     _renderEmptyView = () => {
-        // if (this.state.isEmpty) {
-        //     return (
-        //         <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
-        //             <Text style={{ color: '#999999', fontSize: 15, marginTop: 15 }}>数据加载中...</Text>
-        //         </View>
-        //     )
-        // } else {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
                 <Text style={{ color: '#999999', fontSize: 15, marginTop: 15 }}>暂无优惠券</Text></View>
         );
-        // }
     };
 
     render() {
+        console.log('render', this.state.viewData);
         return (
             <View style={styles.container}>
                 <FlatList
@@ -267,8 +258,9 @@ export default class MyCouponsItems extends Component {
                     onEndReachedThreshold={0.1}
                     onEndReached={this.onLoadMore}
                     ListEmptyComponent={this._renderEmptyView}
-                    refreshing={this.state.refreshing}
+                    refreshing={false}
                     onRefresh={this.onRefresh}
+                    showsVerticalScrollIndicator={false}
                 />
                 {this.renderDialogModal()}
                 {this.props.isgiveup ?
@@ -328,15 +320,10 @@ export default class MyCouponsItems extends Component {
         }
     };
     parseData = (dataList) => {
-        let arrData;
-        if (this.state.currentPage == 1) {
-            arrData = [];
-        }
-        arrData = this.state.viewData || [];
-        if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
-            if (arrData.length > 0 && arrData[0].type == 99) {
-                //不在重复显示一元券
-            } else {
+
+        let arrData = [];
+        if (this.currentPage === 1) {//refresh
+            if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
                 arrData.push({
                     status: 0,
                     name: '可叠加使用',
@@ -347,43 +334,46 @@ export default class MyCouponsItems extends Component {
                     type: 99 //以type=99表示1元券
                 });
             }
-        }
-        dataList.map((item) => {
-            arrData.push({
-                id: item.id,
-                status: item.status,
-                name: item.name,
-                timeStr: this.fmtDate(item.startTime) + '-' + this.fmtDate(item.outTime),
-                value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n抵扣' : item.value),
-                limit: this.parseCoupon(item),
-                couponConfigId: item.couponConfigId,
-                remarks: item.remarks,
-                type: item.type
-            });
 
-        });
-        this.setState({ viewData: arrData });
+            dataList.map((item) => {
+                arrData.push({
+                    id: item.id,
+                    status: item.status,
+                    name: item.name,
+                    timeStr: this.fmtDate(item.startTime) + '-' + this.fmtDate(item.expireTime),
+                    value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n抵扣' : item.value),
+                    limit: this.parseCoupon(item),
+                    couponConfigId: item.couponConfigId,
+                    remarks: item.remarks,
+                    type: item.type
+                });
+            });
+            this.setState({ viewData: arrData });
+        } else {//more
+            dataList.map((item) => {
+                arrData.push({
+                    id: item.id,
+                    status: item.status,
+                    name: item.name,
+                    timeStr: this.fmtDate(item.startTime) + '-' + this.fmtDate(item.expireTime),
+                    value: item.type === 3 ? (item.value / 10) : (item.type === 4 ? '商品\n抵扣' : item.value),
+                    limit: this.parseCoupon(item),
+                    couponConfigId: item.couponConfigId,
+                    remarks: item.remarks,
+                    type: item.type
+                });
+            });
+            this.setState({ viewData: this.state.viewData.concat(arrData) });
+
+        }
 
     };
 
-    componentDidMount() {
-        //网络请求，业务处理
-        this.getDataFromNetwork();
-
-    }
-
+    // 1表示刷新，2代表加载
     getDataFromNetwork = () => {
-        let status = this.state.pageStatus;
-        /**
 
-         "page": 1,
-         "pageSize": 10,
-         "productPriceIds": [
-         {
-           "priceId": 1,
-           "productId": 1
-         }
-         */
+        let status = this.state.pageStatus;
+
         if (this.props.fromOrder && status == 0) {
             let arr = [];
             // ProductPriceIdPair=this.props.productIds;
@@ -391,13 +381,14 @@ export default class MyCouponsItems extends Component {
             this.props.orderParam.orderProducts.map((item, index) => {
                 arr.push({
                     priceId: item.priceId,
-                    productId: item.productId
+                    productId: item.productId,
+                    amount: item.num
                 });
             });
-            API.listAvailable({ page: this.state.currentPage, pageSize: 20, productPriceIds: arr }).then(res => {
+            API.listAvailable({ page: this.currentPage, pageSize: 10, productPriceIds: arr }).then(res => {
                 let data = res.data || {};
                 let dataList = data.data || [];
-                this.setState({ isEmpty: false }, this._renderEmptyView);
+                // this.setState({ isEmpty: false }, this._renderEmptyView);
                 this.parseData(dataList);
             }).catch(result => {
                 if (result.code === 10009) {
@@ -418,18 +409,22 @@ export default class MyCouponsItems extends Component {
                     type: 99 //以type=99表示1元券
                 });
             }
-            this.setState({ viewData: arrData, isEmpty: false }, this._renderEmptyView);
+            this.setState({ viewData: arrData });
         }
         else {
             API.userCouponList({
-                page: this.state.currentPage,
+                page: this.currentPage,
                 status,
                 pageSize: 10
             }).then(result => {
                 let data = result.data || {};
                 let dataList = data.data || [];
-                this.setState({ isEmpty: false }, this._renderEmptyView);
+                // this.setState({ isEmpty: false }, this._renderEmptyView);
+                //this.parseData(dataList);
+
+                // this.setState({ viewData: dataList });
                 this.parseData(dataList);
+
 
             }).catch(result => {
                 if (result.code === 10009) {
@@ -455,23 +450,16 @@ export default class MyCouponsItems extends Component {
 
     onRefresh = () => {
         console.log('refresh');
-        this.setState({
-            // viewData: [],
-            currentPage: 1
-        }, () => {
-            this.getDataFromNetwork();
-        });
+        this.currentPage = 1;
+        this.getDataFromNetwork();
+
 
     };
 
     onLoadMore = () => {
         console.log('onLoadMore');
-        let currentpage = this.state.currentPage + 1;
-        this.setState({
-            currentPage: currentpage
-        }, () => {
-            this.getDataFromNetwork();
-        });
+        this.currentPage++;
+        this.getDataFromNetwork();
 
     };
 

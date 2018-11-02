@@ -31,7 +31,6 @@ ext {
             fastjson  : 'com.alibaba:fastjson:1.1.68.android',
             exoplayer : 'com.google.android.exoplayer:exoplayer:2.7.3',
             exopOKhttp: 'com.google.android.exoplayer:extension-okhttp:2.7.3',
-            multidex  : 'com.android.support:multidex:1.0.3'
-
+            multidex  : 'com.android.support:multidex:1.0.3',
     ]
 }

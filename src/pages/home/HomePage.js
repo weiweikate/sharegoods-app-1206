@@ -141,8 +141,8 @@ export default class HomePage extends Component {
                 opacity: this.st
             });
             this.shadowOpacity = 0;
-            this.setState({
-                shadowOpacity: this.shadowOpacity
+            this.headerShadow.setNativeProps({
+                opacity: this.shadowOpacity
             });
             return;
         }
@@ -162,8 +162,8 @@ export default class HomePage extends Component {
         this._refHeader.setNativeProps({
             opacity: this.st
         });
-        this.setState({
-            shadowOpacity: this.shadowOpacity
+        this.headerShadow.setNativeProps({
+            opacity: this.shadowOpacity
         });
     };
 
@@ -194,13 +194,7 @@ export default class HomePage extends Component {
             return <HomeGoodsView data={data.itemData} navigation={this.props.navigation}/>;
         } else if (data.type === homeType.show) {
             const { isShow } = this.state;
-            return (<View>{
-                isShow
-                    ?
-                    <ShowView navigation={this.props.navigation}/>
-                    :
-                    <View/>
-            }</View>);
+            return  <ShowView navigation={this.props.navigation} isShow={isShow}/>
         } else if (data.type === homeType.goodsTitle) {
             return <View style={styles.titleView}>
                 <Text style={styles.title}>为你推荐</Text>
@@ -220,7 +214,7 @@ export default class HomePage extends Component {
     componentDidMount() {
         //this.shareModal.open();
         InteractionManager.runAfterInteractions(() => {
-            this.getMessageData();
+            // this.getMessageData();
         });
     }
 
@@ -329,9 +323,10 @@ export default class HomePage extends Component {
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
                 <LinearGradient colors={['#000', 'transparent']}
+                                ref={e => this.headerShadow = e}
                                 style={[styles.navBar, {
                                     height: this.headerH + 14,
-                                    opacity: bannerModule.opacity === 1 ? 0 : this.state.shadowOpacity
+                                    opacity: bannerModule.opacity === 1 ? 0 : 0.4
                                 }]}/>
 
                 <HomeSearchView navigation={this.props.navigation}

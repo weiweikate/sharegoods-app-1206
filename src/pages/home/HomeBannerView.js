@@ -2,14 +2,13 @@
  * 首页轮播图
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
 import { bannerModule, homeModule } from './Modules'
-import XGSwiper from '../../components/ui/XGSwiper'
-
-const bannerHeight = px2dp(220);
+import ViewPager from '../../components/ui/ViewPager'
+const bannerHeight = px2dp(220)
 
 @observer
 export default class HomeBannerView extends Component {
@@ -20,38 +19,10 @@ export default class HomeBannerView extends Component {
     state = {
         index : 0
     }
-    _renderViewPageItem = (item, index) => {
-        return <Image source={{ uri: item.imgUrl }} style={styles.img} resizeMode="cover"/>
+    _renderViewPageItem(item) {
+        return <TouchableOpacity onPress={()=>this._onPressRow(item)}><Image style={styles.img} source={{uri: item}}/></TouchableOpacity>
     }
-    _onDidChange = (item, index) => {
-        this.setState({index: index})
-    }
-    _onPressRow = (item) => {
-        const router = homeModule.homeNavigate(item.linkType, item.linkTypeCode);
-        let params = homeModule.paramsNavigate(item);
-        const { navigation } = this.props;
-        navigation.navigate(router, params);
-    }
-    render() {
-        const { bannerList } = bannerModule;
-        if (bannerList.length === 0) {
-            return null;
-        }
-        return <View>
-            <XGSwiper style={styles.swiper}
-                dataSource={bannerList}
-                width={ ScreenUtils.width }
-                height={ bannerHeight }
-                renderRow={this._renderViewPageItem.bind(this)}
-                onPress={this._onPressRow.bind(this)}
-                onDidChange={this._onDidChange.bind(this)}
-                />
-            {this.renderIndexView()}
-        </View>
-    }
-
-    renderIndexView() {
-        const { index } = this.state
+    _renderPagination = (index, total) => {
         const { bannerCount } = bannerModule
         let items = []
         for (let i = 0; i < bannerCount; i++) {
@@ -63,6 +34,45 @@ export default class HomeBannerView extends Component {
         }
         return  <View style={styles.indexView}>
             {items}
+        </View>
+    }
+    _onPressRow = (item) => {
+        const { bannerCount, bannerList } = bannerModule
+        let data = null
+        for (let i = 0; i < bannerCount; i++) {
+            if (bannerList[i].imgUrl === item) {
+                data = bannerList[i]
+                break
+            }
+        }
+        const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+        let params = homeModule.paramsNavigate(data);
+        const { navigation } = this.props;
+        navigation.navigate(router, params);
+    }
+    render() {
+        const { bannerList } = bannerModule;
+        if (bannerList.length === 0) {
+            return null;
+        }
+
+        let items = []
+        bannerList.map(value => {
+            items.push(value.imgUrl)
+        })
+
+        return <View>
+             <ViewPager
+                swiperShow={true}
+                arrayData={items}
+                renderItem={this._renderViewPageItem.bind(this)}
+                autoplay={true}
+                loop={false}
+                height={bannerHeight}
+                renderPagination={this._renderPagination.bind(this)}
+                index={0}
+                scrollsToTop={true}
+            />
         </View>
     }
 }

@@ -30,6 +30,13 @@ export default class DetailNavShowModal extends Component {
             confirmCallBack: confirmCallBack
         });
     };
+
+    close=()=>{
+        this.setState({
+            modalVisible: false,
+        });
+    }
+
     _onPress = (item) => {
         this.setState({
             modalVisible: false

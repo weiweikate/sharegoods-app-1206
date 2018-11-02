@@ -15,6 +15,7 @@ pod 'CocoaLumberjack', '3.4.1'
 pod 'UICKeyChainStore', '2.1.1'
 pod 'SandBoxPreviewTool'    #用于实时预览沙盒文件目录
 pod 'MBProgressHUD'
+pod 'IQKeyboardManager'
 pod 'Bugly', '2.5.0'
 #微信支付
 pod 'WechatOpenSDK'
@@ -43,7 +44,6 @@ end
 
 #    pod 'SVProgressHUD'
 #    pod 'Masonry'
-#    pod 'IQKeyboardManager'
 #    pod 'SDWebImage'
 #    pod 'MJRefresh'
 #    pod 'MJExtension'

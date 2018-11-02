@@ -14,8 +14,8 @@ import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
 import TopicDetailSegmentView from './components/TopicDetailSegmentView';
 import ScreenUtils from '../../utils/ScreenUtils';
-import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
-import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
+import detailBack from '../../comm/res/show_detail_back.png';
+import detailMore from '../../comm/res/show_share.png';
 import HTML from 'react-native-render-html';
 import HomeAPI from '../home/api/HomeAPI';
 import TopicApi from './api/TopicApi';
@@ -40,15 +40,20 @@ export default class TopicDetailPage extends BasePage {
             activityType: this.params.activityType,
             //参数还是详情
             selectedIndex: 0,
-            //数据 礼包没有活动数据都在data里
+            //正常数据 礼包
             data: {},
             //活动数据  降价拍和秒杀活动数据
             activityData: {}
+
         };
     }
 
     componentDidMount() {
         this.loadPageData();
+    }
+
+    componentWillUnmount() {
+        this.__timer__ && clearInterval(this.__timer__);
     }
 
     loadPageData() {
@@ -64,7 +69,8 @@ export default class TopicDetailPage extends BasePage {
             }).then((data) => {
                 this.state.activityData = data.data || {};
                 this._getProductDetail(this.state.activityData.productId);
-                this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType);
+                this._needPushToNormal();
+                this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this.updateActivityStatus);
             }).catch((error) => {
                 this.$loadingDismiss();
                 this.$toastShow(error.msg);
@@ -76,7 +82,8 @@ export default class TopicDetailPage extends BasePage {
             }).then((data) => {
                 this.state.activityData = data.data || {};
                 this._getProductDetail(this.state.activityData.productId);
-                this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType);
+                this._needPushToNormal();
+                this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this.updateActivityStatus);
             }).catch((error) => {
                 this.$loadingDismiss();
                 this.$toastShow(error.msg);
@@ -98,6 +105,21 @@ export default class TopicDetailPage extends BasePage {
                 this.$loadingDismiss();
                 this.$toastShow(error.msg);
             });
+        }
+    };
+
+    //倒计时到0的情况刷新页面
+    updateActivityStatus = () => {
+        this._getActivityData();
+    };
+
+    _needPushToNormal = () => {
+        const { status, type } = this.state.activityData;
+        //如果降价拍,秒杀&&结束&&需要   5秒跳转普通详情
+        if (this.state.activityType !== 3 && (status === 4 || status === 5) && type === 1) {
+            this.__timer__ = setTimeout(() => {
+                this.$navigate('home/product/ProductDetailPage', { productId: this.state.activityData.productId });
+            }, 5000);
         }
     };
 
@@ -302,13 +324,18 @@ export default class TopicDetailPage extends BasePage {
                 colorType = 2;
             }
         } else {
-            const { notifyFlag, surplusNumber, limitNumber, limitFlag, status } = this.state.activityData;
+            //状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
+            const { notifyFlag, surplusNumber, limitNumber, limitFlag, status, beginTime } = this.state.activityData;
             if (status === 1) {
-                if (notifyFlag === 1) {
-                    bottomTittle = '开始前3分钟提醒';
+                if (beginTime - new Date().getTime() > 3 * 60 * 1000) {
+                    if (notifyFlag === 1) {
+                        bottomTittle = '开始前3分钟提醒';
+                    } else {
+                        bottomTittle = '设置提醒';
+                        colorType = 1;
+                    }
                 } else {
-                    bottomTittle = '设置提醒';
-                    colorType = 1;
+                    bottomTittle = '即将开始';
                 }
             } else if (status === 4 || status === 5) {
                 bottomTittle = '已结束';
@@ -345,7 +372,7 @@ export default class TopicDetailPage extends BasePage {
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
-                        <Image source={xiangqing_btn_return_nor}/>
+                        <Image source={detailBack}/>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
                         this.DetailNavShowModal.show((item) => {
@@ -362,7 +389,7 @@ export default class TopicDetailPage extends BasePage {
                             }
                         });
                     }}>
-                        <Image source={xiangqing_btn_more_nor}/>
+                        <Image source={detailMore}/>
                     </TouchableWithoutFeedback>
                 </View>
 

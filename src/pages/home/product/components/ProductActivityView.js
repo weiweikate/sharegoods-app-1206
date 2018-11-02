@@ -32,22 +32,18 @@ export default class ActivityView extends Component {
         this.interval && clearInterval(this.interval);
     };
 
-    componentDidMount() {
-        this.saveActivityViewData(this.props.activityData, this.props.activityType);
-    }
-
-    saveActivityViewData(activityData, activityType) {
+    saveActivityViewData(activityData, activityType, callBack) {
+        this.callBack = callBack;
         //	integer($int32)
         // example: 1
-        // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
         const { date, beginTime, endTime, status } = activityData;
-        let begin = status === 1;
-        if (begin) {
+        // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
+        if (status === 1 && beginTime >= date) {//以防止错误数据无限循环
             this._time(date, beginTime);
-        } else {
+        } else if ((status === 2 || status === 3) && endTime >= date) {//以防止错误数据无限循环
             if (activityType === 2) {
                 const { markdownPrice = '', floorPrice, activityTime } = activityData;
-                markdownPrice === floorPrice ? this._time(date, endTime) : this._time(date, activityTime);
+                (markdownPrice === floorPrice || status === 3) ? this._time(date, endTime) : this._time(date, activityTime);
             } else {
                 this._time(date, endTime);
             }
@@ -56,13 +52,15 @@ export default class ActivityView extends Component {
 
 
     _time(start, end) {
+        this._stopTime();
         if (isNoEmpty(start) && isNoEmpty(end)) {
-            let countdownDate = new Date(new Date().getTime() + (end - start));
+            let countdownDate = new Date().getTime() + (end - start);
             this.interval = setInterval(() => {
                 let diff = countdownDate - new Date().getTime();
                 if (diff <= 0) {
                     diff = 0;
                     this._stopTime();
+                    this.callBack && this.callBack();
                 }
                 this.setState({
                     countTime: diff
@@ -127,7 +125,7 @@ export default class ActivityView extends Component {
                 price = markdownPrice;
                 one = '起拍价';
                 two = `${reseCount}人关注`;
-                three = markdownPrice === floorPrice ? `距结束 ${this._timeDif(this.state.countTime) || ''}` : `距下次降价 ${this._timeDif(this.state.countTime) || ''}`;
+                three = (markdownPrice === floorPrice || status === 3) ? `距结束 ${this._timeDif(this.state.countTime) || ''}` : `距下次降价 ${this._timeDif(this.state.countTime) || ''}`;
                 four = `${surplusNumber === 0 ? `已抢完` : `还剩${surplusNumber}件`}`;
             }
         } else {
@@ -164,32 +162,33 @@ export default class ActivityView extends Component {
                     }}>{two}</Text>
                 </View>
             </View>
-            <View style={{ marginRight: 15 }}>
-                {end ?
-                    <Text style={{ color: '#FFFC00', fontSize: 13 }}>活动已结束</Text>
-                    :
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View>
-                            <Text style={{ color: '#1B7BB3', fontSize: 11 }}>{three}</Text>
-                            <View style={{
-                                marginTop: 5,
-                                height: 15,
-                                width: 106,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                backgroundColor: '#2B99D9',
-                                borderRadius: 2.5
-                            }}>
-                                <Text style={{ color: '#F7F7F7', fontSize: 11 }}>{four}</Text>
-                            </View>
+            {end ?
+                <Text style={{ color: '#FFFC00', fontSize: 13, marginRight: 15 }}>活动已结束</Text>
+                :
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ alignItems: 'flex-end' }}>
+                        <View style={{ width: 106 + 30, alignItems: 'center' }}>
+                            <Text style={{ color: '#1B7BB3', fontSize: 11 }} numberOfLines={1}>{three}</Text>
                         </View>
-
-                        <Image source={whiteArrowRight}
-                               style={{ height: 14, marginLeft: 2 }}
-                               resizeMode={'contain'}/>
+                        <View style={{
+                            marginTop: 5,
+                            marginRight:15,
+                            height: 15,
+                            width: 106,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: '#2B99D9',
+                            borderRadius: 2.5
+                        }}>
+                            <Text style={{ color: '#F7F7F7', fontSize: 11 }}>{four}</Text>
+                        </View>
                     </View>
-                }
-            </View>
+
+                    <Image source={whiteArrowRight}
+                           style={{ height: 14, marginLeft: 2,marginRight:15 }}
+                           resizeMode={'contain'}/>
+                </View>
+            }
         </TouchableOpacity>;
     }
 }

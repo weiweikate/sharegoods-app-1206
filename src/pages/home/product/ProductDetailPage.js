@@ -16,8 +16,8 @@ import DetailBottomView from './components/DetailBottomView';
 import SelectionPage from './SelectionPage';
 import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
-import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
+import detailBack from '../../../comm/res/show_detail_back.png';
+import detailMore from '../../../comm/res/show_share.png';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
@@ -38,7 +38,7 @@ export default class ProductDetailPage extends BasePage {
             selectedIndex: 0,
             //活动数据
             activityData: {},
-            activityType: 0//请求到数据查看类型
+            activityType: 0//请求到数据才能知道活动类型
         };
     }
 
@@ -76,12 +76,13 @@ export default class ProductDetailPage extends BasePage {
         }
     };
 
-    _getQueryByProductId = (productId) => {
-        if (!productId) {
+    _getQueryByProductId = () => {
+        const { product = {} } = this.state.data;
+        if (!product.id) {
             return;
         }
         HomeAPI.queryByProductId({
-            productId: productId
+            productId: product.id
         }).then((data) => {
             this.$loadingDismiss();
             let dataTemp = data.data || {};
@@ -89,13 +90,16 @@ export default class ProductDetailPage extends BasePage {
             if (dataTemp.activityType === 2 && dataTemp.depreciate) {
                 this.setState({
                     activityData: dataTemp.depreciate
+                }, () => {
+                    this.DetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this._getQueryByProductId);
                 });
             } else if (dataTemp.activityType === 1 && dataTemp.seckill) {
                 this.setState({
                     activityData: dataTemp.seckill
+                }, () => {
+                    this.DetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this._getQueryByProductId);
                 });
             }
-            // this.DetailHeaderView.updateTime(this.state.activityData, this.state.activityType);
         }).catch((error) => {
             this.$loadingDismiss();
             this.$toastShow(error.msg);
@@ -103,10 +107,10 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _savaData = (data) => {
-        const { product = {} } = data;
-        this._getQueryByProductId(product.id);
         this.setState({
             data: data
+        }, () => {
+            this._getQueryByProductId();
         });
     };
 
@@ -169,9 +173,12 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        return <DetailHeaderView ref={(e) => {
-            this.DetailHeaderView = e;
-        }} data={this.state.data} activityData={this.state.activityData} activityType={this.state.activityType}
+        return <DetailHeaderView data={this.state.data}
+                                 ref={(e) => {
+                                     this.DetailHeaderView = e;
+                                 }}
+                                 activityType={this.state.activityType}
+                                 activityData={this.state.activityData}
                                  productActivityViewAction={this._productActivityViewAction}
                                  navigation={this.props.navigation}/>;
     };
@@ -256,13 +263,14 @@ export default class ProductDetailPage extends BasePage {
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
-                        <Image source={xiangqing_btn_return_nor}/>
+                        <Image source={detailBack}/>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
                         this.DetailNavShowModal.show((item) => {
                             switch (item.index) {
                                 case 0:
                                     this.$navigate('message/MessageCenterPage');
+                                    this.DetailNavShowModal.close();
                                     break;
                                 case 1:
                                     this.props.navigation.popToTop();
@@ -273,7 +281,7 @@ export default class ProductDetailPage extends BasePage {
                             }
                         });
                     }}>
-                        <Image source={xiangqing_btn_more_nor}/>
+                        <Image source={detailMore}/>
                     </TouchableWithoutFeedback>
                 </View>
 

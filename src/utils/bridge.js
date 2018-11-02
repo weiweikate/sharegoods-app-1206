@@ -105,8 +105,8 @@ export default {
      * allScreen: bool
      * }
      */
-    saveScreen(){
-        NativeModules.LoginAndShareModule.saveScreen({allScreen: true});
+    saveScreen(jsonParam, onSuccess, onError = (errorStr) => {}){
+        NativeModules.LoginAndShareModule.saveScreen(jsonParam||{allScreen: true},onSuccess, onError);
     },
     scanQRCode(onSuccess, onError = (errorStr) => {}){
         NativeModules.QRCodeModule.scanQRCode(onSuccess, onError);

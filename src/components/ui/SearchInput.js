@@ -66,7 +66,7 @@ class SearchInput extends Component {
                         width: 10,
                         height: 18
                     }}/>
-                    <UIText value={'返回'} style={{ fontSize: 13, textAlign: 'center', marginLeft: 5 }}/>
+                    <UIText value={''} style={{ fontSize: 13, textAlign: 'center', marginLeft: 5 }}/>
                 </TouchableOpacity>
                 <View style={styles.searchBox}>
                     <Image

@@ -37,6 +37,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
     constructor(props) {
         super(props);
         this.state = {
+            disable:false,
             path: ''
         };
         this._bind();
@@ -57,7 +58,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
     }
 
     loadPageData() {
-        this.creatQRCodeImage('二维码链接');
+        this.creatQRCodeImage(`${apiEnvironment.getCurrentH5Url()}/register`);
     }
 
     creatQRCodeImage(QRCodeStr){
@@ -65,6 +66,27 @@ export default class InviteFriendsPage extends BasePage<Props> {
            this.setState({path:Platform.OS === 'android' ? 'file://' + path : '' + path});
        }) ;
     }
+
+    //截屏
+    _saveImg = () => {
+        this.setState({
+            disable: true
+        }, () => {
+            bridge.saveScreen(null, () => {
+                this.$toastShow('保存成功');
+                this.__timer__ = setTimeout(() => {
+                    this.setState({
+                        disable: false
+                    });
+                }, 2500);
+            }, () => {
+                this.$toastShow('保存失败');
+                this.setState({
+                    disable: false
+                });
+            });
+        });
+    };
 
     _render() {
         return (
@@ -119,7 +141,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                 />
                 <View style = {{flexDirection: 'row', marginTop: autoSizeWidth(50)}}>
                     <View style = {{flex: 1}}/>
-                    <TouchableOpacity style={styles.btnContainer} onPress={() => {bridge.saveScreen()}}>
+                    <TouchableOpacity style={styles.btnContainer} onPress={this._saveImg} disabled={this.state.disable}>
                         <UIText value = {'保存图片'} style = {styles.btnText}/>
                     </TouchableOpacity>
                     <View style = {{flex: 1}}/>
