@@ -8,7 +8,7 @@ import {
     Image,
     Text,
     TouchableOpacity,
-     TouchableWithoutFeedback,ScrollView
+    TouchableWithoutFeedback, ScrollView
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -18,7 +18,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import AutoExpandingInput from '../../../../components/ui/AutoExpandingInput';
 import arrowUp from '../../res/customerservice/icon_06-03.png';
 import arrowDown from '../../res/customerservice/icon_06.png';
-import rightIcon from '../../res/customerservice/icon111_03.png';
+import rightIcon from '../../../../comm/res/tongyon_icon_check_green.png';
 import addPic from '../../res/customerservice/xk1_03.png';
 import deleteImage from '../../res/customerservice/deleteImage.png';
 import BusinessUtils from '../../components/BusinessUtils';
@@ -36,7 +36,10 @@ export default class HelperFeedbackPage extends BasePage {
             showModal: false,
             isShowFinishModal: false,
             course: '请选择问题类型',
-            CONFIG: [{value:'物流问题',detailId:0},{value:'客服问题',detailId:1},{value:'物流问题',detailId:2},{value:'客服问题',detailId:3},{value:'物流问题',detailId:4},{value:'客服问题',detailId:5}],//value, item.detailId
+            CONFIG: [{ value: '物流问题', detailId: 0 }, { value: '客服问题', detailId: 1 }, {
+                value: '物流问题',
+                detailId: 2
+            }, { value: '客服问题', detailId: 3 }, { value: '物流问题', detailId: 4 }, { value: '客服问题', detailId: 5 }],//value, item.detailId
             selectIndex: -1,
             imageArr: []
         };
@@ -95,7 +98,7 @@ export default class HelperFeedbackPage extends BasePage {
         //     ToastAndroid.show('请完善反馈资料!', ToastAndroid.SHORT);
         //     return;
         // }
-        if(this.state.selectIndex == -1){
+        if (this.state.selectIndex == -1) {
             this.$toastShow('请选择反馈类型!');
             return;
         }
@@ -114,12 +117,12 @@ export default class HelperFeedbackPage extends BasePage {
             } else {
                 this.$toastShow(res.msg);
             }
-        }).catch(err=>{
-            if(err.code == 10009){
-                this.$navigate('login/login/LoginPage')
+        }).catch(err => {
+            if (err.code == 10009) {
+                this.$navigate('login/login/LoginPage');
             }
 
-        })
+        });
     }
 
     renderFinishModal() {
@@ -130,7 +133,7 @@ export default class HelperFeedbackPage extends BasePage {
                 onRequestClose={() => {
                 }}
                 visible={this.state.isShowFinishModal}>
-                <View style={{flex: 1,width:ScreenUtils.width }}>
+                <View style={{ flex: 1, width: ScreenUtils.width }}>
                     <View style={{
                         width: ScreenUtils.width / 5 * 3,
                         height: ScreenUtils.height / 3,
@@ -235,7 +238,7 @@ export default class HelperFeedbackPage extends BasePage {
                             <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>请选择问题类型</Text>
                             <Image source={arrowUp} style={{ width: 15, height: 15, marginRight: 10 }}/>
                         </TouchableOpacity>
-                        <View style={{  width: ScreenUtils.width, backgroundColor: 'white' }}>
+                        <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
                             {this.state.CONFIG.map((item, i) => {
                                 return (
                                     <TouchableOpacity key={i} style={{ height: 48, justifyContent: 'center' }}
@@ -264,45 +267,50 @@ export default class HelperFeedbackPage extends BasePage {
                 {this.renderModals()}
                 {this.renderFinishModal()}
                 <ScrollView>
-                <TouchableOpacity style={{
-                    flexDirection: 'row', width: ScreenUtils.width, height: 44, backgroundColor: 'white', marginTop: 5,
-                    justifyContent: 'space-between', alignItems: 'center'
-                }} onPress={() => this.setState({ showModal: true })}>
-                    <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>{this.state.course}</Text>
-                    <Image source={arrowDown} style={{ width: 15, height: 15, marginRight: 10 }}/>
-                </TouchableOpacity>
-                <View style={styles.containerView1}>
-                    <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>详细说明</Text>
-                </View>
-                <View style={{height: 130, backgroundColor: 'white' }}>
-                    <AutoExpandingInput
-                        style={styles.detailAddress}
-                        onChangeText={text => this.setState({ detailContent: text, textLength: text.length })}
-                        placeholder={'请描述详细问题...'}
-                        maxLength={90}
-                        defaultValue={''}
-                        underlineColorAndroid={'transparent'}
-                    />
-                    <Text style={{ position: 'absolute', bottom: 10, right: 10 }}>{this.state.textLength}/90</Text>
-                </View>
-                <View style={styles.containerView2}>
-                    <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>上传图片</Text>
-                </View>
-                <View style={styles.containerView3}>
-                    {this.state.imageArr.map((item, index) => {
-                        return this.renderPhotoItem(item, index);
-                    })}
-                    {this.renderAddItem()}
-                </View>
-
-                <View style={{ width: ScreenUtils.width, height: 180, alignItems: 'center',}}>
-                    <TouchableOpacity activeOpacity={0.9}
-                                      style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' || this.state.detailContent.length < 10 ? '#dddddd' : color.red }]
-
-                                      } onPress={() => this.feedback2server()}>
-                        <Text style={{ fontSize: 16, color: '#fff' }}>提交</Text>
+                    <TouchableOpacity style={{
+                        flexDirection: 'row',
+                        width: ScreenUtils.width,
+                        height: 44,
+                        backgroundColor: 'white',
+                        marginTop: 5,
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }} onPress={() => this.setState({ showModal: true })}>
+                        <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>{this.state.course}</Text>
+                        <Image source={arrowDown} style={{ width: 15, height: 15, marginRight: 10 }}/>
                     </TouchableOpacity>
-                </View>
+                    <View style={styles.containerView1}>
+                        <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>详细说明</Text>
+                    </View>
+                    <View style={{ height: 130, backgroundColor: 'white' }}>
+                        <AutoExpandingInput
+                            style={styles.detailAddress}
+                            onChangeText={text => this.setState({ detailContent: text, textLength: text.length })}
+                            placeholder={'请描述详细问题...'}
+                            maxLength={90}
+                            defaultValue={''}
+                            underlineColorAndroid={'transparent'}
+                        />
+                        <Text style={{ position: 'absolute', bottom: 10, right: 10 }}>{this.state.textLength}/90</Text>
+                    </View>
+                    <View style={styles.containerView2}>
+                        <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>上传图片</Text>
+                    </View>
+                    <View style={styles.containerView3}>
+                        {this.state.imageArr.map((item, index) => {
+                            return this.renderPhotoItem(item, index);
+                        })}
+                        {this.renderAddItem()}
+                    </View>
+
+                    <View style={{ width: ScreenUtils.width, height: 180, alignItems: 'center' }}>
+                        <TouchableOpacity activeOpacity={0.9}
+                                          style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' || this.state.detailContent.length < 10 ? '#dddddd' : color.red }]
+
+                                          } onPress={() => this.feedback2server()}>
+                            <Text style={{ fontSize: 16, color: '#fff' }}>提交</Text>
+                        </TouchableOpacity>
+                    </View>
                 </ScrollView>
             </View>
         );
@@ -370,7 +378,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop:50
+        marginTop: 50
     },
     containerView1: {
         backgroundColor: 'white',

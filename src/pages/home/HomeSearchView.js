@@ -7,7 +7,8 @@ import { View, StyleSheet, Image, TouchableOpacity, TouchableWithoutFeedback } f
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp, statusBarHeight } = ScreenUtils;
-import logoImg from './res/logo.png';
+import logoRed from './res/home_icon_logo_red.png';
+import logoWhite from './res/home_icon_logo_white.png';
 import searchImg from './res/icon_search.png';
 import msgBlack from './res/message_black.png';
 import msgWhite from './res/message_white.png';
@@ -16,7 +17,7 @@ import UIText from '../../components/ui/UIText';
 export default ({ navigation, whiteIcon }) =>
     <View style={styles.navBar}>
         <View style={styles.navContent}>
-            <Image source={logoImg} style={styles.logo}/>
+            <Image source={whiteIcon ? logoWhite : logoRed} style={styles.logo}/>
             <TouchableOpacity style={[styles.searchBox, { backgroundColor: whiteIcon ? 'white' : '#E4E5E6' }]}
                               onPress={() => navigation.navigate('home/search/SearchPage')}>
                 <Image source={searchImg} style={styles.searchIcon}/>
@@ -34,7 +35,7 @@ export default ({ navigation, whiteIcon }) =>
 let styles = StyleSheet.create({
     navBar: {
         flexDirection: 'column',
-        height: statusBarHeight + 44,
+        height: statusBarHeight + 44 - (ScreenUtils.isIOSX?10:0) ,
         position: 'absolute',
         left: 0,
         right: 0,
@@ -46,7 +47,7 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'transparent',
         justifyContent: 'center',
-        paddingTop: statusBarHeight,
+        paddingTop: statusBarHeight -  (ScreenUtils.isIOSX?10:0),
         marginLeft: px2dp(15),
         marginRight: px2dp(15)
     },
