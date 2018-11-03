@@ -7,6 +7,7 @@ import UserApi from './userApi'
 const USERINFOCACHEKEY = 'UserInfo';
 const CARTDATA = 'cartData';
 const USERTOKEN = 'USERTOKEN'
+const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
 
 class User {
 
@@ -349,7 +350,8 @@ class User {
         this.upUserid = null;
         // todo 清空cookie
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
-
+        AsyncStorage.removeItem(LASTSHOWPROMOTIONTIME).catch(e => {
+        });
         return AsyncStorage.removeItem(USERINFOCACHEKEY).catch(e => {
         });
     }
