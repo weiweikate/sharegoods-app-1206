@@ -106,7 +106,7 @@ export default class HomePage extends Component {
                 const { state } = payload;
                 console.log('willFocusSubscription', state)
                 if (state && state.routeName === 'HomePage') {
-                     //this.shareTaskIcon.queryTask();
+                    this.shareTaskIcon.queryTask();
                     this.setState({ isShow: true });
                 }
 
