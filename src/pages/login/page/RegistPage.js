@@ -107,7 +107,8 @@ export default class RegistPage extends BasePage {
             headImg:this.params.headerImg?this.params.headerImg:'',
         }).then((data) => {
             if (data.code === 10000) {
-               this.toLogin(phone, code, password)
+               // this.toLogin(phone, code, password)
+                this.$navigate('GetRedpacketPage')
             } else {
                 bridge.$toast(data.msg);
             }
