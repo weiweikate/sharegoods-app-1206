@@ -172,13 +172,18 @@ class ShopCartStore {
         ShopCartAPI.updateItem(
             itemData
         ).then((res) => {
-            let [...temDataArr] = this.data.slice();
-            temDataArr.map((itemValue, indexPath) => {
-                if (itemValue.priceId === itemData.priceId && itemValue.productId === itemData.productId) {
-                    temDataArr[indexPath] = itemData;
-                }
-            });
-            this.data = temDataArr;
+            this.getShopCartListData()
+            // let [...temDataArr] = this.data.slice();
+            // if (itemData.amount > 200){
+            //     itemData.amount = 200
+            //     bridge.$toast('单个商品最多加入200件')
+            // }
+            // temDataArr.map((itemValue, indexPath) => {
+            //     if (itemValue.priceId === itemData.priceId && itemValue.productId === itemData.productId) {
+            //         temDataArr[indexPath] = itemData;
+            //     }
+            // });
+            // this.data = temDataArr;
             // this.data.splice()[[rowId]] = itemData
         }).catch(error => {
             //登陆失效

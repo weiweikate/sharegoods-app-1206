@@ -69,20 +69,20 @@ export default class MyPromotionPage extends BasePage {
         // 当前等级
         MineApi.getUserLevelInfo().then(response => {
             console.log(response);
-                // console.warn(JSON.stringify(response,null,4));
-                const { data } = response;
-                this.setState({
-                    loading: false,
-                    refreshing: false,
-                    netFailedInfo: null,
-                    levelName: data.levelName,
-                    experience: data.experience || 0,
-                    levelExperience: data.levelExperience || 0,
-                    headImg: data.headImg,
-                    realName: data.realName,
-                    loadingState: PageLoadingState.success,
-                    ...data
-                });
+            // console.warn(JSON.stringify(response,null,4));
+            const { data } = response;
+            this.setState({
+                loading: false,
+                refreshing: false,
+                netFailedInfo: null,
+                levelName: data.levelName,
+                experience: data.experience || 0,
+                levelExperience: data.levelExperience || 0,
+                headImg: data.headImg,
+                realName: data.realName,
+                loadingState: PageLoadingState.success,
+                ...data
+            });
         }).catch(err => {
             this.setState({
                 loading: false,
@@ -94,12 +94,12 @@ export default class MyPromotionPage extends BasePage {
                 this.props.navigation.navigate('login/login/LoginPage');
             }
         });
-        MineApi.getNextLevelInfo().then(res =>{
-            const {data} = res;
+        MineApi.getNextLevelInfo().then(res => {
+            const { data } = res;
             this.setState({
-                nextArr:data.content
-            })
-        })
+                nextArr: data.content
+            });
+        });
     };
 
 
@@ -217,7 +217,7 @@ export default class MyPromotionPage extends BasePage {
     renderWelfare() {
         // const arr = ['分红增加', '分红增加', '分红增加', '分红增加'];
         return (
-            <View style={{marginBottom:50}}>
+            <View style={{ marginBottom: 50 }}>
                 <View style={{ justifyContent: 'center', height: 44, backgroundColor: '#fff' }}>
                     <Text style={{
                         marginLeft: 14,
@@ -227,9 +227,10 @@ export default class MyPromotionPage extends BasePage {
                     }}>预计晋升后可获得哪些福利？</Text>
                 </View>
                 {this.renderSepLine()}
-                {this.state.nextArr?<HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
-                                          containerStyle={{ backgroundColor: '#fff' }}/>:null}
-
+                {this.state.nextArr ? <HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
+                                            containerStyle={{ backgroundColor: '#fff' }}
+                                            imagesInitialDimensions={ScreenUtils.width}
+                                            baseFontStyle={{ lineHeight: 25, color: '#666', fontSize: 13 }}/> : null}
             </View>
         );
     }
@@ -258,7 +259,7 @@ export default class MyPromotionPage extends BasePage {
                         />}>
                 {this.renderHeader()}
                 {this.renderWelfare()}
-                <View style={{backgroundColor:'f7f7f7',height:2}}/>
+                <View style={{ backgroundColor: 'f7f7f7', height: 2 }}/>
             </ScrollView>
         );
     };

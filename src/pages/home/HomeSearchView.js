@@ -35,7 +35,7 @@ export default ({ navigation, whiteIcon }) =>
 let styles = StyleSheet.create({
     navBar: {
         flexDirection: 'column',
-        height: statusBarHeight + 44,
+        height: statusBarHeight + 44 - (ScreenUtils.isIOSX?10:0) ,
         position: 'absolute',
         left: 0,
         right: 0,
@@ -47,7 +47,7 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'transparent',
         justifyContent: 'center',
-        paddingTop: statusBarHeight,
+        paddingTop: statusBarHeight -  (ScreenUtils.isIOSX?10:0),
         marginLeft: px2dp(15),
         marginRight: px2dp(15)
     },

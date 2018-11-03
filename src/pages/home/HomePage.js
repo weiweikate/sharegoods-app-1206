@@ -51,7 +51,7 @@ export default class HomePage extends Component {
     st = 0;
     shadowOpacity = 0.4;
 
-    headerH = statusBarHeight + 44;
+    headerH = statusBarHeight + 44 - (ScreenUtils.isIOSX?10:0);
     state = {
         isShow: true,
         showMessage: false,
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
-        height: statusBarHeight + 44,
+        height: statusBarHeight + 44 - (ScreenUtils.isIOSX?10:0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
         backgroundColor: '#fff',
@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
-        height: statusBarHeight + 44,
+        height: statusBarHeight + 44 - (ScreenUtils.isIOSX?10:0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
         alignItems: 'center',
