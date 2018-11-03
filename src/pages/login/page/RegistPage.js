@@ -15,7 +15,6 @@ import LoginApi from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import UserModel from '../../../model/user';
 import DeviceInfo from 'react-native-device-info'
-import { NavigationActions } from 'react-navigation';
 
 @observer
 export default class RegistPage extends BasePage {
@@ -135,14 +134,15 @@ export default class RegistPage extends BasePage {
             this.$loadingDismiss();
             UserModel.saveUserInfo(data.data);
             UserModel.saveToken(data.data.token)
-            bridge.$toast('登陆成功');
-            let resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                    ]
-                });
-            this.props.navigation.dispatch(resetAction);
+            this.$navigate('login/login/GetRedpacketPage')
+            // bridge.$toast('登陆成功');
+            // let resetAction = NavigationActions.reset({
+            //         index: 0,
+            //         actions: [
+            //             NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
+            //         ]
+            //     });
+            // this.props.navigation.dispatch(resetAction);
         }).catch((data) => {
             this.$loadingDismiss();
             bridge.$toast(data.msg);

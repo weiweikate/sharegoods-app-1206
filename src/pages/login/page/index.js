@@ -5,6 +5,7 @@ import RegistPage from './RegistPage';
 import ForgetPasswordPage from './ForgetPasswordPage';
 import GetRedpacketPage from './GetRedpacketPage'
 import TestNav from './testNav'
+import InviteCodePage from './InviteCodePage'
 
 // 访问路径 'Login/Demo1'
 export default {
@@ -17,6 +18,7 @@ export default {
         ForgetPasswordPage,
         GetRedpacketPage,
         TestNav,
+        InviteCodePage
     }
 };
 

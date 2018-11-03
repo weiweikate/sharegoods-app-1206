@@ -72,8 +72,25 @@ export default class ShareTaskListPage extends BasePage<Props> {
     }
 
     //开启奖励
-    getRewards() {
-
+    getRewards(id) {
+        this.$loadingShow();
+        let that = this;
+        taskApi.getReward({id: id}).then((result)=> {
+            that.list2.onRefresh();
+            let {recieveMoney, recieveBean} = result.data;
+            if (recieveMoney <= 0){
+                that.failModal.open();
+            }{
+                that.successModal.open();
+                recieveMoney =  Math.round(recieveMoney*100)/100;
+                recieveBean =  Math.round(recieveBean*100)/100;
+                that.setState({recieveMoney,recieveBean});
+            }
+            that.$loadingDismiss();
+        }).catch((error) => {
+            that.$toastShow(error.msg);
+            that.$loadingDismiss();
+        });
     }
 
     _render() {
@@ -95,10 +112,15 @@ export default class ShareTaskListPage extends BasePage<Props> {
                     isSupportLoadingMore={false}
                     onEndRefresh={this._onEndRefresh.bind(this)}
                 />
-                <ShareTaskResultAlert ref={(ref) => this.shareModal = ref}
+                <ShareTaskResultAlert ref={(ref) => this.successModal = ref}
                                       success={true}
-                                      money={25}
-                                      shareValue={18}
+                                      money={this.state.recieveMoney}
+                                      shareValue={this.state.recieveBean}
+                                      onPress={() => {
+                                          this.$navigate('mine/userInformation/MyCashAccountPage');
+                                      }}/>
+                <ShareTaskResultAlert ref={(ref) => this.failModal = ref}
+                                      success={false}
                                       onPress={() => {
                                           this.$navigate('mine/userInformation/MyCashAccountPage');
                                       }}/>
@@ -146,7 +168,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
 
     _renderIndexPath = ({ section, row, item }) => {
         let arrow = this.expansions[row] ? arrow_top : arrow_bottom;
-        let { status, countDown, shareHits, desc, recieveMoney} = item;
+        let { status, countDown, shareHits, desc, recieveMoney, id} = item;
         let image_title = '';
         let image_btnText = '';
         let image_detail = '';
@@ -170,7 +192,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                 image_title = '任务已结束';
                 image_btnText = '开启奖励';
                 image_detail = desc;
-                onPress = this.getRewards.bind(this);
+                onPress = () => {this.getRewards(id)};
                 break;
         }
         return (
