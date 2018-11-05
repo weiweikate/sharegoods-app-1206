@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
         flex: 1
     },
     text: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#222222',
         marginLeft: 11

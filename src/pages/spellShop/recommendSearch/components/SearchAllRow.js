@@ -117,7 +117,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     title: {
-        // fontFamily: "PingFang-SC-Medium",
         fontSize: 13,
         color: '#000000',
         maxWidth: 200

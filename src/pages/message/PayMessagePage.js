@@ -69,9 +69,8 @@ export default class PayMessagePage extends BasePage {
                     justifyContent: 'space-between',
                     paddingVertical: 20
                 }}>
-                    <Text style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 15, color: '#222222' }}>支付订单</Text>
+                    <Text style={{ fontSize: 15, color: '#222222' }}>支付订单</Text>
                     <Text style={{
-                        fontFamily: 'PingFang-SC-Medium',
                         fontSize: 24,
                         color: '#222222'
                     }}>-{StringUtils.formatMoneyString(this.params.tradeAmount, false)}</Text>
@@ -103,9 +102,8 @@ export default class PayMessagePage extends BasePage {
                     justifyContent: 'space-between',
                     paddingVertical: 20
                 }}>
-                    <Text style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 15, color: '#222222' }}>订单退款</Text>
+                    <Text style={{ fontSize: 15, color: '#222222' }}>订单退款</Text>
                     <Text style={{
-                        fontFamily: 'PingFang-SC-Medium',
                         fontSize: 24,
                         color: '#222222'
                     }}>+{StringUtils.formatMoneyString(this.params.tradeAmount, false)}</Text>
@@ -178,7 +176,6 @@ const styles = StyleSheet.create({
         borderStyle: 'solid'
     },
     textsingle: {
-        fontFamily: 'PingFang-SC-Regular',
         fontSize: 13,
         color: '#999999',
         marginLeft: 16,
@@ -199,7 +196,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 1
     },
     tilteposition: {
-        // fontFamily: "PingFang-SC-Bold",
         fontSize: 15,
         color: '#e60012',
         marginLeft: 14

@@ -70,7 +70,6 @@ export default class CashExplainPage extends BasePage {
                 <Text style={{
                     alignSelf: 'center',
                     marginTop: 41,
-                    fontFamily: 'PingFang-SC-Medium',
                     fontSize: 17,
                     color: '#000000'
                 }}>保证金缴纳说明</Text>
@@ -87,7 +86,6 @@ export default class CashExplainPage extends BasePage {
                 }}>
                     <TouchableOpacity activeOpacity={0.5} onPress={this._clickOpen} style={styles.btnStyle}>
                         <Text style={{
-                            fontFamily: 'PingFang-SC-Medium',
                             fontSize: 15,
                             color: '#ffffff'
                         }}>缴纳保证金</Text>
@@ -111,14 +109,12 @@ const styles = StyleSheet.create({
         borderRadius: 9
     },
     circleText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 12,
         color: 'white'
     },
     desc: {
         marginLeft: 8,
         marginRight: 0,
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#222222'
     },
@@ -133,7 +129,6 @@ const styles = StyleSheet.create({
     },
     descText: {
         marginTop: 10,
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 11,
         color: '#999999',
         textAlign: 'center'
