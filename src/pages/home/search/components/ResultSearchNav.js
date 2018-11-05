@@ -15,8 +15,22 @@ export default class ResultSearchNav extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { inputText: props.defaultValue || '' };
     }
+
+    onChangeText = (text) => {
+        this.setState({
+            inputText: text
+        }, () => {
+            this.props.onChangeText(text);
+        });
+    };
+
+    changeText = (text) => {
+        this.setState({
+            inputText: text
+        });
+    };
 
     render() {
         return (
@@ -31,9 +45,9 @@ export default class ResultSearchNav extends Component {
                                    underlineColorAndroid='transparent'
                                    placeholder={'请输入关键词搜索'}
                                    placeholderTextColor='#C8C8C8'
-                                   value={this.props.textInput}
-                                   onChangeText={this.props.onChangeText}
-                                   onEndEditing={this.props.onEndEditing}
+                                   value={this.state.inputText}
+                                   onChangeText={this.onChangeText}
+                                   onSubmitEditing={this.props.onSubmitEditing}
                                    onFocus={this.props.onFocus}
                         />
                     </View>

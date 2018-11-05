@@ -235,7 +235,7 @@ export default class SearchResultPage extends BasePage {
     };
 
     //跳转
-    _clickItemAction = (text, index, hotWordId) => {
+    _clickItemAction = (text) => {
         this.params.categoryId = undefined;
         this.params.hotWordId = undefined;
         this.params.keywords = text;
@@ -247,6 +247,7 @@ export default class SearchResultPage extends BasePage {
     _renderKeyItem = ({ item }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
+                this.ResultSearchNav.changeText(item);
                 this._clickItemAction(item);
             }}>
                 <View>
@@ -345,16 +346,17 @@ export default class SearchResultPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <ResultSearchNav changeLayout={this._changeLayout}
+                                 ref={(ref) => this.ResultSearchNav = ref}
                                  goBack={() => {
                                      this.$navigateBack();
                                  }}
                                  isHorizontal={this.state.isHorizontal}
-                                 textInput={this.state.textInput}
+                                 defaultValue={this.params.keywords || this.params.name}
                                  onFocus={() => {
                                      this.setState({ onFocus: true });
                                  }}
                                  onChangeText={this._onChangeText}
-                                 onEndEditing={() => {
+                                 onSubmitEditing={() => {
                                      this._clickItemAction(this.state.textInput);
                                  }}
                 />

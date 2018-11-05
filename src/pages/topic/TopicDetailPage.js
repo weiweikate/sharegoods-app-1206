@@ -381,7 +381,7 @@ export default class TopicDetailPage extends BasePage {
                                     this.$navigate('message/MessageCenterPage');
                                     break;
                                 case 1:
-                                    this.props.navigation.popToTop();
+                                    this.$navigateReset();
                                     break;
                                 case 2:
                                     this.shareModal.open();
