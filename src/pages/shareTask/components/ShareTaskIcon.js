@@ -56,8 +56,8 @@ export default class ShareTaskIcon extends React.Component {
 
     queryTask() {
         taskApi.queryTask({}).then((result => {
-            let hasTask = false
-            if (result.data.id !== undefined){
+            let hasTask = false;
+            if (result.data.id !== undefined && result.data.id !== null){
                 hasTask = true;
             }
             this.setState({hasTask, data:result.data});
