@@ -405,7 +405,7 @@ export default class ProductDetailPage extends BasePage {
                                     this.DetailNavShowModal.close();
                                     break;
                                 case 1:
-                                    this.props.navigation.popToTop();
+                                    this.$navigateReset();
                                     break;
                                 case 2:
                                     this.shareModal.open();
