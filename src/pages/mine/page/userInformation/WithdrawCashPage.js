@@ -212,26 +212,26 @@ class WithdrawCashPage extends BasePage {
         }
     };
     commit = () => {
-        if (StringUtils.isEmpty(this.state.id)) {
-            NativeModules.commModule.toast('请先选择银行卡');
-            return;
-        }
-        if ((this.state.availableBalance + '') == '0') {
-            NativeModules.commModule.toast('可提现金额不够');
-            return;
-        }
-        if ((this.state.money + '') == '0') {
-            NativeModules.commModule.toast('请输入金额');
-            return;
-        }
-        MineApi.addWithdrawMoney({ bankId: this.state.id, withdrawBlance: this.state.money }).then((response) => {
-            if (response.ok) {
-                this.loadPageData();
-                NativeModules.commModule.toast('提现成功');
-            } else {
-                NativeModules.commModule.toast(response.msg);
-            }
-        });
+        // if (StringUtils.isEmpty(this.state.id)) {
+        //     NativeModules.commModule.toast('请先选择银行卡');
+        //     return;
+        // }
+        // if ((this.state.availableBalance + '') == '0') {
+        //     NativeModules.commModule.toast('可提现金额不够');
+        //     return;
+        // }
+        // if ((this.state.money + '') == '0') {
+        //     NativeModules.commModule.toast('请输入金额');
+        //     return;
+        // }
+        // MineApi.addWithdrawMoney({ bankId: this.state.id, withdrawBlance: this.state.money }).then((response) => {
+        //     if (response.ok) {
+        //         this.loadPageData();
+        //         NativeModules.commModule.toast('提现成功');
+        //     } else {
+        //         NativeModules.commModule.toast(response.msg);
+        //     }
+        // });
     };
     selectBankCard = () => {
         this.$navigate('mine/bankCard/BankCardListPage', {

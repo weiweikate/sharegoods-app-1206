@@ -241,7 +241,7 @@ export default class ConfirOrderPage extends BasePage {
             <View style={{ borderColor: '#DDDDDD', borderWidth: 1 }}>
                 {this.state.viewData.couponList ?
                     this.state.viewData.couponList.map((item, index) => {
-                        return <View style={{ backgroundColor: 'white' }}>
+                        return <View style={{ backgroundColor: 'white' }} key={index}>
                             {index == 0 ? <Image source={couponIcon} style={{
                                 width: 15,
                                 height: 12,
