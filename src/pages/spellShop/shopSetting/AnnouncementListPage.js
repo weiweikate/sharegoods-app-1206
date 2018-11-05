@@ -9,6 +9,7 @@ import AnnouncementRow from './components/AnnouncementRow';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import { observer } from 'mobx-react/native';
 import SpellShopApi from '../api/SpellShopApi';
+import bridge from '../../../utils/bridge';
 
 const DefaultPageSize = 10;
 // 是否显示删除按钮
@@ -43,6 +44,7 @@ export default class AnnouncementListPage extends BasePage {
         };
         this.numebr = 1;
     }
+
     componentDidMount() {
         this.loadPageData();
     }
@@ -66,7 +68,7 @@ export default class AnnouncementListPage extends BasePage {
             this.setState({
                 refreshing: false
             }, () => {
-                this.$toastShow(error.msg);
+                bridge.$toast(error.msg);
             });
         });
     };
@@ -109,7 +111,7 @@ export default class AnnouncementListPage extends BasePage {
             confirmCallBack: () => {
                 SpellShopApi.deleteById({ id: id }).then(() => {
                     this.loadPageData();
-                    this.$toastShow('删除成功');
+                    bridge.$toast('删除成功');
                 }).catch((error) => {
                     this.$toastShow(error.msg);
                 });

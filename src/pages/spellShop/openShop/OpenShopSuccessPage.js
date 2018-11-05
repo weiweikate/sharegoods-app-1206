@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
         marginTop: 71
     },
     desc: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 14,
         color: '#666666',
         marginTop: 19,
@@ -103,7 +102,6 @@ const styles = StyleSheet.create({
         marginBottom: 11
     },
     btnText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 16,
         color: '#e60012'
     }

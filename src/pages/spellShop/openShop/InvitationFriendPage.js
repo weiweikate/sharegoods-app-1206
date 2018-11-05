@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
 
 
     text: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#000000'
     },
@@ -186,7 +185,6 @@ const styles = StyleSheet.create({
     },
 
     wxTip: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#D51243',
         marginTop: 15
@@ -201,7 +199,6 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     textBtn: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 14,
         color: '#D51243'
     }

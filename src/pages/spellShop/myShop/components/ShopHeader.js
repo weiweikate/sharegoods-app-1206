@@ -137,12 +137,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     shopName: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#ffffff'
     },
     shopId: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#ffffff',
         marginVertical: 12
@@ -176,13 +174,11 @@ const styles = StyleSheet.create({
         marginRight: 6
     },
     chengzhangzhi: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         color: '#000000'
     },
     gongxian: {
         marginLeft: 3,
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#e60012'
     },
@@ -191,7 +187,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
         color: '#e60012',
         fontSize: 10,
-        fontFamily: 'PingFang-SC-Medium'
     },
     progressBg: {
         marginRight: -1,
@@ -203,13 +198,11 @@ const styles = StyleSheet.create({
         marginTop: 10,
         color: '#222222',
         fontSize: 11,
-        fontFamily: 'PingFang-SC-Medium'
     },
     fenghong: {
         marginTop: 5,
         color: 'rgb(34,34,34)',
         fontSize: 12,
-        fontFamily: 'PingFang-SC-Medium'
     },
     // 公告
     announcementContainer: {
@@ -225,7 +218,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     announcementTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 10,
         color: '#ffffff'
     },

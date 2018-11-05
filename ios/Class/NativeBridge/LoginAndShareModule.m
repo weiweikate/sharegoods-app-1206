@@ -156,5 +156,25 @@ RCT_EXPORT_METHOD(creatQRCodeImage:(NSString *) QRCodeStr
     }
   }];
 }
+
+/**
+ @QRCodeStr  推广的二维码字符串
+ onSuccess(NSSting) 成功的回调
+ onError(NSSting)   失败的回调
+ */
+RCT_EXPORT_METHOD(createPromotionShareImage:(NSString *) QRCodeStr
+                  onSuccess:(RCTResponseSenderBlock) onSuccess
+                  onError:(RCTResponseSenderBlock) onError){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[ShareImageMaker sharedInstance] createPromotionShareImageWithQRString:QRCodeStr
+                                                                   completion:^(NSString *pathStr, NSString *errorStr) {
+                                                                     if (errorStr) {
+                                                                       onError(@[errorStr]);
+                                                                     }else{
+                                                                       onSuccess(@[pathStr]);
+                                                                     }
+                                                                   }];
+  });
+}
               
 @end

@@ -104,7 +104,6 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 4
     },
     barTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         color: '#ffffff'
     },
@@ -114,7 +113,6 @@ const styles = StyleSheet.create({
         height: 262
     },
     textInput: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 14,
         margin: 17,
         flex: 1,
@@ -146,7 +144,6 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     okTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 16,
         color: '#ffffff'
     },
@@ -159,7 +156,6 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     canCelTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 16,
         color: '#999999'
     }

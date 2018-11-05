@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10
     }, grayText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         lineHeight: 18,
         color: '#666666'

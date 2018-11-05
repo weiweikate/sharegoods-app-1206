@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -323,9 +325,53 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
 
         getBitmap(mContext, shareImageBean, success, fail);
-
-
     }
+
+
+    @ReactMethod
+    public void createPromotionShareImage(String url, Callback success, Callback fail) {
+
+        drawPromotionShare(mContext, url, success, fail);
+    }
+
+    public static void drawPromotionShare(final Context context, final String url, final Callback success, final Callback fail){
+        String info = url;
+        String str = "长按扫码打开连接";
+        Bitmap result = Bitmap.createBitmap(279, (int) (348), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.red_envelope_bg);
+
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int newWidth=279;
+        int newHeight=348;
+        float scaleWidth=((float)newWidth)/width;
+        float scaleHeight=((float)newHeight)/height;
+
+        //获取想要缩放的matrix
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth,scaleHeight);
+
+        bitmap=Bitmap.createBitmap(bitmap,0,0,width,height,matrix,true);
+        canvas.drawBitmap(bitmap, 0, 0,paint);
+        Bitmap qrBitmap = createQRImage(info, 140, 140);
+        canvas.drawBitmap(qrBitmap, 70, 146, paint);
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(12);
+        Rect bounds = new Rect();
+        paint.getTextBounds(str, 0, str.length(), bounds);
+        canvas.drawText(str, (279-bounds.width())/2, 306, paint);
+        String path = saveImageToCache(context, result,"sharePromotionImage.png");
+        if (!TextUtils.isEmpty(path)) {
+            success.invoke(path);
+        } else {
+            fail.invoke("图片生成失败");
+        }
+        bitmap.recycle();
+    }
+
 
 
     public static void getBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
@@ -418,7 +464,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         Bitmap qrBitmap = createQRImage(info, 120, 120);
         canvas.drawBitmap(qrBitmap, 360, 520, paint);
-        String path = saveImageToCache(context, result);
+        String path = saveImageToCache(context, result,"shareImage.png");
         if (!TextUtils.isEmpty(path)) {
             success.invoke(path);
         } else {
@@ -473,7 +519,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             bitmap.recycle();
             return;
         }
-        String path = saveImageToCache(mContext, bitmap);
+        String path = saveImageToCache(mContext, bitmap,"shareImage.png");
         if (TextUtils.isEmpty(path)) {
             fail.invoke("图片保存失败！");
         } else {
@@ -564,11 +610,11 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         return null;
     }
 
-    private static String saveImageToCache(Context context, Bitmap bitmap) {
+    private static String saveImageToCache(Context context, Bitmap bitmap,String name) {
 
         String path = getDiskCachePath(context);
         long date = System.currentTimeMillis();
-        String fileName = date + "shareImage.png";
+        String fileName = date + name;
         File file = new File(path, fileName);
         if (file.exists()) {
             file.delete();

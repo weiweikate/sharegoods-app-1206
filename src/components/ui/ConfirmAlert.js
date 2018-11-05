@@ -139,7 +139,6 @@ export default class ConfirmAlert extends Component {
                     >
                         <View style={{flex: 1}}>
                             <Text style={{
-                                fontFamily: "PingFang-SC-Medium",
                                 fontSize: 15,
                                 color: "#666666",
                                 textAlign: this.state.alignType,
@@ -158,7 +157,6 @@ export default class ConfirmAlert extends Component {
                                 borderRadius: 5,
                             }}>
                                 <Text style={{
-                                    fontFamily: "PingFang-SC-Medium",
                                     fontSize: 16,
                                     color: "#ffffff"
                                 }}>确认</Text>
@@ -172,7 +170,6 @@ export default class ConfirmAlert extends Component {
                                 borderRadius: 5,
                             }}>
                                 <Text style={{
-                                    fontFamily: "PingFang-SC-Medium",
                                     fontSize: 16,
                                     color: "#999999"
                                 }}>取消</Text>

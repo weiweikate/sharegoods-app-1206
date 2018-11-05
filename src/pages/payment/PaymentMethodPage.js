@@ -17,7 +17,8 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import spellStatusModel from '../spellShop/model/SpellStatusModel';
 import DesignRule from 'DesignRule';
 import CommModal from 'CommModal';
-import paySuccessIcon from '../../comm/res/tongyon_icon_check_green.png'
+import paySuccessIcon from '../../comm/res/tongyon_icon_check_green.png';
+
 const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) => {
     let selected = isSelected;
     if (data.type !== paymentType.balance && selectedTypes) {
@@ -51,7 +52,7 @@ const Section = ({ data }) => <View style={{
     justifyContent: 'center'
 }}>
     <Text style={{
-        fontFamily: 'PingFang-SC-Medium', fontSize: 13
+        fontSize: 13
         , color: '#999999', marginLeft: 15
     }}>{data.name}</Text>
 </View>;
@@ -76,7 +77,7 @@ export default class PaymentMethodPage extends BasePage {
             tokenCoinToBalance: this.params.tokenCoinToBalance ? this.params.tokenCoinToBalance : -1,
             //订单支付的参数
             orderNum: this.params.orderNum ? this.params.orderNum : 0,
-            payPromotionSuccess:false
+            payPromotionSuccess: false
         };
         this.payment = new Payment();
         this.payment.payStore = this.params.payStore;
@@ -179,10 +180,10 @@ export default class PaymentMethodPage extends BasePage {
                     <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_22,includeFontPadding:false,marginTop:15,textAlign:'center'}}>
                         {`系统会在明天0点进行站内推广\n每成功获取一个下级将收到站内消息推送`}
                     </Text>
-                    <View style={{width:200,marginHorizontal:24,justifyContent:'space-between',flexDirection:'row',marginTop:20}}>
+                    <View style={{width:200,marginHorizontal:24,justifyContent:'center',flexDirection:'row',marginTop:20}}>
                         <TouchableWithoutFeedback onPress={()=>{
                             this.setState({payPromotionSuccess:false})
-                            this.$navigateBack('mine/promotion/UserPromotionPage')
+                            this.$navigateBack('mine/promotion/UserPromotionPage',{reload:true})
                         }}>
                             <View style={{borderRadius:5,borderColor:'#D51243',borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
                                 <Text style={{color:'#D51243',fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
@@ -190,11 +191,6 @@ export default class PaymentMethodPage extends BasePage {
                                 </Text>
                             </View>
                         </TouchableWithoutFeedback>
-                        <View style={{borderRadius:5,borderColor:'#D51243',borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
-                            <Text style={{color:'#D51243',fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
-                                站外分享推广
-                            </Text>
-                        </View>
                     </View>
                 </View>
             </CommModal>
@@ -210,7 +206,7 @@ export default class PaymentMethodPage extends BasePage {
 
     //支付方式弹窗
     renderPaymentModal = () => {
-        const { payStore ,payPromotion} = this.payment;
+        const { payStore, payPromotion } = this.payment;
 
         return (
             <InputTransactionPasswordModal
@@ -277,7 +273,7 @@ export default class PaymentMethodPage extends BasePage {
                         style={{ flex: 1, backgroundColor: color.red, justifyContent: 'center', alignItems: 'center' }}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'去支付'}
-                                style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 16, color: '#ffffff' }}/>
+                                style={{ fontSize: 16, color: '#ffffff' }}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -285,8 +281,9 @@ export default class PaymentMethodPage extends BasePage {
     };
     forgetTransactionPassword = () => {
         this.setState({ isShowPaymentModal: false });
-        this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: true })
+        this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: true });
     };
+
     async _balancePay() {
         const { params } = this.getApiRequestParams();
         if (user.hadSalePassword) {
@@ -295,88 +292,93 @@ export default class PaymentMethodPage extends BasePage {
                 return;
             }
 
-            let result = await this.payment.balancePay(params, this.paymentResultView)
-            this.setState({password: ''})
-            console.log('checkRes', result)
-            this._showPayresult(result)
+            let result = await this.payment.balancePay(params, this.paymentResultView);
+            this.setState({ password: '' });
+            console.log('checkRes', result);
+            this._showPayresult(result);
         }
         else {
             this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
         }
     }
+
     _alipay() {
-        const { params } = this.getApiRequestParams()
-        this.payment.alipay(params, this.paymentResultView)
+        const { params } = this.getApiRequestParams();
+        this.payment.alipay(params, this.paymentResultView);
     }
+
     _wechat() {
-        const { params } = this.getApiRequestParams()
-        this.payment.appWXPay(params, this.paymentResultView)
+        const { params } = this.getApiRequestParams();
+        this.payment.appWXPay(params, this.paymentResultView);
     }
+
     async _mixingPay() {
         const { params } = this.getApiRequestParams();
-        let selectedTypes = this.payment.selectedTypes
-        params.type = 1 + this.payment.selectedTypes.type
-        let otherAmounts = this.payment.availableBalance - params.amounts
+        let selectedTypes = this.payment.selectedTypes;
+        params.type = 1 + this.payment.selectedTypes.type;
+        let otherAmounts = this.payment.availableBalance - params.amounts;
         if (otherAmounts > 0) {
-            params.balance = params.amounts
-            params.amounts = 0
+            params.balance = params.amounts;
+            params.amounts = 0;
         } else {
-            params.balance = this.payment.availableBalance
-            params.amounts = (params.amounts - this.payment.availableBalance).toFixed(2)
+            params.balance = this.payment.availableBalance;
+            params.amounts = (params.amounts - this.payment.availableBalance).toFixed(2);
         }
         if (user.hadSalePassword) {
             if (StringUtils.isEmpty(this.state.password)) {
                 this.setState({ isShowPaymentModal: true });
                 return;
             }
-            let result = await this.payment.perpay(params)
+            let result = await this.payment.perpay(params);
 
-            user.updateUserData()
-            console.log('result', result)
-            this.setState({"password": ''})
+            user.updateUserData();
+            console.log('result', result);
+            this.setState({ 'password': '' });
             if (params.amounts === 0 && parseInt(result.code, 0) === 10000) {
-                this._showPayresult(result)
-                return
+                this._showPayresult(result);
+                return;
             }
-            this.payment.outTradeNo = result.data.outTradeNo
+            this.payment.outTradeNo = result.data.outTradeNo;
             if (selectedTypes.type === paymentType.alipay) {
-                const prePayStr = result.data.prePayStr
-                console.log('prePayStr', prePayStr)
-                const resultStr = await PayUtil.appAliPay(prePayStr)
-                console.log('resultStr', resultStr)
+                const prePayStr = result.data.prePayStr;
+                console.log('prePayStr', prePayStr);
+                const resultStr = await PayUtil.appAliPay(prePayStr);
+                console.log('resultStr', resultStr);
                 // const checkStr = await this.payment.alipayCheck({outTradeNo:result.data.outTradeNo , type:paymentType.alipay})
                 if (resultStr.code !== 9000) {
-                    this.paymentResultView && this.paymentResultView.show(PaymentResult.fail, resultStr.msg)
+                    this.paymentResultView && this.paymentResultView.show(PaymentResult.fail, resultStr.msg);
                 }
-                return
+                return;
             }
 
             if (selectedTypes.type === paymentType.wechat) {
-                const prePayStr = result.data.prePayStr
-                const prePay = JSON.parse(prePayStr)
-                const resultStr = await PayUtil.appWXPay(prePay)
-                console.log('resultStr', resultStr)
+                const prePayStr = result.data.prePayStr;
+                const prePay = JSON.parse(prePayStr);
+                const resultStr = await PayUtil.appWXPay(prePay);
+                console.log('resultStr', resultStr);
                 // const checkStr = await this.payment.wechatCheck({outTradeNo:result.data.outTradeNo , type:2})
                 if (resultStr.sdkCode !== 0) {
-                    this.paymentResultView && this.paymentResultView.show(PaymentResult.fail, resultStr.msg)
+                    this.paymentResultView && this.paymentResultView.show(PaymentResult.fail, resultStr.msg);
                 }
-                return
+                return;
             }
         }
         else {
             this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
         }
     }
+
     _showPayresult(result) {
-        if ( parseInt(result.code, 0) === 10000) {
-            this.paymentResultView.show(PaymentResult.sucess)
+        if (parseInt(result.code, 0) === 10000) {
+            this.paymentResultView.show(PaymentResult.sucess);
         }
     }
+
     commitOrder = () => {
-        const { selectedBalace, selectedTypes, payStore,payPromotion } = this.payment
+        const { selectedBalace, selectedTypes, payStore, payPromotion } = this.payment;
         if (selectedTypes && selectedTypes.type === paymentType.bank) {
-            Toast.$toast('银行卡支付，暂不支持')
-            return
+            Toast.$toast('银行卡支付，暂不支持');
+            return;
         }
 
         if (payStore) {
@@ -407,7 +409,7 @@ export default class PaymentMethodPage extends BasePage {
             return;
         }
 
-        if(payPromotion){
+        if (payPromotion) {
             if (selectedBalace) {
                 if (user.hadSalePassword) {
                     if (StringUtils.isEmpty(this.state.password)) {
@@ -420,10 +422,19 @@ export default class PaymentMethodPage extends BasePage {
                     this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
                 }
                 return;
-            }else {
-                this.$toastShow('暂时只支持平台支付！')
             }
-            return
+
+            this.payment.payPromotionWithId(this.state.password , this.params.packageId).then(result => {
+                if (result.sdkCode === 0) {
+                    //刷新拼店状态
+                    this.setState({
+                        payPromotionSuccess: true
+                    });
+                } else {
+                    Toast.$toast('支付失败');
+                }
+            });
+            return;
         }
 
         if (selectedBalace && selectedTypes) {
@@ -469,14 +480,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#f7f7f7'
     },
     selectText: {
-        fontFamily: 'PingFang-SC-Medium', fontSize: 16, color: '#ffffff'
+        fontSize: 16, color: '#ffffff'
     }, blackText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         lineHeight: 18,
         color: '#000000'
     }, grayText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         lineHeight: 18,
         color: '#999999'
@@ -493,14 +502,12 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     bottomUiText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         color: '#222222',
         marginRight: 12,
         marginLeft: 12
     },
     bottomUitext1: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         color: color.red,
         marginRight: 12
@@ -515,12 +522,12 @@ const styles = StyleSheet.create({
         backgroundColor: color.white,
         marginTop: 10
     },
-    promotionBgStyle:{
-        height:230,
-        width:250,
-        borderRadius:5,
-        backgroundColor:DesignRule.white,
-        alignItems:'center'
+    promotionBgStyle: {
+        height: 230,
+        width: 250,
+        borderRadius: 5,
+        backgroundColor: DesignRule.white,
+        alignItems: 'center'
     }
 });
 

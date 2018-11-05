@@ -6,7 +6,7 @@
  * @flow
  * @format
  * Created by huchao on 2018/10/15.
- * props type 'Image'(有分享图片和web) 'nomal'（分享web） 'miniProgram'小程序 task任务
+ * props type 'Image'(有分享图片和web) 'nomal'（分享web） 'miniProgram'小程序 task任务 promotionShare 推广分享
  *
  *     imageJson:{
  *     imageUrlStr: 'http//：xxxx.png',
@@ -44,7 +44,8 @@ import {
     Platform,
     TouchableOpacity,
     Clipboard,
-    NativeModules
+    NativeModules,
+    Linking
 } from "react-native";
 
 import {
@@ -152,15 +153,22 @@ export default class CommShareModal extends React.Component {
         NativeModules.commModule.toast('复制链接成功');
     }
 
-    changeShareType(shareType) {
+    changeShareType(shareType) {//切换是分享图片还是分享网页
         this.setState({ shareType: shareType });
 
         if (this.state.path.length === 0 && shareType === 0) {
-            bridge.creatShareImage(this.props.imageJson, (path) => {
-                this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path });
-                this.startAnimated();
-            });
-        } else {
+            if (this.props.type === 'promotionShare') {
+                bridge.createPromotionShareImage(this.props.webJson.linkUrl, (path) => {
+                    this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path });
+                    this.startAnimated();
+                });
+            }else {
+                bridge.creatShareImage(this.props.imageJson, (path) => {
+                    this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path });
+                    this.startAnimated();
+                });
+            }
+        } else {//已经有图片就直接展示
             this.startAnimated();
         }
     }
@@ -206,7 +214,7 @@ export default class CommShareModal extends React.Component {
                 }
             });
         }
-        if (this.props.type === 'Image') {
+        if (this.props.type === 'Image' || this.props.type === 'promotionShare') {
             if (this.state.shareType === 1) {
                 array.push({
                     image: CommTabImag.lianjie, title: '复制链接', onPress: () => {
@@ -226,6 +234,13 @@ export default class CommShareModal extends React.Component {
                     }
                 });
             }
+        }
+
+        let imageHeight = autoSizeWidth(650 / 2);
+        let imageWidth = autoSizeWidth(250);
+        if (this.props.type === 'promotionShare') {
+            imageHeight = autoSizeWidth(348);
+            imageWidth = autoSizeWidth(279);
         }
         return (
             <CommModal onRequestClose={this.close}
@@ -301,25 +316,31 @@ export default class CommShareModal extends React.Component {
                     {
                         this.state.shareType === 0 ?
                             <Animated.View style={{
-                                height: autoSizeWidth(650 / 2),
-                                width: autoSizeWidth(250),
+                                height: imageHeight,
+                                width: imageWidth,
                                 position: 'absolute',
-                                top: ScreenUtils.height - autoSizeWidth(autoSizeWidth(265)) - autoSizeWidth(650 / 2) - ScreenUtils.safeBottom,
-                                left: autoSizeWidth(125 / 2),
-                                borderRadius: 8,
+                                top: ScreenUtils.height - autoSizeWidth(255) - imageHeight- ScreenUtils.safeBottom,
+                                left: (autoSizeWidth(375) - imageWidth)/2,
+                                borderRadius: 10,
                                 borderColor: '#CCCCCC',
                                 shadowOpacity: 0.3,
-                                borderWidth: 0.5,
+                                borderWidth:  this.props.type === 'promotionShare'? 0:0.5,
                                 overflow: 'hidden',
                                 shadowColor: '#CCCCCC',
                                 transform: [{ scale: this.state.scale }]
 
                             }}>
+                                <TouchableWithoutFeedback onLongPress={()=>{
+                                    if (this.props.type === 'promotionShare') {
+                                        Linking.openURL(this.props.webJson.linkUrl);
+                                    }
+                                    }}>
                                 <UIImage source={{ uri: this.state.path }}
                                          style={{
-                                             height: autoSizeWidth(650 / 2),
-                                             width: autoSizeWidth(250)
+                                             height: imageHeight,
+                                             width: imageWidth
                                          }}/>
+                                </TouchableWithoutFeedback>
                             </Animated.View> : null
                     }
                 </View>

@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import {
-    UIText,UIButton
+    UIText, UIButton
 } from '../../../../components/ui';
 import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
@@ -60,13 +60,15 @@ class AddBankCardPage extends BasePage {
             }
         };
     }
+
     // 导航配置
     $navigationBarOptions = {
         title: '绑定银行卡'
 
     };
+
     //**********************************ViewPart******************************************
-    _render(){
+    _render() {
         return (
             <View style={styles.container}>
                 <View style={styles.itemTitleView}>
@@ -129,17 +131,18 @@ class AddBankCardPage extends BasePage {
                         <Text style={styles.accountStyle2}>{this.state.cardType == 1 ? '储蓄卡' : '信用卡'}</Text>
                     }
                 </View>
-                    <UIButton
-                        value={'确认'}
-                        style={{
-                            marginTop: 102,
-                            backgroundColor:color.red,
-                            width: ScreenUtils.width - 96,
-                            height: 48,
-                            marginLeft: 48,
-                            marginRight: 48}}
-                        onPress={() => this.confirm()}/>
-                </View>
+                <UIButton
+                    value={'确认'}
+                    style={{
+                        marginTop: 102,
+                        backgroundColor: color.red,
+                        width: ScreenUtils.width - 96,
+                        height: 48,
+                        marginLeft: 48,
+                        marginRight: 48
+                    }}
+                    onPress={() => this.confirm()}/>
+            </View>
         );
     }
 
@@ -264,11 +267,10 @@ const styles = StyleSheet.create({
         paddingLeft: 14,
         justifyContent: 'center'
     }, itemTitleText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#999999'
     }, grayText: {
-        fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#999999', marginRight: 5
+        fontSize: 13, color: '#999999', marginRight: 5
     }
 });
 

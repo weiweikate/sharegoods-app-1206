@@ -69,12 +69,10 @@ const styles = StyleSheet.create({
         marginRight: 8
     },
     topTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         color: '#222222'
     },
     topDescText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 12,
         color: '#666666',
         flex: 1,
@@ -107,7 +105,6 @@ const styles = StyleSheet.create({
     itemTitleText: {
         marginTop: 10,
         width: 40 + 20,
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 11,
         color: '#666666',
         textAlign: 'center'

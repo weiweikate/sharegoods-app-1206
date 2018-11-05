@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     shopName: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#000000'
     },
