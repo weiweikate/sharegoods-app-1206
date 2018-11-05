@@ -107,8 +107,8 @@ const styles = StyleSheet.create({
         paddingHorizontal:px2dp(15),
         borderTopColor:'#DDDDDD',
         borderBottomColor:'#DDDDDD',
-        borderBottomWidth:px2dp(0.5),
-        borderTopWidth:px2dp(0.5),
+        borderBottomWidth:ScreenUtils.onePixel,
+        borderTopWidth:ScreenUtils.onePixel,
         backgroundColor:'white'
     },
     buttonWrapper:{

@@ -78,7 +78,7 @@ export default class InvitePromotionPage extends BasePage<Props> {
     };
 
     goExplicationPage = () => {
-        alert();
+        this.$navigate('mine/promotion/PromotionRulePage')
     };
 
     $NavBarRenderRightItem = () => {
@@ -104,15 +104,13 @@ export default class InvitePromotionPage extends BasePage<Props> {
     }
 
     _itemRender = ({ item }) =>{
-        if (!item.userBuy) {
-            return null;
-        }
+
         return (
             <View style={{ height: px2dp(63), width: ScreenUtils.width }}>
                 <TouchableWithoutFeedback onPress={()=>{
                     this.$navigate('mine/promotion/PromotionPayPage',item)
                 }}>
-                    <View style={styles.itemWrapper}>
+                    <View style={[styles.itemWrapper,{backgroundColor : item.userBuy ? '#ffffff':'#CCCCCC'}]}>
                         <Text style={styles.itemTextStyle}>
                             {item.name}
                         </Text>
@@ -164,7 +162,6 @@ const styles = StyleSheet.create({
         paddingBottom: px2dp(32)
     },
     itemWrapper: {
-        backgroundColor: 'white',
         height: px2dp(48),
         width: ScreenUtils.width - px2dp(30),
         justifyContent: 'center',
