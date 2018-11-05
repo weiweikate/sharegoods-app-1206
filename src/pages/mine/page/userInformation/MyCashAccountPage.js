@@ -36,49 +36,13 @@ export default class MyCashAccountPage extends BasePage {
             passwordDis: false,
             phoneError: false,
             passwordError: false,
-            viewData: [
-                {
-                    useType: '提现支出',
-
-                    time: '2018-05-25 12:15:45',
-                    serialNumber: '流水号：123456787653234567',
-                    capital: '-200.00',
-                    iconImage: withdrawMoney,
-                    capitalRed: true
-                },
-                {
-                    type: '提现',
-                    time: '2018-05-25 12:15:45',
-                    serialNumber: '流水号：123456787653234567',
-                    capital: '-200.00',
-                    iconImage: withdrawMoney,
-                    capitalRed: true
-
-                },
-                {
-                    type: '店主分红',
-                    time: '2018-05-25 12:15:45',
-                    serialNumber: '流水号：123456787653234567',
-                    capital: '-200.00',
-                    iconImage: withdrawMoney,
-                    capitalRed: true
-
-                },
-                {
-                    type: '销售提成',
-
-                    time: '2018-05-25 12:15:45',
-                    serialNumber: '流水号：123456787653234567',
-                    capital: '-200.00',
-                    iconImage: withdrawMoney,
-                    capitalRed: true
-                }
-            ],
+            viewData: [],
             restMoney: this.params.availableBalance,
 
             currentPage: 1,
             isEmpty: false
         };
+        this.currentPage = 0;
     }
 
     $navigationBarOptions = {
@@ -165,12 +129,12 @@ export default class MyCashAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '推广提成'];
-        let use_type_symbol = ['', '+', '-', '-', '+', '+', '+', '+'];
-        let useLeftImg = ['', storeShare, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, tuiguang];
+        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '推广提成','拼店退款'];
+        let use_type_symbol = ['', '+', '-',];
+        let useLeftImg = ['', storeShare, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, tuiguang,tuiguang];
         Toast.showLoading();
-        let arrData = this.state.currentPage == 1 ? [] : this.state.viewData;
-        MineApi.userBalanceQuery({ page: 1, size: 20, type: 2 }).then((response) => {
+        let arrData = this.currentPage == 1 ? [] : this.state.viewData;
+        MineApi.userBalanceQuery({ page: this.currentPage, size: 20, type: 2 }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
             if (response.code == 10000) {
@@ -181,9 +145,9 @@ export default class MyCashAccountPage extends BasePage {
                             type: use_type[item.useType],
                             time: DataUtils.getFormatDate(item.createTime / 1000),
                             serialNumber: '编号：' + item.serialNo,
-                            capital: use_type_symbol[item.useType] + item.balance,
+                            capital: use_type_symbol[item.biType] + item.balance,
                             iconImage: useLeftImg[item.useType],
-                            capitalRed: use_type_symbol[item.useType] === '-'
+                            capitalRed: use_type_symbol[item.biType] === '-'
                         });
                     });
                 }
@@ -204,15 +168,11 @@ export default class MyCashAccountPage extends BasePage {
         });
     };
     onRefresh = () => {
-        this.setState({
-            currentPage: 1
-        });
+     this.currentPage=1;
         this.getDataFromNetwork();
     };
     onLoadMore = () => {
-        this.setState({
-            currentPage: this.state.currentPage + 1
-        });
+        this.currentPage++;
         this.getDataFromNetwork();
     };
 }

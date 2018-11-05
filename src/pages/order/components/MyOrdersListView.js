@@ -27,6 +27,7 @@ export default class MyOrdersListView extends Component {
             menu: {},
             index: -1
         };
+        this.currentPage=0;
     }
 
     $getPageStateOptions = () => {
@@ -201,7 +202,7 @@ export default class MyOrdersListView extends Component {
     };
     getList = (data) => {
         if (StringUtils.isNoEmpty(data) && StringUtils.isNoEmpty(data.data)) {
-            let arrData = this.state.currentPage === 1 ? [] : this.state.viewData;
+            let arrData = this.currentPage === 1 ? [] : this.state.viewData;
             data.data.map((item, index) => {
                 arrData.push({
                     id: item.id,
@@ -228,7 +229,7 @@ export default class MyOrdersListView extends Component {
             });
             this.setState({ viewData: arrData });
         } else {
-            this.setState({ viewData: [], isEmpty: true });
+            this.setState({ viewData: this.state.viewData});
         }
     };
 
@@ -257,7 +258,7 @@ export default class MyOrdersListView extends Component {
         userOrderNum.getUserOrderNum();
         let params = {
             userId: user.id,
-            page: this.state.currentPage,
+            page: this.currentPage,
             size: constants.PAGESIZE
         };
         Toast.showLoading();
@@ -392,16 +393,12 @@ export default class MyOrdersListView extends Component {
     };
 
     onRefresh = () => {
-        this.setState({
-            currentPage: 1
-        });
+       this.currentPage=1;
         this.getDataFromNetwork();
     };
 
     onLoadMore = (page) => {
-        this.setState({
-            currentPage: this.state.currentPage + 1
-        });
+       this.currentPage++;
         this.getDataFromNetwork();
     };
     clickItem = (index) => {
