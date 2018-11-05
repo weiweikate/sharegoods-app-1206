@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
         flex: 1
     },
     text: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#222222'
     },
@@ -156,7 +155,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     separateTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 16,
         color: '#e60012'
     },
@@ -170,7 +168,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     sendTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 16,
         color: '#ffffff'
     }

@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
         height: 150 / 375 * Dimensions.get('window').width
     },
     content: {
-        fontFamily: 'PingFang-SC-Regular',
         fontSize: 13,
         lineHeight: 24,
         color: 'rgb(34,34,34)',

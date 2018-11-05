@@ -157,7 +157,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width:ScreenUtils.width
     }, smallTextStyle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         marginTop: 10,
         color: '#666666'
