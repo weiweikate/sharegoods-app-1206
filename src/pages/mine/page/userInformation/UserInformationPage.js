@@ -171,17 +171,14 @@ export default class UserInformationPage extends BasePage {
 
 const styles = StyleSheet.create({
     blackText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         color: '#222222'
     },
     grayText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         color: '#999999'
     },
     whiteText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#ffffff'
     }, hasVertifyID: {

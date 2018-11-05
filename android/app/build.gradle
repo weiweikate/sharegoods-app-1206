@@ -98,10 +98,12 @@ dependencies {
     api project(path: ':qiyu_service')
     api project(path: ':qrcode')
 
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.+'
-//    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.+'
-//    // Optional, if you use support library fragments:
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.+'
+    debugImplementation('com.squareup.leakcanary:leakcanary-android:1.+') {
+        exclude(module: 'support-core-utils')
+    }
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.+'
+    // Optional, if you use support library fragments:
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.+'
     api rootProject.ext.dependencies.support
 
     api rootProject.ext.dependencies.eventbus

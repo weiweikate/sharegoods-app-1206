@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         flex: 1
     }, smallTextStyle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         marginTop: 10,
         color: '#666666'

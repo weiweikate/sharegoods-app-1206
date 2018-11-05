@@ -173,7 +173,6 @@ export default class TopicDetailSelectPage extends Component {
                                     <Text style={{
                                         color: '#D51243',
                                         fontSize: 16,
-                                        fontFamily: 'PingFang-SC-Medium',
                                         marginTop: 16
                                     }}>{`￥${levelPrice}`}</Text>
                                     <Text

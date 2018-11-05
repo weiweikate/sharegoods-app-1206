@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     blackText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#222222'
     }

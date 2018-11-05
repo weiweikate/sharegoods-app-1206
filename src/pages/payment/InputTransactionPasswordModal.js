@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
         justifyContent:'flex-end',
         flex: 1,
     },smallTextStyle:{
-        fontFamily: "PingFang-SC-Medium",
         fontSize: 15,
         color: "#666666"
     },titleTextStyle:{
@@ -101,7 +100,6 @@ const styles = StyleSheet.create({
     },contentTextStyle:{
         fontSize:15,color:color.blue_222,marginTop:10
     },redTextStyle:{
-        fontFamily: "PingFang-SC-Medium",
         fontSize: 15,
         color: "#e60012"
     }

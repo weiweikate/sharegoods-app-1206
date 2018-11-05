@@ -175,7 +175,6 @@ export default class HelperFeedbackPage extends BasePage {
                             }}>
                                 <Text
                                     style={{
-                                        fontFamily: 'PingFang-SC-Medium',
                                         fontSize: 15,
                                         color: '#222222'
                                     }}>确定</Text>

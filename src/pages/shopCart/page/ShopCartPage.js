@@ -213,7 +213,6 @@ export default class ShopCartPage extends BasePage {
                         <UIText
                             value={'全选'}
                             style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,
                                 color: '#999999',
                                 marginLeft: 10
@@ -222,7 +221,7 @@ export default class ShopCartPage extends BasePage {
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
                             value={'合计'}
-                            style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: ColorUtil.Color_222222 }}/>
+                            style={{ fontSize: 13, color: ColorUtil.Color_222222 }}/>
                         <UIText
                             value={StringUtils.formatMoneyString(shopCartStore.getTotalMoney)}
                             style={styles.totalPrice}/>
@@ -357,7 +356,6 @@ export default class ShopCartPage extends BasePage {
                                     numberOfLines={2}
                                     style={{
                                         marginTop: 0,
-                                        fontFamily: 'PingFang-SC-Medium',
                                         fontSize: 13,
                                         lineHeight: 16,
                                         height: 32,
@@ -369,7 +367,6 @@ export default class ShopCartPage extends BasePage {
                                     value={itemData.specString ? itemData.specString : ''}
                                     numberOfLines={2}
                                     style={{
-                                        fontFamily: 'PingFang-SC-Medium',
                                         fontSize: 13,
                                         color: ColorUtil.Color_999999
                                     }}/>
@@ -443,9 +440,9 @@ export default class ShopCartPage extends BasePage {
                 </TouchableHighlight>
 
                 <View
-                style={{
-                    backgroundColor:ColorUtil.Color_f7f7f7
-                }}
+                    style={{
+                        backgroundColor: ColorUtil.Color_f7f7f7
+                    }}
                 >
                     {
                         (
@@ -553,8 +550,8 @@ export default class ShopCartPage extends BasePage {
         if (itemData.amount <= 0) {
             itemData.amount = 1;
         }
-        if (itemData.amount > 200){
-            itemData.amount = 200
+        if (itemData.amount > 200) {
+            itemData.amount = 200;
             bridge.$toast('单个商品最多200件');
         }
         shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
@@ -690,7 +687,6 @@ const
             alignItems: 'center'
         },
         totalPrice: {
-            fontFamily: 'PingFang-SC-Medium',
             fontSize: 13,
             color: ColorUtil.mainRedColor,
             marginLeft: 10,

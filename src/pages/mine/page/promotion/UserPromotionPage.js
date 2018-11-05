@@ -186,7 +186,6 @@ const styles = StyleSheet.create({
     blackTextStyle: {
         color: '#222222',
         fontSize: px2dp(16),
-        fontFamily:'PingFangSC-Regular',
         includeFontPadding:false
     },
     grayTextStyle: {

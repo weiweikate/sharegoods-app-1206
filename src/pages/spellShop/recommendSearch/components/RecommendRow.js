@@ -165,12 +165,10 @@ const styles = StyleSheet.create({
     },
     name: {
         color: '#212121',
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 14
     },
     member: {
         color: '#666666',
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 11
     },
     joinBtn: {
@@ -184,7 +182,6 @@ const styles = StyleSheet.create({
     },
     joinText: {
         color: 'white',
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 12
     },
 
@@ -210,7 +207,6 @@ const styles = StyleSheet.create({
     },
     moneyText: {
         color: '#666666',
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 11
     }
 

@@ -18,21 +18,18 @@ typedef  void(^ShareImageMakercompletionBlock)(NSString * pathStr, NSString *err
 @interface ShareImageMaker : NSObject
 SINGLETON_FOR_HEADER(ShareImageMaker)
 /**
- 生成二维码分享的图片，保存在本地
-
- @param urlStr 图片的url字符串
- @param titleStr 标题字符串
- @param priceStr 价格字符串
- @param QRCodeStr 二维码字符串
- @return 返回保存的本地图片的路径
+ 生成二维码分享的图片，保存在本地,商品详情里面
  */
 - (void)creatShareImageWithShareImageMakerModel:(ShareImageMakerModel *)model
                                     completion:(ShareImageMakercompletionBlock) completion;
-
+/**
+ 邀请好友返回二维码
+ */
 - (void)creatQRCodeImageWithQRCodeStr:(NSString *)QRCodeStr
                                      completion:(ShareImageMakercompletionBlock) completion;
 
-
+- (void)createPromotionShareImageWithQRString:(NSString *)QRString
+                                     completion:(ShareImageMakercompletionBlock) completion;
 @end
 
 

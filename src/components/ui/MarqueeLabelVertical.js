@@ -114,7 +114,6 @@ export default class MarqueeLabelVertical extends Component {
       justifyContent: 'flex-start',
     },
     text: {
-      fontFamily: 'PingFangSC-Regular',
       fontSize: 12,
       color: '#FFF',
       lineHeight: 30,

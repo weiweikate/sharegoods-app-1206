@@ -51,7 +51,6 @@ class ShowMessageModal extends Component {
                             <Image source={this.props.detail[i].icon} style={{ height: 18, width: 18 }}/>
                             <Text style={{
                                 marginLeft: 16,
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,
                                 color: '#000000'
                             }}>{this.props.detail[i].title}</Text>
