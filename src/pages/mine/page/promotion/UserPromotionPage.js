@@ -134,7 +134,7 @@ export default class UserPromotionPage extends BasePage<Props> {
                 </View>
                 <View style={styles.bottomTextWrapper}>
                     <Text style={styles.bottomTextStyle}>
-                        {`购买时间：${DateUtils.formatDate(item.startTime)}`}
+                        {`购买时间：${DateUtils.formatDate(item.createTime)}`}
                     </Text>
                 </View>
             </View>
