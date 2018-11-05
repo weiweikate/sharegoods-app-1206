@@ -27,6 +27,7 @@ export class Payment {
     @observable outTradeNo = ''
     //是否支付店铺保证金
     @observable payStore = false
+    @observable payPromotion = false
     @observable paymentList = [
         {
             type: paymentType.section,
@@ -217,6 +218,53 @@ export class Payment {
         console.log('payStoreActoin', type)
 
         return PaymentApi.storePayment({type: type}).then(result => {
+            if (!this.selectedTypes && parseInt(result.code, 0) === 10000) {
+                Toast.hiddenLoading()
+                result.sdkCode = 0
+                return Promise.resolve(result)
+            }
+
+            if (parseInt(result.code, 0) === 10000) {
+                if (this.paymentType.type === paymentType.wechat) {
+                    PayUtil.appWXPay(result.data).then(resultStr => {
+                        Toast.hiddenLoading()
+                        if (parseInt(resultStr.sdkCode, 0) !== 0) {
+                            return Promise.reject(resultStr)
+                        }
+                        return Promise.resolve(resultStr)
+                    })
+                } else {
+                    PayUtil.appAliPay(result.data).then(resultStr => {
+                        Toast.hiddenLoading()
+                        if (parseInt(resultStr.code, 0) !== 0) {
+                            return Promise.reject(resultStr)
+                        }
+                        result.sdkCode = 0
+                        return Promise.resolve(resultStr)
+                    })
+                }
+            }
+            Toast.hiddenLoading()
+            return Promise.reject(result)
+        }).catch(error => {
+            console.log('payStoreActoin error', error)
+            Toast.$toast(error.msg)
+            Toast.hiddenLoading()
+        })
+    }
+
+
+    //推广套餐
+    @action payPromotionWithId = (password,packageId) => {
+        let type = (this.selectedBalace ? 1 : 0)
+        if (this.selectedTypes) {
+            type += this.selectedTypes.type
+        }
+        Toast.showLoading()
+
+        console.log('payStoreActoin', type)
+
+        return PaymentApi.payPromotion({type: 1,packageId:packageId,salePassword:password}).then(result => {
             if (!this.selectedTypes && parseInt(result.code, 0) === 10000) {
                 Toast.hiddenLoading()
                 result.sdkCode = 0

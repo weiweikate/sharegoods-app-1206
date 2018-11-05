@@ -82,7 +82,9 @@ const api = {
     //分页查询用户领取红包记录列表
     getPromotionReceiveRecord:['/promotion/promotionReceiveRecord/queryPromotionReceiveRecordPageList',{method:'post'}],
     //根据ID查询帮助有用/无用数量
-    findQuestionEffectById:['/help/helpQuestion/findQuestionEffectById',{ method: 'get' }]
+    findQuestionEffectById:['/help/helpQuestion/findQuestionEffectById',{ method: 'get' }],
+    //
+    payPromotion:['/promotion/promotionPromoter/pay',{method:'get'}]
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';

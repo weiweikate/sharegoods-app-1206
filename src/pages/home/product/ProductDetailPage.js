@@ -67,12 +67,9 @@ export default class ProductDetailPage extends BasePage {
     }
 
     getPromotion = () => {
-
         try {
             const value = AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
             if (value == null || !DateUtils.isToday(new Date(value))) {
-                // We have data!!
-                alert(value);
                 if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
                     HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
                         this.setState({
