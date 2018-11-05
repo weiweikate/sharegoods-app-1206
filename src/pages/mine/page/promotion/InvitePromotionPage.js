@@ -104,11 +104,12 @@ export default class InvitePromotionPage extends BasePage<Props> {
     }
 
     _itemRender = ({ item }) =>{
-
         return (
             <View style={{ height: px2dp(63), width: ScreenUtils.width }}>
                 <TouchableWithoutFeedback onPress={()=>{
-                    this.$navigate('mine/promotion/PromotionPayPage',item)
+                    if(item.userBuy){
+                        this.$navigate('mine/promotion/PromotionPayPage',item)
+                    }
                 }}>
                     <View style={[styles.itemWrapper,{backgroundColor : item.userBuy ? '#ffffff':'#CCCCCC'}]}>
                         <Text style={styles.itemTextStyle}>

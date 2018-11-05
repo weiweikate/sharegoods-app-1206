@@ -73,19 +73,20 @@ export default class ProductDetailPage extends BasePage {
             if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
                 if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
                     HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
-                        this.setState({
-                            canGetCoupon: true,
-                            couponData: data.data
-                        });
-                        this.couponId = data.data.id;
+                        if(!EmptyUtils.isEmpty(data.data)){
+                            this.setState({
+                                canGetCoupon: true,
+                                couponData: data.data
+                            });
+                            this.couponId = data.data.id;
+                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME,Date.parse(new Date()).toString());
+                        }
                     });
                 }
             }
         } catch (error) {
-            console.log(error.message);
         }
 
-        AsyncStorage.setItem(LASTSHOWPROMOTIONTIME,Date.parse(new Date()).toString());
 
 
     };
@@ -93,6 +94,9 @@ export default class ProductDetailPage extends BasePage {
 
     getCoupon = () => {
         if (EmptyUtils.isEmpty(this.couponId)) {
+            this.setState({
+                canGetCoupon: false
+            });
             this.$toastShow('领取失败！');
         } else {
             HomeAPI.givingPackageToUser({ id: this.couponId }).then((data) => {
@@ -100,6 +104,9 @@ export default class ProductDetailPage extends BasePage {
                     hasGetCoupon: true
                 });
             }).catch((error) => {
+                this.setState({
+                    canGetCoupon: false
+                });
                 this.$toastShow(error.msg);
             });
 
@@ -309,7 +316,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
 
-    _renderCouponModal() {
+    _renderCouponModal=()=> {
 
         let view = (
             <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>

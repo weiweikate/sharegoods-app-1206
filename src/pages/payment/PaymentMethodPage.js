@@ -179,10 +179,10 @@ export default class PaymentMethodPage extends BasePage {
                     <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_22,includeFontPadding:false,marginTop:15,textAlign:'center'}}>
                         {`系统会在明天0点进行站内推广\n每成功获取一个下级将收到站内消息推送`}
                     </Text>
-                    <View style={{width:200,marginHorizontal:24,justifyContent:'space-between',flexDirection:'row',marginTop:20}}>
+                    <View style={{width:200,marginHorizontal:24,justifyContent:'center',flexDirection:'row',marginTop:20}}>
                         <TouchableWithoutFeedback onPress={()=>{
                             this.setState({payPromotionSuccess:false})
-                            this.$navigateBack('mine/promotion/UserPromotionPage')
+                            this.$navigateBack('mine/promotion/UserPromotionPage',{reload:true})
                         }}>
                             <View style={{borderRadius:5,borderColor:'#D51243',borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
                                 <Text style={{color:'#D51243',fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
@@ -190,11 +190,6 @@ export default class PaymentMethodPage extends BasePage {
                                 </Text>
                             </View>
                         </TouchableWithoutFeedback>
-                        <View style={{borderRadius:5,borderColor:'#D51243',borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
-                            <Text style={{color:'#D51243',fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
-                                站外分享推广
-                            </Text>
-                        </View>
                     </View>
                 </View>
             </CommModal>
@@ -421,7 +416,7 @@ export default class PaymentMethodPage extends BasePage {
                 }
                 return;
             }
-            
+
             this.payment.payPromotionWithId(this.state.password , this.params.packageId).then(result => {
                 if (result.sdkCode === 0) {
                     //刷新拼店状态

@@ -53,7 +53,11 @@ export default class UserPromotionPage extends BasePage<Props> {
     };
 
     componentDidMount() {
-        this.getUserPromotionPromoter();
+        if(this.params.reload){
+            this.onRefresh();
+        }else {
+            this.getUserPromotionPromoter();
+        }
     }
 
     getUserPromotionPromoter = () => {
@@ -177,7 +181,7 @@ const styles = StyleSheet.create({
     },
     grayButtonWrapper: {
         borderColor: '#DDDDDD',
-        borderWidth: px2dp(0.5),
+        borderWidth: ScreenUtils.onePixel,
         borderRadius: px2dp(5),
         width: px2dp(80),
         height: px2dp(35),

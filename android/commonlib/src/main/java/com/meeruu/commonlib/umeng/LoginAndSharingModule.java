@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -328,23 +329,32 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void createPromotionShareImage(ReadableMap json, Callback success, Callback fail) {
-        ShareImageBean shareImageBean = parseParam(json);
-        if (shareImageBean == null) {
-            fail.invoke("参数出错");
-            return;
-        }
+    public void createPromotionShareImage(String url, Callback success, Callback fail) {
 
-        drawPromotionShare(mContext, shareImageBean, success, fail);
+        drawPromotionShare(mContext, url, success, fail);
     }
 
-    public static void drawPromotionShare(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail){
-        String info = shareImageBean.getQRCodeStr();
+    public static void drawPromotionShare(final Context context, final String url, final Callback success, final Callback fail){
+        String info = url;
         String str = "长按扫码打开连接";
         Bitmap result = Bitmap.createBitmap(279, (int) (348), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.red_envelope_bg);
+
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int newWidth=279;
+        int newHeight=348;
+        float scaleWidth=((float)newWidth)/width;
+        float scaleHeight=((float)newHeight)/height;
+
+        //获取想要缩放的matrix
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth,scaleHeight);
+
+        bitmap=Bitmap.createBitmap(bitmap,0,0,width,height,matrix,true);
         canvas.drawBitmap(bitmap, 0, 0,paint);
         Bitmap qrBitmap = createQRImage(info, 140, 140);
         canvas.drawBitmap(qrBitmap, 70, 146, paint);
@@ -359,6 +369,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             fail.invoke("图片生成失败");
         }
+        bitmap.recycle();
     }
 
 
