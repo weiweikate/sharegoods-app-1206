@@ -17,6 +17,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import spellStatusModel from '../spellShop/model/SpellStatusModel';
 import DesignRule from 'DesignRule';
 import CommModal from 'CommModal';
+import paySuccessIcon from '../../comm/res/tongyon_icon_check_green.png'
 const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) => {
     let selected = isSelected;
     if (data.type !== paymentType.balance && selectedTypes) {
@@ -74,10 +75,12 @@ export default class PaymentMethodPage extends BasePage {
             //-1表示该参数未初始化,不能完成支付 todo 做支付拦截
             tokenCoinToBalance: this.params.tokenCoinToBalance ? this.params.tokenCoinToBalance : -1,
             //订单支付的参数
-            orderNum: this.params.orderNum ? this.params.orderNum : 0
+            orderNum: this.params.orderNum ? this.params.orderNum : 0,
+            payPromotionSuccess:false
         };
         this.payment = new Payment();
         this.payment.payStore = this.params.payStore;
+        this.payment.payPromotion = this.params.payPromotion;
         if (this.state.shouldPayMoney === 0) {
             this.payment.selectedBalace = true;
         }
@@ -161,15 +164,15 @@ export default class PaymentMethodPage extends BasePage {
             {this.renderBottomOrder()}
             {this.renderPaymentModal()}
             {this.renderPayResult()}
-            {/*{this.renderPromotion()}*/}
+            {this.renderPromotion()}
         </View>;
     }
 
     renderPromotion=()=>{
         return (
-            <CommModal visible={false}>
+            <CommModal visible={this.state.payPromotionSuccess}>
                 <View style={styles.promotionBgStyle}>
-                    <View style={{width:70,height:70,backgroundColor:'#47C546',marginTop:20}}/>
+                    <Image source={paySuccessIcon} style={{width:70,height:70,marginTop:20}}/>
                     <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_mediumBtnText,includeFontPadding:false,marginTop:10}}>
                         支付成功
                     </Text>
@@ -178,7 +181,8 @@ export default class PaymentMethodPage extends BasePage {
                     </Text>
                     <View style={{width:200,marginHorizontal:24,justifyContent:'space-between',flexDirection:'row',marginTop:20}}>
                         <TouchableWithoutFeedback onPress={()=>{
-                            this.$navigate('mine/promotion/UserPromotionPage')
+                            this.setState({payPromotionSuccess:false})
+                            this.$navigateBack('mine/promotion/UserPromotionPage')
                         }}>
                             <View style={{borderRadius:5,borderColor:'#D51243',borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
                                 <Text style={{color:'#D51243',fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
@@ -206,7 +210,7 @@ export default class PaymentMethodPage extends BasePage {
 
     //支付方式弹窗
     renderPaymentModal = () => {
-        const { payStore } = this.payment;
+        const { payStore ,payPromotion} = this.payment;
 
         return (
             <InputTransactionPasswordModal
@@ -221,6 +225,8 @@ export default class PaymentMethodPage extends BasePage {
                     if (text.length === 6) {
                         this.setState({ isShowPaymentModal: false });
                         setTimeout(() => {
+
+
                             if (payStore) {
                                 this.payment.payStoreActoin().then(result => {
                                     if (result.sdkCode === 0) {
@@ -232,7 +238,21 @@ export default class PaymentMethodPage extends BasePage {
                                         Toast.$toast('支付失败');
                                     }
                                 });
-                            } else {
+                            }else if(payPromotion){
+                                this.payment.payPromotionWithId(text,this.params.packageId).then(result => {
+                                    if (result.sdkCode === 0) {
+                                        // //刷新拼店状态
+                                        // spellStatusModel.storeStatus = 2;
+                                        // spellStatusModel.getUser(2);
+                                        // this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                                        this.setState({
+                                            payPromotionSuccess:true
+                                        })
+                                    } else {
+                                        Toast.$toast('支付失败');
+                                    }
+                                });
+                            }else {
                                 this.setState({ password: text, isShowPaymentModal: false });
                                 this.commitOrder();
                             }
@@ -353,7 +373,7 @@ export default class PaymentMethodPage extends BasePage {
         }
     }
     commitOrder = () => {
-        const { selectedBalace, selectedTypes, payStore } = this.payment
+        const { selectedBalace, selectedTypes, payStore,payPromotion } = this.payment
         if (selectedTypes && selectedTypes.type === paymentType.bank) {
             Toast.$toast('银行卡支付，暂不支持')
             return
@@ -385,6 +405,25 @@ export default class PaymentMethodPage extends BasePage {
                 }
             });
             return;
+        }
+
+        if(payPromotion){
+            if (selectedBalace) {
+                if (user.hadSalePassword) {
+                    if (StringUtils.isEmpty(this.state.password)) {
+                        this.setState({ isShowPaymentModal: true });
+                        return;
+                    }
+                    this.setState({ password: '' });
+                }
+                else {
+                    this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
+                }
+                return;
+            }else {
+                this.$toastShow('暂时只支持平台支付！')
+            }
+            return
         }
 
         if (selectedBalace && selectedTypes) {

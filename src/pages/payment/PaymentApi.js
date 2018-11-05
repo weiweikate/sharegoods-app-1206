@@ -16,7 +16,9 @@ const api = {
     //支付宝查账
     alipayCheck: ['/aliPay/aliPayQuery', {method:'get'}],
     //微信支付查账
-    wechatCheck: ['/weChatPay/weChatQuery', {method: 'get'}]
+    wechatCheck: ['/weChatPay/weChatQuery', {method: 'get'}],
+    //推广套餐
+    payPromotion:['/promotion/promotionPromoter/pay',{method:'get'}]
 };
 import ApiUtils from '../../api/network/ApiUtils';
 
