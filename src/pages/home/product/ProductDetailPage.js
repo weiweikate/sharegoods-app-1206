@@ -66,10 +66,10 @@ export default class ProductDetailPage extends BasePage {
         this.getPromotion();
     }
 
-    getPromotion = () => {
+    getPromotion = async() => {
         try {
-            const value = AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
-            if (value == null || !DateUtils.isToday(new Date(value))) {
+            const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
+            if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
                 if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
                     HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
                         this.setState({
@@ -77,12 +77,14 @@ export default class ProductDetailPage extends BasePage {
                             couponData: data.data
                         });
                         this.couponId = data.data.id;
-                        AsyncStorage.setItem(LASTSHOWPROMOTIONTIME,new Date().getTime())
+                        AsyncStorage.setItem(LASTSHOWPROMOTIONTIME,Date.parse(new Date()).toString());
+
                     });
+
                 }
             }
         } catch (error) {
-
+            console.log(error.message);
         }
 
     };
