@@ -102,7 +102,7 @@ let styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: -px2dp(38) / 2
+        marginLeft: -px2dp(10)
     },
     levelBottomText: {
         color: '#9B6D26',
