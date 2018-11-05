@@ -2,7 +2,7 @@
  * 首页
  */
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
     View,
     StyleSheet,
@@ -47,7 +47,7 @@ const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
 
 @observer
-export default class HomePage extends Component {
+export default class HomePage extends PureComponent {
 
     st = 0;
     shadowOpacity = 0.4;
