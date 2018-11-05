@@ -50,7 +50,7 @@ const activityString = {
 export default class ShopCartPage extends BasePage {
     // 导航配置
     $navigationBarOptions = {
-        title: '购物车',
+        title: '购物车更改',
         leftNavItemHidden: true
 
     };
