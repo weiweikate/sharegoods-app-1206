@@ -420,9 +420,18 @@ export default class PaymentMethodPage extends BasePage {
                     this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
                 }
                 return;
-            }else {
-                this.$toastShow('暂时只支持平台支付！')
             }
+            
+            this.payment.payPromotionWithId(this.state.password , this.params.packageId).then(result => {
+                if (result.sdkCode === 0) {
+                    //刷新拼店状态
+                    this.setState({
+                        payPromotionSuccess:true
+                    })
+                } else {
+                    Toast.$toast('支付失败');
+                }
+            });
             return
         }
 
