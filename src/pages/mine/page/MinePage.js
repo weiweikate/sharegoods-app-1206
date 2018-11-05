@@ -381,7 +381,6 @@ export default class MinePage extends BasePage {
                         <View style={{ flexDirection: 'row', marginRight: 15, alignItems: 'center' }}>
                             <UIText value={'查看全部'}
                                     style={{
-                                        fontFamily: 'PingFang-SC-Medium',
                                         fontSize: px2dp(12),
                                         color: '#999999'
                                     }}/>
@@ -665,12 +664,10 @@ const styles = StyleSheet.create({
         color: '#ffffff'
     },
     greyText: {
-        fontFamily: 'PingFang-SC-Regular',
         fontSize: 12,
         color: '#212121'
     },
     blackText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#000000'
     },

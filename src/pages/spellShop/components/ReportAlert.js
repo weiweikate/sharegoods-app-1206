@@ -238,7 +238,6 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     submitTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 16,
         color: '#ffffff'
     },
@@ -251,7 +250,6 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     cancelTitleText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 16,
         color: '#999999'
     }

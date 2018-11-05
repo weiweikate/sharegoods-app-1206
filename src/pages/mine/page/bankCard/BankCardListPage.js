@@ -86,7 +86,7 @@ class BankCardListPage extends BasePage {
                         style={[styles.addBankCardView, { marginTop: this.state.viewData.length == 0 ? 76 : 47 }]}
                         onPress={() => this.addBankCard()}>
                         <UIText value={'+ 点击添加银行卡'}
-                                style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 16, color: '#ffffff' }}/>
+                                style={{  fontSize: 16, color: '#ffffff' }}/>
                     </TouchableOpacity>
                 </View>
                 {this.renderModal()}
@@ -108,11 +108,10 @@ class BankCardListPage extends BasePage {
                                          source={bankCardList[rowData.bankCardType]}
                                          resizeMode={'stretch'}>
                             <UIText value={rowData.bank_name}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 18, color: '#ffffff' }}/>
+                                    style={{ fontSize: 18, color: '#ffffff' }}/>
                             <UIText value={'储蓄卡'}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#ffffff' }}/>
+                                    style={{ fontSize: 13, color: '#ffffff' }}/>
                             <UIText value={StringUtils.formatBankCardNum(rowData.card_no)} style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 18,
                                 color: '#ffffff',
                                 marginTop: 15
@@ -151,11 +150,10 @@ class BankCardListPage extends BasePage {
                                          source={bankCardList[this.state.viewData[i].bankCardType]}
                                          resizeMode={'stretch'}>
                             <UIText value={this.state.viewData[i].bank_name}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 18, color: '#ffffff' }}/>
+                                    style={{  fontSize: 18, color: '#ffffff' }}/>
                             <UIText value={'储蓄卡'}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#ffffff' }}/>
+                                    style={{ fontSize: 13, color: '#ffffff' }}/>
                             <UIText value={StringUtils.formatBankCardNum(this.state.viewData[i].card_no)} style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 18,
                                 color: '#ffffff',
                                 marginTop: 15

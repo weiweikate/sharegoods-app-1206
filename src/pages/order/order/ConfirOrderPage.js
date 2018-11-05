@@ -90,7 +90,6 @@ export default class ConfirOrderPage extends BasePage {
                         <View style={{ flex: 1, flexDirection: 'row' }}>
                             <Text style={{
                                 flex: 1,
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 15,
                                 color: '#222222'
                             }}>收货人：{this.state.viewData.express.receiverName}</Text>
@@ -107,7 +106,6 @@ export default class ConfirOrderPage extends BasePage {
                                 + this.state.viewData.express.receiverAddress
                             }
                             style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,
                                 color: '#222222',
                                 marginTop: 5
@@ -121,7 +119,6 @@ export default class ConfirOrderPage extends BasePage {
                     <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }}/>
                     <View style={{ flex: 1, marginLeft: 15, marginRight: 20 }}>
                         <UIText value={'请添加一个收货人地址'} style={{
-                            fontFamily: 'PingFang-SC-Medium',
                             fontSize: 13,
                             color: '#c8c8c8',
                             marginLeft: 15
@@ -154,7 +151,6 @@ export default class ConfirOrderPage extends BasePage {
                             marginLeft: 20
                         }}>
                             <Text style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 11,
                                 color: '#e60012',
                                 padding: 3
@@ -284,7 +280,6 @@ export default class ConfirOrderPage extends BasePage {
                     <View
                         style={{ width: 264, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
                         <UIText value={'应付款：'} style={{
-                            fontFamily: 'PingFang-SC-Medium',
                             fontSize: 15,
                             color: '#222222',
                             marginRight: 12
@@ -292,7 +287,6 @@ export default class ConfirOrderPage extends BasePage {
                         <UIText
                             value={StringUtils.formatMoneyString(this.state.viewData.totalAmounts)}
                             style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 15,
                                 color: color.red,
                                 marginRight: 12
@@ -302,7 +296,7 @@ export default class ConfirOrderPage extends BasePage {
                         style={{ flex: 1, backgroundColor: color.red, justifyContent: 'center', alignItems: 'center' }}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'提交订单'}
-                                style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 16, color: '#ffffff' }}/>
+                                style={{ fontSize: 16, color: '#ffffff' }}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -367,12 +361,12 @@ export default class ConfirOrderPage extends BasePage {
     componentDidMount() {
         this.loadPageData();
         let arr = [];
-        console.log('loadmore',this.state.orderParam);
+        console.log('loadmore', this.state.orderParam);
         this.state.orderParam.orderProducts.map((item, index) => {
             arr.push({
                 priceId: item.priceId,
                 productId: item.productId,
-                amount:item.num
+                amount: item.num
             });
         });
         API.listAvailable({ page: 1, pageSize: 20, productPriceIds: arr }).then(res => {
@@ -580,7 +574,7 @@ export default class ConfirOrderPage extends BasePage {
             buyerRemark: this.state.message,
             tokenCoin: this.state.tokenCoin,
             couponId: this.state.couponId,
-            address:this.state.viewData.express.receiverAddress
+            address: this.state.viewData.express.receiverAddress
         };
 
         if (StringUtils.isEmpty(this.state.viewData.express.areaCode)) {
@@ -610,7 +604,7 @@ export default class ConfirOrderPage extends BasePage {
                 }).catch(e => {
                     this.$loadingDismiss();
                     console.log(e);
-                    this.$toastShow(e.msg)
+                    this.$toastShow(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -633,7 +627,7 @@ export default class ConfirOrderPage extends BasePage {
                 }).catch(e => {
                     this.$loadingDismiss();
                     console.log(e);
-                    this.$toastShow(e.msg)
+                    this.$toastShow(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -663,7 +657,7 @@ export default class ConfirOrderPage extends BasePage {
                 }).catch(e => {
                     this.$loadingDismiss();
                     console.log(e);
-                    this.$toastShow(e.msg)
+                    this.$toastShow(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -695,7 +689,7 @@ export default class ConfirOrderPage extends BasePage {
             }).catch(e => {
                 this.$loadingDismiss();
                 console.log(e);
-                this.$toastShow(e.msg)
+                this.$toastShow(e.msg);
                 if (e.code === 10009) {
                     this.$navigate('login/login/LoginPage', {
                         callback: () => {
@@ -764,14 +758,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1, backgroundColor: '#f7f7f7', justifyContent: 'flex-end'
     }, selectText: {
-        fontFamily: 'PingFang-SC-Medium', fontSize: 16, color: '#ffffff'
+        fontSize: 16, color: '#ffffff'
     }, blackText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         lineHeight: 18,
         color: '#000000'
     }, grayText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         lineHeight: 18,
         color: '#999999'

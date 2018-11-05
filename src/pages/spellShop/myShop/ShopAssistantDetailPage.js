@@ -171,7 +171,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     rowTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#ffffff',
         marginLeft: 5
@@ -190,13 +189,11 @@ const styles = StyleSheet.create({
         marginLeft: 25
     },
     title: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#222222',
         marginLeft: 4
     },
     desc: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 12,
         color: '#666666',
         flex: 1,

@@ -227,7 +227,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     uploadTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#f7f7f7'
     },
@@ -253,7 +252,6 @@ const styles = StyleSheet.create({
         marginLeft: 11
     },
     textInput: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         marginLeft: 9,
         marginRight: 11,
@@ -269,7 +267,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     btnTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#ffffff'
     }
