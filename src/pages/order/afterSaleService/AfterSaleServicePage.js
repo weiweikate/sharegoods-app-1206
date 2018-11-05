@@ -34,6 +34,7 @@ import OrderApi from '../api/orderApi';
 import SelectionPage from '../../home/product/SelectionPage';
 import HomeAPI from '../../home/api/HomeAPI';
 import EmptyUtils from '../../../utils/EmptyUtils';
+import bridge from '../../../utils/bridge';
 
 class AfterSaleServicePage extends BasePage {
     constructor(props) {
@@ -356,7 +357,7 @@ class AfterSaleServicePage extends BasePage {
                 afterAmount: this.state.productData.num,
                 afterPrice: this.state.productData.price,
                 type: 'after',
-                productPriceId: this.state.productData.productPriceId,
+                productPriceId: this.state.productData.productPriceId
             });
         }
     };
@@ -391,7 +392,7 @@ class AfterSaleServicePage extends BasePage {
             });
         }).catch((data) => {
             this.$loadingDismiss();
-            this.$toastShow(data.msg);
+            bridge.$toast(data.msg);
         });
     }
 
@@ -415,10 +416,10 @@ class AfterSaleServicePage extends BasePage {
             remark: this.state.remark,
             returnReason: this.state.returnReason
         };
-        // if (StringUtils.isEmpty(params.remark)) {
-        //     NativeModules.commModule.toast('请选择说明');
-        //     return;
-        // }
+        if (params.remark.length > 180) {
+            NativeModules.commModule.toast('输入的说明文字超出了180个');
+            return;
+        }
         if (StringUtils.isEmpty(params.returnReason) && this.state.pageType === 2) {
             NativeModules.commModule.toast('请填写原因');
             return;
@@ -444,7 +445,7 @@ class AfterSaleServicePage extends BasePage {
 
             }).catch(e => {
                 this.$loadingDismiss();
-                this.$toastShow(e.msg);
+                bridge.$toast(e.msg);
             });
             return;
         }
@@ -471,7 +472,7 @@ class AfterSaleServicePage extends BasePage {
 
                 }).catch(e => {
                     this.$loadingDismiss();
-                    this.$toastShow(e.msg);
+                    bridge.$toast(e.msg);
                 });
                 break;
             case 1:
@@ -485,7 +486,7 @@ class AfterSaleServicePage extends BasePage {
                     });
                 }).catch(e => {
                     this.$loadingDismiss();
-                    this.$toastShow(e.msg);
+                    bridge.$toast(e.msg);
                 });
                 break;
             case 2:
@@ -502,7 +503,7 @@ class AfterSaleServicePage extends BasePage {
                     });
                 }).catch(e => {
                     this.$loadingDismiss();
-                    this.$toastShow(e.msg);
+                    bridge.$toast(e.msg);
                 });
                 break;
         }

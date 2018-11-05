@@ -60,6 +60,9 @@ export default {
     creatShareImage(jsonParam, onSuccess, onError = (errorStr) => {}) {
         NativeModules.LoginAndShareModule.creatShareImage(jsonParam, onSuccess, onError);
     },
+    createPromotionShareImage(qrString, onSuccess, onError = (errorStr) => {}) {
+        NativeModules.LoginAndShareModule.createPromotionShareImage(qrString, onSuccess, onError);
+    },
     /**
      * @param jsonParam
     <<<<<<<<<<<<< 共同 <<<<<<<<<<<<<<

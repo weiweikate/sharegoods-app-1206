@@ -11,13 +11,13 @@ import {
 } from 'react-native';
 import NavigatorBar from './components/pageDecorator/NavigatorBar/index';
 import {
-    LoadingHub,
-    ToastView
+    LoadingHub
 } from './components/pageDecorator/BaseView';
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';
-import  { netStatus } from "./comm/components/NoNetHighComponent";
+import { netStatus } from './comm/components/NoNetHighComponent';
 import CommTabImag from './comm/res/CommTabImag';
+import bridge from './utils/bridge';
 
 
 export default class BasePage extends Component {
@@ -31,8 +31,8 @@ export default class BasePage extends Component {
         show: true
     };
 
-    componentDidMount(){
-        if (netStatus.isConnected === false){
+    componentDidMount() {
+        if (netStatus.isConnected === false) {
             return;
         }
     }
@@ -46,54 +46,55 @@ export default class BasePage extends Component {
 
     _renderDefaultNoNet() {
         return (
-            <View style={[this.props.style, { alignItems: 'center', justifyContent: 'center', flex: 1}]}>
-                <TouchableWithoutFeedback onPress={()=>{if(netStatus.isConnected){this.$refreshData();this.setState({isConnected: true})}}}>
+            <View style={[this.props.style, { alignItems: 'center', justifyContent: 'center', flex: 1 }]}>
+                <TouchableWithoutFeedback onPress={() => {
+                    if (netStatus.isConnected) {
+                        this.$refreshData();
+                        this.setState({ isConnected: true });
+                    }
+                }}>
                     <View>
-                        <Image source={CommTabImag.noNetImg} style={{height: 100, width: 100}}/>
-                        <Text style={{ marginTop: 10, color: "#666666" }}>无网络</Text>
+                        <Image source={CommTabImag.noNetImg} style={{ height: 100, width: 100 }}/>
+                        <Text style={{ marginTop: 10, color: '#666666' }}>无网络</Text>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
         );
     }
 
-    renderContianer(){
+    renderContianer() {
         let controlParams = this.$getPageStateOptions ? this.$getPageStateOptions() : null;
-       return(
-           controlParams ? renderViewByLoadingState(controlParams, () => {
-        return this._render();
-        }) : this._render()
-        )
+        return (
+            controlParams ? renderViewByLoadingState(controlParams, () => {
+                return this._render();
+            }) : this._render()
+        );
     }
 
     render() {
         let navigationBarOptions = this.$navigationBarOptions || {};
         let isShowNavBar = navigationBarOptions.show !== undefined ? navigationBarOptions.show : true;
-         // let controlParams = this.$getPageStateOptions ? this.$getPageStateOptions() : null;
+        // let controlParams = this.$getPageStateOptions ? this.$getPageStateOptions() : null;
 
         return (
             <View style={styles.container}>
-            {
-                isShowNavBar && <NavigatorBar {...navigationBarOptions}
-                                              renderRight={this.$NavBarRenderRightItem || null}
-                                              navigation={this.props.navigation}
-                                              leftPressed={() => (this.$NavBarLeftPressed || this.$NavigationBarDefaultLeftPressed).call(this)}
-                                              rightPressed={() => (this.$NavBarRightPressed || this.$NavigationBarDefaultRightPressed).call(this)}
-                                              ref={(bar) => {
-                                                  this.$navigatorBar = bar;
-                                              }}/>
-            }
-            {this.$isMonitorNetworkStatus() && netStatus.isConnected === false ?
-                this._renderDefaultNoNet() :
-                this.renderContianer()}
-            <ToastView ref={(toast) => {
-                this.$toast = toast;
-            }}/>
-
-            <LoadingHub ref={(loadingHub) => {
-                this.$loadingHub = loadingHub;
-            }}/>
-        </View>
+                {
+                    isShowNavBar && <NavigatorBar {...navigationBarOptions}
+                                                  renderRight={this.$NavBarRenderRightItem || null}
+                                                  navigation={this.props.navigation}
+                                                  leftPressed={() => (this.$NavBarLeftPressed || this.$NavigationBarDefaultLeftPressed).call(this)}
+                                                  rightPressed={() => (this.$NavBarRightPressed || this.$NavigationBarDefaultRightPressed).call(this)}
+                                                  ref={(bar) => {
+                                                      this.$navigatorBar = bar;
+                                                  }}/>
+                }
+                {this.$isMonitorNetworkStatus() && netStatus.isConnected === false ?
+                    this._renderDefaultNoNet() :
+                    this.renderContianer()}
+                <LoadingHub ref={(loadingHub) => {
+                    this.$loadingHub = loadingHub;
+                }}/>
+            </View>
         );
     }
 
@@ -182,8 +183,8 @@ export default class BasePage extends Component {
             index: 1,
             actions: [
                 NavigationActions.navigate({ routeName: 'Tab' }),
-                NavigationActions.navigate({ routeName: 'login/login/LoginPage' }),
-            ],
+                NavigationActions.navigate({ routeName: 'login/login/LoginPage' })
+            ]
         });
         this.props.navigation.dispatch(resetAction);
     };
@@ -197,16 +198,16 @@ export default class BasePage extends Component {
             if (typeof step === 'number') {
                 let router = $routes[$routes.length + step];
                 routerKey = router.key;
-            } else if(typeof step === 'string'){
-                for(let i = 0; i < $routes.length - 1; i++){
+            } else if (typeof step === 'string') {
+                for (let i = 0; i < $routes.length - 1; i++) {
 
-                    if (step === $routes[i].routeName){
+                    if (step === $routes[i].routeName) {
                         routerKey = $routes[i + 1].key;
                         break;
                     }
                 }
             }
-            if (routerKey){
+            if (routerKey) {
                 const backAction = NavigationActions.back({ key: routerKey });
                 this.props.navigation.dispatch(backAction);
             } else {
@@ -218,23 +219,13 @@ export default class BasePage extends Component {
         }
     };
 
-    $toastShow = (title, params) => {
-        if (!this.$toast) {
-            return;
-        }
-        this.$toast.showToast(title, params || {});
-    };
-    $toastDismiss = (callBack) => {
-        if (!this.$toast) {
-            return;
-        }
-        this.$toast.dismiss(typeof callBack === 'function' ? callBack : null);
+    $toastShow = (title) => {
+        bridge.$toast(title);
     };
     $loadingShow = (msg, params) => {
         if (!this.$loadingHub) {
             return;
         }
-        this.$toastDismiss();
         this.$loadingHub.loadingShow(msg, params || {});
     };
     $loadingDismiss = (callBack) => {

@@ -225,7 +225,7 @@ export class Payment {
             }
 
             if (parseInt(result.code, 0) === 10000) {
-                if (this.paymentType.type === paymentType.wechat) {
+                if (this.selectedTypes.type === paymentType.wechat) {
                     PayUtil.appWXPay(result.data).then(resultStr => {
                         Toast.hiddenLoading()
                         if (parseInt(resultStr.sdkCode, 0) !== 0) {
@@ -264,7 +264,8 @@ export class Payment {
 
         console.log('payStoreActoin', type)
 
-        return PaymentApi.payPromotion({type: 1,packageId:packageId,salePassword:password}).then(result => {
+        return PaymentApi.payPromotion({type: type,packageId:packageId,salePassword:password}).then(result => {
+            console.log('this.selectedTypes', this.selectedTypes)
             if (!this.selectedTypes && parseInt(result.code, 0) === 10000) {
                 Toast.hiddenLoading()
                 result.sdkCode = 0
@@ -272,9 +273,10 @@ export class Payment {
             }
 
             if (parseInt(result.code, 0) === 10000) {
-                if (this.paymentType.type === paymentType.wechat) {
+                if (this.selectedTypes.type === paymentType.wechat) {
                     PayUtil.appWXPay(result.data).then(resultStr => {
                         Toast.hiddenLoading()
+                        console.log('app wx pay', resultStr)
                         if (parseInt(resultStr.sdkCode, 0) !== 0) {
                             return Promise.reject(resultStr)
                         }
