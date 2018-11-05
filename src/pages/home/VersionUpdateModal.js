@@ -99,6 +99,7 @@ export default class VersionUpdateModal extends React.Component {
                                 <TouchableOpacity
                                     style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 45 }}
                                     onPress={() => {
+                                        //
                                         this.props.onDismiss();
                                     }}>
                                     <UIText value={'以后再说'} style={{ color: '#999' }}/>
