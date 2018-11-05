@@ -3,7 +3,7 @@
  * @providesModule RouterMap
  * @flow
  */
-import {PageKey} from './Router';
+import {PageKey} from './Stack';
  const RouterMap = {
     // base
     Tab: 'Tab',
@@ -14,11 +14,6 @@ import {PageKey} from './Router';
     DebugUserInfoPage: 'debug/UserInfoPage',
     DebugRequestDetailPage: 'debug/RequestDetailPage',
     DebugPanelPage: 'debug/DebugPanelPage',
-
-    SearchPage: 'home/search/SearchPage',
-    SearchResultPage: 'home/search/SearchResultPage',
-
-    ProductDetailPage: 'home/product/ProductDetailPage',
    ...PageKey
 };
 

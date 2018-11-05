@@ -1,20 +1,18 @@
 import { TabNavigator } from 'react-navigation';
 import React from 'react';
-import Home from './pages/home/HomePage';
-// import Mine from './pages/mine/page/MinePage';
-import Mine from './pages/mine/page/MinePage';
-import ShopCart from './pages/shopCart/page/ShopCartPage';
-import SpellShop from './pages/spellShop/SpellShopPage';
-import {
-    StyleSheet,
-    Image
-} from 'react-native';
-import CommTabImag from './comm/res/CommTabImag';
-import ColorUtil from './utils/ColorUtil';
-import ScreenUtils from './utils/ScreenUtils';
-import ShowListPage from './pages/show/ShowListPage';
-import discoverImg from './comm/res/tab_discover_selected.png';
-import undiscoverImg from './comm/res/tab_discover_unselected.png';
+import Home from '../pages/home/HomePage';
+import Mine from '../pages/mine/page/MinePage';
+import ShopCart from '../pages/shopCart/page/ShopCartPage';
+import SpellShop from '../pages/spellShop/SpellShopPage';
+import { StyleSheet, Image } from 'react-native';
+import CommTabImag from '../comm/res/CommTabImag';
+import ColorUtil from '../utils/ColorUtil';
+import ScreenUtils from '../utils/ScreenUtils';
+import ShowListPage from '../pages/show/ShowListPage';
+import discoverImg from '../comm/res/tab_discover_selected.png';
+import undiscoverImg from '../comm/res/tab_discover_unselected.png';
+import user from '../model/user'
+import RouterMap from './RouterMap'
 
 export const TabNav = TabNavigator(
     {
@@ -84,23 +82,28 @@ export const TabNav = TabNavigator(
         },
         MinePage: {
             screen: Mine,
-            navigationOptions:
-                {
-                    tabBarLabel: '我的',
-                    tabBarIcon: ({ focused }) => {
-                        if (focused) {
-                            return (
-                                <Image style={styles.tabBarIcon} source={CommTabImag.mine_Tab_img.img_Sel}/>
-                            );
-                        }
+            navigationOptions: ({navigation}) => ({
+                tabBarLabel: '我的',
+                tabBarIcon: ({ focused }) => {
+                    if (focused) {
                         return (
-                            <Image style={styles.tabBarIcon} source={CommTabImag.mine_Tab_img.img_Nor}/>
+                            <Image style={styles.tabBarIcon} source={CommTabImag.mine_Tab_img.img_Sel}/>
                         );
                     }
+                    return (
+                        <Image style={styles.tabBarIcon} source={CommTabImag.mine_Tab_img.img_Nor}/>
+                    );
+                },
+                tabBarOnPress: (tab) => {
+                    const { jumpToIndex , scene } = tab
+                    if (user && user.isLogin) {
+                        jumpToIndex(scene.index)
+                    } else {
+                        navigation.navigate(RouterMap.LoginPage)
+                    }
                 }
-
+            })
         }
-
     },
     {
         tabBarOptions: {
