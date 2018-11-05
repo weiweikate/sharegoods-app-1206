@@ -25,6 +25,7 @@ import phoneIcon from '../../res/customerservice/kf_30.png';
 import personIcon from '../../res/customerservice/kf_30-33.png';
 import QYChatUtil from './QYChatModel';
 import MineApi from '../../api/MineApi';
+
 export default class MyHelperPage extends BasePage {
     constructor(props) {
         super(props);
@@ -87,7 +88,7 @@ export default class MyHelperPage extends BasePage {
                         backgroundColor: '#F6F6F6'
                     }}>
                         <Text style={{
-                            marginLeft: 16, width: 60, height: 15, fontFamily: 'PingFang-SC-Medium', fontSize: 13,
+                            marginLeft: 16, width: 60, height: 15, fontSize: 13,
                             color: '#666666'
                         }}>热门问题</Text>
                     </View>
@@ -144,7 +145,7 @@ export default class MyHelperPage extends BasePage {
         );
     };
     jumpQYIMPage = () => {
-        QYChatUtil.qiYUChat()
+        QYChatUtil.qiYUChat();
     };
 
     jumpTohelpPage() {
@@ -152,7 +153,7 @@ export default class MyHelperPage extends BasePage {
     }
 
     orderListq(list) {
-        this.$navigate('mine/helper/HelperQuestionListPage',{list});
+        this.$navigate('mine/helper/HelperQuestionListPage', { list });
         // this.navigate(RouterPaths.HelperQuestionListPage,{typeid:typeid})
     }
 
@@ -162,35 +163,35 @@ export default class MyHelperPage extends BasePage {
 
     gotoquestionDetail(id) {
         console.log(id);
-        this.$navigate('mine/helper/HelperQuestionDetail',{id:id});
+        this.$navigate('mine/helper/HelperQuestionDetail', { id: id });
         // this.navigate(RouterPaths.HelperQeustionDetail,{id:id})
     }
 
-     componentDidMount(){
+    componentDidMount() {
         let list = [];
-         MineApi.queryHelpQuestionList().then(res => {
-             console.log(res);
-             if(res.code == 10000){
-                 Object.keys(res.data).forEach(item=>{
-                     list.push({
-                         name:item,
-                         list:res.data[item],
-                         typeid:res.data[item][0].typeId
-                     })
-                 })
-                 this.setState({
-                     typeList: list
-                 })
-             }else{
+        MineApi.queryHelpQuestionList().then(res => {
+            console.log(res);
+            if (res.code == 10000) {
+                Object.keys(res.data).forEach(item => {
+                    list.push({
+                        name: item,
+                        list: res.data[item],
+                        typeid: res.data[item][0].typeId
+                    });
+                });
+                this.setState({
+                    typeList: list
+                });
+            } else {
                 this.$toastShow(res.msg);
-                 this.setState({isEmpty: true})
-             }
-             }).catch(error =>{
-                 if(error.code === 10009){
-                     this.$navigate('login/login/LoginPage')
-                 }
-         });
-     }
+                this.setState({ isEmpty: true });
+            }
+        }).catch(error => {
+            if (error.code === 10009) {
+                this.$navigate('login/login/LoginPage');
+            }
+        });
+    }
 
     _render() {
         return (

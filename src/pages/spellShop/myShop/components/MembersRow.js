@@ -74,12 +74,10 @@ const styles = StyleSheet.create({
         marginRight: 8
     },
     iconTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         color: '#222222'
     },
     iconDesc: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 12,
         color: '#666666',
         flex: 1,
@@ -109,7 +107,6 @@ const styles = StyleSheet.create({
     name: {
         marginTop: 5,
         width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(23) * 2) / 5,
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 11,
         color: '#666666',
         textAlign: 'center'

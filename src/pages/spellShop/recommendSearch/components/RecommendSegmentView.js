@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     title: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#999999'
     }

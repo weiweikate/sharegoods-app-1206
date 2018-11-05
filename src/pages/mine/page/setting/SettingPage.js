@@ -89,7 +89,7 @@ class SettingPage extends BasePage {
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.clearAllCaches()}>
                         <UIText value={'清除缓存'} style={styles.blackText}/>
                         <UIText value={desc}
-                                style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#666666' }}/>
+                                style={{fontSize: 13, color: '#666666' }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
@@ -315,7 +315,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     blackText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#222222'
     }

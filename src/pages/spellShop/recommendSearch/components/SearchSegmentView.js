@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     title: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#999999'
     }

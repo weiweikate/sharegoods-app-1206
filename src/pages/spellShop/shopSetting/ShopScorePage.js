@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
         marginBottom: 32 / 128 * WhitePanelHeight,
     },
     shopLevel: {
-        fontFamily: "PingFang-SC-Medium",
         fontSize: 15,
         color: "#222222",
         marginBottom: 16 / 128 * WhitePanelHeight,
@@ -107,7 +106,6 @@ const styles = StyleSheet.create({
     },
     title: {
         marginTop: 16,
-        fontFamily: "PingFang-SC-Medium",
         fontSize: 15,
         color: "#222222"
     },
