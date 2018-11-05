@@ -34,6 +34,7 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 import StringUtils from '../../../utils/StringUtils';
 import closeIcon from '../../../../src/comm/res/tongyong_btn_close_white.png';
 import DateUtils from '../../../utils/DateUtils';
+
 const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
 export default class ProductDetailPage extends BasePage {
 
@@ -66,7 +67,7 @@ export default class ProductDetailPage extends BasePage {
         this.getPromotion();
     }
 
-    getPromotion = async() => {
+    getPromotion = async () => {
         try {
             const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
             if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
@@ -77,19 +78,17 @@ export default class ProductDetailPage extends BasePage {
                             couponData: data.data
                         });
                         this.couponId = data.data.id;
-                        AsyncStorage.setItem(LASTSHOWPROMOTIONTIME,Date.parse(new Date()).toString());
-
                     });
-
                 }
             }
         } catch (error) {
             console.log(error.message);
         }
 
+        AsyncStorage.setItem(LASTSHOWPROMOTIONTIME,Date.parse(new Date()).toString());
+
+
     };
-
-
 
 
     getCoupon = () => {

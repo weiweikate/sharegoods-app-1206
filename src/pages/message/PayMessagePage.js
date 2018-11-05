@@ -80,7 +80,7 @@ export default class PayMessagePage extends BasePage {
                     </View>
                 </View>
                 <View style={{ height: 10 }}/>
-                <NewsDetailItem titles={'付款方式'} rightmg={this.getPayType(this.params.payType)} isshow={false}/>
+                <NewsDetailItem titles={'付款编号'} rightmg={this.params.orderNum} isshow={false}/>
                 <NewsDetailItem titles={'创建时间'}
                                 rightmg={DateUtils.getFormatDate(this.params.time / 1000)}
                                 isshow={false}/>
@@ -114,7 +114,7 @@ export default class PayMessagePage extends BasePage {
                     </View>
                 </View>
                 <View style={{ height: 10 }}/>
-                <NewsDetailItem titles={'付款方式'} rightmg={this.getPayType(this.params.payType)} isshow={false}/>
+                <NewsDetailItem titles={'付款编号'} rightmg={this.params.refundNo} isshow={false}/>
                 <NewsDetailItem titles={'创建时间'}
                                 rightmg={DateUtils.getFormatDate(this.params.time / 1000)}
                                 isshow={false}/>
