@@ -277,7 +277,6 @@ export default class MyCouponsItems extends Component {
                         }}
                                           activeOpacity={0.5} onPress={this.props.giveupUse}>
                             <Text style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 14,
                                 color: '#666666'
                             }}>放弃使用优惠券</Text>

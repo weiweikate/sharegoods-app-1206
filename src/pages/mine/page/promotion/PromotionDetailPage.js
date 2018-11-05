@@ -104,7 +104,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
         MineApi.getPromotionReceiveRecord({
             page: this.currentPage,
             pageSize: 15,
-            packageId: this.params.packageId
+            packageId: this.params.id
         }).then(res => {
             let arrs = this.currentPage == 1 ? [] : this.state.data;
             if (!EmptyUtils.isEmptyArr(res.data.data)) {
@@ -207,30 +207,17 @@ export default class PromotionDetailPage extends BasePage<Props> {
                     onLoadMore={this.onLoadMore}
                     // extraData={this.state}
                     isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无发起推广'}
+                    emptyTip={'暂无数据'}
                 />
                 {this.state.showCountDown ? this._bottomButtonRender() : null}
                 <CommShareModal ref={(ref) => this.shareModal = ref}
-                    // type={'miniProgram'}
-                    //  imageJson={{
-                    //      imageUrlStr: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1539577593172&di=c87eead9eb2e2073b50758daf6194c62&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F59c914525c484566292f8d8d3d29c964ca59c7ca.jpg',
-                    //      titleStr: '商品标题',
-                    //      priceStr: '¥100.00',
-                    //      QRCodeStr: '分享的链接'
-                    //  }}
+                                type={'promotionShare'}
                                 webJson={{
                                     title: '邀请好友免费领取福利',
                                     dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
                                     linkUrl: `http://uath5.sharegoodsmall.com/promote?id=${this.params.id}`,
-                                    thumImage: 'logo.png'
+                                    thumImage: 'logo.png',
                                 }}
-                    // miniProgramJson = {{
-                    //     title: '分享小程序title',
-                    //     dec: '分享小程序子标题',
-                    //     thumImage: 'logo.png',
-                    //     linkUrl: '${apiEnvironment.getCurrentH5Url()}/pages/index/index',
-                    //     userName: 'gh_3ac2059ac66f',
-                    //     miniProgramPath: 'pages/index/index'}}
                 />
             </View>
         );

@@ -16,12 +16,19 @@ export default class VersionUpdateModal extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (Platform.OS !== 'ios' && nextProps.updateData) {
-            this.currProgress = 0;
-            this.setState({
-                positiveTxt: nextProps.apkExist ? '立即安装' : '立即更新',
-                updateContent: nextProps.apkExist ? '是否安装V' + nextProps.updateData.version + '版本？' : '是否更新为V' + nextProps.updateData.version + '版本？'
-            });
+        if (nextProps.updateData) {
+            if (Platform.OS !== 'ios') {
+                this.currProgress = 0;
+                this.setState({
+                    positiveTxt: nextProps.apkExist ? '立即安装' : '立即更新',
+                    updateContent: nextProps.apkExist ? '是否安装V' + nextProps.updateData.version + '版本？' : '是否更新为V' + nextProps.updateData.version + '版本？'
+                });
+            } else {
+                this.setState({
+                    positiveTxt: '立即更新',
+                    updateContent: '是否更新为V' + nextProps.updateData.version + '版本？'
+                });
+            }
         }
     }
 

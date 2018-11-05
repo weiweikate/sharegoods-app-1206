@@ -31,8 +31,7 @@ const CommTabImag = {
     baocun: require('./share_icon_baocun.png'),
     download: require('./share_btn_download_nor.png'),
     closeImg: require('./tongyong_btn_close_white.png'),
-    noNetImg: require('./网络异常.png')
-
+    noNetImg: require('./网络异常.png'),
 };
 
 export default CommTabImag;

@@ -241,7 +241,6 @@ class MyOrdersDetailPage extends BasePage {
                             marginLeft: 20
                         }}>
                             <Text style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 11,
                                 color: '#e60012',
                                 padding: 3
@@ -249,7 +248,6 @@ class MyOrdersDetailPage extends BasePage {
                         </View>
                         <Text style={{
                             marginLeft: 10,
-                            fontFamily: 'PingFang-SC-Medium',
                             fontSize: 12,
                             color: '#999999'
                         }}>{this.state.giftPackageName}</Text>
@@ -598,7 +596,6 @@ class MyOrdersDetailPage extends BasePage {
                     <View style={{ flex: 1, flexDirection: 'row' }}>
                         <Text style={{
                             flex: 1,
-                            fontFamily: 'PingFang-SC-Medium',
                             fontSize: 15,
                             color: '#222222'
                         }}>收货人：{this.state.viewData.receiverName}</Text>
@@ -1317,7 +1314,6 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10
     }, grayText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         lineHeight: 18,
         color: '#666666'

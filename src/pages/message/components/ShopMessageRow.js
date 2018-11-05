@@ -65,7 +65,6 @@ export default class ShopMessageRow extends Component {
                     <TouchableOpacity onPress={()=>{this.props.rejectAction && this.props.rejectAction(item)}}
                                       style={[styles.selectText,{borderWidth:0.5,borderColor:'red',}]}>
                         <Text style={{
-                            fontFamily: "PingFang-SC-Medium",
                             fontSize: 16,
                             color: "red"
                         }}>拒绝</Text>
@@ -73,7 +72,6 @@ export default class ShopMessageRow extends Component {
                     <TouchableOpacity onPress={()=>{this.props.allowAction && this.props.allowAction(item)}}
                                       style={[styles.selectText, {backgroundColor: 'red'}]}>
                         <Text style={{
-                            fontFamily: "PingFang-SC-Medium",
                             fontSize: 16,
                             color: "white"
                         }}>{item.type === 1 ? '加入' : '同意'}</Text>
@@ -109,7 +107,6 @@ export default class ShopMessageRow extends Component {
                 }}>
                     <View style={[styles.selectText, {backgroundColor: '#dddddd'}]}>
                         <Text style={{
-                            fontFamily: "PingFang-SC-Medium",
                             fontSize: 16,
                             color: "#ffffff"
                         }}>{

@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20
     },
     title: {
-        fontFamily: 'PingFang-SC-Regular',
         fontSize: 15,
         fontWeight: 'bold',
         color: '#e60012'
@@ -120,7 +119,6 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 10
     },
     content: {
-        fontFamily: 'PingFang-SC-Regular',
         fontSize: 14,
         lineHeight: 20,
         color: '#000000',
