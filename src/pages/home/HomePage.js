@@ -51,7 +51,7 @@ export default class HomePage extends Component {
     st = 0;
     shadowOpacity = 0.4;
 
-    headerH = statusBarHeight + 44 - (ScreenUtils.isIOSX?10:0);
+    headerH = statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0);
     state = {
         isShow: true,
         showMessage: false,
@@ -104,7 +104,7 @@ export default class HomePage extends Component {
             'willFocus',
             payload => {
                 const { state } = payload;
-                console.log('willFocusSubscription', state)
+                console.log('willFocusSubscription', state);
                 if (state && state.routeName === 'HomePage') {
                     this.shareTaskIcon.queryTask();
                     this.setState({ isShow: true });
@@ -167,7 +167,7 @@ export default class HomePage extends Component {
         });
     };
 
-    _onScrollBeginDrag(){
+    _onScrollBeginDrag() {
         this.shareTaskIcon.close();
     }
 
@@ -194,7 +194,7 @@ export default class HomePage extends Component {
             return <HomeGoodsView data={data.itemData} navigation={this.props.navigation}/>;
         } else if (data.type === homeType.show) {
             const { isShow } = this.state;
-            return  <ShowView navigation={this.props.navigation} isShow={isShow}/>
+            return <ShowView navigation={this.props.navigation} isShow={isShow}/>;
         } else if (data.type === homeType.goodsTitle) {
             return <View style={styles.titleView}>
                 <Text style={styles.title}>为你推荐</Text>
@@ -331,8 +331,10 @@ export default class HomePage extends Component {
 
                 <HomeSearchView navigation={this.props.navigation}
                                 whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}/>
-                <ShareTaskIcon style={{position: 'absolute', right:0, top: px2dp(220) - 40}}
-                               ref={(ref)=>{this.shareTaskIcon = ref}}
+                <ShareTaskIcon style={{ position: 'absolute', right: 0, top: px2dp(220) - 40 }}
+                               ref={(ref) => {
+                                   this.shareTaskIcon = ref;
+                               }}
                 />
                 {this.messageModalRender()}
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
@@ -356,7 +358,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
-        height: statusBarHeight + 44 - (ScreenUtils.isIOSX?10:0),
+        height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
         backgroundColor: '#fff',
@@ -372,7 +374,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
-        height: statusBarHeight + 44 - (ScreenUtils.isIOSX?10:0),
+        height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
         alignItems: 'center',
