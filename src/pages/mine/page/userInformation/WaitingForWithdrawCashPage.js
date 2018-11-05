@@ -48,6 +48,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
             blockedBalance: this.params.blockedBalance,
             modalVisible:false
         };
+        this.currentPage = 0;
     }
 
     $navigationBarOptions = {
@@ -223,9 +224,9 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         let use_type = ['', '销售提成', '推广提成'];
         let use_type_symbol = ['', '+', '+'];
         let useLeftImg = ['', salesCommissions, tuiguang];
-        let arrData = this.state.currentPage === 1 ? [] : this.state.viewData;
+        let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         Toast.showLoading();
-        MineApi.userBalanceQuery({ page: 1, size: 20, type: 1 }).then((response) => {
+        MineApi.userBalanceQuery({ page: this.currentPage, size: 20, type: 1 }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
             if (response.code === 10000) {
@@ -265,10 +266,12 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         });
     };
     onRefresh = () => {
-        this.setState({currentPage:1},this.getDataFromNetwork());
+        this.currentPage=1;
+            this.getDataFromNetwork();
     };
     onLoadMore = (page) => {
-        this.setState({currentPage:this.state.currentPage + 1},this.getDataFromNetwork());
+        this.currentPage++;
+        this.getDataFromNetwork();
     };
 }
 

@@ -103,7 +103,7 @@ const GoodsListItem = props => {
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             {nameArr.map((item, i) => {
-                                return <TouchableOpacity style={{
+                                return <TouchableOpacity key={i} style={{
                                     borderWidth: 1,
                                     borderColor: item.isRed ? color.red : color.gray_DDD,
                                     height: 30,
@@ -132,7 +132,7 @@ const GoodsListItem = props => {
                 }
               return  <View style={{ flexDirection: 'row' }}>
                 {nameArr.map((item, i) => {
-                    return <TouchableOpacity style={{
+                    return <TouchableOpacity key={i} style={{
                         borderWidth: 1,
                         borderColor: item.isRed ? color.red : color.gray_DDD,
                         height: 30,

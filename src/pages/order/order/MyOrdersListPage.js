@@ -107,7 +107,7 @@ class MyOrdersListPage extends BasePage {
     };
     renderWideLine = () => {
         return (
-            <View style={{ flex: 1, height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ flex: 0.5, height: 10, backgroundColor: color.page_background }}/>
         );
     };
 }
