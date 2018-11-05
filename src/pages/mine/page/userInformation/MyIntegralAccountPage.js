@@ -40,6 +40,7 @@ export default class MyIntegralAccountPage extends BasePage {
             currentPage: 1,
             isEmpty: false
         };
+        this.currentPage = 0;
     }
 
     $navigationBarOptions = {
@@ -135,10 +136,10 @@ export default class MyIntegralAccountPage extends BasePage {
 
         let use_type_symbol = ['', '+', '+', '-','-','+'];
         let use_let_img = ['', registeredImg, activityPresent, xiaofei,xiaofei,activityPresent];
-        let arrData = this.state.currentPage === 1 ? [] : this.state.viewData;
+        let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         Toast.showLoading();
         MineApi.userScoreQuery({
-            page: 1,
+            page: this.currentPage,
             size: 20
 
         }).then((response) => {
@@ -169,9 +170,7 @@ export default class MyIntegralAccountPage extends BasePage {
         });
     };
     onRefresh = () => {
-        this.setState({
-            currentPage: 1
-        });
+     this.currentPage=1;
         MineApi.getUser().then(res => {
             let data = res.data;
             user.saveUserInfo(data);
@@ -183,9 +182,7 @@ export default class MyIntegralAccountPage extends BasePage {
         this.getDataFromNetwork();
     };
     onLoadMore = () => {
-        this.setState({
-            currentPage: this.state.currentPage + 1
-        });
+       this.currentPage++;
         this.getDataFromNetwork();
     };
 }

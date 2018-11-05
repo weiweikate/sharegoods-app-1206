@@ -1,6 +1,6 @@
 {
   "showDebugPanel": true,
-  "envType": "qa",
+  "envType": "pre_release",
   "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
   "env": {
     "dev_mock": {
@@ -59,8 +59,8 @@
     },
     "pre_release": {
       "name": "预发布环境",
-      "host": "http://uatapi.sharegoodsmall.com/gateway",
-      "h5": "http://uath5.sharegoodsmall.com"
+      "host": "https://uatapi.sharegoodsmall.com/gateway",
+      "h5": "https://uath5.sharegoodsmall.com"
     }
   }
 }
