@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-    View,
-    Text,
-    StyleSheet,
-    TouchableOpacity,
-    Image,
-    ScrollView,
-    AppState,
-    TouchableWithoutFeedback
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, AppState,TouchableWithoutFeedback } from 'react-native';
 import BasePage from '../../BasePage';
 import { UIText } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
@@ -178,79 +169,33 @@ export default class PaymentMethodPage extends BasePage {
         </View>;
     }
 
-    renderPromotion = () => {
+    renderPromotion=()=>{
         return (
             <CommModal visible={this.state.payPromotionSuccess}>
                 <View style={styles.promotionBgStyle}>
-                    <Image source={paySuccessIcon} style={{ width: 70, height: 70, marginTop: 20 }}/>
-                    <Text style={{
-                        color: DesignRule.textColor_secondTitle,
-                        fontSize: DesignRule.fontSize_mediumBtnText,
-                        includeFontPadding: false,
-                        marginTop: 10
-                    }}>
+                    <Image source={paySuccessIcon} style={{width:70,height:70,marginTop:20}}/>
+                    <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_mediumBtnText,includeFontPadding:false,marginTop:10}}>
                         支付成功
                     </Text>
-                    <Text style={{
-                        color: DesignRule.textColor_secondTitle,
-                        fontSize: DesignRule.fontSize_22,
-                        includeFontPadding: false,
-                        marginTop: 15,
-                        textAlign: 'center'
-                    }}>
+                    <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_22,includeFontPadding:false,marginTop:15,textAlign:'center'}}>
                         {`系统会在明天0点进行站内推广\n每成功获取一个下级将收到站内消息推送`}
                     </Text>
-                    <View style={{
-                        width: 200,
-                        marginHorizontal: 24,
-                        justifyContent: 'space-between',
-                        flexDirection: 'row',
-                        marginTop: 20
-                    }}>
-                        <TouchableWithoutFeedback onPress={() => {
-                            this.setState({ payPromotionSuccess: false });
-                            this.$navigateBack('mine/promotion/UserPromotionPage');
+                    <View style={{width:200,marginHorizontal:24,justifyContent:'center',flexDirection:'row',marginTop:20}}>
+                        <TouchableWithoutFeedback onPress={()=>{
+                            this.setState({payPromotionSuccess:false})
+                            this.$navigateBack('mine/promotion/UserPromotionPage',{reload:true})
                         }}>
-                            <View style={{
-                                borderRadius: 5,
-                                borderColor: '#D51243',
-                                borderWidth: 1,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                width: 93,
-                                height: 30
-                            }}>
-                                <Text style={{
-                                    color: '#D51243',
-                                    fontSize: DesignRule.fontSize_24,
-                                    includeFontPadding: false
-                                }}>
+                            <View style={{borderRadius:5,borderColor:'#D51243',borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
+                                <Text style={{color:'#D51243',fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
                                     我的推广
                                 </Text>
                             </View>
                         </TouchableWithoutFeedback>
-                        <View style={{
-                            borderRadius: 5,
-                            borderColor: '#D51243',
-                            borderWidth: 1,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: 93,
-                            height: 30
-                        }}>
-                            <Text style={{
-                                color: '#D51243',
-                                fontSize: DesignRule.fontSize_24,
-                                includeFontPadding: false
-                            }}>
-                                站外分享推广
-                            </Text>
-                        </View>
                     </View>
                 </View>
             </CommModal>
-        );
-    };
+        )
+    }
 
 
     renderPayResult() {
@@ -289,21 +234,21 @@ export default class PaymentMethodPage extends BasePage {
                                         Toast.$toast('支付失败');
                                     }
                                 });
-                            } else if (payPromotion) {
-                                this.payment.payPromotionWithId(text, this.params.packageId).then(result => {
+                            }else if(payPromotion){
+                                this.payment.payPromotionWithId(text,this.params.packageId).then(result => {
                                     if (result.sdkCode === 0) {
                                         // //刷新拼店状态
                                         // spellStatusModel.storeStatus = 2;
                                         // spellStatusModel.getUser(2);
                                         // this.$navigate('spellShop/shopSetting/SetShopNamePage');
                                         this.setState({
-                                            payPromotionSuccess: true
-                                        });
+                                            payPromotionSuccess:true
+                                        })
                                     } else {
                                         Toast.$toast('支付失败');
                                     }
                                 });
-                            } else {
+                            }else {
                                 this.setState({ password: text, isShowPaymentModal: false });
                                 this.commitOrder();
                             }
@@ -479,7 +424,7 @@ export default class PaymentMethodPage extends BasePage {
                 return;
             }
 
-            this.payment.payPromotionWithId(this.state.password, this.params.packageId).then(result => {
+            this.payment.payPromotionWithId(this.state.password , this.params.packageId).then(result => {
                 if (result.sdkCode === 0) {
                     //刷新拼店状态
                     this.setState({

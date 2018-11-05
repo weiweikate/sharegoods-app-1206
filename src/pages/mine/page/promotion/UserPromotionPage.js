@@ -24,6 +24,7 @@ import MineApi from '../../api/MineApi';
 import RefreshList from '../../../../components/ui/RefreshList';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import DateUtils from '../../../../utils/DateUtils';
+import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
 
 const { px2dp } = ScreenUtils;
 
@@ -33,7 +34,8 @@ export default class UserPromotionPage extends BasePage<Props> {
         super(props);
         this.state = {
             data: [],
-            isEmpty: false
+            isEmpty: false,
+            loadingState:PageLoadingState.loading,
         };
         this.currentPage = 1;
     }
@@ -44,29 +46,45 @@ export default class UserPromotionPage extends BasePage<Props> {
     };
 
 
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+        };
+    };
+
     componentDidMount() {
-        this.getUserPromotionPromoter();
+        if(this.params.reload){
+            this.onRefresh();
+        }else {
+            this.getUserPromotionPromoter();
+        }
     }
 
     getUserPromotionPromoter = () => {
         MineApi.getUserPromotionPromoter({ page: this.currentPage, pageSize: 15 }).then(res => {
-            let arrs = this.currentPage == 1 ? [] : this.state.data;
+            let arrs = this.currentPage === 1 ? [] : this.state.data;
             if (!EmptyUtils.isEmptyArr(res.data.data)) {
                 res.data.data.map((item, index) => {
                     arrs.push(item);
                 });
                 this.setState({
-                    data: arrs
+                    data: arrs,
+                    loadingState: PageLoadingState.success
                 });
             } else {
                 if (EmptyUtils.isEmptyArr(this.state.data)) {
                     this.setState({
-                        isEmpty: true
+                        isEmpty: true,
+                        loadingState: PageLoadingState.success
                     });
                 }
             }
         }).catch((error) => {
-            this.$toastShow(error.msg);
+            if(this.currentPage === 1 && EmptyUtils.isEmptyArr(this.state.data)){
+                this.setState({
+                    loadingState: PageLoadingState.fail
+                })
+            }
         });
     };
 
@@ -116,7 +134,7 @@ export default class UserPromotionPage extends BasePage<Props> {
                 </View>
                 <View style={styles.bottomTextWrapper}>
                     <Text style={styles.bottomTextStyle}>
-                        {`购买时间：${DateUtils.formatDate(item.startTime)}`}
+                        {`购买时间：${DateUtils.formatDate(item.createTime)}`}
                     </Text>
                 </View>
             </View>
@@ -163,7 +181,7 @@ const styles = StyleSheet.create({
     },
     grayButtonWrapper: {
         borderColor: '#DDDDDD',
-        borderWidth: px2dp(0.5),
+        borderWidth: ScreenUtils.onePixel,
         borderRadius: px2dp(5),
         width: px2dp(80),
         height: px2dp(35),

@@ -61,6 +61,10 @@ const MessageUtils = {
                     pageType: 2,
                 });
                 break
+            case 123://推广消息
+                pagParams = JSON.parse(params);
+                navigation.navigate('mine/promotion/PromotionDetailPage',pagParams)
+                break
             case 202://请出消息
             case 203://招募消息
             case 204://拼店成功
