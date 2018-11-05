@@ -44,13 +44,11 @@ export default class RecommendRow extends Component {
                 </View>
 
                 <Text style={{
-                    fontFamily: 'PingFang-SC-Medium',
                     fontSize: 14,
                     color: '#f7f7f7',
                     marginTop: 20
                 }}>{`${DateUtils.formatDate(createTime, 'yyyy-MM-dd')}日发起招募`}</Text>
                 <Text style={{
-                    fontFamily: 'PingFang-SC-Medium',
                     fontWeight: 'bold',
                     fontSize: 14,
                     color: '#f7f7f7',
@@ -61,7 +59,6 @@ export default class RecommendRow extends Component {
                     <View style={{ height: 43, marginHorizontal: 0, flexDirection: 'row', alignItems: 'center' }}>
                         <Image source={AdminImg} style={{ marginLeft: 17, marginRight: 6 }}/>
                         <Text style={{
-                            fontFamily: 'PingFang-SC-Medium',
                             fontSize: 15,
                             color: '#000000'
                         }}>店长信息</Text>
@@ -79,19 +76,16 @@ export default class RecommendRow extends Component {
                         <View style={{ flex: 1, marginHorizontal: 15, justifyContent: 'center' }}>
 
                             <Text style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,
                                 color: '#222222'
                             }}>店长：{manager.nickname || ''}</Text>
 
                             <Text style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,
                                 color: '#666',
                                 marginTop: 6
                             }}>等级：{manager.levelName || ''}</Text>
                             <Text style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,
                                 color: '#666',
                                 marginTop: 6
@@ -105,14 +99,12 @@ export default class RecommendRow extends Component {
                         justifyContent: 'space-between'
                     }}>
                         <Text style={{
-                            fontFamily: 'PingFang-SC-Medium',
                             fontSize: 13,
                             color: '#c8c8c8',
                             marginTop: 6
                         }}>{`完成总交易额：${totalTradeVolume || 0}元`}</Text>
 
                         <Text style={{
-                            fontFamily: 'PingFang-SC-Medium',
                             fontSize: 13,
                             color: '#666',
                             marginTop: 6
@@ -144,12 +136,10 @@ const styles = StyleSheet.create({
         borderColor: '#c8c8c8'
     },
     shopName: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#f7f7f7'
     },
     shopId: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#f7f7f7',
         marginTop: 8

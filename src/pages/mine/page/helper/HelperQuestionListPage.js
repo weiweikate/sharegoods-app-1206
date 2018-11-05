@@ -85,7 +85,6 @@ export default class HelperQuestionListPage extends BasePage {
 
 const styles = StyleSheet.create({
     blackText: {
-        fontFamily: "PingFang-SC-Medium",
         fontSize: 13,
         color: "#000000"
     },

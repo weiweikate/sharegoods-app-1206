@@ -127,7 +127,6 @@ export default class IDVertify2Page extends BasePage {
                     </TouchableOpacity>
                     <View style={{ alignItems: 'center' }}>
                         <UIText value={'（信息仅用户自己可见）'} style={{
-                            fontFamily: 'PingFang-SC-Medium',
                             fontSize: 13,
                             color: '#999999',
                             marginTop: 7
@@ -139,9 +138,9 @@ export default class IDVertify2Page extends BasePage {
                             <Image source={this.state.agreeAggreement ? addressSelect : addressUnselect}
                                    style={{ width: 11, height: 11 }}/>
                             <UIText value={'提交认证代表您已同意'}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#999999' }}/>
+                                    style={{ fontSize: 11, color: '#999999' }}/>
                             <UIText value={'《实名认证协议》'}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#D62B56' }}
+                                    style={{ fontSize: 11, color: '#D62B56' }}
                                     onPress={() => {
                                         this.$navigate('HtmlPage', {
                                             title: '用户协议内容',
@@ -181,7 +180,7 @@ export default class IDVertify2Page extends BasePage {
         return (
             <View style={{ height: 50, backgroundColor: '#e60012', justifyContent: 'center', paddingLeft: 15 }}>
                 <UIText value={'请仔细检查姓名和证件号是否有误\n并重新上传图片，提交审核'}
-                        style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, lineHeight: 18, color: '#ffffff' }}/>
+                        style={{ fontSize: 13, lineHeight: 18, color: '#ffffff' }}/>
             </View>
         );
     };
@@ -308,16 +307,13 @@ const styles = StyleSheet.create({
         paddingLeft: 14,
         justifyContent: 'center'
     }, itemTitleText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#999999'
     }, blackText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         color: '#222222'
     },
     grayText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         color: '#999999'
     }, accountStyle: {

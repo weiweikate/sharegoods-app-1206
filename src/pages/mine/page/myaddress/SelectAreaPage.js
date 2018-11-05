@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
         height: 48
     },
     blackText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         color: '#222222',
         marginLeft: 15,

@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     title: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#000000'
     },

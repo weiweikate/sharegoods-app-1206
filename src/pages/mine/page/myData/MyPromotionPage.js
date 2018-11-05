@@ -161,7 +161,6 @@ export default class MyPromotionPage extends BasePage {
                 <View style={{ height: 43, marginHorizontal: 0, flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={CCZImg} style={{ marginLeft: 17, marginRight: 6 }}/>
                     <Text style={{
-                        fontFamily: 'PingFang-SC-Medium',
                         fontSize: 15,
                         color: '#000000'
                     }}>成长值</Text>
@@ -172,7 +171,6 @@ export default class MyPromotionPage extends BasePage {
                         marginTop: 10,
                         color: '#e60012',
                         fontSize: 10,
-                        fontFamily: 'PingFang-SC-Medium'
                     }}>{this.state.experience || 0}<Text style={{
                         color: '#666666'
                     }}>
@@ -202,7 +200,6 @@ export default class MyPromotionPage extends BasePage {
                         marginTop: 10,
                         color: '#222222',
                         fontSize: 11,
-                        fontFamily: 'PingFang-SC-Medium'
                     }}>距离晋升还差<Text style={{
                         color: '#000',
                         fontSize: 15
@@ -221,7 +218,6 @@ export default class MyPromotionPage extends BasePage {
                 <View style={{ justifyContent: 'center', height: 44, backgroundColor: '#fff' }}>
                     <Text style={{
                         marginLeft: 14,
-                        fontFamily: 'PingFang-SC-Medium',
                         fontSize: 14,
                         color: '#222222'
                     }}>预计晋升后可获得哪些福利？</Text>
@@ -345,7 +341,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     shopName: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         color: '#ffffff'
     },
