@@ -415,10 +415,10 @@ class AfterSaleServicePage extends BasePage {
             remark: this.state.remark,
             returnReason: this.state.returnReason
         };
-        // if (StringUtils.isEmpty(params.remark)) {
-        //     NativeModules.commModule.toast('请选择说明');
-        //     return;
-        // }
+        if (params.remark.length > 180) {
+            NativeModules.commModule.toast('输入的说明文字超出了180个');
+            return;
+        }
         if (StringUtils.isEmpty(params.returnReason) && this.state.pageType === 2) {
             NativeModules.commModule.toast('请填写原因');
             return;
