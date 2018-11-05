@@ -143,4 +143,32 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     completion(path,nil);
   }
 }
+
+- (void)createPromotionShareImageWithQRString:(NSString *)QRString
+                                   completion:(ShareImageMakercompletionBlock) completion{
+  UIImage *bgImage = [UIImage imageNamed:@"promotionBg"];
+  UIImage *QRCodeImage =  [self QRCodeWithStr:QRString];
+  
+  CGRect rect = CGRectMake(0.0f, 0.0f, 280, 380);
+  UIGraphicsBeginImageContext(CGSizeMake(280, 380));
+  CGContextRef context = UIGraphicsGetCurrentContext();
+//  CGContextSetFillColorWithColor(context, [UIColor redColor].CGColor);
+//  CGContextFillRect(context, rect);
+  // 绘制图片
+  [bgImage drawInRect:CGRectMake(0, 0, 280, 380)];
+  // 绘制图片
+  [QRCodeImage drawInRect:CGRectMake(70, 180, 140, 140)];
+  // 绘制文字
+  NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+  paragraphStyle.alignment = NSTextAlignmentCenter;
+  [@"长按二维码打开链接" drawInRect:CGRectMake(0, 340, 280, 30) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12], NSForegroundColorAttributeName: [UIColor whiteColor], NSParagraphStyleAttributeName: paragraphStyle}];
+  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  NSString * path = [self save:image withPath:@"/Documents/promotionShareImage.png"];
+  if (path == nil || path.length == 0) {
+    completion(nil, @"ShareImageMaker：保存图片到本地失败");
+  }else{
+    completion(path, nil);
+  }
+}
 @end
