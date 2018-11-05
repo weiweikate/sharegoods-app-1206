@@ -1,6 +1,14 @@
 import React from 'react';
 import CommModal from '../../comm/components/CommModal';
-import { DeviceEventEmitter, NativeModules, Platform, TouchableOpacity, View, ProgressBarAndroid } from 'react-native';
+import {
+    DeviceEventEmitter,
+    NativeModules,
+    Platform,
+    TouchableOpacity,
+    View,
+    ProgressBarAndroid,
+    AsyncStorage
+} from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIText from '../../components/ui/UIText';
 
@@ -99,7 +107,8 @@ export default class VersionUpdateModal extends React.Component {
                                 <TouchableOpacity
                                     style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 45 }}
                                     onPress={() => {
-                                        //
+                                        // 缓存状态
+                                        AsyncStorage.setItem('isToUpdate', this.props.updateData.version);
                                         this.props.onDismiss();
                                     }}>
                                     <UIText value={'以后再说'} style={{ color: '#999' }}/>
