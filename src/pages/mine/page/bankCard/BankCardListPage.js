@@ -175,7 +175,7 @@ class BankCardListPage extends BasePage {
     };
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, height: 10 }}/>
+            <View style={{ height: 10 }}/>
         );
     };
     renderModal = () => {
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 17,
-        paddingLeft: 68,
+        paddingLeft: 68
     }, backTextWhite: {
         color: color.white,
         marginRight: 20,
