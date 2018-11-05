@@ -34,6 +34,7 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 import StringUtils from '../../../utils/StringUtils';
 import closeIcon from '../../../../src/comm/res/tongyong_btn_close_white.png';
 import DateUtils from '../../../utils/DateUtils';
+
 const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
 export default class ProductDetailPage extends BasePage {
 
@@ -66,32 +67,36 @@ export default class ProductDetailPage extends BasePage {
         this.getPromotion();
     }
 
-    getPromotion = () => {
+    getPromotion = async () => {
         try {
-            const value = AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
-            if (value == null || !DateUtils.isToday(new Date(value))) {
+            const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
+            if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
                 if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
                     HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
-                        this.setState({
-                            canGetCoupon: true,
-                            couponData: data.data
-                        });
-                        this.couponId = data.data.id;
-                        AsyncStorage.setItem(LASTSHOWPROMOTIONTIME,new Date().getTime())
+                        if(!EmptyUtils.isEmpty(data.data)){
+                            this.setState({
+                                canGetCoupon: true,
+                                couponData: data.data
+                            });
+                            this.couponId = data.data.id;
+                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME,Date.parse(new Date()).toString());
+                        }
                     });
                 }
             }
         } catch (error) {
-
         }
+
+
 
     };
 
 
-
-
     getCoupon = () => {
         if (EmptyUtils.isEmpty(this.couponId)) {
+            this.setState({
+                canGetCoupon: false
+            });
             this.$toastShow('领取失败！');
         } else {
             HomeAPI.givingPackageToUser({ id: this.couponId }).then((data) => {
@@ -99,6 +104,9 @@ export default class ProductDetailPage extends BasePage {
                     hasGetCoupon: true
                 });
             }).catch((error) => {
+                this.setState({
+                    canGetCoupon: false
+                });
                 this.$toastShow(error.msg);
             });
 
@@ -308,7 +316,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
 
-    _renderCouponModal() {
+    _renderCouponModal=()=> {
 
         let view = (
             <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>

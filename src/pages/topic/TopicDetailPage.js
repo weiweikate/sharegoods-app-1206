@@ -7,7 +7,8 @@ import {
     FlatList,
     Text,
     TouchableWithoutFeedback,
-    TouchableOpacity
+    TouchableOpacity, AsyncStorage,
+    ImageBackground
 } from 'react-native';
 
 import BasePage from '../../BasePage';
@@ -26,6 +27,15 @@ import CommShareModal from '../../comm/components/CommShareModal';
 import TopicDetailShowModal from './components/TopicDetailShowModal';
 import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
 import apiEnvironment from '../../api/ApiEnvironment';
+import closeIcon from '../../../src/comm/res/tongyong_btn_close_white.png';
+
+const { px2dp } = ScreenUtils;
+import EmptyUtils from '../../utils/EmptyUtils';
+import redEnvelopeBg from '../home/product/res/red_envelope_bg.png';
+import StringUtils from '../../utils/StringUtils';
+import DateUtils from '../../utils/DateUtils';
+import CommModal from 'CommModal';
+const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
 
 export default class TopicDetailPage extends BasePage {
 
@@ -43,14 +53,39 @@ export default class TopicDetailPage extends BasePage {
             //正常数据 礼包
             data: {},
             //活动数据  降价拍和秒杀活动数据
-            activityData: {}
+            activityData: {},
+            canGetCoupon: false,
+            couponData: null,
+            hasGetCoupon: false
 
         };
     }
 
     componentDidMount() {
         this.loadPageData();
+        this.getPromotion();
     }
+
+    getPromotion = async () => {
+        try {
+            const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
+            if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
+                if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
+                    HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
+                        if(!EmptyUtils.isEmpty(data.data)){
+                            this.setState({
+                                canGetCoupon: true,
+                                couponData: data.data
+                            });
+                            this.couponId = data.data.id;
+                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, Date.parse(new Date()).toString());
+                        }
+                    })
+                }
+            }
+        } catch (error) {
+        }
+    };
 
     componentWillUnmount() {
         this.__timer__ && clearInterval(this.__timer__);
@@ -59,6 +94,28 @@ export default class TopicDetailPage extends BasePage {
     loadPageData() {
         this._getActivityData();
     }
+
+    getCoupon = () => {
+        if (EmptyUtils.isEmpty(this.couponId)) {
+            this.setState({
+                canGetCoupon: false
+            });
+            this.$toastShow('领取失败！');
+        } else {
+            HomeAPI.givingPackageToUser({ id: this.couponId }).then((data) => {
+                this.setState({
+                    hasGetCoupon: true
+                });
+            }).catch((error) => {
+                this.setState({
+                    canGetCoupon: false
+                });
+                this.$toastShow(error.msg);
+            });
+
+        }
+    };
+
 
     //数据
     _getActivityData = () => {
@@ -311,6 +368,73 @@ export default class TopicDetailPage extends BasePage {
         });
     };
 
+    _renderCouponModal() {
+
+        let view = (
+            <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
+                <Text style={{ color: 'white', fontSize: px2dp(24) }}>
+                    领取成功
+                </Text>
+                <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
+                    可前往我的-优惠卷查看
+                </Text>
+            </View>
+        );
+
+        let button = (
+            <TouchableWithoutFeedback onPress={this.getCoupon}>
+                <Text
+                    style={{ position: 'absolute', top: px2dp(220), left: px2dp(115), color: '#80522A', fontSize: 14 }}>
+                    {`立即\n领取`}
+                </Text>
+            </TouchableWithoutFeedback>
+        );
+
+        return (
+            <CommModal visible={this.state.canGetCoupon}>
+                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center', justifyContent: 'center' }}>
+                    <ImageBackground source={redEnvelopeBg} style={{
+                        height: px2dp(362), width: px2dp(257),
+                        alignItems: 'center'
+                    }}>
+                        <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14), marginTop: 26 }}>
+                            {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.encryptPhone(this.state.couponData.phone)}
+                        </Text>
+                        <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14) }}>
+                            赠送了你一个红包
+                        </Text>
+
+                        <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(60), marginTop: 20 }}>
+                            {EmptyUtils.isEmpty(this.state.couponData) ? null : this.state.couponData.price}
+                            <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
+                                元
+                            </Text>
+                        </Text>
+                        <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(14), marginTop: 12 }}>
+                            红包抵扣金
+                        </Text>
+                        {this.state.hasGetCoupon ? null : button}
+
+                        {this.state.hasGetCoupon ? view : null}
+                    </ImageBackground>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.setState({
+                            canGetCoupon: false
+                        });
+                    }}>
+                        <Image source={closeIcon} style={{
+                            position: 'absolute',
+                            top: 107,
+                            right: 35,
+                            width: 24,
+                            height: 24
+                        }}/>
+                    </TouchableWithoutFeedback>
+                </View>
+            </CommModal>
+        );
+    }
+
     _render() {
         let bottomTittle, colorType;
         if (this.state.activityType === 3) {
@@ -435,6 +559,7 @@ export default class TopicDetailPage extends BasePage {
                                 }}/>
                 <TopicDetailShowModal ref={(ref) => this.TopicDetailShowModal = ref}/>
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
+                {this._renderCouponModal()}
             </View>
         );
     }
