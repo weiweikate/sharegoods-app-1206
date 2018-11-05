@@ -42,6 +42,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
         this._bind();
         this.seconds = 0;
         this.expansions = {};
+        this.state={};
 
     }
 
@@ -192,7 +193,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                 image_title = '任务已结束';
                 image_btnText = '开启奖励';
                 image_detail = desc;
-                onPress = () => {this.getRewards(id)};
+               // onPress = () => {this.getRewards(id)};
                 break;
         }
         return (
