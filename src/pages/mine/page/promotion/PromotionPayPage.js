@@ -9,6 +9,7 @@
  *
  */
 
+
 "use strict";
 import React from "react";
 import {
@@ -21,7 +22,7 @@ import BasePage from "../../../../BasePage";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 const { px2dp } = ScreenUtils;
 import UIText from "../../../../comm/components/UIText";
-import icon from './res/selected.png'
+import icon from '../../../../comm/res/selected_circle_red.png'
 
 type Props = {};
 export default class PromotionPayPage extends BasePage<Props> {
@@ -49,6 +50,16 @@ export default class PromotionPayPage extends BasePage<Props> {
     loadPageData() {
     }
 
+    pay=()=>{
+        // MineAPI.payPromotion({packageId:this.params.id,salePassword:'',type:4}).then((data)=>{
+        //     alert(JSON.stringify(data))
+        // }).catch(error=>{
+        //     alert(error.msg);
+        // })
+
+        this.$navigate('payment/PaymentMethodPage',{packageId:this.params.id,amounts:this.params.total,payPromotion:true})
+    }
+
     _render() {
         let unSelectView = (
             <View style={{backgroundColor:'white',borderColor:'#DDDDDD',borderWidth:px2dp(0.5),width:px2dp(22),height:px2dp(22),borderRadius:px2dp(11)}}/>
@@ -73,7 +84,7 @@ export default class PromotionPayPage extends BasePage<Props> {
                     </TouchableOpacity>
                 </View>
                 <View style={{flex:1}}/>
-                <TouchableOpacity onPress={()=>alert()} disabled={!this.state.isSelected} >
+                <TouchableOpacity onPress={()=>this.pay()} disabled={!this.state.isSelected} >
                     <View style={[styles.buttonWrapper,this.state.isSelected ? { opacity: 1} : {opacity : 0.5}]}>
                         <UIText value={'提交支付'} style={{color:'white', fontSize: px2dp(16)}}/>
                     </View>

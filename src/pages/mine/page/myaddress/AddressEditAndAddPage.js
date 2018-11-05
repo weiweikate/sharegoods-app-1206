@@ -8,8 +8,8 @@ import StringUtils from '../../../../utils/StringUtils';
 import MineAPI from '../../api/MineApi';
 import UIText from '../../../../components/ui/UIText';
 import bridge from '../../../../utils/bridge';
-import addrSelectedIcon from '../../res/address/dizhi_btn_moren_sel.png';
-import addrUnSelectedIcon from '../../res/address/dizhi_btn_moren_nor.png';
+import addrSelectedIcon from '../../../../comm/res/selected_circle_red.png';
+import addrUnSelectedIcon from '../../../../comm/res/unselected_circle.png';
 import UIImage from '../../../../components/ui/UIImage';
 
 const dismissKeyboard = require('dismissKeyboard');

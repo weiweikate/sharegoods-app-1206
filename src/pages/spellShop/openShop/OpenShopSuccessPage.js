@@ -9,7 +9,7 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
-import SuccessImg from './src/xz_03.png';
+import SuccessImg from '../../../comm/res/tongyon_icon_check_green.png';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 
@@ -29,10 +29,10 @@ export default class OpenShopSuccessPage extends BasePage {
         this.$loadingShow();
         SpellShopApi.getById().then((data) => {
             //邀请好友页面
-            this.$loadingDismiss()
+            this.$loadingDismiss();
             this.$navigate('spellShop/openShop/InvitationFriendPage', { shareInfo: data.data || {} });
         }).catch((error) => {
-            this.$loadingDismiss()
+            this.$loadingDismiss();
             this.$toastShow(error.msg);
         });
     };

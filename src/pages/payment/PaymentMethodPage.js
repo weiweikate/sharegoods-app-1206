@@ -1,48 +1,51 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, AppState } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, AppState,TouchableWithoutFeedback } from 'react-native';
 import BasePage from '../../BasePage';
 import { UIText } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
 import { color } from '../../constants/Theme';
-import selectedImg from './res/selected.png';
+import selectedImg from '../../comm/res/selected_circle_red.png';
 import Toast from '../../utils/bridge';
 import InputTransactionPasswordModal from './InputTransactionPasswordModal';
 import user from '../../model/user';
 import { observer } from 'mobx-react/native';
-import unselectedImg from './res/unselected.png'
-import { Payment, paymentType } from './Payment'
-import PayUtil from './PayUtil'
-import PaymentResultView, {PaymentResult} from './PaymentResultView'
+import unselectedImg from '../../comm/res/unselected_circle.png';
+import { Payment, paymentType } from './Payment';
+import PayUtil from './PayUtil';
+import PaymentResultView, { PaymentResult } from './PaymentResultView';
 import ScreenUtils from '../../utils/ScreenUtils';
 import spellStatusModel from '../spellShop/model/SpellStatusModel';
-
-const PayCell = ({data, isSelected, balance, press, selectedTypes, disabled}) => {
-    let selected = isSelected
+import DesignRule from 'DesignRule';
+import CommModal from 'CommModal';
+import paySuccessIcon from '../../comm/res/tongyon_icon_check_green.png'
+const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) => {
+    let selected = isSelected;
     if (data.type !== paymentType.balance && selectedTypes) {
-        selected = selectedTypes.type === data.type
+        selected = selectedTypes.type === data.type;
     }
-    return <TouchableOpacity style={styles.cell} disabled={disabled} onPress={()=>press && press()}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' ,flex:1}}>
+    return <TouchableOpacity style={styles.cell} disabled={disabled} onPress={() => press && press()}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
             <Image source={data.icon} style={{ height: 33 }} resizeMode={'contain'}/>
             <Text style={[styles.blackText, { marginLeft: 5 }]}>{data.name}</Text>
         </View>
         {
             data.hasBalance
-            ?
-            <Text style={{
+                ?
+                <Text style={{
                     marginLeft: 5,
                     marginRight: 7,
                     color: '#999999',
                     fontSize: 13
                 }}>可用余额: {balance ? balance : 0}</Text>
-            :
-            null
+                :
+                null
         }
-        <Image source={selected ? selectedImg : unselectedImg} style={{ height: 22, width: 22 }} resizeMode={'stretch'}/>
-    </TouchableOpacity>
-}
+        <Image source={selected ? selectedImg : unselectedImg} style={{ height: 22, width: 22 }}
+               resizeMode={'stretch'}/>
+    </TouchableOpacity>;
+};
 
-const Section = ({data}) => <View style={{
+const Section = ({ data }) => <View style={{
     backgroundColor: color.page_background,
     height: 39,
     justifyContent: 'center'
@@ -51,7 +54,7 @@ const Section = ({data}) => <View style={{
         fontFamily: 'PingFang-SC-Medium', fontSize: 13
         , color: '#999999', marginLeft: 15
     }}>{data.name}</Text>
-</View>
+</View>;
 
 @observer
 export default class PaymentMethodPage extends BasePage {
@@ -72,104 +75,158 @@ export default class PaymentMethodPage extends BasePage {
             //-1表示该参数未初始化,不能完成支付 todo 做支付拦截
             tokenCoinToBalance: this.params.tokenCoinToBalance ? this.params.tokenCoinToBalance : -1,
             //订单支付的参数
-            orderNum: this.params.orderNum ? this.params.orderNum : 0
+            orderNum: this.params.orderNum ? this.params.orderNum : 0,
+            payPromotionSuccess:false
         };
-        this.payment = new Payment()
-        this.payment.payStore = this.params.payStore
+        this.payment = new Payment();
+        this.payment.payStore = this.params.payStore;
+        this.payment.payPromotion = this.params.payPromotion;
         if (this.state.shouldPayMoney === 0) {
-            this.payment.selectedBalace = true
+            this.payment.selectedBalace = true;
         }
         if (this.params.outTradeNo) {
-            this.payment.outTradeNo = this.params.outTradeNo
-            this.payment.continueToPay({outTradeNo: this.params.outTradeNo}).then(data => {
-                this.setState({shouldPayMoney: data.data.amounts})
-            })
+            this.payment.outTradeNo = this.params.outTradeNo;
+            this.payment.continueToPay({ outTradeNo: this.params.outTradeNo }).then(data => {
+                this.setState({ shouldPayMoney: data.data.amounts });
+            });
         } else {
-            this.payment.outTradeNo = ''
+            this.payment.outTradeNo = '';
         }
         user.updateUserData().then(data => {
-            this.payment.availableBalance = data.availableBalance
-        })
-        console.log('shouldPayMoney', this.state.shouldPayMoney)
+            this.payment.availableBalance = data.availableBalance;
+        });
+        console.log('shouldPayMoney', this.state.shouldPayMoney);
     }
 
     componentDidMount() {
-        AppState.addEventListener("change", this._handleAppStateChange);
+        AppState.addEventListener('change', this._handleAppStateChange);
     }
 
     componentWillUnmount() {
-        AppState.removeEventListener("change", this._handleAppStateChange);
+        AppState.removeEventListener('change', this._handleAppStateChange);
     }
 
     _handleAppStateChange = (state) => {
-        console.log("_handleAppStateChange AppState", state);
-        const { selectedTypes } = this.payment
+        console.log('_handleAppStateChange AppState', state);
+        const { selectedTypes } = this.payment;
         if (state === 'active' && this.payment.outTradeNo) {
-            if (selectedTypes.type === paymentType.alipay ) {
-               this.payment.alipayCheck({outTradeNo: this.payment.outTradeNo, type: paymentType.alipay, payType: 1}).then(checkStr => {
-                    console.log('_handleAppStateChange', state, checkStr)
-                    this._showPayresult(checkStr.resultStr)
-                    AppState.removeEventListener("change", this._handleAppStateChange);
-               })
+            if (selectedTypes.type === paymentType.alipay) {
+                this.payment.alipayCheck({
+                    outTradeNo: this.payment.outTradeNo,
+                    type: paymentType.alipay,
+                    payType: 1
+                }).then(checkStr => {
+                    console.log('_handleAppStateChange', state, checkStr);
+                    this._showPayresult(checkStr.resultStr);
+                    AppState.removeEventListener('change', this._handleAppStateChange);
+                });
             } else {
-                this.payment.wechatCheck({outTradeNo: this.payment.outTradeNo, type: 2, payType: 1}).then(checkStr=> {
-                    console.log('_handleAppStateChange', state, checkStr)
-                    this._showPayresult(checkStr.resultStr)
-                    AppState.removeEventListener("change", this._handleAppStateChange);
-                })
+                this.payment.wechatCheck({
+                    outTradeNo: this.payment.outTradeNo,
+                    type: 2,
+                    payType: 1
+                }).then(checkStr => {
+                    console.log('_handleAppStateChange', state, checkStr);
+                    this._showPayresult(checkStr.resultStr);
+                    AppState.removeEventListener('change', this._handleAppStateChange);
+                });
             }
         }
     };
 
     _selectedPayType(value) {
-        this.payment.selectPaymentType(value)
+        this.payment.selectPaymentType(value);
     }
 
     _selectedBalancePay() {
-        this.payment.selectBalancePayment()
+        this.payment.selectBalancePayment();
     }
 
     _render() {
-        const { paymentList,  availableBalance, balancePayment, selectedBalace, selectedTypes} = this.payment
-        let items = []
+        const { paymentList, availableBalance, balancePayment, selectedBalace, selectedTypes } = this.payment;
+        let items = [];
         paymentList.map((value, index) => {
             if (value.type === paymentType.section) {
-                items.push(<Section key={index + ''} data={value}/>)
+                items.push(<Section key={index + ''} data={value}/>);
             } else {
-                items.push(<PayCell disabled={value.type !== paymentType.balance && this.state.shouldPayMoney  === 0} key={index + ''}  selectedTypes={selectedTypes} data={value} balance={availableBalance} press={()=>this._selectedPayType(value)}/>)
+                items.push(<PayCell disabled={value.type !== paymentType.balance && this.state.shouldPayMoney === 0}
+                                    key={index + ''} selectedTypes={selectedTypes} data={value}
+                                    balance={availableBalance} press={() => this._selectedPayType(value)}/>);
             }
-        })
+        });
 
-        return  <View  style={styles.container}><ScrollView style={styles.container}>
-            <PayCell disabled={this.params.outTradeNo} data={balancePayment} isSelected={selectedBalace || this.state.shouldPayMoney  === 0} balance={availableBalance} press={()=>this._selectedBalancePay(balancePayment)}/>
+        return <View style={styles.container}><ScrollView style={styles.container}>
+            <PayCell disabled={this.params.outTradeNo} data={balancePayment}
+                     isSelected={selectedBalace || this.state.shouldPayMoney === 0} balance={availableBalance}
+                     press={() => this._selectedBalancePay(balancePayment)}/>
             {items}
         </ScrollView>
-        {this.renderBottomOrder()}
-        {this.renderPaymentModal()}
-        {this.renderPayResult()}
-        </View>
+            {this.renderBottomOrder()}
+            {this.renderPaymentModal()}
+            {this.renderPayResult()}
+            {this.renderPromotion()}
+        </View>;
     }
+
+    renderPromotion=()=>{
+        return (
+            <CommModal visible={this.state.payPromotionSuccess}>
+                <View style={styles.promotionBgStyle}>
+                    <Image source={paySuccessIcon} style={{width:70,height:70,marginTop:20}}/>
+                    <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_mediumBtnText,includeFontPadding:false,marginTop:10}}>
+                        支付成功
+                    </Text>
+                    <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_22,includeFontPadding:false,marginTop:15,textAlign:'center'}}>
+                        {`系统会在明天0点进行站内推广\n每成功获取一个下级将收到站内消息推送`}
+                    </Text>
+                    <View style={{width:200,marginHorizontal:24,justifyContent:'space-between',flexDirection:'row',marginTop:20}}>
+                        <TouchableWithoutFeedback onPress={()=>{
+                            this.setState({payPromotionSuccess:false})
+                            this.$navigateBack('mine/promotion/UserPromotionPage')
+                        }}>
+                            <View style={{borderRadius:5,borderColor:'#D51243',borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
+                                <Text style={{color:'#D51243',fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
+                                    我的推广
+                                </Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                        <View style={{borderRadius:5,borderColor:'#D51243',borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
+                            <Text style={{color:'#D51243',fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
+                                站外分享推广
+                            </Text>
+                        </View>
+                    </View>
+                </View>
+            </CommModal>
+        )
+    }
+
+
     renderPayResult() {
-        return <PaymentResultView ref={(ref) => {this.paymentResultView = ref}} navigation={this.props.navigation}/>
+        return <PaymentResultView ref={(ref) => {
+            this.paymentResultView = ref;
+        }} navigation={this.props.navigation}/>;
     }
 
     //支付方式弹窗
     renderPaymentModal = () => {
-        const {  payStore } = this.payment
+        const { payStore ,payPromotion} = this.payment;
 
         return (
             <InputTransactionPasswordModal
                 isShow={this.state.isShowPaymentModal}
                 detail={{ title: '平台支付密码', context: '请输入平台的支付密码' }}
                 closeWindow={() => {
-                    this.setState({ isShowPaymentModal: false })
+                    this.setState({ isShowPaymentModal: false });
                 }}
                 passwordInputError={this.state.isShowPaymentModal}
                 bottomText={'忘记支付密码'}
                 inputText={(text) => {
                     if (text.length === 6) {
-                        this.setState({isShowPaymentModal: false})
+                        this.setState({ isShowPaymentModal: false });
                         setTimeout(() => {
+
+
                             if (payStore) {
                                 this.payment.payStoreActoin().then(result => {
                                     if (result.sdkCode === 0) {
@@ -178,10 +235,24 @@ export default class PaymentMethodPage extends BasePage {
                                         spellStatusModel.getUser(2);
                                         this.$navigate('spellShop/shopSetting/SetShopNamePage');
                                     } else {
-                                        Toast.$toast('支付失败')
+                                        Toast.$toast('支付失败');
                                     }
-                                })
-                            } else {
+                                });
+                            }else if(payPromotion){
+                                this.payment.payPromotionWithId(text,this.params.packageId).then(result => {
+                                    if (result.sdkCode === 0) {
+                                        // //刷新拼店状态
+                                        // spellStatusModel.storeStatus = 2;
+                                        // spellStatusModel.getUser(2);
+                                        // this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                                        this.setState({
+                                            payPromotionSuccess:true
+                                        })
+                                    } else {
+                                        Toast.$toast('支付失败');
+                                    }
+                                });
+                            }else {
                                 this.setState({ password: text, isShowPaymentModal: false });
                                 this.commitOrder();
                             }
@@ -194,9 +265,9 @@ export default class PaymentMethodPage extends BasePage {
     };
     renderBottomOrder = () => {
         return (
-            <View style={{paddingBottom: ScreenUtils.safeBottom }}>
+            <View style={{ paddingBottom: ScreenUtils.safeBottom }}>
                 <View style={{ height: ScreenUtils.onePixel, backgroundColor: color.line }}/>
-                <View style={{ height: ScreenUtils.px2dp(49), flexDirection: 'row'}}>
+                <View style={{ height: ScreenUtils.px2dp(49), flexDirection: 'row' }}>
                     <View style={styles.bottomStyleContainer}>
                         <UIText value={'合计：'} style={styles.bottomUiText}/>
                         <UIText value={`${this.state.shouldPayMoney || 0}元`}
@@ -302,7 +373,7 @@ export default class PaymentMethodPage extends BasePage {
         }
     }
     commitOrder = () => {
-        const { selectedBalace, selectedTypes, payStore } = this.payment
+        const { selectedBalace, selectedTypes, payStore,payPromotion } = this.payment
         if (selectedTypes && selectedTypes.type === paymentType.bank) {
             Toast.$toast('银行卡支付，暂不支持')
             return
@@ -315,50 +386,69 @@ export default class PaymentMethodPage extends BasePage {
                         this.setState({ isShowPaymentModal: true });
                         return;
                     }
-                    this.setState({password: ''})
+                    this.setState({ password: '' });
                 }
                 else {
                     this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
                 }
-                return
+                return;
             }
-             this.payment.payStoreActoin().then(result => {
+            this.payment.payStoreActoin().then(result => {
                 if (result.sdkCode === 0) {
                     //刷新拼店状态
                     spellStatusModel.storeStatus = 2;
                     spellStatusModel.getUser(2);
-                    this.$navigate('spellShop/shopSetting/SetShopNamePage')
-                    Toast.$toast('支付成功')
+                    this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                    Toast.$toast('支付成功');
                 } else {
-                    Toast.$toast('支付失败')
+                    Toast.$toast('支付失败');
                 }
-            })
+            });
+            return;
+        }
+
+        if(payPromotion){
+            if (selectedBalace) {
+                if (user.hadSalePassword) {
+                    if (StringUtils.isEmpty(this.state.password)) {
+                        this.setState({ isShowPaymentModal: true });
+                        return;
+                    }
+                    this.setState({ password: '' });
+                }
+                else {
+                    this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
+                }
+                return;
+            }else {
+                this.$toastShow('暂时只支持平台支付！')
+            }
             return
         }
 
         if (selectedBalace && selectedTypes) {
-            this._mixingPay()
-            return
+            this._mixingPay();
+            return;
         }
 
         if (selectedBalace) {
-            this._balancePay()
-            return
+            this._balancePay();
+            return;
         }
 
         if (!selectedTypes) {
-            Toast.$toast('请选择支付方式')
-            return
+            Toast.$toast('请选择支付方式');
+            return;
         }
 
         if (selectedTypes.type === paymentType.alipay) {
-            this._alipay()
-            return
+            this._alipay();
+            return;
         }
 
         if (selectedTypes.type === paymentType.wechat) {
-            this._wechat()
-            return
+            this._wechat();
+            return;
         }
     };
     //需要在当前选择的支付方式能完成支付的情况下，才保证调用该方法返回的数据有效性
@@ -367,7 +457,7 @@ export default class PaymentMethodPage extends BasePage {
         let params = {
             amounts: parseFloat(this.state.shouldPayMoney).toFixed(2),//N:第三方金额	number
             orderNum: this.state.orderNum,//N:订单号	string
-            salePsw: this.state.password,//Y:交易密码	string
+            salePsw: this.state.password//Y:交易密码	string
             // type: type//N:支付方式	number 1:纯平台  2：微信小程序   4：微信app   8：支付宝   16：银联卡
         };
         return { params };
@@ -424,6 +514,13 @@ const styles = StyleSheet.create({
         paddingRight: 28,
         backgroundColor: color.white,
         marginTop: 10
+    },
+    promotionBgStyle:{
+        height:230,
+        width:250,
+        borderRadius:5,
+        backgroundColor:DesignRule.white,
+        alignItems:'center'
     }
 });
 

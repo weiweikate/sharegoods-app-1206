@@ -6,7 +6,9 @@ import {
     Image,
     FlatList,
     Text,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ImageBackground,
+    AsyncStorage
 } from 'react-native';
 
 import BasePage from '../../../BasePage';
@@ -16,14 +18,23 @@ import DetailBottomView from './components/DetailBottomView';
 import SelectionPage from './SelectionPage';
 import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
-import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
+import detailBack from '../../../comm/res/show_detail_back.png';
+import detailMore from '../../../comm/res/show_share.png';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
 import DetailNavShowModal from './components/DetailNavShowModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import CommModal from '../../../comm/components/CommModal';
+import redEnvelopeBg from './res/red_envelope_bg.png';
 
+const { px2dp } = ScreenUtils;
+import user from '../../../model/user';
+import EmptyUtils from '../../../utils/EmptyUtils';
+import StringUtils from '../../../utils/StringUtils';
+import closeIcon from '../../../../src/comm/res/tongyong_btn_close_white.png';
+import DateUtils from '../../../utils/DateUtils';
+const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
 export default class ProductDetailPage extends BasePage {
 
     $navigationBarOptions = {
@@ -38,8 +49,12 @@ export default class ProductDetailPage extends BasePage {
             selectedIndex: 0,
             //活动数据
             activityData: {},
-            activityType: 0//请求到数据才能知道活动类型
+            activityType: 0,//请求到数据才能知道活动类型
+            canGetCoupon: false,
+            couponData: null,
+            hasGetCoupon: false
         };
+        this.couponId = null;
     }
 
     componentDidMount() {
@@ -48,7 +63,47 @@ export default class ProductDetailPage extends BasePage {
 
     loadPageData() {
         this._getProductDetail();
+        this.getPromotion();
     }
+
+    getPromotion = () => {
+        try {
+            const value = AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
+            if (value == null || !DateUtils.isToday(new Date(value))) {
+                if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
+                    HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
+                        this.setState({
+                            canGetCoupon: true,
+                            couponData: data.data
+                        });
+                        this.couponId = data.data.id;
+                        AsyncStorage.setItem(LASTSHOWPROMOTIONTIME,new Date().getTime())
+                    });
+                }
+            }
+        } catch (error) {
+
+        }
+
+    };
+
+
+
+
+    getCoupon = () => {
+        if (EmptyUtils.isEmpty(this.couponId)) {
+            this.$toastShow('领取失败！');
+        } else {
+            HomeAPI.givingPackageToUser({ id: this.couponId }).then((data) => {
+                this.setState({
+                    hasGetCoupon: true
+                });
+            }).catch((error) => {
+                this.$toastShow(error.msg);
+            });
+
+        }
+    };
 
     //数据
     _getProductDetail = () => {
@@ -252,6 +307,75 @@ export default class ProductDetailPage extends BasePage {
         });
     };
 
+
+    _renderCouponModal() {
+
+        let view = (
+            <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
+                <Text style={{ color: 'white', fontSize: px2dp(24) }}>
+                    领取成功
+                </Text>
+                <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
+                    可前往我的-优惠卷查看
+                </Text>
+            </View>
+        );
+
+        let button = (
+            <TouchableWithoutFeedback onPress={this.getCoupon}>
+                <Text
+                    style={{ position: 'absolute', top: px2dp(220), left: px2dp(115), color: '#80522A', fontSize: 14 }}>
+                    {`立即\n领取`}
+                </Text>
+            </TouchableWithoutFeedback>
+        );
+
+        return (
+            <CommModal visible={this.state.canGetCoupon}>
+                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center', justifyContent: 'center' }}>
+                    <ImageBackground source={redEnvelopeBg} style={{
+                        height: px2dp(362), width: px2dp(257),
+                        alignItems: 'center'
+                    }}>
+                        <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14), marginTop: 26 }}>
+                            {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.encryptPhone(this.state.couponData.phone)}
+                        </Text>
+                        <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14) }}>
+                            赠送了你一个红包
+                        </Text>
+
+                        <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(60), marginTop: 20 }}>
+                            {EmptyUtils.isEmpty(this.state.couponData) ? null : this.state.couponData.price}
+                            <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
+                                元
+                            </Text>
+                        </Text>
+                        <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(14), marginTop: 12 }}>
+                            红包抵扣金
+                        </Text>
+                        {this.state.hasGetCoupon ? null : button}
+
+                        {this.state.hasGetCoupon ? view : null}
+                    </ImageBackground>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.setState({
+                            canGetCoupon: false
+                        });
+                    }}>
+                        <Image source={closeIcon} style={{
+                            position: 'absolute',
+                            top: 107,
+                            right: 35,
+                            width: 24,
+                            height: 24
+                        }}/>
+                    </TouchableWithoutFeedback>
+                </View>
+            </CommModal>
+        );
+    }
+
+
     _render() {
         const { price = 0, product = {} } = this.state.data || {};
         const { name = '', imgUrl } = product;
@@ -263,7 +387,7 @@ export default class ProductDetailPage extends BasePage {
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
-                        <Image source={xiangqing_btn_return_nor}/>
+                        <Image source={detailBack}/>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
                         this.DetailNavShowModal.show((item) => {
@@ -281,7 +405,7 @@ export default class ProductDetailPage extends BasePage {
                             }
                         });
                     }}>
-                        <Image source={xiangqing_btn_more_nor}/>
+                        <Image source={detailMore}/>
                     </TouchableWithoutFeedback>
                 </View>
 
@@ -309,6 +433,7 @@ export default class ProductDetailPage extends BasePage {
                                     thumImage: imgUrl
                                 }}/>
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
+                {this._renderCouponModal()}
             </View>
         );
     }

@@ -15,7 +15,7 @@ import StringUtils from '../../../utils/StringUtils';
 import GoodsItem from '../components/GoodsGrayItem';
 import applyRefundMessage from '../res/applyRefundMessage.png';
 import applyRefundPhone from '../res/applyRefundPhone.png';
-import rechargeSucceed from '../res/rechargeSucceed.png';
+import rechargeSucceed from '../../../comm/res/tongyon_icon_check_green.png';
 import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../../pages/mine/components/BusinessUtils';
 import Toast from '../../../utils/bridge';

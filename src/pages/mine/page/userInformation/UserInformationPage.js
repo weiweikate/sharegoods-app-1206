@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     View,
-    StyleSheet
+    StyleSheet,ScrollView,RefreshControl
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import TakePhotoModal from '../../components/TakePhotoModal';
@@ -56,11 +56,27 @@ export default class UserInformationPage extends BasePage {
 
         );
     };
-
+    _reload=()=>{
+        MineApi.getUser().then(res => {
+                let data = res.data;
+                user.saveUserInfo(data);
+        }).catch(err=>{
+            this.$toastShow(err.msg);
+        })
+    };
     _render() {
         //rightText={(user.province || ' ') + '-' + (user.city || ' ') + '-' + (user.area || ' ')}
         return (
-            <View style={{ backgroundColor: color.white }}>
+            <ScrollView style={{ backgroundColor: color.white }}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={false}
+                                onRefresh={this._reload}
+                                progressViewOffset={64}
+                                colors={['#d51243']}
+                                tintColor="#999"
+                                titleColor="#999"
+                            />}>
 
                 {this.renderWideLine()}
 
@@ -96,7 +112,7 @@ export default class UserInformationPage extends BasePage {
                                 circleStyle={user.realname ? styles.hasVertifyID : styles.notVertifyID}
                                 onPress={() => this.jumpToIDVertify2Page()}/>
 
-            </View>
+            </ScrollView>
         );
     }
 
@@ -131,7 +147,6 @@ export default class UserInformationPage extends BasePage {
         this.props.navigation.navigate('mine/userInformation/NickNameModifyPage', { oldNickName: user.nickname });
     };
     renderGetCityPicker = () => {
-
         dismissKeyboard();
         this.$navigate('mine/address/SelectAreaPage', {
             setArea: this.setArea.bind(this),
