@@ -31,25 +31,13 @@ export default class MyCollectPage extends BasePage {
         super(props);
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
-            viewData: [
-                // {
-                //     createTime: 1537183933000,
-                //     headUrl: 'string',
-                //     id: 71,
-                //     name: '张波的黑店',
-                //     storeId: 1,
-                //     storeStarId: 1,
-                //     totalTradeBalance: null,
-                //     userCount: 6,
-                //     userId: 25
-                // }
-            ],
+            viewData: [],
             selectAll: false,
-            currentPage: 1,
             isEmpty: true,
             totalPrice: 0,
             selectGoodsNum: 0
         };
+        this.currentPage=1
     }
 
     $navigationBarOptions = {
@@ -196,15 +184,11 @@ export default class MyCollectPage extends BasePage {
         );
     };
     onLoadMore = () => {
-        this.setState({
-            currentPage: this.state.currentPage + 1
-        });
+       this.currentPage++;
         this.getDataFromNetwork();
     };
     onRefresh = () => {
-        this.setState({
-            currentPage: 1
-        });
+      this.currentPage=1;
         this.getDataFromNetwork();
     };
 
@@ -221,9 +205,9 @@ export default class MyCollectPage extends BasePage {
 
     getDataFromNetwork = () => {
         this.$loadingShow();
-        MineApi.queryCollection({ page: 1, size: 20 }).then(res => {
+        MineApi.queryCollection({ page: this.currentPage, size: 20 }).then(res => {
             this.$loadingDismiss();
-            let arr = [];
+            let arr = this.currentPage==1?[]:this.state.viewData;
             console.log(res);
             if (res.code === 10000) {
                 let icons = res.data ? (res.data.data ? res.data.data : []) : [];
@@ -306,7 +290,8 @@ export default class MyCollectPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: '#f7f7f7'
+        flex: 1, backgroundColor: '#f7f7f7',
+        marginBottom: ScreenUtils.saveMarginBottom
     },
     standaloneRowFront: {
         alignItems: 'center',

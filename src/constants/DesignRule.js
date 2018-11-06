@@ -17,7 +17,7 @@ const colors = {
     mainColor: '#F00006',//主色调
     white: '#FFFFFF',
     bgColor: '#F7F7F7',//背景色
-    bgColor_btn: '#FF1A54',//红色按钮背景色
+    bgColor_btn: '#F00006',//红色按钮背景色
     bgColor_btnSelect: '#EF154C',//红色按钮选中状态背景色
     bgColor_LVLabel: '#F2D3A2',//等级标签背景色
     bgColor_redCard: '#FF4F6E',//红色卡片背景色
@@ -34,9 +34,9 @@ const colors = {
     textColor_instruction: '#999999',//说明文字
     textColor_placeholder: '#CCCCCC',//预填文字
     textColor_white: '#FFFFFF',//白色文字
-    textColor_redWarn: '#FF1A54',//红色警告、提示文字
+    textColor_redWarn: '#F00006',//红色警告、提示文字
     textColor_blueURL: '#38ADFF',//文字链接
-    textColor_btnText: '#FF1A54'//按钮红色文字
+    textColor_btnText: '#F00006'//按钮红色文字
 };
 
 const sizes = {
