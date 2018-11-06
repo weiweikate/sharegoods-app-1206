@@ -287,9 +287,9 @@ export default class RefreshLargeList extends React.Component {
             let allLoadCompleted = false;
             let footerStatus = "idle";
             if (handleRequestResult) {
-                netData = handleRequestResult(result, isRefresh);
+                netData = handleRequestResult(result, isRefresh) || [];
             } else {
-                netData = result.data.data;
+                netData = result.data.data || [];
             }
             if (netData.length < pageSize) {
                 allLoadCompleted = true;
