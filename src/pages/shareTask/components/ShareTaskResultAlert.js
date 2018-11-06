@@ -93,7 +93,7 @@ export default class ShareTaskResultAlert extends React.Component {
                                     <UIText value={'现金奖励已存入\"现金账户 \"'} style={styles.detail}/>
                                 </View>
                                 ) :
-                                <UIText value={"没有任何秀有帮你激活～\n下次再接再厉"}
+                                <UIText value={"没有任何秀友帮你激活～\n下次再接再厉"}
                                         style={{
                                             fontSize: autoSizeWidth(11),
                                             color: "#666666",
