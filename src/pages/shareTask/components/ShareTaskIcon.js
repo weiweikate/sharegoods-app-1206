@@ -79,7 +79,7 @@ export default class ShareTaskIcon extends React.Component {
     }
 
     _gotoTaskList(){
-        global.$navigator.dispatch(NavigationActions.push({ routeName: RouterMap.ShareTaskListPage }));
+        global.$navigator.dispatch(NavigationActions.push({ routeName: RouterMap.ShareTaskIntroducePage, params: {jobId: this.state.data.id, status: 1} }));
     }
     //领取任务
     receiveTask(){
