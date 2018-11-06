@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import DeleteIcon from '../res/del-icon.png';
 import DashLine from '../res/xt_03.png';
+import DesignRule from 'DesignRule';
 
 export default class AnnouncementRow extends Component {
 
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     rowContainer: {
         maxHeight: 196,
         borderRadius: 10,
-        backgroundColor: '#ffffff',
+        backgroundColor: DesignRule.white,
         shadowColor: 'rgba(0, 0, 0, 0.1)',
         shadowOffset: {
             width: 0,
@@ -111,17 +112,17 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 15,
         fontWeight: 'bold',
-        color: '#e60012'
+        color: DesignRule.mainColor
     },
     contentContainer: {
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10
     },
     content: {
         fontSize: 14,
         lineHeight: 20,
-        color: '#000000',
+        color: DesignRule.textColor_mainTitle,
         marginVertical: 10,
         marginHorizontal: 21
     },
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
     },
     delTitle: {
         fontSize: 13,
-        color: '#000000'
+        color: DesignRule.textColor_mainTitle
     },
     dashLine: {
         width: Dimensions.get('window').width - 32
