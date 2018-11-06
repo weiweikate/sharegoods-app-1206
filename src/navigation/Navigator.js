@@ -50,7 +50,6 @@ Navigator.router.getStateForAction = (action, state) => {
             return null
         }
     }
-
     // console.log('getStateForAction', action, state)
     return defaultStateAction(action, state);
 };

@@ -18,6 +18,7 @@ import CommModal from '../../../comm/components/CommModal';
 import closeIcon from '../../../../src/comm/res/tongyong_btn_close_white.png';
 import { NavigationActions } from 'react-navigation';
 import LoginAPI from '../api/LoginApi';
+import StringUtils from '../../../utils/StringUtils';
 
 
 
@@ -56,7 +57,7 @@ export default class GetRedpacketPage extends BasePage {
                     领取成功
                 </Text>
                 <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
-                    可前往我的-优惠卷查看
+                    可前往我的-优惠券查看
                 </Text>
             </View>
         );
@@ -91,7 +92,7 @@ export default class GetRedpacketPage extends BasePage {
                         <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(60), marginTop: 20 }}>
 
                             {/*{this.state.redPacketData && this.state.redPacketData.price?this.state.redPacketData.price:''}*/}
-                            {this.state.price}
+                            {StringUtils.formatMoneyString(this.state.price,false)}
                             {/*{EmptyUtils.isEmpty(this.state.couponData) ? null : this.state.couponData.price}*/}
                             <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
                                 元
