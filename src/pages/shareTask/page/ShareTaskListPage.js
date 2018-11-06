@@ -37,7 +37,6 @@ import DateUtils from '../../../utils/DateUtils';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import user from '../../../model/user';
 import CommShareModal from '../../../comm/components/CommShareModal';
-import { NavigationActions } from 'react-navigation';
 type Props = {};
 export default class ShareTaskListPage extends BasePage<Props> {
 
