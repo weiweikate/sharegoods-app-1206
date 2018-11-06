@@ -117,8 +117,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FFFFFF'
-
+        backgroundColor: '#FFFFFF',
+        marginBottom: ScreenUtils.saveMarginBottom
     },
     welcome: {
         fontSize: 20,
