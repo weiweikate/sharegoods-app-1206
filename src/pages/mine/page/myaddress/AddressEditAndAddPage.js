@@ -11,6 +11,7 @@ import bridge from '../../../../utils/bridge';
 import addrSelectedIcon from '../../../../comm/res/selected_circle_red.png';
 import addrUnSelectedIcon from '../../../../comm/res/unselected_circle.png';
 import UIImage from '../../../../components/ui/UIImage';
+import DesignRule from 'DesignRule';
 
 const dismissKeyboard = require('dismissKeyboard');
 
@@ -18,7 +19,7 @@ export default class AddressEditAndAddPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        rightTitleStyle: { color: '#D51243' },
+        rightTitleStyle: { color: DesignRule.mainColor },
         rightNavTitle: '保存'
     };
 
@@ -124,7 +125,7 @@ export default class AddressEditAndAddPage extends BasePage {
                     value={this.state.receiverText}
                 />
             </View>
-            <View style={{ height: 0.5, backgroundColor: '#EEEEEE' }}/>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
             <View style={styles.horizontalItem}>
                 <Text style={styles.itemLeftText}>联系电话</Text>
                 <TextInput
@@ -134,18 +135,18 @@ export default class AddressEditAndAddPage extends BasePage {
                     value={this.state.telText}
                 />
             </View>
-            <View style={{ height: 0.5, backgroundColor: '#EEEEEE' }}/>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
             <TouchableOpacity style={styles.horizontalItem} onPress={() => this._getCityPicker()}>
                 <Text style={[styles.itemLeftText, { flex: 1 }]}>所在地区</Text>
                 <Text>{this.state.areaText}</Text>
                 <Image source={IconGoTo} style={{ width: 12, height: 20, marginLeft: 4 }} resizeMode={'contain'}/>
             </TouchableOpacity>
-            <View style={{ height: 0.5, backgroundColor: '#EEEEEE' }}/>
-            <View style={{ backgroundColor: 'white' }}>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
+            <View style={{ backgroundColor: DesignRule.white }}>
                 <TextInput
                     style={styles.itemAddressInput}
                     placeholder={'请输入详细地址~'}
-                    placeholderTextColor={'#999999'}
+                    placeholderTextColor={DesignRule.textColor_instruction}
                     maxLength={90}
                     multiline={true}
                     underlineColorAndroid={'transparent'}
@@ -156,7 +157,7 @@ export default class AddressEditAndAddPage extends BasePage {
             {
                 this.state.from === 'add' ?
                     <View style={{
-                        backgroundColor: 'white',
+                        backgroundColor: DesignRule.white,
                         marginTop: 10,
                         flexDirection: 'row',
                         height: 44,
@@ -206,24 +207,24 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         height: 45,
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     itemLeftText: {
         width: 64,
         marginRight: 6,
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     itemRightInput: {
         flex: 1,
         height: 40,
         padding: 0,
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         fontSize: 13
     },
     itemAddressInput: {
         height: 105,
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         textAlignVertical: 'top',
         padding: 0,
         marginLeft: 15,
@@ -234,10 +235,10 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingTop: 12,
         paddingBottom: 12,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: 13,
         borderRadius: 5,
         borderWidth: 0.5,
-        borderColor: '#EEEEEE'
+        borderColor: DesignRule.lineColor_inColorBg
     }
 });

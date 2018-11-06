@@ -72,7 +72,7 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                         style={styles.image}
                     />
                 </ScrollView>
-                <TouchableWithoutFeedback onPress={() => {
+                {this.params.status === 1 ? <TouchableWithoutFeedback onPress={() => {
                     this.shareModal.open();
                 }}>
                     <View style={{
@@ -83,14 +83,23 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                     }}>
                         <UIText value={'分享好友帮你点击'} style={{ color: '#FFFFFF', fontSize: 16 }}/>
                     </View>
-                </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback> : null}
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'task'}
-                                webJson={{
+                                // webJson={{
+                                //     title: '邀请好友可获得品牌推广的现金奖励',
+                                //     dec: '',
+                                //     linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.params.jobId}`,
+                                //     thumImage: 'logo.png'
+                                // }}
+                                // type={'miniProgram'}
+                                miniProgramJson={{
                                     title: '邀请好友可获得品牌推广的现金奖励',
                                     dec: '',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.params.jobId}`,
-                                    thumImage: 'logo.png'
+                                    thumImage: 'logo.png',
+                                    hdImageURL: '',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/index/index`,
+                                    miniProgramPath: `/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.params.jobId}`
                                 }}
                 />
             </View>
