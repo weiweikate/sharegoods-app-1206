@@ -3,9 +3,9 @@ import OldUserLoginPage from './OldUserLoginPage';
 import SetPasswordPage from './SetPasswordPage';
 import RegistPage from './RegistPage';
 import ForgetPasswordPage from './ForgetPasswordPage';
-import GetRedpacketPage from './GetRedpacketPage'
-import TestNav from './testNav'
-import InviteCodePage from './InviteCodePage'
+import GetRedpacketPage from './GetRedpacketPage';
+import TestNav from './testNav';
+import InviteCodePage from './InviteCodePage';
 
 // 访问路径 'Login/Demo1'
 export default {
