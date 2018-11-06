@@ -110,6 +110,7 @@ class MyOrdersDetailPage extends BasePage {
     };
     //**********************************ViewPart******************************************
     renderState = () => {
+        console.log('this.state.height',this.state.height);
         return (
             <View style={{ marginBottom: 10 }}>
                 <ImageBackground style={styles.redRectangle} source={productDetailImg}>
@@ -127,24 +128,27 @@ class MyOrdersDetailPage extends BasePage {
                     </View>
                 </ImageBackground>
                 <TouchableOpacity style={{
-                    height: 83,
+                   minHeight:81,
                     marginTop: 69,
                     backgroundColor: color.white,
                     marginLeft: 15,
                     marginRight: 15,
+                    paddingTop:5,
+                    paddingBottom:5,
                     justifyContent: 'space-between',
                     borderRadius: 10,
+                    flex:1,
                     flexDirection: 'row',
                     alignItems: 'center'}} onPress={() => {
                     this.$navigate('order/logistics/LogisticsDetailsPage', {
                         orderNum: this.state.viewData.orderNum,
                         orderId: this.state.orderId,
                         expressNo: this.state.expressNo
-                    });
+                    })
                 }}  onContentSizeChange={this.onContentSizeChange.bind(this)}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center'}} >
                         <UIImage source={position} style={{ height: 19, width: 19, marginLeft: 21 }}/>
-                        <View>
+                        <View style={{justifyContent:'center'}}>
                             {typeof this.state.pageStateString.sellerState=='string'?
                                 <UIText value={this.state.pageStateString.sellerState} style={{
                                     color: color.black_222,
@@ -152,7 +156,7 @@ class MyOrdersDetailPage extends BasePage {
                                     marginLeft: 10,
                                     marginRight: 46
                                 }}/>:
-                                <View style={{ flex: 1, flexDirection: 'row' }}>
+                                <View style={{flexDirection: 'row' }}>
                                     <Text style={{
                                         flex: 1,
                                         fontSize: 15,
@@ -608,7 +612,11 @@ class MyOrdersDetailPage extends BasePage {
     onContentSizeChange(event) {
         this.setState({ height: event.nativeEvent.contentSize.height });
     }
-    renderAddress = () => {
+
+
+
+        renderAddress = () => {
+            console.log('this.state.heightaddredd',this.state.height);
         return (
             <View style={{
                 height: Math.max(83, this.state.height),
