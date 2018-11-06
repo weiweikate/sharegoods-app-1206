@@ -166,6 +166,7 @@ export default class LoginPage extends BasePage {
     };
     /*注册*/
     registBtnClick = () => {
+        console.log('registBtnClick')
         this.$navigate('login/login/RegistPage');
         // this.$navigate('registPage');
         // this.$navigate('login/login/GetRedpacketPage')
