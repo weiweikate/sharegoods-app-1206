@@ -8,22 +8,18 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
-    View,
-    Platform,
-    NativeModules
+    View
 } from 'react-native';
-import { NavigationActions, StackNavigator } from 'react-navigation';
-import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
-import RouterMap from 'RouterMap';
+import { NavigationActions } from 'react-navigation';
+import RouterMap from './navigation/RouterMap';
 import user from '../src/model/user';
-import Router from './Router';
 import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
 import appData from './model/appData';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import signTestTool from './signTestTool';
-
+import Navigator, { getCurrentRouteName } from './navigation/Navigator'
 
 export default class App extends Component {
     constructor(props) {
@@ -46,74 +42,22 @@ export default class App extends Component {
     }
 
     render() {
-        const Navigator = StackNavigator(Router,
-            {
-                initialRouteName: 'Tab',
-                initialRouteParams: {},
-                headerMode: 'none',
-                transitionConfig: (transitionProps,prevTransitionProps,isModal) =>{
-
-                    if (transitionProps.scene&&transitionProps.scene.route.routeName === "LoginModal"){
-                        return({
-                            screenInterpolator: CardStackStyleInterpolator.forVertical
-                        })
-                    }else {
-                        return({
-                            screenInterpolator: CardStackStyleInterpolator.forHorizontal
-                        })
-                    }
-                } ,
-                // mode: 'modal',
-                navigationOptions: {
-                    gesturesEnabled: true
-                }
-            }
-        );
-        // goBack 返回指定的router
-        const defaultStateAction = Navigator.router.getStateForAction;
-        Navigator.router.getStateForAction = (action, state) => {
-            if (state && action.type === NavigationActions.BACK && state.routes.length === 1) {
-                console.log('退出RN页面');
-                // Android物理回退键到桌面
-                if (Platform.OS !== 'ios') {
-                    NativeModules.commModule.nativeTaskToBack();
-                }
-                const routes = [...state.routes];
-                return {
-                    ...state,
-                    ...state.routes,
-                    index: routes.length - 1
-                };
-            }
-
-            return defaultStateAction(action, state);
-        };
-        const getCurrentRouteName = (navigationState) => {
-            if (!navigationState) {
-                return null;
-            }
-            const route = navigationState.routes[navigationState.index];
-            if (route.routes) {
-                return getCurrentRouteName(route);
-            }
-            return route.routeName;
-        };
         return (
             <View style={styles.container}>
                 <Navigator screenProps={this.props.params}
-                           ref='Navigator'
-                           onNavigationStateChange={(prevState, currentState) => {
-                               let curRouteName = getCurrentRouteName(currentState);
-                               // 拦截当前router的名称
-                               console.log(curRouteName);
-                               const currentScreen = getCurrentRouteName(currentState);
-                               const prevScreen = getCurrentRouteName(prevState);
-                               global.$routes = currentState.routes;
-                               if (prevScreen !== currentScreen) {
-                                   //console.log('从页面' + prevScreen + '跳转页面' + currentScreen);
-                               }
+                    ref='Navigator'
+                    onNavigationStateChange={(prevState, currentState) => {
+                        let curRouteName = getCurrentRouteName(currentState);
+                        // 拦截当前router的名称
+                        console.log(curRouteName);
+                        const currentScreen = getCurrentRouteName(currentState);
+                        const prevScreen = getCurrentRouteName(prevState);
+                        global.$routes = currentState.routes;
+                        if (prevScreen !== currentScreen) {
+                            //console.log('从页面' + prevScreen + '跳转页面' + currentScreen);
+                        }
 
-                           }}/>
+                    }}/>
                 {
                     CONFIG.showDebugPanel ? <DebugButton onPress={this.showDebugPage}><Text
                         style={{ color: 'white' }}>调试页</Text></DebugButton> : null
