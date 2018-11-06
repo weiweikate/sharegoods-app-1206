@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import { ClassifyModules } from './Modules';
+import { classifyModules } from './Modules';
 import ScreenUtils from '../../utils/ScreenUtils';
 import user from '../../model/user'
 
@@ -31,12 +31,6 @@ const Item = ({ data, onPress }) => {
 @observer
 export default class HomeClassifyView extends Component {
 
-    constructor(props) {
-        super(props);
-        this.classifyModule = new ClassifyModules();
-        this.classifyModule.loadClassifyList();
-    }
-
     _onItemPress = (data) => {
         const { navigation } = this.props
         if (data.needLogin && !user.isLogin) {
@@ -51,7 +45,7 @@ export default class HomeClassifyView extends Component {
     }
 
     renderItems = () => {
-        const { classifyList } = this.classifyModule;
+        const { classifyList } = classifyModules;
         let itemViews = [];
         classifyList.map((value, index) => {
             itemViews.push(<Item key={index} data={value} onPress={(data) => {

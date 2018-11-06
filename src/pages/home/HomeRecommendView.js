@@ -6,7 +6,7 @@ import { View, ScrollView, StyleSheet, Text, Image, TouchableOpacity } from 'rea
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import {RecommendModule, homeModule} from './Modules'
+import {recommendModule, homeModule} from './Modules'
 
 const RecommendItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <View style={styles.imgView}>
@@ -17,12 +17,6 @@ const RecommendItem = ({item, press}) => <TouchableOpacity style={styles.item} o
 @observer
 export default class HomeRecommendView extends Component {
 
-    constructor(props) {
-        super(props)
-        this.recommendModule = new RecommendModule()
-        this.recommendModule.loadRecommendList()
-    }
-
     _onRecommendAction(item) {
         let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
         const {navigation} = this.props
@@ -31,7 +25,7 @@ export default class HomeRecommendView extends Component {
     }
 
     render() {
-        const { recommendList } = this.recommendModule
+        const { recommendList } = recommendModule
         let items = []
         recommendList.map((item, index) => {
             items.push(<RecommendItem key={index} item={item} press={()=>this._onRecommendAction(item)}/>)
