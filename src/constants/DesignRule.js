@@ -36,7 +36,8 @@ const colors = {
     textColor_white: '#FFFFFF',//白色文字
     textColor_redWarn: '#F00006',//红色警告、提示文字
     textColor_blueURL: '#38ADFF',//文字链接
-    textColor_btnText: '#F00006'//按钮红色文字
+    textColor_btnText: '#F00006',//按钮红色文字
+    textColor_hint: '#C8C8C8', //输入框背景字颜色
 };
 
 const sizes = {
