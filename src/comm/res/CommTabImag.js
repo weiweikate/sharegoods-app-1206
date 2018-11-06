@@ -32,7 +32,6 @@ const CommTabImag = {
     download: require('./share_btn_download_nor.png'),
     closeImg: require('./tongyong_btn_close_white.png'),
     noNetImg: require('./netError.png')
-
 };
 
 export default CommTabImag;

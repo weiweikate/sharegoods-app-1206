@@ -10,13 +10,11 @@ import {
     Text,
     View,
     Platform,
-    NativeModules, Alert, Linking
+    Alert, Linking
 } from 'react-native';
-import { NavigationActions, StackNavigator } from 'react-navigation';
-import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
-import RouterMap from 'RouterMap';
+import { NavigationActions } from 'react-navigation';
+import RouterMap from './navigation/RouterMap';
 import user from '../src/model/user';
-import Router from './Router';
 import DebugButton from './components/debug/DebugButton';
 import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
@@ -36,6 +34,7 @@ import {
 
 import _updateConfig from '../update.json';
 const {appKey} = _updateConfig[Platform.OS];
+import Navigator, { getCurrentRouteName } from './navigation/Navigator'
 
 export default class App extends Component {
     constructor(props) {
@@ -63,14 +62,13 @@ export default class App extends Component {
         }
     }
     componentDidMount(){
-        this.checkUpdate()
+        // this.checkUpdate()
     }
 
     doUpdate = info => {
         downloadUpdate(info).then(hash => {
             Alert.alert('提示', '下载完毕,是否重启应用?', [
                 {text: '是', onPress: ()=>{switchVersion(hash);}},
-                {text: '否',},
                 {text: '下次启动时', onPress: ()=>{switchVersionLater(hash);}},
             ]);
         }).catch(err => {
@@ -87,7 +85,7 @@ export default class App extends Component {
             } else if (info.upToDate) {
                 /**
                  * Alert.alert('提示', '您的应用版本已是最新.');
-                 * 如果已是罪行版本则什么也不需要做
+                 * 如果已是最新版本则什么也不需要做
                  * */
             } else {
                 Alert.alert('提示', '检查到新的版本'+info.name+',是否下载?\n'+ info.description+'\n'+info, [
@@ -101,74 +99,22 @@ export default class App extends Component {
     };
 
     render() {
-        const Navigator = StackNavigator(Router,
-            {
-                initialRouteName: 'Tab',
-                initialRouteParams: {},
-                headerMode: 'none',
-                transitionConfig: (transitionProps,prevTransitionProps,isModal) =>{
-
-                    if (transitionProps.scene&&transitionProps.scene.route.routeName === "LoginModal"){
-                        return({
-                            screenInterpolator: CardStackStyleInterpolator.forVertical
-                        })
-                    }else {
-                        return({
-                            screenInterpolator: CardStackStyleInterpolator.forHorizontal
-                        })
-                    }
-                } ,
-                // mode: 'modal',
-                navigationOptions: {
-                    gesturesEnabled: true
-                }
-            }
-        );
-        // goBack 返回指定的router
-        const defaultStateAction = Navigator.router.getStateForAction;
-        Navigator.router.getStateForAction = (action, state) => {
-            if (state && action.type === NavigationActions.BACK && state.routes.length === 1) {
-                console.log('退出RN页面');
-                // Android物理回退键到桌面
-                if (Platform.OS !== 'ios') {
-                    NativeModules.commModule.nativeTaskToBack();
-                }
-                const routes = [...state.routes];
-                return {
-                    ...state,
-                    ...state.routes,
-                    index: routes.length - 1
-                };
-            }
-
-            return defaultStateAction(action, state);
-        };
-        const getCurrentRouteName = (navigationState) => {
-            if (!navigationState) {
-                return null;
-            }
-            const route = navigationState.routes[navigationState.index];
-            if (route.routes) {
-                return getCurrentRouteName(route);
-            }
-            return route.routeName;
-        };
         return (
             <View style={styles.container}>
                 <Navigator screenProps={this.props.params}
-                           ref='Navigator'
-                           onNavigationStateChange={(prevState, currentState) => {
-                               let curRouteName = getCurrentRouteName(currentState);
-                               // 拦截当前router的名称
-                               console.log(curRouteName);
-                               const currentScreen = getCurrentRouteName(currentState);
-                               const prevScreen = getCurrentRouteName(prevState);
-                               global.$routes = currentState.routes;
-                               if (prevScreen !== currentScreen) {
-                                   //console.log('从页面' + prevScreen + '跳转页面' + currentScreen);
-                               }
+                    ref='Navigator'
+                    onNavigationStateChange={(prevState, currentState) => {
+                        let curRouteName = getCurrentRouteName(currentState);
+                        // 拦截当前router的名称
+                        console.log(curRouteName);
+                        const currentScreen = getCurrentRouteName(currentState);
+                        const prevScreen = getCurrentRouteName(prevState);
+                        global.$routes = currentState.routes;
+                        if (prevScreen !== currentScreen) {
+                            //console.log('从页面' + prevScreen + '跳转页面' + currentScreen);
+                        }
 
-                           }}/>
+                    }}/>
                 {
                     CONFIG.showDebugPanel ? <DebugButton onPress={this.showDebugPage}><Text
                         style={{ color: 'white' }}>调试页</Text></DebugButton> : null

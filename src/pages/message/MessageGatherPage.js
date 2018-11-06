@@ -381,43 +381,10 @@ export default class MessageGatherPage extends BasePage {
             </View>
         )
     }
-    renderItem = ({item, index})=> {
-        // switch (item.type) {
-        //     case 1://支付成功
-        //         return this.renderPaySuccessItem({item, index});
-        //         break;
-        //     case 2://订单发货
-        //     case 3://订单超时
-        //     case 4://退款申请
-        //     case 5://退货申请
-        //     case 6://换货申请
-        //     case 7://退款成功
-        //         return this.renderForProductItem({item, index});
-        //         break;
-        //     case 8://提现申请驳回
-        //     case 9://提现申请成功
-        //     case 10://提交提现申请
-        //         return this.renderCashItem({item, index});
-        //         break;
-        //     case 11://余额提现到账
-        //     case 12://代币提现到账
-        //         return this.render2AccontItem({item, index});
-        //         break;
-        //     case 13://身份认证成功
-        //     case 14://身份认证失败
-        //     case 15://优惠券
-        //         return this.rendSingleItem({item, index});
-        //         break;
-        //     case 16://秒杀
-        //     case 17://降价拍
-        //         return this.rendActivityItem({item, index});
-        //         break;
-        //
-        // }
-        // return (
-        //     this.renderNoticeItem({item, index})
-        // )
 
+
+
+    renderItem = ({item, index})=> {
         let btn = (
             <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.props.navigation,item.paramType,item.param,item.createdTime)}}>
                 <View style={{height:33,width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white'}}>
@@ -439,7 +406,7 @@ export default class MessageGatherPage extends BasePage {
                 <View style={{ backgroundColor: 'white',marginVertical:px2dp(15) }}>
                     <Text style={{ marginLeft: 15, fontSize: 13,color:'#666666' }}>{item.content}</Text>
                 </View>
-                <View style={{ height:!EmptyUtils.isEmpty(item.param) ? 1 : 0, width: ScreenUtils.width, backgroundColor: '#DDDDDD' }}/>
+                <View style={{ height:!EmptyUtils.isEmpty(item.param) ? ScreenUtils.onePixel : 0, width: ScreenUtils.width, backgroundColor: '#DDDDDD' }}/>
                 {item.messageType === 200 ? btn : null}
             </View>
         );

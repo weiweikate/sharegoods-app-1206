@@ -42,6 +42,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
         this._bind();
         this.seconds = 0;
         this.expansions = {};
+        this.state={};
 
     }
 

@@ -44,7 +44,8 @@ import {
     Platform,
     TouchableOpacity,
     Clipboard,
-    NativeModules
+    NativeModules,
+    Linking
 } from "react-native";
 
 import {
@@ -238,8 +239,8 @@ export default class CommShareModal extends React.Component {
         let imageHeight = autoSizeWidth(650 / 2);
         let imageWidth = autoSizeWidth(250);
         if (this.props.type === 'promotionShare') {
-            imageHeight = autoSizeWidth(380);
-            imageWidth = autoSizeWidth(280);
+            imageHeight = autoSizeWidth(348);
+            imageWidth = autoSizeWidth(279);
         }
         return (
             <CommModal onRequestClose={this.close}
@@ -329,7 +330,11 @@ export default class CommShareModal extends React.Component {
                                 transform: [{ scale: this.state.scale }]
 
                             }}>
-                                <TouchableWithoutFeedback>
+                                <TouchableWithoutFeedback onLongPress={()=>{
+                                    if (this.props.type === 'promotionShare') {
+                                        Linking.openURL(this.props.webJson.linkUrl);
+                                    }
+                                    }}>
                                 <UIImage source={{ uri: this.state.path }}
                                          style={{
                                              height: imageHeight,

@@ -87,8 +87,8 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'task'}
                                 webJson={{
-                                    title: '分享标题(当为图文分享时候使用)',
-                                    dec: '内容(当为图文分享时候使用)',
+                                    title: '邀请好友可获得品牌推广的现金奖励',
+                                    dec: '',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.params.jobId}`,
                                     thumImage: 'logo.png'
                                 }}

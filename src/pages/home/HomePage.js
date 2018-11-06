@@ -2,7 +2,7 @@
  * 首页
  */
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
     View,
     StyleSheet,
@@ -12,7 +12,7 @@ import {
     ImageBackground,
     InteractionManager,
     TouchableWithoutFeedback,
-    Image, Platform, NativeModules
+    Image, Platform, NativeModules, AsyncStorage
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
@@ -41,17 +41,18 @@ import closeImg from '../shareTask/res/qiandao_btn_return_nor.png';
 import MineApi from '../mine/api/MineApi';
 import VersionUpdateModal from './VersionUpdateModal';
 import DeviceInfo from 'react-native-device-info';
+import StringUtils from '../../utils/StringUtils';
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
 
 @observer
-export default class HomePage extends Component {
+export default class HomePage extends PureComponent {
 
     st = 0;
     shadowOpacity = 0.4;
 
-    headerH = statusBarHeight + 44 - (ScreenUtils.isIOSX?10:0);
+    headerH = statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0);
     state = {
         isShow: true,
         showMessage: false,
@@ -72,22 +73,30 @@ export default class HomePage extends Component {
         this.getVersion();
     }
 
-    getVersion = () => {
+    getVersion = async () => {
+        let upVersion = '';
+        try {
+            upVersion = await AsyncStorage.getItem('isToUpdate');
+        } catch (error) {
+        }
+
         MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((res) => {
             if (res.data.upgrade === 1) {
-                if (Platform.OS !== 'ios') {
-                    NativeModules.commModule.apkExist(res.data.version, (exist) => {
+                if (StringUtils.isEmpty(upVersion) && upVersion !== res.data.version) {
+                    if (Platform.OS !== 'ios') {
+                        NativeModules.commModule.apkExist(res.data.version, (exist) => {
+                            this.setState({
+                                updateData: res.data,
+                                showUpdate: true,
+                                apkExist: exist
+                            });
+                        });
+                    } else {
                         this.setState({
                             updateData: res.data,
-                            showUpdate: true,
-                            apkExist: exist
+                            showUpdate: true
                         });
-                    });
-                } else {
-                    this.setState({
-                        updateData: res.data,
-                        showUpdate: true
-                    });
+                    }
                 }
                 if (res.data.forceUpdate === 1) {
                     // 强制更新
@@ -104,7 +113,7 @@ export default class HomePage extends Component {
             'willFocus',
             payload => {
                 const { state } = payload;
-                console.log('willFocusSubscription', state)
+                console.log('willFocusSubscription', state);
                 if (state && state.routeName === 'HomePage') {
                     this.shareTaskIcon.queryTask();
                     this.setState({ isShow: true });
@@ -167,7 +176,7 @@ export default class HomePage extends Component {
         });
     };
 
-    _onScrollBeginDrag(){
+    _onScrollBeginDrag() {
         this.shareTaskIcon.close();
     }
 
@@ -194,7 +203,7 @@ export default class HomePage extends Component {
             return <HomeGoodsView data={data.itemData} navigation={this.props.navigation}/>;
         } else if (data.type === homeType.show) {
             const { isShow } = this.state;
-            return  <ShowView navigation={this.props.navigation} isShow={isShow}/>
+            return <ShowView navigation={this.props.navigation} isShow={isShow}/>;
         } else if (data.type === homeType.goodsTitle) {
             return <View style={styles.titleView}>
                 <Text style={styles.title}>为你推荐</Text>
@@ -331,8 +340,10 @@ export default class HomePage extends Component {
 
                 <HomeSearchView navigation={this.props.navigation}
                                 whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}/>
-                <ShareTaskIcon style={{position: 'absolute', right:0, top: px2dp(220) - 40}}
-                               ref={(ref)=>{this.shareTaskIcon = ref}}
+                <ShareTaskIcon style={{ position: 'absolute', right: 0, top: px2dp(220) - 40 }}
+                               ref={(ref) => {
+                                   this.shareTaskIcon = ref;
+                               }}
                 />
                 {this.messageModalRender()}
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
@@ -356,7 +367,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
-        height: statusBarHeight + 44 - (ScreenUtils.isIOSX?10:0),
+        height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
         backgroundColor: '#fff',
@@ -372,7 +383,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
-        height: statusBarHeight + 44 - (ScreenUtils.isIOSX?10:0),
+        height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
         alignItems: 'center',

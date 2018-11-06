@@ -71,3 +71,4 @@ tsconfig.json
 
 .update
 /uploadPackage
+build
