@@ -28,7 +28,6 @@ const colors = {
     lineColor_inColorBg: '#EEEEEE',//在有色背景的线的颜色
     lineColor_inWhiteBg: '#E4E4E4',//在白色背景的线的颜色
     lineColor_inGrayBg: '#D9D9D9',//在灰色背景的线的颜色
-    textColor_pureBlack: '#000000',//纯黑字
     textColor_mainTitle: '#333333',//主标题
     textColor_secondTitle: '#666666',//二级标题
     textColor_instruction: '#999999',//说明文字
@@ -38,6 +37,10 @@ const colors = {
     textColor_blueURL: '#38ADFF',//文字链接
     textColor_btnText: '#F00006',//按钮红色文字
     textColor_hint: '#C8C8C8', //输入框背景字颜色
+    bgColor_blue: '#33B4FF', //蓝色背景
+    color_yellow: '#FFFC00', //黄色字体
+    color_deepBlue: '#1B7BB3', //深蓝颜色
+    color_orange: '#2B99D9' //橘黄颜色
 };
 
 const sizes = {
