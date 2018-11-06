@@ -82,7 +82,7 @@ export default class GetRedpacketPage extends BasePage {
                         <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14), marginTop: 26 }}>
 
                             {/*{ this.state.redPacketData && this.state.redPacketData.phone?this.redPacketData.phone:''}*/}
-                            {this.state.phone}
+                            {StringUtils.formatPhoneNumber(this.state.phone)}
                             {/*{EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.encryptPhone(this.state.couponData.phone)}*/}
                         </Text>
                         <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14) }}>
