@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
-    View
+    View,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import RouterMap from './navigation/RouterMap';
@@ -19,11 +19,13 @@ import CONFIG from '../config';
 import appData from './model/appData';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import signTestTool from './signTestTool';
+
+import hotUpdateUtil from './utils/HotUpdateUtil'
+
 import Navigator, { getCurrentRouteName } from './navigation/Navigator'
 
 export default class App extends Component {
     constructor(props) {
-
         appData.setStatusBarHeight(props.statusBarHeight);
 
         super(props);
@@ -39,6 +41,11 @@ export default class App extends Component {
         await user.readUserInfoFromDisk();
         global.$navigator = this.refs.Navigator;
         global.$routes = [];
+
+    }
+    componentDidMount(){
+        //热更新 先注释掉
+        hotUpdateUtil.checkUpdate();
     }
 
     render() {

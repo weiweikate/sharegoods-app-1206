@@ -260,6 +260,21 @@ export default class RefreshLargeList extends React.Component {
         }
     }
 
+    onRefresh(){
+        this.setState({footerStatus: "idle" });
+        this.allLoadCompleted = false;
+        let { onStartRefresh, url, params, defaultPage, onEndRefresh } = this.props;
+        this.page = defaultPage;
+        onStartRefresh && onStartRefresh();
+
+        if (url) {
+            this._getData(url, params, true);
+        } else {
+            onEndRefresh && onEndRefresh();
+        }
+    }
+
+
     _onLoadMore() {
         let { onStartLoadMore, url, params, isSupportLoadingMore } = this.props;
         if (isSupportLoadingMore === false) {
@@ -287,9 +302,9 @@ export default class RefreshLargeList extends React.Component {
             let allLoadCompleted = false;
             let footerStatus = "idle";
             if (handleRequestResult) {
-                netData = handleRequestResult(result, isRefresh);
+                netData = handleRequestResult(result, isRefresh) || [];
             } else {
-                netData = result.data.data;
+                netData = result.data.data || [];
             }
             if (netData.length < pageSize) {
                 allLoadCompleted = true;

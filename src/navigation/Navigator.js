@@ -3,6 +3,8 @@ import { NavigationActions, StackNavigator } from 'react-navigation'
 import Router from './Stack'
 import { Platform, NativeModules } from 'react-native'
 import RouterMap from './RouterMap'
+import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
+
 const Navigator = StackNavigator(Router,
     {
         initialRouteName: 'Tab',
@@ -11,7 +13,18 @@ const Navigator = StackNavigator(Router,
         // mode: 'modal',
         navigationOptions: {
             gesturesEnabled: true
-        }
+        },
+        transitionConfig: (transitionProps,prevTransitionProps,isModal) =>{
+            if (transitionProps.scene && transitionProps.scene.route.routeName === "LoginModal"){
+                return({
+                    screenInterpolator: CardStackStyleInterpolator.forVertical
+                })
+            }else {
+                return({
+                    screenInterpolator: CardStackStyleInterpolator.forHorizontal
+                })
+            }
+        } ,
     }
 );
 // goBack 返回指定的router
@@ -35,10 +48,10 @@ Navigator.router.getStateForAction = (action, state) => {
     if (state && action.type === NavigationActions.NAVIGATE) {
         let length =  state.routes.length
         let currentRoute = state.routes[length - 1]
-        let lastRoute = state.routes[length - 2]
-        console.log('currentRoute',action.type, state, currentRoute, lastRoute, currentRoute && currentRoute.routeName === RouterMap.LoginPage)
+        let nextRoute = action.routeName
+        console.log('currentRoute',action,  currentRoute.routeName, nextRoute, currentRoute && currentRoute.routeName === RouterMap.LoginPage)
         if (currentRoute
-            && lastRoute
+            && nextRoute === RouterMap.LoginPage
             && currentRoute.routeName === RouterMap.LoginPage) {
             return null
         }

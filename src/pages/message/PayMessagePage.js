@@ -10,6 +10,7 @@ import StringUtils from '../../utils/StringUtils';
 import BasePage from '../../BasePage';
 import arrow_right from '../order/res/arrow_right.png';
 import DateUtils from '../../utils/DateUtils';
+import EmptyUtils from '../../utils/EmptyUtils';
 
 const payTypes = [1, 2, 4, 8, 16];
 const payTexts = ['纯平台', '微信(小程序)', '微信(APP)', '支付宝', '银联'];
@@ -79,11 +80,11 @@ export default class PayMessagePage extends BasePage {
                     </View>
                 </View>
                 <View style={{ height: 10 }}/>
-                <NewsDetailItem titles={'付款编号'} rightmg={this.params.orderNum} isshow={false}/>
+                <NewsDetailItem titles={'付款编号'} rightmg={this.params.outTradeNo} isshow={false}/>
                 <NewsDetailItem titles={'创建时间'}
                                 rightmg={DateUtils.getFormatDate(this.params.time / 1000)}
                                 isshow={false}/>
-                <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/>
+                {!EmptyUtils.isEmpty(this.params.orderNum) ? <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/> : null }
                 <View style={{ height: 10 }}/>
                 <NewsDetailItem titles={'订单疑问'} isshow={true} onPresses={() => this.toHelperPage()}/>
                 <NewsDetailItem titles={'投诉'} isshow={true} onPresses={() => this.commitQuestion()}/>
@@ -112,11 +113,11 @@ export default class PayMessagePage extends BasePage {
                     </View>
                 </View>
                 <View style={{ height: 10 }}/>
-                <NewsDetailItem titles={'付款编号'} rightmg={this.params.refundNo} isshow={false}/>
+                <NewsDetailItem titles={'退款编号'} rightmg={this.params.refundNo} isshow={false}/>
                 <NewsDetailItem titles={'创建时间'}
                                 rightmg={DateUtils.getFormatDate(this.params.time / 1000)}
                                 isshow={false}/>
-                <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/>
+                {!EmptyUtils.isEmpty(this.params.orderNum) ? <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/> : null }
                 <View style={{ height: 10 }}/>
                 <NewsDetailItem titles={'订单疑问'} isshow={true} onPresses={() => this.toHelperPage()}/>
                 <NewsDetailItem titles={'投诉'} isshow={true} onPresses={() => this.commitQuestion()}/>

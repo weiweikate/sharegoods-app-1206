@@ -14,7 +14,7 @@ import ScreenUtils from '../utils/ScreenUtils';
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 const colors = {
-    mainColor: '#FF1A54',//主色调
+    mainColor: '#F00006',//主色调
     white: '#FFFFFF',
     bgColor: '#F7F7F7',//背景色
     bgColor_btn: '#FF1A54',//红色按钮背景色
