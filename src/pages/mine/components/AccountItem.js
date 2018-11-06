@@ -5,11 +5,11 @@ import {
     StyleSheet
 } from 'react-native';
 import MoreClickComponet from '../../../components/ui/NoMoreClick';
-import { color } from '../../../constants/Theme';
 import questionImage_gray from '../res/userInfoImg/questionImage_gray.png';
 import {
     UIText, UIImage
 } from '../../../components/ui';
+import DesignRule from 'DesignRule';
 // status,//账单状态：0出账中，1待支付，2已支付，3逾期
 const AccountItem = props => {
     const {
@@ -29,12 +29,12 @@ const AccountItem = props => {
             return (
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                     <Image source={questionImage_gray} style={{ width: 13, height: 13 }}/>
-                    <UIText value={serialNumber} style={{ color: color.black_999, fontSize: 13 }}/>
+                    <UIText value={serialNumber} style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
                 </View>
             );
         } else {
             return (
-                <UIText value={serialNumber} style={{ color: color.black_999, fontSize: 13 }}/>
+                <UIText value={serialNumber} style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
             );
         }
     };
@@ -47,19 +47,26 @@ const AccountItem = props => {
                 <View style={{ marginLeft: 10 }}>
                     <UIText value={type}/>
                     <UIText value={time}
-                            style={{ color: color.black_999, fontSize: 13, marginTop: serialNumber == '' ? 10 : 0 }}/>
+                            style={{
+                                color: DesignRule.textColor_instruction,
+                                fontSize: 13,
+                                marginTop: serialNumber == '' ? 10 : 0
+                            }}/>
                 </View>
                 <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row' }}>
                     <View style={{ marginRight: 15, height: 60, justifyContent: 'space-between' }}>
                         <UIText value={capital}
-                                style={{ color: capitalRed ? color.red : color.blue_222, fontSize: 16 }}/>
-                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }} />
+                                style={{
+                                    color: capitalRed ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
+                                    fontSize: 16
+                                }}/>
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}/>
                         <UIText value={''}/>
                     </View>
                 </View>
             </MoreClickComponet>
-            <View style={{ flex: 1, height: 1, backgroundColor: color.white }}>
-                <View style={{ flex: 1, height: 1, backgroundColor: color.line, marginLeft: 15 }}/>
+            <View style={{ flex: 1, height: 1, backgroundColor: DesignRule.white }}>
+                <View style={{ flex: 1, height: 1, backgroundColor: DesignRule.lineColor_inGrayBg, marginLeft: 15 }}/>
             </View>
         </View>
     );
@@ -68,7 +75,7 @@ const AccountItem = props => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: color.white,
+        backgroundColor: DesignRule.white,
         flexDirection: 'row',
         height: 90,
         alignItems: 'center'
