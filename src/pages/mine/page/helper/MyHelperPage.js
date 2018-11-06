@@ -206,8 +206,8 @@ export default class MyHelperPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: '#F6F6F6'
-        // marginTop: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 0
+        flex: 1, backgroundColor: '#F6F6F6',
+        marginBottom: ScreenUtils.saveMarginBottom
     },
     hotQuestionStyle: {
         alignItems: 'center',
