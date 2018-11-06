@@ -129,12 +129,12 @@ export default class PromotionDetailPage extends BasePage<Props> {
     //下拉加载更多
     onLoadMore = () => {
         this.currentPage++;
-        this.getUserPromotionPromoter();
+        this.getPromotionReceiveRecord();
     };
     //刷新
     onRefresh = () => {
         this.currentPage = 1;
-        this.getUserPromotionPromoter();
+        this.getPromotionReceiveRecord();
     };
 
 

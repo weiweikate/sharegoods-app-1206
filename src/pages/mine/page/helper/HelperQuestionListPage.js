@@ -73,7 +73,7 @@ export default class HelperQuestionListPage extends BasePage {
 
     _render() {
         return (
-            <View style={{backgroundColor: '#F6F6F6', flex: 1}}>
+            <View style={{backgroundColor: '#F6F6F6', flex: 1,marginBottom: ScreenUtils.saveMarginBottom}}>
                 <View style={{width: ScreenUtils.width, height: 10}}/>
                 {this.renderContentView()}
                 {this.renderFooter()}

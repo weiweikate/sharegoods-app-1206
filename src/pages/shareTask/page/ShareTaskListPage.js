@@ -53,11 +53,11 @@ export default class ShareTaskListPage extends BasePage<Props> {
 
     _bind() {
         this.loadPageData = this.loadPageData.bind(this);
+
     }
 
     componentDidMount() {
 
-        // this.shareModal.open();
     }
 
     componentWillUnmount() {
@@ -77,20 +77,20 @@ export default class ShareTaskListPage extends BasePage<Props> {
         this.$loadingShow();
         let that = this;
         taskApi.getReward({id: id}).then((result)=> {
-            that.list2.onRefresh();
-            let {recieveMoney, recieveBean} = result.data;
+            that.list2 && that.list2.onRefresh();
+            let {recieveMoney = 0, recieveBean = 0} = result.data;
             if (recieveMoney <= 0){
                 that.failModal.open();
-            }{
+            }else {
                 that.successModal.open();
                 recieveMoney =  Math.round(recieveMoney*100)/100;
                 recieveBean =  Math.round(recieveBean*100)/100;
                 that.setState({recieveMoney,recieveBean});
             }
-            that.$loadingDismiss();
+           that.$loadingDismiss();
         }).catch((error) => {
             that.$toastShow(error.msg);
-            that.$loadingDismiss();
+            //that.$loadingDismiss();
         });
     }
 
@@ -327,7 +327,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
         this.seconds = 0;
         this.timer = TimerMixin.setInterval(() => {
             that.seconds++;
-            that.list2.reloadAll();
+            that.list2 && that.list2.reloadAll();
         }, 1000);
     }
 
