@@ -206,7 +206,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                     borderBottomWidth: 1
                 }}>
                     <Text style={{
-                        includeFontPadding: 0,
+                        includeFontPadding: false,
                         color: '#666666',
                         fontSize: autoSizeWidth(12),
                         marginLeft: autoSizeWidth(15),

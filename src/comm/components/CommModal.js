@@ -48,8 +48,6 @@ export default class CommModal extends Component {
     }
 
     _handleAppStateChange = (AppState) => {
-        console.log("AppState", AppState);
-        console.log("AppState _handleAppStateChange", this.state.visible);
         this.setState({
             update: !this.state.update,
             visible: this.state.visible

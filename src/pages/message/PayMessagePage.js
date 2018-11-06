@@ -107,7 +107,7 @@ export default class PayMessagePage extends BasePage {
                     <Text style={{
                         fontSize: 24,
                         color: '#222222'
-                    }}>+{StringUtils.formatMoneyString(this.params.tradeAmount, false)}</Text>
+                    }}>+{StringUtils.formatMoneyString(this.params.refundPrice, false)}</Text>
                     <View style={{ backgroundColor: '#FF7E00', borderRadius: 3 }}>
                         <Text style={{ color: 'white', margin: 1, fontSize: 11 }}>退款成功</Text>
                     </View>
