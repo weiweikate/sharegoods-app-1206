@@ -81,10 +81,10 @@ export default class PayMessagePage extends BasePage {
                 </View>
                 <View style={{ height: 10 }}/>
                 <NewsDetailItem titles={'付款编号'} rightmg={this.params.outTradeNo} isshow={false}/>
+                {!EmptyUtils.isEmpty(this.params.orderNum) ? <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/> : null }
                 <NewsDetailItem titles={'创建时间'}
                                 rightmg={DateUtils.getFormatDate(this.params.time / 1000)}
                                 isshow={false}/>
-                {!EmptyUtils.isEmpty(this.params.orderNum) ? <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/> : null }
                 <View style={{ height: 10 }}/>
                 <NewsDetailItem titles={'订单疑问'} isshow={true} onPresses={() => this.toHelperPage()}/>
                 <NewsDetailItem titles={'投诉'} isshow={true} onPresses={() => this.commitQuestion()}/>
@@ -114,10 +114,10 @@ export default class PayMessagePage extends BasePage {
                 </View>
                 <View style={{ height: 10 }}/>
                 <NewsDetailItem titles={'退款编号'} rightmg={this.params.refundNo} isshow={false}/>
+                {!EmptyUtils.isEmpty(this.params.orderNum) ? <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/> : null }
                 <NewsDetailItem titles={'创建时间'}
                                 rightmg={DateUtils.getFormatDate(this.params.time / 1000)}
                                 isshow={false}/>
-                {!EmptyUtils.isEmpty(this.params.orderNum) ? <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/> : null }
                 <View style={{ height: 10 }}/>
                 <NewsDetailItem titles={'订单疑问'} isshow={true} onPresses={() => this.toHelperPage()}/>
                 <NewsDetailItem titles={'投诉'} isshow={true} onPresses={() => this.commitQuestion()}/>

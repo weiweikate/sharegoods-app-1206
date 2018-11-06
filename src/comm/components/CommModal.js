@@ -21,7 +21,7 @@ import {
     Platform,
     Modal,
     AppState,
-    requireNativeComponent,
+    requireNativeComponent
 } from "react-native";
 
 const NativeModalAndroid = requireNativeComponent("ModalAndroid");//内部使用popwindow实现全屏
@@ -48,6 +48,8 @@ export default class CommModal extends Component {
     }
 
     _handleAppStateChange = (AppState) => {
+        console.log("AppState", AppState);
+        console.log("AppState _handleAppStateChange", this.state.visible);
         this.setState({
             update: !this.state.update,
             visible: this.state.visible
