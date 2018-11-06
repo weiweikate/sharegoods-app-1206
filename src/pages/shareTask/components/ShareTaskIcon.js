@@ -56,8 +56,8 @@ export default class ShareTaskIcon extends React.Component {
 
     queryTask() {
         taskApi.queryTask({}).then((result => {
-            let hasTask = false
-            if (result.data.id !== undefined){
+            let hasTask = false;
+            if (result.data.id !== undefined && result.data.id !== null){
                 hasTask = true;
             }
             this.setState({hasTask, data:result.data});
@@ -127,7 +127,7 @@ export default class ShareTaskIcon extends React.Component {
         ;
         return (
             <Animated.View style={[this.props.style, { transform: [{ translateX: this.state.x}] }]}>
-                <TouchableOpacity onPress={this._onPress.bind(this)}>
+                <TouchableOpacity onPress={this._onPress}>
                     <UIImage source={task_icon}
                              style={styles.image}
                     />

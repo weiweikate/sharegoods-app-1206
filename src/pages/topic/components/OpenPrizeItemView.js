@@ -147,7 +147,7 @@ export default class OpenPrizeItemView extends Component {
                                         //     '¥' + itemData[typeName[itemData.productType][itemData.status]]
                                         //     :
                                         //     '¥' + itemData[typeName[itemData.productType]]
-                                       getShowPrice(itemData)
+                                        getShowPrice(itemData)
                                     }
                                 </Text>
                                 <Text style={{
@@ -167,7 +167,6 @@ export default class OpenPrizeItemView extends Component {
                                             backgroundColor: ColorUtil.Color_f7f7f7,
                                             height: 30,
                                             width: (ScreenUtils.width / 2 - 16) / 2,
-                                            borderRadius: 5,
                                             borderRadius: 5
                                         }}>
                                         <TouchableOpacity
