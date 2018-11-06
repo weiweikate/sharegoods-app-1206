@@ -53,11 +53,11 @@ export default class ShareTaskListPage extends BasePage<Props> {
 
     _bind() {
         this.loadPageData = this.loadPageData.bind(this);
+
     }
 
     componentDidMount() {
 
-        // this.shareModal.open();
     }
 
     componentWillUnmount() {
@@ -77,20 +77,20 @@ export default class ShareTaskListPage extends BasePage<Props> {
         this.$loadingShow();
         let that = this;
         taskApi.getReward({id: id}).then((result)=> {
-            that.list2.onRefresh();
-            let {recieveMoney, recieveBean} = result.data;
+            that.list2 && that.list2.onRefresh();
+            let {recieveMoney = 0, recieveBean = 0} = result.data;
             if (recieveMoney <= 0){
                 that.failModal.open();
-            }{
+            }else {
                 that.successModal.open();
                 recieveMoney =  Math.round(recieveMoney*100)/100;
                 recieveBean =  Math.round(recieveBean*100)/100;
                 that.setState({recieveMoney,recieveBean});
             }
-            that.$loadingDismiss();
+           that.$loadingDismiss();
         }).catch((error) => {
             that.$toastShow(error.msg);
-            that.$loadingDismiss();
+            //that.$loadingDismiss();
         });
     }
 
@@ -105,7 +105,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                         this.list2 = ref;
                     }}
                     heightForCell={({ row }) => {
-                        return this.expansions[row] ? autoSizeWidth(335) : autoSizeWidth(95);
+                        return this.expansions[row] ? autoSizeWidth(315) : autoSizeWidth(95);
                     }}
                     renderItem={this._renderIndexPath}
                     renderItemSeparator={this.renderItemSeparator}
@@ -244,10 +244,10 @@ export default class ShareTaskListPage extends BasePage<Props> {
                                 <View style={{
                                     marginTop: autoSizeWidth(20),
                                     height: autoSizeWidth(170),
-                                    flexDirection: 'row'
+                                    flexDirection: 'row',
                                 }}>
                                     <Image source={task_bg}
-                                           style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}/>
+                                           style={{ position: 'absolute', top: 0, left: 0,width: autoSizeWidth(375-30),  height: autoSizeWidth(170),}}/>
                                     <View style={{ flex: 1 }}/>
                                     {
                                         status === 4 ?
@@ -327,7 +327,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
         this.seconds = 0;
         this.timer = TimerMixin.setInterval(() => {
             that.seconds++;
-            that.list2.reloadAll();
+            that.list2 && that.list2.reloadAll();
         }, 1000);
     }
 

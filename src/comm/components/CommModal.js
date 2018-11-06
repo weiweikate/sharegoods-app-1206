@@ -21,7 +21,7 @@ import {
     Platform,
     Modal,
     AppState,
-    requireNativeComponent
+    requireNativeComponent,
 } from "react-native";
 
 const NativeModalAndroid = requireNativeComponent("ModalAndroid");//内部使用popwindow实现全屏
