@@ -60,7 +60,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
     }
 
     startTimer = () => {
-        if (this.params.status === 0 || this.params.status === 1) {
+        if (this.params.status === 1) {
             this.date = Date.parse(new Date());
             if (this.date < this.params.endTime) {
                 this.timer = setInterval(() => {
