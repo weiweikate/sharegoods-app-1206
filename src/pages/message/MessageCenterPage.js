@@ -42,7 +42,7 @@ export default class MessageCenterPage extends BasePage {
 
     componentDidMount() {
         this.loadPageData();
-        this.listener = DeviceEventEmitter.addListener("contentViewed",this.loadPageData)
+        this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadPageData);
     }
 
     _render(){
