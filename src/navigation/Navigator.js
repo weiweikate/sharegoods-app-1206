@@ -15,16 +15,10 @@ const Navigator = StackNavigator(Router,
             gesturesEnabled: true
         },
         transitionConfig: (transitionProps,prevTransitionProps,isModal) =>{
-            if (transitionProps.scene && transitionProps.scene.route.routeName === "LoginModal"){
-                return({
-                    screenInterpolator: CardStackStyleInterpolator.forVertical
-                })
-            }else {
                 return({
                     screenInterpolator: CardStackStyleInterpolator.forHorizontal
                 })
-            }
-        } ,
+        }
     }
 );
 // goBack 返回指定的router

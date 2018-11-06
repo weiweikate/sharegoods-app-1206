@@ -111,7 +111,6 @@ export default class RegistPage extends BasePage {
                 bridge.$toast(data.msg);
             }
             this.$loadingDismiss();
-
             bridge.$toast(data.msg);
         }).catch((response) => {
             this.$loadingDismiss();
