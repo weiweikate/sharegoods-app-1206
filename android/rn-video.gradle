@@ -22,14 +22,14 @@ android {
 }
 
 dependencies {
-    compile rootProject.ext.dependencies.support
+    api rootProject.ext.dependencies.support
     // From node_modules
-    compile(rootProject.ext.dependencies.rn) {
+    api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
     implementation rootProject.ext.dependencies.exoplayer
-    compile(rootProject.ext.dependencies.exopOKhttp) {
+    api(rootProject.ext.dependencies.exopOKhttp) {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     }
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    api 'com.squareup.okhttp3:okhttp:3.6.0'
 }
