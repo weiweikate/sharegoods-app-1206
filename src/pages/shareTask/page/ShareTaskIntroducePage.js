@@ -102,7 +102,6 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                                     miniProgramPath: `/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.params.jobId}`
                                 }}
                 />
-                />
             </View>
         );
     }
