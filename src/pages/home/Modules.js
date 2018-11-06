@@ -39,7 +39,7 @@ export class BannerModules {
 
 export const bannerModule = new BannerModules();
 
-export class AdModules {
+class AdModules {
     @observable ad = [];
     loadAdList = flow(function* () {
         try {
@@ -51,13 +51,15 @@ export class AdModules {
     });
 }
 
+export const adModules = new AdModules()
+
 import schoolImg from './res/school.png';
 import makemoneyImg from './res/makemoney.png';
 import shareImg from './res/share.png';
 import signinImg from './res/signin.png';
 import spikeImg from './res/spike.png';
 
-export class ClassifyModules {
+class ClassifyModules {
     @observable classifyList = [];
     @action loadClassifyList = () => {
         this.classifyList = [{
@@ -100,7 +102,9 @@ export class ClassifyModules {
     };
 }
 
-export class StarShopModule {
+export const classifyModules = new ClassifyModules()
+
+class StarShopModule {
     @observable shopList = [];
 
     loadShopList = flow(function* () {
@@ -113,8 +117,10 @@ export class StarShopModule {
     });
 }
 
+export const starShopModule = new StarShopModule()
+
 //今日榜单
-export class TodayModule {
+class TodayModule {
     @observable todayList = [];
     loadTodayList = flow(function* () {
         try {
@@ -126,8 +132,10 @@ export class TodayModule {
     });
 }
 
+export const todayModule = new TodayModule()
+
 //精品推荐
-export class RecommendModule {
+class RecommendModule {
     @observable recommendList = [];
     loadRecommendList = flow(function* () {
         try {
@@ -139,8 +147,10 @@ export class RecommendModule {
     });
 }
 
+export const recommendModule = new RecommendModule()
+
 //专题
-export class SubjectModule {
+class SubjectModule {
     @observable subjectList = [];
     //记载专题
     loadSubjectList = flow(function* () {
@@ -152,6 +162,8 @@ export class SubjectModule {
         }
     });
 }
+
+export const subjectModule = new SubjectModule()
 
 const homeLinkType = {
     good: 1,
@@ -218,6 +230,13 @@ class HomeModule {
     //加载为你推荐列表
     loadHomeList = flow(function* () {
         this.isRefreshing = true;
+        bannerModule.loadBannerList()
+        todayModule.loadTodayList()
+        adModules.loadAdList()
+        classifyModules.loadClassifyList()
+        starShopModule.loadShopList()
+        recommendModule.loadRecommendList()
+        subjectModule.loadSubjectList()
         this.page = 1;
         this.homeList = [{
             id: 0,
