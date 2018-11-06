@@ -197,7 +197,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         }
     }
 
-    
+
 
     private @Nullable
     Activity getCurrentActivity() {
