@@ -1,17 +1,12 @@
 import React from 'react'
 import {View, StyleSheet, Image, TouchableOpacity} from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
-import { AdModules , homeModule} from './Modules'
+import { adModules , homeModule} from './Modules'
 import {observer} from 'mobx-react';
 import BasePage from '../../BasePage'
 
 @observer
 export default class HomeAdView extends BasePage {
-    constructor(props) {
-        super(props)
-        this.adModules = new AdModules()
-        this.adModules.loadAdList()
-    }
     _adAction(value) {
         const router =  homeModule.homeNavigate(value.linkType, value.linkTypeCode)
         const {navigation} = this.props
@@ -19,7 +14,7 @@ export default class HomeAdView extends BasePage {
         navigation.navigate(router, params)
     }
     render() {
-        const {ad} = this.adModules
+        const {ad} = adModules
         let items = []
         ad.map((value, index) => {
             if (index === 0) {

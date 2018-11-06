@@ -12,10 +12,6 @@ const bannerHeight = px2dp(230)
 
 @observer
 export default class HomeBannerView extends Component {
-    constructor(props) {
-        super(props);
-        bannerModule.loadBannerList();
-    }
     state = {
         index : 0
     }

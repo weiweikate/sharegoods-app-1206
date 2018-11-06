@@ -86,11 +86,20 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                 </TouchableWithoutFeedback>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'task'}
-                                webJson={{
+                                // webJson={{
+                                //     title: '邀请好友可获得品牌推广的现金奖励',
+                                //     dec: '',
+                                //     linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.params.jobId}`,
+                                //     thumImage: 'logo.png'
+                                // }}
+                                // type={'miniProgram'}
+                                miniProgramJson={{
                                     title: '邀请好友可获得品牌推广的现金奖励',
                                     dec: '',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.params.jobId}`,
-                                    thumImage: 'logo.png'
+                                    thumImage: 'logo.png',
+                                    hdImageURL: '',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/index/index`,
+                                    miniProgramPath: `/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.params.jobId}`
                                 }}
                 />
             </View>
