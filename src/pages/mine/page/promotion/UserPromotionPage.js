@@ -16,7 +16,8 @@ import {
     StyleSheet,
     View,
     TouchableWithoutFeedback,
-    Text
+    Text,
+    TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -50,6 +51,20 @@ export default class UserPromotionPage extends BasePage<Props> {
         return {
             loadingState: this.state.loadingState,
         };
+    };
+
+    goExplicationPage = () => {
+        this.$navigate('mine/promotion/PromotionRulePage')
+    };
+
+    $NavBarRenderRightItem = () => {
+        return (
+            <TouchableOpacity onPress={this.goExplicationPage}>
+                <Text style={{ color: '#666666', fontSize: px2dp(12) }}>
+                    推广说明
+                </Text>
+            </TouchableOpacity>
+        );
     };
 
     componentDidMount() {
@@ -111,7 +126,7 @@ export default class UserPromotionPage extends BasePage<Props> {
                     justifyContent: 'space-between',
                     paddingHorizontal: px2dp(15),
                     borderBottomColor: '#DDDDDD',
-                    borderBottomWidth: px2dp(0.5)
+                    borderBottomWidth: ScreenUtils.onePixel
                 }}>
                     <View style={styles.itemInfoWrapper}>
                         <Text style={styles.blackTextStyle}>
