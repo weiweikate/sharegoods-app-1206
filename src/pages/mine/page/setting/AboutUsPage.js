@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import Logo from '../../../../comm/res/tongyong_logo_nor.png';
+import DesignRule from 'DesignRule';
 
 export default class AboutUsPage extends BasePage {
 
@@ -17,11 +18,11 @@ export default class AboutUsPage extends BasePage {
 
     _render() {
         return (<ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-            <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
+            <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', backgroundColor: DesignRule.white }}>
                 <Image source={Logo} style={{ height: 70, width: 70, marginTop: 30 }}/>
-                <Text style={{ color: '#222222', fontSize: 15, marginTop: 30 }}>公司简介</Text>
+                <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginTop: 30 }}>公司简介</Text>
                 <Text style={{
-                    color: '#222222',
+                    color: DesignRule.textColor_mainTitle,
                     fontSize: 12,
                     marginTop: 14,
                     marginRight: 15,

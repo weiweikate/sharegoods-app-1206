@@ -51,7 +51,6 @@ const color = {
     gray_bbb: '#BBBBBB',
     green_47c: '#47c546',
     gray_666: '#666666',
-    gray_c8c: '#C8C8C8',
     gray_b4b: '#b4b4b4'
 };
 

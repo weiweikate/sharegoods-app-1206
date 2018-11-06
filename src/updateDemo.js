@@ -83,7 +83,7 @@ export default class updateDemo extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.welcome}>
-                    欢迎使用热更新服务2333444
+                    欢迎使用热更新服务---如果出现这些,说明android更新了
                 </Text>
                 <Text style={styles.instructions}>
                     这是版本一 {'\n'}
