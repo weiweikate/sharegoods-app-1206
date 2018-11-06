@@ -1280,7 +1280,8 @@ class MyOrdersDetailPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: color.page_background
+        backgroundColor: color.page_background,
+        marginBottom: ScreenUtils.saveMarginBottom
     }, redRectangle: {
         width: ScreenUtils.width,
         height: 100,
