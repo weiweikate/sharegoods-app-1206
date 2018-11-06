@@ -502,13 +502,18 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void saveImage(String path) {
-        try {
-            MediaStore.Images.Media.insertImage(mContext.getContentResolver(), path, path, null);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        // 最后通知图库更新
-        mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(path)));
+//        try {
+//            MediaStore.Images.Media.insertImage(mContext.getContentResolver(), path, path, null);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        // 最后通知图库更新
+//        mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(path)));
+        File file = new File(path);
+        Uri uri = Uri.fromFile(file);
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        intent.setData(uri);
+        mContext.sendBroadcast(intent);
     }
 
     @ReactMethod

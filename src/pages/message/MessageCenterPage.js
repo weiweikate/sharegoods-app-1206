@@ -42,7 +42,7 @@ export default class MessageCenterPage extends BasePage {
 
     componentDidMount() {
         this.loadPageData();
-        DeviceEventEmitter.addListener("contentViewed",this.loadPageData)
+        this.listener = DeviceEventEmitter.addListener("contentViewed",this.loadPageData)
     }
 
     _render(){
@@ -67,7 +67,7 @@ export default class MessageCenterPage extends BasePage {
     }
 
     componentWillUnmount(){
-        DeviceEventEmitter.removeAllListeners();
+        this.listener && this.listener.remove();
     }
 
     orderMenuJump(i){
