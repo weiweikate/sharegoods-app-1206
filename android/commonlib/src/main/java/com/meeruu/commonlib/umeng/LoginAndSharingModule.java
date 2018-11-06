@@ -340,7 +340,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Bitmap result = Bitmap.createBitmap(279, (int) (348), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.red_envelope_bg);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.red_envelope_bg);
 
 
         int width = bitmap.getWidth();
