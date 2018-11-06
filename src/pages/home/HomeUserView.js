@@ -45,9 +45,16 @@ export default class HomeUserView extends Component {
                 left += total
                 let otherExp =  experience - lastExp
                 console.log('experience - level.upgradeExp', experience - lastExp, otherExp)
-                items.push(<View key={'line' + index} style={[styles.progressLine, { backgroundColor: '#E7AE39'}]}>
-                    <View style={{flex: otherExp}}/><View style={{flex: lastExp - otherExp, backgroundColor: '#9B6D26' }}/>
-                </View>)
+                if (experience === 0) {
+                    items.push(<View key={'line' + index} style={[styles.progressLine, { backgroundColor: '#E7AE39'}]}>
+                         <View style={{flex: 1, backgroundColor: '#9B6D26' }}/>
+                    </View>)
+                } else {
+                    items.push(<View key={'line' + index} style={[styles.progressLine, { backgroundColor: '#E7AE39'}]}>
+                        <View style={{flex: otherExp}}/><View style={{flex: lastExp - otherExp, backgroundColor: '#9B6D26' }}/>
+                    </View>)
+                }
+                
             } else {
                 items.push(<View key={'line' + index} style={[styles.progressLine]}/>)
             }
