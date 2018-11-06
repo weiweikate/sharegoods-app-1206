@@ -37,6 +37,7 @@ import DateUtils from '../../../utils/DateUtils';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import user from '../../../model/user';
 import CommShareModal from '../../../comm/components/CommShareModal';
+import { NavigationActions } from 'react-navigation';
 type Props = {};
 export default class ShareTaskListPage extends BasePage<Props> {
 
@@ -194,6 +195,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                 image_btnText = '继续分享';
                 image_detail = shareHits === 0 ? '暂无好友激活' : '已有' + shareHits + '位好友帮你激活';
                 onPress = () => {
+                    // global.$navigator.dispatch(NavigationActions.navigate({ routeName: RouterMap.ShareTaskIntroducePage, params: {jobId:item.jobId, status: 1} }));
                     this.setState({jobId: item.jobId})
                     this.shareModal.open();
                 };
