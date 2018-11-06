@@ -135,11 +135,9 @@ class SettingPage extends BasePage {
                             CachesModule.clearCaches(() => {
                                 this.getAllCachesSize();
                                 // 清楚七鱼缓存
-                                // NativeModules.commModule.toast('删除成功');
                             });
                         } else {
                             bridge.clearAllCache(()=>{this.getAllCachesSize();})
-                            // NativeModules.commModule.toast('暂未对接缓存模块');
                         }
                     }
                 }

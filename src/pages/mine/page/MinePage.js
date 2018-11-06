@@ -83,10 +83,6 @@ export default class MinePage extends BasePage {
     };
 
     componentDidMount() {
-        if (!user.isLogin) {
-            this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
-            return;
-        }
         userOrderNum.getUserOrderNum();
         this.refresh();
     }
