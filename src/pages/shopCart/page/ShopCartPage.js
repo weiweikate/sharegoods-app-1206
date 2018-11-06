@@ -129,7 +129,7 @@ export default class ShopCartPage extends BasePage {
                 justifyContent: 'center'
             }}>
                 <Text>
-                    ~购物车暂无商品~!
+                    ~购物车更新暂无商品1.0.2~!
                 </Text>
             </View>
         );

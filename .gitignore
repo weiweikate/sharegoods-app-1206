@@ -70,3 +70,5 @@ tsconfig.json
 /android/app/release/
 
 .update
+/uploadPackage
+build

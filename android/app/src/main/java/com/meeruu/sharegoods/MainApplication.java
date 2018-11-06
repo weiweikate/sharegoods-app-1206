@@ -24,7 +24,6 @@ import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
-import com.squareup.leakcanary.LeakCanary;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
@@ -68,10 +67,10 @@ public class MainApplication extends BaseApplication implements ReactApplication
             }
         });
         // 检测内存泄漏
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        LeakCanary.install(this);
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            return;
+//        }
+//        LeakCanary.install(this);
         if (getProcessName(this).equals(getPackageName())) {
             if (!Utils.isApkInDebug()) {
                 // 捕获闪退日志
