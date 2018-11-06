@@ -7,7 +7,7 @@ import {View , ScrollView, StyleSheet, Text, Image, TouchableOpacity} from 'reac
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
-import { SubjectModule, homeModule } from './Modules'
+import { subjectModule, homeModule } from './Modules'
 import { getShowPrice } from '../topic/model/TopicMudelTool'
 
 const GoodItems = ({img, title, money, press}) => <TouchableOpacity style={styles.goodsView} onPress={()=>{press && press()}}>
@@ -67,11 +67,6 @@ const ActivityItem = ({data, press, goodsPress}) => {
 
 @observer
 export default class HomeSubjectView extends Component {
-    constructor(props) {
-        super(props)
-        this.subjectModule = new SubjectModule()
-        this.subjectModule.loadSubjectList()
-    }
     _subjectActions(item) {
         const { navigation } = this.props
         let params = homeModule.paramsNavigate(item)
@@ -93,7 +88,7 @@ export default class HomeSubjectView extends Component {
         }
     }
     render() {
-        const { subjectList } = this.subjectModule
+        const { subjectList } = subjectModule
         if (!subjectList) {
             return <View/>
         }
