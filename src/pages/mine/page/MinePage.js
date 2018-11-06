@@ -34,6 +34,7 @@ import levelBg from '../res/homeBaseImg/me_bg_vip_nor.png';
 import setting from '../res/homeBaseImg/tongyong_icon_shezhi_nor.png';
 import service from '../res/homeBaseImg/tongyong_icon_xiaoxi_nor.png';
 import promotion from '../res/homeBaseImg/me_icon_tuiguang_nor.png';
+import task_icon from '../res/homeBaseImg/me_task_icon.png'
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineApi from '../api/MineApi';
 import { observer } from 'mobx-react/native';
@@ -510,8 +511,8 @@ export default class MinePage extends BasePage {
     }
 
     renderMenu = () => {
-        let leftImage = [inviteFr, coupons, myData, myCollet, myHelper, address, promotion, showImg];
-        let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助与客服', '地址', '我的推广', '发现收藏'];
+        let leftImage = [inviteFr, coupons, myData, myCollet, myHelper, address, promotion, task_icon, showImg];
+        let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助与客服', '地址', '我的推广', '我的任务', '发现收藏'];
 
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
@@ -602,10 +603,11 @@ export default class MinePage extends BasePage {
                 this.props.navigation.navigate(RouterMap.UserPromotionPage);
                 break;
             case 7:
-                this.props.navigation.navigate(RouterMap.ShowConnectPage);
+                this.props.navigation.navigate(RouterMap.ShareTaskListPage);
                 break;
             case 8:
-
+                this.props.navigation.navigate(RouterMap.ShowConnectPage);
+                break;
             //邀请评分
             case 9:
                 //
