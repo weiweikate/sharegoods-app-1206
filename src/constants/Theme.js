@@ -891,7 +891,6 @@ const ui = {
                 fontSize: 12,
                 lineHeight: 20
             },
-            name_text: {},
             name_text: {
                 fontWeight: 'bold'
             },
