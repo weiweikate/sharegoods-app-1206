@@ -257,7 +257,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                                 <Text style={[styles.text, { marginTop: autoSizeWidth(10) }]}>
                                     {'任务开始时间：' + DateUtils.getFormatDate(item.createTime / 1000, 'yyyy-MM-dd')}
                                 </Text>
-                                <TouchableWithoutFeedback onPress={()=>  this.$navigate(RouterMap.ShareTaskIntroducePage, { jobId: item.jobId, status: status})}>
+                                <TouchableWithoutFeedback onPress={()=>  this.$navigate(RouterMap.ShareTaskIntroducePage, { jobId: item.jobId, status: status, id: id})}>
                                 <View style={{
                                     marginTop: autoSizeWidth(20),
                                     height: autoSizeWidth(170),
