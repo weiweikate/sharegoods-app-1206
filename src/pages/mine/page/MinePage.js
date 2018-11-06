@@ -241,7 +241,7 @@ export default class MinePage extends BasePage {
                         <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={{ color: '#666666', fontSize: px2dp(18), includeFontPadding: false }}>
-                                    {`${user.nickname ? user.nickname : (user.phone ? user.phone : 1234)}`}
+                                    {`${user.nickname ? user.nickname : (user.phone ? user.phone : '未登陆')}`}
                                 </Text>
                                 <Image source={rightIcon}
                                        style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(16) }}
