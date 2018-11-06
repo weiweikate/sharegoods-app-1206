@@ -240,6 +240,10 @@ export default class ShopCartPage extends BasePage {
         );
     };
     _toBuyImmediately = () => {
+
+
+        // console.log('手机号格式话'+ StringUtils.formatPhoneNumber(''+17766667777))
+        // return;
         // this.$navigate('LoginModal')
         // return;
         let [...selectArr] = shopCartStore.startSettlement();
