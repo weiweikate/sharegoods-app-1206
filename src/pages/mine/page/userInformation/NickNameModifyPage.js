@@ -62,8 +62,8 @@ export default class NickNameModifyPage extends BasePage {
     save = () => {
         MineAPI.updateUserById({ type: 2, nickname: this.state.nickName }).then(res => {
             let length = this.state.nickName.trim().length;
-            if (length < 2 || length > 8) {
-                this.$toastShow('昵称长度位2-8位');
+            if (length < 2 || length > 16) {
+                this.$toastShow('昵称长度位2-16位');
                 return;
             }
             let containSpecial = RegExp(/[(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\-)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)(\<)(\>)(\?)(\)]+/);

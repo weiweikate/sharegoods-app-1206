@@ -2,7 +2,7 @@
  * 首页
  */
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
     View,
     StyleSheet,
@@ -12,7 +12,7 @@ import {
     ImageBackground,
     InteractionManager,
     TouchableWithoutFeedback,
-    Image, Platform, NativeModules
+    Image, Platform, NativeModules, AsyncStorage
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
@@ -41,12 +41,13 @@ import closeImg from '../shareTask/res/qiandao_btn_return_nor.png';
 import MineApi from '../mine/api/MineApi';
 import VersionUpdateModal from './VersionUpdateModal';
 import DeviceInfo from 'react-native-device-info';
+import StringUtils from '../../utils/StringUtils';
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
 
 @observer
-export default class HomePage extends Component {
+export default class HomePage extends PureComponent {
 
     st = 0;
     shadowOpacity = 0.4;
@@ -72,22 +73,30 @@ export default class HomePage extends Component {
         this.getVersion();
     }
 
-    getVersion = () => {
+    getVersion = async () => {
+        let upVersion = '';
+        try {
+            upVersion = await AsyncStorage.getItem('isToUpdate');
+        } catch (error) {
+        }
+
         MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((res) => {
             if (res.data.upgrade === 1) {
-                if (Platform.OS !== 'ios') {
-                    NativeModules.commModule.apkExist(res.data.version, (exist) => {
+                if (StringUtils.isEmpty(upVersion) && upVersion !== res.data.version) {
+                    if (Platform.OS !== 'ios') {
+                        NativeModules.commModule.apkExist(res.data.version, (exist) => {
+                            this.setState({
+                                updateData: res.data,
+                                showUpdate: true,
+                                apkExist: exist
+                            });
+                        });
+                    } else {
                         this.setState({
                             updateData: res.data,
-                            showUpdate: true,
-                            apkExist: exist
+                            showUpdate: true
                         });
-                    });
-                } else {
-                    this.setState({
-                        updateData: res.data,
-                        showUpdate: true
-                    });
+                    }
                 }
                 if (res.data.forceUpdate === 1) {
                     // 强制更新
