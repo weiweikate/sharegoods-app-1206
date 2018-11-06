@@ -57,7 +57,7 @@ export default class ShareTaskIcon extends React.Component {
     queryTask() {
         taskApi.queryTask({}).then((result => {
             let hasTask = false;
-            if (result.data.id !== undefined && result.data.id !== null){
+            if (result.data.receiveFlag === true){//表示有任务可以领取
                 hasTask = true;
             }
             this.setState({hasTask, data:result.data});
@@ -66,11 +66,11 @@ export default class ShareTaskIcon extends React.Component {
 
     _onPress() {
         if (this.isOpen === true) {
-            if (this.state.data.receiveFlag === false){//表示任务已经领取
-                this._gotoTaskList();
-            } else {
+            // if (this.state.data.receiveFlag === false){//表示任务已经领取
+            //     this._gotoTaskList();
+            // } else {
                 this.alert.open();
-            }
+            // }
             this.close();
         } else {
             this.open();

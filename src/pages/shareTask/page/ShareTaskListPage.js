@@ -105,7 +105,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                         this.list2 = ref;
                     }}
                     heightForCell={({ row }) => {
-                        return this.expansions[row] ? autoSizeWidth(335) : autoSizeWidth(95);
+                        return this.expansions[row] ? autoSizeWidth(315) : autoSizeWidth(95);
                     }}
                     renderItem={this._renderIndexPath}
                     renderItemSeparator={this.renderItemSeparator}
@@ -244,10 +244,10 @@ export default class ShareTaskListPage extends BasePage<Props> {
                                 <View style={{
                                     marginTop: autoSizeWidth(20),
                                     height: autoSizeWidth(170),
-                                    flexDirection: 'row'
+                                    flexDirection: 'row',
                                 }}>
                                     <Image source={task_bg}
-                                           style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}/>
+                                           style={{ position: 'absolute', top: 0, left: 0,width: autoSizeWidth(375-30),  height: autoSizeWidth(170),}}/>
                                     <View style={{ flex: 1 }}/>
                                     {
                                         status === 4 ?
