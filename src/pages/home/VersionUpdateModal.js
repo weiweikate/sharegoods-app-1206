@@ -64,7 +64,6 @@ export default class VersionUpdateModal extends React.Component {
         return (<CommModal
             animationType='fade'
             transparent={true}
-            forbidAndroidBack={true}
             visible={this.props.showUpdate}>
             <View style={{
                 flexDirection: 'column',
