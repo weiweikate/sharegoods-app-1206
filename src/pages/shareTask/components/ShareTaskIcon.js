@@ -78,14 +78,14 @@ export default class ShareTaskIcon extends React.Component {
 
     }
 
-    _gotoTaskList(){
-        global.$navigator.dispatch(NavigationActions.push({ routeName: RouterMap.ShareTaskListPage }));
+    _gotoTaskList(id){
+        global.$navigator.dispatch(NavigationActions.push({ routeName: RouterMap.ShareTaskIntroducePage, params: {jobId: this.state.data.id, status: 1,id: id}}));
     }
     //领取任务
     receiveTask(){
         let that = this;
         taskApi.reciveTask({}).then((result => {
-            that._gotoTaskList();
+            that._gotoTaskList(result.data.id);
         })).catch((error)=> {
             NativeModules.commModule.toast(error.msg || '任务领取失败');
         });

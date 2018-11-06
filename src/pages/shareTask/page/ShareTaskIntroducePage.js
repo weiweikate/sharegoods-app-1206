@@ -72,7 +72,7 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                         style={styles.image}
                     />
                 </ScrollView>
-                <TouchableWithoutFeedback onPress={() => {
+                {this.params.status === 1 ? <TouchableWithoutFeedback onPress={() => {
                     this.shareModal.open();
                 }}>
                     <View style={{
@@ -83,7 +83,7 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                     }}>
                         <UIText value={'分享好友帮你点击'} style={{ color: '#FFFFFF', fontSize: 16 }}/>
                     </View>
-                </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback> : null}
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'task'}
                                 // webJson={{
@@ -99,7 +99,7 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                                     thumImage: 'logo.png',
                                     hdImageURL: '',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/index/index`,
-                                    miniProgramPath: `/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.params.jobId}`
+                                    miniProgramPath: `/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.params.id}`
                                 }}
                 />
             </View>
