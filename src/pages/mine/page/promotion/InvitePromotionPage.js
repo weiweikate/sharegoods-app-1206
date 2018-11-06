@@ -17,7 +17,6 @@ import {
     Text,
     ImageBackground,
     TouchableWithoutFeedback,
-    TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -46,12 +45,12 @@ export default class InvitePromotionPage extends BasePage<Props> {
     //下拉加载更多
     onLoadMore = () => {
         this.currentPage++;
-        this.getUserPromotionPromoter();
+        this.loadPageData();
     };
     //刷新
     onRefresh = () => {
         this.currentPage = 1;
-        this.getUserPromotionPromoter();
+        this.loadPageData();
     };
 
 
@@ -77,49 +76,35 @@ export default class InvitePromotionPage extends BasePage<Props> {
         });
     };
 
-    goExplicationPage = () => {
-        this.$navigate('mine/promotion/PromotionRulePage')
-    };
-
-    $NavBarRenderRightItem = () => {
-        return (
-            <TouchableOpacity onPress={this.goExplicationPage}>
-                <Text style={{ color: '#666666', fontSize: px2dp(12) }}>
-                    推广说明
-                </Text>
-            </TouchableOpacity>
-        );
-    };
-
-    _bind() {
-        this.loadPageData = this.loadPageData.bind(this);
-    }
-
 
     componentDidMount() {
         this.loadPageData();
     }
 
-    loadPageData() {
-    }
 
-    _itemRender = ({ item }) =>{
+    _itemRender = ({ item }) => {
+        let limit = (
+            <Text style={styles.itemTextStyle}>
+                {`每人限购${item.buyLimit}份`}
+            </Text>
+        );
         return (
             <View style={{ height: px2dp(63), width: ScreenUtils.width }}>
-                <TouchableWithoutFeedback onPress={()=>{
-                    if(item.userBuy){
-                        this.$navigate('mine/promotion/PromotionPayPage',item)
+                <TouchableWithoutFeedback onPress={() => {
+                    if (item.userBuy) {
+                        this.$navigate('mine/promotion/PromotionPayPage', item);
                     }
                 }}>
-                    <View style={[styles.itemWrapper,{backgroundColor : item.userBuy ? '#ffffff':'#CCCCCC'}]}>
+                    <View style={[styles.itemWrapper, { backgroundColor: item.userBuy ? '#ffffff' : '#CCCCCC' }]}>
                         <Text style={styles.itemTextStyle}>
-                            {item.name}
+                            {item.name}{`/推广周期${item.cycle}天`}
                         </Text>
+                        {(!item.userBuy && item.lime !== -1) ? limit : null}
                     </View>
                 </TouchableWithoutFeedback>
             </View>
         );
-    }
+    };
 
 
     _render() {
