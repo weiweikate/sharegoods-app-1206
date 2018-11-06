@@ -10,12 +10,12 @@ import BasePage from '../../../../BasePage';
 import {
     UIText, UIButton
 } from '../../../../components/ui';
-import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
 import user from '../../../../model/user';
+import DesignRule from 'DesignRule';
 
 class AddBankCardPage extends BasePage {
     constructor(props) {
@@ -70,11 +70,16 @@ class AddBankCardPage extends BasePage {
     //**********************************ViewPart******************************************
     _render() {
         return (
-            <View style={styles.container}>
+            <View style={DesignRule.style_container}>
                 <View style={styles.itemTitleView}>
                     <UIText value={'请绑定持卡人本人银行卡'} style={styles.itemTitleText}/>
                 </View>
-                <View style={{ height: 45, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
+                <View style={{
+                    height: 45,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: DesignRule.white
+                }}>
                     <Text style={styles.accountStyle}>{'持卡人姓名'}</Text>
                     <RNTextInput
                         style={styles.inputTextStyle}
@@ -85,7 +90,12 @@ class AddBankCardPage extends BasePage {
                     />
                 </View>
                 {this.renderLine()}
-                <View style={{ height: 45, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
+                <View style={{
+                    height: 45,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: DesignRule.white
+                }}>
                     <Text style={styles.accountStyle}>{'卡号'}</Text>
                     <RNTextInput
                         style={styles.inputTextStyle}
@@ -96,7 +106,12 @@ class AddBankCardPage extends BasePage {
                     />
                 </View>
                 {this.renderLine()}
-                <View style={{ height: 45, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
+                <View style={{
+                    height: 45,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: DesignRule.white
+                }}>
                     <Text style={styles.accountStyle}>{'手机号'}</Text>
                     <RNTextInput
                         style={styles.inputTextStyle}
@@ -111,7 +126,7 @@ class AddBankCardPage extends BasePage {
                     height: 45,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor: 'white',
+                    backgroundColor: DesignRule.white,
                     justifyContent: 'space-between'
                 }}>
                     <Text style={styles.accountStyle}>{'银行'}</Text>
@@ -122,7 +137,7 @@ class AddBankCardPage extends BasePage {
                     height: 45,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor: 'white',
+                    backgroundColor: DesignRule.white,
                     justifyContent: 'space-between'
                 }}>
                     <Text style={styles.accountStyle}>{'卡类型'}</Text>
@@ -135,7 +150,7 @@ class AddBankCardPage extends BasePage {
                     value={'确认'}
                     style={{
                         marginTop: 102,
-                        backgroundColor: color.red,
+                        backgroundColor: DesignRule.mainColor,
                         width: ScreenUtils.width - 96,
                         height: 48,
                         marginLeft: 48,
@@ -148,7 +163,12 @@ class AddBankCardPage extends BasePage {
 
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line, marginLeft: 48, marginRight: 48 }}/>
+            <View style={{
+                height: 1,
+                backgroundColor: DesignRule.lineColor_inColorBg,
+                marginLeft: 48,
+                marginRight: 48
+            }}/>
         );
     };
     inputCardNum = (cardNo) => {
@@ -178,12 +198,17 @@ class AddBankCardPage extends BasePage {
     };
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: '#eeeeee', paddingLeft: 21, paddingRight: 23 }}/>
+            <View style={{
+                height: 1,
+                backgroundColor: DesignRule.lineColor_inColorBg,
+                paddingLeft: 21,
+                paddingRight: 23
+            }}/>
         );
     };
 
@@ -234,14 +259,12 @@ class AddBankCardPage extends BasePage {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1, backgroundColor: color.page_background
-    }, rectangleStyle: {
+    rectangleStyle: {
         marginTop: 20,
         height: 44,
-        backgroundColor: color.page_background,
+        backgroundColor: DesignRule.bgColor,
         borderWidth: 1,
-        borderColor: color.hintTextColor,
+        borderColor: DesignRule.textColor_hint,
         marginLeft: 40,
         marginRight: 40,
         borderRadius: 3,
@@ -250,27 +273,27 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     }, accountStyle: {
-        marginLeft: 21, color: color.loginTextBlack, width: 80
+        marginLeft: 21, color: DesignRule.textColor_mainTitle, width: 80
     }, accountStyle2: {
-        marginLeft: 21, color: color.loginTextBlack, marginRight: 21
+        marginLeft: 21, color: DesignRule.textColor_mainTitle, marginRight: 21
     }, inputTextStyle: {
-        marginLeft: 21, height: 40, flex: 1, backgroundColor: 'white', fontSize: 14
+        marginLeft: 21, height: 40, flex: 1, backgroundColor: DesignRule.white, fontSize: 14
     }, detailAddress: {
         flex: 1,
         marginLeft: 20,
         marginRight: 20,
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         fontSize: 14
     }, itemTitleView: {
         height: 48,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: DesignRule.bgColor,
         paddingLeft: 14,
         justifyContent: 'center'
     }, itemTitleText: {
         fontSize: 13,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     }, grayText: {
-        fontSize: 13, color: '#999999', marginRight: 5
+        fontSize: 13, color: DesignRule.textColor_instruction, marginRight: 5
     }
 });
 
