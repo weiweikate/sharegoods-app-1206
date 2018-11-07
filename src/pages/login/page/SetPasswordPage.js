@@ -20,7 +20,7 @@ export default class SetPasswordPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <CommRegistView
-                    viewType={1}
+                    viewType={2}
                     loginClick={(phone, code, password) => this.clickNext(phone, code, password)}
                 />
                 <View style={{
@@ -56,7 +56,6 @@ export default class SetPasswordPage extends BasePage {
             wechatVersion: ''
         }).then(data=>{
             this.$loadingDismiss();
-
             // console.warn(data);
             this.$navigateBack(-2);
         }).catch(data=>{

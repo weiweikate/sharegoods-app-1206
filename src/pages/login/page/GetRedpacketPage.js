@@ -396,7 +396,7 @@ export default class GetRedpacketPage extends BasePage {
                 if (time <= 0){
                     this._closeModal();
                 }
-            },2)
+            },5)
 
         }).catch(reason => {
             this.$loadingDismiss();
