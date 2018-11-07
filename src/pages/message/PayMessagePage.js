@@ -53,11 +53,11 @@ export default class PayMessagePage extends BasePage {
     }
 
     toHelperPage = () => {
-        this.$navigate('mine/helper/HelperFeedbackPage');
+        this.$navigate('mine/helper/MyHelperPage');
     };
 
     commitQuestion = () => {
-        this.$navigate('mine/helper/MyHelperPage');
+        this.$navigate('mine/helper/HelperFeedbackPage');
     };
 
     renderSuccess() {

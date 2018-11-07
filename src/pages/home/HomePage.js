@@ -42,7 +42,8 @@ import MineApi from '../mine/api/MineApi';
 import VersionUpdateModal from './VersionUpdateModal';
 import DeviceInfo from 'react-native-device-info';
 import StringUtils from '../../utils/StringUtils';
-
+import DateUtils from '../../utils/DateUtils';
+const LASTGETHOMEMESSAGETIME = 'lastgethomemessagetime';
 const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
 
@@ -225,20 +226,31 @@ export default class HomePage extends PureComponent {
     componentDidMount() {
         //this.shareModal.open();
         InteractionManager.runAfterInteractions(() => {
-            // this.getMessageData();
+            this.getMessageData();
         });
     }
 
-    getMessageData = () => {
-        MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
-            if (!EmptyUtils.isEmptyArr(res.data.data)) {
-                this.messageModal && this.messageModal.open();
-                this.setState({
-                    showMessage: true,
-                    messageData: res.data.data
+    getMessageData =async () => {
+        try {
+            const value = await AsyncStorage.getItem(LASTGETHOMEMESSAGETIME);
+            if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
+                console.log('ssss'+DateUtils.isToday(new Date(parseInt(value)))+'----'+value);
+                MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
+                    if (!EmptyUtils.isEmptyArr(res.data.data)) {
+                        this.messageModal && this.messageModal.open();
+                        this.setState({
+                            showMessage: true,
+                            messageData: res.data.data
+                        });
+                    }
                 });
+                AsyncStorage.setItem(LASTGETHOMEMESSAGETIME, Date.parse(new Date()).toString());
             }
-        });
+
+        }catch (e) {
+
+        }
+
     };
 
     messageModalRender() {
