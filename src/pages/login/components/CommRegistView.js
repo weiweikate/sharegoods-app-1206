@@ -240,7 +240,7 @@ export default class CommRegistView extends Component {
             (new TimeDownUtils()).startDown((time) => {
                 this.registModel.dowTime = time;
             });
-            let SMSTyle = this.props.viewType === 1 ? SMSTool.ForgetType : SMSTool.RegType;
+            let SMSTyle = this.props.viewType === 1 ? SMSTool.OldPhoneType : SMSTool.RegType;
             SMSTool.sendVerificationCode(SMSTyle,this.registModel.phoneNumber)
         } else {
             bridge.$toast('手机格式不对');
