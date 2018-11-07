@@ -97,7 +97,11 @@ export default class ShowDetailPage extends Component {
         }
         let content = `<div>${detail.content}</div>`;
         let products = detail.products;
-        return <View style={styles.container}><ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        return <View style={styles.container}>
+            <ScrollView
+                style={styles.container}
+                showsVerticalScrollIndicator={false}
+            >
             <ShowImageView items={detail.imgs}/>
             <View style={styles.profileRow}>
                 <View style={styles.profileLeft}>
@@ -123,14 +127,6 @@ export default class ShowDetailPage extends Component {
                     })
                 }
             </View>
-            <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
-                <Image source={backImg}/>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.shareView} onPress={() => {
-                this._goToShare();
-            }}>
-                <Image source={showShareImg}/>
-            </TouchableOpacity>
         </ScrollView>
             <View style={styles.bottom}>
                 {
@@ -161,6 +157,14 @@ export default class ShowDetailPage extends Component {
                         </TouchableOpacity>
                 }
             </View>
+            <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
+                <Image source={backImg}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.shareView} onPress={() => {
+                this._goToShare();
+            }}>
+                <Image source={showShareImg}/>
+            </TouchableOpacity>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}
                             miniProgramJson={{
