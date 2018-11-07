@@ -8,6 +8,7 @@ import {
     Image,
     Text,
     TouchableOpacity,
+    ScrollView
 } from 'react-native'
 import BasePage from '../../../../BasePage'
 import UIText from '../../../../components/ui/UIText';
@@ -73,9 +74,11 @@ export default class HelperQuestionListPage extends BasePage {
 
     _render() {
         return (
-            <View style={{backgroundColor: '#F6F6F6', flex: 1,marginBottom: ScreenUtils.saveMarginBottom}}>
+            <View style={{backgroundColor: '#F7F7F7', flex: 1,marginBottom: ScreenUtils.safeBottom}}>
+            <ScrollView style={{marginBottom:80}}>
                 <View style={{width: ScreenUtils.width, height: 10}}/>
                 {this.renderContentView()}
+            </ScrollView>
                 {this.renderFooter()}
             </View>
         )

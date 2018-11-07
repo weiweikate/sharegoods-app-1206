@@ -330,7 +330,7 @@ export default class MyPromotionPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginBottom: ScreenUtils.saveMarginBottom
+        marginBottom: ScreenUtils.safeBottom
     },
     headerBg: {
         marginTop: 16,

@@ -11,7 +11,7 @@ const color = {
     page_background3: '#F1F1F1',
     line: '#DCDCDC',
     one_color: '#F34646',
-    red: '#E60012',
+    red: '#F00006',
     lightPink: '#FEEEEE',
     pink: '#EB22245C',
     little_pink: '#EB222414',
