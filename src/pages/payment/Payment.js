@@ -270,7 +270,7 @@ export class Payment {
 
 
     //推广套餐
-    @action payPromotionWithId = (password,packageId) => {
+    @action payPromotionWithId = (password,packageId, ref) => {
         let type = (this.selectedBalace ? 1 : 0)
         if (this.selectedTypes) {
             type += this.selectedTypes.type
@@ -312,7 +312,8 @@ export class Payment {
             return Promise.reject(result)
         }).catch(error => {
             console.log('payStoreActoin error', error)
-            Toast.$toast(error.msg)
+            // Toast.$toast(error.msg)
+            ref && ref.show(2, error.msg)
             Toast.hiddenLoading()
         })
     }
