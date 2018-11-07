@@ -11,9 +11,6 @@ const SMSInterface = {
     SMSNewPhone: ['/sms/sendNewPhoneMessage', { method: 'get',isRSA:true}],
     // 第一次设置交易密码验证码
     SMSSalePhone: ['/sms/sendTransactionMessage', { method: 'get',isRSA:true}],
-    //忘记密码
-    SMSForgetPassword:['',{method: 'get',isRSA:true}]
-    //老用户设置密码
 };
 
 const SMSAPI = ApiUtils(SMSInterface);
@@ -25,7 +22,6 @@ const SMSTool = {
         OldPhoneType: 2,
         NewPhoneType: 3,
         SalePwdType: 4,
-        ForgetType:5
 
     },
     /**
@@ -61,11 +57,6 @@ const SMSTool = {
                     phone: phoneNumber
                 });
                 break;
-            case this.SMSType.ForgetType:
-                return SMSAPI.SMSForgetPassword({
-                    phone:phoneNumber
-
-                })
             default:
                 break;
         }
