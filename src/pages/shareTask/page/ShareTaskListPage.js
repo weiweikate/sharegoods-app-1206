@@ -190,7 +190,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
         let onPress = null;
         switch (status) {
             case 1:
-                image_title = this.getRestTime(countDown, status);
+                image_title = '任务倒计时：' + this.getRestTime(countDown, status);
                 image_btnText = '继续分享';
                 image_detail = shareHits === 0 ? '暂无好友激活' : desc;
                 onPress = () => {
