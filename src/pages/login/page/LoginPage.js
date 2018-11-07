@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import loginAndRegistRes from '../res/LoginAndRegistRes';
-import ScreenUtils from '../../../utils/ScreenUtils';
 import ColorUtil from '../../../utils/ColorUtil';
 import BasePage from '../../../BasePage';
 import bridge from '../../../utils/bridge';
@@ -95,15 +94,15 @@ export default class LoginPage extends BasePage {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <Image
-                    style={{
-                        width: ScreenUtils.width,
-                        position: 'absolute',
-                        bottom: 0,
-                        height: 80
-                    }}
-                    source={loginAndRegistRes.loginBottomImage}
-                    resizeMode='cover'/>
+                {/*<Image*/}
+                    {/*style={{*/}
+                        {/*width: ScreenUtils.width,*/}
+                        {/*position: 'absolute',*/}
+                        {/*bottom: 0,*/}
+                        {/*height: 80*/}
+                    {/*}}*/}
+                    {/*source={loginAndRegistRes.loginBottomImage}*/}
+                    {/*resizeMode='cover'/>*/}
             </View>
         );
     }
