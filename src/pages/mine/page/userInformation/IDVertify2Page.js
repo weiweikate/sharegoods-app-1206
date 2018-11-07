@@ -196,6 +196,9 @@ export default class IDVertify2Page extends BasePage {
             <View>
                 <TakePhotoModal
                     isShow={this.state.isShowTakePhotoModal}
+                    ref = {(ref)=>{
+                        this.takePhoteModal = ref;
+                    }}
                     closeWindow={() => {
                         this.setState({ isShowTakePhotoModal: false });
                     }}
