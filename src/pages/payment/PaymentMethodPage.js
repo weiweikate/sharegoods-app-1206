@@ -72,9 +72,6 @@ export default class PaymentMethodPage extends BasePage {
             password: '',
             //需要支付的金额
             shouldPayMoney: this.params.amounts ? this.params.amounts : 0,
-            //example:2表示两个代币兑换1个余额
-            //-1表示该参数未初始化,不能完成支付 todo 做支付拦截
-            tokenCoinToBalance: this.params.tokenCoinToBalance ? this.params.tokenCoinToBalance : -1,
             //订单支付的参数
             orderNum: this.params.orderNum ? this.params.orderNum : 0,
             payPromotionSuccess: false
@@ -242,7 +239,7 @@ export default class PaymentMethodPage extends BasePage {
                                     }
                                 });
                             }else if(payPromotion){
-                                this.payment.payPromotionWithId(text,this.params.packageId).then(result => {
+                                this.payment.payPromotionWithId(text,this.params.packageId, this.paymentResultView).then(result => {
                                     if (result.sdkCode === 0) {
                                         // //刷新拼店状态
                                         // spellStatusModel.storeStatus = 2;
@@ -252,7 +249,7 @@ export default class PaymentMethodPage extends BasePage {
                                             payPromotionSuccess:true
                                         })
                                     } else {
-                                        Toast.$toast('支付失败');
+                                        this.paymentResultView.show(2, result.message)
                                     }
                                 });
                             }else {
@@ -438,14 +435,15 @@ export default class PaymentMethodPage extends BasePage {
                 return;
             }
 
-            this.payment.payPromotionWithId(this.state.password , this.params.packageId).then(result => {
+            this.payment.payPromotionWithId(this.state.password , this.params.packageId, this.paymentResultView).then(result => {
                 if (result.sdkCode === 0) {
                     //刷新拼店状态
                     this.setState({
                         payPromotionSuccess: true
                     });
                 } else {
-                    Toast.$toast('支付失败');
+                    // Toast.$toast('支付失败');
+                    this.paymentResultView.show(2, result.message)
                 }
             });
             return;
