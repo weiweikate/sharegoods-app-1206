@@ -20,6 +20,7 @@ import bridge from '../../../utils/bridge';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
+import DesignRule from '../../../constants/DesignRule';
 
 class CommModel {
 
@@ -143,7 +144,7 @@ export default class CommRegistView extends Component {
                             }}
                                 activeOpacity={1}
                             >
-                                <Text style={{ color: ColorUtil.mainRedColor }}>
+                                <Text style={{ color: DesignRule.mainColor }}>
                                     {this.registModel.dowTime > 0 ? `${this.registModel.dowTime}秒后重新获取` : '获取验证码'}
                                 </Text>
                             </TouchableOpacity>
@@ -192,11 +193,10 @@ export default class CommRegistView extends Component {
                         marginRight: 30,
                         marginLeft: 30,
                         marginTop: 40,
-                        height: 45,
-                        backgroundColor: ColorUtil.mainRedColor,
-                        borderRadius: 5
+                        height: 50,
+                        borderRadius: 25
                     },
-                        this.registModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]
+                        this.registModel.isCanClick ? { backgroundColor:DesignRule.mainColor} : { backgroundColor: DesignRule.bgColor_grayHeader }]
                 }>
                     <TouchableOpacity
                         onPress={this.loginClick}

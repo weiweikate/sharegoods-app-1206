@@ -62,7 +62,7 @@ export default class CommModal extends PureComponent {
      */
     open = ()=>{
         this.setState({
-            visible: false,
+            visible: true,
             update:!this.state.update
         })
     }
@@ -95,7 +95,7 @@ export default class CommModal extends PureComponent {
                 ref={(modalAndroid) => {
                     this.modalAndroid = modalAndroid;
                 }}
-                popVisible={[this.state.visible, this.state.update]}>
+                visible={[this.state.visible, this.state.update]}>
                 <TouchableOpacity
                     activeOpacity={1}
                 >

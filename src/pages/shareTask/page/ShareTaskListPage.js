@@ -325,6 +325,9 @@ export default class ShareTaskListPage extends BasePage<Props> {
         let H = restSeconds % 24;
         restSeconds = (restSeconds - H) / 24;
         let d = restSeconds;
+        if (d === 0){
+            return `${this.oneToTwo(H)}:${this.oneToTwo(m)}:${this.oneToTwo(s)}`;
+        }
         return `${this.oneToTwo(d)}:${this.oneToTwo(H)}:${this.oneToTwo(m)}:${this.oneToTwo(s)}`;
     }
 
