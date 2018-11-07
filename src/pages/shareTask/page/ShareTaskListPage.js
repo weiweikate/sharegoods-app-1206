@@ -192,8 +192,9 @@ export default class ShareTaskListPage extends BasePage<Props> {
             case 1:
                 image_title = this.getRestTime(countDown, status);
                 image_btnText = '继续分享';
-                image_detail = shareHits === 0 ? '暂无好友激活' : '已有' + shareHits + '位好友帮你激活';
+                image_detail = shareHits === 0 ? '暂无好友激活' : desc;
                 onPress = () => {
+                    // global.$navigator.dispatch(NavigationActions.navigate({ routeName: RouterMap.ShareTaskIntroducePage, params: {jobId:item.jobId, status: 1} }));
                     this.setState({jobId: item.jobId})
                     this.shareModal.open();
                 };
@@ -256,7 +257,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                                 <Text style={[styles.text, { marginTop: autoSizeWidth(10) }]}>
                                     {'任务开始时间：' + DateUtils.getFormatDate(item.createTime / 1000, 'yyyy-MM-dd')}
                                 </Text>
-                                <TouchableWithoutFeedback onPress={()=>  this.$navigate(RouterMap.ShareTaskIntroducePage, { jobId: item.jobId, status: status})}>
+                                <TouchableWithoutFeedback onPress={()=>  this.$navigate(RouterMap.ShareTaskIntroducePage, { jobId: item.jobId, status: status, id: id})}>
                                 <View style={{
                                     marginTop: autoSizeWidth(20),
                                     height: autoSizeWidth(170),

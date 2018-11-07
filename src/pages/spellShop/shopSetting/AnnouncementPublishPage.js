@@ -12,6 +12,7 @@ import {
 import BasePage from '../../../BasePage';
 import StringUtils from '../../../utils/StringUtils';
 import SpellShopApi from '../api/SpellShopApi';
+import DesignRule from 'DesignRule';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -53,10 +54,10 @@ export default class AnnouncementPublishPage extends BasePage {
     };
 
     _render() {
-        const color = { color: this.state.text ? '#333' : '#999999' };
+        const color = { color: this.state.text ? DesignRule.textColor_mainTitle : DesignRule.textColor_instruction };
         return (
             <View style={styles.container}>
-                <ScrollView style={{ backgroundColor: 'white' }}>
+                <ScrollView style={{ backgroundColor: DesignRule.white }}>
                     <View style={styles.gap}/>
                     <View style={styles.bgContainer}>
                         <View style={styles.topBar}>
@@ -99,17 +100,17 @@ const styles = StyleSheet.create({
         marginTop: 15,
         alignItems: 'center',
         height: 44,
-        backgroundColor: '#e60012',
+        backgroundColor: DesignRule.mainColor,
         borderTopLeftRadius: 4,
         borderTopRightRadius: 4
     },
     barTitle: {
         fontSize: 15,
-        color: '#ffffff'
+        color: DesignRule.white
     },
     textInputContainer: {
         width: SCREEN_WIDTH - 30,
-        backgroundColor: '#eeeeee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         height: 262
     },
     textInput: {
@@ -121,13 +122,13 @@ const styles = StyleSheet.create({
     gap: {
         width: SCREEN_WIDTH,
         height: 10,
-        backgroundColor: '#F6F6F6'
+        backgroundColor: DesignRule.bgColor
     },
     bgContainer: {
         flex: 1,
         width: SCREEN_WIDTH,
         alignItems: 'center',
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     btnRow: {
         marginTop: 44,
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
     okBtn: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#e60012',
+        backgroundColor: DesignRule.mainColor,
         marginRight: 45,
         width: 110,
         height: 40,
@@ -145,18 +146,18 @@ const styles = StyleSheet.create({
     },
     okTitle: {
         fontSize: 16,
-        color: '#ffffff'
+        color: DesignRule.white
     },
     canCelBtn: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#dddddd',
+        backgroundColor: DesignRule.lineColor_inWhiteBg,
         width: 110,
         height: 40,
         borderRadius: 5
     },
     canCelTitle: {
         fontSize: 16,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     }
 });

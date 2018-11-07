@@ -56,8 +56,8 @@ task propagateBuildConfig << {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'], exclude: ['android-support-v4.jar'])
-    compile(rootProject.ext.dependencies.rn) {
+    api fileTree(dir: 'libs', include: ['*.jar'], exclude: ['android-support-v4.jar'])
+    api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
     api project(path: ':commonlib')
