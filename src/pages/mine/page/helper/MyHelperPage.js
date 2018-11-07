@@ -8,7 +8,7 @@ import {
     Image,
     Text,
     TouchableOpacity,
-
+    Linking,
     ScrollView
 } from 'react-native';
 import BasePage from '../../../../BasePage';
@@ -110,13 +110,14 @@ export default class MyHelperPage extends BasePage {
                     height: 80, position: 'absolute', bottom: 0, alignItems: 'center', zIndex: 21
                 }}>
 
-                    <View style={{ width: 58, height: 54, alignItems: 'center', flexDirection:'row', flex: 1 ,justifyContent:'center'}}>
+                    <TouchableOpacity style={{ width: 58, height: 54, alignItems: 'center', flexDirection:'row', flex: 1 ,justifyContent:'center'}}
+                                      onPress={() => this.jump2Telephone()}>
                         <UIImage source={phoneIcon} style={{ height: 23, width: 23 }} resizeMode={'contain'}/>
                         <View style={{marginLeft:2,justifyContent:'center',alignItems:'center'}}>
                         <Text style={[styles.textFontstyle]}>咨询电话</Text>
                         <Text style={styles.text2Style}>8：30-24：00</Text>
                         </View>
-                    </View>
+                    </TouchableOpacity>
 
                     <View style={{ width: 1, height: '70%', backgroundColor: '#C5c5c5' }}/>
 
@@ -136,14 +137,15 @@ export default class MyHelperPage extends BasePage {
     jumpQYIMPage = () => {
         QYChatUtil.qiYUChat();
     };
-
+    jump2Telephone(){
+         Linking.openURL('tel:'+'400-9696-365').catch(e=>console.log(e))
+    }
     jumpTohelpPage() {
         console.log('fankui');
     }
 
     orderListq(list) {
         this.$navigate('mine/helper/HelperQuestionListPage', { list });
-        // this.navigate(RouterPaths.HelperQuestionListPage,{typeid:typeid})
     }
 
     questionfeedBack() {
@@ -153,7 +155,6 @@ export default class MyHelperPage extends BasePage {
     gotoquestionDetail(id) {
         console.log(id);
         this.$navigate('mine/helper/HelperQuestionDetail', { id: id });
-        // this.navigate(RouterPaths.HelperQeustionDetail,{id:id})
     }
 
     componentDidMount() {
