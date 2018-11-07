@@ -118,6 +118,26 @@ export default class UserPromotionPage extends BasePage<Props> {
     /**************************viewpart********************************/
 
     _itemRender=({item}) =>{
+        let text;
+        if(item.status === 2){
+            text = (
+                <Text style={styles.grayTextStyle}>
+                    已结束
+                </Text>
+            )
+        }else if(item.status === 3){
+            text = (
+                <Text style={styles.grayTextStyle}>
+                    已取消
+                </Text>
+            )
+        }else {
+            text = (
+                <Text style={styles.grayTextStyle}>
+                    {`剩余推广金额￥${item.remain * item.price}`}
+                </Text>
+            )
+        }
         return (
             <View style={{ backgroundColor: 'white', marginBottom: px2dp(10) }}>
                 <View style={{
@@ -133,9 +153,7 @@ export default class UserPromotionPage extends BasePage<Props> {
                             {item.packageName}
                         </Text>
                         <View style={{height:px2dp(10)}}/>
-                        <Text style={styles.grayTextStyle}>
-                            {`剩余推广金额￥${item.remain * item.price}`}
-                        </Text>
+                        {text}
                     </View>
                     <TouchableWithoutFeedback onPress={()=>{
                         this.$navigate('mine/promotion/PromotionDetailPage',item)
