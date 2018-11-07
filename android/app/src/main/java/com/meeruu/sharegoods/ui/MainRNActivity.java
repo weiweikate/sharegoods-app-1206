@@ -281,7 +281,6 @@ public class MainRNActivity extends ReactActivity {
                     isShowLoadingDialog = true;
                     mLoadingDialog.show();
                 }
-
             }
         } else {
             if (null != mLoadingDialog && isShowLoadingDialog) {
