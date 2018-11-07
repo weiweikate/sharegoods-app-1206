@@ -16,7 +16,8 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Image
+    Image,
+    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ShareTaskResultAlert from '../components/ShareTaskResultAlert';
@@ -33,7 +34,9 @@ import RouterMap from 'RouterMap';
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import TimerMixin from 'react-timer-mixin';
 import DateUtils from '../../../utils/DateUtils';
-
+import apiEnvironment from '../../../api/ApiEnvironment';
+import user from '../../../model/user';
+import CommShareModal from '../../../comm/components/CommShareModal';
 type Props = {};
 export default class ShareTaskListPage extends BasePage<Props> {
 
@@ -42,7 +45,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
         this._bind();
         this.seconds = 0;
         this.expansions = {};
-        this.state={};
+        this.state={jobId: ''};
 
     }
 
@@ -125,6 +128,17 @@ export default class ShareTaskListPage extends BasePage<Props> {
                                       onPress={() => {
                                           this.$navigate('mine/userInformation/MyCashAccountPage');
                                       }}/>
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                type={'task'}
+                                miniProgramJson={{
+                                    title: '邀请好友可获得品牌推广的现金奖励',
+                                    dec: '',
+                                    thumImage: 'logo.png',
+                                    hdImageURL: '',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/index/index`,
+                                    miniProgramPath: `/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.state.jobId}`
+                                }}
+                />
             </View>
         );
     }
@@ -178,9 +192,11 @@ export default class ShareTaskListPage extends BasePage<Props> {
             case 1:
                 image_title = this.getRestTime(countDown, status);
                 image_btnText = '继续分享';
-                image_detail = shareHits === 0 ? '暂无好友激活' : '已有' + shareHits + '位好友帮你激活';
+                image_detail = shareHits === 0 ? '暂无好友激活' : desc;
                 onPress = () => {
-                    this.$navigate(RouterMap.ShareTaskIntroducePage, { jobId: item.jobId });
+                    // global.$navigator.dispatch(NavigationActions.navigate({ routeName: RouterMap.ShareTaskIntroducePage, params: {jobId:item.jobId, status: 1} }));
+                    this.setState({jobId: item.jobId})
+                    this.shareModal.open();
                 };
                 break;
             case 2:
@@ -241,14 +257,15 @@ export default class ShareTaskListPage extends BasePage<Props> {
                                 <Text style={[styles.text, { marginTop: autoSizeWidth(10) }]}>
                                     {'任务开始时间：' + DateUtils.getFormatDate(item.createTime / 1000, 'yyyy-MM-dd')}
                                 </Text>
+                                <TouchableWithoutFeedback onPress={()=>  this.$navigate(RouterMap.ShareTaskIntroducePage, { jobId: item.jobId, status: status, id: id})}>
                                 <View style={{
                                     marginTop: autoSizeWidth(20),
                                     height: autoSizeWidth(170),
                                     flexDirection: 'row',
                                 }}>
                                     <Image source={task_bg}
-                                           style={{ position: 'absolute', top: 0, left: 0,width: autoSizeWidth(375-30),  height: autoSizeWidth(170),}}/>
-                                    <View style={{ flex: 1 }}/>
+                                           style={{ position: 'absolute', top: 0, left: 0,width: autoSizeWidth(375-30),  height: autoSizeWidth(170)}}/>
+                                    <View style={{ flex: 1}}/>
                                     {
                                         status === 4 ?
                                             this._renderEndTaskView(recieveMoney) :
@@ -265,6 +282,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                                             </View>
                                     }
                                 </View>
+                                </TouchableWithoutFeedback>
                             </View>
                         :
                         <View style={{ flexDirection: 'row', alignItems: 'center', height: autoSizeWidth(40) }}>

@@ -54,6 +54,18 @@ const formatString = (text, length = 10) => {
         return str;
     }
 };
+/**
+ * phone 手机号
+ * 如15577773333 => 155****3333
+ */
+const formatPhoneNumber = (phone) => {
+    if (checkPhone(phone)){
+        return '' + phone.replace(phone.substr(3, 4), '****');
+    } else {
+        return '***********'
+    }
+
+};
 /*
  * 名字判断：2-16位字母或者汉字
  * */
@@ -196,10 +208,10 @@ function trim(s) {
 
 //手机号中间4位用*代替
 function encryptPhone(s) {
-    if(EmptyUtils.isEmpty(s)){
+    if (EmptyUtils.isEmpty(s)) {
         return s;
     }
-    if(!checkPhone(s)){
+    if (!checkPhone(s)) {
         return s;
     }
 
@@ -221,7 +233,9 @@ export default {
     clipboardSetString,
     clipboardGetString,
     trim,
-    encryptPhone
+    encryptPhone,
+    formatPhoneNumber
 };
+
 
 

@@ -70,15 +70,15 @@ export default class NotificationPage extends BasePage {
 
     renderNoticeItem = ({ item, index }) => {
         return (
-            <View style={{ height: 168, width: ScreenUtils.width }}>
+            <View style={{ width: ScreenUtils.width }}>
                 <View style={styles.itemContents}>
                     <Text>{DateUtils.getFormatDate(item.startTime / 1000,'MM/dd hh:mm')}</Text>
                 </View>
-                <View style={{ height: 49, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
+                <View style={{paddingVertical:17, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
                     <Text style={{ marginLeft: 15, fontSize: 15, color: '#222222' }}>{item.title}</Text>
                 </View>
                 <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
-                <View style={{ height: 79, justifyContent: 'center', backgroundColor: 'white' }}>
+                <View style={{ justifyContent: 'center', backgroundColor: 'white',paddingVertical:32 }}>
                     <Text style={{ marginLeft: 15, fontSize: 15 }}>{item.content}</Text>
                 </View>
                 <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
