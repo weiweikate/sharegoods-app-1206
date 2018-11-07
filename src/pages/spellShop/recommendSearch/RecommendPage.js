@@ -134,7 +134,7 @@ export default class RecommendPage extends BasePage {
                 this.onEndReached = false;
                 let dataTemp = data.data || {};
                 this.setState({
-                    noMore: dataTemp.data.length < this._getSize(),
+                    noMore: !dataTemp.data || dataTemp.data.length < this._getSize(),
                     loadingMore: false,
                     loadingMoreError: null,
                     dataList: this.state.dataList.concat(dataTemp.data || [])
@@ -228,7 +228,7 @@ export default class RecommendPage extends BasePage {
                 }}
             />;
         } else {
-            return <View style={{ height: ScreenUtils.autoSizeWidth(150), width: ScreenUtils.width }}/>;
+            return null;
         }
     };
 
