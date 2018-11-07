@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
     },
     title: {
         // marginTop:10,
-        fontSize: 16,
+        fontSize: 18,
         color: '#222',
         backgroundColor: 'transparent'
         // backgroundColor:'red'
