@@ -17,52 +17,54 @@ export default class AssistantRow extends Component {
         style: PropTypes.any,       //样式
         onPress: PropTypes.func,    //点击回调
         onPressDelete: PropTypes.func,//删除的回调
-        isYourStore: PropTypes.bool,  //是否是自己的店铺
+        isYourStore: PropTypes.bool  //是否是自己的店铺
     };
 
     static defaultProps = {
         item: {},
-        isYourStore: false,
+        isYourStore: false
     };
 
-    state = {open: false};
+    state = { open: false };
 
-    _clickAssistantDetail = ()=>{
-        const {userId} = this.props.item;
-        const {onPress} = this.props;
-         onPress && onPress(userId);
+    _clickAssistantDetail = () => {
+        const { userId } = this.props.item;
+        const { onPress } = this.props;
+        onPress && onPress(userId);
     };
 
-    _onPressDelete = ()=>{
-        const {userId} = this.props.item;
-        const {onPressDelete} = this.props;
+    _onPressDelete = () => {
+        const { userId } = this.props.item;
+        const { onPressDelete } = this.props;
         onPressDelete && userId && onPressDelete(userId);
     };
 
 
-    renderContent = (style)=>{
-        let {headImg,levelName,nickName,contribution} = this.props.item;
-        const {tradeBalance} = this.props;
+    renderContent = (style) => {
+        let { headImg, levelName, nickName, contribution } = this.props.item;
+        const { tradeBalance } = this.props;
         const sty = [styles.rowContainer];
         // TODO 等待后台确定贡献度 计算方式
         sty.push(style);
-        sty.push({backgroundColor: 'white'});
+        sty.push({ backgroundColor: 'white' });
         return (<TouchableWithoutFeedback onPress={this._clickAssistantDetail}>
             <View style={sty}>
                 {
-                    headImg ? <Image source={{uri: headImg}} style={styles.headerImg}/> : <View style={styles.headerImg}/>
+                    headImg ? <Image source={{ uri: headImg }} style={styles.headerImg}/> :
+                        <View style={styles.headerImg}/>
                 }
                 <View style={styles.right}>
                     <Text style={styles.name}>{nickName || ' '}</Text>
                     <Text style={styles.level}>{levelName || ' '}</Text>
-                    <Text style={styles.desc}>贡献度：{tradeBalance===0?0: (contribution/tradeBalance || 0).toFixed(2)}%</Text>
+                    <Text
+                        style={styles.desc}>贡献度：{tradeBalance === 0 ? 0 : ((contribution / tradeBalance) * 100).toFixed(2)}%</Text>
                 </View>
             </View>
         </TouchableWithoutFeedback>);
     };
 
     render() {
-        if(!this.props.isYourStore){
+        if (!this.props.isYourStore) {
             return this.renderContent(styles.container);
         }
         const swipeOutButtons = [
@@ -71,22 +73,23 @@ export default class AssistantRow extends Component {
                 backgroundColor: '#F6F6F6',
                 component: (
                     <View style={styles.swipeCustomView}>
-                        <Text style={{ color: '#fff', fontSize: 13, }}>删 除</Text>
+                        <Text style={{ color: '#fff', fontSize: 13 }}>删 除</Text>
                     </View>
                 )
             }
         ];
-        return (<SwipeOut style={styles.container} onOpen={this._onOpen} onClose={this._onClose} right={swipeOutButtons} autoClose={true} >
+        return (<SwipeOut style={styles.container} onOpen={this._onOpen} onClose={this._onClose} right={swipeOutButtons}
+                          autoClose={true}>
             {this.renderContent()}
-        </SwipeOut>)
+        </SwipeOut>);
     }
 
-    _onOpen = ()=>{
+    _onOpen = () => {
         // if(this.state.open)return;
         // this.setState({open: true});
     };
 
-    _onClose = ()=>{
+    _onClose = () => {
         // if(!this.state.open)return;
         // this.setState({open: false});
     };
@@ -99,20 +102,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#e60012',
-        borderRadius: 10,
+        borderRadius: 10
         // borderTopRightRadius: 10,
         // borderBottomRightRadius: 10,
     },
     container: {
         backgroundColor: '#F6F6F6',
         marginTop: 10,
-        marginHorizontal: 15,
+        marginHorizontal: 15
     },
     rowContainer: {
         height: 88,
         borderRadius: 10,
-        backgroundColor: "#ffffff",
-        shadowColor: "rgba(0, 0, 0, 0.1)",
+        backgroundColor: '#ffffff',
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
         shadowOffset: {
             width: 0,
             height: 0
@@ -133,20 +136,20 @@ const styles = StyleSheet.create({
     right: {
         flex: 1,
         marginLeft: 15,
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     name: {
         fontSize: 14,
-        color: "#666666"
+        color: '#666666'
     },
     level: {
         fontSize: 13,
-        color: "#666666",
+        color: '#666666',
         marginVertical: 3
     },
     desc: {
         fontSize: 12,
-        color: "#666666"
+        color: '#666666'
     }
 });
 

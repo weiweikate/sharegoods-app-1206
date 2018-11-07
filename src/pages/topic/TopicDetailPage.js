@@ -35,6 +35,7 @@ import redEnvelopeBg from '../home/product/res/red_envelope_bg.png';
 import StringUtils from '../../utils/StringUtils';
 import DateUtils from '../../utils/DateUtils';
 import CommModal from 'CommModal';
+
 const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
 
 export default class TopicDetailPage extends BasePage {
@@ -72,7 +73,7 @@ export default class TopicDetailPage extends BasePage {
             if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
                 if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
                     HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
-                        if(!EmptyUtils.isEmpty(data.data)){
+                        if (!EmptyUtils.isEmpty(data.data)) {
                             this.setState({
                                 canGetCoupon: true,
                                 couponData: data.data
@@ -80,7 +81,7 @@ export default class TopicDetailPage extends BasePage {
                             this.couponId = data.data.id;
                             AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, Date.parse(new Date()).toString());
                         }
-                    })
+                    });
                 }
             }
         } catch (error) {
@@ -556,6 +557,12 @@ export default class TopicDetailPage extends BasePage {
                                     dec: '商品详情',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`,
                                     thumImage: productImgUrl
+                                }}
+                                miniProgramJson={{
+                                    title: productName,
+                                    dec: '商品详情',
+                                    thumImage: productImgUrl,
+                                    miniProgramPath: `/pages/index/index?type=${this.params.activityType}&id=${this.params.activityCode}`
                                 }}/>
                 <TopicDetailShowModal ref={(ref) => this.TopicDetailShowModal = ref}/>
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
