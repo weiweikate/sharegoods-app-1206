@@ -33,7 +33,7 @@ export default class AssistantListPage extends BasePage {
     $navigationBarOptions = {
         title: '店员管理'
     };
-
+    //contribution/tradeBalance本月收入
     constructor(props) {
         super(props);
         this.state = {

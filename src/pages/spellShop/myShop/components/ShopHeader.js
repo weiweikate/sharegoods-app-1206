@@ -31,7 +31,18 @@ export default class ShopHeader extends Component {
 
 
     render() {
-        const { headUrl, name, storeNumber, storeStarId, userStatus } = this.props.item;
+        //tradeBalance本月收入 bonusNeedMoney总额
+        // currentUserSettle当前用户的钱(预计分红)
+        //贡献度currentUserSettle/tradeBalance
+        //clerkTotalBonusMoney店员个人已完成分红总额 历史总和 clerkBonusCount店铺内个人分红次数
+        //totalTradeBalance累计收入
+        const {
+            manager = {},
+            headUrl, name, storeNumber, storeStarId, userStatus, tradeBalance = 0
+            , bonusNeedMoney = 0, currentUserSettle = 0, clerkTotalBonusMoney = 0, totalTradeBalance = 0
+        } = this.props.item;
+        //bonusCount店长个人分红次数  totalBonusMoney店长个人已获得分红金  managerTotalBonusMoney作为店长的总分红
+        const { bonusCount, totalBonusMoney, managerTotalBonusMoney } = manager;
 
         const starsArr = [];
         if (storeStarId && typeof storeStarId === 'number') {
@@ -73,14 +84,14 @@ export default class ShopHeader extends Component {
                     <Image source={CCZImg} style={styles.whiteBgTopRowIcon}/>
                     <Text style={styles.chengzhangzhi}>成长值</Text>
                     <Text style={styles.gongxian}>
-                        (贡献度：{`${((13 || 0) / (100 || 0) * 100 || 0).toFixed(2)}`}%)
+                        (贡献度：{`${tradeBalance === 0 ? 0 : (currentUserSettle / tradeBalance).toFixed(2)}`}%)
                     </Text>
                 </View>
 
                 <View style={{ flex: 1, alignItems: 'center' }}>
-                    <Text style={styles.progress}>{4500 || 0}<Text style={{
+                    <Text style={styles.progress}>{tradeBalance || 0}<Text style={{
                         color: '#666666'
-                    }}>/{6000 || 0}</Text></Text>
+                    }}>/{bonusNeedMoney || 0}</Text></Text>
 
                     <ImageBackground source={ProgressImg} style={{
                         overflow: 'hidden',
@@ -89,17 +100,17 @@ export default class ShopHeader extends Component {
                         width: 315 / 375 * SCREEN_WIDTH
                     }}>
                         <View style={[styles.progressBg, {
-                            marginLeft: 315 / 375 * SCREEN_WIDTH * 4500 / 6000
+                            marginLeft: 315 / 375 * SCREEN_WIDTH * (tradeBalance / bonusNeedMoney > 1 ? 1 : tradeBalance / bonusNeedMoney)
                         }]}/>
                     </ImageBackground>
 
                     <Text style={styles.chaju}>距离分红还差<Text style={{
                         color: '#000',
                         fontSize: 15
-                    }}>1999</Text>元</Text>
+                    }}>{(bonusNeedMoney - tradeBalance) > 0 ? (bonusNeedMoney - tradeBalance) : 0}</Text>元</Text>
 
                     <Text style={styles.fenghong}>预计该次分红金可得<Text style={{ color: 'rgb(236,10,10)' }}>
-                        {4999 || 0}
+                        {currentUserSettle || 0}
                     </Text>元</Text>
 
                 </View>
@@ -186,7 +197,7 @@ const styles = StyleSheet.create({
     progress: {
         marginTop: 10,
         color: '#e60012',
-        fontSize: 10,
+        fontSize: 10
     },
     progressBg: {
         marginRight: -1,
@@ -197,12 +208,12 @@ const styles = StyleSheet.create({
     chaju: {
         marginTop: 10,
         color: '#222222',
-        fontSize: 11,
+        fontSize: 11
     },
     fenghong: {
         marginTop: 5,
         color: 'rgb(34,34,34)',
-        fontSize: 12,
+        fontSize: 12
     },
     // 公告
     announcementContainer: {
