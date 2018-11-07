@@ -220,7 +220,7 @@ export default class CommShareModal extends React.Component {
                     }
                 });
                 array.push({
-                    image: CommTabImag.baocun, title: '保存图片', onPress: () => {
+                    image: CommTabImag.baocun, title: '查看图片', onPress: () => {
                         this.changeShareType(0);
                     }
                 });

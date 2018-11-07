@@ -19,22 +19,22 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compile rootProject.ext.dependencies.support
-    compile rootProject.ext.dependencies.uapp
-    compile rootProject.ext.dependencies.ucommon
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api rootProject.ext.dependencies.support
+    api rootProject.ext.dependencies.uapp
+    api rootProject.ext.dependencies.ucommon
     api rootProject.ext.dependencies.fastjson
     api rootProject.ext.dependencies.zxing
     api rootProject.ext.dependencies.walle
     api rootProject.ext.dependencies.multidex
     // From node_modules
-    compile(rootProject.ext.dependencies.rn) {
+    api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
     api project(path: ':permissionlib')
-    compile files('libs/umeng-share-core-6.9.3.jar')
-    compile files('libs/umeng-sharetool-6.9.3.jar')
-    compile files('libs/umeng-share-wechat-simplify-6.9.3.jar')
-    implementation files('libs/umeng-share-QQ-simplify-6.9.3.jar')
-    implementation files('libs/umeng-share-sina-simplify-6.9.3.jar')
+    api files('libs/umeng-share-core-6.9.3.jar')
+    api files('libs/umeng-sharetool-6.9.3.jar')
+    api files('libs/umeng-share-wechat-simplify-6.9.3.jar')
+    api files('libs/umeng-share-QQ-simplify-6.9.3.jar')
+    api files('libs/umeng-share-sina-simplify-6.9.3.jar')
 }
