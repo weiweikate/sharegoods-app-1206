@@ -8,9 +8,9 @@
  * Created by huchao on 2018/10/18.
  *
  */
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
 
 import {
     StyleSheet,
@@ -18,9 +18,9 @@ import {
     // Modal,
     Animated,
     TouchableWithoutFeedback
-} from "react-native";
+} from 'react-native';
 
-import Modal from 'CommModal'
+import Modal from 'CommModal';
 
 export default class ShareTaskAnimation extends React.Component {
 
@@ -56,12 +56,19 @@ export default class ShareTaskAnimation extends React.Component {
         this.setState({ modalVisible: false });
     }
 
+    open = () => {
+        this.modal && this.modal.open();
+    };
+
     componentDidMount() {
     }
 
     render() {
         return (
             <Modal onRequestClose={this.close}
+                   ref={(ref) => {
+                       this.modal = ref;
+                   }}
                    visible={this.state.modalVisible}
                    transparent={true}
             >
@@ -92,13 +99,13 @@ export default class ShareTaskAnimation extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "rgba(0,0,0,0.3)",
+        backgroundColor: 'rgba(0,0,0,0.3)',
         top: 0,
         left: 0,
         bottom: 0,
         right: 0,
-        position: "absolute",
-        alignItems: "center",
-        justifyContent: "center"
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });

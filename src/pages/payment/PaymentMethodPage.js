@@ -171,7 +171,7 @@ export default class PaymentMethodPage extends BasePage {
 
     renderPromotion=()=>{
         return (
-            <CommModal visible={this.state.payPromotionSuccess}>
+            <CommModal ref={(ref)=>{this.promotionModal = ref;}} visible={this.state.payPromotionSuccess}>
                 <View style={styles.promotionBgStyle}>
                     <Image source={paySuccessIcon} style={{width:70,height:70,marginTop:20}}/>
                     <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_mediumBtnText,includeFontPadding:false,marginTop:10}}>
@@ -243,7 +243,8 @@ export default class PaymentMethodPage extends BasePage {
                                         // this.$navigate('spellShop/shopSetting/SetShopNamePage');
                                         this.setState({
                                             payPromotionSuccess:true
-                                        })
+                                        });
+                                        this.promotionModal && this.promotionModal.open();
                                     } else {
                                         Toast.$toast('支付失败');
                                     }

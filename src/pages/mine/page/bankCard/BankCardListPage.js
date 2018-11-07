@@ -180,6 +180,9 @@ class BankCardListPage extends BasePage {
         return (
             <SettingTransactionModal
                 isShow={this.state.isShowUnbindCardModal}
+                ref={(ref)=>{
+                    this.modal = ref;
+                }}
                 detail={{ title: '请输入交易密码', context: '删除银行卡' }}
                 closeWindow={() => {
                     this.setState({ isShowUnbindCardModal: false });
@@ -251,6 +254,7 @@ class BankCardListPage extends BasePage {
             isShowUnbindCardModal: true,
             selectBankCard: index
         });
+        this.modal && this.modal.open();
     };
     addBankCard = () => {
         this.$navigate('mine/bankCard/AddBankCardPage', { callBack: () => this.loadPageData() });

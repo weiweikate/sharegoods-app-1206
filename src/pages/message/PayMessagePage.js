@@ -26,7 +26,7 @@ export default class PayMessagePage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '支付详情',
+        title: this.params.type === 'pay_success' ? '支付详情' : '退款详情',
         show: true // false则隐藏导航
     };
 

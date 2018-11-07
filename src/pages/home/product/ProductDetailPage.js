@@ -74,6 +74,7 @@ export default class ProductDetailPage extends BasePage {
                 if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
                     HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
                         if(!EmptyUtils.isEmpty(data.data)){
+                            this.couponModal && this.couponModal.open();
                             this.setState({
                                 canGetCoupon: true,
                                 couponData: data.data
@@ -339,7 +340,7 @@ export default class ProductDetailPage extends BasePage {
         );
 
         return (
-            <CommModal visible={this.state.canGetCoupon}>
+            <CommModal ref={(ref)=>{this.couponModal = ref;}} visible={this.state.canGetCoupon}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center', justifyContent: 'center' }}>
                     <ImageBackground source={redEnvelopeBg} style={{
                         height: px2dp(362), width: px2dp(257),

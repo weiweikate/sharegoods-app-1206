@@ -90,12 +90,14 @@ export default class HomePage extends PureComponent {
                                 showUpdate: true,
                                 apkExist: exist
                             });
+                            this.updateModal && this.updateModal.open();
                         });
                     } else {
                         this.setState({
                             updateData: res.data,
                             showUpdate: true
                         });
+                        this.updateModal && this.updateModal.open();
                     }
                 }
                 if (res.data.forceUpdate === 1) {
@@ -230,6 +232,7 @@ export default class HomePage extends PureComponent {
     getMessageData = () => {
         MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
             if (!EmptyUtils.isEmptyArr(res.data.data)) {
+                this.messageModal && this.messageModal.open();
                 this.setState({
                     showMessage: true,
                     messageData: res.data.data
@@ -240,7 +243,7 @@ export default class HomePage extends PureComponent {
 
     messageModalRender() {
         return (
-            <Modal visible={this.state.showMessage}>
+            <Modal ref={(ref)=>{this.messageModal = ref;}} visible={this.state.showMessage}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.setState({
@@ -348,6 +351,7 @@ export default class HomePage extends PureComponent {
                 {this.messageModalRender()}
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
                                     apkExist={this.state.apkExist}
+                                    ref={(ref)=>{this.updateModal = ref;}}
                                     forceUpdate={this.state.forceUpdate} onDismiss={() => {
                     this.setState({ showUpdate: false });
                 }}/>

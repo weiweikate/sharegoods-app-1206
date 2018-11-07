@@ -584,6 +584,7 @@ class MyOrdersDetailPage extends BasePage {
                 />
                 <SingleSelectionModal
                     isShow={this.state.isShowSingleSelctionModal}
+                    ref={(ref)=>{this.cancelModal = ref}}
                     detail={['我不想买了', '信息填写错误，重新拍', '其他原因']}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
@@ -1120,6 +1121,7 @@ class MyOrdersDetailPage extends BasePage {
         switch (menu.id) {
             case 1:
                 this.setState({ isShowSingleSelctionModal: true });
+                this.cancelModal && this.cancelModal.open();
                 break;
             case 2:
                 this.$navigate('payment/PaymentMethodPage', {

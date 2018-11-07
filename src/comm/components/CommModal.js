@@ -40,7 +40,7 @@ export default class CommModal extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({ visible: props.visible });
+        this.setState({ visible: props.visible});
     }
 
     componentWillUnmount() {
@@ -67,6 +67,16 @@ export default class CommModal extends Component {
             }
         });
     };
+
+    /**
+     * modal的打开方法统一使用这个方法，防止android后退键引起bug
+     */
+    open = ()=>{
+        this.setState({
+            visible: false,
+            update:!this.state.update
+        })
+    }
 
 
     render() {
