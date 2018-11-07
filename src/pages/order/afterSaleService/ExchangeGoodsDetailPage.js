@@ -561,8 +561,8 @@ class ExchangeGoodsDetailPage extends BasePage {
     }
 
     callPhone = () => {
-        if (this.state.sellerPhone) {
-            BusinessUtils.callPhone(this.state.sellerPhone);
+        if ('400-9696-365') {
+            BusinessUtils.callPhone('400-9696-365');
         } else {
             NativeModules.commModule.toast('电话号码不存在');
         }
