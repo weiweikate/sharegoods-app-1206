@@ -561,7 +561,9 @@ export default class TopicDetailPage extends BasePage {
                                 miniProgramJson={{
                                     title: productName,
                                     dec: '商品详情',
-                                    thumImage: productImgUrl,
+                                    thumImage: 'logo.png',
+                                    hdImageURL: productImgUrl,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`,
                                     miniProgramPath: `/pages/index/index?type=${this.params.activityType}&id=${this.params.activityCode}`
                                 }}/>
                 <TopicDetailShowModal ref={(ref) => this.TopicDetailShowModal = ref}/>
