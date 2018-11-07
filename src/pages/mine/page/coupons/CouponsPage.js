@@ -76,6 +76,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f7f7f7',
-        marginBottom: ScreenUtils.saveMarginBottom
+        marginBottom: ScreenUtils.safeBottom
     }
 });

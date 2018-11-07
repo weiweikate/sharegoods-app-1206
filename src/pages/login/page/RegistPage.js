@@ -14,8 +14,16 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import LoginApi from '../api/LoginApi';
 import bridge from '../../../utils/bridge';
 import UserModel from '../../../model/user';
-import DeviceInfo from 'react-native-device-info'
+import DeviceInfo from 'react-native-device-info';
+import DesignRule from '../../../constants/DesignRule';
 
+/**
+ * @author huyufeng
+ * @date on 2018/9/7
+ * @describe 注册页
+ * @org www.sharegoodsmall.com
+ * @email huyufeng@meeruu.com
+ */
 @observer
 export default class RegistPage extends BasePage {
     // 导航配置
@@ -33,7 +41,10 @@ export default class RegistPage extends BasePage {
 
     _render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{
+                flex: 1,
+                justifyContent: 'space-between'
+            }}>
                 <CommRegistView
                     // config={viewType:0}
                     viewType={0}
@@ -46,7 +57,7 @@ export default class RegistPage extends BasePage {
                     flexDirection: 'row',
                     justifyContent: 'center',
                     marginTop: 20,
-                    height: 11,
+                    height: 80,
                     width: ScreenUtils.width
                 }}>
                     <TouchableOpacity onPress={() => {
@@ -68,7 +79,7 @@ export default class RegistPage extends BasePage {
                             uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
                         });
                     }}>
-                        <Text style={{ color: ColorUtil.mainRedColor, fontSize: 11 }}
+                        <Text style={{ color: DesignRule.mainColor, fontSize: 11 }}
                               onPress={() => {
                                   this.$navigate('HtmlPage', {
                                       title: '用户协议内容',
@@ -82,16 +93,16 @@ export default class RegistPage extends BasePage {
 
                 </View>
             </View>
-
         );
     }
+
     //点击下一步
     clickNext = (phone, code, password) => {
         if (!this.state.gouxuan) {
             bridge.$toast('请先勾选用户协议');
             return;
         }
-        console.log(this.params)
+        console.log(this.params);
         this.$loadingShow();
         LoginApi.findMemberByPhone({
             code: code,
@@ -102,11 +113,11 @@ export default class RegistPage extends BasePage {
             phone: phone,
             systemVersion: this.params.systemVersion ? this.params.systemVersion : '',
             wechatVersion: '',
-            nickname:this.params.nickName,
-            headImg:this.params.headerImg?this.params.headerImg:'',
+            nickname: this.params.nickName,
+            headImg: this.params.headerImg ? this.params.headerImg : ''
         }).then((data) => {
             if (data.code === 10000) {
-               this.toLogin(phone, code, password)
+                this.toLogin(phone, code, password);
             } else {
                 bridge.$toast(data.msg);
             }
@@ -118,7 +129,7 @@ export default class RegistPage extends BasePage {
         });
 
     };
-    toLogin=(phone ,code,password)=>{
+    toLogin = (phone, code, password) => {
         LoginApi.passwordLogin({
             authcode: '22',
             code: '',
@@ -132,21 +143,12 @@ export default class RegistPage extends BasePage {
         }).then((data) => {
             this.$loadingDismiss();
             UserModel.saveUserInfo(data.data);
-            UserModel.saveToken(data.data.token)
-            this.$navigate('login/login/GetRedpacketPage')
-            // bridge.$toast('登陆成功');
-            // let resetAction = NavigationActions.reset({
-            //         index: 0,
-            //         actions: [
-            //             NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-            //         ]
-            //     });
-            // this.props.navigation.dispatch(resetAction);
+            UserModel.saveToken(data.data.token);
+            this.$navigate('login/login/GetRedpacketPage');
         }).catch((data) => {
             this.$loadingDismiss();
             bridge.$toast(data.msg);
         });
-
-    }
+    };
 }
 

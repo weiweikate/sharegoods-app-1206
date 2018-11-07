@@ -169,7 +169,7 @@ export default class MyPromotionPage extends BasePage {
                 <View style={{ flex: 1, alignItems: 'center' }}>
                     <Text style={{
                         marginTop: 10,
-                        color: '#e60012',
+                        color: '#f00006',
                         fontSize: 10,
                     }}>{this.state.experience || 0}<Text style={{
                         color: '#666666'
@@ -315,7 +315,7 @@ export default class MyPromotionPage extends BasePage {
                     <View style={{
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: '#E60012',
+                        backgroundColor: '#f00006',
                         flex: 1,
                         height: 48
                     }}>
@@ -330,7 +330,7 @@ export default class MyPromotionPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginBottom: ScreenUtils.saveMarginBottom
+        marginBottom: ScreenUtils.safeBottom
     },
     headerBg: {
         marginTop: 16,

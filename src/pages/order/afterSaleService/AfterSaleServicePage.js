@@ -287,6 +287,9 @@ class AfterSaleServicePage extends BasePage {
                 <BottomSingleSelectModal
                     isShow={this.state.isShowSingleSelctionModal}
                     detail={returnReasons}
+                    ref={(ref) => {
+                        this.cancelModal = ref;
+                    }}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
                     }}
@@ -361,6 +364,7 @@ class AfterSaleServicePage extends BasePage {
         this.setState({
             isShowSingleSelctionModal: true
         });
+        this.cancelModal && this.cancelModal.open();
     };
     exchangeType = () => {
         if (EmptyUtils.isEmpty(this.state.selectionData)) {
@@ -558,7 +562,7 @@ const styles = StyleSheet.create({
         marginRight: 20,
         backgroundColor: DesignRule.white,
         fontSize: 14,
-        height: 80,
+        height: 80
 
     }
 });

@@ -35,6 +35,14 @@ import StringUtils from '../../../utils/StringUtils';
 import closeIcon from '../../../../src/comm/res/tongyong_btn_close_white.png';
 import DateUtils from '../../../utils/DateUtils';
 
+/**
+ * @author chenyangjun
+ * @date on 2018/9/7
+ * @describe 首页
+ * @org www.sharegoodsmall.com
+ * @email chenyangjun@meeruu.com
+ */
+
 const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
 export default class ProductDetailPage extends BasePage {
 
@@ -74,6 +82,7 @@ export default class ProductDetailPage extends BasePage {
                 if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
                     HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
                         if(!EmptyUtils.isEmpty(data.data)){
+                            this.couponModal && this.couponModal.open();
                             this.setState({
                                 canGetCoupon: true,
                                 couponData: data.data
@@ -86,9 +95,6 @@ export default class ProductDetailPage extends BasePage {
             }
         } catch (error) {
         }
-
-
-
     };
 
 
@@ -109,7 +115,6 @@ export default class ProductDetailPage extends BasePage {
                 });
                 this.$toastShow(error.msg);
             });
-
         }
     };
 
@@ -339,7 +344,7 @@ export default class ProductDetailPage extends BasePage {
         );
 
         return (
-            <CommModal visible={this.state.canGetCoupon}>
+            <CommModal ref={(ref)=>{this.couponModal = ref;}} visible={this.state.canGetCoupon}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center', justifyContent: 'center' }}>
                     <ImageBackground source={redEnvelopeBg} style={{
                         height: px2dp(362), width: px2dp(257),
@@ -439,6 +444,14 @@ export default class ProductDetailPage extends BasePage {
                                     dec: '商品详情',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`,
                                     thumImage: imgUrl
+                                }}
+                                miniProgramJson={{
+                                    title: `${name}`,
+                                    dec: '商品详情',
+                                    thumImage: 'logo.png',
+                                    hdImageURL: imgUrl,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`,
+                                    miniProgramPath: `/pages/index/index?type=99&id=${product.id}`
                                 }}/>
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
                 {this._renderCouponModal()}
@@ -473,6 +486,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between'
     }
-
 });
 

@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import loginAndRegistRes from '../res/LoginAndRegistRes';
-import ScreenUtils from '../../../utils/ScreenUtils';
 import ColorUtil from '../../../utils/ColorUtil';
 import BasePage from '../../../BasePage';
 import bridge from '../../../utils/bridge';
@@ -18,6 +17,13 @@ import LoginAPI from '../api/LoginApi';
 import { NavigationActions } from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
 
+/**
+ * @author huyufeng
+ * @date on 2018/9/7
+ * @describe 登录页
+ * @org www.sharegoodsmall.com
+ * @email huyufeng@meeruu.com
+ */
 export default class LoginPage extends BasePage {
     constructor(props) {
         super(props);
@@ -88,15 +94,15 @@ export default class LoginPage extends BasePage {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <Image
-                    style={{
-                        width: ScreenUtils.width,
-                        position: 'absolute',
-                        bottom: 0,
-                        height: 80
-                    }}
-                    source={loginAndRegistRes.loginBottomImage}
-                    resizeMode='cover'/>
+                {/*<Image*/}
+                    {/*style={{*/}
+                        {/*width: ScreenUtils.width,*/}
+                        {/*position: 'absolute',*/}
+                        {/*bottom: 0,*/}
+                        {/*height: 80*/}
+                    {/*}}*/}
+                    {/*source={loginAndRegistRes.loginBottomImage}*/}
+                    {/*resizeMode='cover'/>*/}
             </View>
         );
     }

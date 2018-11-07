@@ -47,6 +47,7 @@ export default class NickNameModifyPage extends BasePage {
                         height: 50,
                         marginLeft: 48,
                         marginRight: 48,
+                        borderRadius:25,
                         backgroundColor: color.red
                     }}
                     onPress={() => this.save()}/>

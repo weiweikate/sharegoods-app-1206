@@ -2,7 +2,7 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    Image,
+    ImageBackground,
     Text,
     TouchableOpacity
 } from 'react-native';
@@ -19,7 +19,6 @@ import tuiguang from '../../res/userInfoImg/list_icon_touguang.png';
 import xiaofei from '../../res/userInfoImg/list_icon_xiaofe.png';
 import salesCommissions from '../../res/userInfoImg/list_icon_xiaoshouticheng.png';
 
-import cashAccount from '../../res/userInfoImg/cashAccount.png';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
@@ -72,7 +71,7 @@ export default class MyCashAccountPage extends BasePage {
     renderHeader = () => {
         return (
             <View style={styles.container}>
-                <Image style={styles.imageBackgroundStyle} source={cashAccount}/>
+                <ImageBackground style={styles.imageBackgroundStyle} />
                 <View style={styles.viewStyle}>
                     <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: color.white }}>账户余额(元)</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -180,7 +179,7 @@ export default class MyCashAccountPage extends BasePage {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1, backgroundColor: color.page_background,
-        marginBottom: ScreenUtils.saveMarginBottom
+        marginBottom: ScreenUtils.safeBottom
     },
     container: {}, imageBackgroundStyle: {
         position: 'absolute',
@@ -190,7 +189,8 @@ const styles = StyleSheet.create({
         marginRight: 15,
         marginTop: 10,
         marginBottom: 10,
-        borderRadius: 15
+        borderRadius: 15,
+        backgroundColor:'#FF4F6E'
     }, rectangleStyle: {
         width: 100,
         height: 44,

@@ -24,6 +24,7 @@ import shopCartStore from '../model/ShopCartStore';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import bridge from '../../../utils/bridge';
+import DesignRule from '../../../constants/DesignRule';
 
 
 const activityCode = {
@@ -112,7 +113,7 @@ export default class ShopCartPage extends BasePage {
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
                 {/*{shopCartStore.data && shopCartStore.data.length > 0 ? this._renderListView() : this._renderEmptyView()}*/}
                 {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
-                {this._renderShopCartBottomMenu()}
+                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu():null}
             </View>
 
 
@@ -128,13 +129,70 @@ export default class ShopCartPage extends BasePage {
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>
-                <Text>
-                    ~购物车更新暂无商品~!
+                <Image
+                    source={ShopCartRes.kongShopCartImg}
+                    style={{
+                        height: 115,
+                        width: 115,
+                    }}
+                />
+                <Text
+                    style={{
+                        marginTop: 10,
+                        fontSize: 15,
+                        color: DesignRule.textColor_secondTitle
+                    }}
+                >
+                    去添加点什么吧
                 </Text>
+                <Text
+                    style={{
+                        marginTop: 10,
+                        fontSize: 12,
+                        color: DesignRule.textColor_secondTitle
+                    }}
+                >
+                    快去商城逛逛吧~
+                </Text>
+
+                <TouchableOpacity
+                    onPress={
+                        () => {
+                            this._gotoLookAround();
+                        }
+                    }
+                >
+                    <View
+                        style={{
+                            marginTop: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderColor: DesignRule.mainColor,
+                            borderWidth: 1,
+                            borderRadius: 25,
+                            width: 150,
+                            height: 50
+                        }}
+                    >
+                        <Text
+                            style={{
+
+                                color: DesignRule.mainColor,
+                                fontSize: 17
+                            }}
+                        >
+                            去逛逛
+                        </Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         );
     };
 
+    _gotoLookAround = () => {
+        this.$navigateReset();
+
+    };
     _renderListView = () => {
         const tempArr = this.ds.cloneWithRows(shopCartStore.cartData);
         const { statusBarHeight } = ScreenUtils;
@@ -241,11 +299,6 @@ export default class ShopCartPage extends BasePage {
     };
     _toBuyImmediately = () => {
 
-
-        // console.log('手机号格式话'+ StringUtils.formatPhoneNumber(''+17766667777))
-        // return;
-        // this.$navigate('LoginModal')
-        // return;
         let [...selectArr] = shopCartStore.startSettlement();
         if (selectArr.length <= 0) {
             bridge.$toast('请先选择结算商品~');
