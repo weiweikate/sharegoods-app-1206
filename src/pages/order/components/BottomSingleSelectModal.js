@@ -3,16 +3,18 @@ import {
     StyleSheet,
     View,
     Text,
-    Modal,
+    // Modal,
     NativeModules,
     TouchableOpacity
 } from 'react-native';
 import { color } from '../../../constants/Theme';
 import circleSelect from '../../../comm/res/selected_circle_red.png';
 import circleUnselect from '../../../comm/res/unselected_circle.png';
+import Modal from 'CommModal';
 import {
     UIText, UIImage, UIButton
 } from '../../../components/ui';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 export default class BottomSingleSelectModal extends Component {
 
@@ -121,7 +123,8 @@ const styles = StyleSheet.create({
     modalStyle: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'flex-end',
-        flex: 1
+        flex: 1,
+        width:ScreenUtils.width
     }
 });
 
