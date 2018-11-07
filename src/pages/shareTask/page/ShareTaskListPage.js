@@ -93,7 +93,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
            that.$loadingDismiss();
         }).catch((error) => {
             that.$toastShow(error.msg);
-            //that.$loadingDismiss();
+            that.$loadingDismiss();
         });
     }
 
