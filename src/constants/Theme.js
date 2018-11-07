@@ -6,7 +6,7 @@ const getUIScale = (value) => {
 const color = {
     main: '#EB2224',
     sub_main: '#FD6844',
-    page_background: '#F6F6F6',
+    page_background: '#F7F7F7',
     page_background2: '#F9F9F9',
     page_background3: '#F1F1F1',
     line: '#DCDCDC',
