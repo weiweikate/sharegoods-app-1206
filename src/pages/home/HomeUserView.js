@@ -62,11 +62,11 @@ export default class HomeUserView extends Component {
                             </View>
                     </View>)
                 } else {
-                    expItems.push(<View style={styles.block}/>)
+                    expItems.push(<View key={'user' + index} style={styles.block}/>)
                 }
             } else {
                 items.push(<View key={'line' + index} style={[styles.progressLine]}/>)
-                expItems.push(<View style={styles.block}/>)
+                expItems.push(<View key={'user' + index} style={styles.block}/>)
             }
             lastExp = level.upgradeExp
         });

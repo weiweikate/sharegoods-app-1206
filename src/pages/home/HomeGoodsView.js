@@ -3,6 +3,7 @@ import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtils
 import { homeModule } from './Modules'
+import DesignRule from 'DesignRule'
 
 const Goods = ({goods, press}) => <TouchableOpacity style={styles.container} onPress={()=> press && press()}>
     <View style={styles.image}>
@@ -84,7 +85,7 @@ let styles = StyleSheet.create({
         fontSize: px2dp(12)
     },
     money: {
-        color: '#D51234',
+        color: DesignRule.mainColor,
         fontSize: px2dp(14),
         marginTop: px2dp(10),
         marginLeft: px2dp(7)

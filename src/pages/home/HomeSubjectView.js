@@ -9,6 +9,7 @@ const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { subjectModule, homeModule } from './Modules'
 import { getShowPrice } from '../topic/model/TopicMudelTool'
+import DesignRule from 'DesignRule'
 
 const GoodItems = ({img, title, money, press}) => <TouchableOpacity style={styles.goodsView} onPress={()=>{press && press()}}>
     <Image style={styles.goodImg} source={{uri:img ? img : ''}}/>
@@ -162,7 +163,7 @@ let styles = StyleSheet.create({
         marginTop: px2dp(8)
     },
     money: {
-        color: '#D51234',
+        color: DesignRule.mainColor,
         fontSize: px2dp(14),
         marginTop: px2dp(8)
     },
