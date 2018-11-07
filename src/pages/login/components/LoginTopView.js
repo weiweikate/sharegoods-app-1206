@@ -333,7 +333,7 @@ const Styles = StyleSheet.create(
             margin: 0,
             alignItems: 'center',
             textAlign: 'center',
-            fontSize: 14
+            fontSize: 17
         },
         oldUserLoginBgStyle: {
             flexDirection: 'row-reverse'
