@@ -65,7 +65,7 @@ export default class EditPhoneNumPage extends BasePage {
                 <TouchableOpacity onPress={() => this._onGetCode(oldNum)}
                                   disabled={this.state.vertifyCodeTime > 0 ? true : false}>
                     <UIText value={this.state.vertifyCodeTime > 0 ? this.state.vertifyCodeTime + '秒后重新获取' : '获取验证码'}
-                            style={{ color: '#D85674', fontSize: 11, marginRight: 15 }}/>
+                            style={{ color: '#D85674', fontSize: 13, marginRight: 15 }}/>
                 </TouchableOpacity>
             </View>
 
@@ -73,14 +73,14 @@ export default class EditPhoneNumPage extends BasePage {
                 marginTop: 42,
                 backgroundColor: color.red,
                 width: ScreenUtils.width - 84,
-                height: 48,
+                height: 50,
                 marginLeft: 42,
                 marginRight: 42,
                 alignItems: 'center',
                 justifyContent: 'center',
-                borderRadius: 5
+                borderRadius: 25
             }} onPress={() => this._toNext(oldNum)}>
-                <Text style={{ fontSize: 13, color: 'white' }}>下一步</Text>
+                <Text style={{ fontSize: 17, color: 'white' }}>下一步</Text>
             </TouchableOpacity>
         </View>);
     }

@@ -4,7 +4,7 @@ import {
     TextInput,
     StyleSheet,
     TouchableOpacity,
-    Image,
+    Image
 
 } from 'react-native';
 
@@ -20,6 +20,7 @@ import bridge from '../../../utils/bridge';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
+import DesignRule from '../../../constants/DesignRule';
 
 class CommModel {
 
@@ -37,7 +38,7 @@ class CommModel {
     @observable
     isSecuret = true;
     @observable
-    isSelectProtocl=true;
+    isSelectProtocl = true;
 
     @action
     savePhoneNumber(phoneNmber) {
@@ -80,16 +81,19 @@ class CommModel {
 @observer
 export default class CommRegistView extends Component {
     registModel = new CommModel();
+
     constructor(props) {
         super(props);
         this.state = {
-            viewType: props.viewType,
+            viewType: props.viewType
         };
-        this.registModel.phoneNumber = this.props.phone || ''
+        this.registModel.phoneNumber = this.props.phone || '';
     }
-    changeSelectState(){
+
+    changeSelectState() {
         this.registModel.isSelectProtocl = !this.registModel.isSelectProtocl;
     }
+
     render() {
         return (
             <View style={{ backgroundColor: ColorUtil.Color_f7f7f7 }}>
@@ -139,11 +143,11 @@ export default class CommRegistView extends Component {
                             </View>
                             <TouchableOpacity
                                 onPress={() => {
-                                this.getVertifyCode();
-                            }}
+                                    this.getVertifyCode();
+                                }}
                                 activeOpacity={1}
                             >
-                                <Text style={{ color: ColorUtil.mainRedColor }}>
+                                <Text style={{ color: DesignRule.mainColor, fontSize: 13 }}>
                                     {this.registModel.dowTime > 0 ? `${this.registModel.dowTime}秒后重新获取` : '获取验证码'}
                                 </Text>
                             </TouchableOpacity>
@@ -192,11 +196,10 @@ export default class CommRegistView extends Component {
                         marginRight: 30,
                         marginLeft: 30,
                         marginTop: 40,
-                        height: 45,
-                        backgroundColor: ColorUtil.mainRedColor,
-                        borderRadius: 5
+                        height: 50,
+                        borderRadius: 25
                     },
-                        this.registModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]
+                        this.registModel.isCanClick ? { backgroundColor: DesignRule.mainColor } : { backgroundColor: DesignRule.bgColor_grayHeader }]
                 }>
                     <TouchableOpacity
                         onPress={this.loginClick}
@@ -219,7 +222,6 @@ export default class CommRegistView extends Component {
                 </View>
 
 
-
             </View>
         );
     }
@@ -229,7 +231,7 @@ export default class CommRegistView extends Component {
         if (this.registModel.dowTime > 0) {
             return;
         }
-        if (!netStatusTool.isConnected){
+        if (!netStatusTool.isConnected) {
             bridge.$toast('请检测网络是否连接');
             return;
         }
@@ -238,7 +240,7 @@ export default class CommRegistView extends Component {
             (new TimeDownUtils()).startDown((time) => {
                 this.registModel.dowTime = time;
             });
-            SMSTool.sendVerificationCode(1,this.registModel.phoneNumber)
+            SMSTool.sendVerificationCode(1, this.registModel.phoneNumber);
 
 
         } else {
@@ -247,7 +249,7 @@ export default class CommRegistView extends Component {
     };
 
     loginClick = () => {
-        if(this.registModel.isCanClick){
+        if (this.registModel.isCanClick) {
             this.props.loginClick(this.registModel.phoneNumber, this.registModel.vertifyCode, this.registModel.password);
         }
     };

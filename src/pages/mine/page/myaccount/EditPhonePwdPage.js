@@ -119,14 +119,14 @@ export default class EditPhonePwdPage extends BasePage {
                 marginTop: 63,
                 backgroundColor: color.red,
                 width: ScreenUtils.width - 84,
-                height: 48,
+                height: 50,
                 marginLeft: 42,
                 marginRight: 42,
                 alignItems: 'center',
                 justifyContent: 'center',
-                borderRadius: 5
+                borderRadius: 25
             }} onPress={() => this._done()}>
-                <Text style={{ fontSize: 13, color: 'white' }}>完成</Text>
+                <Text style={{ fontSize: 17, color: 'white' }}>完成</Text>
             </TouchableOpacity>
         </View>;
     }
@@ -160,7 +160,7 @@ export default class EditPhonePwdPage extends BasePage {
                     user.clearUserInfo();
                     //清空购物车
                     shopCartStore.data = [];
-                    this.$navigateResetLogin()
+                    this.$navigateResetLogin();
                     bridge.$toast('密码修改成功，请重新登录');
                 }
             }).catch(err => {
@@ -168,7 +168,7 @@ export default class EditPhonePwdPage extends BasePage {
                 if (err.code === 10009) {
                     user.clearUserInfo();
                     shopCartStore.data = [];
-                    this.$navigateResetLogin()
+                    this.$navigateResetLogin();
                     // this.$navigateReset();
                     // this.$navigate('login/login/LoginPage');
                 }

@@ -122,7 +122,7 @@ export default class IDVertify2Page extends BasePage {
                         justifyContent: 'center',
                         borderRadius: 25
                     }} onPress={() => this.commit()}>
-                        <Text style={{ fontSize: 15, color: 'white' }}
+                        <Text style={{ fontSize: 17, color: 'white' }}
                               onPress={() => this.toLoginOut()}>提交</Text>
                     </TouchableOpacity>
                     <View style={{ alignItems: 'center' }}>
@@ -140,7 +140,7 @@ export default class IDVertify2Page extends BasePage {
                             <UIText value={'提交认证代表您已同意'}
                                     style={{ fontSize: 11, color: '#999999' }}/>
                             <UIText value={'《实名认证协议》'}
-                                    style={{ fontSize: 11, color: '#D62B56' }}
+                                    style={{ fontSize: 11, color: '#F00006' }}
                                     onPress={() => {
                                         this.$navigate('mine/userInformation/UserAgreementPage');
                                     }}/>
@@ -196,6 +196,9 @@ export default class IDVertify2Page extends BasePage {
             <View>
                 <TakePhotoModal
                     isShow={this.state.isShowTakePhotoModal}
+                    ref = {(ref)=>{
+                        this.takePhoteModal = ref;
+                    }}
                     closeWindow={() => {
                         this.setState({ isShowTakePhotoModal: false });
                     }}
