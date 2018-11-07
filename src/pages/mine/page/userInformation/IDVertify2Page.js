@@ -78,7 +78,7 @@ export default class IDVertify2Page extends BasePage {
                         <RNTextInput
                             style={styles.inputTextStyle}
                             onChangeText={text => this.setState({ name: text })}
-                            placeholder={'请输入真实姓名'}
+                            placeholder={'请填写证件上的真实姓名'}
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
@@ -94,7 +94,7 @@ export default class IDVertify2Page extends BasePage {
                         <RNTextInput
                             style={styles.inputTextStyle}
                             onChangeText={text => this.setState({ idNumber: text })}
-                            placeholder={'请输入证件号'}
+                            placeholder={'请填写证件上的证件号码'}
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
@@ -120,7 +120,7 @@ export default class IDVertify2Page extends BasePage {
                         marginRight: 42,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        borderRadius: 5
+                        borderRadius: 25
                     }} onPress={() => this.commit()}>
                         <Text style={{ fontSize: 15, color: 'white' }}
                               onPress={() => this.toLoginOut()}>提交</Text>
@@ -319,7 +319,8 @@ const styles = StyleSheet.create({
     }, accountStyle: {
         marginLeft: 16, color: color.loginTextBlack, width: 60
     }, inputTextStyle: {
-        marginLeft: 20, height: 40, flex: 1, backgroundColor: 'white', fontSize: 14
+         height: 40, flex: 1, backgroundColor: 'white', fontSize: 14,textAlign:'right',marginRight:15
     }
 });
+
 

@@ -55,6 +55,7 @@ export default class ShowView extends Component {
                 dataSource={this.showModules.showList}
                 renderItems={(item, index)=>this._renderItems(item, index)}
                 showEnd={()=>this._showEnd()}
+                marqueeHeight={px2dp(34)}
             />
             {
                 this.showModules.showImage

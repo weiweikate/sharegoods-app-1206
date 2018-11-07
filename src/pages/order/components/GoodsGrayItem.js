@@ -69,7 +69,7 @@ export default class GoodsGrayItem extends React.Component {
 const styles = StyleSheet.create({
     container: {
         height: 100,
-        backgroundColor: 'white',
+        backgroundColor: '#F0F0F0',
         flexDirection: 'row',
         alignItems: 'center',
     },
