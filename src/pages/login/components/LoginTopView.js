@@ -337,6 +337,7 @@ const Styles = StyleSheet.create(
             fontSize: 17
         },
         oldUserLoginBgStyle: {
+            marginTop:10,
             flexDirection: 'row-reverse'
         },
         oldUserLoginBtn: {
@@ -346,7 +347,7 @@ const Styles = StyleSheet.create(
             color: DesignRule.textColor_mainTitle,
             textAlign: 'center',
             marginRight: 0,
-            fontSize:12
+            fontSize:13
         },
         seePasswordImageStyle: {
             width: 20,

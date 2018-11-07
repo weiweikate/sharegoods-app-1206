@@ -13,7 +13,6 @@ import React, { Component } from 'react';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
 import { observable, computed, action } from 'mobx';
-import ColorUtil from '../../../utils/ColorUtil';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
@@ -96,7 +95,7 @@ export default class CommRegistView extends Component {
 
     render() {
         return (
-            <View style={{ backgroundColor: ColorUtil.Color_f7f7f7 }}>
+            <View >
                 <View style={{ backgroundColor: '#fff', marginTop: 10 }}>
                     <View style={{
                         marginLeft: 30,
