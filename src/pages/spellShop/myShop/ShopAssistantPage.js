@@ -33,7 +33,7 @@ export default class AssistantListPage extends BasePage {
     $navigationBarOptions = {
         title: '店员管理'
     };
-
+    //contribution/tradeBalance本月收入
     constructor(props) {
         super(props);
         this.state = {
@@ -129,13 +129,14 @@ export default class AssistantListPage extends BasePage {
 
     // 渲染行
     _renderItem = ({ item }) => {
+        const {tradeBalance} = this.params.storeData;
         if (item.roleType === 0) {//0店主
-            return <MasterRow item={item} onPress={this._clickAssistantDetail}/>;
+            return <MasterRow item={item} onPress={this._clickAssistantDetail} tradeBalance={tradeBalance}/>;
         } else {//1店员
             return (<AssistantRow item={item}
                                   isYourStore={this.params.storeData.myStore}
                                   onPress={this._clickAssistantDetail}
-                                  onPressDelete={this._clickDeleteAssistant}/>);
+                                  onPressDelete={this._clickDeleteAssistant} tradeBalance={tradeBalance}/>);
         }
 
     };

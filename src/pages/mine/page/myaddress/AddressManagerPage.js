@@ -12,6 +12,13 @@ import bridge from '../../../../utils/bridge';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 
+/**
+ * @author luoyongming
+ * @date on 2018/9/18
+ * @describe 设置页面
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
+ */
 export default class AddressManagerPage extends BasePage {
 
     initIndex = -10;
@@ -217,8 +224,6 @@ export default class AddressManagerPage extends BasePage {
     _separator = () => {
         return <View style={{ height: 10, backgroundColor: 'transparent' }}/>;
     };
-
-
 }
 
 const styles = StyleSheet.create({

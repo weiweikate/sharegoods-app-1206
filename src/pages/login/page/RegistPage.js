@@ -16,6 +16,13 @@ import bridge from '../../../utils/bridge';
 import UserModel from '../../../model/user';
 import DeviceInfo from 'react-native-device-info'
 
+/**
+ * @author huyufeng
+ * @date on 2018/9/7
+ * @describe 注册页
+ * @org www.sharegoodsmall.com
+ * @email huyufeng@meeruu.com
+ */
 @observer
 export default class RegistPage extends BasePage {
     // 导航配置
@@ -82,7 +89,6 @@ export default class RegistPage extends BasePage {
 
                 </View>
             </View>
-
         );
     }
     //点击下一步
@@ -134,19 +140,10 @@ export default class RegistPage extends BasePage {
             UserModel.saveUserInfo(data.data);
             UserModel.saveToken(data.data.token)
             this.$navigate('login/login/GetRedpacketPage')
-            // bridge.$toast('登陆成功');
-            // let resetAction = NavigationActions.reset({
-            //         index: 0,
-            //         actions: [
-            //             NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-            //         ]
-            //     });
-            // this.props.navigation.dispatch(resetAction);
         }).catch((data) => {
             this.$loadingDismiss();
             bridge.$toast(data.msg);
         });
-
     }
 }
 

@@ -214,7 +214,7 @@ class AfterSaleServicePage extends BasePage {
                     <View style={{
                         position: 'absolute',
                         right: 5,
-                        bottom: 11
+                        bottom: 5
                     }}>
                         <UIText value={this.state.remark.length + '/180'}
                                 style={{
@@ -559,7 +559,8 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         backgroundColor: DesignRule.white,
-        fontSize: 14
+        fontSize: 14,
+        height: 80,
 
     }
 });

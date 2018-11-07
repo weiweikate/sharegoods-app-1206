@@ -13,6 +13,13 @@ import addrUnSelectedIcon from '../../../../comm/res/unselected_circle.png';
 import UIImage from '../../../../components/ui/UIImage';
 import DesignRule from 'DesignRule';
 
+/**
+ * @author luoyongming
+ * @date on 2018/9/18
+ * @describe 设置页面
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
+ */
 const dismissKeyboard = require('dismissKeyboard');
 
 export default class AddressEditAndAddPage extends BasePage {
@@ -88,7 +95,6 @@ export default class AddressEditAndAddPage extends BasePage {
             });
         }
     };
-
 
     constructor(props) {
         super(props);

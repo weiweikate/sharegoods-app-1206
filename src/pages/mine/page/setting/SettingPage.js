@@ -21,7 +21,13 @@ import DeviceInfo from 'react-native-device-info';
 import bridge from '../../../../utils/bridge';
 import CommModal from 'CommModal';
 
-
+/**
+ * @author luoyongming
+ * @date on 2018/9/13
+ * @describe 设置页面
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
+ */
 class SettingPage extends BasePage {
     constructor(props) {
         super(props);
@@ -51,7 +57,6 @@ class SettingPage extends BasePage {
     _componentDidMount() {
         this.getAllCachesSize();
     }
-
 
 
     //**********************************ViewPart******************************************
@@ -89,7 +94,7 @@ class SettingPage extends BasePage {
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.clearAllCaches()}>
                         <UIText value={'清除缓存'} style={styles.blackText}/>
                         <UIText value={desc}
-                                style={{fontSize: 13, color: '#666666' }}/>
+                                style={{ fontSize: 13, color: '#666666' }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
@@ -140,7 +145,9 @@ class SettingPage extends BasePage {
                                 // 清楚七鱼缓存
                             });
                         } else {
-                            bridge.clearAllCache(()=>{this.getAllCachesSize();})
+                            bridge.clearAllCache(() => {
+                                this.getAllCachesSize();
+                            });
                         }
                     }
                 }
@@ -148,20 +155,19 @@ class SettingPage extends BasePage {
         );
     };
     getAllCachesSize = () => {
-        if(ScreenUtils.isIOS){
+        if (ScreenUtils.isIOS) {
             CachesModule && CachesModule.getCachesSize((allSize) => {
                 this.setState({
                     memorySize: allSize
                 });
             });
-        }else {
-            bridge.getTotalCacheSize((allSize)=>{
+        } else {
+            bridge.getTotalCacheSize((allSize) => {
                 this.setState({
                     memorySize: allSize
                 });
-            })
+            });
         }
-
     };
     renderWideLine = () => {
         return (
@@ -265,8 +271,6 @@ class SettingPage extends BasePage {
     }
 
     //**********************************BusinessPart******************************************
-
-
     jumpToAddressManagePage = () => {
         this.$navigate('mine/address/AddressManagerPage');
     };

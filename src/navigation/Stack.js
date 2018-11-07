@@ -7,12 +7,12 @@
 * 如:如果想跳转home模块下的HomePage  则为 ...navigate(home/HomePage)
 *import TabNav from './pages/shareTask/page/ShareTaskIntroducePage'
 * */
-// // 基础模块
+// 基础模块
 import { TabNav } from './Tab';
 //  import  TabNav  from './pages/payment/PaymentMethodPage';
 //  import  TabNav  from './pages/home/product/ProductDetailPage';
-// import  TabNav  from './pages/shareTask/page/ShareTaskListPage';
-//  import  TabNav  from './pages/mine/page/Invite/InviteFriendsPage';
+// import  TabNav  from '../pages/order/afterSaleService/AfterSaleServicePage';
+//   import  TabNav  from './pages/mine/page/Invite/InviteFriendsPage';
 // 业务模块
 import debug from '../pages/debug';
 import home from '../pages/home';

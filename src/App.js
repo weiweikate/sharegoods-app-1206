@@ -1,14 +1,16 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
+ * @author louis
+ * @date on 2018/9/3
+ * @describe rn入口
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
  */
 
 import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
-    View,
+    View
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import RouterMap from './navigation/RouterMap';
@@ -18,11 +20,10 @@ import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
 import appData from './model/appData';
 import { netStatus } from './comm/components/NoNetHighComponent';
-import signTestTool from './signTestTool';
 
-import hotUpdateUtil from './utils/HotUpdateUtil'
+import hotUpdateUtil from './utils/HotUpdateUtil';
 
-import Navigator, { getCurrentRouteName } from './navigation/Navigator'
+import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 
 export default class App extends Component {
     constructor(props) {
@@ -43,7 +44,8 @@ export default class App extends Component {
         global.$routes = [];
 
     }
-    componentDidMount(){
+
+    componentDidMount() {
         //热更新 先注释掉
         hotUpdateUtil.checkUpdate();
     }
@@ -52,35 +54,20 @@ export default class App extends Component {
         return (
             <View style={styles.container}>
                 <Navigator screenProps={this.props.params}
-                    ref='Navigator'
-                    onNavigationStateChange={(prevState, currentState) => {
-                        let curRouteName = getCurrentRouteName(currentState);
-                        // 拦截当前router的名称
-                        console.log(curRouteName);
-                        const currentScreen = getCurrentRouteName(currentState);
-                        const prevScreen = getCurrentRouteName(prevState);
-                        global.$routes = currentState.routes;
-                        if (prevScreen !== currentScreen) {
-                            //console.log('从页面' + prevScreen + '跳转页面' + currentScreen);
-                        }
-
-                    }}/>
+                           ref='Navigator'
+                           onNavigationStateChange={(prevState, currentState) => {
+                               let curRouteName = getCurrentRouteName(currentState);
+                               // 拦截当前router的名称
+                               console.log(curRouteName);
+                               global.$routes = currentState.routes;
+                           }}/>
                 {
                     CONFIG.showDebugPanel ? <DebugButton onPress={this.showDebugPage}><Text
                         style={{ color: 'white' }}>调试页</Text></DebugButton> : null
                 }
-                {/*{*/}
-                {/*CONFIG.showDebugPanel ? <DebugButton onPress={this.signTestFunc}><Text*/}
-                {/*style={{ color: 'white' }}>验签调试</Text></DebugButton> : null*/}
-                {/*}*/}
             </View>
         );
     }
-
-    signTestFunc = () => {
-        // signTestTool.beginTest(); post
-        signTestTool.testSignGet(); //get
-    };
 
     showDebugPage = () => {
         const navigationAction = NavigationActions.navigate({
@@ -89,7 +76,6 @@ export default class App extends Component {
         });
         this.refs.Navigator.dispatch(navigationAction);
     };
-
 }
 
 const styles = StyleSheet.create({

@@ -28,6 +28,14 @@ const Item = ({ data, onPress }) => {
     </TouchableOpacity>
 }
 
+/**
+ * @author chenyangjun
+ * @date on 2018/9/7
+ * @describe 首页头部分类view
+ * @org www.sharegoodsmall.com
+ * @email chenyangjun@meeruu.com
+ */
+
 @observer
 export default class HomeClassifyView extends Component {
 

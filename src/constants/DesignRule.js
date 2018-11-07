@@ -38,9 +38,10 @@ const colors = {
     textColor_btnText: '#F00006',//按钮红色文字
     textColor_hint: '#C8C8C8', //输入框背景字颜色
     bgColor_blue: '#33B4FF', //蓝色背景
+    bgColor_deepBlue: '#2B99D9',//深蓝背景
+    textColor_deepBlue: '#1B7BB3', //深蓝字体
     color_yellow: '#FFFC00', //黄色字体
-    color_deepBlue: '#1B7BB3', //深蓝颜色
-    color_orange: '#2B99D9' //橘黄颜色
+    color_deepYellow: '#F1C11B', //深黄色字体
 };
 
 const sizes = {

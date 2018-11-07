@@ -1,6 +1,3 @@
-/**
- * Created by xiangchen on 2018/7/12.
- */
 import React from 'react';
 import {
     View,
@@ -12,7 +9,13 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import { color } from '../../../../constants/Theme';
 import HTML from 'react-native-render-html';
 import MineApi from '../../api/MineApi';
-
+/**
+ * @author chenxiang
+ * @date on 2018/9/21
+ * @describe 设置页面
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
+ */
 export default class HelperQuestionDetail extends BasePage {
     constructor(props) {
         super(props);
@@ -41,7 +44,6 @@ export default class HelperQuestionDetail extends BasePage {
             console.log(err);
         });
         this.loadPageData();
-
     }
 
     _render() {
@@ -49,7 +51,6 @@ export default class HelperQuestionDetail extends BasePage {
             <View style={{ backgroundColor: '#F6F6F6', flex: 1 }}>
                 {this.state.content? <HTML html={this.state.content} imagesMaxWidth={ScreenUtils.width}
                                            containerStyle={{ backgroundColor: '#fff' }}/>:null}
-
                 <View style={{
                     width: ScreenUtils.width,
                     height: 80,
@@ -97,7 +98,6 @@ export default class HelperQuestionDetail extends BasePage {
                 useHelpNum:res.data.isHelp,
                 noHelpNum:res.data.notHelp,
                 type:res.data.type
-
             })
         }).catch(err => {
             console.log(err);
@@ -108,7 +108,6 @@ export default class HelperQuestionDetail extends BasePage {
         MineApi.updateHelpQuestionToClick({id:this.params.id,hadHelp:0}).then(res=>{
             this.$toastShow(''+res.data)
             this.loadPageData();
-
         }).catch(err=>{
             if(err.code == 10009){
                 this.$navigate('login/login/LoginPage')
@@ -126,5 +125,4 @@ export default class HelperQuestionDetail extends BasePage {
            }
         })
     }
-
 }

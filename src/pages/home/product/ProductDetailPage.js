@@ -35,6 +35,14 @@ import StringUtils from '../../../utils/StringUtils';
 import closeIcon from '../../../../src/comm/res/tongyong_btn_close_white.png';
 import DateUtils from '../../../utils/DateUtils';
 
+/**
+ * @author chenyangjun
+ * @date on 2018/9/7
+ * @describe 首页
+ * @org www.sharegoodsmall.com
+ * @email chenyangjun@meeruu.com
+ */
+
 const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
 export default class ProductDetailPage extends BasePage {
 
@@ -87,9 +95,6 @@ export default class ProductDetailPage extends BasePage {
             }
         } catch (error) {
         }
-
-
-
     };
 
 
@@ -110,7 +115,6 @@ export default class ProductDetailPage extends BasePage {
                 });
                 this.$toastShow(error.msg);
             });
-
         }
     };
 
@@ -474,6 +478,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between'
     }
-
 });
 
