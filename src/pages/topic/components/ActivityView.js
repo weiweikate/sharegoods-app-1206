@@ -174,7 +174,10 @@ export default class MyShop_RecruitPage extends Component {
                 <View style={{ alignItems: 'flex-end' }}>
                     <View style={{ width: 106 + 30, alignItems: 'center' }}>
                         <Text
-                            style={{ color: begin ? DesignRule.color_deepBlue : DesignRule.color_yellow, fontSize: 11 }}
+                            style={{
+                                color: begin ? DesignRule.textColor_deepBlue : DesignRule.color_yellow,
+                                fontSize: 11
+                            }}
                             numberOfLines={1}>{three}</Text>
                     </View>
                     <View style={{
@@ -183,7 +186,7 @@ export default class MyShop_RecruitPage extends Component {
                         width: 106,
                         height: 12,
                         borderRadius: 6,
-                        backgroundColor: begin ? DesignRule.color_orange : DesignRule.color_deepBlue,
+                        backgroundColor: begin ? DesignRule.bgColor_deepBlue : DesignRule.color_deepYellow,
                         flexDirection: 'row',
                         overflow: 'hidden'
                     }}>

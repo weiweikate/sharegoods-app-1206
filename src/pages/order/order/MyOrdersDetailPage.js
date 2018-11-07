@@ -18,7 +18,6 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import buyerHasPay from '../res/buyerHasPay.png';
 import couponIcon from '../../mine/res/couponsImg/dingdan_icon_quan_nor.png';
-// import car from '../res/car.png';
 import arrow_right from '../res/arrow_right.png';
 import position from '../res/position.png';
 import GoodsDetailItem from '../components/GoodsDetailItem';
@@ -33,7 +32,6 @@ import DateUtils from '../../../utils/DateUtils';
 import Toast from '../../../utils/bridge';
 import productDetailImg from '../res/productDetailImg.png';
 import moreIcon from '../../spellShop/myShop/res/more_icon.png';
-// import GoodsItem from '../components/GoodsItem';
 import GoodsGrayItem from '../components/GoodsGrayItem';
 import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
@@ -584,6 +582,7 @@ class MyOrdersDetailPage extends BasePage {
                 />
                 <SingleSelectionModal
                     isShow={this.state.isShowSingleSelctionModal}
+                    ref={(ref)=>{this.cancelModal = ref}}
                     detail={['我不想买了', '信息填写错误，重新拍', '其他原因']}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
@@ -1120,6 +1119,7 @@ class MyOrdersDetailPage extends BasePage {
         switch (menu.id) {
             case 1:
                 this.setState({ isShowSingleSelctionModal: true });
+                this.cancelModal && this.cancelModal.open();
                 break;
             case 2:
                 this.$navigate('payment/PaymentMethodPage', {

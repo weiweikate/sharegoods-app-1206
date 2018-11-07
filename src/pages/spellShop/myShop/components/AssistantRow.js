@@ -42,6 +42,7 @@ export default class AssistantRow extends Component {
 
     renderContent = (style)=>{
         let {headImg,levelName,nickName,contribution} = this.props.item;
+        const {tradeBalance} = this.props;
         const sty = [styles.rowContainer];
         // TODO 等待后台确定贡献度 计算方式
         sty.push(style);
@@ -54,7 +55,7 @@ export default class AssistantRow extends Component {
                 <View style={styles.right}>
                     <Text style={styles.name}>{nickName || ' '}</Text>
                     <Text style={styles.level}>{levelName || ' '}</Text>
-                    <Text style={styles.desc}>贡献度：{contribution ? (contribution / 100) : 0}%</Text>
+                    <Text style={styles.desc}>贡献度：{tradeBalance===0?0: (contribution/tradeBalance || 0).toFixed(2)}%</Text>
                 </View>
             </View>
         </TouchableWithoutFeedback>);

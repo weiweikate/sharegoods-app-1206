@@ -73,7 +73,11 @@ export default class GetRedpacketPage extends BasePage {
 
         return (
             // this.state.canGetCoupon
-            <CommModal visible={this.state.showRedAlter}>
+            <CommModal
+                ref={(ref)=>{
+                    this.modal = ref;
+                }}
+                visible={this.state.showRedAlter}>
                 <TouchableOpacity
                     onPress={
                         () => {
@@ -385,6 +389,7 @@ export default class GetRedpacketPage extends BasePage {
                 phone: result.data.phone,
                 price: result.data.price
             });
+            this.modal && this.modal.open();
 
             //定时关闭
             (new TimeDownUtils()).startDown((time)=>{

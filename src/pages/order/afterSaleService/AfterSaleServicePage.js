@@ -214,7 +214,7 @@ class AfterSaleServicePage extends BasePage {
                     <View style={{
                         position: 'absolute',
                         right: 5,
-                        bottom: 11
+                        bottom: 5
                     }}>
                         <UIText value={this.state.remark.length + '/180'}
                                 style={{
@@ -287,6 +287,7 @@ class AfterSaleServicePage extends BasePage {
                 <BottomSingleSelectModal
                     isShow={this.state.isShowSingleSelctionModal}
                     detail={returnReasons}
+                    ref={(ref)=>{this.cancelModal = ref;}}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
                     }}
@@ -361,6 +362,7 @@ class AfterSaleServicePage extends BasePage {
         this.setState({
             isShowSingleSelctionModal: true
         });
+        this.cancelModal && this.cancelModal.open();
     };
     exchangeType = () => {
         if (EmptyUtils.isEmpty(this.state.selectionData)) {
@@ -557,7 +559,8 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         backgroundColor: DesignRule.white,
-        fontSize: 14
+        fontSize: 14,
+        height: 80,
 
     }
 });

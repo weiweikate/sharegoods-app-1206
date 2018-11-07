@@ -34,7 +34,7 @@ import levelBg from '../res/homeBaseImg/me_bg_vip_nor.png';
 import setting from '../res/homeBaseImg/tongyong_icon_shezhi_nor.png';
 import service from '../res/homeBaseImg/tongyong_icon_xiaoxi_nor.png';
 import promotion from '../res/homeBaseImg/me_icon_tuiguang_nor.png';
-import task_icon from '../res/homeBaseImg/me_task_icon.png'
+import task_icon from '../res/homeBaseImg/me_task_icon.png';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineApi from '../api/MineApi';
 import { observer } from 'mobx-react/native';
@@ -43,6 +43,14 @@ import bgImg from '../res/homeBaseImg/bg_img_user.png';
 import rightIcon from '../res/homeBaseImg/me_icon_jinru_nor.png';
 import userOrderNum from '../../../model/userOrderNum';
 import RouterMap from 'RouterMap';
+
+/**
+ * @author chenxiang
+ * @date on 2018/9/13
+ * @describe 订单列表
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
+ */
 
 const headerBgSize = { width: 375, height: 200 };
 
@@ -185,12 +193,12 @@ export default class MinePage extends BasePage {
         return (
             <View
                 style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
-                <View style={{ height: ScreenUtils.statusBarHeight}}/>
+                <View style={{ height: ScreenUtils.statusBarHeight }}/>
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     paddingRight: px2dp(15),
-                    height: 44,
+                    height: 44
                 }}>
                     <View style={{ flex: 1 }}/>
                     <Text style={{ justifySelf: 'center', color: '#212121', fontSize: px2dp(17) }}>
@@ -221,7 +229,6 @@ export default class MinePage extends BasePage {
                 <View style={{ flex: 1 }}/>
                 <View style={{ height: px2dp(54), marginBottom: px2dp(43), flexDirection: 'row' }}>
                     <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
-
                         {
                             StringUtils.isEmpty(user.headImg) ?
                                 <View style={[styles.userIconStyle, { backgroundColor: 'gray' }]}/> :
@@ -462,7 +469,7 @@ export default class MinePage extends BasePage {
                     justifyContent: 'center'
                 }}>
                     <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(10) }}>
-                        {num>99?99:num}
+                        {num > 99 ? 99 : num}
                     </Text>
                 </View>
             ) : null;
@@ -634,10 +641,6 @@ export default class MinePage extends BasePage {
     };
 
     jumpToSettingPage = () => {
-        // if (!user.isLogin) {
-        //     this.props.navigation.navigate('login/login/LoginPage');
-        //     return;
-        // }
         this.props.navigation.navigate('mine/SettingPage', { callBack: () => this.loadPageData() });
 
     };
@@ -645,7 +648,6 @@ export default class MinePage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1
-        // marginTop: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 0
     },
     whatLeft: {  // 组件定义了一个上边框
         flex: 1,
@@ -689,6 +691,5 @@ const styles = StyleSheet.create({
         paddingLeft: px2dp(22),
         paddingVertical: px2dp(1)
     }
-
 });
 

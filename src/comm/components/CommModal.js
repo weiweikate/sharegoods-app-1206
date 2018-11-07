@@ -4,16 +4,7 @@
  * @providesModule CommModal
  */
 
-// import {
-//     requireNativeComponent,
-//     Platform,
-//     Modal,
-// } from 'react-native';
-// const NativeModalAndroid = requireNativeComponent('ModalAndroid');//内部使用popwindow实现全屏
-// const CommModal = Platform.OS === 'android' ? NativeModalAndroid : Modal;
-// export default CommModal;
-
-import React, { Component } from "react";
+import React, { PureComponent } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -22,11 +13,11 @@ import {
     Modal,
     AppState,
     requireNativeComponent
-} from "react-native";
+} from 'react-native';
 
-const NativeModalAndroid = requireNativeComponent("ModalAndroid");//内部使用popwindow实现全屏
+const NativeModalAndroid = requireNativeComponent('ModalAndroid');//内部使用popwindow实现全屏
 
-export default class CommModal extends Component {
+export default class CommModal extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -36,20 +27,18 @@ export default class CommModal extends Component {
     }
 
     componentDidMount() {
-        AppState.addEventListener("change", this._handleAppStateChange);
+        AppState.addEventListener('change', this._handleAppStateChange);
     }
 
     componentWillReceiveProps(props) {
-        this.setState({ visible: props.visible });
+        this.setState({ visible: props.visible});
     }
 
     componentWillUnmount() {
-        AppState.removeEventListener("change", this._handleAppStateChange);
+        AppState.removeEventListener('change', this._handleAppStateChange);
     }
 
     _handleAppStateChange = (AppState) => {
-        console.log("AppState", AppState);
-        console.log("AppState _handleAppStateChange", this.state.visible);
         this.setState({
             update: !this.state.update,
             visible: this.state.visible
@@ -68,12 +57,22 @@ export default class CommModal extends Component {
         });
     };
 
+    /**
+     * modal的打开方法统一使用这个方法，防止android后退键引起bug
+     */
+    open = ()=>{
+        this.setState({
+            visible: false,
+            update:!this.state.update
+        })
+    }
+
 
     render() {
-        if (Platform.OS === "ios") {
+        if (Platform.OS === 'ios') {
             return (
                 <Modal
-                    animationType={this.props.animation ? this.props.animation : "none"}// 进场动画 fade
+                    animationType={this.props.animation ? this.props.animation : 'none'}// 进场动画 fade
                     onRequestClose={() => this.close()}
                     visible={this.state.visible}// 是否可见
                     transparent
@@ -96,7 +95,7 @@ export default class CommModal extends Component {
                 ref={(modalAndroid) => {
                     this.modalAndroid = modalAndroid;
                 }}
-                visible={[this.state.visible, this.state.update]}>
+                popVisible={[this.state.visible, this.state.update]}>
                 <TouchableOpacity
                     activeOpacity={1}
                 >
@@ -112,13 +111,13 @@ export default class CommModal extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        position: "absolute",
+        position: 'absolute',
         top: 0,
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        justifyContent: "center",
-        alignItems: "center"
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
