@@ -79,8 +79,8 @@ export default class CommShareModal extends React.Component {
 
     /** public*/
     open() {
-        this.modal && this.modal.open();
         this.setState({ modalVisible: true, shareType: this.defaultShareType });
+        this.modal && this.modal.open();
         this.state.y.setValue(autoSizeWidth(340));
         Animated.spring(
             // Animate value over time
