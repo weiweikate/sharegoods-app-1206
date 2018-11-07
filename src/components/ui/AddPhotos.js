@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, TouchableOpacity, DeviceEventEmitter } from 'r
 import React from 'react';
 import NoMoreClick from '../ui/NoMoreClick';
 import addPic from '../../pages/mine/res/customerservice/xk1_03.png';
-import deleteImage from '../../pages/mine/res/customerservice/deleteImage.png';
+import deleteImage from '../../pages/mine/res/customerservice/x.png';
 
 
 class AddPhotos extends Component {

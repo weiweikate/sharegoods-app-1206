@@ -114,14 +114,14 @@ class SettingPage extends BasePage {
                     marginTop: 42,
                     backgroundColor: color.red,
                     width: ScreenUtils.width - 84,
-                    height: 45,
+                    height: 50,
                     marginLeft: 42,
                     marginRight: 42,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    borderRadius: 5
+                    borderRadius: 25
                 }} onPress={() => this.toLoginOut()}>
-                    <Text style={{ fontSize: 15, color: 'white' }}
+                    <Text style={{ fontSize: 17, color: 'white' }}
                           onPress={() => this.toLoginOut()}>退出登录</Text>
                 </TouchableOpacity>
 
@@ -186,42 +186,43 @@ class SettingPage extends BasePage {
     renderModal = () => {
         return (
 
-                <CommonTwoChoiceModal
-                    isShow={this.state.isShowLoginOutModal}
-                    ref={(ref)=>this.loginOutModal = ref}
-                    detail={{ title: '', context: '是否确认退出登录', no: '取消', yes: '确认' }}
-                    closeWindow={() => {
-                        this.setState({ isShowLoginOutModal: false });
-                    }}
-                    yes={() => {
-                        this.setState({ isShowLoginOutModal: false });
-                        this.$loadingShow();
-                        // 正常退出，或者登录超时，都去清空数据
-                        user.clearUserInfo();
-                        user.clearToken();
-                        //清空购物车
-                        shopCartStore.data = [];
-                        this.$navigateReset();
-                        MineApi.signOut();
-                        this.$loadingDismiss();
+            <CommonTwoChoiceModal
+                isShow={this.state.isShowLoginOutModal}
+                ref={(ref) => this.loginOutModal = ref}
+                detail={{ title: '', context: '是否确认退出登录', no: '取消', yes: '确认' }}
+                closeWindow={() => {
+                    this.setState({ isShowLoginOutModal: false });
+                }}
+                yes={() => {
+                    this.setState({ isShowLoginOutModal: false });
+                    this.$loadingShow();
+                    // 正常退出，或者登录超时，都去清空数据
+                    user.clearUserInfo();
+                    user.clearToken();
+                    //清空购物车
+                    shopCartStore.data = [];
+                    this.$navigateReset();
+                    MineApi.signOut();
+                    this.$loadingDismiss();
 
-                    }}
-                    no={() => {
-                        this.setState({ isShowLoginOutModal: false });
-                    }}
-                />
-
+                }}
+                no={() => {
+                    this.setState({ isShowLoginOutModal: false });
+                }}
+            />
 
 
         );
     };
 
-    renderUpdateModal=()=>{
-        return(
+    renderUpdateModal = () => {
+        return (
             <CommModal
                 animationType='fade'
                 transparent={true}
-                ref={(ref)=>{this.updateModal = ref}}
+                ref={(ref) => {
+                    this.updateModal = ref;
+                }}
                 visible={this.state.showUpdate}>
                 <View style={{
                     flexDirection: 'column',
@@ -267,8 +268,8 @@ class SettingPage extends BasePage {
                     </View>
                 </View>
             </CommModal>
-        )
-    }
+        );
+    };
 
     //**********************************BusinessPart******************************************
     jumpToAddressManagePage = () => {
@@ -318,7 +319,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: color.page_background,
         flexDirection: 'column',
-        flex:1
+        flex: 1
     },
     viewStyle: {
         flexDirection: 'row',
