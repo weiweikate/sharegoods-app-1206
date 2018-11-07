@@ -5,6 +5,13 @@
 //  Created by Max on 2018/8/13.
 //  Copyright © 2018年 Facebook. All rights reserved.
 //
+/**
+ * @author huyufeng
+ * @date on 2018/9/3
+ * @describe ios AppDelegate
+ * @org www.sharegoodsmall.com
+ * @email huyufeng@meeruu.com
+ */
 
 #import "AppDelegate+ConfigVC.h"
 #import <React/RCTRootView.h>
@@ -49,10 +56,6 @@
 }
 - (void)testA {
   NSLog(@"testa");
-//  [[JRShareManager sharedInstance]shareWithPlatefrom:nil Title:nil SubTitle:nil Image:nil LinkUrl:nil];
-//  [[JRShareManager sharedInstance]shareImage:nil imageUrl:nil];
-//  [JRLoadingAndToastTool showToast:@"你好你好你好你好你好你好你好你好" andDelyTime:3];
-//   long long allSize =  [[JRCacheManager sharedInstance]getAllCache];
   
   [[JRCacheManager sharedInstance]getAllCachesWithFinshBlock:^(unsigned long long memorySise) {
     

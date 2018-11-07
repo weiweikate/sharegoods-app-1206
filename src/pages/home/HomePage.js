@@ -1,7 +1,3 @@
-/**
- * 首页
- */
-
 import React, { PureComponent } from 'react';
 import {
     View,
@@ -42,6 +38,14 @@ import MineApi from '../mine/api/MineApi';
 import VersionUpdateModal from './VersionUpdateModal';
 import DeviceInfo from 'react-native-device-info';
 import StringUtils from '../../utils/StringUtils';
+
+/**
+ * @author zhangjian
+ * @date on 2018/9/7
+ * @describe 首页
+ * @org www.sharegoodsmall.com
+ * @email zhangjian@meeruu.com
+ */
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
@@ -354,7 +358,6 @@ export default class HomePage extends PureComponent {
             </View>
         );
     }
-
 }
 
 const styles = StyleSheet.create({
