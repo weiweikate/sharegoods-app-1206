@@ -6,6 +6,14 @@
 //  Copyright © 2018年 Facebook. All rights reserved.
 //
 
+/**
+ * @author huyufeng
+ * @date on 2018/9/3
+ * @describe ios AppDelegate
+ * @org www.sharegoodsmall.com
+ * @email huyufeng@meeruu.com
+ */
+
 #import "AppDelegate+ConfigLib.h"
 #import "EasyTextGlobalConfig.h"
 #import "EasyLoadingGlobalConfig.h"

@@ -1,6 +1,3 @@
-/**
- * Created by xiangchen on 2018/7/12.
- */
 import React from 'react';
 import {
     StyleSheet,
@@ -25,6 +22,14 @@ import BusinessUtils from '../../components/BusinessUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import MineApi from '../../api/MineApi';
 import Modal from 'CommModal';
+
+/**
+ * @author chenxiang
+ * @date on 2018/9/18
+ * @describe 设置页面
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
+ */
 
 export default class HelperFeedbackPage extends BasePage {
     constructor(props) {
@@ -313,9 +318,7 @@ export default class HelperFeedbackPage extends BasePage {
                 </ScrollView>
             </View>
         );
-
     }
-
 }
 
 
@@ -403,5 +406,4 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     }
-
 });
