@@ -284,22 +284,39 @@ export default class MyShopPage extends BasePage {
     };
 
     _renderBottom = () => {
-        let { myStore, saleBonus, totalTradeVolume, bonusCount, bossBonus, updateTime, createTime, userStatus } = this.state.storeData;
+        let {
+            userStatus, myStore,
+            clerkTotalBonusMoney, clerkBonusCount,
+            manager, totalTradeBalance, tradeBalance,
+            updateTime,
+            createTime
+        } = this.state.storeData;
+        //店员
+        //clerkTotalBonusMoney店员个人已完成分红总额
+        //clerkBonusCount店铺内个人分红次数
+        //加入时间
+
+        //店长
+        //totalTradeBalance累计收入- tradeBalance本月收入  店铺已完成分红总额
+        //bonusCount店长个人分红次数
+        //totalBonusMoney店长个人已获得分红金
+        //managerTotalBonusMoney作为店长的总分红
+        const { bonusCount, totalBonusMoney, managerTotalBonusMoney } = manager;
         if (userStatus === 1) {
             return (
                 <View>
-                    {myStore && this._renderRow(RmbIcon, '店铺已完成分红总额', `${saleBonus || 0}元`)}
+                    {myStore && this._renderRow(RmbIcon, '店铺已完成分红总额', `${(totalTradeBalance - tradeBalance) || 0}元`)}
                     <View style={{ height: 10 }}/>
 
                     {myStore ? this._renderRow(ZuanIcon, '个人分红次数', `${bonusCount || 0}次`)
-                        : this._renderRow(RmbIcon, '个人已完成交易总额', `${totalTradeVolume || 0}元`)}
+                        : this._renderRow(RmbIcon, '个人已完成交易总额', `${clerkTotalBonusMoney || 0}元`)}
                     {this.renderSepLine()}
 
-                    {myStore ? this._renderRow(MoneyIcon, '个人已获得分红金', `${saleBonus || 0}元`)
-                        : this._renderRow(ZuanIcon, '分红次数', `${bonusCount || 0}次`)}
+                    {myStore ? this._renderRow(MoneyIcon, '个人已获得分红金', `${totalBonusMoney || 0}元`)
+                        : this._renderRow(ZuanIcon, '分红次数', `${clerkBonusCount || 0}次`)}
                     {myStore && this.renderSepLine()}
 
-                    {myStore ? this._renderRow(QbIcon, '个人获得店长分红金', `${bossBonus || 0}元`)
+                    {myStore ? this._renderRow(QbIcon, '个人获得店长分红金', `${managerTotalBonusMoney || 0}元`)
                         : this._renderRow(QbIcon, '加入时间', DateUtils.formatDate(updateTime, 'yyyy-MM-dd'))}
                 </View>
             );
