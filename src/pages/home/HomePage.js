@@ -239,7 +239,6 @@ export default class HomePage extends PureComponent {
         try {
             const value = await AsyncStorage.getItem(LASTGETHOMEMESSAGETIME);
             if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
-                console.log('ssss'+DateUtils.isToday(new Date(parseInt(value)))+'----'+value);
                 MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
                     if (!EmptyUtils.isEmptyArr(res.data.data)) {
                         this.messageModal && this.messageModal.open();

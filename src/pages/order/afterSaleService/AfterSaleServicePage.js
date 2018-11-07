@@ -287,7 +287,9 @@ class AfterSaleServicePage extends BasePage {
                 <BottomSingleSelectModal
                     isShow={this.state.isShowSingleSelctionModal}
                     detail={returnReasons}
-                    ref={(ref)=>{this.cancelModal = ref;}}
+                    ref={(ref) => {
+                        this.cancelModal = ref;
+                    }}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
                     }}
@@ -560,7 +562,7 @@ const styles = StyleSheet.create({
         marginRight: 20,
         backgroundColor: DesignRule.white,
         fontSize: 14,
-        height: 80,
+        height: 80
 
     }
 });
