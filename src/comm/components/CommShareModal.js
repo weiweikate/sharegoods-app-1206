@@ -26,6 +26,7 @@
        dec
        thumImage
        linkUrl"兼容微信低版本网页地址";
+       hdImageURL
        userName //"小程序username，如 gh_3ac2059ac66f";
        miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
        }
@@ -214,14 +215,14 @@ export default class CommShareModal extends React.Component {
             }
         });
         if (this.props.type === 'Image' || this.props.type === 'promotionShare') {
-            if (this.state.shareType === 1) {
+            if (this.state.shareType === 2 || this.state.shareType === 1) {
                 array.push({
                     image: CommTabImag.lianjie, title: '复制链接', onPress: () => {
                         this.copyUrl();
                     }
                 });
                 array.push({
-                    image: CommTabImag.baocun, title: '查看图片', onPress: () => {
+                    image: CommTabImag.baocun, title: '保存图片', onPress: () => {
                         this.changeShareType(0);
                     }
                 });
