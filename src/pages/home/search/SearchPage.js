@@ -14,6 +14,7 @@ import RouterMap from 'RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import Storage from '../../../utils/storage';
 import StringUtils from '../../../utils/StringUtils';
+import DesignRule from 'DesignRule';
 
 const recentDataKey = 'recentDataKey';
 export default class SearchPage extends BasePage {
@@ -163,7 +164,7 @@ export default class SearchPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1, backgroundColor: DesignRule.bgColor
     }
 });
 
