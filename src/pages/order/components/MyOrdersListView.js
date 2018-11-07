@@ -272,7 +272,7 @@ export default class MyOrdersListView extends Component {
             }).then((response) => {
                 Toast.hiddenLoading();
                 this.getList(response.data);
-                this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+                this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
             }).catch(e => {
                 Toast.hiddenLoading();
                 // NativeModules.commModule.toast(e.msg);
@@ -293,7 +293,7 @@ export default class MyOrdersListView extends Component {
                     Toast.hiddenLoading();
                     this.getList(response.data);
                     console.log(response);
-                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+                    this.setState({ isEmpty:!(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data))  });
 
                 }).catch(e => {
                     Toast.hiddenLoading();
@@ -311,7 +311,7 @@ export default class MyOrdersListView extends Component {
                 OrderApi.queryPage({ ...params, status: 1 }).then((response) => {
                     Toast.hiddenLoading();
                     this.getList(response.data);
-                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+                    this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
                 }).catch(e => {
                     Toast.hiddenLoading();
                     //NativeModules.commModule.toast(e.msg);
@@ -328,7 +328,7 @@ export default class MyOrdersListView extends Component {
                 OrderApi.queryPage({ ...params, status: 2 }).then((response) => {
                     Toast.hiddenLoading();
                     this.getList(response.data);
-                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+                    this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
 
                 }).catch(e => {
                     Toast.hiddenLoading();
@@ -346,7 +346,7 @@ export default class MyOrdersListView extends Component {
                 OrderApi.queryPage({ ...params, status: 3 }).then((response) => {
                     Toast.hiddenLoading();
                     this.getList(response.data);
-                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+                    this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
 
                 }).catch(e => {
                     Toast.hiddenLoading();
@@ -364,7 +364,7 @@ export default class MyOrdersListView extends Component {
                 OrderApi.queryPage({ ...params, status: 4 }).then((response) => {
                     Toast.hiddenLoading();
                     this.getList(response.data);
-                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+                    this.setState({ isEmpty:!(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data))});
 
                 }).catch(e => {
                     Toast.hiddenLoading();
