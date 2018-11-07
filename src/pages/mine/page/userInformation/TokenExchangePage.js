@@ -109,6 +109,9 @@ export default class TokenExchangePage extends BasePage {
         return (
             <CommonTwoChoiceModal
                 isShow={this.state.isShowModal}
+                ref={(ref)=>{
+                    this.modal = ref;
+                }}
                 detail={{title:'是否兑换',context:'请确认是否兑换',no:'稍后再说',yes:'马上兑换'}}
                 closeWindow={()=>{
                     this.setState({isShowModal:false})
@@ -187,6 +190,7 @@ export default class TokenExchangePage extends BasePage {
         });
     }
     commit=()=>{
+        this.modal && this.modal.open();
         this.setState({
             isShowModal:true
         })

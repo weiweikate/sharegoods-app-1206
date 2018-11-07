@@ -287,6 +287,7 @@ class AfterSaleServicePage extends BasePage {
                 <BottomSingleSelectModal
                     isShow={this.state.isShowSingleSelctionModal}
                     detail={returnReasons}
+                    ref={(ref)=>{this.cancelModal = ref;}}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
                     }}
@@ -361,6 +362,7 @@ class AfterSaleServicePage extends BasePage {
         this.setState({
             isShowSingleSelctionModal: true
         });
+        this.cancelModal && this.cancelModal.open();
     };
     exchangeType = () => {
         if (EmptyUtils.isEmpty(this.state.selectionData)) {

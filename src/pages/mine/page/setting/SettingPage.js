@@ -64,7 +64,7 @@ class SettingPage extends BasePage {
         const desc = !ScreenUtils.isIOS ? this.state.memorySize : ((this.state.memorySize / 1024 / 1024) > 1) ? `${(this.state.memorySize / 1024 / 1024).toFixed(2)}G` : (((this.state.memorySize / 1024) > 1) ? `${(this.state.memorySize / 1024).toFixed(2)}M` : `${(this.state.memorySize).toFixed(2)}kb`);
         return (
             <View style={styles.container}>
-                {this.renderModal()}
+
                 {this.renderWideLine()}
                 <View style={{ backgroundColor: 'white' }}>
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAccountSettingPage()}>
@@ -124,6 +124,9 @@ class SettingPage extends BasePage {
                     <Text style={{ fontSize: 15, color: 'white' }}
                           onPress={() => this.toLoginOut()}>退出登录</Text>
                 </TouchableOpacity>
+
+                {this.renderModal()}
+                {this.renderUpdateModal()}
             </View>
         );
     };
@@ -178,13 +181,14 @@ class SettingPage extends BasePage {
     };
     toLoginOut = () => {
         this.setState({ isShowLoginOutModal: true });
-
+        this.loginOutModal && this.loginOutModal.open();
     };
     renderModal = () => {
         return (
-            <View>
+
                 <CommonTwoChoiceModal
                     isShow={this.state.isShowLoginOutModal}
+                    ref={(ref)=>this.loginOutModal = ref}
                     detail={{ title: '', context: '是否确认退出登录', no: '取消', yes: '确认' }}
                     closeWindow={() => {
                         this.setState({ isShowLoginOutModal: false });
@@ -206,57 +210,65 @@ class SettingPage extends BasePage {
                         this.setState({ isShowLoginOutModal: false });
                     }}
                 />
-                <CommModal
-                    animationType='fade'
-                    transparent={true}
-                    visible={this.state.showUpdate}>
-                    <View style={{
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignContent: 'center',
-                        backgroundColor: '#fff',
-                        width: ScreenUtils.width - 84,
-                        borderRadius: 10,
-                        borderWidth: 0
-                    }}>
-                        <UIText value={this.state.updateContent}
-                                style={{
-                                    fontSize: 17,
-                                    color: '#333',
-                                    marginTop: 40,
-                                    marginBottom: 40,
-                                    alignSelf: 'center'
-                                }}/>
-                        <View style={{ height: 0.5, backgroundColor: '#eee' }}/>
-                        <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity
-                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 45 }}
-                                onPress={() => {
-                                    this.setState({ showUpdate: false });
-                                }}>
-                                <UIText value={'以后再说'} style={{ color: '#999' }}/>
-                            </TouchableOpacity>
-                            <View style={{ width: 0.5, backgroundColor: '#eee' }}/>
-                            <TouchableOpacity
-                                style={{
-                                    flex: 1,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    height: 45,
-                                    backgroundColor: '#d51243',
-                                    borderBottomRightRadius: 10
-                                }}
-                                onPress={() => {
-                                    this.toUpdate();
-                                }}>
-                                <UIText value={'立即更新'} style={{ color: '#fff' }}/>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </CommModal>
-            </View>
+
+
+
         );
     };
+
+    renderUpdateModal=()=>{
+        return(
+            <CommModal
+                animationType='fade'
+                transparent={true}
+                ref={(ref)=>{this.updateModal = ref}}
+                visible={this.state.showUpdate}>
+                <View style={{
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    backgroundColor: '#fff',
+                    width: ScreenUtils.width - 84,
+                    borderRadius: 10,
+                    borderWidth: 0
+                }}>
+                    <UIText value={this.state.updateContent}
+                            style={{
+                                fontSize: 17,
+                                color: '#333',
+                                marginTop: 40,
+                                marginBottom: 40,
+                                alignSelf: 'center'
+                            }}/>
+                    <View style={{ height: 0.5, backgroundColor: '#eee' }}/>
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity
+                            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 45 }}
+                            onPress={() => {
+                                this.setState({ showUpdate: false });
+                            }}>
+                            <UIText value={'以后再说'} style={{ color: '#999' }}/>
+                        </TouchableOpacity>
+                        <View style={{ width: 0.5, backgroundColor: '#eee' }}/>
+                        <TouchableOpacity
+                            style={{
+                                flex: 1,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                height: 45,
+                                backgroundColor: '#d51243',
+                                borderBottomRightRadius: 10
+                            }}
+                            onPress={() => {
+                                this.toUpdate();
+                            }}>
+                            <UIText value={'立即更新'} style={{ color: '#fff' }}/>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </CommModal>
+        )
+    }
 
     //**********************************BusinessPart******************************************
     jumpToAddressManagePage = () => {
@@ -280,6 +292,7 @@ class SettingPage extends BasePage {
                     showUpdate: true,
                     updateContent: '是否更新为V' + res.data.version + '版本？'
                 });
+                this.updateModal && this.updateModal.open();
             } else {
                 bridge.$toast('当前已是最新版本');
             }
@@ -304,7 +317,8 @@ class SettingPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: color.page_background,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        flex:1
     },
     viewStyle: {
         flexDirection: 'row',
