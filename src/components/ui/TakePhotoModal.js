@@ -3,12 +3,13 @@ import {
     StyleSheet,
     View,
     Text,
-    Modal,
+    // Modal,
     TouchableOpacity
 } from 'react-native';
 import { color } from '../../constants/Theme';
 import circleSelect from '../../comm/res/selected_circle_red.png';
 import circleUnselect from '../../comm/res/unselected_circle.png';
+import Modal from 'CommModal';
 import {
     UIText, UIImage
 } from './../ui';
@@ -22,11 +23,18 @@ class TakePhotoModal extends Component {
         };
     }
 
+    open=()=>{
+        this.modal && this.modal.open();
+    }
+
     render() {
         return (
             <Modal
                 animationType='slide'
                 transparent={true}
+                ref={(ref)=>{
+                    this.modal = ref;
+                }}
                 onRequestClose={() => {
                 }}
                 visible={this.props.isShow}>

@@ -421,12 +421,12 @@ class MyOrdersDetailPage extends BasePage {
                 </View>
                 <UIText value={'创建时间：' + DateUtils.getFormatDate(this.state.viewData.createTime / 1000)}
                         style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>
-                {StringUtils.isNoEmpty(this.state.viewData.platformPayTime) && this.state.viewData.status > 1 ?
+                {StringUtils.isNoEmpty(this.state.viewData.platformPayTime) && this.state.status > 1 ?
                     <UIText value={'平台付款时间：' + DateUtils.getFormatDate(this.state.viewData.platformPayTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>:null}
-                {StringUtils.isEmpty(this.state.viewData.shutOffTime)? null :
+                {StringUtils.isNoEmpty(this.state.viewData.shutOffTime)&&this.state.status > 5?
                     <UIText value={'关闭时间：' + DateUtils.getFormatDate(this.state.viewData.shutOffTime / 1000)}
-                            style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
+                            style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>:null}
                 {StringUtils.isEmpty(this.state.viewData.cancelTime) ? null :
                     <UIText value={'取消时间：' + DateUtils.getFormatDate(this.state.viewData.cancelTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}

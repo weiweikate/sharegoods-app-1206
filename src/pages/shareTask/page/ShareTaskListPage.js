@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
         includeFontPadding: false
     },
     image_btn: {
-        backgroundColor: '#D51243',
+        backgroundColor: DesignRule.bgColor_btn,
         height: autoSizeWidth(30),
         width: autoSizeWidth(100),
         marginTop: autoSizeWidth(10),
