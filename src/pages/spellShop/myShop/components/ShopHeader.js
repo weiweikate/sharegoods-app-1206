@@ -34,15 +34,10 @@ export default class ShopHeader extends Component {
         //tradeBalance本月收入 bonusNeedMoney总额
         // currentUserSettle当前用户的钱(预计分红)
         //贡献度currentUserSettle/tradeBalance
-        //clerkTotalBonusMoney店员个人已完成分红总额 历史总和 clerkBonusCount店铺内个人分红次数
-        //totalTradeBalance累计收入
         const {
-            manager = {},
-            headUrl, name, storeNumber, storeStarId, userStatus, tradeBalance = 0
-            , bonusNeedMoney = 0, currentUserSettle = 0, clerkTotalBonusMoney = 0, totalTradeBalance = 0
+            headUrl, name, storeNumber, storeStarId, userStatus,
+            tradeBalance = 0, bonusNeedMoney = 0, currentUserSettle = 0
         } = this.props.item;
-        //bonusCount店长个人分红次数  totalBonusMoney店长个人已获得分红金  managerTotalBonusMoney作为店长的总分红
-        const { bonusCount, totalBonusMoney, managerTotalBonusMoney } = manager;
 
         const starsArr = [];
         if (storeStarId && typeof storeStarId === 'number') {
@@ -100,7 +95,8 @@ export default class ShopHeader extends Component {
                         width: 315 / 375 * SCREEN_WIDTH
                     }}>
                         <View style={[styles.progressBg, {
-                            marginLeft: 315 / 375 * SCREEN_WIDTH * (tradeBalance / bonusNeedMoney > 1 ? 1 : tradeBalance / bonusNeedMoney)
+                            marginLeft: 315 / 375 * SCREEN_WIDTH * (bonusNeedMoney === 0 ? 0 :
+                                (tradeBalance / bonusNeedMoney > 1 ? 1 : tradeBalance / bonusNeedMoney))
                         }]}/>
                     </ImageBackground>
 
