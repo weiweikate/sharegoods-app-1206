@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, TouchableWithoutFeedback, Animated, Easing} from 'react-native'
-import ScreenUtils from '../../utils/ScreenUtils'
 
 let index = 0
 export default class MarqueeLabelVertical extends Component {
@@ -23,10 +22,10 @@ export default class MarqueeLabelVertical extends Component {
       }
     }
     showHeadBar(count) {
-      const { showEnd } = this.props
+      const { showEnd, marqueeHeight } = this.props
       index++
       Animated.timing(this.state.translateY, {
-        toValue: -ScreenUtils.px2dp(17) * index, //40为文本View的高度
+        toValue: -(marqueeHeight / 2) * index, //40为文本View的高度
         duration: 1000, //动画时间
         Easing: Easing.linear,
         delay: 2500 //文字停留时间
