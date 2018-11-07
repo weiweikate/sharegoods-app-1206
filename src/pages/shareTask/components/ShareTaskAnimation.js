@@ -42,6 +42,7 @@ export default class ShareTaskAnimation extends React.Component {
 
     open() {
         this.setState({ modalVisible: true });
+        this.modal && this.modal.open();
         this.state.scale.setValue(0);
         Animated.spring(
             this.state.scale, // The value to drive
@@ -56,9 +57,6 @@ export default class ShareTaskAnimation extends React.Component {
         this.setState({ modalVisible: false });
     }
 
-    open = () => {
-        this.modal && this.modal.open();
-    };
 
     componentDidMount() {
     }
