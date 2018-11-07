@@ -18,27 +18,27 @@ export default class EditPayPwdPage extends BasePage {
                 width: ScreenUtils.width - 84,
                 borderColor: color.red,
                 borderWidth: 0.7,
-                height: 48,
+                height: 50,
                 marginLeft: 42,
                 marginRight: 42,
                 alignItems: 'center',
                 justifyContent: 'center',
-                borderRadius: 5
+                borderRadius: 25
             }} onPress={() => this._know()}>
-                <Text style={{ fontSize: 14, color: color.red }}>记得原交易密码</Text>
+                <Text style={{ fontSize: 17, color: color.red }}>记得原交易密码</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{
                 marginTop: 21,
                 backgroundColor: color.red,
                 width: ScreenUtils.width - 84,
-                height: 48,
+                height: 50,
                 marginLeft: 42,
                 marginRight: 42,
                 alignItems: 'center',
                 justifyContent: 'center',
-                borderRadius: 5
+                borderRadius: 25
             }} onPress={() => this._forget()}>
-                <Text style={{ fontSize: 14, color: 'white' }}>忘记原交易密码</Text>
+                <Text style={{ fontSize: 17, color: 'white' }}>忘记原交易密码</Text>
             </TouchableOpacity>
         </View>;
     }

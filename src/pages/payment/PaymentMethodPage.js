@@ -355,7 +355,7 @@ export default class PaymentMethodPage extends BasePage {
                 const resultStr = await PayUtil.appAliPay(prePayStr);
                 console.log('resultStr', resultStr);
                 // const checkStr = await this.payment.alipayCheck({outTradeNo:result.data.outTradeNo , type:paymentType.alipay})
-                if (resultStr.code !== 9000) {
+                if (resultStr.sdkCode !== 9000) {
                     this.paymentResultView && this.paymentResultView.show(PaymentResult.fail, resultStr.msg);
                 }
                 return;
@@ -367,7 +367,7 @@ export default class PaymentMethodPage extends BasePage {
                 const resultStr = await PayUtil.appWXPay(prePay);
                 console.log('resultStr', resultStr);
                 // const checkStr = await this.payment.wechatCheck({outTradeNo:result.data.outTradeNo , type:2})
-                if (resultStr.sdkCode !== 0) {
+                if (resultStr.code !== 0) {
                     this.paymentResultView && this.paymentResultView.show(PaymentResult.fail, resultStr.msg);
                 }
                 return;
