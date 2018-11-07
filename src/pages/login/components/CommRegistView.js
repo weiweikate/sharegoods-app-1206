@@ -210,7 +210,7 @@ export default class CommRegistView extends Component {
                             textAlign: 'center',
                             height: 45,
                             alignItems: 'center',
-                            fontSize: 14,
+                            fontSize: 17,
                             color: '#fff',
                             paddingTop: 15,
                             fontWeight: '600'
@@ -240,9 +240,8 @@ export default class CommRegistView extends Component {
             (new TimeDownUtils()).startDown((time) => {
                 this.registModel.dowTime = time;
             });
-            SMSTool.sendVerificationCode(1, this.registModel.phoneNumber);
-
-
+            // let SMSType = this.props.viewType === 1 ? SMSTool.OldPhoneType : SMSTool.RegType;
+            SMSTool.sendVerificationCode(this.props.viewType === 1 ? 2 : 1,this.registModel.phoneNumber)
         } else {
             bridge.$toast('手机格式不对');
         }
