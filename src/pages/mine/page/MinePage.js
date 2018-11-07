@@ -43,6 +43,7 @@ import bgImg from '../res/homeBaseImg/bg_img_user.png';
 import rightIcon from '../res/homeBaseImg/me_icon_jinru_nor.png';
 import userOrderNum from '../../../model/userOrderNum';
 import RouterMap from 'RouterMap';
+import DesignRule from 'DesignRule';
 
 /**
  * @author chenxiang
@@ -305,7 +306,7 @@ export default class MinePage extends BasePage {
                     {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', '#FF4F6E', () => {
                         this.go2CashDetailPage(1);
                     })}
-                    {this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : user.userScore + '', '秀豆账户', '#FFC079', () => {
+                    {this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : user.userScore + '', '秀豆账户', DesignRule.bgColor_yellowCard, () => {
                         this.go2CashDetailPage(2);
                     })}
                     {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户', '#8EC7FF', () => {
