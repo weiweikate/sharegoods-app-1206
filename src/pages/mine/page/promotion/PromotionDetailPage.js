@@ -209,7 +209,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
                     isEmpty={this.state.isEmpty}
                     emptyTip={'暂无数据'}
                 />
-                {this.state.showCountDown ? this._bottomButtonRender() : null}
+                {this._bottomButtonRender()}
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'promotionShare'}
                                 webJson={{

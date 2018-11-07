@@ -1,6 +1,3 @@
-/**
- * 明星店铺
- */
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Image } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
@@ -9,6 +6,14 @@ import {observer} from 'mobx-react'
 import { starShopModule, homeModule } from './Modules'
 import User from '../../model/user'
 import starImg from './res/star.png'
+
+/**
+ * @author chenyangjun
+ * @date on 2018/9/7
+ * @describe 明星店铺
+ * @org www.sharegoodsmall.com
+ * @email chenyangjun@meeruu.com
+ */
 
 const Banner = ({backImage, title, press}) => <View style={styles.bannerContainer}>
     <ImageBackground style={styles.bannerImg}  source={backImage}>

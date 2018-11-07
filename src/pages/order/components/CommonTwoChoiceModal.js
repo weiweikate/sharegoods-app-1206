@@ -43,11 +43,16 @@ export default class CommonTwoChoiceModal extends Component {
 
     };
 
+    open=()=>{
+        this.modal && this.modal.open();
+    }
+
     render() {
         return (
             <Modal
                 animationType='fade'
                 transparent={true}
+                ref={ref=>{this.modal = ref}}
                 onRequestClose={() => this.onRequestClose()}
                 visible={this.props.isShow}>
                 <View style={styles.modalStyle}>

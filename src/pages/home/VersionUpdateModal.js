@@ -60,10 +60,15 @@ export default class VersionUpdateModal extends React.Component {
         }
     }
 
+    open=()=>{
+        this.modal && this.modal.open();
+    }
+
     render() {
         return (<CommModal
             animationType='fade'
             transparent={true}
+            ref={(ref)=>{this.modal = ref}}
             visible={this.props.showUpdate}>
             <View style={{
                 flexDirection: 'column',

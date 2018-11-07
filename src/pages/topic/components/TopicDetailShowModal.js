@@ -30,6 +30,8 @@ export default class TopicDetailShowModal extends Component {
             tittle, name, subName,
             content
         });
+
+        this.modal && this.modal.open();
     };
     _onPress = () => {
         this.setState({
@@ -41,6 +43,7 @@ export default class TopicDetailShowModal extends Component {
         return (
             <CommModal onRequestClose={this.close}
                        visible={this.state.modalVisible}
+                       ref={(ref)=>{this.modal = ref;}}
                        transparent={true}>
                 <View style={{
                     backgroundColor: 'rgba(0,0,0,0.5)', top: 0,

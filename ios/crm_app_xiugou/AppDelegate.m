@@ -7,6 +7,14 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
+/**
+ * @author huyufeng
+ * @date on 2018/9/3
+ * @describe iosUIApplication
+ * @org www.sharegoodsmall.com
+ * @email huyufeng@meeruu.com
+ */
+
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>

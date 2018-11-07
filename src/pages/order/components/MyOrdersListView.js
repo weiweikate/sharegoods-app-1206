@@ -94,6 +94,7 @@ export default class MyOrdersListView extends Component {
             <View>
                 <CommonTwoChoiceModal
                     isShow={this.state.isShowDeleteOrderModal}
+                    ref={(ref)=>{this.deleteModal = ref}}
                     detail={{ title: '删除订单', context: '确定删除此订单吗', no: '取消', yes: '确认' }}
                     closeWindow={() => {
                         this.setState({ isShowDeleteOrderModal: false });
@@ -131,6 +132,7 @@ export default class MyOrdersListView extends Component {
                 />
                 <CommonTwoChoiceModal
                     isShow={this.state.isShowReceiveGoodsModal}
+                    ref={(ref)=>{this.receiveModal = ref}}
                     detail={{ title: '确认收货', context: '是否确认收货?', no: '取消', yes: '确认' }}
                     closeWindow={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
@@ -153,6 +155,7 @@ export default class MyOrdersListView extends Component {
                 />
                 <SingleSelectionModal
                     isShow={this.state.isShowSingleSelctionModal}
+                    ref={(ref)=>{this.cancelModal = ref}}
                     detail={['我不想买了', '信息填写错误，重新拍', '其他原因']}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
@@ -432,6 +435,7 @@ export default class MyOrdersListView extends Component {
         switch (menu.id) {
             case 1:
                 this.setState({ isShowSingleSelctionModal: true });
+                this.cancelModal && this.cancelModal.open();
                 break;
             case 2:
                 this.props.nav('payment/PaymentMethodPage', {
@@ -494,10 +498,12 @@ export default class MyOrdersListView extends Component {
                 }
                 if (j == 0) {
                     this.setState({ isShowReceiveGoodsModal: true });
+                    this.receiveModal && this.receiveModal.open();
                 }
                 break;
             case 7:
                 this.setState({ isShowDeleteOrderModal: true });
+                this.deleteModal && this.deleteModal.open();
                 break;
             case 8:
                 Toast.showLoading();
@@ -529,6 +535,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 9:
                 this.setState({ isShowDeleteOrderModal: true });
+                this.deleteModal && this.deleteModal.open();
                 break;
         }
     };

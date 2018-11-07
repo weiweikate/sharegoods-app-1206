@@ -8,6 +8,7 @@ const USERINFOCACHEKEY = 'UserInfo';
 const CARTDATA = 'cartData';
 const USERTOKEN = 'USERTOKEN'
 const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
+const LASTGETHOMEMESSAGETIME = 'lastgethomemessagetime';
 
 class User {
 
@@ -351,6 +352,8 @@ class User {
         // todo 清空cookie
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
         AsyncStorage.removeItem(LASTSHOWPROMOTIONTIME).catch(e => {
+        });
+        AsyncStorage.removeItem(LASTGETHOMEMESSAGETIME).catch(e => {
         });
         return AsyncStorage.removeItem(USERINFOCACHEKEY).catch(e => {
         });

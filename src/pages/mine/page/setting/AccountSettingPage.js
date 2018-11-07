@@ -129,7 +129,6 @@ export default class AccountSettingPage extends BasePage {
 
 }
 
-
 const styles = StyleSheet.create({
     container: {
         backgroundColor: DesignRule.white,

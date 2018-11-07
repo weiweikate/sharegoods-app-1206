@@ -80,6 +80,7 @@ export default class CommShareModal extends React.Component {
     /** public*/
     open() {
         this.setState({ modalVisible: true, shareType: this.defaultShareType });
+        this.modal && this.modal.open();
         this.state.y.setValue(autoSizeWidth(340));
         Animated.spring(
             // Animate value over time
@@ -252,6 +253,7 @@ export default class CommShareModal extends React.Component {
             <CommModal onRequestClose={this.close}
                        visible={this.state.modalVisible}
                        transparent={true}
+                       ref={(ref) =>{this.modal = ref;}}
             >
                 <View style={{
                     backgroundColor: 'rgba(0,0,0,0.5)',

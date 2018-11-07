@@ -147,10 +147,18 @@ export default class SignInPage extends BasePage {
 
     //**********************************ViewPart******************************************
     _signInButtonRender() {
+        let fontSize = px2dp(22);
+        if(user.userScore){
+            let str = user.userScore+'';
+            if(str.length > 4){
+                fontSize = px2dp(16);
+            }
+        }
+
         return (
             <View style={styles.signInButtonWrapper}>
                 <Image style={styles.showBeanIconStyle} resizeMode={"stretch"} source={showBeanIcon}/>
-                <Text style={styles.showBeanTextStyle}>
+                <Text style={[styles.showBeanTextStyle,{fontSize : fontSize}]}>
                     {user.userScore ? user.userScore : 0}
                 </Text>
             </View>
@@ -385,7 +393,6 @@ const styles = StyleSheet.create({
     },
     showBeanTextStyle: {
         color: "white",
-        fontSize: px2dp(22)
     },
     couponBgStyle: {
         height: px2dp(94),
