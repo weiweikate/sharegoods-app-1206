@@ -164,7 +164,7 @@ export default class ShopCartPage extends BasePage {
                 >
                     <View
                         style={{
-                            marginTop: 10,
+                            marginTop: 22,
                             justifyContent: 'center',
                             alignItems: 'center',
                             borderColor: DesignRule.mainColor,
