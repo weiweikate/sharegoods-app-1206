@@ -16,7 +16,6 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 // import withdrawMoney from '../../res/userInfoImg/withdrawMoney.png';
 import tuiguang from '../../res/userInfoImg/list_icon_touguang.png';
 import salesCommissions from '../../res/userInfoImg/list_icon_xiaoshouticheng.png';
-import waitWithdrawCashBg from '../../res/userInfoImg/waitWithdrawCashBg2.png';
 import questionImage_white from '../../res/userInfoImg/questionImage_white.png';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
@@ -76,7 +75,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
     renderHeader = () => {
         return (
             <View style={styles.container}>
-                <Image style={styles.imageBackgroundStyle} source={waitWithdrawCashBg}/>
+                <ImageBackground style={styles.imageBackgroundStyle} />
                 <View style={styles.viewStyle}>
                     <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: color.white }}>待提现余额(元)</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -284,13 +283,14 @@ const styles = StyleSheet.create({
     },
     container: {}, imageBackgroundStyle: {
         position: 'absolute',
-        height: 140,
+        height: 95,
         width: ScreenUtils.width - 30,
         marginLeft: 15,
         marginRight: 15,
         marginTop: 10,
         marginBottom: 10,
-        borderRadius: 15
+        borderRadius: 15,
+        backgroundColor:'#8EC7FF'
     }, rectangleStyle: {
         width: 100,
         height: 44,
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         alignItems: 'center'
     }, viewStyle: {
-        height: 140,
+        height: 95,
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 15,
