@@ -48,7 +48,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                         placeholderTextColor={'#C8C8C8'}
                     />
                 </View>
-                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15 }} />
+                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15 }}/>
                 <View style={styles.horizontalItem}>
                     <Text style={styles.itemLeftText}>证件号码</Text>
                     <TextInput
@@ -66,14 +66,14 @@ export default class SetNewPhoneNumPage extends BasePage {
                 marginTop: 54,
                 backgroundColor: color.red,
                 width: ScreenUtils.width - 84,
-                height: 48,
+                height: 50,
                 marginLeft: 42,
                 marginRight: 42,
                 alignItems: 'center',
                 justifyContent: 'center',
-                borderRadius: 5
+                borderRadius: 25
             }} onPress={() => this._toNext()}>
-                <Text style={{ fontSize: 13, color: 'white' }}>确认</Text>
+                <Text style={{ fontSize: 17, color: 'white' }}>确认</Text>
             </TouchableOpacity>
         </View>);
     }

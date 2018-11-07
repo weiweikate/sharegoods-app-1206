@@ -27,7 +27,7 @@ export default class MyOrdersListView extends Component {
             menu: {},
             index: -1
         };
-        this.currentPage=0;
+        this.currentPage = 0;
     }
 
     $getPageStateOptions = () => {
@@ -74,7 +74,7 @@ export default class MyOrdersListView extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: '#f7f7f7' }}>
                 <RefreshList
                     data={this.state.viewData}
                     renderItem={this.renderItem}
@@ -94,7 +94,9 @@ export default class MyOrdersListView extends Component {
             <View>
                 <CommonTwoChoiceModal
                     isShow={this.state.isShowDeleteOrderModal}
-                    ref={(ref)=>{this.deleteModal = ref}}
+                    ref={(ref) => {
+                        this.deleteModal = ref;
+                    }}
                     detail={{ title: '删除订单', context: '确定删除此订单吗', no: '取消', yes: '确认' }}
                     closeWindow={() => {
                         this.setState({ isShowDeleteOrderModal: false });
@@ -132,7 +134,9 @@ export default class MyOrdersListView extends Component {
                 />
                 <CommonTwoChoiceModal
                     isShow={this.state.isShowReceiveGoodsModal}
-                    ref={(ref)=>{this.receiveModal = ref}}
+                    ref={(ref) => {
+                        this.receiveModal = ref;
+                    }}
                     detail={{ title: '确认收货', context: '是否确认收货?', no: '取消', yes: '确认' }}
                     closeWindow={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
@@ -155,7 +159,9 @@ export default class MyOrdersListView extends Component {
                 />
                 <SingleSelectionModal
                     isShow={this.state.isShowSingleSelctionModal}
-                    ref={(ref)=>{this.cancelModal = ref}}
+                    ref={(ref) => {
+                        this.cancelModal = ref;
+                    }}
                     detail={['我不想买了', '信息填写错误，重新拍', '其他原因']}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
@@ -232,7 +238,7 @@ export default class MyOrdersListView extends Component {
             });
             this.setState({ viewData: arrData });
         } else {
-            this.setState({ viewData: this.state.viewData});
+            this.setState({ viewData: this.state.viewData });
         }
     };
 
@@ -396,12 +402,12 @@ export default class MyOrdersListView extends Component {
     };
 
     onRefresh = () => {
-       this.currentPage=1;
+        this.currentPage = 1;
         this.getDataFromNetwork();
     };
 
     onLoadMore = (page) => {
-       this.currentPage++;
+        this.currentPage++;
         this.getDataFromNetwork();
     };
     clickItem = (index) => {

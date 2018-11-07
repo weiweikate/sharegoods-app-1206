@@ -316,7 +316,8 @@ const Styles = StyleSheet.create(
             textAlign: 'center',
             width: 120,
             color: DesignRule.mainColor,
-            marginTop: 40
+            marginTop: 40,
+            fontSize:13
         },
         loginBtnStyle: {
             marginTop: 40,
