@@ -6,7 +6,7 @@ import MyIntegralAccountPage from './MyIntegralAccountPage';
 import WithdrawCashPage from './WithdrawCashPage';
 import IDVertify2Page from './IDVertify2Page';
 import WaitingForWithdrawCashPage from './WaitingForWithdrawCashPage';
-import TokenExchangePage from './TokenExchangePage';
+import UserAgreementPage from './UserAgreementPage';
 
 
 export default {
@@ -19,6 +19,6 @@ export default {
         WithdrawCashPage,
         IDVertify2Page,
         WaitingForWithdrawCashPage,
-        TokenExchangePage
+        UserAgreementPage
     }
 };

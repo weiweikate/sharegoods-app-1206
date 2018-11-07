@@ -26,7 +26,7 @@ export default class PayMessagePage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '支付详情',
+        title: this.params.type === 'pay_success' ? '支付详情' : '退款详情',
         show: true // false则隐藏导航
     };
 
@@ -53,11 +53,11 @@ export default class PayMessagePage extends BasePage {
     }
 
     toHelperPage = () => {
-        this.$navigate('mine/helper/HelperFeedbackPage');
+        this.$navigate('mine/helper/MyHelperPage');
     };
 
     commitQuestion = () => {
-        this.$navigate('mine/helper/MyHelperPage');
+        this.$navigate('mine/helper/HelperFeedbackPage');
     };
 
     renderSuccess() {

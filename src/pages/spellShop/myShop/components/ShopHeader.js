@@ -79,7 +79,7 @@ export default class ShopHeader extends Component {
                     <Image source={CCZImg} style={styles.whiteBgTopRowIcon}/>
                     <Text style={styles.chengzhangzhi}>成长值</Text>
                     <Text style={styles.gongxian}>
-                        (贡献度：{`${tradeBalance === 0 ? 0 : (currentUserSettle / tradeBalance).toFixed(2)}`}%)
+                        (贡献度：{`${tradeBalance === 0 ? 0 : ((currentUserSettle / tradeBalance) *100).toFixed(2)}`}%)
                     </Text>
                 </View>
 

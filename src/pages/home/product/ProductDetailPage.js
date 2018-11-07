@@ -82,6 +82,7 @@ export default class ProductDetailPage extends BasePage {
                 if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
                     HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
                         if(!EmptyUtils.isEmpty(data.data)){
+                            this.couponModal && this.couponModal.open();
                             this.setState({
                                 canGetCoupon: true,
                                 couponData: data.data
@@ -343,7 +344,7 @@ export default class ProductDetailPage extends BasePage {
         );
 
         return (
-            <CommModal visible={this.state.canGetCoupon}>
+            <CommModal ref={(ref)=>{this.couponModal = ref;}} visible={this.state.canGetCoupon}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center', justifyContent: 'center' }}>
                     <ImageBackground source={redEnvelopeBg} style={{
                         height: px2dp(362), width: px2dp(257),
@@ -443,6 +444,12 @@ export default class ProductDetailPage extends BasePage {
                                     dec: '商品详情',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`,
                                     thumImage: imgUrl
+                                }}
+                                miniProgramJson={{
+                                    title: `${name}`,
+                                    dec: '商品详情',
+                                    thumImage: imgUrl,
+                                    miniProgramPath: `/pages/index/index?type=99&id=${product.id}`
                                 }}/>
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
                 {this._renderCouponModal()}

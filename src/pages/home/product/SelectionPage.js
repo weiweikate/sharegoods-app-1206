@@ -80,6 +80,7 @@ export default class SelectionPage extends Component {
             this._indexCanSelectedItems();
 
         });
+        this.modal && this.modal.open();
     };
 
     _clickItemAction = (item, indexOfProp) => {
@@ -286,6 +287,7 @@ export default class SelectionPage extends Component {
         const { afterAmount, type } = this.state.propData;
         return (
             <Modal
+                ref={(ref)=>this.modal = ref}
                 animationType="none"
                 transparent={true}
                 visible={this.state.modalVisible}
