@@ -758,7 +758,7 @@ export default class ConfirOrderPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: '#f7f7f7', justifyContent: 'flex-end',marginBottom: ScreenUtils.saveMarginBottom
+        flex: 1, backgroundColor: '#f7f7f7', justifyContent: 'flex-end',marginBottom: ScreenUtils.safeBottom
     }, selectText: {
         fontSize: 16, color: '#ffffff'
     }, blackText: {

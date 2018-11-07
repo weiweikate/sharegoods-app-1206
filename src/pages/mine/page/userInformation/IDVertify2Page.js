@@ -113,7 +113,7 @@ export default class IDVertify2Page extends BasePage {
                     </View>
                     <TouchableOpacity style={{
                         marginTop: 42,
-                        backgroundColor: color.red,
+                        backgroundColor: StringUtils.isNoEmpty(this.state.name)&&StringUtils.isNoEmpty(this.state.idNumber)&&StringUtils.isNoEmpty(this.state.backIdCard)&&StringUtils.isNoEmpty(this.state.frontIdCard)?color.red:'#cccccc',
                         width: ScreenUtils.width - 84,
                         height: 45,
                         marginLeft: 42,
@@ -142,10 +142,7 @@ export default class IDVertify2Page extends BasePage {
                             <UIText value={'《实名认证协议》'}
                                     style={{ fontSize: 11, color: '#D62B56' }}
                                     onPress={() => {
-                                        this.$navigate('HtmlPage', {
-                                            title: '用户协议内容',
-                                            uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
-                                        });
+                                        this.$navigate('mine/userInformation/UserAgreementPage');
                                     }}/>
                         </TouchableOpacity>
                     </View>

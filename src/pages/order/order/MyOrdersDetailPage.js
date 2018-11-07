@@ -1314,7 +1314,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: color.page_background,
-        marginBottom: ScreenUtils.saveMarginBottom
+        marginBottom: ScreenUtils.safeBottom
     }, redRectangle: {
         width: ScreenUtils.width,
         height: 100,
