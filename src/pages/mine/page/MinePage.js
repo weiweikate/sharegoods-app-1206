@@ -57,10 +57,6 @@ export default class MinePage extends BasePage {
             total: 0,
             nickname: user.phone,
             headImg: '',
-            availableBalance: 0,//现金余额
-            blockedBalance: 0,//待提现
-            levelName: 'V0',
-            userScore: 0,//秀豆
             refreshing: false,
             netFailedInfo: null,
             loadingState: PageLoadingState.success
@@ -263,7 +259,7 @@ export default class MinePage extends BasePage {
                                 includeFontPadding: false,
                                 marginLeft: px2dp(4.5),
                                 marginTop: px2dp(-3)
-                            }}>{this.state.levelName ? this.state.levelName : `${'VO'}`}</Text>
+                            }}>{user.levelName ? user.levelName : `${'VO'}`}</Text>
                         </ImageBackground>
                     </View>
                 </View>
@@ -299,13 +295,13 @@ export default class MinePage extends BasePage {
                     paddingHorizontal: px2dp(15),
                     justifyContent: 'space-between'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(this.state.availableBalance), '现金账户', '#FF4F6E', () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', '#FF4F6E', () => {
                         this.go2CashDetailPage(1);
                     })}
-                    {this.accountItemView(StringUtils.isEmpty(this.state.userScore) ? '0' : this.state.userScore + '', '秀豆账户', '#FFC079', () => {
+                    {this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : user.userScore + '', '秀豆账户', '#FFC079', () => {
                         this.go2CashDetailPage(2);
                     })}
-                    {this.accountItemView(StringUtils.formatMoneyString(this.state.blockedBalance), '待提现账户', '#8EC7FF', () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户', '#8EC7FF', () => {
                         this.go2CashDetailPage(3);
                     })}
                 </View>
@@ -556,13 +552,13 @@ export default class MinePage extends BasePage {
     go2CashDetailPage(i) {
         switch (i) {
             case 1:
-                this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: this.state.availableBalance });
+                this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: user.availableBalance });
                 break;
             case 2:
-                this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: this.state.userScore ? this.state.userScore : 0 });
+                this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: user.userScore ? user.userScore : 0 });
                 break;
             case 3:
-                this.$navigate('mine/userInformation/WaitingForWithdrawCashPage', { blockedBalance: this.state.blockedBalance ? this.state.blockedBalance : 0 });
+                this.$navigate('mine/userInformation/WaitingForWithdrawCashPage', { blockedBalance: user.blockedBalance ? user.blockedBalance : 0 });
                 break;
             default:
             // this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
