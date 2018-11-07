@@ -1,6 +1,11 @@
 /**
- * Created by damon on 2018/9/6.
+ * @author louis
+ * @date on 2018/9/6
+ * @describe basePage
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
  */
+
 import React, { Component } from 'react';
 import {
     View,
@@ -18,7 +23,6 @@ import { netStatus } from './comm/components/NoNetHighComponent';
 import CommTabImag from './comm/res/CommTabImag';
 import bridge from './utils/bridge';
 import DesignRule from 'DesignRule';
-
 
 export default class BasePage extends Component {
     constructor(props) {

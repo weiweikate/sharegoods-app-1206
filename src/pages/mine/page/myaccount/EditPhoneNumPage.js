@@ -12,6 +12,13 @@ import bridge from '../../../../utils/bridge';
 import MineAPI from '../../api/MineApi';
 import SMSTool from '../../../../utils/SMSTool';
 
+/**
+ * @author chenxiang
+ * @date on 2018/9/18
+ * @describe 设置页面
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
+ */
 export default class EditPhoneNumPage extends BasePage {
 
     // 导航配置
@@ -114,5 +121,4 @@ export default class EditPhoneNumPage extends BasePage {
             bridge.$toast(data.msg);
         });
     };
-
 }

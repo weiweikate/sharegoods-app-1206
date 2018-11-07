@@ -45,7 +45,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
         this._bind();
         this.seconds = 0;
         this.expansions = {};
-        this.state={jobId: ''};
+        this.state={id: ''};
 
     }
 
@@ -93,7 +93,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
            that.$loadingDismiss();
         }).catch((error) => {
             that.$toastShow(error.msg);
-            //that.$loadingDismiss();
+            that.$loadingDismiss();
         });
     }
 
@@ -136,7 +136,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                                     thumImage: 'logo.png',
                                     hdImageURL: '',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/index/index`,
-                                    miniProgramPath: `/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.state.jobId}`
+                                    miniProgramPath: `/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.state.id}`
                                 }}
                 />
             </View>
@@ -190,12 +190,12 @@ export default class ShareTaskListPage extends BasePage<Props> {
         let onPress = null;
         switch (status) {
             case 1:
-                image_title = this.getRestTime(countDown, status);
+                image_title = '任务倒计时：' + this.getRestTime(countDown, status);
                 image_btnText = '继续分享';
                 image_detail = shareHits === 0 ? '暂无好友激活' : desc;
                 onPress = () => {
                     // global.$navigator.dispatch(NavigationActions.navigate({ routeName: RouterMap.ShareTaskIntroducePage, params: {jobId:item.jobId, status: 1} }));
-                    this.setState({jobId: item.jobId})
+                    this.setState({id: id})
                     this.shareModal.open();
                 };
                 break;

@@ -24,6 +24,7 @@ import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
+import com.squareup.leakcanary.LeakCanary;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
@@ -34,6 +35,13 @@ import java.util.List;
 import cn.reactnative.modules.update.UpdateContext;
 import cn.reactnative.modules.update.UpdatePackage;
 
+/**
+ * @author louis
+ * @date on 2018/9/3
+ * @describe 应用application类
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
+ */
 public class MainApplication extends BaseApplication implements ReactApplication {
 
     private int patchStatus;
@@ -67,10 +75,10 @@ public class MainApplication extends BaseApplication implements ReactApplication
             }
         });
         // 检测内存泄漏
-//        if (LeakCanary.isInAnalyzerProcess(this)) {
-//            return;
-//        }
-//        LeakCanary.install(this);
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
         if (getProcessName(this).equals(getPackageName())) {
             if (!Utils.isApkInDebug()) {
                 // 捕获闪退日志
@@ -86,7 +94,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
-
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 

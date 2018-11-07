@@ -14,6 +14,13 @@ import BusinessUtils from '../../components/BusinessUtils';
 const dismissKeyboard = require('dismissKeyboard');
 import MineApi from '../../api/MineApi';
 
+/**
+ * @author chenxiang
+ * @date on 2018/9/13
+ * @describe 订单列表
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
+ */
 @observer
 export default class UserInformationPage extends BasePage {
 
@@ -66,7 +73,6 @@ export default class UserInformationPage extends BasePage {
     };
 
     _render() {
-        //rightText={(user.province || ' ') + '-' + (user.city || ' ') + '-' + (user.area || ' ')}
         return (
             <ScrollView
                 refreshControl={
@@ -112,7 +118,6 @@ export default class UserInformationPage extends BasePage {
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={false}
                                 circleStyle={user.realname ? styles.hasVertifyID : styles.notVertifyID}
                                 onPress={() => this.jumpToIDVertify2Page()}/>
-
             </ScrollView>
         );
     }
@@ -126,8 +131,6 @@ export default class UserInformationPage extends BasePage {
                 if (response.code == 10000) {
                     user.headImg = callback.imageUrl;
                     this.$toastShow('头像修改成功');
-                } else {
-                    // this.$toast(response.msg);
                 }
             }).catch(err => {
 
@@ -135,7 +138,6 @@ export default class UserInformationPage extends BasePage {
                 if (err.code == 10009) {
                     this.props.navigation.navigate('login/login/LoginPage');
                 }
-
             });
         });
     };

@@ -1,6 +1,3 @@
-/**
- * Created by xiangchen on 2018/7/12.
- */
 import React from 'react'
 import {
     StyleSheet,
@@ -14,6 +11,14 @@ import UIText from '../../../../components/ui/UIText';
 import { color} from "../../../../constants/Theme";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import arrow_right from '../../res/homeBaseImg/icon3_07.png';
+
+/**
+ * @author chenxiang
+ * @date on 2018/9/20
+ * @describe 设置页面
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
+ */
 export default class HelperQuestionListPage extends BasePage {
     constructor(props) {
         super(props);
