@@ -219,30 +219,30 @@ const GoodsListItem = props => {
             case 1:
             case 8:
                 aboutTime = <UIText value={'创建时间：' + DateUtils.getFormatDate(orderCreateTime / 1000)}
-                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                                    style={{ fontSize: 13, color: '#999999' }}/>;
                 break;
 
             case 2:
-                aboutTime = <UIText value={'付款时间：' + DateUtils.getFormatDate(platformPayTime / 1000)}
-                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                aboutTime = <UIText value={'支付时间：' + DateUtils.getFormatDate(platformPayTime / 1000)}
+                                    style={{ fontSize: 13, color: '#999999' }}/>;
                 break;
             case 3:
                 aboutTime = <UIText value={'发货时间：' + DateUtils.getFormatDate(sendTime / 1000)}
-                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                                    style={{ fontSize: 13, color: '#999999' }}/>;
                 break;
 
             case 4:
                 aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(deliverTime / 1000)}
-                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                                    style={{ fontSize: 13, color: '#999999' }}/>;
                 break;
             case 5:
             case 6:
                 aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(finishTime / 1000)}
-                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                                    style={{ fontSize: 13, color: '#999999' }}/>;
                 break;
             case 7:
                 aboutTime = <UIText value={'取消时间：' + DateUtils.getFormatDate(cancelTime / 1000)}
-                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                                    style={{ fontSize: 13, color: '#999999' }}/>;
                 break;
 
 

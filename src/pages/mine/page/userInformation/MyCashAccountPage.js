@@ -180,7 +180,7 @@ export default class MyCashAccountPage extends BasePage {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1, backgroundColor: color.page_background,
-        marginBottom: ScreenUtils.saveMarginBottom
+        marginBottom: ScreenUtils.safeBottom
     },
     container: {}, imageBackgroundStyle: {
         position: 'absolute',

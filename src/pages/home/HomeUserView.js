@@ -43,7 +43,8 @@ export default class HomeUserView extends Component {
             }
             if (level.name <= levelName) {
                 let otherExp =  experience - lastExp
-                console.log('experience - level.upgradeExp', experience - lastExp, otherExp)
+                let currentExp = level.upgradeExp - lastExp
+                console.log('experience - level.upgradeExp', experience - lastExp, otherExp, currentExp, level.upgradeExp)
                 if (experience === 0) {
                     items.push(<View key={'line' + index} style={[styles.progressLine, { backgroundColor: '#E7AE39'}]}>
                          <View style={{flex: 1, backgroundColor: '#9B6D26' }}/>
@@ -54,8 +55,8 @@ export default class HomeUserView extends Component {
                     </View>)
                 }
                 if (level.name === levelName) {
-                    let left = (otherExp / level.upgradeExp > 1 ? 1 : otherExp / level.upgradeExp)  *  total
-                    expItems.push(<View style={[styles.block, {paddingLeft: left}]}>
+                    let left = (otherExp / currentExp > 1 ? 1 : otherExp / currentExp)  *  total
+                    expItems.push(<View key={'user' + index} style={[styles.block, {paddingLeft: left}]}>
                             <View style={[styles.levelBottomTextBg]}>
                                 <Text style={ styles.levelBottomText }> {experience} </Text>
                             </View>

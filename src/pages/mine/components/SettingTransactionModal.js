@@ -3,7 +3,6 @@ import {
     StyleSheet,
     View,
     Text,
-    Modal,
     ImageBackground
 } from 'react-native';
 import { color } from '../../../constants/Theme';
@@ -14,7 +13,7 @@ import {
 } from '../../../components/ui';
 import PasswordInput from './PasswordInput';
 import { observer } from 'mobx-react/native';
-
+import Modal from 'CommModal';
 @observer
 class SettingTransactionModal extends Component {
 
@@ -38,11 +37,18 @@ class SettingTransactionModal extends Component {
 
     };
 
+    open=()=>{
+        this.modal && this.modal.open();
+    }
+
     render() {
         return (
             <Modal
                 animationType='fade'
                 transparent={true}
+                ref={(ref)=>{
+                    this.modal = ref;
+                }}
                 onRequestClose={() => this.onRequestClose()}
                 visible={this.props.isShow}>
                 <View style={styles.modalStyle}>

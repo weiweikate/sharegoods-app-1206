@@ -78,7 +78,7 @@ export default class IDVertify2Page extends BasePage {
                         <RNTextInput
                             style={styles.inputTextStyle}
                             onChangeText={text => this.setState({ name: text })}
-                            placeholder={'请输入真实姓名'}
+                            placeholder={'请填写证件上的真实姓名'}
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
@@ -94,7 +94,7 @@ export default class IDVertify2Page extends BasePage {
                         <RNTextInput
                             style={styles.inputTextStyle}
                             onChangeText={text => this.setState({ idNumber: text })}
-                            placeholder={'请输入证件号'}
+                            placeholder={'请填写证件上的证件号码'}
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
@@ -113,14 +113,14 @@ export default class IDVertify2Page extends BasePage {
                     </View>
                     <TouchableOpacity style={{
                         marginTop: 42,
-                        backgroundColor: color.red,
+                        backgroundColor: StringUtils.isNoEmpty(this.state.name)&&StringUtils.isNoEmpty(this.state.idNumber)&&StringUtils.isNoEmpty(this.state.backIdCard)&&StringUtils.isNoEmpty(this.state.frontIdCard)?color.red:'#cccccc',
                         width: ScreenUtils.width - 84,
                         height: 45,
                         marginLeft: 42,
                         marginRight: 42,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        borderRadius: 5
+                        borderRadius: 25
                     }} onPress={() => this.commit()}>
                         <Text style={{ fontSize: 15, color: 'white' }}
                               onPress={() => this.toLoginOut()}>提交</Text>
@@ -142,10 +142,7 @@ export default class IDVertify2Page extends BasePage {
                             <UIText value={'《实名认证协议》'}
                                     style={{ fontSize: 11, color: '#D62B56' }}
                                     onPress={() => {
-                                        this.$navigate('HtmlPage', {
-                                            title: '用户协议内容',
-                                            uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
-                                        });
+                                        this.$navigate('mine/userInformation/UserAgreementPage');
                                     }}/>
                         </TouchableOpacity>
                     </View>
@@ -319,7 +316,8 @@ const styles = StyleSheet.create({
     }, accountStyle: {
         marginLeft: 16, color: color.loginTextBlack, width: 60
     }, inputTextStyle: {
-        marginLeft: 20, height: 40, flex: 1, backgroundColor: 'white', fontSize: 14
+         height: 40, flex: 1, backgroundColor: 'white', fontSize: 14,textAlign:'right',marginRight:15
     }
 });
+
 

@@ -215,7 +215,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     //本地路径RUL如（/user/logo.png）2.网络URL如(http//:logo.png) 3.项目里面的图片 如（logo.png）
     private UMImage fixThumImage(String url) {
         if (TextUtils.isEmpty(url)) {
-            return null;
+            return new UMImage(mContext, R.mipmap.ic_launcher);
         }
         if (url.startsWith("http")) {
             return new UMImage(getCurrentActivity(), url);//网络图片

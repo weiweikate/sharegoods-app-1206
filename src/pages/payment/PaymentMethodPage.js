@@ -110,12 +110,19 @@ export default class PaymentMethodPage extends BasePage {
     _handleAppStateChange = (state) => {
         console.log('_handleAppStateChange AppState', state);
         const { selectedTypes } = this.payment;
+        let paytype = 1
+        if (this.payment.payStore) {
+            paytype = 2
+        }
+        if (this.payment.payPromotion) {
+            paytype = 3
+        }
         if (state === 'active' && this.payment.outTradeNo) {
             if (selectedTypes.type === paymentType.alipay) {
                 this.payment.alipayCheck({
                     outTradeNo: this.payment.outTradeNo,
                     type: paymentType.alipay,
-                    payType: 1
+                    payType: paytype
                 }).then(checkStr => {
                     console.log('_handleAppStateChange', state, checkStr);
                     this._showPayresult(checkStr.resultStr);
@@ -125,7 +132,7 @@ export default class PaymentMethodPage extends BasePage {
                 this.payment.wechatCheck({
                     outTradeNo: this.payment.outTradeNo,
                     type: 2,
-                    payType: 1
+                    payType: paytype
                 }).then(checkStr => {
                     console.log('_handleAppStateChange', state, checkStr);
                     this._showPayresult(checkStr.resultStr);
@@ -171,7 +178,7 @@ export default class PaymentMethodPage extends BasePage {
 
     renderPromotion=()=>{
         return (
-            <CommModal visible={this.state.payPromotionSuccess}>
+            <CommModal ref={(ref)=>{this.promotionModal = ref;}} visible={this.state.payPromotionSuccess}>
                 <View style={styles.promotionBgStyle}>
                     <Image source={paySuccessIcon} style={{width:70,height:70,marginTop:20}}/>
                     <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_mediumBtnText,includeFontPadding:false,marginTop:10}}>
@@ -243,7 +250,8 @@ export default class PaymentMethodPage extends BasePage {
                                         // this.$navigate('spellShop/shopSetting/SetShopNamePage');
                                         this.setState({
                                             payPromotionSuccess:true
-                                        })
+                                        });
+                                        this.promotionModal && this.promotionModal.open();
                                     } else {
                                         Toast.$toast('支付失败');
                                     }

@@ -11,7 +11,7 @@ class AutoExpandingInput extends Component {
     }
 
     onContentSizeChange(event) {
-        this.setState({ height: event.nativeEvent.contentSize.height });
+        //this.setState({ height: event.nativeEvent.contentSize.height });
     }
 
     render() {
@@ -20,9 +20,11 @@ class AutoExpandingInput extends Component {
                        multiline={true}
                        onChange={this.onChange}
                        onContentSizeChange={this.onContentSizeChange.bind(this)}
-                       style={[this.props.style, { height: Math.max(35, this.state.height) }]}
+                       style={[this.props.style]}
                        defaultValue={this.state.defaultValue}
                        underlineColorAndroid={'transparent'}
+                       scrollEnabled={true}
+                       //showsVerticalScrollIndicator={false}
             />
         );
     }

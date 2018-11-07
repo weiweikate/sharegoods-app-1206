@@ -7,6 +7,14 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import search from '../res/search.png';
 import { color } from '../../../constants/Theme';
 
+/**
+ * @author chenxiang
+ * @date on 2018/9/7
+ * @describe 订单列表
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
+ */
+
 class MyOrdersListPage extends BasePage {
     constructor(props) {
         super(props);
@@ -39,10 +47,6 @@ class MyOrdersListPage extends BasePage {
             </TouchableOpacity>
         );
     };
-
-    loadPageData() {
-        //网络请求，业务处理
-    }
 
     gotoSearchPage = () => {
         this.$navigate('order/order/SearchPage', { keyWord: 'kafaka' });
@@ -100,7 +104,7 @@ class MyOrdersListPage extends BasePage {
         return (
             <ScrollableTabBar
                 style={{
-                    borderWidth: 0.5,
+                    borderWidth: 0.5
 
                 }}/>
         );
@@ -118,7 +122,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#FFFFFF',
-        marginBottom: ScreenUtils.saveMarginBottom
+        marginBottom: ScreenUtils.safeBottom
     },
     welcome: {
         fontSize: 20,
