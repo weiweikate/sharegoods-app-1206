@@ -10,6 +10,8 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import Modal from 'CommModal'
+import DesignRule from 'DesignRule';
+
 
 const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const PANNELHEIGHT = 203;
@@ -202,7 +204,7 @@ const styles = StyleSheet.create({
     title: {
         textAlign: 'center',
         fontSize: 15,
-        color: '#333'
+        color: DesignRule.textColor_mainTitle
     },
     whitePanel: {
         position: 'absolute',

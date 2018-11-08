@@ -13,6 +13,8 @@ import searchImg from './res/icon_search.png';
 import msgBlack from './res/message_black.png';
 import msgWhite from './res/message_white.png';
 import UIText from '../../components/ui/UIText';
+import DesignRule from 'DesignRule';
+
 
 export default ({ navigation, whiteIcon }) =>
     <View style={styles.navBar}>
@@ -77,7 +79,7 @@ let styles = StyleSheet.create({
     },
     inputText: {
         flex: 1,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: 14
     }
 });

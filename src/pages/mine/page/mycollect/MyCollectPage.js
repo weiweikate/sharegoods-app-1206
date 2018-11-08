@@ -23,7 +23,7 @@ import MoneyIcon from '../../../spellShop/recommendSearch/src/je_07.png';
 import StarIcon from '../../../spellShop/recommendSearch/src/xj_10.png';
 import invalidIcon from '../../res/setting/shoucang_icon_shixiao_nor.png'
 import { observer } from 'mobx-react/native';
-
+import DesignRule from 'DesignRule';
 
 @observer
 export default class MyCollectPage extends BasePage {
@@ -290,7 +290,7 @@ export default class MyCollectPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: '#f7f7f7',
+        flex: 1, backgroundColor: DesignRule.bgColor,
         marginBottom: ScreenUtils.safeBottom
     },
     standaloneRowFront: {
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     },
     ingText: {
         fontSize: 11,
-        color: '#f7f7f7'
+        color: DesignRule.bgColor
     },
     rowContainer: {
         height: 80,
@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
     desc: {
         marginLeft: 2,
         fontSize: 12,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     }
 
 });

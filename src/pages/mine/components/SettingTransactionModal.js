@@ -14,6 +14,8 @@ import {
 import PasswordInput from './PasswordInput';
 import { observer } from 'mobx-react/native';
 import Modal from 'CommModal';
+import DesignRule from 'DesignRule';
+
 @observer
 class SettingTransactionModal extends Component {
 
@@ -37,16 +39,16 @@ class SettingTransactionModal extends Component {
 
     };
 
-    open=()=>{
+    open = () => {
         this.modal && this.modal.open();
-    }
+    };
 
     render() {
         return (
             <Modal
                 animationType='fade'
                 transparent={true}
-                ref={(ref)=>{
+                ref={(ref) => {
                     this.modal = ref;
                 }}
                 onRequestClose={() => this.onRequestClose()}
@@ -66,7 +68,7 @@ class SettingTransactionModal extends Component {
                     maxLength={6}
                     onChange={value => this.props.inputText(value)}/>
                 <UIText value={this.state.passwordInputError ? this.state.bottomText : ''}
-                        style={{fontSize: 11, color: '#e60012', marginTop: 9 }}/>
+                        style={{ fontSize: 11, color: '#e60012', marginTop: 9 }}/>
             </View>
         );
     };
@@ -119,7 +121,7 @@ const styles = StyleSheet.create({
     }, smallTextStyle: {
         fontSize: 15,
         marginTop: 10,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     }, titleTextStyle: {
         fontSize: 24, color: color.blue_222, marginTop: 10
     }, contentTextStyle: {

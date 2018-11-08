@@ -26,11 +26,11 @@ import RefreshList from '../../../../components/ui/RefreshList';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import apiEnvironment from '../../../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 type Props = {};
 import CommShareModal from '../../../../comm/components/CommShareModal'
-import DesignRule from '../../../../constants/DesignRule';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
 
 export default class PromotionDetailPage extends BasePage<Props> {
@@ -253,7 +253,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: DesignRule.bgColor,
         paddingBottom: px2dp(48)
     },
     grayButtonWrapper: {
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     redButtonWrapper: {
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         borderWidth: px2dp(1),
         borderRadius: px2dp(5),
         width: px2dp(80),
@@ -280,16 +280,16 @@ const styles = StyleSheet.create({
         paddingVertical: px2dp(15)
     },
     blackTextStyle: {
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(16),
         fontWeight: 'bold'
     },
     grayTextStyle: {
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13)
     },
     redTextStyle: {
-        color: '#D51243',
+        color: DesignRule.mainColor,
         fontSize: px2dp(13)
     },
     bottomTextWrapper: {
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: px2dp(15)
     },
     bottomTextStyle: {
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13)
     },
     bottomButtonWrapper: {

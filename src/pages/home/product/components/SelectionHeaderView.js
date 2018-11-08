@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import StringUtils from '../../../../utils/StringUtils';
 import icon_close from '../res/icon_close.png';
+import DesignRule from 'DesignRule';
+
 
 /**
  * 规格选择头部view
@@ -67,18 +69,18 @@ export default class SelectionHeaderView extends Component {
                 <View style={{ backgroundColor: 'white', marginTop: 20, height: 87 }}>
                     <View style={{ marginLeft: 132 }}>
                         <Text style={{
-                            color: '#D51243',
+                            color: DesignRule.mainColor,
                             fontSize: 16,
                             marginTop: 16
                         }}>{`￥${price}`}</Text>
                         <Text
                             style={{
-                                color: '#222222',
+                                color: DesignRule.textColor_mainTitle,
                                 fontSize: 13,
                                 marginTop: 8
                             }}>{`库存${stock}${stockUnit || ''}`}</Text>
                         <Text style={{
-                            color: '#222222',
+                            color: DesignRule.textColor_mainTitle,
                             fontSize: 13,
                             marginTop: 8
                         }}>{selectStrListTemp.join(',')}</Text>

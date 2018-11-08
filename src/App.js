@@ -81,7 +81,7 @@ export default class App extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff'
+        backgroundColor: 'white'
     },
     debugBtn: {
         width: 60,

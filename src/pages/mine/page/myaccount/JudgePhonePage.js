@@ -10,6 +10,7 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
 import SMSTool from '../../../../utils/SMSTool';
+import DesignRule from 'DesignRule';
 
 export default class JudgePhoneNumPage extends BasePage {
 
@@ -29,7 +30,7 @@ export default class JudgePhoneNumPage extends BasePage {
             <View style={{ height: 38, justifyContent: 'center' }}>
                 <UIText value={'手机验证'}
                         style={{
-                            color: '#999999',
+                            color: DesignRule.textColor_instruction,
                             fontSize: 13,
                             marginLeft: 16
                         }}/>
@@ -166,13 +167,13 @@ const styles = StyleSheet.create({
     itemLeftText: {
         marginRight: 20,
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     itemRightInput: {
         flex: 1,
         height: 40,
         padding: 0,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: 13
     }
 });

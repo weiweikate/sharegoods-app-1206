@@ -36,6 +36,7 @@ import {
 } from 'react-native-update';
 
 import _updateConfig from '../update.json';
+import DesignRule from 'DesignRule';
 const {appKey} = _updateConfig[Platform.OS];
 
 export default class updateDemo extends Component {
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
     },
     instructions: {
         textAlign: 'center',
-        color: '#333333',
+        color: DesignRule.textColor_mainTitle,
         marginBottom: 5,
     },
 });

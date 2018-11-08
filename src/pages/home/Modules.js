@@ -230,6 +230,9 @@ class HomeModule {
     //加载为你推荐列表
     loadHomeList = flow(function* () {
         this.isRefreshing = true;
+        setTimeout(() => {
+            this.isRefreshing = false;
+        }, 3000);
         bannerModule.loadBannerList()
         todayModule.loadTodayList()
         adModules.loadAdList()

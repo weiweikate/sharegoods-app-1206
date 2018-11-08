@@ -25,6 +25,10 @@ PODS:
   - MBProgressHUD (1.1.0)
   - QIYU_iOS_SDK (4.2.1)
   - SandBoxPreviewTool (1.1)
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
+  - TYCyclePagerView (1.1.0)
   - UICKeyChainStore (2.1.1)
   - UMCAnalytics (5.5.1):
     - UMCCommon
@@ -54,6 +58,8 @@ DEPENDENCIES:
   - MBProgressHUD
   - QIYU_iOS_SDK (~> 4.2.1)
   - SandBoxPreviewTool
+  - SDWebImage
+  - TYCyclePagerView
   - UICKeyChainStore (= 2.1.1)
   - UMCAnalytics
   - UMCCommon
@@ -73,6 +79,8 @@ SPEC REPOS:
     - MBProgressHUD
     - QIYU_iOS_SDK
     - SandBoxPreviewTool
+    - SDWebImage
+    - TYCyclePagerView
     - UICKeyChainStore
     - UMCAnalytics
     - UMCCommon
@@ -89,6 +97,8 @@ SPEC CHECKSUMS:
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   QIYU_iOS_SDK: 9dc5cb1dee3abdccca56cc282ecbfc841e366680
   SandBoxPreviewTool: 2d837db4409c74c9a8047838f5b320c08161fad1
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  TYCyclePagerView: b70858c9b5d0e80e1e3129ff5ceb027eb0f76d44
   UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
   UMCAnalytics: 0aff87e39008e2a650e5917430db0da2de2f8495
   UMCCommon: 4392868ac47ff1b101663106bb114ba616fabbad
@@ -97,6 +107,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 3117412f8aafde4758cac1e8d20b93c67cafcfef
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: a8f115040464e492329502a0ec52e4d677ff05ce
+PODFILE CHECKSUM: 09025d33f88d5c89371c64d1f71e33157b520cc0
 
 COCOAPODS: 1.5.3

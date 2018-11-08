@@ -9,6 +9,8 @@ import {
 import { isNoEmpty } from '../../../../utils/StringUtils';
 import { formatDate } from '../../../../utils/DateUtils';
 import whiteArrowRight from '../res/icon3_03.png';
+import DesignRule from 'DesignRule';
+
 
 export default class ActivityView extends Component {
 
@@ -154,9 +156,9 @@ export default class ActivityView extends Component {
                 <Text style={{ color: 'white', fontSize: 18 }}>￥<Text
                     style={{ fontSize: 40 }}>{price}</Text></Text>
                 <View style={{ marginLeft: 10, justifyContent: 'center' }}>
-                    <Text style={{ color: '#F7F7F7', fontSize: 12 }}>{one}</Text>
+                    <Text style={{ color: DesignRule.bgColor, fontSize: 12 }}>{one}</Text>
                     <Text style={{
-                        color: '#F7F7F7',
+                        color: DesignRule.bgColor,
                         fontSize: 10,
                         marginTop: 4
                     }}>{two}</Text>
@@ -180,7 +182,7 @@ export default class ActivityView extends Component {
                             backgroundColor: '#2B99D9',
                             borderRadius: 2.5
                         }}>
-                            <Text style={{ color: '#F7F7F7', fontSize: 11 }}>{four}</Text>
+                            <Text style={{ color: DesignRule.bgColor, fontSize: 11 }}>{four}</Text>
                         </View>
                     </View>
 

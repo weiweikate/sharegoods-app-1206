@@ -360,21 +360,21 @@ public class CommModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void getTotalCacheSize(Callback callback){
+    public void getTotalCacheSize(Callback callback) {
         try {
             String s = DataCleanManager.getTotalCacheSize(mContext);
             callback.invoke(s);
-        }catch (Exception e){
+        } catch (Exception e) {
             LogUtils.d(e.getMessage());
         }
     }
 
     @ReactMethod
-    public void clearAllCache(Callback callback){
+    public void clearAllCache(Callback callback) {
         try {
             DataCleanManager.clearAllCache(mContext);
             callback.invoke();
-        }catch (Exception e){
+        } catch (Exception e) {
             LogUtils.d(e.getMessage());
         }
     }

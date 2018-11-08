@@ -24,6 +24,7 @@ import ProgressImg from './res/jdt_05.png';
 import BasePage from '../../../../BasePage';
 import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 // 常量
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -151,7 +152,7 @@ export default class MyPromotionPage extends BasePage {
                         borderRadius: 10,
                         borderStyle: 'solid',
                         borderWidth: 1,
-                        borderColor: '#ffffff'
+                        borderColor: 'white'
                     }}>
                         <Text style={styles.shopName}>{this.state.levelName || ' '}</Text>
                     </View>
@@ -172,7 +173,7 @@ export default class MyPromotionPage extends BasePage {
                         color: '#f00006',
                         fontSize: 10,
                     }}>{this.state.experience || 0}<Text style={{
-                        color: '#666666'
+                        color: DesignRule.textColor_secondTitle
                     }}>
                         /{this.state.levelExperience}
                     </Text></Text>
@@ -198,7 +199,7 @@ export default class MyPromotionPage extends BasePage {
 
                     <Text style={{
                         marginTop: 10,
-                        color: '#222222',
+                        color: DesignRule.textColor_mainTitle,
                         fontSize: 11,
                     }}>距离晋升还差<Text style={{
                         color: '#000',
@@ -219,14 +220,14 @@ export default class MyPromotionPage extends BasePage {
                     <Text style={{
                         marginLeft: 14,
                         fontSize: 14,
-                        color: '#222222'
+                        color: DesignRule.textColor_mainTitle
                     }}>预计晋升后可获得哪些福利？</Text>
                 </View>
                 {this.renderSepLine()}
                 {this.state.nextArr ? <HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
                                             containerStyle={{ backgroundColor: '#fff' }}
                                             imagesInitialDimensions={ScreenUtils.width}
-                                            baseFontStyle={{ lineHeight: 25, color: '#666', fontSize: 13 }}/> : null}
+                                            baseFontStyle={{ lineHeight: 25, color: DesignRule.textColor_secondTitle, fontSize: 13 }}/> : null}
             </View>
         );
     }
@@ -343,7 +344,7 @@ const styles = StyleSheet.create({
     },
     shopName: {
         fontSize: 13,
-        color: '#ffffff'
+        color: 'white'
     },
     //白的面板背景
     whiteBg: {

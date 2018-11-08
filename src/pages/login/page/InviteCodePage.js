@@ -121,7 +121,7 @@ export default class  extends BasePage {
                         style={
                             [{
                                 marginTop: 100,
-                                backgroundColor: 'red',
+                                backgroundColor: DesignRule.mainColor,
                                 width: 300,
                                 height: 50,
                                 borderRadius: 25,
@@ -130,7 +130,7 @@ export default class  extends BasePage {
 
                             },
                                 this.inviteModel.isCanClick ? {
-                                        backgroundColor: 'red'
+                                        backgroundColor: DesignRule.mainColor
                                     } :
                                     {
                                         backgroundColor: '#bbb'
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     bottomBtnStyle: {
         width: 200,
         height: 60,
-        backgroundColor: 'red'
+        backgroundColor: DesignRule.mainColor
     }
 
 });

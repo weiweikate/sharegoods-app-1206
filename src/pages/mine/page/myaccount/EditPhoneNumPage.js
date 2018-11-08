@@ -11,6 +11,7 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import bridge from '../../../../utils/bridge';
 import MineAPI from '../../api/MineApi';
 import SMSTool from '../../../../utils/SMSTool';
+import DesignRule from 'DesignRule';
 
 /**
  * @author chenxiang
@@ -40,7 +41,7 @@ export default class EditPhoneNumPage extends BasePage {
         return (<View style={{ flex: 1 }}>
             <UIText value={'短信验证码将发送至绑定手机： ' + oldNum}
                     style={{
-                        color: '#999999',
+                        color: DesignRule.textColor_instruction,
                         fontSize: 13,
                         marginTop: 15,
                         marginLeft: 16

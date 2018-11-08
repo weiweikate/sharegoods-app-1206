@@ -26,6 +26,8 @@ import { PageLoadingState, renderViewByLoadingState } from '../../../components/
 import { observer } from 'mobx-react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
+import DesignRule from 'DesignRule';
+
 
 @observer
 export default class SearchResultPage extends BasePage {
@@ -251,7 +253,7 @@ export default class SearchResultPage extends BasePage {
                 this._clickItemAction(item);
             }}>
                 <View>
-                    <Text style={{ fontSize: 13, color: '#222222', marginLeft: 16, paddingVertical: 15 }}>{item}</Text>
+                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 16, paddingVertical: 15 }}>{item}</Text>
                     <View style={{ height: 1, backgroundColor: '#DDDDDD', marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);
@@ -368,7 +370,7 @@ export default class SearchResultPage extends BasePage {
                         {ShopCartStore.getAllGoodsClassNumber === 0 ? null : <View style={{
                             position: 'absolute', top: 4, left: 4, height: 16,
                             paddingHorizontal: 4,
-                            backgroundColor: '#D51243',
+                            backgroundColor: DesignRule.mainColor,
                             borderRadius: 8, justifyContent: 'center', alignItems: 'center'
                         }}>
                             <Text style={{

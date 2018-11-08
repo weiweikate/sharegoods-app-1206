@@ -13,6 +13,7 @@ import ItemView from './ShowHotItem';
 import BasePage from '../../BasePage';
 import selectedImg from '../../comm/res/selected_circle_red.png';
 import unselectedImg from '../../comm/res/unselected_circle.png';
+import DesignRule from 'DesignRule';
 
 const imgWidth = px2dp(168);
 
@@ -210,7 +211,7 @@ let styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     all: {
-        color: '#999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13),
         marginLeft: px2dp(10)
     },
