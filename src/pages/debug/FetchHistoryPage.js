@@ -14,7 +14,6 @@ import { PageLoadingState } from '../../components/pageDecorator/PageState';
 import { observer } from 'mobx-react/native';
 import { formatDate } from '../../utils/DateUtils';
 import BasePage from '../../BasePage';
-import DesignRule from 'DesignRule';
 
 
 @observer
@@ -85,6 +84,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 8,
         marginBottom: 8,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
     }
 });

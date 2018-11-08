@@ -3,6 +3,7 @@ import { StyleSheet, ScrollView, Image, TouchableOpacity, View, Text, ActivityIn
 import ShowImageView from './ShowImageView';
 import backImg from '../../comm/res/show_detail_back.png';
 import ScreenUtils from '../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 const { px2dp, width } = ScreenUtils;
 import HTML from 'react-native-render-html';
@@ -117,7 +118,7 @@ export default class ShowDetailPage extends Component {
                 backgroundColor: '#fff',
                 marginLeft: px2dp(15),
                 marginRight: px2dp(15)
-            }} baseFontStyle={{ lineHeight: px2dp(25), color: '#333', fontSize: px2dp(13) }}/>
+            }} baseFontStyle={{ lineHeight: px2dp(25), color: DesignRule.textColor_mainTitle, fontSize: px2dp(13) }}/>
             <View style={styles.goodsView}>
                 {
                     products.map((value, index) => {
@@ -242,7 +243,7 @@ let styles = StyleSheet.create({
     },
     name: {
         fontSize: px2dp(13),
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontWeight: '600'
     },
     price: {
@@ -271,7 +272,7 @@ let styles = StyleSheet.create({
     bottomGoodImg: {},
     bottomText: {
         marginLeft: px2dp(8),
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(11)
     },
     connectImg: {},
@@ -287,7 +288,7 @@ let styles = StyleSheet.create({
         borderRadius: px2dp(15)
     },
     showName: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         marginLeft: px2dp(5),
         fontSize: px2dp(11)
     },
@@ -302,7 +303,7 @@ let styles = StyleSheet.create({
         alignItems: 'center'
     },
     number: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(11),
         marginLeft: px2dp(9)
     },

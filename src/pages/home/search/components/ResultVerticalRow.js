@@ -36,11 +36,11 @@ export default class SearchBar extends Component {
             <TouchableWithoutFeedback onPress={() => {
                 this.props.onPressAtIndex(product.id);
             }}>
-                <View style={{ backgroundColor: DesignRule.white }}>
+                <View style={{ backgroundColor: 'white' }}>
                     <View style={[styles.container]}>
                         <Image style={styles.img} source={{ uri: product.imgUrl || '' }}/>
                         <View style={styles.textContentView}>
-                            <Text style={{ color: '#222222', fontSize: 13 }}
+                            <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}
                                   numberOfLines={2}>{`${name}`}</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Text style={{

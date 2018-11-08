@@ -82,7 +82,7 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
-                        <UIText value={'分享好友帮你点击'} style={{ color: DesignRule.white, fontSize: 16 }}/>
+                        <UIText value={'分享好友帮你点击'} style={{ color: 'white', fontSize: 16 }}/>
                     </View>
                 </TouchableWithoutFeedback> : null}
                 <CommShareModal ref={(ref) => this.shareModal = ref}
@@ -114,13 +114,13 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 13,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         marginHorizontal: 15,
         marginTop: 10
     },
     detail: {
         fontSize: 12,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         marginHorizontal: 15,
         marginTop: 10
     },

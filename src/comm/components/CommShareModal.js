@@ -60,7 +60,6 @@ import CommModal from 'CommModal';
 
 import CommTabImag from '../res/CommTabImag';
 import bridge from '../../utils/bridge';
-import DesignRule from 'DesignRule';
 
 export default class CommShareModal extends React.Component {
 
@@ -272,7 +271,7 @@ export default class CommShareModal extends React.Component {
                     <Animated.View style={{
                         transform: [{ translateY: this.state.y }],
                         paddingBottom: ScreenUtils.safeBottom,
-                        backgroundColor: DesignRule.white
+                        backgroundColor: 'white'
                     }}>
                         <View style={[styles.contentContainer]}>
                             <View style={styles.header}>
@@ -365,10 +364,10 @@ export default class CommShareModal extends React.Component {
 
 const styles = StyleSheet.create({
     modalStyle: {
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     contentContainer: {
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         height: autoSizeWidth(255)
     },
     header: {
@@ -380,7 +379,7 @@ const styles = StyleSheet.create({
         height: autoSizeWidth(45),
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     item: {
         width: ScreenUtils.width / 4 - 0.1,

@@ -40,11 +40,11 @@ export default class EditPhonePwdPage extends BasePage {
             <View style={{
                 flexDirection: 'row',
                 height: 48,
-                backgroundColor: DesignRule.white,
+                backgroundColor: 'white',
                 marginTop: 12,
                 alignItems: 'center'
             }}>
-                <UIText value={'旧密码'} style={{ fontSize: 13, color: '#222222', marginLeft: 22 }}/>
+                <UIText value={'旧密码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
                 <TextInput underlineColorAndroid={'transparent'}
                            style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 14 }}
                            placeholder={'请输入旧密码'} placeholderTextColor={'#C8C8C8'}
@@ -64,13 +64,13 @@ export default class EditPhonePwdPage extends BasePage {
                 </TouchableOpacity>
             </View>
             <UIText value={'请设置新密码'} style={{ fontSize: 13, color: '#C8C8C8', marginLeft: 20, marginTop: 15 }}/>
-            <View style={{ backgroundColor: DesignRule.white, marginTop: 12, flexDirection: 'column' }}>
+            <View style={{ backgroundColor: 'white', marginTop: 12, flexDirection: 'column' }}>
                 <View style={{
                     flexDirection: 'row',
                     height: 48,
                     alignItems: 'center'
                 }}>
-                    <UIText value={'新密码'} style={{ fontSize: 13, color: '#222222', marginLeft: 22 }}/>
+                    <UIText value={'新密码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
                     <TextInput underlineColorAndroid={'transparent'}
                                style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 14 }}
                                placeholder={'请输入新密码'} placeholderTextColor={'#C8C8C8'}
@@ -95,7 +95,7 @@ export default class EditPhonePwdPage extends BasePage {
                     height: 48,
                     alignItems: 'center'
                 }}>
-                    <UIText value={'新密码'} style={{ fontSize: 13, color: '#222222', marginLeft: 22 }}/>
+                    <UIText value={'新密码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
                     <TextInput underlineColorAndroid={'transparent'}
                                style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 14 }}
                                placeholder={'请再次输入新密码'} placeholderTextColor={'#C8C8C8'}
@@ -127,7 +127,7 @@ export default class EditPhonePwdPage extends BasePage {
                 justifyContent: 'center',
                 borderRadius: 25
             }} onPress={() => this._done()}>
-                <Text style={{ fontSize: 17, color: DesignRule.white }}>完成</Text>
+                <Text style={{ fontSize: 17, color: 'white' }}>完成</Text>
             </TouchableOpacity>
         </View>;
     }

@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingHorizontal: 15,
         alignItems: 'center',
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     icon: {
         width: 50,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     },
     desc: {
         fontSize: 12,
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         marginTop: 9
     }
 

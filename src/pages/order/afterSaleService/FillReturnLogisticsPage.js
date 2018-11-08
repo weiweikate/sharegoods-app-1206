@@ -87,7 +87,7 @@ export default class FillReturnLogisticsPage extends BasePage {
                 </ScrollView>
                 <TouchableWithoutFeedback onPress = {this.submit}>
                     <View style = {{backgroundColor: '#D51243', height: 50, alignItems: 'center', justifyContent: 'center'}}>
-                        <UIText value = {'提交'} style = {{color: DesignRule.white, fontSize: 16}}/>
+                        <UIText value = {'提交'} style = {{color: 'white', fontSize: 16}}/>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
@@ -153,22 +153,22 @@ export default class FillReturnLogisticsPage extends BasePage {
 const styles = StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: '#f7f7f7',
+            backgroundColor: DesignRule.bgColor,
         },
         item_container: {
-            backgroundColor: DesignRule.white,
+            backgroundColor: 'white',
             flexDirection: 'row',
             height: 44,
             marginBottom: 10,
             alignItems: 'center',
         },
         item_title:{
-            color: '#222222',
+            color: DesignRule.textColor_mainTitle,
             fontSize: 13,
             marginLeft: 17,
         },
         item_detail:{
-            color: '#222222',
+            color: DesignRule.textColor_mainTitle,
             fontSize: 13,
             marginRight: 9,
             textAlign: 'right',

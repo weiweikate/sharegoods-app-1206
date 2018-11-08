@@ -10,6 +10,7 @@ import ShowHotScrollView from './ShowHotScrollView';
 import { observer } from 'mobx-react';
 import { ShowRecommendModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
@@ -103,7 +104,7 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     recTitle: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
         fontWeight: '600'
     }

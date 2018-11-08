@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         height: WhitePanelHeight,
         alignItems: 'center',
         justifyContent: 'flex-end',
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
     },
     starContainer: {
         flexDirection: 'row',
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     },
     shopLevel: {
         fontSize: 15,
-        color: "#222222",
+        color: DesignRule.textColor_mainTitle,
         marginBottom: 16 / 128 * WhitePanelHeight,
     },
     content: {
@@ -108,13 +108,13 @@ const styles = StyleSheet.create({
     title: {
         marginTop: 16,
         fontSize: 15,
-        color: "#222222"
+        color: DesignRule.textColor_mainTitle
     },
     subTitle: {
         marginTop: 12,
         fontSize: 12,
         lineHeight: 18,
-        color: "#666666"
+        color: DesignRule.textColor_secondTitle
     },
     img: {
         marginTop: 18,

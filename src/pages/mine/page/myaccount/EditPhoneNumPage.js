@@ -41,7 +41,7 @@ export default class EditPhoneNumPage extends BasePage {
         return (<View style={{ flex: 1 }}>
             <UIText value={'短信验证码将发送至绑定手机： ' + oldNum}
                     style={{
-                        color: '#999999',
+                        color: DesignRule.textColor_instruction,
                         fontSize: 13,
                         marginTop: 15,
                         marginLeft: 16
@@ -49,7 +49,7 @@ export default class EditPhoneNumPage extends BasePage {
             <View style={{
                 height: 44,
                 flexDirection: 'row',
-                backgroundColor: DesignRule.white,
+                backgroundColor: 'white',
                 alignItems: 'center',
                 marginTop: 10
             }}>
@@ -81,7 +81,7 @@ export default class EditPhoneNumPage extends BasePage {
                 justifyContent: 'center',
                 borderRadius: 25
             }} onPress={() => this._toNext(oldNum)}>
-                <Text style={{ fontSize: 17, color: DesignRule.white }}>下一步</Text>
+                <Text style={{ fontSize: 17, color: 'white' }}>下一步</Text>
             </TouchableOpacity>
         </View>);
     }

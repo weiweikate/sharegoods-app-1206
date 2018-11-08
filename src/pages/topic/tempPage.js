@@ -44,7 +44,7 @@ export default class DownPricePage extends BasePage {
                         flexDirection: 'row',//设置横向布局
                         flexWrap: 'wrap',  //设置换行显示
                         // alignItems: 'flex-start',
-                        backgroundColor: DesignRule.white
+                        backgroundColor: 'white'
                     }
                 }
             >
@@ -68,7 +68,7 @@ export default class DownPricePage extends BasePage {
                         flexDirection: 'row',//设置横向布局
                         flexWrap: 'wrap',  //设置换行显示
                         // alignItems: 'flex-start',
-                        backgroundColor: DesignRule.white,
+                        backgroundColor: 'white',
                         width: ScreenUtils.width
                     }
                 }
@@ -246,7 +246,7 @@ const Styles = StyleSheet.create({
         flexDirection: 'row',//设置横向布局
         flexWrap: 'wrap',  //设置换行显示
         // alignItems: 'flex-start',
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     itemBgStyle: {
         width: ScreenUtils.width / 2,

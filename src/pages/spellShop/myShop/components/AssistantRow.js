@@ -47,7 +47,7 @@ export default class AssistantRow extends Component {
         const sty = [styles.rowContainer];
         // TODO 等待后台确定贡献度 计算方式
         sty.push(style);
-        sty.push({ backgroundColor: DesignRule.white });
+        sty.push({ backgroundColor: 'white' });
         return (<TouchableWithoutFeedback onPress={this._clickAssistantDetail}>
             <View style={sty}>
                 {
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     rowContainer: {
         height: 88,
         borderRadius: 10,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         shadowColor: 'rgba(0, 0, 0, 0.1)',
         shadowOffset: {
             width: 0,
@@ -141,16 +141,16 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 14,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     },
     level: {
         fontSize: 13,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         marginVertical: 3
     },
     desc: {
         fontSize: 12,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     }
 });
 

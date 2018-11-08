@@ -86,7 +86,7 @@ export default class ShopHeader extends Component {
 
                 <View style={{ flex: 1, alignItems: 'center' }}>
                     <Text style={styles.progress}>{tradeBalance || 0}<Text style={{
-                        color: '#666666'
+                        color: DesignRule.textColor_secondTitle
                     }}>/{bonusNeedMoney || 0}</Text></Text>
 
                     <ImageBackground source={ProgressImg} style={{
@@ -146,11 +146,11 @@ const styles = StyleSheet.create({
     },
     shopName: {
         fontSize: 13,
-        color: DesignRule.white
+        color: 'white'
     },
     shopId: {
         fontSize: 13,
-        color: DesignRule.white,
+        color: 'white',
         marginVertical: 12
     },
 
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     },
     chaju: {
         marginTop: 10,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: 11
     },
     fenghong: {
@@ -221,13 +221,13 @@ const styles = StyleSheet.create({
         height: 20,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: DesignRule.white,
+        borderColor: 'white',
         justifyContent: 'center',
         alignItems: 'center'
     },
     announcementTitle: {
         fontSize: 10,
-        color: DesignRule.white
+        color: 'white'
     },
     starRow: {
         flexDirection: 'row',

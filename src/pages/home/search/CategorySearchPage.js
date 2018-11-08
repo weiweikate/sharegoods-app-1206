@@ -116,7 +116,7 @@ export default class CategorySearchPage extends BasePage {
                     <View style={{
                         width: bannerW + 20,
                         flexDirection: 'column',
-                        backgroundColor: DesignRule.white,
+                        backgroundColor: 'white',
                         height: ScreenUtils.height - 60 - ScreenUtils.headerHeight //屏幕高减去搜索框以及头部高
                     }}>
                         <ViewPager swiperShow={this.state.swiperShow && this.state.bannerData.length > 0}
@@ -126,14 +126,14 @@ export default class CategorySearchPage extends BasePage {
                                        height: 5,
                                        width: 5,
                                        borderRadius: 5,
-                                       backgroundColor: DesignRule.white,
+                                       backgroundColor: 'white',
                                        opacity: 0.4
                                    }}
                                    activeDotStyle={{
                                        height: 5,
                                        width: 20,
                                        borderRadius: 5,
-                                       backgroundColor: DesignRule.white
+                                       backgroundColor: 'white'
                                    }}
                                    autoplay={true}
                                    height={118}
@@ -175,14 +175,14 @@ export default class CategorySearchPage extends BasePage {
                 <View style={{
                     flex: 1,
                     height: 45,
-                    backgroundColor: item.index === this.state.leftIndex ? DesignRule.white : '#EEEEEE',
+                    backgroundColor: item.index === this.state.leftIndex ? 'white' : '#EEEEEE',
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
                     <Text style={{
                         fontSize: 13,
                         fontWeight: item.index === this.state.leftIndex ? 'bold' : 'normal',
-                        color: '#222222'
+                        color: DesignRule.textColor_mainTitle
                     }}>
                         {item.item.name.length > 4 ? item.item.name.substr(0, 4) + '...' : item.item.name}
                     </Text>
@@ -292,7 +292,7 @@ export default class CategorySearchPage extends BasePage {
                             textAlign: 'center',
                             height: 30,
                             fontSize: 13,
-                            color: '#333',
+                            color: DesignRule.textColor_mainTitle,
                             marginTop: 10,
                             marginBottom: 22
                         }}/>
@@ -307,7 +307,7 @@ export default class CategorySearchPage extends BasePage {
                         fontWeight: 'bold',
                         fontSize: 13,
                         width: ScreenUtils.width - 110,
-                        color: '#333',
+                        color: DesignRule.textColor_mainTitle,
                         marginBottom: 20
                     }}/>
         );
@@ -324,9 +324,9 @@ export default class CategorySearchPage extends BasePage {
                     marginTop: 30,
                     marginBottom: 30
                 }}>
-                    <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginRight: 10 }}/>
-                    <UIText value={'没有更多啦～'} style={{ fontSize: 12, color: '#999999' }}/>
-                    <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginLeft: 10 }}/>
+                    <View style={{ height: 0.7, width: 20, backgroundColor: DesignRule.textColor_instruction, marginRight: 10 }}/>
+                    <UIText value={'没有更多啦～'} style={{ fontSize: 12, color: DesignRule.textColor_instruction }}/>
+                    <View style={{ height: 0.7, width: 20, backgroundColor: DesignRule.textColor_instruction, marginLeft: 10 }}/>
                 </View> : null
         );
     };

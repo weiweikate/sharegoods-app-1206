@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     container: {
         height: ScreenUtils.headerHeight,
         width: ScreenUtils.width,
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     contentView: {
         marginTop: ScreenUtils.statusBarHeight,
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     inputView: {
         height: 30,
         borderRadius: 15,
-        backgroundColor: '#F7F7F7',
+        backgroundColor: DesignRule.bgColor,
         justifyContent: 'center',
         flex: 1,
         marginRight: 10

@@ -253,7 +253,7 @@ export default class SearchResultPage extends BasePage {
                 this._clickItemAction(item);
             }}>
                 <View>
-                    <Text style={{ fontSize: 13, color: '#222222', marginLeft: 16, paddingVertical: 15 }}>{item}</Text>
+                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 16, paddingVertical: 15 }}>{item}</Text>
                     <View style={{ height: 1, backgroundColor: '#DDDDDD', marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);
@@ -262,7 +262,7 @@ export default class SearchResultPage extends BasePage {
     _renderContainer = () => {
         if (this.state.onFocus) {
             return (
-                <View style={{ backgroundColor: DesignRule.white, flex: 1 }}>
+                <View style={{ backgroundColor: 'white', flex: 1 }}>
                     {this.state.keywordsArr.length === 0 ? null : <FlatList
                         renderItem={this._renderKeyItem}
                         showsVerticalScrollIndicator={false}
@@ -374,7 +374,7 @@ export default class SearchResultPage extends BasePage {
                             borderRadius: 8, justifyContent: 'center', alignItems: 'center'
                         }}>
                             <Text style={{
-                                color: DesignRule.white,
+                                color: 'white',
                                 fontSize: 10
                             }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
                         </View>}

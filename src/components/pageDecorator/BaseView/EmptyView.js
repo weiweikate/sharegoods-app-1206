@@ -26,6 +26,7 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native';
 import EmptyImage from './source/no_data.png';
+import DesignRule from 'DesignRule';
 
 export default class EmptyView extends Component {
 
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: 15,
-        color: '#999',
+        color: DesignRule.textColor_instruction,
         marginTop: 28,
         textAlign: 'center',
     }

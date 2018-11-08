@@ -116,11 +116,11 @@ export default class DetailHeaderView extends Component {
                                          }}
                                          activityData={this.props.activityData}
                                          productActivityViewAction={this.props.productActivityViewAction}/> : null}
-                <View style={{ backgroundColor: DesignRule.white }}>
+                <View style={{ backgroundColor: 'white' }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{
                             marginTop: 14,
-                            color: '#222222',
+                            color: DesignRule.textColor_mainTitle,
                             fontSize: 15
                         }}>{`${name}`}</Text>
                         <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
@@ -134,7 +134,7 @@ export default class DetailHeaderView extends Component {
                             <Text style={{
                                 marginLeft: 5,
                                 backgroundColor: 'red',
-                                color: DesignRule.white,
+                                color: 'white',
                                 fontSize: 10, paddingHorizontal: 5
                             }}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelName}价` : '原价'}</Text>
                         </View>
@@ -145,14 +145,14 @@ export default class DetailHeaderView extends Component {
                                     fontSize: 11
                                 }}>快递：{freight === 0 ? '包邮' : `${freight}元`}</Text>
                             <Text style={{
-                                color: '#666666',
+                                color: DesignRule.textColor_secondTitle,
                                 fontSize: 13,
                                 marginLeft: ScreenUtils.autoSizeWidth(108)
                             }}>{`月销售${monthSaleTotal}笔`}</Text>
                         </View>
                     </View>
                 </View>
-                <View style={{ backgroundColor: DesignRule.white, marginTop: 10, marginBottom: 12 }}>
+                <View style={{ backgroundColor: 'white', marginTop: 10, marginBottom: 12 }}>
                     <View style={{
                         flexDirection: 'row',
                         marginLeft: 16,
@@ -163,7 +163,7 @@ export default class DetailHeaderView extends Component {
                         <Text style={{ color: '#D51243', fontSize: 13 }}>服务</Text>
                         <Text style={{
                             marginLeft: 11,
-                            color: '#666666',
+                            color: DesignRule.textColor_secondTitle,
                             fontSize: 13
                         }}>{`正品保证·急速发货 ${afterSaleServiceDays === 0 ? `无售后服务` : `${afterSaleServiceDays > 30 ? 30 : afterSaleServiceDays || ''}天无理由退换`}`}</Text>
                     </View>

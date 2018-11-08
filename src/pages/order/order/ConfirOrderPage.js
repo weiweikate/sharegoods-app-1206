@@ -92,11 +92,11 @@ export default class ConfirOrderPage extends BasePage {
                             <Text style={{
                                 flex: 1,
                                 fontSize: 15,
-                                color: '#222222'
+                                color: DesignRule.textColor_mainTitle
                             }}>收货人：{this.state.viewData.express.receiverName}</Text>
                             <Text style={{
                                 fontSize: 15,
-                                color: '#222222'
+                                color: DesignRule.textColor_mainTitle
                             }}>{this.state.viewData.express.receiverNum}</Text>
                         </View>
                         <UIText
@@ -108,7 +108,7 @@ export default class ConfirOrderPage extends BasePage {
                             }
                             style={{
                                 fontSize: 13,
-                                color: '#222222',
+                                color: DesignRule.textColor_mainTitle,
                                 marginTop: 5
                             }}/>
                     </View>
@@ -165,7 +165,7 @@ export default class ConfirOrderPage extends BasePage {
     };
     renderDetail = () => {
         return (
-            <View style={{ backgroundColor: DesignRule.white }}>
+            <View style={{ backgroundColor: 'white' }}>
                 <TouchableOpacity style={styles.couponsStyle}
                                   disabled={(this.state.viewData.list[0].restrictions & 1) == 1 || this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2}
                                   onPress={() => this.jumpToCouponsPage()}>
@@ -238,7 +238,7 @@ export default class ConfirOrderPage extends BasePage {
             <View style={{ borderColor: '#DDDDDD', borderWidth: 1 }}>
                 {this.state.viewData.couponList ?
                     this.state.viewData.couponList.map((item, index) => {
-                        return <View style={{ backgroundColor: DesignRule.white }} key={index}>
+                        return <View style={{ backgroundColor: 'white' }} key={index}>
                             {index == 0 ? <Image source={couponIcon} style={{
                                 width: 15,
                                 height: 12,
@@ -264,12 +264,12 @@ export default class ConfirOrderPage extends BasePage {
                                     marginRight: 13.5
                                 }}>X1</Text>
                             </View>
-                            <View style={{ marginLeft: 36, backgroundColor: '#F7F7F7', height: 0.5, width: '100%' }}/>
+                            <View style={{ marginLeft: 36, backgroundColor: DesignRule.bgColor, height: 0.5, width: '100%' }}/>
                         </View>;
                     })
                     :
                     null}
-                <View style={{ backgroundColor: '#F7F7F7', height: 10, width: '100%' }}/>
+                <View style={{ backgroundColor: DesignRule.bgColor, height: 10, width: '100%' }}/>
             </View>
         );
     };
@@ -282,7 +282,7 @@ export default class ConfirOrderPage extends BasePage {
                         style={{ width: 264, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
                         <UIText value={'应付款：'} style={{
                             fontSize: 15,
-                            color: '#222222',
+                            color: DesignRule.textColor_mainTitle,
                             marginRight: 12
                         }}/>
                         <UIText
@@ -297,7 +297,7 @@ export default class ConfirOrderPage extends BasePage {
                         style={{ flex: 1, backgroundColor: color.red, justifyContent: 'center', alignItems: 'center' }}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'提交订单'}
-                                style={{ fontSize: 16, color: DesignRule.white }}/>
+                                style={{ fontSize: 16, color: 'white' }}/>
                     </TouchableOpacity>
 
                 </View>
@@ -759,9 +759,9 @@ export default class ConfirOrderPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: '#f7f7f7', justifyContent: 'flex-end',marginBottom: ScreenUtils.safeBottom
+        flex: 1, backgroundColor: DesignRule.bgColor, justifyContent: 'flex-end',marginBottom: ScreenUtils.safeBottom
     }, selectText: {
-        fontSize: 16, color: DesignRule.white
+        fontSize: 16, color: 'white'
     }, blackText: {
         fontSize: 13,
         lineHeight: 18,
@@ -769,9 +769,9 @@ const styles = StyleSheet.create({
     }, grayText: {
         fontSize: 13,
         lineHeight: 18,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     }, inputTextStyle: {
-        marginLeft: 20, height: 40, flex: 1, backgroundColor: DesignRule.white, fontSize: 14
+        marginLeft: 20, height: 40, flex: 1, backgroundColor: 'white', fontSize: 14
     }, selectView: {
         flex: 1,
         borderRadius: 3,

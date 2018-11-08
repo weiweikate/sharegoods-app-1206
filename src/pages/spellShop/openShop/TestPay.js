@@ -37,19 +37,19 @@ export default class OpenShopSuccessPage extends BasePage {
                     right: 0,
                     alignItems: 'center',
                     flexDirection: 'row',
-                    backgroundColor: DesignRule.white
+                    backgroundColor: 'white'
                 }}>
                     <Text style={{ flex: 1, marginLeft: 24 }}>应付款：0元</Text>
                     <TouchableOpacity
                         onPress={this._click}
                         style={{
-                            backgroundColor: 'red',
+                            backgroundColor: DesignRule.mainColor,
                             width: 109,
                             height: 49,
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}>
-                        <Text style={{ color: DesignRule.white }}>去支付</Text>
+                        <Text style={{ color: 'white' }}>去支付</Text>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -52,10 +52,10 @@ export default class GetRedpacketPage extends BasePage {
         const { px2dp } = ScreenUtils;
         let view = (
             <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
-                <Text style={{ color: DesignRule.white, fontSize: px2dp(24) }}>
+                <Text style={{ color: 'white', fontSize: px2dp(24) }}>
                     领取成功
                 </Text>
-                <Text style={{ color: DesignRule.white, fontSize: px2dp(11), marginTop: px2dp(5) }}>
+                <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
                     可前往我的-优惠券查看
                 </Text>
             </View>
@@ -90,7 +90,7 @@ export default class GetRedpacketPage extends BasePage {
                             alignItems: 'center'
                         }}>
                             <Text style={{
-                                color: DesignRule.white,
+                                color: 'white',
                                 includeFontPadding: false,
                                 fontSize: px2dp(14),
                                 marginTop: 26
@@ -100,13 +100,13 @@ export default class GetRedpacketPage extends BasePage {
                                 {StringUtils.formatPhoneNumber(this.state.phone)}
                                 {/*{EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.encryptPhone(this.state.couponData.phone)}*/}
                             </Text>
-                            <Text style={{ color: DesignRule.white, includeFontPadding: false, fontSize: px2dp(14) }}>
+                            <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14) }}>
                                 赠送了你一个红包
                             </Text>
 
                             <Text style={{
                                 includeFontPadding: false,
-                                color: DesignRule.white,
+                                color: 'white',
                                 fontSize: px2dp(60),
                                 marginTop: 20
                             }}>
@@ -115,13 +115,13 @@ export default class GetRedpacketPage extends BasePage {
                                 {StringUtils.formatMoneyString(this.state.price, false)}
                                 {/*{EmptyUtils.isEmpty(this.state.couponData) ? null : this.state.couponData.price}*/}
                                 <Text
-                                    style={{ includeFontPadding: false, color: DesignRule.white, fontSize: px2dp(15) }}>
+                                    style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
                                     元
                                 </Text>
                             </Text>
                             <Text style={{
                                 includeFontPadding: false,
-                                color: DesignRule.white,
+                                color: 'white',
                                 fontSize: px2dp(14),
                                 marginTop: 12
                             }}>
@@ -212,7 +212,7 @@ export default class GetRedpacketPage extends BasePage {
                 <Text
                     style={{
                         fontSize: 13,
-                        color: '#333',
+                        color: DesignRule.textColor_mainTitle,
                         marginLeft: 15
                     }}
                 >
@@ -239,7 +239,7 @@ export default class GetRedpacketPage extends BasePage {
                         <Text
                             style={{
                                 fontSize: 13,
-                                color: '#666',
+                                color: DesignRule.textColor_secondTitle,
                                 marginLeft: 5
                             }}
                             onPress={
@@ -332,7 +332,7 @@ export default class GetRedpacketPage extends BasePage {
                                 style={{
                                     marginTop: 20,
                                     height: 30,
-                                    color: DesignRule.white,
+                                    color: 'white',
                                     textAlign: 'center'
                                 }}
                             >
@@ -419,7 +419,7 @@ const Styles = StyleSheet.create(
         },
         rightTopTitleStyle: {
             fontSize: 15,
-            color: '#666'
+            color: DesignRule.textColor_secondTitle
         },
         topViewStyle: {
             height: ScreenUtils.px2dp(430)

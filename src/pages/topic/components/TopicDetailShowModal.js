@@ -54,7 +54,7 @@ export default class TopicDetailShowModal extends Component {
                     position: 'absolute'
                 }}>
                     <View style={{
-                        backgroundColor: DesignRule.white,
+                        backgroundColor: 'white',
                         top: ScreenUtils.px2dp(105),
                         width: ScreenUtils.px2dp(290),
                         height: ScreenUtils.px2dp(360),
@@ -68,7 +68,7 @@ export default class TopicDetailShowModal extends Component {
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}>
-                            <Text style={{ color: DesignRule.white, fontSize: ScreenUtils.px2dp(18) }}>{this.state.tittle}</Text>
+                            <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }}>{this.state.tittle}</Text>
                         </ImageBackground>
                         <View style={{ flex: 1, alignItems: 'center' }}>
                             <Text style={{
@@ -78,7 +78,7 @@ export default class TopicDetailShowModal extends Component {
                             }}>{`${this.state.name || ''}\n${this.state.subName || ''}`}</Text>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
-                                color: '#666666',
+                                color: DesignRule.textColor_secondTitle,
                                 fontSize: ScreenUtils.px2dp(14),
                                 paddingHorizontal: ScreenUtils.px2dp(32),
                             }}>{`${this.state.content || ''}`}</Text>

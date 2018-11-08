@@ -116,7 +116,7 @@ let styles = StyleSheet.create({
         height: 16,
         width: px2dp(38),
         borderRadius: 8,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft: -px2dp(10)
@@ -136,7 +136,7 @@ let styles = StyleSheet.create({
     title: {
         marginTop: px2dp(10),
         marginLeft: px2dp(10),
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(14)
     },
     left: {

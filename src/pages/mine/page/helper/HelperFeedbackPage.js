@@ -152,7 +152,7 @@ export default class HelperFeedbackPage extends BasePage {
                     }}>
                         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <UIImage source={rightIcon} style={{ width: 70, height: 70 }}/>
-                            <UIText value={'提交成功！'} style={{ fontSize: 15, color: '#222222', marginTop: 10 }}/>
+                            <UIText value={'提交成功！'} style={{ fontSize: 15, color: DesignRule.textColor_mainTitle, marginTop: 10 }}/>
                             <UIText value={`您的反馈我们会认真查看`} style={{
                                 fontSize: 11,
                                 color: '#c6c6c6',
@@ -182,7 +182,7 @@ export default class HelperFeedbackPage extends BasePage {
                                 <Text
                                     style={{
                                         fontSize: 15,
-                                        color: '#222222'
+                                        color: DesignRule.textColor_mainTitle
                                     }}>确定</Text>
                             </TouchableOpacity>
                         </View>
@@ -240,17 +240,17 @@ export default class HelperFeedbackPage extends BasePage {
 
                         <TouchableOpacity style={styles.modalContainer}
                                           onPress={() => this.setState({ showModal: true })}>
-                            <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>请选择问题类型</Text>
+                            <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>请选择问题类型</Text>
                             <Image source={arrowUp} style={{ width: 15, height: 15, marginRight: 10 }}/>
                         </TouchableOpacity>
-                        <View style={{ width: ScreenUtils.width, backgroundColor: DesignRule.white }}>
+                        <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
                             {this.state.CONFIG.map((item, i) => {
                                 return (
                                     <TouchableOpacity key={i} style={{ height: 48, justifyContent: 'center' }}
                                                       activeOpacity={0.6}
                                                       onPress={() => this.selCourse(item.value, item.detailId)}>
                                         <Text style={{
-                                            color: i == this.state.selectIndex ? '#e60012' : '#222222',
+                                            color: i == this.state.selectIndex ? '#e60012' : DesignRule.textColor_mainTitle,
                                             fontSize: 15,
                                             marginLeft: 15
                                         }}>{item.value}</Text>
@@ -276,18 +276,18 @@ export default class HelperFeedbackPage extends BasePage {
                         flexDirection: 'row',
                         width: ScreenUtils.width,
                         height: 44,
-                        backgroundColor: DesignRule.white,
+                        backgroundColor: 'white',
                         marginTop: 5,
                         justifyContent: 'space-between',
                         alignItems: 'center'
                     }} onPress={() => this.setState({ showModal: true })}>
-                        <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>{this.state.course}</Text>
+                        <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>{this.state.course}</Text>
                         <Image source={arrowDown} style={{ width: 15, height: 15, marginRight: 10 }}/>
                     </TouchableOpacity>
                     <View style={styles.containerView1}>
-                        <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>详细说明</Text>
+                        <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>详细说明</Text>
                     </View>
-                    <View style={{ height: 130, backgroundColor: DesignRule.white }}>
+                    <View style={{ height: 130, backgroundColor: 'white' }}>
                         <AutoExpandingInput
                             style={styles.detailAddress}
                             onChangeText={text => this.setState({ detailContent: text, textLength: text.length })}
@@ -299,7 +299,7 @@ export default class HelperFeedbackPage extends BasePage {
                         <Text style={{ position: 'absolute', bottom: 10, right: 10 }}>{this.state.textLength}/90</Text>
                     </View>
                     <View style={styles.containerView2}>
-                        <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>上传图片</Text>
+                        <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>上传图片</Text>
                     </View>
                     <View style={styles.containerView3}>
                         {this.state.imageArr.map((item, index) => {
@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
     detailAddress: {
         marginLeft: 20,
         marginRight: 20,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         fontSize: 14
 
     },
@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
         marginTop: 50
     },
     containerView1: {
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         width: ScreenUtils.width,
         marginTop: 5,
         height: 44,
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start'
     },
     containerView2: {
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         width: ScreenUtils.width,
         marginTop: 5,
         height: 44,
@@ -402,7 +402,7 @@ const styles = StyleSheet.create({
     containerView3: {
         width: ScreenUtils.width,
         height: 101,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         marginTop: 1,
         flexDirection: 'row',
         alignItems: 'center'

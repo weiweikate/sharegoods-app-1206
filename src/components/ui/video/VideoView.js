@@ -131,7 +131,7 @@ export default class VideoView extends Component {
                         <Text style={styles.time}>{formatTime(this.state.currentTime)}</Text>
                         <Slider
                             style={{ flex: 1 }}
-                            maximumTrackTintColor={'#999999'}
+                            maximumTrackTintColor={DesignRule.textColor_instruction}
                             minimumTrackTintColor={'#00c06d'}
                             thumbImage={icon_control_slider}
                             value={this.state.currentTime}
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
     },
     time: {
         fontSize: 12,
-        color: DesignRule.white,
+        color: 'white',
         marginLeft: 10,
         marginRight: 10
     },

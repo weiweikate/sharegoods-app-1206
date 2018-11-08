@@ -93,7 +93,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 onPress={() => this.show()}>
                                 <UIImage source={questionImage_white}
                                          style={{ width: 13, height: 13, marginRight: 3 }}/>
-                                <UIText value={'提现说明'} style={{ fontSize: 11, color: DesignRule.white }}/>
+                                <UIText value={'提现说明'} style={{ fontSize: 11, color: 'white' }}/>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -132,7 +132,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                     position: 'absolute'
                 }}>
                     <View style={{
-                        backgroundColor: DesignRule.white,
+                        backgroundColor: 'white',
                         top: ScreenUtils.px2dp(105),
                         width: ScreenUtils.px2dp(290),
                         height: ScreenUtils.px2dp(360),
@@ -145,7 +145,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}>
-                            <Text style={{ color: DesignRule.white, fontSize: ScreenUtils.px2dp(18) }}>待提现账户说明</Text>
+                            <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }}>待提现账户说明</Text>
                         </ImageBackground>
                         <View style={{ marginLeft: ScreenUtils.px2dp(22) }}>
                             <Text style={{
@@ -155,7 +155,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                             }}>什么是待提现账户？</Text>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(10),
-                                color: '#666666',
+                                color: DesignRule.textColor_secondTitle,
                                 fontSize: ScreenUtils.px2dp(13)
                             }}>{`待提现账户为用户收益明细账户，可通过待提现账户查看收益情况`}</Text>
                         </View>
@@ -167,7 +167,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                             }}>为何不能马上提现？</Text>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(10),
-                                color: '#666666',
+                                color: DesignRule.textColor_secondTitle,
                                 fontSize: ScreenUtils.px2dp(13)
                             }}>{`因为您下级或下下级的交易并未完全完成，所以账户中的余额暂时不可马上提现，当交易完成之后，系统回自动提现到您的余额账户`}</Text>
                         </View>

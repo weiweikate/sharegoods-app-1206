@@ -20,8 +20,8 @@ export default class UserAgreementPage extends BasePage{
     };
     _render(){
         return(
-            <ScrollView style={{flex:1,backgroundColor:DesignRule.white}}>
-                <View style={{width:ScreenUtils.width,height:25,backgroundColor:'#F7F7F7'}}/>
+            <ScrollView style={{flex:1,backgroundColor:'white'}}>
+                <View style={{width:ScreenUtils.width,height:25,backgroundColor:DesignRule.bgColor}}/>
                 <Image source={agreementDetailImg} style={{width:ScreenUtils.width}} resizeMode={'stretch'}/>
             </ScrollView>
         )

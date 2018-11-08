@@ -64,13 +64,13 @@ export default class ProgressBarView extends Component {
                     justifyContent: 'center',
                     position: 'absolute'
                 }}/>
-                <Text style={{ fontSize: 11, marginLeft: 5, color: DesignRule.white }}>
+                <Text style={{ fontSize: 11, marginLeft: 5, color: 'white' }}>
                     {'已抢' + haveRobNum + '件'}
                 </Text>
                 <Text style={{
                     fontSize: 11,
                     marginRight: 5,
-                    color: DesignRule.white
+                    color: 'white'
                 }}>
 
                     {(progressValue * 100).toFixed(0) + '%'}

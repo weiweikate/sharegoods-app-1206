@@ -111,7 +111,7 @@ export default class SubSwichView extends Component {
                                             {
                                                 marginTop: 10,
                                                 height: 1,
-                                                backgroundColor: DesignRule.white
+                                                backgroundColor: 'white'
                                             }
                                         }
                                     />

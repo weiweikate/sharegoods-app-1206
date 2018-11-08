@@ -376,12 +376,12 @@ export default class MyShopPage extends BasePage {
                                  style={{
                                      height: 48,
                                      width: 150,
-                                     backgroundColor: canJoin ? '#D51243' : 'rgb(221,109,140)',
+                                     backgroundColor: canJoin ? DesignRule.mainColor : 'rgb(221,109,140)',
                                      borderRadius: 5,
                                      marginTop: 30,
                                      alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
                                  }}>
-            <Text style={{ fontSize: 16, color: DesignRule.white }}>{btnText}</Text>
+            <Text style={{ fontSize: 16, color: 'white' }}>{btnText}</Text>
         </TouchableOpacity>;
     };
 

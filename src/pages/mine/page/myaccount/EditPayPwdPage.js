@@ -1,7 +1,6 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
-import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 
@@ -17,7 +16,7 @@ export default class EditPayPwdPage extends BasePage {
             <TouchableOpacity style={{
                 marginTop: 160,
                 width: ScreenUtils.width - 84,
-                borderColor: color.red,
+                borderColor: DesignRule.mainColor,
                 borderWidth: 0.7,
                 height: 50,
                 marginLeft: 42,
@@ -26,11 +25,11 @@ export default class EditPayPwdPage extends BasePage {
                 justifyContent: 'center',
                 borderRadius: 25
             }} onPress={() => this._know()}>
-                <Text style={{ fontSize: 17, color: color.red }}>记得原交易密码</Text>
+                <Text style={{ fontSize: 17, color: DesignRule.mainColor }}>记得原交易密码</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{
                 marginTop: 21,
-                backgroundColor: color.red,
+                backgroundColor: DesignRule.mainColor,
                 width: ScreenUtils.width - 84,
                 height: 50,
                 marginLeft: 42,
@@ -39,7 +38,7 @@ export default class EditPayPwdPage extends BasePage {
                 justifyContent: 'center',
                 borderRadius: 25
             }} onPress={() => this._forget()}>
-                <Text style={{ fontSize: 17, color: DesignRule.white }}>忘记原交易密码</Text>
+                <Text style={{ fontSize: 17, color: 'white' }}>忘记原交易密码</Text>
             </TouchableOpacity>
         </View>;
     }

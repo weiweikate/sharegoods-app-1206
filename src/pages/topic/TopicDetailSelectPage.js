@@ -58,7 +58,7 @@ export default class TopicDetailSelectPage extends Component {
                             <TouchableOpacity
                                 style={[styles.btn, { backgroundColor: '#D51243' }]}>
                                 <Text
-                                    style={[styles.btnText, { color: DesignRule.white }]}>{obj.specValue}</Text>
+                                    style={[styles.btnText, { color: 'white' }]}>{obj.specValue}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -105,7 +105,7 @@ export default class TopicDetailSelectPage extends Component {
                                 zIndex: 1
                             }} source={{ uri: specImg || '' }}/>
 
-                            <View style={{ backgroundColor: DesignRule.white, marginTop: 20, height: 87 }}>
+                            <View style={{ backgroundColor: 'white', marginTop: 20, height: 87 }}>
                                 <View style={{ marginLeft: 132 }}>
                                     <Text style={{
                                         color: '#D51243',
@@ -114,12 +114,12 @@ export default class TopicDetailSelectPage extends Component {
                                     }}>{`￥${price}`}</Text>
                                     <Text
                                         style={{
-                                            color: '#222222',
+                                            color: DesignRule.textColor_mainTitle,
                                             fontSize: 13,
                                             marginTop: 8
                                         }}>{`库存${surplusNumber}件`}</Text>
                                     <Text style={{
-                                        color: '#222222',
+                                        color: DesignRule.textColor_mainTitle,
                                         fontSize: 13,
                                         marginTop: 8
                                     }}>{specs}</Text>
@@ -131,7 +131,7 @@ export default class TopicDetailSelectPage extends Component {
                             </View>
                         </View>
 
-                        <View style={{ flex: 1, backgroundColor: DesignRule.white }}>
+                        <View style={{ flex: 1, backgroundColor: 'white' }}>
                             <ScrollView>
                                 {this._addSelectionSectionView()}
                                 <View style={[{
@@ -140,7 +140,7 @@ export default class TopicDetailSelectPage extends Component {
                                     justifyContent: 'space-between',
                                     alignItems: 'center'
                                 }]}>
-                                    <Text style={{ color: '#666666', marginLeft: 16, fontSize: 13 }}>购买数量</Text>
+                                    <Text style={{ color: DesignRule.textColor_secondTitle, marginLeft: 16, fontSize: 13 }}>购买数量</Text>
                                     <View style={{
                                         flexDirection: 'row',
                                         borderColor: '#dddddd',
@@ -162,7 +162,7 @@ export default class TopicDetailSelectPage extends Component {
                                         <View style={{ height: 21, width: 1, backgroundColor: '#dddddd' }}/>
                                         <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
                                             <Text style={{
-                                                color: '#222222',
+                                                color: DesignRule.textColor_mainTitle,
                                                 fontSize: 15,
                                                 paddingHorizontal: 11
                                             }}>+</Text>
@@ -178,7 +178,7 @@ export default class TopicDetailSelectPage extends Component {
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }}>
-                                    <Text style={{ fontSize: 16, color: DesignRule.white }}>确认</Text>
+                                    <Text style={{ fontSize: 16, color: 'white' }}>确认</Text>
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize: 13,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     },
 
     containerView: {

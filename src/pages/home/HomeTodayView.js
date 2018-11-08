@@ -7,6 +7,7 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
 import { todayModule, homeModule } from './Modules'
+import DesignRule from 'DesignRule';
 
 const TodayItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <Image style={styles.img} source={{uri: item.imgUrl}}/>
@@ -58,7 +59,7 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     title: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
         fontWeight: '600'
     },

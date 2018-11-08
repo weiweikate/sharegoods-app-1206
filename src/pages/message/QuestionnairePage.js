@@ -35,17 +35,17 @@ export default class QuestionnairePage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7'
+        backgroundColor: DesignRule.bgColor
     },
     textitems: {
         width: ScreenUtils.width,
         height: 44,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         borderStyle: 'solid'
     },
     textsingle: {
         fontSize: 13,
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         marginLeft: 16,
         marginRight: 13
     }

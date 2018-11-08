@@ -63,20 +63,20 @@ export default class PromotionPayPage extends BasePage<Props> {
 
     _render() {
         let unSelectView = (
-            <View style={{backgroundColor:DesignRule.white,borderColor:'#DDDDDD',borderWidth:px2dp(0.5),width:px2dp(22),height:px2dp(22),borderRadius:px2dp(11)}}/>
+            <View style={{backgroundColor:'white',borderColor:'#DDDDDD',borderWidth:px2dp(0.5),width:px2dp(22),height:px2dp(22),borderRadius:px2dp(11)}}/>
         );
         let isSelectedView = (
-            <Image source={icon} style={{backgroundColor:DesignRule.white,width:px2dp(22),height:px2dp(22)}}/>
+            <Image source={icon} style={{backgroundColor:'white',width:px2dp(22),height:px2dp(22)}}/>
         );
 
         return (
             <View style={styles.container}>
                 <View style={{justifyContent:'center',paddingHorizontal:px2dp(15),height:px2dp(36)}}>
-                    <UIText style={{color:'#999999',fontSize:px2dp(12)}} value={'固定金额红包'}/>
+                    <UIText style={{color:DesignRule.textColor_instruction,fontSize:px2dp(12)}} value={'固定金额红包'}/>
                 </View>
                 <View style={styles.itemWrapper}>
-                    <UIText style={{color:'#222222',fontSize:px2dp(13),includeFontPadding:false}} value={`红包金额：${this.params.price}元`}/>
-                    <UIText  style={{color:'#999999',fontSize:px2dp(11),includeFontPadding:false}} value={`（共发放${this.params.count}个红包）`}/>
+                    <UIText style={{color:DesignRule.textColor_mainTitle,fontSize:px2dp(13),includeFontPadding:false}} value={`红包金额：${this.params.price}元`}/>
+                    <UIText  style={{color:DesignRule.textColor_instruction,fontSize:px2dp(11),includeFontPadding:false}} value={`（共发放${this.params.count}个红包）`}/>
                     <View style={{flex:1}}/>
                     <TouchableOpacity onPress={()=>{
                         this.setState({isSelected : !this.state.isSelected})
@@ -87,7 +87,7 @@ export default class PromotionPayPage extends BasePage<Props> {
                 <View style={{flex:1}}/>
                 <TouchableOpacity onPress={()=>this.pay()} disabled={!this.state.isSelected} >
                     <View style={[styles.buttonWrapper,this.state.isSelected ? { opacity: 1} : {opacity : 0.5}]}>
-                        <UIText value={'提交支付'} style={{color:DesignRule.white, fontSize: px2dp(16)}}/>
+                        <UIText value={'提交支付'} style={{color:'white', fontSize: px2dp(16)}}/>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
         borderBottomColor:'#DDDDDD',
         borderBottomWidth:ScreenUtils.onePixel,
         borderTopWidth:ScreenUtils.onePixel,
-        backgroundColor:DesignRule.white
+        backgroundColor:'white'
     },
     buttonWrapper:{
         height:px2dp(48),

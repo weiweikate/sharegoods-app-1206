@@ -91,7 +91,7 @@ export default class OpenShopExplainPage extends BasePage {
                     <TouchableOpacity activeOpacity={0.5} onPress={this._clickOpen} style={styles.btnStyle}>
                         <Text style={{
                             fontSize: 15,
-                            color: DesignRule.white
+                            color: 'white'
                         }}>我要开店</Text>
                     </TouchableOpacity>
 
@@ -121,13 +121,13 @@ const styles = StyleSheet.create({
     },
     circleText: {
         fontSize: 12,
-        color: DesignRule.white
+        color: 'white'
     },
     desc: {
         marginLeft: 8,
         marginRight: 0,
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     btnStyle: {
         width: 170,
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     descText: {
         paddingVertical: 10,
         fontSize: 11,
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         textAlign: 'center'
     }
 });

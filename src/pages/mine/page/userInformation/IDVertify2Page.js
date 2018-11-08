@@ -72,7 +72,7 @@ export default class IDVertify2Page extends BasePage {
                         height: 56,
                         flexDirection: 'row',
                         alignItems: 'center',
-                        backgroundColor: DesignRule.white,
+                        backgroundColor: 'white',
                         justifyContent: 'space-between'
                     }}>
                         <Text style={styles.accountStyle}>姓名</Text>
@@ -88,7 +88,7 @@ export default class IDVertify2Page extends BasePage {
                         height: 56,
                         flexDirection: 'row',
                         alignItems: 'center',
-                        backgroundColor: DesignRule.white,
+                        backgroundColor: 'white',
                         justifyContent: 'space-between'
                     }}>
                         <Text style={styles.accountStyle}>证件号</Text>
@@ -123,13 +123,13 @@ export default class IDVertify2Page extends BasePage {
                         justifyContent: 'center',
                         borderRadius: 25
                     }} onPress={() => this.commit()}>
-                        <Text style={{ fontSize: 17, color: DesignRule.white }}
+                        <Text style={{ fontSize: 17, color: 'white' }}
                               onPress={() => this.toLoginOut()}>提交</Text>
                     </TouchableOpacity>
                     <View style={{ alignItems: 'center' }}>
                         <UIText value={'（信息仅用户自己可见）'} style={{
                             fontSize: 13,
-                            color: '#999999',
+                            color: DesignRule.textColor_instruction,
                             marginTop: 7
                         }}/>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}
@@ -139,7 +139,7 @@ export default class IDVertify2Page extends BasePage {
                             <Image source={this.state.agreeAggreement ? addressSelect : addressUnselect}
                                    style={{ width: 11, height: 11 }}/>
                             <UIText value={'提交认证代表您已同意'}
-                                    style={{ fontSize: 11, color: '#999999' }}/>
+                                    style={{ fontSize: 11, color: DesignRule.textColor_instruction }}/>
                             <UIText value={'《实名认证协议》'}
                                     style={{ fontSize: 11, color: '#F00006' }}
                                     onPress={() => {
@@ -178,7 +178,7 @@ export default class IDVertify2Page extends BasePage {
         return (
             <View style={{ height: 50, backgroundColor: '#e60012', justifyContent: 'center', paddingLeft: 15 }}>
                 <UIText value={'请仔细检查姓名和证件号是否有误\n并重新上传图片，提交审核'}
-                        style={{ fontSize: 13, lineHeight: 18, color: DesignRule.white }}/>
+                        style={{ fontSize: 13, lineHeight: 18, color: 'white' }}/>
             </View>
         );
     };
@@ -304,23 +304,23 @@ const styles = StyleSheet.create({
         flex: 1, backgroundColor: color.page_background
     }, itemTitleView: {
         height: 48,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: DesignRule.bgColor,
         paddingLeft: 14,
         justifyContent: 'center'
     }, itemTitleText: {
         fontSize: 13,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     }, blackText: {
         fontSize: 15,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     grayText: {
         fontSize: 15,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     }, accountStyle: {
         marginLeft: 16, color: color.loginTextBlack, width: 60
     }, inputTextStyle: {
-         height: 40, flex: 1, backgroundColor: DesignRule.white, fontSize: 14,textAlign:'right',marginRight:15
+         height: 40, flex: 1, backgroundColor: 'white', fontSize: 14,textAlign:'right',marginRight:15
     }
 });
 

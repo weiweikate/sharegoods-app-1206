@@ -133,11 +133,11 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     desc: {
         fontSize: 13,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         textAlign: 'right'
     },
     line: {
@@ -170,6 +170,6 @@ const styles = StyleSheet.create({
     },
     sendTitle: {
         fontSize: 16,
-        color: DesignRule.white
+        color: 'white'
     }
 });

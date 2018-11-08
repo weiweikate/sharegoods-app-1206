@@ -194,19 +194,19 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         height: 50,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         flexDirection: 'row',
         paddingHorizontal: 20
     },
     title: {
         textAlign: 'center',
         fontSize: 15,
-        color: '#333'
+        color: DesignRule.textColor_mainTitle
     },
     whitePanel: {
         flex:1,
         marginTop: 31,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         alignItems: 'center',
         borderRadius: 5
     },
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
         width: 235 / 375 * MIN_SCREEN,
         borderRadius: 2,
         backgroundColor: '#eeeeee',
-        color: '#333'
+        color: DesignRule.textColor_mainTitle
     },
     btnContainer: {
         flexDirection: 'row',
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     },
     submitTitle: {
         fontSize: 16,
-        color: DesignRule.white
+        color: 'white'
     },
     cancelContainer: {
         justifyContent: 'center',
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     },
     cancelTitleText: {
         fontSize: 16,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     }
 });
 

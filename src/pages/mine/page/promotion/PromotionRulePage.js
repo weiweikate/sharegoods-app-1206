@@ -72,7 +72,7 @@ export default class PromotionRulePage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:DesignRule.white
+        backgroundColor:'white'
     },
     headerWrapper: {
         justifyContent: "center",
@@ -80,14 +80,14 @@ const styles = StyleSheet.create({
         height:px2dp(75)
     },
     headerTextStyle:{
-        color:'#333333',
+        color:DesignRule.textColor_mainTitle,
         fontSize:px2dp(16)
     },
     rulesWrapper:{
         padding:px2dp(15)
     },
     rulesTextStyle:{
-        color:'#222222',
+        color:DesignRule.textColor_mainTitle,
         fontSize:px2dp(12)
     }
 });

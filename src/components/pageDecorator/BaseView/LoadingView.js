@@ -14,7 +14,7 @@ import {
     StyleSheet,
     ActivityIndicator,
 } from 'react-native';
-
+import DesignRule from 'DesignRule';
 
 export default class LoadingView extends Component {
 
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#F7F7F7',
+        backgroundColor: DesignRule.bgColor,
     },
 });
 

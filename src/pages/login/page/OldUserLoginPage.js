@@ -233,7 +233,7 @@ const Styles = StyleSheet.create(
         },
         rightTopTitleStyle: {
             fontSize: 15,
-            color: '#666'
+            color: DesignRule.textColor_secondTitle
         },
         otherLoginBgStyle: {
             marginBottom: -20,

@@ -161,7 +161,7 @@ export default class RequestDetailPage extends BasePage {
             </TouchableWithoutFeedback>
             {
                 this.state[index] ? null :
-                    <Text selectable={true} style={{ flex: 1, color: '#333', marginLeft: index < 3 ? 10 : 0 }}>{
+                    <Text selectable={true} style={{ flex: 1, color: DesignRule.textColor_mainTitle, marginLeft: index < 3 ? 10 : 0 }}>{
                         typeof value === 'object' ? JSON.stringify(value, null, 4) : (key === 'status' && !value ? '请求异常，无法获取status状态' : value)
                     }</Text>
             }
@@ -176,10 +176,10 @@ export default class RequestDetailPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: DesignRule.bgColor,
     },
     cell: {
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         marginBottom: 4,
         padding: 15,
         paddingVertical: 8,

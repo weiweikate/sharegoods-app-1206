@@ -52,7 +52,7 @@ export default class SbOpenPrizeHeader extends Component {
                                     {
                                         width: ScreenUtils.width,
                                         height: 48,
-                                        backgroundColor: DesignRule.white
+                                        backgroundColor: 'white'
                                     }
                                 }
                             />
@@ -114,7 +114,7 @@ export default class SbOpenPrizeHeader extends Component {
                                     // { width: ScreenUtils.width /arrAccount},
                                     this.state.selectSate === index ?
                                         {
-                                            color: DesignRule.white
+                                            color: 'white'
                                         } : null]}
                             />
 
@@ -128,7 +128,7 @@ export default class SbOpenPrizeHeader extends Component {
                                                 itemViewStyle.itemBottomTextStyle,
                                                 this.state.selectSate === index ?
                                                     {
-                                                        color: DesignRule.white
+                                                        color: 'white'
                                                     } : null
                                             ]
                                         }

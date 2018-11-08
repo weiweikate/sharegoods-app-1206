@@ -263,7 +263,7 @@ export default class MyCollectPage extends BasePage {
                             rowMap[`${secId}${rowId}`].closeRow();
                             this.deleteFromShoppingCartByProductId(data.storeId);
                         }}>
-                        <UIText style={{ color: DesignRule.white }} value={'立即\n删除'}/>
+                        <UIText style={{ color: 'white' }} value={'立即\n删除'}/>
                     </TouchableOpacity>
                 )}
                 rightOpenValue={-75}
@@ -290,7 +290,7 @@ export default class MyCollectPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: '#f7f7f7',
+        flex: 1, backgroundColor: DesignRule.bgColor,
         marginBottom: ScreenUtils.safeBottom
     },
     standaloneRowFront: {
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
         height: 50,
         borderWidth: 1,
         borderColor: '#c8c8c8',
-        backgroundColor: __DEV__ ? '#c8c8c8' : DesignRule.white
+        backgroundColor: __DEV__ ? '#c8c8c8' : 'white'
     },
     ingContainer: {
         width: 46,
@@ -355,14 +355,14 @@ const styles = StyleSheet.create({
     },
     ingText: {
         fontSize: 11,
-        color: '#f7f7f7'
+        color: DesignRule.bgColor
     },
     rowContainer: {
         height: 80,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 20,
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     title: {
         fontSize: 13,
@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
     desc: {
         marginLeft: 2,
         fontSize: 12,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     }
 
 });

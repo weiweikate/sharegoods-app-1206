@@ -314,9 +314,9 @@ export default class TopicDetailPage extends BasePage {
                       imagesMaxWidth={ScreenUtils.width}
                       imagesInitialDimensions={ScreenUtils.width}
                       containerStyle={{ backgroundColor: '#fff' }}/>
-                <View style={{ backgroundColor: DesignRule.white }}>
+                <View style={{ backgroundColor: 'white' }}>
                     <Text
-                        style={{ paddingVertical: 13, marginLeft: 15, fontSize: 15, color: '#222222' }}>价格说明</Text>
+                        style={{ paddingVertical: 13, marginLeft: 15, fontSize: 15, color: DesignRule.textColor_mainTitle }}>价格说明</Text>
                     <View style={{ height: 0.5, marginHorizontal: 0, backgroundColor: '#eee' }}/>
                     <Text style={{
                         padding: 15
@@ -324,7 +324,7 @@ export default class TopicDetailPage extends BasePage {
                 </View>
             </View>;
         } else {
-            return <View style={{ backgroundColor: DesignRule.white }}>
+            return <View style={{ backgroundColor: 'white' }}>
                 <FlatList
                     style={{ marginHorizontal: 16, marginVertical: 16, borderWidth: 0.5, borderColor: '#eee' }}
                     renderItem={this._renderSmallItem}
@@ -341,7 +341,7 @@ export default class TopicDetailPage extends BasePage {
             <View style={{ backgroundColor: '#DDDDDD', width: 70, justifyContent: 'center' }}>
                 <Text style={{
                     marginLeft: 10,
-                    color: '#222222',
+                    color: DesignRule.textColor_mainTitle,
                     fontSize: 12
                 }}>{this.state.activityType === 3 ? item.param || '' : item.paramName || ''}</Text>
             </View>
@@ -349,7 +349,7 @@ export default class TopicDetailPage extends BasePage {
                 flex: 1,
                 alignSelf: 'center',
                 marginLeft: 20,
-                color: '#999999',
+                color: DesignRule.textColor_instruction,
                 fontSize: 12
             }}>{item.paramValue || ' '}</Text>
         </View>;
@@ -374,10 +374,10 @@ export default class TopicDetailPage extends BasePage {
 
         let view = (
             <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
-                <Text style={{ color: DesignRule.white, fontSize: px2dp(24) }}>
+                <Text style={{ color: 'white', fontSize: px2dp(24) }}>
                     领取成功
                 </Text>
-                <Text style={{ color: DesignRule.white, fontSize: px2dp(11), marginTop: px2dp(5) }}>
+                <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
                     可前往我的-优惠卷查看
                 </Text>
             </View>
@@ -399,20 +399,20 @@ export default class TopicDetailPage extends BasePage {
                         height: px2dp(362), width: px2dp(257),
                         alignItems: 'center'
                     }}>
-                        <Text style={{ color: DesignRule.white, includeFontPadding: false, fontSize: px2dp(14), marginTop: 26 }}>
+                        <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14), marginTop: 26 }}>
                             {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.encryptPhone(this.state.couponData.phone)}
                         </Text>
-                        <Text style={{ color: DesignRule.white, includeFontPadding: false, fontSize: px2dp(14) }}>
+                        <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14) }}>
                             赠送了你一个红包
                         </Text>
 
-                        <Text style={{ includeFontPadding: false, color: DesignRule.white, fontSize: px2dp(60), marginTop: 20 }}>
+                        <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(60), marginTop: 20 }}>
                             {EmptyUtils.isEmpty(this.state.couponData) ? null : this.state.couponData.price}
-                            <Text style={{ includeFontPadding: false, color: DesignRule.white, fontSize: px2dp(15) }}>
+                            <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
                                 元
                             </Text>
                         </Text>
-                        <Text style={{ includeFontPadding: false, color: DesignRule.white, fontSize: px2dp(14), marginTop: 12 }}>
+                        <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(14), marginTop: 12 }}>
                             红包抵扣金
                         </Text>
                         {this.state.hasGetCoupon ? null : button}
@@ -527,7 +527,7 @@ export default class TopicDetailPage extends BasePage {
                              showsVerticalScrollIndicator={false}
                              sections={[{ data: [{}] }]}
                              scrollEventThrottle={10}/>
-                <View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49, backgroundColor: DesignRule.white }}>
+                <View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49, backgroundColor: 'white' }}>
                     <TouchableOpacity style={{
                         height: 49,
                         backgroundColor: colorType === 1 ? '#33B4FF' : (colorType === 2 ? '#D51243' : '#CCCCCC'),
@@ -535,7 +535,7 @@ export default class TopicDetailPage extends BasePage {
                         alignItems: 'center'
                     }} onPress={() => this._bottomAction(colorType)} disabled={!(colorType === 1 || colorType === 2)}>
                         <Text style={{
-                            color: DesignRule.white,
+                            color: 'white',
                             fontSize: 14
                         }}>{bottomTittle}</Text>
                     </TouchableOpacity>
@@ -582,7 +582,7 @@ const styles = StyleSheet.create({
     },
     opacityView: {
         height: ScreenUtils.headerHeight,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         position: 'absolute',
         top: 0,
         left: 0,

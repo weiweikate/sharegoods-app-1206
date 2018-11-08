@@ -249,7 +249,7 @@ export default class ShopCartPage extends BasePage {
                 style={[{
                     height: 49,
                     width: ScreenUtils.width,
-                    backgroundColor: DesignRule.white
+                    backgroundColor: 'white'
                 },
                     (!hiddeLeft && ScreenUtils.tabBarHeight > 49)
                         ?
@@ -271,7 +271,7 @@ export default class ShopCartPage extends BasePage {
                             value={'全选'}
                             style={{
                                 fontSize: 13,
-                                color: '#999999',
+                                color: DesignRule.textColor_instruction,
                                 marginLeft: 10
                             }}/>
                     </TouchableOpacity>
@@ -288,7 +288,7 @@ export default class ShopCartPage extends BasePage {
                         >
                             <UIText
                                 value={`结算(${shopCartStore.getTotalSelectGoodsNum})`}
-                                style={{ color: DesignRule.white, fontSize: 16 }}
+                                style={{ color: 'white', fontSize: 16 }}
                             />
                         </TouchableOpacity>
                     </View>
@@ -525,7 +525,7 @@ export default class ShopCartPage extends BasePage {
                             >
                                 <Text style={{
                                     flex: 1,
-                                    color: DesignRule.white,
+                                    color: 'white',
                                     fontSize: 11
                                 }}>
                                     {
@@ -667,7 +667,7 @@ const
         backUITextWhite: {
             // flex:1,
             marginRight: 0,
-            color: DesignRule.white
+            color: 'white'
         },
         standaloneRowFront: {
             alignItems: 'center',
@@ -709,13 +709,13 @@ const
         invalidItemContainer: {
             height: 100,
             flexDirection: 'row',
-            backgroundColor: DesignRule.white
+            backgroundColor: 'white'
         },
         invalidUITextInvalid: {
             width: 38,
             height: 20,
             borderRadius: 10,
-            backgroundColor: '#999999',
+            backgroundColor: DesignRule.textColor_instruction,
             justifyContent: 'center',
             alignItems: 'center',
             marginLeft: 12
@@ -737,7 +737,7 @@ const
         CartBottomContainer: {
             width: ScreenUtils.width,
             height: 49,
-            backgroundColor: DesignRule.white,
+            backgroundColor: 'white',
             justifyContent: 'space-between',
             flexDirection: 'row',
             alignItems: 'center'

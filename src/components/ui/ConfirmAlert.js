@@ -197,21 +197,21 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         height: 50,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         flexDirection: 'row',
         paddingHorizontal: 20
     },
     title: {
         textAlign: 'center',
         fontSize: 15,
-        color: '#333'
+        color: DesignRule.textColor_mainTitle
     },
     whitePanel: {
         position: 'absolute',
         left: 40,
         right: 40,
         height: PANNELHEIGHT,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         alignItems: 'center',
         borderRadius: 5,
     }

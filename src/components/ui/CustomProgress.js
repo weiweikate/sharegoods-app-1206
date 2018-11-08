@@ -6,8 +6,6 @@ import {
     Easing
 } from 'react-native';
 import PropTypes from 'prop-types';
-import DesignRule from 'DesignRule';
-
 
 export default class CustomProgress extends Component {
     static propTypes = {
@@ -27,7 +25,7 @@ export default class CustomProgress extends Component {
     };
     static defaultProps = {
         //进度条颜色
-        progressColor: DesignRule.white,
+        progressColor: 'white',
         //buffer进度条颜色
         bufferColor: 'rgba(255,0,0,0.7)',
         //进度条动画时长

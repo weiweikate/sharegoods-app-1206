@@ -145,7 +145,7 @@ const Styles = StyleSheet.create({
         flexDirection: 'row',//设置横向布局
         flexWrap: 'wrap',  //设置换行显示
         // alignItems: 'flex-start',
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     itemBgStyle: {
         width: ScreenUtils.width / 2,
@@ -156,7 +156,7 @@ const Styles = StyleSheet.create({
     },
     itemContentStyle: {
         flex: 1,
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     itemTopImageStyle: {
         backgroundColor: 'red',
@@ -176,7 +176,7 @@ const Styles = StyleSheet.create({
         flex: 1,
         paddingTop: 3,
         fontSize: 11,
-        color: DesignRule.white
+        color: 'white'
 
     },
     itemBottomTextStyle: {

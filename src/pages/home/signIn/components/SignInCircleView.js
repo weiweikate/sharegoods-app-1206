@@ -34,8 +34,8 @@ export default class SignInCircleView extends PureComponent {
 
     signedInRender(){
         return (
-            <View style={[styles.circleStyle,{ backgroundColor: DesignRule.white}]}>
-                <Text style={[styles.textStyle,{color:'#666666'}]}>
+            <View style={[styles.circleStyle,{ backgroundColor: 'white'}]}>
+                <Text style={[styles.textStyle,{color:DesignRule.textColor_secondTitle}]}>
                     {`+${this.props.count}`}
                 </Text>
             </View>
@@ -44,7 +44,7 @@ export default class SignInCircleView extends PureComponent {
 
     signingInRender(){
         return (
-            <View style={[styles.circleStyle,{ backgroundColor: DesignRule.white}]}>
+            <View style={[styles.circleStyle,{ backgroundColor: 'white'}]}>
                 <Image source={signingInIcon} style={styles.iconStyle} resizeMode={'stretch'}/>
             </View>
         );
@@ -53,7 +53,7 @@ export default class SignInCircleView extends PureComponent {
     willSignInRender(){
         return (
             <View style={[styles.circleStyle,{ backgroundColor: '#c6b478'}]}>
-                <Text style={[styles.textStyle,{color:'#F7F7F7'}]}>
+                <Text style={[styles.textStyle,{color:DesignRule.bgColor}]}>
                     {`+${this.props.count}`}
                 </Text>
             </View>
@@ -63,9 +63,9 @@ export default class SignInCircleView extends PureComponent {
     noSignInRender(){
         return (
             <View style={[styles.circleStyle,{ backgroundColor: '#c6b478',borderRadius:px2dp(12), borderWidth: px2dp(2),
-                borderColor:DesignRule.white
+                borderColor:'white'
             }]}>
-                <Text style={[styles.textStyle,{color:'#666666'}]}>
+                <Text style={[styles.textStyle,{color:DesignRule.textColor_secondTitle}]}>
                     {`+${this.props.count}`}
                 </Text>
             </View>

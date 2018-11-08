@@ -39,7 +39,7 @@ export default class SearchSegmentView extends Component {
         }}>
             <View style={styles.itemContainer}>
                 <Text
-                    style={[styles.title, { color: this.state.selIndex === index ? '#e60012' : '#999999' }]}>{title}</Text>
+                    style={[styles.title, { color: this.state.selIndex === index ? '#e60012' : DesignRule.textColor_instruction }]}>{title}</Text>
             </View>
         </TouchableWithoutFeedback>;
     };
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     container: {
         width: ScreenUtils.width,
         height: 42,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         borderTopWidth: StyleSheet.hairlineWidth,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderTopColor: '#eeeeee',
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 13,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     }
 });
 

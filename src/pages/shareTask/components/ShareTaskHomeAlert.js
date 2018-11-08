@@ -28,7 +28,6 @@ import renwu_icon_quan_nor from '../res/renwu_icon_quan_nor.png';
 import cancel from '../res/qiandao_btn_return_nor.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
-import DesignRule from 'DesignRule';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
@@ -71,13 +70,14 @@ export default class ShareTaskHomeAlert extends React.Component {
                     <View style={styles.content}>
                         <UIText value={this.props.data.name} style={styles.title}/>
                         <UIImage source={renwu_icon_quan_nor} style={styles.contentImage}/>
-                        <UIText value={"完成推广任务\n"+ this.props.data.desc} style={styles.detail}/>
+                        <UIText value={'完成推广任务\n' + this.props.data.desc} style={styles.detail}/>
                         <TouchableWithoutFeedback onPress={() => {
                             this.props.onPress && this.props.onPress();
                             this.close();
                         }}>
-                            <View style = {styles.btn}>
-                                <UIText value={"马上领取"} style={{color: DesignRule.white, fontSize: autoSizeWidth(14)}}/>
+                            <View style={styles.btn}>
+                                <UIText value={'马上领取'}
+                                        style={{ color: 'white', fontSize: autoSizeWidth(14) }}/>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
         width: autoSizeWidth(230),
         height: autoSizeWidth(260),
         alignItems: 'center',
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         borderRadius: 5,
         overflow: 'hidden'
     },
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         marginBottom: autoSizeWidth(20)
     },
     title: {
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: autoSizeWidth(16),
         marginTop: autoSizeWidth(15)
     },
@@ -116,13 +116,13 @@ const styles = StyleSheet.create({
         height: autoSizeWidth(90),
         width: autoSizeWidth(130),
         marginTop: autoSizeWidth(20),
-        marginRight: autoSizeWidth(10),
+        marginRight: autoSizeWidth(10)
     },
     detail: {
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: autoSizeWidth(12),
         marginTop: autoSizeWidth(20),
-        textAlign: 'center',
+        textAlign: 'center'
     },
     btn: {
         backgroundColor: '#D51243',

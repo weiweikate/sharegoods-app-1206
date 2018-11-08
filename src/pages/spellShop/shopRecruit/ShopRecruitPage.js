@@ -248,7 +248,7 @@ export default class ShopRecruitPage extends BasePage {
                     </TouchableOpacity>
                     {
                         this.state.canOpen ? <TouchableOpacity onPress={this._openStore} style={styles.open}>
-                            <Text style={{ fontSize: 16, color: DesignRule.white }}>{'开启店铺'}</Text>
+                            <Text style={{ fontSize: 16, color: 'white' }}>{'开启店铺'}</Text>
                         </TouchableOpacity> : null
                     }
                 </View>
@@ -270,7 +270,7 @@ export default class ShopRecruitPage extends BasePage {
                         </TouchableOpacity>
                         : <TouchableOpacity onPress={this._joinStore}
                                             style={[styles.OutStore]}>
-                            <Text style={{ fontSize: 16, color: DesignRule.white }}>{'加入拼店'}</Text>
+                            <Text style={{ fontSize: 16, color: 'white' }}>{'加入拼店'}</Text>
                         </TouchableOpacity>
                 }
 
@@ -327,14 +327,14 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center'
     },
     OutStore: {
         width: ScreenUtils.autoSizeWidth(345),
         height: 48,
-        backgroundColor: '#D51243',
+        backgroundColor: DesignRule.mainColor,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center'
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         width: ScreenUtils.autoSizeWidth(168),
         height: 48,
-        backgroundColor: '#D51243',
+        backgroundColor: DesignRule.mainColor,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center'

@@ -14,35 +14,37 @@ import ScreenUtils from '../utils/ScreenUtils';
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 const colors = {
-    mainColor: '#F00006',//主色调
-    white: DesignRule.white,
-    bgColor: '#F7F7F7',//背景色
-    bgColor_btn: '#F00006',//红色按钮背景色
-    bgColor_btnSelect: '#EF154C',//红色按钮选中状态背景色
-    bgColor_LVLabel: '#F2D3A2',//等级标签背景色
-    bgColor_redCard: '#FF4F6E',//红色卡片背景色
-    bgColor_blueCard: '#8EC7FF',//蓝色卡片背景色
-    bgColor_yellowCard: '#F2D4A2',//黄色卡片背景色
-    bgColor_grayHeader: '#CCCCCC',//头像灰色背景
-    bgColor_redHeader: '#FF5781',//头像红色背景
-    lineColor_inColorBg: '#EEEEEE',//在有色背景的线的颜色
-    lineColor_inWhiteBg: '#E4E4E4',//在白色背景的线的颜色
-    lineColor_inGrayBg: '#D9D9D9',//在灰色背景的线的颜色
-    textColor_mainTitle: '#333333',//主标题
-    textColor_secondTitle: '#666666',//二级标题
-    textColor_instruction: '#999999',//说明文字
-    textColor_placeholder: '#CCCCCC',//预填文字
-    textColor_white: DesignRule.white,//白色文字
-    textColor_redWarn: '#F00006',//红色警告、提示文字
-    textColor_blueURL: '#38ADFF',//文字链接
-    textColor_btnText: '#F00006',//按钮红色文字
-    textColor_hint: '#C8C8C8', //输入框背景字颜色
-    bgColor_blue: '#33B4FF', //蓝色背景
-    bgColor_deepBlue: '#2B99D9',//深蓝背景
-    textColor_deepBlue: '#1B7BB3', //深蓝字体
-    color_yellow: '#FFFC00', //黄色字体
-    color_deepYellow: '#F1C11B', //深黄色字体
-};
+        mainColor: '#F00006',//主色调
+        white: 'white',
+        bgColor: '#F7F7F7',//背景色
+        bgColor_btn: '#F00006',//红色按钮背景色
+        bgColor_btnSelect: '#EF154C',//红色按钮选中状态背景色
+        bgColor_LVLabel: '#F2D3A2',//等级标签背景色
+        bgColor_redCard: '#FF4F6E',//红色卡片背景色
+        bgColor_blueCard: '#8EC7FF',//蓝色卡片背景色
+        bgColor_yellowCard: '#F2D4A2',//黄色卡片背景色
+        bgColor_grayHeader: '#CCCCCC',//头像灰色背景
+        bgColor_redHeader: '#FF5781',//头像红色背景
+        lineColor_inColorBg: '#EEEEEE',//在有色背景的线的颜色
+        lineColor_inWhiteBg: '#E4E4E4',//在白色背景的线的颜色
+        lineColor_inGrayBg: '#D9D9D9',//在灰色背景的线的颜色
+        textColor_mainTitle: '#333333',//主标题
+        textColor_secondTitle: '#666666',//二级标题
+        textColor_instruction: '#999999',//说明文字
+        textColor_placeholder: '#CCCCCC',//预填文字
+        textColor_white: 'white',//白色文字
+        textColor_redWarn: '#F00006',//红色警告、提示文字
+        textColor_blueURL: '#38ADFF',//文字链接
+        textColor_btnText: '#F00006',//按钮红色文字
+        textColor_hint: '#C8C8C8', //输入框背景字颜色
+        bgColor_blue: '#33B4FF', //蓝色背景
+        bgColor_deepBlue: '#2B99D9',//深蓝背景
+        textColor_deepBlue: '#1B7BB3', //深蓝字体
+        color_yellow: '#FFFC00', //黄色字体
+        color_deepYellow: '#F1C11B', //深黄色字体
+        color_green: '#47c546' //绿色字体
+    }
+;
 
 const sizes = {
     /** 字体*/

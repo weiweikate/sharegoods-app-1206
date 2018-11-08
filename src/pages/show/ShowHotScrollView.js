@@ -9,6 +9,7 @@ import {observer} from 'mobx-react'
 import { ShowHotModules } from './Show'
 import seeImg from '../../comm/res/see_white.png'
 import maskImg from '../../comm/res/show_mask.png'
+import DesignRule from 'DesignRule';
 
 const HotItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <ImageBackground style={styles.imgBack} source={{uri: item.img}}>
@@ -77,7 +78,7 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     title: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
         fontWeight: '600'
     },

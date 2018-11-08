@@ -37,7 +37,7 @@ export default class ResultHorizontalRow extends Component {
             }}>
                 <View style={[styles.container]}>
                     <Image style={styles.img} source={{ uri: product.imgUrl }}/>
-                    <Text style={{ color: '#222222', fontSize: 13, paddingHorizontal: 10, marginTop: 9 }}
+                    <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, paddingHorizontal: 10, marginTop: 9 }}
                           numberOfLines={2}>{`${name}`}</Text>
                     <View style={{
                         flexDirection: 'row',
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 5,
         marginLeft: 5,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         width: (ScreenUtils.width - 30 - 5) / 2
     },
     img: {

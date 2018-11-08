@@ -136,7 +136,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                         style = {{
                             marginTop: autoSizeWidth(20),
                             fontSize: autoSizeWidth(18),
-                            color: '#666666',
+                            color: DesignRule.textColor_secondTitle,
                             lineHeight: autoSizeWidth(28)
                         }}
                 />
@@ -193,6 +193,6 @@ const styles = StyleSheet.create({
     },
     btnText: {
         fontSize: 18,
-        color: DesignRule.white,
+        color: 'white',
     }
 });

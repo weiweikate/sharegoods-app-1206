@@ -193,7 +193,7 @@ export default class MessageGatherPage extends BasePage {
                     <Text style={styles.tilteposition}>{item.title}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 160, backgroundColor: DesignRule.white}}>
+                <View style={{height: 160, backgroundColor: 'white'}}>
                     <View style={styles.typeContentstyle}>
                         <Text style={{marginLeft: 5, fontSize: 13, color: "#999999"}}>支付金额：</Text>
                         <Text style={{marginLeft: 1, fontSize: 19, color: color.red}}>{StringUtils.formatMoneyString(item.totalPrice)}</Text>
@@ -205,7 +205,7 @@ export default class MessageGatherPage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: DesignRule.white}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={0.5} onPress={()=>this.go2DetailPage(item.id,item.type)}
                                       style={styles.bottomlookstyle}>
                         <Text style={{fontSize: 13, color: "#999999"}}>查看详情</Text>
@@ -227,7 +227,7 @@ export default class MessageGatherPage extends BasePage {
                     <Text style={styles.tilteposition}>{item.title}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 160, backgroundColor: DesignRule.white}}>
+                <View style={{height: 160, backgroundColor: 'white'}}>
                     <View style={styles.typeContentstyle}>
                         <Text style={{marginLeft: 20, fontSize: 19, color: color.red,marginRight:20}}>{item.content}</Text>
                     </View>
@@ -237,7 +237,7 @@ export default class MessageGatherPage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: DesignRule.white}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={0.5} onPress={()=>this.go2DetailPage(item.id,item.type,item.tdId)}
                                       style={styles.bottomlookstyle}>
                         <Text style={{fontSize: 13, color: "#999999"}}>查看详情</Text>
@@ -259,7 +259,7 @@ export default class MessageGatherPage extends BasePage {
                     <Text style={styles.tilteposition}>{item.title}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 160, backgroundColor: DesignRule.white}}>
+                <View style={{height: 160, backgroundColor: 'white'}}>
                     <View style={styles.typeContentstyle}>
                         <Text style={{marginLeft: 5, fontSize: 13, color: "#999999"}}>提现金额：</Text>
                         <Text style={{marginLeft: 1, fontSize: 19, color: color.red}}>{StringUtils.formatMoneyString(item.totalPrice)}</Text>
@@ -270,7 +270,7 @@ export default class MessageGatherPage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: DesignRule.white}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={0.5} onPress={()=>this.go2DetailPage(item.id,item.type)}
                                       style={styles.bottomlookstyle}>
                         <Text style={{fontSize: 13, color: "#999999"}}>查看详情</Text>
@@ -291,7 +291,7 @@ export default class MessageGatherPage extends BasePage {
                     <Text style={styles.tilteposition}>{item.title}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 120, backgroundColor: DesignRule.white}}>
+                <View style={{height: 120, backgroundColor: 'white'}}>
                     <View style={styles.typecontent2}>
                         {undefined == item.totalPrice ? null : <View style={{flexDirection:"row",alignItems:'center'}}>
                             <Text style={{marginLeft: 1, fontSize: 11}}>退款金额</Text>
@@ -308,7 +308,7 @@ export default class MessageGatherPage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: DesignRule.white}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={1.5} onPress={()=>{}}
                                       style={styles.bottomlookstyle}>
                         <Text style={{fontSize: 13, color: "#999999"}}>查看详情</Text>
@@ -329,7 +329,7 @@ export default class MessageGatherPage extends BasePage {
                     <Text style={styles.tilteposition}>{item.title}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 160, backgroundColor: DesignRule.white}}>
+                <View style={{height: 160, backgroundColor: 'white'}}>
                     <View style={styles.typecontent2}>
                         <Text style={{marginLeft: 1, fontSize: 19, color: color.red}}>{item.content}</Text>
                     </View>
@@ -357,7 +357,7 @@ export default class MessageGatherPage extends BasePage {
                     <Text style={styles.tilteposition}>{item.title}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 80, backgroundColor: DesignRule.white}}>
+                <View style={{height: 80, backgroundColor: 'white'}}>
                     <View style={styles.typecontent2}>
                         <Text style={{marginLeft: 1, fontSize: 19, color: color.red}}>{item.content}</Text>
                     </View>
@@ -371,7 +371,7 @@ export default class MessageGatherPage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: DesignRule.white}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={0.5} onPress={()=>this.go2DetailPage(item.productId,item.type,item.tdId)}
                                       style={styles.bottomlookstyle}>
                         <Text style={{fontSize: 13, color: "#999999"}}>查看详情</Text>
@@ -387,8 +387,8 @@ export default class MessageGatherPage extends BasePage {
     renderItem = ({item, index})=> {
         let btn = (
             <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.props.navigation,item.paramType,item.param,item.createdTime)}}>
-                <View style={{height:33,width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:DesignRule.white}}>
-                    <Text style={{color:'#666666',fontSize:px2dp(13)}}>
+                <View style={{height:33,width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white'}}>
+                    <Text style={{color:DesignRule.textColor_secondTitle,fontSize:px2dp(13)}}>
                         查看详情>>
                     </Text>
                 </View>
@@ -396,15 +396,15 @@ export default class MessageGatherPage extends BasePage {
         );
 
         return (
-            <View style={{ width: ScreenUtils.width,backgroundColor:DesignRule.white }}>
+            <View style={{ width: ScreenUtils.width,backgroundColor:'white' }}>
                 <View style={styles.itemContents}>
                     <Text>{DateUtils.getFormatDate(item.createdTime / 1000 ,'MM/dd hh:mm')}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', marginTop:px2dp(15)}}>
-                    <Text style={{ marginLeft: 15, fontSize: 15, color: '#222222' }}>{item.title}</Text>
+                    <Text style={{ marginLeft: 15, fontSize: 15, color: DesignRule.textColor_mainTitle }}>{item.title}</Text>
                 </View>
-                <View style={{ backgroundColor: DesignRule.white,marginVertical:px2dp(15) }}>
-                    <Text style={{ marginLeft: 15, fontSize: 13,color:'#666666' }}>{item.content}</Text>
+                <View style={{ backgroundColor: 'white',marginVertical:px2dp(15) }}>
+                    <Text style={{ marginLeft: 15, fontSize: 13,color:DesignRule.textColor_secondTitle }}>{item.content}</Text>
                 </View>
                 <View style={{ height:!EmptyUtils.isEmpty(item.param) ? ScreenUtils.onePixel : 0, width: ScreenUtils.width, backgroundColor: '#DDDDDD' }}/>
                 {item.messageType === 200 ? btn : null}
@@ -564,7 +564,7 @@ export default class MessageGatherPage extends BasePage {
                     <Text style={{marginLeft: 15, fontSize: 15}}>{item.title}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 160, backgroundColor: DesignRule.white}}>
+                <View style={{height: 160, backgroundColor: 'white'}}>
                     <View style={{
                         height: 60,
                         alignItems: 'center',
@@ -587,7 +587,7 @@ export default class MessageGatherPage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: DesignRule.white}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={0.5} onPress={()=>this.go2DetailPage()}
                                       style={{
                                           height: 41,
@@ -614,7 +614,7 @@ export default class MessageGatherPage extends BasePage {
                     <Text style={{marginLeft: 15, fontSize: 15}}>退款到账通知</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 160, backgroundColor: DesignRule.white}}>
+                <View style={{height: 160, backgroundColor: 'white'}}>
                     <View style={{
                         height: 60,
                         alignItems: 'center',
@@ -639,7 +639,7 @@ export default class MessageGatherPage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: DesignRule.white}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={0.5} onPress={()=>this.go2FeedDetailPage()}
                                       style={{
                                           height: 41,
@@ -658,7 +658,7 @@ export default class MessageGatherPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7'
+        backgroundColor: DesignRule.bgColor
     },
     typetitleStyle:{
         height: 49,
@@ -702,6 +702,6 @@ const styles = StyleSheet.create({
         height: 37,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor:'#F7F7F7'
+        backgroundColor:DesignRule.bgColor
     }
 });

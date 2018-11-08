@@ -95,7 +95,7 @@ const Styles = StyleSheet.create({
     },
     itemContentStyle: {
         flex: 1,
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     itemTopImageStyle: {
         // backgroundColor: 'red'
@@ -113,7 +113,7 @@ const Styles = StyleSheet.create({
         flex: 1,
         paddingTop: 3,
         fontSize: 11,
-        color: DesignRule.white
+        color: 'white'
 
     },
     itemBottomTextStyle: {

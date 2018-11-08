@@ -6,6 +6,7 @@ import UIText from '../../../../components/ui/UIText';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
+import DesignRule from 'DesignRule';
 
 export default class OldPayPwdPage extends BasePage {
 
@@ -25,7 +26,7 @@ export default class OldPayPwdPage extends BasePage {
 
     _render() {
         return <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-            <UIText value={this.state.tips} style={{ fontSize: 17, color: '#222222', marginTop: 120 }}/>
+            <UIText value={this.state.tips} style={{ fontSize: 17, color: DesignRule.textColor_mainTitle, marginTop: 120 }}/>
             <Password maxLength={6} style={{ width: 345, marginTop: 30 }}
                       onEnd={(pwd) => this._onext(pwd)} />
         </View>;

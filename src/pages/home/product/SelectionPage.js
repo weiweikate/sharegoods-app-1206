@@ -304,7 +304,7 @@ export default class SelectionPage extends Component {
                                              selectStrList={this.state.selectStrList}
                                              selectSpecList={this.state.selectSpecList}
                                              closeSelectionPage={() => this.setState({ modalVisible: false })}/>
-                        <View style={{ flex: 1, backgroundColor: DesignRule.white }}>
+                        <View style={{ flex: 1, backgroundColor: 'white' }}>
                             <ScrollView>
                                 {this._addSelectionSectionView()}
                                 <SelectionAmountView style={{ marginTop: 30 }}
@@ -315,11 +315,11 @@ export default class SelectionPage extends Component {
                             <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
                                 <View style={{
                                     height: 49,
-                                    backgroundColor: '#D51243',
+                                    backgroundColor: DesignRule.mainColor,
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }}>
-                                    <Text style={{ fontSize: 16, color: DesignRule.white }}>确认</Text>
+                                    <Text style={{ fontSize: 16, color: 'white' }}>确认</Text>
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>

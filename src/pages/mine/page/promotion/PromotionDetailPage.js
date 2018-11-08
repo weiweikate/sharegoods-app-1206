@@ -144,7 +144,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
 
     _itemRender({ item }) {
         return (
-            <View style={{ backgroundColor: DesignRule.white, marginBottom: px2dp(10) }}>
+            <View style={{ backgroundColor: 'white', marginBottom: px2dp(10) }}>
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -191,7 +191,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
                 width: ScreenUtils.width, height: px2dp(20), justifyContent: 'center',
                 alignItems: 'center', backgroundColor: '#D51243'
             }}>
-                <Text style={{ color: DesignRule.white, fontSize: px2dp(13), includeFontPadding: false }}>
+                <Text style={{ color: 'white', fontSize: px2dp(13), includeFontPadding: false }}>
                     {this.state.countDownStr}
                 </Text>
             </View>
@@ -229,7 +229,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: DesignRule.bgColor,
         paddingBottom: px2dp(48)
     },
     grayButtonWrapper: {
@@ -256,12 +256,12 @@ const styles = StyleSheet.create({
         paddingVertical: px2dp(15)
     },
     blackTextStyle: {
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(16),
         fontWeight: 'bold'
     },
     grayTextStyle: {
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13)
     },
     redTextStyle: {
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: px2dp(15)
     },
     bottomTextStyle: {
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13)
     },
     bottomButtonWrapper: {
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#D51243'
     },
     bottomButtonTextStyle: {
-        color: DesignRule.white,
+        color: 'white',
         fontSize: px2dp(13)
     }
 });

@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 20,
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     right: {
         flex:1,
@@ -87,11 +87,11 @@ const styles = StyleSheet.create({
     },
     ingText: {
         fontSize: 11,
-        color: '#f7f7f7'
+        color: DesignRule.bgColor
     },
     desc: {
         fontSize: 12,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     }
 });
 

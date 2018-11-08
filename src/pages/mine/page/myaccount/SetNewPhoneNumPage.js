@@ -35,12 +35,12 @@ export default class SetNewPhoneNumPage extends BasePage {
             <View style={{ height: 40, justifyContent: 'center' }}>
                 <UIText value={this.state.tips}
                         style={{
-                            color: '#999999',
+                            color: DesignRule.textColor_instruction,
                             fontSize: 13,
                             marginLeft: 16
                         }}/>
             </View>
-            <View style={{ backgroundColor: DesignRule.white, flexDirection: 'column' }}>
+            <View style={{ backgroundColor: 'white', flexDirection: 'column' }}>
                 <View style={styles.horizontalItem}>
                     <Text style={styles.itemLeftText}>新手机</Text>
                     <TextInput
@@ -56,7 +56,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                         keyboardType={'numeric'}
                     />
                 </View>
-                <View style={{ height: 0.5, backgroundColor: DesignRule.white, marginLeft: 15, marginRight: 15 }}/>
+                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15, marginRight: 15 }}/>
                 <View style={{
                     height: 44,
                     flexDirection: 'row',
@@ -92,7 +92,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                 justifyContent: 'center',
                 borderRadius: 25
             }} onPress={() => this._toNext()}>
-                <Text style={{ fontSize: 17, color: DesignRule.white }}>绑定</Text>
+                <Text style={{ fontSize: 17, color: 'white' }}>绑定</Text>
             </TouchableOpacity>
         </View>);
     }
@@ -163,18 +163,18 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         height: 45,
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     itemLeftText: {
         marginRight: 20,
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     itemRightInput: {
         flex: 1,
         height: 40,
         padding: 0,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: 13
     }
 });

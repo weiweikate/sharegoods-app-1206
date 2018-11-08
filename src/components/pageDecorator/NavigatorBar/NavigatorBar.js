@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
         // height: this.state.statusHeight + 44,
         // paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
         // paddingTop: this.state.statusHeight,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 60,
@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
     title: {
         // marginTop:10,
         fontSize: 18,
-        color: '#222',
+        color: DesignRule.textColor_mainTitle,
         backgroundColor: 'transparent'
         // backgroundColor:'red'
     },

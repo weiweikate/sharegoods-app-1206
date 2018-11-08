@@ -30,7 +30,6 @@ import redEnvelope from '../res/redEnvelope.png';
 import task_bg from '../res/task_bg.png';
 import DesignRule from 'DesignRule';
 import RouterMap from 'RouterMap';
-import DesignRule from 'DesignRule';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import TimerMixin from 'react-timer-mixin';
@@ -145,7 +144,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
     }
 
     renderItemSeparator = () => {
-        return <View style={{ height: 7, backgroundColor: '#F7F7F7' }}/>;
+        return <View style={{ height: 7, backgroundColor: DesignRule.bgColor }}/>;
     };
 
     _renderEndTaskView(recieveMoney) {
@@ -219,12 +218,12 @@ export default class ShareTaskListPage extends BasePage<Props> {
                     height: autoSizeWidth(55),
                     flexDirection: 'row',
                     alignItems: 'center',
-                    borderBottomColor: '#F7F7F7',
+                    borderBottomColor: DesignRule.bgColor,
                     borderBottomWidth: 1
                 }}>
                     <Text style={{
                         includeFontPadding: false,
-                        color: '#666666',
+                        color: DesignRule.textColor_secondTitle,
                         fontSize: autoSizeWidth(12),
                         marginLeft: autoSizeWidth(15),
                         flex: 1
@@ -365,15 +364,15 @@ const styles = StyleSheet.create({
     },
     row: {
         flex: 1,
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     text: {
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: autoSizeWidth(12),
         includeFontPadding: false
     },
     image_title: {
-        color: DesignRule.white,
+        color: 'white',
         fontSize: autoSizeWidth(12),
         includeFontPadding: false
     },
@@ -389,12 +388,12 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     image_btnText: {
-        color: DesignRule.white,
+        color: 'white',
         fontSize: autoSizeWidth(13),
         includeFontPadding: false
     },
     image_detail: {
-        color: DesignRule.white,
+        color: 'white',
         fontSize: autoSizeWidth(11),
         includeFontPadding: false
     }

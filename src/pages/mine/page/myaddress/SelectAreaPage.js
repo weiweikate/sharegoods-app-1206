@@ -103,14 +103,14 @@ export default class SelectAreaPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
         height: 48
     },
     blackText: {
         fontSize: 15,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         marginLeft: 15,
         flex: 1
     }

@@ -107,8 +107,8 @@ export default class InvitationToShopPage extends BasePage {
                                 <QRCode
                                     value={'https://www.baidu.com/'}
                                     size={140 - 6}
-                                    bgColor='#333'
-                                    fgColor={DesignRule.white}/>
+                                    bgColor={DesignRule.textColor_mainTitle}
+                                    fgColor={'white'}/>
                             </View>
                             <Text style={styles.wxTip}>分享为您的店铺增添活力</Text>
                         </ImageBackground>

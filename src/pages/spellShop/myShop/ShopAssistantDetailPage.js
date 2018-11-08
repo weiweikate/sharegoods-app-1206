@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     },
     rowTitle: {
         fontSize: 13,
-        color: DesignRule.white,
+        color: 'white',
         marginLeft: 5
     },
     line: {
@@ -184,19 +184,19 @@ const styles = StyleSheet.create({
         height: 44,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     icon: {
         marginLeft: 25
     },
     title: {
         fontSize: 13,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         marginLeft: 4
     },
     desc: {
         fontSize: 12,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         flex: 1,
         textAlign: 'right',
         marginRight: 21

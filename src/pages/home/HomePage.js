@@ -40,6 +40,7 @@ import DeviceInfo from 'react-native-device-info';
 import StringUtils from '../../utils/StringUtils';
 import DateUtils from '../../utils/DateUtils';
 const LASTGETHOMEMESSAGETIME = 'lastgethomemessagetime';
+import DesignRule from 'DesignRule';
 
 /**
  * @author zhangjian
@@ -379,7 +380,7 @@ export default class HomePage extends PureComponent {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7'
+        backgroundColor: DesignRule.bgColor
     },
     // headerBg
     navBarBg: {
@@ -420,7 +421,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     title: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
         fontWeight: '600'
     },

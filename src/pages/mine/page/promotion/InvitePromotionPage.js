@@ -16,7 +16,7 @@ import {
     View,
     Text,
     ImageBackground,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -96,7 +96,7 @@ export default class InvitePromotionPage extends BasePage<Props> {
                         this.$navigate('mine/promotion/PromotionPayPage', item);
                     }
                 }}>
-                    <View style={[styles.itemWrapper, { backgroundColor: item.userBuy ? DesignRule.white : '#CCCCCC' }]}>
+                    <View style={[styles.itemWrapper, { backgroundColor: item.userBuy ? 'white' : '#CCCCCC' }]}>
                         <Text style={styles.itemTextStyle}>
                             {item.name}{`/推广周期${item.cycle}天`}
                         </Text>
@@ -112,10 +112,10 @@ export default class InvitePromotionPage extends BasePage<Props> {
         return (
             <View style={styles.container}>
                 <ImageBackground source={bg} style={styles.imageStyle}>
-                    <Text style={{ color: DesignRule.white, fontSize: px2dp(20) }}>
+                    <Text style={{ color: 'white', fontSize: px2dp(20) }}>
                         邀请推广是什么？
                     </Text>
-                    <Text style={{ textAlign: 'center', color: DesignRule.white, fontSize: px2dp(13) }}>
+                    <Text style={{ textAlign: 'center', color: 'white', fontSize: px2dp(13) }}>
                         平台拥有很多没有上级用户的会员，{`\n`}
                         您可以通过发送红包的方式进行绑定，{`\n`}
                         平台提供分享通道
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         elevation: 2,
         borderRadius: px2dp(5),
-        shadowColor: '#000000',
+        shadowColor: DesignRule.mainColor,
         shadowOffset: { h: 2, w: 2 },
         shadowRadius: px2dp(6),
         shadowOpacity: 0.1

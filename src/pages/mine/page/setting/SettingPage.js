@@ -67,7 +67,7 @@ class SettingPage extends BasePage {
             <View style={styles.container}>
 
                 {this.renderWideLine()}
-                <View style={{ backgroundColor: DesignRule.white }}>
+                <View style={{ backgroundColor: 'white' }}>
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAccountSettingPage()}>
                         <UIText value={'账号与安全'} style={styles.blackText}/>
                         <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
@@ -82,7 +82,7 @@ class SettingPage extends BasePage {
                         <UIText value={'消息推送'} style={styles.blackText}/>
                         <Switch value={this.state.value}
                                 onTintColor={'#00D914'}
-                                thumbTintColor={Platform.OS === 'android' ? DesignRule.white : ''}
+                                thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
                                 tintColor={'#C8C8C8'}
                                 onValueChange={(value) => {
                                     this.setState({
@@ -95,7 +95,7 @@ class SettingPage extends BasePage {
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.clearAllCaches()}>
                         <UIText value={'清除缓存'} style={styles.blackText}/>
                         <UIText value={desc}
-                                style={{ fontSize: 13, color: '#666666' }}/>
+                                style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
@@ -107,7 +107,7 @@ class SettingPage extends BasePage {
                                       onPress={() => this.getNewVersion()}>
                         <UIText value={'版本检测'} style={[styles.blackText, { flex: 1 }]}/>
                         <UIText value={'当前版本v' + this.state.version}
-                                style={{ fontSize: 13, color: '#666666' }}/>
+                                style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
                         <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                     </TouchableOpacity>
                 </View>
@@ -122,7 +122,7 @@ class SettingPage extends BasePage {
                     justifyContent: 'center',
                     borderRadius: 25
                 }} onPress={() => this.toLoginOut()}>
-                    <Text style={{ fontSize: 17, color: DesignRule.white }}
+                    <Text style={{ fontSize: 17, color: 'white' }}
                           onPress={() => this.toLoginOut()}>退出登录</Text>
                 </TouchableOpacity>
 
@@ -237,7 +237,7 @@ class SettingPage extends BasePage {
                     <UIText value={this.state.updateContent}
                             style={{
                                 fontSize: 17,
-                                color: '#333',
+                                color: DesignRule.textColor_mainTitle,
                                 marginTop: 40,
                                 marginBottom: 40,
                                 alignSelf: 'center'
@@ -249,7 +249,7 @@ class SettingPage extends BasePage {
                             onPress={() => {
                                 this.setState({ showUpdate: false });
                             }}>
-                            <UIText value={'以后再说'} style={{ color: '#999' }}/>
+                            <UIText value={'以后再说'} style={{ color: DesignRule.textColor_instruction }}/>
                         </TouchableOpacity>
                         <View style={{ width: 0.5, backgroundColor: '#eee' }}/>
                         <TouchableOpacity
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     },
     blackText: {
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     }
 });
 

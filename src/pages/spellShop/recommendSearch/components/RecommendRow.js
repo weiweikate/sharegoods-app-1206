@@ -85,7 +85,7 @@ export default class RecommendRow extends Component {
                         </View>
                         <Text style={{
                             marginTop: 8, marginBottom: 14.5, paddingHorizontal: 21.5,
-                            color: '#666666', fontSize: 10
+                            color: DesignRule.textColor_secondTitle, fontSize: 10
                         }}>{`距离下一次分红还差${(bonusNeedMoney - tradeBalance > 0) ? (bonusNeedMoney - tradeBalance) : 0}元`}</Text>
                     </View>
                     <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     viewContainer: {
         marginTop: 9,
         marginHorizontal: 15,
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
 
     topViewContainer: {
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
         fontSize: 14
     },
     member: {
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: 11
     },
     joinBtn: {
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#D51243'
     },
     joinText: {
-        color: DesignRule.white,
+        color: 'white',
         fontSize: 12
     },
 
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     moneyText: {
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: 11
     }
 

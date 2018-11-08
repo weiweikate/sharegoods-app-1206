@@ -153,7 +153,7 @@ export default class MyShop_RecruitPage extends Component {
             justifyContent: 'space-between'
         }}>
             <View style={{ marginLeft: 11, flexDirection: 'row', paddingVertical: 10 }}>
-                <Text style={{ color: DesignRule.white, fontSize: 18 }}>￥<Text
+                <Text style={{ color: 'white', fontSize: 18 }}>￥<Text
                     style={{ fontSize: 40 }}>{price}</Text></Text>
                 <View style={{ marginLeft: 10, justifyContent: 'center' }}>
                     <Text style={{

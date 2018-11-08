@@ -179,7 +179,7 @@ export default class MinePage extends BasePage {
         return (
             <View ref={(ref) => this.headerBg = ref}
                   style={{
-                      backgroundColor: DesignRule.white,
+                      backgroundColor: 'white',
                       position: 'absolute',
                       top: 0,
                       left: 0,
@@ -211,10 +211,10 @@ export default class MinePage extends BasePage {
                         justifyContent: 'flex-end',
                         flexDirection: 'row'
                     }}>
-                        <UIImage tintColor={'#222222'} source={setting}
+                        <UIImage tintColor={DesignRule.textColor_mainTitle} source={setting}
                                  style={{ height: px2dp(17), width: px2dp(17), marginRight: 15 }}
                                  onPress={() => this.jumpToSettingPage()}/>
-                        <UIImage tintColor={'#222222'} source={service}
+                        <UIImage tintColor={DesignRule.textColor_mainTitle} source={service}
                                  style={{ height: px2dp(17), width: px2dp(17) }}
                                  onPress={() => this.jumpToServicePage()}/>
                     </View>
@@ -244,7 +244,7 @@ export default class MinePage extends BasePage {
                     }}>
                         <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ color: '#666666', fontSize: px2dp(18), includeFontPadding: false }}>
+                                <Text style={{ color: DesignRule.textColor_secondTitle, fontSize: px2dp(18), includeFontPadding: false }}>
                                     {`${user.nickname ? user.nickname : (user.phone ? user.phone : '未登陆')}`}
                                 </Text>
                                 <Image source={rightIcon}
@@ -263,7 +263,7 @@ export default class MinePage extends BasePage {
                                          source={levelBg}>
                             <Text style={{
                                 fontSize: px2dp(12),
-                                color: DesignRule.white,
+                                color: 'white',
                                 includeFontPadding: false,
                                 marginLeft: px2dp(4.5),
                                 marginTop: px2dp(-3)
@@ -285,9 +285,9 @@ export default class MinePage extends BasePage {
 
     accountRender = () => {
         return (
-            <View style={{ backgroundColor: DesignRule.white, marginTop: px2dp(11) }}>
+            <View style={{ backgroundColor: 'white', marginTop: px2dp(11) }}>
                 <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
-                    <Text style={{ color: '#666666', fontSize: px2dp(16) }}>
+                    <Text style={{ color: DesignRule.textColor_secondTitle, fontSize: px2dp(16) }}>
                         我的资产
                     </Text>
                 </View>
@@ -345,7 +345,7 @@ export default class MinePage extends BasePage {
                 }}>
                     <Text allowFontScaling={true} style={{
                         textAlign: 'center',
-                        color: DesignRule.white,
+                        color: 'white',
                         includeFontPadding: false,
                         width: 80,
                         height: 20,
@@ -354,7 +354,7 @@ export default class MinePage extends BasePage {
                         {num}
                     </Text>
 
-                    <Text style={{ color: DesignRule.white, fontSize: px2dp(11), includeFontPadding: false }}>
+                    <Text style={{ color: 'white', fontSize: px2dp(11), includeFontPadding: false }}>
                         {text}
                     </Text>
 
@@ -376,14 +376,14 @@ export default class MinePage extends BasePage {
                     justifyContent: 'space-between'
                 }}>
                     <View style={{ flexDirection: 'row', marginLeft: 15, alignItems: 'center' }}>
-                        <UIText value={'我的订单'} style={{ fontSize: px2dp(16), color: '#666666' }}/>
+                        <UIText value={'我的订单'} style={{ fontSize: px2dp(16), color: DesignRule.textColor_secondTitle }}/>
                     </View>
                     <TouchableWithoutFeedback onPress={this.jumpToAllOrder}>
                         <View style={{ flexDirection: 'row', marginRight: 15, alignItems: 'center' }}>
                             <UIText value={'查看全部'}
                                     style={{
                                         fontSize: px2dp(12),
-                                        color: '#999999'
+                                        color: DesignRule.textColor_instruction
                                     }}/>
                             <Image source={arrowRight} style={{ height: 12, marginLeft: 6 }}
                                    resizeMode={'contain'}/>
@@ -413,7 +413,7 @@ export default class MinePage extends BasePage {
                 marginVertical: px2dp(10)
             }}>
                 <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
-                    <Text style={{ color: '#666666', fontSize: px2dp(16) }}>
+                    <Text style={{ color: DesignRule.textColor_secondTitle, fontSize: px2dp(16) }}>
                         常用工具
                     </Text>
                 </View>
@@ -469,7 +469,7 @@ export default class MinePage extends BasePage {
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}>
-                    <Text style={{ includeFontPadding: false, color: DesignRule.white, fontSize: px2dp(10) }}>
+                    <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(10) }}>
                         {num > 99 ? 99 : num}
                     </Text>
                 </View>
@@ -658,7 +658,7 @@ const styles = StyleSheet.create({
     },
     whiteText: {
         fontSize: 15,
-        color: DesignRule.white
+        color: 'white'
     },
     greyText: {
         fontSize: 12,

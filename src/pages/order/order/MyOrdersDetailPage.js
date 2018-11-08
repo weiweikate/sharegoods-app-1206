@@ -160,12 +160,12 @@ class MyOrdersDetailPage extends BasePage {
                                         flex: 1,
                                         fontSize: 15,
                                          marginLeft:10,
-                                        color: '#222222'
+                                        color: DesignRule.textColor_mainTitle
                                     }}>{this.state.pageStateString.sellerState[0]}</Text>
                                     <Text style={{
                                         fontSize: 15,
                                         marginRight:46,
-                                        color: '#222222'
+                                        color: DesignRule.textColor_mainTitle
                                     }}>{this.state.pageStateString.sellerState[1]}</Text>
                                 </View>
                             }
@@ -276,7 +276,7 @@ class MyOrdersDetailPage extends BasePage {
                         <Text style={{
                             marginLeft: 10,
                             fontSize: 12,
-                            color: '#999999'
+                            color: DesignRule.textColor_instruction
                         }}>{this.state.giftPackageName}</Text>
                     </View>
                     :
@@ -338,7 +338,7 @@ class MyOrdersDetailPage extends BasePage {
                     <View>
                         {this.renderLine()}
                         {this.state.giftBagCoupons.map((item, index) => {
-                            return <View style={{ backgroundColor: DesignRule.white }} key={index}>
+                            return <View style={{ backgroundColor: 'white' }} key={index}>
                                 {index == 0 ? <Image source={couponIcon} style={{
                                     width: 15,
                                     height: 12,
@@ -365,7 +365,7 @@ class MyOrdersDetailPage extends BasePage {
                                     }}>x1</Text>
                                 </View>
                                 <View
-                                    style={{ marginLeft: 36, backgroundColor: '#F7F7F7', height: 0.5, width: '100%' }}/>
+                                    style={{ marginLeft: 36, backgroundColor: DesignRule.bgColor, height: 0.5, width: '100%' }}/>
                             </View>;
                         })}
                         {this.renderWideLine()}
@@ -632,11 +632,11 @@ class MyOrdersDetailPage extends BasePage {
                         <Text style={{
                             flex: 1,
                             fontSize: 15,
-                            color: '#222222'
+                            color: DesignRule.textColor_mainTitle
                         }}>收货人：{this.state.viewData.receiverName}</Text>
                         <Text style={{
                             fontSize: 15,
-                            color: '#222222'
+                            color: DesignRule.textColor_mainTitle
                         }}>{this.state.viewData.receiverNum}</Text>
                     </View>
                     <UIText value={
@@ -1339,7 +1339,7 @@ const styles = StyleSheet.create({
         width: 80,
         height: 30,
         borderRadius: 15,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         borderStyle: 'solid',
         borderWidth: 1,
         borderColor: '#dddddd',
@@ -1351,7 +1351,7 @@ const styles = StyleSheet.create({
     }, grayText: {
         fontSize: 13,
         lineHeight: 18,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     }
 });
 

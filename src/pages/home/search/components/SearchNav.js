@@ -69,7 +69,7 @@ export default class SearchBar extends Component {
 
                     </View>
                     <TouchableOpacity onPress={this.props.cancel}>
-                        <Text style={{ paddingRight: 15, color: '#999999' }}>取消</Text>
+                        <Text style={{ paddingRight: 15, color: DesignRule.textColor_instruction }}>取消</Text>
                     </TouchableOpacity>
                 </View>
             </View>);
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     container: {
         height: ScreenUtils.headerHeight,
         width: ScreenUtils.width,
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     contentView: {
         marginTop: ScreenUtils.statusBarHeight,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     inputView: {
         height: 30,
         borderRadius: 15,
-        backgroundColor: '#F7F7F7',
+        backgroundColor: DesignRule.bgColor,
         justifyContent: 'center',
         flex: 1,
         marginLeft: 15,

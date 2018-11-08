@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     rowContainer: {
         maxHeight: 196,
         borderRadius: 10,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         shadowColor: 'rgba(0, 0, 0, 0.1)',
         shadowOffset: {
             width: 0,
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
         color: DesignRule.mainColor
     },
     contentContainer: {
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10
     },

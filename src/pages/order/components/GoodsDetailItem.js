@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         width: 80,
         height: 30,
         borderRadius: 15,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         borderStyle: 'solid',
         borderWidth: 1,
         borderColor: '#dddddd',
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     }, grayText: {
         fontSize: 13,
         lineHeight: 18,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     }
 });
 export default GoodsDetailItem;

@@ -185,7 +185,7 @@ export default class OpenPrizeItemView extends Component {
                                                 <Text
                                                     style={
                                                         {
-                                                            color: DesignRule.white,
+                                                            color: 'white',
                                                             textAlign: 'center',
                                                             height: 30,
                                                             paddingTop: 8,
@@ -215,7 +215,7 @@ export default class OpenPrizeItemView extends Component {
                                         <Text
                                             style={
                                                 [{
-                                                    color: DesignRule.white,
+                                                    color: 'white',
                                                     textAlign: 'center',
                                                     height: 30,
                                                     paddingTop: 8,
@@ -223,7 +223,7 @@ export default class OpenPrizeItemView extends Component {
                                                 },
                                                     (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
                                                         ? { color: DesignRule.textColor_instruction }
-                                                        : { color: DesignRule.white }
+                                                        : { color: 'white' }
                                                 ]
                                             }
                                         >
@@ -283,7 +283,7 @@ const ItemStyles = StyleSheet.create({
     },
     itemContentStyle: {
         flex: 1,
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     itemTopImageStyle: {
         // backgroundColor: 'red'

@@ -27,12 +27,12 @@ export default class DetailBottomView extends Component {
     }
 
     render() {
-        return (<View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49, backgroundColor: DesignRule.white }}>
+        return (<View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49, backgroundColor: 'white' }}>
             <View style={styles.container}>
                 <TouchableOpacity style={{ width: 63, justifyContent: 'center', alignItems: 'center' }}
                                   onPress={() => this.props.bottomViewAction('goGwc')}>
                     <Image style={{ marginBottom: 6 }} source={xiangqing_btn_gouwuche_nor}/>
-                    <Text style={{ fontSize: 11, color: '#999999' }}>购物车</Text>
+                    <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction }}>购物车</Text>
                     {ShopCartStore.getAllGoodsClassNumber === 0 ? null : <View style={{
                         position: 'absolute', top: 4, right: 4, height: 16,
                         paddingHorizontal: 4,
@@ -40,7 +40,7 @@ export default class DetailBottomView extends Component {
                         borderRadius: 8, justifyContent: 'center', alignItems: 'center'
                     }}>
                         <Text style={{
-                            color: DesignRule.white,
+                            color: 'white',
                             fontSize: 10
                         }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
                     </View>}
@@ -53,7 +53,7 @@ export default class DetailBottomView extends Component {
                 <TouchableOpacity
                     style={{ flex: 1, backgroundColor: '#D51243', justifyContent: 'center', alignItems: 'center' }}
                     onPress={() => this.props.bottomViewAction('gwc')}>
-                    <Text style={{ color: DesignRule.white }}>加入购物车</Text>
+                    <Text style={{ color: 'white' }}>加入购物车</Text>
                 </TouchableOpacity>
             </View>
 
@@ -64,7 +64,7 @@ export default class DetailBottomView extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: 49, flexDirection: 'row', backgroundColor: DesignRule.white, borderWidth: 1,
+        height: 49, flexDirection: 'row', backgroundColor: 'white', borderWidth: 1,
         borderColor: '#DDDDDD'
     }
 });

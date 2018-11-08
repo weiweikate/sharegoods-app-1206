@@ -22,6 +22,7 @@ import {
     UIText,
     UIImage
 } from '../../../components/ui';
+import DesignRule from 'DesignRule';
 
 export default class GoodsGrayItem extends React.Component {
 
@@ -81,11 +82,11 @@ const styles = StyleSheet.create({
     title: {
         marginTop: 10,
         fontSize: 13,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
     },
     detail: {
         fontSize: 13,
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         textAlign: 'right',
     }
 });

@@ -153,12 +153,12 @@ export default class ActivityView extends Component {
             justifyContent: 'space-between'
         }} onPress={() => this.props.productActivityViewAction()}>
             <View style={{ marginLeft: 11, flexDirection: 'row', paddingVertical: 10 }}>
-                <Text style={{ color: DesignRule.white, fontSize: 18 }}>￥<Text
+                <Text style={{ color: 'white', fontSize: 18 }}>￥<Text
                     style={{ fontSize: 40 }}>{price}</Text></Text>
                 <View style={{ marginLeft: 10, justifyContent: 'center' }}>
-                    <Text style={{ color: '#F7F7F7', fontSize: 12 }}>{one}</Text>
+                    <Text style={{ color: DesignRule.bgColor, fontSize: 12 }}>{one}</Text>
                     <Text style={{
-                        color: '#F7F7F7',
+                        color: DesignRule.bgColor,
                         fontSize: 10,
                         marginTop: 4
                     }}>{two}</Text>
@@ -182,7 +182,7 @@ export default class ActivityView extends Component {
                             backgroundColor: '#2B99D9',
                             borderRadius: 2.5
                         }}>
-                            <Text style={{ color: '#F7F7F7', fontSize: 11 }}>{four}</Text>
+                            <Text style={{ color: DesignRule.bgColor, fontSize: 11 }}>{four}</Text>
                         </View>
                     </View>
 

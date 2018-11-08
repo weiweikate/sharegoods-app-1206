@@ -30,12 +30,12 @@ export default class JudgePhoneNumPage extends BasePage {
             <View style={{ height: 38, justifyContent: 'center' }}>
                 <UIText value={'手机验证'}
                         style={{
-                            color: '#999999',
+                            color: DesignRule.textColor_instruction,
                             fontSize: 13,
                             marginLeft: 16
                         }}/>
             </View>
-            <View style={{ backgroundColor: DesignRule.white, flexDirection: 'column' }}>
+            <View style={{ backgroundColor: 'white', flexDirection: 'column' }}>
                 <View style={styles.horizontalItem}>
                     <Text style={styles.itemLeftText}>手机号</Text>
                     <TextInput
@@ -50,7 +50,7 @@ export default class JudgePhoneNumPage extends BasePage {
                         placeholderTextColor={'#C8C8C8'}
                     />
                 </View>
-                <View style={{ height: 0.5, backgroundColor: DesignRule.white, marginLeft: 15 }}/>
+                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15 }}/>
                 <View style={{
                     height: 44,
                     flexDirection: 'row',
@@ -86,7 +86,7 @@ export default class JudgePhoneNumPage extends BasePage {
                 justifyContent: 'center',
                 borderRadius: 25
             }} onPress={() => this._toNext()}>
-                <Text style={{ fontSize: 17, color: DesignRule.white }}>下一步</Text>
+                <Text style={{ fontSize: 17, color: 'white' }}>下一步</Text>
             </TouchableOpacity>
         </View>);
     }
@@ -162,18 +162,18 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         height: 45,
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     itemLeftText: {
         marginRight: 20,
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     itemRightInput: {
         flex: 1,
         height: 40,
         padding: 0,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: 13
     }
 });

@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         height: 50,
         borderWidth: 1,
         borderColor: '#c8c8c8',
-        backgroundColor: __DEV__ ? '#c8c8c8' : DesignRule.white
+        backgroundColor: __DEV__ ? '#c8c8c8' : 'white'
     },
     ingContainer: {
         width: 46,
@@ -80,14 +80,14 @@ const styles = StyleSheet.create({
     },
     ingText: {
         fontSize: 11,
-        color: '#f7f7f7'
+        color: DesignRule.bgColor
     },
     rowContainer: {
         height: 80,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 20,
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     title: {
         fontSize: 13,
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     },
     desc: {
         fontSize: 12,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     }
 });
 

@@ -113,7 +113,7 @@ export default class ShopMessagePage extends BasePage {
                     <Text style={styles.tilteposition}>{item.title}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 160, backgroundColor: DesignRule.white}}>
+                <View style={{height: 160, backgroundColor: 'white'}}>
                     <View style={styles.typeContentstyle}>
                         <Text style={{marginLeft: 5, fontSize: 13, color: "#999999"}}>支付金额：</Text>
                         <Text style={{marginLeft: 1, fontSize: 19, color: color.red}}>{StringUtils.formatMoneyString(item.totalPrice)}</Text>
@@ -125,7 +125,7 @@ export default class ShopMessagePage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: DesignRule.white}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={0.5} onPress={()=>this.go2DetailPage(item.id,item.type)}
                                       style={styles.bottomlookstyle}>
                         <Text style={{fontSize: 13, color: "#999999"}}>查看详情</Text>
@@ -147,7 +147,7 @@ export default class ShopMessagePage extends BasePage {
                     <Text style={styles.tilteposition}>{item.title}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 160, backgroundColor: DesignRule.white}}>
+                <View style={{height: 160, backgroundColor: 'white'}}>
                     <View style={styles.typeContentstyle}>
                         <Text style={{marginLeft: 20, fontSize: 19, color: color.red,marginRight:20}}>{item.content}</Text>
                     </View>
@@ -157,7 +157,7 @@ export default class ShopMessagePage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: DesignRule.white}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={0.5} onPress={()=>this.go2DetailPage(item.id,item.type,item.tdId)}
                                       style={styles.bottomlookstyle}>
                         <Text style={{fontSize: 13, color: "#999999"}}>查看详情</Text>
@@ -179,7 +179,7 @@ export default class ShopMessagePage extends BasePage {
                     <Text style={styles.tilteposition}>{item.title}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 160, backgroundColor: DesignRule.white}}>
+                <View style={{height: 160, backgroundColor: 'white'}}>
                     <View style={styles.typeContentstyle}>
                         <Text style={{marginLeft: 5, fontSize: 13, color: "#999999"}}>提现金额：</Text>
                         <Text style={{marginLeft: 1, fontSize: 19, color: color.red}}>{StringUtils.formatMoneyString(item.totalPrice)}</Text>
@@ -190,7 +190,7 @@ export default class ShopMessagePage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: DesignRule.white}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={0.5} onPress={()=>this.go2DetailPage(item.id,item.type)}
                                       style={styles.bottomlookstyle}>
                         <Text style={{fontSize: 13, color: "#999999"}}>查看详情</Text>
@@ -211,7 +211,7 @@ export default class ShopMessagePage extends BasePage {
                     <Text style={styles.tilteposition}>{item.title}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 120, backgroundColor: DesignRule.white}}>
+                <View style={{height: 120, backgroundColor: 'white'}}>
                     <View style={styles.typecontent2}>
                         {undefined == item.totalPrice ? null : <View style={{flexDirection:"row",alignItems:'center'}}>
                             <Text style={{marginLeft: 1, fontSize: 11}}>退款金额</Text>
@@ -228,7 +228,7 @@ export default class ShopMessagePage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: DesignRule.white}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={1.5} onPress={()=>{}}
                                       style={styles.bottomlookstyle}>
                         <Text style={{fontSize: 13, color: "#999999"}}>查看详情</Text>
@@ -249,7 +249,7 @@ export default class ShopMessagePage extends BasePage {
                     <Text style={styles.tilteposition}>{item.title}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 160, backgroundColor: DesignRule.white}}>
+                <View style={{height: 160, backgroundColor: 'white'}}>
                     <View style={styles.typecontent2}>
                         <Text style={{marginLeft: 1, fontSize: 19, color: color.red}}>{item.content}</Text>
                     </View>
@@ -277,7 +277,7 @@ export default class ShopMessagePage extends BasePage {
                     <Text style={styles.tilteposition}>{item.title}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 80, backgroundColor: DesignRule.white}}>
+                <View style={{height: 80, backgroundColor: 'white'}}>
                     <View style={styles.typecontent2}>
                         <Text style={{marginLeft: 1, fontSize: 19, color: color.red}}>{item.content}</Text>
                     </View>
@@ -291,7 +291,7 @@ export default class ShopMessagePage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: DesignRule.white}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={0.5} onPress={()=>this.go2DetailPage(item.productId,item.type,item.tdId)}
                                       style={styles.bottomlookstyle}>
                         <Text style={{fontSize: 13, color: "#999999"}}>查看详情</Text>
@@ -311,8 +311,8 @@ export default class ShopMessagePage extends BasePage {
             return (
 
                 <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.props.navigation,item.paramType,item.param)}}>
-                    <View style={{height:px2dp(33),width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:DesignRule.white,borderTopColor:'#DDDDDD',borderTopWidth:px2dp(0,5)}}>
-                        <Text style={{color:'#666666',fontSize:px2dp(13)}}>
+                    <View style={{height:px2dp(33),width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white',borderTopColor:'#DDDDDD',borderTopWidth:px2dp(0,5)}}>
+                        <Text style={{color:DesignRule.textColor_secondTitle,fontSize:px2dp(13)}}>
                              查看详情>>
                         </Text>
                     </View>
@@ -338,7 +338,7 @@ export default class ShopMessagePage extends BasePage {
                            this.confirmMessage(item.id,true,item.createdBy,index)
                        }}>
                            <View style={styles.redButtonStyle}>
-                               <Text style={{color:DesignRule.white,fontSize:px2dp(16)}}>
+                               <Text style={{color:'white',fontSize:px2dp(16)}}>
                                    同意
                                </Text>
                            </View>
@@ -349,7 +349,7 @@ export default class ShopMessagePage extends BasePage {
                 return(
                     <View style={styles.itemBottomWrapper}>
                         <View style={styles.grayButtonStyle}>
-                            <Text style={{color:DesignRule.white,fontSize:px2dp(16)}}>
+                            <Text style={{color:'white',fontSize:px2dp(16)}}>
                                 已同意
                             </Text>
                         </View>
@@ -360,7 +360,7 @@ export default class ShopMessagePage extends BasePage {
                 return(
                     <View style={styles.itemBottomWrapper}>
                         <View style={styles.grayButtonStyle}>
-                            <Text style={{color:DesignRule.white,fontSize:px2dp(16)}}>
+                            <Text style={{color:'white',fontSize:px2dp(16)}}>
                                 已拒绝
                             </Text>
                         </View>
@@ -393,15 +393,15 @@ export default class ShopMessagePage extends BasePage {
 
 
         return (
-            <View style={{ width: ScreenUtils.width,backgroundColor:DesignRule.white }}>
+            <View style={{ width: ScreenUtils.width,backgroundColor:'white' }}>
                 <View style={styles.itemContents}>
                     <Text>{DateUtils.getFormatDate(item.createdTime / 1000,'MM/dd hh:mm')}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', marginTop:px2dp(15)}}>
-                    <Text style={{ marginLeft: 15, fontSize: 15, color: '#222222' }}>{item.title}</Text>
+                    <Text style={{ marginLeft: 15, fontSize: 15, color: DesignRule.textColor_mainTitle }}>{item.title}</Text>
                 </View>
-                <View style={{ backgroundColor: DesignRule.white,marginVertical:px2dp(15) }}>
-                    <Text style={{ marginLeft: 15, fontSize: 13,color:'#666666' }}>{item.content}</Text>
+                <View style={{ backgroundColor: 'white',marginVertical:px2dp(15) }}>
+                    <Text style={{ marginLeft: 15, fontSize: 13,color:DesignRule.textColor_secondTitle }}>{item.content}</Text>
                 </View>
                 {this.itemBottomRender(item,index)}
             </View>
@@ -469,7 +469,7 @@ export default class ShopMessagePage extends BasePage {
                     <Text style={{marginLeft: 15, fontSize: 15}}>{item.title}</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 160, backgroundColor: DesignRule.white}}>
+                <View style={{height: 160, backgroundColor: 'white'}}>
                     <View style={{
                         height: 60,
                         alignItems: 'center',
@@ -492,7 +492,7 @@ export default class ShopMessagePage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: DesignRule.white}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={0.5} onPress={()=>this.go2DetailPage()}
                                       style={{
                                           height: 41,
@@ -519,7 +519,7 @@ export default class ShopMessagePage extends BasePage {
                     <Text style={{marginLeft: 15, fontSize: 15}}>退款到账通知</Text>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 160, backgroundColor: DesignRule.white}}>
+                <View style={{height: 160, backgroundColor: 'white'}}>
                     <View style={{
                         height: 60,
                         alignItems: 'center',
@@ -544,7 +544,7 @@ export default class ShopMessagePage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: DesignRule.white}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={0.5} onPress={()=>this.go2FeedDetailPage()}
                                       style={{
                                           height: 41,
@@ -563,7 +563,7 @@ export default class ShopMessagePage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7'
+        backgroundColor: DesignRule.bgColor
     },
     typetitleStyle:{
         height: 49,
@@ -607,12 +607,12 @@ const styles = StyleSheet.create({
         height: 37,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor:'#F7F7F7'
+        backgroundColor:DesignRule.bgColor
     },
     itemBottomWrapper:{
         height:px2dp(60),
         width:ScreenUtils.width,
-        backgroundColor:DesignRule.white,
+        backgroundColor:'white',
         alignItems:'center',
         justifyContent:'space-around',
         flexDirection:'row',
@@ -620,7 +620,7 @@ const styles = StyleSheet.create({
         borderTopColor:'#DDDDDD'
     },
     whiteButtonStyle:{
-        backgroundColor:DesignRule.white,
+        backgroundColor:'white',
         width:px2dp(138),
         height:px2dp(40),
         borderWidth:1,

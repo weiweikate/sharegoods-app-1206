@@ -5,7 +5,6 @@ import {
     TextInput as RNTextInput
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import { color } from '../../../../constants/Theme';
 import { UIButton } from '../../../../components/ui';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineAPI from '../../api/MineApi';
@@ -48,8 +47,8 @@ export default class NickNameModifyPage extends BasePage {
                         height: 50,
                         marginLeft: 48,
                         marginRight: 48,
-                        borderRadius:25,
-                        backgroundColor: color.red
+                        borderRadius: 25,
+                        backgroundColor: DesignRule.mainColor
                     }}
                     onPress={() => this.save()}/>
             </View>
@@ -58,7 +57,7 @@ export default class NickNameModifyPage extends BasePage {
 
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
     save = () => {
@@ -69,7 +68,7 @@ export default class NickNameModifyPage extends BasePage {
                 return;
             }
             let containSpecial = RegExp(/[(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\-)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)(\<)(\>)(\?)(\)]+/);
-            if(containSpecial.test(this.state.nickName)){
+            if (containSpecial.test(this.state.nickName)) {
                 this.$toastShow('昵称不能包含特殊字符');
                 return;
             }
@@ -83,8 +82,8 @@ export default class NickNameModifyPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: color.page_background
+        flex: 1, backgroundColor: DesignRule.bgColor
     }, inputTextStyle: {
-        height: 48, backgroundColor: DesignRule.white, fontSize: 14, paddingLeft: 14, paddingRight: 14
+        height: 48, backgroundColor: 'white', fontSize: 14, paddingLeft: 14, paddingRight: 14
     }
 });
