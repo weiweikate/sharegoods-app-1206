@@ -25,9 +25,10 @@ import {
 
 import ShareTaskAnimation from './ShareTaskAnimation';
 import renwu_icon_quan_nor from '../res/renwu_icon_quan_nor.png';
-import cancel from '../res/qiandao_btn_return_nor.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
+import res from '../../../comm/res';
+const cancel =  res.button.cancel_white_circle;
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 

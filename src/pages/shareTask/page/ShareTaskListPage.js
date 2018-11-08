@@ -24,8 +24,6 @@ import ShareTaskResultAlert from '../components/ShareTaskResultAlert';
 import RefreshLargeList from 'RefreshLargeList';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import taskApi from '../api/taskApi';
-import arrow_bottom from '../res/arrow_bottom.png';
-import arrow_top from '../res/arrow_top.png';
 import redEnvelope from '../res/redEnvelope.png';
 import task_bg from '../res/task_bg.png';
 import DesignRule from 'DesignRule';
@@ -37,6 +35,9 @@ import DateUtils from '../../../utils/DateUtils';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import user from '../../../model/user';
 import CommShareModal from '../../../comm/components/CommShareModal';
+import res from '../../../comm/res';
+const arrow_bottom =  res.button.arrow_bottom;
+const arrow_top =  res.button.arrow_top;
 type Props = {};
 export default class ShareTaskListPage extends BasePage<Props> {
 

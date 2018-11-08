@@ -33,7 +33,6 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import messageModalBg from './res/messageModalBg.png';
 import messageSelected from './res/messageSelected.png';
 import messageUnselected from './res/messageUnselected.png';
-import closeImg from '../shareTask/res/qiandao_btn_return_nor.png';
 import MineApi from '../mine/api/MineApi';
 import VersionUpdateModal from './VersionUpdateModal';
 import DeviceInfo from 'react-native-device-info';
@@ -41,6 +40,8 @@ import StringUtils from '../../utils/StringUtils';
 import DateUtils from '../../utils/DateUtils';
 const LASTGETHOMEMESSAGETIME = 'lastgethomemessagetime';
 import DesignRule from 'DesignRule';
+import res from '../../comm/res';
+const closeImg = res.button.cancel_white_circle
 
 /**
  * @author zhangjian
