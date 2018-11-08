@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         width:ScreenUtils.width - px2dp(30),
         alignSelf:'center',
         borderRadius:px2dp(5),
-        backgroundColor:'#D51243',
+        backgroundColor:DesignRule.mainColor,
         justifyContent:'center',
         alignItems:'center',
         marginBottom:px2dp(15)

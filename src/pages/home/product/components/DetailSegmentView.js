@@ -44,7 +44,7 @@ export default class DetailSegmentView extends Component {
                     height: 3,
                     bottom: 0,
                     position: 'absolute',
-                    backgroundColor: '#D51243'
+                    backgroundColor: DesignRule.mainColor
                 }}/> : null}
             </View>
         </TouchableWithoutFeedback>;

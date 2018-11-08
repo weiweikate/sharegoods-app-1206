@@ -329,7 +329,7 @@ export default class ShopMessagePage extends BasePage {
                            this.confirmMessage(item.id,false,item.createdBy,index)
                        }}>
                            <View style={styles.whiteButtonStyle}>
-                               <Text style={{color:'#D51243',fontSize:px2dp(16)}}>
+                               <Text style={{color:DesignRule.mainColor,fontSize:px2dp(16)}}>
                                    拒绝
                                </Text>
                            </View>
@@ -625,17 +625,17 @@ const styles = StyleSheet.create({
         height:px2dp(40),
         borderWidth:1,
         borderRadius:px2dp(5),
-        borderColor:'#D51243',
+        borderColor:DesignRule.mainColor,
         alignItems:'center',
         justifyContent:'center'
     },
     redButtonStyle:{
-        backgroundColor:'#D51243',
+        backgroundColor:DesignRule.mainColor,
         width:px2dp(138),
         height:px2dp(40),
         borderWidth:1,
         borderRadius:px2dp(5),
-        borderColor:'#D51243',
+        borderColor:DesignRule.mainColor,
         alignItems:'center',
         justifyContent:'center'
     },

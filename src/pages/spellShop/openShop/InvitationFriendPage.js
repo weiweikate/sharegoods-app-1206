@@ -182,12 +182,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 25,
         borderWidth: 1,
-        borderColor: '#D51243'
+        borderColor: DesignRule.mainColor
     },
 
     wxTip: {
         fontSize: 13,
-        color: '#D51243',
+        color: DesignRule.mainColor,
         marginTop: 15
     },
     bottomBtn: {
@@ -195,13 +195,13 @@ const styles = StyleSheet.create({
         width: 143,
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         borderWidth: 1,
         borderRadius: 5
     },
     textBtn: {
         fontSize: 14,
-        color: '#D51243'
+        color: DesignRule.mainColor
     }
 
 });

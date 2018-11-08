@@ -37,7 +37,7 @@ export default class OpenShopExplainPage extends BasePage {
                 <View style={{ marginHorizontal: 15 }}>
 
                     {index !== 0 ?
-                        <View style={{ marginLeft: 8, width: 2, backgroundColor: '#d51243', height: 33 }}/> : null}
+                        <View style={{ marginLeft: 8, width: 2, backgroundColor: DesignRule.mainColor, height: 33 }}/> : null}
 
                     <View style={{ flexDirection: 'row' }}>
                         <View>
@@ -45,7 +45,7 @@ export default class OpenShopExplainPage extends BasePage {
                                 <Text style={styles.circleText}>{index + 1}</Text>
                             </View>
                             {index !== maxIndex - 1 ?
-                                <View style={{ marginLeft: 8, width: 2, backgroundColor: '#d51243', flex: 1 }}/> : null}
+                                <View style={{ marginLeft: 8, width: 2, backgroundColor: DesignRule.mainColor, flex: 1 }}/> : null}
                         </View>
 
                         <Text style={styles.desc}>{title}</Text>
@@ -98,7 +98,7 @@ export default class OpenShopExplainPage extends BasePage {
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.descText}>点击我要开店则默认同意</Text>
                         <TouchableOpacity onPress = {this._onPress}>
-                            <Text style={[styles.descText, { color: '#D51243' }]}>《拼店管理条例》</Text>
+                            <Text style={[styles.descText, { color: DesignRule.mainColor }]}>《拼店管理条例》</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     circle: {
         width: 18,
         height: 18,
-        backgroundColor: '#d51243',
+        backgroundColor: DesignRule.mainColor,
         overflow: 'hidden',
         justifyContent: 'center',
         alignItems: 'center',
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         width: 170,
         height: 43,
         borderRadius: 5,
-        backgroundColor: '#d51243',
+        backgroundColor: DesignRule.mainColor,
         overflow: 'hidden',
         justifyContent: 'center',
         alignItems: 'center'

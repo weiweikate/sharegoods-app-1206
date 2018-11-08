@@ -69,7 +69,7 @@ export default class SelectionHeaderView extends Component {
                 <View style={{ backgroundColor: 'white', marginTop: 20, height: 87 }}>
                     <View style={{ marginLeft: 132 }}>
                         <Text style={{
-                            color: '#D51243',
+                            color: DesignRule.mainColor,
                             fontSize: 16,
                             marginTop: 16
                         }}>{`￥${price}`}</Text>

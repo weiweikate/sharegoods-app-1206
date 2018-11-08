@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     redButtonWrapper: {
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         borderWidth: px2dp(1),
         borderRadius: px2dp(5),
         width: px2dp(80),
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
         fontSize: px2dp(13)
     },
     redTextStyle: {
-        color: '#D51243',
+        color: DesignRule.mainColor,
         fontSize: px2dp(13)
     },
     bottomTextWrapper: {

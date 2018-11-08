@@ -530,7 +530,7 @@ export default class TopicDetailPage extends BasePage {
                 <View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49, backgroundColor: 'white' }}>
                     <TouchableOpacity style={{
                         height: 49,
-                        backgroundColor: colorType === 1 ? '#33B4FF' : (colorType === 2 ? '#D51243' : '#CCCCCC'),
+                        backgroundColor: colorType === 1 ? '#33B4FF' : (colorType === 2 ? DesignRule.mainColor : '#CCCCCC'),
                         justifyContent: 'center',
                         alignItems: 'center'
                     }} onPress={() => this._bottomAction(colorType)} disabled={!(colorType === 1 || colorType === 2)}>

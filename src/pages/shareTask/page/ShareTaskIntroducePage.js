@@ -77,7 +77,7 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                     this.shareModal.open();
                 }}>
                     <View style={{
-                        backgroundColor: '#D51243',
+                        backgroundColor: DesignRule.mainColor,
                         height: 50,
                         alignItems: 'center',
                         justifyContent: 'center'
