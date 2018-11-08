@@ -16,7 +16,15 @@ export default class MRBannerView extends Component {
         //滚动间隔 设置0为不滚动  默认3
         autoInterval: PropTypes.number,
         //是否轮播 默认true
-        autoLoop: PropTypes.bool
+        autoLoop: PropTypes.bool,
+
+        //卡片文字数组
+        tittleArray: PropTypes.array,
+        //卡片宽
+        itemWidth: PropTypes.number,
+        //卡片间距
+        itemSpace: PropTypes.number
+
     };
 
     render() {

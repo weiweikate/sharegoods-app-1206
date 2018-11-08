@@ -28,6 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSArray *tittleArray;
 /**滚动间隔*/
 @property (nonatomic, assign) CGFloat autoInterval;
+/**卡片宽*/
+@property (nonatomic, assign) CGFloat itemWidth;
+/**视图间距*/
+@property (nonatomic, assign) CGFloat itemSpace;
 /**循环*/
 @property (nonatomic, assign) BOOL autoLoop;
 /**点击事件*/
