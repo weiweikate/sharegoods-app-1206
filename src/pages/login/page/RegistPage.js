@@ -40,6 +40,14 @@ export default class RegistPage extends BasePage {
     }
 
     _render() {
+        // 测试环境:https://testh5.sharegoodsmall.com/static/protocol/service.html
+        // 预发布环境：https://uath5.sharegoodsmall.com/static/protocol/service.html
+        // 生产布环境：https://h5.sharegoodsmall.com/static/protocol/service.html
+
+        const htmlUrl = __DEV__ ?
+            'https://testh5.sharegoodsmall.com/static/protocol/service.html'
+            :
+            'https://testh5.sharegoodsmall.com/static/protocol/service.html';
         return (
             <View style={{
                 flex: 1,
@@ -83,7 +91,7 @@ export default class RegistPage extends BasePage {
                               onPress={() => {
                                   this.$navigate('HtmlPage', {
                                       title: '用户协议内容',
-                                      uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
+                                      uri: htmlUrl
                                   });
                               }}
                         >
