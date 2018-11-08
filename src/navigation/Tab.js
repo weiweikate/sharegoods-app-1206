@@ -35,7 +35,7 @@ export const TabNav = TabNavigator(
         ShowListPage: {
             screen: ShowListPage,
             navigationOptions: {
-                tabBarLabel: '发现',
+                tabBarLabel: '秀场',
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
                         return (

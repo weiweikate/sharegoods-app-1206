@@ -216,7 +216,7 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(10)
     },
     button: {
-        backgroundColor: '#FF1A54',
+        backgroundColor: DesignRule.mainColor,
         width: px2dp(109),
         height: px2dp(49),
         alignItems: 'center',
@@ -227,7 +227,7 @@ let styles = StyleSheet.create({
         fontSize: px2dp(16)
     },
     select: {
-        color: '#FF1A54',
+        color: DesignRule.mainColor,
         fontSize: px2dp(15)
     },
     rightButton: {
