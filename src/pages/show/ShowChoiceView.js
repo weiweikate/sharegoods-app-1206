@@ -7,8 +7,9 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
 import { ShowChoiceModules } from './Show'
-import seeImg from '../../comm/res/see.png'
-import maskImg from '../../comm/res/show_mask.png'
+import res from '../../comm/res';
+const seeImg = res.button.see;
+const maskImg = res.other.show_mask;
 
 const Card = ({item, press}) => <TouchableOpacity style={styles.card} onPress={()=> press && press()}>
     <ImageBackground style={styles.imgView} source={{uri:item.coverImg}} resizeMode={'cover'}>

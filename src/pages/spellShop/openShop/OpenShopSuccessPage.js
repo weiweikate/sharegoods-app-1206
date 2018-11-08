@@ -9,11 +9,12 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
-import SuccessImg from '../../../comm/res/tongyon_icon_check_green.png';
+import res from '../../../comm/res';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const SuccessImg = res.button.tongyon_icon_check_green;
 
 export default class OpenShopSuccessPage extends BasePage {
 

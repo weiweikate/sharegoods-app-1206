@@ -14,12 +14,12 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import bridge from '../../../utils/bridge';
 import CommModal from '../../../comm/components/CommModal';
-
-import closeIcon from '../../../../src/comm/res/tongyong_btn_close_white.png';
 import { NavigationActions } from 'react-navigation';
 import LoginAPI from '../api/LoginApi';
 import StringUtils from '../../../utils/StringUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+import res from '../../../comm/res';
+const closeIcon = res.button.tongyong_btn_close_white;
 
 
 export default class GetRedpacketPage extends BasePage {

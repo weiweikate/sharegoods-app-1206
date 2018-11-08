@@ -6,8 +6,8 @@ import ScreenUtils from '../../utils/ScreenUtils';
 const { px2dp } = ScreenUtil;
 import { NavigationActions } from 'react-navigation';
 import failImg from './res/fail.png';
-import successImg from '../../comm/res/tongyon_icon_check_green.png';
-
+import res from '../../comm/res';
+const successImg = res.button.tongyon_icon_check_green;
 export const PaymentResult = {
     sucess: 1,
     fail: 2

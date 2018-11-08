@@ -3,8 +3,9 @@ import {
     Text, ScrollView, Image, View
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import Logo from '../../../../comm/res/tongyong_logo_nor.png';
+import res from '../../../../comm/res';
 import DesignRule from 'DesignRule';
+const Logo = res.other.tongyong_logo_nor;
 
 export default class AboutUsPage extends BasePage {
 

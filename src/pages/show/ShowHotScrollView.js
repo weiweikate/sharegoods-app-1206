@@ -7,8 +7,9 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
 import { ShowHotModules } from './Show'
-import seeImg from '../../comm/res/see_white.png'
-import maskImg from '../../comm/res/show_mask.png'
+import res from '../../comm/res';
+const seeImg = res.button.see;
+const maskImg = res.other.show_mask;
 
 const HotItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <ImageBackground style={styles.imgBack} source={{uri: item.img}}>

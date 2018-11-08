@@ -79,7 +79,7 @@ export default {
      <<<<<<<<<<<  shareType : 0图片分享 <<<<<<<<<<<<<<
      shareImage:分享的大图(本地URL)图片分享使用
 
-     <<<<<<<<<<<  shareType : 2图片分享 <<<<<<<<<<<<<<
+     <<<<<<<<<<<  shareType : 2小程序分享 <<<<<<<<<<<<<<
      title
      dec
      thumImage

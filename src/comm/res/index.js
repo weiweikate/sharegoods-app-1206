@@ -2,6 +2,7 @@ import button from './button';
 import placeholder from './placeholder';
 import share from './share';
 import tab from './tab';
+import other from './other';
 
 const res = {
     button: {
@@ -15,6 +16,9 @@ const res = {
     },
     tab: {
         ...tab
+    },
+    other: {
+        ...other
     }
 };
 export default res;

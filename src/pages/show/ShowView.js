@@ -5,7 +5,8 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { HomeShowModules, tagName } from './Show'
-import homeShowImg from '../../comm/res/home_show.png'
+import res from '../../comm/res'
+const homeShowImg = res.other.home_show;
 
 const TagView = ({text}) => <View style={styles.tagView}>
     <Text style={styles.tag}>{text}</Text>

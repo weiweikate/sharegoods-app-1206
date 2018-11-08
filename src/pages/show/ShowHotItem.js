@@ -6,8 +6,9 @@ import React from 'react'
 import { View, Text, TouchableOpacity, ImageBackground, Image, StyleSheet } from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 const {  px2dp } = ScreenUtils
-import seeImg from '../../comm/res/see_white.png'
-import maskImg from '../../comm/res/show_mask.png'
+import res from '../../comm/res';
+const seeImg = res.button.see_white;
+const maskImg = res.other.show_mask;
 
 export default ({data, press, imageStyle}) => {
     return <TouchableOpacity style={styles.item} onPress={()=>{press && press()}}>

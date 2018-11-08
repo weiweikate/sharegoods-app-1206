@@ -10,7 +10,7 @@ import UIText from '../../../../components/ui/UIText';
 import bridge from '../../../../utils/bridge';
 import UIImage from '../../../../components/ui/UIImage';
 import DesignRule from 'DesignRule';
-import res from '../../../../comm/';
+import res from '../../../../comm/res';
 const addrSelectedIcon = res.button.selected_circle_red;
 const addrUnSelectedIcon = res.button.unselected_circle;
 /**
