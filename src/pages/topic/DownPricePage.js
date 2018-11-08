@@ -168,7 +168,7 @@ export default class DownPricePage extends BasePage {
                         refreshing={this.dataModel.isRefresh}
                         onRefresh={this._onRefresh.bind(this)}
                         progressViewOffset={statusBarHeight + 44}
-                        colors={['#d51243']}
+                        colors={[DesignRule.mainColor]}
                         title="下拉刷新"
                         tintColor="#999"
                         titleColor="#999"

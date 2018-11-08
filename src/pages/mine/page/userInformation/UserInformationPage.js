@@ -80,7 +80,7 @@ export default class UserInformationPage extends BasePage {
                         refreshing={false}
                         onRefresh={this._reload}
                         progressViewOffset={64}
-                        colors={['#d51243']}
+                        colors={[DesignRule.mainColor]}
                         tintColor="#999"
                         titleColor="#999"
                     />}>

@@ -437,7 +437,7 @@ export default class MinePage extends BasePage {
                                 refreshing={this.state.isRefreshing}
                                 onRefresh={this._reload}
                                 progressViewOffset={statusBarHeight + 44}
-                                colors={['#d51243']}
+                                colors={[DesignRule.mainColor]}
                                 title="下拉刷新"
                                 tintColor="#999"
                                 titleColor="#999"
@@ -465,7 +465,7 @@ export default class MinePage extends BasePage {
                     position: 'absolute',
                     top: px2dp(-10),
                     right: px2dp(-10),
-                    backgroundColor: '#D51243',
+                    backgroundColor: DesignRule.mainColor,
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}>

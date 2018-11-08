@@ -36,7 +36,7 @@ export default class DetailBottomView extends Component {
                     {ShopCartStore.getAllGoodsClassNumber === 0 ? null : <View style={{
                         position: 'absolute', top: 4, right: 4, height: 16,
                         paddingHorizontal: 4,
-                        backgroundColor: '#D51243',
+                        backgroundColor: DesignRule.mainColor,
                         borderRadius: 8, justifyContent: 'center', alignItems: 'center'
                     }}>
                         <Text style={{
@@ -51,7 +51,7 @@ export default class DetailBottomView extends Component {
                     <Text>立即购买</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={{ flex: 1, backgroundColor: '#D51243', justifyContent: 'center', alignItems: 'center' }}
+                    style={{ flex: 1, backgroundColor: DesignRule.mainColor, justifyContent: 'center', alignItems: 'center' }}
                     onPress={() => this.props.bottomViewAction('gwc')}>
                     <Text style={{ color: 'white' }}>加入购物车</Text>
                 </TouchableOpacity>

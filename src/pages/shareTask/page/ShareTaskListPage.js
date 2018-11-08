@@ -294,7 +294,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                                     <View style={{ flexDirection: 'row' }}>
                                         <Image source={redEnvelope} style={{ height: 14, width: 14, marginRight: 3 }}/>
                                         <Text style={{
-                                            color: '#D51243',
+                                            color: DesignRule.mainColor,
                                             fontSize: autoSizeWidth(11),
                                             marginRight: autoSizeWidth(15)
                                         }}>待开奖</Text>

@@ -44,7 +44,7 @@ export default class SearchBar extends Component {
                                   numberOfLines={2}>{`${name}`}</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Text style={{
-                                    color: '#D51243',
+                                    color: DesignRule.mainColor,
                                     fontSize: 17
                                 }}>{`￥${price || ' '}`}<Text
                                     style={{ fontSize: 12 }}>起</Text>

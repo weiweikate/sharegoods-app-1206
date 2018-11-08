@@ -124,7 +124,7 @@ export default class DetailHeaderView extends Component {
                             fontSize: 15
                         }}>{`${name}`}</Text>
                         <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
-                            <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${price}起`}</Text>
+                            <Text style={{ color: DesignRule.mainColor, fontSize: 18 }}>{`￥${price}起`}</Text>
                             <Text style={{
                                 marginLeft: 5,
                                 color: '#BBBBBB',
@@ -160,7 +160,7 @@ export default class DetailHeaderView extends Component {
                         marginVertical: 13,
                         alignItems: 'center'
                     }}>
-                        <Text style={{ color: '#D51243', fontSize: 13 }}>服务</Text>
+                        <Text style={{ color: DesignRule.mainColor, fontSize: 13 }}>服务</Text>
                         <Text style={{
                             marginLeft: 11,
                             color: DesignRule.textColor_secondTitle,

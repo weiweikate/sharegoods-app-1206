@@ -189,8 +189,8 @@ export default class PaymentMethodPage extends BasePage {
                             this.setState({payPromotionSuccess:false})
                             this.$navigateBack('mine/promotion/UserPromotionPage',{reload:true})
                         }}>
-                            <View style={{borderRadius:5,borderColor:'#D51243',borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
-                                <Text style={{color:'#D51243',fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
+                            <View style={{borderRadius:5,borderColor:DesignRule.mainColor,borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
+                                <Text style={{color:DesignRule.mainColor,fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
                                     我的推广
                                 </Text>
                             </View>
@@ -265,7 +265,7 @@ export default class PaymentMethodPage extends BasePage {
                                 style={styles.bottomUitext1}/>
                     </View>
                     <TouchableOpacity
-                        style={{ flex: 1, backgroundColor: color.red, justifyContent: 'center', alignItems: 'center' }}
+                        style={{ flex: 1, backgroundColor: DesignRule.mainColor, justifyContent: 'center', alignItems: 'center' }}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'去支付'}
                                 style={{ fontSize: 16, color: 'white' }}/>
@@ -512,7 +512,7 @@ const styles = StyleSheet.create({
     },
     bottomUitext1: {
         fontSize: 15,
-        color: color.red,
+        color: DesignRule.mainColor,
         marginRight: 12
     },
     cell: {

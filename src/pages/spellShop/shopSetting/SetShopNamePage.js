@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     btnRow: {
         height: 48,
         borderRadius: 5,
-        backgroundColor: '#D51243',
+        backgroundColor: DesignRule.mainColor,
         marginHorizontal: 43,
         marginTop: ScreenUtils.autoSizeHeight(123),
         justifyContent: 'center',

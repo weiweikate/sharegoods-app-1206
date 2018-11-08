@@ -337,7 +337,6 @@ export default class HomePage extends PureComponent {
                             refreshing={homeModule.isRefreshing}
                             onRefresh={this._onRefresh.bind(this)}
                             progressViewOffset={statusBarHeight + 44}
-                            colors={['#d51243']}
                             title="下拉刷新"
                             tintColor="#999"
                             titleColor="#999"
