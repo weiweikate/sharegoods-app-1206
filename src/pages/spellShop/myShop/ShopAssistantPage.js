@@ -19,6 +19,7 @@ import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import DesignRule from 'DesignRule';
 
 const sectionsArr = [
     'master',
@@ -153,7 +154,7 @@ export default class AssistantListPage extends BasePage {
         return (<View style={{ height: 20, justifyContent: 'center', alignItems: 'center', marginTop: 11 }}>
             <Text style={{
                 fontSize: 13,
-                color: '#999999'
+                color: DesignRule.textColor_instruction
             }}>{title} ({data.length}人）</Text>
         </View>);
     };

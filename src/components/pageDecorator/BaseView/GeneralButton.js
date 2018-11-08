@@ -57,9 +57,9 @@ export default class GeneralButton extends Component {
         withoutFeedback: false,
         disabled: false,
 
-        highlightTitleColor: '#ffffff',
+        highlightTitleColor: 'white',
         //
-        disabledTitleColor: '#ffffff',
+        disabledTitleColor: 'white',
 
         throttleTime: 500,
     };
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
         borderRadius: 6,
     },
     textStyle: {
-        color: '#ffffff',
+        color: 'white',
         fontSize: 16,
     }
 });

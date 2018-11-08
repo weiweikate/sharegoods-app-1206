@@ -13,6 +13,8 @@ import searchImg from './res/icon_search.png';
 import msgBlack from './res/message_black.png';
 import msgWhite from './res/message_white.png';
 import UIText from '../../components/ui/UIText';
+import DesignRule from 'DesignRule';
+
 
 export default ({ navigation, whiteIcon }) =>
     <View style={styles.navBar}>
@@ -29,13 +31,13 @@ export default ({ navigation, whiteIcon }) =>
         </View>
         {
             whiteIcon ? null :
-                <View style={{ height: 0.5, backgroundColor: '#eee' }}/>}
+                <View style={{ height: 0.5, backgroundColor: '#ccc' }}/>}
     </View>
 
 let styles = StyleSheet.create({
     navBar: {
         flexDirection: 'column',
-        height: statusBarHeight + 44 - (ScreenUtils.isIOSX?10:0) ,
+        height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
         position: 'absolute',
         left: 0,
         right: 0,
@@ -47,7 +49,7 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'transparent',
         justifyContent: 'center',
-        paddingTop: statusBarHeight -  (ScreenUtils.isIOSX?10:0),
+        paddingTop: statusBarHeight - (ScreenUtils.isIOSX ? 10 : 0),
         marginLeft: px2dp(15),
         marginRight: px2dp(15)
     },
@@ -77,7 +79,7 @@ let styles = StyleSheet.create({
     },
     inputText: {
         flex: 1,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: 14
     }
 });

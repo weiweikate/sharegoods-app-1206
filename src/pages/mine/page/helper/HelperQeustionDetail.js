@@ -2,13 +2,14 @@ import React from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
+    TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import { color } from '../../../../constants/Theme';
 import HTML from 'react-native-render-html';
 import MineApi from '../../api/MineApi';
+import DesignRule from 'DesignRule';
+
 /**
  * @author chenxiang
  * @date on 2018/9/21
@@ -22,9 +23,9 @@ export default class HelperQuestionDetail extends BasePage {
         this.state = {
             title: '',
             content: '',
-            noHelpNum:0,
-            useHelpNum:0,
-            type:null
+            noHelpNum: 0,
+            useHelpNum: 0,
+            type: null
         };
     }
 
@@ -35,11 +36,11 @@ export default class HelperQuestionDetail extends BasePage {
 
     componentDidMount() {
         MineApi.findHelpQuestionById({ id: this.params.id }).then(res => {
-                this.setState({
-                    title: res.data.title,
-                    content: res.data.content,
-                    type:res.data.type
-                });
+            this.setState({
+                title: res.data.title,
+                content: res.data.content,
+                type: res.data.type
+            });
         }).catch(err => {
             console.log(err);
         });
@@ -49,8 +50,8 @@ export default class HelperQuestionDetail extends BasePage {
     _render() {
         return (
             <View style={{ backgroundColor: '#F6F6F6', flex: 1 }}>
-                {this.state.content? <HTML html={this.state.content} imagesMaxWidth={ScreenUtils.width}
-                                           containerStyle={{ backgroundColor: '#f7f7f7' }}/>:null}
+                {this.state.content ? <HTML html={this.state.content} imagesMaxWidth={ScreenUtils.width}
+                                            containerStyle={{ backgroundColor: DesignRule.bgColor }}/> : null}
                 <View style={{
                     width: ScreenUtils.width,
                     height: 80,
@@ -66,24 +67,30 @@ export default class HelperQuestionDetail extends BasePage {
                         height: 48,
                         borderRadius: 5,
                         borderWidth: 1,
-                        borderColor: this.state.type===null||this.state.type==1?color.red:color.white,
-                        backgroundColor:this.state.type===null||this.state.type==1?color.white:color.red,
+                        borderColor: this.state.type === null || this.state.type == 1 ? DesignRule.mainColor : 'white',
+                        backgroundColor: this.state.type === null || this.state.type == 1 ? 'white' : DesignRule.mainColor,
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
-                        <Text style={{ fontSize: 16, color: this.state.type===null||this.state.type==1?color.red:color.white }}>{`没啥帮助?  (${this.state.noHelpNum>9999?'9999+':this.state.noHelpNum})`}</Text>
+                        <Text style={{
+                            fontSize: 16,
+                            color: this.state.type === null || this.state.type == 1 ? DesignRule.mainColor : 'white'
+                        }}>{`没啥帮助?  (${this.state.noHelpNum > 9999 ? '9999+' : this.state.noHelpNum})`}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.6} onPress={() => this.feedbackGoodUse()} style={{
                         width: 150,
                         height: 48,
                         borderRadius: 5,
-                        backgroundColor: this.state.type===null||this.state.type==0?color.white:color.red,
-                        borderColor: this.state.type===null||this.state.type==0?color.red:color.white,
+                        backgroundColor: this.state.type === null || this.state.type == 0 ? 'white' : DesignRule.mainColor,
+                        borderColor: this.state.type === null || this.state.type == 0 ? DesignRule.mainColor : 'white',
                         borderWidth: 1,
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
-                        <Text style={{ fontSize: 16, color: this.state.type===null||this.state.type==0?color.red:color.white }}>{`有用  (${this.state.useHelpNum>9999?'9999+':this.state.useHelpNum})`}</Text>
+                        <Text style={{
+                            fontSize: 16,
+                            color: this.state.type === null || this.state.type == 0 ? DesignRule.mainColor : 'white'
+                        }}>{`有用  (${this.state.useHelpNum > 9999 ? '9999+' : this.state.useHelpNum})`}</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -92,37 +99,37 @@ export default class HelperQuestionDetail extends BasePage {
     }
 
     loadPageData() {
-        MineApi.findQuestionEffectById({id:this.params.id}).then(res =>{
+        MineApi.findQuestionEffectById({ id: this.params.id }).then(res => {
             console.log(res);
             this.setState({
-                useHelpNum:res.data.isHelp,
-                noHelpNum:res.data.notHelp,
-                type:res.data.type
-            })
+                useHelpNum: res.data.isHelp,
+                noHelpNum: res.data.notHelp,
+                type: res.data.type
+            });
         }).catch(err => {
             console.log(err);
         });
     }
 
     feedbackNoUse() {
-        MineApi.updateHelpQuestionToClick({id:this.params.id,hadHelp:0}).then(res=>{
-            this.$toastShow(''+res.data)
+        MineApi.updateHelpQuestionToClick({ id: this.params.id, hadHelp: 0 }).then(res => {
+            this.$toastShow('' + res.data);
             this.loadPageData();
-        }).catch(err=>{
-            if(err.code == 10009){
-                this.$navigate('login/login/LoginPage')
+        }).catch(err => {
+            if (err.code == 10009) {
+                this.$navigate('login/login/LoginPage');
             }
-        })
+        });
     }
 
     feedbackGoodUse() {
-        MineApi.updateHelpQuestionToClick({id:this.params.id,hadHelp:1}).then(res=>{
-            this.$toastShow(''+res.data)
+        MineApi.updateHelpQuestionToClick({ id: this.params.id, hadHelp: 1 }).then(res => {
+            this.$toastShow('' + res.data);
             this.loadPageData();
-        }).catch(err=>{
-           if(err.code == 10009){
-               this.$navigate('login/login/LoginPage')
-           }
-        })
+        }).catch(err => {
+            if (err.code == 10009) {
+                this.$navigate('login/login/LoginPage');
+            }
+        });
     }
 }

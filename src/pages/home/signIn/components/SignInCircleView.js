@@ -14,6 +14,8 @@ import {
 } from 'react-native';
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import signingInIcon from '../res/qiandao_btn_return_nor.png';
+import DesignRule from 'DesignRule';
+
 
 /**
  * 签到圆形view
@@ -33,7 +35,7 @@ export default class SignInCircleView extends PureComponent {
     signedInRender(){
         return (
             <View style={[styles.circleStyle,{ backgroundColor: 'white'}]}>
-                <Text style={[styles.textStyle,{color:'#666666'}]}>
+                <Text style={[styles.textStyle,{color:DesignRule.textColor_secondTitle}]}>
                     {`+${this.props.count}`}
                 </Text>
             </View>
@@ -51,7 +53,7 @@ export default class SignInCircleView extends PureComponent {
     willSignInRender(){
         return (
             <View style={[styles.circleStyle,{ backgroundColor: '#c6b478'}]}>
-                <Text style={[styles.textStyle,{color:'#F7F7F7'}]}>
+                <Text style={[styles.textStyle,{color:DesignRule.bgColor}]}>
                     {`+${this.props.count}`}
                 </Text>
             </View>
@@ -63,7 +65,7 @@ export default class SignInCircleView extends PureComponent {
             <View style={[styles.circleStyle,{ backgroundColor: '#c6b478',borderRadius:px2dp(12), borderWidth: px2dp(2),
                 borderColor:'white'
             }]}>
-                <Text style={[styles.textStyle,{color:'#666666'}]}>
+                <Text style={[styles.textStyle,{color:DesignRule.textColor_secondTitle}]}>
                     {`+${this.props.count}`}
                 </Text>
             </View>

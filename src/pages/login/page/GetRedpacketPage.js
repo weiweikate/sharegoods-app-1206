@@ -8,7 +8,6 @@ import {
     ImageBackground,
     TouchableWithoutFeedback
 } from 'react-native';
-import ColorUtil from '../../../utils/ColorUtil';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
@@ -20,7 +19,7 @@ import { NavigationActions } from 'react-navigation';
 import LoginAPI from '../api/LoginApi';
 import StringUtils from '../../../utils/StringUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
-
+import DesignRule from 'DesignRule';
 
 export default class GetRedpacketPage extends BasePage {
     constructor(props) {
@@ -74,7 +73,7 @@ export default class GetRedpacketPage extends BasePage {
         return (
             // this.state.canGetCoupon
             <CommModal
-                ref={(ref)=>{
+                ref={(ref) => {
                     this.modal = ref;
                 }}
                 visible={this.state.showRedAlter}>
@@ -115,7 +114,8 @@ export default class GetRedpacketPage extends BasePage {
                                 {/*{this.state.redPacketData && this.state.redPacketData.price?this.state.redPacketData.price:''}*/}
                                 {StringUtils.formatMoneyString(this.state.price, false)}
                                 {/*{EmptyUtils.isEmpty(this.state.couponData) ? null : this.state.couponData.price}*/}
-                                <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
+                                <Text
+                                    style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
                                     元
                                 </Text>
                             </Text>
@@ -148,6 +148,7 @@ export default class GetRedpacketPage extends BasePage {
             </CommModal>
         );
     }
+
     _closeModal = () => {
         this.setState({
             showRedAlter: false
@@ -205,13 +206,13 @@ export default class GetRedpacketPage extends BasePage {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     marginTop: 40,
-                    backgroundColor: ColorUtil.Color_f7f7f7
+                    backgroundColor: DesignRule.bgColor
                 }}
             >
                 <Text
                     style={{
                         fontSize: 13,
-                        color: '#333',
+                        color: DesignRule.textColor_mainTitle,
                         marginLeft: 15
                     }}
                 >
@@ -238,7 +239,7 @@ export default class GetRedpacketPage extends BasePage {
                         <Text
                             style={{
                                 fontSize: 13,
-                                color: '#666',
+                                color: DesignRule.textColor_secondTitle,
                                 marginLeft: 5
                             }}
                             onPress={
@@ -331,7 +332,7 @@ export default class GetRedpacketPage extends BasePage {
                                 style={{
                                     marginTop: 20,
                                     height: 30,
-                                    color: ColorUtil.Color_ffffff,
+                                    color: 'white',
                                     textAlign: 'center'
                                 }}
                             >
@@ -392,11 +393,11 @@ export default class GetRedpacketPage extends BasePage {
             this.modal && this.modal.open();
 
             //定时关闭
-            (new TimeDownUtils()).startDown((time)=>{
-                if (time <= 0){
+            (new TimeDownUtils()).startDown((time) => {
+                if (time <= 0) {
                     this._closeModal();
                 }
-            },2)
+            }, 5);
 
         }).catch(reason => {
             this.$loadingDismiss();
@@ -414,11 +415,11 @@ const Styles = StyleSheet.create(
             flex: 1,
             margin: 0,
             marginTop: -2,
-            backgroundColor: ColorUtil.Color_f7f7f7
+            backgroundColor: DesignRule.bgColor
         },
         rightTopTitleStyle: {
             fontSize: 15,
-            color: '#666'
+            color: DesignRule.textColor_secondTitle
         },
         topViewStyle: {
             height: ScreenUtils.px2dp(430)

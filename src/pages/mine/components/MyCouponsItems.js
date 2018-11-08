@@ -24,6 +24,7 @@ import { observer } from 'mobx-react';
 import StringUtils from '../../../utils/StringUtils';
 import user from '../../../model/user';
 import { UIText, UIImage } from '../../../components/ui';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 
@@ -52,7 +53,7 @@ export default class MyCouponsItems extends Component {
         let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
         let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
         return (
-            <TouchableOpacity style={{ backgroundColor: '#f7f7f7' }} onPress={() => this.clickItem(index, item)}>
+            <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor }} onPress={() => this.clickItem(index, item)}>
                 <ImageBackground style={{
                     width: ScreenUtils.width - px2dp(30),
                     height: px2dp(109),
@@ -70,39 +71,39 @@ export default class MyCouponsItems extends Component {
                                     item.type === 3 || item.type === 4 ? null :
                                         <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
                                             <Text
-                                                style={{ fontSize: 14, color: '#222222', marginBottom: 4 }}>￥</Text>
+                                                style={{ fontSize: 14, color: DesignRule.textColor_mainTitle, marginBottom: 4 }}>￥</Text>
                                         </View>}
                                 <View>
                                     <Text style={{
                                         fontSize: item.type === 4 ? 20 : 34,
-                                        color: '#222222'
+                                        color: DesignRule.textColor_mainTitle
                                     }}>{item.value}</Text>
                                 </View>
                                 {
                                     item.type === 3 ?
                                         <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
                                             <Text
-                                                style={{ fontSize: 14, color: '#222222', marginBottom: 4 }}>折</Text>
+                                                style={{ fontSize: 14, color: DesignRule.textColor_mainTitle, marginBottom: 4 }}>折</Text>
                                         </View> : null}
                             </View>
                         </View>
 
                         <View style={{ flex: 1, alignItems: 'flex-start', marginLeft: 10 }}>
-                            <Text style={{ fontSize: 15, color: '#222222' }}>{item.name} </Text>
+                            <Text style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}>{item.name} </Text>
                             <Text style={{
                                 fontSize: 11,
-                                color: '#999999',
+                                color: DesignRule.textColor_instruction,
                                 marginTop: 6
                             }}>使用有效期：{item.timeStr}</Text>
                         </View>
                         <Image style={{ marginRight: 5, width: px2dp(70), height: px2dp(70) }} source={BGR}/>
                         {item.type === 99 ?
                             <UIText value={'x' + user.tokenCoin}
-                                    style={{ marginRight: 15, marginTop: 15, fontSize: 14, color: '#222' }}/> : null}
+                                    style={{ marginRight: 15, marginTop: 15, fontSize: 14, color: DesignRule.textColor_mainTitle }}/> : null}
                     </View>
 
                     <View style={{ height: px2dp(33), justifyContent: 'center', marginLeft: 10 }}>
-                        <Text style={{ fontSize: 11, color: '#999999' }}>{item.limit}</Text>
+                        <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction }}>{item.limit}</Text>
                     </View>
                 </ImageBackground>
             </TouchableOpacity>
@@ -243,7 +244,7 @@ export default class MyCouponsItems extends Component {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
-                <Text style={{ color: '#999999', fontSize: 15, marginTop: 15 }}>暂无优惠券</Text></View>
+                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 15 }}>暂无优惠券</Text></View>
         );
     };
 
@@ -266,19 +267,19 @@ export default class MyCouponsItems extends Component {
                 {this.props.isgiveup ?
                     <View style={{
                         position: 'absolute',
-                        bottom: 0, height: 48, borderTopColor: '#f7f7f7', borderTopWidth: 1
+                        bottom: 0, height: 48, borderTopColor: DesignRule.bgColor, borderTopWidth: 1
                     }}>
                         <TouchableOpacity style={{
                             width: ScreenUtils.width,
                             height: 48,
-                            backgroundColor: '#ffffff',
+                            backgroundColor: 'white',
                             borderStyle: 'solid'
                             , alignItems: 'center', justifyContent: 'center'
                         }}
                                           activeOpacity={0.5} onPress={this.props.giveupUse}>
                             <Text style={{
                                 fontSize: 14,
-                                color: '#666666'
+                                color: DesignRule.textColor_secondTitle
                             }}>放弃使用优惠券</Text>
                         </TouchableOpacity></View> : null}
 
@@ -490,7 +491,7 @@ const styles = StyleSheet.create(
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: '#f7f7f7'
+            backgroundColor: DesignRule.bgColor
         },
         imgBg: {
             width: px2dp(345),

@@ -93,7 +93,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     height: 50,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor: DesignRule.white,
+                    backgroundColor: 'white',
                     borderTopWidth: 0.5,
                     borderTopColor: DesignRule.textColor_placeholder
                 }}>

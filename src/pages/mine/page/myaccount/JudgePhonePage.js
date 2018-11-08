@@ -10,6 +10,7 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
 import SMSTool from '../../../../utils/SMSTool';
+import DesignRule from 'DesignRule';
 
 export default class JudgePhoneNumPage extends BasePage {
 
@@ -29,7 +30,7 @@ export default class JudgePhoneNumPage extends BasePage {
             <View style={{ height: 38, justifyContent: 'center' }}>
                 <UIText value={'手机验证'}
                         style={{
-                            color: '#999999',
+                            color: DesignRule.textColor_instruction,
                             fontSize: 13,
                             marginLeft: 16
                         }}/>
@@ -69,7 +70,7 @@ export default class JudgePhoneNumPage extends BasePage {
                     <TouchableOpacity onPress={() => this._onGetCode(this.state.telText)}
                                       disabled={this.state.vertifyCodeTime > 0 ? true : false}>
                         <UIText value={this.state.vertifyCodeTime > 0 ? this.state.vertifyCodeTime + '秒后重新获取' : '获取验证码'}
-                                style={{ color: '#D85674', fontSize: 11, marginRight: 15 }}/>
+                                style={{ color: '#D85674', fontSize: 13, marginRight: 15 }}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -78,14 +79,14 @@ export default class JudgePhoneNumPage extends BasePage {
                 marginTop: 54,
                 backgroundColor: color.red,
                 width: ScreenUtils.width - 84,
-                height: 48,
+                height: 50,
                 marginLeft: 42,
                 marginRight: 42,
                 alignItems: 'center',
                 justifyContent: 'center',
-                borderRadius: 5
+                borderRadius: 25
             }} onPress={() => this._toNext()}>
-                <Text style={{ fontSize: 13, color: 'white' }}>下一步</Text>
+                <Text style={{ fontSize: 17, color: 'white' }}>下一步</Text>
             </TouchableOpacity>
         </View>);
     }
@@ -166,13 +167,13 @@ const styles = StyleSheet.create({
     itemLeftText: {
         marginRight: 20,
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     itemRightInput: {
         flex: 1,
         height: 40,
         padding: 0,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: 13
     }
 });

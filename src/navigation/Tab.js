@@ -6,13 +6,13 @@ import ShopCart from '../pages/shopCart/page/ShopCartPage';
 import SpellShop from '../pages/spellShop/SpellShopPage';
 import { StyleSheet, Image } from 'react-native';
 import CommTabImag from '../comm/res/CommTabImag';
-import ColorUtil from '../utils/ColorUtil';
 import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
 import discoverImg from '../comm/res/tab_discover_selected.png';
 import undiscoverImg from '../comm/res/tab_discover_unselected.png';
-import user from '../model/user'
-import RouterMap from './RouterMap'
+import user from '../model/user';
+import RouterMap from './RouterMap';
+import DesignRule from 'DesignRule';
 
 export const TabNav = TabNavigator(
     {
@@ -82,7 +82,7 @@ export const TabNav = TabNavigator(
         },
         MinePage: {
             screen: Mine,
-            navigationOptions: ({navigation}) => ({
+            navigationOptions: ({ navigation }) => ({
                 tabBarLabel: '我的',
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
@@ -95,11 +95,11 @@ export const TabNav = TabNavigator(
                     );
                 },
                 tabBarOnPress: (tab) => {
-                    const { jumpToIndex , scene } = tab
+                    const { jumpToIndex, scene } = tab;
                     if (user && user.isLogin) {
-                        jumpToIndex(scene.index)
+                        jumpToIndex(scene.index);
                     } else {
-                        navigation.navigate(RouterMap.LoginPage)
+                        navigation.navigate(RouterMap.LoginPage);
                     }
                 }
             })
@@ -109,7 +109,7 @@ export const TabNav = TabNavigator(
         tabBarOptions: {
 
             //当前选中的tab bar的文本颜色和图标颜色
-            activeTintColor: ColorUtil.mainRedColor,
+            activeTintColor: DesignRule.mainColor,
             //当前未选中的tab bar的文本颜色和图标颜色
             inactiveTintColor: '#000',
             //是否显示tab bar的图标，默认是false
@@ -151,10 +151,6 @@ export const TabNav = TabNavigator(
         backBehavior: 'none'
     });
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#f6f6f6'
-    },
     tabBarIcon: {
         width: 21,
         height: 21

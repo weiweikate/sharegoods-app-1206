@@ -7,6 +7,7 @@ import {
     View,
     TouchableOpacity
 } from 'react-native';
+import DesignRule from 'DesignRule';
 
 /**
  * section规格 view
@@ -48,7 +49,7 @@ export default class RecentSearchView extends Component {
                             this._clickItemAction(index);
                         }}>
                         <Text
-                            style={[styles.btnText, { color: canSelected ? '#222222' : 'white' }]}>{this.props.listData[index].specValue}</Text>
+                            style={[styles.btnText, { color: canSelected ? DesignRule.textColor_mainTitle : 'white' }]}>{this.props.listData[index].specValue}</Text>
                     </TouchableOpacity>
                 </View>
             );
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize: 13,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     },
     image: {
         width: 15,

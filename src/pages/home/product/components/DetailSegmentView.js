@@ -6,6 +6,7 @@ import {
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
+import DesignRule from 'DesignRule';
 
 export default class DetailSegmentView extends Component {
 
@@ -37,7 +38,7 @@ export default class DetailSegmentView extends Component {
         }}>
             <View style={styles.btnContainer}>
                 <Text
-                    style={[styles.title, { color: this.state.selectedIndex === index ? '#e60012' : '#999999' }]}>{title}</Text>
+                    style={[styles.title, { color: this.state.selectedIndex === index ? '#e60012' : DesignRule.textColor_instruction }]}>{title}</Text>
                 {this.state.selectedIndex === index ? <View style={{
                     width: 45,
                     height: 3,
@@ -65,7 +66,7 @@ export default class DetailSegmentView extends Component {
 const styles = StyleSheet.create({
     container: {
         marginBottom: 1.5,
-        backgroundColor: '#ffffff',
+        backgroundColor: 'white',
         flexDirection: 'row',
         flex: 1
     },
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 15,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     }
 });
 

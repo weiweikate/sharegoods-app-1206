@@ -15,6 +15,7 @@ import { observer } from 'mobx-react/native';
 import { formatDate } from '../../utils/DateUtils';
 import BasePage from '../../BasePage';
 
+
 @observer
 export default class FetchHistoryPage extends BasePage {
 

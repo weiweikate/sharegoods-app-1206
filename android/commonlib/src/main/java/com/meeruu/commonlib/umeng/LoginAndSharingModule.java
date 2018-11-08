@@ -12,7 +12,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -38,6 +37,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.bean.WXLoginBean;
 import com.meeruu.commonlib.utils.LogUtils;
+import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
@@ -334,7 +334,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         drawPromotionShare(mContext, url, success, fail);
     }
 
-    public static void drawPromotionShare(final Context context, final String url, final Callback success, final Callback fail){
+    public static void drawPromotionShare(final Context context, final String url, final Callback success, final Callback fail) {
         String info = url;
         String str = "长按扫码打开连接";
         Bitmap result = Bitmap.createBitmap(279, (int) (348), Bitmap.Config.ARGB_8888);
@@ -345,25 +345,25 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-        int newWidth=279;
-        int newHeight=348;
-        float scaleWidth=((float)newWidth)/width;
-        float scaleHeight=((float)newHeight)/height;
+        int newWidth = 279;
+        int newHeight = 348;
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
 
         //获取想要缩放的matrix
         Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth,scaleHeight);
+        matrix.postScale(scaleWidth, scaleHeight);
 
-        bitmap=Bitmap.createBitmap(bitmap,0,0,width,height,matrix,true);
-        canvas.drawBitmap(bitmap, 0, 0,paint);
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
         Bitmap qrBitmap = createQRImage(info, 140, 140);
         canvas.drawBitmap(qrBitmap, 70, 146, paint);
         paint.setColor(Color.WHITE);
         paint.setTextSize(12);
         Rect bounds = new Rect();
         paint.getTextBounds(str, 0, str.length(), bounds);
-        canvas.drawText(str, (279-bounds.width())/2, 306, paint);
-        String path = saveImageToCache(context, result,"sharePromotionImage.png");
+        canvas.drawText(str, (279 - bounds.width()) / 2, 306, paint);
+        String path = saveImageToCache(context, result, "sharePromotionImage.png");
         if (!TextUtils.isEmpty(path)) {
             success.invoke(path);
         } else {
@@ -371,7 +371,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
         bitmap.recycle();
     }
-
 
 
     public static void getBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
@@ -464,7 +463,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         Bitmap qrBitmap = createQRImage(info, 120, 120);
         canvas.drawBitmap(qrBitmap, 360, 520, paint);
-        String path = saveImageToCache(context, result,"shareImage.png");
+        String path = saveImageToCache(context, result, "shareImage.png");
         if (!TextUtils.isEmpty(path)) {
             success.invoke(path);
         } else {
@@ -502,18 +501,11 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void saveImage(String path) {
-//        try {
-//            MediaStore.Images.Media.insertImage(mContext.getContentResolver(), path, path, null);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        // 最后通知图库更新
-//        mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(path)));
-        File file = new File(path);
-        Uri uri = Uri.fromFile(file);
+        Uri uri = Uri.parse(path);
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(uri);
         mContext.sendBroadcast(intent);
+        ToastUtils.showToast("保存成功");
     }
 
     @ReactMethod
@@ -524,7 +516,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             bitmap.recycle();
             return;
         }
-        String path = saveImageToCache(mContext, bitmap,"shareImage.png");
+        String path = saveImageToCache(mContext, bitmap, "shareImage.png");
         if (TextUtils.isEmpty(path)) {
             fail.invoke("图片保存失败！");
         } else {
@@ -548,7 +540,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         dView.setDrawingCacheEnabled(true);
         dView.buildDrawingCache();
         Bitmap bmp = dView.getDrawingCache();
-        String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "screenshotImage.png";
+        long date = System.currentTimeMillis();
+        String storePath = getDiskCachePath() + File.separator + date + "screenshotImage.png";
+
 
         File file = new File(storePath);
         if (bmp != null) {
@@ -565,6 +559,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 intent.setData(uri);
                 mContext.sendBroadcast(intent);
+                ToastUtils.showToast("保存成功");
                 success.invoke();
             } catch (Exception e) {
                 fail.invoke(e.getMessage());
@@ -615,9 +610,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         return null;
     }
 
-    private static String saveImageToCache(Context context, Bitmap bitmap,String name) {
+    private static String saveImageToCache(Context context, Bitmap bitmap, String name) {
 
-        String path = getDiskCachePath(context);
+        String path = getDiskCachePath();
         long date = System.currentTimeMillis();
         String fileName = date + name;
         File file = new File(path, fileName);
@@ -641,16 +636,17 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     /**
      * 获取cache路径
      *
-     * @param context
      * @return
      */
-    public static String getDiskCachePath(Context context) {
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable()) {
-            return context.getExternalCacheDir().getPath();
-        } else {
-            return context.getCacheDir().getPath();
-        }
+    public static String getDiskCachePath() {
+//        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable()) {
+//            return context.getExternalCacheDir().getPath();
+//        } else {
+//            return context.getCacheDir().getPath();
+//        }
+
+        File file = SDCardUtils.getFileDirPath("MR/picture");
+        return file.getAbsolutePath();
+
     }
-
-
 }

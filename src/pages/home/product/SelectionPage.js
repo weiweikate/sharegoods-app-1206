@@ -13,6 +13,7 @@ import SelectionAmountView from './components/SelectionAmountView';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import Modal from 'CommModal';
+import DesignRule from 'DesignRule';
 
 
 export default class SelectionPage extends Component {
@@ -314,11 +315,11 @@ export default class SelectionPage extends Component {
                             <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
                                 <View style={{
                                     height: 49,
-                                    backgroundColor: '#D51243',
+                                    backgroundColor: DesignRule.mainColor,
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }}>
-                                    <Text style={{ fontSize: 16, color: '#FFFFFF' }}>确认</Text>
+                                    <Text style={{ fontSize: 16, color: 'white' }}>确认</Text>
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>

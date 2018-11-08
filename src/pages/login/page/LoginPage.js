@@ -10,12 +10,13 @@ import {
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import loginAndRegistRes from '../res/LoginAndRegistRes';
-import ColorUtil from '../../../utils/ColorUtil';
 import BasePage from '../../../BasePage';
 import bridge from '../../../utils/bridge';
 import LoginAPI from '../api/LoginApi';
 import { NavigationActions } from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 /**
  * @author huyufeng
@@ -76,13 +77,14 @@ export default class LoginPage extends BasePage {
                 />
                 <View style={Styles.otherLoginBgStyle}>
                     <View style={Styles.lineBgStyle}>
-                        <CommSpaceLine style={{ marginTop: 7, width: 80, marginLeft: 5 }}/>
+                        <CommSpaceLine style={{ width: 80, marginLeft: 5 }}/>
                         <Text style={Styles.otherLoginTextStyle}>
                             其他登录方式
                         </Text>
-                        <CommSpaceLine style={{ marginTop: 7, width: 80, marginLeft: 5 }}/>
+                        <CommSpaceLine style={{ width: 80, marginLeft: 5 }}/>
                     </View>
                     <View style={{
+                        marginTop: 15,
                         marginLeft: 0,
                         marginRight: 0,
                         justifyContent: 'center',
@@ -95,14 +97,14 @@ export default class LoginPage extends BasePage {
                     </View>
                 </View>
                 {/*<Image*/}
-                    {/*style={{*/}
-                        {/*width: ScreenUtils.width,*/}
-                        {/*position: 'absolute',*/}
-                        {/*bottom: 0,*/}
-                        {/*height: 80*/}
-                    {/*}}*/}
-                    {/*source={loginAndRegistRes.loginBottomImage}*/}
-                    {/*resizeMode='cover'/>*/}
+                {/*style={{*/}
+                {/*width: ScreenUtils.width,*/}
+                {/*position: 'absolute',*/}
+                {/*bottom: 0,*/}
+                {/*height: 80*/}
+                {/*}}*/}
+                {/*source={loginAndRegistRes.loginBottomImage}*/}
+                {/*resizeMode='cover'/>*/}
             </View>
         );
     }
@@ -241,24 +243,29 @@ const Styles = StyleSheet.create(
         },
         rightTopTitleStyle: {
             fontSize: 15,
-            color: '#666'
+            color: DesignRule.textColor_secondTitle
         },
         otherLoginBgStyle: {
-            left: 30,
+            // left: 30,
+            width: ScreenUtils.width,
             position: 'absolute',
             bottom: 10,
-            height: 170
+            height: 170,
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         lineBgStyle: {
-            marginLeft: 30,
-            marginRight: 30,
+            // marginLeft: 30,
+            // marginRight: 30,
+            width: ScreenUtils.width,
             flexDirection: 'row',
             height: 30,
             backgroundColor: '#fff',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         otherLoginTextStyle: {
-            color: ColorUtil.Color_666666
+            color: DesignRule.textColor_secondTitle
         }
     }
 );

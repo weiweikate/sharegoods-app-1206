@@ -14,7 +14,6 @@ import {
 import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import ColorUtil from '../../../utils/ColorUtil';
 import {
     UIText,
     UIImage
@@ -24,7 +23,7 @@ import shopCartStore from '../model/ShopCartStore';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import bridge from '../../../utils/bridge';
-import DesignRule from '../../../constants/DesignRule';
+import DesignRule from 'DesignRule';
 
 
 const activityCode = {
@@ -113,7 +112,7 @@ export default class ShopCartPage extends BasePage {
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
                 {/*{shopCartStore.data && shopCartStore.data.length > 0 ? this._renderListView() : this._renderEmptyView()}*/}
                 {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
-                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu():null}
+                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
             </View>
 
 
@@ -123,7 +122,7 @@ export default class ShopCartPage extends BasePage {
     _renderEmptyView = () => {
         return (
             <View style={{
-                backgroundColor: ColorUtil.Color_f7f7f7,
+                backgroundColor: DesignRule.bgColor,
                 flex: 1,
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -133,7 +132,7 @@ export default class ShopCartPage extends BasePage {
                     source={ShopCartRes.kongShopCartImg}
                     style={{
                         height: 115,
-                        width: 115,
+                        width: 115
                     }}
                 />
                 <Text
@@ -164,7 +163,7 @@ export default class ShopCartPage extends BasePage {
                 >
                     <View
                         style={{
-                            marginTop: 10,
+                            marginTop: 22,
                             justifyContent: 'center',
                             alignItems: 'center',
                             borderColor: DesignRule.mainColor,
@@ -198,7 +197,7 @@ export default class ShopCartPage extends BasePage {
         const { statusBarHeight } = ScreenUtils;
         return (
             <SwipeListView
-                style={{ backgroundColor: ColorUtil.Color_f7f7f7 }}
+                style={{ backgroundColor: DesignRule.bgColor }}
                 dataSource={tempArr}
                 disableRightSwipe={true}
                 // renderRow={ data => (
@@ -250,7 +249,7 @@ export default class ShopCartPage extends BasePage {
                 style={[{
                     height: 49,
                     width: ScreenUtils.width,
-                    backgroundColor: ColorUtil.Color_ffffff
+                    backgroundColor: 'white'
                 },
                     (!hiddeLeft && ScreenUtils.tabBarHeight > 49)
                         ?
@@ -272,14 +271,14 @@ export default class ShopCartPage extends BasePage {
                             value={'全选'}
                             style={{
                                 fontSize: 13,
-                                color: '#999999',
+                                color: DesignRule.textColor_instruction,
                                 marginLeft: 10
                             }}/>
                     </TouchableOpacity>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
                             value={'合计'}
-                            style={{ fontSize: 13, color: ColorUtil.Color_222222 }}/>
+                            style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
                         <UIText
                             value={StringUtils.formatMoneyString(shopCartStore.getTotalMoney)}
                             style={styles.totalPrice}/>
@@ -289,7 +288,7 @@ export default class ShopCartPage extends BasePage {
                         >
                             <UIText
                                 value={`结算(${shopCartStore.getTotalSelectGoodsNum})`}
-                                style={{ color: ColorUtil.Color_ffffff, fontSize: 16 }}
+                                style={{ color: 'white', fontSize: 16 }}
                             />
                         </TouchableOpacity>
                     </View>
@@ -365,10 +364,10 @@ export default class ShopCartPage extends BasePage {
                                             left: 140,
                                             top: 20,
                                             fontSize: 10,
-                                            color: ColorUtil.mainRedColor,
+                                            color: DesignRule.mainColor,
                                             borderWidth: 1,
                                             borderRadius: 4,
-                                            borderColor: ColorUtil.mainRedColor
+                                            borderColor: DesignRule.mainColor
                                         }
                                     }
                                 />
@@ -416,7 +415,7 @@ export default class ShopCartPage extends BasePage {
                                         fontSize: 13,
                                         lineHeight: 16,
                                         height: 32,
-                                        color: ColorUtil.Color_222222
+                                        color: DesignRule.textColor_mainTitle
                                     }}
                                 />
 
@@ -425,7 +424,7 @@ export default class ShopCartPage extends BasePage {
                                     numberOfLines={2}
                                     style={{
                                         fontSize: 13,
-                                        color: ColorUtil.Color_999999
+                                        color: DesignRule.textColor_instruction
                                     }}/>
                             </View>
                             <View style={{
@@ -446,7 +445,7 @@ export default class ShopCartPage extends BasePage {
                                         <UIText
                                             value={'-'}
                                             // style={{fontSize:15,color:data.num<=1?ColorUtil.Color_dddddd:ColorUtil.Color_222222}}
-                                            style={{ fontSize: 11, color: ColorUtil.Color_222222 }}
+                                            style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }}
                                         />
                                     </TouchableOpacity>
                                     <View style={[styles.rectangle, {
@@ -486,7 +485,7 @@ export default class ShopCartPage extends BasePage {
                                         <UIText
                                             value={'+'}
                                             // style={{fontSize:15,color:data.num>=data.stock?color.gray_DDD:color.black_222}}
-                                            style={{ fontSize: 11, color: ColorUtil.Color_222222 }}
+                                            style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }}
 
                                         />
                                     </TouchableOpacity>
@@ -498,7 +497,7 @@ export default class ShopCartPage extends BasePage {
 
                 <View
                     style={{
-                        backgroundColor: ColorUtil.Color_f7f7f7
+                        backgroundColor: DesignRule.bgColor
                     }}
                 >
                     {
@@ -526,7 +525,7 @@ export default class ShopCartPage extends BasePage {
                             >
                                 <Text style={{
                                     flex: 1,
-                                    color: ColorUtil.Color_ffffff,
+                                    color: 'white',
                                     fontSize: 11
                                 }}>
                                     {
@@ -539,7 +538,7 @@ export default class ShopCartPage extends BasePage {
                             : null
                     }
                     <View
-                        style={{ height: 10, backgroundColor: ColorUtil.Color_f7f7f7, width: ScreenUtils.width }}
+                        style={{ height: 10, backgroundColor: DesignRule.bgColor, width: ScreenUtils.width }}
                     />
                 </View>
             </View>
@@ -658,7 +657,7 @@ const
         },
         standaloneRowBack: {
             alignItems: 'center',
-            backgroundColor: ColorUtil.mainRedColor,
+            backgroundColor: DesignRule.bgColor,
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'flex-end',
@@ -668,7 +667,7 @@ const
         backUITextWhite: {
             // flex:1,
             marginRight: 0,
-            color: '#ffffff'
+            color: 'white'
         },
         standaloneRowFront: {
             alignItems: 'center',
@@ -683,14 +682,14 @@ const
             width: 30,
             justifyContent: 'center',
             borderWidth: 1,
-            borderColor: ColorUtil.Color_dddddd,
+            borderColor: DesignRule.lineColor_inColorBg,
             alignItems: 'center'
         },
 
         validItemContainer: {
             height: 140,
             flexDirection: 'row',
-            backgroundColor: ColorUtil.Color_f7f7f7
+            backgroundColor: DesignRule.bgColor
         },
         validProductImg: {
             width: 80,
@@ -710,13 +709,13 @@ const
         invalidItemContainer: {
             height: 100,
             flexDirection: 'row',
-            backgroundColor: ColorUtil.Color_ffffff
+            backgroundColor: 'white'
         },
         invalidUITextInvalid: {
             width: 38,
             height: 20,
             borderRadius: 10,
-            backgroundColor: '#999999',
+            backgroundColor: DesignRule.textColor_instruction,
             justifyContent: 'center',
             alignItems: 'center',
             marginLeft: 12
@@ -738,21 +737,21 @@ const
         CartBottomContainer: {
             width: ScreenUtils.width,
             height: 49,
-            backgroundColor: ColorUtil.Color_ffffff,
+            backgroundColor: 'white',
             justifyContent: 'space-between',
             flexDirection: 'row',
             alignItems: 'center'
         },
         totalPrice: {
             fontSize: 13,
-            color: ColorUtil.mainRedColor,
+            color: DesignRule.mainColor,
             marginLeft: 10,
             marginRight: 10
         },
         selectGoodsNum: {
             width: 110,
             height: 49,
-            backgroundColor: ColorUtil.mainRedColor,
+            backgroundColor: DesignRule.mainColor,
             justifyContent: 'center',
             alignItems: 'center'
         },
@@ -763,7 +762,7 @@ const
             height: 30,
             width: 46,
             fontSize: 11,
-            color: ColorUtil.Color_222222,
+            color: DesignRule.textColor_mainTitle,
             alignSelf: 'center',
             justifyContent: 'center',
             textAlign: 'center',

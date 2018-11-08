@@ -15,6 +15,7 @@ import { observer } from 'mobx-react';
 import { classifyModules } from './Modules';
 import ScreenUtils from '../../utils/ScreenUtils';
 import user from '../../model/user'
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
         height: px2dp(6)
     },
     name: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(10)
     }
 });

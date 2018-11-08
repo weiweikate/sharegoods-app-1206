@@ -7,7 +7,6 @@ import {
     Text,
     Image
 } from 'react-native';
-import ColorUtil from '../../../utils/ColorUtil';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ProgressBarView from './ProgressBarView';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
@@ -18,7 +17,7 @@ import bridge from '../../../utils/bridge';
 import ShopCartRes from '../../shopCart/res/ShopCartRes';
 import SbResTool from '../res/SbResTool';
 import { getShowPrice } from '../model/TopicMudelTool';
-
+import DesignRule from 'DesignRule';
 
 // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
 const statues = {
@@ -139,7 +138,7 @@ export default class OpenPrizeItemView extends Component {
                                 <Text style={{
                                     height: 18,
                                     fontSize: 16,
-                                    color: ColorUtil.Color_d51243
+                                    color: DesignRule.mainColor
                                 }}>
                                     {
                                         // itemData.productType === 2
@@ -154,7 +153,7 @@ export default class OpenPrizeItemView extends Component {
                                     height: 11,
                                     fontSize: 11,
                                     textDecorationLine: 'line-through',
-                                    color: ColorUtil.Color_999999
+                                    color: DesignRule.textColor_instruction
                                 }}>
                                     {itemData.originalPrice}
                                 </Text>
@@ -164,7 +163,7 @@ export default class OpenPrizeItemView extends Component {
                                 itemData.status === 1 ?
                                     <View
                                         style={{
-                                            backgroundColor: ColorUtil.Color_f7f7f7,
+                                            backgroundColor: DesignRule.bgColor,
                                             height: 30,
                                             width: (ScreenUtils.width / 2 - 16) / 2,
                                             borderRadius: 5
@@ -186,7 +185,7 @@ export default class OpenPrizeItemView extends Component {
                                                 <Text
                                                     style={
                                                         {
-                                                            color: ColorUtil.Color_ffffff,
+                                                            color: 'white',
                                                             textAlign: 'center',
                                                             height: 30,
                                                             paddingTop: 8,
@@ -203,28 +202,28 @@ export default class OpenPrizeItemView extends Component {
                                     :
                                     <View
                                         style={[{
-                                            backgroundColor: ColorUtil.Color_d51243,
+                                            backgroundColor: DesignRule.mainColor,
                                             height: 30,
                                             width: (ScreenUtils.width / 2 - 16) / 2,
                                             borderRadius: 5
                                         },
                                             (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
-                                                ? { backgroundColor: ColorUtil.Color_f7f7f7 }
-                                                : { backgroundColor: ColorUtil.Color_d51243 }
+                                                ? { backgroundColor: DesignRule.bgColor }
+                                                : { backgroundColor: DesignRule.mainColor }
 
                                         ]}>
                                         <Text
                                             style={
                                                 [{
-                                                    color: ColorUtil.Color_ffffff,
+                                                    color: 'white',
                                                     textAlign: 'center',
                                                     height: 30,
                                                     paddingTop: 8,
                                                     fontSize: 12
                                                 },
                                                     (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
-                                                        ? { color: ColorUtil.Color_999999 }
-                                                        : { color: ColorUtil.Color_ffffff }
+                                                        ? { color: DesignRule.textColor_instruction }
+                                                        : { color: 'white' }
                                                 ]
                                             }
                                         >
@@ -278,7 +277,7 @@ const ItemStyles = StyleSheet.create({
     itemBgStyle: {
         width: ScreenUtils.width / 2,
         height: ScreenUtils.width / 2 + 100,
-        backgroundColor: ColorUtil.Color_f7f7f7,
+        backgroundColor: DesignRule.bgColor,
         padding: 8,
         paddingBottom: 0
     },
@@ -294,13 +293,13 @@ const ItemStyles = StyleSheet.create({
 
     itemBottomTextStyle: {
         padding: 10,
-        color: ColorUtil.Color_222222,
+        color: DesignRule.textColor_mainTitle,
         width: ScreenUtils.width / 2 - 16,
         height: 37,
         fontSize: 12
     },
     itemFolloweTextStyle: {
-        color: ColorUtil.Color_33b4ff,
+        color: DesignRule.bgColor_blue,
         fontSize: 11,
         marginTop: 5,
         marginLeft: 0,

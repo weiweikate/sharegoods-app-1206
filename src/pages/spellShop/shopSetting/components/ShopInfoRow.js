@@ -8,6 +8,7 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
+import DesignRule from 'DesignRule';
 
 export default class ShopInfoRow extends Component {
 
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     },
     desc: {
         fontSize: 12,
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         marginTop: 9
     }
 

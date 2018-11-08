@@ -26,6 +26,7 @@ import RefreshList from '../../../../components/ui/RefreshList';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 
@@ -60,7 +61,7 @@ export default class UserPromotionPage extends BasePage<Props> {
     $NavBarRenderRightItem = () => {
         return (
             <TouchableOpacity onPress={this.goExplicationPage}>
-                <Text style={{ color: '#666666', fontSize: px2dp(12) }}>
+                <Text style={{ color: DesignRule.textColor_secondTitle, fontSize: px2dp(12) }}>
                     推广说明
                 </Text>
             </TouchableOpacity>
@@ -209,7 +210,7 @@ export default class UserPromotionPage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: DesignRule.bgColor,
         paddingTop: px2dp(10),
     },
     grayButtonWrapper: {
@@ -235,12 +236,12 @@ const styles = StyleSheet.create({
         paddingVertical: px2dp(15)
     },
     blackTextStyle: {
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(16),
         includeFontPadding:false
     },
     grayTextStyle: {
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13),
         includeFontPadding:false
     },
@@ -250,7 +251,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: px2dp(15)
     },
     bottomTextStyle: {
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13),
         includeFontPadding:false
     },
@@ -262,11 +263,12 @@ const styles = StyleSheet.create({
         // position: 'absolute',
         // left: 0,
         // bottom: 0,
-        backgroundColor: '#D51243'
+        backgroundColor: '#D51243',
+        marginBottom:ScreenUtils.safeBottom
     },
     bottomButtonTextStyle: {
         color: 'white',
-        fontSize: px2dp(13)
+        fontSize: px2dp(17)
     }
 
 

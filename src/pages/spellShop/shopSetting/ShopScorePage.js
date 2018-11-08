@@ -13,6 +13,7 @@ const WhitePanelHeight = 128 / 375 * SCREEN_WIDTH;
 import BgIcon from './res/bg_07.png';
 import StarIcon from './res/wjx_03.png';
 import BasePage from '../../../BasePage';
+import DesignRule from 'DesignRule';
 
 export default class ShopScorePage extends BasePage {
 
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     },
     shopLevel: {
         fontSize: 15,
-        color: "#222222",
+        color: DesignRule.textColor_mainTitle,
         marginBottom: 16 / 128 * WhitePanelHeight,
     },
     content: {
@@ -107,13 +108,13 @@ const styles = StyleSheet.create({
     title: {
         marginTop: 16,
         fontSize: 15,
-        color: "#222222"
+        color: DesignRule.textColor_mainTitle
     },
     subTitle: {
         marginTop: 12,
         fontSize: 12,
         lineHeight: 18,
-        color: "#666666"
+        color: DesignRule.textColor_secondTitle
     },
     img: {
         marginTop: 18,

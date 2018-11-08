@@ -4,7 +4,7 @@ import {
 
 } from "react-native";
 import React, { Component } from "react";
-import ColorUtil from "../../utils/ColorUtil";
+import DesignRule from 'DesignRule';
 
 export default class CommSpaceLine extends Component {
 
@@ -22,6 +22,6 @@ export default class CommSpaceLine extends Component {
 const Styles = StyleSheet.create({
     CommLineStyle: {
         height: 0.5,
-        backgroundColor: ColorUtil.lineColor
+        backgroundColor: DesignRule.lineColor_inColorBg
     }
 });

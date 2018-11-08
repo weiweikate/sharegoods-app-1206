@@ -9,7 +9,6 @@ import {
     TextInput,
     Image,
 } from 'react-native';
-import ColorUtil from '../../../utils/ColorUtil';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import StringUtils from '../../../utils/StringUtils';
@@ -316,7 +315,8 @@ const Styles = StyleSheet.create(
             textAlign: 'center',
             width: 120,
             color: DesignRule.mainColor,
-            marginTop: 40
+            marginTop: 40,
+            fontSize:13
         },
         loginBtnStyle: {
             marginTop: 40,
@@ -324,7 +324,7 @@ const Styles = StyleSheet.create(
             height: 50,
             width: ScreenUtils.width - 40,
             borderRadius: 25,
-            backgroundColor: ColorUtil.mainRedColor
+            backgroundColor: DesignRule.mainColor
         },
         loginBtnTextStyle: {
             paddingTop: 18,
@@ -333,9 +333,10 @@ const Styles = StyleSheet.create(
             margin: 0,
             alignItems: 'center',
             textAlign: 'center',
-            fontSize: 14
+            fontSize: 17
         },
         oldUserLoginBgStyle: {
+            marginTop:10,
             flexDirection: 'row-reverse'
         },
         oldUserLoginBtn: {
@@ -345,7 +346,7 @@ const Styles = StyleSheet.create(
             color: DesignRule.textColor_mainTitle,
             textAlign: 'center',
             marginRight: 0,
-            fontSize:12
+            fontSize:13
         },
         seePasswordImageStyle: {
             width: 20,

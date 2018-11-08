@@ -7,6 +7,7 @@ import {
     View,
     TouchableOpacity
 } from 'react-native';
+import DesignRule from 'DesignRule';
 
 /**
  * 热门搜索view
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize: 13,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     },
     image: {
         width: 15,

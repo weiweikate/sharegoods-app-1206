@@ -31,6 +31,7 @@ import bridge from '../../../../utils/bridge'
 // import BaseUrl from '../../../../api/BaseUrl'
 import fanhui from '../../res/homeBaseImg/fanhui.png'
 import apiEnvironment from '../../../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
 
 type Props = {};
 export default class InviteFriendsPage extends BasePage<Props> {
@@ -135,7 +136,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                         style = {{
                             marginTop: autoSizeWidth(20),
                             fontSize: autoSizeWidth(18),
-                            color: '#666666',
+                            color: DesignRule.textColor_secondTitle,
                             lineHeight: autoSizeWidth(28)
                         }}
                 />

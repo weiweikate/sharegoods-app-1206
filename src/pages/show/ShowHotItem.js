@@ -8,6 +8,7 @@ import ScreenUtils from '../../utils/ScreenUtils'
 const {  px2dp } = ScreenUtils
 import seeImg from '../../comm/res/see_white.png'
 import maskImg from '../../comm/res/show_mask.png'
+import DesignRule from 'DesignRule';
 
 export default ({data, press, imageStyle}) => {
     return <TouchableOpacity style={styles.item} onPress={()=>{press && press()}}>
@@ -53,7 +54,7 @@ let styles = StyleSheet.create({
         padding : px2dp(10)
     },
     title: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(12)
     },
     row: {
@@ -80,7 +81,7 @@ let styles = StyleSheet.create({
         borderRadius: px2dp(15)
     },
     name: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(11),
         marginLeft: 5
     },

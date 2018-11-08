@@ -12,6 +12,7 @@ import {
 import SuccessImg from '../../../comm/res/tongyon_icon_check_green.png';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
+import DesignRule from 'DesignRule';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     },
     desc: {
         fontSize: 14,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         marginTop: 19,
         textAlign: 'center'
     },

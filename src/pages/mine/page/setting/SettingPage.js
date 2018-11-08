@@ -20,6 +20,7 @@ import shopCartStore from '../../../shopCart/model/ShopCartStore';
 import DeviceInfo from 'react-native-device-info';
 import bridge from '../../../../utils/bridge';
 import CommModal from 'CommModal';
+import DesignRule from 'DesignRule';
 
 /**
  * @author luoyongming
@@ -94,7 +95,7 @@ class SettingPage extends BasePage {
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.clearAllCaches()}>
                         <UIText value={'清除缓存'} style={styles.blackText}/>
                         <UIText value={desc}
-                                style={{ fontSize: 13, color: '#666666' }}/>
+                                style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
@@ -106,7 +107,7 @@ class SettingPage extends BasePage {
                                       onPress={() => this.getNewVersion()}>
                         <UIText value={'版本检测'} style={[styles.blackText, { flex: 1 }]}/>
                         <UIText value={'当前版本v' + this.state.version}
-                                style={{ fontSize: 13, color: '#666666' }}/>
+                                style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
                         <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                     </TouchableOpacity>
                 </View>
@@ -114,14 +115,14 @@ class SettingPage extends BasePage {
                     marginTop: 42,
                     backgroundColor: color.red,
                     width: ScreenUtils.width - 84,
-                    height: 45,
+                    height: 50,
                     marginLeft: 42,
                     marginRight: 42,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    borderRadius: 5
+                    borderRadius: 25
                 }} onPress={() => this.toLoginOut()}>
-                    <Text style={{ fontSize: 15, color: 'white' }}
+                    <Text style={{ fontSize: 17, color: 'white' }}
                           onPress={() => this.toLoginOut()}>退出登录</Text>
                 </TouchableOpacity>
 
@@ -186,42 +187,43 @@ class SettingPage extends BasePage {
     renderModal = () => {
         return (
 
-                <CommonTwoChoiceModal
-                    isShow={this.state.isShowLoginOutModal}
-                    ref={(ref)=>this.loginOutModal = ref}
-                    detail={{ title: '', context: '是否确认退出登录', no: '取消', yes: '确认' }}
-                    closeWindow={() => {
-                        this.setState({ isShowLoginOutModal: false });
-                    }}
-                    yes={() => {
-                        this.setState({ isShowLoginOutModal: false });
-                        this.$loadingShow();
-                        // 正常退出，或者登录超时，都去清空数据
-                        user.clearUserInfo();
-                        user.clearToken();
-                        //清空购物车
-                        shopCartStore.data = [];
-                        this.$navigateReset();
-                        MineApi.signOut();
-                        this.$loadingDismiss();
+            <CommonTwoChoiceModal
+                isShow={this.state.isShowLoginOutModal}
+                ref={(ref) => this.loginOutModal = ref}
+                detail={{ title: '', context: '是否确认退出登录', no: '取消', yes: '确认' }}
+                closeWindow={() => {
+                    this.setState({ isShowLoginOutModal: false });
+                }}
+                yes={() => {
+                    this.setState({ isShowLoginOutModal: false });
+                    this.$loadingShow();
+                    // 正常退出，或者登录超时，都去清空数据
+                    user.clearUserInfo();
+                    user.clearToken();
+                    //清空购物车
+                    shopCartStore.data = [];
+                    this.$navigateReset();
+                    MineApi.signOut();
+                    this.$loadingDismiss();
 
-                    }}
-                    no={() => {
-                        this.setState({ isShowLoginOutModal: false });
-                    }}
-                />
-
+                }}
+                no={() => {
+                    this.setState({ isShowLoginOutModal: false });
+                }}
+            />
 
 
         );
     };
 
-    renderUpdateModal=()=>{
-        return(
+    renderUpdateModal = () => {
+        return (
             <CommModal
                 animationType='fade'
                 transparent={true}
-                ref={(ref)=>{this.updateModal = ref}}
+                ref={(ref) => {
+                    this.updateModal = ref;
+                }}
                 visible={this.state.showUpdate}>
                 <View style={{
                     flexDirection: 'column',
@@ -235,7 +237,7 @@ class SettingPage extends BasePage {
                     <UIText value={this.state.updateContent}
                             style={{
                                 fontSize: 17,
-                                color: '#333',
+                                color: DesignRule.textColor_mainTitle,
                                 marginTop: 40,
                                 marginBottom: 40,
                                 alignSelf: 'center'
@@ -247,7 +249,7 @@ class SettingPage extends BasePage {
                             onPress={() => {
                                 this.setState({ showUpdate: false });
                             }}>
-                            <UIText value={'以后再说'} style={{ color: '#999' }}/>
+                            <UIText value={'以后再说'} style={{ color: DesignRule.textColor_instruction }}/>
                         </TouchableOpacity>
                         <View style={{ width: 0.5, backgroundColor: '#eee' }}/>
                         <TouchableOpacity
@@ -267,8 +269,8 @@ class SettingPage extends BasePage {
                     </View>
                 </View>
             </CommModal>
-        )
-    }
+        );
+    };
 
     //**********************************BusinessPart******************************************
     jumpToAddressManagePage = () => {
@@ -318,7 +320,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: color.page_background,
         flexDirection: 'column',
-        flex:1
+        flex: 1
     },
     viewStyle: {
         flexDirection: 'row',
@@ -331,7 +333,7 @@ const styles = StyleSheet.create({
     },
     blackText: {
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     }
 });
 

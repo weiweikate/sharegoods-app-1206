@@ -11,6 +11,7 @@ import user from '../../../model/user';
 import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import userOrderNum from '../../../model/userOrderNum';
+import DesignRule from 'DesignRule';
 
 export default class MyOrdersListView extends Component {
     constructor(props) {
@@ -27,7 +28,7 @@ export default class MyOrdersListView extends Component {
             menu: {},
             index: -1
         };
-        this.currentPage=0;
+        this.currentPage = 1;
     }
 
     $getPageStateOptions = () => {
@@ -66,7 +67,7 @@ export default class MyOrdersListView extends Component {
                 outTradeNo={item.outTradeNo}
                 status={item.status}
                 callBack={() => {
-                    this.getDataFromNetwork();
+                    this.onRefresh();
                 }}
             />
         );
@@ -74,7 +75,7 @@ export default class MyOrdersListView extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
                 <RefreshList
                     data={this.state.viewData}
                     renderItem={this.renderItem}
@@ -94,7 +95,9 @@ export default class MyOrdersListView extends Component {
             <View>
                 <CommonTwoChoiceModal
                     isShow={this.state.isShowDeleteOrderModal}
-                    ref={(ref)=>{this.deleteModal = ref}}
+                    ref={(ref) => {
+                        this.deleteModal = ref;
+                    }}
                     detail={{ title: '删除订单', context: '确定删除此订单吗', no: '取消', yes: '确认' }}
                     closeWindow={() => {
                         this.setState({ isShowDeleteOrderModal: false });
@@ -107,7 +110,7 @@ export default class MyOrdersListView extends Component {
                             OrderApi.deleteClosedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast('订单已删除');
-                                this.getDataFromNetwork();
+                                this.onRefresh();
                             }).catch(e => {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast(e.msg);
@@ -117,7 +120,7 @@ export default class MyOrdersListView extends Component {
                             OrderApi.deleteCompletedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast('订单已删除');
-                                this.getDataFromNetwork();
+                                this.onRefresh();
                             }).catch(e => {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast(e.msg);
@@ -132,7 +135,9 @@ export default class MyOrdersListView extends Component {
                 />
                 <CommonTwoChoiceModal
                     isShow={this.state.isShowReceiveGoodsModal}
-                    ref={(ref)=>{this.receiveModal = ref}}
+                    ref={(ref) => {
+                        this.receiveModal = ref;
+                    }}
                     detail={{ title: '确认收货', context: '是否确认收货?', no: '取消', yes: '确认' }}
                     closeWindow={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
@@ -143,7 +148,7 @@ export default class MyOrdersListView extends Component {
                         OrderApi.confirmReceipt({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
                             Toast.hiddenLoading();
                             NativeModules.commModule.toast('确认收货成功');
-                            this.getDataFromNetwork();
+                            this.onRefresh();
                         }).catch(e => {
                             Toast.hiddenLoading();
                             NativeModules.commModule.toast(e.msg);
@@ -155,7 +160,9 @@ export default class MyOrdersListView extends Component {
                 />
                 <SingleSelectionModal
                     isShow={this.state.isShowSingleSelctionModal}
-                    ref={(ref)=>{this.cancelModal = ref}}
+                    ref={(ref) => {
+                        this.cancelModal = ref;
+                    }}
                     detail={['我不想买了', '信息填写错误，重新拍', '其他原因']}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
@@ -170,7 +177,7 @@ export default class MyOrdersListView extends Component {
                             Toast.hiddenLoading();
                             if (response.code === 10000) {
                                 NativeModules.commModule.toast('订单已取消');
-                                this.getDataFromNetwork();
+                                this.onRefresh();
                             } else {
                                 NativeModules.commModule.toast(response.msg);
                             }
@@ -204,8 +211,9 @@ export default class MyOrdersListView extends Component {
         return arrData;
     };
     getList = (data) => {
+        let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         if (StringUtils.isNoEmpty(data) && StringUtils.isNoEmpty(data.data)) {
-            let arrData = this.currentPage === 1 ? [] : this.state.viewData;
+            // let arrData = this.currentPage === 1 ? [] : this.state.viewData;
             data.data.map((item, index) => {
                 arrData.push({
                     id: item.id,
@@ -230,16 +238,15 @@ export default class MyOrdersListView extends Component {
                 });
 
             });
-            this.setState({ viewData: arrData });
-        } else {
-            this.setState({ viewData: this.state.viewData});
         }
+        this.setState({ viewData: arrData });
+
     };
 
     componentDidMount() {
         //网络请求，业务处理
         this.getDataFromNetwork();
-        DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.getDataFromNetwork());
+        DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.onRefresh());
         this.timeDown();
     }
 
@@ -272,7 +279,7 @@ export default class MyOrdersListView extends Component {
             }).then((response) => {
                 Toast.hiddenLoading();
                 this.getList(response.data);
-                this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+                this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
             }).catch(e => {
                 Toast.hiddenLoading();
                 // NativeModules.commModule.toast(e.msg);
@@ -293,7 +300,7 @@ export default class MyOrdersListView extends Component {
                     Toast.hiddenLoading();
                     this.getList(response.data);
                     console.log(response);
-                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+                    this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
 
                 }).catch(e => {
                     Toast.hiddenLoading();
@@ -311,7 +318,7 @@ export default class MyOrdersListView extends Component {
                 OrderApi.queryPage({ ...params, status: 1 }).then((response) => {
                     Toast.hiddenLoading();
                     this.getList(response.data);
-                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+                    this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
                 }).catch(e => {
                     Toast.hiddenLoading();
                     //NativeModules.commModule.toast(e.msg);
@@ -328,7 +335,7 @@ export default class MyOrdersListView extends Component {
                 OrderApi.queryPage({ ...params, status: 2 }).then((response) => {
                     Toast.hiddenLoading();
                     this.getList(response.data);
-                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+                    this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
 
                 }).catch(e => {
                     Toast.hiddenLoading();
@@ -346,7 +353,7 @@ export default class MyOrdersListView extends Component {
                 OrderApi.queryPage({ ...params, status: 3 }).then((response) => {
                     Toast.hiddenLoading();
                     this.getList(response.data);
-                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+                    this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
 
                 }).catch(e => {
                     Toast.hiddenLoading();
@@ -364,7 +371,7 @@ export default class MyOrdersListView extends Component {
                 OrderApi.queryPage({ ...params, status: 4 }).then((response) => {
                     Toast.hiddenLoading();
                     this.getList(response.data);
-                    this.setState({ isEmpty: response.data && StringUtils.isNoEmpty(response.data) && response.data.data.length != 0 });
+                    this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
 
                 }).catch(e => {
                     Toast.hiddenLoading();
@@ -396,12 +403,12 @@ export default class MyOrdersListView extends Component {
     };
 
     onRefresh = () => {
-       this.currentPage=1;
+        this.currentPage = 1;
         this.getDataFromNetwork();
     };
 
     onLoadMore = (page) => {
-       this.currentPage++;
+        this.currentPage++;
         this.getDataFromNetwork();
     };
     clickItem = (index) => {
@@ -484,7 +491,7 @@ export default class MyOrdersListView extends Component {
                                     OrderApi.confirmReceipt({ orderNum: this.state.viewData[index].orderNum }).then((response) => {
                                         Toast.hiddenLoading();
                                         NativeModules.commModule.toast('确认收货成功');
-                                        this.getDataFromNetwork();
+                                        this.onRefresh();
                                     }).catch(e => {
                                         Toast.hiddenLoading();
                                         NativeModules.commModule.toast(e.msg);

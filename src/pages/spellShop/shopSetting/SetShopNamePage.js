@@ -20,6 +20,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
+import DesignRule from 'DesignRule';
 
 export default class SetShopNamePage extends BasePage {
 
@@ -168,7 +169,7 @@ export default class SetShopNamePage extends BasePage {
                                    underlineColorAndroid={'transparent'}
                                    placeholder={'请输入店铺名称'}
                                    blurOnSubmit={false}
-                                   style={[styles.textInput, { color: this.state.text ? '#333' : '#c8c8c8' }]}/>
+                                   style={[styles.textInput, { color: this.state.text ? DesignRule.textColor_mainTitle : '#c8c8c8' }]}/>
                     </View>
 
                     {
@@ -206,7 +207,7 @@ const styles = StyleSheet.create({
         height: 170,
         marginHorizontal: 15,
         borderRadius: 5,
-        backgroundColor: '#ffffff',
+        backgroundColor: 'white',
         shadowColor: 'rgba(102, 102, 102, 0.1)',
         shadowOffset: {
             width: 0,
@@ -228,14 +229,14 @@ const styles = StyleSheet.create({
     },
     uploadTitle: {
         fontSize: 13,
-        color: '#f7f7f7'
+        color: DesignRule.bgColor
     },
     textInputContainer: {
         marginTop: 10,
         marginHorizontal: 15,
         height: 44,
         borderRadius: 5,
-        backgroundColor: '#ffffff',
+        backgroundColor: 'white',
         shadowColor: 'rgba(102, 102, 102, 0.1)',
         shadowOffset: {
             width: 0,
@@ -248,7 +249,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 13,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         marginLeft: 11
     },
     textInput: {
@@ -268,6 +269,6 @@ const styles = StyleSheet.create({
     },
     btnTitle: {
         fontSize: 13,
-        color: '#ffffff'
+        color: 'white'
     }
 });
