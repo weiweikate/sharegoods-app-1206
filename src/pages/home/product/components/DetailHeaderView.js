@@ -133,7 +133,7 @@ export default class DetailHeaderView extends Component {
                             }}>{`￥${originalPrice}`}</Text>
                             <Text style={{
                                 marginLeft: 5,
-                                backgroundColor: 'red',
+                                backgroundColor: DesignRule.mainColor,
                                 color: 'white',
                                 fontSize: 10, paddingHorizontal: 5
                             }}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelName}价` : '原价'}</Text>

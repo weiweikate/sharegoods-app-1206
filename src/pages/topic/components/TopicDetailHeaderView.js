@@ -161,7 +161,7 @@ export default class TopicDetailHeaderView extends Component {
                                 }}>{`￥${oldPrice}`}</Text>
                                 <Text style={{
                                     marginLeft: 5,
-                                    backgroundColor: 'red',
+                                    backgroundColor: DesignRule.mainColor,
                                     color: 'white',
                                     fontSize: 10, paddingHorizontal: 5
                                 }}>{levelTypeName}</Text>

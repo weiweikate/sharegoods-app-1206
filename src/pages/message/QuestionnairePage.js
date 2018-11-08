@@ -24,7 +24,7 @@ export default class QuestionnairePage extends BasePage {
             <View style={styles.container}>
                 <Text style={{ fontWeight: 'bold' }}>
                     I am bold
-                    <Text style={{ color: 'red' }}>
+                    <Text style={{ color: DesignRule.mainColor }}>
                         and red
                     </Text>
                 </Text>

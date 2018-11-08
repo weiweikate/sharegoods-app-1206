@@ -284,13 +284,13 @@ class ExchangeGoodsDetailPage extends BasePage {
                     <View style={{
                         width: 43,
                         height: 36,
-                        borderColor: 'red',
+                        borderColor: DesignRule.mainColor,
                         borderWidth: 0.5,
                         justifyContent: 'center',
                         alignItems: 'center',
                         marginLeft: 16
                     }}>
-                        <UIText value={'寄回\n地址'} style={{ fontSize: 12, color: 'red' }}/>
+                        <UIText value={'寄回\n地址'} style={{ fontSize: 12, color: DesignRule.mainColor }}/>
                     </View>
                     <View style={{ backgroundColor: color.gray_EEE, width: 1, height: 40 }}/>
                     <AddressItem height={82}

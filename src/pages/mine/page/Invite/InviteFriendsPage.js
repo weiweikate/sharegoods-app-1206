@@ -130,7 +130,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                              top: autoSizeWidth(165),
                              left: autoSizeWidth(107.5),
                              position: 'absolute',
-                             backgroundColor: 'red',
+                             backgroundColor: DesignRule.mainColor,
                          }}/>
                 <UIText value = {'专属你的惊喜福利活动\n数量有限赶快参与吧～'}
                         style = {{

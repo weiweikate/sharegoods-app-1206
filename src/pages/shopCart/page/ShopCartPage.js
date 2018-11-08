@@ -383,7 +383,7 @@ export default class ShopCartPage extends BasePage {
                                 <UIImage
                                     source={ShopCartRes.invalidGoodImg}
                                     style={{
-                                        // backgroundColor:'red',
+                                        // backgroundColor:DesignRule.mainColor,
                                         position: 'absolute',
                                         marginLeft: 55,
                                         width: 60,
