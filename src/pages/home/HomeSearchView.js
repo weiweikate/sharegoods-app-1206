@@ -29,13 +29,13 @@ export default ({ navigation, whiteIcon }) =>
         </View>
         {
             whiteIcon ? null :
-                <View style={{ height: 0.5, backgroundColor: '#eee' }}/>}
+                <View style={{ height: 0.5, backgroundColor: '#ccc' }}/>}
     </View>
 
 let styles = StyleSheet.create({
     navBar: {
         flexDirection: 'column',
-        height: statusBarHeight + 44 - (ScreenUtils.isIOSX?10:0) ,
+        height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
         position: 'absolute',
         left: 0,
         right: 0,
@@ -47,7 +47,7 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'transparent',
         justifyContent: 'center',
-        paddingTop: statusBarHeight -  (ScreenUtils.isIOSX?10:0),
+        paddingTop: statusBarHeight - (ScreenUtils.isIOSX ? 10 : 0),
         marginLeft: px2dp(15),
         marginRight: px2dp(15)
     },

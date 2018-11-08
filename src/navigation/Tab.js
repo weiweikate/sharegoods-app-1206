@@ -11,8 +11,8 @@ import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
 import discoverImg from '../comm/res/tab_discover_selected.png';
 import undiscoverImg from '../comm/res/tab_discover_unselected.png';
-import user from '../model/user'
-import RouterMap from './RouterMap'
+import user from '../model/user';
+import RouterMap from './RouterMap';
 
 export const TabNav = TabNavigator(
     {
@@ -82,7 +82,7 @@ export const TabNav = TabNavigator(
         },
         MinePage: {
             screen: Mine,
-            navigationOptions: ({navigation}) => ({
+            navigationOptions: ({ navigation }) => ({
                 tabBarLabel: '我的',
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
@@ -95,11 +95,11 @@ export const TabNav = TabNavigator(
                     );
                 },
                 tabBarOnPress: (tab) => {
-                    const { jumpToIndex , scene } = tab
+                    const { jumpToIndex, scene } = tab;
                     if (user && user.isLogin) {
-                        jumpToIndex(scene.index)
+                        jumpToIndex(scene.index);
                     } else {
-                        navigation.navigate(RouterMap.LoginPage)
+                        navigation.navigate(RouterMap.LoginPage);
                     }
                 }
             })
@@ -151,10 +151,6 @@ export const TabNav = TabNavigator(
         backBehavior: 'none'
     });
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#f6f6f6'
-    },
     tabBarIcon: {
         width: 21,
         height: 21

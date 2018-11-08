@@ -1,6 +1,7 @@
 import {
     Platform,
-    Alert, Linking
+    Alert,
+    Linking,
 } from 'react-native';
 import {
     isFirstTime,
@@ -19,6 +20,8 @@ import _updateConfig from '../../update.json';
 const { appKey } = _updateConfig[Platform.OS];
 
 class HotUpdateUtil {
+
+    static TIME_INTERVAL_KEY = 'TIME_INTERVAL_KEY'
 
     appVersion = ''
     hashVersion = ''
@@ -99,6 +102,17 @@ class HotUpdateUtil {
             Alert.alert('提示', '更新失败.');
         });
     };
+    /**
+     * 判断是否需要检测更新,默认三天
+     * @param timeInterval 更新检测的最小时间间隔 (天)
+     * @return {boolean}
+     */
+
+    isNeedToCheck = (timeInterval = 3) =>{
+        return false
+    }
+
+
 }
 
 const hotUpdateUtil = new HotUpdateUtil();

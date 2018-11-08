@@ -202,7 +202,7 @@ class AfterSaleServicePage extends BasePage {
                     <UIText value={this.state.inputReason[this.state.pageType]}
                             style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
                 </View>
-                <View style={{ height: 90, backgroundColor: DesignRule.white }}>
+                <View style={{ backgroundColor: DesignRule.white }}>
                     <AutoExpandingInput
                         style={styles.inputTextStyle}
                         onChangeText={text => this.setState({ remark: text })}
@@ -212,15 +212,14 @@ class AfterSaleServicePage extends BasePage {
                         underlineColorAndroid={'transparent'}
                     />
                     <View style={{
-                        position: 'absolute',
-                        right: 5,
-                        bottom: 5
+                        alignItems: 'flex-end',
+                        marginBottom: 5
                     }}>
                         <UIText value={this.state.remark.length + '/180'}
                                 style={{
                                     color: DesignRule.textColor_mainTitle,
                                     fontSize: 13,
-                                    marginLeft: 16,
+                                    marginRight: 16,
                                     width: 50
                                 }}/>
                     </View>
@@ -287,7 +286,9 @@ class AfterSaleServicePage extends BasePage {
                 <BottomSingleSelectModal
                     isShow={this.state.isShowSingleSelctionModal}
                     detail={returnReasons}
-                    ref={(ref)=>{this.cancelModal = ref;}}
+                    ref={(ref) => {
+                        this.cancelModal = ref;
+                    }}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
                     }}
@@ -559,8 +560,9 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         backgroundColor: DesignRule.white,
+        marginTop: 4,
         fontSize: 14,
-        height: 80,
+        height: 80
 
     }
 });

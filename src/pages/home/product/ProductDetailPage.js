@@ -448,7 +448,9 @@ export default class ProductDetailPage extends BasePage {
                                 miniProgramJson={{
                                     title: `${name}`,
                                     dec: '商品详情',
-                                    thumImage: imgUrl,
+                                    thumImage: 'logo.png',
+                                    hdImageURL: imgUrl,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`,
                                     miniProgramPath: `/pages/index/index?type=99&id=${product.id}`
                                 }}/>
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>

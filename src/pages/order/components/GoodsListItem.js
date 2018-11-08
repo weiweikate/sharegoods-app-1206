@@ -39,7 +39,7 @@ const GoodsListItem = props => {
         callBack,
         // autoReceiveTime,
         deliverTime,//发货时间
-        orderType,
+        orderType
     } = props;
     this.state = { pageStateString: '27:45:45后自动取消订单' };
 
@@ -63,95 +63,95 @@ const GoodsListItem = props => {
     //28:45:45后自动取消订单
     this.renderMenu = () => {
         let nameArr = constants.viewOrderStatus[orderStatus].menuData;
-            if (orderStatus == 1) {
+        if (orderStatus == 1) {
 
-                if (StringUtils.isNoEmpty(outTradeNo)) {
-                    nameArr = [{
-                        id: 1,
-                        operation: '取消订单',
-                        isRed: false
-                    },
-                        {
-                            id: 3,
-                            operation: '继续支付',
-                            isRed: true
-                        }
-                    ];
-                } else {
-                    nameArr = [{
-                        id: 1,
-                        operation: '取消订单',
-                        isRed: false
-                    },
-                        {
-                            id: 2,
-                            operation: '去支付',
-                            isRed: true
-                        }
-                    ];
-                }
-                return (
-                    <View style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between'
-                    }}>
-                        <View style={{ marginLeft: 5, flexDirection: 'row' }}>
-                            <Text
-                                style={{ color: '#D51243', fontSize: 13 }}>{this.startCutDownTime2(shutOffTime)}</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            {nameArr.map((item, i) => {
-                                return <TouchableOpacity key={i} style={{
-                                    borderWidth: 1,
-                                    borderColor: item.isRed ? color.red : color.gray_DDD,
-                                    height: 30,
-                                    borderRadius: 10,
-                                    marginRight: 15,
-                                    justifyContent: 'center',
-                                    paddingLeft: 20,
-                                    paddingRight: 20
-                                }} onPress={() => {
-                                    operationMenuClick(item)
-                                }}>
-                                    <Text
-                                        style={{ color: item.isRed ? color.red : color.gray_666 }}>{item.operation}</Text>
-                                </TouchableOpacity>;
-                            })}
-                        </View>
-                    </View>
-                );
+            if (StringUtils.isNoEmpty(outTradeNo)) {
+                nameArr = [{
+                    id: 1,
+                    operation: '取消订单',
+                    isRed: false
+                },
+                    {
+                        id: 3,
+                        operation: '继续支付',
+                        isRed: true
+                    }
+                ];
             } else {
-                if ((orderType === 5 || orderType === 98) && orderStatus >= 4) {
-                    nameArr = [{
-                        id: 7,
-                        operation: '删除订单',
-                        isRed: false
-                    }];
-                }
-              return  <View style={{ flexDirection: 'row' }}>
-                {nameArr.map((item, i) => {
-                    return <TouchableOpacity key={i} style={{
-                        borderWidth: 1,
-                        borderColor: item.isRed ? color.red : color.gray_DDD,
-                        height: 30,
-                        borderRadius: 10,
-                        marginRight: 15,
-                        justifyContent: 'center',
-                        paddingLeft: 20,
-                        paddingRight: 20
-                    }} onPress={() => {
-                        operationMenuClick(item)
-                    }}>
-                        <Text
-                            style={{ color: item.isRed ? color.red : color.gray_666 }}>{item.operation}</Text>
-                    </TouchableOpacity>;
-
-                }
-                )}
-              </View>
+                nameArr = [{
+                    id: 1,
+                    operation: '取消订单',
+                    isRed: false
+                },
+                    {
+                        id: 2,
+                        operation: '去支付',
+                        isRed: true
+                    }
+                ];
             }
+            return (
+                <View style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                }}>
+                    <View style={{ marginLeft: 5, flexDirection: 'row' }}>
+                        <Text
+                            style={{ color: '#D51243', fontSize: 13 }}>{this.startCutDownTime2(shutOffTime)}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        {nameArr.map((item, i) => {
+                            return <TouchableOpacity key={i} style={{
+                                borderWidth: 1,
+                                borderColor: item.isRed ? color.red : color.gray_DDD,
+                                height: 30,
+                                borderRadius: 10,
+                                marginRight: 15,
+                                justifyContent: 'center',
+                                paddingLeft: 20,
+                                paddingRight: 20
+                            }} onPress={() => {
+                                operationMenuClick(item);
+                            }}>
+                                <Text
+                                    style={{ color: item.isRed ? color.red : color.gray_666 }}>{item.operation}</Text>
+                            </TouchableOpacity>;
+                        })}
+                    </View>
+                </View>
+            );
+        } else {
+            if ((orderType === 5 || orderType === 98) && orderStatus >= 4) {
+                nameArr = [{
+                    id: 7,
+                    operation: '删除订单',
+                    isRed: false
+                }];
+            }
+            return <View style={{ flexDirection: 'row' }}>
+                {nameArr.map((item, i) => {
+                        return <TouchableOpacity key={i} style={{
+                            borderWidth: 1,
+                            borderColor: item.isRed ? color.red : color.gray_DDD,
+                            height: 30,
+                            borderRadius: 10,
+                            marginRight: 15,
+                            justifyContent: 'center',
+                            paddingLeft: 20,
+                            paddingRight: 20
+                        }} onPress={() => {
+                            operationMenuClick(item);
+                        }}>
+                            <Text
+                                style={{ color: item.isRed ? color.red : color.gray_666 }}>{item.operation}</Text>
+                        </TouchableOpacity>;
+
+                    }
+                )}
+            </View>;
+        }
 
     };
     this.renderLine = () => {
@@ -171,7 +171,7 @@ const GoodsListItem = props => {
                 <GoodsGrayItem
                     key={i}
                     uri={orderProduct[i].imgUrl}
-                    gift={orderType==5||orderType==98}
+                    gift={orderType == 5 || orderType == 98}
                     goodsName={orderProduct[i].productName}
                     salePrice={orderProduct[i].price}
                     category={orderProduct[i].spec}
