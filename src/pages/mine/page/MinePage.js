@@ -20,10 +20,11 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import user from '../../../model/user';
 import arrowRight from '../res/homeBaseImg/icon3_07.png';
-import waitPay from '../res/homeBaseImg/icon_03-04.png';
-import waitDelivery from '../res/homeBaseImg/icon_03-05.png';
-import waitReceive from '../res/homeBaseImg/icon1-03.png';
-import hasFinished from '../res/homeBaseImg/icon3_03-06.png';
+import waitPay from '../res/homeBaseImg/icon_tool_wait_pay.png';
+import waitDelivery from '../res/homeBaseImg/icon_tool_wait_commit.png';
+import waitReceive from '../res/homeBaseImg/icon_tool_wait_ensure.png';
+import hasFinished from '../res/homeBaseImg/icon_tool_refund.png';
+
 import inviteFr from '../res/homeBaseImg/icon3_16.png';
 import coupons from '../res/homeBaseImg/icon3_16-09.png';
 import myData from '../res/homeBaseImg/icon3_16-10.png';
@@ -68,7 +69,7 @@ export default class MinePage extends BasePage {
             headImg: '',
             netFailedInfo: null,
             loadingState: PageLoadingState.success,
-            isRefreshing:false
+            isRefreshing: false
         };
     }
 
@@ -244,7 +245,11 @@ export default class MinePage extends BasePage {
                     }}>
                         <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Text style={{ color: DesignRule.textColor_secondTitle, fontSize: px2dp(18), includeFontPadding: false }}>
+                                <Text style={{
+                                    color: DesignRule.textColor_secondTitle,
+                                    fontSize: px2dp(18),
+                                    includeFontPadding: false
+                                }}>
                                     {`${user.nickname ? user.nickname : (user.phone ? user.phone : '未登陆')}`}
                                 </Text>
                                 <Image source={rightIcon}
@@ -376,7 +381,8 @@ export default class MinePage extends BasePage {
                     justifyContent: 'space-between'
                 }}>
                     <View style={{ flexDirection: 'row', marginLeft: 15, alignItems: 'center' }}>
-                        <UIText value={'我的订单'} style={{ fontSize: px2dp(16), color: DesignRule.textColor_secondTitle }}/>
+                        <UIText value={'我的订单'}
+                                style={{ fontSize: px2dp(16), color: DesignRule.textColor_secondTitle }}/>
                     </View>
                     <TouchableWithoutFeedback onPress={this.jumpToAllOrder}>
                         <View style={{ flexDirection: 'row', marginRight: 15, alignItems: 'center' }}>

@@ -26,7 +26,6 @@ export default class ShowHotView extends Component {
 
     componentDidMount() {
         this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
-
             this.waterfall.addItems(data || []);
         });
     }
@@ -42,6 +41,9 @@ export default class ShowHotView extends Component {
 
     refreshing(done) {
         setTimeout(() => {
+            this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
+                this.waterfall.addItems(data || []);
+            });
             done();
         }, 1000);
     }
@@ -88,6 +90,7 @@ export default class ShowHotView extends Component {
                     keyExtractor={(data) => this._keyExtractor(data)}
                     infiniting={(done) => this.infiniting(done)}
                     showsVerticalScrollIndicator={false}
+                    refreshing={(done) => this.refreshing(done)}
                 />
             </View>
         );
