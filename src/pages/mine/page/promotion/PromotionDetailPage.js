@@ -31,7 +31,6 @@ import DesignRule from 'DesignRule';
 const { px2dp } = ScreenUtils;
 type Props = {};
 import CommShareModal from '../../../../comm/components/CommShareModal'
-import DesignRule from '../../../../constants/DesignRule';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
 
 export default class PromotionDetailPage extends BasePage<Props> {
