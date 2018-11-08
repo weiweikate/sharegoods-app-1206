@@ -5,19 +5,19 @@ import tab from './tab';
 import other from './other';
 
 const res = {
-    button: {
+    button: {//按钮图片
         ...button
     },
-    placeholder:{
+    placeholder:{//网络错误。占未图
         ...placeholder
     },
-    share: {
+    share: {//分享相关图片
         ...share
     },
-    tab: {
+    tab: {//tabbar图标
         ...tab
     },
-    other: {
+    other: {//背景图片、线的图片
         ...other
     }
 };
