@@ -134,7 +134,7 @@ export default class MyCashAccountPage extends BasePage {
         let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions,renwu];
         Toast.showLoading();
         let arrData = this.currentPage == 1 ? [] : this.state.viewData;
-        MineApi.userBalanceQuery({ page: this.currentPage, size: 20, type: 2 }).then((response) => {
+        MineApi.userBalanceQuery({ page: this.currentPage, size: 20, type: 1 }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
             if (response.code == 10000) {

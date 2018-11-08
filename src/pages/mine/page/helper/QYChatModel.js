@@ -34,12 +34,12 @@ export default {
             groupId: 0,
             staffId: 0,
             title: '秀购客服',
-            userId: user.id || null,
+            userId: user.id + '',
             userIcon: user.headImg,
             nickName: user.nickname,
             device: DeviceInfo.getDeviceName(),
             systemVersion: DeviceInfo.getSystemVersion(),
-            phoneNum: user.phone
+            phoneNum: user.phone + ''
         };
 
         QYChatModule.qiYUChat(jsonParams);

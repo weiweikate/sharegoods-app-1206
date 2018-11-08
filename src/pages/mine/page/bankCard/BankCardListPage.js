@@ -25,7 +25,7 @@ import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
 import SettingTransactionModal from '../../components/SettingTransactionModal';
 import DesignRule from 'DesignRule';
-// import res from '../../../../comm/res';
+import res from '../../../../comm/res';
 
 const bankCardList = [bankCard1, bankCard2, bankCard3, bankCard4, bankCard5];
 
@@ -71,7 +71,7 @@ class BankCardListPage extends BasePage {
         headerStyle:{
             backgroundColor:'#383c45'
         },
-       // leftNavImage:CommTabImag.white_back_img,
+       leftNavImage:res.button.white_back_img,
         titleStyle:{
             color:'white'
         }

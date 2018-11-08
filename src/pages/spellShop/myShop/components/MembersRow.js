@@ -30,7 +30,7 @@ export default class MembersRow extends Component {
     };
 
     render() {
-        const dealerList = this.props.dealerList || [];
+        let dealerList = this.props.dealerList || [];
         return (<View style={styles.container}>
             <TouchableOpacity onPress={this.props.onPressAllMembers}
                               activeOpacity={1}
@@ -45,10 +45,14 @@ export default class MembersRow extends Component {
                 {
                     dealerList.map((item, index) => {
                         const { headImg, nickName } = item || {};
-                        if (index > 10) {
+                        if (index > 9) {
                             return;
                         }
-                        return (<View style={{ alignItems: 'center', marginBottom: (index >= 5) ? 16 : 0 }} key={index}>
+                        return (<View style={{
+                            alignItems: 'center',
+                            marginTop: (index >= 5) ? 0 : 9,
+                            marginBottom: (index >= 5) ? 24 : 20
+                        }} key={index}>
                             {headImg ? <Image source={{ uri: headImg }}
                                               style={styles.headerImg}/> :
                                 <View style={styles.headerImg}/>}
@@ -94,20 +98,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#dddddd'
     },
     membersContainer: {
-        marginHorizontal: ScreenUtils.autoSizeWidth(23),
+        marginHorizontal: ScreenUtils.autoSizeWidth(30),
         flexDirection: 'row',
         flexWrap: 'wrap'
     },
     headerImg: {
-        width: 28,
-        height: 28,
+        width: 40,
+        height: 40,
         backgroundColor: '#eee',
-        marginTop: 16,
-        borderRadius: 14
+        borderRadius: 20
     },
     name: {
         marginTop: 5,
-        width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(23) * 2) / 5,
+        width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(30) * 2) / 5,
         fontSize: 11,
         color: DesignRule.textColor_secondTitle,
         textAlign: 'center'

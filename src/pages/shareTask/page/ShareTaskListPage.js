@@ -24,19 +24,19 @@ import ShareTaskResultAlert from '../components/ShareTaskResultAlert';
 import RefreshLargeList from 'RefreshLargeList';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import taskApi from '../api/taskApi';
-import arrow_bottom from '../res/arrow_bottom.png';
-import arrow_top from '../res/arrow_top.png';
-import redEnvelope from '../res/redEnvelope.png';
-import task_bg from '../res/task_bg.png';
 import DesignRule from 'DesignRule';
 import RouterMap from 'RouterMap';
-
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import TimerMixin from 'react-timer-mixin';
 import DateUtils from '../../../utils/DateUtils';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import user from '../../../model/user';
 import CommShareModal from '../../../comm/components/CommShareModal';
+import res from '../res'
+const arrow_bottom =  res.button.arrow_bottom;
+const arrow_top =  res.button.arrow_top;
+const task_bg = res.task_bg;
+const redEnvelope = res.redEnvelope;
 type Props = {};
 export default class ShareTaskListPage extends BasePage<Props> {
 

@@ -38,14 +38,19 @@ export default class AssistantRow extends Component {
                 <View style={styles.listContainer}>
                     {
                         storeUserList.map((item, index) => {
-                            const { headImg, nickName } = item;
-                            return (<View style={styles.item} key={index}>
-                                {
-                                    headImg ? <Image source={{ uri: headImg }}
-                                                     style={[styles.itemHeader, { marginTop: 0 }]}/> :
-                                        <View style={styles.itemHeader}/>
-                                }
-                                <Text numberOfLines={1} style={styles.itemTitleText}>{nickName || ' '}</Text>
+                            const { headImg, nickName } = item || {};
+                            if (index > 9) {
+                                return;
+                            }
+                            return (<View style={{
+                                alignItems: 'center',
+                                marginTop: (index >= 5) ? 0 : 9,
+                                marginBottom: (index >= 5) ? 24 : 20
+                            }} key={index}>
+                                {headImg ? <Image source={{ uri: headImg }}
+                                                  style={styles.headerImg}/> :
+                                    <View style={styles.headerImg}/>}
+                                <Text numberOfLines={1} style={styles.name}>{nickName || ''}</Text>
                             </View>);
                         })
                     }
@@ -88,7 +93,9 @@ const styles = StyleSheet.create({
         height: 1
     },
     listContainer: {
-        flexDirection: 'row'
+        marginHorizontal: ScreenUtils.autoSizeWidth(30),
+        flexDirection: 'row',
+        flexWrap: 'wrap'
     },
     item: {
         justifyContent: 'center',
@@ -96,15 +103,15 @@ const styles = StyleSheet.create({
         marginLeft: 30,
         marginVertical: 15
     },
-    itemHeader: {
+    headerImg: {
         width: 40,
         height: 40,
-        backgroundColor: '#F6F6F6',
+        backgroundColor: '#eee',
         borderRadius: 20
     },
-    itemTitleText: {
-        marginTop: 10,
-        width: 40 + 20,
+    name: {
+        marginTop: 5,
+        width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(30) * 2) / 5,
         fontSize: 11,
         color: DesignRule.textColor_secondTitle,
         textAlign: 'center'
