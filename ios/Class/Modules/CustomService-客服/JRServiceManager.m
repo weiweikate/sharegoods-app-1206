@@ -16,7 +16,21 @@
 
 @implementation JRServiceManager
 SINGLETON_FOR_CLASS(JRServiceManager)
-//  groupId:0, staffId:0, title:'七鱼金融',
+
+-(void)qiYULogout{
+  [[QYSDK sharedSDK]logout:nil];
+}
+/**
+ * groupId:0,
+ * staffId:0,
+ * title:'七鱼金融',
+ * userId:用户id
+ * userIcon:用户头像,
+ * phoneNum:用户手机号,
+ * nickName:用户名称,
+ * device:手机型号
+ * systemVersion:手机系统版本
+ */
 -(void)qiYUChat:(id)josnData{
 //  NSDictionary *jsonDic = [NSJSONSerialization  JSONObjectWithData:josnData options:NSJSONReadingMutableLeaves error:nil];
   NSDictionary *jsonDic = josnData;
@@ -30,6 +44,66 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   
   self.sessionVC.groupId = [jsonDic[@"groupId"] integerValue];
   self.sessionVC.staffId = [jsonDic[@"staffId"] integerValue];
+  //设置当前用[JIRA] (XIUGOU-1360) 【老用户激活】修改客服电话户信息
+//  QYUserInfo * userInfo = [QYUserInfo alloc];
+//  userInfo.userId = jsonDic[@"userId"];
+//  NSArray * infoData = @[
+//                         @{@"userIcon":jsonDic[@"userIcon"]?jsonDic[@"userIcon"]:@""},
+//                         @{@"phoneNum":jsonDic[@"phoneNum"]?jsonDic[@"phoneNum"]:@""},
+//                         @{ @"nickName":jsonDic[@"nickName"]?jsonDic[@"nickName"]:@""},
+//                         @{@"device":jsonDic[@"device"]?jsonDic[@"device"]:@""},
+//                         @{@"systemVersion":jsonDic[@"systemVersion"]?jsonDic[@"systemVersion"]:@"",
+//                           @"version":
+//                           }
+//                        ];
+//  userInfo.data = [self arrToJsonString:infoData];
+//  [[QYSDK sharedSDK] setUserInfo:userInfo];
+  
+  QYUserInfo *userInfo = [[QYUserInfo alloc] init];
+  userInfo.userId = jsonDic[@"userId"];
+  NSMutableArray *array = [NSMutableArray new];
+  
+  NSMutableDictionary *dictRealName = [NSMutableDictionary new];
+  [dictRealName setObject:@"real_name" forKey:@"key"];
+  [dictRealName setObject:jsonDic[@"nickName"]?jsonDic[@"nickName"]:@"" forKey:@"value"];
+  [array addObject:dictRealName];
+  
+  NSMutableDictionary *dictMobilePhone = [NSMutableDictionary new];
+  [dictMobilePhone setObject:@"mobile_phone" forKey:@"key"];
+  [dictMobilePhone setObject:jsonDic[@"phoneNum"]?jsonDic[@"phoneNum"]:@"" forKey:@"value"];
+  [dictMobilePhone setObject:@(NO) forKey:@"hidden"];
+  [array addObject:dictMobilePhone];
+  
+  NSMutableDictionary *dictavatar = [NSMutableDictionary new];
+  [dictavatar setObject:@"avatar" forKey:@"key"];
+  [dictavatar setObject:jsonDic[@"userIcon"]?jsonDic[@"userIcon"]:@"" forKey:@"value"];
+  [array addObject:dictavatar];
+  
+  NSMutableDictionary *dictphoneNum = [NSMutableDictionary new];
+  [dictphoneNum setObject:@"phoneNum" forKey:@"key"];
+  [dictphoneNum setObject:jsonDic[@"phoneNum"]?jsonDic[@"phoneNum"]:@"" forKey:@"value"];
+  [array addObject:dictphoneNum];
+  
+  NSMutableDictionary *dictSystemVersion = [NSMutableDictionary new];
+  [dictSystemVersion setObject:@"systemVersion" forKey:@"key"];
+  [dictSystemVersion setObject:jsonDic[@"systemVersion"]?jsonDic[@"systemVersion"]:@"" forKey:@"value"];
+  [array addObject:dictSystemVersion];
+  
+  NSMutableDictionary *appVersion = [NSMutableDictionary new];
+  [appVersion setObject:@"appVersion" forKey:@"key"];
+  [appVersion setObject:kAppVersion forKey:@"value"];
+  [array addObject:dictSystemVersion];
+  
+  NSData *data = [NSJSONSerialization dataWithJSONObject:array
+                                                 options:0
+                                                   error:nil];
+  
+  if (data) {
+    userInfo.data = [[NSString alloc] initWithData:data
+                                          encoding:NSUTF8StringEncoding];
+  }
+  
+  [[QYSDK sharedSDK] setUserInfo:userInfo];
   
   JRBaseNavVC *nav =[[JRBaseNavVC alloc] initWithRootViewController:self.sessionVC];
   self.sessionVC.navigationItem.leftBarButtonItem =
@@ -77,14 +151,11 @@ SINGLETON_FOR_CLASS(JRServiceManager)
  *  @param count 未读数
  */
 - (void)onUnreadCountChanged:(NSInteger)count{
-  
-  
 }
 /**
  *  会话列表变化；非平台电商用户，只有一个会话项，平台电商用户，有多个会话项
  */
 - (void)onSessionListChanged:(NSArray<QYSessionInfo*> *)sessionList{
-  
 }
 /**
  *  收到消息
@@ -92,4 +163,17 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 - (void)onReceiveMessage:(QYMessageInfo *)message{
   
 }
+-(NSString *)arrToJsonString:(NSArray *)arr{
+    NSData *data = [NSJSONSerialization dataWithJSONObject:self
+                                                   options:NSJSONReadingMutableLeaves | NSJSONReadingAllowFragments
+                                                     error:nil];
+    
+    if (data == nil) {
+      return nil;
+    }
+    NSString *string = [[NSString alloc] initWithData:data
+                                             encoding:NSUTF8StringEncoding];
+    return string;
+}
+
 @end

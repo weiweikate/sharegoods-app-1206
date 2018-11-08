@@ -35,7 +35,7 @@ const CashAccountItem = props => {
                 <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row' }}>
                     <View
                         style={{ marginRight: 15, height: 60, justifyContent: 'space-between' }}>
-                        <UIText value={capital}  style={{ color: capitalRed ? color.red : color.blue_222, fontSize: 16 }}/>
+                        <UIText value={capital}  style={{ color: !capitalRed ? color.red : color.blue_222, fontSize: 16 }}/>
                         <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                             <View style={{ height: 10, width: 7 }}/>
                         </View>

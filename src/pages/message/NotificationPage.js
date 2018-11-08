@@ -15,6 +15,7 @@ import arrorw_rightIcon from '../order/res/arrow_right.png';
 import MessageApi from './api/MessageApi';
 import Toast from '../../utils/bridge';
 import DesignRule from 'DesignRule';
+import emptyIcon from './src/message_empty.png'
 
 
 export default class NotificationPage extends BasePage {
@@ -159,6 +160,8 @@ export default class NotificationPage extends BasePage {
                     onLoadMore={this.onLoadMore}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
+                    emptyIcon={emptyIcon}
+                    emptyTip={'暂无消息通知~'}
                 />
             </View>
         );

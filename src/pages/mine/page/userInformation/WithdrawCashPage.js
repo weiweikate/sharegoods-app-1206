@@ -69,14 +69,15 @@ class WithdrawCashPage extends BasePage {
     renderButtom = () => {
         return (
             <UIButton
-                value={'提现'}
+                value={'审核提现'}
                 style={{
                     marginTop: 16,
                     width: ScreenUtils.width - 96,
                     height: 48,
                     marginLeft: 48,
                     marginRight: 48,
-                    backgroundColor: DesignRule.mainColor
+                    backgroundColor: StringUtils.isNoEmpty(this.state.card_no)?DesignRule.mainColor:'#CCCCCC',
+                    borderRadius:25
                 }}
                 onPress={() => this.commit()}/>
         );

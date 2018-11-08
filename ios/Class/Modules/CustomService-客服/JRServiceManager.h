@@ -18,4 +18,5 @@ SINGLETON_FOR_HEADER(JRServiceManager)
  清理缓存
  */
 -(void)onCleanCache;
+-(void)qiYULogout;
 @end

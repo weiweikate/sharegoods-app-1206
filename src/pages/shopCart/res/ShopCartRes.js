@@ -1,14 +1,13 @@
-import selectImg from '../../../comm/res/selected_circle_red.png';
-import unSelectImg from '../../../comm/res/unselected_circle.png';
+import res from '../../../comm/res';
 import noGoodImg from './gouwuche_icon_qiangguang_nor.png';
 import invalidGoodImg from './gouwuche_icon_shixiao_nor.png';
-import kongShopCartImg from './gowuche_icon.png'
+import kongShopCartImg from './gowuche_icon.png';
 
 const ShopCartRes = {
-    selectImg: selectImg,
-    unSelectImg: unSelectImg,
+    selectImg: res.button.selected_circle_red,
+    unSelectImg: res.button.unselected_circle,
     noGoodImg: noGoodImg,
     invalidGoodImg: invalidGoodImg,
-    kongShopCartImg:kongShopCartImg
+    kongShopCartImg: kongShopCartImg
 };
 export default ShopCartRes;

@@ -21,6 +21,7 @@ import DeviceInfo from 'react-native-device-info';
 import bridge from '../../../../utils/bridge';
 import CommModal from 'CommModal';
 import DesignRule from 'DesignRule';
+import QYChatUtil from '../helper/QYChatModel';
 
 /**
  * @author luoyongming
@@ -204,6 +205,7 @@ class SettingPage extends BasePage {
                     shopCartStore.data = [];
                     this.$navigateReset();
                     MineApi.signOut();
+                    QYChatUtil.qiYULogout()
                     this.$loadingDismiss();
 
                 }}

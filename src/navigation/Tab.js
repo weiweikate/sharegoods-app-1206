@@ -5,11 +5,9 @@ import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
 import SpellShop from '../pages/spellShop/SpellShopPage';
 import { StyleSheet, Image } from 'react-native';
-import CommTabImag from '../comm/res/CommTabImag';
+import res from '../comm/res';
 import ScreenUtils from '../utils/ScreenUtils';
 import ShowListPage from '../pages/show/ShowListPage';
-import discoverImg from '../comm/res/tab_discover_selected.png';
-import undiscoverImg from '../comm/res/tab_discover_unselected.png';
 import user from '../model/user';
 import RouterMap from './RouterMap';
 import DesignRule from 'DesignRule';
@@ -23,11 +21,11 @@ export const TabNav = TabNavigator(
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
                         return (
-                            <Image style={styles.tabBarIcon} source={CommTabImag.home_Tab_img.img_Sel}/>
+                            <Image style={styles.tabBarIcon} source={res.tab.home_s}/>
                         );
                     }
                     return (
-                        <Image style={styles.tabBarIcon} source={CommTabImag.home_Tab_img.img_Nor}/>
+                        <Image style={styles.tabBarIcon} source={res.tab.home_n}/>
                     );
                 }
             }
@@ -35,15 +33,15 @@ export const TabNav = TabNavigator(
         ShowListPage: {
             screen: ShowListPage,
             navigationOptions: {
-                tabBarLabel: '发现',
+                tabBarLabel: '秀场',
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
                         return (
-                            <Image style={styles.tabBarIcon} source={discoverImg}/>
+                            <Image style={styles.tabBarIcon} source={res.tab.discover_s}/>
                         );
                     }
                     return (
-                        <Image style={styles.tabBarIcon} source={undiscoverImg}/>
+                        <Image style={styles.tabBarIcon} source={res.tab.discover_n}/>
                     );
                 }
             }
@@ -55,11 +53,11 @@ export const TabNav = TabNavigator(
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
                         return (
-                            <Image style={styles.tabBarIcon} source={CommTabImag.spellShop_Tab_img.img_Sel}/>
+                            <Image style={styles.tabBarIcon} source={res.tab.group_s}/>
                         );
                     }
                     return (
-                        <Image style={styles.tabBarIcon} source={CommTabImag.spellShop_Tab_img.img_Nor}/>
+                        <Image style={styles.tabBarIcon} source={res.tab.group_n}/>
                     );
                 }
             }
@@ -71,11 +69,11 @@ export const TabNav = TabNavigator(
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
                         return (
-                            <Image style={styles.tabBarIcon} source={CommTabImag.shopCart_Tab_img.img_Sel}/>
+                            <Image style={styles.tabBarIcon} source={res.tab.cart_s}/>
                         );
                     }
                     return (
-                        <Image style={styles.tabBarIcon} source={CommTabImag.shopCart_Tab_img.img_Nor}/>
+                        <Image style={styles.tabBarIcon} source={res.tab.cart_n}/>
                     );
                 }
             }
@@ -87,11 +85,11 @@ export const TabNav = TabNavigator(
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
                         return (
-                            <Image style={styles.tabBarIcon} source={CommTabImag.mine_Tab_img.img_Sel}/>
+                            <Image style={styles.tabBarIcon} source={res.tab.mine_s}/>
                         );
                     }
                     return (
-                        <Image style={styles.tabBarIcon} source={CommTabImag.mine_Tab_img.img_Nor}/>
+                        <Image style={styles.tabBarIcon} source={res.tab.mine_n}/>
                     );
                 },
                 tabBarOnPress: (tab) => {
