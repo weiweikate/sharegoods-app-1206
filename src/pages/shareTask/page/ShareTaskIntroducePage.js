@@ -26,8 +26,9 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import taskApi from '../api/taskApi';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import user from '../../../model/user';
-import banner from '../res/banner.png';
+import res from '../res';
 import DesignRule from 'DesignRule';
+const banner = res.banner;
 
 type Props = {};
 export default class ShareTaskIntroducePage extends BasePage<Props> {
