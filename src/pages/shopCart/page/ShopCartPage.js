@@ -51,7 +51,8 @@ export default class ShopCartPage extends BasePage {
     // 导航配置
     $navigationBarOptions = {
         title: '购物车',
-        leftNavItemHidden: true
+        leftNavItemHidden: true,
+
 
     };
 
