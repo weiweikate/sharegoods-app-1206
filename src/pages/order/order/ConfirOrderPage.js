@@ -27,6 +27,7 @@ import MineApi from '../../mine/api/MineApi';
 import API from '../../../api';
 import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
+import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 
 // let oldViewData, oldPriceList;
 export default class ConfirOrderPage extends BasePage {
@@ -685,6 +686,12 @@ export default class ConfirOrderPage extends BasePage {
                     let data = res.data;
                     user.saveUserInfo(data);
                 }).catch(err => {
+                    if(err.code===54001){
+                        this.$toastShow('商品库存不足！');
+                        shopCartCacheTool.getShopCartGoodsListData();
+                        this.$navigateBack()
+                    }
+
                 });
 
                 this.replaceRouteName(data);

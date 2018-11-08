@@ -15,6 +15,6 @@ const button = {
     arrow_bottom: require('./arrow_bottom.png'),//朝下、灰色箭头
     arrow_top: require('./arrow_top.png'),//朝上、灰色箭头
     cancel_white_circle: require('./cancel_white_circle.png'),//白色圆形取消按钮
-
+    white_back_img:require('./Pin_Left.png')
 };
 export default button;
