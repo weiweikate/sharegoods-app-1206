@@ -33,7 +33,6 @@ import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.meeruu.sharegoods.utils.DataCleanManager;
-import com.qiyukf.unicorn.api.Unicorn;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -378,10 +377,5 @@ public class CommModule extends ReactContextBaseJavaModule {
         } catch (Exception e) {
             LogUtils.d(e.getMessage());
         }
-    }
-
-    @ReactMethod
-    public void qiYULogout() {
-        Unicorn.logout();
     }
 }
