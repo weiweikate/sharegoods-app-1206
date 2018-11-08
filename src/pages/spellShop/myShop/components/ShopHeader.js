@@ -16,7 +16,7 @@ import {
 const SCREEN_WIDTH = Dimensions.get('window').width;
 import HeaderBarBgImg from '../res/txbg_02.png';
 import WhiteBtImg from '../res/dz_03-02.png';
-import RingImg from '../res/headBg.png';
+// import RingImg from '../res/headBg.png';
 import StarImg from '../res/dj_03.png';
 import CCZImg from '../res/ccz_03.png';
 import ProgressImg from '../res/jdt_05.png';

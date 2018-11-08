@@ -169,7 +169,7 @@ export default class SetShopNamePage extends BasePage {
                                    underlineColorAndroid={'transparent'}
                                    placeholder={'请输入店铺名称'}
                                    blurOnSubmit={false}
-                                   style={[styles.textInput, { color: this.state.text ? DesignRule.textColor_mainTitle : '#c8c8c8' }]}/>
+                                   style={[styles.textInput, { color: DesignRule.textColor_mainTitle }]}/>
                     </View>
 
                     {
@@ -259,8 +259,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     btnRow: {
-        height: 48,
-        borderRadius: 5,
+        height: 50,
+        borderRadius: 25,
         backgroundColor: DesignRule.mainColor,
         marginHorizontal: 43,
         marginTop: ScreenUtils.autoSizeHeight(123),
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     btnTitle: {
-        fontSize: 13,
+        fontSize: 17,
         color: 'white'
     }
 });
