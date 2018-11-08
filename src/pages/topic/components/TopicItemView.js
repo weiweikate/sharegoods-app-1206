@@ -98,7 +98,7 @@ const Styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     itemTopImageStyle: {
-        // backgroundColor: 'red'
+        // backgroundColor: DesignRule.mainColor
 
     },
     itemTipBgViewStyle: {

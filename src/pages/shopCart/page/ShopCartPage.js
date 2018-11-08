@@ -190,7 +190,6 @@ export default class ShopCartPage extends BasePage {
 
     _gotoLookAround = () => {
         this.$navigateReset();
-
     };
     _renderListView = () => {
         const tempArr = this.ds.cloneWithRows(shopCartStore.cartData);
@@ -384,7 +383,7 @@ export default class ShopCartPage extends BasePage {
                                 <UIImage
                                     source={ShopCartRes.invalidGoodImg}
                                     style={{
-                                        // backgroundColor:'red',
+                                        // backgroundColor:DesignRule.mainColor,
                                         position: 'absolute',
                                         marginLeft: 55,
                                         width: 60,

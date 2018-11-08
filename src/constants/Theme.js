@@ -267,7 +267,7 @@ const ui = {
         default: {
             badge: {
                 position: 'absolute',
-                backgroundColor: 'red',
+                backgroundColor: DesignRule.mainColor,
                 height: 20,
                 width: 20,
                 borderRadius: 10,
@@ -842,7 +842,7 @@ const ui = {
                 width: 124,
                 height: 36,
                 borderRadius: 2,
-                // backgroundColor: 'red',
+                // backgroundColor: DesignRule.mainColor,
                 borderWidth: 1,
                 borderColor: '#EB2224',
                 justifyContent: 'center',

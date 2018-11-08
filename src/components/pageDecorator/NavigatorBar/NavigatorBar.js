@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: DesignRule.textColor_mainTitle,
         backgroundColor: 'transparent'
-        // backgroundColor:'red'
+        // backgroundColor:DesignRule.mainColor
     },
     left: {
         position: 'absolute',
