@@ -17,6 +17,7 @@ const colors = {
     mainColor: '#F00006',//主色调
     white: '#FFFFFF',
     bgColor: '#F7F7F7',//背景色
+    bgColor_Type2: '#FF1A54',
     bgColor_btn: '#F00006',//红色按钮背景色
     bgColor_btnSelect: '#EF154C',//红色按钮选中状态背景色
     bgColor_LVLabel: '#F2D3A2',//等级标签背景色
