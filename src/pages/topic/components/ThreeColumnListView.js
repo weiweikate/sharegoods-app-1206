@@ -150,7 +150,7 @@ const Styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     itemTopImageStyle: {
-        backgroundColor: 'red',
+        backgroundColor: DesignRule.mainColor,
 
         width: ScreenUtils.width / 3 - 16,
         height: ScreenUtils.width / 3 - 16

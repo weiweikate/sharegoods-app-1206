@@ -92,7 +92,7 @@ export default class VersionUpdateModal extends React.Component {
                     <ProgressBarAndroid
                         styleAttr={'Horizontal'}
                         indeterminate={false}
-                        color={'#d51243'}
+                        color={DesignRule.mainColor}
                         style={{
                             marginTop: 50,
                             marginLeft: 20,
@@ -129,7 +129,7 @@ export default class VersionUpdateModal extends React.Component {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 height: 45,
-                                backgroundColor: '#d51243',
+                                backgroundColor: DesignRule.mainColor,
                                 borderBottomRightRadius: 10,
                                 borderBottomLeftRadius: this.props.forceUpdate ? 10 : 0
                             }}

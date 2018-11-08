@@ -44,7 +44,7 @@ export default class RecentSearchView extends Component {
             tagList.push(
                 <View key={index}>
                     <TouchableOpacity
-                        style={[styles.btn, { backgroundColor: isSelected ? '#D51243' : '#EEEEEE' }]}
+                        style={[styles.btn, { backgroundColor: isSelected ? DesignRule.mainColor : '#EEEEEE' }]}
                         onPress={() => {
                             this._clickItemAction(index);
                         }}>

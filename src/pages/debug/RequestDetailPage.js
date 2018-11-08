@@ -151,10 +151,10 @@ export default class RequestDetailPage extends BasePage {
                 this.foldAtIndex(index);
             }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={{ color: 'red' }}>{key}:</Text>
+                    <Text style={{ color: DesignRule.mainColor }}>{key}:</Text>
                     {
                         index < 3 ? null : <View>
-                            <Text style={{ color: 'red' }}>{this.state[index] ? '展开' : '收起'}</Text>
+                            <Text style={{ color: DesignRule.mainColor }}>{this.state[index] ? '展开' : '收起'}</Text>
                         </View>
                     }
                 </View>

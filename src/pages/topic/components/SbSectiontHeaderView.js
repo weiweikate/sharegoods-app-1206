@@ -10,6 +10,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
 import SubSwichView from './SubSwichView';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
+import DesignRule from 'DesignRule';
 
 class SbSectiontHeaderView extends Component {
 
@@ -43,7 +44,7 @@ const SbSectiontHeaderViewStyles = StyleSheet.create({
     topImageStyle: {
         width: ScreenUtils.width,
         height: ScreenUtils.width * 188 / 375,
-        backgroundColor: 'red'
+        backgroundColor: DesignRule.mainColor
     }
 });
 

@@ -260,7 +260,7 @@ class SettingPage extends BasePage {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 height: 45,
-                                backgroundColor: '#d51243',
+                                backgroundColor: DesignRule.mainColor,
                                 borderBottomRightRadius: 10
                             }}
                             onPress={() => {

@@ -117,6 +117,7 @@ export default class CategorySearchPage extends BasePage {
                         width: bannerW + 20,
                         flexDirection: 'column',
                         backgroundColor: 'white',
+                        paddingTop: 10,
                         height: ScreenUtils.height - 60 - ScreenUtils.headerHeight //屏幕高减去搜索框以及头部高
                     }}>
                         <ViewPager swiperShow={this.state.swiperShow && this.state.bannerData.length > 0}
@@ -140,15 +141,13 @@ export default class CategorySearchPage extends BasePage {
                                    style={{ marginBottom: 10 }}
                         />
                         <SectionList style={{
-                            marginTop: 10,
+                            marginTop: this.state.bannerData.length > 0 ? 10 : 0,
                             marginLeft: 10,
                             marginRight: 10
-                        }}
-                                     contentContainerStyle={{
-                                         flexWrap: 'wrap',
-                                         flexDirection: 'row'
-                                     }}
-                                     renderItem={this._sectionItem}
+                        }} contentContainerStyle={{
+                            flexWrap: 'wrap',
+                            flexDirection: 'row'
+                        }} renderItem={this._sectionItem}
                                      renderSectionHeader={this._sectionHeader}
                                      ListFooterComponent={this._listFooter}
                                      sections={this.state.sectionArr}
@@ -170,7 +169,7 @@ export default class CategorySearchPage extends BasePage {
                 <View style={{
                     height: 45,
                     width: 2,
-                    backgroundColor: item.index === this.state.leftIndex ? '#D51243' : '#EEEEEE'
+                    backgroundColor: item.index === this.state.leftIndex ? DesignRule.mainColor : '#EEEEEE'
                 }}/>
                 <View style={{
                     flex: 1,
@@ -324,9 +323,19 @@ export default class CategorySearchPage extends BasePage {
                     marginTop: 30,
                     marginBottom: 30
                 }}>
-                    <View style={{ height: 0.7, width: 20, backgroundColor: DesignRule.textColor_instruction, marginRight: 10 }}/>
+                    <View style={{
+                        height: 0.7,
+                        width: 20,
+                        backgroundColor: DesignRule.textColor_instruction,
+                        marginRight: 10
+                    }}/>
                     <UIText value={'没有更多啦～'} style={{ fontSize: 12, color: DesignRule.textColor_instruction }}/>
-                    <View style={{ height: 0.7, width: 20, backgroundColor: DesignRule.textColor_instruction, marginLeft: 10 }}/>
+                    <View style={{
+                        height: 0.7,
+                        width: 20,
+                        backgroundColor: DesignRule.textColor_instruction,
+                        marginLeft: 10
+                    }}/>
                 </View> : null
         );
     };

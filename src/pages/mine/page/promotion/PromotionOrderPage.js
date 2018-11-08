@@ -105,11 +105,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: px2dp(5),
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         borderWidth: px2dp(0.5)
     },
     buttonTextStyle: {
-        color: '#D51243',
+        color: DesignRule.mainColor,
         fontSize: px2dp(16)
     }
 });

@@ -83,16 +83,16 @@ export default class ShopMessageRow extends Component {
                     <TouchableOpacity onPress={() => {
                         this.props.rejectAction && this.props.rejectAction(item);
                     }}
-                                      style={[styles.selectText, { borderWidth: 0.5, borderColor: 'red' }]}>
+                                      style={[styles.selectText, { borderWidth: 0.5, borderColor: DesignRule.mainColor }]}>
                         <Text style={{
                             fontSize: 16,
-                            color: 'red'
+                            color: DesignRule.mainColor
                         }}>拒绝</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         this.props.allowAction && this.props.allowAction(item);
                     }}
-                                      style={[styles.selectText, { backgroundColor: 'red' }]}>
+                                      style={[styles.selectText, { backgroundColor: DesignRule.mainColor }]}>
                         <Text style={{
                             fontSize: 16,
                             color: 'white'

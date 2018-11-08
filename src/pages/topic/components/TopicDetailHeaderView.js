@@ -152,7 +152,7 @@ export default class TopicDetailHeaderView extends Component {
                         }}>{tittle}</Text>
                         {activityType === 3 ?
                             <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
-                                <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
+                                <Text style={{ color: DesignRule.mainColor, fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
                                 <Text style={{
                                     marginLeft: 5,
                                     color: '#BBBBBB',
@@ -161,7 +161,7 @@ export default class TopicDetailHeaderView extends Component {
                                 }}>{`￥${oldPrice}`}</Text>
                                 <Text style={{
                                     marginLeft: 5,
-                                    backgroundColor: 'red',
+                                    backgroundColor: DesignRule.mainColor,
                                     color: 'white',
                                     fontSize: 10, paddingHorizontal: 5
                                 }}>{levelTypeName}</Text>
@@ -200,7 +200,7 @@ export default class TopicDetailHeaderView extends Component {
                         marginVertical: 16,
                         alignItems: 'center'
                     }}>
-                        <Text style={{ color: '#D51243', fontSize: 13 }}>服务</Text>
+                        <Text style={{ color: DesignRule.mainColor, fontSize: 13 }}>服务</Text>
                         <Text style={{
                             marginLeft: 11,
                             color: DesignRule.textColor_secondTitle,

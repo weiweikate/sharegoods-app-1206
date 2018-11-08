@@ -135,13 +135,13 @@ let styles = StyleSheet.create({
         marginBottom: 16
     },
     activityIndex: {
-        color: '#D51243',
+        color: DesignRule.mainColor,
         fontSize: px2dp(14),
         fontWeight: '600',
         marginBottom: 15
     },
     line: {
-        backgroundColor: '#D51243',
+        backgroundColor: DesignRule.mainColor,
         width: 30,
         height: 1
     }
