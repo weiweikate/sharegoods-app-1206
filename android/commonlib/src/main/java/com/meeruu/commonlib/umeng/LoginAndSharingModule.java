@@ -12,7 +12,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -374,7 +373,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     }
 
 
-
     public static void getBitmap(final Context context, final ShareImageBean shareImageBean, final Callback success, final Callback fail) {
         Fresco.initialize(context);
 
@@ -555,6 +553,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
                 os.flush();
                 os.close();
+                long currentTime = System.currentTimeMillis();
                 Uri uri = Uri.fromFile(file);
                 Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 intent.setData(uri);
