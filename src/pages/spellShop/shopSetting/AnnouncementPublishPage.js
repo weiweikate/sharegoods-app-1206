@@ -57,7 +57,7 @@ export default class AnnouncementPublishPage extends BasePage {
         const color = { color: this.state.text ? DesignRule.textColor_mainTitle : DesignRule.textColor_instruction };
         return (
             <View style={styles.container}>
-                <ScrollView style={{ backgroundColor: DesignRule.white }}>
+                <ScrollView style={{ backgroundColor: 'white' }}>
                     <View style={styles.gap}/>
                     <View style={styles.bgContainer}>
                         <View style={styles.topBar}>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     },
     barTitle: {
         fontSize: 15,
-        color: DesignRule.white
+        color: 'white'
     },
     textInputContainer: {
         width: SCREEN_WIDTH - 30,
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: SCREEN_WIDTH,
         alignItems: 'center',
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     btnRow: {
         marginTop: 44,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     },
     okTitle: {
         fontSize: 16,
-        color: DesignRule.white
+        color: 'white'
     },
     canCelBtn: {
         justifyContent: 'center',

@@ -10,6 +10,7 @@ import { ShowHotModules } from './Show'
 import res from '../../comm/res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
+import DesignRule from 'DesignRule';
 
 const HotItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <ImageBackground style={styles.imgBack} source={{uri: item.img}}>
@@ -78,7 +79,7 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     title: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
         fontWeight: '600'
     },

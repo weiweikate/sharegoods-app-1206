@@ -11,6 +11,7 @@ import user from '../../../model/user';
 import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import userOrderNum from '../../../model/userOrderNum';
+import DesignRule from 'DesignRule';
 
 export default class MyOrdersListView extends Component {
     constructor(props) {
@@ -74,7 +75,7 @@ export default class MyOrdersListView extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1, backgroundColor: '#f7f7f7' }}>
+            <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
                 <RefreshList
                     data={this.state.viewData}
                     renderItem={this.renderItem}

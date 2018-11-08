@@ -9,6 +9,7 @@ import {
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
+import DesignRule from 'DesignRule';
 
 export default class OpenShopSuccessPage extends BasePage {
 
@@ -42,7 +43,7 @@ export default class OpenShopSuccessPage extends BasePage {
                     <TouchableOpacity
                         onPress={this._click}
                         style={{
-                            backgroundColor: 'red',
+                            backgroundColor: DesignRule.mainColor,
                             width: 109,
                             height: 49,
                             alignItems: 'center',

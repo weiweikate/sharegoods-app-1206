@@ -23,6 +23,7 @@ import StringUtils from '../../../../utils/StringUtils';
 import MineApi from '../../api/MineApi';
 import Modal from 'CommModal';
 const rightIcon = res.button.tongyon_icon_check_green;
+import DesignRule from 'DesignRule';
 /**
  * @author chenxiang
  * @date on 2018/9/18
@@ -118,7 +119,7 @@ export default class HelperFeedbackPage extends BasePage {
             console.log(res);
             if (res.code == 10000) {
                 this.setState({ isShowFinishModal: true });
-
+                this.finishModal && this.finishModal.open();
             } else {
                 this.$toastShow(res.msg);
             }
@@ -137,6 +138,9 @@ export default class HelperFeedbackPage extends BasePage {
                 transparent={true}
                 onRequestClose={() => {
                 }}
+                ref={(ref)=>{
+                    this.finishModal = ref;
+                }}
                 visible={this.state.isShowFinishModal}>
                 <View style={{ flex: 1, width: ScreenUtils.width }}>
                     <View style={{
@@ -151,7 +155,7 @@ export default class HelperFeedbackPage extends BasePage {
                     }}>
                         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <UIImage source={rightIcon} style={{ width: 70, height: 70 }}/>
-                            <UIText value={'提交成功！'} style={{ fontSize: 15, color: '#222222', marginTop: 10 }}/>
+                            <UIText value={'提交成功！'} style={{ fontSize: 15, color: DesignRule.textColor_mainTitle, marginTop: 10 }}/>
                             <UIText value={`您的反馈我们会认真查看`} style={{
                                 fontSize: 11,
                                 color: '#c6c6c6',
@@ -181,7 +185,7 @@ export default class HelperFeedbackPage extends BasePage {
                                 <Text
                                     style={{
                                         fontSize: 15,
-                                        color: '#222222'
+                                        color: DesignRule.textColor_mainTitle
                                     }}>确定</Text>
                             </TouchableOpacity>
                         </View>
@@ -239,7 +243,7 @@ export default class HelperFeedbackPage extends BasePage {
 
                         <TouchableOpacity style={styles.modalContainer}
                                           onPress={() => this.setState({ showModal: true })}>
-                            <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>请选择问题类型</Text>
+                            <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>请选择问题类型</Text>
                             <Image source={arrowUp} style={{ width: 15, height: 15, marginRight: 10 }}/>
                         </TouchableOpacity>
                         <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
@@ -249,7 +253,7 @@ export default class HelperFeedbackPage extends BasePage {
                                                       activeOpacity={0.6}
                                                       onPress={() => this.selCourse(item.value, item.detailId)}>
                                         <Text style={{
-                                            color: i == this.state.selectIndex ? '#e60012' : '#222222',
+                                            color: i == this.state.selectIndex ? '#e60012' : DesignRule.textColor_mainTitle,
                                             fontSize: 15,
                                             marginLeft: 15
                                         }}>{item.value}</Text>
@@ -280,11 +284,11 @@ export default class HelperFeedbackPage extends BasePage {
                         justifyContent: 'space-between',
                         alignItems: 'center'
                     }} onPress={() => this.setState({ showModal: true })}>
-                        <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>{this.state.course}</Text>
+                        <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>{this.state.course}</Text>
                         <Image source={arrowDown} style={{ width: 15, height: 15, marginRight: 10 }}/>
                     </TouchableOpacity>
                     <View style={styles.containerView1}>
-                        <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>详细说明</Text>
+                        <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>详细说明</Text>
                     </View>
                     <View style={{ height: 130, backgroundColor: 'white' }}>
                         <AutoExpandingInput
@@ -298,7 +302,7 @@ export default class HelperFeedbackPage extends BasePage {
                         <Text style={{ position: 'absolute', bottom: 10, right: 10 }}>{this.state.textLength}/90</Text>
                     </View>
                     <View style={styles.containerView2}>
-                        <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>上传图片</Text>
+                        <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>上传图片</Text>
                     </View>
                     <View style={styles.containerView3}>
                         {this.state.imageArr.map((item, index) => {

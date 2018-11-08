@@ -131,7 +131,7 @@ export default class AccountSettingPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         flexDirection: 'column',
         marginTop: 11
     },
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingLeft: 21,
         paddingRight: 23,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         height: 44,
         alignItems: 'center'
     },

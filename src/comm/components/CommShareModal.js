@@ -270,7 +270,7 @@ export default class CommShareModal extends React.Component {
                     <Animated.View style={{
                         transform: [{ translateY: this.state.y }],
                         paddingBottom: ScreenUtils.safeBottom,
-                        backgroundColor: '#FFFFFF'
+                        backgroundColor: 'white'
                     }}>
                         <View style={[styles.contentContainer]}>
                             <View style={styles.header}>

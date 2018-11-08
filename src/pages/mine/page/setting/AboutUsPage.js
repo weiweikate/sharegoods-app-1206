@@ -19,7 +19,7 @@ export default class AboutUsPage extends BasePage {
 
     _render() {
         return (<ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-            <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', backgroundColor: DesignRule.white }}>
+            <View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', backgroundColor: 'white' }}>
                 <Image source={Logo} style={{ height: 70, width: 70, marginTop: 30 }}/>
                 <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginTop: 30 }}>公司简介</Text>
                 <Text style={{

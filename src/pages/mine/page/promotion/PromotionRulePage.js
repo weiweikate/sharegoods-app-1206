@@ -17,6 +17,8 @@ import {
 } from "react-native";
 import BasePage from "../../../../BasePage";
 import ScreenUtils from "../../../../utils/ScreenUtils";
+import DesignRule from 'DesignRule';
+
 const { px2dp, } = ScreenUtils;
 
 type Props = {};
@@ -78,14 +80,14 @@ const styles = StyleSheet.create({
         height:px2dp(75)
     },
     headerTextStyle:{
-        color:'#333333',
+        color:DesignRule.textColor_mainTitle,
         fontSize:px2dp(16)
     },
     rulesWrapper:{
         padding:px2dp(15)
     },
     rulesTextStyle:{
-        color:'#222222',
+        color:DesignRule.textColor_mainTitle,
         fontSize:px2dp(12)
     }
 });

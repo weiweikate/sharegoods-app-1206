@@ -144,7 +144,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
     }
 
     renderItemSeparator = () => {
-        return <View style={{ height: 7, backgroundColor: '#F7F7F7' }}/>;
+        return <View style={{ height: 7, backgroundColor: DesignRule.bgColor }}/>;
     };
 
     _renderEndTaskView(recieveMoney) {
@@ -218,12 +218,12 @@ export default class ShareTaskListPage extends BasePage<Props> {
                     height: autoSizeWidth(55),
                     flexDirection: 'row',
                     alignItems: 'center',
-                    borderBottomColor: '#F7F7F7',
+                    borderBottomColor: DesignRule.bgColor,
                     borderBottomWidth: 1
                 }}>
                     <Text style={{
                         includeFontPadding: false,
-                        color: '#666666',
+                        color: DesignRule.textColor_secondTitle,
                         fontSize: autoSizeWidth(12),
                         marginLeft: autoSizeWidth(15),
                         flex: 1
@@ -294,7 +294,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                                     <View style={{ flexDirection: 'row' }}>
                                         <Image source={redEnvelope} style={{ height: 14, width: 14, marginRight: 3 }}/>
                                         <Text style={{
-                                            color: '#D51243',
+                                            color: DesignRule.mainColor,
                                             fontSize: autoSizeWidth(11),
                                             marginRight: autoSizeWidth(15)
                                         }}>待开奖</Text>
@@ -367,12 +367,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     text: {
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: autoSizeWidth(12),
         includeFontPadding: false
     },
     image_title: {
-        color: '#FFFFFF',
+        color: 'white',
         fontSize: autoSizeWidth(12),
         includeFontPadding: false
     },
@@ -388,12 +388,12 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     image_btnText: {
-        color: '#FFFFFF',
+        color: 'white',
         fontSize: autoSizeWidth(13),
         includeFontPadding: false
     },
     image_detail: {
-        color: '#FFFFFF',
+        color: 'white',
         fontSize: autoSizeWidth(11),
         includeFontPadding: false
     }

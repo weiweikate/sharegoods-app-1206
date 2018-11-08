@@ -24,6 +24,7 @@ const { px2dp } = ScreenUtils;
 import UIText from "../../../../comm/components/UIText";
 import res from '../../../../comm/res';
 const icon = res.selected_circle_red;
+import DesignRule from 'DesignRule';
 
 type Props = {};
 export default class PromotionPayPage extends BasePage<Props> {
@@ -72,11 +73,11 @@ export default class PromotionPayPage extends BasePage<Props> {
         return (
             <View style={styles.container}>
                 <View style={{justifyContent:'center',paddingHorizontal:px2dp(15),height:px2dp(36)}}>
-                    <UIText style={{color:'#999999',fontSize:px2dp(12)}} value={'固定金额红包'}/>
+                    <UIText style={{color:DesignRule.textColor_instruction,fontSize:px2dp(12)}} value={'固定金额红包'}/>
                 </View>
                 <View style={styles.itemWrapper}>
-                    <UIText style={{color:'#222222',fontSize:px2dp(13),includeFontPadding:false}} value={`红包金额：${this.params.price}元`}/>
-                    <UIText  style={{color:'#999999',fontSize:px2dp(11),includeFontPadding:false}} value={`（共发放${this.params.count}个红包）`}/>
+                    <UIText style={{color:DesignRule.textColor_mainTitle,fontSize:px2dp(13),includeFontPadding:false}} value={`红包金额：${this.params.price}元`}/>
+                    <UIText  style={{color:DesignRule.textColor_instruction,fontSize:px2dp(11),includeFontPadding:false}} value={`（共发放${this.params.count}个红包）`}/>
                     <View style={{flex:1}}/>
                     <TouchableOpacity onPress={()=>{
                         this.setState({isSelected : !this.state.isSelected})
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
         width:ScreenUtils.width - px2dp(30),
         alignSelf:'center',
         borderRadius:px2dp(5),
-        backgroundColor:'#D51243',
+        backgroundColor:DesignRule.mainColor,
         justifyContent:'center',
         alignItems:'center',
         marginBottom:px2dp(15)

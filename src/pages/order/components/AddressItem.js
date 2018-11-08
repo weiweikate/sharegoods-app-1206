@@ -23,7 +23,7 @@ const AddressItem = props => {
             height: 84,
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: DesignRule.white
+            backgroundColor: 'white'
         }
     } = props;
     this.renderRightImage = () => {
@@ -55,7 +55,7 @@ const style = {
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     }
 
 };

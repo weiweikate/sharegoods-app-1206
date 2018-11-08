@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import { observer } from 'mobx-react';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
-import ColorUtil from '../../../utils/ColorUtil';
 import BasePage from '../../../BasePage';
 import CommRegistView from '../components/CommRegistView';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -40,6 +39,14 @@ export default class RegistPage extends BasePage {
     }
 
     _render() {
+        // 测试环境:https://testh5.sharegoodsmall.com/static/protocol/service.html
+        // 预发布环境：https://uath5.sharegoodsmall.com/static/protocol/service.html
+        // 生产布环境：https://h5.sharegoodsmall.com/static/protocol/service.html
+
+        const htmlUrl = __DEV__ ?
+            'https://testh5.sharegoodsmall.com/static/protocol/service.html'
+            :
+            'https://testh5.sharegoodsmall.com/static/protocol/service.html';
         return (
             <View style={{
                 flex: 1,
@@ -70,7 +77,7 @@ export default class RegistPage extends BasePage {
                             source={this.state.gouxuan ? LoginAndRegistRes.reg_GouXuan : LoginAndRegistRes.reg_WeiXuan}
                             style={{ width: 11, height: 11, marginRight: 5 }}/>
                     </TouchableOpacity>
-                    <Text style={{ fontSize: 11, color: ColorUtil.Color_666666 }}>
+                    <Text style={{ fontSize: 11, color: DesignRule.textColor_secondTitle }}>
                         阅读并接受
                     </Text>
                     <TouchableOpacity onPress={() => {
@@ -83,7 +90,7 @@ export default class RegistPage extends BasePage {
                               onPress={() => {
                                   this.$navigate('HtmlPage', {
                                       title: '用户协议内容',
-                                      uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
+                                      uri: htmlUrl
                                   });
                               }}
                         >

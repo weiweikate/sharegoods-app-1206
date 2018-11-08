@@ -9,7 +9,7 @@ import {
     InteractionManager
 } from 'react-native';
 import PropTypes from 'prop-types';
-
+import DesignRule from 'DesignRule';
 /**
  * 交易密码框
  */
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     iconStyle: {
         width: 10,
         height: 10,
-        backgroundColor: '#999',
+        backgroundColor: DesignRule.textColor_instruction,
         borderRadius: 5
     }
 });

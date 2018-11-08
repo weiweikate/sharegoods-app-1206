@@ -12,6 +12,7 @@ const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
 import BasePage from '../../BasePage';
 import res from '../../comm/res';
+import DesignRule from 'DesignRule';
 
 const imgWidth = px2dp(168);
 
@@ -209,7 +210,7 @@ let styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     all: {
-        color: '#999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13),
         marginLeft: px2dp(10)
     },

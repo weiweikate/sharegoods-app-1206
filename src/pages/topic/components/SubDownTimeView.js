@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import UIText from '../../../comm/components/UIText';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import ColorUtil from '../../../utils/ColorUtil';
+import DesignRule from 'DesignRule';
 
 
 export default class SubDownTimeView extends Component {
@@ -33,8 +33,8 @@ export default class SubDownTimeView extends Component {
                         }}
                         style={[SwichStyles.titleItemStyle,
                             this.state.selectState === 0 ?
-                                { color: ColorUtil.Color_d51243 } :
-                                { color: ColorUtil.Color_666666 }
+                                { color: DesignRule.mainColor } :
+                                { color: DesignRule.textColor_secondTitle }
 
                         ]}
                         value={'美容彩妆'}
@@ -47,8 +47,8 @@ export default class SubDownTimeView extends Component {
                         }
                         style={[SwichStyles.titleItemStyle,
                             this.state.selectState === 0 ?
-                                { color: ColorUtil.Color_666666 } :
-                                { color: ColorUtil.Color_d51243 }
+                                { color: DesignRule.textColor_secondTitle } :
+                                { color: DesignRule.mainColor }
                         ]}
                         value={'个人护肤'}
                     />
@@ -58,7 +58,7 @@ export default class SubDownTimeView extends Component {
                         {
                             marginLeft: this.state.bottomLineMarginLeft
                         }]}
-                 />
+                />
             </View>
         );
     }
@@ -104,12 +104,12 @@ const SwichStyles = StyleSheet.create({
         },
         titleItemStyle: {
             paddingTop: 15,
-            color: ColorUtil.Color_d51243,
+            color: DesignRule.mainColor,
             fontSize: 16
         },
         bottomLineViewStyle: {
             height: 2,
-            backgroundColor: ColorUtil.Color_d51243,
+            backgroundColor: DesignRule.mainColor,
             width: 70,
             marginLeft: (ScreenUtils.width - 70 * 2) / 4
         }

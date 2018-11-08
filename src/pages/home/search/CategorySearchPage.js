@@ -9,6 +9,8 @@ import ViewPager from '../../../components/ui/ViewPager';
 import UIText from '../../../components/ui/UIText';
 import UIImage from '../../../components/ui/UIImage';
 import StringUtils from '../../../utils/StringUtils';
+import DesignRule from 'DesignRule';
+
 
 const itemImgW = (ScreenUtils.width - 110 - 2 * 10.5 - 2 * 30) / 3;
 const bannerW = ScreenUtils.width - 110;
@@ -115,6 +117,7 @@ export default class CategorySearchPage extends BasePage {
                         width: bannerW + 20,
                         flexDirection: 'column',
                         backgroundColor: 'white',
+                        paddingTop: 10,
                         height: ScreenUtils.height - 60 - ScreenUtils.headerHeight //屏幕高减去搜索框以及头部高
                     }}>
                         <ViewPager swiperShow={this.state.swiperShow && this.state.bannerData.length > 0}
@@ -124,29 +127,27 @@ export default class CategorySearchPage extends BasePage {
                                        height: 5,
                                        width: 5,
                                        borderRadius: 5,
-                                       backgroundColor: '#ffffff',
+                                       backgroundColor: 'white',
                                        opacity: 0.4
                                    }}
                                    activeDotStyle={{
                                        height: 5,
                                        width: 20,
                                        borderRadius: 5,
-                                       backgroundColor: '#ffffff'
+                                       backgroundColor: 'white'
                                    }}
                                    autoplay={true}
                                    height={118}
                                    style={{ marginBottom: 10 }}
                         />
                         <SectionList style={{
-                            marginTop: 10,
+                            marginTop: this.state.bannerData.length > 0 ? 10 : 0,
                             marginLeft: 10,
                             marginRight: 10
-                        }}
-                                     contentContainerStyle={{
-                                         flexWrap: 'wrap',
-                                         flexDirection: 'row'
-                                     }}
-                                     renderItem={this._sectionItem}
+                        }} contentContainerStyle={{
+                            flexWrap: 'wrap',
+                            flexDirection: 'row'
+                        }} renderItem={this._sectionItem}
                                      renderSectionHeader={this._sectionHeader}
                                      ListFooterComponent={this._listFooter}
                                      sections={this.state.sectionArr}
@@ -168,7 +169,7 @@ export default class CategorySearchPage extends BasePage {
                 <View style={{
                     height: 45,
                     width: 2,
-                    backgroundColor: item.index === this.state.leftIndex ? '#D51243' : '#EEEEEE'
+                    backgroundColor: item.index === this.state.leftIndex ? DesignRule.mainColor : '#EEEEEE'
                 }}/>
                 <View style={{
                     flex: 1,
@@ -180,7 +181,7 @@ export default class CategorySearchPage extends BasePage {
                     <Text style={{
                         fontSize: 13,
                         fontWeight: item.index === this.state.leftIndex ? 'bold' : 'normal',
-                        color: '#222222'
+                        color: DesignRule.textColor_mainTitle
                     }}>
                         {item.item.name.length > 4 ? item.item.name.substr(0, 4) + '...' : item.item.name}
                     </Text>
@@ -290,7 +291,7 @@ export default class CategorySearchPage extends BasePage {
                             textAlign: 'center',
                             height: 30,
                             fontSize: 13,
-                            color: '#333',
+                            color: DesignRule.textColor_mainTitle,
                             marginTop: 10,
                             marginBottom: 22
                         }}/>
@@ -305,7 +306,7 @@ export default class CategorySearchPage extends BasePage {
                         fontWeight: 'bold',
                         fontSize: 13,
                         width: ScreenUtils.width - 110,
-                        color: '#333',
+                        color: DesignRule.textColor_mainTitle,
                         marginBottom: 20
                     }}/>
         );
@@ -322,9 +323,19 @@ export default class CategorySearchPage extends BasePage {
                     marginTop: 30,
                     marginBottom: 30
                 }}>
-                    <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginRight: 10 }}/>
-                    <UIText value={'没有更多啦～'} style={{ fontSize: 12, color: '#999999' }}/>
-                    <View style={{ height: 0.7, width: 20, backgroundColor: '#999999', marginLeft: 10 }}/>
+                    <View style={{
+                        height: 0.7,
+                        width: 20,
+                        backgroundColor: DesignRule.textColor_instruction,
+                        marginRight: 10
+                    }}/>
+                    <UIText value={'没有更多啦～'} style={{ fontSize: 12, color: DesignRule.textColor_instruction }}/>
+                    <View style={{
+                        height: 0.7,
+                        width: 20,
+                        backgroundColor: DesignRule.textColor_instruction,
+                        marginLeft: 10
+                    }}/>
                 </View> : null
         );
     };

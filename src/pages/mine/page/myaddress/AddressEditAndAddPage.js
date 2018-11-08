@@ -148,7 +148,7 @@ export default class AddressEditAndAddPage extends BasePage {
                 <Image source={IconGoTo} style={{ width: 12, height: 20, marginLeft: 4 }} resizeMode={'contain'}/>
             </TouchableOpacity>
             <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
-            <View style={{ backgroundColor: DesignRule.white }}>
+            <View style={{ backgroundColor: 'white' }}>
                 <TextInput
                     style={styles.itemAddressInput}
                     placeholder={'请输入详细地址~'}
@@ -163,7 +163,7 @@ export default class AddressEditAndAddPage extends BasePage {
             {
                 this.state.from === 'add' ?
                     <View style={{
-                        backgroundColor: DesignRule.white,
+                        backgroundColor: 'white',
                         marginTop: 10,
                         flexDirection: 'row',
                         height: 44,
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         height: 45,
-        backgroundColor: DesignRule.white
+        backgroundColor: 'white'
     },
     itemLeftText: {
         width: 64,
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     },
     itemAddressInput: {
         height: 105,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         textAlignVertical: 'top',
         padding: 0,
         marginLeft: 15,

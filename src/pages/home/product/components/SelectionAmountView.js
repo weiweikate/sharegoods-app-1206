@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
+import DesignRule from 'DesignRule';
 
 /**
  * 选择数量view
@@ -97,7 +98,7 @@ export default class RecentSearchView extends Component {
                 justifyContent: 'space-between',
                 alignItems: 'center'
             }, this.props.style]}>
-                <Text style={{ color: '#666666', marginLeft: 16, fontSize: 13 }}>购买数量</Text>
+                <Text style={{ color: DesignRule.textColor_secondTitle, marginLeft: 16, fontSize: 13 }}>购买数量</Text>
                 <View style={{
                     flexDirection: 'row',
                     borderColor: '#dddddd',
@@ -126,7 +127,7 @@ export default class RecentSearchView extends Component {
                     <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
                                       onPress={this._rightAction} disabled={type === 'after'}>
-                        <Text style={{ color: '#222222', fontSize: 15, paddingHorizontal: 11 }}>+</Text>
+                        <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, paddingHorizontal: 11 }}>+</Text>
                     </TouchableOpacity>
                 </View>
             </View>

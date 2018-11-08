@@ -16,6 +16,8 @@ import SearchAllRow from './components/SearchAllRow';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
+import DesignRule from 'DesignRule';
+import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 
 
 export default class SearchPage extends BasePage {
@@ -37,9 +39,12 @@ export default class SearchPage extends BasePage {
             page: 1,
             pageSize: 5,
 
+            loadingState: PageLoadingState.loading,
+            netFailedInfo: {},
+
             selIndex: 0,
             keyword: '',
-            dataList: []
+            dataList: [{}]//默认一行显示状态页面使用 错误页 无数据页面
         };
     }
 
@@ -65,16 +70,21 @@ export default class SearchPage extends BasePage {
         }).then((data) => {
             this.state.page++;
             let dataTemp = data.data || {};
+            const dataList = dataTemp.data || [];
+            //如果是空数据 显示空数据页面需要一个cell
+            let isEmpty = dataList.length === 0;
             this.setState({
                 refreshing: false,
-                noMore: dataTemp.data.length < this.state.pageSize,
-                dataList: dataTemp.data || []//data.data.data
+                noMore: dataList.length < this.state.pageSize,
+                dataList: isEmpty ? [{}] : dataList,
+                loadingState: isEmpty ? PageLoadingState.empty : PageLoadingState.success
             });
         }).catch((error) => {
             this.setState({
-                refreshing: false
+                refreshing: false,
+                netFailedInfo: error,
+                loadingState: PageLoadingState.fail
             });
-            this.$toastShow(error.msg);
         });
     };
 
@@ -114,7 +124,8 @@ export default class SearchPage extends BasePage {
 
     _onPressAtIndex = (index) => {
         this.setState({
-            dataList: [],
+            dataList: [{}],
+            loadingState: PageLoadingState.loading,
             selIndex: index
         }, () => {
             this._loadPageData();
@@ -126,22 +137,27 @@ export default class SearchPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        return <SearchBar style={{ marginBottom: 10 }}
-                          onChangeText={this._onChangeText}
+        return <SearchBar onChangeText={this._onChangeText}
                           title={this.state.keyword}
                           placeholder={'可通过搜索店铺/ID进行查找'}/>;
     };
 
     _renderHeader = () => {
-        return <SearchSegmentView style={{ marginBottom: 10 }} onPressAtIndex={this._onPressAtIndex}/>;
+        return <SearchSegmentView onPressAtIndex={this._onPressAtIndex}/>;
     };
 
     // 渲染行
     _renderItem = (item) => {
-        if (this.state.selIndex === 0) {
-            return (<SearchAllRow onPress={this._clickShopAtRow} item={item.item}/>);
+        if (this.state.loadingState === PageLoadingState.success) {
+            if (this.state.selIndex === 0) {
+                return (<SearchAllRow RecommendRowOnPress={this._clickShopAtRow} RecommendRowItem={item.item}/>);
+            } else {
+                return (<SearchRecruitingRow onPress={this._clickShopAtRow} item={item.item}/>);
+            }
         } else {
-            return (<SearchRecruitingRow onPress={this._clickShopAtRow} item={item.item}/>);
+            return <View style={{ height: 300 }}>
+                {renderViewByLoadingState(this._getPageStateOptions(), null)}
+            </View>;
         }
     };
 
@@ -150,7 +166,7 @@ export default class SearchPage extends BasePage {
     };
 
     _ListFooterComponent = () => {
-        if (this.state.dataList.length === 0) {
+        if (this.state.loadingState !== PageLoadingState.success) {
             return null;
         }
         return <ListFooter loadingMore={this.state.loadingMore}
@@ -158,16 +174,27 @@ export default class SearchPage extends BasePage {
                            onPressLoadError={this._onEndReached}/>;
     };
     _onEndReached = () => {
-        if (this.onEndReached || !this.state.dataList.length || this.state.noMore) {
+        if (this.onEndReached || this.state.loadingState !== PageLoadingState.success || this.state.noMore) {
             return;
         }
         this._loadPageDataMore();
+    };
+
+    _getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: this._refreshing
+            }
+        };
     };
 
     _render() {
         return (
             <View style={styles.container}>
                 <SectionList keyExtractor={(item, index) => `${index}`}
+                             style={{ backgroundColor: DesignRule.bgColor }}
                              refreshControl={
                                  <RefreshControl
                                      refreshing={this.state.refreshing}

@@ -16,7 +16,7 @@ import {
     View,
     Text,
     ImageBackground,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -24,6 +24,7 @@ import bg from './res/tuiguang_bg_nor.png';
 import MineApi from '../../api/MineApi';
 import RefreshList from '../../../../components/ui/RefreshList';
 import EmptyUtils from '../../../../utils/EmptyUtils';
+import DesignRule from 'DesignRule';
 
 const { px2dp, autoSizeWidth } = ScreenUtils;
 type Props = {};
@@ -95,7 +96,7 @@ export default class InvitePromotionPage extends BasePage<Props> {
                         this.$navigate('mine/promotion/PromotionPayPage', item);
                     }
                 }}>
-                    <View style={[styles.itemWrapper, { backgroundColor: item.userBuy ? '#ffffff' : '#CCCCCC' }]}>
+                    <View style={[styles.itemWrapper, { backgroundColor: item.userBuy ? 'white' : '#CCCCCC' }]}>
                         <Text style={styles.itemTextStyle}>
                             {item.name}{`/推广周期${item.cycle}天`}
                         </Text>
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         elevation: 2,
         borderRadius: px2dp(5),
-        shadowColor: '#000000',
+        shadowColor: DesignRule.mainColor,
         shadowOffset: { h: 2, w: 2 },
         shadowRadius: px2dp(6),
         shadowOpacity: 0.1
