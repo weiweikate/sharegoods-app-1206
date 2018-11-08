@@ -13,6 +13,7 @@ import StringUtils from '../../utils/StringUtils';
 import bridge from '../../utils/bridge';
 import icon_close from '../home/product/res/icon_close.png';
 import Modal from 'CommModal';
+import DesignRule from 'DesignRule';
 
 export default class TopicDetailSelectPage extends Component {
 
@@ -93,7 +94,7 @@ export default class TopicDetailSelectPage extends Component {
                             this._clickItemAction(obj, indexOfTop);
                         }}>
                         <Text
-                            style={[styles.btnText, { color: obj.isSelected ? 'white' : obj.canSelected ? '#666666' : 'white' }]}>{data[index].specValues}</Text>
+                            style={[styles.btnText, { color: obj.isSelected ? DesignRule.white : obj.canSelected ? '#666666' : DesignRule.white }]}>{data[index].specValues}</Text>
                     </TouchableOpacity>
                 </View>
             );
@@ -168,7 +169,7 @@ export default class TopicDetailSelectPage extends Component {
                                 zIndex: 1
                             }} source={{ uri: imgUrl }}/>
 
-                            <View style={{ backgroundColor: 'white', marginTop: 20, height: 87 }}>
+                            <View style={{ backgroundColor: DesignRule.white, marginTop: 20, height: 87 }}>
                                 <View style={{ marginLeft: 132 }}>
                                     <Text style={{
                                         color: '#D51243',
@@ -194,7 +195,7 @@ export default class TopicDetailSelectPage extends Component {
                             </View>
                         </View>
 
-                        <View style={{ flex: 1, backgroundColor: 'white' }}>
+                        <View style={{ flex: 1, backgroundColor: DesignRule.white }}>
                             <ScrollView>
                                 {this._addSelectionSectionView()}
                                 <View style={[{
@@ -241,7 +242,7 @@ export default class TopicDetailSelectPage extends Component {
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }}>
-                                    <Text style={{ fontSize: 16, color: '#FFFFFF' }}>确认</Text>
+                                    <Text style={{ fontSize: 16, color: DesignRule.white }}>确认</Text>
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>

@@ -28,6 +28,7 @@ import {
     TouchableOpacity,
     TouchableHighlight
 } from 'react-native';
+import DesignRule from 'DesignRule';
 
 export default class GeneralButton extends Component {
 
@@ -57,9 +58,9 @@ export default class GeneralButton extends Component {
         withoutFeedback: false,
         disabled: false,
 
-        highlightTitleColor: '#ffffff',
+        highlightTitleColor: DesignRule.white,
         //
-        disabledTitleColor: '#ffffff',
+        disabledTitleColor: DesignRule.white,
 
     };
 
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     textStyle: {
-        color: '#ffffff',
+        color: DesignRule.white,
         fontSize: 16,
     }
 });

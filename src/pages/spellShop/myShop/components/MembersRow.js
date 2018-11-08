@@ -14,6 +14,7 @@ import {
 import PeopleImg from '../res/dy_07.png';
 import ArrowImg from '../res/xjt_03.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 export default class MembersRow extends Component {
 
@@ -62,7 +63,7 @@ export default class MembersRow extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     allMembersRow: {
         height: 38,

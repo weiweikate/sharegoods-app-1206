@@ -11,6 +11,7 @@ import BasePage from '../../BasePage';
 import arrow_right from '../order/res/arrow_right.png';
 import DateUtils from '../../utils/DateUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
+import DesignRule from 'DesignRule';
 
 const payTypes = [1, 2, 4, 8, 16];
 const payTexts = ['纯平台', '微信(小程序)', '微信(APP)', '支付宝', '银联'];
@@ -65,7 +66,7 @@ export default class PayMessagePage extends BasePage {
             <View style={styles.container}>
                 <View style={{
                     height: 131,
-                    backgroundColor: '#ffffff',
+                    backgroundColor: DesignRule.white,
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     paddingVertical: 20
@@ -76,7 +77,7 @@ export default class PayMessagePage extends BasePage {
                         color: '#222222'
                     }}>-{StringUtils.formatMoneyString(this.params.tradeAmount, false)}</Text>
                     <View style={{ backgroundColor: color.blue_4a9, borderRadius: 3 }}>
-                        <Text style={{ color: 'white', margin: 1, fontSize: 11 }}>交易成功</Text>
+                        <Text style={{ color: DesignRule.white, margin: 1, fontSize: 11 }}>交易成功</Text>
                     </View>
                 </View>
                 <View style={{ height: 10 }}/>
@@ -98,7 +99,7 @@ export default class PayMessagePage extends BasePage {
             <View style={styles.container}>
                 <View style={{
                     height: 131,
-                    backgroundColor: '#ffffff',
+                    backgroundColor: DesignRule.white,
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     paddingVertical: 20
@@ -109,7 +110,7 @@ export default class PayMessagePage extends BasePage {
                         color: '#222222'
                     }}>+{StringUtils.formatMoneyString(this.params.refundPrice, false)}</Text>
                     <View style={{ backgroundColor: '#FF7E00', borderRadius: 3 }}>
-                        <Text style={{ color: 'white', margin: 1, fontSize: 11 }}>退款成功</Text>
+                        <Text style={{ color: DesignRule.white, margin: 1, fontSize: 11 }}>退款成功</Text>
                     </View>
                 </View>
                 <View style={{ height: 10 }}/>
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
     textitems: {
         width: ScreenUtils.width,
         height: 44,
-        backgroundColor: '#ffffff',
+        backgroundColor: DesignRule.white,
         borderStyle: 'solid'
     },
     textsingle: {
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width - 30,
         height: 111,
         borderRadius: 10,
-        backgroundColor: '#ffffff',
+        backgroundColor: DesignRule.white,
         shadowColor: 'rgba(153, 153, 153, 0.1)',
         shadowOffset: {
             width: 0,
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
         height: 49,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     }
 
 });

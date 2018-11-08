@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import StringUtils from '../../../../utils/StringUtils';
 import icon_close from '../res/icon_close.png';
+import DesignRule from 'DesignRule';
+
 
 /**
  * 规格选择头部view
@@ -64,7 +66,7 @@ export default class SelectionHeaderView extends Component {
                     zIndex: 1
                 }} source={{ uri: specImg || imgUrl || '' }}/>
 
-                <View style={{ backgroundColor: 'white', marginTop: 20, height: 87 }}>
+                <View style={{ backgroundColor: DesignRule.white, marginTop: 20, height: 87 }}>
                     <View style={{ marginLeft: 132 }}>
                         <Text style={{
                             color: '#D51243',

@@ -8,6 +8,8 @@ import rightImg from './res/right_arrow.png';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
 import { MemberModule } from './Modules'
+import DesignRule from 'DesignRule';
+
 
 @observer
 export default class HomeUserView extends Component {
@@ -114,7 +116,7 @@ let styles = StyleSheet.create({
         height: 16,
         width: px2dp(38),
         borderRadius: 8,
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft: -px2dp(10)

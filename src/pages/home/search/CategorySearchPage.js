@@ -9,6 +9,8 @@ import ViewPager from '../../../components/ui/ViewPager';
 import UIText from '../../../components/ui/UIText';
 import UIImage from '../../../components/ui/UIImage';
 import StringUtils from '../../../utils/StringUtils';
+import DesignRule from 'DesignRule';
+
 
 const itemImgW = (ScreenUtils.width - 110 - 2 * 10.5 - 2 * 30) / 3;
 const bannerW = ScreenUtils.width - 110;
@@ -114,7 +116,7 @@ export default class CategorySearchPage extends BasePage {
                     <View style={{
                         width: bannerW + 20,
                         flexDirection: 'column',
-                        backgroundColor: 'white',
+                        backgroundColor: DesignRule.white,
                         height: ScreenUtils.height - 60 - ScreenUtils.headerHeight //屏幕高减去搜索框以及头部高
                     }}>
                         <ViewPager swiperShow={this.state.swiperShow && this.state.bannerData.length > 0}
@@ -124,14 +126,14 @@ export default class CategorySearchPage extends BasePage {
                                        height: 5,
                                        width: 5,
                                        borderRadius: 5,
-                                       backgroundColor: '#ffffff',
+                                       backgroundColor: DesignRule.white,
                                        opacity: 0.4
                                    }}
                                    activeDotStyle={{
                                        height: 5,
                                        width: 20,
                                        borderRadius: 5,
-                                       backgroundColor: '#ffffff'
+                                       backgroundColor: DesignRule.white
                                    }}
                                    autoplay={true}
                                    height={118}
@@ -173,7 +175,7 @@ export default class CategorySearchPage extends BasePage {
                 <View style={{
                     flex: 1,
                     height: 45,
-                    backgroundColor: item.index === this.state.leftIndex ? 'white' : '#EEEEEE',
+                    backgroundColor: item.index === this.state.leftIndex ? DesignRule.white : '#EEEEEE',
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>

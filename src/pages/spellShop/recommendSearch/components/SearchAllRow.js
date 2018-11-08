@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import MoneyIcon from '../src/je_07.png';
 import StarIcon from '../src/xj_10.png';
+import DesignRule from 'DesignRule';
 
 export default class RecommendRow extends Component {
 
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
         height: 50,
         borderWidth: 1,
         borderColor: '#c8c8c8',
-        backgroundColor: __DEV__ ? '#c8c8c8' : 'white'
+        backgroundColor: __DEV__ ? '#c8c8c8' : DesignRule.white
     },
     ingContainer: {
         width: 46,
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 20,
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     title: {
         fontSize: 13,

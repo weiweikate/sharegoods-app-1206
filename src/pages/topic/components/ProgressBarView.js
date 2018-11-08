@@ -2,11 +2,11 @@
  * Created by xiangchen on 2018/8/6.
  */
 import React, { Component } from 'react';
-import { View, Text ,StyleSheet} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import ColorUtil from '../../../utils/ColorUtil';
 // import TopicItemView from './TopicItemView';
 import PropTypes from 'prop-types';
+import DesignRule from 'DesignRule';
 // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
 const statues = {
     deleteStatue: 0,
@@ -25,22 +25,25 @@ export default class ProgressBarView extends Component {
             [statues.noBegin]: this._noBeginTextRender,
             [statues.isBeginning]: this._renderProgress,
             [statues.haveSoldOut]: this._renderHaveSoltOut,
-            [statues.timeOver]:this._renderHaveSoltOut,
-            [statues.handOver]:this._renderHaveSoltOut,
+            [statues.timeOver]: this._renderHaveSoltOut,
+            [statues.handOver]: this._renderHaveSoltOut
         };
     }
+
     shouldComponentUpdate(nextProps, nextState) {
-        console.log('shouldComponentUpdate --nextProps' + nextProps + '===nextState' + nextState)
-        return true
+        console.log('shouldComponentUpdate --nextProps' + nextProps + '===nextState' + nextState);
+        return true;
     }
+
     render() {
-        const {statue } = this.props;
+        const { statue } = this.props;
         return (
             this.statueRender[statue] ? this.statueRender[statue]() : null
         );
     }
+
     _renderProgress = () => {
-        const { progressValue, haveRobNum} = this.props;
+        const { progressValue, haveRobNum } = this.props;
         return (
             <View style={{
                 width: ScreenUtils.width / 2 - 40,
@@ -56,18 +59,18 @@ export default class ProgressBarView extends Component {
                     width: progressValue * (ScreenUtils.width / 2 - 40),
                     height: 12,
                     borderRadius: 6,
-                    backgroundColor: ColorUtil.Color_d51243,
+                    backgroundColor: DesignRule.mainColor,
                     alignItems: 'flex-start',
                     justifyContent: 'center',
                     position: 'absolute'
-                }} />
-                <Text style={{ fontSize: 11, marginLeft: 5, color: ColorUtil.Color_ffffff }}>
+                }}/>
+                <Text style={{ fontSize: 11, marginLeft: 5, color: DesignRule.white }}>
                     {'已抢' + haveRobNum + '件'}
                 </Text>
                 <Text style={{
                     fontSize: 11,
                     marginRight: 5,
-                    color: ColorUtil.Color_ffffff
+                    color: DesignRule.white
                 }}>
 
                     {(progressValue * 100).toFixed(0) + '%'}
@@ -79,44 +82,44 @@ export default class ProgressBarView extends Component {
 
     };
     _noBeginTextRender = () => {
-        const {itemData} = this.props;
-        console.log('测试item----' + itemData)
-          return(
-              <View>
-                  <Text
-                      style={Styles.normalTextStyle}
-                      number={1}
-                  >
-                      {itemData.reseCount + '人已关注'}
-                  </Text>
-              </View>
+        const { itemData } = this.props;
+        console.log('测试item----' + itemData);
+        return (
+            <View>
+                <Text
+                    style={Styles.normalTextStyle}
+                    number={1}
+                >
+                    {itemData.reseCount + '人已关注'}
+                </Text>
+            </View>
 
-          )
+        );
     };
     _renderHaveSoltOut = () => {
-        const {itemData} = this.props;
-        return(
+        const { itemData } = this.props;
+        return (
             <Text
                 style={[Styles.normalTextStyle,
-                    {color:ColorUtil.Color_999999}
+                    { color: DesignRule.textColor_instruction }
                 ]}
                 number={1}
             >
-                {'抢光了' + (parseInt(itemData.totalNumber) - parseInt(itemData.surplusNumber))  + '件'}
+                {'抢光了' + (parseInt(itemData.totalNumber) - parseInt(itemData.surplusNumber)) + '件'}
             </Text>
-        )
+        );
 
     };
 }
-const  Styles = StyleSheet.create({
-    normalTextStyle:{
-        color: ColorUtil.Color_33b4ff,
+const Styles = StyleSheet.create({
+    normalTextStyle: {
+        color: DesignRule.bgColor_blue,
         fontSize: 11,
         marginTop: 5,
         marginLeft: 0,
         marginRight: 10
     }
-})
+});
 
 ProgressBarView.propTypes = {
     progressValue: PropTypes.number.isRequired,

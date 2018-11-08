@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import BackIcon from './source/icon_header_back.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
+
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
@@ -276,7 +278,7 @@ const styles = StyleSheet.create({
         // height: this.state.statusHeight + 44,
         // paddingTop: Platform.OS === 'ios' ? (IPHONEX ? 44 : 20) : 20,
         // paddingTop: this.state.statusHeight,
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 60,

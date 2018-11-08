@@ -9,6 +9,7 @@ import {
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
+import DesignRule from 'DesignRule';
 
 export default class OpenShopSuccessPage extends BasePage {
 
@@ -36,7 +37,7 @@ export default class OpenShopSuccessPage extends BasePage {
                     right: 0,
                     alignItems: 'center',
                     flexDirection: 'row',
-                    backgroundColor: 'white'
+                    backgroundColor: DesignRule.white
                 }}>
                     <Text style={{ flex: 1, marginLeft: 24 }}>应付款：0元</Text>
                     <TouchableOpacity
@@ -48,7 +49,7 @@ export default class OpenShopSuccessPage extends BasePage {
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}>
-                        <Text style={{ color: 'white' }}>去支付</Text>
+                        <Text style={{ color: DesignRule.white }}>去支付</Text>
                     </TouchableOpacity>
                 </View>
             </View>

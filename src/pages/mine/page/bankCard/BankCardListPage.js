@@ -25,6 +25,7 @@ import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
 import SettingTransactionModal from '../../components/SettingTransactionModal';
+import DesignRule from 'DesignRule';
 
 const bankCardList = [bankCard1, bankCard2, bankCard3, bankCard4, bankCard5];
 
@@ -86,7 +87,7 @@ class BankCardListPage extends BasePage {
                         style={[styles.addBankCardView, { marginTop: this.state.viewData.length == 0 ? 76 : 47 }]}
                         onPress={() => this.addBankCard()}>
                         <UIText value={'+ 点击添加银行卡'}
-                                style={{  fontSize: 16, color: '#ffffff' }}/>
+                                style={{  fontSize: 16, color: DesignRule.white }}/>
                     </TouchableOpacity>
                 </View>
                 {this.renderModal()}
@@ -108,12 +109,12 @@ class BankCardListPage extends BasePage {
                                          source={bankCardList[rowData.bankCardType]}
                                          resizeMode={'stretch'}>
                             <UIText value={rowData.bank_name}
-                                    style={{ fontSize: 18, color: '#ffffff' }}/>
+                                    style={{ fontSize: 18, color: DesignRule.white }}/>
                             <UIText value={'储蓄卡'}
-                                    style={{ fontSize: 13, color: '#ffffff' }}/>
+                                    style={{ fontSize: 13, color: DesignRule.white }}/>
                             <UIText value={StringUtils.formatBankCardNum(rowData.card_no)} style={{
                                 fontSize: 18,
-                                color: '#ffffff',
+                                color: DesignRule.white,
                                 marginTop: 15
                             }}/>
 
@@ -150,12 +151,12 @@ class BankCardListPage extends BasePage {
                                          source={bankCardList[this.state.viewData[i].bankCardType]}
                                          resizeMode={'stretch'}>
                             <UIText value={this.state.viewData[i].bank_name}
-                                    style={{  fontSize: 18, color: '#ffffff' }}/>
+                                    style={{  fontSize: 18, color: DesignRule.white }}/>
                             <UIText value={'储蓄卡'}
-                                    style={{ fontSize: 13, color: '#ffffff' }}/>
+                                    style={{ fontSize: 13, color: DesignRule.white }}/>
                             <UIText value={StringUtils.formatBankCardNum(this.state.viewData[i].card_no)} style={{
                                 fontSize: 18,
-                                color: '#ffffff',
+                                color: DesignRule.white,
                                 marginTop: 15
                             }}/>
                         </ImageBackground>
@@ -315,7 +316,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderStyle: 'dashed',
         borderWidth: 2,
-        borderColor: '#ffffff',
+        borderColor: DesignRule.white,
         justifyContent: 'center',
         alignItems: 'center'
     }

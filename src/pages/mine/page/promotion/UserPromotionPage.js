@@ -26,6 +26,7 @@ import RefreshList from '../../../../components/ui/RefreshList';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 
@@ -139,7 +140,7 @@ export default class UserPromotionPage extends BasePage<Props> {
             )
         }
         return (
-            <View style={{ backgroundColor: 'white', marginBottom: px2dp(10) }}>
+            <View style={{ backgroundColor: DesignRule.white, marginBottom: px2dp(10) }}>
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -265,7 +266,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#D51243'
     },
     bottomButtonTextStyle: {
-        color: 'white',
+        color: DesignRule.white,
         fontSize: px2dp(13)
     }
 

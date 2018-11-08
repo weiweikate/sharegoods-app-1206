@@ -24,6 +24,7 @@ import Toast from '../../../../utils/bridge';
 import topicShow from '../../../topic/res/topicShow.png';
 import topicShowClose from '../../../topic/res/topicShowClose.png';
 import CommModal from 'CommModal';
+import DesignRule from 'DesignRule';
 
 export default class WaitingForWithdrawCashPage extends BasePage {
     constructor(props) {
@@ -92,7 +93,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 onPress={() => this.show()}>
                                 <UIImage source={questionImage_white}
                                          style={{ width: 13, height: 13, marginRight: 3 }}/>
-                                <UIText value={'提现说明'} style={{ fontSize: 11, color: '#ffffff' }}/>
+                                <UIText value={'提现说明'} style={{ fontSize: 11, color: DesignRule.white }}/>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -131,7 +132,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                     position: 'absolute'
                 }}>
                     <View style={{
-                        backgroundColor: 'white',
+                        backgroundColor: DesignRule.white,
                         top: ScreenUtils.px2dp(105),
                         width: ScreenUtils.px2dp(290),
                         height: ScreenUtils.px2dp(360),
@@ -144,7 +145,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}>
-                            <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }}>待提现账户说明</Text>
+                            <Text style={{ color: DesignRule.white, fontSize: ScreenUtils.px2dp(18) }}>待提现账户说明</Text>
                         </ImageBackground>
                         <View style={{ marginLeft: ScreenUtils.px2dp(22) }}>
                             <Text style={{

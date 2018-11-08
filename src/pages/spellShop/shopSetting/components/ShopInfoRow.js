@@ -8,6 +8,7 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
+import DesignRule from 'DesignRule';
 
 export default class ShopInfoRow extends Component {
 
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingHorizontal: 15,
         alignItems: 'center',
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     icon: {
         width: 50,

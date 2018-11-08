@@ -15,6 +15,8 @@ import {
     StyleSheet,
 } from 'react-native';
 import LoadingImg from './source/toast_loading.png';
+import DesignRule from 'DesignRule';
+
 
 const LOADING_WIDTH = 75;
 const LOADING_HEIGHT = 70;
@@ -198,7 +200,7 @@ const styles = StyleSheet.create({
     },
     loadingText: {
         marginTop: 12,
-        color: 'white',
+        color: DesignRule.white,
         fontSize: 12,
         backgroundColor: 'transparent',
         textAlign: 'center',

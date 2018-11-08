@@ -278,7 +278,7 @@ export default class PaymentMethodPage extends BasePage {
                         style={{ flex: 1, backgroundColor: color.red, justifyContent: 'center', alignItems: 'center' }}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'去支付'}
-                                style={{ fontSize: 16, color: '#ffffff' }}/>
+                                style={{ fontSize: 16, color: DesignRule.white }}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -493,7 +493,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f7f7f7'
     },
     selectText: {
-        fontSize: 16, color: '#ffffff'
+        fontSize: 16, color: DesignRule.white
     }, blackText: {
         fontSize: 13,
         lineHeight: 18,

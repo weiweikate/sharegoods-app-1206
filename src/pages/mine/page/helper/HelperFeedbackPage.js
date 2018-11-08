@@ -22,6 +22,7 @@ import BusinessUtils from '../../components/BusinessUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import MineApi from '../../api/MineApi';
 import Modal from 'CommModal';
+import DesignRule from 'DesignRule';
 
 /**
  * @author chenxiang
@@ -242,7 +243,7 @@ export default class HelperFeedbackPage extends BasePage {
                             <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>请选择问题类型</Text>
                             <Image source={arrowUp} style={{ width: 15, height: 15, marginRight: 10 }}/>
                         </TouchableOpacity>
-                        <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
+                        <View style={{ width: ScreenUtils.width, backgroundColor: DesignRule.white }}>
                             {this.state.CONFIG.map((item, i) => {
                                 return (
                                     <TouchableOpacity key={i} style={{ height: 48, justifyContent: 'center' }}
@@ -275,7 +276,7 @@ export default class HelperFeedbackPage extends BasePage {
                         flexDirection: 'row',
                         width: ScreenUtils.width,
                         height: 44,
-                        backgroundColor: 'white',
+                        backgroundColor: DesignRule.white,
                         marginTop: 5,
                         justifyContent: 'space-between',
                         alignItems: 'center'
@@ -286,7 +287,7 @@ export default class HelperFeedbackPage extends BasePage {
                     <View style={styles.containerView1}>
                         <Text style={{ marginLeft: 10, fontSize: 15, color: '#222222' }}>详细说明</Text>
                     </View>
-                    <View style={{ height: 130, backgroundColor: 'white' }}>
+                    <View style={{ height: 130, backgroundColor: DesignRule.white }}>
                         <AutoExpandingInput
                             style={styles.detailAddress}
                             onChangeText={text => this.setState({ detailContent: text, textLength: text.length })}
@@ -338,7 +339,7 @@ const styles = StyleSheet.create({
     detailAddress: {
         marginLeft: 20,
         marginRight: 20,
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         fontSize: 14
 
     },
@@ -383,7 +384,7 @@ const styles = StyleSheet.create({
         marginTop: 50
     },
     containerView1: {
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         width: ScreenUtils.width,
         marginTop: 5,
         height: 44,
@@ -391,7 +392,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start'
     },
     containerView2: {
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         width: ScreenUtils.width,
         marginTop: 5,
         height: 44,
@@ -401,7 +402,7 @@ const styles = StyleSheet.create({
     containerView3: {
         width: ScreenUtils.width,
         height: 101,
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         marginTop: 1,
         flexDirection: 'row',
         alignItems: 'center'

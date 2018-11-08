@@ -11,6 +11,7 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import icon_close from '../home/product/res/icon_close.png';
 import Modal from 'CommModal';
+import DesignRule from 'DesignRule';
 
 export default class TopicDetailSelectPage extends Component {
 
@@ -57,7 +58,7 @@ export default class TopicDetailSelectPage extends Component {
                             <TouchableOpacity
                                 style={[styles.btn, { backgroundColor: '#D51243' }]}>
                                 <Text
-                                    style={[styles.btnText, { color: 'white' }]}>{obj.specValue}</Text>
+                                    style={[styles.btnText, { color: DesignRule.white }]}>{obj.specValue}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -104,7 +105,7 @@ export default class TopicDetailSelectPage extends Component {
                                 zIndex: 1
                             }} source={{ uri: specImg || '' }}/>
 
-                            <View style={{ backgroundColor: 'white', marginTop: 20, height: 87 }}>
+                            <View style={{ backgroundColor: DesignRule.white, marginTop: 20, height: 87 }}>
                                 <View style={{ marginLeft: 132 }}>
                                     <Text style={{
                                         color: '#D51243',
@@ -130,7 +131,7 @@ export default class TopicDetailSelectPage extends Component {
                             </View>
                         </View>
 
-                        <View style={{ flex: 1, backgroundColor: 'white' }}>
+                        <View style={{ flex: 1, backgroundColor: DesignRule.white }}>
                             <ScrollView>
                                 {this._addSelectionSectionView()}
                                 <View style={[{
@@ -177,7 +178,7 @@ export default class TopicDetailSelectPage extends Component {
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }}>
-                                    <Text style={{ fontSize: 16, color: '#FFFFFF' }}>确认</Text>
+                                    <Text style={{ fontSize: 16, color: DesignRule.white }}>确认</Text>
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>

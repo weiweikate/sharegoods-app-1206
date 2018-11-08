@@ -10,6 +10,8 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import Modal from 'CommModal'
+import DesignRule from 'DesignRule';
+
 
 const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const PANNELHEIGHT = 203;
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         height: 50,
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         flexDirection: 'row',
         paddingHorizontal: 20
     },
@@ -209,7 +211,7 @@ const styles = StyleSheet.create({
         left: 40,
         right: 40,
         height: PANNELHEIGHT,
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         alignItems: 'center',
         borderRadius: 5,
     }

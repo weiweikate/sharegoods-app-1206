@@ -31,6 +31,7 @@ import bridge from '../../../../utils/bridge'
 // import BaseUrl from '../../../../api/BaseUrl'
 import fanhui from '../../res/homeBaseImg/fanhui.png'
 import apiEnvironment from '../../../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
 
 type Props = {};
 export default class InviteFriendsPage extends BasePage<Props> {
@@ -192,6 +193,6 @@ const styles = StyleSheet.create({
     },
     btnText: {
         fontSize: 18,
-        color: 'white',
+        color: DesignRule.white,
     }
 });

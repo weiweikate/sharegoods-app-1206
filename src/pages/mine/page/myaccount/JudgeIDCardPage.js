@@ -9,6 +9,7 @@ import bridge from '../../../../utils/bridge';
 import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import user from '../../../../model/user';
 import MineAPI from '../../api/MineApi';
+import DesignRule from 'DesignRule';
 
 export default class SetNewPhoneNumPage extends BasePage {
 
@@ -36,7 +37,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                             marginLeft: 16
                         }}/>
             </View>
-            <View style={{ backgroundColor: 'white', flexDirection: 'column' }}>
+            <View style={{ backgroundColor: DesignRule.white, flexDirection: 'column' }}>
                 <View style={styles.horizontalItem}>
                     <Text style={styles.itemLeftText}>用户姓名</Text>
                     <TextInput
@@ -48,7 +49,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                         placeholderTextColor={'#C8C8C8'}
                     />
                 </View>
-                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15 }}/>
+                <View style={{ height: 0.5, backgroundColor: DesignRule.white, marginLeft: 15 }}/>
                 <View style={styles.horizontalItem}>
                     <Text style={styles.itemLeftText}>证件号码</Text>
                     <TextInput
@@ -73,7 +74,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                 justifyContent: 'center',
                 borderRadius: 25
             }} onPress={() => this._toNext()}>
-                <Text style={{ fontSize: 17, color: 'white' }}>确认</Text>
+                <Text style={{ fontSize: 17, color: DesignRule.white }}>确认</Text>
             </TouchableOpacity>
         </View>);
     }
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         height: 45,
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     itemLeftText: {
         marginRight: 20,

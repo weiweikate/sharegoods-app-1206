@@ -24,6 +24,7 @@ import ProgressImg from './res/jdt_05.png';
 import BasePage from '../../../../BasePage';
 import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 // 常量
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -151,7 +152,7 @@ export default class MyPromotionPage extends BasePage {
                         borderRadius: 10,
                         borderStyle: 'solid',
                         borderWidth: 1,
-                        borderColor: '#ffffff'
+                        borderColor: DesignRule.white
                     }}>
                         <Text style={styles.shopName}>{this.state.levelName || ' '}</Text>
                     </View>
@@ -343,7 +344,7 @@ const styles = StyleSheet.create({
     },
     shopName: {
         fontSize: 13,
-        color: '#ffffff'
+        color: DesignRule.white
     },
     //白的面板背景
     whiteBg: {

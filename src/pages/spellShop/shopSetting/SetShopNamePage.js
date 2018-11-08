@@ -20,6 +20,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
+import DesignRule from 'DesignRule';
 
 export default class SetShopNamePage extends BasePage {
 
@@ -206,7 +207,7 @@ const styles = StyleSheet.create({
         height: 170,
         marginHorizontal: 15,
         borderRadius: 5,
-        backgroundColor: '#ffffff',
+        backgroundColor: DesignRule.white,
         shadowColor: 'rgba(102, 102, 102, 0.1)',
         shadowOffset: {
             width: 0,
@@ -235,7 +236,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 15,
         height: 44,
         borderRadius: 5,
-        backgroundColor: '#ffffff',
+        backgroundColor: DesignRule.white,
         shadowColor: 'rgba(102, 102, 102, 0.1)',
         shadowOffset: {
             width: 0,
@@ -268,6 +269,6 @@ const styles = StyleSheet.create({
     },
     btnTitle: {
         fontSize: 13,
-        color: '#ffffff'
+        color: DesignRule.white
     }
 });

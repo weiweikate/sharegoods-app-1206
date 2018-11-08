@@ -10,6 +10,7 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
 import SMSTool from '../../../../utils/SMSTool';
+import DesignRule from 'DesignRule';
 
 export default class JudgePhoneNumPage extends BasePage {
 
@@ -34,7 +35,7 @@ export default class JudgePhoneNumPage extends BasePage {
                             marginLeft: 16
                         }}/>
             </View>
-            <View style={{ backgroundColor: 'white', flexDirection: 'column' }}>
+            <View style={{ backgroundColor: DesignRule.white, flexDirection: 'column' }}>
                 <View style={styles.horizontalItem}>
                     <Text style={styles.itemLeftText}>手机号</Text>
                     <TextInput
@@ -49,7 +50,7 @@ export default class JudgePhoneNumPage extends BasePage {
                         placeholderTextColor={'#C8C8C8'}
                     />
                 </View>
-                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15 }}/>
+                <View style={{ height: 0.5, backgroundColor: DesignRule.white, marginLeft: 15 }}/>
                 <View style={{
                     height: 44,
                     flexDirection: 'row',
@@ -85,7 +86,7 @@ export default class JudgePhoneNumPage extends BasePage {
                 justifyContent: 'center',
                 borderRadius: 25
             }} onPress={() => this._toNext()}>
-                <Text style={{ fontSize: 17, color: 'white' }}>下一步</Text>
+                <Text style={{ fontSize: 17, color: DesignRule.white }}>下一步</Text>
             </TouchableOpacity>
         </View>);
     }
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         height: 45,
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     itemLeftText: {
         marginRight: 20,

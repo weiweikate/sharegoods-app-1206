@@ -7,6 +7,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 export default class RecommendSegmentView extends Component {
 
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
     container: {
         width: ScreenUtils.width,
         height: 40,
-        backgroundColor: '#ffffff',
+        backgroundColor: DesignRule.white,
         flexDirection: 'row',
         alignItems: 'center'
     },

@@ -25,6 +25,7 @@ import phoneIcon from '../../res/customerservice/bangzukefu_icon.png';
 import personIcon from '../../res/customerservice/bangzyuef_icon.png';
 import QYChatUtil from './QYChatModel';
 import MineApi from '../../api/MineApi';
+import DesignRule from 'DesignRule';
 
 export default class MyHelperPage extends BasePage {
     constructor(props) {
@@ -41,7 +42,7 @@ export default class MyHelperPage extends BasePage {
 
     renderHotQuestionList = () => {
         return (
-            <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
+            <View style={{ width: ScreenUtils.width, backgroundColor: DesignRule.white }}>
                 {this.state.typeList.map((item, index) => {
                     return (
                         <View key={index} style={styles.hotQuestionStyle}>
@@ -74,7 +75,7 @@ export default class MyHelperPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
-                    <View style={{ marginTop: 1, paddingLeft:36, backgroundColor: 'white' }}>
+                    <View style={{ marginTop: 1, paddingLeft:36, backgroundColor: DesignRule.white }}>
                         <Image  source={csperson}
                                resizeMode="contain"/>
                     </View>
@@ -85,7 +86,7 @@ export default class MyHelperPage extends BasePage {
                         height: 87,
                         flexDirection: 'row',
                         marginTop: 10,
-                        backgroundColor: 'white'
+                        backgroundColor: DesignRule.white
                     }}>
                         <TouchableOpacity activeOpacity={0.6} onPress={() => console.log('退款进度')}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

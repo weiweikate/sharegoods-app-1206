@@ -10,6 +10,8 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import navBack from '../../../../components/pageDecorator/NavigatorBar/source/icon_header_back.png';
 import verticalRow from '../res/verticalRow.png';
 import horizontalRow from '../res/horizontalRow.png';
+import DesignRule from 'DesignRule';
+
 
 export default class ResultSearchNav extends Component {
 
@@ -64,7 +66,7 @@ const styles = StyleSheet.create({
     container: {
         height: ScreenUtils.headerHeight,
         width: ScreenUtils.width,
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     contentView: {
         marginTop: ScreenUtils.statusBarHeight,

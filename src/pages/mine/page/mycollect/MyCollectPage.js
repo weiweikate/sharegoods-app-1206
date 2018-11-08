@@ -23,7 +23,7 @@ import MoneyIcon from '../../../spellShop/recommendSearch/src/je_07.png';
 import StarIcon from '../../../spellShop/recommendSearch/src/xj_10.png';
 import invalidIcon from '../../res/setting/shoucang_icon_shixiao_nor.png'
 import { observer } from 'mobx-react/native';
-
+import DesignRule from 'DesignRule';
 
 @observer
 export default class MyCollectPage extends BasePage {
@@ -263,7 +263,7 @@ export default class MyCollectPage extends BasePage {
                             rowMap[`${secId}${rowId}`].closeRow();
                             this.deleteFromShoppingCartByProductId(data.storeId);
                         }}>
-                        <UIText style={{ color: 'white' }} value={'立即\n删除'}/>
+                        <UIText style={{ color: DesignRule.white }} value={'立即\n删除'}/>
                     </TouchableOpacity>
                 )}
                 rightOpenValue={-75}
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
         height: 50,
         borderWidth: 1,
         borderColor: '#c8c8c8',
-        backgroundColor: __DEV__ ? '#c8c8c8' : 'white'
+        backgroundColor: __DEV__ ? '#c8c8c8' : DesignRule.white
     },
     ingContainer: {
         width: 46,
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 20,
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     title: {
         fontSize: 13,

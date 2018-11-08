@@ -24,6 +24,7 @@ import { observer } from 'mobx-react';
 import StringUtils from '../../../utils/StringUtils';
 import user from '../../../model/user';
 import { UIText, UIImage } from '../../../components/ui';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 
@@ -174,7 +175,7 @@ export default class MyCouponsItems extends Component {
                                 marginLeft: 5,
                                 marginRight: 5,
                                 borderColor: '#4D4D4D',
-                                backgroundColor: 'white',
+                                backgroundColor: DesignRule.white,
                                 borderWidth: 1,
                                 height: px2dp(24),
                                 width: px2dp(136),
@@ -271,7 +272,7 @@ export default class MyCouponsItems extends Component {
                         <TouchableOpacity style={{
                             width: ScreenUtils.width,
                             height: 48,
-                            backgroundColor: '#ffffff',
+                            backgroundColor: DesignRule.white,
                             borderStyle: 'solid'
                             , alignItems: 'center', justifyContent: 'center'
                         }}

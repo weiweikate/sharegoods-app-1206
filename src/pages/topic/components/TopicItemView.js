@@ -6,11 +6,11 @@ import {
     TouchableOpacity,
     Text
 } from 'react-native';
-import ColorUtil from '../../../utils/ColorUtil';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import PropTypes from 'prop-types';
 import StringUtils from '../../../utils/StringUtils';
+import DesignRule from 'DesignRule';
 
 export default class TopicItemView extends Component {
 
@@ -89,13 +89,13 @@ TopicItemView.propTypes = {
 
 const Styles = StyleSheet.create({
     itemBgStyle: {
-        backgroundColor: ColorUtil.Color_f7f7f7,
+        backgroundColor: DesignRule.bgColor,
         padding: 8,
         paddingBottom: 0
     },
     itemContentStyle: {
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     itemTopImageStyle: {
         // backgroundColor: 'red'
@@ -113,17 +113,17 @@ const Styles = StyleSheet.create({
         flex: 1,
         paddingTop: 3,
         fontSize: 11,
-        color: ColorUtil.Color_ffffff
+        color: DesignRule.white
 
     },
     itemBottomTextStyle: {
         marginTop: 10,
-        color: ColorUtil.Color_222222,
+        color: DesignRule.textColor_mainTitle,
         height: 27,
         fontSize: 11
     },
     itemBottomPriceTextStyle: {
-        color: ColorUtil.Color_d51243,
+        color: DesignRule.mainColor,
         fontSize: 16,
         marginTop: 5
     }

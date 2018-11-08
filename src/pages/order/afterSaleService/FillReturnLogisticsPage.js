@@ -22,7 +22,7 @@ import StringUtils from "../../../utils/StringUtils";
 import EmptyUtils from '../../../utils/EmptyUtils';
 import bridge from '../../../utils/bridge';
 import OrderApi from '../api/orderApi'
-
+import DesignRule from 'DesignRule';
 
 export default class FillReturnLogisticsPage extends BasePage {
     constructor(props) {
@@ -87,7 +87,7 @@ export default class FillReturnLogisticsPage extends BasePage {
                 </ScrollView>
                 <TouchableWithoutFeedback onPress = {this.submit}>
                     <View style = {{backgroundColor: '#D51243', height: 50, alignItems: 'center', justifyContent: 'center'}}>
-                        <UIText value = {'提交'} style = {{color: '#FFFFFF', fontSize: 16}}/>
+                        <UIText value = {'提交'} style = {{color: DesignRule.white, fontSize: 16}}/>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
             backgroundColor: '#f7f7f7',
         },
         item_container: {
-            backgroundColor: 'white',
+            backgroundColor: DesignRule.white,
             flexDirection: 'row',
             height: 44,
             marginBottom: 10,

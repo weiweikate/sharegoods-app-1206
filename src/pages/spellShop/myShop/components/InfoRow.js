@@ -10,6 +10,7 @@ import {
     Image,
     StyleSheet,
 } from 'react-native';
+import DesignRule from 'DesignRule';
 
 export default class InfoRow extends Component {
 
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
         height: 44,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     img: {
         marginLeft: 25,

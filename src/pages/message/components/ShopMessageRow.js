@@ -10,6 +10,7 @@ import {
 import ScreenUtils from '../../../utils/ScreenUtils'
 import DateUtils from '../../../utils/DateUtils';
 import arrowIcon from  "../src/icon-3_09.png";
+import DesignRule from 'DesignRule';
 
 export default class ShopMessageRow extends Component {
 
@@ -32,7 +33,7 @@ export default class ShopMessageRow extends Component {
                 </View>
                 <View style={{height: StyleSheet.hairlineWidth, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
                 <View
-                    style={{ justifyContent: "center", alignItems: 'center', backgroundColor: 'white'}}>
+                    style={{ justifyContent: "center", alignItems: 'center', backgroundColor: DesignRule.white}}>
                     <Text style={{marginHorizontal: 15,marginTop:22, fontSize: 15,color:"#222222"}}>{item.content}</Text>
                     <Text style={{marginTop:10,marginBottom:12, fontSize: 13,color:"#999999"
                                 }}>{item.type === 1 ? '邀请' : '申请'}时间 {DateUtils.getFormatDate(item.createTime / 1000)}
@@ -40,7 +41,7 @@ export default class ShopMessageRow extends Component {
                 </View>
                 <View style={{height: StyleSheet.hairlineWidth, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
                 {
-                    item.type === 1 ? <View style={{height: 41, backgroundColor: 'white'}}>
+                    item.type === 1 ? <View style={{height: 41, backgroundColor: DesignRule.white}}>
                         <TouchableOpacity activeOpacity={0.5} onPress={()=>{this.props.pushShop && this.props.pushShop(item)}}
                                           style={{
                                               height: 41,
@@ -60,7 +61,7 @@ export default class ShopMessageRow extends Component {
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: "space-around",
-                    backgroundColor: 'white',height:60,
+                    backgroundColor: DesignRule.white,height:60,
                 }}>
                     <TouchableOpacity onPress={()=>{this.props.rejectAction && this.props.rejectAction(item)}}
                                       style={[styles.selectText,{borderWidth:0.5,borderColor:'red',}]}>
@@ -94,7 +95,7 @@ export default class ShopMessageRow extends Component {
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
                 <View
-                    style={{justifyContent: "center", alignItems: 'center', backgroundColor: 'white'}}>
+                    style={{justifyContent: "center", alignItems: 'center', backgroundColor: DesignRule.white}}>
                     <Text style={{marginHorizontal: 15,marginTop:22, fontSize: 15,color:"#222222"}}>{item.content}</Text>
                     <Text style={{marginTop:10,marginBottom:20, fontSize: 13,color:"#999999"}}>邀请时间 {DateUtils.getFormatDate(item.createTime / 1000)}</Text>
                 </View>
@@ -103,7 +104,7 @@ export default class ShopMessageRow extends Component {
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: "center",
-                    backgroundColor: 'white',height:60,
+                    backgroundColor: DesignRule.white,height:60,
                 }}>
                     <View style={[styles.selectText, {backgroundColor: '#dddddd'}]}>
                         <Text style={{
@@ -130,11 +131,11 @@ export default class ShopMessageRow extends Component {
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
                 <View
-                    style={{justifyContent: "center", alignItems: 'center', backgroundColor: 'white'}}>
+                    style={{justifyContent: "center", alignItems: 'center', backgroundColor: DesignRule.white}}>
                     <Text style={{marginHorizontal: 15,marginBottom:22,marginTop:22, fontSize: 15,color:"#222222"}}>{item.content}</Text>
                 </View>
                 {
-                    this.props.item.type === 4 && <View style={{height: 41, backgroundColor: 'white'}}>
+                    this.props.item.type === 4 && <View style={{height: 41, backgroundColor: DesignRule.white}}>
                     <TouchableOpacity activeOpacity={0.5} onPress={()=>{this.props.pushShop && this.props.pushShop(item)}}
                                       style={{
                                           height: 41,
@@ -175,7 +176,7 @@ export default class ShopMessageRow extends Component {
 
 const styles = StyleSheet.create({
     row: {
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     selectText: {
         width: 138,

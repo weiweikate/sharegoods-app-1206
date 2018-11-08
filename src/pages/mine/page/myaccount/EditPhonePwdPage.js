@@ -14,6 +14,7 @@ import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
 import user from '../../../../model/user';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
+import DesignRule from 'DesignRule';
 
 export default class EditPhonePwdPage extends BasePage {
 
@@ -39,7 +40,7 @@ export default class EditPhonePwdPage extends BasePage {
             <View style={{
                 flexDirection: 'row',
                 height: 48,
-                backgroundColor: 'white',
+                backgroundColor: DesignRule.white,
                 marginTop: 12,
                 alignItems: 'center'
             }}>
@@ -63,7 +64,7 @@ export default class EditPhonePwdPage extends BasePage {
                 </TouchableOpacity>
             </View>
             <UIText value={'请设置新密码'} style={{ fontSize: 13, color: '#C8C8C8', marginLeft: 20, marginTop: 15 }}/>
-            <View style={{ backgroundColor: 'white', marginTop: 12, flexDirection: 'column' }}>
+            <View style={{ backgroundColor: DesignRule.white, marginTop: 12, flexDirection: 'column' }}>
                 <View style={{
                     flexDirection: 'row',
                     height: 48,
@@ -126,7 +127,7 @@ export default class EditPhonePwdPage extends BasePage {
                 justifyContent: 'center',
                 borderRadius: 25
             }} onPress={() => this._done()}>
-                <Text style={{ fontSize: 17, color: 'white' }}>完成</Text>
+                <Text style={{ fontSize: 17, color: DesignRule.white }}>完成</Text>
             </TouchableOpacity>
         </View>;
     }

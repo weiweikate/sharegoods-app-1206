@@ -7,6 +7,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 export default class SearchSegmentView extends Component {
 
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     container: {
         width: ScreenUtils.width,
         height: 42,
-        backgroundColor: '#ffffff',
+        backgroundColor: DesignRule.white,
         borderTopWidth: StyleSheet.hairlineWidth,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderTopColor: '#eeeeee',

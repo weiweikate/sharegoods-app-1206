@@ -11,6 +11,7 @@ import {
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
+import DesignRule from 'DesignRule';
 
 export default class CashExplainPage extends BasePage {
 
@@ -87,7 +88,7 @@ export default class CashExplainPage extends BasePage {
                     <TouchableOpacity activeOpacity={0.5} onPress={this._clickOpen} style={styles.btnStyle}>
                         <Text style={{
                             fontSize: 15,
-                            color: '#ffffff'
+                            color: DesignRule.white
                         }}>缴纳保证金</Text>
                     </TouchableOpacity>
                     <Text style={styles.descText}>点击缴纳则默认已阅读并同意缴纳保证金</Text>
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
     },
     circleText: {
         fontSize: 12,
-        color: 'white'
+        color: DesignRule.white
     },
     desc: {
         marginLeft: 8,

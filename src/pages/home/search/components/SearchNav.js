@@ -8,6 +8,8 @@ import {
     Text
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
+
 
 export default class SearchBar extends Component {
 
@@ -79,7 +81,7 @@ const styles = StyleSheet.create({
     container: {
         height: ScreenUtils.headerHeight,
         width: ScreenUtils.width,
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     contentView: {
         marginTop: ScreenUtils.statusBarHeight,

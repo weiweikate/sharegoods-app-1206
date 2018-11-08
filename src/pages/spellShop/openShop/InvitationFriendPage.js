@@ -17,6 +17,7 @@ import BasePage from '../../../BasePage';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import bridge from '../../../utils/bridge';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
 
 const gap = -5;
 
@@ -107,7 +108,7 @@ export default class InvitationToShopPage extends BasePage {
                                     value={'https://www.baidu.com/'}
                                     size={140 - 6}
                                     bgColor='#333'
-                                    fgColor='white'/>
+                                    fgColor={DesignRule.white}/>
                             </View>
                             <Text style={styles.wxTip}>分享为您的店铺增添活力</Text>
                         </ImageBackground>

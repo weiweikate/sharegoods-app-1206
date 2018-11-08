@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import BasePage from '../../BasePage';
+import DesignRule from 'DesignRule';
 
 export default class QuestionnairePage extends BasePage {
     constructor(props) {
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     textitems: {
         width: ScreenUtils.width,
         height: 44,
-        backgroundColor: '#ffffff',
+        backgroundColor: DesignRule.white,
         borderStyle: 'solid'
     },
     textsingle: {

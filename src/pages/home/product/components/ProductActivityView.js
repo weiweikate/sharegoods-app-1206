@@ -9,6 +9,8 @@ import {
 import { isNoEmpty } from '../../../../utils/StringUtils';
 import { formatDate } from '../../../../utils/DateUtils';
 import whiteArrowRight from '../res/icon3_03.png';
+import DesignRule from 'DesignRule';
+
 
 export default class ActivityView extends Component {
 
@@ -151,7 +153,7 @@ export default class ActivityView extends Component {
             justifyContent: 'space-between'
         }} onPress={() => this.props.productActivityViewAction()}>
             <View style={{ marginLeft: 11, flexDirection: 'row', paddingVertical: 10 }}>
-                <Text style={{ color: 'white', fontSize: 18 }}>￥<Text
+                <Text style={{ color: DesignRule.white, fontSize: 18 }}>￥<Text
                     style={{ fontSize: 40 }}>{price}</Text></Text>
                 <View style={{ marginLeft: 10, justifyContent: 'center' }}>
                     <Text style={{ color: '#F7F7F7', fontSize: 12 }}>{one}</Text>

@@ -24,6 +24,7 @@ import UserSingleItem from '../../components/UserSingleItem';
 import BusinessUtils from '../../components/BusinessUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
+import DesignRule from 'DesignRule';
 
 export default class IDVertify2Page extends BasePage {
 
@@ -71,7 +72,7 @@ export default class IDVertify2Page extends BasePage {
                         height: 56,
                         flexDirection: 'row',
                         alignItems: 'center',
-                        backgroundColor: 'white',
+                        backgroundColor: DesignRule.white,
                         justifyContent: 'space-between'
                     }}>
                         <Text style={styles.accountStyle}>姓名</Text>
@@ -87,7 +88,7 @@ export default class IDVertify2Page extends BasePage {
                         height: 56,
                         flexDirection: 'row',
                         alignItems: 'center',
-                        backgroundColor: 'white',
+                        backgroundColor: DesignRule.white,
                         justifyContent: 'space-between'
                     }}>
                         <Text style={styles.accountStyle}>证件号</Text>
@@ -122,7 +123,7 @@ export default class IDVertify2Page extends BasePage {
                         justifyContent: 'center',
                         borderRadius: 25
                     }} onPress={() => this.commit()}>
-                        <Text style={{ fontSize: 17, color: 'white' }}
+                        <Text style={{ fontSize: 17, color: DesignRule.white }}
                               onPress={() => this.toLoginOut()}>提交</Text>
                     </TouchableOpacity>
                     <View style={{ alignItems: 'center' }}>
@@ -177,7 +178,7 @@ export default class IDVertify2Page extends BasePage {
         return (
             <View style={{ height: 50, backgroundColor: '#e60012', justifyContent: 'center', paddingLeft: 15 }}>
                 <UIText value={'请仔细检查姓名和证件号是否有误\n并重新上传图片，提交审核'}
-                        style={{ fontSize: 13, lineHeight: 18, color: '#ffffff' }}/>
+                        style={{ fontSize: 13, lineHeight: 18, color: DesignRule.white }}/>
             </View>
         );
     };
@@ -319,7 +320,7 @@ const styles = StyleSheet.create({
     }, accountStyle: {
         marginLeft: 16, color: color.loginTextBlack, width: 60
     }, inputTextStyle: {
-         height: 40, flex: 1, backgroundColor: 'white', fontSize: 14,textAlign:'right',marginRight:15
+         height: 40, flex: 1, backgroundColor: DesignRule.white, fontSize: 14,textAlign:'right',marginRight:15
     }
 });
 

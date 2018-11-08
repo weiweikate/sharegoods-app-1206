@@ -27,6 +27,8 @@ import DetailNavShowModal from './components/DetailNavShowModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import CommModal from '../../../comm/components/CommModal';
 import redEnvelopeBg from './res/red_envelope_bg.png';
+import DesignRule from 'DesignRule';
+
 
 const { px2dp } = ScreenUtils;
 import user from '../../../model/user';
@@ -264,7 +266,7 @@ export default class ProductDetailPage extends BasePage {
                     <HTML html={product.content} imagesMaxWidth={ScreenUtils.width}
                           imagesInitialDimensions={ScreenUtils.width}
                           containerStyle={{ backgroundColor: '#fff' }}/>
-                    <View style={{ backgroundColor: 'white' }}>
+                    <View style={{ backgroundColor: DesignRule.white }}>
                         <Text
                             style={{ paddingVertical: 13, marginLeft: 15, fontSize: 15, color: '#222222' }}>价格说明</Text>
                         <View style={{ height: 0.5, marginHorizontal: 0, backgroundColor: '#eee' }}/>
@@ -278,7 +280,7 @@ export default class ProductDetailPage extends BasePage {
             }
 
         } else {
-            return <View style={{ backgroundColor: 'white' }}>
+            return <View style={{ backgroundColor: DesignRule.white }}>
                 <FlatList
                     style={{ marginHorizontal: 16, marginVertical: 16, borderWidth: 0.5, borderColor: '#eee' }}
                     renderItem={this._renderSmallItem}
@@ -325,10 +327,10 @@ export default class ProductDetailPage extends BasePage {
 
         let view = (
             <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
-                <Text style={{ color: 'white', fontSize: px2dp(24) }}>
+                <Text style={{ color: DesignRule.white, fontSize: px2dp(24) }}>
                     领取成功
                 </Text>
-                <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
+                <Text style={{ color: DesignRule.white, fontSize: px2dp(11), marginTop: px2dp(5) }}>
                     可前往我的-优惠卷查看
                 </Text>
             </View>
@@ -350,20 +352,20 @@ export default class ProductDetailPage extends BasePage {
                         height: px2dp(362), width: px2dp(257),
                         alignItems: 'center'
                     }}>
-                        <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14), marginTop: 26 }}>
+                        <Text style={{ color: DesignRule.white, includeFontPadding: false, fontSize: px2dp(14), marginTop: 26 }}>
                             {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.encryptPhone(this.state.couponData.phone)}
                         </Text>
-                        <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14) }}>
+                        <Text style={{ color: DesignRule.white, includeFontPadding: false, fontSize: px2dp(14) }}>
                             赠送了你一个红包
                         </Text>
 
-                        <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(60), marginTop: 20 }}>
+                        <Text style={{ includeFontPadding: false, color: DesignRule.white, fontSize: px2dp(60), marginTop: 20 }}>
                             {EmptyUtils.isEmpty(this.state.couponData) ? null : this.state.couponData.price}
-                            <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
+                            <Text style={{ includeFontPadding: false, color: DesignRule.white, fontSize: px2dp(15) }}>
                                 元
                             </Text>
                         </Text>
-                        <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(14), marginTop: 12 }}>
+                        <Text style={{ includeFontPadding: false, color: DesignRule.white, fontSize: px2dp(14), marginTop: 12 }}>
                             红包抵扣金
                         </Text>
                         {this.state.hasGetCoupon ? null : button}
@@ -467,7 +469,7 @@ const styles = StyleSheet.create({
     },
     opacityView: {
         height: ScreenUtils.headerHeight,
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         position: 'absolute',
         top: 0,
         left: 0,

@@ -7,13 +7,13 @@ import {
     ScrollView
 } from 'react-native';
 import { observer } from 'mobx-react';
-import ColorUtil from '../../utils/ColorUtil';
 import { ActivityOneView } from './components/SbSectiontHeaderView';
 import ScreenUtils from '../../utils/ScreenUtils';
 import SbOpenPrizeHeader from './components/SbOpenPrizeHeader';
 import OpenPrizeItemView from './components/OpenPrizeItemView';
 // import HomeAPI from '../api/HomeAPI';
 import TotalTopicDataModel from './model/SubTopicModel';
+import DesignRule from 'DesignRule';
 
 @observer
 export default class DownPricePage extends BasePage {
@@ -44,7 +44,7 @@ export default class DownPricePage extends BasePage {
                         flexDirection: 'row',//设置横向布局
                         flexWrap: 'wrap',  //设置换行显示
                         // alignItems: 'flex-start',
-                        backgroundColor: '#FFFFFF'
+                        backgroundColor: DesignRule.white
                     }
                 }
             >
@@ -68,7 +68,7 @@ export default class DownPricePage extends BasePage {
                         flexDirection: 'row',//设置横向布局
                         flexWrap: 'wrap',  //设置换行显示
                         // alignItems: 'flex-start',
-                        backgroundColor: '#FFFFFF',
+                        backgroundColor: DesignRule.white,
                         width: ScreenUtils.width
                     }
                 }
@@ -246,12 +246,12 @@ const Styles = StyleSheet.create({
         flexDirection: 'row',//设置横向布局
         flexWrap: 'wrap',  //设置换行显示
         // alignItems: 'flex-start',
-        backgroundColor: '#FFFFFF'
+        backgroundColor: DesignRule.white
     },
     itemBgStyle: {
         width: ScreenUtils.width / 2,
         height: ScreenUtils.width / 2 + 100,
-        backgroundColor: ColorUtil.Color_f7f7f7,
+        backgroundColor: DesignRule.bgColor,
         padding: 8,
         paddingBottom: 0
     }

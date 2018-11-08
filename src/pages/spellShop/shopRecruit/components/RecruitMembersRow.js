@@ -16,6 +16,7 @@ import PeopleImg from '../src/dy_07.png';
 import ArrowImg from '../src/xjt_03.png';
 import DashImg from '../src/xt_03.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 export default class AssistantRow extends Component {
 
@@ -57,7 +58,7 @@ export default class AssistantRow extends Component {
 
 const styles = StyleSheet.create({
     row: {
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     topRow: {
         height: 38,

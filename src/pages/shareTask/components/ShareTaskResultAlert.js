@@ -27,6 +27,9 @@ import fail from "../res/renwu_icon_yihan_nor.png";
 import success from "../res/renwu_icon_gongxi_nor.png";
 import cancel from "../res/qiandao_btn_return_nor.png";
 import ScreenUtils from "../../../utils/ScreenUtils";
+import DesignRule from 'DesignRule';
+import DesignRule from 'DesignRule';
+import DesignRule from 'DesignRule';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
@@ -87,7 +90,7 @@ export default class ShareTaskResultAlert extends React.Component {
                                         this.close();
                                     }}>
                                         <View style = {styles.btn}>
-                                            <UIText value={"查看账户"} style={{color: 'white', fontSize: autoSizeWidth(14)}}/>
+                                            <UIText value={"查看账户"} style={{color: DesignRule.white, fontSize: autoSizeWidth(14)}}/>
                                         </View>
                                     </TouchableWithoutFeedback>
                                     <UIText value={'现金奖励已存入\"现金账户 \"'} style={styles.detail}/>

@@ -17,6 +17,7 @@ import { isNoEmpty } from '../../../utils/StringUtils';
 import StringUtils from '../../../utils/StringUtils';
 import VideoView from '../../../components/ui/video/VideoView';
 // import user from '../../../model/user';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 /**
@@ -142,7 +143,7 @@ export default class TopicDetailHeaderView extends Component {
                 {activityType === 3 ? null : <ActivityView ref={(e) => {
                     this.ActivityView = e;
                 }} activityData={this.props.activityData} activityType={activityType}/>}
-                <View style={{ backgroundColor: 'white' }}>
+                <View style={{ backgroundColor: DesignRule.white }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{
                             marginTop: 14,
@@ -161,7 +162,7 @@ export default class TopicDetailHeaderView extends Component {
                                 <Text style={{
                                     marginLeft: 5,
                                     backgroundColor: 'red',
-                                    color: '#FFFFFF',
+                                    color: DesignRule.white,
                                     fontSize: 10, paddingHorizontal: 5
                                 }}>{levelTypeName}</Text>
                             </View> : null}
@@ -179,7 +180,7 @@ export default class TopicDetailHeaderView extends Component {
                     </View>
                 </View>
                 {activityType === 2 ?
-                    <View style={{ backgroundColor: 'white', marginTop: 10 }}>
+                    <View style={{ backgroundColor: DesignRule.white, marginTop: 10 }}>
                         <TouchableOpacity style={{
                             height: 45,
                             flexDirection: 'row',
@@ -191,7 +192,7 @@ export default class TopicDetailHeaderView extends Component {
                         </TouchableOpacity>
                         <View style={{ height: 1, backgroundColor: '#eeee' }}/>
                     </View> : null}
-                <View style={{ backgroundColor: 'white', marginTop: activityType === 2 ? 0 : 10, marginBottom: 12 }}>
+                <View style={{ backgroundColor: DesignRule.white, marginTop: activityType === 2 ? 0 : 10, marginBottom: 12 }}>
                     <View style={{
                         flexDirection: 'row',
                         marginLeft: 16,

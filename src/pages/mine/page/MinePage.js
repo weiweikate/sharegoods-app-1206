@@ -179,7 +179,7 @@ export default class MinePage extends BasePage {
         return (
             <View ref={(ref) => this.headerBg = ref}
                   style={{
-                      backgroundColor: 'white',
+                      backgroundColor: DesignRule.white,
                       position: 'absolute',
                       top: 0,
                       left: 0,
@@ -263,7 +263,7 @@ export default class MinePage extends BasePage {
                                          source={levelBg}>
                             <Text style={{
                                 fontSize: px2dp(12),
-                                color: 'white',
+                                color: DesignRule.white,
                                 includeFontPadding: false,
                                 marginLeft: px2dp(4.5),
                                 marginTop: px2dp(-3)
@@ -285,7 +285,7 @@ export default class MinePage extends BasePage {
 
     accountRender = () => {
         return (
-            <View style={{ backgroundColor: 'white', marginTop: px2dp(11) }}>
+            <View style={{ backgroundColor: DesignRule.white, marginTop: px2dp(11) }}>
                 <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
                     <Text style={{ color: '#666666', fontSize: px2dp(16) }}>
                         我的资产
@@ -345,7 +345,7 @@ export default class MinePage extends BasePage {
                 }}>
                     <Text allowFontScaling={true} style={{
                         textAlign: 'center',
-                        color: 'white',
+                        color: DesignRule.white,
                         includeFontPadding: false,
                         width: 80,
                         height: 20,
@@ -354,7 +354,7 @@ export default class MinePage extends BasePage {
                         {num}
                     </Text>
 
-                    <Text style={{ color: 'white', fontSize: px2dp(11), includeFontPadding: false }}>
+                    <Text style={{ color: DesignRule.white, fontSize: px2dp(11), includeFontPadding: false }}>
                         {text}
                     </Text>
 
@@ -469,7 +469,7 @@ export default class MinePage extends BasePage {
                     alignItems: 'center',
                     justifyContent: 'center'
                 }}>
-                    <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(10) }}>
+                    <Text style={{ includeFontPadding: false, color: DesignRule.white, fontSize: px2dp(10) }}>
                         {num > 99 ? 99 : num}
                     </Text>
                 </View>
@@ -658,7 +658,7 @@ const styles = StyleSheet.create({
     },
     whiteText: {
         fontSize: 15,
-        color: '#ffffff'
+        color: DesignRule.white
     },
     greyText: {
         fontSize: 12,

@@ -14,6 +14,8 @@ import BasePage from '../../BasePage';
 import arrorw_rightIcon from '../order/res/arrow_right.png';
 import MessageApi from './api/MessageApi';
 import Toast from '../../utils/bridge';
+import DesignRule from 'DesignRule';
+
 
 export default class NotificationPage extends BasePage {
     constructor(props) {
@@ -56,11 +58,11 @@ export default class NotificationPage extends BasePage {
                 <View style={styles.itemContents}>
                     <Text>{DateUtils.getFormatDate(item.pushTime / 1000)}</Text>
                 </View>
-                <View style={{ height: 49, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
+                <View style={{ height: 49, flexDirection: 'row', alignItems: 'center', backgroundColor: DesignRule.white }}>
                     <Text style={{ marginLeft: 15, fontSize: 15, color: color.red }}>公告</Text>
                 </View>
                 <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
-                <View style={{ height: 79, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+                <View style={{ height: 79, justifyContent: 'center', alignItems: 'center', backgroundColor: DesignRule.white }}>
                     <Text style={{ marginLeft: 5, fontSize: 15 }}>{item.content}</Text>
                 </View>
                 <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
@@ -74,11 +76,11 @@ export default class NotificationPage extends BasePage {
                 <View style={styles.itemContents}>
                     <Text>{DateUtils.getFormatDate(item.startTime / 1000,'MM/dd hh:mm')}</Text>
                 </View>
-                <View style={{paddingVertical:17, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
+                <View style={{paddingVertical:17, flexDirection: 'row', alignItems: 'center', backgroundColor: DesignRule.white }}>
                     <Text style={{ marginLeft: 15, fontSize: 15, color: '#222222' }}>{item.title}</Text>
                 </View>
                 <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
-                <View style={{ justifyContent: 'center', backgroundColor: 'white',paddingVertical:32 }}>
+                <View style={{ justifyContent: 'center', backgroundColor: DesignRule.white,paddingVertical:32 }}>
                     <Text style={{ marginLeft: 15, fontSize: 15 }}>{item.content}</Text>
                 </View>
                 <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
@@ -168,16 +170,16 @@ export default class NotificationPage extends BasePage {
                 <View style={{ height: 37, justifyContent: 'center', alignItems: 'center' }}>
                     <Text>04/06 12:23</Text>
                 </View>
-                <View style={{ height: 49, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
+                <View style={{ height: 49, flexDirection: 'row', alignItems: 'center', backgroundColor: DesignRule.white }}>
                     <Text style={{ marginLeft: 15, fontSize: 15, color: color.red }}>[有奖调研]</Text>
                     <Text style={{ marginLeft: 5, fontSize: 15 }}> 您对我们的产品还满意么？</Text>
                 </View>
                 <View style={{ height: 0.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
-                <View style={{ height: 93, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+                <View style={{ height: 93, justifyContent: 'center', alignItems: 'center', backgroundColor: DesignRule.white }}>
                     <Text style={{ marginLeft: 5, fontSize: 15 }}>想要了解您对我们的印象如何，参加调研，就有机会赢取丰富奖励！</Text>
                 </View>
                 <View style={{ height: 0.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
-                <View style={{ height: 41, backgroundColor: 'white' }}>
+                <View style={{ height: 41, backgroundColor: DesignRule.white }}>
                     <TouchableOpacity activeOpacity={0.5} onPress={() => this.go2Questionnaire()}
                                       style={{
                                           height: 41,

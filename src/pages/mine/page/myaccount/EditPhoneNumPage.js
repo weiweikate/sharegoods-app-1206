@@ -11,6 +11,7 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import bridge from '../../../../utils/bridge';
 import MineAPI from '../../api/MineApi';
 import SMSTool from '../../../../utils/SMSTool';
+import DesignRule from 'DesignRule';
 
 /**
  * @author chenxiang
@@ -48,7 +49,7 @@ export default class EditPhoneNumPage extends BasePage {
             <View style={{
                 height: 44,
                 flexDirection: 'row',
-                backgroundColor: 'white',
+                backgroundColor: DesignRule.white,
                 alignItems: 'center',
                 marginTop: 10
             }}>
@@ -80,7 +81,7 @@ export default class EditPhoneNumPage extends BasePage {
                 justifyContent: 'center',
                 borderRadius: 25
             }} onPress={() => this._toNext(oldNum)}>
-                <Text style={{ fontSize: 17, color: 'white' }}>下一步</Text>
+                <Text style={{ fontSize: 17, color: DesignRule.white }}>下一步</Text>
             </TouchableOpacity>
         </View>);
     }

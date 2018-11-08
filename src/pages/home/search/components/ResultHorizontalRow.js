@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import gwc from '../res/gwc.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
+
 
 export default class ResultHorizontalRow extends Component {
 
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 5,
         marginLeft: 5,
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         width: (ScreenUtils.width - 30 - 5) / 2
     },
     img: {

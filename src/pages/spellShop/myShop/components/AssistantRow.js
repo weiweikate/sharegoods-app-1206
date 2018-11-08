@@ -9,6 +9,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import SwipeOut from 'react-native-swipeout';
+import DesignRule from 'DesignRule';
 
 export default class AssistantRow extends Component {
 
@@ -46,7 +47,7 @@ export default class AssistantRow extends Component {
         const sty = [styles.rowContainer];
         // TODO 等待后台确定贡献度 计算方式
         sty.push(style);
-        sty.push({ backgroundColor: 'white' });
+        sty.push({ backgroundColor: DesignRule.white });
         return (<TouchableWithoutFeedback onPress={this._clickAssistantDetail}>
             <View style={sty}>
                 {
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
     rowContainer: {
         height: 88,
         borderRadius: 10,
-        backgroundColor: '#ffffff',
+        backgroundColor: DesignRule.white,
         shadowColor: 'rgba(0, 0, 0, 0.1)',
         shadowOffset: {
             width: 0,

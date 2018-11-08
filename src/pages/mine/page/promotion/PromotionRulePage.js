@@ -17,6 +17,8 @@ import {
 } from "react-native";
 import BasePage from "../../../../BasePage";
 import ScreenUtils from "../../../../utils/ScreenUtils";
+import DesignRule from 'DesignRule';
+
 const { px2dp, } = ScreenUtils;
 
 type Props = {};
@@ -70,7 +72,7 @@ export default class PromotionRulePage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'white'
+        backgroundColor:DesignRule.white
     },
     headerWrapper: {
         justifyContent: "center",

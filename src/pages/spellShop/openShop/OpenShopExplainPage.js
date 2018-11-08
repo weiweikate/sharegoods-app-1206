@@ -10,6 +10,7 @@ import {
 //source
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
+import DesignRule from 'DesignRule';
 
 export default class OpenShopExplainPage extends BasePage {
 
@@ -90,7 +91,7 @@ export default class OpenShopExplainPage extends BasePage {
                     <TouchableOpacity activeOpacity={0.5} onPress={this._clickOpen} style={styles.btnStyle}>
                         <Text style={{
                             fontSize: 15,
-                            color: '#ffffff'
+                            color: DesignRule.white
                         }}>我要开店</Text>
                     </TouchableOpacity>
 
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
     },
     circleText: {
         fontSize: 12,
-        color: 'white'
+        color: DesignRule.white
     },
     desc: {
         marginLeft: 8,

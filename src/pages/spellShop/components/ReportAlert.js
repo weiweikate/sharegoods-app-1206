@@ -17,6 +17,7 @@ const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('wind
 const PANNELHEIGHT = 340;
 const Animated_Duration = 300; //默认的动画持续时间
 import KeFuIcon from '../src/jbtk_03.png';
+import DesignRule from 'DesignRule';
 
 export default class ReportAlert extends Component {
 
@@ -193,7 +194,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         height: 50,
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         flexDirection: 'row',
         paddingHorizontal: 20
     },
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
     whitePanel: {
         flex:1,
         marginTop: 31,
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         alignItems: 'center',
         borderRadius: 5
     },
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
     },
     submitTitle: {
         fontSize: 16,
-        color: '#ffffff'
+        color: DesignRule.white
     },
     cancelContainer: {
         justifyContent: 'center',

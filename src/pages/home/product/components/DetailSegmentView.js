@@ -6,6 +6,7 @@ import {
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
+import DesignRule from 'DesignRule';
 
 export default class DetailSegmentView extends Component {
 
@@ -65,7 +66,7 @@ export default class DetailSegmentView extends Component {
 const styles = StyleSheet.create({
     container: {
         marginBottom: 1.5,
-        backgroundColor: '#ffffff',
+        backgroundColor: DesignRule.white,
         flexDirection: 'row',
         flex: 1
     },

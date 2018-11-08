@@ -15,6 +15,8 @@ import user from '../../../../model/user';
 
 import VideoView from '../../../../components/ui/video/VideoView';
 import StringUtils from '../../../../utils/StringUtils';
+import DesignRule from 'DesignRule';
+
 
 const { px2dp } = ScreenUtils;
 
@@ -114,7 +116,7 @@ export default class DetailHeaderView extends Component {
                                          }}
                                          activityData={this.props.activityData}
                                          productActivityViewAction={this.props.productActivityViewAction}/> : null}
-                <View style={{ backgroundColor: 'white' }}>
+                <View style={{ backgroundColor: DesignRule.white }}>
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{
                             marginTop: 14,
@@ -132,7 +134,7 @@ export default class DetailHeaderView extends Component {
                             <Text style={{
                                 marginLeft: 5,
                                 backgroundColor: 'red',
-                                color: '#FFFFFF',
+                                color: DesignRule.white,
                                 fontSize: 10, paddingHorizontal: 5
                             }}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelName}价` : '原价'}</Text>
                         </View>
@@ -150,7 +152,7 @@ export default class DetailHeaderView extends Component {
                         </View>
                     </View>
                 </View>
-                <View style={{ backgroundColor: 'white', marginTop: 10, marginBottom: 12 }}>
+                <View style={{ backgroundColor: DesignRule.white, marginTop: 10, marginBottom: 12 }}>
                     <View style={{
                         flexDirection: 'row',
                         marginLeft: 16,

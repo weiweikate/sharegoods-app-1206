@@ -37,6 +37,7 @@ import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { NavigationActions } from 'react-navigation';
+import DesignRule from 'DesignRule';
 
 class MyOrdersDetailPage extends BasePage {
     constructor(props) {
@@ -337,7 +338,7 @@ class MyOrdersDetailPage extends BasePage {
                     <View>
                         {this.renderLine()}
                         {this.state.giftBagCoupons.map((item, index) => {
-                            return <View style={{ backgroundColor: 'white' }} key={index}>
+                            return <View style={{ backgroundColor: DesignRule.white }} key={index}>
                                 {index == 0 ? <Image source={couponIcon} style={{
                                     width: 15,
                                     height: 12,
@@ -1338,7 +1339,7 @@ const styles = StyleSheet.create({
         width: 80,
         height: 30,
         borderRadius: 15,
-        backgroundColor: '#ffffff',
+        backgroundColor: DesignRule.white,
         borderStyle: 'solid',
         borderWidth: 1,
         borderColor: '#dddddd',

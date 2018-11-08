@@ -10,6 +10,7 @@ import { UIButton } from '../../../../components/ui';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
+import DesignRule from 'DesignRule';
 
 export default class NickNameModifyPage extends BasePage {
     constructor(props) {
@@ -84,6 +85,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1, backgroundColor: color.page_background
     }, inputTextStyle: {
-        height: 48, backgroundColor: 'white', fontSize: 14, paddingLeft: 14, paddingRight: 14
+        height: 48, backgroundColor: DesignRule.white, fontSize: 14, paddingLeft: 14, paddingRight: 14
     }
 });

@@ -26,6 +26,7 @@ import OrderApi from './../api/orderApi';
 import MineApi from '../../mine/api/MineApi';
 import API from '../../../api';
 import { NavigationActions } from 'react-navigation';
+import DesignRule from 'DesignRule';
 
 // let oldViewData, oldPriceList;
 export default class ConfirOrderPage extends BasePage {
@@ -164,7 +165,7 @@ export default class ConfirOrderPage extends BasePage {
     };
     renderDetail = () => {
         return (
-            <View style={{ backgroundColor: 'white' }}>
+            <View style={{ backgroundColor: DesignRule.white }}>
                 <TouchableOpacity style={styles.couponsStyle}
                                   disabled={(this.state.viewData.list[0].restrictions & 1) == 1 || this.state.orderParam.orderType == 1 || this.state.orderParam.orderType == 2}
                                   onPress={() => this.jumpToCouponsPage()}>
@@ -237,7 +238,7 @@ export default class ConfirOrderPage extends BasePage {
             <View style={{ borderColor: '#DDDDDD', borderWidth: 1 }}>
                 {this.state.viewData.couponList ?
                     this.state.viewData.couponList.map((item, index) => {
-                        return <View style={{ backgroundColor: 'white' }} key={index}>
+                        return <View style={{ backgroundColor: DesignRule.white }} key={index}>
                             {index == 0 ? <Image source={couponIcon} style={{
                                 width: 15,
                                 height: 12,
@@ -296,7 +297,7 @@ export default class ConfirOrderPage extends BasePage {
                         style={{ flex: 1, backgroundColor: color.red, justifyContent: 'center', alignItems: 'center' }}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'提交订单'}
-                                style={{ fontSize: 16, color: '#ffffff' }}/>
+                                style={{ fontSize: 16, color: DesignRule.white }}/>
                     </TouchableOpacity>
 
                 </View>
@@ -760,7 +761,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1, backgroundColor: '#f7f7f7', justifyContent: 'flex-end',marginBottom: ScreenUtils.safeBottom
     }, selectText: {
-        fontSize: 16, color: '#ffffff'
+        fontSize: 16, color: DesignRule.white
     }, blackText: {
         fontSize: 13,
         lineHeight: 18,
@@ -770,7 +771,7 @@ const styles = StyleSheet.create({
         lineHeight: 18,
         color: '#999999'
     }, inputTextStyle: {
-        marginLeft: 20, height: 40, flex: 1, backgroundColor: 'white', fontSize: 14
+        marginLeft: 20, height: 40, flex: 1, backgroundColor: DesignRule.white, fontSize: 14
     }, selectView: {
         flex: 1,
         borderRadius: 3,

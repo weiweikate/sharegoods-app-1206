@@ -3,6 +3,7 @@ import React from 'react';
 import BasePage from '../../../../BasePage';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 export default class EditPayPwdPage extends BasePage {
 
@@ -38,7 +39,7 @@ export default class EditPayPwdPage extends BasePage {
                 justifyContent: 'center',
                 borderRadius: 25
             }} onPress={() => this._forget()}>
-                <Text style={{ fontSize: 17, color: 'white' }}>忘记原交易密码</Text>
+                <Text style={{ fontSize: 17, color: DesignRule.white }}>忘记原交易密码</Text>
             </TouchableOpacity>
         </View>;
     }

@@ -6,6 +6,7 @@ import MyOrdersListView from './../components/MyOrdersListView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import search from '../res/search.png';
 import { color } from '../../../constants/Theme';
+import DesignRule from 'DesignRule';
 
 /**
  * @author chenxiang
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: DesignRule.white,
         marginBottom: ScreenUtils.safeBottom
     },
     welcome: {

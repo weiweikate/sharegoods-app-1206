@@ -13,7 +13,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import StarImg from '../src/dj_03.png';
 import StringUtils from '../../../../utils/StringUtils';
-
+import DesignRule from 'DesignRule';
 
 export default class RecommendRow extends Component {
 
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     viewContainer: {
         marginTop: 9,
         marginHorizontal: 15,
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
 
     topViewContainer: {
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#D51243'
     },
     joinText: {
-        color: 'white',
+        color: DesignRule.white,
         fontSize: 12
     },
 

@@ -21,7 +21,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import bank from '../../res/userInfoImg/commonBankCardIcon.png';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
-
+import DesignRule from 'DesignRule';
 
 class WithdrawCashPage extends BasePage {
     constructor(props) {
@@ -92,11 +92,11 @@ class WithdrawCashPage extends BasePage {
                     width: ScreenUtils.width,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor: 'white'
+                    backgroundColor: DesignRule.white
                 }}>
                     <Text style={{ marginLeft: 15, color: color.loginTextBlack, fontSize: 30 }}>{'¥'}</Text>
                     <RNTextInput
-                        style={{ marginLeft: 20, height: 40, flex: 1, backgroundColor: 'white', fontSize: 14 }}
+                        style={{ marginLeft: 20, height: 40, flex: 1, backgroundColor: DesignRule.white, fontSize: 14 }}
                         onChangeText={(text) => this.onChangeText(text)}
                         placeholder={''}
                         underlineColorAndroid={'transparent'}

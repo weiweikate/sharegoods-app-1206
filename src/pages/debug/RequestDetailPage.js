@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import { formatDate } from '../../utils/DateUtils';
 import BasePage from '../../BasePage';
+import DesignRule from 'DesignRule';
+
 
 export default class RequestDetailPage extends BasePage {
 
@@ -177,7 +179,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f7f7f7',
     },
     cell: {
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         marginBottom: 4,
         padding: 15,
         paddingVertical: 8,

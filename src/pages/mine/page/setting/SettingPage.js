@@ -20,6 +20,7 @@ import shopCartStore from '../../../shopCart/model/ShopCartStore';
 import DeviceInfo from 'react-native-device-info';
 import bridge from '../../../../utils/bridge';
 import CommModal from 'CommModal';
+import DesignRule from 'DesignRule';
 
 /**
  * @author luoyongming
@@ -66,7 +67,7 @@ class SettingPage extends BasePage {
             <View style={styles.container}>
 
                 {this.renderWideLine()}
-                <View style={{ backgroundColor: 'white' }}>
+                <View style={{ backgroundColor: DesignRule.white }}>
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAccountSettingPage()}>
                         <UIText value={'账号与安全'} style={styles.blackText}/>
                         <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
@@ -81,7 +82,7 @@ class SettingPage extends BasePage {
                         <UIText value={'消息推送'} style={styles.blackText}/>
                         <Switch value={this.state.value}
                                 onTintColor={'#00D914'}
-                                thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
+                                thumbTintColor={Platform.OS === 'android' ? DesignRule.white : ''}
                                 tintColor={'#C8C8C8'}
                                 onValueChange={(value) => {
                                     this.setState({
@@ -121,7 +122,7 @@ class SettingPage extends BasePage {
                     justifyContent: 'center',
                     borderRadius: 25
                 }} onPress={() => this.toLoginOut()}>
-                    <Text style={{ fontSize: 17, color: 'white' }}
+                    <Text style={{ fontSize: 17, color: DesignRule.white }}
                           onPress={() => this.toLoginOut()}>退出登录</Text>
                 </TouchableOpacity>
 

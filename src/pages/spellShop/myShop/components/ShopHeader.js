@@ -21,6 +21,7 @@ import RingImg from '../res/headBg.png';
 import StarImg from '../res/dj_03.png';
 import CCZImg from '../res/ccz_03.png';
 import ProgressImg from '../res/jdt_05.png';
+import DesignRule from 'DesignRule';
 
 export default class ShopHeader extends Component {
 
@@ -145,11 +146,11 @@ const styles = StyleSheet.create({
     },
     shopName: {
         fontSize: 13,
-        color: '#ffffff'
+        color: DesignRule.white
     },
     shopId: {
         fontSize: 13,
-        color: '#ffffff',
+        color: DesignRule.white,
         marginVertical: 12
     },
 
@@ -220,13 +221,13 @@ const styles = StyleSheet.create({
         height: 20,
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: '#ffffff',
+        borderColor: DesignRule.white,
         justifyContent: 'center',
         alignItems: 'center'
     },
     announcementTitle: {
         fontSize: 10,
-        color: '#ffffff'
+        color: DesignRule.white
     },
     starRow: {
         flexDirection: 'row',

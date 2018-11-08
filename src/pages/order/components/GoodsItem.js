@@ -5,7 +5,7 @@ import {
 } from '../../../components/ui';
 import { color } from '../../../constants/Theme';
 import ScreenUtils from '../../../utils/ScreenUtils';
-
+import DesignRule from 'DesignRule';
 
 const GoodsItem = props => {
     const {
@@ -19,7 +19,7 @@ const GoodsItem = props => {
     } = props;
 
     return (
-        <TouchableOpacity style={{ flexDirection: 'row', height: 100, alignItems: 'center' ,width:ScreenUtils.width,backgroundColor:'white'}} onPress={() => onPress()}>
+        <TouchableOpacity style={{ flexDirection: 'row', height: 100, alignItems: 'center' ,width:ScreenUtils.width,backgroundColor:DesignRule.white}} onPress={() => onPress()}>
             <View style={{ height: 80, width: 80, marginLeft: 15 }}>
                 <Image style={{ height: 80, width: 80 }} source={{ uri: uri }}/>
             </View>

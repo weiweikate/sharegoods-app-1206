@@ -27,6 +27,8 @@ import ShareTaskAnimation from './ShareTaskAnimation';
 import renwu_icon_quan_nor from '../res/renwu_icon_quan_nor.png';
 import cancel from '../res/qiandao_btn_return_nor.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
+import DesignRule from 'DesignRule';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
@@ -75,7 +77,7 @@ export default class ShareTaskHomeAlert extends React.Component {
                             this.close();
                         }}>
                             <View style = {styles.btn}>
-                                <UIText value={"马上领取"} style={{color: 'white', fontSize: autoSizeWidth(14)}}/>
+                                <UIText value={"马上领取"} style={{color: DesignRule.white, fontSize: autoSizeWidth(14)}}/>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
         width: autoSizeWidth(230),
         height: autoSizeWidth(260),
         alignItems: 'center',
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         borderRadius: 5,
         overflow: 'hidden'
     },

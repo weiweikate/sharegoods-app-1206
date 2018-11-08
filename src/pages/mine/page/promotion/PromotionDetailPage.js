@@ -26,6 +26,7 @@ import RefreshList from '../../../../components/ui/RefreshList';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import apiEnvironment from '../../../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 type Props = {};
@@ -143,7 +144,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
 
     _itemRender({ item }) {
         return (
-            <View style={{ backgroundColor: 'white', marginBottom: px2dp(10) }}>
+            <View style={{ backgroundColor: DesignRule.white, marginBottom: px2dp(10) }}>
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -190,7 +191,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
                 width: ScreenUtils.width, height: px2dp(20), justifyContent: 'center',
                 alignItems: 'center', backgroundColor: '#D51243'
             }}>
-                <Text style={{ color: 'white', fontSize: px2dp(13), includeFontPadding: false }}>
+                <Text style={{ color: DesignRule.white, fontSize: px2dp(13), includeFontPadding: false }}>
                     {this.state.countDownStr}
                 </Text>
             </View>
@@ -287,7 +288,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#D51243'
     },
     bottomButtonTextStyle: {
-        color: 'white',
+        color: DesignRule.white,
         fontSize: px2dp(13)
     }
 });

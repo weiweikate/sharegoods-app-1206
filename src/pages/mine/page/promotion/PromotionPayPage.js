@@ -23,6 +23,7 @@ import ScreenUtils from "../../../../utils/ScreenUtils";
 const { px2dp } = ScreenUtils;
 import UIText from "../../../../comm/components/UIText";
 import icon from '../../../../comm/res/selected_circle_red.png'
+import DesignRule from 'DesignRule';
 
 type Props = {};
 export default class PromotionPayPage extends BasePage<Props> {
@@ -62,10 +63,10 @@ export default class PromotionPayPage extends BasePage<Props> {
 
     _render() {
         let unSelectView = (
-            <View style={{backgroundColor:'white',borderColor:'#DDDDDD',borderWidth:px2dp(0.5),width:px2dp(22),height:px2dp(22),borderRadius:px2dp(11)}}/>
+            <View style={{backgroundColor:DesignRule.white,borderColor:'#DDDDDD',borderWidth:px2dp(0.5),width:px2dp(22),height:px2dp(22),borderRadius:px2dp(11)}}/>
         );
         let isSelectedView = (
-            <Image source={icon} style={{backgroundColor:'white',width:px2dp(22),height:px2dp(22)}}/>
+            <Image source={icon} style={{backgroundColor:DesignRule.white,width:px2dp(22),height:px2dp(22)}}/>
         );
 
         return (
@@ -86,7 +87,7 @@ export default class PromotionPayPage extends BasePage<Props> {
                 <View style={{flex:1}}/>
                 <TouchableOpacity onPress={()=>this.pay()} disabled={!this.state.isSelected} >
                     <View style={[styles.buttonWrapper,this.state.isSelected ? { opacity: 1} : {opacity : 0.5}]}>
-                        <UIText value={'提交支付'} style={{color:'white', fontSize: px2dp(16)}}/>
+                        <UIText value={'提交支付'} style={{color:DesignRule.white, fontSize: px2dp(16)}}/>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
         borderBottomColor:'#DDDDDD',
         borderBottomWidth:ScreenUtils.onePixel,
         borderTopWidth:ScreenUtils.onePixel,
-        backgroundColor:'white'
+        backgroundColor:DesignRule.white
     },
     buttonWrapper:{
         height:px2dp(48),

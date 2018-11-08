@@ -26,6 +26,8 @@ import { PageLoadingState, renderViewByLoadingState } from '../../../components/
 import { observer } from 'mobx-react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
+import DesignRule from 'DesignRule';
+
 
 @observer
 export default class SearchResultPage extends BasePage {
@@ -260,7 +262,7 @@ export default class SearchResultPage extends BasePage {
     _renderContainer = () => {
         if (this.state.onFocus) {
             return (
-                <View style={{ backgroundColor: 'white', flex: 1 }}>
+                <View style={{ backgroundColor: DesignRule.white, flex: 1 }}>
                     {this.state.keywordsArr.length === 0 ? null : <FlatList
                         renderItem={this._renderKeyItem}
                         showsVerticalScrollIndicator={false}
@@ -372,7 +374,7 @@ export default class SearchResultPage extends BasePage {
                             borderRadius: 8, justifyContent: 'center', alignItems: 'center'
                         }}>
                             <Text style={{
-                                color: 'white',
+                                color: DesignRule.white,
                                 fontSize: 10
                             }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
                         </View>}

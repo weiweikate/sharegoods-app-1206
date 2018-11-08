@@ -21,6 +21,7 @@ import {
 // import {TransmitTransparently} from 'nt-transmit-transparently'
 import ImageZoom from 'FlyImageZoom'
 import ScreenUtils from "../../utils/ScreenUtils";
+import DesignRule from 'DesignRule';
 //import styles from './image-viewerStyle'
 
 let staticStyle = {show : false,
@@ -60,12 +61,12 @@ getStyle(width: number, height: number){
               paddingTop: 5,
               paddingBottom: 5,
               borderRadius: 30,
-              borderColor: 'white',
+              borderColor: DesignRule.white,
               borderWidth: 0.5,
               backgroundColor: 'rgba(0, 0, 0, 0.1)'
           } ,
           watchOriginText: {
-              color: 'white',
+              color: DesignRule.white,
               backgroundColor: 'transparent'
           } ,
           imageStyle: {} ,
@@ -104,7 +105,7 @@ getStyle(width: number, height: number){
           operateContainer: {
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: 'white',
+              backgroundColor: DesignRule.white,
               height: 40,
               borderBottomColor: '#ccc',
               borderBottomWidth: 1
@@ -767,7 +768,7 @@ const simpleStyle = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     countText: {
-        color: 'white',
+        color: DesignRule.white,
         fontSize: 16,
         backgroundColor: 'transparent',
         textShadowColor: 'rgba(0, 0, 0, 0.3)',
@@ -798,12 +799,12 @@ const simpleStyle = StyleSheet.create({
 //              paddingTop: 5,
 //              paddingBottom: 5,
 //              borderRadius: 30,
-//              borderColor: 'white',
+//              borderColor: DesignRule.white,
 //              borderWidth: 0.5,
 //              backgroundColor: 'rgba(0, 0, 0, 0.1)'
 //          } ,
 //          watchOriginText: {
-//              color: 'white',
+//              color: DesignRule.white,
 //              backgroundColor: 'transparent'
 //          } ,
 //          imageStyle: {} ,
@@ -842,7 +843,7 @@ const simpleStyle = StyleSheet.create({
 //          operateContainer: {
 //              justifyContent: 'center',
 //              alignItems: 'center',
-//              backgroundColor: 'white',
+//              backgroundColor: DesignRule.white,
 //              height: 40,
 //              borderBottomColor: '#ccc',
 //              borderBottomWidth: 1

@@ -24,6 +24,8 @@ import { netStatus } from './comm/components/NoNetHighComponent';
 import hotUpdateUtil from './utils/HotUpdateUtil';
 
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
+import DesignRule from 'DesignRule';
+import DesignRule from 'DesignRule';
 
 export default class App extends Component {
     constructor(props) {
@@ -63,7 +65,7 @@ export default class App extends Component {
                            }}/>
                 {
                     CONFIG.showDebugPanel ? <DebugButton onPress={this.showDebugPage}><Text
-                        style={{ color: 'white' }}>调试页</Text></DebugButton> : null
+                        style={{ color: DesignRule.white }}>调试页</Text></DebugButton> : null
                 }
             </View>
         );

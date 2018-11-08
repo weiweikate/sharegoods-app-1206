@@ -19,8 +19,7 @@ import rechargeSucceed from '../../../comm/res/tongyon_icon_check_green.png';
 import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../../pages/mine/components/BusinessUtils';
 import Toast from '../../../utils/bridge';
-// import OrderApi from 'OrderApi'
-// import QYChatUtil from 'QYChatUtil'
+import DesignRule from 'DesignRule';
 
 export default class ApplyRefundNextPage extends BasePage {
     constructor(props) {
@@ -285,7 +284,7 @@ export default class ApplyRefundNextPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: 'white',
+        flex: 1, backgroundColor: DesignRule.white,
         justifyContent: 'flex-end'
     }, refundReason: {
         color: color.black_999, fontSize: 13, marginLeft: 17, marginTop: 10

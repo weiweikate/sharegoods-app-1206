@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import gwc from '../res/gwc.png';
+import DesignRule from 'DesignRule';
+
 
 export default class SearchBar extends Component {
 
@@ -34,7 +36,7 @@ export default class SearchBar extends Component {
             <TouchableWithoutFeedback onPress={() => {
                 this.props.onPressAtIndex(product.id);
             }}>
-                <View style={{ backgroundColor: 'white' }}>
+                <View style={{ backgroundColor: DesignRule.white }}>
                     <View style={[styles.container]}>
                         <Image style={styles.img} source={{ uri: product.imgUrl || '' }}/>
                         <View style={styles.textContentView}>

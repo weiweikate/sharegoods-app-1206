@@ -140,7 +140,7 @@ export default class SearchPage extends BasePage {
         } else {
             return (
 
-                <View style={{ backgroundColor: 'white', flex: 1 }}>
+                <View style={{ backgroundColor: DesignRule.white, flex: 1 }}>
                     {this.state.keywordsArr.length === 0 ? null : <FlatList
                         renderItem={this._renderItem}
                         showsVerticalScrollIndicator={false}

@@ -8,6 +8,7 @@ import {
     Image
 } from 'react-native';
 import upDown from '../res/updown.png';
+import DesignRule from 'DesignRule';
 
 export default class SearchSegmentView extends Component {
 
@@ -58,7 +59,7 @@ export default class SearchSegmentView extends Component {
 const styles = StyleSheet.create({
     container: {
         height: 49,
-        backgroundColor: '#ffffff',
+        backgroundColor: DesignRule.white,
         flexDirection: 'row'
     },
     btnContainer: {

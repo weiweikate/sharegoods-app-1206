@@ -31,7 +31,7 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 import QYChatUtil from '../../mine/page/helper/QYChatModel';
 
 import OrderApi from '../api/orderApi'
-
+import DesignRule from 'DesignRule';
 
 class ExchangeGoodsDetailPage extends BasePage {
     constructor(props) {
@@ -280,7 +280,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         {this.renderWideLine()}
                     </View> : null
                 }
-                <View style={{ flexDirection: 'row', height: 82, alignItems: 'center' ,backgroundColor: '#FFFFFF'}}>
+                <View style={{ flexDirection: 'row', height: 82, alignItems: 'center' ,backgroundColor: DesignRule.white}}>
                     <View style={{
                         width: 43,
                         height: 36,
@@ -724,7 +724,7 @@ const styles = StyleSheet.create({
     },
     addressStyle: {},
     operationApplyView_container: {
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         height: 110,
     },
     operationApplyView_title: {
@@ -745,11 +745,11 @@ const styles = StyleSheet.create({
     },
     header_title: {
         fontSize: 18,
-        color: '#FFFFFF',
+        color: DesignRule.white,
     },
     header_detail: {
         fontSize: 12,
-        color: '#FFFFFF',
+        color: DesignRule.white,
         marginTop: 3,
     },
     header_image: {

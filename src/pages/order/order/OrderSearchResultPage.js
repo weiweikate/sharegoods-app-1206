@@ -9,6 +9,7 @@ import {
 import BasePage from '../../../BasePage';
 import { color } from '../../../constants/Theme';
 import MyOrdersListView from './../components/MyOrdersListView';
+import DesignRule from 'DesignRule';
 
 class OrderSearchResultPage extends BasePage {
     constructor(props) {
@@ -52,7 +53,7 @@ class OrderSearchResultPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: 'white'
+        flex: 1, backgroundColor: DesignRule.white
     }
 });
 

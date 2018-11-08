@@ -15,7 +15,7 @@ const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 const colors = {
     mainColor: '#F00006',//主色调
-    white: '#FFFFFF',
+    white: DesignRule.white,
     bgColor: '#F7F7F7',//背景色
     bgColor_btn: '#F00006',//红色按钮背景色
     bgColor_btnSelect: '#EF154C',//红色按钮选中状态背景色
@@ -32,7 +32,7 @@ const colors = {
     textColor_secondTitle: '#666666',//二级标题
     textColor_instruction: '#999999',//说明文字
     textColor_placeholder: '#CCCCCC',//预填文字
-    textColor_white: '#FFFFFF',//白色文字
+    textColor_white: DesignRule.white,//白色文字
     textColor_redWarn: '#F00006',//红色警告、提示文字
     textColor_blueURL: '#38ADFF',//文字链接
     textColor_btnText: '#F00006',//按钮红色文字

@@ -41,6 +41,7 @@ import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
 
 @observer
 export default class MyShopPage extends BasePage {
@@ -380,7 +381,7 @@ export default class MyShopPage extends BasePage {
                                      marginTop: 30,
                                      alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
                                  }}>
-            <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{btnText}</Text>
+            <Text style={{ fontSize: 16, color: DesignRule.white }}>{btnText}</Text>
         </TouchableOpacity>;
     };
 

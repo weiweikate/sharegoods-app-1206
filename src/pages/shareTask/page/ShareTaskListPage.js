@@ -30,6 +30,7 @@ import redEnvelope from '../res/redEnvelope.png';
 import task_bg from '../res/task_bg.png';
 import DesignRule from 'DesignRule';
 import RouterMap from 'RouterMap';
+import DesignRule from 'DesignRule';
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import TimerMixin from 'react-timer-mixin';
@@ -364,7 +365,7 @@ const styles = StyleSheet.create({
     },
     row: {
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     text: {
         color: '#666666',
@@ -372,7 +373,7 @@ const styles = StyleSheet.create({
         includeFontPadding: false
     },
     image_title: {
-        color: '#FFFFFF',
+        color: DesignRule.white,
         fontSize: autoSizeWidth(12),
         includeFontPadding: false
     },
@@ -388,12 +389,12 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     image_btnText: {
-        color: '#FFFFFF',
+        color: DesignRule.white,
         fontSize: autoSizeWidth(13),
         includeFontPadding: false
     },
     image_detail: {
-        color: '#FFFFFF',
+        color: DesignRule.white,
         fontSize: autoSizeWidth(11),
         includeFontPadding: false
     }

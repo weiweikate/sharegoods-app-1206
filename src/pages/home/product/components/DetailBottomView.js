@@ -11,6 +11,8 @@ import xiangqing_btn_gouwuche_nor from '../res/xiangqing_btn_gouwuche_nor.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import ShopCartStore from '../../../shopCart/model/ShopCartStore';
 import { observer } from 'mobx-react';
+import DesignRule from 'DesignRule';
+
 
 @observer
 export default class DetailBottomView extends Component {
@@ -25,7 +27,7 @@ export default class DetailBottomView extends Component {
     }
 
     render() {
-        return (<View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49, backgroundColor: 'white' }}>
+        return (<View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49, backgroundColor: DesignRule.white }}>
             <View style={styles.container}>
                 <TouchableOpacity style={{ width: 63, justifyContent: 'center', alignItems: 'center' }}
                                   onPress={() => this.props.bottomViewAction('goGwc')}>
@@ -38,7 +40,7 @@ export default class DetailBottomView extends Component {
                         borderRadius: 8, justifyContent: 'center', alignItems: 'center'
                     }}>
                         <Text style={{
-                            color: 'white',
+                            color: DesignRule.white,
                             fontSize: 10
                         }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
                     </View>}
@@ -51,7 +53,7 @@ export default class DetailBottomView extends Component {
                 <TouchableOpacity
                     style={{ flex: 1, backgroundColor: '#D51243', justifyContent: 'center', alignItems: 'center' }}
                     onPress={() => this.props.bottomViewAction('gwc')}>
-                    <Text style={{ color: 'white' }}>加入购物车</Text>
+                    <Text style={{ color: DesignRule.white }}>加入购物车</Text>
                 </TouchableOpacity>
             </View>
 
@@ -62,7 +64,7 @@ export default class DetailBottomView extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: 49, flexDirection: 'row', backgroundColor: 'white', borderWidth: 1,
+        height: 49, flexDirection: 'row', backgroundColor: DesignRule.white, borderWidth: 1,
         borderColor: '#DDDDDD'
     }
 });

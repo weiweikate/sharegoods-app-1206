@@ -10,6 +10,7 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
 import SMSTool from '../../../../utils/SMSTool';
+import DesignRule from 'DesignRule';
 
 export default class SetNewPhoneNumPage extends BasePage {
 
@@ -39,7 +40,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                             marginLeft: 16
                         }}/>
             </View>
-            <View style={{ backgroundColor: 'white', flexDirection: 'column' }}>
+            <View style={{ backgroundColor: DesignRule.white, flexDirection: 'column' }}>
                 <View style={styles.horizontalItem}>
                     <Text style={styles.itemLeftText}>新手机</Text>
                     <TextInput
@@ -55,7 +56,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                         keyboardType={'numeric'}
                     />
                 </View>
-                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15, marginRight: 15 }}/>
+                <View style={{ height: 0.5, backgroundColor: DesignRule.white, marginLeft: 15, marginRight: 15 }}/>
                 <View style={{
                     height: 44,
                     flexDirection: 'row',
@@ -91,7 +92,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                 justifyContent: 'center',
                 borderRadius: 25
             }} onPress={() => this._toNext()}>
-                <Text style={{ fontSize: 17, color: 'white' }}>绑定</Text>
+                <Text style={{ fontSize: 17, color: DesignRule.white }}>绑定</Text>
             </TouchableOpacity>
         </View>);
     }
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         height: 45,
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     itemLeftText: {
         marginRight: 20,

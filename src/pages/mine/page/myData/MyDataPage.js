@@ -28,6 +28,7 @@ const ArtWidth = 124 / 375 * ScreenWidth;
 const InlineArtWidth = 21.5 / 375 * ScreenWidth;
 const BtnWidth = (Dimensions.get('window').width - 44) / 2;
 const BtnHeight = BtnWidth * 75 / 168;
+import DesignRule from 'DesignRule';
 
 export default class MyDataPage extends Component{
 
@@ -183,7 +184,7 @@ export default class MyDataPage extends Component{
                     <View style={styles.chart}>
                         {this._renderArt()}
                     </View>
-                    <View style={{marginTop: 1,backgroundColor: 'white'}}>
+                    <View style={{marginTop: 1,backgroundColor: DesignRule.white}}>
                         <View style={styles.lineRow}>
                             <View style={styles.line}/>
                             <Text style={styles.lineTitle}>
@@ -248,7 +249,7 @@ const styles = StyleSheet.create({
     chart: {
         width: Dimensions.get('window').width - 32,
         marginTop: 1,
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         borderRadius: 3,
     },
     bottom: {

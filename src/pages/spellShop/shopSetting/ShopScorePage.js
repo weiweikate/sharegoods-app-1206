@@ -13,6 +13,7 @@ const WhitePanelHeight = 128 / 375 * SCREEN_WIDTH;
 import BgIcon from './res/bg_07.png';
 import StarIcon from './res/wjx_03.png';
 import BasePage from '../../../BasePage';
+import DesignRule from 'DesignRule';
 
 export default class ShopScorePage extends BasePage {
 
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
         height: WhitePanelHeight,
         alignItems: 'center',
         justifyContent: 'flex-end',
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
     },
     starContainer: {
         flexDirection: 'row',

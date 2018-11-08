@@ -14,6 +14,8 @@ import {
     UIText, UIImage
 } from '../../../components/ui';
 import OrderApi from "../api/orderApi";
+import DesignRule from 'DesignRule';
+
 export default class SelectLogisticsCompanyPage extends BasePage {
     constructor(props) {
         super(props);
@@ -110,7 +112,7 @@ const styles = StyleSheet.create({
             backgroundColor: '#f7f7f7',
         },
         item_container: {
-            backgroundColor: 'white',
+            backgroundColor: DesignRule.white,
             flexDirection: 'row',
             height: 60,
             alignItems: 'center',

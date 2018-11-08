@@ -5,6 +5,7 @@ import UIText from '../../../../components/ui/UIText';
 import arrow_right from '../../../mine/res/customerservice/icon_06-03.png';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
+import DesignRule from 'DesignRule';
 
 export default class SelectAreaPage extends BasePage {
 
@@ -102,7 +103,7 @@ export default class SelectAreaPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         flexDirection: 'row',
         alignItems: 'center',
         height: 48

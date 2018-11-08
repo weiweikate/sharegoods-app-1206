@@ -27,6 +27,7 @@ import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import DesignRule from 'DesignRule';
 
 export default class ShopRecruitPage extends BasePage {
 
@@ -247,7 +248,7 @@ export default class ShopRecruitPage extends BasePage {
                     </TouchableOpacity>
                     {
                         this.state.canOpen ? <TouchableOpacity onPress={this._openStore} style={styles.open}>
-                            <Text style={{ fontSize: 16, color: 'white' }}>{'开启店铺'}</Text>
+                            <Text style={{ fontSize: 16, color: DesignRule.white }}>{'开启店铺'}</Text>
                         </TouchableOpacity> : null
                     }
                 </View>
@@ -269,7 +270,7 @@ export default class ShopRecruitPage extends BasePage {
                         </TouchableOpacity>
                         : <TouchableOpacity onPress={this._joinStore}
                                             style={[styles.OutStore]}>
-                            <Text style={{ fontSize: 16, color: 'white' }}>{'加入拼店'}</Text>
+                            <Text style={{ fontSize: 16, color: DesignRule.white }}>{'加入拼店'}</Text>
                         </TouchableOpacity>
                 }
 

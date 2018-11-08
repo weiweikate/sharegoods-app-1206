@@ -11,7 +11,7 @@ import {
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
-
+import DesignRule from 'DesignRule';
 
 export default class SearchRecruitingRow extends Component {
 
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 20,
-        backgroundColor: 'white'
+        backgroundColor: DesignRule.white
     },
     right: {
         flex:1,

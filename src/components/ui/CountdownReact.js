@@ -10,6 +10,8 @@ import {
     View,
     Text,
 } from 'react-native';
+import DesignRule from 'DesignRule';
+
 
 const styles = StyleSheet.create({
     cardItemTimeRemainTxt: {
@@ -29,7 +31,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 1,
         backgroundColor: 'rgba(85, 85, 85, 1)',
         fontSize: 12,
-        color: 'white',
+        color: DesignRule.white,
         marginHorizontal: 3,
         borderRadius: 2,
     },
