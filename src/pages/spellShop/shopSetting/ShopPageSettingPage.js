@@ -12,6 +12,7 @@ import {
 import ArrowImg from './res/xjt_03.png';
 import BasePage from '../../../BasePage';
 import DateUtils from '../../../utils/DateUtils';
+import DesignRule from 'DesignRule';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -132,11 +133,11 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     desc: {
         fontSize: 13,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         textAlign: 'right'
     },
     line: {
@@ -169,6 +170,6 @@ const styles = StyleSheet.create({
     },
     sendTitle: {
         fontSize: 16,
-        color: '#ffffff'
+        color: 'white'
     }
 });

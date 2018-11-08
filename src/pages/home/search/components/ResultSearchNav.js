@@ -10,6 +10,8 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import navBack from '../../../../components/pageDecorator/NavigatorBar/source/icon_header_back.png';
 import verticalRow from '../res/verticalRow.png';
 import horizontalRow from '../res/horizontalRow.png';
+import DesignRule from 'DesignRule';
+
 
 export default class ResultSearchNav extends Component {
 
@@ -85,7 +87,7 @@ const styles = StyleSheet.create({
     inputView: {
         height: 30,
         borderRadius: 15,
-        backgroundColor: '#F7F7F7',
+        backgroundColor: DesignRule.bgColor,
         justifyContent: 'center',
         flex: 1,
         marginRight: 10

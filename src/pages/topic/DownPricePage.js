@@ -8,7 +8,6 @@ import {
     RefreshControl
 } from 'react-native';
 import { observer } from 'mobx-react';
-import ColorUtil from '../../utils/ColorUtil';
 import { ActivityOneView } from './components/SbSectiontHeaderView';
 import ScreenUtils from '../../utils/ScreenUtils';
 import SbOpenPrizeHeader from './components/SbOpenPrizeHeader';
@@ -17,6 +16,7 @@ import TotalTopicDataModel from './model/SubTopicModel';
 import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
+import DesignRule from 'DesignRule';
 
 const { statusBarHeight } = ScreenUtils;
 @observer
@@ -30,7 +30,7 @@ export default class DownPricePage extends BasePage {
         super(props);
         this.dataModel = new TotalTopicDataModel();
         this.state = {
-            selectNav: 0,
+            selectNav: 0
         };
     }
 
@@ -40,7 +40,6 @@ export default class DownPricePage extends BasePage {
         this.dataModel.loadTopicData(linkTypeCode);
         // this.$NavigationBarResetTitle(this.dataModel.name)
     }
-
 
 
     /**
@@ -58,7 +57,7 @@ export default class DownPricePage extends BasePage {
                         flexDirection: 'row',//设置横向布局
                         flexWrap: 'wrap',  //设置换行显示
                         // alignItems: 'flex-start',
-                        backgroundColor: '#F7F7F7'
+                        backgroundColor: DesignRule.bgColor
                     }
                 }
             >
@@ -70,10 +69,11 @@ export default class DownPricePage extends BasePage {
             </View>
         );
     }
-    _onRefresh=()=>{
+
+    _onRefresh = () => {
         const { linkTypeCode } = this.params;
-        this.dataModel.loadTopicData(linkTypeCode)
-    }
+        this.dataModel.loadTopicData(linkTypeCode);
+    };
 
     /**
      * 渲染具体组
@@ -90,7 +90,7 @@ export default class DownPricePage extends BasePage {
                     {
                         flexDirection: 'row',//设置横向布局
                         flexWrap: 'wrap',  //设置换行显示
-                        backgroundColor: '#F7F7F7',
+                        backgroundColor: DesignRule.bgColor,
                         width: ScreenUtils.width
                     }
                 }
@@ -147,14 +147,15 @@ export default class DownPricePage extends BasePage {
             });
         }
     };
+
     _render() {
         const sectionList = this.dataModel.sectionDataList.slice() || [];
         let sectionData = [];
         if (sectionList.length > 0) {
             sectionData = sectionList[this.state.selectNav].sectionDataList || [];
         }
-        const { imgUrl} = this.dataModel;
-        this.$NavigationBarResetTitle(this.dataModel.topicTitle || '专题')
+        const { imgUrl } = this.dataModel;
+        this.$NavigationBarResetTitle(this.dataModel.topicTitle || '专题');
         return (
             <ScrollView
                 alwaysBounceVertical={true}
@@ -167,7 +168,7 @@ export default class DownPricePage extends BasePage {
                         refreshing={this.dataModel.isRefresh}
                         onRefresh={this._onRefresh.bind(this)}
                         progressViewOffset={statusBarHeight + 44}
-                        colors={['#d51243']}
+                        colors={[DesignRule.mainColor]}
                         title="下拉刷新"
                         tintColor="#999"
                         titleColor="#999"
@@ -246,12 +247,12 @@ const Styles = StyleSheet.create({
     list: {
         flexDirection: 'row',//设置横向布局
         flexWrap: 'wrap',  //设置换行显示
-        backgroundColor: '#F7F7F7'
+        backgroundColor: DesignRule.bgColor
     },
     itemBgStyle: {
         width: ScreenUtils.width / 2,
         height: ScreenUtils.width / 2 + 100,
-        backgroundColor: ColorUtil.Color_f7f7f7,
+        backgroundColor: DesignRule.bgColor,
         padding: 8,
         paddingBottom: 0
     }

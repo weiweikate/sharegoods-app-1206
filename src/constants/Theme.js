@@ -1,4 +1,6 @@
 import ScreenUtils from '../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
+
 
 const getUIScale = (value) => {
     return ScreenUtils.width / 375 * value;
@@ -146,7 +148,7 @@ const ui = {
                 borderRadius: 5
             },
             btn_text: {
-                color: 'white',
+                color: DesignRule.white,
                 fontSize: 15
             }
         },
@@ -155,7 +157,7 @@ const ui = {
                 height: 50,
                 marginRight: 10,
                 marginLeft: 10,
-                backgroundColor: 'white',
+                backgroundColor: DesignRule.white,
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderWidth: ScreenUtils.onePixel,
@@ -230,7 +232,7 @@ const ui = {
                 width: 60,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             icon: {
                 width: 30,
@@ -247,7 +249,7 @@ const ui = {
                 width: 60,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             icon: {
                 width: 30,
@@ -265,17 +267,17 @@ const ui = {
         default: {
             badge: {
                 position: 'absolute',
-                backgroundColor: 'red',
+                backgroundColor: DesignRule.mainColor,
                 height: 20,
                 width: 20,
                 borderRadius: 10,
                 borderWidth: ScreenUtils.onePixel * 3,
-                borderColor: 'white',
+                borderColor: DesignRule.white,
                 justifyContent: 'center',
                 alignItems: 'center'
             },
             text: {
-                color: 'white'
+                color: DesignRule.white
             }
 
         }
@@ -288,7 +290,7 @@ const ui = {
                 width: ScreenUtils.width,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             left_icon: {
                 height: 25,
@@ -317,7 +319,7 @@ const ui = {
                 width: ScreenUtils.width,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             left_icon: {
                 height: 25,
@@ -347,7 +349,7 @@ const ui = {
                 width: ScreenUtils.width,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             left_icon: {
                 height: 50,
@@ -380,7 +382,7 @@ const ui = {
                 width: ScreenUtils.width,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             left_icon: {
                 height: 40,
@@ -411,7 +413,7 @@ const ui = {
                 alignItems: 'flex-start',
                 marginTop: 20,
                 marginBottom: 8,
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             left_icon: {
                 height: 32,
@@ -487,7 +489,7 @@ const ui = {
         default: {
             container: {
                 flexDirection: 'row',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             header_left: {
                 flex: 1,
@@ -525,7 +527,7 @@ const ui = {
         goods: {
             container: {
                 flexDirection: 'row',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             header_left: {
                 flex: 1,
@@ -566,7 +568,7 @@ const ui = {
         default: {
             container: {
                 flexDirection: 'row',
-                backgroundColor: 'white',
+                backgroundColor: DesignRule.white,
                 height: ScreenUtils.headerHeight,
                 paddingTop: ScreenUtils.statusBarHeight,
                 paddingLeft: 15,
@@ -654,12 +656,12 @@ const ui = {
         default: {
             container: {
                 width: ScreenUtils.width,
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             content_container: {
                 flexDirection: 'row',
                 height: 50,
-                backgroundColor: 'white',
+                backgroundColor: DesignRule.white,
                 justifyContent: 'center',
                 alignItems: 'center'
             },
@@ -840,7 +842,7 @@ const ui = {
                 width: 124,
                 height: 36,
                 borderRadius: 2,
-                // backgroundColor: 'red',
+                // backgroundColor: DesignRule.mainColor,
                 borderWidth: 1,
                 borderColor: '#EB2224',
                 justifyContent: 'center',

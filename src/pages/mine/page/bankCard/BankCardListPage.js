@@ -13,7 +13,6 @@ import BasePage from '../../../../BasePage';
 import {
     UIText
 } from '../../../../components/ui';
-import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import bankCard1 from './res/bankCard1.png';
@@ -26,6 +25,8 @@ import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
 import SettingTransactionModal from '../../components/SettingTransactionModal';
 import CommTabImag from '../../../../comm/res/CommTabImag';
+import DesignRule from 'DesignRule';
+
 const bankCardList = [bankCard1, bankCard2, bankCard3, bankCard4, bankCard5];
 
 class BankCardListPage extends BasePage {
@@ -89,7 +90,7 @@ class BankCardListPage extends BasePage {
                         style={[styles.addBankCardView, { marginTop: this.state.viewData.length == 0 ? 76 : 47 }]}
                         onPress={() => this.addBankCard()}>
                         <UIText value={'+ 点击添加银行卡'}
-                                style={{  fontSize: 16, color: '#ffffff' }}/>
+                                style={{ fontSize: 16, color: 'white' }}/>
                     </TouchableOpacity>
                 </View>
                 {this.renderModal()}
@@ -111,12 +112,12 @@ class BankCardListPage extends BasePage {
                                          source={bankCardList[rowData.bankCardType]}
                                          resizeMode={'stretch'}>
                             <UIText value={rowData.bank_name}
-                                    style={{ fontSize: 18, color: '#ffffff' }}/>
+                                    style={{ fontSize: 18, color: 'white' }}/>
                             <UIText value={'储蓄卡'}
-                                    style={{ fontSize: 13, color: '#ffffff' }}/>
+                                    style={{ fontSize: 13, color: 'white' }}/>
                             <UIText value={StringUtils.formatBankCardNum(rowData.card_no)} style={{
                                 fontSize: 18,
-                                color: '#ffffff',
+                                color: 'white',
                                 marginTop: 15
                             }}/>
 
@@ -145,7 +146,7 @@ class BankCardListPage extends BasePage {
                           style={{ height: 110, flexDirection: 'row', marginTop: 10 }} key={i}>
                     <View style={styles.standaloneRowBack}>
                         <TouchableOpacity style={styles.deleteStyle} onPress={() => this.deleteBankCard(i)}>
-                            <Text style={{ color: color.white }}>删除</Text>
+                            <Text style={{ color: 'white' }}>删除</Text>
                         </TouchableOpacity>
                     </View>
                     <TouchableWithoutFeedback onPress={() => this.callBack(this.state.viewData[i])}>
@@ -153,12 +154,12 @@ class BankCardListPage extends BasePage {
                                          source={bankCardList[this.state.viewData[i].bankCardType]}
                                          resizeMode={'stretch'}>
                             <UIText value={this.state.viewData[i].bank_name}
-                                    style={{  fontSize: 18, color: '#ffffff' }}/>
+                                    style={{ fontSize: 18, color: 'white' }}/>
                             <UIText value={'储蓄卡'}
-                                    style={{ fontSize: 13, color: '#ffffff' }}/>
+                                    style={{ fontSize: 13, color: 'white' }}/>
                             <UIText value={StringUtils.formatBankCardNum(this.state.viewData[i].card_no)} style={{
                                 fontSize: 18,
-                                color: '#ffffff',
+                                color: 'white',
                                 marginTop: 15
                             }}/>
                         </ImageBackground>
@@ -171,7 +172,7 @@ class BankCardListPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line }}/>
+            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
     renderWideLine = () => {
@@ -183,7 +184,7 @@ class BankCardListPage extends BasePage {
         return (
             <SettingTransactionModal
                 isShow={this.state.isShowUnbindCardModal}
-                ref={(ref)=>{
+                ref={(ref) => {
                     this.modal = ref;
                 }}
                 detail={{ title: '请输入交易密码', context: '删除银行卡' }}
@@ -272,7 +273,7 @@ class BankCardListPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: '#383c45',marginTop:-1
+        flex: 1, backgroundColor: DesignRule.textColor_mainTitle,marginTop:-1
     }, bankCardView: {
         height: 110,
         width: ScreenUtils.width - 30,
@@ -282,13 +283,13 @@ const styles = StyleSheet.create({
         paddingTop: 17,
         paddingLeft: 68
     }, backTextWhite: {
-        color: color.white,
+        color: 'white',
         marginRight: 20,
         borderRadius: 10,
         width: 60
     }, standaloneRowFront: {
         alignItems: 'center',
-        backgroundColor: color.white,
+        backgroundColor: 'white',
         justifyContent: 'center',
         height: 130,
         width: ScreenUtils.width,
@@ -296,7 +297,7 @@ const styles = StyleSheet.create({
         marginRight: 16
     }, standaloneRowBack: {
         alignItems: 'center',
-        backgroundColor: '#383c45',
+        backgroundColor: DesignRule.textColor_mainTitle,
         flex: 1,
         borderRadius: 10,
         flexDirection: 'row',
@@ -307,7 +308,7 @@ const styles = StyleSheet.create({
         width: 60,
         height: 110,
         borderRadius: 10,
-        backgroundColor: '#e60012',
+        backgroundColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center'
     }, addBankCardView: {
@@ -318,7 +319,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderStyle: 'dashed',
         borderWidth: 2,
-        borderColor: '#ffffff',
+        borderColor: 'white',
         justifyContent: 'center',
         alignItems: 'center'
     }

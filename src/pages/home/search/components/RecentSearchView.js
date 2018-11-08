@@ -9,6 +9,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import deleteImg from '../res/search_delete.png';
+import DesignRule from 'DesignRule';
 
 /**
  * 最近搜索view
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize: 13,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     },
     image: {
         width: 15,

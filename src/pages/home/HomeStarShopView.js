@@ -6,6 +6,7 @@ import {observer} from 'mobx-react'
 import { starShopModule, homeModule } from './Modules'
 import User from '../../model/user'
 import starImg from './res/star.png'
+import DesignRule from 'DesignRule';
 
 /**
  * @author chenyangjun
@@ -98,7 +99,7 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     title: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
         fontWeight: '600'
     },
@@ -134,7 +135,7 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(15)
     },
     name: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(12)
     },
     level: {
@@ -157,11 +158,11 @@ let styles = StyleSheet.create({
         alignItems: 'center'
     },
     text: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(9)
     },
     member: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(10)
     },
     line: {
@@ -176,7 +177,7 @@ let styles = StyleSheet.create({
     },
     income: {
         fontSize: px2dp(11),
-        color: '#333'
+        color: DesignRule.textColor_mainTitle
     },
     allIncomeBox: {
         justifyContent: 'center',

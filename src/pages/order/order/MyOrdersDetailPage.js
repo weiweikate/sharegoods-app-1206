@@ -38,6 +38,7 @@ import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { NavigationActions } from 'react-navigation';
+import DesignRule from 'DesignRule';
 
 class MyOrdersDetailPage extends BasePage {
     constructor(props) {
@@ -106,6 +107,7 @@ class MyOrdersDetailPage extends BasePage {
     };
     showMore = () => {
         this.setState({ isShowShowMessageModal: true });
+        this.messageModal && this.messageModal.open();
     };
     //**********************************ViewPart******************************************
     renderState = () => {
@@ -160,12 +162,12 @@ class MyOrdersDetailPage extends BasePage {
                                         flex: 1,
                                         fontSize: 15,
                                          marginLeft:10,
-                                        color: '#222222'
+                                        color: DesignRule.textColor_mainTitle
                                     }}>{this.state.pageStateString.sellerState[0]}</Text>
                                     <Text style={{
                                         fontSize: 15,
                                         marginRight:46,
-                                        color: '#222222'
+                                        color: DesignRule.textColor_mainTitle
                                     }}>{this.state.pageStateString.sellerState[1]}</Text>
                                 </View>
                             }
@@ -276,7 +278,7 @@ class MyOrdersDetailPage extends BasePage {
                         <Text style={{
                             marginLeft: 10,
                             fontSize: 12,
-                            color: '#999999'
+                            color: DesignRule.textColor_instruction
                         }}>{this.state.giftPackageName}</Text>
                     </View>
                     :
@@ -365,7 +367,7 @@ class MyOrdersDetailPage extends BasePage {
                                     }}>x1</Text>
                                 </View>
                                 <View
-                                    style={{ marginLeft: 36, backgroundColor: '#F7F7F7', height: 0.5, width: '100%' }}/>
+                                    style={{ marginLeft: 36, backgroundColor: DesignRule.bgColor, height: 0.5, width: '100%' }}/>
                             </View>;
                         })}
                         {this.renderWideLine()}
@@ -499,6 +501,7 @@ class MyOrdersDetailPage extends BasePage {
                         { icon: productDetailMessage, title: '消息' },
                         { icon: productDetailHome, title: '首页' }
                     ]}
+                    ref={(ref)=>this.messageModal = ref}
                     clickSelect={(index) => {
                         switch (index) {
                             case 0:
@@ -522,6 +525,7 @@ class MyOrdersDetailPage extends BasePage {
                 <CommonTwoChoiceModal
                     isShow={this.state.isShowDeleteOrderModal}
                     detail={{ title: '删除订单', context: '确定删除此订单吗', no: '取消', yes: '确认' }}
+                    ref={(ref)=>{this.deleteModal = ref;}}
                     closeWindow={() => {
                         this.setState({ isShowDeleteOrderModal: false });
                     }}
@@ -565,6 +569,7 @@ class MyOrdersDetailPage extends BasePage {
                     close={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
                     }}
+                    ref={(ref)=>this.receiveModal = ref}
                     yes={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
                         Toast.showLoading();
@@ -632,11 +637,11 @@ class MyOrdersDetailPage extends BasePage {
                         <Text style={{
                             flex: 1,
                             fontSize: 15,
-                            color: '#222222'
+                            color: DesignRule.textColor_mainTitle
                         }}>收货人：{this.state.viewData.receiverName}</Text>
                         <Text style={{
                             fontSize: 15,
-                            color: '#222222'
+                            color: DesignRule.textColor_mainTitle
                         }}>{this.state.viewData.receiverNum}</Text>
                     </View>
                     <UIText value={
@@ -1184,11 +1189,13 @@ class MyOrdersDetailPage extends BasePage {
                 }
                 if (j == 0) {
                     this.setState({ isShowReceiveGoodsModal: true });
+                    this.receiveModal && this.receiveModal.open();
                 }
                 // this.setState({ isShowReceiveGoodsModal: true });
                 break;
             case 7:
                 this.setState({ isShowDeleteOrderModal: true });
+                this.deleteModal && this.deleteModal.open();
                 break;
             case 8:
                 Toast.showLoading();
@@ -1339,7 +1346,7 @@ const styles = StyleSheet.create({
         width: 80,
         height: 30,
         borderRadius: 15,
-        backgroundColor: '#ffffff',
+        backgroundColor: 'white',
         borderStyle: 'solid',
         borderWidth: 1,
         borderColor: '#dddddd',
@@ -1351,7 +1358,7 @@ const styles = StyleSheet.create({
     }, grayText: {
         fontSize: 13,
         lineHeight: 18,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     }
 });
 

@@ -10,6 +10,7 @@ import {
 //source
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
+import DesignRule from 'DesignRule';
 
 export default class OpenShopExplainPage extends BasePage {
 
@@ -36,7 +37,7 @@ export default class OpenShopExplainPage extends BasePage {
                 <View style={{ marginHorizontal: 15 }}>
 
                     {index !== 0 ?
-                        <View style={{ marginLeft: 8, width: 2, backgroundColor: '#d51243', height: 33 }}/> : null}
+                        <View style={{ marginLeft: 8, width: 2, backgroundColor: DesignRule.mainColor, height: 33 }}/> : null}
 
                     <View style={{ flexDirection: 'row' }}>
                         <View>
@@ -44,7 +45,7 @@ export default class OpenShopExplainPage extends BasePage {
                                 <Text style={styles.circleText}>{index + 1}</Text>
                             </View>
                             {index !== maxIndex - 1 ?
-                                <View style={{ marginLeft: 8, width: 2, backgroundColor: '#d51243', flex: 1 }}/> : null}
+                                <View style={{ marginLeft: 8, width: 2, backgroundColor: DesignRule.mainColor, flex: 1 }}/> : null}
                         </View>
 
                         <Text style={styles.desc}>{title}</Text>
@@ -90,14 +91,14 @@ export default class OpenShopExplainPage extends BasePage {
                     <TouchableOpacity activeOpacity={0.5} onPress={this._clickOpen} style={styles.btnStyle}>
                         <Text style={{
                             fontSize: 15,
-                            color: '#ffffff'
+                            color: 'white'
                         }}>我要开店</Text>
                     </TouchableOpacity>
 
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.descText}>点击我要开店则默认同意</Text>
                         <TouchableOpacity onPress = {this._onPress}>
-                            <Text style={[styles.descText, { color: '#D51243' }]}>《拼店管理条例》</Text>
+                            <Text style={[styles.descText, { color: DesignRule.mainColor }]}>《拼店管理条例》</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     circle: {
         width: 18,
         height: 18,
-        backgroundColor: '#d51243',
+        backgroundColor: DesignRule.mainColor,
         overflow: 'hidden',
         justifyContent: 'center',
         alignItems: 'center',
@@ -126,13 +127,13 @@ const styles = StyleSheet.create({
         marginLeft: 8,
         marginRight: 0,
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     btnStyle: {
         width: 170,
         height: 43,
         borderRadius: 5,
-        backgroundColor: '#d51243',
+        backgroundColor: DesignRule.mainColor,
         overflow: 'hidden',
         justifyContent: 'center',
         alignItems: 'center'
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
     descText: {
         paddingVertical: 10,
         fontSize: 11,
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         textAlign: 'center'
     }
 });

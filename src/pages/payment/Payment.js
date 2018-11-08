@@ -148,7 +148,7 @@ export class Payment {
                 return  resultStr
             } else {
                 Toast.hiddenLoading()
-                ref && ref.show(2, preStr.msg)
+                Toast.$toast(preStr.msg)
                 return
             }
            
@@ -201,7 +201,7 @@ export class Payment {
                 return resultStr
             } else {
                 Toast.hiddenLoading()
-                ref && ref.show(2, preStr.msg)
+                Toast.$toast(preStr.msg);
                 return
             }
             

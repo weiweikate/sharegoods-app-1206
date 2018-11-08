@@ -31,6 +31,7 @@ import bridge from '../../../../utils/bridge'
 // import BaseUrl from '../../../../api/BaseUrl'
 import fanhui from '../../res/homeBaseImg/fanhui.png'
 import apiEnvironment from '../../../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
 
 type Props = {};
 export default class InviteFriendsPage extends BasePage<Props> {
@@ -129,13 +130,13 @@ export default class InviteFriendsPage extends BasePage<Props> {
                              top: autoSizeWidth(165),
                              left: autoSizeWidth(107.5),
                              position: 'absolute',
-                             backgroundColor: 'red',
+                             backgroundColor: DesignRule.mainColor,
                          }}/>
                 <UIText value = {'专属你的惊喜福利活动\n数量有限赶快参与吧～'}
                         style = {{
                             marginTop: autoSizeWidth(20),
                             fontSize: autoSizeWidth(18),
-                            color: '#666666',
+                            color: DesignRule.textColor_secondTitle,
                             lineHeight: autoSizeWidth(28)
                         }}
                 />

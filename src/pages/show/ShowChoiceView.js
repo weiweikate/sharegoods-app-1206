@@ -9,6 +9,7 @@ import {observer} from 'mobx-react'
 import { ShowChoiceModules } from './Show'
 import seeImg from '../../comm/res/see.png'
 import maskImg from '../../comm/res/show_mask.png'
+import DesignRule from 'DesignRule';
 
 const Card = ({item, press}) => <TouchableOpacity style={styles.card} onPress={()=> press && press()}>
     <ImageBackground style={styles.imgView} source={{uri:item.coverImg}} resizeMode={'cover'}>
@@ -96,12 +97,12 @@ let styles = StyleSheet.create({
         width: px2dp(10)
     },
     text: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(13),
         marginLeft: px2dp(10)
     },
     title: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19)
     },
     titleView: {
@@ -150,12 +151,12 @@ let styles = StyleSheet.create({
         borderRadius: px2dp(15)
     },
     name: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(12),
         marginLeft: px2dp(10)
     },
     time: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(11)
     },
     mask: {

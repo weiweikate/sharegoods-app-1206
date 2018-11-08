@@ -6,6 +6,7 @@ import MyOrdersListView from './../components/MyOrdersListView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import search from '../res/search.png';
 import { color } from '../../../constants/Theme';
+import DesignRule from 'DesignRule';
 
 /**
  * @author chenxiang
@@ -66,11 +67,11 @@ class MyOrdersListPage extends BasePage {
                     }}
                     //进界面的时候打算进第几个
                     initialPage={parseInt(this.state.index)}
-                    tabBarBackgroundColor='#fff'
-                    tabBarActiveTextColor='#D51243'
-                    tabBarInactiveTextColor='#999999'
+                    tabBarBackgroundColor='white'
+                    tabBarActiveTextColor={DesignRule.mainColor}
+                    tabBarInactiveTextColor={DesignRule.textColor_instruction}
                     tabBarTextStyle={{ fontSize: 15 }}
-                    tabBarUnderlineStyle={{ backgroundColor: '#D51243', height: 2 }}
+                    tabBarUnderlineStyle={{ backgroundColor: DesignRule.mainColor, height: 2 }}
                     renderTabBar={() => (
                         this.renterTabBar()
                     )}>
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'white',
         marginBottom: ScreenUtils.safeBottom
     },
     welcome: {
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
     },
     instructions: {
         textAlign: 'center',
-        color: '#333333',
+        color: DesignRule.textColor_mainTitle,
         marginBottom: 5,
         fontSize: 28
     },
