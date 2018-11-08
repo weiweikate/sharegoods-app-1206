@@ -263,11 +263,12 @@ const styles = StyleSheet.create({
         // position: 'absolute',
         // left: 0,
         // bottom: 0,
-        backgroundColor: '#D51243'
+        backgroundColor: '#D51243',
+        marginBottom:ScreenUtils.safeBottom
     },
     bottomButtonTextStyle: {
         color: 'white',
-        fontSize: px2dp(13)
+        fontSize: px2dp(17)
     }
 
 

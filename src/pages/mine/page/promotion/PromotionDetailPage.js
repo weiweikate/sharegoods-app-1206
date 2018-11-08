@@ -31,6 +31,8 @@ import DesignRule from 'DesignRule';
 const { px2dp } = ScreenUtils;
 type Props = {};
 import CommShareModal from '../../../../comm/components/CommShareModal'
+import DesignRule from '../../../../constants/DesignRule';
+import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
 
 export default class PromotionDetailPage extends BasePage<Props> {
     constructor(props) {
@@ -39,7 +41,8 @@ export default class PromotionDetailPage extends BasePage<Props> {
             data: [],
             isEmpty: false,
             showCountDown: false,
-            countDownStr: ''
+            countDownStr: '',
+            loadingState: PageLoadingState.loading,
         };
         this.date = null;
         this.currentPage = 1;
@@ -48,6 +51,12 @@ export default class PromotionDetailPage extends BasePage<Props> {
     $navigationBarOptions = {
         title: '我的推广订单',
         show: true// false则隐藏导航
+    };
+
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+        };
     };
 
 
@@ -71,17 +80,24 @@ export default class PromotionDetailPage extends BasePage<Props> {
                         let seconds = parseInt((this.params.endTime - this.date) / 1000);
                         this.setState({
                             showCountDown: true,
-                            countDownStr: `剩余推广时间： ${this.timeFormat(seconds)}`
+                            countDownStr: `剩余推广时间： ${this.timeFormat(seconds)}`,
+                            loadingState: PageLoadingState.success
                         });
                     } else {
                         this.setState({
-                            showCountDown: false
+                            showCountDown: false,
+                            loadingState: PageLoadingState.success
+
                         });
                         this.timer && clearTimeout(this.timer);
                     }
                 }, 1000);
             }
 
+        }else {
+            this.setState({
+                loadingState: PageLoadingState.success
+            })
         }
     };
 
@@ -189,7 +205,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
         return (
             <View style={{
                 width: ScreenUtils.width, height: px2dp(20), justifyContent: 'center',
-                alignItems: 'center', backgroundColor: '#D51243'
+                alignItems: 'center', backgroundColor: DesignRule.mainColor
             }}>
                 <Text style={{ color: 'white', fontSize: px2dp(13), includeFontPadding: false }}>
                     {this.state.countDownStr}
@@ -203,6 +219,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
             <View style={styles.container}>
                 {this.state.showCountDown ? this._countDownRender() : null}
                 <RefreshList
+                    style={{marginBottom:ScreenUtils.safeBottom}}
                     data={this.state.data}
                     renderItem={this._itemRender}
                     onRefresh={this.onRefresh}
@@ -284,11 +301,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         left: 0,
-        bottom: 0,
-        backgroundColor: '#D51243'
+        bottom: ScreenUtils.safeBottom,
+        backgroundColor: DesignRule.mainColor
     },
     bottomButtonTextStyle: {
-        color: 'white',
-        fontSize: px2dp(13)
+        color: DesignRule.white,
+        fontSize: px2dp(17)
     }
 });

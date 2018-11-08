@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     container: {
         height: 42,
         borderRadius: 10,
-        backgroundColor: "#f6f6f6",
+        backgroundColor: "#FFFFFF",
         borderStyle: "solid",
         borderWidth: 1,
         borderColor: "#dddddd",
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 1,
         marginHorizontal: 15,
         flexDirection: "row",
-        marginTop: 10,
+        marginVertical: 10,
         alignItems: "center"
     },
     icon: {

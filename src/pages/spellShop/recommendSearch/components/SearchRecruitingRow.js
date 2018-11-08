@@ -9,9 +9,12 @@ import {
     View,
     Image,
     StyleSheet,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    TouchableOpacity
 } from 'react-native';
 import DesignRule from 'DesignRule';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+
 
 export default class SearchRecruitingRow extends Component {
 
@@ -25,24 +28,41 @@ export default class SearchRecruitingRow extends Component {
     };
 
     render() {
-        const { item } = this.props;
-        return (<TouchableWithoutFeedback onPress={()=>this._onPress(item)}>
+        const { item = {} } = this.props;
+        return (<TouchableWithoutFeedback onPress={() => this._onPress(item)}>
             <View style={styles.rowContainer}>
-                {
-                    item.headUrl ? <Image source={{ uri: item.headUrl }} style={styles.img}/> :
-                        <View style={styles.img}/>
-                }
-                <View style={styles.right}>
-                    <View style={styles.row}>
-                        <Text style={styles.title}>{item.name || ''}</Text>
-                        <View style={styles.ingContainer}>
-                            <Text style={styles.ingText}>招募中</Text>
+                <View style={styles.headerViewContainer}>
+                    {item.headUrl ? <Image style={styles.icon}
+                                           source={{ uri: item.headUrl || '' }}/> :
+                        <View style={styles.icon}/>}
+                    <View style={styles.tittleContainer}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.name} numberOfLines={1}>{item.name || ''}</Text>
+                            <View style={styles.ingContainer}>
+                                <Text style={styles.ingText}>招募中</Text>
+                            </View>
                         </View>
+                        <Text style={styles.member}>{`店主: ${item.storeUserName || ''}`}</Text>
                     </View>
-                    <View style = {{flexDirection:'row',justifyContent:'space-between',marginTop:11}}>
-                        <Text style={[styles.desc]}>店长:{item.storeUserName || ''}</Text>
-                        <Text style={[styles.desc]}>{item.storeUserNum || 0}成员</Text>
-                    </View>
+                </View>
+                <View style={{ width: 1, height: 100, backgroundColor: 'rgb(244,231,221)' }}/>
+                <View style={{ width: 44 + 70, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{
+                        color: DesignRule.textColor_secondTitle,
+                        fontSize: 10,
+                        fontFamily: 'PingFangSC-Light'
+                    }}>店铺成员</Text>
+                    <Text style={{
+                        color: DesignRule.textColor_secondTitle,
+                        fontSize: 11,
+                        fontFamily: 'PingFangSC-Medium',
+                        marginTop: 5
+                    }}>{item.storeUserNum || ''}</Text>
+                    <TouchableOpacity style={styles.joinBtn} onPress={() => {
+                        this._onPress(item);
+                    }}>
+                        <Text style={styles.joinText}>+加入我们</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </TouchableWithoutFeedback>);
@@ -51,47 +71,66 @@ export default class SearchRecruitingRow extends Component {
 
 const styles = StyleSheet.create({
     rowContainer: {
-        height: 80,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 20,
-        backgroundColor: 'white'
+        marginHorizontal: 15,
+        marginTop: 10,
+        backgroundColor: '#FEFAF7'
     },
-    right: {
-        flex:1,
-        marginLeft: 10,
+    headerViewContainer: {
+        flex: 1,
+        paddingVertical: 25,
+        marginLeft: 15,
+        flexDirection: 'row'
     },
-    img: {
-        alignSelf:'center',
+    icon: {
         width: 50,
         height: 50,
-        borderWidth: 1,
-        borderColor: '#c8c8c8',
-        backgroundColor: '#c8c8c8'
+        backgroundColor: '#eee',
+        borderRadius: 25
     },
-    row: {
-        flexDirection: 'row',
+    tittleContainer: {
+        justifyContent: 'center',
+        marginLeft: 11,
+        flex: 1
     },
-    title: {
-        fontSize: 13,
-        color: '#000000'
+    name: {
+        maxWidth: ScreenUtils.autoSizeWidth(100),
+        color: DesignRule.textColor_mainTitle,
+        fontSize: 14
+    },
+    member: {
+        marginTop: 9,
+        color: DesignRule.textColor_instruction,
+        fontSize: 11
     },
     ingContainer: {
-        width: 46,
+        marginLeft: 10,
         height: 15,
         borderRadius: 7,
-        backgroundColor: '#0186f5',
         justifyContent: 'center',
         alignItems: 'center',
-        marginLeft: 5
+        backgroundColor: '#0186f5'
     },
     ingText: {
-        fontSize: 11,
-        color: DesignRule.bgColor
+        fontFamily: 'PingFang-SC-Medium',
+        paddingHorizontal: 7,
+        color: 'white',
+        fontSize: 11
     },
-    desc: {
+    joinBtn: {
+        marginTop: 14,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 22,
+        borderRadius: 11,
+        backgroundColor: DesignRule.bgColor_btn
+    },
+    joinText: {
+        fontFamily: 'PingFangSC-Medium',
+        color: 'white',
         fontSize: 12,
-        color: DesignRule.textColor_secondTitle
+        paddingHorizontal: 8
     }
 });
 

@@ -18,7 +18,7 @@ export default class SearchSegmentView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selIndex: 0,
+            selIndex: 0
         };
     }
 
@@ -39,7 +39,8 @@ export default class SearchSegmentView extends Component {
         }}>
             <View style={styles.itemContainer}>
                 <Text
-                    style={[styles.title, { color: this.state.selIndex === index ? '#e60012' : DesignRule.textColor_instruction }]}>{title}</Text>
+                    style={[styles.title, { color: this.state.selIndex === index ? DesignRule.bgColor_btn : '#999999' }]}>{title}</Text>
+                {index === this.state.selIndex && < View style={styles.itemLine}/>}
             </View>
         </TouchableWithoutFeedback>;
     };
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     container: {
         width: ScreenUtils.width,
         height: 42,
-        backgroundColor: 'white',
+        backgroundColor: '#ffffff',
         borderTopWidth: StyleSheet.hairlineWidth,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderTopColor: '#eeeeee',
@@ -78,8 +79,15 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     title: {
-        fontSize: 13,
-        color: DesignRule.textColor_instruction
+        fontSize: 13
+    },
+    itemLine: {
+        position: 'absolute',
+        bottom: 0,
+        backgroundColor: DesignRule.bgColor_btn,
+        height: 2,
+        width: 50,
+        alignSelf: 'center'
     }
 });
 

@@ -39,7 +39,7 @@ export default class RecommendSegmentView extends Component {
             this._onPress(index);
         }}>
             <View style={styles.itemContainer}>
-                <Text style={[styles.title, { color: this.state.selectIndex === index ? '#D51243' : DesignRule.textColor_secondTitle }]}
+                <Text style={[styles.title, { color: this.state.selectIndex === index ? DesignRule.bgColor_btn : '#999999' }]}
                 >{title}</Text>
                 {index === this.state.selectIndex && < View style={styles.itemLine}/>}
             </View>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     container: {
         width: ScreenUtils.width,
         height: 40,
-        backgroundColor: 'white',
+        backgroundColor: '#ffffff',
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -73,14 +73,14 @@ const styles = StyleSheet.create({
     itemLine: {
         position: 'absolute',
         bottom: 0,
-        backgroundColor: '#D51243',
-        height: 1,
+        backgroundColor: DesignRule.bgColor_btn,
+        height: 2,
         width: 50,
         alignSelf: 'center'
     },
     title: {
+        fontFamily: 'PingFangSC-Medium',
         fontSize: 13,
-        color: DesignRule.textColor_instruction
     }
 });
 

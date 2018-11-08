@@ -106,6 +106,7 @@ class MyOrdersDetailPage extends BasePage {
     };
     showMore = () => {
         this.setState({ isShowShowMessageModal: true });
+        this.messageModal && this.messageModal.open();
     };
     //**********************************ViewPart******************************************
     renderState = () => {
@@ -499,6 +500,7 @@ class MyOrdersDetailPage extends BasePage {
                         { icon: productDetailMessage, title: '消息' },
                         { icon: productDetailHome, title: '首页' }
                     ]}
+                    ref={(ref)=>this.messageModal = ref}
                     clickSelect={(index) => {
                         switch (index) {
                             case 0:
@@ -522,6 +524,7 @@ class MyOrdersDetailPage extends BasePage {
                 <CommonTwoChoiceModal
                     isShow={this.state.isShowDeleteOrderModal}
                     detail={{ title: '删除订单', context: '确定删除此订单吗', no: '取消', yes: '确认' }}
+                    ref={(ref)=>{this.deleteModal = ref;}}
                     closeWindow={() => {
                         this.setState({ isShowDeleteOrderModal: false });
                     }}
@@ -565,6 +568,7 @@ class MyOrdersDetailPage extends BasePage {
                     close={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
                     }}
+                    ref={(ref)=>this.receiveModal = ref}
                     yes={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
                         Toast.showLoading();
@@ -1184,11 +1188,13 @@ class MyOrdersDetailPage extends BasePage {
                 }
                 if (j == 0) {
                     this.setState({ isShowReceiveGoodsModal: true });
+                    this.receiveModal && this.receiveModal.open();
                 }
                 // this.setState({ isShowReceiveGoodsModal: true });
                 break;
             case 7:
                 this.setState({ isShowDeleteOrderModal: true });
+                this.deleteModal && this.deleteModal.open();
                 break;
             case 8:
                 Toast.showLoading();
