@@ -25,7 +25,10 @@ import BusinessUtils from '../../components/BusinessUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import DesignRule from 'DesignRule';
-
+const htmlUrl = __DEV__ ?
+    'https://testh5.sharegoodsmall.com/static/protocol/privacy.html'
+    :
+    'https://testh5.sharegoodsmall.com/static/protocol/privacy.html';
 export default class IDVertify2Page extends BasePage {
 
     constructor(props) {
@@ -143,7 +146,10 @@ export default class IDVertify2Page extends BasePage {
                             <UIText value={'《实名认证协议》'}
                                     style={{ fontSize: 11, color: '#F00006' }}
                                     onPress={() => {
-                                        this.$navigate('mine/userInformation/UserAgreementPage');
+                                        this.$navigate('HtmlPage', {
+                                            title: '实名认证协议',
+                                            uri: htmlUrl
+                                        });
                                     }}/>
                         </TouchableOpacity>
                     </View>
