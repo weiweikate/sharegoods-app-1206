@@ -27,6 +27,9 @@ import SpellShopApi from '../api/SpellShopApi';
 import HomeAPI from '../../home/api/HomeAPI';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import StringUtils from '../../../utils/StringUtils';
+import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
+import DesignRule from 'DesignRule';
+
 
 @observer
 export default class RecommendPage extends BasePage {
@@ -41,9 +44,12 @@ export default class RecommendPage extends BasePage {
             loadingMoreError: null,//加载更多是否报错
             page: 1,
 
+            loadingState: PageLoadingState.loading,
+            netFailedInfo: {},
+
             segmentIndex: 1,
             //data
-            dataList: [],
+            dataList: [{}],//默认一行显示状态页面使用 错误页 无数据页面
             adList: [],
             swiperShow: false
         };
@@ -99,16 +105,19 @@ export default class RecommendPage extends BasePage {
         }).then((data) => {
             this.state.page++;
             let dataTemp = data.data || {};
+            //如果是空数据 显示空数据页面需要一个cell
+            let isEmpty = !dataTemp.data || dataTemp.data.length === 0;
             this.setState({
                 refreshing: false,
+                loadingState: isEmpty ? PageLoadingState.empty : PageLoadingState.success,
                 noMore: dataTemp.data.length < this._getSize(),
-                dataList: dataTemp.data || []
+                dataList: isEmpty ? [{}] : dataTemp.data
             });
         }).catch((error) => {
             this.setState({
-                refreshing: false
+                refreshing: false,
+                loadingState: PageLoadingState.fail
             });
-            this.$toastShow(error.msg);
         });
         HomeAPI.getSwipers({
             type: 9
@@ -197,7 +206,8 @@ export default class RecommendPage extends BasePage {
 
     _segmentPressAtIndex = (index) => {
         this.setState({
-            dataList: [],
+            dataList: [{}],
+            loadingState: PageLoadingState.loading,
             segmentIndex: index
         }, () => {
             this._loadPageData();
@@ -248,11 +258,17 @@ export default class RecommendPage extends BasePage {
     };
 
     _renderItem = ({ item }) => {
-        return (<RecommendRow RecommendRowItem={item} RecommendRowOnPress={this._RecommendRowOnPress}/>);
+        if (this.state.loadingState === PageLoadingState.success) {
+            return (<RecommendRow RecommendRowItem={item} RecommendRowOnPress={this._RecommendRowOnPress}/>);
+        } else {
+            return <View style={{ height: 300 }}>
+                {renderViewByLoadingState(this._getPageStateOptions(), null)}
+            </View>;
+        }
     };
 
     _ListFooterComponent = () => {
-        if (this.state.dataList.length === 0) {
+        if (this.state.loadingState !== PageLoadingState.success) {
             return null;
         }
         return <ListFooter loadingMore={this.state.loadingMore}
@@ -260,16 +276,27 @@ export default class RecommendPage extends BasePage {
                            onPressLoadError={this._onEndReached}/>;
     };
     _onEndReached = () => {
-        if (this.onEndReached || !this.state.dataList.length || this.state.noMore) {
+        if (this.onEndReached || this.state.loadingState !== PageLoadingState.success || this.state.noMore) {
             return;
         }
         this._loadPageDataMore();
+    };
+
+    _getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: this._refreshing
+            }
+        };
     };
 
     _render() {
         return (
             <View style={{ flex: 1 }}>
                 <SectionList keyExtractor={(item, index) => `${index}`}
+                             style={{ backgroundColor: DesignRule.bgColor }}
                              refreshControl={
                                  <RefreshControl
                                      refreshing={this.state.refreshing}
