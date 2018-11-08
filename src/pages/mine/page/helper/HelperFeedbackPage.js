@@ -118,7 +118,7 @@ export default class HelperFeedbackPage extends BasePage {
             console.log(res);
             if (res.code == 10000) {
                 this.setState({ isShowFinishModal: true });
-
+                this.finishModal && this.finishModal.open();
             } else {
                 this.$toastShow(res.msg);
             }
@@ -136,6 +136,9 @@ export default class HelperFeedbackPage extends BasePage {
                 animationType="fade"
                 transparent={true}
                 onRequestClose={() => {
+                }}
+                ref={(ref)=>{
+                    this.finishModal = ref;
                 }}
                 visible={this.state.isShowFinishModal}>
                 <View style={{ flex: 1, width: ScreenUtils.width }}>

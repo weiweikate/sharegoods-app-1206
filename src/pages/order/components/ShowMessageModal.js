@@ -4,12 +4,12 @@ import {
     View,
     Text,
     Image,
-    Modal,
+    // Modal,
     TouchableOpacity
 } from 'react-native';
 import { color } from '../../../constants/Theme';
 import ScreenUtils from '../../../utils/ScreenUtils';
-
+import Modal from 'CommModal';
 class ShowMessageModal extends Component {
 
     constructor(props) {
@@ -19,12 +19,19 @@ class ShowMessageModal extends Component {
         };
     }
 
+    open=()=>{
+        this.modal && this.modal.open();
+    }
+
     render() {
         return (
             <Modal
                 animationType='fade'
                 transparent={true}
                 onRequestClose={() => {
+                }}
+                ref={(ref)=>{
+                    this.modal = ref;
                 }}
                 visible={this.props.isShow && this.state.dis}>
                 <TouchableOpacity style={styles.modalStyle} onPress={() => {
