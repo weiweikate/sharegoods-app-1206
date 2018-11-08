@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 import PeopleImg from '../src/dy_07.png';
 import ArrowImg from '../src/xjt_03.png';
-import DashImg from '../src/xt_03.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 
 export default class AssistantRow extends Component {
@@ -29,11 +28,11 @@ export default class AssistantRow extends Component {
         return (<View style={styles.row}>
             <TouchableOpacity activeOpacity={1} onPress={this.props.clickAllMembers} style={styles.topRow}>
                 <Image style={styles.topIcon} source={PeopleImg}/>
-                <Text style={styles.topTitle}>{'参与成员'}</Text>
-                <Text style={styles.topDescText}>{`共${storeUserList.length || 0}人`}</Text>
+                <Text style={styles.topTitle}>{'店铺成员'}</Text>
+                <Text style={styles.topDescText}>{`${storeUserList.length || 0}人`}</Text>
                 <Image style={styles.topArrow} source={ArrowImg}/>
             </TouchableOpacity>
-            <Image source={DashImg} style={styles.dash}/>
+            <View style={styles.dash}/>
             <ScrollView bounces={false} showsHorizontalScrollIndicator={false}>
                 <View style={styles.listContainer}>
                     {
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     topRow: {
-        height: 38,
+        height: 40,
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -83,9 +82,9 @@ const styles = StyleSheet.create({
         marginRight: 21
     },
     dash: {
-        width: ScreenUtils.width - 15,
-        marginLeft: 15,
-        height: 0.5
+        width: ScreenUtils.width,
+        backgroundColor: '#E4E4E4',
+        height: 1
     },
     listContainer: {
         flexDirection: 'row'
