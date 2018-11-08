@@ -18,6 +18,8 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_VIEW_PROPERTY(imgUrlArray, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(tittleArray, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(autoInterval,CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(itemWidth,CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(itemSpace,CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(autoLoop,BOOL)
 
 RCT_EXPORT_VIEW_PROPERTY(onDidSelectItemAtIndex, RCTBubblingEventBlock)
@@ -48,8 +50,12 @@ RCT_EXPORT_VIEW_PROPERTY(onDidScrollToIndex, RCTBubblingEventBlock)
 }
 - (TYCyclePagerViewLayout *)layoutForPagerView:(TYCyclePagerView *)pageView {
   TYCyclePagerViewLayout *layout = [[TYCyclePagerViewLayout alloc]init];
-  layout.itemSize = CGSizeMake(CGRectGetWidth(pageView.frame)*0.8, CGRectGetHeight(pageView.frame));
-  layout.itemSpacing = 15;
+  if (_swiperView.itemSpace && _swiperView.itemWidth) {
+    layout.itemSize = CGSizeMake(_swiperView.itemWidth, CGRectGetHeight(pageView.frame));
+    layout.itemSpacing = _swiperView.itemSpace;
+  }else{
+    layout.itemSize = CGSizeMake(CGRectGetWidth(pageView.frame), CGRectGetHeight(pageView.frame));
+  }
   return layout;
 }
 
