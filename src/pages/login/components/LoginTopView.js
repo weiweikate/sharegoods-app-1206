@@ -319,17 +319,19 @@ const Styles = StyleSheet.create(
             fontSize:13
         },
         loginBtnStyle: {
-            marginTop: 40,
-            marginLeft: 0,
+            marginTop: 20,
+            marginLeft: 15,
             height: 50,
-            width: ScreenUtils.width - 40,
+            width: ScreenUtils.width - 70,
             borderRadius: 25,
-            backgroundColor: DesignRule.mainColor
+            backgroundColor: DesignRule.mainColor,
+            justifyContent:'center',
+            alignItems:'center'
         },
         loginBtnTextStyle: {
-            paddingTop: 18,
+            // paddingTop: 16,
             color: '#fff',
-            height: 48,
+            // height:,
             margin: 0,
             alignItems: 'center',
             textAlign: 'center',

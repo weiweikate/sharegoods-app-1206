@@ -14,7 +14,7 @@ import UIText from '../../../../components/ui/UIText';
 // import UIImage from '../../../../components/ui/UIImage';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import { SwipeListView } from 'react-native-swipe-list-view';
+import { SwipeListView } from '../../../../components/ui/react-native-swipe-list-view';
 import RefreshList from '../../../../components/ui/RefreshList';
 import res from '../../../../comm/res';
 import user from '../../../../model/user';

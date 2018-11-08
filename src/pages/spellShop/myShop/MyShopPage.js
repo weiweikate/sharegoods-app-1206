@@ -73,11 +73,12 @@ export default class MyShopPage extends BasePage {
     _NavBarRenderRightItem = () => {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
-                    <TouchableOpacity onPress={() => {
-                        this.$navigateBack();
-                    }}>
-                        <Image source={NavLeft}/>
-                    </TouchableOpacity>
+                    {!this.props.leftNavItemHidden ?
+                        <TouchableOpacity onPress={() => {
+                            this.$navigateBack();
+                        }}>
+                            <Image source={NavLeft}/>
+                        </TouchableOpacity> : null}
                 </View>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ fontSize: 17, color: '#ffffff' }}>{this.state.tittle}</Text>
