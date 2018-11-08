@@ -16,7 +16,21 @@
 
 @implementation JRServiceManager
 SINGLETON_FOR_CLASS(JRServiceManager)
-//  groupId:0, staffId:0, title:'七鱼金融',
+
+-(void)qiYULogout{
+  [[QYSDK sharedSDK]logout:nil];
+}
+/**
+ * groupId:0,
+ * staffId:0,
+ * title:'七鱼金融',
+ * userId:用户id
+ * userIcon:用户头像,
+ * phoneNum:用户手机号,
+ * nickName:用户名称,
+ * device:手机型号
+ * systemVersion:手机系统版本
+ */
 -(void)qiYUChat:(id)josnData{
 //  NSDictionary *jsonDic = [NSJSONSerialization  JSONObjectWithData:josnData options:NSJSONReadingMutableLeaves error:nil];
   NSDictionary *jsonDic = josnData;
@@ -30,6 +44,18 @@ SINGLETON_FOR_CLASS(JRServiceManager)
   
   self.sessionVC.groupId = [jsonDic[@"groupId"] integerValue];
   self.sessionVC.staffId = [jsonDic[@"staffId"] integerValue];
+  //设置当前用户信息
+  QYUserInfo * userInfo = [QYUserInfo alloc];
+  userInfo.userId = jsonDic[@"userId"];
+  NSArray * infoData = @[
+                         @{@"userIcon":jsonDic[@"userIcon"]?jsonDic[@"userIcon"]:@""},
+                         @{@"phoneNum":jsonDic[@"phoneNum"]?jsonDic[@"phoneNum"]:@""},
+                         @{ @"nickName":jsonDic[@"nickName"]?jsonDic[@"nickName"]:@""},
+                         @{@"device":jsonDic[@"device"]?jsonDic[@"device"]:@""},
+                         @{@"systemVersion":jsonDic[@"systemVersion"]?jsonDic[@"systemVersion"]:@""}
+                        ];
+  userInfo.data = [self arrToJsonString:infoData];
+  [[QYSDK sharedSDK] setUserInfo:userInfo];
   
   JRBaseNavVC *nav =[[JRBaseNavVC alloc] initWithRootViewController:self.sessionVC];
   self.sessionVC.navigationItem.leftBarButtonItem =
@@ -77,14 +103,11 @@ SINGLETON_FOR_CLASS(JRServiceManager)
  *  @param count 未读数
  */
 - (void)onUnreadCountChanged:(NSInteger)count{
-  
-  
 }
 /**
  *  会话列表变化；非平台电商用户，只有一个会话项，平台电商用户，有多个会话项
  */
 - (void)onSessionListChanged:(NSArray<QYSessionInfo*> *)sessionList{
-  
 }
 /**
  *  收到消息
@@ -92,4 +115,17 @@ SINGLETON_FOR_CLASS(JRServiceManager)
 - (void)onReceiveMessage:(QYMessageInfo *)message{
   
 }
+-(NSString *)arrToJsonString:(NSArray *)arr{
+    NSData *data = [NSJSONSerialization dataWithJSONObject:self
+                                                   options:NSJSONReadingMutableLeaves | NSJSONReadingAllowFragments
+                                                     error:nil];
+    
+    if (data == nil) {
+      return nil;
+    }
+    NSString *string = [[NSString alloc] initWithData:data
+                                             encoding:NSUTF8StringEncoding];
+    return string;
+}
+
 @end
