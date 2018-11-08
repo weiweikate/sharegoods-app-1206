@@ -90,4 +90,8 @@ public class QYChatModule extends ReactContextBaseJavaModule {
         Unicorn.openServiceActivity(mContext, title, source);
     }
 
+    @ReactMethod
+    public void qiYULogout() {
+        Unicorn.logout();
+    }
 }
