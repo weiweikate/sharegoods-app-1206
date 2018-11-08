@@ -35,7 +35,7 @@ const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) 
                 <Text style={{
                     marginLeft: 5,
                     marginRight: 7,
-                    color: '#999999',
+                    color: DesignRule.textColor_instruction,
                     fontSize: 13
                 }}>可用余额: {balance ? balance : 0}</Text>
                 :
@@ -53,7 +53,7 @@ const Section = ({ data }) => <View style={{
 }}>
     <Text style={{
         fontSize: 13
-        , color: '#999999', marginLeft: 15
+        , color: DesignRule.textColor_instruction, marginLeft: 15
     }}>{data.name}</Text>
 </View>;
 
@@ -278,7 +278,7 @@ export default class PaymentMethodPage extends BasePage {
                         style={{ flex: 1, backgroundColor: color.red, justifyContent: 'center', alignItems: 'center' }}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'去支付'}
-                                style={{ fontSize: 16, color: '#ffffff' }}/>
+                                style={{ fontSize: 16, color: 'white' }}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -490,10 +490,10 @@ export default class PaymentMethodPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7'
+        backgroundColor: DesignRule.bgColor
     },
     selectText: {
-        fontSize: 16, color: '#ffffff'
+        fontSize: 16, color: 'white'
     }, blackText: {
         fontSize: 13,
         lineHeight: 18,
@@ -501,7 +501,7 @@ const styles = StyleSheet.create({
     }, grayText: {
         fontSize: 13,
         lineHeight: 18,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     },
     modalStyle: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -516,7 +516,7 @@ const styles = StyleSheet.create({
     },
     bottomUiText: {
         fontSize: 15,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         marginRight: 12,
         marginLeft: 12
     },
@@ -539,7 +539,7 @@ const styles = StyleSheet.create({
         height: 230,
         width: 250,
         borderRadius: 5,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         alignItems: 'center'
     }
 });

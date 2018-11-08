@@ -7,8 +7,8 @@ import {
 } from 'react-native';
 import UIText from '../../../comm/components/UIText';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import ColorUtil from '../../../utils/ColorUtil';
 import PropTypes from 'prop-types';
+import DesignRule from 'DesignRule';
 
 
 export default class SubSwichView extends Component {
@@ -66,7 +66,7 @@ export default class SubSwichView extends Component {
                         return <View
                             style={{
                                 // width: ScreenUtils.width / 2,
-                                width:titleWidth,
+                                width: titleWidth,
                                 justifyContent: 'center',
                                 flexDirection: 'column'
                                 // alignItems:'center'
@@ -80,13 +80,13 @@ export default class SubSwichView extends Component {
                                 style={[SwichStyles.titleItemStyle,
                                     this.state.selectState === titleItemIndex ?
                                         {
-                                            color: ColorUtil.mainRedColor,
-                                            width:titleWidth
+                                            color: DesignRule.mainColor,
+                                            width: titleWidth
                                         }
                                         :
                                         {
-                                            color: ColorUtil.Color_666666 ,
-                                            width:titleWidth
+                                            color: DesignRule.textColor_secondTitle,
+                                            width: titleWidth
 
                                         }
                                 ]}
@@ -101,7 +101,7 @@ export default class SubSwichView extends Component {
                                                 marginLeft: (titleWidth - 50) / 2,
                                                 marginTop: 10,
                                                 height: 1,
-                                                backgroundColor: ColorUtil.mainRedColor
+                                                backgroundColor: DesignRule.mainColor
                                             }
                                         }
                                     />
@@ -111,7 +111,7 @@ export default class SubSwichView extends Component {
                                             {
                                                 marginTop: 10,
                                                 height: 1,
-                                                backgroundColor: ColorUtil.Color_ffffff
+                                                backgroundColor: 'white'
                                             }
                                         }
                                     />
@@ -145,14 +145,14 @@ const SwichStyles = StyleSheet.create({
         },
         titleItemStyle: {
             paddingTop: 15,
-            color: ColorUtil.Color_d51243,
+            color: DesignRule.mainColor,
             fontSize: 16,
             width: ScreenUtils.width / 2,
             textAlign: 'center'
         },
         bottomLineViewStyle: {
             height: 2,
-            backgroundColor: ColorUtil.Color_d51243,
+            backgroundColor: DesignRule.mainColor,
             width: 50,
             marginLeft: (ScreenUtils.width - 70 * 2) / 4
         }

@@ -26,6 +26,7 @@ import PhoneIcon from './res/icon_03-04.png';
 import BasePage from '../../../BasePage';
 import DateUtils from '../../../utils/DateUtils';
 import SpellShopApi from '../api/SpellShopApi';
+import DesignRule from 'DesignRule';
 
 export default class ShopAssistantDetailPage extends BasePage {
 
@@ -172,7 +173,7 @@ const styles = StyleSheet.create({
     },
     rowTitle: {
         fontSize: 13,
-        color: '#ffffff',
+        color: 'white',
         marginLeft: 5
     },
     line: {
@@ -190,12 +191,12 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 13,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         marginLeft: 4
     },
     desc: {
         fontSize: 12,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         flex: 1,
         textAlign: 'right',
         marginRight: 21

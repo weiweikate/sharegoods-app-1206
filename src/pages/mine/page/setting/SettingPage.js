@@ -20,6 +20,7 @@ import shopCartStore from '../../../shopCart/model/ShopCartStore';
 import DeviceInfo from 'react-native-device-info';
 import bridge from '../../../../utils/bridge';
 import CommModal from 'CommModal';
+import DesignRule from 'DesignRule';
 
 /**
  * @author luoyongming
@@ -94,7 +95,7 @@ class SettingPage extends BasePage {
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.clearAllCaches()}>
                         <UIText value={'清除缓存'} style={styles.blackText}/>
                         <UIText value={desc}
-                                style={{ fontSize: 13, color: '#666666' }}/>
+                                style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
@@ -106,7 +107,7 @@ class SettingPage extends BasePage {
                                       onPress={() => this.getNewVersion()}>
                         <UIText value={'版本检测'} style={[styles.blackText, { flex: 1 }]}/>
                         <UIText value={'当前版本v' + this.state.version}
-                                style={{ fontSize: 13, color: '#666666' }}/>
+                                style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
                         <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                     </TouchableOpacity>
                 </View>
@@ -236,7 +237,7 @@ class SettingPage extends BasePage {
                     <UIText value={this.state.updateContent}
                             style={{
                                 fontSize: 17,
-                                color: '#333',
+                                color: DesignRule.textColor_mainTitle,
                                 marginTop: 40,
                                 marginBottom: 40,
                                 alignSelf: 'center'
@@ -248,7 +249,7 @@ class SettingPage extends BasePage {
                             onPress={() => {
                                 this.setState({ showUpdate: false });
                             }}>
-                            <UIText value={'以后再说'} style={{ color: '#999' }}/>
+                            <UIText value={'以后再说'} style={{ color: DesignRule.textColor_instruction }}/>
                         </TouchableOpacity>
                         <View style={{ width: 0.5, backgroundColor: '#eee' }}/>
                         <TouchableOpacity
@@ -332,7 +333,7 @@ const styles = StyleSheet.create({
     },
     blackText: {
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     }
 });
 

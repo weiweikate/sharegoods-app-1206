@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import gwc from '../res/gwc.png';
+import DesignRule from 'DesignRule';
+
 
 export default class SearchBar extends Component {
 
@@ -38,7 +40,7 @@ export default class SearchBar extends Component {
                     <View style={[styles.container]}>
                         <Image style={styles.img} source={{ uri: product.imgUrl || '' }}/>
                         <View style={styles.textContentView}>
-                            <Text style={{ color: '#222222', fontSize: 13 }}
+                            <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}
                                   numberOfLines={2}>{`${name}`}</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Text style={{

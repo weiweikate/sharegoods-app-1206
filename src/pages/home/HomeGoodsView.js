@@ -74,14 +74,14 @@ let styles = StyleSheet.create({
         alignItems: 'center'
     },
     dis: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(12),
         marginTop: px2dp(20),
         marginLeft: px2dp(7),
         marginRight: px2dp(7)
     },
     title: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(12)
     },
     money: {

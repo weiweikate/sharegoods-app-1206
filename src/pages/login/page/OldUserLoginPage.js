@@ -11,13 +11,12 @@ import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
 import { observable, computed, action } from 'mobx';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
-import ColorUtil from '../../../utils/ColorUtil';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import LoginAPI from '../api/LoginApi';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
-import DesignRule from '../../../constants/DesignRule';
+import DesignRule from 'DesignRule';
 
 class OldUserLoginModel {
     @observable
@@ -83,7 +82,7 @@ export default class OldUserLoginPage extends BasePage {
 
     _render() {
         return (
-            <View style={{ flex: 1 ,backgroundColor: DesignRule.bgColor}}>
+            <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
                 <View style={{ backgroundColor: DesignRule.bgColor }}>
                     <View style={{ marginTop: 30, justifyContent: 'center', alignItems: 'center' }}>
                         <Image style={{ width: 79, height: 79 }} source={LoginAndRegistRes.logoImage}/>
@@ -125,7 +124,7 @@ export default class OldUserLoginPage extends BasePage {
                         <CommSpaceLine style={Styles.lineStyle}/>
                     </View>
                     <View
-                        style={[Styles.oldUserLoginBtnStyle, this.oldUserLoginModel.isCanClick ? { backgroundColor:DesignRule.mainColor } : { backgroundColor: DesignRule.bgColor_grayHeader }]}>
+                        style={[Styles.oldUserLoginBtnStyle, this.oldUserLoginModel.isCanClick ? { backgroundColor: DesignRule.mainColor } : { backgroundColor: DesignRule.bgColor_grayHeader }]}>
                         <TouchableOpacity onPress={this.loginClick}>
                             <Text style={{
                                 textAlign: 'center',
@@ -144,33 +143,33 @@ export default class OldUserLoginPage extends BasePage {
 
                     <Text
                         style={{
-                            marginTop:20,
-                            height:50,
-                            width:ScreenUtils.width - 40,
-                            textAlign:'right',
-                            fontSize:12,
-                            color:DesignRule.textColor_secondTitle
+                            marginTop: 20,
+                            height: 50,
+                            width: ScreenUtils.width - 40,
+                            textAlign: 'right',
+                            fontSize: 12,
+                            color: DesignRule.textColor_secondTitle
                         }}
                     >
                         请使用经销商账号登录
                     </Text>
                 </View>
                 {/*<Image*/}
-                    {/*style={{*/}
-                        {/*width: ScreenUtils.width,*/}
-                        {/*position: 'absolute',*/}
-                        {/*bottom: 0,*/}
-                        {/*height: 80*/}
-                    {/*}}*/}
-                    {/*source={loginAndRegistRes.loginBottomImage}*/}
-                    {/*resizeMode='cover'/>*/}
+                {/*style={{*/}
+                {/*width: ScreenUtils.width,*/}
+                {/*position: 'absolute',*/}
+                {/*bottom: 0,*/}
+                {/*height: 80*/}
+                {/*}}*/}
+                {/*source={loginAndRegistRes.loginBottomImage}*/}
+                {/*resizeMode='cover'/>*/}
                 <Text
                     style={{
                         width: ScreenUtils.width,
                         position: 'absolute',
                         bottom: 50,
                         fontSize: 12,
-                        color: ColorUtil.Color_666666,
+                        color: DesignRule.textColor_secondTitle,
                         textAlign: 'center'
                     }}>
                     客服电话:400-888-8888
@@ -181,8 +180,7 @@ export default class OldUserLoginPage extends BasePage {
 
     /*d点击登录*/
     loginClick = () => {
-        if (StringUtils.checkPhone(this.oldUserLoginModel.phoneNumber))
-        {
+        if (StringUtils.checkPhone(this.oldUserLoginModel.phoneNumber)) {
             this.$loadingShow();
             LoginAPI.existedUserVerify(
                 {
@@ -204,11 +202,11 @@ export default class OldUserLoginPage extends BasePage {
                 if (data.code === 10000) {
                     //存在老用户返回的code
                     this.$navigate('login/login/SetPasswordPage', {
-                        code: data.data.code ,
-                        phone:this.oldUserLoginModel.phoneNumber,
+                        code: data.data.code,
+                        phone: this.oldUserLoginModel.phoneNumber
                     });
                 } else {
-                       this.$toast(data.msg);
+                    this.$toast(data.msg);
                 }
             }).catch((data) => {
                 this.$loadingDismiss();
@@ -235,7 +233,7 @@ const Styles = StyleSheet.create(
         },
         rightTopTitleStyle: {
             fontSize: 15,
-            color: '#666'
+            color: DesignRule.textColor_secondTitle
         },
         otherLoginBgStyle: {
             marginBottom: -20,
@@ -255,7 +253,7 @@ const Styles = StyleSheet.create(
             width: ScreenUtils.width - 60,
             marginTop: 40,
             height: 50,
-            borderRadius: 25,
+            borderRadius: 25
         },
         lineStyle: {
             marginTop: 3,

@@ -7,6 +7,7 @@ import {
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import agreementDetailImg from '../../res/userInfoImg/yonghuxiayi-img.png';
+import DesignRule from 'DesignRule';
 
 export default class UserAgreementPage extends BasePage{
     constructor(props){
@@ -19,8 +20,8 @@ export default class UserAgreementPage extends BasePage{
     };
     _render(){
         return(
-            <ScrollView style={{flex:1,backgroundColor:'#ffffff'}}>
-                <View style={{width:ScreenUtils.width,height:25,backgroundColor:'#F7F7F7'}}/>
+            <ScrollView style={{flex:1,backgroundColor:'white'}}>
+                <View style={{width:ScreenUtils.width,height:25,backgroundColor:DesignRule.bgColor}}/>
                 <Image source={agreementDetailImg} style={{width:ScreenUtils.width}} resizeMode={'stretch'}/>
             </ScrollView>
         )

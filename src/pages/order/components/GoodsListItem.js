@@ -18,6 +18,7 @@ import StringUtils from '../../../utils/StringUtils';
 import DateUtils from '../../../utils/DateUtils';
 import constants from '../../../constants/constants';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+import DesignRule from 'DesignRule';
 
 const GoodsListItem = props => {
     const {
@@ -219,30 +220,30 @@ const GoodsListItem = props => {
             case 1:
             case 8:
                 aboutTime = <UIText value={'创建时间：' + DateUtils.getFormatDate(orderCreateTime / 1000)}
-                                    style={{ fontSize: 13, color: '#999999' }}/>;
+                                    style={{ fontSize: 13, color: DesignRule.textColor_instruction }}/>;
                 break;
 
             case 2:
                 aboutTime = <UIText value={'支付时间：' + DateUtils.getFormatDate(platformPayTime / 1000)}
-                                    style={{ fontSize: 13, color: '#999999' }}/>;
+                                    style={{ fontSize: 13, color: DesignRule.textColor_instruction }}/>;
                 break;
             case 3:
                 aboutTime = <UIText value={'发货时间：' + DateUtils.getFormatDate(sendTime / 1000)}
-                                    style={{ fontSize: 13, color: '#999999' }}/>;
+                                    style={{ fontSize: 13, color: DesignRule.textColor_instruction }}/>;
                 break;
 
             case 4:
                 aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(deliverTime / 1000)}
-                                    style={{ fontSize: 13, color: '#999999' }}/>;
+                                    style={{ fontSize: 13, color: DesignRule.textColor_instruction }}/>;
                 break;
             case 5:
             case 6:
                 aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(finishTime / 1000)}
-                                    style={{ fontSize: 13, color: '#999999' }}/>;
+                                    style={{ fontSize: 13, color: DesignRule.textColor_instruction }}/>;
                 break;
             case 7:
                 aboutTime = <UIText value={'取消时间：' + DateUtils.getFormatDate(cancelTime / 1000)}
-                                    style={{ fontSize: 13, color: '#999999' }}/>;
+                                    style={{ fontSize: 13, color: DesignRule.textColor_instruction }}/>;
                 break;
 
 

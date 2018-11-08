@@ -65,7 +65,7 @@ class AfterSaleServiceHomePage extends BasePage {
 
     renderOrderNum = () => {
         return (
-            <View style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center' }}>
+            <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
                 <UIText value={'订单编号：' + this.state.pageData.orderNum}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
@@ -73,7 +73,7 @@ class AfterSaleServiceHomePage extends BasePage {
     };
     renderOrderTime = () => {
         return (
-            <View style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center' }}>
+            <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
                 <UIText value={'下单时间：' + DateUtils.getFormatDate(this.state.pageData.createTime / 1000)}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
@@ -96,7 +96,7 @@ class AfterSaleServiceHomePage extends BasePage {
                         alignItems: 'center',
                         alignContent: 'center',
                         marginBottom: 10,
-                        backgroundColor: DesignRule.white
+                        backgroundColor: 'white'
                     }} onPress={() => this.pageSelect(i)} key={i}>
                         <UIImage source={image[i]} style={{ width: 50, height: 50, marginBottom: 10, marginLeft: 21 }}/>
                         <View style={{ marginLeft: 10 }}>
@@ -136,7 +136,7 @@ class AfterSaleServiceHomePage extends BasePage {
     };
     renderServiceType = () => {
         return (
-            <View style={{ backgroundColor: DesignRule.white, height: 40, justifyContent: 'center', paddingLeft: 15 }}>
+            <View style={{ backgroundColor: 'white', height: 40, justifyContent: 'center', paddingLeft: 15 }}>
                 <UIText value={'服务类型'} style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
             </View>
         );

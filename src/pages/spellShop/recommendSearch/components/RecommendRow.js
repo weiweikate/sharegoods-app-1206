@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
 
     headerViewContainer: {
         flexDirection: 'row',
+        height: 44,
         marginTop: 15,
         paddingHorizontal: 15
     },
@@ -191,7 +192,7 @@ const styles = StyleSheet.create({
         marginTop: 17
     },
     itemIcon: {
-        backgroundColor: '#eee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         width: 40,
         height: 40,
         borderRadius: 20
@@ -218,5 +219,7 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_secondTitle,
         fontSize: 11
     }
+
+
 });
 

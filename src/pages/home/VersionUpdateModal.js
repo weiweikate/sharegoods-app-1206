@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIText from '../../components/ui/UIText';
+import DesignRule from 'DesignRule';
 
 export default class VersionUpdateModal extends React.Component {
 
@@ -82,7 +83,7 @@ export default class VersionUpdateModal extends React.Component {
                 <UIText value={this.state.updateContent}
                         style={{
                             fontSize: 17,
-                            color: '#333',
+                            color: DesignRule.textColor_mainTitle,
                             marginTop: 40,
                             marginBottom: 40,
                             alignSelf: 'center'
@@ -116,7 +117,7 @@ export default class VersionUpdateModal extends React.Component {
                                         AsyncStorage.setItem('isToUpdate', this.props.updateData.version);
                                         this.props.onDismiss();
                                     }}>
-                                    <UIText value={'以后再说'} style={{ color: '#999' }}/>
+                                    <UIText value={'以后再说'} style={{ color: DesignRule.textColor_instruction }}/>
                                 </TouchableOpacity>
                                 < View style={{ width: 0.5, backgroundColor: '#eee' }}/>
                             </View>

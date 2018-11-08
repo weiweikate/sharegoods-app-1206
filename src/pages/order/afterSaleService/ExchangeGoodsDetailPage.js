@@ -31,7 +31,7 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 import QYChatUtil from '../../mine/page/helper/QYChatModel';
 
 import OrderApi from '../api/orderApi'
-
+import DesignRule from 'DesignRule';
 
 class ExchangeGoodsDetailPage extends BasePage {
     constructor(props) {
@@ -280,7 +280,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         {this.renderWideLine()}
                     </View> : null
                 }
-                <View style={{ flexDirection: 'row', height: 82, alignItems: 'center' ,backgroundColor: '#FFFFFF'}}>
+                <View style={{ flexDirection: 'row', height: 82, alignItems: 'center' ,backgroundColor: 'white'}}>
                     <View style={{
                         width: 43,
                         height: 36,
@@ -607,11 +607,11 @@ class ExchangeGoodsDetailPage extends BasePage {
         return(
             <View style = {styles.operationApplyView_container}>
                 <View style = {styles.operationApplyView_title}>
-                    <UIText value = {'您已成功发起' + typeStr + '申请，请耐心等待商家处理'} style = {{ color: '#222222', fontSize: 15, marginLeft: 15}}/>
+                    <UIText value = {'您已成功发起' + typeStr + '申请，请耐心等待商家处理'} style = {{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginLeft: 15}}/>
                 </View>
                 <View style = {{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-                    <TouchableOpacity onPress = {() => {this.loadPageData(() => this.onPressOperationApply(true))}} style ={[styles.borderButton, {borderColor: '#666666'}]}>
-                        <UIText value = {'撤销申请'} style = {{fontSize: 16, color: '#666666'}}/>
+                    <TouchableOpacity onPress = {() => {this.loadPageData(() => this.onPressOperationApply(true))}} style ={[styles.borderButton, {borderColor: DesignRule.textColor_secondTitle}]}>
+                        <UIText value = {'撤销申请'} style = {{fontSize: 16, color: DesignRule.textColor_secondTitle}}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress = {() => {this.loadPageData(() => this.onPressOperationApply(false))}} style ={styles.borderButton}>
                         <UIText value = {'修改申请'} style = {{fontSize: 16, color: '#D51243'}}/>
@@ -745,11 +745,11 @@ const styles = StyleSheet.create({
     },
     header_title: {
         fontSize: 18,
-        color: '#FFFFFF',
+        color: 'white',
     },
     header_detail: {
         fontSize: 12,
-        color: '#FFFFFF',
+        color: 'white',
         marginTop: 3,
     },
     header_image: {

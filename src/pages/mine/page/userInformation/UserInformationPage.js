@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import TakePhotoModal from '../../components/TakePhotoModal';
-import { color } from '../../../../constants/Theme';
 import UserSingleItem from '../../components/UserSingleItem';
 import user from '../../../../model/user';
 import { observer } from 'mobx-react/native';
@@ -13,6 +12,7 @@ import BusinessUtils from '../../components/BusinessUtils';
 
 const dismissKeyboard = require('dismissKeyboard');
 import MineApi from '../../api/MineApi';
+import DesignRule from 'DesignRule';
 
 /**
  * @author chenxiang
@@ -41,7 +41,7 @@ export default class UserInformationPage extends BasePage {
 
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
     renderModal = () => {
@@ -97,7 +97,7 @@ export default class UserInformationPage extends BasePage {
                 <UserSingleItem leftText={'授权ID'} rightText={user.code} rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isArrow={false}/>
                 <UserSingleItem leftText={'会员等级'} rightText={user.levelName}
-                                rightTextStyle={[styles.grayText, { color: color.white }]}
+                                rightTextStyle={[styles.grayText, { color: 'white' }]}
                                 leftTextStyle={styles.blackText} isArrow={false} circleStyle={{
                     borderRadius: 10,
                     backgroundColor: '#ff7e00',
@@ -114,7 +114,7 @@ export default class UserInformationPage extends BasePage {
                                 onPress={() => this.renderGetCityPicker()}/>
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'实名认证'} rightText={user.realname ? '已实名认证' : '未实名认证'}
-                                rightTextStyle={[styles.grayText, { color: color.white }]}
+                                rightTextStyle={[styles.grayText, { color: 'white' }]}
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={false}
                                 circleStyle={user.realname ? styles.hasVertifyID : styles.notVertifyID}
                                 onPress={() => this.jumpToIDVertify2Page()}/>
@@ -176,15 +176,15 @@ export default class UserInformationPage extends BasePage {
 const styles = StyleSheet.create({
     blackText: {
         fontSize: 15,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     grayText: {
         fontSize: 15,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     },
     whiteText: {
         fontSize: 13,
-        color: '#ffffff'
+        color: 'white'
     }, hasVertifyID: {
         borderRadius: 10, backgroundColor: '#0186f5', paddingLeft: 10, paddingRight: 10, marginRight: 15
     }, notVertifyID: {

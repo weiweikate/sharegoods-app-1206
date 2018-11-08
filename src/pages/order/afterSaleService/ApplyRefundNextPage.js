@@ -10,7 +10,6 @@ import BasePage from '../../../BasePage';
 import {
     UIText, UIImage
 } from '../../../components/ui';
-import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import GoodsItem from '../components/GoodsGrayItem';
 import applyRefundMessage from '../res/applyRefundMessage.png';
@@ -19,8 +18,7 @@ import rechargeSucceed from '../../../comm/res/tongyon_icon_check_green.png';
 import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../../pages/mine/components/BusinessUtils';
 import Toast from '../../../utils/bridge';
-// import OrderApi from 'OrderApi'
-// import QYChatUtil from 'QYChatUtil'
+import DesignRule from 'DesignRule';
 
 export default class ApplyRefundNextPage extends BasePage {
     constructor(props) {
@@ -84,7 +82,7 @@ export default class ApplyRefundNextPage extends BasePage {
 
     renderContact = () => {
         return (
-            <View style={{ height: 61, backgroundColor: color.white }}>
+            <View style={{ height: 61, backgroundColor: 'white' }}>
                 {this.renderLine()}
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity style={{
@@ -97,12 +95,13 @@ export default class ApplyRefundNextPage extends BasePage {
                     }} onPress={() => this.contactSeller()}>
                         <UIImage source={applyRefundMessage} style={{ width: 25, height: 23, marginBottom: 10 }}/>
                         <View style={{ marginLeft: 10 }}>
-                            <UIText value={'联系卖家'} style={{ fontSize: 16, color: color.black_222 }}/>
-                            <UIText value={'9:00-17:00'} style={{ fontSize: 12, color: color.black_999 }}/>
+                            <UIText value={'联系卖家'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
+                            <UIText value={'9:00-17:00'}
+                                    style={{ fontSize: 12, color: DesignRule.textColor_instruction }}/>
                         </View>
                     </TouchableOpacity>
                     <View style={{ width: 1, justifyContent: 'center' }}>
-                        <View style={{ width: 1, height: 30, backgroundColor: color.gray_EEE }}/>
+                        <View style={{ width: 1, height: 30, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                     </View>
                     <TouchableOpacity style={{
                         flexDirection: 'row',
@@ -114,8 +113,9 @@ export default class ApplyRefundNextPage extends BasePage {
                     }} onPress={() => this.callPhone()}>
                         <UIImage source={applyRefundPhone} style={{ width: 25, height: 23, marginBottom: 10 }}/>
                         <View style={{ marginLeft: 10 }}>
-                            <UIText value={'拨打电话'} style={{ fontSize: 16, color: color.black_222 }}/>
-                            <UIText value={'9:00-17:00'} style={{ fontSize: 12, color: color.black_999 }}/>
+                            <UIText value={'拨打电话'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
+                            <UIText value={'9:00-17:00'}
+                                    style={{ fontSize: 12, color: DesignRule.textColor_instruction }}/>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -125,9 +125,9 @@ export default class ApplyRefundNextPage extends BasePage {
     renderReason = () => {
         return (
             <View>
-                <View style={{ backgroundColor: color.white, height: 40, justifyContent: 'center', paddingLeft: 15 }}>
+                <View style={{ backgroundColor: 'white', height: 40, justifyContent: 'center', paddingLeft: 15 }}>
                     <UIText value={'下单时间：' + DateUtils.getFormatDate(this.state.pageData.createTime / 1000)}
-                            style={{ color: color.black_222, fontSize: 13 }}/>
+                            style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
                 </View>
                 {this.renderLine()}
                 <UIText value={'退款原因：' + this.state.viewData.return_reason} style={styles.refundReason}/>
@@ -158,13 +158,18 @@ export default class ApplyRefundNextPage extends BasePage {
         return (
             <View>
                 <View
-                    style={{ backgroundColor: color.gray_f7f7, height: 40, justifyContent: 'center', paddingLeft: 15 }}>
-                    <UIText value={'退款订单'} style={{ color: color.black_999, fontSize: 13 }}/>
+                    style={{
+                        backgroundColor: DesignRule.bgColor,
+                        height: 40,
+                        justifyContent: 'center',
+                        paddingLeft: 15
+                    }}>
+                    <UIText value={'退款订单'} style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
                 </View>
                 {this.renderLine()}
-                <View style={{ backgroundColor: color.white, height: 40, justifyContent: 'center', paddingLeft: 15 }}>
+                <View style={{ backgroundColor: 'white', height: 40, justifyContent: 'center', paddingLeft: 15 }}>
                     <UIText value={'订单编号：' + this.state.pageData.orderNum}
-                            style={{ color: color.black_222, fontSize: 13 }}/>
+                            style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
                 </View>
             </View>
         );
@@ -208,7 +213,7 @@ export default class ApplyRefundNextPage extends BasePage {
             <View style={{ height: 115, flexDirection: 'row' }}>
                 <View style={{ height: 115, width: 89, justifyContent: 'center' }}>
                     <View style={{
-                        backgroundColor: color.green_47c,
+                        backgroundColor: DesignRule.color_green,
                         borderRadius: 10,
                         width: 2,
                         marginLeft: 51,
@@ -217,7 +222,7 @@ export default class ApplyRefundNextPage extends BasePage {
                     <UIImage source={image}
                              style={{ width: 41, height: 41, marginLeft: 32, marginTop: 10, marginBottom: 10 }}/>
                     <View style={{
-                        backgroundColor: color.green_47c,
+                        backgroundColor: DesignRule.color_green,
                         borderRadius: 10,
                         width: 2,
                         marginLeft: 51,
@@ -225,17 +230,17 @@ export default class ApplyRefundNextPage extends BasePage {
                     }}/>
                 </View>
                 <View style={{ marginLeft: 18, justifyContent: 'center' }}>
-                    <UIText value={context1} style={{ fontSize: 17, color: color.green_47c }}/>
-                    <UIText value={context2} style={{ color: color.black_999, fontSize: 13 }}/>
+                    <UIText value={context1} style={{ fontSize: 17, color: DesignRule.color_green }}/>
+                    <UIText value={context2} style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
                     <UIText value={DateUtils.getFormatDate(this.state.viewData.apply_time / 1000)}
-                            style={{ color: color.black_999, fontSize: 13 }}/>
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
                 </View>
             </View>
         );
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line }}/>
+            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
 
@@ -288,7 +293,7 @@ const styles = StyleSheet.create({
         flex: 1, backgroundColor: 'white',
         justifyContent: 'flex-end'
     }, refundReason: {
-        color: color.black_999, fontSize: 13, marginLeft: 17, marginTop: 10
+        color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 17, marginTop: 10
     }
 });
 
