@@ -53,6 +53,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.net.URI;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -169,10 +170,15 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 break;
         }
 
+        //分享类型为小程序，且不为微信会话
+        if(params.getInt("platformType") != 0 && shareType == 2){
+            shareType = 1;
+        }
+
 
         switch (shareType) {
             case 0:
-                UMImage image = fixThumImage(params.getString("thumImage"));
+                UMImage image = fixThumImage(params.getString("shareImage"));
                 new ShareAction(getCurrentActivity()).setPlatform(platform)//传入平台
                         .withMedia(image).setCallback(umShareListener)//回调监听器
                         .share();
@@ -219,9 +225,18 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
         if (url.startsWith("http")) {
             return new UMImage(getCurrentActivity(), url);//网络图片
-        } else if (url.startsWith("/")) {
-            File file = new File(url);
-            return new UMImage(mContext, file);//本地文件
+        } else if (url.startsWith("file") || url.startsWith("content")) {
+            try {
+                Uri uri = Uri.parse(url);
+                File file = new File(new URI(uri.toString()));
+                return new UMImage(mContext, file);
+            }catch (Exception e){
+
+            }
+
+            return new UMImage(mContext, R.mipmap.ic_launcher);
+
+
         } else {
             if (url.endsWith(".png") || url.endsWith(".jpg")) {
                 url = url.substring(0, url.length() - 4);
@@ -639,14 +654,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
      * @return
      */
     public static String getDiskCachePath() {
-//        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable()) {
-//            return context.getExternalCacheDir().getPath();
-//        } else {
-//            return context.getCacheDir().getPath();
-//        }
-
         File file = SDCardUtils.getFileDirPath("MR/picture");
         return file.getAbsolutePath();
-
     }
 }
