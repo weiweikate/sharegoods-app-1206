@@ -12,12 +12,13 @@ import AccountItem from '../../components/CashAccountItem';
 import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import withdrawMoney from '../../res/userInfoImg/list_icon_tixiang.png';
-import storeShare from '../../res/userInfoImg/list_icon_dianzhufehong.png';
-import storeShareBonus from '../../res/userInfoImg/list_icon_dianpufewhong.png';
-import tuiguang from '../../res/userInfoImg/list_icon_touguang.png';
-import xiaofei from '../../res/userInfoImg/list_icon_xiaofe.png';
-import salesCommissions from '../../res/userInfoImg/list_icon_xiaoshouticheng.png';
+import withdrawMoney from '../../res/userInfoImg/xiangjzhanghu_icon03_14.png';
+import storeShare from '../../res/userInfoImg/xiangjzhanghu_icon03.png';
+import storeShareBonus from '../../res/userInfoImg/xiangjzhanghu_icon03_06.png';
+import shouyi from '../../res/userInfoImg/xiangjzhanghu_icon03_10.png';
+import xiaofei from '../../res/userInfoImg/xiangjzhanghu_icon03_12.png';
+import salesCommissions from '../../res/userInfoImg/xiangjzhanghu_icon03_08.png';
+import renwu from '../../res/userInfoImg/xiangjzhanghu_icon03_16.png'
 
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
@@ -128,9 +129,9 @@ export default class MyCashAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '推广提成','拼店退款'];
+        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '推广提成','任务奖励'];
         let use_type_symbol = ['', '+', '-',];
-        let useLeftImg = ['', storeShare, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, tuiguang,tuiguang];
+        let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions,renwu];
         Toast.showLoading();
         let arrData = this.currentPage == 1 ? [] : this.state.viewData;
         MineApi.userBalanceQuery({ page: this.currentPage, size: 20, type: 2 }).then((response) => {

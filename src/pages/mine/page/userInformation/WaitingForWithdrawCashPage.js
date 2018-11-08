@@ -9,13 +9,13 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList, UIImage, UIText } from '../../../../components/ui';
-import AccountItem from '../../components/AccountItem';
+// import AccountItem from '../../components/AccountItem';
 import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 // import withdrawMoney from '../../res/userInfoImg/withdrawMoney.png';
-import tuiguang from '../../res/userInfoImg/list_icon_touguang.png';
-import salesCommissions from '../../res/userInfoImg/list_icon_xiaoshouticheng.png';
+import tuiguang from '../../res/userInfoImg/xiangjzhanghu_icon03_16.png';
+import salesCommissions from '../../res/userInfoImg/xiangjzhanghu_icon03_08.png';
 import questionImage_white from '../../res/userInfoImg/questionImage_white.png';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
@@ -187,20 +187,35 @@ export default class WaitingForWithdrawCashPage extends BasePage {
 
     renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity>
-                <AccountItem
-                    type={item.type}
-                    time={item.time}
-                    serialNumber={item.serialNumber}
-                    capital={item.capital}
-                    iconImage={item.iconImage}
-                    clickItem={() => {
-                        this.clickItem(index);
-                    }}
-                    capitalRed={item.capitalRed}
-                    needQuestionImage={item.needQuestionImage}
-                />
-            </TouchableOpacity>
+            <View>
+                <TouchableOpacity style={styles.container} o>
+                    <View style={{ height: 90, justifyContent: 'center' }}>
+                        <UIImage source={item.iconImage} style={{ height: 50, width: 50, marginLeft: 16 }}/>
+                    </View>
+                    <View style={{ marginLeft: 10 }}>
+                        <UIText value={item.type}/>
+                        <UIText value={item.time}
+                                style={{
+                                    color: DesignRule.textColor_instruction,
+                                    fontSize: 13,
+                                    marginTop: item.serialNumber == '' ? 10 : 0
+                                }}/>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row' }}>
+                        <View style={{ marginRight: 15, height: 60, justifyContent: 'space-between' }}>
+                            <UIText value={item.capital}
+                                    style={{
+                                        color: item.capitalRed ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
+                                        fontSize: 16
+                                    }}/>
+                            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}/>
+                            <UIText value={''}/>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+
+                </View>
+
         );
     };
     renderLine = () => {
