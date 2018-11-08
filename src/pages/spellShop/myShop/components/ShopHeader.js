@@ -14,7 +14,6 @@ import {
 } from 'react-native';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const headerWidth = 65 / 375 * SCREEN_WIDTH;
 import HeaderBarBgImg from '../res/txbg_02.png';
 import WhiteBtImg from '../res/dz_03-02.png';
 import RingImg from '../res/headBg.png';
@@ -22,6 +21,8 @@ import StarImg from '../res/dj_03.png';
 import CCZImg from '../res/ccz_03.png';
 import ProgressImg from '../res/jdt_05.png';
 import DesignRule from 'DesignRule';
+import ScreenUtils from '../../../../utils/ScreenUtils';
+import StringUtils from '../../../../utils/StringUtils';
 
 export default class ShopHeader extends Component {
 
@@ -35,10 +36,12 @@ export default class ShopHeader extends Component {
         //tradeBalance本月收入 bonusNeedMoney总额
         // currentUserSettle当前用户的钱(预计分红)
         //贡献度currentUserSettle/tradeBalance
-        const {
+        let {
             headUrl, name, storeNumber, storeStarId, userStatus,
             tradeBalance = 0, bonusNeedMoney = 0, currentUserSettle = 0
         } = this.props.item;
+
+        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : tradeBalance;
 
         const starsArr = [];
         if (storeStarId && typeof storeStarId === 'number') {
@@ -49,189 +52,160 @@ export default class ShopHeader extends Component {
 
         return <View style={styles.container}>
             <ImageBackground source={HeaderBarBgImg} style={styles.imgBg}>
-                <ImageBackground source={RingImg}
-                                 style={styles.headerBg}>
-                    {
-                        headUrl ? <Image style={styles.headerImg}
-                                         source={{ uri: headUrl }}/> : null
-                    }
-                </ImageBackground>
-                <View style={styles.shopInContainer}>
-                    <Text style={styles.shopName}>{name || ''}</Text>
-                    <Text style={styles.shopId}>ID：{storeNumber || ''}</Text>
-                    <View style={styles.starRow}>
-                        <Text style={styles.shopName}>店铺星级：</Text>
-                        {
-                            starsArr.map((item, index) => {
-                                return <Image key={index} source={StarImg}/>;
-                            })
-                        }
+                <View source={WhiteBtImg} style={styles.whiteBg}>
+                    <View style={{ flexDirection: 'row', marginTop: 25, marginLeft: 20, marginRight: 20 }}>
+                        <Image style={styles.headerImg} source={{ uri: headUrl }}/>
+                        <View style={styles.shopInContainer}>
+                            <Text style={styles.shopName}>{name || ''}</Text>
+                            <Text style={styles.shopId}>ID：{storeNumber || ''}</Text>
+                            <View style={styles.starRow}>
+                                <Text style={{ fontSize: 11, color: '#999999' }}>店铺星级：</Text>
+                                {
+                                    starsArr.map((item, index) => {
+                                        return <Image key={index} source={StarImg}/>;
+                                    })
+                                }
+                            </View>
+                        </View>
+                        {userStatus === 1 ?
+                            <TouchableOpacity onPress={this.props.onPressShopAnnouncement}
+                                              style={styles.announcementContainer}>
+                                <Text style={styles.announcementTitle}>店铺公告</Text>
+                            </TouchableOpacity> : null}
+                    </View>
+
+                    <View style={styles.whiteBgTopRow}>
+                        <Image source={CCZImg} style={styles.whiteBgTopRowIcon}/>
+                        <Text style={styles.gongxian}>
+                            贡献度：{`${tradeBalance === 0 ? 0 : ((currentUserSettle / tradeBalance) * 100).toFixed(2)}`}%
+                        </Text>
+                    </View>
+                    <View style={{
+                        marginHorizontal: 10,
+                        marginTop: 10,
+                        marginBottom: 15,
+                        backgroundColor: '#E4E4E4',
+                        height: 0.5
+                    }}/>
+
+                    <View style={{ flex: 1, alignItems: 'center' }}>
+                        <Text style={styles.progress}>{tradeBalance || 0}<Text style={{
+                            color: DesignRule.textColor_secondTitle
+                        }}>/{bonusNeedMoney || 0}</Text></Text>
+
+                        <ImageBackground source={ProgressImg} style={{
+                            overflow: 'hidden',
+                            marginTop: 5,
+                            height: 7,
+                            width: 315 / 375 * SCREEN_WIDTH
+                        }}>
+                            <View style={[styles.progressBg, {
+                                marginLeft: 315 / 375 * SCREEN_WIDTH * (bonusNeedMoney === 0 ? 0 :
+                                    (tradeBalance / bonusNeedMoney > 1 ? 1 : tradeBalance / bonusNeedMoney))
+                            }]}/>
+                        </ImageBackground>
+
+                        <Text
+                            style={styles.chaju}>距离分红还差{(bonusNeedMoney - tradeBalance) > 0 ? (bonusNeedMoney - tradeBalance) : 0}元</Text>
+
+                        <Text style={styles.fenghong}>预计该次分红金可得<Text style={{ color: '#F00006', fontSize: 13 }}>
+                            {currentUserSettle || 0}
+                        </Text>元</Text>
+
                     </View>
                 </View>
-                {userStatus === 1 ?
-                    <TouchableOpacity onPress={this.props.onPressShopAnnouncement} style={styles.announcementContainer}>
-                        <Text style={styles.announcementTitle}>查看公告</Text>
-                    </TouchableOpacity> : null}
 
             </ImageBackground>
 
-            <ImageBackground source={WhiteBtImg} style={styles.whiteBg}>
-                <View style={styles.whiteBgTopRow}>
-                    <Image source={CCZImg} style={styles.whiteBgTopRowIcon}/>
-                    <Text style={styles.chengzhangzhi}>成长值</Text>
-                    <Text style={styles.gongxian}>
-                        (贡献度：{`${tradeBalance === 0 ? 0 : ((currentUserSettle / tradeBalance) *100).toFixed(2)}`}%)
-                    </Text>
-                </View>
 
-                <View style={{ flex: 1, alignItems: 'center' }}>
-                    <Text style={styles.progress}>{tradeBalance || 0}<Text style={{
-                        color: DesignRule.textColor_secondTitle
-                    }}>/{bonusNeedMoney || 0}</Text></Text>
-
-                    <ImageBackground source={ProgressImg} style={{
-                        overflow: 'hidden',
-                        marginTop: 5,
-                        height: 8,
-                        width: 315 / 375 * SCREEN_WIDTH
-                    }}>
-                        <View style={[styles.progressBg, {
-                            marginLeft: 315 / 375 * SCREEN_WIDTH * (bonusNeedMoney === 0 ? 0 :
-                                (tradeBalance / bonusNeedMoney > 1 ? 1 : tradeBalance / bonusNeedMoney))
-                        }]}/>
-                    </ImageBackground>
-
-                    <Text style={styles.chaju}>距离分红还差<Text style={{
-                        color: '#000',
-                        fontSize: 15
-                    }}>{(bonusNeedMoney - tradeBalance) > 0 ? (bonusNeedMoney - tradeBalance) : 0}</Text>元</Text>
-
-                    <Text style={styles.fenghong}>预计该次分红金可得<Text style={{ color: 'rgb(236,10,10)' }}>
-                        {currentUserSettle || 0}
-                    </Text>元</Text>
-
-                </View>
-            </ImageBackground>
         </View>;
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        height: 182 / 375 * SCREEN_WIDTH + 115
+        height: ScreenUtils.headerHeight + ScreenUtils.autoSizeWidth(271)
     },
     imgBg: {
-        width: SCREEN_WIDTH,
-        height: 182 / 375 * SCREEN_WIDTH,
-        flexDirection: 'row'
+        width: ScreenUtils.width,
+        height: ScreenUtils.headerHeight + ScreenUtils.autoSizeWidth(173)
     },
-    headerBg: {
-        marginTop: 16,
-        marginLeft: 16,
-        marginRight: 23,
-        width: 105 / 375 * SCREEN_WIDTH,
-        height: 105 / 375 * SCREEN_WIDTH,
-        justifyContent: 'center',
-        alignItems: 'center'
+    whiteBg: {
+        marginTop: ScreenUtils.headerHeight + 15,
+        backgroundColor: DesignRule.white,
+        marginHorizontal: 15,
+        height: ScreenUtils.autoSizeWidth(249),
+        borderRadius: 10
     },
     headerImg: {
-        width: headerWidth,
-        height: headerWidth,
-        borderRadius: headerWidth / 2
+        width: 60,
+        height: 60,
+        borderRadius: 30
     },
     shopInContainer: {
-        marginTop: 16,
-        height: 105 / 375 * SCREEN_WIDTH,
+        flex: 1,
+        marginLeft: 10,
         justifyContent: 'center'
     },
     shopName: {
         fontSize: 13,
-        color: 'white'
+        color: '#333333'
     },
     shopId: {
-        fontSize: 13,
-        color: 'white',
-        marginVertical: 12
+        marginTop: 5,
+        fontSize: 11,
+        color: '#333333'
     },
-
-    whiteBg: {
-        width: SCREEN_WIDTH - 22,
-        height: 153 / 375 * (SCREEN_WIDTH - 22),
-        position: 'absolute',
-        bottom: 11,
-        left: 11,
-        backgroundColor: 'transparent',
-        shadowColor: 'rgba(0, 0, 0, 0.1)',
-        shadowOffset: {
-            width: 0,
-            height: 0
-        },
-        overflow: 'hidden',
-        shadowRadius: 10,
-        shadowOpacity: 1,
-        borderRadius: 12
-    },
-    whiteBgTopRow: {
-        height: 43,
-        marginHorizontal: 0,
+    starRow: {
+        marginTop: 5,
         flexDirection: 'row',
         alignItems: 'center'
     },
-    whiteBgTopRowIcon: {
-        marginLeft: 17,
-        marginRight: 6
-    },
-    chengzhangzhi: {
-        fontSize: 15,
-        color: '#000000'
-    },
-    gongxian: {
-        marginLeft: 3,
-        fontSize: 13,
-        color: '#e60012'
-    },
-    //0/10000
-    progress: {
-        marginTop: 10,
-        color: '#e60012',
-        fontSize: 10
-    },
-    progressBg: {
-        marginRight: -1,
-        height: 8.5,
-        borderRadius: 4.25,
-        backgroundColor: '#dddddd'
-    },
-    chaju: {
-        marginTop: 10,
-        color: DesignRule.textColor_mainTitle,
-        fontSize: 11
-    },
-    fenghong: {
-        marginTop: 5,
-        color: 'rgb(34,34,34)',
-        fontSize: 12
-    },
     // 公告
     announcementContainer: {
-        position: 'absolute',
-        top: 13,
-        right: 17,
-        width: 55,
-        height: 20,
-        borderRadius: 10,
+        width: 64,
+        height: 22,
+        borderRadius: 11,
         borderWidth: 1,
-        borderColor: 'white',
+        borderColor: '#F00006',
         justifyContent: 'center',
         alignItems: 'center'
     },
     announcementTitle: {
-        fontSize: 10,
-        color: 'white'
+        fontSize: 11,
+        color: '#F00006'
     },
-    starRow: {
+
+    whiteBgTopRow: {
+        marginTop: 27,
+        marginLeft: 10,
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    gongxian: {
+        marginLeft: 5,
+        fontSize: 13,
+        color: '#333333'
+    },
+    //0/10000
+    progress: {
+        color: '#F00006',
+        fontSize: 11
+    },
+    progressBg: {
+        height: 7,
+        borderRadius: 4,
+        backgroundColor: '#E4E4E4'
+    },
+    chaju: {
+        marginTop: 10,
+        color: DesignRule.textColor_secondTitle,
+        fontSize: 11
+    },
+    fenghong: {
+        marginTop: 10,
+        color: DesignRule.textColor_secondTitle,
+        fontSize: 12
     }
 });
 
