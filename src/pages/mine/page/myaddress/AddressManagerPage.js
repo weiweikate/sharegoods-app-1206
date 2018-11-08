@@ -1,8 +1,7 @@
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
-import addrSelectedImg from '../../../../comm/res/selected_circle_red.png';
-import addrUnselectedImg from '../../../../comm/res/unselected_circle.png';
+import res from '../../../../comm/res';
 import addrBorderImgN from '../../res/address/dizhi_img_nor.png';
 import addrBorderImgS from '../../res/address/dizhi_img_sel.png';
 import addrRight from '../../res/address/dizhi_icon_moren_sel.png';
@@ -125,7 +124,7 @@ export default class AddressManagerPage extends BasePage {
                     <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginLeft: 16 }}
                                       onPress={() => this._onSelectImgClick(item.item, item.index)}>
                         <Image style={{ width: 16, height: 16, marginRight: 11 }}
-                               source={item.index === this.state.selectIndex ? addrSelectedImg : addrUnselectedImg}
+                               source={item.index === this.state.selectIndex ? res.button.selected_circle_red : res.button.unselected_circle}
                         />
                         <Text style={{
                             flex: 1,

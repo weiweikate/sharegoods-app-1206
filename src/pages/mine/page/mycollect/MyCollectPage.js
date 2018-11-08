@@ -16,7 +16,7 @@ import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import RefreshList from '../../../../components/ui/RefreshList';
-import NoMessage from '../../../../comm/res/empty_list_message.png';
+import res from '../../../../comm/res';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import MoneyIcon from '../../../spellShop/recommendSearch/src/je_07.png';
@@ -176,7 +176,7 @@ export default class MyCollectPage extends BasePage {
                     onLoadMore={this.onLoadMore}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
-                    emptyIcon={NoMessage}
+                    emptyIcon={res.placeholder.messageNoData}
                     emptyTip={'暂无数据'}
                 />
 

@@ -8,11 +8,11 @@ import StringUtils from '../../../../utils/StringUtils';
 import MineAPI from '../../api/MineApi';
 import UIText from '../../../../components/ui/UIText';
 import bridge from '../../../../utils/bridge';
-import addrSelectedIcon from '../../../../comm/res/selected_circle_red.png';
-import addrUnSelectedIcon from '../../../../comm/res/unselected_circle.png';
 import UIImage from '../../../../components/ui/UIImage';
 import DesignRule from 'DesignRule';
-
+import res from '../../../../comm/';
+const addrSelectedIcon = res.button.selected_circle_red;
+const addrUnSelectedIcon = res.button.unselected_circle;
 /**
  * @author luoyongming
  * @date on 2018/9/18

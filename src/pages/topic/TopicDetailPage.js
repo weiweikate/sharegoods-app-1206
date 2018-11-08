@@ -15,8 +15,7 @@ import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
 import TopicDetailSegmentView from './components/TopicDetailSegmentView';
 import ScreenUtils from '../../utils/ScreenUtils';
-import detailBack from '../../comm/res/show_detail_back.png';
-import detailMore from '../../comm/res/show_share.png';
+import res from '../../comm/res';
 import HTML from 'react-native-render-html';
 import HomeAPI from '../home/api/HomeAPI';
 import TopicApi from './api/TopicApi';
@@ -27,7 +26,6 @@ import CommShareModal from '../../comm/components/CommShareModal';
 import TopicDetailShowModal from './components/TopicDetailShowModal';
 import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
 import apiEnvironment from '../../api/ApiEnvironment';
-import closeIcon from '../../../src/comm/res/tongyong_btn_close_white.png';
 
 const { px2dp } = ScreenUtils;
 import EmptyUtils from '../../utils/EmptyUtils';
@@ -423,7 +421,7 @@ export default class TopicDetailPage extends BasePage {
                             canGetCoupon: false
                         });
                     }}>
-                        <Image source={closeIcon} style={{
+                        <Image source={res.button.tongyong_btn_close_white} style={{
                             position: 'absolute',
                             top: 107,
                             right: 35,
@@ -497,7 +495,7 @@ export default class TopicDetailPage extends BasePage {
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
-                        <Image source={detailBack}/>
+                        <Image source={res.button.show_detail_back}/>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
                         this.DetailNavShowModal.show((item) => {
@@ -514,7 +512,7 @@ export default class TopicDetailPage extends BasePage {
                             }
                         });
                     }}>
-                        <Image source={detailMore}/>
+                        <Image source={res.button.show_share}/>
                     </TouchableWithoutFeedback>
                 </View>
 

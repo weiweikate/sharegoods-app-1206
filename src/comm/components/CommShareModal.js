@@ -57,8 +57,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 //const saveMarginBottom = ScreenUtils.saveMarginBottom;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommModal from 'CommModal';
-
-import CommTabImag from '../res/CommTabImag';
+import res from '../res'
 import bridge from '../../utils/bridge';
 
 export default class CommShareModal extends React.Component {
@@ -190,46 +189,46 @@ export default class CommShareModal extends React.Component {
     render() {
         let array = [];
         array.push({
-            image: CommTabImag.wechat, title: '微信好友', onPress: () => {
+            image: res.share.weiXin, title: '微信好友', onPress: () => {
                 this.share(0);
             }
         });
         array.push({
-            image: CommTabImag.pengyouquan, title: '朋友圈', onPress: () => {
+            image: res.share.weiXinTimeLine, title: '朋友圈', onPress: () => {
                 this.share(1);
             }
         });
         array.push({
-            image: CommTabImag.qq, title: 'QQ好友', onPress: () => {
+            image: res.share.QQ, title: 'QQ好友', onPress: () => {
                 this.share(2);
             }
         });
         array.push({
-            image: CommTabImag.kongjian, title: 'QQ空间', onPress: () => {
+            image: res.share.qqKongJian, title: 'QQ空间', onPress: () => {
                 this.share(3);
             }
         });
         array.push({
-            image: CommTabImag.weibo, title: '微博', onPress: () => {
+            image: res.share.weibo, title: '微博', onPress: () => {
                 this.share(4);
             }
         });
         if (this.props.type === 'Image' || this.props.type === 'promotionShare') {
             if (this.state.shareType === 2 || this.state.shareType === 1) {
                 array.push({
-                    image: CommTabImag.lianjie, title: '复制链接', onPress: () => {
+                    image: res.share.copyURL, title: '复制链接', onPress: () => {
                         this.copyUrl();
                     }
                 });
                 array.push({
-                    image: CommTabImag.baocun, title: '保存图片', onPress: () => {
+                    image: res.share.saveImage, title: '保存图片', onPress: () => {
                         this.changeShareType(0);
                     }
                 });
             }
             if (this.state.shareType === 0) {
                 array.push({
-                    image: CommTabImag.download, title: '下载图片', onPress: () => {
+                    image: res.share.download, title: '下载图片', onPress: () => {
                         this.saveImage(this.state.path);
                     }
                 });
@@ -238,7 +237,7 @@ export default class CommShareModal extends React.Component {
 
         if (this.props.type === 'task'){
             array = [{
-                image: CommTabImag.wechat, title: '微信好友', onPress: () => {
+                image: res.share.weiXin, title: '微信好友', onPress: () => {
                     this.share(0);
                 }
             }];

@@ -20,7 +20,7 @@ import {
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';
 import { netStatus } from './comm/components/NoNetHighComponent';
-import CommTabImag from './comm/res/CommTabImag';
+import res from './comm/res';
 import bridge from './utils/bridge';
 import DesignRule from 'DesignRule';
 
@@ -58,7 +58,7 @@ export default class BasePage extends Component {
                     }
                 }}>
                     <View>
-                        <Image source={CommTabImag.noNetImg} style={{ height: 100, width: 100 }}/>
+                        <Image source={res.placeholder.netError} style={{ height: 100, width: 100 }}/>
                         <Text style={{ marginTop: 10, color: DesignRule.textColor_secondTitle }}>无网络</Text>
                     </View>
                 </TouchableWithoutFeedback>
