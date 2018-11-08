@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import { observer } from 'mobx-react';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
-import ColorUtil from '../../../utils/ColorUtil';
 import BasePage from '../../../BasePage';
 import CommRegistView from '../components/CommRegistView';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -78,7 +77,7 @@ export default class RegistPage extends BasePage {
                             source={this.state.gouxuan ? LoginAndRegistRes.reg_GouXuan : LoginAndRegistRes.reg_WeiXuan}
                             style={{ width: 11, height: 11, marginRight: 5 }}/>
                     </TouchableOpacity>
-                    <Text style={{ fontSize: 11, color: ColorUtil.Color_666666 }}>
+                    <Text style={{ fontSize: 11, color: DesignRule.textColor_secondTitle }}>
                         阅读并接受
                     </Text>
                     <TouchableOpacity onPress={() => {

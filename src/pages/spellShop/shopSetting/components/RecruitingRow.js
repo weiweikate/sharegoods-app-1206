@@ -11,7 +11,7 @@ import {
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
-
+import DesignRule from 'DesignRule';
 
 export default class RecruitingRow extends Component {
 
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     },
     ingText: {
         fontSize: 11,
-        color: '#f7f7f7'
+        color: DesignRule.bgColor
     },
     rowContainer: {
         height: 80,
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     },
     desc: {
         fontSize: 12,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     }
 });
 

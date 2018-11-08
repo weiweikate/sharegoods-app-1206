@@ -37,6 +37,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.bean.WXLoginBean;
 import com.meeruu.commonlib.utils.LogUtils;
+import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
@@ -500,13 +501,11 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void saveImage(String path) {
-
-        // 最后通知图库更新
-        File file = new File(path);
-        Uri uri = Uri.fromFile(file);
+        Uri uri = Uri.parse(path);
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(uri);
         mContext.sendBroadcast(intent);
+        ToastUtils.showToast("保存成功");
     }
 
     @ReactMethod
@@ -541,7 +540,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         dView.setDrawingCacheEnabled(true);
         dView.buildDrawingCache();
         Bitmap bmp = dView.getDrawingCache();
-        String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "screenshotImage.png";
+        long date = System.currentTimeMillis();
+        String storePath = getDiskCachePath() + File.separator + date + "screenshotImage.png";
+
 
         File file = new File(storePath);
         if (bmp != null) {
@@ -558,6 +559,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 intent.setData(uri);
                 mContext.sendBroadcast(intent);
+                ToastUtils.showToast("保存成功");
                 success.invoke();
             } catch (Exception e) {
                 fail.invoke(e.getMessage());
@@ -610,7 +612,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     private static String saveImageToCache(Context context, Bitmap bitmap, String name) {
 
-        String path = getDiskCachePath(context);
+        String path = getDiskCachePath();
         long date = System.currentTimeMillis();
         String fileName = date + name;
         File file = new File(path, fileName);
@@ -634,16 +636,17 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     /**
      * 获取cache路径
      *
-     * @param context
      * @return
      */
-    public static String getDiskCachePath(Context context) {
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable()) {
-            return context.getExternalCacheDir().getPath();
-        } else {
-            return context.getCacheDir().getPath();
-        }
+    public static String getDiskCachePath() {
+//        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable()) {
+//            return context.getExternalCacheDir().getPath();
+//        } else {
+//            return context.getCacheDir().getPath();
+//        }
+
+        File file = SDCardUtils.getFileDirPath("MR/picture");
+        return file.getAbsolutePath();
+
     }
-
-
 }

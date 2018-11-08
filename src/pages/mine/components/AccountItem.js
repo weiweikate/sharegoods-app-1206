@@ -65,7 +65,7 @@ const AccountItem = props => {
                     </View>
                 </View>
             </MoreClickComponet>
-            <View style={{ flex: 1, height: 1, backgroundColor: DesignRule.white }}>
+            <View style={{ flex: 1, height: 1, backgroundColor: 'white' }}>
                 <View style={{ flex: 1, height: 1, backgroundColor: DesignRule.lineColor_inGrayBg, marginLeft: 15 }}/>
             </View>
         </View>
@@ -75,7 +75,7 @@ const AccountItem = props => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         flexDirection: 'row',
         height: 90,
         alignItems: 'center'

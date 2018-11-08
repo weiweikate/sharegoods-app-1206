@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import BackIcon from './source/icon_header_back.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
+
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
@@ -293,7 +295,7 @@ const styles = StyleSheet.create({
     title: {
         // marginTop:10,
         fontSize: 18,
-        color: '#222',
+        color: DesignRule.textColor_mainTitle,
         backgroundColor: 'transparent'
         // backgroundColor:'red'
     },

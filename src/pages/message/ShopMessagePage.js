@@ -22,6 +22,7 @@ import MessageAPI from "./api/MessageApi";
 const { px2dp } = ScreenUtils;
 import CommonUtils from 'CommonUtils'
 import MessageUtils from './utils/MessageUtils'
+import DesignRule from 'DesignRule';
 
 export default class ShopMessagePage extends BasePage {
     constructor(props) {
@@ -290,7 +291,7 @@ export default class ShopMessagePage extends BasePage {
                     </View>
                 </View>
                 <View style={{height: 1.5, width: ScreenUtils.width, backgroundColor: "#f7f7f7"}}/>
-                <View style={{height: 41, backgroundColor: '#ffffff'}}>
+                <View style={{height: 41, backgroundColor: 'white'}}>
                     <TouchableOpacity activeOpacity={0.5} onPress={()=>this.go2DetailPage(item.productId,item.type,item.tdId)}
                                       style={styles.bottomlookstyle}>
                         <Text style={{fontSize: 13, color: "#999999"}}>查看详情</Text>
@@ -311,7 +312,7 @@ export default class ShopMessagePage extends BasePage {
 
                 <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.props.navigation,item.paramType,item.param)}}>
                     <View style={{height:px2dp(33),width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white',borderTopColor:'#DDDDDD',borderTopWidth:px2dp(0,5)}}>
-                        <Text style={{color:'#666666',fontSize:px2dp(13)}}>
+                        <Text style={{color:DesignRule.textColor_secondTitle,fontSize:px2dp(13)}}>
                              查看详情>>
                         </Text>
                     </View>
@@ -397,10 +398,10 @@ export default class ShopMessagePage extends BasePage {
                     <Text>{DateUtils.getFormatDate(item.createdTime / 1000,'MM/dd hh:mm')}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', marginTop:px2dp(15)}}>
-                    <Text style={{ marginLeft: 15, fontSize: 15, color: '#222222' }}>{item.title}</Text>
+                    <Text style={{ marginLeft: 15, fontSize: 15, color: DesignRule.textColor_mainTitle }}>{item.title}</Text>
                 </View>
                 <View style={{ backgroundColor: 'white',marginVertical:px2dp(15) }}>
-                    <Text style={{ marginLeft: 15, fontSize: 13,color:'#666666' }}>{item.content}</Text>
+                    <Text style={{ marginLeft: 15, fontSize: 13,color:DesignRule.textColor_secondTitle }}>{item.content}</Text>
                 </View>
                 {this.itemBottomRender(item,index)}
             </View>
@@ -562,7 +563,7 @@ export default class ShopMessagePage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7'
+        backgroundColor: DesignRule.bgColor
     },
     typetitleStyle:{
         height: 49,
@@ -606,7 +607,7 @@ const styles = StyleSheet.create({
         height: 37,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor:'#F7F7F7'
+        backgroundColor:DesignRule.bgColor
     },
     itemBottomWrapper:{
         height:px2dp(60),

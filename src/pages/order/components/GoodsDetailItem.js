@@ -8,6 +8,8 @@ import {
 import { color } from '../../../constants/Theme';
 // import GoodsItem from './GoodsItem';
 import GoodsGrayItem from './GoodsGrayItem'
+import DesignRule from 'DesignRule';
+
 // status,//账单状态：0出账中，1待支付，2已支付，3逾期
 const GoodsDetailItem = props => {
     const {
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
         width: 80,
         height: 30,
         borderRadius: 15,
-        backgroundColor: '#ffffff',
+        backgroundColor: 'white',
         borderStyle: 'solid',
         borderWidth: 1,
         borderColor: '#dddddd',
@@ -109,7 +111,7 @@ const styles = StyleSheet.create({
     }, grayText: {
         fontSize: 13,
         lineHeight: 18,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     }
 });
 export default GoodsDetailItem;

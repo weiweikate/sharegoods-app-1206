@@ -7,6 +7,7 @@ import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MyCouponsItems from './../../components/MyCouponsItems';
 import User from '../../../../model/user';
+import DesignRule from 'DesignRule';
 
 export default class CouponsPage extends BasePage {
     constructor(props) {
@@ -39,16 +40,16 @@ export default class CouponsPage extends BasePage {
                         width: ScreenUtils.width,
                         justifyContent: 'center',
                         marginTop: 1,
-                        backgroundColor: '#f7f7f7'
+                        backgroundColor: DesignRule.bgColor
                     }}
                     //进界面的时候打算进第几个
                     initialPage={0}
-                    tabBarBackgroundColor='#fff'
-                    tabBarActiveTextColor='#D51243'
-                    tabBarInactiveTextColor='#999999'
+                    tabBarBackgroundColor='white'
+                    tabBarActiveTextColor={DesignRule.mainColor}
+                    tabBarInactiveTextColor={DesignRule.textColor_instruction}
                     locked={true}
                     tabBarTextStyle={{ fontSize: 15 }}
-                    tabBarUnderlineStyle={{ backgroundColor: '#D51243', height: 2 }}
+                    tabBarUnderlineStyle={{ backgroundColor: DesignRule.mainColor, height: 2 }}
                     renderTabBar={() => <ScrollableTabBar style={{ borderWidth: 0.5 }}/>}
                 >
                     <MyCouponsItems tabLabel={'未使用'} pageStatus={0} nav={this.props.navigation}
@@ -75,7 +76,7 @@ export default class CouponsPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: DesignRule.bgColor,
         marginBottom: ScreenUtils.safeBottom
     }
 });

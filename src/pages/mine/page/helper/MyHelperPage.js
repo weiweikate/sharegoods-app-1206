@@ -25,6 +25,7 @@ import phoneIcon from '../../res/customerservice/bangzukefu_icon.png';
 import personIcon from '../../res/customerservice/bangzyuef_icon.png';
 import QYChatUtil from './QYChatModel';
 import MineApi from '../../api/MineApi';
+import DesignRule from 'DesignRule';
 
 export default class MyHelperPage extends BasePage {
     constructor(props) {
@@ -48,18 +49,18 @@ export default class MyHelperPage extends BasePage {
                             <TouchableOpacity activeOpacity={0.6} onPress={() => this.orderListq(item.list)}
                                               style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                                 <Image source={kf11} style={{ width: 37, height: 37 }}/>
-                                <Text style={{ fontSize: 11, color: '#666666' }}>{item.name}</Text>
+                                <Text style={{ fontSize: 11, color: DesignRule.textColor_secondTitle }}>{item.name}</Text>
                             </TouchableOpacity>
                             <View style={styles.hot2ViewStyle}>
                                 <View style={{ flex: 1, justifyContent: 'center' }}>
                                     <UIText onPress={() => this.gotoquestionDetail(item.list[0].id)}
-                                            style={{ marginLeft: 10, fontSize: 15, color: '#666666' }}
+                                            style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_secondTitle }}
                                             value={item.list.length > 0 ? item.list[0].title : ''}/>
                                 </View>
                                 <View style={{ width: '100%', height: 0.5, backgroundColor: '#c9c9c9' }}/>
                                 <View style={{ flex: 1, justifyContent: 'center', borderColor: '#c9c9c9' }}>
                                     <UIText onPress={() => this.gotoquestionDetail(item.list[1].id)}
-                                            style={{ marginLeft: 10, fontSize: 15, color: '#666666' }}
+                                            style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_secondTitle }}
                                             value={item.list.length > 1 ? item.list[1].title : ''}/>
                                 </View>
                             </View>
@@ -196,7 +197,7 @@ export default class MyHelperPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: '#F7F7F7',
+        flex: 1, backgroundColor: DesignRule.bgColor,
         marginBottom: ScreenUtils.safeBottom
     },
     hotQuestionStyle: {
@@ -216,11 +217,11 @@ const styles = StyleSheet.create({
     },
     textFontstyle: {
         fontSize: 16,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontFamily:'PingFangSC-Regular'
     },
     text2Style:{
-        color:'#999999',
+        color:DesignRule.textColor_instruction,
         fontSize:12,
         fontFamily:'PingFangSC-Light'
     }

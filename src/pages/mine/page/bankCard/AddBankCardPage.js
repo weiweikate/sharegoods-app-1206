@@ -78,7 +78,7 @@ class AddBankCardPage extends BasePage {
                     height: 45,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor: DesignRule.white
+                    backgroundColor: 'white'
                 }}>
                     <Text style={styles.accountStyle}>{'持卡人姓名'}</Text>
                     <RNTextInput
@@ -94,7 +94,7 @@ class AddBankCardPage extends BasePage {
                     height: 45,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor: DesignRule.white
+                    backgroundColor: 'white'
                 }}>
                     <Text style={styles.accountStyle}>{'卡号'}</Text>
                     <RNTextInput
@@ -110,7 +110,7 @@ class AddBankCardPage extends BasePage {
                     height: 45,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor: DesignRule.white
+                    backgroundColor: 'white'
                 }}>
                     <Text style={styles.accountStyle}>{'手机号'}</Text>
                     <RNTextInput
@@ -126,7 +126,7 @@ class AddBankCardPage extends BasePage {
                     height: 45,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor: DesignRule.white,
+                    backgroundColor: 'white',
                     justifyContent: 'space-between'
                 }}>
                     <Text style={styles.accountStyle}>{'银行'}</Text>
@@ -137,7 +137,7 @@ class AddBankCardPage extends BasePage {
                     height: 45,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor: DesignRule.white,
+                    backgroundColor: 'white',
                     justifyContent: 'space-between'
                 }}>
                     <Text style={styles.accountStyle}>{'卡类型'}</Text>
@@ -277,12 +277,12 @@ const styles = StyleSheet.create({
     }, accountStyle2: {
         marginLeft: 21, color: DesignRule.textColor_mainTitle, marginRight: 21
     }, inputTextStyle: {
-        marginLeft: 21, height: 40, flex: 1, backgroundColor: DesignRule.white, fontSize: 14
+        marginLeft: 21, height: 40, flex: 1, backgroundColor: 'white', fontSize: 14
     }, detailAddress: {
         flex: 1,
         marginLeft: 20,
         marginRight: 20,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         fontSize: 14
     }, itemTitleView: {
         height: 48,

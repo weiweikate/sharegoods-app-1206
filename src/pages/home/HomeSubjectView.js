@@ -123,7 +123,7 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     title: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
         fontWeight: '600'
     },
@@ -158,7 +158,7 @@ let styles = StyleSheet.create({
         height: px2dp(100)
     },
     goodsTitle: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(12),
         marginTop: px2dp(8)
     },
@@ -174,7 +174,7 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     backView: {
-        backgroundColor: '#F7F7F7',
+        backgroundColor: DesignRule.bgColor,
         width: px2dp(75),
         height: px2dp(75),
         borderRadius: px2dp(75) / 2,
@@ -182,11 +182,11 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     seeMore: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(11)
     },
     seeMoreEn: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(9)
     },
     line: {

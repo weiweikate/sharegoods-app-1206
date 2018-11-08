@@ -28,6 +28,7 @@ import TopicDetailShowModal from './components/TopicDetailShowModal';
 import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import closeIcon from '../../../src/comm/res/tongyong_btn_close_white.png';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 import EmptyUtils from '../../utils/EmptyUtils';
@@ -315,7 +316,7 @@ export default class TopicDetailPage extends BasePage {
                       containerStyle={{ backgroundColor: '#fff' }}/>
                 <View style={{ backgroundColor: 'white' }}>
                     <Text
-                        style={{ paddingVertical: 13, marginLeft: 15, fontSize: 15, color: '#222222' }}>价格说明</Text>
+                        style={{ paddingVertical: 13, marginLeft: 15, fontSize: 15, color: DesignRule.textColor_mainTitle }}>价格说明</Text>
                     <View style={{ height: 0.5, marginHorizontal: 0, backgroundColor: '#eee' }}/>
                     <Text style={{
                         padding: 15
@@ -340,7 +341,7 @@ export default class TopicDetailPage extends BasePage {
             <View style={{ backgroundColor: '#DDDDDD', width: 70, justifyContent: 'center' }}>
                 <Text style={{
                     marginLeft: 10,
-                    color: '#222222',
+                    color: DesignRule.textColor_mainTitle,
                     fontSize: 12
                 }}>{this.state.activityType === 3 ? item.param || '' : item.paramName || ''}</Text>
             </View>
@@ -348,7 +349,7 @@ export default class TopicDetailPage extends BasePage {
                 flex: 1,
                 alignSelf: 'center',
                 marginLeft: 20,
-                color: '#999999',
+                color: DesignRule.textColor_instruction,
                 fontSize: 12
             }}>{item.paramValue || ' '}</Text>
         </View>;

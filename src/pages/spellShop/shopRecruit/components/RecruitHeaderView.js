@@ -14,6 +14,7 @@ import AdminImg from '../src/dyxx_03.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
+import DesignRule from 'DesignRule';
 
 export default class RecommendRow extends Component {
 
@@ -45,13 +46,13 @@ export default class RecommendRow extends Component {
 
                 <Text style={{
                     fontSize: 14,
-                    color: '#f7f7f7',
+                    color: DesignRule.bgColor,
                     marginTop: 20
                 }}>{`${DateUtils.formatDate(createTime, 'yyyy-MM-dd')}日发起招募`}</Text>
                 <Text style={{
                     fontWeight: 'bold',
                     fontSize: 14,
-                    color: '#f7f7f7',
+                    color: DesignRule.bgColor,
                     marginTop: 5
                 }}>{this._judgeCanOpenShop()}</Text>
 
@@ -77,17 +78,17 @@ export default class RecommendRow extends Component {
 
                             <Text style={{
                                 fontSize: 13,
-                                color: '#222222'
+                                color: DesignRule.textColor_mainTitle
                             }}>店长：{manager.nickname || ''}</Text>
 
                             <Text style={{
                                 fontSize: 13,
-                                color: '#666',
+                                color: DesignRule.textColor_secondTitle,
                                 marginTop: 6
                             }}>等级：{manager.levelName || ''}</Text>
                             <Text style={{
                                 fontSize: 13,
-                                color: '#666',
+                                color: DesignRule.textColor_secondTitle,
                                 marginTop: 6
                             }}>{`参与平台${Math.floor((new Date().getTime() - manager.regTime) / (24 * 3600 * 1000))}天`}</Text>
                         </View>
@@ -106,7 +107,7 @@ export default class RecommendRow extends Component {
 
                         <Text style={{
                             fontSize: 13,
-                            color: '#666',
+                            color: DesignRule.textColor_secondTitle,
                             marginTop: 6
                         }}>{`参与拼店分红：${bonusCount || 0}次`}</Text>
                     </View>
@@ -137,11 +138,11 @@ const styles = StyleSheet.create({
     },
     shopName: {
         fontSize: 13,
-        color: '#f7f7f7'
+        color: DesignRule.bgColor
     },
     shopId: {
         fontSize: 13,
-        color: '#f7f7f7',
+        color: DesignRule.bgColor,
         marginTop: 8
     },
     //白的面板背景

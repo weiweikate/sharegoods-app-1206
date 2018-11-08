@@ -17,6 +17,7 @@ import {
 } from '../../components/ui';
 import left_arrow from '../../pages/order/res/left_arrow.png';
 import ScreenUtils from '../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 /**
  * 搜索输入框组件
@@ -193,7 +194,7 @@ const styles = StyleSheet.create(
             paddingTop: 5,
             paddingBottom: 5,
             fontSize: 14,
-            color: '#333333',
+            color: DesignRule.textColor_mainTitle,
             backgroundColor: '#F0F0F0',
             borderRadius: 15
         },

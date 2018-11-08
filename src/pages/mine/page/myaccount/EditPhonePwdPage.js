@@ -14,6 +14,7 @@ import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
 import user from '../../../../model/user';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
+import DesignRule from 'DesignRule';
 
 export default class EditPhonePwdPage extends BasePage {
 
@@ -43,7 +44,7 @@ export default class EditPhonePwdPage extends BasePage {
                 marginTop: 12,
                 alignItems: 'center'
             }}>
-                <UIText value={'旧密码'} style={{ fontSize: 13, color: '#222222', marginLeft: 22 }}/>
+                <UIText value={'旧密码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
                 <TextInput underlineColorAndroid={'transparent'}
                            style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 14 }}
                            placeholder={'请输入旧密码'} placeholderTextColor={'#C8C8C8'}
@@ -69,7 +70,7 @@ export default class EditPhonePwdPage extends BasePage {
                     height: 48,
                     alignItems: 'center'
                 }}>
-                    <UIText value={'新密码'} style={{ fontSize: 13, color: '#222222', marginLeft: 22 }}/>
+                    <UIText value={'新密码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
                     <TextInput underlineColorAndroid={'transparent'}
                                style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 14 }}
                                placeholder={'请输入新密码'} placeholderTextColor={'#C8C8C8'}
@@ -94,7 +95,7 @@ export default class EditPhonePwdPage extends BasePage {
                     height: 48,
                     alignItems: 'center'
                 }}>
-                    <UIText value={'新密码'} style={{ fontSize: 13, color: '#222222', marginLeft: 22 }}/>
+                    <UIText value={'新密码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
                     <TextInput underlineColorAndroid={'transparent'}
                                style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 14 }}
                                placeholder={'请再次输入新密码'} placeholderTextColor={'#C8C8C8'}
