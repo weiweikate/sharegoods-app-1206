@@ -105,17 +105,19 @@ export default class RecommendPage extends BasePage {
         }).then((data) => {
             this.state.page++;
             let dataTemp = data.data || {};
+            const dataList = dataTemp.data || [];
             //如果是空数据 显示空数据页面需要一个cell
-            let isEmpty = !dataTemp.data || dataTemp.data.length === 0;
+            let isEmpty = !dataList || dataList.length === 0;
             this.setState({
                 refreshing: false,
                 loadingState: isEmpty ? PageLoadingState.empty : PageLoadingState.success,
-                noMore: dataTemp.data.length < this._getSize(),
-                dataList: isEmpty ? [{}] : dataTemp.data
+                noMore: dataList.length < this._getSize(),
+                dataList: isEmpty ? [{}] : dataList
             });
         }).catch((error) => {
             this.setState({
                 refreshing: false,
+                netFailedInfo: error,
                 loadingState: PageLoadingState.fail
             });
         });

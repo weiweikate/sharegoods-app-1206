@@ -7,6 +7,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 export default class RecommendSegmentView extends Component {
 
@@ -38,7 +39,7 @@ export default class RecommendSegmentView extends Component {
             this._onPress(index);
         }}>
             <View style={styles.itemContainer}>
-                <Text style={[styles.title, { color: this.state.selectIndex === index ? '#F00006' : '#999999' }]}
+                <Text style={[styles.title, { color: this.state.selectIndex === index ? DesignRule.bgColor_btn : '#999999' }]}
                 >{title}</Text>
                 {index === this.state.selectIndex && < View style={styles.itemLine}/>}
             </View>
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     itemLine: {
         position: 'absolute',
         bottom: 0,
-        backgroundColor: '#F00006',
+        backgroundColor: DesignRule.bgColor_btn,
         height: 2,
         width: 50,
         alignSelf: 'center'

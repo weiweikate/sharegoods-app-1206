@@ -76,11 +76,11 @@ export default class RecommendRow extends Component {
                         <View style={{
                             flexDirection: 'row', alignSelf: 'center',
                             width: ScreenUtils.autoSizeWidth(200), height: 5, marginTop: 6,
-                            borderRadius: 2, borderWidth: 0.5, borderColor: DesignRule.bgColor_Type2
+                            borderRadius: 2, borderWidth: 0.5, borderColor: DesignRule.bgColor_btn
                         }}>
                             <View style={{
                                 width: widthScale * ScreenUtils.autoSizeWidth(200),
-                                backgroundColor: DesignRule.bgColor_Type2
+                                backgroundColor: DesignRule.bgColor_btn
                             }}/>
                         </View>
                         <Text style={{
@@ -149,7 +149,6 @@ const styles = StyleSheet.create({
 
     headerViewContainer: {
         flexDirection: 'row',
-        height: 44,
         marginTop: 15,
         paddingHorizontal: 15
     },
@@ -179,7 +178,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 22,
         borderRadius: 11,
-        backgroundColor: DesignRule.bgColor_Type2
+        backgroundColor: DesignRule.bgColor_btn
     },
     joinText: {
         fontFamily: 'PingFangSC-Medium',
