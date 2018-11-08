@@ -190,7 +190,6 @@ export default class ShopCartPage extends BasePage {
 
     _gotoLookAround = () => {
         this.$navigateReset();
-
     };
     _renderListView = () => {
         const tempArr = this.ds.cloneWithRows(shopCartStore.cartData);
