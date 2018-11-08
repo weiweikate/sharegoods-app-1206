@@ -17,7 +17,7 @@ export default class ShowImageView extends Component {
     }
 
     _renderViewPageItem(item) {
-        return <Image style={styles.image} source={{uri: item}}/>
+        return <Image style={styles.image} source={{uri: item}} resizeMode='contain'/>
     }
     render() {
         let items = this.props.items
