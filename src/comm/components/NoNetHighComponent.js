@@ -7,7 +7,7 @@ import {
     Image,
     Text
 } from 'react-native';
-import CommTabImag from '../res/CommTabImag';
+import res from '../res';
 
 
 class NetStatus {
@@ -87,7 +87,7 @@ export default function NoNetHighComponent(WrappedComponent) {
                 <View style={[this.props.style, { alignItems: 'center', justifyContent: 'center', flex: 1}]}>
                     <TouchableWithoutFeedback onPress={this.onPress}>
                         <View>
-                            <Image source={CommTabImag.noNetImg} style={{height: 100, width: 100}}/>
+                            <Image source={res.placeholder.netError} style={{height: 100, width: 100}}/>
                             <Text style={{ marginTop: 10, color: "#666666" }}>无网络</Text>
                         </View>
                     </TouchableWithoutFeedback>

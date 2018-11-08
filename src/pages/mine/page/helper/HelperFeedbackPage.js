@@ -15,15 +15,15 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import AutoExpandingInput from '../../../../components/ui/AutoExpandingInput';
 import arrowUp from '../../res/customerservice/icon_06-03.png';
 import arrowDown from '../../res/customerservice/icon_06.png';
-import rightIcon from '../../../../comm/res/tongyon_icon_check_green.png';
+import res from '../../../../comm/res';
 import addPic from '../../res/customerservice/xk1_03.png';
 import deleteImage from '../../res/customerservice/deleteImage.png';
 import BusinessUtils from '../../components/BusinessUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import MineApi from '../../api/MineApi';
 import Modal from 'CommModal';
+const rightIcon = res.button.tongyon_icon_check_green;
 import DesignRule from 'DesignRule';
-
 /**
  * @author chenxiang
  * @date on 2018/9/18

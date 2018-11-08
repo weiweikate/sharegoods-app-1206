@@ -11,8 +11,8 @@ import {
 import PropTypes from 'prop-types';
 import ScreenUtils from '../../utils/ScreenUtils';
 import { color } from '../../constants/Theme';
-import empty_list_message from '../../comm/res/empty_list_message.png';
-
+import res from '../../comm/res';
+const empty_list_message = res.placeholder.messageNoData
 
 const defaultPageSize = 10;
 

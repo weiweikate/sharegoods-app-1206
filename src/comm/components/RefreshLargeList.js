@@ -23,7 +23,7 @@ import {
 } from "react-native";
 import PropTypes from "prop-types";
 import { LargeList } from "react-native-largelist";
-import defaultNoData from "../res/defaultNoData.png";
+import res from "../res";
 
 export default class RefreshLargeList extends React.Component {
     static propTypes = {
@@ -74,7 +74,7 @@ export default class RefreshLargeList extends React.Component {
         pageSize: 10,
         defaultPage: 1,
         params: {},
-        defaultEmptyImage: defaultNoData,
+        defaultEmptyImage: res.placeholder.defaultNoData,
         defaultEmptyText: "没有数据",
         defaultData:[]
     };

@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, Image, TouchableOpacity, View, Text, ActivityIndicator } from 'react-native';
 import ShowImageView from './ShowImageView';
-import backImg from '../../comm/res/show_detail_back.png';
+import res from '../../comm/res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 
 const { px2dp, width } = ScreenUtils;
-import HTML from 'react-native-render-html';
-import showConnectedImg from '../../comm/res/show_connected.png';
-import showConnectImg from '../../comm/res/show_connect.png';
-import showGoodImg from '../../comm/res/show_good.png';
-import showDidGoodImg from '../../comm/res/show_did_good.png';
-import seeImg from '../../comm/res/see.png';
-import showShareImg from '../../comm/res/show_share.png';
+import HTML from 'react-native-render-html'
 import { ShowDetail } from './Show';
 import { observer } from 'mobx-react';
 import CommShareModal from '../../comm/components/CommShareModal';
@@ -110,7 +104,7 @@ export default class ShowDetailPage extends Component {
                     <Text style={styles.showName}>{detail.userName ? detail.userName : ''}</Text>
                 </View>
                 <View style={styles.profileRight}>
-                    <Image source={seeImg}/>
+                    <Image source={res.button.see}/>
                     <Text style={styles.number}>{detail.click}</Text>
                 </View>
             </View>
@@ -138,7 +132,7 @@ export default class ShowDetailPage extends Component {
                         </View>
                         :
                         <TouchableOpacity style={styles.bottomBtn} onPress={() => this._goodAction()}>
-                            <Image style={styles.bottomGoodImg} source={detail.hadLike ? showDidGoodImg : showGoodImg}/>
+                            <Image style={styles.bottomGoodImg} source={detail.hadLike ? res.button.show_did_good : res.button.show_good}/>
                             <Text style={styles.bottomText}> {detail.hadLike ? '已赞' : '赞'} · {detail.likeCount}</Text>
                         </TouchableOpacity>
                 }
@@ -152,19 +146,19 @@ export default class ShowDetailPage extends Component {
                         :
                         <TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>
                             <Image style={styles.bottomGoodImg}
-                                   source={detail.hadCollect ? showConnectedImg : showConnectImg}/>
+                                   source={detail.hadCollect ? res.button.show_connected : res.button.show_connect}/>
                             <Text
                                 style={styles.bottomText}>{detail.hadCollect ? '已收藏' : '收藏'} · {detail.collectCount}</Text>
                         </TouchableOpacity>
                 }
             </View>
             <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
-                <Image source={backImg}/>
+                <Image source={res.button.show_detail_back}/>
             </TouchableOpacity>
             <TouchableOpacity style={styles.shareView} onPress={() => {
                 this._goToShare();
             }}>
-                <Image source={showShareImg}/>
+                <Image source={res.button.show_share}/>
             </TouchableOpacity>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'miniProgram'}

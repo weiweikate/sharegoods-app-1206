@@ -4,11 +4,9 @@ import BasePage from '../../BasePage';
 import { UIText } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
 import { color } from '../../constants/Theme';
-import selectedImg from '../../comm/res/selected_circle_red.png';
 import Toast from '../../utils/bridge';
 import user from '../../model/user';
 import { observer } from 'mobx-react/native';
-import unselectedImg from '../../comm/res/unselected_circle.png';
 import { Payment, paymentType } from './Payment';
 import PayUtil from './PayUtil';
 import PaymentResultView, { PaymentResult } from './PaymentResultView';
@@ -16,8 +14,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import spellStatusModel from '../spellShop/model/SpellStatusModel';
 import DesignRule from 'DesignRule';
 import CommModal from 'CommModal';
-import paySuccessIcon from '../../comm/res/tongyon_icon_check_green.png';
-import PasswordView from './PasswordView'
+import res from '../../comm/res';
 
 const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) => {
     let selected = isSelected;
@@ -41,7 +38,7 @@ const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) 
                 :
                 null
         }
-        <Image source={selected ? selectedImg : unselectedImg} style={{ height: 22, width: 22 }}
+        <Image source={selected ? res.button.selected_circle_red : res.button.unselected_circle} style={{ height: 22, width: 22 }}
                resizeMode={'stretch'}/>
     </TouchableOpacity>;
 };
@@ -177,7 +174,7 @@ export default class PaymentMethodPage extends BasePage {
         return (
             <CommModal ref={(ref)=>{this.promotionModal = ref;}} visible={this.state.payPromotionSuccess}>
                 <View style={styles.promotionBgStyle}>
-                    <Image source={paySuccessIcon} style={{width:70,height:70,marginTop:20}}/>
+                    <Image source={res.button.tongyon_icon_check_green} style={{width:70,height:70,marginTop:20}}/>
                     <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_mediumBtnText,includeFontPadding:false,marginTop:10}}>
                         支付成功
                     </Text>
