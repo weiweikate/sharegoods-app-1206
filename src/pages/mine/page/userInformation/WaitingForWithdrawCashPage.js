@@ -14,8 +14,13 @@ import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 // import withdrawMoney from '../../res/userInfoImg/withdrawMoney.png';
-import tuiguang from '../../res/userInfoImg/xiangjzhanghu_icon03_16.png';
+import withdrawMoney from '../../res/userInfoImg/xiangjzhanghu_icon03_14.png';
+import storeShare from '../../res/userInfoImg/xiangjzhanghu_icon03.png';
+import storeShareBonus from '../../res/userInfoImg/xiangjzhanghu_icon03_06.png';
+import shouyi from '../../res/userInfoImg/xiangjzhanghu_icon03_10.png';
+import xiaofei from '../../res/userInfoImg/xiangjzhanghu_icon03_12.png';
 import salesCommissions from '../../res/userInfoImg/xiangjzhanghu_icon03_08.png';
+import renwu from '../../res/userInfoImg/xiangjzhanghu_icon03_16.png'
 import questionImage_white from '../../res/userInfoImg/questionImage_white.png';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
@@ -187,33 +192,26 @@ export default class WaitingForWithdrawCashPage extends BasePage {
 
     renderItem = ({ item, index }) => {
         return (
-            <View>
-                <TouchableOpacity style={styles.container} o>
+                <View style={styles.Itemcontainer} >
                     <View style={{ height: 90, justifyContent: 'center' }}>
                         <UIImage source={item.iconImage} style={{ height: 50, width: 50, marginLeft: 16 }}/>
                     </View>
-                    <View style={{ marginLeft: 10 }}>
-                        <UIText value={item.type}/>
-                        <UIText value={item.time}
-                                style={{
-                                    color: DesignRule.textColor_instruction,
-                                    fontSize: 13,
-                                    marginTop: item.serialNumber == '' ? 10 : 0
-                                }}/>
+                    <View style={{flex:1,marginLeft:16,marginRight:16}}>
+                    <View style={{ justifyContent:'space-between',flexDirection:'row',alignItems:'center' }}>
+                        <UIText value={item.type} style={{fontSize:15}}/>
+                       <View style={{flexDirection:'row',alignItems:'center'}}>
+                           <Text style={{fontSize:12,color:DesignRule.textColor_secondTitle}}>预计收入</Text>
+                           <Text style={{fontSize:16,color:DesignRule.mainColor}}>{item.capital}</Text>
+                       </View>
                     </View>
-                    <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row' }}>
-                        <View style={{ marginRight: 15, height: 60, justifyContent: 'space-between' }}>
-                            <UIText value={item.capital}
-                                    style={{
-                                        color: item.capitalRed ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
-                                        fontSize: 16
-                                    }}/>
-                            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}/>
-                            <UIText value={''}/>
+                        <View style={{ justifyContent:'space-between',flexDirection:'row',alignItems:'center',marginTop:5 }}>
+                            <UIText value={item.time} style={{fontSize:15,color:DesignRule.textColor_instruction}}/>
+                            <View style={{flexDirection:'row',alignItems:'center'}}>
+                                <Text style={{fontSize:12,color:DesignRule.textColor_secondTitle}}>已入账:</Text>
+                                <Text style={{fontSize:12,color:DesignRule.textColor_secondTitle}}>{item.realBalance===null?'?':item.realBalance}</Text>
+                            </View>
                         </View>
                     </View>
-                </TouchableOpacity>
-
                 </View>
 
         );
@@ -239,48 +237,41 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '销售提成', '推广提成'];
-        let use_type_symbol = ['', '+', '+'];
-        let useLeftImg = ['', salesCommissions, tuiguang];
-        let arrData = this.currentPage === 1 ? [] : this.state.viewData;
+        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '推广提成','任务奖励'];
+        let use_type_symbol = ['', '+', '-',];
+        let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions,renwu];
         Toast.showLoading();
-        MineApi.userBalanceQuery({ page: this.currentPage, size: 20, type: 1 }).then((response) => {
+        let arrData = this.currentPage == 1 ? [] : this.state.viewData;
+        MineApi.userBalanceQuery({ page: this.currentPage, size: 20, type: 2 }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
-            if (response.code === 10000) {
+            if (response.code == 10000) {
                 let data = response.data;
-
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
                         arrData.push({
                             type: use_type[item.useType],
                             time: DataUtils.getFormatDate(item.createTime / 1000),
-                            serialNumber: '流水号：' + item.serialNo,
-                            capital: use_type_symbol[item.useType] + item.balance,
+                            capital: use_type_symbol[item.biType] + item.balance,
                             iconImage: useLeftImg[item.useType],
-                            capitalRed: use_type_symbol[item.useType] === '-'
-
+                            realBalance:item.realBalance,
                         });
                     });
                 }
-
                 this.setState({
                     viewData: arrData,
                     isEmpty: data.data && data.data.length !== 0 ? false : true
                 });
             } else {
                 this.$toastShow(response.msg);
-                this.setState({
-                    viewData: arrData,
-                    isEmpty: true
-                });
 
             }
         }).catch(e => {
             Toast.hiddenLoading();
-            if (e.code === 10009) {
-                this.$navigate('login/login/LoginPage');
-            }
+            this.setState({
+                viewData: arrData,
+                isEmpty: true
+            });
         });
     };
     onRefresh = () => {
@@ -323,6 +314,11 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginLeft: 15,
         marginRight: 15
+    },Itemcontainer:{
+        backgroundColor: color.white,
+        flexDirection: 'row',
+        height: 90,
+        alignItems: 'center'
     }
 });
 

@@ -11,6 +11,7 @@ const button = {
     show_share: require('./show_share.png'),
     tongyong_btn_close_white: require('./tongyong_btn_close_white.png'),
     tongyon_icon_check_green: require('./tongyon_icon_check_green.png'),
-    unselected_circle: require('./unselected_circle.png')
+    unselected_circle: require('./unselected_circle.png'),
+    white_back_img:require('./Pin_Left.png')
 };
 export default button;
