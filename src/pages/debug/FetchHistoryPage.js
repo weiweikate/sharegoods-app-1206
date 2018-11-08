@@ -20,8 +20,8 @@ import BasePage from '../../BasePage';
 export default class FetchHistoryPage extends BasePage {
 
     // 页面配置
-    $navigationBarOptions =  {
-        title: '请求记录',
+    $navigationBarOptions = {
+        title: '请求记录'
     };
 
     $getPageStateOptions = () => {
@@ -55,7 +55,7 @@ export default class FetchHistoryPage extends BasePage {
             } : {
                 flexDirection: 'row',
                 alignItems: 'center',
-                height: 55,
+                height: 55
             }]}>
                 <Text numberOfLines={2}>{url}<Text
                     style={{ color: 'gray' }}>   {formatDate(requestStamp)}</Text></Text>
@@ -84,6 +84,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 8,
         marginBottom: 8,
-        backgroundColor: 'white',
+        backgroundColor: 'white'
     }
 });
