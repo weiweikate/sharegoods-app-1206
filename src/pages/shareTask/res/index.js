@@ -1,4 +1,5 @@
-const shareTaskImage = {
+import res from '../../../comm/res'
+const index = {
     banner: require('./banner.png'),
     redEnvelope: require('./redEnvelope.png'),
     renwu_icon_gongxi_nor: require('./renwu_icon_gongxi_nor.png'),
@@ -6,5 +7,6 @@ const shareTaskImage = {
     renwu_icon_yihan_nor: require('./renwu_icon_yihan_nor.png'),
     task_bg: require('./task_bg.png'),
     task_icon: require('./task_icon.png'),
+    ...res
 };
-export default shareTaskImage;
+export default index;
