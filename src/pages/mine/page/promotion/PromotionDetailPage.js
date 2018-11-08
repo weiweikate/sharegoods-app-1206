@@ -233,8 +233,16 @@ export default class PromotionDetailPage extends BasePage<Props> {
                                 webJson={{
                                     title: '邀请好友免费领取福利',
                                     dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}?id=${this.params.id}`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/promote?id=${this.params.id}`,
                                     thumImage: 'logo.png',
+                                }}
+                                miniProgramJson={{
+                                    title: `邀请好友免费领取福利`,
+                                    dec:'属你的惊喜福利活动\n数量有限赶快参与吧～',
+                                    thumImage: 'logo.png',
+                                    hdImageURL: '',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/promote?id=${this.params.id}`,
+                                    miniProgramPath: `/pages/index/index?type=100&id=${this.params.id}'`
                                 }}
                 />
             </View>
