@@ -10,7 +10,6 @@ import { observer } from 'mobx-react';
 import { MemberModule } from './Modules'
 import DesignRule from 'DesignRule';
 
-
 @observer
 export default class HomeUserView extends Component {
     constructor(props) {
@@ -29,8 +28,8 @@ export default class HomeUserView extends Component {
             return <View/>;
         }
         let { levelName, experience } = user
-        const { memberLevels, totalExp, levelCount, levelNumber } = this.memberModule
-        console.log('experience', experience, levelName, totalExp, experience / totalExp, levelNumber)
+        const { memberLevels, levelCount } = this.memberModule
+        
         experience = experience ? experience : 0
         let items = [];
         let levelNames = [];
@@ -40,19 +39,15 @@ export default class HomeUserView extends Component {
         memberLevels.map((level, index) => {
             levelNames.push( <Text style={styles.level} key={'text' + index}>{level.name}</Text>)
             items.push(<View key={'circle' + index} style={styles.smallCircle}/>)
-            if (index === levelCount - 1) {
-                return
-            }
             if (level.name <= levelName) {
                 let otherExp =  experience - lastExp
                 let currentExp = level.upgradeExp - lastExp
-                console.log('experience - level.upgradeExp', experience - lastExp, otherExp, currentExp, level.upgradeExp)
                 if (experience === 0) {
                     items.push(<View key={'line' + index} style={[styles.progressLine, { backgroundColor: '#E7AE39'}]}>
                          <View style={{flex: 1, backgroundColor: '#9B6D26' }}/>
                     </View>)
                 } else {
-                    items.push(<View key={'line' + index} style={[styles.progressLine, { backgroundColor: '#E7AE39'}]}>
+                    index !== levelCount - 1 && items.push(<View key={'line' + index} style={[styles.progressLine, { backgroundColor: '#E7AE39'}]}>
                         <View style={{flex: otherExp}}/><View style={{flex: lastExp - otherExp, backgroundColor: '#9B6D26' }}/>
                     </View>)
                 }
@@ -64,11 +59,11 @@ export default class HomeUserView extends Component {
                             </View>
                     </View>)
                 } else {
-                    expItems.push(<View key={'user' + index} style={styles.block}/>)
+                    index !== levelCount - 1 &&  expItems.push(<View key={'user' + index} style={styles.block}/>)
                 }
             } else {
-                items.push(<View key={'line' + index} style={[styles.progressLine]}/>)
-                expItems.push(<View key={'user' + index} style={styles.block}/>)
+                index !== levelCount - 1 && items.push(<View key={'line' + index} style={[styles.progressLine]}/>)
+                index !== levelCount - 1 && expItems.push(<View key={'user' + index} style={styles.block}/>)
             }
             lastExp = level.upgradeExp
         });
@@ -188,7 +183,10 @@ let styles = StyleSheet.create({
         borderRadius: px2dp(25),
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        shadowColor: '#e7ae39',
+        shadowOffset: {width: 2, height: 2},
+        shadowOpacity: 0.6
     },
     progress: {
         height : px2dp(10),

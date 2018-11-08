@@ -12,9 +12,8 @@ import { RefreshList } from '../../../../components/ui';
 import AccountItem from '../../components/AccountItem';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import registeredImg from '../../res/userInfoImg/list_icon_zhucei.png';
-import activityPresent from '../../res/userInfoImg/list_icon_hedong.png';
-import xiaofei from '../../res/userInfoImg/list_icon_xiaofe.png';
+import singInImg from '../../res/userInfoImg/qdaojianli_icon.png';
+import taskImg from '../../res/userInfoImg/rwujianli_icon.png'
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
@@ -38,7 +37,7 @@ export default class MyIntegralAccountPage extends BasePage {
             currentPage: 1,
             isEmpty: false
         };
-        this.currentPage = 0;
+        this.currentPage = 1;
     }
 
     $navigationBarOptions = {
@@ -134,10 +133,10 @@ export default class MyIntegralAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '注册赠送', '活动赠送', '秀豆消费', '1元券兑换', '签到'];
+        let use_type = ['', '注册赠送', '活动赠送', '秀豆消费', '1元券兑换', '签到奖励','任务奖励'];
 
-        let use_type_symbol = ['', '+', '+', '-', '-', '+'];
-        let use_let_img = ['', registeredImg, activityPresent, xiaofei, xiaofei, activityPresent];
+        let use_type_symbol = ['', '+', '+', '-', '-', '+','+'];
+        let use_let_img = ['', singInImg, taskImg, taskImg, singInImg, singInImg,taskImg];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         Toast.showLoading();
         MineApi.userScoreQuery({

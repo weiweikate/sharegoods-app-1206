@@ -10,7 +10,7 @@ import {
     UIText, UIImage
 } from '../../../components/ui';
 import DesignRule from 'DesignRule';
-// status,//账单状态：0出账中，1待支付，2已支付，3逾期
+
 const AccountItem = props => {
     const {
         type,
