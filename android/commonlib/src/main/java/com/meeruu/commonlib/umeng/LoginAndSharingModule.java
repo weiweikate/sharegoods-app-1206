@@ -334,7 +334,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         drawPromotionShare(mContext, url, success, fail);
     }
 
-    public static void drawPromotionShare(final Context context, final String url, final Callback success, final Callback fail){
+    public static void drawPromotionShare(final Context context, final String url, final Callback success, final Callback fail) {
         String info = url;
         String str = "长按扫码打开连接";
         Bitmap result = Bitmap.createBitmap(279, (int) (348), Bitmap.Config.ARGB_8888);
@@ -345,25 +345,25 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-        int newWidth=279;
-        int newHeight=348;
-        float scaleWidth=((float)newWidth)/width;
-        float scaleHeight=((float)newHeight)/height;
+        int newWidth = 279;
+        int newHeight = 348;
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
 
         //获取想要缩放的matrix
         Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth,scaleHeight);
+        matrix.postScale(scaleWidth, scaleHeight);
 
-        bitmap=Bitmap.createBitmap(bitmap,0,0,width,height,matrix,true);
-        canvas.drawBitmap(bitmap, 0, 0,paint);
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
         Bitmap qrBitmap = createQRImage(info, 140, 140);
         canvas.drawBitmap(qrBitmap, 70, 146, paint);
         paint.setColor(Color.WHITE);
         paint.setTextSize(12);
         Rect bounds = new Rect();
         paint.getTextBounds(str, 0, str.length(), bounds);
-        canvas.drawText(str, (279-bounds.width())/2, 306, paint);
-        String path = saveImageToCache(context, result,"sharePromotionImage.png");
+        canvas.drawText(str, (279 - bounds.width()) / 2, 306, paint);
+        String path = saveImageToCache(context, result, "sharePromotionImage.png");
         if (!TextUtils.isEmpty(path)) {
             success.invoke(path);
         } else {
@@ -463,7 +463,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         Bitmap qrBitmap = createQRImage(info, 120, 120);
         canvas.drawBitmap(qrBitmap, 360, 520, paint);
-        String path = saveImageToCache(context, result,"shareImage.png");
+        String path = saveImageToCache(context, result, "shareImage.png");
         if (!TextUtils.isEmpty(path)) {
             success.invoke(path);
         } else {
@@ -505,6 +505,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(uri);
         mContext.sendBroadcast(intent);
+        ToastUtils.showToast("保存成功");
     }
 
     @ReactMethod
@@ -515,7 +516,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             bitmap.recycle();
             return;
         }
-        String path = saveImageToCache(mContext, bitmap,"shareImage.png");
+        String path = saveImageToCache(mContext, bitmap, "shareImage.png");
         if (TextUtils.isEmpty(path)) {
             fail.invoke("图片保存失败！");
         } else {
@@ -540,7 +541,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         dView.buildDrawingCache();
         Bitmap bmp = dView.getDrawingCache();
         long date = System.currentTimeMillis();
-        String storePath =getDiskCachePath() + File.separator + date + "screenshotImage.png";
+        String storePath = getDiskCachePath() + File.separator + date + "screenshotImage.png";
 
 
         File file = new File(storePath);
@@ -558,6 +559,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 intent.setData(uri);
                 mContext.sendBroadcast(intent);
+                ToastUtils.showToast("保存成功");
                 success.invoke();
             } catch (Exception e) {
                 fail.invoke(e.getMessage());
@@ -608,7 +610,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         return null;
     }
 
-    private static String saveImageToCache(Context context, Bitmap bitmap,String name) {
+    private static String saveImageToCache(Context context, Bitmap bitmap, String name) {
 
         String path = getDiskCachePath();
         long date = System.currentTimeMillis();
@@ -633,6 +635,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     /**
      * 获取cache路径
+     *
      * @return
      */
     public static String getDiskCachePath() {
