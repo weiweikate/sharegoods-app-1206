@@ -73,7 +73,7 @@ class LoginTopViewModel {
                 return true;
             }
         } else {
-            if (this.password.length > 0) {
+            if (this.password.length > 3) {
                 return true;
             }
         }
@@ -133,16 +133,18 @@ export default class LoginTopView extends Component {
                     <CommSpaceLine style={Styles.lineStyle}/>
                 </View>
                 {this.LoginModel.selectIndex ? this.renderPasswordLogin() : this.renderCodeLogin()}
+                <TouchableOpacity
+                    onPress={this.clickLoginBtn}
+                    activeOpacity={this.LoginModel.isCanClick ? 0.6 : 1}
+                >
                 <View style={[Styles.loginBtnStyle, this.LoginModel.isCanClick ? { backgroundColor: DesignRule.mainColor } : { backgroundColor: DesignRule.bgColor_grayHeader }]}>
-                    <TouchableOpacity
-                        onPress={this.clickLoginBtn}
-                        activeOpacity={this.LoginModel.isCanClick ? 0.6 : 1}
-                    >
+
                         <Text style={Styles.loginBtnTextStyle}>
                             登录
                         </Text>
-                    </TouchableOpacity>
+
                 </View>
+                </TouchableOpacity>
                 <View style={Styles.oldUserLoginBgStyle}>
                     <TouchableOpacity onPress={this.props.oldUserLoginClick}>
                         <Text style={Styles.oldUserLoginBtn}>
