@@ -96,15 +96,6 @@ export default class LoginPage extends BasePage {
                         </TouchableOpacity>
                     </View>
                 </View>
-                {/*<Image*/}
-                {/*style={{*/}
-                {/*width: ScreenUtils.width,*/}
-                {/*position: 'absolute',*/}
-                {/*bottom: 0,*/}
-                {/*height: 80*/}
-                {/*}}*/}
-                {/*source={loginAndRegistRes.loginBottomImage}*/}
-                {/*resizeMode='cover'/>*/}
             </View>
         );
     }
@@ -219,7 +210,6 @@ export default class LoginPage extends BasePage {
                 } else {
                     this.$navigateBack();
                 }
-
             }).catch((data) => {
                 console.log(data);
                 this.$loadingDismiss();
@@ -255,8 +245,6 @@ const Styles = StyleSheet.create(
             alignItems: 'center'
         },
         lineBgStyle: {
-            // marginLeft: 30,
-            // marginRight: 30,
             width: ScreenUtils.width,
             flexDirection: 'row',
             height: 30,

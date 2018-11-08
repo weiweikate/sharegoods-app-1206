@@ -21,7 +21,8 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
-import icon from '../../../../comm/res/tongyon_icon_check_green.png';
+import res from '../../../../comm/res';
+const  icon = res.button.tongyon_icon_check_green;
 
 type Props = {};
 export default class PromotionOrderPage extends BasePage<Props> {

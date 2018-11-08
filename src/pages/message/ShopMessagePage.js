@@ -23,7 +23,7 @@ const { px2dp } = ScreenUtils;
 import CommonUtils from 'CommonUtils'
 import MessageUtils from './utils/MessageUtils'
 import DesignRule from 'DesignRule';
-
+import emptyIcon from './src/message_empty.png'
 export default class ShopMessagePage extends BasePage {
     constructor(props) {
         super(props);
@@ -452,6 +452,8 @@ export default class ShopMessagePage extends BasePage {
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
                     extraData={this.state}
+                    emptyIcon={emptyIcon}
+                    emptyTip={'暂无消息通知~'}
                     isEmpty={this.state.isEmpty}
                 />
             </View>

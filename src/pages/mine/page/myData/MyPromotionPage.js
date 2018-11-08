@@ -22,8 +22,10 @@ import CCZImg from './res/ccz_03.png';
 import ProgressImg from './res/jdt_05.png';
 // import {NavigationActions} from "react-navigation";
 import BasePage from '../../../../BasePage';
+// import {UIImage} from '../../../../components/ui';
 import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+// import CommTabImag from '../../../../comm/res/CommTabImag';
 import DesignRule from 'DesignRule';
 // 常量
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -32,7 +34,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 export default class MyPromotionPage extends BasePage {
 
     $navigationBarOptions = {
-        show: true, // false则隐藏导航
+        show: false, // false则隐藏导航
         title: '我的晋升情况'
     };
 
@@ -110,7 +112,6 @@ export default class MyPromotionPage extends BasePage {
 
 
     renderHeader = () => {
-
         const progress = this.state.experience / this.state.levelExperience;
         const marginLeft = 315 / 375 * SCREEN_WIDTH * progress;
         const headerWidth = 65 / 375 * SCREEN_WIDTH;
@@ -125,11 +126,12 @@ export default class MyPromotionPage extends BasePage {
             }
         }
 
-        return <View style={{ height: 182 / 375 * SCREEN_WIDTH + 115 }}>
+        return <View style={{ height: 182 / 375 * SCREEN_WIDTH + 115+ScreenUtils.statusBarHeight+10}}>
             <ImageBackground source={HeaderBarBgImg} style={{
-                width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH,
-                flexDirection: 'row'
+                width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH+ScreenUtils.statusBarHeight,
+                flexDirection: 'row',paddingTop:ScreenUtils.statusBarHeight,
             }}>
+                {/*<UIImage source={} style={{marginLeft:15,width:15,height:15}} onPress={()=>this.$navigateBack()}/>*/}
                 <ImageBackground source={RingImg}
                                  style={styles.headerBg}>
                     {
@@ -144,7 +146,7 @@ export default class MyPromotionPage extends BasePage {
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: 16,
-                    marginLeft: 16
+                    marginLeft: 10
                 }}>
                     <View style={{
                         justifyContent: 'center', alignItems: 'center', marginTop: 10, width: 89,
@@ -256,7 +258,7 @@ export default class MyPromotionPage extends BasePage {
                         />}>
                 {this.renderHeader()}
                 {this.renderWelfare()}
-                <View style={{ backgroundColor: 'f7f7f7', height: 2 }}/>
+                <View style={{ backgroundColor: '#f7f7f7', height: 2 }}/>
             </ScrollView>
         );
     };
@@ -331,12 +333,12 @@ export default class MyPromotionPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginBottom: ScreenUtils.safeBottom
+        marginBottom: ScreenUtils.safeBottom,
     },
     headerBg: {
-        marginTop: 16,
-        marginLeft: 16,
-        marginRight: 23,
+        marginTop:26,
+        marginLeft: 10,
+        marginRight: 10,
         width: 105 / 375 * SCREEN_WIDTH,
         height: 105 / 375 * SCREEN_WIDTH,
         justifyContent: 'center',
