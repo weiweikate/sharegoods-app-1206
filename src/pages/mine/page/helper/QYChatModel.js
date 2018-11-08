@@ -23,22 +23,25 @@ export default {
      * systemVersion:手机系统版本
      */
 
-    jsonParams: {
-        groupId: 0,
-        staffId: 0,
-        title: '秀购客服',
-        userId: user.id || null,
-        userIcon: user.headImg,
-        nickName: user.nickname,
-        device: DeviceInfo.getDeviceName(),
-        systemVersion: DeviceInfo.getSystemVersion()
-    },
+
 
     /**
      * 发起客服聊天
      * @param jsonParams
      */
-    qiYUChat(jsonParams) {
+    qiYUChat() {
+        let jsonParams = {
+            groupId: 0,
+            staffId: 0,
+            title: '秀购客服',
+            userId: user.id || null,
+            userIcon: user.headImg,
+            nickName: user.nickname,
+            device: DeviceInfo.getDeviceName(),
+            systemVersion: DeviceInfo.getSystemVersion(),
+            phoneNum: user.phone
+        };
+
         QYChatModule.qiYUChat(jsonParams);
     },
     /**
