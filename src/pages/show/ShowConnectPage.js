@@ -25,13 +25,13 @@ export default class ShowConnectPage extends BasePage {
         collectData: []
     };
     $navigationBarOptions = {
-        title: '发现收藏',
+        title: '秀场收藏',
         show: true
     };
     $NavBarRenderRightItem = () => {
         return (
             <TouchableOpacity style={styles.rightButton} onPress={() => this._onSelectedAction()}>
-                <Text style={styles.select}>选择</Text>
+                <Text style={styles.select}>管理</Text>
             </TouchableOpacity>
         );
     };
