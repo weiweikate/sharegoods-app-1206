@@ -22,6 +22,7 @@ import {
     UIText,
     UIImage
 } from '../../../components/ui';
+import DesignRule from 'DesignRule';
 
 export default class GoodsGrayItem extends React.Component {
 
@@ -50,7 +51,7 @@ export default class GoodsGrayItem extends React.Component {
                     <View style = {{marginHorizontal: 10, flex: 1, height: 100}}>
                     <View style = {{flexDirection: 'row', marginTop: 10}}>
                         <View style={{flex:1,flexDirection: 'row',marginRight:10,alignItems:'center'}}>
-                            {gift?<View style={{marginRight:8,marginTop:10,borderWidth:1,borderRadius:2,borderColor:'#D51243',justifyContent:'center',padding:1}}><Text style={{fontSize:12,color:'#D51243'}}>礼包</Text></View>:null}
+                            {gift?<View style={{marginRight:8,marginTop:10,borderWidth:1,borderRadius:2,borderColor:DesignRule.mainColor,justifyContent:'center',padding:1}}><Text style={{fontSize:12,color:DesignRule.mainColor}}>礼包</Text></View>:null}
                             <Text  style = {[styles.title]} numberOfLines = {2}>{goodsName}</Text>
                         </View>
                         <UIText value = {salePrice} style = {styles.title}/>
@@ -81,11 +82,11 @@ const styles = StyleSheet.create({
     title: {
         marginTop: 10,
         fontSize: 13,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
     },
     detail: {
         fontSize: 13,
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         textAlign: 'right',
     }
 });

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import MRBannerView from './MRBannerView';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -7,7 +7,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 export default class MRBannerViewMode extends Component {
 
     static propTypes = {
-        bannerHeight:PropTypes.number,
+        bannerHeight: PropTypes.number,
         //ModeStyle
         modeStyle: PropTypes.number,//0划点/1数字/2卡片
         //图片url数组
@@ -18,7 +18,6 @@ export default class MRBannerViewMode extends Component {
     _onDidScrollToIndex = (e) => {
         console.log(`dfshfdkffdjfdsfdjfdddddd${e.nativeEvent.index}`);
     };
-
 
 
     _renderPageControl = () => {
@@ -61,7 +60,7 @@ export default class MRBannerViewMode extends Component {
 
     render() {
         return (
-            <MRBannerView style={[{ height: this.props.bannerHeight, width: ScreenUtils.width}]}
+            <MRBannerView style={[{ height: this.props.bannerHeight, width: ScreenUtils.width }]}
                           onDidScrollToIndex={this._onDidScrollToIndex}
                           imgUrlArray={this.props.imgUrlArray}
                           onDidSelectItemAtIndex={this.props.onDidSelectItemAtIndex}>

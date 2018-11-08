@@ -10,6 +10,7 @@ import topicShow from '../res/topicShow.png';
 import topicShowClose from '../res/topicShowClose.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import CommModal from 'CommModal';
+import DesignRule from 'DesignRule';
 
 export default class TopicDetailShowModal extends Component {
 
@@ -77,7 +78,7 @@ export default class TopicDetailShowModal extends Component {
                             }}>{`${this.state.name || ''}\n${this.state.subName || ''}`}</Text>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
-                                color: '#666666',
+                                color: DesignRule.textColor_secondTitle,
                                 fontSize: ScreenUtils.px2dp(14),
                                 paddingHorizontal: ScreenUtils.px2dp(32),
                             }}>{`${this.state.content || ''}`}</Text>

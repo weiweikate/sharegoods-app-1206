@@ -362,14 +362,14 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center'
     },
     OutStore: {
         width: ScreenUtils.autoSizeWidth(345),
         height: 48,
-        backgroundColor: '#D51243',
+        backgroundColor: DesignRule.mainColor,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center'
@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         width: ScreenUtils.autoSizeWidth(168),
         height: 48,
-        backgroundColor: '#D51243',
+        backgroundColor: DesignRule.mainColor,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center'

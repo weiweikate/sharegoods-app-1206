@@ -10,8 +10,8 @@ import {
 import React, { Component } from 'react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PropTypes from 'prop-types';
-import ColorUtil from '../../../utils/ColorUtil';
 import UIText from '../../../comm/components/UIText';
+import DesignRule from 'DesignRule';
 
 export default class SbOpenPrizeHeader extends Component {
 
@@ -114,7 +114,7 @@ export default class SbOpenPrizeHeader extends Component {
                                     // { width: ScreenUtils.width /arrAccount},
                                     this.state.selectSate === index ?
                                         {
-                                            color: ColorUtil.Color_ffffff
+                                            color: 'white'
                                         } : null]}
                             />
 
@@ -128,7 +128,7 @@ export default class SbOpenPrizeHeader extends Component {
                                                 itemViewStyle.itemBottomTextStyle,
                                                 this.state.selectSate === index ?
                                                     {
-                                                        color: ColorUtil.Color_ffffff
+                                                        color: 'white'
                                                     } : null
                                             ]
                                         }
@@ -169,7 +169,7 @@ export default class SbOpenPrizeHeader extends Component {
 
 const SbOpenPrizeHeaderStyles = StyleSheet.create({
     headerBgViewStyle: {
-        backgroundColor: ColorUtil.Color_f7f7f7
+        backgroundColor: DesignRule.bgColor
     },
     topImageStyle: {
         width: ScreenUtils.width,
@@ -180,7 +180,7 @@ const SbOpenPrizeHeaderStyles = StyleSheet.create({
         width: ScreenUtils.width,
         flexDirection: 'row',
         justifyContent: 'space-around',
-        backgroundColor: ColorUtil.Color_f7f7f7
+        backgroundColor: DesignRule.bgColor
     }
 });
 
@@ -191,7 +191,7 @@ const itemViewStyle = StyleSheet.create({
         // justifyContent:'center',
         alignItems: 'center',
         height: 47,
-        backgroundColor: ColorUtil.mainRedColor
+        backgroundColor: DesignRule.mainColor
     },
     itemBgStyle: {
         width: ScreenUtils.width / 5,
@@ -204,7 +204,7 @@ const itemViewStyle = StyleSheet.create({
         // flex: 1,
         zIndex: 20,
         // marginTop: 5,
-        color: ColorUtil.Color_222222,
+        color: DesignRule.textColor_mainTitle,
         textAlign: 'center',
         fontWeight: '800',
         fontSize: 17
@@ -212,7 +212,7 @@ const itemViewStyle = StyleSheet.create({
     itemBottomTextStyle: {
         // flex: 1,
         zIndex: 20,
-        color: ColorUtil.Color_999999,
+        color: DesignRule.textColor_instruction,
         textAlign: 'center',
         fontWeight: '500',
         fontSize: 12

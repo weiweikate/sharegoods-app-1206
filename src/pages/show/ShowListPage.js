@@ -7,6 +7,7 @@ const { px2dp } = ScreenUtils
 import ShowHotView from './ShowHotView'
 import ShowHotFindView from './ShowHotFindView'
 import backIconImg from '../../components/pageDecorator/NavigatorBar/source/icon_header_back.png'
+import DesignRule from 'DesignRule';
 
 export default class ShowListPage extends BasePage {
     $navigationBarOptions = {
@@ -128,19 +129,19 @@ let styles = StyleSheet.create({
         justifyContent: 'flex-end'
     },
     index: {
-        color: '#999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(14),
         fontWeight: '600',
         marginBottom: 16
     },
     activityIndex: {
-        color: '#D51243',
+        color: DesignRule.mainColor,
         fontSize: px2dp(14),
         fontWeight: '600',
         marginBottom: 15
     },
     line: {
-        backgroundColor: '#D51243',
+        backgroundColor: DesignRule.mainColor,
         width: 30,
         height: 1
     }

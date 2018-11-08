@@ -14,6 +14,7 @@ import {
 import PeopleImg from '../res/dy_07.png';
 import ArrowImg from '../res/xjt_03.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 export default class MembersRow extends Component {
 
@@ -75,11 +76,11 @@ const styles = StyleSheet.create({
     },
     iconTitle: {
         fontSize: 15,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     iconDesc: {
         fontSize: 12,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         flex: 1,
         textAlign: 'right'
     },
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(23) * 2) / 5,
         fontSize: 11,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         textAlign: 'center'
     }
 

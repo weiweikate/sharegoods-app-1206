@@ -6,7 +6,6 @@ import StringUtils from '../../utils/StringUtils';
 import { color } from '../../constants/Theme';
 import selectedImg from '../../comm/res/selected_circle_red.png';
 import Toast from '../../utils/bridge';
-import InputTransactionPasswordModal from './InputTransactionPasswordModal';
 import user from '../../model/user';
 import { observer } from 'mobx-react/native';
 import unselectedImg from '../../comm/res/unselected_circle.png';
@@ -18,6 +17,7 @@ import spellStatusModel from '../spellShop/model/SpellStatusModel';
 import DesignRule from 'DesignRule';
 import CommModal from 'CommModal';
 import paySuccessIcon from '../../comm/res/tongyon_icon_check_green.png';
+import PasswordView from './PasswordView'
 
 const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) => {
     let selected = isSelected;
@@ -35,7 +35,7 @@ const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) 
                 <Text style={{
                     marginLeft: 5,
                     marginRight: 7,
-                    color: '#999999',
+                    color: DesignRule.textColor_instruction,
                     fontSize: 13
                 }}>可用余额: {balance ? balance : 0}</Text>
                 :
@@ -53,7 +53,7 @@ const Section = ({ data }) => <View style={{
 }}>
     <Text style={{
         fontSize: 13
-        , color: '#999999', marginLeft: 15
+        , color: DesignRule.textColor_instruction, marginLeft: 15
     }}>{data.name}</Text>
 </View>;
 
@@ -189,8 +189,8 @@ export default class PaymentMethodPage extends BasePage {
                             this.setState({payPromotionSuccess:false})
                             this.$navigateBack('mine/promotion/UserPromotionPage',{reload:true})
                         }}>
-                            <View style={{borderRadius:5,borderColor:'#D51243',borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
-                                <Text style={{color:'#D51243',fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
+                            <View style={{borderRadius:5,borderColor:DesignRule.mainColor,borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
+                                <Text style={{color:DesignRule.mainColor,fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
                                     我的推广
                                 </Text>
                             </View>
@@ -208,61 +208,51 @@ export default class PaymentMethodPage extends BasePage {
         }} navigation={this.props.navigation}/>;
     }
 
+    finishedPwd(password) {
+        const { payStore, payPromotion } = this.payment
+        this.setState({ isShowPaymentModal: false });
+        setTimeout(() => {
+            if (payStore) {
+                this.payment.payStoreActoin().then(result => {
+                    if (result.sdkCode === 0) {
+                        //刷新拼店状态
+                        spellStatusModel.storeStatus = 2;
+                        spellStatusModel.getUser(2);
+                        this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                    } else {
+                        Toast.$toast('支付失败');
+                    }
+                });
+            }else if(payPromotion){
+                this.payment.payPromotionWithId(password,this.params.packageId, this.paymentResultView).then(result => {
+                    if (result.sdkCode === 0) {
+                        // //刷新拼店状态
+                        // spellStatusModel.storeStatus = 2;
+                        // spellStatusModel.getUser(2);
+                        // this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                        this.setState({
+                            payPromotionSuccess:true
+                        });
+                        this.promotionModal && this.promotionModal.open();
+                    } else {
+                        this.paymentResultView.show(2, result.message)
+                    }
+                });
+            }else {
+                this.setState({ password: password, isShowPaymentModal: false });
+                this.commitOrder();
+            }
+        }, 100);
+    }
+
     //支付方式弹窗
     renderPaymentModal = () => {
-        const { payStore, payPromotion } = this.payment;
-
-        return (
-            <InputTransactionPasswordModal
-                isShow={this.state.isShowPaymentModal}
-                detail={{ title: '平台支付密码', context: '请输入平台的支付密码' }}
-                closeWindow={() => {
-                    this.setState({ isShowPaymentModal: false });
-                }}
-                passwordInputError={this.state.isShowPaymentModal}
-                bottomText={'忘记支付密码'}
-                inputText={(text) => {
-                    if (text.length === 6) {
-                        this.setState({ isShowPaymentModal: false });
-                        setTimeout(() => {
-
-
-                            if (payStore) {
-                                this.payment.payStoreActoin().then(result => {
-                                    if (result.sdkCode === 0) {
-                                        //刷新拼店状态
-                                        spellStatusModel.storeStatus = 2;
-                                        spellStatusModel.getUser(2);
-                                        this.$navigate('spellShop/shopSetting/SetShopNamePage');
-                                    } else {
-                                        Toast.$toast('支付失败');
-                                    }
-                                });
-                            }else if(payPromotion){
-                                this.payment.payPromotionWithId(text,this.params.packageId, this.paymentResultView).then(result => {
-                                    if (result.sdkCode === 0) {
-                                        // //刷新拼店状态
-                                        // spellStatusModel.storeStatus = 2;
-                                        // spellStatusModel.getUser(2);
-                                        // this.$navigate('spellShop/shopSetting/SetShopNamePage');
-                                        this.setState({
-                                            payPromotionSuccess:true
-                                        });
-                                        this.promotionModal && this.promotionModal.open();
-                                    } else {
-                                        this.paymentResultView.show(2, result.message)
-                                    }
-                                });
-                            }else {
-                                this.setState({ password: text, isShowPaymentModal: false });
-                                this.commitOrder();
-                            }
-                        }, 100);
-                    }
-                }}
-                forgetPassword={() => this.forgetTransactionPassword()}
+        return <PasswordView
+            forgetAction={() => this.forgetTransactionPassword()}
+            closeAction={()=> this.setState({isShowPaymentModal: false})}
+            visible={this.state.isShowPaymentModal}
+            finishedAction={(password)=> this.finishedPwd(password)}
             />
-        );
     };
     renderBottomOrder = () => {
         return (
@@ -275,10 +265,10 @@ export default class PaymentMethodPage extends BasePage {
                                 style={styles.bottomUitext1}/>
                     </View>
                     <TouchableOpacity
-                        style={{ flex: 1, backgroundColor: color.red, justifyContent: 'center', alignItems: 'center' }}
+                        style={{ flex: 1, backgroundColor: DesignRule.mainColor, justifyContent: 'center', alignItems: 'center' }}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'去支付'}
-                                style={{ fontSize: 16, color: '#ffffff' }}/>
+                                style={{ fontSize: 16, color: 'white' }}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -337,7 +327,7 @@ export default class PaymentMethodPage extends BasePage {
             let result = await this.payment.perpay(params);
             if (result && result.code !== 10000) {
                 Toast.hiddenLoading()
-                this.paymentResultView && this.paymentResultView.show(2, result.msg)
+                Toast.$toast(result.msg)
                 return
             }
 
@@ -382,7 +372,7 @@ export default class PaymentMethodPage extends BasePage {
         if (parseInt(result.code, 0) === 10000) {
             this.paymentResultView.show(PaymentResult.sucess);
         } else {
-            this.paymentResultView.show(PaymentResult.fail, result.msg);
+            Toast.$toast(result.msg);
         }
     }
 
@@ -490,10 +480,10 @@ export default class PaymentMethodPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7'
+        backgroundColor: DesignRule.bgColor
     },
     selectText: {
-        fontSize: 16, color: '#ffffff'
+        fontSize: 16, color: 'white'
     }, blackText: {
         fontSize: 13,
         lineHeight: 18,
@@ -501,7 +491,7 @@ const styles = StyleSheet.create({
     }, grayText: {
         fontSize: 13,
         lineHeight: 18,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     },
     modalStyle: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -516,13 +506,13 @@ const styles = StyleSheet.create({
     },
     bottomUiText: {
         fontSize: 15,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         marginRight: 12,
         marginLeft: 12
     },
     bottomUitext1: {
         fontSize: 15,
-        color: color.red,
+        color: DesignRule.mainColor,
         marginRight: 12
     },
     cell: {
@@ -539,7 +529,7 @@ const styles = StyleSheet.create({
         height: 230,
         width: 250,
         borderRadius: 5,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         alignItems: 'center'
     }
 });

@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         marginTop: 27,
         fontWeight: 'bold',
         fontSize: 18,
-        color: DesignRule.white
+        color: 'white'
     },
     bgContainer: {
         flex: 1,

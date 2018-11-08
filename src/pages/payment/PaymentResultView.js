@@ -7,6 +7,7 @@ const { px2dp } = ScreenUtil;
 import { NavigationActions } from 'react-navigation';
 import failImg from './res/fail.png';
 import successImg from '../../comm/res/tongyon_icon_check_green.png';
+import DesignRule from 'DesignRule';
 
 export const PaymentResult = {
     sucess: 1,
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     text: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(15),
         marginTop: px2dp(10)
     },
@@ -145,20 +146,20 @@ const styles = StyleSheet.create({
         height: px2dp(30),
         width: px2dp(90),
         borderRadius: px2dp(5),
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         borderWidth: ScreenUtils.onePixel,
         alignItems: 'center',
         justifyContent: 'center'
     },
     buttonText: {
-        color: '#D51243',
+        color: DesignRule.mainColor,
         fontSize: px2dp(12)
     },
     image: {
         marginTop: px2dp(21)
     },
     message: {
-        color: '#999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13),
         marginTop: px2dp(10)
     }

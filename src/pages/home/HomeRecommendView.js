@@ -7,6 +7,7 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
 import {recommendModule, homeModule} from './Modules'
+import DesignRule from 'DesignRule';
 
 const RecommendItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <View style={styles.imgView}>
@@ -62,7 +63,7 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     title: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
         fontWeight: '600'
     },
@@ -88,7 +89,7 @@ let styles = StyleSheet.create({
         width: px2dp(10)
     },
     text: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(13),
         marginTop: px2dp(10)
     }

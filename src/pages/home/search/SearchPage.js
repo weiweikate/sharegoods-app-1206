@@ -124,7 +124,7 @@ export default class SearchPage extends BasePage {
                 this._clickItemAction(item);
             }}>
                 <View>
-                    <Text style={{ fontSize: 13, color: '#222222', marginLeft: 16, paddingVertical: 15 }}>{item}</Text>
+                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 16, paddingVertical: 15 }}>{item}</Text>
                     <View style={{ height: 1, backgroundColor: '#DDDDDD', marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);

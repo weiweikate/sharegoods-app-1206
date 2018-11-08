@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     },
     cell: {
         flexDirection: 'column',
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         borderRadius: 10
     },
     cell_name_tel: {

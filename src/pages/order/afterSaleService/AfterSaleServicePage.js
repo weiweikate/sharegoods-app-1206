@@ -78,7 +78,7 @@ class AfterSaleServicePage extends BasePage {
                         alignItems: 'center'
                     }}>
                         <UIText value={this.state.activeProduct[this.params.pageType]}
-                                style={{ fontSize: 13, color: DesignRule.white }}/>
+                                style={{ fontSize: 13, color: 'white' }}/>
                     </View>
                     {this.renderWideLine()}
                 </View>
@@ -86,7 +86,7 @@ class AfterSaleServicePage extends BasePage {
     };
     renderOrderNum = () => {
         return (
-            <View style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center' }}>
+            <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
                 <UIText value={'订单编号：' + this.state.productData.orderNum}
                         style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
@@ -100,7 +100,7 @@ class AfterSaleServicePage extends BasePage {
                         {this.renderWideLine()}
                         <View style={{
                             height: 40,
-                            backgroundColor: DesignRule.white,
+                            backgroundColor: 'white',
                             alignItems: 'center',
                             flexDirection: 'row'
                         }}>
@@ -118,7 +118,7 @@ class AfterSaleServicePage extends BasePage {
                         {this.renderWideLine()}
                         <View style={{
                             height: 40,
-                            backgroundColor: DesignRule.white,
+                            backgroundColor: 'white',
                             alignItems: 'center',
                             flexDirection: 'row'
                         }}>
@@ -136,7 +136,7 @@ class AfterSaleServicePage extends BasePage {
                         {this.renderWideLine()}
                         <TouchableOpacity style={{
                             height: 48,
-                            backgroundColor: DesignRule.white,
+                            backgroundColor: 'white',
                             justifyContent: 'space-between',
                             flexDirection: 'row',
                             alignItems: 'center'
@@ -169,14 +169,14 @@ class AfterSaleServicePage extends BasePage {
     renderOrderTime = () => {
         return (
             <View>
-                <View style={{ height: 40, backgroundColor: DesignRule.white, justifyContent: 'center' }}>
+                <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
                     <UIText value={'下单时间：' + DateUtils.getFormatDate(this.state.productData.orderCreateTime / 1000)}
                             style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
                 </View>
                 {this.renderWideLine()}
                 <TouchableOpacity style={{
                     height: 48,
-                    backgroundColor: DesignRule.white,
+                    backgroundColor: 'white',
                     justifyContent: 'space-between',
                     flexDirection: 'row',
                     alignItems: 'center'
@@ -202,7 +202,7 @@ class AfterSaleServicePage extends BasePage {
                     <UIText value={this.state.inputReason[this.state.pageType]}
                             style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
                 </View>
-                <View style={{ backgroundColor: DesignRule.white }}>
+                <View style={{ backgroundColor: 'white' }}>
                     <AutoExpandingInput
                         style={styles.inputTextStyle}
                         onChangeText={text => this.setState({ remark: text })}
@@ -234,7 +234,7 @@ class AfterSaleServicePage extends BasePage {
                             style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
                 </View>
                 <View
-                    style={{ paddingLeft: 20, paddingRight: 20, marginBottom: 38, backgroundColor: DesignRule.white }}>
+                    style={{ paddingLeft: 20, paddingRight: 20, marginBottom: 38, backgroundColor: 'white' }}>
                     <AddPhotos
                         imageArr={this.state.imageArr}
                         addPic={() => this.addPic()}
@@ -273,7 +273,7 @@ class AfterSaleServicePage extends BasePage {
                     alignItems: 'center'
                 }}
                 onPress={() => this.commit()}>
-                <UIText value={'提交'} style={{ color: DesignRule.white, fontSize: 16 }}/>
+                <UIText value={'提交'} style={{ color: 'white', fontSize: 16 }}/>
             </TouchableOpacity>
 
         );
@@ -559,7 +559,7 @@ const styles = StyleSheet.create({
     }, inputTextStyle: {
         marginLeft: 20,
         marginRight: 20,
-        backgroundColor: DesignRule.white,
+        backgroundColor: 'white',
         marginTop: 4,
         fontSize: 14,
         height: 80

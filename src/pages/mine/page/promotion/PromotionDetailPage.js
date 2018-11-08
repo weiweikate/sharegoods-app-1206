@@ -26,10 +26,12 @@ import RefreshList from '../../../../components/ui/RefreshList';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import apiEnvironment from '../../../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 type Props = {};
 import CommShareModal from '../../../../comm/components/CommShareModal'
+import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
 
 export default class PromotionDetailPage extends BasePage<Props> {
     constructor(props) {
@@ -38,7 +40,8 @@ export default class PromotionDetailPage extends BasePage<Props> {
             data: [],
             isEmpty: false,
             showCountDown: false,
-            countDownStr: ''
+            countDownStr: '',
+            loadingState: PageLoadingState.loading,
         };
         this.date = null;
         this.currentPage = 1;
@@ -47,6 +50,12 @@ export default class PromotionDetailPage extends BasePage<Props> {
     $navigationBarOptions = {
         title: '我的推广订单',
         show: true// false则隐藏导航
+    };
+
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+        };
     };
 
 
@@ -70,17 +79,24 @@ export default class PromotionDetailPage extends BasePage<Props> {
                         let seconds = parseInt((this.params.endTime - this.date) / 1000);
                         this.setState({
                             showCountDown: true,
-                            countDownStr: `剩余推广时间： ${this.timeFormat(seconds)}`
+                            countDownStr: `剩余推广时间： ${this.timeFormat(seconds)}`,
+                            loadingState: PageLoadingState.success
                         });
                     } else {
                         this.setState({
-                            showCountDown: false
+                            showCountDown: false,
+                            loadingState: PageLoadingState.success
+
                         });
                         this.timer && clearTimeout(this.timer);
                     }
                 }, 1000);
             }
 
+        }else {
+            this.setState({
+                loadingState: PageLoadingState.success
+            })
         }
     };
 
@@ -188,7 +204,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
         return (
             <View style={{
                 width: ScreenUtils.width, height: px2dp(20), justifyContent: 'center',
-                alignItems: 'center', backgroundColor: '#D51243'
+                alignItems: 'center', backgroundColor: DesignRule.mainColor
             }}>
                 <Text style={{ color: 'white', fontSize: px2dp(13), includeFontPadding: false }}>
                     {this.state.countDownStr}
@@ -202,6 +218,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
             <View style={styles.container}>
                 {this.state.showCountDown ? this._countDownRender() : null}
                 <RefreshList
+                    style={{marginBottom:ScreenUtils.safeBottom}}
                     data={this.state.data}
                     renderItem={this._itemRender}
                     onRefresh={this.onRefresh}
@@ -228,7 +245,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: DesignRule.bgColor,
         paddingBottom: px2dp(48)
     },
     grayButtonWrapper: {
@@ -241,7 +258,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     redButtonWrapper: {
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         borderWidth: px2dp(1),
         borderRadius: px2dp(5),
         width: px2dp(80),
@@ -255,16 +272,16 @@ const styles = StyleSheet.create({
         paddingVertical: px2dp(15)
     },
     blackTextStyle: {
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(16),
         fontWeight: 'bold'
     },
     grayTextStyle: {
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13)
     },
     redTextStyle: {
-        color: '#D51243',
+        color: DesignRule.mainColor,
         fontSize: px2dp(13)
     },
     bottomTextWrapper: {
@@ -273,7 +290,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: px2dp(15)
     },
     bottomTextStyle: {
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13)
     },
     bottomButtonWrapper: {
@@ -283,11 +300,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         left: 0,
-        bottom: 0,
-        backgroundColor: '#D51243'
+        bottom: ScreenUtils.safeBottom,
+        backgroundColor: DesignRule.mainColor
     },
     bottomButtonTextStyle: {
-        color: 'white',
-        fontSize: px2dp(13)
+        color: DesignRule.white,
+        fontSize: px2dp(17)
     }
 });

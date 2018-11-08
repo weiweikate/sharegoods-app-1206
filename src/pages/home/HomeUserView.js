@@ -8,6 +8,8 @@ import rightImg from './res/right_arrow.png';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
 import { MemberModule } from './Modules'
+import DesignRule from 'DesignRule';
+
 
 @observer
 export default class HomeUserView extends Component {
@@ -134,7 +136,7 @@ let styles = StyleSheet.create({
     title: {
         marginTop: px2dp(10),
         marginLeft: px2dp(10),
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(14)
     },
     left: {

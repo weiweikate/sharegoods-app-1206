@@ -41,6 +41,7 @@ import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
 
 @observer
 export default class MyShopPage extends BasePage {
@@ -375,12 +376,12 @@ export default class MyShopPage extends BasePage {
                                  style={{
                                      height: 48,
                                      width: 150,
-                                     backgroundColor: canJoin ? '#D51243' : 'rgb(221,109,140)',
+                                     backgroundColor: canJoin ? DesignRule.mainColor : 'rgb(221,109,140)',
                                      borderRadius: 5,
                                      marginTop: 30,
                                      alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
                                  }}>
-            <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{btnText}</Text>
+            <Text style={{ fontSize: 16, color: 'white' }}>{btnText}</Text>
         </TouchableOpacity>;
     };
 

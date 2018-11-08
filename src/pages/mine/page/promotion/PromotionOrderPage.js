@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 import icon from '../../../../comm/res/tongyon_icon_check_green.png';
@@ -50,7 +51,12 @@ export default class PromotionOrderPage extends BasePage<Props> {
         return (
             <View style={styles.container}>
                 <Image source={icon} style={{ width: px2dp(70), height: px2dp(70), marginTop: px2dp(66) }}/>
-                <Text style={{ color: '#666666', fontSize: px2dp(15), marginTop: px2dp(15), marginBottom: px2dp(20) }}>
+                <Text style={{
+                    color: DesignRule.textColor_secondTitle,
+                    fontSize: px2dp(15),
+                    marginTop: px2dp(15),
+                    marginBottom: px2dp(20)
+                }}>
                     支付成功
                 </Text>
                 <Text style={[styles.grayTextStyle, { marginBottom: px2dp(5) }]}>
@@ -84,7 +90,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     grayTextStyle: {
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(12)
     },
     buttonsWrapper: {
@@ -99,11 +105,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: px2dp(5),
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         borderWidth: px2dp(0.5)
     },
     buttonTextStyle: {
-        color: '#D51243',
+        color: DesignRule.mainColor,
         fontSize: px2dp(16)
     }
 });

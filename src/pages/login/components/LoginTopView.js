@@ -9,7 +9,6 @@ import {
     TextInput,
     Image,
 } from 'react-native';
-import ColorUtil from '../../../utils/ColorUtil';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import StringUtils from '../../../utils/StringUtils';
@@ -325,7 +324,7 @@ const Styles = StyleSheet.create(
             height: 50,
             width: ScreenUtils.width - 40,
             borderRadius: 25,
-            backgroundColor: ColorUtil.mainRedColor
+            backgroundColor: DesignRule.mainColor
         },
         loginBtnTextStyle: {
             paddingTop: 18,
