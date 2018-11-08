@@ -67,7 +67,7 @@ const styles = {
     /** 常用的style */
     style_container: {//页面
         flex: 1,
-        bgColor: colors.bgColor
+        backgroundColor: colors.bgColor
     },
     style_absoluteFullParent: {//充满父组件
         position: 'absolute',

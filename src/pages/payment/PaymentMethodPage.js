@@ -6,7 +6,6 @@ import StringUtils from '../../utils/StringUtils';
 import { color } from '../../constants/Theme';
 import selectedImg from '../../comm/res/selected_circle_red.png';
 import Toast from '../../utils/bridge';
-import InputTransactionPasswordModal from './InputTransactionPasswordModal';
 import user from '../../model/user';
 import { observer } from 'mobx-react/native';
 import unselectedImg from '../../comm/res/unselected_circle.png';
@@ -18,6 +17,7 @@ import spellStatusModel from '../spellShop/model/SpellStatusModel';
 import DesignRule from 'DesignRule';
 import CommModal from 'CommModal';
 import paySuccessIcon from '../../comm/res/tongyon_icon_check_green.png';
+import PasswordView from './PasswordView'
 
 const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) => {
     let selected = isSelected;
@@ -208,61 +208,51 @@ export default class PaymentMethodPage extends BasePage {
         }} navigation={this.props.navigation}/>;
     }
 
+    finishedPwd(password) {
+        const { payStore, payPromotion } = this.payment
+        this.setState({ isShowPaymentModal: false });
+        setTimeout(() => {
+            if (payStore) {
+                this.payment.payStoreActoin().then(result => {
+                    if (result.sdkCode === 0) {
+                        //刷新拼店状态
+                        spellStatusModel.storeStatus = 2;
+                        spellStatusModel.getUser(2);
+                        this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                    } else {
+                        Toast.$toast('支付失败');
+                    }
+                });
+            }else if(payPromotion){
+                this.payment.payPromotionWithId(password,this.params.packageId, this.paymentResultView).then(result => {
+                    if (result.sdkCode === 0) {
+                        // //刷新拼店状态
+                        // spellStatusModel.storeStatus = 2;
+                        // spellStatusModel.getUser(2);
+                        // this.$navigate('spellShop/shopSetting/SetShopNamePage');
+                        this.setState({
+                            payPromotionSuccess:true
+                        });
+                        this.promotionModal && this.promotionModal.open();
+                    } else {
+                        this.paymentResultView.show(2, result.message)
+                    }
+                });
+            }else {
+                this.setState({ password: password, isShowPaymentModal: false });
+                this.commitOrder();
+            }
+        }, 100);
+    }
+
     //支付方式弹窗
     renderPaymentModal = () => {
-        const { payStore, payPromotion } = this.payment;
-
-        return (
-            <InputTransactionPasswordModal
-                isShow={this.state.isShowPaymentModal}
-                detail={{ title: '平台支付密码', context: '请输入平台的支付密码' }}
-                closeWindow={() => {
-                    this.setState({ isShowPaymentModal: false });
-                }}
-                passwordInputError={this.state.isShowPaymentModal}
-                bottomText={'忘记支付密码'}
-                inputText={(text) => {
-                    if (text.length === 6) {
-                        this.setState({ isShowPaymentModal: false });
-                        setTimeout(() => {
-
-
-                            if (payStore) {
-                                this.payment.payStoreActoin().then(result => {
-                                    if (result.sdkCode === 0) {
-                                        //刷新拼店状态
-                                        spellStatusModel.storeStatus = 2;
-                                        spellStatusModel.getUser(2);
-                                        this.$navigate('spellShop/shopSetting/SetShopNamePage');
-                                    } else {
-                                        Toast.$toast('支付失败');
-                                    }
-                                });
-                            }else if(payPromotion){
-                                this.payment.payPromotionWithId(text,this.params.packageId, this.paymentResultView).then(result => {
-                                    if (result.sdkCode === 0) {
-                                        // //刷新拼店状态
-                                        // spellStatusModel.storeStatus = 2;
-                                        // spellStatusModel.getUser(2);
-                                        // this.$navigate('spellShop/shopSetting/SetShopNamePage');
-                                        this.setState({
-                                            payPromotionSuccess:true
-                                        });
-                                        this.promotionModal && this.promotionModal.open();
-                                    } else {
-                                        this.paymentResultView.show(2, result.message)
-                                    }
-                                });
-                            }else {
-                                this.setState({ password: text, isShowPaymentModal: false });
-                                this.commitOrder();
-                            }
-                        }, 100);
-                    }
-                }}
-                forgetPassword={() => this.forgetTransactionPassword()}
+        return <PasswordView
+            forgetAction={() => this.forgetTransactionPassword()}
+            closeAction={()=> this.setState({isShowPaymentModal: false})}
+            visible={this.state.isShowPaymentModal}
+            finishedAction={(password)=> this.finishedPwd(password)}
             />
-        );
     };
     renderBottomOrder = () => {
         return (
