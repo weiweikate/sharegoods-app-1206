@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     redButtonWrapper: {
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         borderWidth: px2dp(1),
         borderRadius: px2dp(5),
         width: px2dp(80),
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
         // position: 'absolute',
         // left: 0,
         // bottom: 0,
-        backgroundColor: '#D51243',
+        backgroundColor: DesignRule.mainColor,
         marginBottom:ScreenUtils.safeBottom
     },
     bottomButtonTextStyle: {

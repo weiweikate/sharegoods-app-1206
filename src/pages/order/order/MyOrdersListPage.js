@@ -71,7 +71,7 @@ class MyOrdersListPage extends BasePage {
                     tabBarActiveTextColor={DesignRule.mainColor}
                     tabBarInactiveTextColor={DesignRule.textColor_instruction}
                     tabBarTextStyle={{ fontSize: 15 }}
-                    tabBarUnderlineStyle={{ backgroundColor: '#D51243', height: 2 }}
+                    tabBarUnderlineStyle={{ backgroundColor: DesignRule.mainColor, height: 2 }}
                     renderTabBar={() => (
                         this.renterTabBar()
                     )}>

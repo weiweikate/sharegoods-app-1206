@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     btn: {
-        backgroundColor: '#D51243',
+        backgroundColor: DesignRule.mainColor,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 5,

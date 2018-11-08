@@ -56,7 +56,7 @@ export default class TopicDetailSelectPage extends Component {
                     <View style={styles.containerView}>
                         <View>
                             <TouchableOpacity
-                                style={[styles.btn, { backgroundColor: '#D51243' }]}>
+                                style={[styles.btn, { backgroundColor: DesignRule.mainColor }]}>
                                 <Text
                                     style={[styles.btnText, { color: 'white' }]}>{obj.specValue}</Text>
                             </TouchableOpacity>
@@ -108,7 +108,7 @@ export default class TopicDetailSelectPage extends Component {
                             <View style={{ backgroundColor: 'white', marginTop: 20, height: 87 }}>
                                 <View style={{ marginLeft: 132 }}>
                                     <Text style={{
-                                        color: '#D51243',
+                                        color: DesignRule.mainColor,
                                         fontSize: 16,
                                         marginTop: 16
                                     }}>{`￥${price}`}</Text>
@@ -174,7 +174,7 @@ export default class TopicDetailSelectPage extends Component {
                             <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
                                 <View style={{
                                     height: 49,
-                                    backgroundColor: '#D51243',
+                                    backgroundColor: DesignRule.mainColor,
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }}>

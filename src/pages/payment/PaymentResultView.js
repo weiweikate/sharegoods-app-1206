@@ -146,13 +146,13 @@ const styles = StyleSheet.create({
         height: px2dp(30),
         width: px2dp(90),
         borderRadius: px2dp(5),
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         borderWidth: ScreenUtils.onePixel,
         alignItems: 'center',
         justifyContent: 'center'
     },
     buttonText: {
-        color: '#D51243',
+        color: DesignRule.mainColor,
         fontSize: px2dp(12)
     },
     image: {

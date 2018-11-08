@@ -370,7 +370,7 @@ export default class SearchResultPage extends BasePage {
                         {ShopCartStore.getAllGoodsClassNumber === 0 ? null : <View style={{
                             position: 'absolute', top: 4, left: 4, height: 16,
                             paddingHorizontal: 4,
-                            backgroundColor: '#D51243',
+                            backgroundColor: DesignRule.mainColor,
                             borderRadius: 8, justifyContent: 'center', alignItems: 'center'
                         }}>
                             <Text style={{

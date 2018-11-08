@@ -169,7 +169,7 @@ export default class CategorySearchPage extends BasePage {
                 <View style={{
                     height: 45,
                     width: 2,
-                    backgroundColor: item.index === this.state.leftIndex ? '#D51243' : '#EEEEEE'
+                    backgroundColor: item.index === this.state.leftIndex ? DesignRule.mainColor : '#EEEEEE'
                 }}/>
                 <View style={{
                     flex: 1,

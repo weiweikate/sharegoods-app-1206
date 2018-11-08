@@ -93,7 +93,7 @@ export default class ShopCartPage extends BasePage {
         //         refreshing={homeModule.isRefreshing}
         //         onRefresh={this._onRefresh.bind(this)}
         //         progressViewOffset={statusBarHeight + 44}
-        //         colors={['#d51243']}
+        //         colors={[DesignRule.mainColor]}
         //         title="下拉刷新"
         //         tintColor="#999"
         //         titleColor="#999"
@@ -225,7 +225,7 @@ export default class ShopCartPage extends BasePage {
                         }
                         }
                         progressViewOffset={statusBarHeight + 44}
-                        colors={['#d51243']}
+                        colors={[DesignRule.mainColor]}
                         title="下拉刷新"
                         tintColor="#999"
                         titleColor="#999"

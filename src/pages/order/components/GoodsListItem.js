@@ -100,7 +100,7 @@ const GoodsListItem = props => {
                 }}>
                     <View style={{ marginLeft: 5, flexDirection: 'row' }}>
                         <Text
-                            style={{ color: '#D51243', fontSize: 13 }}>{this.startCutDownTime2(shutOffTime)}</Text>
+                            style={{ color: DesignRule.mainColor, fontSize: 13 }}>{this.startCutDownTime2(shutOffTime)}</Text>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         {nameArr.map((item, i) => {
