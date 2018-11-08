@@ -70,14 +70,15 @@ class WithdrawCashPage extends BasePage {
     renderButtom = () => {
         return (
             <UIButton
-                value={'提现'}
+                value={'审核提现'}
                 style={{
                     marginTop: 16,
                     width: ScreenUtils.width - 96,
                     height: 48,
                     marginLeft: 48,
                     marginRight: 48,
-                    backgroundColor: color.red
+                    backgroundColor: StringUtils.isNoEmpty(this.state.card_no)?color.red:'#CCCCCC',
+                    borderRadius:25
                 }}
                 onPress={() => this.commit()}/>
         );
@@ -109,7 +110,7 @@ class WithdrawCashPage extends BasePage {
                 </View>
                 <UIText
                     value={'可用余额' + StringUtils.formatMoneyString(this.state.availableBalance, false) + '元，不可提现金额' + StringUtils.formatMoneyString(this.state.blockedBalances, false) + '元'}
-                    style={{ color: color.black_light, fontSize: 15, marginLeft: 15, marginTop: 1, height: 30 }}/>
+                    style={{ color: color.black_light, fontSize: 15, marginLeft: 15, marginTop: 10, height: 30 }}/>
                 <View style={{ backgroundColor: color.page_background }}>
                     <UIText value={'额外扣除￥' + this.state.totalFee + '手续费（费率' + this.state.serviceCharge + '%）'}
                             style={{ color: color.red, fontSize: 12, marginLeft: 15, marginTop: 10 }}/>

@@ -27,6 +27,7 @@ import SingleSelectionModal from '../components/BottomSingleSelectModal';
 import ShowMessageModal from '../components/ShowMessageModal';
 import productDetailHome from '../res/productDetailHome.png';
 import productDetailMessage from '../res/productDetailMessage.png';
+import logisticCar from './../res/car.png'
 import constants from '../../../constants/constants';
 import DateUtils from '../../../utils/DateUtils';
 import Toast from '../../../utils/bridge';
@@ -145,7 +146,7 @@ class MyOrdersDetailPage extends BasePage {
                     })
                 }}  onContentSizeChange={this.onContentSizeChange.bind(this)}>
                     <View style={{ flexDirection: 'row', alignItems: 'center'}} >
-                        <UIImage source={position} style={{ height: 19, width: 19, marginLeft: 21 }}/>
+                        <UIImage source={logisticCar} style={{ height: 19, width: 19, marginLeft: 21 }}/>
                         <View style={{justifyContent:'center'}}>
                             {typeof this.state.pageStateString.sellerState=='string'?
                                 <UIText value={this.state.pageStateString.sellerState} style={{
