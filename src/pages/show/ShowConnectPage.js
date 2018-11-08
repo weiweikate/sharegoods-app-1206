@@ -11,8 +11,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
 import BasePage from '../../BasePage';
-import selectedImg from '../../comm/res/selected_circle_red.png';
-import unselectedImg from '../../comm/res/unselected_circle.png';
+import res from '../../comm/res';
 import DesignRule from 'DesignRule';
 
 const imgWidth = px2dp(168);
@@ -148,7 +147,7 @@ export default class ShowConnectPage extends BasePage {
                     ?
                     <TouchableOpacity style={styles.selectedView} onPress={() => this._selectedAction(data)}>
                         <Image
-                            source={allSelected ? selectedImg : (selectedList[data.id] ? selectedImg : unselectedImg)}/>
+                            source={allSelected ? res.button.selected_circle_red : (selectedList[data.id] ? res.button.selected_circle_red : res.button.unselected_circle)}/>
                     </TouchableOpacity>
                     :
                     null
@@ -182,7 +181,7 @@ export default class ShowConnectPage extends BasePage {
                             <TouchableOpacity style={styles.allView} onPress={() => {
                                 this._selectedAllAction();
                             }}>
-                                <Image style={styles.allImg} source={allSelected ? selectedImg : unselectedImg}/>
+                                <Image style={styles.allImg} source={allSelected ? res.button.selected_circle_red : res.button.unselected_circle}/>
                                 <Text style={styles.all}>全选</Text>
                             </TouchableOpacity>
                             <View style={{ flex: 1 }}/>
@@ -216,7 +215,7 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(10)
     },
     button: {
-        backgroundColor: '#FF1A54',
+        backgroundColor: DesignRule.mainColor,
         width: px2dp(109),
         height: px2dp(49),
         alignItems: 'center',
@@ -227,7 +226,7 @@ let styles = StyleSheet.create({
         fontSize: px2dp(16)
     },
     select: {
-        color: '#FF1A54',
+        color: DesignRule.mainColor,
         fontSize: px2dp(15)
     },
     rightButton: {

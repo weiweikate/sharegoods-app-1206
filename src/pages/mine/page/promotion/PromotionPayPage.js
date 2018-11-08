@@ -22,7 +22,8 @@ import BasePage from "../../../../BasePage";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 const { px2dp } = ScreenUtils;
 import UIText from "../../../../comm/components/UIText";
-import icon from '../../../../comm/res/selected_circle_red.png'
+import res from '../../../../comm/res';
+const icon = res.selected_circle_red;
 import DesignRule from 'DesignRule';
 
 type Props = {};

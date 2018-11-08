@@ -22,10 +22,10 @@ import CCZImg from './res/ccz_03.png';
 import ProgressImg from './res/jdt_05.png';
 // import {NavigationActions} from "react-navigation";
 import BasePage from '../../../../BasePage';
-import {UIImage} from '../../../../components/ui';
+// import {UIImage} from '../../../../components/ui';
 import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import CommTabImag from '../../../../comm/res/CommTabImag';
+// import CommTabImag from '../../../../comm/res/CommTabImag';
 import DesignRule from 'DesignRule';
 // 常量
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -131,7 +131,7 @@ export default class MyPromotionPage extends BasePage {
                 width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH+ScreenUtils.statusBarHeight,
                 flexDirection: 'row',paddingTop:ScreenUtils.statusBarHeight,
             }}>
-                <UIImage source={CommTabImag.white_back_img} style={{marginLeft:15,width:15,height:15}} onPress={()=>this.$navigateBack()}/>
+                {/*<UIImage source={} style={{marginLeft:15,width:15,height:15}} onPress={()=>this.$navigateBack()}/>*/}
                 <ImageBackground source={RingImg}
                                  style={styles.headerBg}>
                     {
