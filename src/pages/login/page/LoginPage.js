@@ -6,43 +6,29 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    Image,
-    Platform,
-    BackAndroid
+    Image
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import loginAndRegistRes from '../res/LoginAndRegistRes';
-import ScreenUtils from '../../../utils/ScreenUtils';
 import ColorUtil from '../../../utils/ColorUtil';
 import BasePage from '../../../BasePage';
 import bridge from '../../../utils/bridge';
 import LoginAPI from '../api/LoginApi';
 import { NavigationActions } from 'react-navigation';
-import DeviceInfo from 'react-native-device-info'
+import DeviceInfo from 'react-native-device-info';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
+/**
+ * @author huyufeng
+ * @date on 2018/9/7
+ * @describe 登录页
+ * @org www.sharegoodsmall.com
+ * @email huyufeng@meeruu.com
+ */
 export default class LoginPage extends BasePage {
     constructor(props) {
         super(props);
     }
-
-    componentWillMount() {
-        if (Platform.OS === 'android') {
-            BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid);
-        }
-
-        console.log(this.props.navigation.state);
-    }
-
-    componentWillUnmount() {
-        if (Platform.OS === 'android') {
-            BackAndroid.removeEventListener('hardwareBackPress', this.onBackAndroid);
-        }
-    }
-
-    onBackAndroid = () => {
-        this.$NavBarLeftPressed();
-        return true;
-    };
 
     // 禁用某个页面的手势
     static navigationOptions = {
@@ -62,9 +48,8 @@ export default class LoginPage extends BasePage {
             </Text>
         );
     };
+
     $NavBarLeftPressed = () => {
-        // this.$navigateBack('Tab')
-        // return
         if (UserModel.isLogin) {
             this.$navigateBack();
         } else {
@@ -92,33 +77,34 @@ export default class LoginPage extends BasePage {
                 />
                 <View style={Styles.otherLoginBgStyle}>
                     <View style={Styles.lineBgStyle}>
-                        <CommSpaceLine style={{ marginTop: 7, width: 80, marginLeft: 5 }}/>
+                        <CommSpaceLine style={{ width: 80, marginLeft: 5 }}/>
                         <Text style={Styles.otherLoginTextStyle}>
                             其他登录方式
                         </Text>
-                        <CommSpaceLine style={{ marginTop: 7, width: 80, marginLeft: 5 }}/>
+                        <CommSpaceLine style={{  width: 80, marginLeft: 5 }}/>
                     </View>
                     <View style={{
+                        marginTop:15,
                         marginLeft: 0,
                         marginRight: 0,
                         justifyContent: 'center',
                         backgroundColor: '#fff',
-                        alignItems: 'center'
+                        alignItems: 'center',
                     }}>
                         <TouchableOpacity onPress={this.weChatLoginClick}>
                             <Image style={{ width: 50, height: 50 }} source={loginAndRegistRes.weixinImage}/>
                         </TouchableOpacity>
                     </View>
                 </View>
-                <Image
-                    style={{
-                        width: ScreenUtils.width,
-                        position: 'absolute',
-                        bottom: 0,
-                        height: 80
-                    }}
-                    source={loginAndRegistRes.loginBottomImage}
-                    resizeMode='cover'/>
+                {/*<Image*/}
+                    {/*style={{*/}
+                        {/*width: ScreenUtils.width,*/}
+                        {/*position: 'absolute',*/}
+                        {/*bottom: 0,*/}
+                        {/*height: 80*/}
+                    {/*}}*/}
+                    {/*source={loginAndRegistRes.loginBottomImage}*/}
+                    {/*resizeMode='cover'/>*/}
             </View>
         );
     }
@@ -145,7 +131,7 @@ export default class LoginPage extends BasePage {
                     this.$navigate('login/login/RegistPage', data);
                 } else if (res.code === 10000) {
                     UserModel.saveUserInfo(res.data);
-                    UserModel.saveToken(res.data.token)
+                    UserModel.saveToken(res.data.token);
                     bridge.$toast('登陆成功');
                     this.$navigateBack();
                 }
@@ -160,16 +146,11 @@ export default class LoginPage extends BasePage {
 
     /*老用户登陆*/
     oldUserLoginClick = () => {
-        // this.$navigate('login/login/SetPasswordPage', {
-        // });
         this.props.navigation.navigate('login/login/OldUserLoginPage');
     };
     /*注册*/
     registBtnClick = () => {
-        console.log('registBtnClick')
         this.$navigate('login/login/RegistPage');
-        // this.$navigate('registPage');
-        // this.$navigate('login/login/GetRedpacketPage')
     };
 
     /*登陆*/
@@ -182,16 +163,16 @@ export default class LoginPage extends BasePage {
                 device: '设备名称',
                 password: LoginParam.password,
                 phone: LoginParam.phoneNumber,
-                systemVersion: (DeviceInfo.getSystemVersion() + '').length>0?DeviceInfo.getSystemVersion():'暂无',
+                systemVersion: (DeviceInfo.getSystemVersion() + '').length > 0 ? DeviceInfo.getSystemVersion() : '暂无',
                 username: '',
                 wechatCode: '',
                 wechatVersion: ''
             }).then((data) => {
                 this.$loadingDismiss();
                 UserModel.saveUserInfo(data.data);
-                UserModel.saveToken(data.data.token)
+                UserModel.saveToken(data.data.token);
                 bridge.$toast('登陆成功');
-                if(this.params.callback){
+                if (this.params.callback) {
                     let resetAction = NavigationActions.reset({
                         index: 0,
                         actions: [
@@ -199,7 +180,7 @@ export default class LoginPage extends BasePage {
                         ]
                     });
                     this.props.navigation.dispatch(resetAction);
-                }else {
+                } else {
                     this.$navigateBack();
                 }
             }).catch((data) => {
@@ -207,7 +188,7 @@ export default class LoginPage extends BasePage {
                 bridge.$toast(data.msg);
                 /*未注册*/
                 if (data.code === 34001) {
-                    this.$navigate('login/login/RegistPage',{phone:LoginParam.phoneNumber});
+                    this.$navigate('login/login/RegistPage', { phone: LoginParam.phoneNumber });
                 }
             });
         } else {
@@ -217,17 +198,17 @@ export default class LoginPage extends BasePage {
                 device: '44',
                 password: LoginParam.password,
                 phone: LoginParam.phoneNumber,
-                systemVersion: (DeviceInfo.getSystemVersion() + '').length > 0 ? DeviceInfo.getSystemVersion()+'' : '22' ,
+                systemVersion: (DeviceInfo.getSystemVersion() + '').length > 0 ? DeviceInfo.getSystemVersion() + '' : '22',
                 username: '',
                 wechatCode: '11',
                 wechatVersion: '11'
             }).then((data) => {
                 this.$loadingDismiss();
                 UserModel.saveUserInfo(data.data);
-                UserModel.saveToken(data.data.token)
+                UserModel.saveToken(data.data.token);
                 bridge.$toast('登陆成功');
                 this.params.callback && this.params.callback();
-                if(this.params.callback){
+                if (this.params.callback) {
                     let resetAction = NavigationActions.reset({
                         index: 0,
                         actions: [
@@ -235,16 +216,16 @@ export default class LoginPage extends BasePage {
                         ]
                     });
                     this.props.navigation.dispatch(resetAction);
-                }else {
+                } else {
                     this.$navigateBack();
                 }
 
             }).catch((data) => {
-                console.log(data)
+                console.log(data);
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
                 if (data.code === 34001) {
-                    this.$navigate('login/login/RegistPage',{phone:LoginParam.phoneNumber});
+                    this.$navigate('login/login/RegistPage', { phone: LoginParam.phoneNumber });
                 }
             });
 
@@ -265,18 +246,23 @@ const Styles = StyleSheet.create(
             color: '#666'
         },
         otherLoginBgStyle: {
-            left: 30,
+            // left: 30,
+            width:ScreenUtils.width,
             position: 'absolute',
             bottom: 10,
-            height: 170
+            height: 170,
+            justifyContent:'center',
+            alignItems:'center'
         },
         lineBgStyle: {
-            marginLeft: 30,
-            marginRight: 30,
+            // marginLeft: 30,
+            // marginRight: 30,
+            width:ScreenUtils.width,
             flexDirection: 'row',
             height: 30,
             backgroundColor: '#fff',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            alignItems:'center'
         },
         otherLoginTextStyle: {
             color: ColorUtil.Color_666666

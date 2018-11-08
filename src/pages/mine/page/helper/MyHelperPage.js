@@ -8,21 +8,21 @@ import {
     Image,
     Text,
     TouchableOpacity,
-
+    Linking,
     ScrollView
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import UIImage from '../../../../components/ui/UIImage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import csperson from '../../res/customerservice/kf_03.png';
-import backmg from '../../res/customerservice/xwduo.png';
+import csperson from '../../res/customerservice/kefu-img.png';
+// import backmg from '../../res/customerservice/xwduo.png';
 import kf11 from '../../res/customerservice/kf_11.png';
 import monenybpg from '../../res/customerservice/kf_20.png';
 import qbcIcon from '../../res/customerservice/kf_22.png';
 import autobcIon from '../../res/customerservice/kf_24.png';
-import phoneIcon from '../../res/customerservice/kf_30.png';
-import personIcon from '../../res/customerservice/kf_30-33.png';
+import phoneIcon from '../../res/customerservice/bangzukefu_icon.png';
+import personIcon from '../../res/customerservice/bangzyuef_icon.png';
 import QYChatUtil from './QYChatModel';
 import MineApi from '../../api/MineApi';
 
@@ -74,23 +74,9 @@ export default class MyHelperPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
-                    <View
-                        style={{ alignItems: 'center', marginTop: 1, flexDirection: 'row', backgroundColor: 'white' }}>
-                        <Image style={{ width: 90, height: 101, flex: 1, marginBottom: 2 }} source={csperson}
+                    <View style={{ marginTop: 1, paddingLeft:36, backgroundColor: 'white' }}>
+                        <Image  source={csperson}
                                resizeMode="contain"/>
-                        <UIImage source={backmg} style={{ flex: 2, height: 63, width: 232 }}
-                                 onPress={() => this.jumpTohelpPage()}/>
-                    </View>
-                    <View style={{
-                        width: ScreenUtils.width,
-                        height: 32,
-                        justifyContent: 'center',
-                        backgroundColor: '#F6F6F6'
-                    }}>
-                        <Text style={{
-                            marginLeft: 16, width: 60, height: 15, fontSize: 13,
-                            color: '#666666'
-                        }}>热门问题</Text>
                     </View>
                     {this.renderHotQuestionList()}
                     <View style={{ height: 1, backgroundColor: '#f6f6f6' }}/>
@@ -124,21 +110,25 @@ export default class MyHelperPage extends BasePage {
                     height: 80, position: 'absolute', bottom: 0, alignItems: 'center', zIndex: 21
                 }}>
 
-                    <View style={{ width: 58, height: 54, alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-                        <UIImage source={phoneIcon} style={{ height: 20, width: 24 }}/>
-                        <Text style={[styles.textFontstyle, { marginTop: 5 }]}>咨询电话</Text>
-                        <Text style={styles.textFontstyle}>8：30-24：00</Text>
-                    </View>
+                    <TouchableOpacity style={{ width: 58, height: 54, alignItems: 'center', flexDirection:'row', flex: 1 ,justifyContent:'center'}}
+                                      onPress={() => this.jump2Telephone()}>
+                        <UIImage source={phoneIcon} style={{ height: 23, width: 23 }} resizeMode={'contain'}/>
+                        <View style={{marginLeft:2,justifyContent:'center',alignItems:'center'}}>
+                        <Text style={[styles.textFontstyle]}>咨询电话</Text>
+                        <Text style={styles.text2Style}>8：30-24：00</Text>
+                        </View>
+                    </TouchableOpacity>
 
                     <View style={{ width: 1, height: '70%', backgroundColor: '#C5c5c5' }}/>
 
                     <TouchableOpacity
-                        style={{ width: 58, height: 54, alignItems: 'center', justifyContent: 'center', flex: 1 }}
+                        style={{ width: 58, height: 54, alignItems: 'center', flexDirection:'row',justifyContent:'center', flex: 1 }}
                         onPress={() => this.jumpQYIMPage()}>
-                        <UIImage source={personIcon} style={{ height: 20, width: 24 }}/>
+                        <UIImage source={personIcon} style={{ height: 23, width: 24 }} esizeMode={'contain'}/>
+                        <View style={{marginLeft:2,justifyContent:'center',alignItems:'center'}}>
                         <Text style={[styles.textFontstyle, { marginTop: 5 }]}>在线客服</Text>
-                        <Text style={styles.textFontstyle}>8：30-24：00</Text>
-
+                        <Text style={styles.text2Style}>8：30-24：00</Text>
+                        </View>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -147,14 +137,15 @@ export default class MyHelperPage extends BasePage {
     jumpQYIMPage = () => {
         QYChatUtil.qiYUChat();
     };
-
+    jump2Telephone(){
+         Linking.openURL('tel:'+'400-9696-365').catch(e=>console.log(e))
+    }
     jumpTohelpPage() {
         console.log('fankui');
     }
 
     orderListq(list) {
         this.$navigate('mine/helper/HelperQuestionListPage', { list });
-        // this.navigate(RouterPaths.HelperQuestionListPage,{typeid:typeid})
     }
 
     questionfeedBack() {
@@ -164,7 +155,6 @@ export default class MyHelperPage extends BasePage {
     gotoquestionDetail(id) {
         console.log(id);
         this.$navigate('mine/helper/HelperQuestionDetail', { id: id });
-        // this.navigate(RouterPaths.HelperQeustionDetail,{id:id})
     }
 
     componentDidMount() {
@@ -206,8 +196,8 @@ export default class MyHelperPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: '#F6F6F6'
-        // marginTop: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 0
+        flex: 1, backgroundColor: '#F7F7F7',
+        marginBottom: ScreenUtils.safeBottom
     },
     hotQuestionStyle: {
         alignItems: 'center',
@@ -225,7 +215,13 @@ const styles = StyleSheet.create({
         borderWidth: 0.5
     },
     textFontstyle: {
-        fontSize: 11,
-        color: '#666666'
+        fontSize: 16,
+        color: '#222222',
+        fontFamily:'PingFangSC-Regular'
+    },
+    text2Style:{
+        color:'#999999',
+        fontSize:12,
+        fontFamily:'PingFangSC-Light'
     }
 });

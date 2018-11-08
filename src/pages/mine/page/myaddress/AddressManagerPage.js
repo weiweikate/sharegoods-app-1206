@@ -10,7 +10,15 @@ import dingwei from '../../res/address/dizhi_icon_dingwei_nor.png';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
+/**
+ * @author luoyongming
+ * @date on 2018/9/18
+ * @describe 设置页面
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
+ */
 export default class AddressManagerPage extends BasePage {
 
     initIndex = -10;
@@ -18,7 +26,7 @@ export default class AddressManagerPage extends BasePage {
     // 导航配置
     $navigationBarOptions = {
         title: '地址管理',
-        rightTitleStyle: { color: '#D51243' },
+        rightTitleStyle: { color: DesignRule.mainColor },
         rightNavTitle: '添加新地址'
     };
 
@@ -96,8 +104,15 @@ export default class AddressManagerPage extends BasePage {
                            }}/>
                     <View style={{ flex: 1, flexDirection: 'column' }}>
                         <View style={styles.cell_name_tel}>
-                            <Text style={{ flex: 1, fontSize: 15, color: '#222222' }}>收货人：{item.item.receiver}</Text>
-                            <Text style={{ fontSize: 15, color: '#222222' }}>{item.item.receiverPhone}</Text>
+                            <Text style={{
+                                flex: 1,
+                                fontSize: 15,
+                                color: DesignRule.textColor_mainTitle
+                            }}>收货人：{item.item.receiver}</Text>
+                            <Text style={{
+                                fontSize: 15,
+                                color: DesignRule.textColor_mainTitle
+                            }}>{item.item.receiverPhone}</Text>
                         </View>
                         <Text
                             numberOfLines={2}
@@ -105,7 +120,7 @@ export default class AddressManagerPage extends BasePage {
                             style={styles.cell_addr}>{item.item.province + item.item.city + item.item.area + item.item.address}</Text>
                     </View>
                 </View>
-                <View style={{ height: 0.5, backgroundColor: '#EBEBEB', marginTop: 15 }}/>
+                <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg, marginTop: 15 }}/>
                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 13, paddingBottom: 13 }}>
                     <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginLeft: 16 }}
                                       onPress={() => this._onSelectImgClick(item.item, item.index)}>
@@ -115,20 +130,20 @@ export default class AddressManagerPage extends BasePage {
                         <Text style={{
                             flex: 1,
                             fontSize: 13,
-                            color: item.index === this.state.selectIndex ? '#D51243' : '#999999'
+                            color: item.index === this.state.selectIndex ? DesignRule.mainColor : DesignRule.textColor_instruction
                         }}>默认地址</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}
                                       onPress={() => this._onEditAddress(item.item, item.index)}>
                         <Image style={{ width: 16, height: 17, marginRight: 4 }}
                                source={require('../../res/address/addr_edit.png')}/>
-                        <Text style={{ fontSize: 13, color: '#999999' }}>编辑</Text>
+                        <Text style={{ fontSize: 13, color: DesignRule.textColor_instruction }}>编辑</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 17 }}
                                       onPress={() => this._onDelAddress(item.item)}>
                         <Image style={{ width: 17, height: 15, marginRight: 6 }}
                                source={require('../../res/address/addr_del.png')}/>
-                        <Text style={{ fontSize: 13, color: '#999999' }}>删除</Text>
+                        <Text style={{ fontSize: 13, color: DesignRule.textColor_instruction }}>删除</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -209,8 +224,6 @@ export default class AddressManagerPage extends BasePage {
     _separator = () => {
         return <View style={{ height: 10, backgroundColor: 'transparent' }}/>;
     };
-
-
 }
 
 const styles = StyleSheet.create({
@@ -220,7 +233,7 @@ const styles = StyleSheet.create({
     },
     cell: {
         flexDirection: 'column',
-        backgroundColor: 'white',
+        backgroundColor: DesignRule.white,
         borderRadius: 10
     },
     cell_name_tel: {
@@ -229,7 +242,7 @@ const styles = StyleSheet.create({
     },
     cell_addr: {
         fontSize: 13,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         paddingRight: 17,
         marginTop: 5
     },

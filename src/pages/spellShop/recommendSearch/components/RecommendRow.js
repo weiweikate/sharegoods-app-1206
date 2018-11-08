@@ -40,8 +40,9 @@ export default class RecommendRow extends Component {
 
     render() {
         const { ...RecommendRowItem } = this.props.RecommendRowItem;
-        const { storeUserList } = RecommendRowItem;
-
+        //bonusNeedMoney总额 tradeBalance本月收入 totalTradeBalance累计收入
+        const { storeUserList, tradeBalance = 0, bonusNeedMoney = 0, totalTradeBalance = 0 } = RecommendRowItem;
+        let widthScale = bonusNeedMoney===0?0:((tradeBalance / bonusNeedMoney > 1) ? 1 : tradeBalance / bonusNeedMoney);
         const storeStar = RecommendRowItem.storeStarId;
         const starsArr = [];
         if (storeStar && typeof storeStar === 'number') {
@@ -78,14 +79,14 @@ export default class RecommendRow extends Component {
                             borderRadius: 2, borderWidth: 0.5, borderColor: '#D51234'
                         }}>
                             <View style={{
-                                width: 44 / 100 * ScreenUtils.autoSizeWidth(200),
+                                width: widthScale * ScreenUtils.autoSizeWidth(200),
                                 backgroundColor: '#D51234'
                             }}/>
                         </View>
                         <Text style={{
                             marginTop: 8, marginBottom: 14.5, paddingHorizontal: 21.5,
                             color: '#666666', fontSize: 10
-                        }}>{`距离下一次分红还差${1234}元`}</Text>
+                        }}>{`距离下一次分红还差${(bonusNeedMoney - tradeBalance > 0) ? (bonusNeedMoney - tradeBalance) : 0}元`}</Text>
                     </View>
                     <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
                     <View style={{ width: 44 + 70, alignItems: 'center', justifyContent: 'center' }}>
@@ -114,12 +115,12 @@ export default class RecommendRow extends Component {
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.moneyText}>店铺本月收入</Text>
-                        <Text style={styles.moneyText}>{`${RecommendRowItem.tradeVolume || 0}元`}</Text>
+                        <Text style={styles.moneyText}>{`${tradeBalance}元`}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.moneyText}>店铺累计收入</Text>
-                        <Text style={styles.moneyText}>{`${RecommendRowItem.totalTradeVolume || 0}元`}</Text>
+                        <Text style={styles.moneyText}>{`${totalTradeBalance}元`}</Text>
                     </View>
                 </View>
 

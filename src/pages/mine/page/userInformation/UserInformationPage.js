@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     View,
-    StyleSheet,ScrollView,RefreshControl
+    StyleSheet, ScrollView, RefreshControl
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import TakePhotoModal from '../../components/TakePhotoModal';
@@ -14,6 +14,13 @@ import BusinessUtils from '../../components/BusinessUtils';
 const dismissKeyboard = require('dismissKeyboard');
 import MineApi from '../../api/MineApi';
 
+/**
+ * @author chenxiang
+ * @date on 2018/9/13
+ * @describe 订单列表
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
+ */
 @observer
 export default class UserInformationPage extends BasePage {
 
@@ -56,27 +63,27 @@ export default class UserInformationPage extends BasePage {
 
         );
     };
-    _reload=()=>{
+    _reload = () => {
         MineApi.getUser().then(res => {
-                let data = res.data;
-                user.saveUserInfo(data);
-        }).catch(err=>{
+            let data = res.data;
+            user.saveUserInfo(data);
+        }).catch(err => {
             this.$toastShow(err.msg);
-        })
+        });
     };
+
     _render() {
-        //rightText={(user.province || ' ') + '-' + (user.city || ' ') + '-' + (user.area || ' ')}
         return (
-            <ScrollView style={{ backgroundColor: color.white }}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={false}
-                                onRefresh={this._reload}
-                                progressViewOffset={64}
-                                colors={['#d51243']}
-                                tintColor="#999"
-                                titleColor="#999"
-                            />}>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={false}
+                        onRefresh={this._reload}
+                        progressViewOffset={64}
+                        colors={['#d51243']}
+                        tintColor="#999"
+                        titleColor="#999"
+                    />}>
 
                 {this.renderWideLine()}
 
@@ -102,7 +109,7 @@ export default class UserInformationPage extends BasePage {
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={false}/>
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'所在区域'}
-                                rightText={user.area?user.province+user.city+user.area:''}
+                                rightText={user.area ? user.province + user.city + user.area : ''}
                                 rightTextStyle={styles.grayText} leftTextStyle={styles.blackText} isLine={false}
                                 onPress={() => this.renderGetCityPicker()}/>
                 {this.renderWideLine()}
@@ -111,7 +118,6 @@ export default class UserInformationPage extends BasePage {
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={false}
                                 circleStyle={user.realname ? styles.hasVertifyID : styles.notVertifyID}
                                 onPress={() => this.jumpToIDVertify2Page()}/>
-
             </ScrollView>
         );
     }
@@ -125,8 +131,6 @@ export default class UserInformationPage extends BasePage {
                 if (response.code == 10000) {
                     user.headImg = callback.imageUrl;
                     this.$toastShow('头像修改成功');
-                } else {
-                    // this.$toast(response.msg);
                 }
             }).catch(err => {
 
@@ -134,7 +138,6 @@ export default class UserInformationPage extends BasePage {
                 if (err.code == 10009) {
                     this.props.navigation.navigate('login/login/LoginPage');
                 }
-
             });
         });
     };
@@ -154,12 +157,13 @@ export default class UserInformationPage extends BasePage {
             fatherCode: '0'
         });
     };
-    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, areaText) {
-            user.province=provinceName;
-            user.city=cityName;
-            user.area=areaName;
 
-        MineApi.updateUserById({ type: 3, provinceId: provinceCode,cityId:cityCode,areaId:areaCode }).then(res => {
+    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, areaText) {
+        user.province = provinceName;
+        user.city = cityName;
+        user.area = areaName;
+
+        MineApi.updateUserById({ type: 3, provinceId: provinceCode, cityId: cityCode, areaId: areaCode }).then(res => {
             this.$toastShow('地址修改成功');
         }).catch(err => {
             if (err.code == 10009) {

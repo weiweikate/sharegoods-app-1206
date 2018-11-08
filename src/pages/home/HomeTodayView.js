@@ -6,7 +6,7 @@ import { View, ScrollView, StyleSheet, Text, Image, TouchableOpacity } from 'rea
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import { TodayModule, homeModule } from './Modules'
+import { todayModule, homeModule } from './Modules'
 
 const TodayItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <Image style={styles.img} source={{uri: item.imgUrl}}/>
@@ -14,13 +14,6 @@ const TodayItem = ({item, press}) => <TouchableOpacity style={styles.item} onPre
 
 @observer
 export default class HomeTodayView extends Component {
-
-    constructor(props) {
-        super(props)
-        this.todayModule = new TodayModule()
-        this.todayModule.loadTodayList()
-    }
-
     _todayItemAction(item) {
         let router = homeModule.homeNavigate(item.linkType, item.linkTypeCode)
         let params = homeModule.paramsNavigate(item)
@@ -29,7 +22,7 @@ export default class HomeTodayView extends Component {
     }
 
     render() {
-        const { todayList } = this.todayModule
+        const { todayList } = todayModule
         let items = []
         todayList.map((item, index) => {
             items.push(<TodayItem key={index} item={item} press={()=>this._todayItemAction(item)}/>)

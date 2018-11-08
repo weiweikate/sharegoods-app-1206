@@ -3,7 +3,7 @@ import {
     NativeModules,
     StyleSheet,
     View,
-    Image,
+    ImageBackground,
     Text,
     TouchableOpacity
 } from 'react-native';
@@ -15,7 +15,6 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import registeredImg from '../../res/userInfoImg/list_icon_zhucei.png';
 import activityPresent from '../../res/userInfoImg/list_icon_hedong.png';
 import xiaofei from '../../res/userInfoImg/list_icon_xiaofe.png';
-import consumePointPage from '../../res/userInfoImg/consumePointPage.png';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
@@ -70,7 +69,7 @@ export default class MyIntegralAccountPage extends BasePage {
     renderHeader = () => {
         return (
             <View style={styles.container}>
-                <Image style={styles.imageBackgroundStyle} source={consumePointPage}/>
+                <ImageBackground style={styles.imageBackgroundStyle}/>
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -89,7 +88,7 @@ export default class MyIntegralAccountPage extends BasePage {
                             fontSize: 25,
                             marginTop: 10,
                             color: color.white
-                        }}>{user.userScore}</Text>
+                        }}>{user.userScore?user.userScore:0}</Text>
                     </View>
                     <TouchableOpacity style={styles.rectangleStyle} onPress={() => {
                         this.$navigate('home/signIn/SignInPage');
@@ -197,7 +196,7 @@ const styles = StyleSheet.create({
     container: {}, imageBackgroundStyle: {
         position: 'absolute',
         height: 95,
-
+        backgroundColor:'#F2D4A2',
         width: ScreenUtils.width - 30,
         marginLeft: 15,
         marginRight: 15,

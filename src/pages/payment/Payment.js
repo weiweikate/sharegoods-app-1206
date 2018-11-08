@@ -75,15 +75,20 @@ export class Payment {
             params.balance = params.amounts
             params.amounts = 0
             const res = yield this.perpay(params)
-            const outTradeNo = res.data.outTradeNo
-            const checkRes = yield this.paySuccess({...params, outTradeNo: outTradeNo})
-            user.updateUserData()
-            Toast.hiddenLoading()
-            return checkRes
+            if (res && res.code === 10000) {
+                const outTradeNo = res.data.outTradeNo
+                const checkRes = yield this.paySuccess({...params, outTradeNo: outTradeNo})
+                user.updateUserData()
+                Toast.hiddenLoading()
+                return checkRes
+            } else {
+                Toast.hiddenLoading()
+                return res
+            }
         } catch (error) {
             Toast.hiddenLoading();
             // Toast.$toast(error.msg);
-            console.log('PaymentResultView',error.msg)
+            console.log('PaymentResultView',error)
             ref && ref.show(2, error.msg)
             return error
         }
@@ -134,17 +139,19 @@ export class Payment {
                 params.amounts = params.amounts
                 preStr = yield this.perpay(params)
             }
-            const prePayStr = preStr.data.prePayStr
-            this.outTradeNo = preStr.data.outTradeNo
-            const resultStr = yield PayUtil.appAliPay(prePayStr)
-            // if (resultStr.sdkCode != 9000) {
-            //     throw error
-            // }
-            // console.log('resultStr', resultStr)
-            // const checkStr = yield this.alipayCheck({outTradeNo:preStr.data.outTradeNo , type:paymentType.alipay})
-            // console.log('checkStr', checkStr)
-            Toast.hiddenLoading();
-            return  resultStr
+
+            if (preStr && preStr.code === 10000) {
+                const prePayStr = preStr.data.prePayStr
+                this.outTradeNo = preStr.data.outTradeNo
+                const resultStr = yield PayUtil.appAliPay(prePayStr)
+                Toast.hiddenLoading();
+                return  resultStr
+            } else {
+                Toast.hiddenLoading()
+                ref && ref.show(2, preStr.msg)
+                return
+            }
+           
         } catch (error) {
             Toast.hiddenLoading()
             console.log(error)
@@ -178,18 +185,26 @@ export class Payment {
                 params.amounts = params.amounts
                 preStr = yield this.perpay(params)
             }
-            const prePay = JSON.parse(preStr.data.prePayStr)
-            const resultStr = yield PayUtil.appWXPay(prePay);
-            console.log(JSON.stringify(resultStr));
-            this.outTradeNo = preStr.data.outTradeNo
-           if (parseInt(resultStr.sdkCode, 0) !== 0) {
-                ref && ref.show(2, resultStr.msg)
+
+            if (preStr && preStr.code === 10000) {
+                const prePay = JSON.parse(preStr.data.prePayStr)
+                const resultStr = yield PayUtil.appWXPay(prePay);
+                console.log(JSON.stringify(resultStr));
+                this.outTradeNo = preStr.data.outTradeNo
+                if (parseInt(resultStr.sdkCode, 0) !== 0) {
+                    ref && ref.show(2, resultStr.msg)
+                    Toast.hiddenLoading()
+                    return ''
+                }
+                // const checkStr = yield PaymentApi.wechatCheck({outTradeNo:preStr.data.outTradeNo , type:2})
                 Toast.hiddenLoading()
-                return ''
+                return resultStr
+            } else {
+                Toast.hiddenLoading()
+                ref && ref.show(2, preStr.msg)
+                return
             }
-            // const checkStr = yield PaymentApi.wechatCheck({outTradeNo:preStr.data.outTradeNo , type:2})
-            Toast.hiddenLoading()
-            return resultStr
+            
         } catch (error) {
             Toast.hiddenLoading()
             ref && ref.show(2, error.msg)
@@ -255,7 +270,7 @@ export class Payment {
 
 
     //推广套餐
-    @action payPromotionWithId = (password,packageId) => {
+    @action payPromotionWithId = (password,packageId, ref) => {
         let type = (this.selectedBalace ? 1 : 0)
         if (this.selectedTypes) {
             type += this.selectedTypes.type
@@ -297,7 +312,8 @@ export class Payment {
             return Promise.reject(result)
         }).catch(error => {
             console.log('payStoreActoin error', error)
-            Toast.$toast(error.msg)
+            // Toast.$toast(error.msg)
+            ref && ref.show(2, error.msg)
             Toast.hiddenLoading()
         })
     }

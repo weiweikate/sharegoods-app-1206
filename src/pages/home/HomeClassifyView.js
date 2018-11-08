@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import { ClassifyModules } from './Modules';
+import { classifyModules } from './Modules';
 import ScreenUtils from '../../utils/ScreenUtils';
 import user from '../../model/user'
 
@@ -28,14 +28,16 @@ const Item = ({ data, onPress }) => {
     </TouchableOpacity>
 }
 
+/**
+ * @author chenyangjun
+ * @date on 2018/9/7
+ * @describe 首页头部分类view
+ * @org www.sharegoodsmall.com
+ * @email chenyangjun@meeruu.com
+ */
+
 @observer
 export default class HomeClassifyView extends Component {
-
-    constructor(props) {
-        super(props);
-        this.classifyModule = new ClassifyModules();
-        this.classifyModule.loadClassifyList();
-    }
 
     _onItemPress = (data) => {
         const { navigation } = this.props
@@ -51,7 +53,7 @@ export default class HomeClassifyView extends Component {
     }
 
     renderItems = () => {
-        const { classifyList } = this.classifyModule;
+        const { classifyList } = classifyModules;
         let itemViews = [];
         classifyList.map((value, index) => {
             itemViews.push(<Item key={index} data={value} onPress={(data) => {

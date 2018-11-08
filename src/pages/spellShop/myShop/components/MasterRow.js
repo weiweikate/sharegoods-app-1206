@@ -31,7 +31,8 @@ export default class MasterRow extends Component {
     };
 
     render() {
-        let {headImg,nickName,levelName,storeTotalBonus} = this.props.item;
+        let {headImg,nickName,levelName,contribution} = this.props.item;
+        const {tradeBalance} = this.props;
         return (<TouchableWithoutFeedback onPress={this._clickAssistantDetail}>
             <View style={styles.container}>
                 <Image style={styles.iconGap} source={ShopMasterIcon}/>
@@ -42,7 +43,7 @@ export default class MasterRow extends Component {
                     <View style={styles.right}>
                         <Text style={styles.name}>{(nickName || '  ')}</Text>
                         <Text style={styles.level}>{levelName || ' '}</Text>
-                        <Text style={styles.desc}>贡献度：{storeTotalBonus || 0}%</Text>
+                        <Text style={styles.desc}>贡献度：{tradeBalance===0?0: ((contribution/tradeBalance)*100).toFixed(2)}%</Text>
                     </View>
                 </View>
             </View>

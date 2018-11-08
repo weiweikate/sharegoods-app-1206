@@ -298,7 +298,9 @@ export default class ConfirOrderPage extends BasePage {
                         <UIText value={'提交订单'}
                                 style={{ fontSize: 16, color: '#ffffff' }}/>
                     </TouchableOpacity>
+
                 </View>
+                {this.renderLine()}
             </View>
         );
     };
@@ -756,7 +758,7 @@ export default class ConfirOrderPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: '#f7f7f7', justifyContent: 'flex-end'
+        flex: 1, backgroundColor: '#f7f7f7', justifyContent: 'flex-end',marginBottom: ScreenUtils.safeBottom
     }, selectText: {
         fontSize: 16, color: '#ffffff'
     }, blackText: {

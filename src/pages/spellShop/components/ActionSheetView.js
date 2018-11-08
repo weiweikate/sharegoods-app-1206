@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     View,
     Text,
@@ -10,12 +10,13 @@ import {
     PixelRatio,
     Dimensions,
     StyleSheet,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback
 } from 'react-native';
-import Modal from 'CommModal'
+import Modal from 'CommModal';
+import DesignRule from 'DesignRule';
 
-const MAX_SCREENT = Math.max(Dimensions.get('window').width,Dimensions.get('window').height);
-const MIN_SCREENT = Math.min(Dimensions.get('window').width,Dimensions.get('window').height);
+const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
+const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
 const IPHONEX = (Platform.OS === 'ios') && (MIN_SCREENT === 375.00 && MAX_SCREENT === 812.0);
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -40,7 +41,7 @@ export default class ActionSheetView extends Component {
             //私有state
             modalVisible: false,//是否显示
             panelTopToBottom: new Animated.Value(SCREEN_HEIGHT),//白色面板顶部距离屏幕底部
-            backOpacity: new Animated.Value(0),//背景颜色
+            backOpacity: new Animated.Value(0)//背景颜色
         };
         this.show = this.show.bind(this);
     }
@@ -51,7 +52,7 @@ export default class ActionSheetView extends Component {
             this.state.panelTopToBottom,
             {
                 toValue: (SCREEN_HEIGHT - this._calculatePanelHeight()),
-                duration: Animated_Duration,
+                duration: Animated_Duration
             }
         ).start();
         //透明度
@@ -59,7 +60,7 @@ export default class ActionSheetView extends Component {
             this.state.backOpacity,
             {
                 toValue: 1,
-                duration: Animated_Duration,
+                duration: Animated_Duration
             }
         ).start();
     };
@@ -73,7 +74,7 @@ export default class ActionSheetView extends Component {
             this.state.panelTopToBottom,
             {
                 toValue: SCREEN_HEIGHT,
-                duration: Animated_Duration * 2 / 3,
+                duration: Animated_Duration * 2 / 3
             }
         ).start();
         //透明度
@@ -81,11 +82,11 @@ export default class ActionSheetView extends Component {
             this.state.backOpacity,
             {
                 toValue: 0,
-                duration: Animated_Duration * 2 / 3,
+                duration: Animated_Duration * 2 / 3
             }
         ).start(() => {
             callBack && callBack();
-            this.setState({modalVisible: false,});
+            this.setState({ modalVisible: false });
         });
     };
 
@@ -117,13 +118,13 @@ export default class ActionSheetView extends Component {
             return;
         }
 
-        const {title, items = []} = params;
+        const { title, items = [] } = params;
         this.setState({
             title: title || '',
             items,
             selectCallBack: selectCallBack || defaultCallBack,
             cancelCallBack,
-            modalVisible: true,
+            modalVisible: true
         }, () => {
             this._startAnimated();
         });
@@ -140,12 +141,12 @@ export default class ActionSheetView extends Component {
                                              onPress && onPress(item, index);
                                          }}>
             <View style={[styles.titleContainer, {
-                borderBottomColor: '#e3e3e3',
+                borderBottomColor: DesignRule.lineColor_inWhiteBg,
                 borderBottomWidth: 1.0 / PixelRatio.get()
             }]}>
-                <Text style={[styles.title, onPress ? null : {color: '#C0C0C0'}]}>{item}</Text>
+                <Text style={[styles.title, onPress ? null : { color: DesignRule.bgColor_grayHeader }]}>{item}</Text>
             </View>
-        </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>;
     };
 
 
@@ -171,11 +172,11 @@ export default class ActionSheetView extends Component {
         }}>
             <View style={[styles.titleContainer, {
                 height: 50 + 34,
-                paddingBottom: 34,
+                paddingBottom: 34
             }]}>
                 <Text style={styles.title}>{item}</Text>
             </View>
-        </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>;
     };
 
     render() {
@@ -189,7 +190,7 @@ export default class ActionSheetView extends Component {
         return (
             <Modal onRequestClose={clickHidden} transparent={true} visible={this.state.modalVisible}>
                 <TouchableWithoutFeedback disabled={!this.state.modalVisible} onPress={clickHidden}>
-                    <View style={[styles.container, {backgroundColor: 'transparent'}]}>
+                    <View style={[styles.container, { backgroundColor: 'transparent' }]}>
 
                         <Animated.View style={[styles.container, {
                             backgroundColor: 'rgba(0,0,0,0.5)',
@@ -206,7 +207,7 @@ export default class ActionSheetView extends Component {
 
                             {this._renderArrItems()}
 
-                            <View style={{height: 10, backgroundColor: '#f7f7f7'}}/>
+                            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
 
                             {this._renderCancel('取消', 999, clickHidden)}
 
@@ -224,23 +225,23 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        bottom: 0,
+        bottom: 0
     },
     titleContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        height: 50,
+        height: 50
     },
     title: {
         textAlign: 'center',
         marginHorizontal: 16,
         fontSize: 15,
-        color: '#434343',
+        color: DesignRule.textColor_mainTitle
     },
     whitePanel: {
         position: 'absolute',
         left: 0,
         right: 0,
-        backgroundColor: 'white'
-    },
+        backgroundColor: DesignRule.white
+    }
 });

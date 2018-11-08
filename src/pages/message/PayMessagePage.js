@@ -26,7 +26,7 @@ export default class PayMessagePage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '支付详情',
+        title: this.params.type === 'pay_success' ? '支付详情' : '退款详情',
         show: true // false则隐藏导航
     };
 
@@ -53,11 +53,11 @@ export default class PayMessagePage extends BasePage {
     }
 
     toHelperPage = () => {
-        this.$navigate('mine/helper/HelperFeedbackPage');
+        this.$navigate('mine/helper/MyHelperPage');
     };
 
     commitQuestion = () => {
-        this.$navigate('mine/helper/MyHelperPage');
+        this.$navigate('mine/helper/HelperFeedbackPage');
     };
 
     renderSuccess() {
@@ -81,10 +81,10 @@ export default class PayMessagePage extends BasePage {
                 </View>
                 <View style={{ height: 10 }}/>
                 <NewsDetailItem titles={'付款编号'} rightmg={this.params.outTradeNo} isshow={false}/>
+                {!EmptyUtils.isEmpty(this.params.orderNum) ? <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/> : null }
                 <NewsDetailItem titles={'创建时间'}
                                 rightmg={DateUtils.getFormatDate(this.params.time / 1000)}
                                 isshow={false}/>
-                {!EmptyUtils.isEmpty(this.params.orderNum) ? <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/> : null }
                 <View style={{ height: 10 }}/>
                 <NewsDetailItem titles={'订单疑问'} isshow={true} onPresses={() => this.toHelperPage()}/>
                 <NewsDetailItem titles={'投诉'} isshow={true} onPresses={() => this.commitQuestion()}/>
@@ -107,17 +107,17 @@ export default class PayMessagePage extends BasePage {
                     <Text style={{
                         fontSize: 24,
                         color: '#222222'
-                    }}>+{StringUtils.formatMoneyString(this.params.tradeAmount, false)}</Text>
+                    }}>+{StringUtils.formatMoneyString(this.params.refundPrice, false)}</Text>
                     <View style={{ backgroundColor: '#FF7E00', borderRadius: 3 }}>
                         <Text style={{ color: 'white', margin: 1, fontSize: 11 }}>退款成功</Text>
                     </View>
                 </View>
                 <View style={{ height: 10 }}/>
                 <NewsDetailItem titles={'退款编号'} rightmg={this.params.refundNo} isshow={false}/>
+                {!EmptyUtils.isEmpty(this.params.orderNum) ? <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/> : null }
                 <NewsDetailItem titles={'创建时间'}
                                 rightmg={DateUtils.getFormatDate(this.params.time / 1000)}
                                 isshow={false}/>
-                {!EmptyUtils.isEmpty(this.params.orderNum) ? <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/> : null }
                 <View style={{ height: 10 }}/>
                 <NewsDetailItem titles={'订单疑问'} isshow={true} onPresses={() => this.toHelperPage()}/>
                 <NewsDetailItem titles={'投诉'} isshow={true} onPresses={() => this.commitQuestion()}/>

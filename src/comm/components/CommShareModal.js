@@ -6,7 +6,7 @@
  * @flow
  * @format
  * Created by huchao on 2018/10/15.
- * props type 'Image'(有分享图片和web) 'nomal'（分享web） 'miniProgram'小程序 task任务 promotionShare 推广分享
+ * props type 'Image'(有分享图片和web) 'nomal'（分享web） 'miniProgram'小程序 task 任务 promotionShare 推广分享
  *
  *     imageJson:{
  *     imageUrlStr: 'http//：xxxx.png',
@@ -26,6 +26,7 @@
        dec
        thumImage
        linkUrl"兼容微信低版本网页地址";
+       hdImageURL
        userName //"小程序username，如 gh_3ac2059ac66f";
        miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
        }
@@ -46,7 +47,7 @@ import {
     Clipboard,
     NativeModules,
     Linking
-} from "react-native";
+} from 'react-native';
 
 import {
     UIText, UIImage
@@ -55,7 +56,7 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 //const saveMarginBottom = ScreenUtils.saveMarginBottom;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
-import CommModal from 'CommModal'
+import CommModal from 'CommModal';
 
 import CommTabImag from '../res/CommTabImag';
 import bridge from '../../utils/bridge';
@@ -66,7 +67,7 @@ export default class CommShareModal extends React.Component {
         super(props);
 
         this._bind();
-        this.defaultShareType = props.type === 'miniProgram' ? 2 : 1;
+        this.defaultShareType = (props.type === 'miniProgram'||props.type === 'task' || props.type === 'Image') ? 2 : 1;
 
         this.state = {
             modalVisible: false,
@@ -80,6 +81,7 @@ export default class CommShareModal extends React.Component {
     /** public*/
     open() {
         this.setState({ modalVisible: true, shareType: this.defaultShareType });
+        this.modal && this.modal.open();
         this.state.y.setValue(autoSizeWidth(340));
         Animated.spring(
             // Animate value over time
@@ -162,7 +164,7 @@ export default class CommShareModal extends React.Component {
                     this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path });
                     this.startAnimated();
                 });
-            }else {
+            } else {
                 bridge.creatShareImage(this.props.imageJson, (path) => {
                     this.setState({ path: Platform.OS === 'android' ? 'file://' + path : '' + path });
                     this.startAnimated();
@@ -197,25 +199,23 @@ export default class CommShareModal extends React.Component {
                 this.share(1);
             }
         });
-        if (this.props.type !== 'task') {
-            array.push({
-                image: CommTabImag.qq, title: 'QQ好友', onPress: () => {
-                    this.share(2);
-                }
-            });
-            array.push({
-                image: CommTabImag.kongjian, title: 'QQ空间', onPress: () => {
-                    this.share(3);
-                }
-            });
-            array.push({
-                image: CommTabImag.weibo, title: '微博', onPress: () => {
-                    this.share(4);
-                }
-            });
-        }
+        array.push({
+            image: CommTabImag.qq, title: 'QQ好友', onPress: () => {
+                this.share(2);
+            }
+        });
+        array.push({
+            image: CommTabImag.kongjian, title: 'QQ空间', onPress: () => {
+                this.share(3);
+            }
+        });
+        array.push({
+            image: CommTabImag.weibo, title: '微博', onPress: () => {
+                this.share(4);
+            }
+        });
         if (this.props.type === 'Image' || this.props.type === 'promotionShare') {
-            if (this.state.shareType === 1) {
+            if (this.state.shareType === 2 || this.state.shareType === 1) {
                 array.push({
                     image: CommTabImag.lianjie, title: '复制链接', onPress: () => {
                         this.copyUrl();
@@ -236,6 +236,14 @@ export default class CommShareModal extends React.Component {
             }
         }
 
+        if (this.props.type === 'task'){
+            array = [{
+                image: CommTabImag.wechat, title: '微信好友', onPress: () => {
+                    this.share(0);
+                }
+            }];
+        }
+
         let imageHeight = autoSizeWidth(650 / 2);
         let imageWidth = autoSizeWidth(250);
         if (this.props.type === 'promotionShare') {
@@ -244,8 +252,9 @@ export default class CommShareModal extends React.Component {
         }
         return (
             <CommModal onRequestClose={this.close}
-                   visible={this.state.modalVisible}
-                   transparent={true}
+                       visible={this.state.modalVisible}
+                       transparent={true}
+                       ref={(ref) =>{this.modal = ref;}}
             >
                 <View style={{
                     backgroundColor: 'rgba(0,0,0,0.5)',
@@ -259,7 +268,11 @@ export default class CommShareModal extends React.Component {
                     <TouchableOpacity style={{ flex: 1 }} onPress={() => {
                         this.close();
                     }}/>
-                    <Animated.View style={{ transform: [{ translateY: this.state.y }], paddingBottom: ScreenUtils.safeBottom, backgroundColor: '#FFFFFF'}}>
+                    <Animated.View style={{
+                        transform: [{ translateY: this.state.y }],
+                        paddingBottom: ScreenUtils.safeBottom,
+                        backgroundColor: '#FFFFFF'
+                    }}>
                         <View style={[styles.contentContainer]}>
                             <View style={styles.header}>
                                 <View style={{
@@ -299,10 +312,10 @@ export default class CommShareModal extends React.Component {
                                 }
                             </View>
                         </View>
-                        <View style = {{flex: 1}}/>
+                        <View style={{ flex: 1 }}/>
                         <View style={{
                             height: 1,
-                            backgroundColor: '#EEEEEE',
+                            backgroundColor: '#EEEEEE'
                         }}/>
                         <TouchableWithoutFeedback onPress={() => {
                             this.close();
@@ -319,27 +332,27 @@ export default class CommShareModal extends React.Component {
                                 height: imageHeight,
                                 width: imageWidth,
                                 position: 'absolute',
-                                top: ScreenUtils.height - autoSizeWidth(255) - imageHeight- ScreenUtils.safeBottom,
-                                left: (autoSizeWidth(375) - imageWidth)/2,
+                                top: ScreenUtils.height - autoSizeWidth(255) - imageHeight - ScreenUtils.safeBottom,
+                                left: (autoSizeWidth(375) - imageWidth) / 2,
                                 borderRadius: 10,
                                 borderColor: '#CCCCCC',
                                 shadowOpacity: 0.3,
-                                borderWidth:  this.props.type === 'promotionShare'? 0:0.5,
+                                borderWidth: this.props.type === 'promotionShare' ? 0 : 0.5,
                                 overflow: 'hidden',
                                 shadowColor: '#CCCCCC',
                                 transform: [{ scale: this.state.scale }]
 
                             }}>
-                                <TouchableWithoutFeedback onLongPress={()=>{
+                                <TouchableWithoutFeedback onLongPress={() => {
                                     if (this.props.type === 'promotionShare') {
                                         Linking.openURL(this.props.webJson.linkUrl);
                                     }
-                                    }}>
-                                <UIImage source={{ uri: this.state.path }}
-                                         style={{
-                                             height: imageHeight,
-                                             width: imageWidth
-                                         }}/>
+                                }}>
+                                    <UIImage source={{ uri: this.state.path }}
+                                             style={{
+                                                 height: imageHeight,
+                                                 width: imageWidth
+                                             }}/>
                                 </TouchableWithoutFeedback>
                             </Animated.View> : null
                     }
@@ -355,7 +368,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         backgroundColor: 'white',
-        height: autoSizeWidth(255),
+        height: autoSizeWidth(255)
     },
     header: {
         flexDirection: 'row',

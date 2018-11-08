@@ -33,8 +33,8 @@ export default class HomeUserView extends Component {
         let items = [];
         let levelNames = [];
         let lastExp = 0
-        let left = 0
         let total = px2dp(220) / levelCount
+        let expItems = []
         memberLevels.map((level, index) => {
             levelNames.push( <Text style={styles.level} key={'text' + index}>{level.name}</Text>)
             items.push(<View key={'circle' + index} style={styles.smallCircle}/>)
@@ -42,9 +42,9 @@ export default class HomeUserView extends Component {
                 return
             }
             if (level.name <= levelName) {
-                left += total
                 let otherExp =  experience - lastExp
-                console.log('experience - level.upgradeExp', experience - lastExp, otherExp)
+                let currentExp = level.upgradeExp - lastExp
+                console.log('experience - level.upgradeExp', experience - lastExp, otherExp, currentExp, level.upgradeExp)
                 if (experience === 0) {
                     items.push(<View key={'line' + index} style={[styles.progressLine, { backgroundColor: '#E7AE39'}]}>
                          <View style={{flex: 1, backgroundColor: '#9B6D26' }}/>
@@ -54,9 +54,19 @@ export default class HomeUserView extends Component {
                         <View style={{flex: otherExp}}/><View style={{flex: lastExp - otherExp, backgroundColor: '#9B6D26' }}/>
                     </View>)
                 }
-                
+                if (level.name === levelName) {
+                    let left = (otherExp / currentExp > 1 ? 1 : otherExp / currentExp)  *  total
+                    expItems.push(<View key={'user' + index} style={[styles.block, {paddingLeft: left}]}>
+                            <View style={[styles.levelBottomTextBg]}>
+                                <Text style={ styles.levelBottomText }> {experience} </Text>
+                            </View>
+                    </View>)
+                } else {
+                    expItems.push(<View key={'user' + index} style={styles.block}/>)
+                }
             } else {
                 items.push(<View key={'line' + index} style={[styles.progressLine]}/>)
+                expItems.push(<View key={'user' + index} style={styles.block}/>)
             }
             lastExp = level.upgradeExp
         });
@@ -75,10 +85,8 @@ export default class HomeUserView extends Component {
                             <View style={styles.progress}>
                                 {items}
                             </View>
-                            <View style={[styles.experience, {paddingLeft: left}]}>
-                                <View style={[styles.levelBottomTextBg]}>
-                                    <Text style={ styles.levelBottomText }> {experience} </Text>
-                                </View>
+                            <View style={styles.experience}>
+                                {expItems}
                             </View>
                         </View>
                     </View>
@@ -218,5 +226,9 @@ let styles = StyleSheet.create({
         marginTop: px2dp(15),
         marginLeft: px2dp(14),
         flexDirection: 'row'
+    },
+    block: {
+        height: 15,
+        flex: 1
     }
 });

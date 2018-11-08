@@ -1,6 +1,3 @@
-/**
- * Created by xiangchen on 2018/7/12.
- */
 import React from 'react'
 import {
     StyleSheet,
@@ -8,12 +5,21 @@ import {
     Image,
     Text,
     TouchableOpacity,
+    ScrollView
 } from 'react-native'
 import BasePage from '../../../../BasePage'
 import UIText from '../../../../components/ui/UIText';
 import { color} from "../../../../constants/Theme";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import arrow_right from '../../res/homeBaseImg/icon3_07.png';
+
+/**
+ * @author chenxiang
+ * @date on 2018/9/20
+ * @describe 设置页面
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
+ */
 export default class HelperQuestionListPage extends BasePage {
     constructor(props) {
         super(props);
@@ -73,9 +79,11 @@ export default class HelperQuestionListPage extends BasePage {
 
     _render() {
         return (
-            <View style={{backgroundColor: '#F6F6F6', flex: 1}}>
+            <View style={{backgroundColor: '#F7F7F7', flex: 1,marginBottom: ScreenUtils.safeBottom}}>
+            <ScrollView style={{marginBottom:80}}>
                 <View style={{width: ScreenUtils.width, height: 10}}/>
                 {this.renderContentView()}
+            </ScrollView>
                 {this.renderFooter()}
             </View>
         )

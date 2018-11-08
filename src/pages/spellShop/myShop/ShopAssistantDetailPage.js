@@ -65,26 +65,22 @@ export default class ShopAssistantDetailPage extends BasePage {
 
     // 总体贡献度
     _totalContribution = (storeBonusDto) => {
-        const dealerTotalBonus = storeBonusDto.dealerTotalBonus || 0;
-        const dealerThisTimeBonus = storeBonusDto.dealerThisTimeBonus || 0;
-
-        const storeThisTimeBonus = storeBonusDto.storeThisTimeBonus || 0;
-        const storeTotalBonus = storeBonusDto.storeTotalBonus || 0;
-
-        if (!(storeThisTimeBonus + storeTotalBonus)) {
+        //dealerTotalBonus(店员所有)/storeTotalBonus(店铺所有) 总体贡献度
+        const { dealerTotalBonus = 0, storeTotalBonus = 0 } = this.state.userInfo;
+        if (storeTotalBonus === 0) {
             return '0%';
         }
-        return ((dealerTotalBonus + dealerThisTimeBonus) / (storeThisTimeBonus + storeTotalBonus) * 100).toFixed(2);
+        return `${((dealerTotalBonus / storeTotalBonus) * 100).toFixed(2)}%`;
     };
 
     // 本次贡献度
     _currContribution = (storeBonusDto) => {
-        const dealerThisTimeBonus = storeBonusDto.dealerThisTimeBonus || 0;
-        const storeThisTimeBonus = storeBonusDto.storeThisTimeBonus || 0;
-        if (!storeThisTimeBonus) {
+        //dealerThisTimeBonus(店员本次)/storeThisTimeBonus(店铺本次)
+        const { dealerThisTimeBonus = 0, storeThisTimeBonus = 0 } = this.state.userInfo;
+        if (storeThisTimeBonus === 0) {
             return '0%';
         }
-        return (dealerThisTimeBonus / storeThisTimeBonus * 100).toFixed(2);
+        return `${((dealerThisTimeBonus / storeThisTimeBonus) * 100).toFixed(2)}%`;
     };
 
     _renderRow = (icon, title, desc) => {
@@ -102,8 +98,12 @@ export default class ShopAssistantDetailPage extends BasePage {
 
     renderContent = () => {
         const { userInfo } = this.state;
-        const storeBonusDto = userInfo.storeBonusDto || {};
         const headerWidth = 65 / 375 * SCREEN_WIDTH;
+
+        const { updateTime, dealerTotalBonusCount, dealerTotalBonus, dealerThisTimeBonus } = this.state.userInfo;
+
+        //dealerTotalBonusCount参与店铺分红次数
+        //dealerTotalBonus(店员所有) -dealerThisTimeBonus(未分红) 获得分红总额
 
         return (<ScrollView style={{ flex: 1 }}
                             refreshControl={<RefreshControl
@@ -126,15 +126,15 @@ export default class ShopAssistantDetailPage extends BasePage {
                     {this._renderDescRow(PhoneIcon, `手机号：${userInfo.phone || ''}`, null)}
                 </View>
             </ImageBackground>
-            {this._renderRow(RmbIcon, '加入店铺时间', DateUtils.formatDate(userInfo.addStoreTime, 'yyyy-MM-dd'))}
+            {this._renderRow(RmbIcon, '加入店铺时间', DateUtils.formatDate(updateTime, 'yyyy-MM-dd'))}
             {this.renderSepLine()}
-            {this._renderRow(ZuanIcon, '参与店铺分红次数', `${storeBonusDto.dealerTotalBonusCount || 0}次`)}
+            {this._renderRow(ZuanIcon, '参与店铺分红次数', `${dealerTotalBonusCount || 0}次`)}
             {this.renderSepLine()}
-            {this._renderRow(MoneyIcon, '共获得分红总额', `${storeBonusDto.dealerTotalBonus || 0}元`)}
+            {this._renderRow(MoneyIcon, '共获得分红总额', `${((dealerTotalBonus || 0) - (dealerThisTimeBonus || 0))}元`)}
             {this.renderSepLine()}
-            {this._renderRow(QbIcon, '总体贡献度', this._totalContribution(storeBonusDto))}
+            {this._renderRow(QbIcon, '总体贡献度', this._totalContribution())}
             {this.renderSepLine()}
-            {this._renderRow(MoneyIcon, '本次贡献值', this._currContribution(storeBonusDto))}
+            {this._renderRow(MoneyIcon, '本次贡献值', this._currContribution())}
         </ScrollView>);
     };
 

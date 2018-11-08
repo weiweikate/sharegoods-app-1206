@@ -3,16 +3,18 @@ import {
     StyleSheet,
     View,
     Text,
-    Modal,
+    // Modal,
     NativeModules,
-    TouchableOpacity,
+    TouchableOpacity
 } from 'react-native';
 import { color } from '../../../constants/Theme';
 import circleSelect from '../../../comm/res/selected_circle_red.png';
 import circleUnselect from '../../../comm/res/unselected_circle.png';
+import Modal from 'CommModal';
 import {
-    UIText, UIImage,UIButton
+    UIText, UIImage, UIButton
 } from '../../../components/ui';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 export default class BottomSingleSelectModal extends Component {
 
@@ -23,11 +25,18 @@ export default class BottomSingleSelectModal extends Component {
         };
     }
 
+    open = () => {
+        this.modal && this.modal.open();
+    }
+
     render() {
         return (
             <Modal
                 animationType='slide'
                 transparent={true}
+                ref={(ref) => {
+                    this.modal = ref;
+                }}
                 onRequestClose={() => {
                 }}
                 visible={this.props.isShow}>
@@ -57,7 +66,7 @@ export default class BottomSingleSelectModal extends Component {
                                      style={{ width: 22, height: 22, marginRight: 22 }}/>
                         </View>
                     </TouchableOpacity>
-                    <View style={{ backgroundColor: color.gray_EEE, height: 1 }} />
+                    <View style={{ backgroundColor: color.gray_EEE, height: 1 }}/>
                 </View>
             );
         }
@@ -97,11 +106,11 @@ export default class BottomSingleSelectModal extends Component {
                         </TouchableOpacity>
                     </View>
                     {this.renderMenu()}
-                    <View style={{justifyContent:'center',alignItems:'center',height:64}}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', height: 64 }}>
                         <UIButton
                             value={'确定'}
-                            style={{backgroundColor: color.red,height:43}}
-                            onPress={()=>this.commitSelect()}/>
+                            style={{ backgroundColor: color.red, height: 43 }}
+                            onPress={() => this.commitSelect()}/>
                     </View>
 
                 </View>
@@ -114,7 +123,8 @@ const styles = StyleSheet.create({
     modalStyle: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'flex-end',
-        flex: 1
+        flex: 1,
+        width:ScreenUtils.width
     }
 });
 

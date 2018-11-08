@@ -34,7 +34,7 @@ import levelBg from '../res/homeBaseImg/me_bg_vip_nor.png';
 import setting from '../res/homeBaseImg/tongyong_icon_shezhi_nor.png';
 import service from '../res/homeBaseImg/tongyong_icon_xiaoxi_nor.png';
 import promotion from '../res/homeBaseImg/me_icon_tuiguang_nor.png';
-import task_icon from '../res/homeBaseImg/me_task_icon.png'
+import task_icon from '../res/homeBaseImg/me_task_icon.png';
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineApi from '../api/MineApi';
 import { observer } from 'mobx-react/native';
@@ -43,6 +43,15 @@ import bgImg from '../res/homeBaseImg/bg_img_user.png';
 import rightIcon from '../res/homeBaseImg/me_icon_jinru_nor.png';
 import userOrderNum from '../../../model/userOrderNum';
 import RouterMap from 'RouterMap';
+import DesignRule from 'DesignRule';
+
+/**
+ * @author chenxiang
+ * @date on 2018/9/13
+ * @describe 订单列表
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
+ */
 
 const headerBgSize = { width: 375, height: 200 };
 
@@ -57,10 +66,6 @@ export default class MinePage extends BasePage {
             total: 0,
             nickname: user.phone,
             headImg: '',
-            availableBalance: 0,//现金余额
-            blockedBalance: 0,//待提现
-            levelName: 'V0',
-            userScore: 0,//秀豆
             refreshing: false,
             netFailedInfo: null,
             loadingState: PageLoadingState.success
@@ -189,12 +194,12 @@ export default class MinePage extends BasePage {
         return (
             <View
                 style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
-                <View style={{ height: ScreenUtils.statusBarHeight}}/>
+                <View style={{ height: ScreenUtils.statusBarHeight }}/>
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     paddingRight: px2dp(15),
-                    height: 44,
+                    height: 44
                 }}>
                     <View style={{ flex: 1 }}/>
                     <Text style={{ justifySelf: 'center', color: '#212121', fontSize: px2dp(17) }}>
@@ -225,7 +230,6 @@ export default class MinePage extends BasePage {
                 <View style={{ flex: 1 }}/>
                 <View style={{ height: px2dp(54), marginBottom: px2dp(43), flexDirection: 'row' }}>
                     <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
-
                         {
                             StringUtils.isEmpty(user.headImg) ?
                                 <View style={[styles.userIconStyle, { backgroundColor: 'gray' }]}/> :
@@ -241,7 +245,7 @@ export default class MinePage extends BasePage {
                         <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={{ color: '#666666', fontSize: px2dp(18), includeFontPadding: false }}>
-                                    {`${user.nickname ? user.nickname : (user.phone ? user.phone : 1234)}`}
+                                    {`${user.nickname ? user.nickname : (user.phone ? user.phone : '未登陆')}`}
                                 </Text>
                                 <Image source={rightIcon}
                                        style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(16) }}
@@ -263,7 +267,7 @@ export default class MinePage extends BasePage {
                                 includeFontPadding: false,
                                 marginLeft: px2dp(4.5),
                                 marginTop: px2dp(-3)
-                            }}>{this.state.levelName ? this.state.levelName : `${'VO'}`}</Text>
+                            }}>{user.levelName ? user.levelName : `${'VO'}`}</Text>
                         </ImageBackground>
                     </View>
                 </View>
@@ -299,13 +303,13 @@ export default class MinePage extends BasePage {
                     paddingHorizontal: px2dp(15),
                     justifyContent: 'space-between'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(this.state.availableBalance), '现金账户', '#FF4F6E', () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', '#FF4F6E', () => {
                         this.go2CashDetailPage(1);
                     })}
-                    {this.accountItemView(StringUtils.isEmpty(this.state.userScore) ? '0' : this.state.userScore + '', '秀豆账户', '#FFC079', () => {
+                    {this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : user.userScore + '', '秀豆账户', DesignRule.bgColor_yellowCard, () => {
                         this.go2CashDetailPage(2);
                     })}
-                    {this.accountItemView(StringUtils.formatMoneyString(this.state.blockedBalance), '待提现账户', '#8EC7FF', () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户', '#8EC7FF', () => {
                         this.go2CashDetailPage(3);
                     })}
                 </View>
@@ -466,7 +470,7 @@ export default class MinePage extends BasePage {
                     justifyContent: 'center'
                 }}>
                     <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(10) }}>
-                        {num>99?99:num}
+                        {num > 99 ? 99 : num}
                     </Text>
                 </View>
             ) : null;
@@ -556,13 +560,13 @@ export default class MinePage extends BasePage {
     go2CashDetailPage(i) {
         switch (i) {
             case 1:
-                this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: this.state.availableBalance });
+                this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: user.availableBalance });
                 break;
             case 2:
-                this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: this.state.userScore ? this.state.userScore : 0 });
+                this.$navigate('mine/userInformation/MyIntegralAccountPage', { userScore: user.userScore ? user.userScore : 0 });
                 break;
             case 3:
-                this.$navigate('mine/userInformation/WaitingForWithdrawCashPage', { blockedBalance: this.state.blockedBalance ? this.state.blockedBalance : 0 });
+                this.$navigate('mine/userInformation/WaitingForWithdrawCashPage', { blockedBalance: user.blockedBalance ? user.blockedBalance : 0 });
                 break;
             default:
             // this.props.navigation.navigate('order/order/ConfirOrderPage', { orderParam: { orderType: 2 } });
@@ -638,10 +642,6 @@ export default class MinePage extends BasePage {
     };
 
     jumpToSettingPage = () => {
-        // if (!user.isLogin) {
-        //     this.props.navigation.navigate('login/login/LoginPage');
-        //     return;
-        // }
         this.props.navigation.navigate('mine/SettingPage', { callBack: () => this.loadPageData() });
 
     };
@@ -649,7 +649,6 @@ export default class MinePage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1
-        // marginTop: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 44 : 20) : 0
     },
     whatLeft: {  // 组件定义了一个上边框
         flex: 1,
@@ -693,6 +692,5 @@ const styles = StyleSheet.create({
         paddingLeft: px2dp(22),
         paddingVertical: px2dp(1)
     }
-
 });
 

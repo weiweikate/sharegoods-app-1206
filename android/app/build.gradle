@@ -101,9 +101,13 @@ dependencies {
     debugImplementation('com.squareup.leakcanary:leakcanary-android:1.+') {
         exclude(module: 'support-core-utils')
     }
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.+'
+    releaseImplementation ('com.squareup.leakcanary:leakcanary-android-no-op:1.+'){
+        exclude(module: 'support-core-utils')
+    }
     // Optional, if you use support library fragments:
-    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.+'
+    debugImplementation ('com.squareup.leakcanary:leakcanary-support-fragment:1.+'){
+        exclude(module: 'support-core-utils')
+    }
     api rootProject.ext.dependencies.support
 
     api rootProject.ext.dependencies.eventbus

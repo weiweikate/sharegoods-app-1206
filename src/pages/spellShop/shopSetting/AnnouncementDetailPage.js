@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Banner from './res/banner_02.png';
 import BasePage from '../../../BasePage';
+import DesignRule from 'DesignRule';
 
 export default class AnnouncementDetailPage extends BasePage {
 
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
         marginTop: 27,
         fontWeight: 'bold',
         fontSize: 18,
-        color: '#ffffff'
+        color: DesignRule.white
     },
     bgContainer: {
         flex: 1,
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
     content: {
         fontSize: 13,
         lineHeight: 24,
-        color: 'rgb(34,34,34)',
+        color: DesignRule.textColor_mainTitle,
         marginTop: 48,
         marginHorizontal: 32
     },

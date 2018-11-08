@@ -72,9 +72,6 @@ export default class PaymentMethodPage extends BasePage {
             password: '',
             //需要支付的金额
             shouldPayMoney: this.params.amounts ? this.params.amounts : 0,
-            //example:2表示两个代币兑换1个余额
-            //-1表示该参数未初始化,不能完成支付 todo 做支付拦截
-            tokenCoinToBalance: this.params.tokenCoinToBalance ? this.params.tokenCoinToBalance : -1,
             //订单支付的参数
             orderNum: this.params.orderNum ? this.params.orderNum : 0,
             payPromotionSuccess: false
@@ -110,12 +107,19 @@ export default class PaymentMethodPage extends BasePage {
     _handleAppStateChange = (state) => {
         console.log('_handleAppStateChange AppState', state);
         const { selectedTypes } = this.payment;
+        let paytype = 1
+        if (this.payment.payStore) {
+            paytype = 2
+        }
+        if (this.payment.payPromotion) {
+            paytype = 3
+        }
         if (state === 'active' && this.payment.outTradeNo) {
             if (selectedTypes.type === paymentType.alipay) {
                 this.payment.alipayCheck({
                     outTradeNo: this.payment.outTradeNo,
                     type: paymentType.alipay,
-                    payType: 1
+                    payType: paytype
                 }).then(checkStr => {
                     console.log('_handleAppStateChange', state, checkStr);
                     this._showPayresult(checkStr.resultStr);
@@ -125,7 +129,7 @@ export default class PaymentMethodPage extends BasePage {
                 this.payment.wechatCheck({
                     outTradeNo: this.payment.outTradeNo,
                     type: 2,
-                    payType: 1
+                    payType: paytype
                 }).then(checkStr => {
                     console.log('_handleAppStateChange', state, checkStr);
                     this._showPayresult(checkStr.resultStr);
@@ -171,7 +175,7 @@ export default class PaymentMethodPage extends BasePage {
 
     renderPromotion=()=>{
         return (
-            <CommModal visible={this.state.payPromotionSuccess}>
+            <CommModal ref={(ref)=>{this.promotionModal = ref;}} visible={this.state.payPromotionSuccess}>
                 <View style={styles.promotionBgStyle}>
                     <Image source={paySuccessIcon} style={{width:70,height:70,marginTop:20}}/>
                     <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_mediumBtnText,includeFontPadding:false,marginTop:10}}>
@@ -235,7 +239,7 @@ export default class PaymentMethodPage extends BasePage {
                                     }
                                 });
                             }else if(payPromotion){
-                                this.payment.payPromotionWithId(text,this.params.packageId).then(result => {
+                                this.payment.payPromotionWithId(text,this.params.packageId, this.paymentResultView).then(result => {
                                     if (result.sdkCode === 0) {
                                         // //刷新拼店状态
                                         // spellStatusModel.storeStatus = 2;
@@ -243,9 +247,10 @@ export default class PaymentMethodPage extends BasePage {
                                         // this.$navigate('spellShop/shopSetting/SetShopNamePage');
                                         this.setState({
                                             payPromotionSuccess:true
-                                        })
+                                        });
+                                        this.promotionModal && this.promotionModal.open();
                                     } else {
-                                        Toast.$toast('支付失败');
+                                        this.paymentResultView.show(2, result.message)
                                     }
                                 });
                             }else {
@@ -330,6 +335,11 @@ export default class PaymentMethodPage extends BasePage {
                 return;
             }
             let result = await this.payment.perpay(params);
+            if (result && result.code !== 10000) {
+                Toast.hiddenLoading()
+                this.paymentResultView && this.paymentResultView.show(2, result.msg)
+                return
+            }
 
             user.updateUserData();
             console.log('result', result);
@@ -345,7 +355,7 @@ export default class PaymentMethodPage extends BasePage {
                 const resultStr = await PayUtil.appAliPay(prePayStr);
                 console.log('resultStr', resultStr);
                 // const checkStr = await this.payment.alipayCheck({outTradeNo:result.data.outTradeNo , type:paymentType.alipay})
-                if (resultStr.code !== 9000) {
+                if (resultStr.sdkCode !== 9000) {
                     this.paymentResultView && this.paymentResultView.show(PaymentResult.fail, resultStr.msg);
                 }
                 return;
@@ -357,7 +367,7 @@ export default class PaymentMethodPage extends BasePage {
                 const resultStr = await PayUtil.appWXPay(prePay);
                 console.log('resultStr', resultStr);
                 // const checkStr = await this.payment.wechatCheck({outTradeNo:result.data.outTradeNo , type:2})
-                if (resultStr.sdkCode !== 0) {
+                if (resultStr.code !== 0) {
                     this.paymentResultView && this.paymentResultView.show(PaymentResult.fail, resultStr.msg);
                 }
                 return;
@@ -371,6 +381,8 @@ export default class PaymentMethodPage extends BasePage {
     _showPayresult(result) {
         if (parseInt(result.code, 0) === 10000) {
             this.paymentResultView.show(PaymentResult.sucess);
+        } else {
+            this.paymentResultView.show(PaymentResult.fail, result.msg);
         }
     }
 
@@ -424,14 +436,15 @@ export default class PaymentMethodPage extends BasePage {
                 return;
             }
 
-            this.payment.payPromotionWithId(this.state.password , this.params.packageId).then(result => {
+            this.payment.payPromotionWithId(this.state.password , this.params.packageId, this.paymentResultView).then(result => {
                 if (result.sdkCode === 0) {
                     //刷新拼店状态
                     this.setState({
                         payPromotionSuccess: true
                     });
                 } else {
-                    Toast.$toast('支付失败');
+                    // Toast.$toast('支付失败');
+                    this.paymentResultView.show(2, result.message)
                 }
             });
             return;
