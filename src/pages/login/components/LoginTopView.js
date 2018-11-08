@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     StyleSheet,
     TextInput,
-    Image,
+    Image
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
@@ -123,11 +123,11 @@ export default class LoginTopView extends Component {
                         placeholder='请输入手机号'
                         underlineColorAndroid={'transparent'}
                         keyboardType='numeric'
-                        onEndEditing={()=>{
+                        onEndEditing={() => {
 
-                           if(this.LoginModel.phoneNumber.length>0 && (!StringUtils.checkPhone(this.LoginModel.phoneNumber))) {
-                               bridge.$toast('手机号格式不对');
-                           }
+                            if (this.LoginModel.phoneNumber.length > 0 && (!StringUtils.checkPhone(this.LoginModel.phoneNumber))) {
+                                bridge.$toast('手机号格式不对');
+                            }
                         }}
                     />
                     <CommSpaceLine style={Styles.lineStyle}/>
@@ -137,13 +137,14 @@ export default class LoginTopView extends Component {
                     onPress={this.clickLoginBtn}
                     activeOpacity={this.LoginModel.isCanClick ? 0.6 : 1}
                 >
-                <View style={[Styles.loginBtnStyle, this.LoginModel.isCanClick ? { backgroundColor: DesignRule.mainColor } : { backgroundColor: DesignRule.bgColor_grayHeader }]}>
+                    <View
+                        style={[Styles.loginBtnStyle, this.LoginModel.isCanClick ? { backgroundColor: DesignRule.mainColor } : { backgroundColor: DesignRule.bgColor_grayHeader }]}>
 
                         <Text style={Styles.loginBtnTextStyle}>
                             登录
                         </Text>
 
-                </View>
+                    </View>
                 </TouchableOpacity>
                 <View style={Styles.oldUserLoginBgStyle}>
                     <TouchableOpacity onPress={this.props.oldUserLoginClick}>
@@ -191,8 +192,8 @@ export default class LoginTopView extends Component {
         if (this.LoginModel.dowTime > 0) {
             return;
         }
-        if (!netStatusTool.isConnected){
-            bridge.$toast('请检查网络是否连接')
+        if (!netStatusTool.isConnected) {
+            bridge.$toast('请检查网络是否连接');
             return;
         }
         if (StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
@@ -200,7 +201,7 @@ export default class LoginTopView extends Component {
             (new TimeDownUtils()).startDown((time) => {
                 this.LoginModel.dowTime = time;
             });
-            SMSTool.sendVerificationCode(0,this.LoginModel.phoneNumber)
+            SMSTool.sendVerificationCode(0, this.LoginModel.phoneNumber);
         } else {
             bridge.$toast('手机格式不对');
         }
@@ -318,7 +319,7 @@ const Styles = StyleSheet.create(
             width: 120,
             color: DesignRule.mainColor,
             marginTop: 40,
-            fontSize:13
+            fontSize: 13
         },
         loginBtnStyle: {
             marginTop: 20,
@@ -327,8 +328,8 @@ const Styles = StyleSheet.create(
             width: ScreenUtils.width - 70,
             borderRadius: 25,
             backgroundColor: DesignRule.mainColor,
-            justifyContent:'center',
-            alignItems:'center'
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         loginBtnTextStyle: {
             // paddingTop: 16,
@@ -340,7 +341,7 @@ const Styles = StyleSheet.create(
             fontSize: 17
         },
         oldUserLoginBgStyle: {
-            marginTop:10,
+            marginTop: 10,
             flexDirection: 'row-reverse'
         },
         oldUserLoginBtn: {
@@ -350,7 +351,7 @@ const Styles = StyleSheet.create(
             color: DesignRule.textColor_mainTitle,
             textAlign: 'center',
             marginRight: 0,
-            fontSize:13
+            fontSize: 13
         },
         seePasswordImageStyle: {
             width: 20,
