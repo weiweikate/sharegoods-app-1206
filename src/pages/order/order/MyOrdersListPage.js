@@ -79,7 +79,7 @@ class MyOrdersListPage extends BasePage {
                         selectTab={this.state.selectTab}/>
 
                     <MyOrdersListView
-                        tabLabel={'待支付'} pageStatus={1}
+                        tabLabel={'待付款'} pageStatus={1}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
                     <MyOrdersListView
