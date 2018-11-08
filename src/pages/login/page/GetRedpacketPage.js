@@ -19,7 +19,6 @@ import closeIcon from '../../../../src/comm/res/tongyong_btn_close_white.png';
 import { NavigationActions } from 'react-navigation';
 import LoginAPI from '../api/LoginApi';
 import StringUtils from '../../../utils/StringUtils';
-import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 
 
 export default class GetRedpacketPage extends BasePage {
@@ -365,7 +364,6 @@ export default class GetRedpacketPage extends BasePage {
      * 跳过函数
      */
     jump = () => {
-        // this.$navigate('login/login/RegistPage');
         let resetAction = NavigationActions.reset({
             index: 0,
             actions: [
@@ -389,20 +387,10 @@ export default class GetRedpacketPage extends BasePage {
                 phone: result.data.phone,
                 price: result.data.price
             });
-            this.modal && this.modal.open();
-
-            //定时关闭
-            (new TimeDownUtils()).startDown((time)=>{
-                if (time <= 0){
-                    this._closeModal();
-                }
-            },5)
-
         }).catch(reason => {
             this.$loadingDismiss();
             this.$toastShow(reason.msg);
         });
-        // bridge.$toast('点击了第' + redPacketIndex + '红包');
     };
 }
 
