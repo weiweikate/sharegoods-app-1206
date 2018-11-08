@@ -66,9 +66,9 @@ export default class MinePage extends BasePage {
             total: 0,
             nickname: user.phone,
             headImg: '',
-            refreshing: false,
             netFailedInfo: null,
-            loadingState: PageLoadingState.success
+            loadingState: PageLoadingState.success,
+            isRefreshing:false
         };
     }
 

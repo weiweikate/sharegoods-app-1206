@@ -20,11 +20,12 @@ import bankCard2 from './res/bankCard2.png';
 import bankCard3 from './res/bankCard3.png';
 import bankCard4 from './res/bankCard4.png';
 import bankCard5 from './res/bankCard5.png';
-import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
+import { SwipeListView, SwipeRow } from './../../../../components/ui/react-native-swipe-list-view';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
 import SettingTransactionModal from '../../components/SettingTransactionModal';
 import DesignRule from 'DesignRule';
+// import res from '../../../../comm/res';
 
 const bankCardList = [bankCard1, bankCard2, bankCard3, bankCard4, bankCard5];
 
@@ -32,13 +33,6 @@ class BankCardListPage extends BasePage {
     constructor(props) {
         super(props);
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-        // this.initHeader({
-        //     title: '银行卡',
-        //     textColor:color.white,
-        //     backgroundColor:"#282d33",
-        //     leftIcon:left_arrow_white,
-        //     isShowLine:false,
-        // })
         this.state = {
             viewData: [
                 {
@@ -72,7 +66,17 @@ class BankCardListPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '银行卡'
+        title: '银行卡',
+        show:true,
+        headerStyle:{
+            backgroundColor:'#383c45'
+        },
+       // leftNavImage:CommTabImag.white_back_img,
+        titleStyle:{
+            color:'white'
+        }
+
+
 
     };
 
@@ -269,7 +273,7 @@ class BankCardListPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: DesignRule.textColor_mainTitle, paddingTop: 5
+        flex: 1, backgroundColor: DesignRule.textColor_mainTitle,marginTop:-1
     }, bankCardView: {
         height: 110,
         width: ScreenUtils.width - 30,

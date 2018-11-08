@@ -7,11 +7,11 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { color } from '../../../constants/Theme';
-import circleSelect from '../../../comm/res/selected_circle_red.png';
-import circleUnselect from '../../../comm/res/unselected_circle.png';
 import UIText from '../../../components/ui/UIText';
 import UIImage from '../../../components/ui/UIImage';
-
+import res from '../../../comm/res';
+const circleSelect = res.button.selected_circle_red;
+const circleUnselect = res.button.unselected_circle;
 class TakePhotoModal extends Component {
 
     constructor(props) {

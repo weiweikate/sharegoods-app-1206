@@ -13,7 +13,7 @@
 -keepclassmembers class * {
    public <init> (org.json.JSONObject);
 }
--keep public class com.meeruu.sharegoods.R$*{
+-keep public class com.mqiyukfeeruu.sharegoods.R$*{
 public static final int *;
 }
 -keepclassmembers enum * {

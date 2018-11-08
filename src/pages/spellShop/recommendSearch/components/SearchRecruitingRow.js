@@ -57,7 +57,7 @@ export default class SearchRecruitingRow extends Component {
                         fontSize: 11,
                         fontFamily: 'PingFangSC-Medium',
                         marginTop: 5
-                    }}>{item.storeUserNum || ''}</Text>
+                    }}>{item.storeUserNum || 0}</Text>
                     <TouchableOpacity style={styles.joinBtn} onPress={() => {
                         this._onPress(item);
                     }}>
