@@ -327,7 +327,7 @@ export default class PaymentMethodPage extends BasePage {
             let result = await this.payment.perpay(params);
             if (result && result.code !== 10000) {
                 Toast.hiddenLoading()
-                this.paymentResultView && this.paymentResultView.show(2, result.msg)
+                Toast.$toast(result.msg)
                 return
             }
 
@@ -372,7 +372,7 @@ export default class PaymentMethodPage extends BasePage {
         if (parseInt(result.code, 0) === 10000) {
             this.paymentResultView.show(PaymentResult.sucess);
         } else {
-            this.paymentResultView.show(PaymentResult.fail, result.msg);
+            Toast.$toast(result.msg);
         }
     }
 
