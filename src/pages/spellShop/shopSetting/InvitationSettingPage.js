@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     },
     rightItem: {
         fontSize: 15,
-        color: '#e60012'
+        color: DesignRule.mainColor
     },
     row: {
         width: SCREEN_WIDTH,
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         marginLeft: 11
     },
     line: {
-        backgroundColor: '#eeeeee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         marginHorizontal: 15,
         height: StyleSheet.hairlineWidth
     }

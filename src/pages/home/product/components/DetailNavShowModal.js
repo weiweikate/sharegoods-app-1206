@@ -13,6 +13,7 @@ import message from '../res/message.png';
 import home from '../res/home.png';
 import share from '../res/share.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 export default class DetailNavShowModal extends Component {
 
@@ -31,11 +32,11 @@ export default class DetailNavShowModal extends Component {
         });
     };
 
-    close=()=>{
+    close = () => {
         this.setState({
-            modalVisible: false,
+            modalVisible: false
         });
-    }
+    };
 
     _onPress = (item) => {
         this.setState({
@@ -51,7 +52,7 @@ export default class DetailNavShowModal extends Component {
             <Text style={{ color: '#000000', fontSize: 13, marginLeft: 15 }}>{item.tittle}</Text>
             <View style={{
                 height: 0.5,
-                backgroundColor: '#EEEEEE',
+                backgroundColor: DesignRule.lineColor_inColorBg,
                 bottom: 0,
                 right: 0,
                 position: 'absolute',

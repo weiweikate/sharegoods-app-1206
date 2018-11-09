@@ -213,14 +213,14 @@ const styles = StyleSheet.create({
     inputContainer: {
         marginTop: 62,
         flex: 1,
-        backgroundColor: '#eeeeee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         padding: 10
     },
     input: {
         textAlignVertical: 'top',
         width: 235 / 375 * MIN_SCREEN,
         borderRadius: 2,
-        backgroundColor: '#eeeeee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         color: DesignRule.textColor_mainTitle
     },
     btnContainer: {
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     submitContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#e60012',
+        backgroundColor: DesignRule.mainColor,
         marginRight: 36,
         width: 99,
         height: 32,

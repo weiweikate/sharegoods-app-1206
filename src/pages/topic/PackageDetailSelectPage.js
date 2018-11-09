@@ -89,7 +89,7 @@ export default class TopicDetailSelectPage extends Component {
             tagList.push(
                 <View key={index}>
                     <TouchableOpacity
-                        style={[styles.btn, { backgroundColor: obj.isSelected ? DesignRule.mainColor : '#EEEEEE' }]}
+                        style={[styles.btn, { backgroundColor: obj.isSelected ? DesignRule.mainColor : DesignRule.lineColor_inColorBg }]}
                         onPress={() => {
                             this._clickItemAction(obj, indexOfTop);
                         }}>
@@ -117,7 +117,7 @@ export default class TopicDetailSelectPage extends Component {
                     <View style={styles.containerView}>
                         {this.rendTag(specPriceList[key], indexOfTop)}
                     </View>
-                    <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: '#eeeeee' }}/>
+                    <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                 </View>
             );
             indexOfTop++;
@@ -157,7 +157,7 @@ export default class TopicDetailSelectPage extends Component {
                             <Image style={{
                                 height: 107,
                                 width: 107,
-                                borderColor: '#EEEEEE',
+                                borderColor: DesignRule.lineColor_inColorBg,
                                 backgroundColor: '#eee',
                                 borderWidth: 1,
                                 borderRadius: 5,

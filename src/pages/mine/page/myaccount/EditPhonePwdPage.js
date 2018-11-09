@@ -89,7 +89,7 @@ export default class EditPhonePwdPage extends BasePage {
 
                     </TouchableOpacity>
                 </View>
-                <View style={{ height: 0.5, backgroundColor: '#EEEEEE', marginRight: 15, marginLeft: 15 }}/>
+                <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg, marginRight: 15, marginLeft: 15 }}/>
                 <View style={{
                     flexDirection: 'row',
                     height: 48,

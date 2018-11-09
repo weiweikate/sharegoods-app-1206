@@ -178,7 +178,7 @@ class SettingPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 0.5, backgroundColor: '#eeeeee', marginLeft: 15, marginRight: 15 }}/>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg, marginLeft: 15, marginRight: 15 }}/>
         );
     };
     toLoginOut = () => {

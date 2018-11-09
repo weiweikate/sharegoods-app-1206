@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         width: (ScreenUtils.width - 30 - 5) / 2
     },
     img: {
-        backgroundColor: '#eeeeee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         height: 170,
         width: 170
     }

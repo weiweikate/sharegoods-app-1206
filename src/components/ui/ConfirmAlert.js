@@ -152,7 +152,7 @@ export default class ConfirmAlert extends Component {
                             <TouchableOpacity onPress={this._clickOk} style={{
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                backgroundColor: '#e60012',
+                                backgroundColor: DesignRule.mainColor,
                                 marginRight: 36,
                                 width: 99,
                                 height: 32,

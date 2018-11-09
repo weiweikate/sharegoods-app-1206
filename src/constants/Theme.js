@@ -44,7 +44,7 @@ const color = {
     hintTextColor: '#c8c8c8',
     deliveryIncludeBlue: '#0186f5',
     gray_DDD: '#DDDDDD',
-    gray_EEE: '#EEEEEE',
+    gray_EEE: DesignRule.lineColor_inColorBg,
     gray_FFF: '#FFFFFF',
     black_222: '#222204',
     gray_f7f7: '#f7f7f7',
@@ -788,7 +788,7 @@ const ui = {
     GoodsListModelView: {
         default: {
             container: {
-                backgroundColor: '#F6F6F6',
+                backgroundColor: DesignRule.bgColor,
                 paddingLeft: getUIScale(20),
                 paddingRight: getUIScale(20),
                 paddingBottom: 10
