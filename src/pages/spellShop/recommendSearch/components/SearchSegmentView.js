@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         borderTopWidth: StyleSheet.hairlineWidth,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderTopColor: '#eeeeee',
-        borderBottomColor: '#eeeeee',
+        borderTopColor: DesignRule.lineColor_inColorBg,
+        borderBottomColor: DesignRule.lineColor_inColorBg,
         flexDirection: 'row',
         alignItems: 'center'
     },

@@ -220,7 +220,7 @@ class User {
         this.auzEndTime = info.auzEndTime;          //授权结束时间
         this.upDealerid = info.upDealerid;          //上级
         this.availableBalance = info.availableBalance;//可提现金额
-        this.blockedBalances = info.blockedBalances; //冻结金额
+        this.blockedBalance = info.blockedBalance; //冻结金额
         this.tokenCoin = info.tokenCoin;            //一元券数量
         this.blockedCoin = info.blockedCoin;        //冻结代币
         this.userScore = info.userScore;            //积分

@@ -125,7 +125,7 @@ export default class ShareTaskIcon extends React.Component {
         if (this.state.hasTask === false) {
             return <View/>;
         }
-        ;
+
         return (
             <Animated.View style={[this.props.style, { transform: [{ translateX: this.state.x}] }]}>
                 <TouchableOpacity onPress={this._onPress}>

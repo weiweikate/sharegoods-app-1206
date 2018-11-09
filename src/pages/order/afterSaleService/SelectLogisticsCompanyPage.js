@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
             marginLeft: 17,
         },
         item_title:{
-            color: '#000000',
+            color: DesignRule.textColor_mainTitle,
             fontSize: 15,
             marginLeft: 17,
         },
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
             alignItems: 'center',
         },
         header_title:{
-            color: '#000000',
+            color: DesignRule.textColor_mainTitle,
             fontSize: 16,
             marginLeft: 17,
         }

@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     gapLine: {
         marginHorizontal: 10,
         height: StyleSheet.hairlineWidth,
-        backgroundColor: '#dddddd'
+        backgroundColor: DesignRule.lineColor_inGrayBg
     },
     membersContainer: {
         marginHorizontal: ScreenUtils.autoSizeWidth(30),
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     headerImg: {
         width: 40,
         height: 40,
-        backgroundColor: '#eee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 20
     },
     name: {

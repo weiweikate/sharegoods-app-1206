@@ -51,9 +51,9 @@ const styles = StyleSheet.create({
     icon: {
         width: 50,
         height: 50,
-        backgroundColor: '#eee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         borderWidth: 1,
-        borderColor: '#c8c8c8'
+        borderColor: DesignRule.textColor_hint
     },
     right: {
         flex: 1,
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     },
     shopName: {
         fontSize: 13,
-        color: '#000000'
+        color: DesignRule.textColor_mainTitle
     },
     desc: {
         fontSize: 12,

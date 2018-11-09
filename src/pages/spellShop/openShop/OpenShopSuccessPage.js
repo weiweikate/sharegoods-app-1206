@@ -60,7 +60,7 @@ export default class OpenShopSuccessPage extends BasePage {
 
                         <TouchableOpacity activeOpacity={0.8} onPress={this._clickInvite} style={[styles.btnStyle, {
                             marginLeft: 20,
-                            backgroundColor: '#e60012'
+                            backgroundColor: DesignRule.mainColor
                         }]}>
                             <Text style={[styles.btnText, { color: '#fff' }]}>
                                 马上邀请好友
@@ -104,6 +104,6 @@ const styles = StyleSheet.create({
     },
     btnText: {
         fontSize: 16,
-        color: '#e60012'
+        color: DesignRule.mainColor
     }
 });

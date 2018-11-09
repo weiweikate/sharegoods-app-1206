@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         height: 30,
         borderRadius: 3,
-        backgroundColor: '#EEEEEE'
+        backgroundColor: DesignRule.lineColor_inColorBg
     },
     btnText: {
         paddingHorizontal: 12,

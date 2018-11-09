@@ -8,13 +8,14 @@
 import React, { Component } from 'react';
 import { Text, StyleSheet, ScrollView } from 'react-native';
 import user from '../../model/user';
+import DesignRule from 'DesignRule';
 
 export default class UserInfoPage extends Component {
 
     static $PageOptions = {
         navigationBarOptions: {
-            title: '当前用户信息',
-        },
+            title: '当前用户信息'
+        }
     };
 
     state = { cookie: null };
@@ -27,7 +28,7 @@ export default class UserInfoPage extends Component {
     render() {
         return (
             <ScrollView style={styles.container}>
-                <Text style={{ margin: 15, color: '#e60012' }}>登录状态：{user.isLogin ? '登录成功' : '未登录'}</Text>
+                <Text style={{ margin: 15, color: DesignRule.mainColor }}>登录状态：{user.isLogin ? '登录成功' : '未登录'}</Text>
                 <Text selectable style={{ margin: 10 }}>当前cookie：{JSON.stringify(this.state.cookie)}</Text>
                 {
                     Object.keys(user).map((key, index) => {
@@ -44,6 +45,6 @@ export default class UserInfoPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f6f6f6'
+        backgroundColor: DesignRule.bgColor
     }
 });

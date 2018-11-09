@@ -206,8 +206,8 @@ export default class ShopCartPage extends BasePage {
                         progressViewOffset={statusBarHeight + 44}
                         colors={[DesignRule.mainColor]}
                         title="下拉刷新"
-                        tintColor="#999"
-                        titleColor="#999"
+                        tintColor={DesignRule.textColor_instruction}
+                        titleColor={DesignRule.textColor_instruction}
                     />
                 }
             />
@@ -403,7 +403,7 @@ export default class ShopCartPage extends BasePage {
                             }}>
                                 <UIText
                                     value={'￥ ' + StringUtils.formatMoneyString(itemData.price, false)}
-                                    style={{ fontSize: 14, color: '#e60012' }}/>
+                                    style={{ fontSize: 14, color: DesignRule.mainColor }}/>
                                 <View style={{ flexDirection: 'row' }}>
                                     <TouchableOpacity
                                         style={styles.rectangle}
@@ -450,7 +450,7 @@ export default class ShopCartPage extends BasePage {
                                         }}>
                                         <UIText
                                             value={'+'}
-                                            // style={{fontSize:15,color:data.num>=data.stock?color.gray_DDD:color.black_222}}
+                                            // style={{fontSize:15,color:data.num>=data.stock?DesignRule.color_ddd:DesignRule.textColor_mainTitle_222}}
                                             style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }}
 
                                         />

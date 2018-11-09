@@ -140,7 +140,7 @@ export default class ShopMessageRow extends Component {
                     justifyContent: 'center',
                     backgroundColor: 'white', height: 60
                 }}>
-                    <View style={[styles.selectText, { backgroundColor: '#dddddd' }]}>
+                    <View style={[styles.selectText, { backgroundColor: DesignRule.lineColor_inGrayBg }]}>
                         <Text style={{
                             fontSize: 16,
                             color: '#ffffff'

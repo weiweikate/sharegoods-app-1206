@@ -175,7 +175,7 @@ export default class HelperFeedbackPage extends BasePage {
                         <View style={{
                             justifyContent: 'center',
                             alignItems: 'center',
-                            backgroundColor: '#eeeeee',
+                            backgroundColor: DesignRule.lineColor_inColorBg,
                             width: '100%',
                             height: 40
                         }}>
@@ -253,7 +253,7 @@ export default class HelperFeedbackPage extends BasePage {
                                                       activeOpacity={0.6}
                                                       onPress={() => this.selCourse(item.value, item.detailId)}>
                                         <Text style={{
-                                            color: i == this.state.selectIndex ? '#e60012' : DesignRule.textColor_mainTitle,
+                                            color: i == this.state.selectIndex ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
                                             fontSize: 15,
                                             marginLeft: 15
                                         }}>{item.value}</Text>
@@ -271,7 +271,7 @@ export default class HelperFeedbackPage extends BasePage {
 
     _render() {
         return (
-            <View style={{ flex: 1, backgroundColor: '#F6F6F6' }}>
+            <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
                 {this.renderModals()}
                 {this.renderFinishModal()}
                 <ScrollView>
@@ -313,7 +313,7 @@ export default class HelperFeedbackPage extends BasePage {
 
                     <View style={{ width: ScreenUtils.width, height: 180, alignItems: 'center' }}>
                         <TouchableOpacity activeOpacity={0.9}
-                                          style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' || this.state.detailContent.length < 10 ? '#dddddd' : color.red }]
+                                          style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' || this.state.detailContent.length < 10 ? DesignRule.lineColor_inGrayBg : color.red }]
 
                                           } onPress={() => this.feedback2server()}>
                             <Text style={{ fontSize: 16, color: '#fff' }}>提交</Text>
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: ScreenUtils.width,
         height: 44,
-        backgroundColor: '#F6F6F6',
+        backgroundColor: DesignRule.bgColor,
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop: 55
