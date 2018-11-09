@@ -22,6 +22,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.events.EventDispatcher;
+import com.meeruu.Banner.adapter.WebBannerAdapter;
+import com.meeruu.Banner.event.DidScrollToIndexEvent;
+import com.meeruu.Banner.event.DidSelectItemAtIndexEvent;
 import com.meeruu.Banner.layoutmanager.BannerLayoutManager;
 import com.meeruu.Banner.layoutmanager.CenterSnapHelper;
 import com.meeruu.commonlib.utils.LogUtils;
@@ -40,7 +46,7 @@ public class BannerLayout extends FrameLayout {
     private IndicatorAdapter indicatorAdapter;
     private int indicatorMargin;//指示器间距
     private RecyclerView mRecyclerView;
-
+    RecyclerView.Adapter adapter;
     private BannerLayoutManager mLayoutManager;
 
     private int WHAT_AUTO_PLAY = 1000;
@@ -54,6 +60,8 @@ public class BannerLayout extends FrameLayout {
     int itemSpace;
     float centerScale;
     float moveSpeed;
+    private final EventDispatcher mEventDispatcher;
+
     protected Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -79,6 +87,7 @@ public class BannerLayout extends FrameLayout {
 
     public BannerLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mEventDispatcher = ((ReactContext)context).getNativeModule(UIManagerModule.class).getEventDispatcher();
         initView(context, attrs);
     }
 
@@ -216,6 +225,9 @@ public class BannerLayout extends FrameLayout {
         }
     }
 
+    public RecyclerView.Adapter getAdapter(){
+        return this.adapter;
+    }
 
     /**
      * 设置轮播数据集
@@ -223,6 +235,7 @@ public class BannerLayout extends FrameLayout {
     public void setAdapter(RecyclerView.Adapter adapter) {
         hasInit = false;
         mRecyclerView.setAdapter(adapter);
+        this.adapter = adapter;
         bannerSize = adapter.getItemCount();
         mLayoutManager.setInfinite(bannerSize >= 3);
         setPlaying(true);
@@ -245,6 +258,8 @@ public class BannerLayout extends FrameLayout {
                 if (newState == SCROLL_STATE_IDLE) {
                     setPlaying(true);
                 }
+
+                mEventDispatcher.dispatchEvent(new DidScrollToIndexEvent(getId(),currentIndex));
                 refreshIndicator();
             }
         });

@@ -30,6 +30,10 @@ public class WebBannerAdapter extends RecyclerView.Adapter<WebBannerAdapter.MzVi
         this.urlList = urlList;
     }
 
+    public void setUrls(List<String> list){
+        this.urlList = list;
+    }
+
     public void setOnBannerItemClickListener(BannerLayout.OnBannerItemClickListener onBannerItemClickListener) {
         this.onBannerItemClickListener = onBannerItemClickListener;
     }

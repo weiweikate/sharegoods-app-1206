@@ -18,6 +18,7 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
+import com.meeruu.sharegoods.rn.ReactRootViewCacheManager;
 import com.meeruu.sharegoods.ui.MainRNActivity;
 
 /**
@@ -32,7 +33,7 @@ public class MainActivity extends BaseActivity {
     private TextView tvGo;
 
     private WeakHandler mHandler;
-    private boolean needGo = true;
+    private boolean needGo = false;
     private boolean isFirst = true;
     private boolean hasGo = false;
     private String adId;
@@ -76,7 +77,7 @@ public class MainActivity extends BaseActivity {
                 //有广告时延迟时间增加
                 mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
             } else {
-                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 500);
+                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
             }
         } else {
             if (needGo && hasBasePer) {
@@ -97,7 +98,7 @@ public class MainActivity extends BaseActivity {
             params.height = (ScreenUtils.getScreenWidth() * 7) / 5;
             ivAdv.setLayoutParams(params);
 //            DisplayImageUtils.formatImgUrlNoHolder(this, imgUrl, ivAdv);
-            findViewById(R.id.iv_splash).setVisibility(View.GONE);
+
             initAdvEvent();
             startTimer();
         }
@@ -150,6 +151,7 @@ public class MainActivity extends BaseActivity {
 
     //跳转到首页
     private void goIndex() {
+        ReactRootViewCacheManager.init(this, MainRNActivity.COMPONENT_NAME);
         startActivity(new Intent(MainActivity.this, MainRNActivity.class));
         finish();
     }
