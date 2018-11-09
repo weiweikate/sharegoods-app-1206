@@ -87,7 +87,7 @@ export default class PromotionOrderPage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f6f6f6',
+        backgroundColor: DesignRule.bgColor,
         alignItems: 'center'
     },
     grayTextStyle: {

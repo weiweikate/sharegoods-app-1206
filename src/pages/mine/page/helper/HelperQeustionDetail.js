@@ -49,7 +49,7 @@ export default class HelperQuestionDetail extends BasePage {
 
     _render() {
         return (
-            <View style={{ backgroundColor: '#F6F6F6', flex: 1 }}>
+            <View style={{ backgroundColor: DesignRule.bgColor, flex: 1 }}>
                 {this.state.content ? <HTML html={this.state.content} imagesMaxWidth={ScreenUtils.width}
                                             containerStyle={{ backgroundColor: DesignRule.bgColor }}/> : null}
                 <View style={{

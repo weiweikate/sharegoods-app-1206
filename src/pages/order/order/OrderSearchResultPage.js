@@ -7,8 +7,8 @@ import {
     View
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import { color } from '../../../constants/Theme';
 import MyOrdersListView from './../components/MyOrdersListView';
+import DesignRule from 'DesignRule';
 
 class OrderSearchResultPage extends BasePage {
     constructor(props) {
@@ -45,7 +45,7 @@ class OrderSearchResultPage extends BasePage {
 
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
 }

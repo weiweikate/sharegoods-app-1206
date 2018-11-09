@@ -10,7 +10,6 @@ import {
 import BasePage from '../../../../BasePage';
 import { RefreshList } from '../../../../components/ui';
 import AccountItem from '../../components/AccountItem';
-import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import singInImg from '../../res/userInfoImg/qdaojianli_icon.png';
 import taskImg from '../../res/userInfoImg/rwujianli_icon.png'
@@ -19,6 +18,7 @@ import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge' ;
 import { observer } from 'mobx-react/native';
+import DesignRule from 'DesignRule';
 
 @observer
 export default class MyIntegralAccountPage extends BasePage {
@@ -80,19 +80,19 @@ export default class MyIntegralAccountPage extends BasePage {
                             marginLeft: 25,
                             marginTop: 15,
                             fontSize: 13,
-                            color: color.white
+                            color: 'white'
                         }}>秀豆账户(枚)</Text>
                         <Text style={{
                             marginLeft: 25,
                             fontSize: 25,
                             marginTop: 10,
-                            color: color.white
-                        }}>{user.userScore?user.userScore:0}</Text>
+                            color: 'white'
+                        }}>{user.userScore ? user.userScore : 0}</Text>
                     </View>
                     <TouchableOpacity style={styles.rectangleStyle} onPress={() => {
                         this.$navigate('home/signIn/SignInPage');
                     }}>
-                        <Text style={{ fontSize: 15, color: color.white }}>兑换1元现金券</Text>
+                        <Text style={{ fontSize: 15, color: 'white' }}>兑换1元现金券</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -118,7 +118,7 @@ export default class MyIntegralAccountPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line, marginLeft: 48, marginRight: 48 }}/>
+            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg, marginLeft: 48, marginRight: 48 }}/>
 
         );
     };
@@ -135,7 +135,7 @@ export default class MyIntegralAccountPage extends BasePage {
     getDataFromNetwork = () => {
         let use_type = ['', '注册赠送', '活动赠送', '秀豆消费', '1元券兑换', '签到奖励','任务奖励'];
 
-        let use_type_symbol = ['', '+', '+', '-', '-', '+','+'];
+        let use_type_symbol = ['', '+', '-',];
         let use_let_img = ['', singInImg, taskImg, taskImg, singInImg, singInImg,taskImg];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         Toast.showLoading();
@@ -153,9 +153,9 @@ export default class MyIntegralAccountPage extends BasePage {
                         type: use_type[item.useType],
                         time: DataUtils.getFormatDate(item.createTime / 1000),
                         serialNumber: item.serialNo,
-                        capital: use_type_symbol[item.useType] + item.userScore,
+                        capital: use_type_symbol[item.usType] + item.userScore,
                         iconImage: use_let_img[item.useType],
-                        capitalRed: use_type_symbol[item.useType] === '-'
+                        capitalRed: use_type_symbol[item.usType] === '+'
 
 
                     });
@@ -190,7 +190,7 @@ export default class MyIntegralAccountPage extends BasePage {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1, backgroundColor: color.page_background
+        flex: 1, backgroundColor: DesignRule.bgColor
     },
     container: {}, imageBackgroundStyle: {
         position: 'absolute',
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
         height: 44,
         borderWidth: 1,
         borderRadius: 5,
-        borderColor: color.white,
+        borderColor: 'white',
         marginLeft: 15,
         marginRight: 15,
         justifyContent: 'center',

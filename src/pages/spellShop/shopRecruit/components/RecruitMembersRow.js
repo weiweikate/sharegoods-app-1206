@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     headerImg: {
         width: 40,
         height: 40,
-        backgroundColor: '#eee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 20
     },
     name: {

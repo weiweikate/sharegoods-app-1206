@@ -71,10 +71,10 @@ export default class AssistantRow extends Component {
         const swipeOutButtons = [
             {
                 onPress: this._onPressDelete,
-                backgroundColor: '#F6F6F6',
+                backgroundColor: DesignRule.bgColor,
                 component: (
                     <View style={styles.swipeCustomView}>
-                        <Text style={{ color: '#fff', fontSize: 13 }}>删 除</Text>
+                        <Text style={{ color: 'white', fontSize: 13 }}>删 除</Text>
                     </View>
                 )
             }
@@ -102,13 +102,13 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#e60012',
+        backgroundColor: DesignRule.mainColor,
         borderRadius: 10
         // borderTopRightRadius: 10,
         // borderBottomRightRadius: 10,
     },
     container: {
-        backgroundColor: '#F6F6F6',
+        backgroundColor: DesignRule.bgColor,
         marginTop: 10,
         marginHorizontal: 15
     },
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     headerImg: {
         width: 28,
         height: 28,
-        backgroundColor: '#eeeeee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 14,
         marginLeft: 20,
         marginTop: 15

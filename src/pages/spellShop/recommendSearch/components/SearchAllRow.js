@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     icon: {
         width: 50,
         height: 50,
-        backgroundColor: '#eee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 25
     },
     tittleContainer: {
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8
     },
     itemIcon: {
-        backgroundColor: '#eee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         width: 40,
         height: 40,
         borderRadius: 20

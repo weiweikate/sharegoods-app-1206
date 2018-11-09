@@ -68,7 +68,7 @@ class SettingTransactionModal extends Component {
                     maxLength={6}
                     onChange={value => this.props.inputText(value)}/>
                 <UIText value={this.state.passwordInputError ? this.state.bottomText : ''}
-                        style={{ fontSize: 11, color: '#e60012', marginTop: 9 }}/>
+                        style={{ fontSize: 11, color: DesignRule.mainColor, marginTop: 9 }}/>
             </View>
         );
     };
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         fontSize: 15, color: color.blue_222, marginTop: 10
     }, redTextStyle: {
         fontSize: 15,
-        color: '#e60012'
+        color: DesignRule.mainColor
     }
 });
 

@@ -6,11 +6,11 @@ import {
     NativeModules,
     TouchableOpacity
 } from 'react-native';
-import { color } from '../../constants/Theme';
 import close from '../../pages/mine/res/userInfoImg/close.png';
 import {
     UIText, UIImage
 } from '../ui';
+import DesignRule from 'DesignRule';
 
 class ExchangeTypeModal extends Component {
 
@@ -64,7 +64,12 @@ class ExchangeTypeModal extends Component {
             arr.push(
                 <View style={{ paddingLeft: 5, paddingRight: 15 }}>
                     <UIText value={this.state.list[i].title}
-                            style={{ color: color.gray_666, fontSize: 13, marginTop: 15, paddingLeft: 10 }}/>
+                            style={{
+                                color: DesignRule.textColor_secondTitle,
+                                fontSize: 13,
+                                marginTop: 15,
+                                paddingLeft: 10
+                            }}/>
                     <View style={{ flexDirection: 'row', marginTop: 15 }}>
                         {this.renderItemList(i)}
                     </View>
@@ -106,15 +111,25 @@ class ExchangeTypeModal extends Component {
                 alignContent: 'center',
                 flexDirection: 'row'
             }}>
-                <View style={{ flex: 1, backgroundColor: color.white }}>
+                <View style={{ flex: 1, backgroundColor: 'white' }}>
                     <View
                         style={{ height: 53, justifyContent: 'flex-end', alignItems: 'center', flexDirection: 'row' }}>
                         <UIImage source={close} style={{ width: 23, height: 23, marginRight: 16 }}
                                  onPress={() => this.props.closeWindow()}/>
                     </View>
-                    <View style={{ height: 1, marginLeft: 15, marginRight: 15, backgroundColor: color.line }}/>
+                    <View style={{
+                        height: 1,
+                        marginLeft: 15,
+                        marginRight: 15,
+                        backgroundColor: DesignRule.lineColor_inColorBg
+                    }}/>
                     {this.renderList()}
-                    <View style={{ height: 1, backgroundColor: color.line, marginTop: 10, marginBottom: 15 }}/>
+                    <View style={{
+                        height: 1,
+                        backgroundColor: DesignRule.lineColor_inColorBg,
+                        marginTop: 10,
+                        marginBottom: 15
+                    }}/>
                     <View style={{
                         flexDirection: 'row',
                         justifyContent: 'space-between',
@@ -123,34 +138,35 @@ class ExchangeTypeModal extends Component {
                         paddingLeft: 15,
                         paddingRight: 15
                     }}>
-                        <UIText value={'换货数量'} style={{ fontSize: 13, color: color.gray_666 }}/>
+                        <UIText value={'换货数量'} style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
                         <View style={{ flexDirection: 'row' }}>
                             <TouchableOpacity style={styles.rectangle} onPress={() => {
                                 this.reduce();
                             }}>
-                                <UIText value={'-'} style={{ fontSize: 15, color: color.gray_DDD }}/>
+                                <UIText value={'-'} style={{ fontSize: 15, color: DesignRule.color_ddd }}/>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={[styles.rectangle, { width: 46, borderLeftWidth: 0, borderRightWidth: 0 }]}>
-                                <UIText value={this.state.number} style={{ fontSize: 15, color: color.black_222 }}/>
+                                <UIText value={this.state.number}
+                                        style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}/>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.rectangle} onPress={() => {
                                 this.add();
                             }}>
-                                <UIText value={'+'} style={{ fontSize: 15, color: color.black_222 }}/>
+                                <UIText value={'+'} style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}/>
                             </TouchableOpacity>
                         </View>
                     </View>
                     <TouchableOpacity style={{
                         height: 49,
-                        backgroundColor: color.red,
+                        backgroundColor: DesignRule.mainColor,
                         justifyContent: 'center',
                         alignItems: 'center'
                     }} onPress={() => {
 
                     }}>
                         <UIText value={'确认'} style={{
-                            color: color.white,
+                            color: 'white',
                             textAlign: 'center',
                             justifyContent: 'center',
                             alignItems: 'center'
@@ -187,30 +203,30 @@ const styles = StyleSheet.create({
         flex: 1
     }, viewUnselect: {
         justifyContent: 'center',
-        backgroundColor: color.gray_EEE,
+        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 5,
         height: 30,
         paddingLeft: 10,
         paddingRight: 10,
         marginLeft: 10
     }, textUnselect: {
-        color: color.black_222, fontSize: 13
+        color: DesignRule.textColor_mainTitle, fontSize: 13
     }, viewSelect: {
         justifyContent: 'center',
-        backgroundColor: color.red,
+        backgroundColor: DesignRule.mainColor,
         borderRadius: 5,
         height: 30,
         paddingLeft: 10,
         paddingRight: 10,
         marginLeft: 10
     }, textSelect: {
-        color: color.white, fontSize: 13
+        color: 'white', fontSize: 13
     }, rectangle: {
         height: 30,
         width: 30,
         justifyContent: 'center',
         borderWidth: 1,
-        borderColor: color.gray_DDD,
+        borderColor: DesignRule.color_ddd,
         alignItems: 'center'
     }
 });

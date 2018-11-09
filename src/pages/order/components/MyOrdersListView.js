@@ -12,7 +12,7 @@ import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import userOrderNum from '../../../model/userOrderNum';
 import DesignRule from 'DesignRule';
-
+import emptyIcon from '../res/kongbeuye_dingdan.png';
 export default class MyOrdersListView extends Component {
     constructor(props) {
         super(props);
@@ -83,7 +83,8 @@ export default class MyOrdersListView extends Component {
                     onLoadMore={this.onLoadMore}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无数据'}
+                    emptyTip={'暂无订单'}
+                    emptyIcon={emptyIcon}
                 />
                 {this.renderModal()}
             </View>
@@ -274,7 +275,9 @@ export default class MyOrdersListView extends Component {
         Toast.showLoading();
         if (this.props.orderNum) {
             OrderApi.queryPage({
-                orderNum: this.props.orderNum, page: 1,
+                // orderNum: this.props.orderNum,
+                condition:this.props.orderNum,
+                page: 1,
                 size: constants.PAGESIZE
             }).then((response) => {
                 Toast.hiddenLoading();

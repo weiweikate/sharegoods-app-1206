@@ -95,7 +95,7 @@ export default class HelperQuestionListPage extends BasePage {
 const styles = StyleSheet.create({
     blackText: {
         fontSize: 13,
-        color: '#000000'
+        color: DesignRule.textColor_mainTitle
     },
     containerStyles: {
         flex: 1,

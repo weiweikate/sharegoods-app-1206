@@ -46,7 +46,7 @@ export default class ResultSearchNav extends Component {
                                    keyboardType='web-search'
                                    underlineColorAndroid='transparent'
                                    placeholder={'请输入关键词搜索'}
-                                   placeholderTextColor='#C8C8C8'
+                                   placeholderTextColor={DesignRule.textColor_hint}
                                    value={this.state.inputText}
                                    onChangeText={this.onChangeText}
                                    onSubmitEditing={this.props.onSubmitEditing}

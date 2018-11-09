@@ -110,7 +110,7 @@ let styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     remark: {
-        color: '#f6f6f6',
+        color: DesignRule.bgColor,
         fontSize: px2dp(12),
         flex: 1
     },

@@ -10,8 +10,9 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import ScreenUtils from '../../utils/ScreenUtils';
-import { color } from '../../constants/Theme';
 import res from '../../comm/res';
+import DesignRule from 'DesignRule';
+
 const empty_list_message = res.placeholder.messageNoData
 
 const defaultPageSize = 10;
@@ -101,7 +102,7 @@ export default class RefreshList extends Component {
                               onPress={() => this.props.onRefresh()}>
                 <Image style={{ height: 140, width: 140 }} source={this.state.emptyIcon}/>
                 <Text
-                    style={{ marginTop: 20, fontSize: 14, color: color.black_more_light }}>{this.state.emptyTip}</Text>
+                    style={{ marginTop: 20, fontSize: 14, color: DesignRule.textColor_mainTitle_more_light }}>{this.state.emptyTip}</Text>
             </TouchableOpacity>);
     };
 

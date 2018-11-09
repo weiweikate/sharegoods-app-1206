@@ -61,21 +61,23 @@ export default class VersionUpdateModal extends React.Component {
         }
     }
 
-    open=()=>{
+    open = () => {
         this.modal && this.modal.open();
-    }
+    };
 
     render() {
         return (<CommModal
             animationType='fade'
             transparent={true}
-            ref={(ref)=>{this.modal = ref}}
+            ref={(ref) => {
+                this.modal = ref;
+            }}
             visible={this.props.showUpdate}>
             <View style={{
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignContent: 'center',
-                backgroundColor: '#fff',
+                backgroundColor: 'white',
                 width: ScreenUtils.width - 84,
                 borderRadius: 10,
                 borderWidth: 0
@@ -105,7 +107,7 @@ export default class VersionUpdateModal extends React.Component {
                             style={{ alignSelf: 'center', marginBottom: 40, marginTop: 5 }}/>
                 </View>}
                 {this.state.showBtn ?
-                    <View style={{ height: 0.5, backgroundColor: '#eee' }}/> : null}
+                    <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/> : null}
                 <View style={{ flexDirection: 'row' }}>
                     {
                         this.props.forceUpdate ? null :
@@ -119,7 +121,7 @@ export default class VersionUpdateModal extends React.Component {
                                     }}>
                                     <UIText value={'以后再说'} style={{ color: DesignRule.textColor_instruction }}/>
                                 </TouchableOpacity>
-                                < View style={{ width: 0.5, backgroundColor: '#eee' }}/>
+                                < View style={{ width: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                             </View>
                     }{
                     this.state.showBtn ?
@@ -136,7 +138,7 @@ export default class VersionUpdateModal extends React.Component {
                             onPress={() => {
                                 this.toUpdate();
                             }}>
-                            <UIText value={this.state.positiveTxt} style={{ color: '#fff' }}/>
+                            <UIText value={this.state.positiveTxt} style={{ color: 'white' }}/>
                         </TouchableOpacity> : null
                 }
                 </View>

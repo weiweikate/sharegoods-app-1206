@@ -8,7 +8,7 @@ import {
     View,
     TextInput as RNTextInput,
     Text,
-    TouchableOpacity,
+    TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import {
@@ -63,7 +63,12 @@ class WithdrawCashPage extends BasePage {
 
     renderLine = () => {
         return (
-            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg, marginLeft: 48, marginRight: 48 }}/>
+            <View style={{
+                height: 0.5,
+                backgroundColor: DesignRule.lineColor_inColorBg,
+                marginLeft: 48,
+                marginRight: 48
+            }}/>
         );
     };
     renderButtom = () => {
@@ -76,8 +81,8 @@ class WithdrawCashPage extends BasePage {
                     height: 48,
                     marginLeft: 48,
                     marginRight: 48,
-                    backgroundColor: StringUtils.isNoEmpty(this.state.card_no)?DesignRule.mainColor:'#CCCCCC',
-                    borderRadius:25
+                    backgroundColor: StringUtils.isNoEmpty(this.state.card_no) ? DesignRule.mainColor : DesignRule.textColor_placeholder,
+                    borderRadius: 25
                 }}
                 onPress={() => this.commit()}/>
         );
@@ -86,7 +91,12 @@ class WithdrawCashPage extends BasePage {
         return (
             <View style={{ backgroundColor: 'white' }}>
                 <UIText value={'提现金额'}
-                        style={{ color: DesignRule.textColor_secondTitle, fontSize: 15, marginLeft: 15, marginTop: 20 }}/>
+                        style={{
+                            color: DesignRule.textColor_secondTitle,
+                            fontSize: 15,
+                            marginLeft: 15,
+                            marginTop: 20
+                        }}/>
                 <View style={{
                     height: 56,
                     width: ScreenUtils.width,
@@ -109,7 +119,13 @@ class WithdrawCashPage extends BasePage {
                 </View>
                 <UIText
                     value={'可用余额' + StringUtils.formatMoneyString(this.state.availableBalance, false) + '元，不可提现金额' + StringUtils.formatMoneyString(this.state.blockedBalances, false) + '元'}
-                    style={{ color: DesignRule.textColor_secondTitle, fontSize: 15, marginLeft: 15, marginTop: 1, height: 30 }}/>
+                    style={{
+                        color: DesignRule.textColor_secondTitle,
+                        fontSize: 15,
+                        marginLeft: 15,
+                        marginTop: 1,
+                        height: 30
+                    }}/>
                 <View style={{ backgroundColor: DesignRule.bgColor }}>
                     <UIText value={'额外扣除￥' + this.state.totalFee + '手续费（费率' + this.state.serviceCharge + '%）'}
                             style={{ color: DesignRule.mainColor, fontSize: 12, marginLeft: 15, marginTop: 10 }}/>
@@ -133,7 +149,8 @@ class WithdrawCashPage extends BasePage {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <UIImage source={bank} style={{ width: 49, height: 49, marginLeft: 16 }}/>
                     <View style={{ marginLeft: 10, alignItems: 'center' }}>
-                        <UIText value={this.state.bank_name} style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}/>
+                        <UIText value={this.state.bank_name}
+                                style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}/>
                         <UIText value={'尾号' + this.state.card_no + '  ' + this.state.card_type == 1 ? '储蓄卡' : '信用卡'}
                                 style={{ fontSize: 13, color: DesignRule.textColor_instruction }}/>
                     </View>

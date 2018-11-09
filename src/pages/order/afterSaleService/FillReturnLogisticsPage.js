@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
             flex: 1,
         },
         item_placeholder:{
-            color: '#C8C8C8',
+            color: DesignRule.textColor_hint,
             fontSize: 13,
             marginRight: 9,
             textAlign: 'right',

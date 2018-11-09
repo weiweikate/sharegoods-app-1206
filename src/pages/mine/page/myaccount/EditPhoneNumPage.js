@@ -4,7 +4,6 @@ import {
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
@@ -53,10 +52,10 @@ export default class EditPhoneNumPage extends BasePage {
                 alignItems: 'center',
                 marginTop: 10
             }}>
-                <UIText value={'验证码'} style={{ fontSize: 13, color: '#000000', marginLeft: 20 }}/>
+                <UIText value={'验证码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}/>
                 <TextInput underlineColorAndroid={'transparent'}
-                           style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 20 }}
-                           placeholder={'请输入验证码'} placeholderTextColor={'#C8C8C8'}
+                           style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}
+                           placeholder={'请输入验证码'} placeholderTextColor={DesignRule.textColor_hint}
                            onChangeText={(text) => {
                                const newText = text.replace(/[^\d]+/, '');
                                this.setState({ code: newText });
@@ -72,7 +71,7 @@ export default class EditPhoneNumPage extends BasePage {
 
             <TouchableOpacity style={{
                 marginTop: 42,
-                backgroundColor: color.red,
+                backgroundColor: DesignRule.mainColor,
                 width: ScreenUtils.width - 84,
                 height: 50,
                 marginLeft: 42,
