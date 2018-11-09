@@ -2,7 +2,7 @@
  * 今日榜单
  */
 import React, {Component} from 'react'
-import { View, ScrollView, StyleSheet, Text, Image, TouchableOpacity, ImageBackground } from 'react-native'
+import { View, ScrollView, StyleSheet, Text, Image, TouchableWithoutFeedback } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
@@ -11,9 +11,11 @@ import res from '../../comm/res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule';
+import ImageLoad from '@mr/react-native-image-placeholder'
 
-const HotItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
-    <ImageBackground style={styles.imgBack} source={{uri: item.img}}>
+const HotItem = ({item, press}) => <TouchableWithoutFeedback onPress={()=> press && press()}>
+    <View style={styles.item}>
+    <ImageLoad style={styles.imgBack} source={{uri: item.img}}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.row}>
             <Text style={styles.remark} numberOfLines={1}>{item.pureContent ? item.pureContent.slice(0, 30).trim() : ''}</Text>
@@ -22,8 +24,9 @@ const HotItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress
                 <Text style={styles.number}>{item.click ? item.click : 0}</Text>
             </View>
         </View>
-    </ImageBackground>
-</TouchableOpacity>
+    </ImageLoad>
+    </View>
+</TouchableWithoutFeedback>
 
 @observer
 export default class ShowHotScrollView extends Component {
