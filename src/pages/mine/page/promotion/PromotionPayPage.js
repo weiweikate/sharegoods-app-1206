@@ -64,7 +64,7 @@ export default class PromotionPayPage extends BasePage<Props> {
 
     _render() {
         let unSelectView = (
-            <View style={{backgroundColor:'white',borderColor:'#DDDDDD',borderWidth:px2dp(0.5),width:px2dp(22),height:px2dp(22),borderRadius:px2dp(11)}}/>
+            <View style={{backgroundColor:'white',borderColor:DesignRule.lineColor_inGrayBg,borderWidth:px2dp(0.5),width:px2dp(22),height:px2dp(22),borderRadius:px2dp(11)}}/>
         );
         let isSelectedView = (
             <Image source={icon} style={{backgroundColor:'white',width:px2dp(22),height:px2dp(22)}}/>
@@ -107,8 +107,8 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
         paddingHorizontal:px2dp(15),
-        borderTopColor:'#DDDDDD',
-        borderBottomColor:'#DDDDDD',
+        borderTopColor:DesignRule.lineColor_inGrayBg,
+        borderBottomColor:DesignRule.lineColor_inGrayBg,
         borderBottomWidth:ScreenUtils.onePixel,
         borderTopWidth:ScreenUtils.onePixel,
         backgroundColor:'white'

@@ -1,7 +1,7 @@
 /**
  * 悬浮按钮
  */
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     Platform,
@@ -9,7 +9,7 @@ import {
     StatusBar,
     StyleSheet,
     Dimensions,
-    PanResponder,
+    PanResponder
 } from 'react-native';
 
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 0 : StatusBar.currentHeight;//默认只处理安卓
@@ -20,12 +20,12 @@ const MOVE_DIS = 1.5;
 export default class SuspensionButton extends Component {
 
     static propTypes = {
-        onPress: PropTypes.func.isRequired, // 点击加载的回调函数
+        onPress: PropTypes.func.isRequired // 点击加载的回调函数
     };
     static defaultProps = {
         onPress: () => {
             console.warn('Warn: Check whether set onPress function on SuspensionButton~');
-        },
+        }
     };
 
 
@@ -43,7 +43,7 @@ export default class SuspensionButton extends Component {
         this.imgHeight = 0;
         this.state = {
             aRight: new Animated.Value(ScreenWidth - 100),
-            aBottom: new Animated.Value(100),
+            aBottom: new Animated.Value(100)
         };
     }
 
@@ -56,7 +56,7 @@ export default class SuspensionButton extends Component {
             onPanResponderGrant: this._handlePanResponderGrant,
             onPanResponderMove: this._handlePanResponderMove,
             onPanResponderRelease: this._handlePanResponderEnd,
-            onPanResponderTerminate: this._handlePanResponderEnd,
+            onPanResponderTerminate: this._handlePanResponderEnd
         });
     }
 
@@ -156,7 +156,7 @@ export default class SuspensionButton extends Component {
         if (this.imgWidth && this.imgHeight) {
             return null;
         }
-        const {width, height} = event.nativeEvent.layout;
+        const { width, height } = event.nativeEvent.layout;
         this.imgWidth = width;
         this.imgHeight = height;
     };
@@ -191,6 +191,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'red',
+        backgroundColor: 'red'
     }
 });

@@ -191,7 +191,7 @@ export default class MyPromotionPage extends BasePage {
                             marginLeft: marginLeft,
                             height: 8,
                             borderRadius: 4,
-                            backgroundColor: '#dddddd',
+                            backgroundColor: DesignRule.lineColor_inGrayBg,
                             borderBottomLeftRadius: radius,
                             borderTopLeftRadius: radius
                         }}/>

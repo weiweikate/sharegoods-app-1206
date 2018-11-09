@@ -244,7 +244,7 @@ class SettingPage extends BasePage {
                                 marginBottom: 40,
                                 alignSelf: 'center'
                             }}/>
-                    <View style={{ height: 0.5, backgroundColor: '#eee' }}/>
+                    <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 45 }}
@@ -253,7 +253,7 @@ class SettingPage extends BasePage {
                             }}>
                             <UIText value={'以后再说'} style={{ color: DesignRule.textColor_instruction }}/>
                         </TouchableOpacity>
-                        <View style={{ width: 0.5, backgroundColor: '#eee' }}/>
+                        <View style={{ width: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                         <TouchableOpacity
                             style={{
                                 flex: 1,

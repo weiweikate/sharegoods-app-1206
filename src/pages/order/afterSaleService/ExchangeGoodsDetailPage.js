@@ -837,7 +837,7 @@ const styles = StyleSheet.create({
     operationApplyView_title: {
         height: 45,
         borderBottomWidth: 1,
-        borderBottomColor: '#DDDDDD',
+        borderBottomColor: DesignRule.lineColor_inGrayBg,
         justifyContent: 'center'
     },
     borderButton: {

@@ -105,7 +105,7 @@ export default class VersionUpdateModal extends React.Component {
                             style={{ alignSelf: 'center', marginBottom: 40, marginTop: 5 }}/>
                 </View>}
                 {this.state.showBtn ?
-                    <View style={{ height: 0.5, backgroundColor: '#eee' }}/> : null}
+                    <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/> : null}
                 <View style={{ flexDirection: 'row' }}>
                     {
                         this.props.forceUpdate ? null :
@@ -119,7 +119,7 @@ export default class VersionUpdateModal extends React.Component {
                                     }}>
                                     <UIText value={'以后再说'} style={{ color: DesignRule.textColor_instruction }}/>
                                 </TouchableOpacity>
-                                < View style={{ width: 0.5, backgroundColor: '#eee' }}/>
+                                < View style={{ width: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                             </View>
                     }{
                     this.state.showBtn ?

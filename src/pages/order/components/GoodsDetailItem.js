@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: '#dddddd',
+        borderColor: DesignRule.lineColor_inGrayBg,
         marginRight: 15,
         justifyContent: 'center',
         alignItems: 'center',

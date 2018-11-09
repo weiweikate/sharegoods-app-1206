@@ -49,7 +49,7 @@ export default class RecommendPage extends BasePage {
             segmentIndex: 1,
             //data
             dataList: [{}],//默认一行显示状态页面使用 错误页 无数据页面
-            adList: [],
+            adList: []
         };
     }
 
@@ -272,8 +272,8 @@ export default class RecommendPage extends BasePage {
                                      refreshing={this.state.refreshing}
                                      onRefresh={this._refreshing.bind(this)}
                                      title="下拉刷新"
-                                     tintColor="#999"
-                                     titleColor="#999"/>}
+                                     tintColor={DesignRule.textColor_instruction}
+                                     titleColor={DesignRule.textColor_instruction}/>}
                              onEndReached={this._onEndReached.bind(this)}
                              onEndReachedThreshold={0.1}
                              ListFooterComponent={this._ListFooterComponent}
