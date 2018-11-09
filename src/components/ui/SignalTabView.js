@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { color } from '../../constants/Theme';
 import { UIText } from './index';
+import DesignRule from 'DesignRule';
 
 const SignalTabView = props => {
 
@@ -22,22 +23,22 @@ const SignalTabView = props => {
             backgroundColor: color.gray_FFF,
             alignItems: 'center',
             borderWidth: 0.5,
-            borderColor: color.gray_DDD
+            borderColor: DesignRule.color_ddd
         },
         specialViewStyle = {
             height: 35,
             width: 71,
             justifyContent: 'center',
-            backgroundColor: color.gray_EEE,
+            backgroundColor: DesignRule.lineColor_inColorBg,
             alignItems: 'center',
             borderWidth: 0.5,
-            borderColor: color.gray_DDD
+            borderColor: DesignRule.color_ddd
         },
         commonTextStyle = {
-            color: color.black_999, fontSize: 12
+            color: DesignRule.textColor_instruction, fontSize: 12
         },
         specialTextStyle = {
-            color: color.black_222, fontSize: 12
+            color: DesignRule.textColor_mainTitle_222, fontSize: 12
         }
     } = props;
 

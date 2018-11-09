@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
     },
     standaloneRowFront: {
         alignItems: 'center',
-        backgroundColor: color.white,
+        backgroundColor: 'white',
         justifyContent: 'center',
         height: 100,
         width: ScreenUtils.width,

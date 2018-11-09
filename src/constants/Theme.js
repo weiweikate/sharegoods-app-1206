@@ -43,14 +43,14 @@ const color = {
     otherLoginLine: '#DCDCDC',
     hintTextColor: DesignRule.textColor_hint,
     deliveryIncludeBlue: '#0186f5',
-    gray_DDD: '#DDDDDD',
+    gray_DDD: DesignRule.lineColor_inGrayBg,
     gray_EEE: DesignRule.lineColor_inColorBg,
     gray_FFF: '#FFFFFF',
     black_222: '#222204',
     gray_f7f7: '#f7f7f7',
     yellow_FF7: '#FF7E00',
     gray_c8c: DesignRule.textColor_hint,
-    gray_bbb: '#BBBBBB',
+    gray_bbb: DesignRule.textColor_instruction,
     green_47c: '#47c546',
     gray_666: '#666666',
     gray_b4b: '#b4b4b4'
@@ -104,22 +104,22 @@ const ui = {
     Line: {
         default: {
             height: ScreenUtils.onePixel,
-            backgroundColor: color.line
+            backgroundColor: DesignRule.lineColor_inColorBg
         },
         left_margin: {
             height: ScreenUtils.onePixel,
-            backgroundColor: color.line,
+            backgroundColor: DesignRule.lineColor_inColorBg,
             marginLeft: 20
         },
         between_margin: {
             height: ScreenUtils.onePixel,
-            backgroundColor: color.line,
+            backgroundColor: DesignRule.lineColor_inColorBg,
             marginLeft: 20,
             marginRight: 20
         },
         vertical: {
             width: ScreenUtils.onePixel,
-            backgroundColor: color.line
+            backgroundColor: DesignRule.lineColor_inColorBg
         }
     },
 
@@ -299,7 +299,7 @@ const ui = {
             },
             left_text: {
                 marginLeft: 10,
-                color: color.black_more_light
+                color: DesignRule.textColor_mainTitle_more_light
             },
             middle_text: {
                 flex: 1,
@@ -692,7 +692,7 @@ const ui = {
                 width: ScreenUtils.width - 60,
                 marginLeft: 30,
                 marginRight: 30,
-                backgroundColor: color.white,
+                backgroundColor: 'white',
                 borderRadius: 5,
                 alignItems: 'center'
             },
@@ -721,7 +721,7 @@ const ui = {
         default: {
             container: {
                 width: 316,
-                backgroundColor: color.white,
+                backgroundColor: 'white',
                 alignItems: 'center',
                 borderRadius: 5
             },
@@ -743,14 +743,14 @@ const ui = {
                 alignItems: 'center'
             },
             top_middle_tx: {
-                color: color.black,
+                color: DesignRule.textColor_mainTitle,
                 fontSize: 14
             },
             top_right: {
                 flex: 1, alignItems: 'flex-end'
             },
             top_right_tx: {
-                color: color.black_more_light,
+                color: DesignRule.textColor_mainTitle_more_light,
                 fontSize: 12,
                 marginRight: 10
             },
@@ -765,12 +765,12 @@ const ui = {
                 marginBottom: 13
             },
             bottom_left_tx: {
-                color: color.black_more_light,
+                color: DesignRule.textColor_mainTitle_more_light,
                 fontSize: 14,
                 marginLeft: 10
             },
             bottom_middle_tx: {
-                color: color.black_light,
+                color: DesignRule.textColor_mainTitle_light,
                 fontSize: 14,
                 marginLeft: 10
             },

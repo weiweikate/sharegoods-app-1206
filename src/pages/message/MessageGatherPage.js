@@ -407,7 +407,7 @@ export default class MessageGatherPage extends BasePage {
                 <View style={{ backgroundColor: 'white',marginVertical:px2dp(15) }}>
                     <Text style={{ marginLeft: 15, fontSize: 13,color:DesignRule.textColor_secondTitle }}>{item.content}</Text>
                 </View>
-                <View style={{ height:!EmptyUtils.isEmpty(item.param) ? ScreenUtils.onePixel : 0, width: ScreenUtils.width, backgroundColor: '#DDDDDD' }}/>
+                <View style={{ height:!EmptyUtils.isEmpty(item.param) ? ScreenUtils.onePixel : 0, width: ScreenUtils.width, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                 {item.messageType === 200 ? btn : null}
             </View>
         );

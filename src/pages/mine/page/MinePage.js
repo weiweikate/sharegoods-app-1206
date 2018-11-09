@@ -14,7 +14,6 @@ import {
 import BasePage from '../../../BasePage';
 import UIText from '../../../components/ui/UIText';
 import UIImage from '../../../components/ui/UIImage';
-import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
@@ -371,7 +370,7 @@ export default class MinePage extends BasePage {
     orderRender() {
         return (
             <View style={{
-                backgroundColor: color.white,
+                backgroundColor: 'white',
                 marginTop: px2dp(10)
             }}>
                 <View style={{
@@ -414,7 +413,7 @@ export default class MinePage extends BasePage {
         return (
             <View style={{
                 flexDirection: 'row',
-                backgroundColor: color.white,
+                backgroundColor: 'white',
                 flexWrap: 'wrap',
                 marginVertical: px2dp(10)
             }}>
@@ -445,8 +444,8 @@ export default class MinePage extends BasePage {
                                 progressViewOffset={statusBarHeight + 44}
                                 colors={[DesignRule.mainColor]}
                                 title="下拉刷新"
-                                tintColor="#999"
-                                titleColor="#999"
+                                tintColor={DesignRule.textColor_instruction}
+                                titleColor={DesignRule.textColor_instruction}
                             />}
             >
                 {this.renderUserHead()}

@@ -117,7 +117,7 @@ export default class MessageCenterPage extends BasePage {
                         height: 44,
                         paddingLeft: 21,
                         paddingRight: 28,
-                        backgroundColor: color.white,
+                        backgroundColor: 'white',
                         flexDirection: 'row'
                     }} onPress={() => this.orderMenuJump(i)}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>

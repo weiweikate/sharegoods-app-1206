@@ -1,20 +1,10 @@
 import React from 'react';
-import {
-    NativeModules,
-    StyleSheet,
-    View,
-    Image,
-    Text,
-    TouchableOpacity
-} from 'react-native';
+import { Image, NativeModules, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../BasePage';
-import {
-    UIText, UIImage
-} from '../../../components/ui';
+import { RefreshList, UIImage, UIText } from '../../../components/ui';
 import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import {RefreshList} from '../../../components/ui';
 import logisticsTop from '../res/logisticsTop.png';
 import logisticsBottom from '../res/logisticsBottom.png';
 import copy from '../res/copy.png';
@@ -24,6 +14,7 @@ import LogisticsDetailItem from '../components/LogisticsDetailItem';
 import Nowuliu from '../res/kongbeiye_wulian.png';
 import Toast from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
+import DesignRule from 'DesignRule';
 
 // import {PageLoadingState} from 'PageState';
 
@@ -46,7 +37,7 @@ class LogisticsDetailsPage extends BasePage {
             expressNo: this.params.expressNo ? this.params.expressNo : '',
             expressName: '',
             loadingState: 'loading',
-            flags:false,
+            flags: false,
             viewData: []
         };
     }
@@ -80,9 +71,14 @@ class LogisticsDetailsPage extends BasePage {
                 </View>
                 <View style={{ flexDirection: 'row', paddingLeft: 15, height: 60, paddingTop: 5 }}>
                     <UIImage source={logisticsIcon} style={{ width: 20, height: 23, marginLeft: 10, marginTop: 15 }}/>
-                    <Text style={{ fontSize: 13, color: color.black_222, marginTop: 15, marginLeft: 15 }}>本数据由</Text>
+                    <Text style={{
+                        fontSize: 13,
+                        color: DesignRule.textColor_mainTitle_222,
+                        marginTop: 15,
+                        marginLeft: 15
+                    }}>本数据由</Text>
                     <Text style={{ fontSize: 13, color: color.deliveryIncludeBlue, marginTop: 15 }}>百世汇通</Text>
-                    <Text style={{ fontSize: 13, color: color.black_222, marginTop: 15 }}>提供</Text>
+                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle_222, marginTop: 15 }}>提供</Text>
                 </View>
 
             </View>
@@ -107,7 +103,7 @@ class LogisticsDetailsPage extends BasePage {
     };
     renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity style={{ elevation: 2, backgroundColor: color.white, marginLeft: 15, marginRight: 15 }}>
+            <TouchableOpacity style={{ elevation: 2, backgroundColor: 'white', marginLeft: 15, marginRight: 15 }}>
                 <LogisticsDetailItem
                     time={item.time}
                     middleImage={item.middleImage}
@@ -130,46 +126,54 @@ class LogisticsDetailsPage extends BasePage {
             </View>
         );
     }
-    renderEmpty(){
-        return(
-            <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-                <Image source={Nowuliu} style={{width:92,height:61}}/>
-                <Text style={{color:'#909090',fontSize:15,marginTop:25}}>暂无物流信息</Text>
+
+    renderEmpty() {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Image source={Nowuliu} style={{ width: 92, height: 61 }}/>
+                <Text style={{ color: '#909090', fontSize: 15, marginTop: 25 }}>暂无物流信息</Text>
             </View>
-        )
+        );
     }
-    renderSuccess(){
-        return(
+
+    renderSuccess() {
+        return (
             <View style={styles.container}>
-            {this.renderLogisticsNumber()}
-        <RefreshList
-            ListHeaderComponent={this.renderHeader}
-            ListFooterComponent={this.renderFootder}
-            data={this.state.viewData}
-            renderItem={this.renderItem}
-            onRefresh={this.onRefresh}
-            onLoadMore={this.onLoadMore}
-            extraData={this.state}
-            isEmpty={this.state.isEmpty}
-            emptyTip={'暂无数据'}
-        />
+                {this.renderLogisticsNumber()}
+                <RefreshList
+                    ListHeaderComponent={this.renderHeader}
+                    ListFooterComponent={this.renderFootder}
+                    data={this.state.viewData}
+                    renderItem={this.renderItem}
+                    onRefresh={this.onRefresh}
+                    onLoadMore={this.onLoadMore}
+                    extraData={this.state}
+                    isEmpty={this.state.isEmpty}
+                    emptyTip={'暂无数据'}
+                />
             </View>
-        )
+        );
     }
 
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line, marginLeft: 48, marginRight: 48 }}/>
+            <View style={{
+                height: 1,
+                backgroundColor: DesignRule.lineColor_inColorBg,
+                marginLeft: 48,
+                marginRight: 48
+            }}/>
         );
     };
 
-    componentDidMount(){
-        this.loadPageData()
+    componentDidMount() {
+        this.loadPageData();
     }
+
     //**********************************BusinessPart******************************************
     loadPageData() {
         console.log(this.params);
-        if(StringUtils.isNoEmpty(this.state.expressNo)){
+        if (StringUtils.isNoEmpty(this.state.expressNo)) {
             Toast.showLoading();
             OrderApi.findLogisticsDetail({ expNum: this.state.expressNo }).then((response) => {
                 Toast.hiddenLoading();
@@ -178,9 +182,9 @@ class LogisticsDetailsPage extends BasePage {
                 if (!response.data.showapi_res_body.flag) {
                     // NativeModules.commModule.toast('查询出错');
                     this.setState({
-                        flags:true,
+                        flags: true,
                         loadingState: 'success'
-                    })
+                    });
                     // this.setState({
                     //     loadingState: 'fail'
                     // });
@@ -200,17 +204,17 @@ class LogisticsDetailsPage extends BasePage {
                 });
             }).catch(e => {
                 Toast.hiddenLoading();
-                this.$toastShow(e.msg)
+                this.$toastShow(e.msg);
                 // this.setState({
                 //     loadingState: 'fail'
                 // });
                 this.setState({
-                    flags:true,
+                    flags: true,
                     loadingState: 'success'
-                })
+                });
             });
-        }else{
-            this.setState({loadingState: 'success'})
+        } else {
+            this.setState({ loadingState: 'success' });
         }
 
     }
@@ -223,16 +227,16 @@ class LogisticsDetailsPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: color.page_background
+        flex: 1, backgroundColor: DesignRule.bgColor
     }, logisticsNumber: {
         marginLeft: 15,
         marginRight: 15,
         marginTop: 10,
-        backgroundColor: color.white,
+        backgroundColor: 'white',
         borderWidth: 1,
         borderRadius: 10,
         height: 48,
-        borderColor: color.white,
+        borderColor: 'white',
         elevation: 2,
         justifyContent: 'center'
     }

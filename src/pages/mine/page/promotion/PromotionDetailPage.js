@@ -166,7 +166,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
                     height: px2dp(45),
                     justifyContent: 'space-between',
                     paddingHorizontal: px2dp(15),
-                    borderBottomColor: '#DDDDDD',
+                    borderBottomColor: DesignRule.lineColor_inGrayBg,
                     borderBottomWidth: px2dp(0.5)
                 }}>
                     <Text style={styles.blackTextStyle}>
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
         paddingBottom: px2dp(48)
     },
     grayButtonWrapper: {
-        borderColor: '#DDDDDD',
+        borderColor: DesignRule.lineColor_inGrayBg,
         borderWidth: px2dp(0.5),
         borderRadius: px2dp(5),
         width: px2dp(80),

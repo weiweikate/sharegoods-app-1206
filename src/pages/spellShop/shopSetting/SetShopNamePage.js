@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
         width: 90,
         height: 90,
         borderRadius: 5,
-        backgroundColor: '#dddddd'
+        backgroundColor: DesignRule.lineColor_inGrayBg
     },
     whitePanel: {
         marginTop: 10,

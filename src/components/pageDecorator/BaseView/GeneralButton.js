@@ -17,7 +17,7 @@
  * title={'点击我'}/>
  * */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
@@ -46,7 +46,7 @@ export default class GeneralButton extends Component {
         style: PropTypes.any,//按钮样式
         textStyle: PropTypes.any,//按钮文字样式
 
-        throttleTime: PropTypes.numebr,
+        throttleTime: PropTypes.numebr
     };
 
     static defaultProps = {
@@ -61,13 +61,13 @@ export default class GeneralButton extends Component {
         //
         disabledTitleColor: 'white',
 
-        throttleTime: 500,
+        throttleTime: 500
     };
 
     constructor(props) {
         super(props);
         this.state = ({
-            highLight: false,
+            highLight: false
         });
     }
 
@@ -96,7 +96,7 @@ export default class GeneralButton extends Component {
             textStyle,
             disabled,
             disabledBgColor,
-            disabledTitleColor,
+            disabledTitleColor
         } = this.props;
 
         // 设置不可用状态样式
@@ -105,9 +105,9 @@ export default class GeneralButton extends Component {
 
         btnContainer.push(style);
         disabled && btnContainer.push({
-            backgroundColor: disabledBgColor || '#C6E7EA',
+            backgroundColor: disabledBgColor || '#C6E7EA'
         });
-        const titleTextStyle = [styles.textStyle, textStyle,];
+        const titleTextStyle = [styles.textStyle, textStyle];
         disabled && disabledTitleColor && titleTextStyle.push({
             color: disabledTitleColor
         });
@@ -139,7 +139,7 @@ export default class GeneralButton extends Component {
             highlightBgColor,
             highlightTitleColor,
             disabledBgColor,
-            disabledTitleColor,
+            disabledTitleColor
         } = this.props;
 
         const btnContainer = [styles.btnContainer, styles.btnRadius];
@@ -147,14 +147,14 @@ export default class GeneralButton extends Component {
         btnContainer.push(style);
         // 不可用状态
         disabled && btnContainer.push({
-            backgroundColor: disabledBgColor || '#C6E7EA',
+            backgroundColor: disabledBgColor || '#C6E7EA'
         });
         const underlayColor = highlightBgColor || '#C6E7EA';
 
         const titleTextStyle = [styles.textStyle, textStyle];
         // 高亮状态
         this.state.highLight && highlightTitleColor && titleTextStyle.push({
-            color: highlightTitleColor,
+            color: highlightTitleColor
         });
         // 不可用状态
         disabled && disabledTitleColor && titleTextStyle.push({
@@ -165,10 +165,10 @@ export default class GeneralButton extends Component {
                                     disabled={disabled}
                                     style={btnContainer}
                                     onShowUnderlay={() => {
-                                        this.setState({highLight: true});
+                                        this.setState({ highLight: true });
                                     }}
                                     onHideUnderlay={() => {
-                                        this.setState({highLight: false});
+                                        this.setState({ highLight: false });
                                     }}
                                     onPress={this.onPress}>
             <View>
@@ -187,10 +187,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     btnRadius: {
-        borderRadius: 6,
+        borderRadius: 6
     },
     textStyle: {
         color: 'white',
-        fontSize: 16,
+        fontSize: 16
     }
 });

@@ -313,7 +313,7 @@ export default class HelperFeedbackPage extends BasePage {
 
                     <View style={{ width: ScreenUtils.width, height: 180, alignItems: 'center' }}>
                         <TouchableOpacity activeOpacity={0.9}
-                                          style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' || this.state.detailContent.length < 10 ? '#dddddd' : color.red }]
+                                          style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' || this.state.detailContent.length < 10 ? DesignRule.lineColor_inGrayBg : color.red }]
 
                                           } onPress={() => this.feedback2server()}>
                             <Text style={{ fontSize: 16, color: '#fff' }}>提交</Text>
