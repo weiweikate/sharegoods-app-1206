@@ -621,7 +621,7 @@ class MyOrdersDetailPage extends BasePage {
 
 
         renderAddress = () => {
-            console.log('this.state.heightaddredd',this.state.height);
+            // console.log('this.state.heightaddredd',this.state.height);
         return (
             <View style={{
                 height: Math.max(83, this.state.height),
@@ -637,11 +637,11 @@ class MyOrdersDetailPage extends BasePage {
                         <Text style={{
                             flex: 1,
                             fontSize: 15,
-                            color: DesignRule.textColor_mainTitle
+                            color: DesignRule.textColor_instruction
                         }}>收货人：{this.state.viewData.receiverName}</Text>
                         <Text style={{
                             fontSize: 15,
-                            color: DesignRule.textColor_mainTitle
+                            color: DesignRule.textColor_instruction
                         }}>{this.state.viewData.receiverNum}</Text>
                     </View>
                     <UIText value={
@@ -650,7 +650,7 @@ class MyOrdersDetailPage extends BasePage {
                         + this.state.viewData.areaString
                         + this.state.viewData.receiverAddress
                     }
-                            style={{ color: color.black_999, fontSize: 15 }}/>
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 15,marginTop:3 }}/>
                 </View>
             </View>
         );
@@ -998,8 +998,9 @@ class MyOrdersDetailPage extends BasePage {
                     pageStateString.moreDetail = data.buyerRemark;
                     break;
                 case 8://超时关闭
-                    pageStateString.sellerState = ['收货人：' + data.receiver,''+data.recevicePhone];
-                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    // pageStateString.sellerState = ['收货人：' + data.receiver,''+data.recevicePhone];
+                    // pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    pageStateString.sellerState = '订单已关闭';
                     pageStateString.moreDetail = data.buyerRemark;
                     if (data.orderType == 5 || data.orderType == 98) {
                         pageStateString.menu = [

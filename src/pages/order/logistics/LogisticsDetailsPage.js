@@ -21,7 +21,7 @@ import copy from '../res/copy.png';
 import logisticsIcon from '../res/logisticsIcon.png';
 import LogisticsDetailItem from '../components/LogisticsDetailItem';
 // import tryIcon from '../res/car.png';
-import Nowuliu from '../res/no_wuliu.png';
+import Nowuliu from '../res/kongbeiye_wulian.png';
 import Toast from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
 
