@@ -203,7 +203,7 @@ export default class MinePage extends BasePage {
                     height: 44
                 }}>
                     <View style={{ flex: 1 }}/>
-                    <Text style={{ justifySelf: 'center', color: '#212121', fontSize: px2dp(17) }}>
+                    <Text style={{  color: '#212121', fontSize: px2dp(17) }}>
                         我的
                     </Text>
                     <View style={{
