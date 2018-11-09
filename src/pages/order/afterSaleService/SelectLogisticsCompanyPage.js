@@ -67,7 +67,7 @@ export default class SelectLogisticsCompanyPage extends BasePage {
                     renderSectionHeader = {this._renderSectionHeader}
                     sections = {this.state.logisticsCompanys}
                     keyExtractor = {(item, index) => item.name + index}
-                    ItemSeparatorComponent = {() => <View style = {{height: 0.5, backgroundColor: DesignRule.bgColor}}/>}
+                    ItemSeparatorComponent = {() => <View style = {{height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg}}/>}
                 />
             </View>
         )

@@ -86,7 +86,7 @@ export default class FillReturnLogisticsPage extends BasePage {
                     </View>
                 </ScrollView>
                 <TouchableWithoutFeedback onPress = {this.submit}>
-                    <View style = {{backgroundColor: DesignRule.mainColor, height: 50, alignItems: 'center', justifyContent: 'center'}}>
+                    <View style = {{backgroundColor: DesignRule.bgColor_btn, height: 50, alignItems: 'center', justifyContent: 'center'}}>
                         <UIText value = {'提交'} style = {{color: 'white', fontSize: 16}}/>
                     </View>
                 </TouchableWithoutFeedback>
