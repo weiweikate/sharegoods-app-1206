@@ -32,7 +32,7 @@ public class MainActivity extends BaseActivity {
     private TextView tvGo;
 
     private WeakHandler mHandler;
-    private boolean needGo = true;
+    private boolean needGo = false;
     private boolean isFirst = true;
     private boolean hasGo = false;
     private String adId;
@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity {
                 //有广告时延迟时间增加
                 mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
             } else {
-                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 500);
+                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
             }
         } else {
             if (needGo && hasBasePer) {
@@ -97,7 +97,7 @@ public class MainActivity extends BaseActivity {
             params.height = (ScreenUtils.getScreenWidth() * 7) / 5;
             ivAdv.setLayoutParams(params);
 //            DisplayImageUtils.formatImgUrlNoHolder(this, imgUrl, ivAdv);
-            findViewById(R.id.iv_splash).setVisibility(View.GONE);
+            
             initAdvEvent();
             startTimer();
         }
