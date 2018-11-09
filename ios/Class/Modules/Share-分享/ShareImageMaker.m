@@ -34,7 +34,8 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     return;
   }
   __weak ShareImageMaker * weakSelf = self;
-  [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:model.imageUrlStr] options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+  NSString *imgUrl = [model.imageUrlStr  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+  [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:imgUrl] options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
     
   } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
     NSString *path = [weakSelf ceratShareImageWithProductImage:image titleStr:model.titleStr priceStr:model.priceStr QRCodeStr:model.QRCodeStr];

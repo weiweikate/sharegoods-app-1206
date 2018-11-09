@@ -208,7 +208,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                             <UIText value={item.time} style={{fontSize:15,color:DesignRule.textColor_instruction}}/>
                             <View style={{flexDirection:'row',alignItems:'center'}}>
                                 <Text style={{fontSize:12,color:DesignRule.textColor_secondTitle}}>已入账:</Text>
-                                <Text style={{fontSize:12,color:DesignRule.textColor_secondTitle}}>{item.realBalance===null?'?':item.realBalance}</Text>
+                                <Text style={{fontSize:12,color:DesignRule.textColor_secondTitle}}>{item.realBalance === null ? '?' : item.realBalance}</Text>
                             </View>
                         </View>
                     </View>

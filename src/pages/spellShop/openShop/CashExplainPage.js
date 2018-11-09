@@ -87,7 +87,7 @@ export default class CashExplainPage extends BasePage {
                 }}>
                     <TouchableOpacity activeOpacity={0.5} onPress={this._clickOpen} style={styles.btnStyle}>
                         <Text style={{
-                            fontSize: 15,
+                            fontSize: 17,
                             color: 'white'
                         }}>缴纳保证金</Text>
                     </TouchableOpacity>
@@ -121,8 +121,8 @@ const styles = StyleSheet.create({
     },
     btnStyle: {
         width: 170,
-        height: 43,
-        borderRadius: 5,
+        height: 50,
+        borderRadius: 25,
         backgroundColor: DesignRule.mainColor,
         overflow: 'hidden',
         justifyContent: 'center',

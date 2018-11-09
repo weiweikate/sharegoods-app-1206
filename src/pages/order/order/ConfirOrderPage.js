@@ -686,7 +686,7 @@ export default class ConfirOrderPage extends BasePage {
                     let data = res.data;
                     user.saveUserInfo(data);
                 }).catch(err => {
-                    if(err.code===54001){
+                    if(err.code === 54001){
                         this.$toastShow('商品库存不足！');
                         shopCartCacheTool.getShopCartGoodsListData();
                         this.$navigateBack()

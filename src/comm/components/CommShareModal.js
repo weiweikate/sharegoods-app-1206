@@ -66,7 +66,7 @@ export default class CommShareModal extends React.Component {
         super(props);
 
         this._bind();
-        this.defaultShareType = (props.type === 'miniProgram'||props.type === 'task' || props.type === 'Image' || props.type === 'promotionShare') ? 2 : 1;
+        this.defaultShareType = (props.type === 'miniProgram' || props.type === 'task' || props.type === 'Image' || props.type === 'promotionShare') ? 2 : 1;
 
         this.state = {
             modalVisible: false,

@@ -24,19 +24,19 @@ import ShareTaskResultAlert from '../components/ShareTaskResultAlert';
 import RefreshLargeList from 'RefreshLargeList';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import taskApi from '../api/taskApi';
-import arrow_bottom from '../res/arrow_bottom.png';
-import arrow_top from '../res/arrow_top.png';
-import redEnvelope from '../res/redEnvelope.png';
-import task_bg from '../res/task_bg.png';
 import DesignRule from 'DesignRule';
 import RouterMap from 'RouterMap';
-
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import TimerMixin from 'react-timer-mixin';
 import DateUtils from '../../../utils/DateUtils';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import user from '../../../model/user';
 import CommShareModal from '../../../comm/components/CommShareModal';
+import res from '../res'
+const arrow_bottom =  res.button.arrow_bottom;
+const arrow_top =  res.button.arrow_top;
+const task_bg = res.task_bg;
+const redEnvelope = res.redEnvelope;
 type Props = {};
 export default class ShareTaskListPage extends BasePage<Props> {
 
@@ -45,7 +45,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
         this._bind();
         this.seconds = 0;
         this.expansions = {};
-        this.state={id: ''};
+        this.state = {id: ''};
 
     }
 
@@ -86,8 +86,8 @@ export default class ShareTaskListPage extends BasePage<Props> {
                 that.failModal.open();
             }else {
                 that.successModal.open();
-                recieveMoney =  Math.round(recieveMoney*100)/100;
-                recieveBean =  Math.round(recieveBean*100)/100;
+                recieveMoney =  Math.round(recieveMoney * 100) / 100;
+                recieveBean =  Math.round(recieveBean * 100) / 100;
                 that.setState({recieveMoney,recieveBean});
             }
            that.$loadingDismiss();
@@ -247,7 +247,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                     </TouchableOpacity>
                 </View>
                 {
-                    this.expansions[row]?
+                    this.expansions[row] ?
                             <View style={{ height: 280, paddingHorizontal: autoSizeWidth(15) }}>
                                 <Text style={[styles.text, { marginTop: autoSizeWidth(10) }]}
                                       numberOfLines={2}
@@ -264,7 +264,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
                                     flexDirection: 'row',
                                 }}>
                                     <Image source={task_bg}
-                                           style={{ position: 'absolute', top: 0, left: 0,width: autoSizeWidth(375-30),  height: autoSizeWidth(170)}}/>
+                                           style={{ position: 'absolute', top: 0, left: 0,width: autoSizeWidth(375 - 30),  height: autoSizeWidth(170)}}/>
                                     <View style={{ flex: 1}}/>
                                     {
                                         status === 4 ?
@@ -316,7 +316,7 @@ export default class ShareTaskListPage extends BasePage<Props> {
             this.list2.onRefresh();
             return;
         }
-        ;
+
         let restSeconds = allSeconds - this.seconds;
         let s = restSeconds % 60;
         restSeconds = (restSeconds - s) / 60;

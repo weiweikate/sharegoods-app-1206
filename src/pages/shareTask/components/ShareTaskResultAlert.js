@@ -23,11 +23,12 @@ import {
     UIImage
 } from '../../../components/ui';
 import ShareTaskAnimation from './ShareTaskAnimation';
-import fail from '../res/renwu_icon_yihan_nor.png';
-import success from '../res/renwu_icon_gongxi_nor.png';
-import cancel from '../res/qiandao_btn_return_nor.png';
+import res from '../res';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
+const cancel = res.button.cancel_white_circle;
+const fail = res.renwu_icon_yihan_nor;
+const success = res.renwu_icon_gongxi_nor;
 
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 

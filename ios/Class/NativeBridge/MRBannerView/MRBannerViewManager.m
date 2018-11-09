@@ -18,6 +18,8 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_VIEW_PROPERTY(imgUrlArray, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(tittleArray, NSArray)
 RCT_EXPORT_VIEW_PROPERTY(autoInterval,CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(itemWidth,CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(itemSpace,CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(autoLoop,BOOL)
 
 RCT_EXPORT_VIEW_PROPERTY(onDidSelectItemAtIndex, RCTBubblingEventBlock)
@@ -29,7 +31,7 @@ RCT_EXPORT_VIEW_PROPERTY(onDidScrollToIndex, RCTBubblingEventBlock)
   pagerView.isInfiniteLoop = true;
   pagerView.dataSource = self;
   pagerView.delegate = self;
-  [pagerView registerClass:[MRBannerViewCell class] forCellWithReuseIdentifier:@"cellId"];
+  [pagerView registerClass:[MRBannerViewCell class] forCellWithReuseIdentifier:@"MRBannerViewCell"];
   _swiperView = pagerView;
   return _swiperView;
 }
@@ -39,8 +41,9 @@ RCT_EXPORT_VIEW_PROPERTY(onDidScrollToIndex, RCTBubblingEventBlock)
 }
 
 - (__kindof UICollectionViewCell *)pagerView:(TYCyclePagerView *)pagerView cellForItemAtIndex:(NSInteger)index{
-  MRBannerViewCell *cell = [pagerView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndex:index];
-  [cell.imgView sd_setImageWithURL:[NSURL URLWithString:_swiperView.imgUrlArray[index]] placeholderImage:nil];
+  MRBannerViewCell *cell = [pagerView dequeueReusableCellWithReuseIdentifier:@"MRBannerViewCell" forIndex:index];
+  NSString *tempUrlString = _swiperView.imgUrlArray[index];
+  [cell.imgView sd_setImageWithURL:[NSURL URLWithString: [tempUrlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]] placeholderImage:nil];
   if (_swiperView.tittleArray && _swiperView.tittleArray.count>index) {
     cell.tittleLabel.text = _swiperView.tittleArray[index];
   }
@@ -48,8 +51,12 @@ RCT_EXPORT_VIEW_PROPERTY(onDidScrollToIndex, RCTBubblingEventBlock)
 }
 - (TYCyclePagerViewLayout *)layoutForPagerView:(TYCyclePagerView *)pageView {
   TYCyclePagerViewLayout *layout = [[TYCyclePagerViewLayout alloc]init];
-  layout.itemSize = CGSizeMake(CGRectGetWidth(pageView.frame)*0.8, CGRectGetHeight(pageView.frame));
-  layout.itemSpacing = 15;
+  if (_swiperView.itemSpace && _swiperView.itemWidth) {
+    layout.itemSize = CGSizeMake(_swiperView.itemWidth, CGRectGetHeight(pageView.frame));
+    layout.itemSpacing = _swiperView.itemSpace;
+  }else{
+    layout.itemSize = CGSizeMake(CGRectGetWidth(pageView.frame), CGRectGetHeight(pageView.frame));
+  }
   return layout;
 }
 
