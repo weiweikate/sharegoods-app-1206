@@ -68,12 +68,14 @@ export default class MRBannerViewMode extends Component {
 
     render() {
         return (
-            <MRBannerView style={[{ height: this.props.bannerHeight, width: ScreenUtils.width }]}
-                          onDidScrollToIndex={(e)=>this._onDidScrollToIndex(e)}
-                          imgUrlArray={this.props.imgUrlArray}
-                          onDidSelectItemAtIndex={(e)=>this._onDidSelectItemAtIndex(e)}>
+            <View>
+                <MRBannerView style={[{ height: this.props.bannerHeight, width: ScreenUtils.width }]}
+                              onDidScrollToIndex={(e) => this._onDidScrollToIndex(e)}
+                              imgUrlArray={this.props.imgUrlArray}
+                              onDidSelectItemAtIndex={(e) => this._onDidSelectItemAtIndex(e)}/>
                 {this._renderPageControl()}
-            </MRBannerView>
+            </View>
+
         );
     }
 }

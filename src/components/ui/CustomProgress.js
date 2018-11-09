@@ -6,6 +6,7 @@ import {
     Easing
 } from 'react-native';
 import PropTypes from 'prop-types';
+import DesignRule from 'DesignRule';
 
 export default class CustomProgress extends Component {
     static propTypes = {
@@ -165,7 +166,7 @@ Object.defineProperty(CustomProgress.prototype, 'buffer', {
 const styles = StyleSheet.create({
     container: {
         height: 4,
-        backgroundColor: '#eee',
-        borderRadius:10
+        backgroundColor: DesignRule.lineColor_inColorBg,
+        borderRadius: 10
     }
 });

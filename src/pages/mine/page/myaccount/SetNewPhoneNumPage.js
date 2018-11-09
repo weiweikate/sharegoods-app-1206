@@ -52,7 +52,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                         }}
                         value={this.state.telText}
                         placeholder={'请输入新手机号'}
-                        placeholderTextColor={'#C8C8C8'}
+                        placeholderTextColor={DesignRule.textColor_hint}
                         keyboardType={'numeric'}
                     />
                 </View>
@@ -62,11 +62,11 @@ export default class SetNewPhoneNumPage extends BasePage {
                     flexDirection: 'row',
                     alignItems: 'center'
                 }}>
-                    <UIText value={'验证码'} style={{ fontSize: 13, color: '#000000', marginLeft: 20 }}/>
+                    <UIText value={'验证码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}/>
                     <TextInput underlineColorAndroid={'transparent'}
-                               style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 20 }}
+                               style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}
                                placeholder={'请输入验证码'}
-                               placeholderTextColor={'#C8C8C8'}
+                               placeholderTextColor={DesignRule.textColor_hint}
                                onChangeText={(text) => {
                                    const newText = text.replace(/[^\d]+/, '');
                                    this.setState({ code: newText });

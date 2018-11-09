@@ -1,5 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, AppState,TouchableWithoutFeedback } from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    Image,
+    ScrollView,
+    AppState,
+    TouchableWithoutFeedback
+} from 'react-native';
 import BasePage from '../../BasePage';
 import { UIText } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
@@ -15,7 +24,7 @@ import spellStatusModel from '../spellShop/model/SpellStatusModel';
 import DesignRule from 'DesignRule';
 import CommModal from 'CommModal';
 import res from '../../comm/res';
-import PasswordView from './PasswordView'
+import PasswordView from './PasswordView';
 
 const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) => {
     let selected = isSelected;
@@ -39,7 +48,8 @@ const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) 
                 :
                 null
         }
-        <Image source={selected ? res.button.selected_circle_red : res.button.unselected_circle} style={{ height: 22, width: 22 }}
+        <Image source={selected ? res.button.selected_circle_red : res.button.unselected_circle}
+               style={{ height: 22, width: 22 }}
                resizeMode={'stretch'}/>
     </TouchableOpacity>;
 };
@@ -105,12 +115,12 @@ export default class PaymentMethodPage extends BasePage {
     _handleAppStateChange = (state) => {
         console.log('_handleAppStateChange AppState', state);
         const { selectedTypes } = this.payment;
-        let paytype = 1
+        let paytype = 1;
         if (this.payment.payStore) {
-            paytype = 2
+            paytype = 2;
         }
         if (this.payment.payPromotion) {
-            paytype = 3
+            paytype = 3;
         }
         if (state === 'active' && this.payment.outTradeNo) {
             if (selectedTypes.type === paymentType.alipay) {
@@ -171,24 +181,56 @@ export default class PaymentMethodPage extends BasePage {
         </View>;
     }
 
-    renderPromotion=()=>{
+    renderPromotion = () => {
         return (
-            <CommModal ref={(ref)=>{this.promotionModal = ref;}} visible={this.state.payPromotionSuccess}>
+            <CommModal ref={(ref) => {
+                this.promotionModal = ref;
+            }} visible={this.state.payPromotionSuccess}>
                 <View style={styles.promotionBgStyle}>
-                    <Image source={res.button.tongyon_icon_check_green} style={{width:70,height:70,marginTop:20}}/>
-                    <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_mediumBtnText,includeFontPadding:false,marginTop:10}}>
+                    <Image source={res.button.tongyon_icon_check_green}
+                           style={{ width: 70, height: 70, marginTop: 20 }}/>
+                    <Text style={{
+                        color: DesignRule.textColor_secondTitle,
+                        fontSize: DesignRule.fontSize_mediumBtnText,
+                        includeFontPadding: false,
+                        marginTop: 10
+                    }}>
                         支付成功
                     </Text>
-                    <Text style={{color:DesignRule.textColor_secondTitle,fontSize:DesignRule.fontSize_22,includeFontPadding:false,marginTop:15,textAlign:'center'}}>
+                    <Text style={{
+                        color: DesignRule.textColor_secondTitle,
+                        fontSize: DesignRule.fontSize_22,
+                        includeFontPadding: false,
+                        marginTop: 15,
+                        textAlign: 'center'
+                    }}>
                         {`系统会在明天0点进行站内推广\n每成功获取一个下级将收到站内消息推送`}
                     </Text>
-                    <View style={{width:200,marginHorizontal:24,justifyContent:'center',flexDirection:'row',marginTop:20}}>
-                        <TouchableWithoutFeedback onPress={()=>{
-                            this.setState({payPromotionSuccess:false})
-                            this.$navigateBack('mine/promotion/UserPromotionPage',{reload:true})
+                    <View style={{
+                        width: 200,
+                        marginHorizontal: 24,
+                        justifyContent: 'center',
+                        flexDirection: 'row',
+                        marginTop: 20
+                    }}>
+                        <TouchableWithoutFeedback onPress={() => {
+                            this.setState({ payPromotionSuccess: false });
+                            this.$navigateBack('mine/promotion/UserPromotionPage', { reload: true });
                         }}>
-                            <View style={{borderRadius:5,borderColor:DesignRule.mainColor,borderWidth:1,justifyContent:'center',alignItems:'center',width:93,height:30}}>
-                                <Text style={{color:DesignRule.mainColor,fontSize:DesignRule.fontSize_24,includeFontPadding:false}}>
+                            <View style={{
+                                borderRadius: 5,
+                                borderColor: DesignRule.mainColor,
+                                borderWidth: 1,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                width: 93,
+                                height: 30
+                            }}>
+                                <Text style={{
+                                    color: DesignRule.mainColor,
+                                    fontSize: DesignRule.fontSize_24,
+                                    includeFontPadding: false
+                                }}>
                                     我的推广
                                 </Text>
                             </View>
@@ -196,8 +238,8 @@ export default class PaymentMethodPage extends BasePage {
                     </View>
                 </View>
             </CommModal>
-        )
-    }
+        );
+    };
 
 
     renderPayResult() {
@@ -207,7 +249,7 @@ export default class PaymentMethodPage extends BasePage {
     }
 
     finishedPwd(password) {
-        const { payStore, payPromotion } = this.payment
+        const { payStore, payPromotion } = this.payment;
         this.setState({ isShowPaymentModal: false });
         setTimeout(() => {
             if (payStore) {
@@ -221,22 +263,22 @@ export default class PaymentMethodPage extends BasePage {
                         Toast.$toast('支付失败');
                     }
                 });
-            }else if(payPromotion){
-                this.payment.payPromotionWithId(password,this.params.packageId, this.paymentResultView).then(result => {
+            } else if (payPromotion) {
+                this.payment.payPromotionWithId(password, this.params.packageId, this.paymentResultView).then(result => {
                     if (result.sdkCode === 0) {
                         // //刷新拼店状态
                         // spellStatusModel.storeStatus = 2;
                         // spellStatusModel.getUser(2);
                         // this.$navigate('spellShop/shopSetting/SetShopNamePage');
                         this.setState({
-                            payPromotionSuccess:true
+                            payPromotionSuccess: true
                         });
                         this.promotionModal && this.promotionModal.open();
                     } else {
-                        this.paymentResultView.show(2, result.message)
+                        this.paymentResultView.show(2, result.message);
                     }
                 });
-            }else {
+            } else {
                 this.setState({ password: password, isShowPaymentModal: false });
                 this.commitOrder();
             }
@@ -247,10 +289,10 @@ export default class PaymentMethodPage extends BasePage {
     renderPaymentModal = () => {
         return <PasswordView
             forgetAction={() => this.forgetTransactionPassword()}
-            closeAction={()=> this.setState({isShowPaymentModal: false})}
+            closeAction={() => this.setState({ isShowPaymentModal: false })}
             visible={this.state.isShowPaymentModal}
-            finishedAction={(password)=> this.finishedPwd(password)}
-            />
+            finishedAction={(password) => this.finishedPwd(password)}
+        />;
     };
     renderBottomOrder = () => {
         return (
@@ -263,7 +305,12 @@ export default class PaymentMethodPage extends BasePage {
                                 style={styles.bottomUitext1}/>
                     </View>
                     <TouchableOpacity
-                        style={{ flex: 1, backgroundColor: DesignRule.mainColor, justifyContent: 'center', alignItems: 'center' }}
+                        style={{
+                            flex: 1,
+                            backgroundColor: DesignRule.mainColor,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'去支付'}
                                 style={{ fontSize: 16, color: 'white' }}/>
@@ -274,7 +321,7 @@ export default class PaymentMethodPage extends BasePage {
     };
     forgetTransactionPassword = () => {
         this.setState({ isShowPaymentModal: false });
-        this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: true });
+        this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
     };
 
     async _balancePay() {
@@ -291,7 +338,7 @@ export default class PaymentMethodPage extends BasePage {
             this._showPayresult(result);
         }
         else {
-            this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
+            this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
         }
     }
 
@@ -324,9 +371,9 @@ export default class PaymentMethodPage extends BasePage {
             }
             let result = await this.payment.perpay(params);
             if (result && result.code !== 10000) {
-                Toast.hiddenLoading()
-                Toast.$toast(result.msg)
-                return
+                Toast.hiddenLoading();
+                Toast.$toast(result.msg);
+                return;
             }
 
             user.updateUserData();
@@ -362,7 +409,7 @@ export default class PaymentMethodPage extends BasePage {
             }
         }
         else {
-            this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
+            this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
         }
     }
 
@@ -391,7 +438,7 @@ export default class PaymentMethodPage extends BasePage {
                     this.setState({ password: '' });
                 }
                 else {
-                    this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
+                    this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
                 }
                 return;
             }
@@ -419,12 +466,12 @@ export default class PaymentMethodPage extends BasePage {
                     this.setState({ password: '' });
                 }
                 else {
-                    this.$navigate('mine/account/JudgePhonePage', { hasOriginalPsw: false });
+                    this.$navigate('mine/account/JudgePhonePage', { title: '设置交易密码' });
                 }
                 return;
             }
 
-            this.payment.payPromotionWithId(this.state.password , this.params.packageId, this.paymentResultView).then(result => {
+            this.payment.payPromotionWithId(this.state.password, this.params.packageId, this.paymentResultView).then(result => {
                 if (result.sdkCode === 0) {
                     //刷新拼店状态
                     this.setState({
@@ -432,7 +479,7 @@ export default class PaymentMethodPage extends BasePage {
                     });
                 } else {
                     // Toast.$toast('支付失败');
-                    this.paymentResultView.show(2, result.message)
+                    this.paymentResultView.show(2, result.message);
                 }
             });
             return;
@@ -485,7 +532,7 @@ const styles = StyleSheet.create({
     }, blackText: {
         fontSize: 13,
         lineHeight: 18,
-        color: '#000000'
+        color: DesignRule.textColor_mainTitle
     }, grayText: {
         fontSize: 13,
         lineHeight: 18,

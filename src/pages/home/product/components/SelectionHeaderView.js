@@ -55,7 +55,7 @@ export default class SelectionHeaderView extends Component {
                 <Image style={{
                     height: 107,
                     width: 107,
-                    borderColor: '#EEEEEE',
+                    borderColor: DesignRule.lineColor_inColorBg,
                     borderWidth: 1,
                     borderRadius: 5,
                     alignItems: 'center',

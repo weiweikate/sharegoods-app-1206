@@ -62,7 +62,7 @@ export default class TopicDetailSelectPage extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: '#eeeeee' }}/>
+                    <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                 </View>
             );
         });
@@ -94,7 +94,7 @@ export default class TopicDetailSelectPage extends Component {
                                 height: 107,
                                 width: 107,
                                 backgroundColor:'#eee',
-                                borderColor: '#EEEEEE',
+                                borderColor: DesignRule.lineColor_inColorBg,
                                 borderWidth: 1,
                                 borderRadius: 5,
                                 alignItems: 'center',

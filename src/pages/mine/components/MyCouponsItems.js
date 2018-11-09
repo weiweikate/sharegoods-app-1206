@@ -52,7 +52,7 @@ export default class MyCouponsItems extends Component {
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         let BG = item.status === 0 && !item.levelimit ? unuesdBg : usedBg;
-        let BGR = item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
+        let BGR = item.status === 3 ? tobeActive : (item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status == 1 ? usedRIcon : ActivedIcon));
         return (
             <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor }}
                               onPress={() => this.clickItem(index, item)}>

@@ -99,7 +99,7 @@ export default class PromotionPayPage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#f6f6f6"
+        backgroundColor: DesignRule.bgColor
     },
     itemWrapper:{
         height:px2dp(48),

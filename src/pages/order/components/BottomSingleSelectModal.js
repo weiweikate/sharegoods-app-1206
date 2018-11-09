@@ -7,13 +7,14 @@ import {
     NativeModules,
     TouchableOpacity
 } from 'react-native';
-import { color } from '../../../constants/Theme';
 import res from '../../../comm/res';
 import Modal from 'CommModal';
 import {
     UIText, UIImage, UIButton
 } from '../../../components/ui';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
+
 const circleSelect = res.button.selected_circle_red;
 const circleUnselect = res.button.unselected_circle;
 
@@ -28,7 +29,7 @@ export default class BottomSingleSelectModal extends Component {
 
     open = () => {
         this.modal && this.modal.open();
-    }
+    };
 
     render() {
         return (
@@ -57,7 +58,7 @@ export default class BottomSingleSelectModal extends Component {
                     <TouchableOpacity key={i} style={{
                         height: 48,
                         justifyContent: 'center',
-                        backgroundColor: this.state.currentSelect == i ? color.gray_f7f7 : color.white
+                        backgroundColor: this.state.currentSelect == i ? DesignRule.bgColor : 'white'
                     }} onPress={() => {
                         this.setState({ currentSelect: i });
                     }}>
@@ -67,7 +68,7 @@ export default class BottomSingleSelectModal extends Component {
                                      style={{ width: 22, height: 22, marginRight: 22 }}/>
                         </View>
                     </TouchableOpacity>
-                    <View style={{ backgroundColor: color.gray_EEE, height: 1 }}/>
+                    <View style={{ backgroundColor: DesignRule.lineColor_inColorBg, height: 1 }}/>
                 </View>
             );
         }
@@ -89,7 +90,7 @@ export default class BottomSingleSelectModal extends Component {
                 alignContent: 'center',
                 flexDirection: 'row'
             }}>
-                <View style={{ flex: 1, backgroundColor: color.white }}>
+                <View style={{ flex: 1, backgroundColor: 'white' }}>
                     <View style={{
                         height: 48,
                         justifyContent: 'space-between',
@@ -99,18 +100,18 @@ export default class BottomSingleSelectModal extends Component {
                     }}>
                         <TouchableOpacity style={{ paddingLeft: 17, width: 50 }}
                                           onPress={() => this.props.closeWindow()}>
-                            <UIText value={'x'} style={{ color: color.gray_bbb, fontSize: 24 }}/>
+                            <UIText value={'x'} style={{ color: DesignRule.textColor_hint, fontSize: 24 }}/>
                         </TouchableOpacity>
                         <UIText value={'请选择'}/>
                         <TouchableOpacity style={{ paddingRight: 17, width: 50 }}>
-                            <UIText value={' '} style={{ color: color.gray_bbb, fontSize: 24 }}/>
+                            <UIText value={' '} style={{ color: DesignRule.textColor_hint, fontSize: 24 }}/>
                         </TouchableOpacity>
                     </View>
                     {this.renderMenu()}
                     <View style={{ justifyContent: 'center', alignItems: 'center', height: 64 }}>
                         <UIButton
                             value={'确定'}
-                            style={{ backgroundColor: color.red, height: 43 }}
+                            style={{ backgroundColor: DesignRule.mainColor, height: 43 }}
                             onPress={() => this.commitSelect()}/>
                     </View>
 
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'flex-end',
         flex: 1,
-        width:ScreenUtils.width
+        width: ScreenUtils.width
     }
 });
 

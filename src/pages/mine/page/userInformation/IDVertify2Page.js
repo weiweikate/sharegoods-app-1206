@@ -182,7 +182,7 @@ export default class IDVertify2Page extends BasePage {
     };
     renderHintInformation = () => {
         return (
-            <View style={{ height: 50, backgroundColor: '#e60012', justifyContent: 'center', paddingLeft: 15 }}>
+            <View style={{ height: 50, backgroundColor: DesignRule.mainColor, justifyContent: 'center', paddingLeft: 15 }}>
                 <UIText value={'请仔细检查姓名和证件号是否有误\n并重新上传图片，提交审核'}
                         style={{ fontSize: 13, lineHeight: 18, color: 'white' }}/>
             </View>

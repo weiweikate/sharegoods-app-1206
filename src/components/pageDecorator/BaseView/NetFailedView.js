@@ -132,7 +132,7 @@ export default class NetFailedView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: '#f6f6f6',
+        // backgroundColor: DesignRule.bgColor,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -152,12 +152,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
-        borderColor: "#e60012",
+        borderColor: DesignRule.mainColor,
         backgroundColor: 'transparent',
     },
     btnText: {
         fontSize: 16,
-        color: '#e60012',
+        color: DesignRule.mainColor,
         textAlign: 'center',
     },
 });

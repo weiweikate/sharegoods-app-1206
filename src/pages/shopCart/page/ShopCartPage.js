@@ -434,7 +434,7 @@ export default class ShopCartPage extends BasePage {
                             }}>
                                 <UIText
                                     value={'￥ ' + StringUtils.formatMoneyString(itemData.price, false)}
-                                    style={{ fontSize: 14, color: '#e60012' }}/>
+                                    style={{ fontSize: 14, color: DesignRule.mainColor }}/>
                                 <View style={{ flexDirection: 'row' }}>
                                     <TouchableOpacity
                                         style={styles.rectangle}
