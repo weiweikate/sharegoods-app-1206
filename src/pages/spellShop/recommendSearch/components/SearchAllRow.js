@@ -58,7 +58,7 @@ export default class RecommendRow extends Component {
                         </View>
                         <View style={{
                             flexDirection: 'row', alignSelf: 'center',
-                            width: ScreenUtils.autoSizeWidth(200), height: 5, marginTop:15,
+                            width: ScreenUtils.autoSizeWidth(200), height: 5, marginTop: 15,
                             borderRadius: 2, borderWidth: 0.5, borderColor: DesignRule.bgColor_btn
                         }}>
                             <View style={{
@@ -98,7 +98,7 @@ export default class RecommendRow extends Component {
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>店铺累计收入</Text>
-                        <Text style={styles.containBottom}>{`${totalTradeBalance}元`}</Text>
+                        <Text style={styles.containBottom}>{`${totalTradeBalance || 0}元`}</Text>
                     </View>
                 </View>
 

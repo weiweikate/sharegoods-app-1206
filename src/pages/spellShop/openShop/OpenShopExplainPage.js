@@ -11,6 +11,7 @@ import {
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
+import apiEnvironment from '../../../api/ApiEnvironment';
 
 export default class OpenShopExplainPage extends BasePage {
 
@@ -21,8 +22,8 @@ export default class OpenShopExplainPage extends BasePage {
 
     _onPress = ()=>{
         this.$navigate('HtmlPage',{
-            title:'用户协议内容',
-            uri:'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
+            title:'拼店管理条例',
+            uri:`${apiEnvironment.getCurrentH5Url()}/static/protocol/pindian.html`
         })
     }
 

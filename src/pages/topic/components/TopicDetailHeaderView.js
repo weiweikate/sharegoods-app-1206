@@ -134,6 +134,7 @@ export default class TopicDetailHeaderView extends Component {
             <View>
                 {bannerImgList.length > 0 && this.state.swiperShow ? <ViewPager swiperShow={true}
                                                                                 loop={false}
+                                                                                autoplay={false}
                                                                                 bounces={true}
                                                                                 height={ScreenUtils.autoSizeWidth(377)}
                                                                                 arrayData={bannerImgList}
