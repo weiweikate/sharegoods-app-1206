@@ -105,9 +105,9 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
     }
 
     public void onDropInstance() {
-        ((ReactContext) getReactContext()).removeLifecycleEventListener(this);
         dismiss();
         if (mContext != null) {
+            ((ReactContext) getReactContext()).removeLifecycleEventListener(this);
             mContext = null;
         }
     }
@@ -145,6 +145,10 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
     public void onHostDestroy() {
         // Drop the instance if the host is destroyed which will dismiss the dialog
         onDropInstance();
+        if (mHostView != null) {
+            mHostView.removeAllViews();
+            mHostView = null;
+        }
     }
 
     @VisibleForTesting
