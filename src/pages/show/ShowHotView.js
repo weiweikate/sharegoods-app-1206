@@ -41,6 +41,7 @@ export default class ShowHotView extends Component {
 
     refreshing(done) {
         setTimeout(() => {
+            this.waterfall.clear()
             this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
                 this.waterfall.addItems(data || []);
             });
@@ -54,12 +55,24 @@ export default class ShowHotView extends Component {
     }
 
     renderItem = (data) => {
-        let imgWide = data.imgWide ? data.imgWide : 1;
-        let imgHigh = data.imgHigh ? data.imgHigh : 1;
+        let imgWide = 1
+        let imgHigh = 1
+        if (data.coverImg) {
+            imgWide = data.coverImgWide ? data.coverImgWide : 1;
+            imgHigh = data.coverImgHigh ? data.coverImgHigh : 1;
+        } else {
+            imgWide = data.imgWide ? data.imgWide : 1;
+            imgHigh = data.imgHigh ? data.imgHigh : 1;
+        }
         let imgHeight = (imgHigh / imgWide) * imgWidth;
-        return <ItemView imageStyle={{ height: imgHeight }} data={data} press={() => {
-            this._gotoDetail(data);
-        }}/>;
+        return <ItemView
+            imageStyle={{ height: imgHeight }}
+            data={data}
+            press={() => {
+                this._gotoDetail(data);
+            }}
+            imageUrl={ data.coverImg }
+            />;
     };
     renderHeader = () => {
         return <View><ShowBannerView navigation={this.props.navigation}/>

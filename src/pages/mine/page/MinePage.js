@@ -518,7 +518,7 @@ export default class MinePage extends BasePage {
 
     renderMenu = () => {
         let leftImage = [inviteFr, coupons, myData, myCollet, myHelper, address, promotion, task_icon, showImg];
-        let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助与客服', '地址', '我的推广', '我的任务', '发现收藏'];
+        let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助与客服', '地址', '我的推广', '我的任务', '秀场收藏'];
 
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
