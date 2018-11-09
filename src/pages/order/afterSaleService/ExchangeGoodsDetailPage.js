@@ -27,7 +27,7 @@ import right_arrow from '../res/arrow_right.png';
 import exchangeGoodsDetailBg from '../res/exchangeGoodsDetailBg.png';
 import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
-import refusa_icon from '../res/tuikuan_icon_jujue_nor.png';
+// import refusa_icon from '../res/tuikuan_icon_jujue_nor.png';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import QYChatUtil from '../../mine/page/helper/QYChatModel';
 
@@ -494,8 +494,8 @@ class ExchangeGoodsDetailPage extends BasePage {
             return null;
         }
 
-        let imageCommpent = () => {
-        };
+        // let imageCommpent = () => {
+        // };
         let titleCommpent = () => {
         };
         let detialCommpent = () => {
@@ -511,9 +511,9 @@ class ExchangeGoodsDetailPage extends BasePage {
             };
             if (pageData.status === 3) {//拒绝
                // textContaner_marginLeft = 10;
-                imageCommpent = () => {
-                    return <UIImage source={refusa_icon} style={styles.header_image}/>;
-                };
+               //  imageCommpent = () => {
+               //      return <UIImage source={refusa_icon} style={styles.header_image}/>;
+               //  };
                 detialCommpent = () => {
                     return <UIText value={pageData.refusalReason} style={styles.header_detail}/>;
                 };
@@ -535,9 +535,9 @@ class ExchangeGoodsDetailPage extends BasePage {
             };
             if (pageData.status === 3 || pageData.status === 9) {//拒绝
                // textContaner_marginLeft = 10;
-                imageCommpent = () => {
-                    return <UIImage source={refusa_icon} style={styles.header_image}/>;
-                };
+               //  imageCommpent = () => {
+               //      return <UIImage source={refusa_icon} style={styles.header_image}/>;
+               //  };
                 detialCommpent = () => {
                     return <UIText value={DateUtils.getFormatDate(pageData.refuseTime / 1000, 'yyyy年MM月dd日  hh:mm:ss')}
                                    style={styles.header_detail}/>;
@@ -564,9 +564,9 @@ class ExchangeGoodsDetailPage extends BasePage {
             };
             if (pageData.status === 3 || pageData.status === 9) {//拒绝
                // textContaner_marginLeft = 10;
-                imageCommpent = () => {
-                    return <UIImage source={refusa_icon} style={styles.header_image}/>;
-                };
+               //  imageCommpent = () => {
+               //      return <UIImage source={refusa_icon} style={styles.header_image}/>;
+               //  };
                 detialCommpent = () => {
                     return <UIText value={DateUtils.getFormatDate(pageData.refuseTime / 1000, 'yyyy年MM月dd日  hh:mm:ss')}
                                    style={styles.header_detail}/>;
