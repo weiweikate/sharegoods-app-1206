@@ -11,6 +11,7 @@ import com.meeruu.sharegoods.MainApplication;
 import java.util.HashMap;
 
 public class ReactRootViewCacheManager {
+
     private static HashMap<String, ReactRootView> rootViewHashMap = new HashMap<>();
 
     /**

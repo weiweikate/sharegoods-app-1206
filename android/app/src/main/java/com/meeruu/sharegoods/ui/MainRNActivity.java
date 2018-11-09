@@ -23,6 +23,7 @@ import android.view.WindowManager;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.base.BaseApplication;
@@ -38,6 +39,7 @@ import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
+import com.meeruu.sharegoods.rn.ReactRootViewCacheManager;
 import com.meeruu.sharegoods.service.VersionUpdateService;
 import com.meeruu.sharegoods.utils.LoadingDialog;
 import com.umeng.socialize.UMShareAPI;
@@ -45,6 +47,8 @@ import com.umeng.socialize.UMShareAPI;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import javax.annotation.Nullable;
 
 /**
  * @author louis
@@ -83,9 +87,12 @@ public class MainRNActivity extends ReactActivity {
 
     //自定义MyReactDelegate
     class MyReactDelegate extends ReactActivityDelegate {
+        private final @Nullable
+        Activity mActivity;
 
         public MyReactDelegate(Activity activity, @javax.annotation.Nullable String mainComponentName) {
             super(activity, mainComponentName);
+            mActivity = activity;
         }
 
         @javax.annotation.Nullable
@@ -95,6 +102,25 @@ public class MainRNActivity extends ReactActivity {
             // android状态栏高度
             bundle.putInt("statusBarHeight", DensityUtils.px2dip(ScreenUtils.getStatusHeight()));
             return bundle;
+        }
+
+        @Override
+        protected void loadApp(String appKey) {
+            if (mActivity != null) {
+                String mainComponentName = ((MainRNActivity) mActivity).getMainComponentName();
+                //从缓存中读取初始化好的ReactRootView,如果不为空直接进行加载
+                ReactRootView reactRootView = ReactRootViewCacheManager.getReactRootView(mainComponentName);
+                if (reactRootView == null) {
+                    ReactRootView mReactRootView = createRootView();
+                    mReactRootView.startReactApplication(
+                            getReactNativeHost().getReactInstanceManager(),
+                            appKey,
+                            getLaunchOptions());
+                    mActivity.setContentView(mReactRootView);
+                } else {
+                    mActivity.setContentView(reactRootView);
+                }
+            }
         }
     }
 
