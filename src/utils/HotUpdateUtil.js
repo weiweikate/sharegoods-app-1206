@@ -36,7 +36,7 @@ class HotUpdateUtil {
          * 暂存版本号,和哈希版本版本值
          * @type {*|string}
          */
-        this.appVersion = packageVersion ||''
+        this.appVersion = packageVersion || ''
         this.hashVersion = currentVersion || ''
     }
     /**

@@ -149,7 +149,7 @@ export default class SignInPage extends BasePage {
     _signInButtonRender() {
         let fontSize = px2dp(22);
         if(user.userScore){
-            let str = user.userScore+'';
+            let str = user.userScore + '';
             if(str.length > 4){
                 fontSize = px2dp(16);
             }
