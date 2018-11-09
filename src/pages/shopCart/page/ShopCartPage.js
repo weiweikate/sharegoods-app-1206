@@ -18,7 +18,7 @@ import {
     UIText,
     UIImage
 } from '../../../components/ui/index';
-import ShopCartRes from '../res/ShopCartRes';
+import res from '../res';
 import shopCartStore from '../model/ShopCartStore';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
@@ -130,7 +130,7 @@ export default class ShopCartPage extends BasePage {
                 justifyContent: 'center'
             }}>
                 <Image
-                    source={ShopCartRes.kongShopCartImg}
+                    source={res.kongShopCartImg}
                     style={{
                         height: 115,
                         width: 115
@@ -264,7 +264,7 @@ export default class ShopCartPage extends BasePage {
                         onPress={() => this._selectAll()}
                     >
                         <Image
-                            source={shopCartStore.computedSelect ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
+                            source={shopCartStore.computedSelect ? res.button.selected_circle_red : res.button.unselected_circle}
                             style={{ width: 22, height: 22 }}/>
 
                         <UIText
@@ -332,7 +332,7 @@ export default class ShopCartPage extends BasePage {
                     style={styles.itemContainer}>
                     <View style={styles.standaloneRowFront}>
                         <UIImage
-                            source={itemData.isSelected ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
+                            source={itemData.isSelected ?  res.button.selected_circle_red : res.button.unselected_circle}
                             style={{ width: 22, height: 22, marginLeft: 10 }}
                             onPress={() => {
 
@@ -382,7 +382,7 @@ export default class ShopCartPage extends BasePage {
                         {
                             itemData.status === 0 ?
                                 <UIImage
-                                    source={ShopCartRes.invalidGoodImg}
+                                    source={res.other.invalidGoodImg}
                                     style={{
                                         // backgroundColor:DesignRule.mainColor,
                                         position: 'absolute',
