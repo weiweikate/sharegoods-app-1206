@@ -7,13 +7,18 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 export default class MRBannerViewMode extends Component {
 
     static propTypes = {
-        bannerHeight: PropTypes.number,
         //ModeStyle
         modeStyle: PropTypes.number,//1划点 /2数字  默认无
+        bannerHeight: PropTypes.number,
+
         //图片url数组
         imgUrlArray: PropTypes.array.isRequired,
         //选择index
-        onDidSelectItemAtIndex: PropTypes.func
+        onDidSelectItemAtIndex: PropTypes.func,
+        //滚动间隔 设置0为不滚动  默认3
+        autoInterval: PropTypes.number,
+        //是否轮播 默认true
+        autoLoop: PropTypes.bool
     };
 
     constructor(props) {
@@ -67,12 +72,15 @@ export default class MRBannerViewMode extends Component {
 
 
     render() {
+        const { bannerHeight, imgUrlArray, autoLoop, autoInterval } = this.props;
         return (
             <View>
-                <MRBannerView style={[{ height: this.props.bannerHeight, width: ScreenUtils.width }]}
+                <MRBannerView style={[{ height: bannerHeight, width: ScreenUtils.width }]}
                               onDidScrollToIndex={(e) => this._onDidScrollToIndex(e)}
-                              imgUrlArray={this.props.imgUrlArray}
-                              onDidSelectItemAtIndex={(e) => this._onDidSelectItemAtIndex(e)}/>
+                              imgUrlArray={imgUrlArray}
+                              onDidSelectItemAtIndex={(e) => this._onDidSelectItemAtIndex(e)}
+                              autoLoop={autoLoop === false ? false : true}
+                              autoInterval={autoInterval || (autoInterval === 0 ? 0 : 3)}/>
                 {this._renderPageControl()}
             </View>
 
