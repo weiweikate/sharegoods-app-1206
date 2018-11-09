@@ -339,7 +339,7 @@ export default class MinePage extends BasePage {
                     height: px2dp(62),
                     borderRadius: px2dp(5),
                     elevation: 2,
-                    shadowColor: '#000000',
+                    shadowColor: DesignRule.textColor_mainTitle,
                     shadowOffset: { h: 2, w: 2 },
                     shadowRadius: px2dp(6),
                     shadowOpacity: 0.1,
@@ -672,7 +672,7 @@ const styles = StyleSheet.create({
     },
     blackText: {
         fontSize: 13,
-        color: '#000000'
+        color: DesignRule.textColor_mainTitle
     },
     headerBgStyle: {
         width: ScreenUtils.width,

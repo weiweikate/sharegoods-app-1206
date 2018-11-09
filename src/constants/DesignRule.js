@@ -25,7 +25,7 @@ const colors = {
         bgColor_yellowCard: '#F2D4A2',//黄色卡片背景色
         bgColor_grayHeader: '#CCCCCC',//头像灰色背景
         bgColor_redHeader: '#FF5781',//头像红色背景
-        lineColor_inColorBg: DesignRule.lineColor_inColorBg,//在有色背景的线的颜色
+        lineColor_inColorBg: '#EEEEEE',//在有色背景的线的颜色
         lineColor_inWhiteBg: '#E4E4E4',//在白色背景的线的颜色
         lineColor_inGrayBg: '#D9D9D9',//在灰色背景的线的颜色
         textColor_mainTitle: '#333333',//主标题

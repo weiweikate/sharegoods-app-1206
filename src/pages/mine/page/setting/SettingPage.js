@@ -84,7 +84,7 @@ class SettingPage extends BasePage {
                         <Switch value={this.state.value}
                                 onTintColor={'#00D914'}
                                 thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
-                                tintColor={'#C8C8C8'}
+                                tintColor={DesignRule.textColor_hint}
                                 onValueChange={(value) => {
                                     this.setState({
                                         value: value,

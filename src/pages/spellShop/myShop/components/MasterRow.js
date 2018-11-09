@@ -10,6 +10,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ShopMasterIcon from '../res/dz_03.png';
+import DesignRule from 'DesignRule';
 
 export default class MasterRow extends Component {
 
@@ -93,11 +94,11 @@ const styles = StyleSheet.create({
     },
     level: {
         fontSize: 13,
-        color: "#666666",
+        color: DesignRule.textColor_secondTitle,
         marginVertical: 3
     },
     desc: {
         fontSize: 12,
-        color: "#666666"
+        color: DesignRule.textColor_secondTitle
     }
 });

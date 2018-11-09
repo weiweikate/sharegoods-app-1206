@@ -49,7 +49,7 @@ export default class DetailNavShowModal extends Component {
         return <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', height: 278 / 2.0 / 3.0 }}
                                  onPress={() => this._onPress(item)}>
             <Image source={item.img} style={{ marginLeft: 17 }}/>
-            <Text style={{ color: '#000000', fontSize: 13, marginLeft: 15 }}>{item.tittle}</Text>
+            <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 15 }}>{item.tittle}</Text>
             <View style={{
                 height: 0.5,
                 backgroundColor: DesignRule.lineColor_inColorBg,

@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderWidth: 1,
-        borderColor: '#c8c8c8',
-        backgroundColor: __DEV__ ? '#c8c8c8' : 'white'
+        borderColor: DesignRule.textColor_hint,
+        backgroundColor: __DEV__ ? DesignRule.textColor_hint : 'white'
     },
     ingContainer: {
         width: 46,
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 13,
-        color: '#000000',
+        color: DesignRule.textColor_mainTitle,
         maxWidth: 200
     },
     desc: {

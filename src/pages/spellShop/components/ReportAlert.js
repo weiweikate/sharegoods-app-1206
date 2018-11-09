@@ -11,7 +11,8 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native';
-import Modal from 'CommModal'
+import Modal from 'CommModal';
+
 const MIN_SCREEN = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
 const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const PANNELHEIGHT = 340;
@@ -126,7 +127,8 @@ export default class ReportAlert extends Component {
             return null;
         }
         return (
-            <Modal visible={this.state.modalVisible} onRequestClose={this._closeAnimated} transparent={true} style={styles.container}>
+            <Modal visible={this.state.modalVisible} onRequestClose={this._closeAnimated} transparent={true}
+                   style={styles.container}>
                 <View style={[styles.container, { backgroundColor: 'transparent' }]}>
                     <Animated.View
                         style={[
@@ -143,7 +145,7 @@ export default class ReportAlert extends Component {
                             position: 'absolute',
                             left: 40,
                             right: 40,
-                            height: PANNELHEIGHT,
+                            height: PANNELHEIGHT
                         },
                             {
                                 top: this.state.top,
@@ -152,7 +154,8 @@ export default class ReportAlert extends Component {
                             }
                         ]}
                     >
-                        <Image style={{position: 'absolute',top:0 ,zIndex:1,alignSelf:'center'}} source={KeFuIcon}/>
+                        <Image style={{ position: 'absolute', top: 0, zIndex: 1, alignSelf: 'center' }}
+                               source={KeFuIcon}/>
                         <View style={styles.whitePanel}>
                             <View style={styles.inputContainer}>
                                 <TextInput
@@ -160,7 +163,7 @@ export default class ReportAlert extends Component {
                                     multiline
                                     underlineColorAndroid={'transparent'}
                                     placeholder='请输入其他举报内容'
-                                    placeholderTextColor='#c8c8c8'
+                                    placeholderTextColor={DesignRule.textColor_hint}
                                     value={this.state.text}
                                     onChangeText={this._onChangeText}
                                     style={styles.input}/>
@@ -204,7 +207,7 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle
     },
     whitePanel: {
-        flex:1,
+        flex: 1,
         marginTop: 31,
         backgroundColor: 'white',
         alignItems: 'center',

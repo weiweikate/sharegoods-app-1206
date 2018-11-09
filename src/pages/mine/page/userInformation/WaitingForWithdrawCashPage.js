@@ -155,7 +155,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                         <View style={{ marginLeft: ScreenUtils.px2dp(22) }}>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
-                                color: '#000000',
+                                color: DesignRule.textColor_mainTitle,
                                 fontSize: ScreenUtils.px2dp(15)
                             }}>什么是待提现账户？</Text>
                             <Text style={{
@@ -167,7 +167,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                         <View style={{ marginLeft: ScreenUtils.px2dp(22) }}>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
-                                color: '#000000',
+                                color: DesignRule.textColor_mainTitle,
                                 fontSize: ScreenUtils.px2dp(15)
                             }}>为何不能马上提现？</Text>
                             <Text style={{

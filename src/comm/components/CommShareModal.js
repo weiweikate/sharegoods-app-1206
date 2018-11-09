@@ -284,7 +284,11 @@ export default class CommShareModal extends React.Component {
                                     backgroundColor: DesignRule.lineColor_inColorBg
                                 }}/>
                                 <UIText value={'分享到'}
-                                        style={{ color: '#4D4D4D', fontSize: autoSizeWidth(17), marginHorizontal: 7 }}/>
+                                        style={{
+                                            color: DesignRule.textColor_secondTitle,
+                                            fontSize: autoSizeWidth(17),
+                                            marginHorizontal: 7
+                                        }}/>
                                 <View style={{
                                     flex: 1,
                                     marginRight: autoSizeWidth(25),
@@ -304,7 +308,7 @@ export default class CommShareModal extends React.Component {
                                                     }}/>
                                                     <UIText value={item.title} style={{
                                                         marginTop: 5,
-                                                        color: '#4D4D4D',
+                                                        color: DesignRule.textColor_secondTitle,
                                                         fontSize: autoSizeWidth(11)
                                                     }}/>
                                                 </View>
@@ -324,7 +328,10 @@ export default class CommShareModal extends React.Component {
                         }}
                         >
                             <View style={styles.bottomBtn}>
-                                <UIText value={'取消'} style={{ color: '#4D4D4D', fontSize: autoSizeWidth(16) }}/>
+                                <UIText value={'取消'} style={{
+                                    color: DesignRule.textColor_secondTitle,
+                                    fontSize: autoSizeWidth(16)
+                                }}/>
                             </View>
                         </TouchableWithoutFeedback>
                     </Animated.View>
@@ -337,11 +344,11 @@ export default class CommShareModal extends React.Component {
                                 top: ScreenUtils.height - autoSizeWidth(255) - imageHeight - ScreenUtils.safeBottom,
                                 left: (autoSizeWidth(375) - imageWidth) / 2,
                                 borderRadius: 10,
-                                borderColor: '#CCCCCC',
+                                borderColor: DesignRule.textColor_placeholder,
                                 shadowOpacity: 0.3,
                                 borderWidth: this.props.type === 'promotionShare' ? 0 : 0.5,
                                 overflow: 'hidden',
-                                shadowColor: '#CCCCCC',
+                                shadowColor: DesignRule.textColor_placeholder,
                                 transform: [{ scale: this.state.scale }]
 
                             }}>

@@ -10,6 +10,8 @@ import {
 import { color } from '../../../constants/Theme';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import Modal from 'CommModal';
+import DesignRule from 'DesignRule';
+
 class ShowMessageModal extends Component {
 
     constructor(props) {
@@ -19,9 +21,9 @@ class ShowMessageModal extends Component {
         };
     }
 
-    open=()=>{
+    open = () => {
         this.modal && this.modal.open();
-    }
+    };
 
     render() {
         return (
@@ -30,7 +32,7 @@ class ShowMessageModal extends Component {
                 transparent={true}
                 onRequestClose={() => {
                 }}
-                ref={(ref)=>{
+                ref={(ref) => {
                     this.modal = ref;
                 }}
                 visible={this.props.isShow && this.state.dis}>
@@ -59,7 +61,7 @@ class ShowMessageModal extends Component {
                             <Text style={{
                                 marginLeft: 16,
                                 fontSize: 13,
-                                color: '#000000'
+                                color: DesignRule.textColor_mainTitle
                             }}>{this.props.detail[i].title}</Text>
                         </View>
                     </TouchableOpacity>

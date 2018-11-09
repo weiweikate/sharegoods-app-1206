@@ -18,6 +18,7 @@ import {
 import BasePage from "../../../BasePage";
 import UIText from "../../../comm/components/UIText";
 import ScreenUtils from "../../../utils/ScreenUtils";
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 
@@ -85,10 +86,10 @@ export default class SignRulePage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#f7f7f7"
+        backgroundColor: DesignRule.bgColor
     },
     titleStyle: {
-        color: "#000000",
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(17),
         alignSelf: "center",
         marginTop: px2dp(40)
@@ -101,12 +102,12 @@ const styles = StyleSheet.create({
         width: px2dp(18),
         height: px2dp(18),
         borderRadius: px2dp(9),
-        backgroundColor: "#D51243",
+        backgroundColor: DesignRule.mainColor,
         justifyContent: "center",
         alignItems: "center"
     },
     lineStyle: {
-        backgroundColor: "#D51243",
+        backgroundColor: DesignRule.mainColor,
         height: px2dp(32),
         width: px2dp(2)
     },
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     ruleTextStyle: {
-        color: "#222222",
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(13),
         marginLeft: px2dp(10)
     },
