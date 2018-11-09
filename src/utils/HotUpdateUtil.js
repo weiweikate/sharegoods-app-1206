@@ -65,7 +65,6 @@ class HotUpdateUtil {
                 }
             ]);
         }).catch(err => {
-
             Alert.alert('提示', '更新失败.' + err);
         });
     };
@@ -74,11 +73,12 @@ class HotUpdateUtil {
      */
     checkUpdate = () => {
         checkUpdate(appKey).then(info => {
+            console.log(info)
             if (info.expired) {
                 Alert.alert('提示', '您的应用版本已更新,请前往应用商店下载新的版本', [
                     {
                         text: '确定', onPress: () => {
-                            info.downloadUrl && Linking.openURL(info.downloadUrl);
+                            info.downloadUrl &&Linking.openURL(info.downloadUrl);
                         }
                     }
                 ]);
@@ -117,18 +117,19 @@ class HotUpdateUtil {
 
                 })
             } else {
-                if ((res + (24 * 3600 * timeInterval)) < (new Date().getTime())) {
+                if ((res + (24 * 3600 * 3)) < (new Date().getTime())) {
                     //三天未检测
                     this.checkUpdate();
                     Storage.set(HotUpdateUtil.TIME_INTERVAL_KEY, (new Date().getTime())).then(()=>{
                     }).catch(()=>{
                     })
-                }else {
-                    //三天内有过检测则不再处理
                 }
             }
-        }).catch(res=>{
-
+        }).catch(()=>{
+            //提取错误则重新存储
+            Storage.set(HotUpdateUtil.TIME_INTERVAL_KEY, (new Date().getTime())).then(()=>{
+            }).catch(()=>{
+            })
         })
     }
 }
