@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     cancelContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#dddddd',
+        backgroundColor: DesignRule.lineColor_inGrayBg,
         width: 99,
         height: 32,
         borderRadius: 5

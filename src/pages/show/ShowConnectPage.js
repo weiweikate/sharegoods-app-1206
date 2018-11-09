@@ -2,16 +2,16 @@
  * 发现收藏
  */
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Image, Alert, ActivityIndicator } from 'react-native';
 import Waterfall from '../../components/ui/WaterFall';
 import { observer } from 'mobx-react';
-import { ShowRecommendModules } from './Show';
+import { ShowRecommendModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
 import BasePage from '../../BasePage';
-import res from '../../comm/res';
+import res from './res';
 import DesignRule from 'DesignRule';
 
 const imgWidth = px2dp(168);
@@ -22,16 +22,19 @@ export default class ShowConnectPage extends BasePage {
         select: false,
         selectedList: {},
         allSelected: false,
-        collectData: []
+        collectData: [],
+        firstLoad: true,
+        isEmpty: false
     };
     $navigationBarOptions = {
-        title: '发现收藏',
+        title: '秀场收藏',
         show: true
     };
     $NavBarRenderRightItem = () => {
+        const {select} = this.state
         return (
             <TouchableOpacity style={styles.rightButton} onPress={() => this._onSelectedAction()}>
-                <Text style={styles.select}>选择</Text>
+                <Text style={styles.select}>{select ? '完成' : '管理'}</Text>
             </TouchableOpacity>
         );
     };
@@ -47,11 +50,13 @@ export default class ShowConnectPage extends BasePage {
 
     _refreshData() {
         this.recommendModules.loadCollect().then(data => {
+            this.setState({firstLoad: false})
             this.waterfall.clear();
             if (data && data.length > 0) {
                 this.waterfall.addItems(data);
             } else {
-                this.waterfall.addItems([]);
+                // this.waterfall.addItems([]);
+                this.setState({isEmpty: true})
             }
             this.state.collectData = data;
         });
@@ -132,8 +137,18 @@ export default class ShowConnectPage extends BasePage {
     }
 
     renderItem = (data) => {
-        let imgWide = data.imgWide ? data.imgWide : 1;
-        let imgHigh = data.imgHigh ? data.imgHigh : 1;
+        let imgWide = 1
+        let imgHigh = 1
+        let img = ''
+        if (data.generalize === tag.New || data.generalize === tag.Recommend) {
+            imgWide = data.coverImgWide ? data.coverImgWide : 1;
+            imgHigh = data.coverImgHigh ? data.coverImgHigh : 1;
+            img = data.coverImg
+        } else {
+            imgWide = data.imgWide ? data.imgWide : 1;
+            imgHigh = data.imgHigh ? data.imgHigh : 1;
+            img = data.img
+        }
         let imgHeight = (imgHigh / imgWide) * imgWidth;
         const { select, allSelected, selectedList } = this.state;
         return <View><ItemView
@@ -141,6 +156,7 @@ export default class ShowConnectPage extends BasePage {
             imageStyle={{ height: imgHeight }}
             data={data}
             press={() => this._gotoDetail(data)}
+            imageUrl={ img }
         />
             {
                 select
@@ -156,8 +172,27 @@ export default class ShowConnectPage extends BasePage {
     };
     _keyExtractor = (data) => data.id + '';
 
+    goToHome() {
+        this.$navigateReset()
+    }
+
     _render() {
-        const { allSelected, select } = this.state;
+        const { allSelected, select, firstLoad, isEmpty } = this.state;
+        if (firstLoad) {
+            return <View style={styles.container}>
+                <ActivityIndicator size='large'/>
+            </View>
+        }
+        if (isEmpty) {
+            return <View style={styles.emptyContainer}>
+            <Image style={styles.noCollect} source={res.placeholder.noCollect}/>
+            <Text style={styles.collectWhat}>去收藏点什么吧</Text>
+            <Text style={styles.goToIndex}>快去商城逛逛吧</Text>
+            <TouchableOpacity style={styles.gotobutton} onPress={()=>{this.goToHome()}}>
+                <Text style={styles.goToText}>逛一逛</Text>
+            </TouchableOpacity>
+        </View>
+        }
         return (
             <View style={styles.container}>
                 <Waterfall
@@ -167,7 +202,7 @@ export default class ShowConnectPage extends BasePage {
                     }}
                     columns={2}
                     infinite={true}
-                    hasMore={true}
+                    hasMore={false}
                     renderItem={item => this.renderItem(item)}
                     containerStyle={{ marginLeft: 15, marginRight: 15 }}
                     keyExtractor={(data) => this._keyExtractor(data)}
@@ -201,6 +236,10 @@ let styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: px2dp(12)
+    },
+    emptyContainer: {
+        flex: 1,
+        alignItems: 'center'
     },
     bottomView: {
         height: px2dp(49) + ScreenUtils.safeBottom,
@@ -251,5 +290,32 @@ let styles = StyleSheet.create({
         height: px2dp(30),
         justifyContent: 'flex-end',
         alignItems: 'flex-start'
+    },
+    collectWhat: {
+        marginTop: px2dp(15),
+        color: '#909090',
+        fontSize: px2dp(15)
+    },
+    goToIndex: {
+        marginTop: px2dp(9),
+        color: '#909090',
+        fontSize: px2dp(12)
+    },
+    noCollect: {
+        marginTop: px2dp(120)
+    },
+    gotobutton: {
+        width: px2dp(150),
+        height: px2dp(50),
+        borderRadius: px2dp(50) / 2,
+        borderColor: '#E60012',
+        borderWidth: ScreenUtils.onePixel,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: px2dp(20)
+    },
+    goToText: {
+        color: '#E60012',
+        fontSize: px2dp(17)
     }
 });

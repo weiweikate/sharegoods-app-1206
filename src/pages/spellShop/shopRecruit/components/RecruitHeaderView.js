@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 30,
-        backgroundColor: '#eee'
+        backgroundColor: DesignRule.lineColor_inColorBg
     },
     shopName: {
         fontSize: 13,

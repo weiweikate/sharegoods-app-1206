@@ -7,7 +7,6 @@ import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import openEyeImage from '../../../login/res/ck_03-02.png';
 import closeEyeImage from '../../../login/res/yinc_03.png';
-import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
@@ -118,7 +117,7 @@ export default class EditPhonePwdPage extends BasePage {
 
             <TouchableOpacity style={{
                 marginTop: 63,
-                backgroundColor: color.red,
+                backgroundColor: DesignRule.mainColor,
                 width: ScreenUtils.width - 84,
                 height: 50,
                 marginLeft: 42,

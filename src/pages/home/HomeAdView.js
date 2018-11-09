@@ -1,9 +1,10 @@
 import React from 'react'
-import {View, StyleSheet, Image, TouchableOpacity} from 'react-native'
+import {View, StyleSheet, TouchableOpacity} from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 import { adModules , homeModule} from './Modules'
 import {observer} from 'mobx-react';
 import BasePage from '../../BasePage'
+import ImageLoad from '@mr/react-native-image-placeholder'
 
 @observer
 export default class HomeAdView extends BasePage {
@@ -19,21 +20,21 @@ export default class HomeAdView extends BasePage {
         ad.map((value, index) => {
             if (index === 0) {
                 items.push(<TouchableOpacity key={index} style={[styles.featureBox1]}  onPress={()=>this._adAction(value)}>
-                    <Image
+                    <ImageLoad
                         source={{ uri: value.imgUrl }}
                         style={styles.featureBox1Image}/>
                 </TouchableOpacity>)
             } else if (index === 1) {
                 items.push(
                     <TouchableOpacity key={index}  style={[styles.featureBox2]} onPress={()=>this._adAction(value)}>
-                        <Image
+                        <ImageLoad
                             source={{ uri: value.imgUrl}}
                             style={styles.featureBox2Image}/>
                     </TouchableOpacity>
                 )
             } else {
                 items.push(<TouchableOpacity key={index}  style={[styles.featureBox3]} onPress={()=>this._adAction(value)}>
-                    <Image
+                    <ImageLoad
                         source={{ uri:  value.imgUrl }}
                         style={styles.featureBox2Image}/>
                 </TouchableOpacity>)

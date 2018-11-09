@@ -190,7 +190,7 @@ export default class IDVertify2Page extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.gray_EEE }}/>
+            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
     renderWideLine = () => {
@@ -307,7 +307,7 @@ export default class IDVertify2Page extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: color.page_background
+        flex: 1, backgroundColor: DesignRule.bgColor
     }, itemTitleView: {
         height: 48,
         backgroundColor: DesignRule.bgColor,

@@ -162,7 +162,7 @@ const Styles = StyleSheet.create({
         width: ScreenUtils.width / 3 - 16,
         height: 16,
         opacity: 0.3,
-        backgroundColor: 'black'
+        backgroundColor: DesignRule.textColor_mainTitle
     },
     itemTipTextStyle: {
         flex: 1,

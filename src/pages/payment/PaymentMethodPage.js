@@ -12,7 +12,6 @@ import {
 import BasePage from '../../BasePage';
 import { UIText } from '../../components/ui';
 import StringUtils from '../../utils/StringUtils';
-import { color } from '../../constants/Theme';
 import Toast from '../../utils/bridge';
 import user from '../../model/user';
 import { observer } from 'mobx-react/native';
@@ -55,7 +54,7 @@ const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) 
 };
 
 const Section = ({ data }) => <View style={{
-    backgroundColor: color.page_background,
+    backgroundColor: DesignRule.bgColor,
     height: 39,
     justifyContent: 'center'
 }}>
@@ -297,7 +296,7 @@ export default class PaymentMethodPage extends BasePage {
     renderBottomOrder = () => {
         return (
             <View style={{ paddingBottom: ScreenUtils.safeBottom }}>
-                <View style={{ height: ScreenUtils.onePixel, backgroundColor: color.line }}/>
+                <View style={{ height: ScreenUtils.onePixel, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                 <View style={{ height: ScreenUtils.px2dp(49), flexDirection: 'row' }}>
                     <View style={styles.bottomStyleContainer}>
                         <UIText value={'合计：'} style={styles.bottomUiText}/>
@@ -567,7 +566,7 @@ const styles = StyleSheet.create({
         height: ScreenUtils.px2dp(44),
         paddingLeft: 21,
         paddingRight: 28,
-        backgroundColor: color.white,
+        backgroundColor: 'white',
         marginTop: 10
     },
     promotionBgStyle: {
