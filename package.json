@@ -19,7 +19,7 @@
         "src/**/*.js": "eslint"
     },
     "dependencies": {
-        "@mr/react-native-image-placeholder": "0.0.1",
+        "@mr/react-native-image-placeholder": "0.1.0",
         "axios": "0.18.0",
         "jsrsasign": "8.0.12",
         "mobx": "4.3.1",
