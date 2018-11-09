@@ -14,8 +14,7 @@ import PropTypes from 'prop-types';
 import TopicAPI from '../api/TopicApi';
 import user from '../../../model/user';
 import bridge from '../../../utils/bridge';
-import ShopCartRes from '../../shopCart/res/ShopCartRes';
-import SbResTool from '../res/SbResTool';
+import res from '../res';
 import { getShowPrice } from '../model/TopicMudelTool';
 import DesignRule from 'DesignRule';
 
@@ -30,9 +29,9 @@ const statues = {
 };
 
 const statuesImg = {
-    [statues.haveSoldOut]: ShopCartRes.noGoodImg,
-    [statues.timeOver]: SbResTool.zhuanti_jieshu,
-    [statues.handOver]: SbResTool.zhuanti_jieshu
+    [statues.haveSoldOut]: res.other.noGoodImg,
+    [statues.timeOver]: res.zhuanti_jieshu,
+    [statues.handOver]: res.zhuanti_jieshu
 };
 const statuesString = {
     [statues.isBeginning]: '马上抢',
