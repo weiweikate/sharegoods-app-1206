@@ -88,7 +88,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingTop: px2dp(2),
-        marginTop: -1
+        marginTop: -1,
+        paddingLeft: px2dp(15),
+        paddingRight: px2dp(15)
     },
     marquee: {
         height: px2dp(34),
@@ -112,7 +114,6 @@ const styles = StyleSheet.create({
         height: px2dp(33)
     },
     title: {
-        marginLeft: px2dp(15),
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(14),
         fontWeight: '600',
@@ -138,7 +139,6 @@ const styles = StyleSheet.create({
     },
     icon: {
         width: px2dp(48),
-        height: px2dp(48),
-        marginRight: px2dp(15)
+        height: px2dp(48)
     }
 });

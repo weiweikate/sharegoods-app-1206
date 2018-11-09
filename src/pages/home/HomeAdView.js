@@ -5,6 +5,7 @@ import { adModules , homeModule} from './Modules'
 import {observer} from 'mobx-react';
 import BasePage from '../../BasePage'
 import ImageLoad from '@mr/react-native-image-placeholder'
+const { px2dp }  = ScreenUtils
 
 @observer
 export default class HomeAdView extends BasePage {
@@ -66,13 +67,13 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
         paddingTop:  ScreenUtils.px2dp(10),
-        marginTop: -1
+        marginTop: -1,
+        paddingLeft: px2dp(15),
+        paddingRight: px2dp(15)
     },
     featureBox: {
         position: 'relative',
         height: ScreenUtils.px2dp(200),
-        marginLeft: ScreenUtils.px2dp(12),
-        marginRight: ScreenUtils.px2dp(12)
     },
     featureBox1: {
         position: 'absolute',
