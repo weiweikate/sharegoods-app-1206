@@ -18,7 +18,6 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
-import com.meeruu.sharegoods.rn.ReactRootViewCacheManager;
 import com.meeruu.sharegoods.ui.MainRNActivity;
 
 /**
@@ -36,7 +35,6 @@ public class MainActivity extends BaseActivity {
     private boolean needGo = false;
     private boolean isFirst = true;
     private boolean hasGo = false;
-    private boolean rnReady = false;
     private String adId;
     private String title;
     private String adUrl;
@@ -47,8 +45,6 @@ public class MainActivity extends BaseActivity {
         setChangeStatusTrans(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        ReactRootViewCacheManager.init(this, MainRNActivity.COMPONENT_NAME);
-        mHandler.sendEmptyMessage(ParameterUtils.MSG_WHAT_FINISH);
     }
 
     @Override
@@ -124,15 +120,7 @@ public class MainActivity extends BaseActivity {
                 switch (msg.what) {
                     case ParameterUtils.EMPTY_WHAT:
                         needGo = true;
-                        if (hasBasePer && rnReady) {
-                            if (!hasGo) {
-                                goIndex();
-                            }
-                        }
-                        break;
-                    case ParameterUtils.MSG_WHAT_FINISH:
-                        rnReady = true;
-                        if (hasBasePer && needGo) {
+                        if (hasBasePer) {
                             if (!hasGo) {
                                 goIndex();
                             }
