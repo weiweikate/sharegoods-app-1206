@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import close_input_img from '../../pages/order/res/input_clear.png';
 import search_img from '../../pages/order/res/search_icon.png';
-import { color } from '../../constants/Theme';
 import {
     UIText, UIImage
 } from '../../components/ui';
@@ -160,7 +159,7 @@ const styles = StyleSheet.create(
             paddingLeft: 16,
             // paddingRight: 16,
 
-            backgroundColor: color.white,
+            backgroundColor: 'white',
             alignItems: 'center' //元素垂直居中排布
         },
 

@@ -15,18 +15,18 @@ import { PageLoadingState } from '../../../../components/pageDecorator/PageState
 import MineApi from '../../api/MineApi';
 import HTML from 'react-native-render-html';
 // 图片资源
-import HeaderBarBgImg from './res/txbg_02.png';
+import HeaderBarBgImg from './res/bg2.png';
 import WhiteBtImg from './res/dz_03-02.png';
 import RingImg from './../../res/homeBaseImg/bg_03.png';
 import CCZImg from './res/ccz_03.png';
 import ProgressImg from './res/jdt_05.png';
 // import {NavigationActions} from "react-navigation";
 import BasePage from '../../../../BasePage';
-// import {UIImage} from '../../../../components/ui';
+import {UIImage} from '../../../../components/ui';
 import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-// import CommTabImag from '../../../../comm/res/CommTabImag';
 import DesignRule from 'DesignRule';
+import res from '../../../../comm/res';
 // 常量
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -128,10 +128,10 @@ export default class MyPromotionPage extends BasePage {
 
         return <View style={{ height: 182 / 375 * SCREEN_WIDTH + 115 + ScreenUtils.statusBarHeight + 10}}>
             <ImageBackground source={HeaderBarBgImg} style={{
-                width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH + ScreenUtils.statusBarHeight,
+                width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH+ScreenUtils.statusBarHeight+10,
                 flexDirection: 'row',paddingTop:ScreenUtils.statusBarHeight,
             }}>
-                {/*<UIImage source={} style={{marginLeft:15,width:15,height:15}} onPress={()=>this.$navigateBack()}/>*/}
+                <UIImage source={res.button.white_back_img} style={{marginLeft:15,width:15,height:15}} onPress={()=>this.$navigateBack()}/>
                 <ImageBackground source={RingImg}
                                  style={styles.headerBg}>
                     {
@@ -191,7 +191,7 @@ export default class MyPromotionPage extends BasePage {
                             marginLeft: marginLeft,
                             height: 8,
                             borderRadius: 4,
-                            backgroundColor: '#dddddd',
+                            backgroundColor: DesignRule.lineColor_inGrayBg,
                             borderBottomLeftRadius: radius,
                             borderTopLeftRadius: radius
                         }}/>

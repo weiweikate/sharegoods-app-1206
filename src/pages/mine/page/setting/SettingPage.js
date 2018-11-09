@@ -173,7 +173,7 @@ class SettingPage extends BasePage {
     };
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
     renderLine = () => {
@@ -244,7 +244,7 @@ class SettingPage extends BasePage {
                                 marginBottom: 40,
                                 alignSelf: 'center'
                             }}/>
-                    <View style={{ height: 0.5, backgroundColor: '#eee' }}/>
+                    <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity
                             style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 45 }}
@@ -253,7 +253,7 @@ class SettingPage extends BasePage {
                             }}>
                             <UIText value={'以后再说'} style={{ color: DesignRule.textColor_instruction }}/>
                         </TouchableOpacity>
-                        <View style={{ width: 0.5, backgroundColor: '#eee' }}/>
+                        <View style={{ width: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                         <TouchableOpacity
                             style={{
                                 flex: 1,
@@ -320,7 +320,7 @@ class SettingPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: color.page_background,
+        backgroundColor: DesignRule.bgColor,
         flexDirection: 'column',
         flex: 1
     },
@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingLeft: 21,
         paddingRight: 23,
-        backgroundColor: color.white,
+        backgroundColor: 'white',
         height: 44,
         alignItems: 'center'
     },

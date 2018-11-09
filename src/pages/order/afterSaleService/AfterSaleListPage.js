@@ -143,7 +143,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
     _render() {
         let params = {};
         if (this.params.type === 'search') {
-            params = { orderNum: this.params.orderNum };
+            params = { condition: this.params.condition };
         } else {
             params = { status: 0 };
         }

@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     },
     inputItemBorderLeftWidth: {
         borderLeftWidth: ScreenUtils.isIOS ? 1.0 : 0.5,
-        borderColor: '#DDDDDD'
+        borderColor: DesignRule.lineColor_inGrayBg
     },
     iconStyle: {
         width: 16,

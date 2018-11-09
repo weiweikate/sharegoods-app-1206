@@ -9,11 +9,16 @@ const {  px2dp } = ScreenUtils
 import res from '../../comm/res';
 const seeImg = res.button.see_white;
 const maskImg = res.other.show_mask;
-import DesignRule from 'DesignRule';
+import DesignRule from 'DesignRule'
 
-export default ({data, press, imageStyle}) => {
+export default ({data, press, imageStyle, imageUrl}) => {
+    let img = imageUrl
+    if (!img) {
+        img = data.img
+    }
+
     return <TouchableOpacity style={styles.item} onPress={()=>{press && press()}}>
-    <ImageBackground style={[styles.img, imageStyle]} source={{uri: data.img}}>
+    <ImageBackground style={[styles.img, imageStyle]} source={{uri: img}} resizeMode='contain'>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.numberView}>
             <Image style={styles.seeImg} source={seeImg}/>

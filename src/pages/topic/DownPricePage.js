@@ -170,8 +170,8 @@ export default class DownPricePage extends BasePage {
                         progressViewOffset={statusBarHeight + 44}
                         colors={[DesignRule.mainColor]}
                         title="下拉刷新"
-                        tintColor="#999"
-                        titleColor="#999"
+                        tintColor={DesignRule.textColor_instruction}
+                        titleColor={DesignRule.textColor_instruction}
                     />
                 }
             >

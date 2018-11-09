@@ -40,9 +40,11 @@ const colors = {
         bgColor_blue: '#33B4FF', //蓝色背景
         bgColor_deepBlue: '#2B99D9',//深蓝背景
         textColor_deepBlue: '#1B7BB3', //深蓝字体
-        color_yellow: '#FFFC00', //黄色字体
-        color_deepYellow: '#F1C11B', //深黄色字体
-        color_green: '#47c546' //绿色字体
+        color_yellow: '#FFFC00', //黄色颜色
+        color_deepYellow: '#F1C11B', //深黄色颜色
+        color_green: '#47c546', //绿色颜色
+        color_ddd: '#dddddd', //ddd颜色
+        color_f2: '#f2f2f2' //f2颜色
     }
 ;
 

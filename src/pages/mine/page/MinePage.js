@@ -14,7 +14,6 @@ import {
 import BasePage from '../../../BasePage';
 import UIText from '../../../components/ui/UIText';
 import UIImage from '../../../components/ui/UIImage';
-import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
@@ -203,7 +202,7 @@ export default class MinePage extends BasePage {
                     height: 44
                 }}>
                     <View style={{ flex: 1 }}/>
-                    <Text style={{ justifySelf: 'center', color: '#212121', fontSize: px2dp(17) }}>
+                    <Text style={{  color: '#212121', fontSize: px2dp(17) }}>
                         我的
                     </Text>
                     <View style={{
@@ -371,7 +370,7 @@ export default class MinePage extends BasePage {
     orderRender() {
         return (
             <View style={{
-                backgroundColor: color.white,
+                backgroundColor: 'white',
                 marginTop: px2dp(10)
             }}>
                 <View style={{
@@ -414,7 +413,7 @@ export default class MinePage extends BasePage {
         return (
             <View style={{
                 flexDirection: 'row',
-                backgroundColor: color.white,
+                backgroundColor: 'white',
                 flexWrap: 'wrap',
                 marginVertical: px2dp(10)
             }}>
@@ -445,8 +444,8 @@ export default class MinePage extends BasePage {
                                 progressViewOffset={statusBarHeight + 44}
                                 colors={[DesignRule.mainColor]}
                                 title="下拉刷新"
-                                tintColor="#999"
-                                titleColor="#999"
+                                tintColor={DesignRule.textColor_instruction}
+                                titleColor={DesignRule.textColor_instruction}
                             />}
             >
                 {this.renderUserHead()}
@@ -518,7 +517,7 @@ export default class MinePage extends BasePage {
 
     renderMenu = () => {
         let leftImage = [inviteFr, coupons, myData, myCollet, myHelper, address, promotion, task_icon, showImg];
-        let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助与客服', '地址', '我的推广', '我的任务', '发现收藏'];
+        let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助与客服', '地址', '我的推广', '我的任务', '秀场收藏'];
 
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {

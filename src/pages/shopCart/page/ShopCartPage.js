@@ -51,7 +51,7 @@ export default class ShopCartPage extends BasePage {
     // 导航配置
     $navigationBarOptions = {
         title: '购物车',
-        leftNavItemHidden: true,
+        leftNavItemHidden: true
 
 
     };
@@ -96,8 +96,8 @@ export default class ShopCartPage extends BasePage {
         //         progressViewOffset={statusBarHeight + 44}
         //         colors={[DesignRule.mainColor]}
         //         title="下拉刷新"
-        //         tintColor="#999"
-        //         titleColor="#999"
+        //         tintColor=DesignRule.textColor_instruction
+        //         titleColor=DesignRule.textColor_instruction
         //     />
         // }
     }
@@ -228,8 +228,8 @@ export default class ShopCartPage extends BasePage {
                         progressViewOffset={statusBarHeight + 44}
                         colors={[DesignRule.mainColor]}
                         title="下拉刷新"
-                        tintColor="#999"
-                        titleColor="#999"
+                        tintColor={DesignRule.textColor_instruction}
+                        titleColor={DesignRule.textColor_instruction}
                     />
                 }
             />
@@ -484,7 +484,7 @@ export default class ShopCartPage extends BasePage {
                                         }}>
                                         <UIText
                                             value={'+'}
-                                            // style={{fontSize:15,color:data.num>=data.stock?color.gray_DDD:color.black_222}}
+                                            // style={{fontSize:15,color:data.num>=data.stock?DesignRule.color_ddd:DesignRule.textColor_mainTitle_222}}
                                             style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }}
 
                                         />
@@ -518,9 +518,9 @@ export default class ShopCartPage extends BasePage {
                                     },
                                         this._getSkillIsBegin(itemData) === 0
                                             ?
-                                            {opacity:0.5}
+                                            { opacity: 0.5 }
                                             :
-                                            {opacity:1}
+                                            { opacity: 1 }
                                     ]
                                 }
                             >

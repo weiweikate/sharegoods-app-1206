@@ -2,7 +2,6 @@ import React from 'react';
 import { View, StyleSheet, TouchableWithoutFeedback, NativeModules, InteractionManager } from 'react-native';
 import BasePage from '../../../BasePage';
 import { HotSearch, RecentSearch, SearchInput } from './../../../components/ui';
-import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import Storage from '../../../utils/storage';
 
@@ -201,7 +200,7 @@ class SearchPage extends BasePage {
                     break;
                 case 2:
                     this.$navigate('order/afterSaleService/AfterSaleListPage', {
-                        orderNum: inputText,
+                        condition: inputText,
                         type: 'search'
                     });
                     break;
@@ -214,7 +213,7 @@ const styles = StyleSheet.create({
     container: {
 
         flex: 1,
-        backgroundColor: color.white
+        backgroundColor: 'white'
     },
     item: {
         marginLeft: 15,

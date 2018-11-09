@@ -158,7 +158,7 @@ export default class TopicDetailSelectPage extends Component {
                                 height: 107,
                                 width: 107,
                                 borderColor: DesignRule.lineColor_inColorBg,
-                                backgroundColor: '#eee',
+                                backgroundColor: DesignRule.lineColor_inColorBg,
                                 borderWidth: 1,
                                 borderRadius: 5,
                                 alignItems: 'center',
@@ -207,23 +207,23 @@ export default class TopicDetailSelectPage extends Component {
                                     <Text style={{ color: DesignRule.textColor_secondTitle, marginLeft: 16, fontSize: 13 }}>购买数量</Text>
                                     <View style={{
                                         flexDirection: 'row',
-                                        borderColor: '#dddddd',
+                                        borderColor: DesignRule.lineColor_inGrayBg,
                                         borderWidth: 1,
                                         borderRadius: 2,
                                         marginRight: 16
                                     }}>
                                         <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
                                             <Text style={{
-                                                color: '#dddddd',
+                                                color: DesignRule.lineColor_inGrayBg,
                                                 fontSize: 15,
                                                 paddingHorizontal: 11
                                             }}>-</Text>
                                         </TouchableOpacity>
-                                        <View style={{ height: 21, width: 1, backgroundColor: '#dddddd' }}/>
+                                        <View style={{ height: 21, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                             <Text style={{ paddingHorizontal: 15 }}>{1}</Text>
                                         </View>
-                                        <View style={{ height: 21, width: 1, backgroundColor: '#dddddd' }}/>
+                                        <View style={{ height: 21, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                                         <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
                                             <Text style={{
                                                 color: DesignRule.textColor_mainTitle,

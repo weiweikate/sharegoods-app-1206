@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Waterfall from '../../components/ui/WaterFall';
 import { observer } from 'mobx-react';
-import { ShowRecommendModules } from './Show';
+import { ShowRecommendModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtils;
@@ -54,11 +54,21 @@ export default class ShowHotView extends Component {
     }
 
     renderItem = (data) => {
-        let imgWide = data.imgWide ? data.imgWide : 1;
-        let imgHigh = data.imgHigh ? data.imgHigh : 1;
+        let imgWide = 1
+        let imgHigh = 1
+        let img = ''
+        if (data.generalize === tag.New || data.generalize === tag.Recommend) {
+            imgWide = data.coverImgWide ? data.coverImgWide : 1;
+            imgHigh = data.coverImgHigh ? data.coverImgHigh : 1;
+            img = data.coverImg
+        } else {
+            imgWide = data.imgWide ? data.imgWide : 1;
+            imgHigh = data.imgHigh ? data.imgHigh : 1;
+            img = data.img
+        }
         let imgHeight = (imgHigh / imgWide) * imgWidth;
         // const itemHeight = this._getHeightForItem({item})
-        return <ItemView imageStyle={{ height: imgHeight }} data={data} press={() => this._gotoDetail(data)}/>;
+        return <ItemView imageStyle={{ height: imgHeight }} data={data} press={() => this._gotoDetail(data)} imageUrl={ img }/>;
     };
     _keyExtractor = (data) => data.id + '' + data.currentDate;
 

@@ -156,7 +156,7 @@ export default class TopicDetailHeaderView extends Component {
                                 <Text style={{ color: DesignRule.mainColor, fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
                                 <Text style={{
                                     marginLeft: 5,
-                                    color: '#BBBBBB',
+                                    color: DesignRule.textColor_instruction,
                                     fontSize: 10,
                                     textDecorationLine: 'line-through'
                                 }}>{`￥${oldPrice}`}</Text>
@@ -169,7 +169,7 @@ export default class TopicDetailHeaderView extends Component {
                             </View> : null}
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text style={{
-                                color: '#BBBBBB',
+                                color: DesignRule.textColor_instruction,
                                 fontSize: 11
                             }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : ''}元`}</Text>
                             <Text style={{
@@ -188,10 +188,14 @@ export default class TopicDetailHeaderView extends Component {
                             justifyContent: 'space-between',
                             alignItems: 'center'
                         }} onPress={this.props.showDetailModal}>
-                            <Text style={{ color: DesignRule.textColor_secondTitle, fontSize: 13, marginLeft: 16 }}>抢拍规则</Text>
+                            <Text style={{
+                                color: DesignRule.textColor_secondTitle,
+                                fontSize: 13,
+                                marginLeft: 16
+                            }}>抢拍规则</Text>
                             <Image style={{ marginRight: 16 }} source={xjt_03}/>
                         </TouchableOpacity>
-                        <View style={{ height: 1, backgroundColor: '#eeee' }}/>
+                        <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                     </View> : null}
                 <View style={{ backgroundColor: 'white', marginTop: activityType === 2 ? 0 : 10, marginBottom: 12 }}>
                     <View style={{

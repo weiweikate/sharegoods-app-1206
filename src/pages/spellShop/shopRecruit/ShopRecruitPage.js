@@ -304,8 +304,8 @@ export default class ShopRecruitPage extends BasePage {
                                     refreshing={this.state.refreshing}
                                     onRefresh={this._refreshing.bind(this)}
                                     title="下拉刷新"
-                                    tintColor="#999"
-                                    titleColor="#999"/>}>
+                                    tintColor={DesignRule.textColor_instruction}
+                                    titleColor={DesignRule.textColor_instruction}/>}>
                     {this.renderHeader()}
                     {this.renderMembers()}
                     {this.renderOpenShopSetting()}

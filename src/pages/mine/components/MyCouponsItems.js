@@ -300,7 +300,6 @@ export default class MyCouponsItems extends Component {
     };
 
     render() {
-        console.log('render', this.state.viewData);
         return (
             <View style={styles.container}>
                 <FlatList
