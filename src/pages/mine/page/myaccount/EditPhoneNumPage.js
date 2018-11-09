@@ -4,7 +4,6 @@ import {
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
@@ -72,7 +71,7 @@ export default class EditPhoneNumPage extends BasePage {
 
             <TouchableOpacity style={{
                 marginTop: 42,
-                backgroundColor: color.red,
+                backgroundColor: DesignRule.mainColor,
                 width: ScreenUtils.width - 84,
                 height: 50,
                 marginLeft: 42,

@@ -5,7 +5,6 @@ import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab
 import MyOrdersListView from './../components/MyOrdersListView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import search from '../res/search.png';
-import { color } from '../../../constants/Theme';
 import DesignRule from 'DesignRule';
 
 /**
@@ -112,7 +111,7 @@ class MyOrdersListPage extends BasePage {
     };
     renderWideLine = () => {
         return (
-            <View style={{ flex: 0.5, height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ flex: 0.5, height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
 }

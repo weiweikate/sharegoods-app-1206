@@ -187,10 +187,14 @@ export default class TopicDetailHeaderView extends Component {
                             justifyContent: 'space-between',
                             alignItems: 'center'
                         }} onPress={this.props.showDetailModal}>
-                            <Text style={{ color: DesignRule.textColor_secondTitle, fontSize: 13, marginLeft: 16 }}>抢拍规则</Text>
+                            <Text style={{
+                                color: DesignRule.textColor_secondTitle,
+                                fontSize: 13,
+                                marginLeft: 16
+                            }}>抢拍规则</Text>
                             <Image style={{ marginRight: 16 }} source={xjt_03}/>
                         </TouchableOpacity>
-                        <View style={{ height: 1, backgroundColor: '#eeee' }}/>
+                        <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                     </View> : null}
                 <View style={{ backgroundColor: 'white', marginTop: activityType === 2 ? 0 : 10, marginBottom: 12 }}>
                     <View style={{

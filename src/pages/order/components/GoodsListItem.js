@@ -8,7 +8,6 @@ import {
     Text,
     TouchableOpacity
 } from 'react-native';
-import { color } from '../../../constants/Theme';
 import {
     UIText
 } from '../../../components/ui';
@@ -101,13 +100,16 @@ const GoodsListItem = props => {
                 }}>
                     <View style={{ marginLeft: 5, flexDirection: 'row' }}>
                         <Text
-                            style={{ color: DesignRule.mainColor, fontSize: 13 }}>{this.startCutDownTime2(shutOffTime)}</Text>
+                            style={{
+                                color: DesignRule.mainColor,
+                                fontSize: 13
+                            }}>{this.startCutDownTime2(shutOffTime)}</Text>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         {nameArr.map((item, i) => {
                             return <TouchableOpacity key={i} style={{
                                 borderWidth: 1,
-                                borderColor: item.isRed ? color.red : color.gray_DDD,
+                                borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd,
                                 height: 30,
                                 borderRadius: 10,
                                 marginRight: 15,
@@ -118,7 +120,7 @@ const GoodsListItem = props => {
                                 operationMenuClick(item);
                             }}>
                                 <Text
-                                    style={{ color: item.isRed ? color.red : color.gray_666 }}>{item.operation}</Text>
+                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}>{item.operation}</Text>
                             </TouchableOpacity>;
                         })}
                     </View>
@@ -136,7 +138,7 @@ const GoodsListItem = props => {
                 {nameArr.map((item, i) => {
                         return <TouchableOpacity key={i} style={{
                             borderWidth: 1,
-                            borderColor: item.isRed ? color.red : color.gray_DDD,
+                            borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd,
                             height: 30,
                             borderRadius: 10,
                             marginRight: 15,
@@ -147,7 +149,7 @@ const GoodsListItem = props => {
                             operationMenuClick(item);
                         }}>
                             <Text
-                                style={{ color: item.isRed ? color.red : color.gray_666 }}>{item.operation}</Text>
+                                style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}>{item.operation}</Text>
                         </TouchableOpacity>;
 
                     }
@@ -158,12 +160,12 @@ const GoodsListItem = props => {
     };
     this.renderLine = () => {
         return (
-            <View style={{ flex: 1, height: 0.5, backgroundColor: color.line }}/>
+            <View style={{ flex: 1, height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
     this.renderWideLine = () => {
         return (
-            <View style={{ flex: 1, height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ flex: 1, height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
     this.renderGoodsList = () => {
@@ -186,12 +188,12 @@ const GoodsListItem = props => {
     };
     this.renderOrderNum = () => {
         return (
-            <View style={{ height: 44, backgroundColor: color.white, justifyContent: 'center' }}>
+            <View style={{ height: 44, backgroundColor: 'white', justifyContent: 'center' }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <UIText value={'订单编号：' + orderNum}
-                            style={{ fontSize: 13, color: color.black_222, marginLeft: 18 }}/>
+                            style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 18 }}/>
                     <UIText value={constants.viewOrderStatus[orderStatus].orderStatus}
-                            style={{ fontSize: 13, color: color.red, marginRight: 18 }}/>
+                            style={{ fontSize: 13, color: DesignRule.mainColor, marginRight: 18 }}/>
                 </View>
             </View>
         );
@@ -201,17 +203,18 @@ const GoodsListItem = props => {
             <View style={{
                 flex: 1,
                 height: 40,
-                backgroundColor: color.white,
+                backgroundColor: 'white',
                 justifyContent: 'flex-end',
                 alignItems: 'center',
                 flexDirection: 'row',
                 paddingRight: 16
             }}>
                 <UIText value={'共' + orderProduct.length + '件商品  合计：'}
-                        style={{ fontSize: 13, color: color.black_222 }}/>
-                <UIText value={StringUtils.formatMoneyString(totalPrice)} style={{ fontSize: 13, color: color.red }}/>
+                        style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
+                <UIText value={StringUtils.formatMoneyString(totalPrice)}
+                        style={{ fontSize: 13, color: DesignRule.mainColor }}/>
                 <UIText value={'（含运费' + StringUtils.formatMoneyString(freightPrice, false) + '）'}
-                        style={{ fontSize: 13, color: color.black_222 }}/>
+                        style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
             </View>
         );
     };
@@ -253,7 +256,7 @@ const GoodsListItem = props => {
             <View style={{
                 flex: 1,
                 height: 40,
-                backgroundColor: color.white,
+                backgroundColor: 'white',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
                 flexDirection: 'row',
@@ -280,7 +283,7 @@ const GoodsListItem = props => {
                     height: 48,
                     justifyContent: 'flex-end',
                     alignItems: 'center',
-                    backgroundColor: color.white
+                    backgroundColor: 'white'
                 }}>
                     {this.renderMenu()}
                 </View>

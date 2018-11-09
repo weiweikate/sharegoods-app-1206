@@ -484,7 +484,7 @@ export default class ShopCartPage extends BasePage {
                                         }}>
                                         <UIText
                                             value={'+'}
-                                            // style={{fontSize:15,color:data.num>=data.stock?color.gray_DDD:color.black_222}}
+                                            // style={{fontSize:15,color:data.num>=data.stock?DesignRule.color_ddd:DesignRule.textColor_mainTitle_222}}
                                             style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }}
 
                                         />

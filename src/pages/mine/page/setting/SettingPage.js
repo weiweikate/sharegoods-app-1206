@@ -173,7 +173,7 @@ class SettingPage extends BasePage {
     };
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
     renderLine = () => {
@@ -320,7 +320,7 @@ class SettingPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: color.page_background,
+        backgroundColor: DesignRule.bgColor,
         flexDirection: 'column',
         flex: 1
     },
@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingLeft: 21,
         paddingRight: 23,
-        backgroundColor: color.white,
+        backgroundColor: 'white',
         height: 44,
         alignItems: 'center'
     },

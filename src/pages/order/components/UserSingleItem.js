@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
     TouchableOpacity,
@@ -8,8 +7,8 @@ import {
     StyleSheet
 } from 'react-native';
 import right_arrow from '../res/arrow_right.png';
-import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
+import DesignRule from 'DesignRule';
 
 const UserSingleItem = props => {
 
@@ -31,7 +30,7 @@ const UserSingleItem = props => {
     } = props;
     const styles = StyleSheet.create({
         containerStyle: {
-            height: 48, backgroundColor: color.white
+            height: 48, backgroundColor: 'white'
         },
         rightText_hasCircle: {
             justifyContent: 'center',
@@ -40,7 +39,7 @@ const UserSingleItem = props => {
             height: 30,
             width: 30,
             alignItems: 'center',
-            borderColor: color.gray_df,
+            borderColor: DesignRule.lineColor_inColorBg,
             marginRight: 15
         },
         rightText_noCircle: {
@@ -50,7 +49,7 @@ const UserSingleItem = props => {
 
     this.renderLine = () => {
         return (!isLine ? null :
-                <View style={{ height: 1, backgroundColor: color.gray_EEE }}/>
+                <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
 

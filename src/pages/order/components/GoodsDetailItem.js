@@ -5,9 +5,8 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
-import { color } from '../../../constants/Theme';
 // import GoodsItem from './GoodsItem';
-import GoodsGrayItem from './GoodsGrayItem'
+import GoodsGrayItem from './GoodsGrayItem';
 import DesignRule from 'DesignRule';
 
 // status,//账单状态：0出账中，1待支付，2已支付，3逾期
@@ -28,7 +27,7 @@ const GoodsDetailItem = props => {
             <View style={{
                 flex: 1,
                 height: 1,
-                backgroundColor: color.line,
+                backgroundColor: DesignRule.lineColor_inColorBg,
                 marginTop: 10,
                 marginBottom: 10,
                 alignItems: 'center'
@@ -40,12 +39,12 @@ const GoodsDetailItem = props => {
         for (let i = 0; i < afterSaleService.length; i++) {
             itemArr.push(
                 <TouchableOpacity key={i}
-                                  style={[styles.grayView, { borderColor: afterSaleService[i].isRed ? color.red : color.gray_DDD }]}
+                                  style={[styles.grayView, { borderColor: afterSaleService[i].isRed ? DesignRule.mainColor : DesignRule.color_ddd }]}
                                   onPress={() => {
                                       afterSaleServiceClick(afterSaleService[i]);
                                   }}>
                     <Text
-                        style={[styles.grayText, { color: afterSaleService[i].isRed ? color.red : color.gray_666 }]}>{afterSaleService[i].operation}</Text>
+                        style={[styles.grayText, { color: afterSaleService[i].isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }]}>{afterSaleService[i].operation}</Text>
                 </TouchableOpacity>
             );
         }
@@ -53,8 +52,8 @@ const GoodsDetailItem = props => {
     };
     this.renderLine = () => {
         return (
-            <View style={{ flex: 1, height: 1, backgroundColor: color.white }}>
-                <View style={{ flex: 1, height: 1, backgroundColor: color.line, marginLeft: 15 }}/>
+            <View style={{ flex: 1, height: 1, backgroundColor: 'white' }}>
+                <View style={{ flex: 1, height: 1, backgroundColor: DesignRule.lineColor_inColorBg, marginLeft: 15 }}/>
             </View>
         );
     };
@@ -66,7 +65,7 @@ const GoodsDetailItem = props => {
                         height: 48,
                         justifyContent: 'flex-end',
                         alignItems: 'center',
-                        backgroundColor: color.white
+                        backgroundColor: 'white'
                     }}>
                         {this.renderMenu()}
                     </View>
@@ -92,7 +91,7 @@ const GoodsDetailItem = props => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: color.white,
+        backgroundColor: 'white',
         flexDirection: 'row',
         height: 100
     }, grayView: {
