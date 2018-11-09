@@ -18,6 +18,7 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
+import com.meeruu.sharegoods.rn.ReactRootViewCacheManager;
 import com.meeruu.sharegoods.ui.MainRNActivity;
 
 /**
@@ -97,7 +98,7 @@ public class MainActivity extends BaseActivity {
             params.height = (ScreenUtils.getScreenWidth() * 7) / 5;
             ivAdv.setLayoutParams(params);
 //            DisplayImageUtils.formatImgUrlNoHolder(this, imgUrl, ivAdv);
-            
+
             initAdvEvent();
             startTimer();
         }
@@ -150,6 +151,7 @@ public class MainActivity extends BaseActivity {
 
     //跳转到首页
     private void goIndex() {
+        ReactRootViewCacheManager.init(this, MainRNActivity.COMPONENT_NAME);
         startActivity(new Intent(MainActivity.this, MainRNActivity.class));
         finish();
     }
