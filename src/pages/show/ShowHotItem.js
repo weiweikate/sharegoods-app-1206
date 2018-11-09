@@ -20,7 +20,7 @@ export default ({data, press, imageStyle, imageUrl}) => {
 
     return <TouchableWithoutFeedback onPress={()=>{press && press()}}>
     <View style={styles.item}>
-    <ImageLoad style={[styles.img, imageStyle]} source={{uri: img}} resizeMode='contain'>
+    <ImageLoad style={[styles.img, imageStyle]} source={{uri: img}}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.numberView}>
             <Image style={styles.seeImg} source={seeImg}/>

@@ -15,7 +15,7 @@ import ImageLoad from '@mr/react-native-image-placeholder'
 
 const HotItem = ({item, press}) => <TouchableWithoutFeedback onPress={()=> press && press()}>
     <View style={styles.item}>
-    <ImageLoad style={styles.imgBack} source={{uri: item.img}}>
+    <ImageLoad style={styles.imgBack} source={{uri: item.coverImg}}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.row}>
             <Text style={styles.remark} numberOfLines={1}>{item.pureContent ? item.pureContent.slice(0, 30).trim() : ''}</Text>
