@@ -57,13 +57,13 @@ export default class ShowHotView extends Component {
         let imgWide = 1
         let imgHigh = 1
         let img = ''
-        if (data.generalize === tag.New) {
-            imgWide = data.imgWide ? data.imgWide : 1;
-            imgHigh = data.imgHigh ? data.imgHigh : 1;
-            img = data.coverImg
-        } else {
+        if (data.generalize === tag.New || data.generalize === tag.Recommend) {
             imgWide = data.coverImgWide ? data.coverImgWide : 1;
             imgHigh = data.coverImgHigh ? data.coverImgHigh : 1;
+            img = data.coverImg
+        } else {
+            imgWide = data.imgWide ? data.imgWide : 1;
+            imgHigh = data.imgHigh ? data.imgHigh : 1;
             img = data.img
         }
         let imgHeight = (imgHigh / imgWide) * imgWidth;
