@@ -37,7 +37,7 @@ export default class MyCollectPage extends BasePage {
             totalPrice: 0,
             selectGoodsNum: 0
         };
-        this.currentPage=1
+        this.currentPage = 1
     }
 
     $navigationBarOptions = {
@@ -188,7 +188,7 @@ export default class MyCollectPage extends BasePage {
         this.getDataFromNetwork();
     };
     onRefresh = () => {
-      this.currentPage=1;
+      this.currentPage = 1;
         this.getDataFromNetwork();
     };
 
@@ -207,7 +207,7 @@ export default class MyCollectPage extends BasePage {
         this.$loadingShow();
         MineApi.queryCollection({ page: this.currentPage, size: 20 }).then(res => {
             this.$loadingDismiss();
-            let arr = this.currentPage==1?[]:this.state.viewData;
+            let arr = this.currentPage == 1 ? [] : this.state.viewData;
             console.log(res);
             if (res.code === 10000) {
                 let icons = res.data ? (res.data.data ? res.data.data : []) : [];
@@ -341,14 +341,14 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderWidth: 1,
-        borderColor: '#c8c8c8',
-        backgroundColor: __DEV__ ? '#c8c8c8' : 'white'
+        borderColor: DesignRule.textColor_hint,
+        backgroundColor: __DEV__ ? DesignRule.textColor_hint : 'white'
     },
     ingContainer: {
         width: 46,
         height: 15,
         borderRadius: 7,
-        backgroundColor: '#e60012',
+        backgroundColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: 5
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 13,
-        color: '#000000',
+        color: DesignRule.textColor_mainTitle,
         maxWidth: 200
     },
     desc: {

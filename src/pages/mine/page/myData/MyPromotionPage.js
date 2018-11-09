@@ -126,9 +126,9 @@ export default class MyPromotionPage extends BasePage {
             }
         }
 
-        return <View style={{ height: 182 / 375 * SCREEN_WIDTH + 115+ScreenUtils.statusBarHeight+10}}>
+        return <View style={{ height: 182 / 375 * SCREEN_WIDTH + 115 + ScreenUtils.statusBarHeight + 10}}>
             <ImageBackground source={HeaderBarBgImg} style={{
-                width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH+ScreenUtils.statusBarHeight,
+                width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH + ScreenUtils.statusBarHeight,
                 flexDirection: 'row',paddingTop:ScreenUtils.statusBarHeight,
             }}>
                 {/*<UIImage source={} style={{marginLeft:15,width:15,height:15}} onPress={()=>this.$navigateBack()}/>*/}
@@ -165,7 +165,7 @@ export default class MyPromotionPage extends BasePage {
                     <Image source={CCZImg} style={{ marginLeft: 17, marginRight: 6 }}/>
                     <Text style={{
                         fontSize: 15,
-                        color: '#000000'
+                        color: DesignRule.textColor_mainTitle
                     }}>成长值</Text>
                 </View>
 

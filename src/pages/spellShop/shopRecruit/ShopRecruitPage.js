@@ -259,7 +259,7 @@ export default class ShopRecruitPage extends BasePage {
                                       style={[styles.unOpen, {
                                           width: this.state.canOpen ? ScreenUtils.autoSizeWidth(168) : ScreenUtils.autoSizeWidth(345)
                                       }]}>
-                        <Text style={{ fontSize: 16, color: '#e60012' }}>{'取消开启'}</Text>
+                        <Text style={{ fontSize: 16, color: DesignRule.mainColor }}>{'取消开启'}</Text>
                     </TouchableOpacity>
                     {
                         this.state.canOpen ? <TouchableOpacity onPress={this._openStore} style={styles.open}>
@@ -281,7 +281,7 @@ export default class ShopRecruitPage extends BasePage {
                                           style={[styles.unOpen, {
                                               width: ScreenUtils.autoSizeWidth(345)
                                           }]}>
-                            <Text style={{ fontSize: 16, color: '#e60012' }}>{'退出拼店'}</Text>
+                            <Text style={{ fontSize: 16, color: DesignRule.mainColor }}>{'退出拼店'}</Text>
                         </TouchableOpacity>
                         : <TouchableOpacity onPress={this._joinStore}
                                             style={[styles.OutStore]}>

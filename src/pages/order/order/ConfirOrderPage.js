@@ -11,7 +11,6 @@ import {
 import {
     UIText, UIImage, RefreshList
 } from '../../../components/ui';
-import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import position from '../res/position.png';
@@ -79,7 +78,7 @@ export default class ConfirOrderPage extends BasePage {
                 <TouchableOpacity
                     style={{
                         height: Math.max(35, this.state.height),
-                        backgroundColor: color.white,
+                        backgroundColor: 'white',
                         flexDirection: 'row',
                         alignItems: 'center',
                         paddingTop: 10,
@@ -116,13 +115,13 @@ export default class ConfirOrderPage extends BasePage {
                     <Image source={arrow_right} style={{ height: 14, marginRight: 15 }}/>
                 </TouchableOpacity> :
                 <TouchableOpacity
-                    style={{ height: 87, backgroundColor: color.white, flexDirection: 'row', alignItems: 'center' }}
+                    style={{ height: 87, backgroundColor: 'white', flexDirection: 'row', alignItems: 'center' }}
                     onPress={() => this.selectAddress()}>
                     <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }}/>
                     <View style={{ flex: 1, marginLeft: 15, marginRight: 20 }}>
                         <UIText value={'请添加一个收货人地址'} style={{
                             fontSize: 13,
-                            color: '#c8c8c8',
+                            color: DesignRule.textColor_hint,
                             marginLeft: 15
                         }}/>
                     </View>
@@ -140,7 +139,7 @@ export default class ConfirOrderPage extends BasePage {
 
                     <View style={{
                         marginTop: 20,
-                        backgroundColor: '#fff',
+                        backgroundColor: 'white',
                         flexDirection: 'row',
                         alignItems: 'center'
                     }}>
@@ -149,12 +148,12 @@ export default class ConfirOrderPage extends BasePage {
                             borderRadius: 5,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            borderColor: '#e60012',
+                            borderColor: DesignRule.mainColor,
                             marginLeft: 20
                         }}>
                             <Text style={{
                                 fontSize: 11,
-                                color: '#e60012',
+                                color: DesignRule.mainColor,
                                 padding: 3
                             }}>礼包</Text>
                         </View>
@@ -236,7 +235,7 @@ export default class ConfirOrderPage extends BasePage {
     };
     renderCouponsPackage = () => {
         return (
-            <View style={{ borderColor: '#DDDDDD', borderWidth: 1 }}>
+            <View style={{ borderColor: DesignRule.lineColor_inWhiteBg, borderWidth: 1 }}>
                 {this.state.viewData.couponList ?
                     this.state.viewData.couponList.map((item, index) => {
                         return <View style={{ backgroundColor: 'white' }} key={index}>
@@ -254,18 +253,23 @@ export default class ConfirOrderPage extends BasePage {
                                 marginLeft: 36
                             }}>
                                 <Text style={{
-                                    color: color.black_999,
+                                    color: DesignRule.textColor_instruction,
                                     fontSize: 13,
                                     alignSelf: 'center'
                                 }}>{item.couponName}</Text>
                                 <Text style={{
-                                    color: color.black_999,
+                                    color: DesignRule.textColor_instruction,
                                     fontSize: 13,
                                     alignSelf: 'center',
                                     marginRight: 13.5
                                 }}>X1</Text>
                             </View>
-                            <View style={{ marginLeft: 36, backgroundColor: DesignRule.bgColor, height: 0.5, width: '100%' }}/>
+                            <View style={{
+                                marginLeft: 36,
+                                backgroundColor: DesignRule.bgColor,
+                                height: 0.5,
+                                width: '100%'
+                            }}/>
                         </View>;
                     })
                     :
@@ -290,12 +294,17 @@ export default class ConfirOrderPage extends BasePage {
                             value={StringUtils.formatMoneyString(this.state.viewData.totalAmounts)}
                             style={{
                                 fontSize: 15,
-                                color: color.red,
+                                color: DesignRule.mainColor,
                                 marginRight: 12
                             }}/>
                     </View>
                     <TouchableOpacity
-                        style={{ flex: 1, backgroundColor: color.red, justifyContent: 'center', alignItems: 'center' }}
+                        style={{
+                            flex: 1,
+                            backgroundColor: DesignRule.mainColor,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'提交订单'}
                                 style={{ fontSize: 16, color: 'white' }}/>
@@ -358,7 +367,7 @@ export default class ConfirOrderPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 0.5, backgroundColor: color.line }}/>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
 
@@ -686,10 +695,10 @@ export default class ConfirOrderPage extends BasePage {
                     let data = res.data;
                     user.saveUserInfo(data);
                 }).catch(err => {
-                    if(err.code===54001){
+                    if (err.code === 54001) {
                         this.$toastShow('商品库存不足！');
                         shopCartCacheTool.getShopCartGoodsListData();
-                        this.$navigateBack()
+                        this.$navigateBack();
                     }
 
                 });
@@ -766,13 +775,13 @@ export default class ConfirOrderPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: DesignRule.bgColor, justifyContent: 'flex-end',marginBottom: ScreenUtils.safeBottom
+        flex: 1, backgroundColor: DesignRule.bgColor, justifyContent: 'flex-end', marginBottom: ScreenUtils.safeBottom
     }, selectText: {
         fontSize: 16, color: 'white'
     }, blackText: {
         fontSize: 13,
         lineHeight: 18,
-        color: '#000000'
+        color: DesignRule.textColor_mainTitle
     }, grayText: {
         fontSize: 13,
         lineHeight: 18,
@@ -782,19 +791,19 @@ const styles = StyleSheet.create({
     }, selectView: {
         flex: 1,
         borderRadius: 3,
-        backgroundColor: '#61686c',
+        backgroundColor: DesignRule.textColor_secondTitle,
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: '#61686c',
+        borderColor: DesignRule.textColor_secondTitle,
         justifyContent: 'center',
         alignItems: 'center'
     }, unSelectView: {
         flex: 1,
         borderRadius: 3,
-        backgroundColor: color.white,
+        backgroundColor: 'white',
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: '#61686c',
+        borderColor: DesignRule.textColor_secondTitle,
         justifyContent: 'center',
         alignItems: 'center'
     }, couponsStyle: {

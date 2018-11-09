@@ -146,14 +146,14 @@ export default class EmptyView extends Component {
 const styles = StyleSheet.create({
     scrollViewContainer: {
         flex: 1,
-        backgroundColor: '#F6F6F6',
+        backgroundColor: DesignRule.bgColor,
     },
     img: {
         // marginTop: 116,
     },
     container: {
         flex: 1,
-        // backgroundColor: '#F6F6F6',
+        // backgroundColor: DesignRule.bgColor,
         alignItems: 'center',
         justifyContent: 'center',
     },

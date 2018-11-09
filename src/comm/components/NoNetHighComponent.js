@@ -8,7 +8,7 @@ import {
     Text
 } from 'react-native';
 import res from '../res';
-
+import DesignRule from 'DesignRule';
 
 class NetStatus {
 
@@ -25,7 +25,7 @@ class NetStatus {
             case 'none':
             case 'unknown':
             case 'NONE':
-            case 'UNKNOWN':{
+            case 'UNKNOWN': {
                 this.isConnected = false;
                 break;
             }
@@ -62,7 +62,8 @@ export default function NoNetHighComponent(WrappedComponent) {
             this.onPress = this.onPress.bind(this);
 
         }
-        componentWillMount(){
+
+        componentWillMount() {
             this.state.isConnected = netStatus.isConnected;
         }
 
@@ -75,20 +76,20 @@ export default function NoNetHighComponent(WrappedComponent) {
         }
 
         onPress() {
-            if (netStatus.isConnected === true){
-                this.props.$refreshData && this.props.$refreshData()
+            if (netStatus.isConnected === true) {
+                this.props.$refreshData && this.props.$refreshData();
             }
-            this.setState({isConnected: netStatus.isConnected});
+            this.setState({ isConnected: netStatus.isConnected });
         }
 
 
         _renderDefaultNoNet() {
             return (
-                <View style={[this.props.style, { alignItems: 'center', justifyContent: 'center', flex: 1}]}>
+                <View style={[this.props.style, { alignItems: 'center', justifyContent: 'center', flex: 1 }]}>
                     <TouchableWithoutFeedback onPress={this.onPress}>
                         <View>
-                            <Image source={res.placeholder.netError} style={{height: 100, width: 100}}/>
-                            <Text style={{ marginTop: 10, color: "#666666" }}>无网络</Text>
+                            <Image source={res.placeholder.netError} style={{ height: 100, width: 100 }}/>
+                            <Text style={{ marginTop: 10, color: DesignRule.textColor_secondTitle }}>无网络</Text>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>

@@ -57,8 +57,9 @@ import ScreenUtils from '../../utils/ScreenUtils';
 //const saveMarginBottom = ScreenUtils.saveMarginBottom;
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommModal from 'CommModal';
-import res from '../res'
+import res from '../res';
 import bridge from '../../utils/bridge';
+import DesignRule from 'DesignRule';
 
 export default class CommShareModal extends React.Component {
 
@@ -66,7 +67,7 @@ export default class CommShareModal extends React.Component {
         super(props);
 
         this._bind();
-        this.defaultShareType = (props.type === 'miniProgram'||props.type === 'task' || props.type === 'Image' || props.type === 'promotionShare') ? 2 : 1;
+        this.defaultShareType = (props.type === 'miniProgram' || props.type === 'task' || props.type === 'Image' || props.type === 'promotionShare') ? 2 : 1;
 
         this.state = {
             modalVisible: false,
@@ -235,7 +236,7 @@ export default class CommShareModal extends React.Component {
             }
         }
 
-        if (this.props.type === 'task'){
+        if (this.props.type === 'task') {
             array = [{
                 image: res.share.weiXin, title: '微信好友', onPress: () => {
                     this.share(0);
@@ -253,7 +254,9 @@ export default class CommShareModal extends React.Component {
             <CommModal onRequestClose={this.close}
                        visible={this.state.modalVisible}
                        transparent={true}
-                       ref={(ref) =>{this.modal = ref;}}
+                       ref={(ref) => {
+                           this.modal = ref;
+                       }}
             >
                 <View style={{
                     backgroundColor: 'rgba(0,0,0,0.5)',
@@ -278,15 +281,19 @@ export default class CommShareModal extends React.Component {
                                     flex: 1,
                                     marginLeft: autoSizeWidth(25),
                                     height: 1,
-                                    backgroundColor: '#EEEEEE'
+                                    backgroundColor: DesignRule.lineColor_inColorBg
                                 }}/>
                                 <UIText value={'分享到'}
-                                        style={{ color: '#4D4D4D', fontSize: autoSizeWidth(17), marginHorizontal: 7 }}/>
+                                        style={{
+                                            color: DesignRule.textColor_secondTitle,
+                                            fontSize: autoSizeWidth(17),
+                                            marginHorizontal: 7
+                                        }}/>
                                 <View style={{
                                     flex: 1,
                                     marginRight: autoSizeWidth(25),
                                     height: 1,
-                                    backgroundColor: '#EEEEEE'
+                                    backgroundColor: DesignRule.lineColor_inColorBg
                                 }}/>
                             </View>
                             <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
@@ -301,7 +308,7 @@ export default class CommShareModal extends React.Component {
                                                     }}/>
                                                     <UIText value={item.title} style={{
                                                         marginTop: 5,
-                                                        color: '#4D4D4D',
+                                                        color: DesignRule.textColor_secondTitle,
                                                         fontSize: autoSizeWidth(11)
                                                     }}/>
                                                 </View>
@@ -314,14 +321,17 @@ export default class CommShareModal extends React.Component {
                         <View style={{ flex: 1 }}/>
                         <View style={{
                             height: 1,
-                            backgroundColor: '#EEEEEE'
+                            backgroundColor: DesignRule.lineColor_inColorBg
                         }}/>
                         <TouchableWithoutFeedback onPress={() => {
                             this.close();
                         }}
                         >
                             <View style={styles.bottomBtn}>
-                                <UIText value={'取消'} style={{ color: '#4D4D4D', fontSize: autoSizeWidth(16) }}/>
+                                <UIText value={'取消'} style={{
+                                    color: DesignRule.textColor_secondTitle,
+                                    fontSize: autoSizeWidth(16)
+                                }}/>
                             </View>
                         </TouchableWithoutFeedback>
                     </Animated.View>
@@ -334,11 +344,11 @@ export default class CommShareModal extends React.Component {
                                 top: ScreenUtils.height - autoSizeWidth(255) - imageHeight - ScreenUtils.safeBottom,
                                 left: (autoSizeWidth(375) - imageWidth) / 2,
                                 borderRadius: 10,
-                                borderColor: '#CCCCCC',
+                                borderColor: DesignRule.textColor_placeholder,
                                 shadowOpacity: 0.3,
                                 borderWidth: this.props.type === 'promotionShare' ? 0 : 0.5,
                                 overflow: 'hidden',
-                                shadowColor: '#CCCCCC',
+                                shadowColor: DesignRule.textColor_placeholder,
                                 transform: [{ scale: this.state.scale }]
 
                             }}>

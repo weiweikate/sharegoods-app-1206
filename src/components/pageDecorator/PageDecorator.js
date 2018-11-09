@@ -52,6 +52,7 @@ import {
 
 import { renderViewByLoadingState } from './PageState';
 import { NavigationActions } from 'react-navigation';
+import DesignRule from 'DesignRule'
 
 const PageDecorator = (ComponentClass) => {
 
@@ -268,7 +269,7 @@ function $NavigationBarDefaultRightPressed() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F6F6F6'
+        backgroundColor: DesignRule.bgColor
     }
 });
 

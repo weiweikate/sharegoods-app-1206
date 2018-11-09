@@ -168,7 +168,7 @@ export default class MyCashAccountPage extends BasePage {
         });
     };
     onRefresh = () => {
-     this.currentPage=1;
+     this.currentPage = 1;
         this.getDataFromNetwork();
     };
     onLoadMore = () => {

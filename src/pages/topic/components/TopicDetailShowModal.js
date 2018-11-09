@@ -73,7 +73,7 @@ export default class TopicDetailShowModal extends Component {
                         <View style={{ flex: 1, alignItems: 'center' }}>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(31),
-                                color: '#000000',
+                                color: DesignRule.textColor_mainTitle,
                                 fontSize: ScreenUtils.px2dp(15), textAlign: 'center'
                             }}>{`${this.state.name || ''}\n${this.state.subName || ''}`}</Text>
                             <Text style={{

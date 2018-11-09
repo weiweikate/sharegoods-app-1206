@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     },
     rightItem: {
         fontSize: 15,
-        color: '#e60012'
+        color: DesignRule.mainColor
     },
     headerImg: {
         width: 90,
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
         width: 90,
         height: 25,
         borderRadius: 13,
-        backgroundColor: '#e60012',
+        backgroundColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center'
     },

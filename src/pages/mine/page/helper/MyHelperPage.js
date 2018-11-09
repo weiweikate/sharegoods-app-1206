@@ -80,7 +80,7 @@ export default class MyHelperPage extends BasePage {
                                resizeMode="contain"/>
                     </View>
                     {this.renderHotQuestionList()}
-                    <View style={{ height: 1, backgroundColor: '#f6f6f6' }}/>
+                    <View style={{ height: 1, backgroundColor: DesignRule.bgColor }}/>
                     <View style={{
                         alignItems: 'center',
                         height: 87,
@@ -104,7 +104,7 @@ export default class MyHelperPage extends BasePage {
                             <Text style={styles.textFontstyle}>自动退款</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={{ height: 177, backgroundColor: '#f6f6f6' }}/>
+                    <View style={{ height: 177, backgroundColor: DesignRule.bgColor }}/>
                 </ScrollView>
                 <View style={{
                     flexDirection: 'row', backgroundColor: '#fff', width: ScreenUtils.width,
@@ -139,7 +139,7 @@ export default class MyHelperPage extends BasePage {
         QYChatUtil.qiYUChat();
     };
     jump2Telephone(){
-         Linking.openURL('tel:'+'400-9696-365').catch(e=>console.log(e))
+         Linking.openURL('tel:' + '400-9696-365').catch(e=>console.log(e))
     }
     jumpTohelpPage() {
         console.log('fankui');

@@ -10,15 +10,16 @@ import {
     View,
     Text
 } from 'react-native';
+import DesignRule from 'DesignRule';
 
 const styles = StyleSheet.create({
     cardItemTimeRemainTxt: {
         fontSize: 20,
-        color: '#ee394b'
+        color: DesignRule.mainColor
     },
     text: {
         fontSize: 30,
-        color: '#FFF',
+        color: 'white',
         marginLeft: 2
     },
     container: {
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     //时间文字
     defaultTime: {
         paddingHorizontal: 1,
-        backgroundColor: 'rgba(85, 85, 85, 1)',
+        backgroundColor: DesignRule.textColor_secondTitle,
         fontSize: 12,
         color: 'white',
         marginHorizontal: 3,
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     },
     //冒号
     defaultColon: {
-        fontSize: 12, color: 'rgba(85, 85, 85, 1)'
+        fontSize: 12, color: DesignRule.textColor_secondTitle
     }
 });
 export default class CountDownReact extends Component {

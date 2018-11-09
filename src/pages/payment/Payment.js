@@ -151,7 +151,7 @@ export class Payment {
                 Toast.$toast(preStr.msg)
                 return
             }
-           
+
         } catch (error) {
             Toast.hiddenLoading()
             console.log(error)
@@ -204,7 +204,7 @@ export class Payment {
                 Toast.$toast(preStr.msg);
                 return
             }
-            
+
         } catch (error) {
             Toast.hiddenLoading()
             ref && ref.show(2, error.msg)

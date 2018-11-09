@@ -87,7 +87,7 @@ export default class MyIntegralAccountPage extends BasePage {
                             fontSize: 25,
                             marginTop: 10,
                             color: color.white
-                        }}>{user.userScore?user.userScore:0}</Text>
+                        }}>{user.userScore ? user.userScore : 0}</Text>
                     </View>
                     <TouchableOpacity style={styles.rectangleStyle} onPress={() => {
                         this.$navigate('home/signIn/SignInPage');

@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
 
     text: {
         fontSize: 13,
-        color: '#000000'
+        color: DesignRule.textColor_mainTitle
     },
     qrContainer: {
         width: 140,
