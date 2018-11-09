@@ -102,7 +102,7 @@ export default class CategorySearchPage extends BasePage {
                             <FlatList
                                 style={{
                                     width: 90,
-                                    backgroundColor: '#EEEEEE',
+                                    backgroundColor: DesignRule.lineColor_inColorBg,
                                     height: ScreenUtils.height - 60 - ScreenUtils.headerHeight //屏幕高减去搜索框以及头部高
                                 }}
                                 renderItem={this._categoryItem}
@@ -169,12 +169,12 @@ export default class CategorySearchPage extends BasePage {
                 <View style={{
                     height: 45,
                     width: 2,
-                    backgroundColor: item.index === this.state.leftIndex ? DesignRule.mainColor : '#EEEEEE'
+                    backgroundColor: item.index === this.state.leftIndex ? DesignRule.mainColor : DesignRule.lineColor_inColorBg
                 }}/>
                 <View style={{
                     flex: 1,
                     height: 45,
-                    backgroundColor: item.index === this.state.leftIndex ? 'white' : '#EEEEEE',
+                    backgroundColor: item.index === this.state.leftIndex ? 'white' : DesignRule.lineColor_inColorBg,
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: ScreenUtils.width - 30,
         borderRadius: 15,
-        backgroundColor: '#EEEEEE',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         alignItems: 'center',
         marginLeft: 15,
         marginRight: 15

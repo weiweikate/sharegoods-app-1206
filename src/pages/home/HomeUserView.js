@@ -29,7 +29,7 @@ export default class HomeUserView extends Component {
         }
         let { levelName, experience } = user
         const { memberLevels, levelCount } = this.memberModule
-        
+
         experience = experience ? experience : 0
         let items = [];
         let levelNames = [];

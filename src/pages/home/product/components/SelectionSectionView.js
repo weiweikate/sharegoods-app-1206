@@ -44,7 +44,7 @@ export default class RecentSearchView extends Component {
             tagList.push(
                 <View key={index}>
                     <TouchableOpacity
-                        style={[styles.btn, { backgroundColor: isSelected ? DesignRule.mainColor : '#EEEEEE' }]}
+                        style={[styles.btn, { backgroundColor: isSelected ? DesignRule.mainColor : DesignRule.lineColor_inColorBg }]}
                         onPress={() => {
                             this._clickItemAction(index);
                         }}>
@@ -66,7 +66,7 @@ export default class RecentSearchView extends Component {
                 <View style={styles.containerView}>
                     {this.rendTag()}
                 </View>
-                <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: '#eeeeee' }}/>
+                <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: DesignRule.lineColor_inColorBg }}/>
             </View>
         );
     }

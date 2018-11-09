@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     img: {
-        backgroundColor: '#eeeeee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         height: 120,
         width: 120
     },

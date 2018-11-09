@@ -113,6 +113,9 @@ dependencies {
     api rootProject.ext.dependencies.eventbus
     api rootProject.ext.dependencies.zxing
     api rootProject.ext.dependencies.wechat
+    api rootProject.ext.dependencies.recyclerview
+    api rootProject.ext.dependencies.glide
+
     implementation(rootProject.ext.dependencies.sophix) {
         exclude(module: 'alicloud-android-utdid')
     }

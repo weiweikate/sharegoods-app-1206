@@ -84,7 +84,7 @@ class SettingPage extends BasePage {
                         <Switch value={this.state.value}
                                 onTintColor={'#00D914'}
                                 thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
-                                tintColor={'#C8C8C8'}
+                                tintColor={DesignRule.textColor_hint}
                                 onValueChange={(value) => {
                                     this.setState({
                                         value: value,
@@ -178,7 +178,7 @@ class SettingPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 0.5, backgroundColor: '#eeeeee', marginLeft: 15, marginRight: 15 }}/>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg, marginLeft: 15, marginRight: 15 }}/>
         );
     };
     toLoginOut = () => {

@@ -126,7 +126,7 @@ export default class MyPromotionPage extends BasePage {
             }
         }
 
-        return <View style={{ height: 182 / 375 * SCREEN_WIDTH + 115+ScreenUtils.statusBarHeight+10}}>
+        return <View style={{ height: 182 / 375 * SCREEN_WIDTH + 115 + ScreenUtils.statusBarHeight + 10}}>
             <ImageBackground source={HeaderBarBgImg} style={{
                 width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH+ScreenUtils.statusBarHeight+10,
                 flexDirection: 'row',paddingTop:ScreenUtils.statusBarHeight,
@@ -165,7 +165,7 @@ export default class MyPromotionPage extends BasePage {
                     <Image source={CCZImg} style={{ marginLeft: 17, marginRight: 6 }}/>
                     <Text style={{
                         fontSize: 15,
-                        color: '#000000'
+                        color: DesignRule.textColor_mainTitle
                     }}>成长值</Text>
                 </View>
 

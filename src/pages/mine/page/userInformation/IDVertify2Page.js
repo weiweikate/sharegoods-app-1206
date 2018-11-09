@@ -117,7 +117,7 @@ export default class IDVertify2Page extends BasePage {
                     </View>
                     <TouchableOpacity style={{
                         marginTop: 42,
-                        backgroundColor: StringUtils.isNoEmpty(this.state.name)&&StringUtils.isNoEmpty(this.state.idNumber)&&StringUtils.isNoEmpty(this.state.backIdCard)&&StringUtils.isNoEmpty(this.state.frontIdCard)?color.red:'#cccccc',
+                        backgroundColor: StringUtils.isNoEmpty(this.state.name) && StringUtils.isNoEmpty(this.state.idNumber) && StringUtils.isNoEmpty(this.state.backIdCard) && StringUtils.isNoEmpty(this.state.frontIdCard) ? color.red : '#cccccc',
                         width: ScreenUtils.width - 84,
                         height: 45,
                         marginLeft: 42,
@@ -182,7 +182,7 @@ export default class IDVertify2Page extends BasePage {
     };
     renderHintInformation = () => {
         return (
-            <View style={{ height: 50, backgroundColor: '#e60012', justifyContent: 'center', paddingLeft: 15 }}>
+            <View style={{ height: 50, backgroundColor: DesignRule.mainColor, justifyContent: 'center', paddingLeft: 15 }}>
                 <UIText value={'请仔细检查姓名和证件号是否有误\n并重新上传图片，提交审核'}
                         style={{ fontSize: 13, lineHeight: 18, color: 'white' }}/>
             </View>

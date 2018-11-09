@@ -69,7 +69,7 @@ class BankCardListPage extends BasePage {
         title: '银行卡',
         show:true,
         headerStyle:{
-            backgroundColor:'#383c45'
+            backgroundColor:DesignRule.textColor_mainTitle
         },
        leftNavImage:res.button.white_back_img,
         titleStyle:{

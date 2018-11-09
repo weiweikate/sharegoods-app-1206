@@ -155,7 +155,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                         <View style={{ marginLeft: ScreenUtils.px2dp(22) }}>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
-                                color: '#000000',
+                                color: DesignRule.textColor_mainTitle,
                                 fontSize: ScreenUtils.px2dp(15)
                             }}>什么是待提现账户？</Text>
                             <Text style={{
@@ -167,7 +167,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                         <View style={{ marginLeft: ScreenUtils.px2dp(22) }}>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
-                                color: '#000000',
+                                color: DesignRule.textColor_mainTitle,
                                 fontSize: ScreenUtils.px2dp(15)
                             }}>为何不能马上提现？</Text>
                             <Text style={{
@@ -208,7 +208,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                             <UIText value={item.time} style={{fontSize:15,color:DesignRule.textColor_instruction}}/>
                             <View style={{flexDirection:'row',alignItems:'center'}}>
                                 <Text style={{fontSize:12,color:DesignRule.textColor_secondTitle}}>已入账:</Text>
-                                <Text style={{fontSize:12,color:DesignRule.textColor_secondTitle}}>{item.realBalance===null?'?':item.realBalance}</Text>
+                                <Text style={{fontSize:12,color:DesignRule.textColor_secondTitle}}>{item.realBalance === null ? '?' : item.realBalance}</Text>
                             </View>
                         </View>
                     </View>

@@ -10,6 +10,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ShopMasterIcon from '../res/dz_03.png';
+import DesignRule from 'DesignRule';
 
 export default class MasterRow extends Component {
 
@@ -43,7 +44,7 @@ export default class MasterRow extends Component {
                     <View style={styles.right}>
                         <Text style={styles.name}>{(nickName || '  ')}</Text>
                         <Text style={styles.level}>{levelName || ' '}</Text>
-                        <Text style={styles.desc}>贡献度：{tradeBalance===0?0: ((contribution/tradeBalance)*100).toFixed(2)}%</Text>
+                        <Text style={styles.desc}>贡献度：{tradeBalance === 0 ? 0 : ((contribution / tradeBalance) * 100).toFixed(2)}%</Text>
                     </View>
                 </View>
             </View>
@@ -93,11 +94,11 @@ const styles = StyleSheet.create({
     },
     level: {
         fontSize: 13,
-        color: "#666666",
+        color: DesignRule.textColor_secondTitle,
         marginVertical: 3
     },
     desc: {
         fontSize: 12,
-        color: "#666666"
+        color: DesignRule.textColor_secondTitle
     }
 });

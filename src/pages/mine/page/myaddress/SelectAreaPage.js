@@ -65,7 +65,7 @@ export default class SelectAreaPage extends BasePage {
     };
 
     _separator = () => {
-        return <View style={{ height: 0.5, backgroundColor: '#EEEEEE' }}/>;
+        return <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>;
     };
 
     _onItemClick = (item) => {

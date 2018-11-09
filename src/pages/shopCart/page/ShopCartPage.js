@@ -434,7 +434,7 @@ export default class ShopCartPage extends BasePage {
                             }}>
                                 <UIText
                                     value={'￥ ' + StringUtils.formatMoneyString(itemData.price, false)}
-                                    style={{ fontSize: 14, color: '#e60012' }}/>
+                                    style={{ fontSize: 14, color: DesignRule.mainColor }}/>
                                 <View style={{ flexDirection: 'row' }}>
                                     <TouchableOpacity
                                         style={styles.rectangle}
@@ -512,14 +512,15 @@ export default class ShopCartPage extends BasePage {
                                         height: 15,
                                         width: ScreenUtils.width,
                                         justifyContent: 'center',
-                                        alignItems: 'center'
-                                        // opacity:0.2
+                                        alignItems: 'center',
+                                        backgroundColor: DesignRule.mainColor
+
                                     },
                                         this._getSkillIsBegin(itemData) === 0
                                             ?
-                                            { backgroundColor: 'rgba(213, 18, 67, 0.5)' }
+                                            {opacity:0.5}
                                             :
-                                            { backgroundColor: 'rgba(213, 18, 67, 1)' }
+                                            {opacity:1}
                                     ]
                                 }
                             >
@@ -657,7 +658,7 @@ const
         },
         standaloneRowBack: {
             alignItems: 'center',
-            backgroundColor: DesignRule.bgColor,
+            backgroundColor: DesignRule.mainColor,
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'flex-end',

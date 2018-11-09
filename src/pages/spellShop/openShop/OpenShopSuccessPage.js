@@ -50,22 +50,23 @@ export default class OpenShopSuccessPage extends BasePage {
                         恭喜你，开店成功
                     </Text>
 
-                    <TouchableOpacity activeOpacity={0.5} onPress={this._clickEnterShop} style={styles.btnStyle}>
-                        <Text style={styles.btnText}>
-                            进入店铺
-                        </Text>
-                    </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', marginTop: 79 }}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={this._clickEnterShop} style={styles.btnStyle}>
+                            <Text style={styles.btnText}>
+                                进入店铺
+                            </Text>
+                        </TouchableOpacity>
 
 
-                    <TouchableOpacity activeOpacity={0.8} onPress={this._clickInvite} style={[styles.btnStyle, {
-                        marginTop: 0,
-                        backgroundColor: '#e60012'
-                    }]}>
-                        <Text style={[styles.btnText, { color: '#fff' }]}>
-                            马上邀请好友
-                        </Text>
-                    </TouchableOpacity>
-
+                        <TouchableOpacity activeOpacity={0.8} onPress={this._clickInvite} style={[styles.btnStyle, {
+                            marginLeft: 20,
+                            backgroundColor: DesignRule.mainColor
+                        }]}>
+                            <Text style={[styles.btnText, { color: '#fff' }]}>
+                                马上邀请好友
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </ScrollView>
         );
@@ -91,7 +92,6 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     btnStyle: {
-        marginTop: 79,
         width: 150 / 375 * SCREEN_WIDTH,
         height: 48 / 375 * SCREEN_WIDTH,
         borderRadius: 5,
@@ -100,11 +100,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         overflow: 'hidden',
         justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 11
+        alignItems: 'center'
     },
     btnText: {
         fontSize: 16,
-        color: '#e60012'
+        color: DesignRule.mainColor
     }
 });

@@ -201,6 +201,6 @@ const styles = StyleSheet.create({
         flex: 1
     },
     headerBg: {
-        backgroundColor: '#F6F6F6'
+        backgroundColor: DesignRule.bgColor
     }
 });
