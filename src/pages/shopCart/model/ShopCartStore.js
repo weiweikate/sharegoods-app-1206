@@ -133,7 +133,29 @@ class ShopCartStore {
     };
 
     /**
-     * 开始结算
+     * 判断是否可以结算
+     */
+    judgeIsCanSettlement=(callBack)=>{
+        let [...selectArr] = shopCartStore.startSettlement();
+        if (selectArr.length <= 0){
+            bridge.$toast('请先选择结算商品~');
+            callBack(false,[]);
+            return;
+        }
+        let isCanSettlement = true
+        selectArr.map(good => {
+            if (good.amount > good.stock) {
+                isCanSettlement = false
+            }
+        })
+        if (!isCanSettlement) {
+            bridge.$toast('商品库存不足请确认~')
+        }
+
+        callBack(isCanSettlement,selectArr)
+    }
+    /**
+     * 获取结算选中商品
      * @returns {any[]}
      * @constructor
      */
@@ -151,7 +173,6 @@ class ShopCartStore {
     /**
      以下为购物车数据操作相关方法
      */
-    /*是否全部选中方法*/
     isSelectAllItem = (isSelectAll) => {
         if (isSelectAll) {
             this.data.slice().map(item => {
