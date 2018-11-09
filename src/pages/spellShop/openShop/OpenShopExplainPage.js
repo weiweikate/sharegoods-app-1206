@@ -75,7 +75,7 @@ export default class OpenShopExplainPage extends BasePage {
                     alignSelf: 'center',
                     marginTop: 41,
                     fontSize: 17,
-                    color: '#000000'
+                    color: DesignRule.textColor_mainTitle
                 }}>拼店规则说明</Text>
                 <View style={{ marginTop: 32 }}>
                     {

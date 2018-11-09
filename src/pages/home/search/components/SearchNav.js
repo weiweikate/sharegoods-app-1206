@@ -62,7 +62,7 @@ export default class SearchBar extends Component {
                                    keyboardType='web-search'
                                    underlineColorAndroid='transparent'
                                    placeholder={this.props.placeholder}
-                                   placeholderTextColor='#C8C8C8'
+                                   placeholderTextColor={DesignRule.textColor_hint}
                                    value={this.state.inputText}
                                    onChangeText={(text) => this.onChangeText(text)}
                                    onSubmitEditing={(event) => this.onSubmitEditing(event.nativeEvent.text)}/>

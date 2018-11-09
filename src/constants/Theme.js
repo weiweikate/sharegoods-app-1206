@@ -37,19 +37,19 @@ const color = {
     black_999: '#999999',
     blue_4a9: '#4A90E2',
     blue_222: '#222222',
-    black000: '#000000',
+    black000: DesignRule.textColor_mainTitle,
 
     loginTextBlack: '#222222',
     otherLoginLine: '#DCDCDC',
-    hintTextColor: '#c8c8c8',
+    hintTextColor: DesignRule.textColor_hint,
     deliveryIncludeBlue: '#0186f5',
     gray_DDD: '#DDDDDD',
-    gray_EEE: '#EEEEEE',
+    gray_EEE: DesignRule.lineColor_inColorBg,
     gray_FFF: '#FFFFFF',
     black_222: '#222204',
     gray_f7f7: '#f7f7f7',
     yellow_FF7: '#FF7E00',
-    gray_c8c: '#C8C8C8',
+    gray_c8c: DesignRule.textColor_hint,
     gray_bbb: '#BBBBBB',
     green_47c: '#47c546',
     gray_666: '#666666',
@@ -788,7 +788,7 @@ const ui = {
     GoodsListModelView: {
         default: {
             container: {
-                backgroundColor: '#F6F6F6',
+                backgroundColor: DesignRule.bgColor,
                 paddingLeft: getUIScale(20),
                 paddingRight: getUIScale(20),
                 paddingBottom: 10

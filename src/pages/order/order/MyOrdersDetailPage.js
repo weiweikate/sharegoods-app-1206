@@ -266,12 +266,12 @@ class MyOrdersDetailPage extends BasePage {
                             borderRadius: 5,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            borderColor: '#e60012',
+                            borderColor: DesignRule.mainColor,
                             marginLeft: 20
                         }}>
                             <Text style={{
                                 fontSize: 11,
-                                color: '#e60012',
+                                color: DesignRule.mainColor,
                                 padding: 3
                             }}>礼包</Text>
                         </View>

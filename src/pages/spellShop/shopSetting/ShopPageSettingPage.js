@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
         textAlign: 'right'
     },
     line: {
-        backgroundColor: '#eeeeee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         marginHorizontal: 15,
         height: StyleSheet.hairlineWidth
     },
@@ -151,20 +151,20 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: '#e60012',
+        borderColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center'
     },
     separateTitle: {
         fontSize: 16,
-        color: '#e60012'
+        color: DesignRule.mainColor
     },
     sendContainer: {
         marginTop: 10,
         width: 150,
         height: 48,
         borderRadius: 5,
-        backgroundColor: '#e60012',
+        backgroundColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center'
     },

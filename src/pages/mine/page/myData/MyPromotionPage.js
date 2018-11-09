@@ -165,7 +165,7 @@ export default class MyPromotionPage extends BasePage {
                     <Image source={CCZImg} style={{ marginLeft: 17, marginRight: 6 }}/>
                     <Text style={{
                         fontSize: 15,
-                        color: '#000000'
+                        color: DesignRule.textColor_mainTitle
                     }}>成长值</Text>
                 </View>
 

@@ -39,7 +39,8 @@ export default class HomeBannerView extends Component {
         });
 
         return <View>
-            <MRBannerViewMode imgUrlArray={items} onDidSelectItemAtIndex={(index)=>this._onDidSelectItemAtIndex(index)}
+            <MRBannerViewMode imgUrlArray={items}
+                              onDidSelectItemAtIndex={(index) => this._onDidSelectItemAtIndex(index)}
                               bannerHeight={bannerHeight} modeStyle={1}/>
         </View>;
     }

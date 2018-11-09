@@ -46,7 +46,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                         onChangeText={(text) => this.setState({ userName: text })}
                         value={this.state.userName}
                         placeholder={'请输入用户姓名'}
-                        placeholderTextColor={'#C8C8C8'}
+                        placeholderTextColor={DesignRule.textColor_hint}
                     />
                 </View>
                 <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15 }}/>
@@ -58,7 +58,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                         onChangeText={(text) => this.setState({ cardNum: text })}
                         value={this.state.cardNum}
                         placeholder={'请输入证件号码'}
-                        placeholderTextColor={'#C8C8C8'}
+                        placeholderTextColor={DesignRule.textColor_hint}
                     />
                 </View>
             </View>

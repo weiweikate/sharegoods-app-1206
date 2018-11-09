@@ -38,7 +38,7 @@ export default class TopicDetailSegmentView extends Component {
         }}>
             <View style={styles.btnContainer}>
                 <Text
-                    style={[styles.title, { color: this.state.selectedIndex === index ? '#e60012' : DesignRule.textColor_instruction }]}>{title}</Text>
+                    style={[styles.title, { color: this.state.selectedIndex === index ? DesignRule.mainColor : DesignRule.textColor_instruction }]}>{title}</Text>
                 {this.state.selectedIndex === index ? <View style={{
                     width: 45,
                     height: 3,
@@ -55,7 +55,7 @@ export default class TopicDetailSegmentView extends Component {
             <View style={{ height: 50.5 }}>
                 <View style={[styles.container]}>
                     {this._renderItem('详情', 0)}
-                    <View style={{ height: 25, alignSelf: 'center', width: 1, backgroundColor: '#EEEEEE' }}/>
+                    <View style={{ height: 25, alignSelf: 'center', width: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                     {this._renderItem('参数', 1)}
                 </View>
             </View>);

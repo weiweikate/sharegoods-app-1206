@@ -36,7 +36,12 @@ export default class CashExplainPage extends BasePage {
                 <View style={{ marginHorizontal: 15 }}>
 
                     {index !== 0 ?
-                        <View style={{ marginLeft: 8, width: 2, backgroundColor: DesignRule.mainColor, height: 33 }}/> : null}
+                        <View style={{
+                            marginLeft: 8,
+                            width: 2,
+                            backgroundColor: DesignRule.mainColor,
+                            height: 33
+                        }}/> : null}
 
                     <View style={{ flexDirection: 'row' }}>
                         <View>
@@ -44,7 +49,12 @@ export default class CashExplainPage extends BasePage {
                                 <Text style={styles.circleText}>{index + 1}</Text>
                             </View>
                             {index !== maxIndex - 1 ?
-                                <View style={{ marginLeft: 8, width: 2, backgroundColor: DesignRule.mainColor, flex: 1 }}/> : null}
+                                <View style={{
+                                    marginLeft: 8,
+                                    width: 2,
+                                    backgroundColor: DesignRule.mainColor,
+                                    flex: 1
+                                }}/> : null}
                         </View>
 
                         <Text style={styles.desc}>{title}</Text>
@@ -72,7 +82,7 @@ export default class CashExplainPage extends BasePage {
                     alignSelf: 'center',
                     marginTop: 41,
                     fontSize: 17,
-                    color: '#000000'
+                    color: DesignRule.textColor_mainTitle
                 }}>保证金缴纳说明</Text>
                 <View style={{ marginTop: 32 }}>
                     {

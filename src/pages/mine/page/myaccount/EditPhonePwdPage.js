@@ -36,7 +36,7 @@ export default class EditPhonePwdPage extends BasePage {
 
     _render() {
         return <View style={{ flex: 1 }}>
-            <UIText value={'请输入旧密码'} style={{ fontSize: 13, color: '#C8C8C8', marginLeft: 20, marginTop: 15 }}/>
+            <UIText value={'请输入旧密码'} style={{ fontSize: 13, color: DesignRule.textColor_hint, marginLeft: 20, marginTop: 15 }}/>
             <View style={{
                 flexDirection: 'row',
                 height: 48,
@@ -46,8 +46,8 @@ export default class EditPhonePwdPage extends BasePage {
             }}>
                 <UIText value={'旧密码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
                 <TextInput underlineColorAndroid={'transparent'}
-                           style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 14 }}
-                           placeholder={'请输入旧密码'} placeholderTextColor={'#C8C8C8'}
+                           style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 14 }}
+                           placeholder={'请输入旧密码'} placeholderTextColor={DesignRule.textColor_hint}
                            onChangeText={(text) => this.setState({ oldPwd: text })}
                            value={this.state.oldPwd}
                            keyboardType={'default'}
@@ -63,7 +63,7 @@ export default class EditPhonePwdPage extends BasePage {
 
                 </TouchableOpacity>
             </View>
-            <UIText value={'请设置新密码'} style={{ fontSize: 13, color: '#C8C8C8', marginLeft: 20, marginTop: 15 }}/>
+            <UIText value={'请设置新密码'} style={{ fontSize: 13, color: DesignRule.textColor_hint, marginLeft: 20, marginTop: 15 }}/>
             <View style={{ backgroundColor: 'white', marginTop: 12, flexDirection: 'column' }}>
                 <View style={{
                     flexDirection: 'row',
@@ -72,8 +72,8 @@ export default class EditPhonePwdPage extends BasePage {
                 }}>
                     <UIText value={'新密码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
                     <TextInput underlineColorAndroid={'transparent'}
-                               style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 14 }}
-                               placeholder={'请输入新密码'} placeholderTextColor={'#C8C8C8'}
+                               style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 14 }}
+                               placeholder={'请输入新密码'} placeholderTextColor={DesignRule.textColor_hint}
                                onChangeText={(text) => this.setState({ newPwd: text })}
                                value={this.state.newPwd}
                                keyboardType={'default'}
@@ -89,7 +89,7 @@ export default class EditPhonePwdPage extends BasePage {
 
                     </TouchableOpacity>
                 </View>
-                <View style={{ height: 0.5, backgroundColor: '#EEEEEE', marginRight: 15, marginLeft: 15 }}/>
+                <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg, marginRight: 15, marginLeft: 15 }}/>
                 <View style={{
                     flexDirection: 'row',
                     height: 48,
@@ -97,8 +97,8 @@ export default class EditPhonePwdPage extends BasePage {
                 }}>
                     <UIText value={'新密码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 22 }}/>
                     <TextInput underlineColorAndroid={'transparent'}
-                               style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 14 }}
-                               placeholder={'请再次输入新密码'} placeholderTextColor={'#C8C8C8'}
+                               style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 14 }}
+                               placeholder={'请再次输入新密码'} placeholderTextColor={DesignRule.textColor_hint}
                                onChangeText={(text) => this.setState({ newPwdAgain: text })}
                                value={this.state.newPwdAgain}
                                keyboardType={'default'}

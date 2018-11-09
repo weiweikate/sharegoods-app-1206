@@ -27,7 +27,7 @@ import user from "../../../model/user";
 import { observer } from "mobx-react/native";
 import EmptyUtils from "../../../utils/EmptyUtils";
 import MineApi from "../../mine/api/MineApi";
-
+import DesignRule from 'DesignRule';
 @observer
 export default class SignInPage extends BasePage {
     constructor(props) {
@@ -226,8 +226,8 @@ export default class SignInPage extends BasePage {
     _couponRender() {
         return (
             <ImageBackground source={couponBackground} style={styles.couponBgStyle}>
-                <Text style={{ color: "#D51243", fontSize: px2dp(36), marginLeft: px2dp(30) }}>
-                    1<Text style={{ color: "#D51243", fontSize: px2dp(14) }}>元</Text>
+                <Text style={{ color: DesignRule.mainColor, fontSize: px2dp(36), marginLeft: px2dp(30) }}>
+                    1<Text style={{ color: DesignRule.mainColor, fontSize: px2dp(14) }}>元</Text>
                 </Text>
                 <View style={styles.couponTextWrapper}>
                     <Text style={styles.couponNameTextStyle}>
@@ -239,10 +239,10 @@ export default class SignInPage extends BasePage {
                 </View>
                 <View style={{ flex: 1 }}/>
                 <View style={styles.convertWrapper}>
-                    <Text style={{ color: "#222222", fontSize: px2dp(12), includeFontPadding: false }}>
+                    <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: px2dp(12), includeFontPadding: false }}>
                         消耗秀豆
                     </Text>
-                    <Text style={{ color: "#D51243", fontSize: px2dp(12), includeFontPadding: false }}>
+                    <Text style={{ color: DesignRule.mainColor, fontSize: px2dp(12), includeFontPadding: false }}>
                         {`-- ${this.state.exchangeData} --`}
                     </Text>
                     <TouchableWithoutFeedback onPress={this.exchangeCoupon}>
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     rightItemStyle: {
-        color: "#222222",
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(12)
     },
     headerImageStyle: {
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
         height: px2dp(178)
     },
     signInButtonWrapper: {
-        backgroundColor: "#b61944",
+        backgroundColor: DesignRule.mainColor,
         width: px2dp(82),
         height: px2dp(82),
         borderRadius: px2dp(41),
@@ -354,7 +354,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     signInCountTextStyle: {
-        color: "#666666",
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(12),
         alignSelf: "center",
         marginTop: px2dp(10)
@@ -403,11 +403,11 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     couponNameTextStyle: {
-        color: "#222222",
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(14)
     },
     couponTagTextStyle: {
-        color: "#666666",
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(12)
     },
     couponTextWrapper: {
@@ -425,7 +425,7 @@ const styles = StyleSheet.create({
         height: px2dp(20),
         width: px2dp(68),
         borderRadius: px2dp(10),
-        backgroundColor: "#b61944",
+        backgroundColor: DesignRule.mainColor,
         justifyContent: "center",
         alignItems: "center"
     },
@@ -434,13 +434,13 @@ const styles = StyleSheet.create({
         fontSize: px2dp(12)
     },
     reminderStyle: {
-        color: "#999999",
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(11),
         marginTop: px2dp(10),
         marginLeft: px2dp(15)
     },
     couponsTextStyle: {
-        color: "#999999",
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(11),
         alignSelf: "center",
         marginBottom: px2dp(15),
