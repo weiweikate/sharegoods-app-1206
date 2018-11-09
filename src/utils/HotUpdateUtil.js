@@ -16,6 +16,7 @@ import {
 } from 'react-native-update';
 
 import _updateConfig from '../../update.json';
+import Storage from './storage';
 
 const { appKey } = _updateConfig[Platform.OS];
 
@@ -64,7 +65,6 @@ class HotUpdateUtil {
                 }
             ]);
         }).catch(err => {
-
             Alert.alert('提示', '更新失败.' + err);
         });
     };
@@ -72,14 +72,13 @@ class HotUpdateUtil {
      * 检测更新
      */
     checkUpdate = () => {
-        //先注释掉
-        return;
         checkUpdate(appKey).then(info => {
+            console.log(info)
             if (info.expired) {
                 Alert.alert('提示', '您的应用版本已更新,请前往应用商店下载新的版本', [
                     {
                         text: '确定', onPress: () => {
-                            info.downloadUrl && Linking.openURL(info.downloadUrl);
+                            info.downloadUrl &&Linking.openURL(info.downloadUrl);
                         }
                     }
                 ]);
@@ -99,7 +98,7 @@ class HotUpdateUtil {
                 ]);
             }
         }).catch(err => {
-            Alert.alert('提示', '更新失败.');
+            // Alert.alert('提示', '更新失败.');
         });
     };
     /**
@@ -109,10 +108,30 @@ class HotUpdateUtil {
      */
 
     isNeedToCheck = (timeInterval = 3) =>{
-        return false
+        Storage.get(HotUpdateUtil.TIME_INTERVAL_KEY,undefined).then(res=>{
+            if (res === undefined){
+                Storage.set(HotUpdateUtil.TIME_INTERVAL_KEY, (new Date().getTime())).then(()=>{
+                    //初次触发更新
+                    this.checkUpdate();
+                }).catch(()=>{
+
+                })
+            } else {
+                if ((res + (24 * 3600 * 3)) < (new Date().getTime())) {
+                    //三天未检测
+                    this.checkUpdate();
+                    Storage.set(HotUpdateUtil.TIME_INTERVAL_KEY, (new Date().getTime())).then(()=>{
+                    }).catch(()=>{
+                    })
+                }
+            }
+        }).catch(()=>{
+            //提取错误则重新存储
+            Storage.set(HotUpdateUtil.TIME_INTERVAL_KEY, (new Date().getTime())).then(()=>{
+            }).catch(()=>{
+            })
+        })
     }
-
-
 }
 
 const hotUpdateUtil = new HotUpdateUtil();

@@ -21,7 +21,7 @@ import CONFIG from '../config';
 import appData from './model/appData';
 import { netStatus } from './comm/components/NoNetHighComponent';
 
-import hotUpdateUtil from './utils/HotUpdateUtil';
+// import hotUpdateUtil from './utils/HotUpdateUtil';
 
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
 
@@ -47,7 +47,7 @@ export default class App extends Component {
 
     componentDidMount() {
         //热更新 先注释掉
-        hotUpdateUtil.checkUpdate();
+        // hotUpdateUtil.isNeedToCheck();
     }
 
     render() {
