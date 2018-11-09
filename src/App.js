@@ -40,7 +40,6 @@ export default class App extends Component {
         netStatus.startMonitorNetworkStatus();
         await apiEnvironment.loadLastApiSettingFromDiskCache();
         await user.readUserInfoFromDisk();
-        global.$navigator = this.refs.Navigator;
         global.$routes = [];
 
     }
@@ -54,7 +53,9 @@ export default class App extends Component {
         return (
             <View style={styles.container}>
                 <Navigator screenProps={this.props.params}
-                           ref='Navigator'
+                           ref={(e) => {
+                               global.$navigator = e;
+                           }}
                            onNavigationStateChange={(prevState, currentState) => {
                                let curRouteName = getCurrentRouteName(currentState);
                                // 拦截当前router的名称
@@ -74,7 +75,7 @@ export default class App extends Component {
             routeName: RouterMap.DebugPanelPage
             //routeName:'debug/DemoLoginPage'
         });
-        this.refs.Navigator.dispatch(navigationAction);
+        global.$navigator.dispatch(navigationAction);
     };
 }
 
