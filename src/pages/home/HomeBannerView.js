@@ -7,8 +7,9 @@ import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
 import { bannerModule, homeModule } from './Modules'
-import ViewPager from '../../components/ui/ViewPager'
+// import ViewPager from '../../components/ui/ViewPager'
 const bannerHeight = px2dp(230)
+import MRBannerViewMode from '../../components/ui/bannerView/MRBannerViewMode'
 
 @observer
 export default class HomeBannerView extends Component {
@@ -58,17 +59,18 @@ export default class HomeBannerView extends Component {
         })
 
         return <View>
-             <ViewPager
-                swiperShow={true}
-                arrayData={items}
-                renderItem={this._renderViewPageItem.bind(this)}
-                autoplay={true}
-                loop={false}
-                height={bannerHeight}
-                renderPagination={this._renderPagination.bind(this)}
-                index={0}
-                scrollsToTop={true}
-            />
+             {/*<ViewPager*/}
+                {/*swiperShow={true}*/}
+                {/*arrayData={items}*/}
+                {/*renderItem={this._renderViewPageItem.bind(this)}*/}
+                {/*autoplay={true}*/}
+                {/*loop={false}*/}
+                {/*height={bannerHeight}*/}
+                {/*renderPagination={this._renderPagination.bind(this)}*/}
+                {/*index={0}*/}
+                {/*scrollsToTop={true}*/}
+            {/*/>*/}
+            <MRBannerViewMode imgUrlArray={items} bannerHeight={bannerHeight} modeStyle={1} onDidSelectItemAtIndex={(index)=>{alert(index)}}/>
         </View>
     }
 }

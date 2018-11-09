@@ -8,6 +8,7 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.Banner.adapter.WebBannerAdapter;
@@ -23,7 +24,7 @@ import javax.annotation.Nullable;
 public class ReactBannerManager extends SimpleViewManager<BannerLayout> {
     public static final String REACT_CLASS = "MRBannerView";
     public ReactContext reactContext;
-
+    public static EventDispatcher dispatcher;
     @Override
     public String getName() {
         return REACT_CLASS;
@@ -33,35 +34,32 @@ public class ReactBannerManager extends SimpleViewManager<BannerLayout> {
     protected BannerLayout createViewInstance(ThemedReactContext reactContext) {
         BannerLayout bannerLayout = new BannerLayout(reactContext);
         this.reactContext = reactContext;
-        bannerLayout.setAutoPlaying(true);
         bannerLayout.setCenterScale(1);
         bannerLayout.setShowIndicator(false);
+        dispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+
         return bannerLayout;
     }
 
-//    //图片url数组
-//    imgUrlArray: PropTypes.array.isRequired,
-//    //选择index
-//    onDidSelectItemAtIndex: PropTypes.func,({index})
-//    //滚动到index
-//    onDidScrollToIndex: PropTypes.func,
-//
-//    //滚动间隔 设置0为不滚动  默认3
-//    autoInterval: PropTypes.number,
-//    //是否轮播 默认true
-//    autoLoop: PropTypes.bool
-
     @ReactProp(name = "imgUrlArray")
-    public void setImgUrlArray(BannerLayout view, @Nullable ReadableArray sources) {
+    public void setImgUrlArray(final BannerLayout view, @Nullable ReadableArray sources) {
         List urls = sources.toArrayList();
-        WebBannerAdapter adapter = (WebBannerAdapter) view.getAdapter();
-        adapter.setUrls(urls);
-        adapter.notifyDataSetChanged();
+//        WebBannerAdapter adapter = (WebBannerAdapter) view.getAdapter();
+//        adapter.setUrls(urls);
+//        adapter.notifyDataSetChanged();
+        WebBannerAdapter adapter = new WebBannerAdapter(reactContext,urls);
+        adapter.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                dispatcher.dispatchEvent(new DidSelectItemAtIndexEvent(view.getId(),position));
+            }
+        });
+        view.setAdapter(adapter);
     }
 
     @ReactProp(name = "autoInterval")
     public void setAutoInterval(BannerLayout view, @Nullable int interval) {
-        view.setAutoPlayDuration(interval);
+        view.setAutoPlayDuration(interval * 1000);
     }
 
     @ReactProp(name = "autoLoop")
