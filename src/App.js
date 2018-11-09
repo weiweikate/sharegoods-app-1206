@@ -47,7 +47,7 @@ export default class App extends Component {
 
     componentDidMount() {
         //热更新 先注释掉
-        hotUpdateUtil.checkUpdate();
+        hotUpdateUtil.isNeedToCheck();
     }
 
     render() {
