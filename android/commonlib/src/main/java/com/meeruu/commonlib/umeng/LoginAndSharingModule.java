@@ -574,7 +574,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 intent.setData(uri);
                 mContext.sendBroadcast(intent);
-                ToastUtils.showToast("保存成功");
                 success.invoke();
             } catch (Exception e) {
                 fail.invoke(e.getMessage());

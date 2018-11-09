@@ -31,7 +31,7 @@ export default class ShowConnectPage extends BasePage {
         show: true
     };
     $NavBarRenderRightItem = () => {
-        const {select} = this.state
+        const { select } = this.state;
         return (
             <TouchableOpacity style={styles.rightButton} onPress={() => this._onSelectedAction()}>
                 <Text style={styles.select}>{select ? '完成' : '管理'}</Text>
@@ -50,13 +50,13 @@ export default class ShowConnectPage extends BasePage {
 
     _refreshData() {
         this.recommendModules.loadCollect().then(data => {
-            this.setState({firstLoad: false})
+            this.setState({ firstLoad: false });
             this.waterfall.clear();
             if (data && data.length > 0) {
                 this.waterfall.addItems(data);
             } else {
                 // this.waterfall.addItems([]);
-                this.setState({isEmpty: true})
+                this.setState({ isEmpty: true });
             }
             this.state.collectData = data;
         });
@@ -137,17 +137,17 @@ export default class ShowConnectPage extends BasePage {
     }
 
     renderItem = (data) => {
-        let imgWide = 1
-        let imgHigh = 1
-        let img = ''
+        let imgWide = 1;
+        let imgHigh = 1;
+        let img = '';
         if (data.generalize === tag.New || data.generalize === tag.Recommend) {
             imgWide = data.coverImgWide ? data.coverImgWide : 1;
             imgHigh = data.coverImgHigh ? data.coverImgHigh : 1;
-            img = data.coverImg
+            img = data.coverImg;
         } else {
             imgWide = data.imgWide ? data.imgWide : 1;
             imgHigh = data.imgHigh ? data.imgHigh : 1;
-            img = data.img
+            img = data.img;
         }
         let imgHeight = (imgHigh / imgWide) * imgWidth;
         const { select, allSelected, selectedList } = this.state;
@@ -156,7 +156,7 @@ export default class ShowConnectPage extends BasePage {
             imageStyle={{ height: imgHeight }}
             data={data}
             press={() => this._gotoDetail(data)}
-            imageUrl={ img }
+            imageUrl={img}
         />
             {
                 select
@@ -173,7 +173,7 @@ export default class ShowConnectPage extends BasePage {
     _keyExtractor = (data) => data.id + '';
 
     goToHome() {
-        this.$navigateReset()
+        this.$navigateReset();
     }
 
     _render() {
@@ -181,17 +181,19 @@ export default class ShowConnectPage extends BasePage {
         if (firstLoad) {
             return <View style={styles.container}>
                 <ActivityIndicator size='large'/>
-            </View>
+            </View>;
         }
         if (isEmpty) {
             return <View style={styles.emptyContainer}>
-            <Image style={styles.noCollect} source={res.placeholder.noCollect}/>
-            <Text style={styles.collectWhat}>去收藏点什么吧</Text>
-            <Text style={styles.goToIndex}>快去商城逛逛吧</Text>
-            <TouchableOpacity style={styles.gotobutton} onPress={()=>{this.goToHome()}}>
-                <Text style={styles.goToText}>逛一逛</Text>
-            </TouchableOpacity>
-        </View>
+                <Image style={styles.noCollect} source={res.placeholder.noCollect}/>
+                <Text style={styles.collectWhat}>去收藏点什么吧</Text>
+                <Text style={styles.goToIndex}>快去商城逛逛吧</Text>
+                <TouchableOpacity style={styles.gotobutton} onPress={() => {
+                    this.goToHome();
+                }}>
+                    <Text style={styles.goToText}>逛一逛</Text>
+                </TouchableOpacity>
+            </View>;
         }
         return (
             <View style={styles.container}>
@@ -216,7 +218,8 @@ export default class ShowConnectPage extends BasePage {
                             <TouchableOpacity style={styles.allView} onPress={() => {
                                 this._selectedAllAction();
                             }}>
-                                <Image style={styles.allImg} source={allSelected ? res.button.selected_circle_red : res.button.unselected_circle}/>
+                                <Image style={styles.allImg}
+                                       source={allSelected ? res.button.selected_circle_red : res.button.unselected_circle}/>
                                 <Text style={styles.all}>全选</Text>
                             </TouchableOpacity>
                             <View style={{ flex: 1 }}/>
@@ -297,7 +300,7 @@ let styles = StyleSheet.create({
         fontSize: px2dp(15)
     },
     goToIndex: {
-        marginTop: px2dp(9),
+        marginTop: px2dp(4),
         color: '#909090',
         fontSize: px2dp(12)
     },
