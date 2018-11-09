@@ -117,7 +117,7 @@ export default class IDVertify2Page extends BasePage {
                     </View>
                     <TouchableOpacity style={{
                         marginTop: 42,
-                        backgroundColor: StringUtils.isNoEmpty(this.state.name)&&StringUtils.isNoEmpty(this.state.idNumber)&&StringUtils.isNoEmpty(this.state.backIdCard)&&StringUtils.isNoEmpty(this.state.frontIdCard)?color.red:'#cccccc',
+                        backgroundColor: StringUtils.isNoEmpty(this.state.name) && StringUtils.isNoEmpty(this.state.idNumber) && StringUtils.isNoEmpty(this.state.backIdCard) && StringUtils.isNoEmpty(this.state.frontIdCard) ? color.red : '#cccccc',
                         width: ScreenUtils.width - 84,
                         height: 45,
                         marginLeft: 42,
