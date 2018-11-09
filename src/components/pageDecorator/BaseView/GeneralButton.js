@@ -105,7 +105,7 @@ export default class GeneralButton extends Component {
 
         btnContainer.push(style);
         disabled && btnContainer.push({
-            backgroundColor: disabledBgColor || '#C6E7EA'
+            backgroundColor: disabledBgColor || '#EF154C'
         });
         const titleTextStyle = [styles.textStyle, textStyle];
         disabled && disabledTitleColor && titleTextStyle.push({
@@ -147,9 +147,9 @@ export default class GeneralButton extends Component {
         btnContainer.push(style);
         // 不可用状态
         disabled && btnContainer.push({
-            backgroundColor: disabledBgColor || '#C6E7EA'
+            backgroundColor: disabledBgColor || '#EF154C'
         });
-        const underlayColor = highlightBgColor || '#C6E7EA';
+        const underlayColor = highlightBgColor || '#EF154C';
 
         const titleTextStyle = [styles.textStyle, textStyle];
         // 高亮状态
