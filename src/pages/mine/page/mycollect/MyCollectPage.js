@@ -37,7 +37,7 @@ export default class MyCollectPage extends BasePage {
             totalPrice: 0,
             selectGoodsNum: 0
         };
-        this.currentPage=1
+        this.currentPage = 1
     }
 
     $navigationBarOptions = {
@@ -188,7 +188,7 @@ export default class MyCollectPage extends BasePage {
         this.getDataFromNetwork();
     };
     onRefresh = () => {
-      this.currentPage=1;
+      this.currentPage = 1;
         this.getDataFromNetwork();
     };
 
@@ -207,7 +207,7 @@ export default class MyCollectPage extends BasePage {
         this.$loadingShow();
         MineApi.queryCollection({ page: this.currentPage, size: 20 }).then(res => {
             this.$loadingDismiss();
-            let arr = this.currentPage==1?[]:this.state.viewData;
+            let arr = this.currentPage == 1 ? [] : this.state.viewData;
             console.log(res);
             if (res.code === 10000) {
                 let icons = res.data ? (res.data.data ? res.data.data : []) : [];

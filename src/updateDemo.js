@@ -71,7 +71,7 @@ export default class updateDemo extends Component {
             } else if (info.upToDate) {
                 Alert.alert('提示', '您的应用版本已是最新.');
             } else {
-                Alert.alert('提示', '检查到新的版本'+info.name+',是否下载?\n'+ info.description, [
+                Alert.alert('提示', '检查到新的版本' + info.name + ',是否下载?\n' + info.description, [
                     {text: '是', onPress: ()=>{this.doUpdate(info)}},
                     {text: '否',},
                 ]);
@@ -89,7 +89,7 @@ export default class updateDemo extends Component {
                 <Text style={styles.instructions}>
                     这是版本一 {'\n'}
                     当前包版本号: {packageVersion}{'\n'}
-                    当前版本Hash: {currentVersion||'(空)'}{'\n'}
+                    当前版本Hash: {currentVersion || '(空)'}{'\n'}
                 </Text>
                 <TouchableOpacity onPress={this.checkUpdate}>
                     <Text style={styles.instructions}>

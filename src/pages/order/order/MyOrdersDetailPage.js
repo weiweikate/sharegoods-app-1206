@@ -150,13 +150,13 @@ class MyOrdersDetailPage extends BasePage {
                     <View style={{ flexDirection: 'row', alignItems: 'center'}} >
                         <UIImage source={logisticCar} style={{ height: 19, width: 19, marginLeft: 21 }}/>
                         <View style={{justifyContent:'center'}}>
-                            {typeof this.state.pageStateString.sellerState=='string'?
+                            {typeof this.state.pageStateString.sellerState === 'string' ?
                                 <UIText value={this.state.pageStateString.sellerState} style={{
                                     color: color.black_222,
                                     fontSize: 18,
                                     marginLeft: 10,
                                     marginRight: 46
-                                }}/>:
+                                }}/> :
                                 <View style={{flexDirection: 'row' }}>
                                     <Text style={{
                                         flex: 1,
@@ -426,10 +426,10 @@ class MyOrdersDetailPage extends BasePage {
                         style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>
                 {StringUtils.isNoEmpty(this.state.viewData.platformPayTime) && this.state.status > 1 ?
                     <UIText value={'平台付款时间：' + DateUtils.getFormatDate(this.state.viewData.platformPayTime / 1000)}
-                            style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>:null}
-                {StringUtils.isNoEmpty(this.state.viewData.shutOffTime)&&this.state.status > 5?
+                            style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/> : null}
+                {StringUtils.isNoEmpty(this.state.viewData.shutOffTime) && this.state.status > 5 ?
                     <UIText value={'关闭时间：' + DateUtils.getFormatDate(this.state.viewData.shutOffTime / 1000)}
-                            style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>:null}
+                            style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/> : null}
                 {StringUtils.isEmpty(this.state.viewData.cancelTime) ? null :
                     <UIText value={'取消时间：' + DateUtils.getFormatDate(this.state.viewData.cancelTime / 1000)}
                             style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
@@ -767,7 +767,7 @@ class MyOrdersDetailPage extends BasePage {
             case 5:
                 if (isAfterSale) {
                     afterSaleService.push();
-                } else if ((data[index].finishTime||0)-(new Date().valueOf())<0) {
+                } else if ((data[index].finishTime || 0) - (new Date().valueOf()) < 0) {
                     afterSaleService.push();
                 }
                 else {
@@ -905,7 +905,7 @@ class MyOrdersDetailPage extends BasePage {
                 //等待买家付款
                 case 1:
                     this.startCutDownTime(data.shutOffTime);
-                    pageStateString.sellerState = ['收货人：' + data.receiver,''+data.recevicePhone];
+                    pageStateString.sellerState = ['收货人：' + data.receiver,'' + data.recevicePhone];
                     pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
                     if (StringUtils.isEmpty(data.outTradeNo)) {
                         pageStateString.menu = [
@@ -998,7 +998,7 @@ class MyOrdersDetailPage extends BasePage {
                     pageStateString.moreDetail = data.buyerRemark;
                     break;
                 case 8://超时关闭
-                    pageStateString.sellerState = ['收货人：' + data.receiver,''+data.recevicePhone];
+                    pageStateString.sellerState = ['收货人：' + data.receiver,'' + data.recevicePhone];
                     pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
                     pageStateString.moreDetail = data.buyerRemark;
                     if (data.orderType == 5 || data.orderType == 98) {

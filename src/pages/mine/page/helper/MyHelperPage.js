@@ -139,7 +139,7 @@ export default class MyHelperPage extends BasePage {
         QYChatUtil.qiYUChat();
     };
     jump2Telephone(){
-         Linking.openURL('tel:'+'400-9696-365').catch(e=>console.log(e))
+         Linking.openURL('tel:' + '400-9696-365').catch(e=>console.log(e))
     }
     jumpTohelpPage() {
         console.log('fankui');

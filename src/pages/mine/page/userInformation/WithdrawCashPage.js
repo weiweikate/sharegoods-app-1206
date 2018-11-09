@@ -76,7 +76,7 @@ class WithdrawCashPage extends BasePage {
                     height: 48,
                     marginLeft: 48,
                     marginRight: 48,
-                    backgroundColor: StringUtils.isNoEmpty(this.state.card_no)?DesignRule.mainColor:'#CCCCCC',
+                    backgroundColor: StringUtils.isNoEmpty(this.state.card_no) ? DesignRule.mainColor : '#CCCCCC',
                     borderRadius:25
                 }}
                 onPress={() => this.commit()}/>

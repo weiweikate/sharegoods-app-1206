@@ -2,6 +2,7 @@
  * @author xzm
  * @date 2018/10/23
  */
+import RouterMap from 'RouterMap';
 
 const MessageUtils = {
 
@@ -19,6 +20,10 @@ const MessageUtils = {
                 pagParams.type = "pay_refund";
                 pagParams.time = time;
                 navigation.navigate("message/PayMessagePage", pagParams);
+                break;
+            case 105://优惠劵
+                navigation.navigate(RouterMap.CouponsPage);
+
                 break;
             case 107://秒杀
                 navigation.navigate("topic/TopicDetailPage", {

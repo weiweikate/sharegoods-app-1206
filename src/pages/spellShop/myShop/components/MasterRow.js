@@ -43,7 +43,7 @@ export default class MasterRow extends Component {
                     <View style={styles.right}>
                         <Text style={styles.name}>{(nickName || '  ')}</Text>
                         <Text style={styles.level}>{levelName || ' '}</Text>
-                        <Text style={styles.desc}>贡献度：{tradeBalance===0?0: ((contribution/tradeBalance)*100).toFixed(2)}%</Text>
+                        <Text style={styles.desc}>贡献度：{tradeBalance === 0 ? 0 : ((contribution / tradeBalance) * 100).toFixed(2)}%</Text>
                     </View>
                 </View>
             </View>
