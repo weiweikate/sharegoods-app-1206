@@ -102,7 +102,7 @@ export default class DetailHeaderView extends Component {
             <View>
                 {productImgListTemp.length > 0 && this.state.swiperShow ? <ViewPager swiperShow={true}
                                                                                      loop={false}
-                                                                                     autoplay={true}
+                                                                                     autoplay={false}
                                                                                      bounces={true}
                                                                                      height={ScreenUtils.autoSizeWidth(377)}
                                                                                      arrayData={productImgListTemp}

@@ -21,7 +21,8 @@ import RecommendRow from './components/RecommendRow';
 import SegementHeaderView from './components/RecommendSegmentView';
 import BasePage from '../../../BasePage';
 import SpellStatusModel from '../model/SpellStatusModel';
-import MRBannerViewMode from '../../../components/ui/bannerView/MRBannerViewMode';
+import ViewPager from '../../../components/ui/ViewPager';
+import UIImage from '../../../components/ui/UIImage';
 import SpellShopApi from '../api/SpellShopApi';
 import HomeAPI from '../../home/api/HomeAPI';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
@@ -50,6 +51,7 @@ export default class RecommendPage extends BasePage {
             //data
             dataList: [{}],//默认一行显示状态页面使用 错误页 无数据页面
             adList: [],
+            swiperShow: false
         };
     }
 
@@ -73,6 +75,11 @@ export default class RecommendPage extends BasePage {
     };
 
     componentDidMount() {
+        setTimeout(() => {
+            this.setState({
+                swiperShow: true
+            });
+        }, 100);
         this._loadPageData();
     }
 
@@ -175,18 +182,8 @@ export default class RecommendPage extends BasePage {
         this.$navigate('spellShop/MyShop_RecruitPage', { storeId: id });
     };
 
-    _segmentPressAtIndex = (index) => {
-        this.setState({
-            dataList: [{}],
-            loadingState: PageLoadingState.loading,
-            segmentIndex: index
-        }, () => {
-            this._loadPageData();
-        });
-    };
-
-    _onDidSelectItemAtIndex = (index) => {
-        let item = this.state.adList[index];
+    // 点击轮播图广告
+    _clickItem = (item) => {
         if (item.linkType === 1) {
             this.$navigate('home/product/ProductDetailPage', {
                 productCode: item.linkTypeCode
@@ -209,18 +206,53 @@ export default class RecommendPage extends BasePage {
         }
     };
 
-    _renderListHeader = () => {
-        let imgArray = [];
-        this.state.adList.forEach((item) => {
-            imgArray.push(item.imgUrl);
+    _segmentPressAtIndex = (index) => {
+        this.setState({
+            dataList: [{}],
+            loadingState: PageLoadingState.loading,
+            segmentIndex: index
+        }, () => {
+            this._loadPageData();
         });
-        if (imgArray.length > 0) {
-            return <MRBannerViewMode imgUrlArray={imgArray}
-                                     onDidSelectItemAtIndex={this._onDidSelectItemAtIndex}
-                                     bannerHeight={ScreenUtils.autoSizeWidth(150)} modeStyle={1}/>;
+    };
+
+    _renderListHeader = () => {
+        if (this.state.adList.length > 0 && this.state.swiperShow) {
+            return <ViewPager
+                swiperShow={true}
+                loop={false}
+                bounces={true}
+                height={ScreenUtils.autoSizeWidth(150)}
+                arrayData={this.state.adList}
+                renderItem={this._renderViewPageItem}
+                dotStyle={{
+                    height: 5,
+                    width: 5,
+                    borderRadius: 5,
+                    backgroundColor: '#eee',
+                    opacity: 0.4
+                }}
+                activeDotStyle={{
+                    height: 5,
+                    width: 30,
+                    borderRadius: 5,
+                    backgroundColor: '#eee'
+                }}
+            />;
         } else {
             return null;
         }
+    };
+
+    _renderViewPageItem = (item) => {
+        const { imgUrl } = item;
+        return (
+            <UIImage
+                source={{ uri: imgUrl }}
+                style={{ height: ScreenUtils.autoSizeWidth(150), width: ScreenUtils.width }}
+                onPress={() => this._clickItem(item)}
+                resizeMode="cover"
+            />);
     };
 
     _renderSectionHeader = () => {
