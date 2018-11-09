@@ -2,7 +2,7 @@
  * 秀场精选
  */
 import React, {Component} from 'react'
-import { View, StyleSheet, Text, Image, TouchableOpacity, ImageBackground } from 'react-native'
+import { View, StyleSheet, Text, Image, TouchableWithoutFeedback } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
@@ -10,13 +10,15 @@ import { ShowChoiceModules } from './Show'
 import res from '../../comm/res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
-import DesignRule from 'DesignRule';
+import DesignRule from 'DesignRule'
+import ImageLoad from '@mr/react-native-image-placeholder'
 
-const Card = ({item, press}) => <TouchableOpacity style={styles.card} onPress={()=> press && press()}>
-    <ImageBackground style={styles.imgView} source={{uri:item.coverImg}} resizeMode={'cover'}>
+const Card = ({item, press}) => <TouchableWithoutFeedback style={styles.card} onPress={()=> press && press()}>
+    <View style={styles.card}>
+    <ImageLoad style={styles.imgView} source={{uri:item.coverImg}} resizeMode={'cover'}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <Text style={styles.dis} numberOfLines={2}>{item.pureContent ? item.pureContent.slice(0, 100).trim() : ''}</Text>
-    </ImageBackground>
+    </ImageLoad>
     <View style={styles.profileView}>
         <Image style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg : ''}}/>
         <Text style={styles.name}>{item.userName}</Text>
@@ -26,7 +28,8 @@ const Card = ({item, press}) => <TouchableOpacity style={styles.card} onPress={(
             <Text style={styles.number}>{item.click ? item.click : 0}</Text>
         </View>
     </View>
-</TouchableOpacity>
+    </View>
+</TouchableWithoutFeedback>
 
 @observer
 export default class ShowChoiceView extends Component {
