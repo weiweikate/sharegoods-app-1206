@@ -200,7 +200,7 @@ class SearchPage extends BasePage {
                     break;
                 case 2:
                     this.$navigate('order/afterSaleService/AfterSaleListPage', {
-                        orderNum: inputText,
+                        condition: inputText,
                         type: 'search'
                     });
                     break;

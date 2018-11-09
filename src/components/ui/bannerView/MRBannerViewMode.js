@@ -68,12 +68,14 @@ export default class MRBannerViewMode extends Component {
 
     render() {
         return (
-            <MRBannerView style={[{ height: this.props.bannerHeight, width: ScreenUtils.width }]}
-                          onDidScrollToIndex={(e) => this._onDidScrollToIndex(e)}
-                          imgUrlArray={this.props.imgUrlArray}
-                          onDidSelectItemAtIndex={(e) => this._onDidSelectItemAtIndex(e)}>
+            <View>
+                <MRBannerView style={[{ height: this.props.bannerHeight, width: ScreenUtils.width }]}
+                              onDidScrollToIndex={(e) => this._onDidScrollToIndex(e)}
+                              imgUrlArray={this.props.imgUrlArray}
+                              onDidSelectItemAtIndex={(e) => this._onDidSelectItemAtIndex(e)}/>
                 {this._renderPageControl()}
-            </MRBannerView>
+            </View>
+
         );
     }
 }
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
         width: 24,
         height: 6,
         borderRadius: 3,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: '#eee',
         marginLeft: 2.5,
         marginRight: 2.5
     },
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
         width: 6,
         height: 6,
         borderRadius: 3,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: '#eee',
         marginLeft: 2.5,
         marginRight: 2.5
     },
