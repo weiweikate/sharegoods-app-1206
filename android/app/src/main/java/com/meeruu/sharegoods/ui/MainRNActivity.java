@@ -65,6 +65,7 @@ public class MainRNActivity extends ReactActivity {
     private WeakHandler myHandler;
     private String lastVersion;
     private ReactApplicationContext mContext;
+    public static final String COMPONENT_NAME = "sharegoods";
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -72,7 +73,7 @@ public class MainRNActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "sharegoods";
+        return COMPONENT_NAME;
     }
 
     @Override
