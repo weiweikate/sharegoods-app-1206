@@ -96,7 +96,7 @@ export default class CommRegistView extends Component {
     render() {
         return (
             <View >
-                <View style={{ backgroundColor: '#fff', marginTop: 10 }}>
+                <View style={{ backgroundColor: 'white', marginTop: 10 }}>
                     <View style={{
                         marginLeft: 30,
                         marginRight: 20,
@@ -158,7 +158,7 @@ export default class CommRegistView extends Component {
                 <View style={{
                     marginTop: 30,
                     flexDirection: 'row',
-                    backgroundColor: '#fff',
+                    backgroundColor: 'white',
                     height: 50,
                     justifyContent: 'space-between'
                 }}>
@@ -210,7 +210,7 @@ export default class CommRegistView extends Component {
                             height: 45,
                             alignItems: 'center',
                             fontSize: 17,
-                            color: '#fff',
+                            color: 'white',
                             paddingTop: 15,
                             fontWeight: '600'
                         }}>
@@ -259,7 +259,7 @@ const Styles = StyleSheet.create(
             flex: 1,
             margin: 0,
             marginTop: -2,
-            backgroundColor: '#fff'
+            backgroundColor: 'white'
         },
         rightTopTitleStyle: {
             fontSize: 15,
@@ -275,7 +275,7 @@ const Styles = StyleSheet.create(
             marginRight: 30,
             flexDirection: 'row',
             height: 30,
-            backgroundColor: '#fff',
+            backgroundColor: 'white',
             justifyContent: 'center'
         },
         lineStyle: {

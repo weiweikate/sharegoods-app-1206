@@ -73,7 +73,7 @@ export default class VideoView extends Component {
         return <View style={{
             width: this.state.videoWidth,
             height: this.state.videoHeight,
-            backgroundColor: '#000000'
+            backgroundColor: DesignRule.textColor_mainTitle
         }}>
             <Video
                 ref={(ref) => this.videoPlayer = ref}
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#000000'
+        backgroundColor: DesignRule.textColor_mainTitle
     },
     playButton: {
         width: 50,

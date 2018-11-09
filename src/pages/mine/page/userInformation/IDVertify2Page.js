@@ -182,7 +182,7 @@ export default class IDVertify2Page extends BasePage {
     };
     renderHintInformation = () => {
         return (
-            <View style={{ height: 50, backgroundColor: '#e60012', justifyContent: 'center', paddingLeft: 15 }}>
+            <View style={{ height: 50, backgroundColor: DesignRule.mainColor, justifyContent: 'center', paddingLeft: 15 }}>
                 <UIText value={'请仔细检查姓名和证件号是否有误\n并重新上传图片，提交审核'}
                         style={{ fontSize: 13, lineHeight: 18, color: 'white' }}/>
             </View>
@@ -190,7 +190,7 @@ export default class IDVertify2Page extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.gray_EEE }}/>
+            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
     renderWideLine = () => {
@@ -307,7 +307,7 @@ export default class IDVertify2Page extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: color.page_background
+        flex: 1, backgroundColor: DesignRule.bgColor
     }, itemTitleView: {
         height: 48,
         backgroundColor: DesignRule.bgColor,

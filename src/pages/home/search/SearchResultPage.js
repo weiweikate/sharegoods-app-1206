@@ -14,6 +14,7 @@ import ResultSegmentView from './components/ResultSegmentView';
 import ResultHorizontalRow from './components/ResultHorizontalRow';
 import ResultVerticalRow from './components/ResultVerticalRow';
 import toGwc from './res/toGwc.png';
+import kongbaiye_ss_icon from './res/kongbaiye_ss_icon.png';
 import toTop from './res/toTop.png';
 import RouterMap from 'RouterMap';
 import HomeAPI from '../api/HomeAPI';
@@ -79,6 +80,11 @@ export default class SearchResultPage extends BasePage {
             netFailedProps: {
                 netFailedInfo: this.state.netFailedInfo,
                 reloadBtnClick: this._productList
+            },
+            emptyProps: {
+                source: kongbaiye_ss_icon,
+                description: '很抱歉',
+                subDescription: '没找到任何内容'
             }
         };
     };
@@ -253,8 +259,13 @@ export default class SearchResultPage extends BasePage {
                 this._clickItemAction(item);
             }}>
                 <View>
-                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 16, paddingVertical: 15 }}>{item}</Text>
-                    <View style={{ height: 1, backgroundColor: '#DDDDDD', marginLeft: 16 }}/>
+                    <Text style={{
+                        fontSize: 13,
+                        color: DesignRule.textColor_mainTitle,
+                        marginLeft: 16,
+                        paddingVertical: 15
+                    }}>{item}</Text>
+                    <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inGrayBg, marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);
     };
@@ -312,8 +323,8 @@ export default class SearchResultPage extends BasePage {
                                  refreshing={this.state.refreshing}
                                  onRefresh={this._refreshing.bind(this)}
                                  title="下拉刷新"
-                                 tintColor="#999"
-                                 titleColor="#999"/>}
+                                 tintColor={DesignRule.textColor_instruction}
+                                 titleColor={DesignRule.textColor_instruction}/>}
                          onScroll={this._onScroll}
                          onEndReached={this._onEndReached.bind(this)}
                          onEndReachedThreshold={0.1}

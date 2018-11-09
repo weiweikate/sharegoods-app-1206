@@ -17,9 +17,7 @@ import AddressItem from '../components/AddressItem';
 import addressLine from '../res/addressLine.png';
 import UserSingleItem from '../components/UserSingleItem';
 import { UIText, UIImage } from '../../../components/ui';
-import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
-import ScreenUtils from '../../../utils/ScreenUtils';
 import GoodsItem from '../components/GoodsGrayItem';
 import applyRefundMessage from '../res/applyRefundMessage.png';
 import applyRefundPhone from '../res/applyRefundPhone.png';
@@ -27,12 +25,12 @@ import right_arrow from '../res/arrow_right.png';
 import exchangeGoodsDetailBg from '../res/exchangeGoodsDetailBg.png';
 import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
-import refusa_icon from '../res/tuikuan_icon_jujue_nor.png';
+// import refusa_icon from '../res/tuikuan_icon_jujue_nor.png';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import QYChatUtil from '../../mine/page/helper/QYChatModel';
-
 import OrderApi from '../api/orderApi';
 import DesignRule from 'DesignRule';
+import ScreenUtils from '../../../utils/ScreenUtils'
 
 class ExchangeGoodsDetailPage extends BasePage {
     constructor(props) {
@@ -77,6 +75,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     {this.renderOperationApplyView()}
                     {this.renderArefundView()}
                     {this.renderReturnGoodsView()}
+                    {this.renderHuan()}
                     {this.renderAddress()}
                     {this.renderLogistics()}
                     {this.renderOrder()}
@@ -96,6 +95,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         );
     }
 
+
     /**  退款详情专用  中间一段View */
     renderArefundView = () => {
         if (this.state.pageData === null || this.state.pageData.undefined || this.params.pageType !== 0) {
@@ -110,26 +110,37 @@ class ExchangeGoodsDetailPage extends BasePage {
         return this.renderItems(isSuccess, isRefused);
     };
 
+    renderHuan = () => {
+        if (this.state.pageData === null || this.state.pageData.undefined || this.params.pageType !== 2) {
+            return null;// 数据没有请求下来，或不是换货详情页面
+        }
+        if (this.state.pageData.status === 3 || this.state.pageData.status === 9) {
+            return this.renderItems(false, true);
+        }
+    };
+
     /**  退货详情专用  中间一段View */
     renderReturnGoodsView() {
         if (this.state.pageData === null || this.state.pageData.undefined || this.params.pageType !== 1) {
             return null;// 数据没有请求下来，或不是退款详情页面
         }
         if (this.state.pageData.status === 6) {
-            return this.renderItems(true);
+            return this.renderItems(true, false);
         } else if (this.state.pageData.status === 3 || this.state.pageData.status === 9) {
             return (
                 <View style={{
                     height: 44,
                     flexDirection: 'row',
-                    backgroundColor: color.white,
+                    backgroundColor: 'white',
                     alignItems: 'center',
-                    marginLeft: 15
+                    marginBottom: 10
                 }}>
-                    <UIText value={'拒绝原因:' + this.state.pageData.refusalReason}
-                            style={{ color: color.black_222, fontSize: 13 }}/>
+                    <UIText value={'拒绝原因：' + this.state.pageData.refusalReason}
+                            style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 15 }}/>
                 </View>
             );
+        } else if (this.state.pageData.status === 1) {
+            return this.renderItems(false, false);
         }
     }
 
@@ -139,7 +150,8 @@ class ExchangeGoodsDetailPage extends BasePage {
             <View>
                 <View style={{
                     height: 44,
-                    backgroundColor: color.white,
+                    marginTop: isSuccess === false && isRefused === false ? 10 : 0,//没成功，也没失败，申请中
+                    backgroundColor: 'white',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
@@ -149,23 +161,25 @@ class ExchangeGoodsDetailPage extends BasePage {
                     <View style={{
                         height: 44,
                         flexDirection: 'row',
-                        backgroundColor: color.white,
+                        backgroundColor: 'white',
                         alignItems: 'center'
                     }}>{
                         isRefused ?
-                            <UIText value={'商家拒绝原因:' + this.state.pageData.refusalReason}
-                                    style={{ color: color.black_222, fontSize: 13 }}/>
+                            <UIText value={'拒绝原因：' + this.state.pageData.refusalReason}
+                                    style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
                             :
-                            <View style={{ flex: 1 }}>
-                                <UIText value={'退款金额:'} style={{ color: color.black_222, fontSize: 13 }}/>
+                            <View style={{ height: 44, flexDirection: 'row', alignItems: 'center' }}>
+                                <UIText value={'退款金额:'}
+                                        style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
                                 <UIText value={StringUtils.formatMoneyString(this.state.pageData.totalRefundPrice)}
-                                        style={{ color: color.red, fontSize: 13, marginLeft: 5 }}/>
+                                        style={{ color: DesignRule.mainColor, fontSize: 13, marginLeft: 5 }}/>
                             </View>
                     }
 
                     </View>
                     {
-                        isSuccess ? <UIText value={'已退款'} style={{ color: color.black_222, fontSize: 13 }}/> : null
+                        isSuccess ? <UIText value={'已退款'}
+                                            style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/> : null
                     }
                 </View>
                 {
@@ -173,29 +187,42 @@ class ExchangeGoodsDetailPage extends BasePage {
                         <View>
                             <View
                                 style={{
-                                    backgroundColor: color.gray_f7f7,
+                                    backgroundColor: DesignRule.bgColor,
                                     height: 40,
                                     justifyContent: 'center',
                                     paddingLeft: 15
                                 }}>
-                                <UIText value={'退款明细'} style={{ color: color.black_999, fontSize: 13 }}/>
+                                <UIText value={'退款明细'}
+                                        style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
                             </View>
                             <UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退回银行卡'}
-                                            leftTextStyle={{ color: color.black_222, fontSize: 13 }}
+                                            leftTextStyle={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}
                                             rightText={StringUtils.formatMoneyString(orderReturnAmounts.actualAmounts)}
-                                            rightTextStyle={{ color: color.black_222, fontSize: 13, marginRight: 5 }}
+                                            rightTextStyle={{
+                                                color: DesignRule.textColor_mainTitle,
+                                                fontSize: 13,
+                                                marginRight: 5
+                                            }}
                                             isArrow={false} isLine={false}/>
                             {this.renderLine()}
                             <UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'退回余额账户'}
-                                            leftTextStyle={{ color: color.black_222, fontSize: 13 }}
+                                            leftTextStyle={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}
                                             rightText={StringUtils.formatMoneyString(orderReturnAmounts.actualBalance)}
-                                            rightTextStyle={{ color: color.black_222, fontSize: 13, marginRight: 5 }}
+                                            rightTextStyle={{
+                                                color: DesignRule.textColor_mainTitle,
+                                                fontSize: 13,
+                                                marginRight: 5
+                                            }}
                                             isArrow={false} isLine={false}/>
                             {this.renderLine()}
                             <UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'1元现金券'}
-                                            leftTextStyle={{ color: color.black_222, fontSize: 13 }}
+                                            leftTextStyle={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}
                                             rightText={orderReturnAmounts.actualTokenCoin + '张'}
-                                            rightTextStyle={{ color: color.black_222, fontSize: 13, marginRight: 5 }}
+                                            rightTextStyle={{
+                                                color: DesignRule.textColor_mainTitle,
+                                                fontSize: 13,
+                                                marginRight: 5
+                                            }}
                                             isArrow={false} isLine={false}/>
                             {this.renderWideLine()}
                         </View>
@@ -224,24 +251,25 @@ class ExchangeGoodsDetailPage extends BasePage {
             <View>
                 <TouchableOpacity style={{
                     height: 44,
-                    backgroundColor: color.white,
+                    backgroundColor: 'white',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     paddingLeft: 15,
                     paddingRight: 15
                 }} onPress={() => this.returnLogists()}>
-                    <UIText value={['无物流', '退货物流', '换货物流'][pageType]} style={{ color: color.black_222, fontSize: 13 }}/>
+                    <UIText value={['无物流', '退货物流', '换货物流'][pageType]}
+                            style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
                     <View style={{
                         height: 44,
                         flexDirection: 'row',
-                        backgroundColor: color.white,
+                        backgroundColor: 'white',
                         alignItems: 'center'
                     }}>
                         <UIText
                             value={EmptyUtils.isEmpty(pageData.expressNo) === false ? `${pageData.expressName}(${pageData.expressNo})` : '请填写寄回物流信息'}
                             style={{
-                                color: EmptyUtils.isEmpty(pageData.expressNo) === false ? color.black_222 : color.gray_c8c,
+                                color: EmptyUtils.isEmpty(pageData.expressNo) === false ? DesignRule.textColor_mainTitle : DesignRule.textColor_hint,
                                 fontSize: 12,
                                 marginRight: 15
                             }}/>
@@ -254,22 +282,26 @@ class ExchangeGoodsDetailPage extends BasePage {
                             {this.renderLine()}
                             <TouchableOpacity style={{
                                 height: 44,
-                                backgroundColor: color.white,
+                                backgroundColor: 'white',
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
                                 alignItems: 'center',
                                 paddingLeft: 15,
                                 paddingRight: 15
                             }} onPress={() => this.shopLogists()}>
-                                <UIText value={'商家物流'} style={{ color: color.black_222, fontSize: 13 }}/>
+                                <UIText value={'商家物流'} style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
                                 <View style={{
                                     height: 44,
                                     flexDirection: 'row',
-                                    backgroundColor: color.white,
+                                    backgroundColor: 'white',
                                     alignItems: 'center'
                                 }}>
                                     <UIText value={`${pageData.ecExpressName}(${pageData.ecExpressNo})`}
-                                            style={{ color: color.black_222, fontSize: 12, marginRight: 15 }}/>
+                                            style={{
+                                                color: DesignRule.textColor_mainTitle,
+                                                fontSize: 12,
+                                                marginRight: 15
+                                            }}/>
                                     <UIImage source={right_arrow} style={{ height: 10, width: 7 }}/>
                                 </View>
                             </TouchableOpacity>
@@ -324,14 +356,14 @@ class ExchangeGoodsDetailPage extends BasePage {
                     }}>
                         <UIText value={'寄回\n地址'} style={{ fontSize: 12, color: DesignRule.mainColor }}/>
                     </View>
-                    <View style={{ backgroundColor: color.gray_EEE, width: 1, height: 40 }}/>
+                    <View style={{ backgroundColor: DesignRule.lineColor_inColorBg, width: 1, height: 40 }}/>
                     <AddressItem height={82}
                                  style={{
                                      flex: 1,
                                      flexDirection: 'row',
                                      justifyContent: 'space-between',
                                      alignItems: 'center',
-                                     backgroundColor: color.white
+                                     backgroundColor: 'white'
                                  }}
                                  name={'收货人：' + returnAddress.receiver}
                                  phone={returnAddress.recevicePhone}
@@ -373,8 +405,13 @@ class ExchangeGoodsDetailPage extends BasePage {
         if (tip) {
             return (
                 <View
-                    style={{ height: 20, backgroundColor: color.red, justifyContent: 'center', alignItems: 'center' }}>
-                    <UIText value={tip} style={{ fontSize: 13, color: color.white }}/>
+                    style={{
+                        height: 20,
+                        backgroundColor: DesignRule.mainColor,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                    <UIText value={tip} style={{ fontSize: 13, color: 'white' }}/>
                 </View>
             );
         } else {
@@ -383,7 +420,7 @@ class ExchangeGoodsDetailPage extends BasePage {
     };
     renderContact = () => {
         return (
-            <View style={{ height: 61, backgroundColor: color.white, marginBottom: ScreenUtils.safeBottom }}>
+            <View style={{ height: 61, backgroundColor: 'white', marginBottom: ScreenUtils.safeBottom }}>
                 {this.renderLine()}
                 <View style={{ flexDirection: 'row' }}>
                     <TouchableOpacity style={{
@@ -396,13 +433,13 @@ class ExchangeGoodsDetailPage extends BasePage {
                     }} onPress={() => this.contactSeller()}>
                         <UIImage source={applyRefundMessage} style={{ width: 25, height: 23, marginBottom: 10 }}/>
                         <View style={{ marginLeft: 10 }}>
-                            <UIText value={'联系客服'} style={{ fontSize: 16, color: color.black_222 }}/>
+                            <UIText value={'联系客服'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
                             <UIText value={'9:00-17:00'}
-                                    style={{ fontSize: 12, color: color.black_999, marginTop: 3 }}/>
+                                    style={{ fontSize: 12, color: DesignRule.textColor_instruction, marginTop: 3 }}/>
                         </View>
                     </TouchableOpacity>
                     <View style={{ width: 1, justifyContent: 'center' }}>
-                        <View style={{ width: 1, height: 30, backgroundColor: color.gray_EEE }}/>
+                        <View style={{ width: 1, height: 30, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                     </View>
                     <TouchableOpacity style={{
                         flexDirection: 'row',
@@ -414,9 +451,9 @@ class ExchangeGoodsDetailPage extends BasePage {
                     }} onPress={() => this.callPhone()}>
                         <UIImage source={applyRefundPhone} style={{ width: 25, height: 23, marginBottom: 10 }}/>
                         <View style={{ marginLeft: 10 }}>
-                            <UIText value={'拨打电话'} style={{ fontSize: 16, color: color.black_222 }}/>
+                            <UIText value={'客服电话'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
                             <UIText value={'9:00-17:00'}
-                                    style={{ fontSize: 12, color: color.black_999, marginTop: 3 }}/>
+                                    style={{ fontSize: 12, color: DesignRule.textColor_instruction, marginTop: 3 }}/>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -430,7 +467,7 @@ class ExchangeGoodsDetailPage extends BasePage {
         }
         let typeStr = ['退款', '退货', '换货'][this.params.pageType];
         return (
-            <View style={{ backgroundColor: color.white }}>
+            <View style={{ backgroundColor: 'white' }}>
                 {this.renderLine()}
                 <UIText value={typeStr + '原因：' + pageData.returnReason} style={styles.refundReason}/>
                 {/*<UIText value={typeStr + '金额：' + StringUtils.formatMoneyString(pageData.totalRefundPrice)}*/}
@@ -465,9 +502,14 @@ class ExchangeGoodsDetailPage extends BasePage {
         return (
             <View>
                 <View
-                    style={{ backgroundColor: color.gray_f7f7, height: 40, justifyContent: 'center', paddingLeft: 15 }}>
+                    style={{
+                        backgroundColor: DesignRule.bgColor,
+                        height: 40,
+                        justifyContent: 'center',
+                        paddingLeft: 15
+                    }}>
                     <UIText value={['退款订单', '退货订单', '换货订单'][this.params.pageType]}
-                            style={{ color: color.black_999, fontSize: 13 }}/>
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
                 </View>
                 {this.renderLine()}
             </View>
@@ -480,8 +522,8 @@ class ExchangeGoodsDetailPage extends BasePage {
             return null;
         }
 
-        let imageCommpent = () => {
-        };
+        // let imageCommpent = () => {
+        // };
         let titleCommpent = () => {
         };
         let detialCommpent = () => {
@@ -496,10 +538,10 @@ class ExchangeGoodsDetailPage extends BasePage {
                 return <UIText value={titles[pageData.status - 1]} style={styles.header_title}/>;
             };
             if (pageData.status === 3) {//拒绝
-                textContaner_marginLeft = 10;
-                imageCommpent = () => {
-                    return <UIImage source={refusa_icon} style={styles.header_image}/>;
-                };
+                // textContaner_marginLeft = 10;
+                //  imageCommpent = () => {
+                //      return <UIImage source={refusa_icon} style={styles.header_image}/>;
+                //  };
                 detialCommpent = () => {
                     return <UIText value={pageData.refusalReason} style={styles.header_detail}/>;
                 };
@@ -520,10 +562,10 @@ class ExchangeGoodsDetailPage extends BasePage {
                 return <UIText value={titles[pageData.status - 1]} style={styles.header_title}/>;
             };
             if (pageData.status === 3 || pageData.status === 9) {//拒绝
-                textContaner_marginLeft = 10;
-                imageCommpent = () => {
-                    return <UIImage source={refusa_icon} style={styles.header_image}/>;
-                };
+                // textContaner_marginLeft = 10;
+                //  imageCommpent = () => {
+                //      return <UIImage source={refusa_icon} style={styles.header_image}/>;
+                //  };
                 detialCommpent = () => {
                     return <UIText value={DateUtils.getFormatDate(pageData.refuseTime / 1000, 'yyyy年MM月dd日  hh:mm:ss')}
                                    style={styles.header_detail}/>;
@@ -549,10 +591,10 @@ class ExchangeGoodsDetailPage extends BasePage {
                 return <UIText value={titles[pageData.status - 1]} style={styles.header_title}/>;
             };
             if (pageData.status === 3 || pageData.status === 9) {//拒绝
-                textContaner_marginLeft = 10;
-                imageCommpent = () => {
-                    return <UIImage source={refusa_icon} style={styles.header_image}/>;
-                };
+                // textContaner_marginLeft = 10;
+                //  imageCommpent = () => {
+                //      return <UIImage source={refusa_icon} style={styles.header_image}/>;
+                //  };
                 detialCommpent = () => {
                     return <UIText value={DateUtils.getFormatDate(pageData.refuseTime / 1000, 'yyyy年MM月dd日  hh:mm:ss')}
                                    style={styles.header_detail}/>;
@@ -583,7 +625,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     <UIImage source={exchangeGoodsDetailBg} style={{ height: 100, width: ScreenUtils.width }}/>
                 </View>
                 <View style={{ height: 100, alignItems: 'center', flexDirection: 'row', width: ScreenUtils.width }}>
-                    {imageCommpent()}
+                    {/*{imageCommpent()}*/}
                     <View style={{ marginLeft: textContaner_marginLeft }}>
                         {titleCommpent()}
                         {detialCommpent()}
@@ -595,12 +637,12 @@ class ExchangeGoodsDetailPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line }}/>
+            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
 
@@ -704,7 +746,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     <TouchableOpacity onPress={() => {
                         this.loadPageData(() => this.onPressOperationApply(false));
                     }} style={styles.borderButton}>
-                        <UIText value={'修改申请'} style={{ fontSize: 16, color: DesignRule.mainColor }}/>
+                        <UIText value={'修改申请'} style={{ fontSize: 16, color: DesignRule.bgColor_btn }}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -717,9 +759,9 @@ class ExchangeGoodsDetailPage extends BasePage {
      */
     onPressOperationApply(cancel) {
         let that = this;
-       // pageType 0 退款详情  1 退货详情   2 换货详情
+        // pageType 0 退款详情  1 退货详情   2 换货详情
         if (cancel) {
-            let tips = ['退款详情待定', '退货详情待定', '换货详情待定'];
+            let tips = ['确认撤销本次退款申请？', '确认撤销本次退货退款申请？', '确认撤销本次换货申请？'];
             Alert.alert('',
                 tips[this.params.pageType],
                 [
@@ -738,7 +780,8 @@ class ExchangeGoodsDetailPage extends BasePage {
                             }).catch(error => {
                                 that.$loadingDismiss();
                                 that.$toastShow(error.msg || '操作失败，请重试');
-                            });},
+                            });
+                        }
                     }
                 ]);
         } else {
@@ -823,11 +866,11 @@ class ExchangeGoodsDetailPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: color.gray_f7f7,
+        flex: 1, backgroundColor: DesignRule.bgColor,
         justifyContent: 'flex-end'
     },
     refundReason: {
-        color: color.black_999, fontSize: 13, marginLeft: 17, marginTop: 10
+        color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 17, marginTop: 10
     },
     addressStyle: {},
     operationApplyView_container: {
@@ -837,7 +880,7 @@ const styles = StyleSheet.create({
     operationApplyView_title: {
         height: 45,
         borderBottomWidth: 1,
-        borderBottomColor: '#DDDDDD',
+        borderBottomColor: DesignRule.lineColor_inGrayBg,
         justifyContent: 'center'
     },
     borderButton: {

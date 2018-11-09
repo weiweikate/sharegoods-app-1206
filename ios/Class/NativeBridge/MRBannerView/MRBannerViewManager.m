@@ -7,10 +7,8 @@
 //
 
 #import "MRBannerViewManager.h"
+#import "TYCyclePagerView.h"
 #import "UIImageView+WebCache.h"
-@interface MRBannerViewManager()<TYCyclePagerViewDataSource,TYCyclePagerViewDelegate>
-@property (nonatomic, strong) MRBannerView *swiperView;
-@end
 
 @implementation MRBannerViewManager
 
@@ -27,33 +25,68 @@ RCT_EXPORT_VIEW_PROPERTY(onDidScrollToIndex, RCTBubblingEventBlock)
 
 - (UIView *)view{
   MRBannerView *pagerView = [[MRBannerView alloc]init];
-  pagerView.autoScrollInterval = 5.0;
-  pagerView.isInfiniteLoop = true;
-  pagerView.dataSource = self;
-  pagerView.delegate = self;
-  [pagerView registerClass:[MRBannerViewCell class] forCellWithReuseIdentifier:@"MRBannerViewCell"];
-  _swiperView = pagerView;
-  return _swiperView;
+  return pagerView;
+}
+
+@end
+
+
+@interface MRBannerView()<TYCyclePagerViewDataSource,TYCyclePagerViewDelegate>
+@property (nonatomic,strong) TYCyclePagerView* pgView;
+@end
+
+@implementation MRBannerView
+
+- (instancetype)init{
+  if (self = [super init]) {
+    TYCyclePagerView *View = [[TYCyclePagerView alloc] init];
+    View.delegate = self;
+    View.dataSource = self;
+    View.autoScrollInterval = 5.0;
+    View.isInfiniteLoop = true;
+    [View registerClass:[MRBannerViewCell class] forCellWithReuseIdentifier:@"MRBannerViewCell"];
+    [self addSubview:View];
+    _pgView = View;
+  }
+  return self;
+}
+
+- (void)layoutSubviews {
+  [super layoutSubviews];
+  _pgView.frame = self.bounds;
+}
+
+- (void)setImgUrlArray:(NSArray *)imgUrlArray{
+  _imgUrlArray = [imgUrlArray copy];
+  [_pgView updateData];
+}
+
+- (void)setAutoInterval:(CGFloat)autoInterval{
+  _pgView.autoScrollInterval = autoInterval;
+}
+
+- (void)setAutoLoop:(BOOL)autoLoop{
+  _pgView.isInfiniteLoop = autoLoop;
 }
 
 - (NSInteger)numberOfItemsInPagerView:(TYCyclePagerView *)pageView{
-  return _swiperView.imgUrlArray.count;
+  return _imgUrlArray.count;
 }
 
 - (__kindof UICollectionViewCell *)pagerView:(TYCyclePagerView *)pagerView cellForItemAtIndex:(NSInteger)index{
   MRBannerViewCell *cell = [pagerView dequeueReusableCellWithReuseIdentifier:@"MRBannerViewCell" forIndex:index];
-  NSString *tempUrlString = _swiperView.imgUrlArray[index];
+  NSString *tempUrlString = _imgUrlArray[index];
   [cell.imgView sd_setImageWithURL:[NSURL URLWithString: [tempUrlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]] placeholderImage:nil];
-  if (_swiperView.tittleArray && _swiperView.tittleArray.count>index) {
-    cell.tittleLabel.text = _swiperView.tittleArray[index];
+  if (_tittleArray && _tittleArray.count>index) {
+    cell.tittleLabel.text = _tittleArray[index];
   }
   return cell;
 }
 - (TYCyclePagerViewLayout *)layoutForPagerView:(TYCyclePagerView *)pageView {
   TYCyclePagerViewLayout *layout = [[TYCyclePagerViewLayout alloc]init];
-  if (_swiperView.itemSpace && _swiperView.itemWidth) {
-    layout.itemSize = CGSizeMake(_swiperView.itemWidth, CGRectGetHeight(pageView.frame));
-    layout.itemSpacing = _swiperView.itemSpace;
+  if (_itemSpace && _itemWidth) {
+    layout.itemSize = CGSizeMake(_itemWidth, CGRectGetHeight(pageView.frame));
+    layout.itemSpacing = _itemSpace;
   }else{
     layout.itemSize = CGSizeMake(CGRectGetWidth(pageView.frame), CGRectGetHeight(pageView.frame));
   }
@@ -61,33 +94,16 @@ RCT_EXPORT_VIEW_PROPERTY(onDidScrollToIndex, RCTBubblingEventBlock)
 }
 
 - (void)pagerView:(TYCyclePagerView *)pageView didScrollFromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex{
-  if (_swiperView.onDidScrollToIndex) {
-    _swiperView.onDidScrollToIndex(@{@"index":[NSNumber numberWithInteger:toIndex]});
+  if (_onDidScrollToIndex) {
+    _onDidScrollToIndex(@{@"index":[NSNumber numberWithInteger:toIndex]});
   }
 }
 
 - (void)pagerView:(TYCyclePagerView *)pageView didSelectedItemCell:(__kindof UICollectionViewCell *)cell atIndex:(NSInteger)index{
-  if (_swiperView.onDidSelectItemAtIndex) {
-    _swiperView.onDidSelectItemAtIndex(@{@"index":[NSNumber numberWithInteger:index]});
+  if (_onDidSelectItemAtIndex) {
+    _onDidSelectItemAtIndex(@{@"index":[NSNumber numberWithInteger:index]});
   }
 }
-@end
-
-
-@implementation MRBannerView
-- (void)setImgUrlArray:(NSArray *)imgUrlArray{
-  _imgUrlArray = [imgUrlArray copy];
-  [self reloadData];
-}
-
-- (void)setAutoInterval:(CGFloat)autoInterval{
-  self.autoScrollInterval = autoInterval;
-}
-
-- (void)setAutoLoop:(BOOL)autoLoop{
-  self.isInfiniteLoop = autoLoop;
-}
-
 
 @end
 

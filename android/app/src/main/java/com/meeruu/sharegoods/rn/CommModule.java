@@ -46,7 +46,6 @@ public class CommModule extends ReactContextBaseJavaModule {
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "commModule";
     public static final String EVENT_NAME = "nativeCallRn";
-    public static final String TAG = "CommModule";
 
     public static final String EVENT_UPDATE_IMG_URL = "uploadedImageURL";
     public static final String EVENT_SELECT_CONTACTS = "ContactSelected";

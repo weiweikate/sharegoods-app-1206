@@ -40,7 +40,7 @@ export default class SearchSegmentView extends Component {
         }}>
             <View style={styles.btnContainer}>
                 <Text
-                    style={[styles.title, { color: this.state.selIndex === index ? '#e60012' : DesignRule.textColor_instruction }]}>{title}</Text>
+                    style={[styles.title, { color: this.state.selIndex === index ? DesignRule.mainColor : DesignRule.textColor_instruction }]}>{title}</Text>
                 {index === 2 && <Image source={upDown}/>}
             </View>
         </TouchableWithoutFeedback>;

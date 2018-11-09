@@ -146,7 +146,7 @@ export default class UserPromotionPage extends BasePage<Props> {
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     paddingHorizontal: px2dp(15),
-                    borderBottomColor: '#DDDDDD',
+                    borderBottomColor: DesignRule.lineColor_inGrayBg,
                     borderBottomWidth: ScreenUtils.onePixel
                 }}>
                     <View style={styles.itemInfoWrapper}>
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
         paddingTop: px2dp(10),
     },
     grayButtonWrapper: {
-        borderColor: '#DDDDDD',
+        borderColor: DesignRule.lineColor_inGrayBg,
         borderWidth: ScreenUtils.onePixel,
         borderRadius: px2dp(5),
         width: px2dp(80),

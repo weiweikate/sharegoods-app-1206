@@ -6,6 +6,7 @@ import addrBorderImgN from '../../res/address/dizhi_img_nor.png';
 import addrBorderImgS from '../../res/address/dizhi_img_sel.png';
 import addrRight from '../../res/address/dizhi_icon_moren_sel.png';
 import dingwei from '../../res/address/dizhi_icon_dingwei_nor.png';
+import NoMessage from '../../res/address/kongbeiye_icon_dizhi.png'
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -60,6 +61,8 @@ export default class AddressManagerPage extends BasePage {
                         });
                     }
                 }
+            }else{
+
             }
             this.setState({
                 datas: response.data || []
@@ -68,6 +71,16 @@ export default class AddressManagerPage extends BasePage {
             bridge.$toast(data.msg);
         });
     }
+    // 空布局
+    _renderEmptyView = () => {
+        return (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
+                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}>暂无收货地址</Text>
+                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}>快去添加吧～</Text>
+            </View>
+        );
+    };
 
     _render() {
         return (
@@ -76,6 +89,7 @@ export default class AddressManagerPage extends BasePage {
                     ListHeaderComponent={this._header}
                     ListFooterComponent={this._footer}
                     ItemSeparatorComponent={this._separator}
+                    ListEmptyComponent={this._renderEmptyView}
                     renderItem={this._renderItem}
                     extraData={this.state}
                     onRefresh={this.refreshing}

@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     },
     tilteposition: {
         fontSize: 15,
-        color: '#e60012',
+        color: DesignRule.mainColor,
         marginLeft: 14
     },
     typetitleStyle: {

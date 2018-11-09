@@ -1,9 +1,11 @@
 import React from 'react'
-import {View, StyleSheet, Image, TouchableOpacity} from 'react-native'
+import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 import { adModules , homeModule} from './Modules'
 import {observer} from 'mobx-react';
 import BasePage from '../../BasePage'
+import ImageLoad from '@mr/react-native-image-placeholder'
+const { px2dp }  = ScreenUtils
 
 @observer
 export default class HomeAdView extends BasePage {
@@ -18,25 +20,31 @@ export default class HomeAdView extends BasePage {
         let items = []
         ad.map((value, index) => {
             if (index === 0) {
-                items.push(<TouchableOpacity key={index} style={[styles.featureBox1]}  onPress={()=>this._adAction(value)}>
-                    <Image
+                items.push(<TouchableWithoutFeedback key={index} onPress={()=>this._adAction(value)}>
+                    <View style={[styles.featureBox1]}>
+                    <ImageLoad
                         source={{ uri: value.imgUrl }}
                         style={styles.featureBox1Image}/>
-                </TouchableOpacity>)
+                    </View>
+                </TouchableWithoutFeedback>)
             } else if (index === 1) {
                 items.push(
-                    <TouchableOpacity key={index}  style={[styles.featureBox2]} onPress={()=>this._adAction(value)}>
-                        <Image
+                    <TouchableWithoutFeedback key={index} onPress={()=>this._adAction(value)}>
+                        <View style={[styles.featureBox2]}>
+                        <ImageLoad
                             source={{ uri: value.imgUrl}}
                             style={styles.featureBox2Image}/>
-                    </TouchableOpacity>
+                        </View>
+                    </TouchableWithoutFeedback>
                 )
             } else {
-                items.push(<TouchableOpacity key={index}  style={[styles.featureBox3]} onPress={()=>this._adAction(value)}>
-                    <Image
+                items.push(<TouchableWithoutFeedback key={index}onPress={()=>this._adAction(value)}>
+                    <View style={[styles.featureBox3]}>
+                    <ImageLoad
                         source={{ uri:  value.imgUrl }}
                         style={styles.featureBox2Image}/>
-                </TouchableOpacity>)
+                    </View>
+                </TouchableWithoutFeedback>)
             }
         })
        return <View style={styles.container}>
@@ -59,13 +67,13 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
         paddingTop:  ScreenUtils.px2dp(10),
-        marginTop: -1
+        marginTop: -1,
+        paddingLeft: px2dp(15),
+        paddingRight: px2dp(15)
     },
     featureBox: {
         position: 'relative',
         height: ScreenUtils.px2dp(200),
-        marginLeft: ScreenUtils.px2dp(12),
-        marginRight: ScreenUtils.px2dp(12)
     },
     featureBox1: {
         position: 'absolute',

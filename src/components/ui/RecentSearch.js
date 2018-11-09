@@ -76,7 +76,7 @@ class RecentSearch extends Component {
             return tagList;
 
         } else {
-            return <Text style={{ flex: 1, backgroundColor: color.white, marginRight: 15 }}>no data</Text>;
+            return <Text style={{ flex: 1, backgroundColor: 'white', marginRight: 15 }}>no data</Text>;
         }
     };
 }

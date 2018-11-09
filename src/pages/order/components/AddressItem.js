@@ -36,7 +36,7 @@ const AddressItem = props => {
         <TouchableOpacity style={style} onPress={() => onPress()}>
             <UIImage source={locationBlack} style={{ width: 18, height: 20, marginLeft: 17 }}/>
             <View style={{ flex: 1, marginLeft: 10 }}>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', paddingRight: 20}}>
                     <UIText value={name}
                             style={{ color: DesignRule.textColor_instruction, fontSize: 15, flex: 1, marginRight: 5 }}
                             numberOfLines={1}/>
@@ -46,7 +46,7 @@ const AddressItem = props => {
                 <UIText value={address} style={{ color: DesignRule.textColor_instruction, fontSize: 15 }}
                         numberOfLines={2}/>
             </View>
-            {this.renderRightImage()}
+            {/*{this.renderRightImage()}*/}
         </TouchableOpacity>
     );
 };

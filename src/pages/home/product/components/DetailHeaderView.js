@@ -102,7 +102,7 @@ export default class DetailHeaderView extends Component {
             <View>
                 {productImgListTemp.length > 0 && this.state.swiperShow ? <ViewPager swiperShow={true}
                                                                                      loop={false}
-                                                                                     autoplay={true}
+                                                                                     autoplay={false}
                                                                                      bounces={true}
                                                                                      height={ScreenUtils.autoSizeWidth(377)}
                                                                                      arrayData={productImgListTemp}
@@ -127,7 +127,7 @@ export default class DetailHeaderView extends Component {
                             <Text style={{ color: DesignRule.mainColor, fontSize: 18 }}>{`￥${price}起`}</Text>
                             <Text style={{
                                 marginLeft: 5,
-                                color: '#BBBBBB',
+                                color: DesignRule.textColor_instruction,
                                 fontSize: 10,
                                 textDecorationLine: 'line-through'
                             }}>{`￥${originalPrice}`}</Text>
@@ -141,7 +141,7 @@ export default class DetailHeaderView extends Component {
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text
                                 style={{
-                                    color: '#BBBBBB',
+                                    color: DesignRule.textColor_instruction,
                                     fontSize: 11
                                 }}>快递：{freight === 0 ? '包邮' : `${freight}元`}</Text>
                             <Text style={{
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     text: {
-        color: '#fff',
+        color: 'white',
         fontSize: px2dp(10),
         paddingHorizontal: 8
     }

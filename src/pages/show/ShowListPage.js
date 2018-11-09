@@ -58,7 +58,7 @@ export default class ShowListPage extends BasePage {
                     </TouchableOpacity>
                     <View style={{width: 50}}/>
                     <TouchableOpacity style={styles.items} onPress={()=> this._gotoPage(1)}>
-                        <Text style={page === 1 ? styles.activityIndex : styles.index}>最新发现</Text>
+                        <Text style={page === 1 ? styles.activityIndex : styles.index}>最新秀场</Text>
                         {page === 1 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
                 </View>

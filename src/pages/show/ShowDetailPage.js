@@ -221,7 +221,7 @@ let styles = StyleSheet.create({
         width: ScreenUtils.width - 2 * px2dp(15),
         flexDirection: 'row',
         alignItems: 'center',
-        borderColor: '#eee',
+        borderColor: DesignRule.lineColor_inColorBg,
         borderWidth: ScreenUtils.onePixel,
         borderRadius: px2dp(2),
         marginBottom: px2dp(10)
@@ -310,7 +310,7 @@ let styles = StyleSheet.create({
     line: {
         width: 1,
         height: px2dp(16),
-        backgroundColor: '#eee'
+        backgroundColor: DesignRule.lineColor_inColorBg
     }
 });
 

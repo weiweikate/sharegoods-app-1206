@@ -81,8 +81,8 @@ export default class UserInformationPage extends BasePage {
                         onRefresh={this._reload}
                         progressViewOffset={64}
                         colors={[DesignRule.mainColor]}
-                        tintColor="#999"
-                        titleColor="#999"
+                        tintColor={DesignRule.textColor_instruction}
+                        titleColor={DesignRule.textColor_instruction}
                     />}>
 
                 {this.renderWideLine()}
@@ -188,7 +188,11 @@ const styles = StyleSheet.create({
     }, hasVertifyID: {
         borderRadius: 10, backgroundColor: '#0186f5', paddingLeft: 10, paddingRight: 10, marginRight: 15
     }, notVertifyID: {
-        borderRadius: 10, backgroundColor: '#dddddd', paddingLeft: 10, paddingRight: 10, marginRight: 15
+        borderRadius: 10,
+        backgroundColor: DesignRule.lineColor_inGrayBg,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginRight: 15
     }
 });
 

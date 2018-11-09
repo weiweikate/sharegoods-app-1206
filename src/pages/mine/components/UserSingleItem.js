@@ -12,8 +12,8 @@ import {
     StyleSheet
 } from 'react-native';
 import right_arrow from '../res/homeBaseImg/icon3_07.png';
-import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
+import DesignRule from 'DesignRule';
 
 export default class UserSingleItem extends Component {
     constructor(props) {
@@ -37,7 +37,7 @@ export default class UserSingleItem extends Component {
                     <View style={{ justifyContent: 'center', marginLeft: marginLeft }}>
                         <Text style={leftTextStyle && leftTextStyle}>{leftText}</Text>
                     </View>
-                    <View style={{ flexDirection: 'row',  justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         {this.renderRightText()}
                         {this.renderArrow()}
                     </View>
@@ -50,7 +50,7 @@ export default class UserSingleItem extends Component {
     renderLine = () => {
         const { isLine = true } = this.props;
         return (!isLine ? null :
-                <View style={{ height: 1, backgroundColor: color.gray_EEE }}/>
+                <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
 
@@ -68,7 +68,7 @@ export default class UserSingleItem extends Component {
         return (
             !headImage ? null :
                 <Image source={{ uri: StringUtils.isNoEmpty(headImage) ? headImage : '' }}
-                       style={{ width: 30, height: 30, borderRadius: 15,marginRight:15 }}/>
+                       style={{ width: 30, height: 30, borderRadius: 15, marginRight: 15 }}/>
         );
     };
     renderArrow = () => {
@@ -84,7 +84,7 @@ export default class UserSingleItem extends Component {
 }
 const styles = StyleSheet.create({
     containerStyle: {
-        height: 48, backgroundColor: color.white
+        height: 48, backgroundColor: 'white'
     },
     rightText_hasCircle: {
         justifyContent: 'center',
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
         height: 30,
         width: 30,
         alignItems: 'center',
-        borderColor: color.gray_df,
+        borderColor: DesignRule.lineColor_inColorBg,
         marginRight: 15
     },
     rightText_noCircle: {

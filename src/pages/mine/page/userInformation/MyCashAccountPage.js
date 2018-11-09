@@ -9,7 +9,6 @@ import {
 import BasePage from '../../../../BasePage';
 import { RefreshList } from '../../../../components/ui';
 import AccountItem from '../../components/CashAccountItem';
-import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import withdrawMoney from '../../res/userInfoImg/xiangjzhanghu_icon03_14.png';
@@ -24,6 +23,7 @@ import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from './../../../../utils/bridge';
+import DesignRule from 'DesignRule';
 
 export default class MyCashAccountPage extends BasePage {
     constructor(props) {
@@ -74,17 +74,17 @@ export default class MyCashAccountPage extends BasePage {
             <View style={styles.container}>
                 <ImageBackground style={styles.imageBackgroundStyle} />
                 <View style={styles.viewStyle}>
-                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: color.white }}>账户余额(元)</Text>
+                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: 'white' }}>账户余额(元)</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={{ height: 44, justifyContent: 'space-between', marginTop: 15 }}>
                             <Text style={{
                                 marginLeft: 25,
                                 fontSize: 25,
-                                color: color.white
+                                color: 'white'
                             }}>{StringUtils.formatMoneyString(this.state.restMoney, false)}</Text>
                         </View>
                         <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
-                            <Text style={{ fontSize: 15, color: color.white }}>提现</Text>
+                            <Text style={{ fontSize: 15, color: 'white' }}>提现</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -111,7 +111,7 @@ export default class MyCashAccountPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line, marginLeft: 48, marginRight: 48 }}/>
+            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg, marginLeft: 48, marginRight: 48 }}/>
         );
     };
 
@@ -179,31 +179,32 @@ export default class MyCashAccountPage extends BasePage {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1, backgroundColor: color.page_background,
+        flex: 1, backgroundColor: DesignRule.bgColor,
         marginBottom: ScreenUtils.safeBottom
     },
     container: {}, imageBackgroundStyle: {
         position: 'absolute',
-        height: 140,
+        height: 95,
+        backgroundColor:'#FF4F6E',
         width: ScreenUtils.width - 30,
         marginLeft: 15,
         marginRight: 15,
         marginTop: 10,
         marginBottom: 10,
-        borderRadius: 15,
-        backgroundColor:'#FF4F6E'
+        borderRadius: 15
     }, rectangleStyle: {
-        width: 100,
+        width: 120,
         height: 44,
         borderWidth: 1,
         borderRadius: 5,
-        borderColor: color.white,
+        borderColor: 'white',
+        marginLeft: 15,
         marginRight: 15,
         justifyContent: 'center',
-        marginTop: 20,
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 3
     }, viewStyle: {
-        height: 140,
+        height: 95,
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 15,

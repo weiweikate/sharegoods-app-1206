@@ -26,7 +26,7 @@ export default class PreLoadImage extends Component {
     }
 
     render() {
-        const { imageUri, style, defaultImage, errImage, onClickAction, ...props } = this.props;
+        const { imageUri, style,  errImage, onClickAction, ...props } = this.props;
         let source;
         if (imageUri){
            source  = { uri: imageUri };
@@ -63,8 +63,11 @@ export default class PreLoadImage extends Component {
                     {this.state.isLoadComplete ? null :
                         <View style={PreLoadImageStyles.preImageBgStyle}>
                             <Image
-                                style={style}
-                                source={defaultImage}
+                                style={[style,{
+                                    backgroundColor:'#efefef'
+                                }]}
+                                // source={defaultImage}
+
                             />
                         </View>
                     }
@@ -89,8 +92,10 @@ export default class PreLoadImage extends Component {
                     {this.state.isLoadComplete ? null :
                         <View style={PreLoadImageStyles.preImageBgStyle}>
                             <Image
-                                style={style}
-                                source={defaultImage}
+                                style={[style,{
+                                    backgroundColor:'#efefef'
+                                }]}
+                                // source={defaultImage}
                             />
                         </View>
                     }

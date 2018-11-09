@@ -67,7 +67,7 @@ export default class SelectLogisticsCompanyPage extends BasePage {
                     renderSectionHeader = {this._renderSectionHeader}
                     sections = {this.state.logisticsCompanys}
                     keyExtractor = {(item, index) => item.name + index}
-                    ItemSeparatorComponent = {() => <View style = {{height: 0.5, backgroundColor: DesignRule.bgColor}}/>}
+                    ItemSeparatorComponent = {() => <View style = {{height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg}}/>}
                 />
             </View>
         )
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
             marginLeft: 17,
         },
         item_title:{
-            color: '#000000',
+            color: DesignRule.textColor_mainTitle,
             fontSize: 15,
             marginLeft: 17,
         },
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
             alignItems: 'center',
         },
         header_title:{
-            color: '#000000',
+            color: DesignRule.textColor_mainTitle,
             fontSize: 16,
             marginLeft: 17,
         }

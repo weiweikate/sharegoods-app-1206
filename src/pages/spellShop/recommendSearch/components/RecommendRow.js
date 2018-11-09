@@ -115,12 +115,12 @@ export default class RecommendRow extends Component {
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>店铺本月收入</Text>
-                        <Text style={styles.containBottom}>{`${tradeBalance}元`}</Text>
+                        <Text style={styles.containBottom}>{`${tradeBalance || 0}元`}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
                         <Text style={styles.containTop}>店铺累计收入</Text>
-                        <Text style={styles.containBottom}>{`${totalTradeBalance}元`}</Text>
+                        <Text style={styles.containBottom}>{`${totalTradeBalance || 0}元`}</Text>
                     </View>
                 </View>
 
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     icon: {
         width: 50,
         height: 50,
-        backgroundColor: '#eee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 25
     },
     tittleContainer: {
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
         fontFamily: 'PingFangSC-Medium',
         color: 'white',
         fontSize: 12,
-        paddingHorizontal:8,
+        paddingHorizontal: 8
     },
 
     midFlatList: {
