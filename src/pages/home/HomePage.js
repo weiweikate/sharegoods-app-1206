@@ -6,9 +6,8 @@ import {
     Text,
     RefreshControl,
     ImageBackground,
-    InteractionManager,
     TouchableWithoutFeedback,
-    Image, Platform, NativeModules, AsyncStorage
+    Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
@@ -37,11 +36,10 @@ import MineApi from '../mine/api/MineApi';
 import VersionUpdateModal from './VersionUpdateModal';
 import DeviceInfo from 'react-native-device-info';
 import StringUtils from '../../utils/StringUtils';
-import DateUtils from '../../utils/DateUtils';
-const LASTGETHOMEMESSAGETIME = 'lastgethomemessagetime';
 import DesignRule from 'DesignRule';
 import res from '../../comm/res';
-const closeImg = res.button.cancel_white_circle
+
+const closeImg = res.button.cancel_white_circle;
 
 /**
  * @author zhangjian
@@ -79,7 +77,10 @@ export default class HomePage extends PureComponent {
         homeModule.loadHomeList();
         // 检测版本更新
         this.getVersion();
+        // this.getMessageData();
     }
+
+
 
     getVersion = async () => {
         let upVersion = '';
@@ -146,6 +147,16 @@ export default class HomePage extends PureComponent {
     componentWillUnmount() {
         this.didBlurSubscription && this.didBlurSubscription.remove();
         this.willFocusSubscription && this.willFocusSubscription.remove();
+    }
+
+    componentDidMount() {
+        this.getMessageData();
+        this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
+
+    }
+
+    componentWillUnmount() {
+        this.listener && this.listener.remove();
     }
 
     // 滑动头部透明度渐变
@@ -230,38 +241,29 @@ export default class HomePage extends PureComponent {
         homeModule.loadHomeList();
     }
 
-    componentDidMount() {
-        //this.shareModal.open();
-        InteractionManager.runAfterInteractions(() => {
-            this.getMessageData();
+    getMessageData =  async() => {
+        const value = await AsyncStorage.getItem('lastMessageTime', (error, result) => {
         });
-    }
-
-    getMessageData =async () => {
-        try {
-            const value = await AsyncStorage.getItem(LASTGETHOMEMESSAGETIME);
-            if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
-                MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
-                    if (!EmptyUtils.isEmptyArr(res.data.data)) {
-                        this.messageModal && this.messageModal.open();
-                        this.setState({
-                            showMessage: true,
-                            messageData: res.data.data
-                        });
-                    }
-                });
-                AsyncStorage.setItem(LASTGETHOMEMESSAGETIME, Date.parse(new Date()).toString());
-            }
-
-        }catch (e) {
-
+        if (value == null || parseInt(currStr)-parseInt(value)<24*60*60*1000) {
+            MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
+                if (!EmptyUtils.isEmptyArr(res.data.data)) {
+                    this.messageModal && this.messageModal.open();
+                    this.setState({
+                        showMessage: true,
+                        messageData: res.data.data
+                    });
+                }
+            });
         }
-
+        let currStr =  new Date().getTime() + '';
+        AsyncStorage.setItem('lastMessageTime', currStr);
     };
 
     messageModalRender() {
         return (
-            <Modal ref={(ref)=>{this.messageModal = ref;}} visible={this.state.showMessage}>
+            <Modal ref={(ref) => {
+                this.messageModal = ref;
+            }} visible={this.state.showMessage}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.setState({
@@ -318,9 +320,27 @@ export default class HomePage extends PureComponent {
 
     messageRender(item, index) {
         return (
-            <Text style={{ width: px2dp(230), height: px2dp(211) }}>
-                {item.content}
-            </Text>
+            <View onStartShouldSetResponder={() => true}>
+                <ScrollView showsVerticalScrollIndicator={false} style={{ showsVerticalScrollIndicator: false }}>
+                    <Text style={{
+                        color: DesignRule.textColor_mainTitle,
+                        fontSize: DesignRule.fontSize_secondTitle,
+                        alignSelf: 'center'
+                    }}>
+                        {item.title}
+                    </Text>
+                    <Text style={{
+                        width: px2dp(230),
+                        color: DesignRule.textColor_secondTitle,
+                        fontSize: DesignRule.fontSize_24,
+                        marginTop: 14,
+                        marginBottom: 10,
+                        height: 500
+                    }}>
+                        {item.content}
+                    </Text>
+                </ScrollView>
+            </View>
         );
     }
 
@@ -368,7 +388,9 @@ export default class HomePage extends PureComponent {
                 {this.messageModalRender()}
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
                                     apkExist={this.state.apkExist}
-                                    ref={(ref)=>{this.updateModal = ref;}}
+                                    ref={(ref) => {
+                                        this.updateModal = ref;
+                                    }}
                                     forceUpdate={this.state.forceUpdate} onDismiss={() => {
                     this.setState({ showUpdate: false });
                 }}/>
