@@ -54,7 +54,7 @@ class AdModules {
 export const adModules = new AdModules()
 
 import schoolImg from './res/school.png';
-import makemoneyImg from './res/makemoney.png';
+import showImg from './res/show.png';
 import shareImg from './res/share.png';
 import signinImg from './res/signin.png';
 import spikeImg from './res/spike.png';
@@ -63,15 +63,15 @@ class ClassifyModules {
     @observable classifyList = [];
     @action loadClassifyList = () => {
         this.classifyList = [{
-            icon: makemoneyImg,
-            name: '赚钱',
-            id: 1,
-            route: 'home/search/CategorySearchPage'
-        }, {
             icon: shareImg,
             name: '分享',
             id: 1,
             route: 'home/search/CategorySearchPage'
+        }, {
+            icon: showImg,
+            name: '秀场',
+            id: 1,
+            route: 'show/ShowListPage'
         }, {
             icon: signinImg,
             name: '签到',
@@ -80,7 +80,7 @@ class ClassifyModules {
             needLogin: 1
         }, {
             icon: schoolImg,
-            name: '学院',
+            name: '必看',
             id: 1,
             route: 'home/search/CategorySearchPage'
         }, {

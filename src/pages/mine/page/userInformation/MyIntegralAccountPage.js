@@ -12,7 +12,8 @@ import { RefreshList } from '../../../../components/ui';
 import AccountItem from '../../components/AccountItem';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import singInImg from '../../res/userInfoImg/qdaojianli_icon.png';
-import taskImg from '../../res/userInfoImg/rwujianli_icon.png'
+import taskImg from '../../res/userInfoImg/rwujianli_icon.png';
+import yiyuanImg from '../../res/userInfoImg/xiudozhanghu_icon_xjaingquan.png'
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
@@ -136,7 +137,7 @@ export default class MyIntegralAccountPage extends BasePage {
         let use_type = ['', '注册赠送', '活动赠送', '秀豆消费', '1元券兑换', '签到奖励','任务奖励'];
 
         let use_type_symbol = ['', '+', '-',];
-        let use_let_img = ['', singInImg, taskImg, taskImg, singInImg, singInImg,taskImg];
+        let use_let_img = ['', singInImg, taskImg, taskImg, yiyuanImg, singInImg,taskImg];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         Toast.showLoading();
         MineApi.userScoreQuery({
