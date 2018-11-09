@@ -30,12 +30,6 @@ let staticStyle = {
     isShowMenu: false
 };
 
-// interface Window {
-//     Image: {
-//         prototype: HTMLImageElement,
-//         new (): HTMLImageElement
-//     }
-// }
 declare var window: Window;
 // var ScreenWidth = Dimensions.get('window').width;
 //@TransmitTransparently('style')
@@ -44,7 +38,7 @@ export default class FlyImageViewer extends Component {
     getStyle(width: number, height: number) {
         return {
             modalContainer: {
-                backgroundColor: '#000',
+                backgroundColor: DesignRule.textColor_mainTitle,
                 justifyContent: 'center',
                 alignItems: 'center',
                 overflow: 'hidden'
@@ -72,7 +66,7 @@ export default class FlyImageViewer extends Component {
             },
             imageStyle: {},
             container: {
-                backgroundColor: 'black'
+                backgroundColor: DesignRule.textColor_mainTitle
             },
             // 多图浏览需要调整整体位置的盒子
             moveBox: {
@@ -90,7 +84,7 @@ export default class FlyImageViewer extends Component {
                 position: 'absolute',
                 width: width,
                 height: height,
-                backgroundColor: 'black',
+                backgroundColor: DesignRule.textColor_mainTitle,
                 left: 0,
                 bottom: 0,
                 opacity: 0.2,
@@ -108,7 +102,7 @@ export default class FlyImageViewer extends Component {
                 alignItems: 'center',
                 backgroundColor: 'white',
                 height: 40,
-                borderBottomColor: '#ccc',
+                borderBottomColor: DesignRule.textColor_placeholder,
                 borderBottomWidth: 1
             },
             operateText: {
@@ -723,12 +717,12 @@ export default class FlyImageViewer extends Component {
             <View style={this.styles.menuContainer}>
                 <View style={this.styles.menuShadow}/>
                 <View style={this.styles.menuContent}>
-                    <TouchableHighlight underlayColor="#F2F2F2"
+                    <TouchableHighlight underlayColor={DesignRule.color_f2}
                                         onPress={this.saveToLocal.bind(this)}
                                         style={this.styles.operateContainer}>
                         <Text style={this.styles.operateText}>{this.props.menuContext.saveToLocal}</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight underlayColor="#F2F2F2"
+                    <TouchableHighlight underlayColor={DesignRule.color_f2}
                                         onPress={this.handleLeaveMenu.bind(this)}
                                         style={this.styles.operateContainer}>
                         <Text style={this.styles.operateText}>{this.props.menuContext.cancel}</Text>
@@ -784,111 +778,3 @@ const simpleStyle = StyleSheet.create({
         textShadowRadius: 0
     }
 });
-// module.exports = FlyImageViewer;
-// const styles = StyleSheet.create({
-//   modalContainer: {
-//              backgroundColor: '#000',
-//              justifyContent: 'center',
-//              alignItems: 'center',
-//              overflow: 'hidden'
-//          } ,
-//          watchOrigin: {
-//              position: 'absolute',
-//              width: 0,
-//              bottom: 20,
-//              justifyContent: 'center',
-//              alignItems: 'center'
-//          } ,
-//          watchOriginTouchable: {
-//              paddingLeft: 10,
-//              paddingRight: 10,
-//              paddingTop: 5,
-//              paddingBottom: 5,
-//              borderRadius: 30,
-//              borderColor: 'white',
-//              borderWidth: 0.5,
-//              backgroundColor: 'rgba(0, 0, 0, 0.1)'
-//          } ,
-//          watchOriginText: {
-//              color: 'white',
-//              backgroundColor: 'transparent'
-//          } ,
-//          imageStyle: {} ,
-//          container: {
-//              backgroundColor: 'black'
-//          } ,
-//          // 多图浏览需要调整整体位置的盒子
-//          moveBox: {
-//              flexDirection: 'row',
-//              alignItems: 'center'
-//          } ,
-//          menuContainer: {
-//              position: 'absolute',
-//              width: 0,
-//              height: 0,
-//              left: 0,
-//              bottom: 0
-//          } ,
-//          menuShadow: {
-//              position: 'absolute',
-//              width: 0,
-//              height: 0,
-//              backgroundColor: 'black',
-//              left: 0,
-//              bottom: 0,
-//              opacity: 0.2,
-//              zIndex: 10
-//          } ,
-//          menuContent: {
-//              position: 'absolute',
-//              width: 0,
-//              left: 0,
-//              bottom: 0,
-//              zIndex: 11
-//          } ,
-//          operateContainer: {
-//              justifyContent: 'center',
-//              alignItems: 'center',
-//              backgroundColor: 'white',
-//              height: 40,
-//              borderBottomColor: '#ccc',
-//              borderBottomWidth: 1
-//          } ,
-//          operateText: {
-//              color: DesignRule.textColor_mainTitle
-//          },
-//          loadingTouchable: {
-//              width: 0,
-//              height: 0
-//          } ,
-//          loadingContainer: {
-//              justifyContent: 'center',
-//              alignItems: 'center',
-//              width: 0,
-//              height: 0
-//          } ,
-//          failContainer: {
-//              justifyContent: 'center',
-//              alignItems: 'center',
-//              width: 0,
-//              height: 0
-//          } ,
-//          failImage: {
-//              width: 90,
-//              height: 60
-//          },
-//          arrowLeftContainer: {
-//              position: 'absolute',
-//              top: 0,
-//              bottom: 0,
-//              left: 0,
-//              justifyContent: 'center'
-//          } ,
-//          arrowRightContainer: {
-//              position: 'absolute',
-//              top: 0,
-//              bottom: 0,
-//              right: 0,
-//              justifyContent: 'center'
-//          }
-// });

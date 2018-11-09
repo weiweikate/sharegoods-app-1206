@@ -10,7 +10,6 @@ import {
 import BasePage from '../../../../BasePage';
 import { RefreshList, UIImage, UIText } from '../../../../components/ui';
 // import AccountItem from '../../components/AccountItem';
-import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 // import withdrawMoney from '../../res/userInfoImg/withdrawMoney.png';
@@ -20,7 +19,7 @@ import storeShareBonus from '../../res/userInfoImg/xiangjzhanghu_icon03_06.png';
 import shouyi from '../../res/userInfoImg/xiangjzhanghu_icon03_10.png';
 import xiaofei from '../../res/userInfoImg/xiangjzhanghu_icon03_12.png';
 import salesCommissions from '../../res/userInfoImg/xiangjzhanghu_icon03_08.png';
-import renwu from '../../res/userInfoImg/xiangjzhanghu_icon03_16.png'
+import renwu from '../../res/userInfoImg/xiangjzhanghu_icon03_16.png';
 import questionImage_white from '../../res/userInfoImg/questionImage_white.png';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
@@ -81,15 +80,15 @@ export default class WaitingForWithdrawCashPage extends BasePage {
     renderHeader = () => {
         return (
             <View style={styles.container}>
-                <ImageBackground style={styles.imageBackgroundStyle} />
+                <ImageBackground style={styles.imageBackgroundStyle}/>
                 <View style={styles.viewStyle}>
-                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: color.white }}>待提现余额(元)</Text>
+                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: 'white' }}>待提现余额(元)</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={{ height: 44, justifyContent: 'space-between', marginTop: 15 }}>
                             <Text style={{
                                 marginLeft: 25,
                                 fontSize: 25,
-                                color: color.white
+                                color: 'white'
                             }}>{StringUtils.formatMoneyString(this.state.blockedBalance, false)}</Text>
                         </View>
                         <View style={{ marginRight: 20 }}>
@@ -192,33 +191,46 @@ export default class WaitingForWithdrawCashPage extends BasePage {
 
     renderItem = ({ item, index }) => {
         return (
-                <View style={styles.Itemcontainer} >
-                    <View style={{ height: 90, justifyContent: 'center' }}>
-                        <UIImage source={item.iconImage} style={{ height: 50, width: 50, marginLeft: 16 }}/>
+            <View style={styles.Itemcontainer}>
+                <View style={{ height: 90, justifyContent: 'center' }}>
+                    <UIImage source={item.iconImage} style={{ height: 50, width: 50, marginLeft: 16 }}/>
+                </View>
+                <View style={{ flex: 1, marginLeft: 16, marginRight: 16 }}>
+                    <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
+                        <UIText value={item.type} style={{ fontSize: 15 }}/>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{ fontSize: 12, color: DesignRule.textColor_secondTitle }}>预计收入</Text>
+                            <Text style={{ fontSize: 16, color: DesignRule.mainColor }}>{item.capital}</Text>
+                        </View>
                     </View>
-                    <View style={{flex:1,marginLeft:16,marginRight:16}}>
-                    <View style={{ justifyContent:'space-between',flexDirection:'row',alignItems:'center' }}>
-                        <UIText value={item.type} style={{fontSize:15}}/>
-                       <View style={{flexDirection:'row',alignItems:'center'}}>
-                           <Text style={{fontSize:12,color:DesignRule.textColor_secondTitle}}>预计收入</Text>
-                           <Text style={{fontSize:16,color:DesignRule.mainColor}}>{item.capital}</Text>
-                       </View>
-                    </View>
-                        <View style={{ justifyContent:'space-between',flexDirection:'row',alignItems:'center',marginTop:5 }}>
-                            <UIText value={item.time} style={{fontSize:15,color:DesignRule.textColor_instruction}}/>
-                            <View style={{flexDirection:'row',alignItems:'center'}}>
-                                <Text style={{fontSize:12,color:DesignRule.textColor_secondTitle}}>已入账:</Text>
-                                <Text style={{fontSize:12,color:DesignRule.textColor_secondTitle}}>{item.realBalance === null ? '?' : item.realBalance}</Text>
-                            </View>
+                    <View style={{
+                        justifyContent: 'space-between',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginTop: 5
+                    }}>
+                        <UIText value={item.time} style={{ fontSize: 15, color: DesignRule.textColor_instruction }}/>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{ fontSize: 12, color: DesignRule.textColor_secondTitle }}>已入账:</Text>
+                            <Text style={{
+                                fontSize: 12,
+                                color: DesignRule.textColor_secondTitle
+                            }}>{item.realBalance === null ? '?' : item.realBalance}</Text>
                         </View>
                     </View>
                 </View>
+            </View>
 
         );
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line, marginLeft: 48, marginRight: 48 }}/>
+            <View style={{
+                height: 1,
+                backgroundColor: DesignRule.lineColor_inColorBg,
+                marginLeft: 48,
+                marginRight: 48
+            }}/>
         );
     };
 
@@ -237,9 +249,9 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '推广提成','任务奖励'];
-        let use_type_symbol = ['', '+', '-',];
-        let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions,renwu];
+        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '推广提成', '任务奖励'];
+        let use_type_symbol = ['', '+', '-'];
+        let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
         Toast.showLoading();
         let arrData = this.currentPage == 1 ? [] : this.state.viewData;
         MineApi.userBalanceQuery({ page: this.currentPage, size: 20, type: 2 }).then((response) => {
@@ -254,7 +266,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                             time: DataUtils.getFormatDate(item.createTime / 1000),
                             capital: use_type_symbol[item.biType] + item.balance,
                             iconImage: useLeftImg[item.useType],
-                            realBalance:item.realBalance,
+                            realBalance: item.realBalance
                         });
                     });
                 }
@@ -286,7 +298,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1, backgroundColor: color.page_background
+        flex: 1, backgroundColor: DesignRule.bgColor
     },
     container: {}, imageBackgroundStyle: {
         position: 'absolute',
@@ -297,13 +309,13 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 10,
         borderRadius: 15,
-        backgroundColor:'#8EC7FF'
+        backgroundColor: DesignRule.bgColor_blueCard
     }, rectangleStyle: {
         width: 100,
         height: 44,
         borderWidth: 1,
         borderRadius: 5,
-        borderColor: color.white,
+        borderColor: 'white',
         marginRight: 15,
         justifyContent: 'center',
         marginTop: 20,
@@ -314,8 +326,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginLeft: 15,
         marginRight: 15
-    },Itemcontainer:{
-        backgroundColor: color.white,
+    }, Itemcontainer: {
+        backgroundColor: 'white',
         flexDirection: 'row',
         height: 90,
         alignItems: 'center'

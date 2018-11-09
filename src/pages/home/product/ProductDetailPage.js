@@ -267,7 +267,7 @@ export default class ProductDetailPage extends BasePage {
                     <View style={{ backgroundColor: 'white' }}>
                         <Text
                             style={{ paddingVertical: 13, marginLeft: 15, fontSize: 15, color: DesignRule.textColor_mainTitle }}>价格说明</Text>
-                        <View style={{ height: 0.5, marginHorizontal: 0, backgroundColor: '#eee' }}/>
+                        <View style={{ height: 0.5, marginHorizontal: 0, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                         <Text style={{
                             padding: 15
                         }}>{`划线价格：指商品的专柜价、吊牌价、正品零售价、厂商指导价或该商品的曾经展示过销售价等，并非原价，仅供参考\n未划线价格：指商品的实时价格，不因表述的差异改变性质。具体成交价格根据商品参加活动，或会员使用优惠券、积分等发生变化最终以订单`}</Text>
@@ -280,7 +280,7 @@ export default class ProductDetailPage extends BasePage {
         } else {
             return <View style={{ backgroundColor: 'white' }}>
                 <FlatList
-                    style={{ marginHorizontal: 16, marginVertical: 16, borderWidth: 0.5, borderColor: '#eee' }}
+                    style={{ marginHorizontal: 16, marginVertical: 16, borderWidth: 0.5, borderColor: DesignRule.lineColor_inColorBg }}
                     renderItem={this._renderSmallItem}
                     ItemSeparatorComponent={this._renderSeparatorComponent}
                     showsVerticalScrollIndicator={false}
@@ -292,7 +292,7 @@ export default class ProductDetailPage extends BasePage {
 
     _renderSmallItem = ({ item }) => {
         return <View style={{ flexDirection: 'row', height: 35 }}>
-            <View style={{ backgroundColor: '#DDDDDD', width: 70, justifyContent: 'center' }}>
+            <View style={{ backgroundColor: DesignRule.lineColor_inGrayBg, width: 70, justifyContent: 'center' }}>
                 <Text style={{ marginLeft: 10, color: DesignRule.textColor_mainTitle, fontSize: 12 }}>{item.paramName || ''}</Text>
             </View>
             <Text style={{
@@ -306,7 +306,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _renderSeparatorComponent = () => {
-        return <View style={{ height: 0.5, backgroundColor: '#eee' }}/>;
+        return <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>;
     };
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;

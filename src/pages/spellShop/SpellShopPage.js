@@ -19,6 +19,7 @@ import SpellStatusModel from './model/SpellStatusModel';
 import RecommendPage from './recommendSearch/RecommendPage';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import MyShop_RecruitPage from './MyShop_RecruitPage';
+import DesignRule from 'DesignRule';
 
 @observer
 export default class SpellShopPage extends BasePage {
@@ -54,10 +55,12 @@ export default class SpellShopPage extends BasePage {
                 <View>
                     <NavigatorBar leftNavItemHidden={true} title={'拼店'}/>
                     <ScrollView refreshControl={<RefreshControl refreshing={SpellStatusModel.refreshing}
-                                                                onRefresh={()=>{SpellStatusModel.getUser(1)}}
+                                                                onRefresh={() => {
+                                                                    SpellStatusModel.getUser(1);
+                                                                }}
                                                                 title="下拉刷新"
-                                                                tintColor="#999"
-                                                                titleColor="#999"/>}
+                                                                tintColor={DesignRule.textColor_instruction}
+                                                                titleColor={DesignRule.textColor_instruction}/>}
                                 showsVerticalScrollIndicator={false}>
                         <View style={{ flex: 1 }}>
                             <Image style={styles.levelLow} source={IntroduceImg} resizeMode='stretch'/>

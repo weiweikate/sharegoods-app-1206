@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     icon: {
         width: 50,
         height: 50,
-        backgroundColor: '#eee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         borderWidth: 1,
         borderColor: DesignRule.textColor_hint
     },

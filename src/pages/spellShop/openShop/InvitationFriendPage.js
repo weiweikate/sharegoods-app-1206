@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     topImg: {
         width: 65,
         height: 65,
-        backgroundColor: '#eee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 5,
         marginRight: 9
     },

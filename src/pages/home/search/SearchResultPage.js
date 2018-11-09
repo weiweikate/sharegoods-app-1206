@@ -254,7 +254,7 @@ export default class SearchResultPage extends BasePage {
             }}>
                 <View>
                     <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 16, paddingVertical: 15 }}>{item}</Text>
-                    <View style={{ height: 1, backgroundColor: '#DDDDDD', marginLeft: 16 }}/>
+                    <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inGrayBg, marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);
     };
@@ -312,8 +312,8 @@ export default class SearchResultPage extends BasePage {
                                  refreshing={this.state.refreshing}
                                  onRefresh={this._refreshing.bind(this)}
                                  title="下拉刷新"
-                                 tintColor="#999"
-                                 titleColor="#999"/>}
+                                 tintColor={DesignRule.textColor_instruction}
+                                 titleColor={DesignRule.textColor_instruction}/>}
                          onScroll={this._onScroll}
                          onEndReached={this._onEndReached.bind(this)}
                          onEndReachedThreshold={0.1}

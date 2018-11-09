@@ -339,8 +339,8 @@ export default class HomePage extends PureComponent {
                             onRefresh={this._onRefresh.bind(this)}
                             progressViewOffset={statusBarHeight + 44}
                             title="下拉刷新"
-                            tintColor="#999"
-                            titleColor="#999"
+                            tintColor={DesignRule.textColor_instruction}
+                            titleColor={DesignRule.textColor_instruction}
                         />
                     }
                     onEndReached={this._onEndReached.bind(this)}
