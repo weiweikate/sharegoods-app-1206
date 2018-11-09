@@ -6,7 +6,7 @@ import {
     Image,
     TextInput as RNTextInput,
     Text,
-    TouchableOpacity, ScrollView
+    TouchableOpacity, ScrollView, Alert
 } from 'react-native';
 import {
     UIText, UIImage, RefreshList
@@ -451,14 +451,23 @@ export default class ConfirOrderPage extends BasePage {
                 }).catch(err => {
                     console.log('err', err);
                     Toast.hiddenLoading();
-
-                    this.$toastShow(err.msg);
                     if (err.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
                                 this.loadPageData();
                             }
                         });
+                    } else if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
+                        Alert.alert('提示', err.msg, [
+                            {
+                                text: '确定', onPress: () => {
+                                    this.$navigateBack();
+                                }
+                            }
+                            // { text: '否' }
+                        ]);
+                    } else {
+                        this.$toastShow(err.msg);
                     }
                 });
                 break;

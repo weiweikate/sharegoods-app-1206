@@ -135,7 +135,7 @@ export default class MyIntegralAccountPage extends BasePage {
     getDataFromNetwork = () => {
         let use_type = ['', '注册赠送', '活动赠送', '秀豆消费', '1元券兑换', '签到奖励','任务奖励'];
 
-        let use_type_symbol = ['', '+', '+', '-', '-', '+','+'];
+        let use_type_symbol = ['', '+', '-',];
         let use_let_img = ['', singInImg, taskImg, taskImg, singInImg, singInImg,taskImg];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         Toast.showLoading();
@@ -153,9 +153,9 @@ export default class MyIntegralAccountPage extends BasePage {
                         type: use_type[item.useType],
                         time: DataUtils.getFormatDate(item.createTime / 1000),
                         serialNumber: item.serialNo,
-                        capital: use_type_symbol[item.useType] + item.userScore,
+                        capital: use_type_symbol[item.usType] + item.userScore,
                         iconImage: use_let_img[item.useType],
-                        capitalRed: use_type_symbol[item.useType] === '-'
+                        capitalRed: use_type_symbol[item.usType] === '+'
 
 
                     });
