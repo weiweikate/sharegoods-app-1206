@@ -10,12 +10,12 @@ import {
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
 import NoMessage from '../res/couponsImg/coupons_no_data.png';
-import unactivatedBg from '../res/couponsImg/youhuiquan_bg_zhihui.png';
 import usedBg from '../res/couponsImg/youhuiquan_bg_zhihui.png';
 import unuesdBg from '../res/couponsImg/youhuiquan_bg_nor.png';
 import tobeActive from '../res/couponsImg/youhuiquan_icon_daijihuo_nor.png';
 import ActivedIcon from '../res/couponsImg/youhuiquan_icon_yishixiao_nor.png';
 import usedRIcon from '../res/couponsImg/youhuiquan_icon_yishiyong_nor.png';
+import limitIcon from '../res/couponsImg/youhuiquan_limit.png';
 import plusIcon from '../res/couponsImg/youhuiquan_icon_jia_nor.png';
 import jianIcon from '../res/couponsImg/youhuiquan_icon_jian_nor.png';
 import API from '../../../api';
@@ -51,8 +51,8 @@ export default class MyCouponsItems extends Component {
 
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
-        let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
-        let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
+        let BG = item.status === 0 && !item.levelimit ? unuesdBg : usedBg;
+        let BGR = item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
         return (
             <TouchableOpacity style={{ backgroundColor: DesignRule.bgColor }}
                               onPress={() => this.clickItem(index, item)}>
@@ -381,7 +381,8 @@ export default class MyCouponsItems extends Component {
                     value: 1,
                     limit: '全品类：无金额门槛',
                     remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
-                    type: 99 //以type=99表示1元券
+                    type: 99, //以type=99表示1元券
+                    levelimit: false
                 });
             }
 
@@ -395,7 +396,8 @@ export default class MyCouponsItems extends Component {
                     limit: this.parseCoupon(item),
                     couponConfigId: item.couponConfigId,
                     remarks: item.remarks,
-                    type: item.type
+                    type: item.type,
+                    levelimit: item.levels ? (item.levels.indexOf(user.levelId) !== -1 ? false : true) : false
                 });
             });
             this.setState({ viewData: arrData });
@@ -410,7 +412,8 @@ export default class MyCouponsItems extends Component {
                     limit: this.parseCoupon(item),
                     couponConfigId: item.couponConfigId,
                     remarks: item.remarks,
-                    type: item.type
+                    type: item.type,
+                    levelimit: item.levels ? (item.levels.indexOf(user.levelId) !== -1 ? false : true) : false
                 });
             });
             this.setState({ viewData: this.state.viewData.concat(arrData) });
@@ -456,7 +459,8 @@ export default class MyCouponsItems extends Component {
                     value: 1,
                     limit: '全品类：无金额门槛',
                     remarks: '1.全场均可使用此优惠券\n2.礼包优惠券在激活有效期内可以购买指定商品',
-                    type: 99 //以type=99表示1元券
+                    type: 99,//以type=99表示1元券
+                    levelimit: false
                 });
             }
             this.setState({ viewData: arrData });
@@ -483,8 +487,6 @@ export default class MyCouponsItems extends Component {
                 UI.$toast(result.msg);
             });
         }
-
-
     };
 
     //当父组件Tab改变的时候让子组件更新
