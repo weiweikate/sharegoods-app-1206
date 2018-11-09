@@ -66,7 +66,8 @@ class ClassifyModules {
             icon: shareImg,
             name: '分享',
             id: 1,
-            route: 'home/search/CategorySearchPage'
+            route: 'topic/DownPricePage',
+            linkTypeCode: 'ZT2018000019'
         }, {
             icon: showImg,
             name: '秀场',
@@ -82,12 +83,13 @@ class ClassifyModules {
             icon: schoolImg,
             name: '必看',
             id: 1,
-            route: 'home/search/CategorySearchPage'
+            route: 'show/ShowDetailPage'
         }, {
             icon: spikeImg,
             name: '秒杀',
             id: 1,
-            route: 'home/search/CategorySearchPage'
+            route: 'topic/DownPricePage',
+            linkTypeCode: 'ZT2018000012'
         }];
 
         HomeApi.classify().then(res => {
