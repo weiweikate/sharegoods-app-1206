@@ -24,6 +24,7 @@ import com.facebook.react.uimanager.RootView;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.views.view.ReactViewGroup;
+import com.meeruu.commonlib.utils.ScreenUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -106,7 +107,9 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
     public void onDropInstance() {
         ((ReactContext) getReactContext()).removeLifecycleEventListener(this);
         dismiss();
-//        mContext = null;
+        if (mContext != null) {
+            mContext = null;
+        }
     }
 
     public void dismiss() {
@@ -115,11 +118,13 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
                 popupWindow.dismiss();
             }
             popupWindow = null;
-
             // We need to remove the mHostView from the parent
             // It is possible we are dismissing this dialog and reattaching the hostView to another
             ViewGroup parent = (ViewGroup) mHostView.getParent();
             parent.removeViewAt(0);
+            if (mContext != null) {
+                mContext = null;
+            }
         }
     }
 
@@ -172,7 +177,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         popupWindow.setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
         View v = getContentView();
         popupWindow.setContentView(v);
-        popupWindow.setWidth(Utils.getScreenWidth(mContext));
+        popupWindow.setWidth(ScreenUtils.getScreenWidth());
         popupWindow.setTouchable(true);// true popwindow优先一切（系统级以外）处理touch  false:popwindow 只是一个view 不影响界面操作
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));//不设置 不是全屏 周围会有空白部分
         popupWindow.setOutsideTouchable(true);
