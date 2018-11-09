@@ -48,6 +48,7 @@ const GoodsListItem = props => {
         let str = '1';
         let autoConfirmTime = Math.round((autoConfirmTime2 - new Date().valueOf()) / 1000);
         if (autoConfirmTime < 0) {
+            callBack();
             return '';
         }
         let time = (new TimeDownUtils()).getDateData2(autoConfirmTime2);

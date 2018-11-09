@@ -24,10 +24,11 @@ import {
     UIImage
 } from '../../../components/ui';
 import ShareTaskHomeAlert from './ShareTaskHomeAlert';
-import task_icon from '../res/task_icon.png';
+import res from '../res';
 import taskApi from '../api/taskApi';
 import { NavigationActions } from 'react-navigation';
 import RouterMap from 'RouterMap';
+const task_icon = res.task_icon;
 
 export default class ShareTaskIcon extends React.Component {
 
