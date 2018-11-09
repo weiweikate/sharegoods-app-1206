@@ -6,7 +6,7 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    Image
+    Image, DeviceEventEmitter
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import loginAndRegistRes from '../res/LoginAndRegistRes';
@@ -197,6 +197,7 @@ export default class LoginPage extends BasePage {
                 this.$loadingDismiss();
                 UserModel.saveUserInfo(data.data);
                 UserModel.saveToken(data.data.token);
+                DeviceEventEmitter.emit('homePage_message',null);
                 bridge.$toast('登陆成功');
                 this.params.callback && this.params.callback();
                 if (this.params.callback) {
