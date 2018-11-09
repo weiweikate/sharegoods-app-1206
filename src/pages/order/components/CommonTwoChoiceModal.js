@@ -7,8 +7,8 @@ import {
     TouchableOpacity
 } from 'react-native';
 import BonusExchangeSucceedBackground from '../../mine/res/userInfoImg/BonusExchangeSucceedBackground.png';
-import bonusClose from '../../mine/res/userInfoImg/bonusClose.png';
-import { UIImage } from '../../../components/ui';
+// import bonusClose from '../../mine/res/userInfoImg/bonusClose.png';
+// import { UIImage } from '../../../components/ui';
 import Modal from 'CommModal';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
@@ -139,8 +139,8 @@ export default class CommonTwoChoiceModal extends Component {
                         justifyContent: 'flex-start',
                         alignItems: 'flex-end'
                     }}>
-                        <UIImage source={bonusClose} style={{ width: 32, height: 32, marginTop: 43 }}
-                                 onPress={() => this.props.closeWindow()}/>
+                        {/*<UIImage source={bonusClose} style={{ width: 32, height: 32, marginTop: 43 }}*/}
+                                 {/*onPress={() => this.props.closeWindow()}/>*/}
                     </View>
                     <View style={{ height: 272, width: 295, justifyContent: 'space-between' }}>
                         <View style={{

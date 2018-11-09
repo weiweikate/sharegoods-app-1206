@@ -14,6 +14,7 @@ import ResultSegmentView from './components/ResultSegmentView';
 import ResultHorizontalRow from './components/ResultHorizontalRow';
 import ResultVerticalRow from './components/ResultVerticalRow';
 import toGwc from './res/toGwc.png';
+import kongbaiye_ss_icon from './res/kongbaiye_ss_icon.png';
 import toTop from './res/toTop.png';
 import RouterMap from 'RouterMap';
 import HomeAPI from '../api/HomeAPI';
@@ -79,6 +80,11 @@ export default class SearchResultPage extends BasePage {
             netFailedProps: {
                 netFailedInfo: this.state.netFailedInfo,
                 reloadBtnClick: this._productList
+            },
+            emptyProps: {
+                source: kongbaiye_ss_icon,
+                description: '很抱歉',
+                subDescription: '没找到任何内容'
             }
         };
     };
@@ -253,7 +259,12 @@ export default class SearchResultPage extends BasePage {
                 this._clickItemAction(item);
             }}>
                 <View>
-                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 16, paddingVertical: 15 }}>{item}</Text>
+                    <Text style={{
+                        fontSize: 13,
+                        color: DesignRule.textColor_mainTitle,
+                        marginLeft: 16,
+                        paddingVertical: 15
+                    }}>{item}</Text>
                     <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inGrayBg, marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);

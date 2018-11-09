@@ -32,6 +32,7 @@ export default class EmptyView extends Component {
 
     static propTypes = {
         description: PropTypes.string, // 标题描述
+        subDescription: PropTypes.string, // 标题描述
         source: PropTypes.any, // 图片
         imageStyle: PropTypes.any, // 图片样式
         // 含有刷新功能
@@ -70,13 +71,15 @@ export default class EmptyView extends Component {
         const {
             style,
             imageStyle,
-            description
+            description,
+            subDescription
         } = this.props;
         return (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={[styles.container, style]}>
                     <Image source={this._getImgSource()} style={[styles.img, imageStyle]}/>
                     <Text style={styles.description}>{description}</Text>
+                    <Text style={styles.subDescription}>{subDescription}</Text>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -159,8 +162,14 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: 15,
-        color: DesignRule.textColor_instruction,
-        marginTop: 28,
+        color: '#909090',
+        marginTop: 12,
+        textAlign: 'center'
+    },
+    subDescription: {
+        fontSize: 12,
+        color: '#909090',
+        marginTop: 9,
         textAlign: 'center'
     }
 });

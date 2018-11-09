@@ -184,26 +184,27 @@ const styles = StyleSheet.create({
     },
     container: {}, imageBackgroundStyle: {
         position: 'absolute',
-        height: 140,
+        height: 95,
+        backgroundColor:'#FF4F6E',
         width: ScreenUtils.width - 30,
         marginLeft: 15,
         marginRight: 15,
         marginTop: 10,
         marginBottom: 10,
-        borderRadius: 15,
-        backgroundColor:'#FF4F6E'
+        borderRadius: 15
     }, rectangleStyle: {
-        width: 100,
+        width: 120,
         height: 44,
         borderWidth: 1,
         borderRadius: 5,
         borderColor: 'white',
+        marginLeft: 15,
         marginRight: 15,
         justifyContent: 'center',
-        marginTop: 20,
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 3
     }, viewStyle: {
-        height: 140,
+        height: 95,
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 15,

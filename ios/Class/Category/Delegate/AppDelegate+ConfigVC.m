@@ -37,12 +37,14 @@
                                                initialProperties:@{@"statusBarHeight":[NSNumber numberWithFloat:kStatusBarHeight]}
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+ 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   JRBaseVC *rootViewController = [JRBaseVC new];
   rootViewController.view = rootView;
   JRBaseNavVC * nav = [[JRBaseNavVC alloc] initWithRootViewController:rootViewController];
   self.window.rootViewController = nav;
   [self.window makeKeyAndVisible];
+  [NSThread sleepForTimeInterval:3];
 //  [self createDebugSuspensionButton];
 }
 // 创建悬浮球按钮
