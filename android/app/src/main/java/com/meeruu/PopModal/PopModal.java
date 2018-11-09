@@ -105,9 +105,9 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
     }
 
     public void onDropInstance() {
-        ((ReactContext) getReactContext()).removeLifecycleEventListener(this);
         dismiss();
         if (mContext != null) {
+            ((ReactContext) getReactContext()).removeLifecycleEventListener(this);
             mContext = null;
         }
     }
