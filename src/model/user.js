@@ -351,8 +351,7 @@ class User {
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
         AsyncStorage.removeItem(LASTSHOWPROMOTIONTIME).catch(e => {
         });
-        AsyncStorage.removeItem('lastMessageTime').catch(e => {
-        });
+
         return AsyncStorage.removeItem(USERINFOCACHEKEY).catch(e => {
         });
     }
