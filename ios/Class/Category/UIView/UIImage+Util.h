@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UIImage (Util)
-
++ (UIImage *)getLaunchImage;
 @end
 
 NS_ASSUME_NONNULL_END
