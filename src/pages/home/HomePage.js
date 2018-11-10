@@ -7,7 +7,7 @@ import {
     RefreshControl,
     ImageBackground,
     TouchableWithoutFeedback,
-    Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter
+    Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter,InteractionManager
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
@@ -40,7 +40,6 @@ import DesignRule from 'DesignRule';
 import res from '../../comm/res';
 
 const closeImg = res.button.cancel_white_circle;
-
 /**
  * @author zhangjian
  * @date on 2018/9/7
@@ -150,8 +149,10 @@ export default class HomePage extends PureComponent {
     }
 
     componentDidMount() {
-        this.getMessageData();
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
+        InteractionManager.runAfterInteractions(() => {
+            this.getMessageData();
+        });
 
     }
 
@@ -241,22 +242,39 @@ export default class HomePage extends PureComponent {
         homeModule.loadHomeList();
     }
 
-    getMessageData =  async() => {
-        const value = await AsyncStorage.getItem('lastMessageTime', (error, result) => {
-        });
-        if (value == null || parseInt(currStr)-parseInt(value)<24*60*60*1000) {
-            MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
-                if (!EmptyUtils.isEmptyArr(res.data.data)) {
-                    this.messageModal && this.messageModal.open();
-                    this.setState({
-                        showMessage: true,
-                        messageData: res.data.data
+    getMessageData = () => {
+        // let currStr =  new Date().getTime() + '';
+        // await AsyncStorage.getItem('lastMessageTime', (error, value) => {
+        //     alert(value);
+        //     if (value == null || parseInt(currStr)-parseInt(value)<24*60*60*1000) {
+        //         MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
+        //             if (!EmptyUtils.isEmptyArr(res.data.data)) {
+        //                 this.messageModal && this.messageModal.open();
+        //                 this.setState({
+        //                     showMessage: true,
+        //                     messageData: res.data.data
+        //                 });
+        //             }
+        //         });
+        //     }
+        //     AsyncStorage.setItem('lastMessageTime', currStr);
+        // });
+        var currStr =  new Date().getTime() + '';
+         AsyncStorage.getItem('lastMessageTime').then((value)=>{
+                if (value == null || parseInt(currStr)-parseInt(value)<24*60*60*1000) {
+                    MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
+                        if (!EmptyUtils.isEmptyArr(res.data.data)) {
+                            this.messageModal && this.messageModal.open();
+                            this.setState({
+                                showMessage: true,
+                                messageData: res.data.data
+                            });
+                        }
                     });
                 }
-            });
-        }
-        let currStr =  new Date().getTime() + '';
+        });
         AsyncStorage.setItem('lastMessageTime', currStr);
+
     };
 
     messageModalRender() {

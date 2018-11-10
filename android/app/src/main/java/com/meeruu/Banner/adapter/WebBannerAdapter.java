@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-
 import com.meeruu.Banner.BannerLayout;
 import com.meeruu.sharegoods.R;
 
@@ -30,7 +29,7 @@ public class WebBannerAdapter extends RecyclerView.Adapter<WebBannerAdapter.MzVi
         this.urlList = urlList;
     }
 
-    public void setUrls(List<String> list){
+    public void setUrls(List<String> list) {
         this.urlList = list;
     }
 
@@ -50,7 +49,7 @@ public class WebBannerAdapter extends RecyclerView.Adapter<WebBannerAdapter.MzVi
         final int P = position % urlList.size();
         String url = urlList.get(P);
         ImageView img = (ImageView) holder.imageView;
-        Glide.with(context).load(url).into(img);
+        Glide.with(context.getApplicationContext()).load(url).into(img);
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,9 +63,9 @@ public class WebBannerAdapter extends RecyclerView.Adapter<WebBannerAdapter.MzVi
     @Override
     public int getItemCount() {
         if (urlList != null) {
-           return urlList.size();
+            return urlList.size();
         }
-       return 0;
+        return 0;
     }
 
 

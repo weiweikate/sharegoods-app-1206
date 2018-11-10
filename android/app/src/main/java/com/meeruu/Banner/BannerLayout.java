@@ -89,14 +89,6 @@ public class BannerLayout extends FrameLayout {
         super(context, attrs, defStyleAttr);
         mEventDispatcher = ((ReactContext)context).getNativeModule(UIManagerModule.class).getEventDispatcher();
         initView(context, attrs);
-        WebBannerAdapter webBannerAdapter = new WebBannerAdapter(context,null);
-        webBannerAdapter.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                mEventDispatcher.dispatchEvent(new DidSelectItemAtIndexEvent(getId(),position));
-            }
-        });
-        setAdapter(webBannerAdapter);
     }
 
     protected void initView(Context context, AttributeSet attrs) {

@@ -4,7 +4,7 @@ import {
     View,
     Image,
     NativeModules,
-    TouchableOpacity, Alert, Switch, Text, Platform
+    TouchableOpacity, Alert, Switch, Text, Platform, AsyncStorage
 } from 'react-native';
 
 const { CachesModule } = NativeModules;
@@ -197,6 +197,8 @@ class SettingPage extends BasePage {
                 }}
                 yes={() => {
                     this.setState({ isShowLoginOutModal: false });
+                    AsyncStorage.removeItem('lastMessageTime').catch(e => {
+                    });
                     this.$loadingShow();
                     // 正常退出，或者登录超时，都去清空数据
                     user.clearUserInfo();
