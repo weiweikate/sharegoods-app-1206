@@ -100,6 +100,7 @@ public class ReactBannerManager extends SimpleViewManager<MZBannerView> {
             LogUtils.d("sssss"+data);
             Picasso.with(context.getApplicationContext()).load(data).into(mImageView);
 
+
             // Glide.with(context.getApplicationContext()).load(data).into(mImageView);
 
         }

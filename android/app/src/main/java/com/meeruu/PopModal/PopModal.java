@@ -26,6 +26,7 @@ import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.meeruu.commonlib.utils.ScreenUtils;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -37,15 +38,16 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
     private DialogRootViewGroup mHostView;
     private @Nullable
     PopupWindow popupWindow;
-    public static ReactContext mContext;
+    public static WeakReference<ReactContext> mContext;
     // Set this flag to true if changing a particular property on the view requires a new Dialog to
     // be created.  For instance, animation does since it affects Dialog creation through the theme
     // but transparency does not since we can access the window to update the property.
 
     public PopModal(ReactContext context) {
         super(context);
-        mContext = context;
-        mContext.addLifecycleEventListener(this);
+        mContext = new WeakReference<>(context);
+
+        context.addLifecycleEventListener(this);
         mHostView = new DialogRootViewGroup(context);
     }
 
@@ -101,7 +103,10 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
     }
 
     public void onDropInstance() {
-        mContext.removeLifecycleEventListener(this);
+        ReactContext context = mContext.get();
+        if(context != null){
+            context.removeLifecycleEventListener(this);
+        }
         dismiss();
     }
 
@@ -115,9 +120,6 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             // It is possible we are dismissing this dialog and reattaching the hostView to another
             ViewGroup parent = (ViewGroup) mHostView.getParent();
             parent.removeViewAt(0);
-            if (mContext != null) {
-                mContext = null;
-            }
         }
     }
 
@@ -186,7 +188,12 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
 
     private @Nullable
     Activity getCurrentActivity() {
-        return mContext.getCurrentActivity();
+        ReactContext context = mContext.get();
+        if(context != null){
+            return context.getCurrentActivity();
+        }else {
+            return null;
+        }
     }
 
     /**
@@ -196,15 +203,20 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
      * "top: statusBarHeight", since that margin will be included in the FrameLayout.
      */
     private View getContentView() {
-        FrameLayout frameLayout = new FrameLayout(mContext);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        frameLayout.setLayoutParams(params);
-        frameLayout.addView(mHostView);
-        frameLayout.setFocusable(true);
-        frameLayout.setFocusableInTouchMode(true);
-        frameLayout.setPadding(0, 0, 0, 0);
-        frameLayout.setFitsSystemWindows(true);
-        return frameLayout;
+        ReactContext context = mContext.get();
+        if(context != null){
+            FrameLayout frameLayout = new FrameLayout(context);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            frameLayout.setLayoutParams(params);
+            frameLayout.addView(mHostView);
+            frameLayout.setFocusable(true);
+            frameLayout.setFocusableInTouchMode(true);
+            frameLayout.setPadding(0, 0, 0, 0);
+            frameLayout.setFitsSystemWindows(true);
+            return frameLayout;
+        }else {
+            return null;
+        }
     }
 
     //适配全屏
@@ -246,14 +258,18 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             super.onSizeChanged(w, h, oldw, oldh);
             if (getChildCount() > 0) {
                 final int viewTag = getChildAt(0).getId();
-                mContext.runOnNativeModulesQueueThread(
-                        new GuardedRunnable(mContext) {
-                            @Override
-                            public void runGuarded() {
-                                mContext.getNativeModule(UIManagerModule.class)
-                                        .updateNodeSize(viewTag, w, h);
-                            }
-                        });
+                final ReactContext context = mContext.get();
+                if(context != null){
+                    context.runOnNativeModulesQueueThread(
+                            new GuardedRunnable(context) {
+                                @Override
+                                public void runGuarded() {
+                                    context.getNativeModule(UIManagerModule.class)
+                                            .updateNodeSize(viewTag, w, h);
+                                }
+                            });
+                }
+
             }
         }
 
@@ -285,7 +301,14 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         }
 
         private EventDispatcher getEventDispatcher() {
-            return mContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+            ReactContext context = mContext.get();
+            if (context != null) {
+                return context.getNativeModule(UIManagerModule.class).getEventDispatcher();
+
+            }else {
+                return null;
+            }
+
         }
     }
 }
