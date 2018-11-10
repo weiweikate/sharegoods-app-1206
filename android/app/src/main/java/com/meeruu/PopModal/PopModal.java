@@ -173,6 +173,9 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         }
 
         Activity currentActivity = getCurrentActivity();
+        if(currentActivity == null || currentActivity.isFinishing()){
+            return;
+        }
 //        Context context = currentActivity == null ? getReactContext() : currentActivity;
         popupWindow = new PopupWindow(getCurrentActivity());
         popupWindow.setFocusable(true);
@@ -194,6 +197,9 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
 
     private @Nullable
     Activity getCurrentActivity() {
+        if(getReactContext() == null){
+            return null;
+        }
         return ((ReactContext) getReactContext()).getCurrentActivity();
     }
 
