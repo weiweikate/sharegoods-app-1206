@@ -37,20 +37,16 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
     private DialogRootViewGroup mHostView;
     private @Nullable
     PopupWindow popupWindow;
-    public static Context mContext;
+    public static ReactContext mContext;
     // Set this flag to true if changing a particular property on the view requires a new Dialog to
     // be created.  For instance, animation does since it affects Dialog creation through the theme
     // but transparency does not since we can access the window to update the property.
 
-    public PopModal(Context context) {
+    public PopModal(ReactContext context) {
         super(context);
-        ((ReactContext) context).addLifecycleEventListener(this);
         mContext = context;
+        mContext.addLifecycleEventListener(this);
         mHostView = new DialogRootViewGroup(context);
-    }
-
-    public static Context getReactContext() {
-        return mContext;
     }
 
     public boolean isShow() {
@@ -105,11 +101,8 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
     }
 
     public void onDropInstance() {
+        mContext.removeLifecycleEventListener(this);
         dismiss();
-        if (mContext != null) {
-            ((ReactContext) getReactContext()).removeLifecycleEventListener(this);
-            mContext = null;
-        }
     }
 
     public void dismiss() {
@@ -191,10 +184,9 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         }
     }
 
-
     private @Nullable
     Activity getCurrentActivity() {
-        return ((ReactContext) getReactContext()).getCurrentActivity();
+        return mContext.getCurrentActivity();
     }
 
     /**
@@ -204,7 +196,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
      * "top: statusBarHeight", since that margin will be included in the FrameLayout.
      */
     private View getContentView() {
-        FrameLayout frameLayout = new FrameLayout(getReactContext());
+        FrameLayout frameLayout = new FrameLayout(mContext);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         frameLayout.setLayoutParams(params);
         frameLayout.addView(mHostView);
@@ -254,12 +246,11 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             super.onSizeChanged(w, h, oldw, oldh);
             if (getChildCount() > 0) {
                 final int viewTag = getChildAt(0).getId();
-                ReactContext reactContext = (ReactContext) getReactContext();
-                reactContext.runOnNativeModulesQueueThread(
-                        new GuardedRunnable(reactContext) {
+                mContext.runOnNativeModulesQueueThread(
+                        new GuardedRunnable(mContext) {
                             @Override
                             public void runGuarded() {
-                                ((ReactContext) getReactContext()).getNativeModule(UIManagerModule.class)
+                                mContext.getNativeModule(UIManagerModule.class)
                                         .updateNodeSize(viewTag, w, h);
                             }
                         });
@@ -294,8 +285,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         }
 
         private EventDispatcher getEventDispatcher() {
-            ReactContext reactContext = (ReactContext) getReactContext();
-            return reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+            return mContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         }
     }
 }
