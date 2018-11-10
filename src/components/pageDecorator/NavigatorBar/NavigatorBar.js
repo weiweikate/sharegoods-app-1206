@@ -50,7 +50,7 @@ export default class NavigatorBar extends Component {
         headerStyle: PropTypes.object,
         title: PropTypes.string,
         titleStyle: PropTypes.object,
-
+        leftImageStyle:PropTypes.object,
         leftNavTitle: PropTypes.string,
         leftNavImage: PropTypes.any,
         leftNavItemHidden: PropTypes.bool,
@@ -80,9 +80,11 @@ export default class NavigatorBar extends Component {
             rightNavTitle,
             leftNavItemHidden,
             rightNavItemHidden,
-            titleStyle
+            titleStyle,
+            leftImageStyle
         } = props;
         this.state = {
+            leftImageStyle,
             titleStyle,
             title,
             hideNavBar,
@@ -153,7 +155,8 @@ export default class NavigatorBar extends Component {
     _renderLeftItem = () => {
         const {
             leftNavImage,
-            leftNavTitle
+            leftNavTitle,
+            leftImageStyle
         } = this.props;
 
         if (this.state.leftNavItemHidden) {
@@ -180,13 +183,13 @@ export default class NavigatorBar extends Component {
             return <TouchableOpacity
                 style={[styles.left,
                     {
-                        top: statusBarHeight
+                        top: statusBarHeight,
                     }]}
                 onPress={this._onLeftPressed}>
                 <Image
                     source={leftNavImage}
                     resizeMode={'stretch'}
-                    style={{ height: 15, width: 15 }}
+                    style={[{ height: 15, width: 15 ,},leftImageStyle]}
                 />
             </TouchableOpacity>;
         }

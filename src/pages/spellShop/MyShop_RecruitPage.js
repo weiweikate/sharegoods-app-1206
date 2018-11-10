@@ -2,9 +2,6 @@ import React from 'react';
 import {
     View,
     StyleSheet,
-    ScrollView,
-    Image,
-    RefreshControl
 } from 'react-native';
 
 import BasePage from '../../BasePage';
@@ -16,10 +13,7 @@ import RecommendPage from './recommendSearch/RecommendPage';
 import SpellShopApi from './api/SpellShopApi';
 import { PageLoadingState } from '../../components/pageDecorator/PageState';
 import spellStatusModel from './model/SpellStatusModel';
-import IntroduceImg from './src/hhk_03.png';
-import IntroduceImg1 from './src/hhk_031.png';
-import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
-import ScreenUtils from '../../utils/ScreenUtils';
+import NoAccessPage from './NoAccessPage';
 
 @observer
 export default class MyShop_RecruitPage extends BasePage {
@@ -101,20 +95,7 @@ export default class MyShop_RecruitPage extends BasePage {
 
             }
         } else {
-            return <View>
-                <NavigatorBar title={'拼店'} leftPressed={() => {
-                    this.$navigateBack();
-                }
-                }/>
-                <ScrollView refreshControl={<RefreshControl refreshing={spellStatusModel.refreshing}
-                                                            onRefresh={this._onRefresh}/>}
-                            showsVerticalScrollIndicator={false}>
-                    <View style={{ flex: 1 }}>
-                        <Image style={styles.levelLow} source={IntroduceImg} resizeMode='stretch'/>
-                        <Image style={styles.levelLow1} source={IntroduceImg1} resizeMode='stretch'/>
-                    </View>
-                </ScrollView>
-            </View>;
+            return <NoAccessPage navigation={this.props.navigation}/>;
         }
 
     };
@@ -133,16 +114,5 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    levelLow: {
-        width: ScreenUtils.width,
-        height: ScreenUtils.height - ScreenUtils.headerHeight
-    },
-    levelLow1: {
-        position: 'absolute',
-        marginTop: ScreenUtils.isIOSX ? ScreenUtils.autoSizeHeight(78 + 60) : ScreenUtils.autoSizeHeight(78),
-        width: ScreenUtils.autoSizeWidth(375 - 59 * 2),
-        height: ScreenUtils.autoSizeWidth(257),
-        alignSelf: 'center'
-    }
 });
 

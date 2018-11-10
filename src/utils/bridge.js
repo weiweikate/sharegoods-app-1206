@@ -129,6 +129,8 @@ export default {
     clearAllCache(callback = () => {
     }) {
         NativeModules.commModule.clearAllCache(callback);
-    }
+    },
+
+    removeLaunch : () => NativeModules.commModule.removeLaunch()
 
 };

@@ -2,24 +2,15 @@
 import React from 'react';
 import {
     View,
-    Image,
-    StyleSheet,
-    ScrollView,
-    RefreshControl
+    StyleSheet
 } from 'react-native';
-
-// 图片资源
-import IntroduceImg from './src/hhk_03.png';
-import IntroduceImg1 from './src/hhk_031.png';
-import ScreenUtils from '../../utils/ScreenUtils';
 import BasePage from '../../BasePage';
 
 import { observer } from 'mobx-react';
 import SpellStatusModel from './model/SpellStatusModel';
 import RecommendPage from './recommendSearch/RecommendPage';
-import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import MyShop_RecruitPage from './MyShop_RecruitPage';
-import DesignRule from 'DesignRule';
+import NoAccessPage from './NoAccessPage';
 
 @observer
 export default class SpellShopPage extends BasePage {
@@ -52,22 +43,7 @@ export default class SpellShopPage extends BasePage {
         } else {
             // 初始化的介绍页面
             return (
-                <View>
-                    <NavigatorBar leftNavItemHidden={true} title={'拼店'}/>
-                    <ScrollView refreshControl={<RefreshControl refreshing={SpellStatusModel.refreshing}
-                                                                onRefresh={() => {
-                                                                    SpellStatusModel.getUser(1);
-                                                                }}
-                                                                title="下拉刷新"
-                                                                tintColor={DesignRule.textColor_instruction}
-                                                                titleColor={DesignRule.textColor_instruction}/>}
-                                showsVerticalScrollIndicator={false}>
-                        <View style={{ flex: 1 }}>
-                            <Image style={styles.levelLow} source={IntroduceImg} resizeMode='stretch'/>
-                            <Image style={styles.levelLow1} source={IntroduceImg1} resizeMode='stretch'/>
-                        </View>
-                    </ScrollView>
-                </View>
+                <NoAccessPage navigation={this.props.navigation} leftNavItemHidden={true}/>
             );
         }
     };
@@ -85,17 +61,6 @@ export default class SpellShopPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1
-    },
-    levelLow: {
-        width: ScreenUtils.width,
-        height: ScreenUtils.height - ScreenUtils.headerHeight - ScreenUtils.tabBarHeight
-    },
-    levelLow1: {
-        position: 'absolute',
-        marginTop: ScreenUtils.isIOSX ? ScreenUtils.autoSizeHeight(78 + 60) : ScreenUtils.autoSizeHeight(78),
-        width: ScreenUtils.autoSizeWidth(375 - 59 * 2),
-        height: ScreenUtils.autoSizeWidth(257),
-        alignSelf: 'center'
     }
 });
 

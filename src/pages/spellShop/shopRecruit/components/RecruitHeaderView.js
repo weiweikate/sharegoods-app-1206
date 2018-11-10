@@ -41,10 +41,12 @@ export default class RecommendRow extends Component {
     };
 
     render() {
-        const { name, storeNumber, totalTradeVolume, bonusCount, manager = {} } = this.props.storeData;
+        const { name, storeNumber, totalTradeBalance, bonusCount, manager = {} } = this.props.storeData;
         let { createTime, headUrl } = this.props.storeData;
         createTime = StringUtils.isNoEmpty(createTime) ? createTime : '';
         headUrl = StringUtils.isNoEmpty(headUrl) ? headUrl : '';
+        let totalTradeBalance1 = totalTradeBalance || 0;
+        totalTradeBalance1 = Math.floor(totalTradeBalance1 / 10000);
         return <View style={styles.bg}>
             <ImageBackground source={HeaderBarBgImg} style={styles.headerBg}>
                 <View style={{
@@ -90,7 +92,7 @@ export default class RecommendRow extends Component {
                     }}>
                         <Text
                             style={{ fontSize: 12, color: '#666666' }}>完成总交易额：<Text
-                            style={{ color: '#FE1A54' }}>{`${totalTradeVolume || 0}元`}</Text></Text>
+                            style={{ color: '#FE1A54' }}>{totalTradeBalance1 < 1 ? '1万以内' : (totalTradeBalance1 > 10 ? '10万+' : `${totalTradeBalance1}万+`)}</Text></Text>
                         <Text style={{
                             fontSize: 12,
                             color: '#666666'
