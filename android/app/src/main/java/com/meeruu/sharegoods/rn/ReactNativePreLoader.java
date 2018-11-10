@@ -7,6 +7,7 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactRootView;
 import com.meeruu.commonlib.utils.LogUtils;
 
+import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,15 +21,15 @@ public class ReactNativePreLoader {
      * @param activity
      * @param componentName
      */
-    public static void preLoad(Activity activity, String componentName) {
+    public static void preLoad(SoftReference<Activity> activity, String componentName) {
 
         if (CACHE.get(componentName) != null) {
             return;
         }
         // 1.创建ReactRootView
-        ReactRootView rootView = new ReactRootView(activity);
+        ReactRootView rootView = new ReactRootView(activity.get());
         rootView.startReactApplication(
-                ((ReactApplication) activity.getApplication()).getReactNativeHost().getReactInstanceManager(),
+                ((ReactApplication) activity.get().getApplication()).getReactNativeHost().getReactInstanceManager(),
                 componentName,
                 null);
 
