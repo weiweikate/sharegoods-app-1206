@@ -84,6 +84,11 @@ export default class InvitePromotionPage extends BasePage<Props> {
 
 
     _itemRender = ({ item }) => {
+        let tip = (
+            <Text style={styles.itemTextStyle}>
+                库存不足
+            </Text>
+        );
         let limit = (
             <Text style={styles.itemTextStyle}>
                 {`每人限购${item.buyLimit}份`}
@@ -92,14 +97,15 @@ export default class InvitePromotionPage extends BasePage<Props> {
         return (
             <View style={{ height: px2dp(63), width: ScreenUtils.width }}>
                 <TouchableWithoutFeedback onPress={() => {
-                    if (item.userBuy) {
+                    if (item.userBuy && item.status === 1) {
                         this.$navigate('mine/promotion/PromotionPayPage', item);
                     }
                 }}>
-                    <View style={[styles.itemWrapper, { backgroundColor: item.userBuy ? 'white' : '#CCCCCC' }]}>
+                    <View style={[styles.itemWrapper, { backgroundColor: item.userBuy && (item.status === 1 )? 'white' : '#CCCCCC' }]}>
                         <Text style={styles.itemTextStyle}>
                             {item.name}{`/推广周期${item.cycle}天`}
                         </Text>
+                        {item.status === 2 ? tip : null}
                         {(!item.userBuy && item.lime !== -1) ? limit : null}
                     </View>
                 </TouchableWithoutFeedback>
