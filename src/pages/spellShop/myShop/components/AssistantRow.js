@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import SwipeOut from 'react-native-swipeout';
 import DesignRule from 'DesignRule';
+import StringUtils from '../../../../utils/StringUtils';
 
 export default class AssistantRow extends Component {
 
@@ -43,7 +44,8 @@ export default class AssistantRow extends Component {
 
     renderContent = (style) => {
         let { headImg, levelName, nickName, contribution } = this.props.item;
-        const { tradeBalance } = this.props;
+        let { tradeBalance } = this.props;
+        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : tradeBalance;
         const sty = [styles.rowContainer];
         // TODO 等待后台确定贡献度 计算方式
         sty.push(style);

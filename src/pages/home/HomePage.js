@@ -243,25 +243,9 @@ export default class HomePage extends PureComponent {
     }
 
     getMessageData = () => {
-        // let currStr =  new Date().getTime() + '';
-        // await AsyncStorage.getItem('lastMessageTime', (error, value) => {
-        //     alert(value);
-        //     if (value == null || parseInt(currStr)-parseInt(value)<24*60*60*1000) {
-        //         MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
-        //             if (!EmptyUtils.isEmptyArr(res.data.data)) {
-        //                 this.messageModal && this.messageModal.open();
-        //                 this.setState({
-        //                     showMessage: true,
-        //                     messageData: res.data.data
-        //                 });
-        //             }
-        //         });
-        //     }
-        //     AsyncStorage.setItem('lastMessageTime', currStr);
-        // });
         var currStr =  new Date().getTime() + '';
          AsyncStorage.getItem('lastMessageTime').then((value)=>{
-                if (value == null || parseInt(currStr)-parseInt(value)<24*60*60*1000) {
+                if (value == null || parseInt(currStr)-parseInt(value)>24*60*60*1000) {
                     MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
                         if (!EmptyUtils.isEmptyArr(res.data.data)) {
                             this.messageModal && this.messageModal.open();

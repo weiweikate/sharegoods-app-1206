@@ -20,6 +20,7 @@ public class ParameterUtils {
     public static final String RESPONSE_CODE_SUCCESS = "10000";  //响应成功码
     //无网络连接错误码
     public static final String RESPONE_CODE_NETERR = "net_err";
+    public static final String RN_MAIN_NAME = "sharegoods";
     // 应用更新
     public static final int FLAG_UPDATE = 1;
     // 应用强制更新

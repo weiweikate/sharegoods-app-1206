@@ -97,6 +97,7 @@ dependencies {
     api project(path: ':commonlib')
     api project(path: ':qiyu_service')
     api project(path: ':qrcode')
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     debugImplementation('com.squareup.leakcanary:leakcanary-android:1.+') {
         exclude(module: 'support-core-utils')

@@ -76,7 +76,7 @@ export default class RecommendRow extends Component {
                     <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
                         {this._renderItems(Shape, '店长', manager.nickname || '')}
                         <View style={{ backgroundColor: '#E4E4E4', width: 0.5, height: 41 }}/>
-                        {this._renderItems(shoushi, '店铺等级', manager.levelName || '')}
+                        {this._renderItems(shoushi, '会员等级', manager.levelName || '')}
                         <View style={{ backgroundColor: '#E4E4E4', width: 0.5, height: 41 }}/>
                         {this._renderItems(xiuling, '秀龄', `${Math.floor((new Date().getTime() - manager.regTime) / (24 * 3600 * 1000))}天`)}
                     </View>
