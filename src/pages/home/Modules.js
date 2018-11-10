@@ -240,9 +240,6 @@ class HomeModule {
             id: 1,
             type: homeType.classify
         }, {
-            id: 2,
-            type: homeType.user
-        }, {
             id: 3,
             type: homeType.ad
         }, {
