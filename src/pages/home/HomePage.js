@@ -39,6 +39,7 @@ import StringUtils from '../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../../comm/res';
 
+var TimerMixin = require('react-timer-mixin');
 const closeImg = res.button.cancel_white_circle;
 /**
  * @author zhangjian
@@ -145,11 +146,13 @@ export default class HomePage extends PureComponent {
     }
 
     componentDidMount() {
-        // 检测版本更新
-        // this.getVersion();
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         InteractionManager.runAfterInteractions(() => {
-            this.getMessageData();
+            this.timer = TimerMixin.setTimeout(() => {
+                // 检测版本更新
+                // this.getVersion();
+                this.getMessageData();
+            }, 2500);
         });
     }
 
