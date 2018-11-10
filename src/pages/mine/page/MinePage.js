@@ -457,7 +457,7 @@ export default class MinePage extends BasePage {
     };
 
     renderOrderStates = () => {
-        let statesImage = [waitPay, waitDelivery, hasFinished, waitReceive];
+        let statesImage = [waitPay, waitDelivery, waitReceive,hasFinished];
         let statesText = ['待付款', '待发货', '待收货', '售后/退款'];
         let arr = [];
         for (let i = 0; i < statesImage.length; i++) {
