@@ -104,7 +104,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
 
     public void onDropInstance() {
         ReactContext context = mContext.get();
-        if(context != null){
+        if (context != null) {
             context.removeLifecycleEventListener(this);
         }
         dismiss();
@@ -168,8 +168,10 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         }
 
         Activity currentActivity = getCurrentActivity();
-//        Context context = currentActivity == null ? getReactContext() : currentActivity;
-        popupWindow = new PopupWindow(getCurrentActivity());
+        if (currentActivity == null) {
+            return;
+        }
+        popupWindow = new PopupWindow(currentActivity);
         popupWindow.setFocusable(true);
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
@@ -182,16 +184,18 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         popupWindow.setOutsideTouchable(true);
         fitPopupWindowOverStatusBar(popupWindow, true);
         if (currentActivity != null || !currentActivity.isFinishing()) {
-            popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
+            if (mHostView.getWindowToken() != null) {
+                popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
+            }
         }
     }
 
     private @Nullable
     Activity getCurrentActivity() {
         ReactContext context = mContext.get();
-        if(context != null){
+        if (context != null) {
             return context.getCurrentActivity();
-        }else {
+        } else {
             return null;
         }
     }
@@ -204,7 +208,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
      */
     private View getContentView() {
         ReactContext context = mContext.get();
-        if(context != null){
+        if (context != null) {
             FrameLayout frameLayout = new FrameLayout(context);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
             frameLayout.setLayoutParams(params);
@@ -214,7 +218,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             frameLayout.setPadding(0, 0, 0, 0);
             frameLayout.setFitsSystemWindows(true);
             return frameLayout;
-        }else {
+        } else {
             return null;
         }
     }
@@ -259,7 +263,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             if (getChildCount() > 0) {
                 final int viewTag = getChildAt(0).getId();
                 final ReactContext context = mContext.get();
-                if(context != null){
+                if (context != null) {
                     context.runOnNativeModulesQueueThread(
                             new GuardedRunnable(context) {
                                 @Override
@@ -305,7 +309,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             if (context != null) {
                 return context.getNativeModule(UIManagerModule.class).getEventDispatcher();
 
-            }else {
+            } else {
                 return null;
             }
 

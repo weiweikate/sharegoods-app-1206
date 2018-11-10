@@ -9,10 +9,8 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
-import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -31,14 +29,11 @@ import com.meeruu.commonlib.utils.FileUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
-import com.meeruu.sharegoods.MainActivity;
-import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.meeruu.sharegoods.utils.DataCleanManager;
-import com.squareup.haha.perflib.Main;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -345,7 +340,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     private VersionUpdateEvent updateEvent(String lastVersion) {
         //提示当前有版本更新
         File apkFile = SDCardUtils.getFileDirPath("MR/file");
-        String fileName = AppUtils.getAppName(getCurrentActivity()) + "_" + lastVersion + ".apk";
+        String fileName = AppUtils.getAppName() + "_" + lastVersion + ".apk";
         String filePath = apkFile.getAbsolutePath() + File.separator + fileName;
         boolean exist = FileUtils.fileIsExists(filePath);
         VersionUpdateEvent event = new VersionUpdateEvent();
