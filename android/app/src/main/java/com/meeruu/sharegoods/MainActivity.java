@@ -46,12 +46,13 @@ public class MainActivity extends BaseActivity {
         setChangeStatusTrans(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        ReactNativePreLoader.preLoad(this, ParameterUtils.RN_MAIN_NAME);
+        ReactNativePreLoader.preLoad(MainActivity.this, ParameterUtils.RN_MAIN_NAME);
     }
 
     @Override
     protected void onDestroy() {
         releaseRes();
+        ReactNativePreLoader.deatchView(ParameterUtils.RN_MAIN_NAME);
         super.onDestroy();
     }
 
