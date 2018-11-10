@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn;
+package com.meeruu.sharegoods.rn.module;
 
 import android.app.Activity;
 import android.content.Intent;

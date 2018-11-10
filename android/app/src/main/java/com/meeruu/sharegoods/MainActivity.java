@@ -18,7 +18,12 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
+import com.meeruu.sharegoods.event.HideSplashEvent;
+import com.meeruu.sharegoods.rn.ReactNativePreLoader;
 import com.meeruu.sharegoods.ui.MainRNActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * @author louis
@@ -45,8 +50,7 @@ public class MainActivity extends BaseActivity {
         setChangeStatusTrans(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-//        SoftReference<Activity> softReference = new SoftReference<Activity>(MainActivity.this);
-//        ReactNativePreLoader.preLoad(softReference, ParameterUtils.RN_MAIN_NAME);
+        ReactNativePreLoader.preLoad(getApplicationContext(), ParameterUtils.RN_MAIN_NAME);
     }
 
     @Override
@@ -200,5 +204,11 @@ public class MainActivity extends BaseActivity {
 //            default:
 //                break;
 //        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void hideSplash(HideSplashEvent event) {
+        startActivity(new Intent(MainActivity.this, MainRNActivity.class));
+        finish();
     }
 }

@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn;
+package com.meeruu.sharegoods.rn.module;
 
 import android.os.Handler;
 import android.os.Message;
