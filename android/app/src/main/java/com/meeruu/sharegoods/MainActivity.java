@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity {
         setChangeStatusTrans(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        ReactNativePreLoader.preLoad(getApplicationContext(), ParameterUtils.RN_MAIN_NAME);
+        ReactNativePreLoader.preLoad(MainActivity.this, ParameterUtils.RN_MAIN_NAME);
     }
 
     @Override
@@ -155,7 +155,6 @@ public class MainActivity extends BaseActivity {
     //跳转到首页
     private void goIndex() {
         startActivity(new Intent(MainActivity.this, MainRNActivity.class));
-        finish();
     }
 
     @Override
@@ -208,7 +207,8 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void hideSplash(HideSplashEvent event) {
-        startActivity(new Intent(MainActivity.this, MainRNActivity.class));
-        finish();
+        if (hasBasePer && needGo && !hasGo) {
+            finish();
+        }
     }
 }

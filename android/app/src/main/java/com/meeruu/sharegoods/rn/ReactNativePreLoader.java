@@ -1,6 +1,6 @@
 package com.meeruu.sharegoods.rn;
 
-import android.content.Context;
+import android.app.Activity;
 import android.view.ViewGroup;
 
 import com.facebook.react.ReactRootView;
@@ -17,18 +17,18 @@ public class ReactNativePreLoader {
     /**
      * 初始化ReactRootView，并添加到缓存
      *
-     * @param context
+     * @param activity
      * @param componentName
      */
-    public static void preLoad(Context context, String componentName) {
+    public static void preLoad(Activity activity, String componentName) {
 
         if (CACHE.get(componentName) != null) {
             return;
         }
         // 1.创建ReactRootView
-        ReactRootView rootView = new ReactRootView(context);
+        ReactRootView rootView = new ReactRootView(activity);
         rootView.startReactApplication(
-                ((MainApplication) context).getReactNativeHost().getReactInstanceManager(),
+                ((MainApplication) activity.getApplication()).getReactNativeHost().getReactInstanceManager(),
                 componentName,
                 null);
 
