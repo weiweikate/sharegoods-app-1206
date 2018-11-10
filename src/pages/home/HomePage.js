@@ -74,8 +74,6 @@ export default class HomePage extends PureComponent {
     constructor(props) {
         super(props);
         homeModule.loadHomeList();
-        // 检测版本更新
-        // this.getVersion();
     }
 
 
@@ -147,11 +145,12 @@ export default class HomePage extends PureComponent {
     }
 
     componentDidMount() {
+        // 检测版本更新
+        // this.getVersion();
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         InteractionManager.runAfterInteractions(() => {
             this.getMessageData();
         });
-
     }
 
     componentWillUnmount() {
