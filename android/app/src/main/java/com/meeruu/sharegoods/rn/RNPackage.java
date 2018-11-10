@@ -24,7 +24,6 @@ public class RNPackage implements ReactPackage {
     public LoginAndSharingModule loginAndSharingModule;
     public PopModalManager popModalManager;
     public QRCodeModule qrCodeModule;
-    public ReactBannerManager reactBannerManager;
 
     /**
      * 创建Native Module
@@ -52,10 +51,8 @@ public class RNPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         popModalManager = new PopModalManager();
-        reactBannerManager = new ReactBannerManager();
         return Arrays.<ViewManager>asList(
-                popModalManager,
-                reactBannerManager);
+                popModalManager);
     }
 
 }
