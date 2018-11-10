@@ -177,6 +177,7 @@ export default class MyCouponsItems extends Component {
                             marginLeft: px2dp(39)
                         }} resizeMode={'contain'} onPress={this.reduceTokenCoin}/>
                         <TextInput
+
                             keyboardType={'numeric'}
                             underlineColorAndroid='transparent'
                             autoFocus={true}
@@ -189,8 +190,8 @@ export default class MyCouponsItems extends Component {
                                 alignItems: 'center',
                                 marginLeft: 5,
                                 marginRight: 5,
-                                borderColor: '#4D4D4D',
-                                backgroundColor: 'white',
+                                borderColor: DesignRule.textColor_placeholder,
+                                backgroundColor: DesignRule.white,
                                 borderWidth: 1,
                                 height: px2dp(24),
                                 width: px2dp(136),

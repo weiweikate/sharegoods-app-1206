@@ -1343,7 +1343,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     grayView: {
-        width: 80,
+        width: 100,
         height: 30,
         borderRadius: 15,
         backgroundColor: 'white',
