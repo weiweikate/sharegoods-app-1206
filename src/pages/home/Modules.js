@@ -51,7 +51,7 @@ class AdModules {
     });
 }
 
-export const adModules = new AdModules()
+export const adModules = new AdModules();
 
 import schoolImg from './res/school.png';
 import showImg from './res/show.png';
@@ -90,11 +90,11 @@ class ClassifyModules {
             id: 1,
             route: 'topic/DownPricePage',
             linkTypeCode: 'ZT2018000012'
-        }]
+        }];
     };
 }
 
-export const classifyModules = new ClassifyModules()
+export const classifyModules = new ClassifyModules();
 
 class StarShopModule {
     @observable shopList = [];
@@ -109,7 +109,7 @@ class StarShopModule {
     });
 }
 
-export const starShopModule = new StarShopModule()
+export const starShopModule = new StarShopModule();
 
 //今日榜单
 class TodayModule {
@@ -124,7 +124,7 @@ class TodayModule {
     });
 }
 
-export const todayModule = new TodayModule()
+export const todayModule = new TodayModule();
 
 //精品推荐
 class RecommendModule {
@@ -139,7 +139,7 @@ class RecommendModule {
     });
 }
 
-export const recommendModule = new RecommendModule()
+export const recommendModule = new RecommendModule();
 
 //专题
 class SubjectModule {
@@ -155,7 +155,7 @@ class SubjectModule {
     });
 }
 
-export const subjectModule = new SubjectModule()
+export const subjectModule = new SubjectModule();
 
 const homeLinkType = {
     good: 1,
@@ -225,13 +225,13 @@ class HomeModule {
         setTimeout(() => {
             this.isRefreshing = false;
         }, 3000);
-        bannerModule.loadBannerList()
-        todayModule.loadTodayList()
-        adModules.loadAdList()
-        classifyModules.loadClassifyList()
-        starShopModule.loadShopList()
-        recommendModule.loadRecommendList()
-        subjectModule.loadSubjectList()
+        bannerModule.loadBannerList();
+        todayModule.loadTodayList();
+        adModules.loadAdList();
+        classifyModules.loadClassifyList();
+        starShopModule.loadShopList();
+        recommendModule.loadRecommendList();
+        subjectModule.loadSubjectList();
         this.page = 1;
         this.homeList = [{
             id: 0,
@@ -292,7 +292,7 @@ class HomeModule {
                     itemData: itemData,
                     type: homeType.goods,
                     id: 'goods'
-                })
+                });
             }
             this.homeList = [...this.homeList, ...home];
             this.isFetching = false;
@@ -308,7 +308,7 @@ class HomeModule {
 
     //加载为你推荐列表
     loadMoreHomeList = flow(function* () {
-        console.log('loadMoreHomeList', this.isFetching, this.isEnd, this.firstLoad)
+        console.log('loadMoreHomeList', this.isFetching, this.isEnd, this.firstLoad);
         if (this.isFetching) {
             return;
         }
@@ -348,12 +348,12 @@ class HomeModule {
                     itemData: itemData,
                     type: homeType.goods,
                     id: 'goods'
-                })
+                });
             }
             this.homeList = [...this.homeList, ...home];
             this.page++;
-            this.isFetching = false
-            this.isEnd = false
+            this.isFetching = false;
+            this.isEnd = false;
         } catch (error) {
             console.log(error);
         }
