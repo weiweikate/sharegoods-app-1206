@@ -607,7 +607,7 @@ public class MZBannerView<T> extends RelativeLayout {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-//           container.removeView((View) object);
+           container.removeView((View) object);
         }
 
         @Override
