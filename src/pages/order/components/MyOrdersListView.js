@@ -67,7 +67,7 @@ export default class MyOrdersListView extends Component {
                 outTradeNo={item.outTradeNo}
                 status={item.status}
                 callBack={() => {
-                    this.onRefresh();
+                    // this.onRefresh();
                 }}
             />
         );

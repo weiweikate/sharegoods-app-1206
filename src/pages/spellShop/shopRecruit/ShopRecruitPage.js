@@ -125,9 +125,10 @@ export default class ShopRecruitPage extends BasePage {
     };
 
     _clickAllMembers = () => {
-        if (this.state.storeData.userStatus === 1) {
-            this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
-        }
+        //招募中先不跳
+        // if (this.state.storeData.userStatus === 1) {
+        //     this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
+        // }
     };
     _clickSettingItem = () => {
         let arr = ['分享店铺', '举报'];

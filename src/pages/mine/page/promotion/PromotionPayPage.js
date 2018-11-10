@@ -22,10 +22,10 @@ import BasePage from "../../../../BasePage";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 const { px2dp } = ScreenUtils;
 import UIText from "../../../../comm/components/UIText";
-// import res from '../../../../comm/res';
-// const icon = res.selected_circle_red;
+import res from '../../../../comm/res';
+const icon = res.button.selected_circle_red;
 import DesignRule from 'DesignRule';
-import icon from '../../../../comm/res/button/selected_circle_red.png'
+// import icon from '../../../../comm/res/button/selected_circle_red.png'
 
 type Props = {};
 export default class PromotionPayPage extends BasePage<Props> {
