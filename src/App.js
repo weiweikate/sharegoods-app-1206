@@ -20,7 +20,7 @@ import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
 import appData from './model/appData';
 import { netStatus } from './comm/components/NoNetHighComponent';
-
+import bridge from './utils/bridge'
 // import hotUpdateUtil from './utils/HotUpdateUtil';
 
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
@@ -46,6 +46,7 @@ export default class App extends Component {
 
     componentDidMount() {
         //热更新 先注释掉
+        bridge.removeLaunch()
         // hotUpdateUtil.isNeedToCheck();
     }
 
