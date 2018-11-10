@@ -48,7 +48,7 @@ const GoodsListItem = props => {
         let autoConfirmTime = Math.round((autoConfirmTime2 - new Date().valueOf()) / 1000);
         if (autoConfirmTime < 0) {
             callBack();
-            return '';
+            return '超时关闭';
         }
         let time = (new TimeDownUtils()).getDateData2(autoConfirmTime2);
         if (time.hours === undefined && time.min === undefined && time.sec === undefined) {
