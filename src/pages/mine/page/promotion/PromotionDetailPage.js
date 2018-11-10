@@ -242,7 +242,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
                                     thumImage: 'logo.png',
                                     hdImageURL: '',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/promote?id=${this.params.id}`,
-                                    miniProgramPath: `/pages/index/index?type=100&id=${this.params.id}'`
+                                    miniProgramPath: `/pages/index/index?type=100&id=${this.params.id}`
                                 }}
                 />
             </View>
