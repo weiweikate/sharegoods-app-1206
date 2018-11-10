@@ -434,7 +434,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         <UIImage source={applyRefundMessage} style={{ width: 25, height: 23, marginBottom: 10 }}/>
                         <View style={{ marginLeft: 10 }}>
                             <UIText value={'联系客服'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
-                            <UIText value={'9:00-17:00'}
+                            <UIText value={'9:00 -21:00'}
                                     style={{ fontSize: 12, color: DesignRule.textColor_instruction, marginTop: 3 }}/>
                         </View>
                     </TouchableOpacity>
@@ -452,7 +452,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         <UIImage source={applyRefundPhone} style={{ width: 25, height: 23, marginBottom: 10 }}/>
                         <View style={{ marginLeft: 10 }}>
                             <UIText value={'客服电话'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
-                            <UIText value={'9:00-17:00'}
+                            <UIText value={'9:00 -21:00'}
                                     style={{ fontSize: 12, color: DesignRule.textColor_instruction, marginTop: 3 }}/>
                         </View>
                     </TouchableOpacity>
