@@ -4,9 +4,13 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
+import com.meeruu.MRBanner.ReactBannerManager;
 import com.meeruu.PopModal.PopModalManager;
 import com.meeruu.commonlib.umeng.LoginAndSharingModule;
 import com.meeruu.qiyu.imService.QYChatModule;
+import com.meeruu.sharegoods.rn.module.AppPayModule;
+import com.meeruu.sharegoods.rn.module.CommModule;
+import com.meeruu.sharegoods.rn.module.QRCodeModule;
 
 import java.util.ArrayList;
 import java.util.Arrays;

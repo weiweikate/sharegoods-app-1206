@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn;
+package com.meeruu.sharegoods.rn.module;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -30,6 +30,7 @@ import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.sharegoods.bean.NetCommonParamsBean;
+import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.meeruu.sharegoods.utils.DataCleanManager;
@@ -376,5 +377,10 @@ public class CommModule extends ReactContextBaseJavaModule {
         } catch (Exception e) {
             LogUtils.d(e.getMessage());
         }
+    }
+
+    @ReactMethod
+    public void removeLaunch() {
+        EventBus.getDefault().post(new HideSplashEvent());
     }
 }
