@@ -611,9 +611,9 @@ class ExchangeGoodsDetailPage extends BasePage {
                                    style={styles.header_detail}/>;
                 };
             } else if (pageData.status === 2) {//同意申请
-                detialCommpent = () => {
-                    return <UIText value={'7天退货，请退货给商家'} style={styles.header_detail}/>;
-                };
+                // detialCommpent = () => {
+                //     return <UIText value={'7天退货，请退货给商家'} style={styles.header_detail}/>;
+                // };
                 timerCommpent = () => {
                     return <UIText value={this.state.timeStr} style={styles.header_detail}/>;
                 };
