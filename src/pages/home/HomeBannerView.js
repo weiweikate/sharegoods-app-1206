@@ -75,7 +75,6 @@ export default class HomeBannerView extends Component {
                 index={0}
                 scrollsToTop={true}
             />
-            {/*<MRBannerViewMode imgUrlArray={items} bannerHeight={bannerHeight} modeStyle={1} onDidSelectItemAtIndex={(index)=>{alert(index)}}/>*/}
         </View>;
     }
 
