@@ -52,7 +52,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         releaseRes();
-        ReactNativePreLoader.deatchView(ParameterUtils.RN_MAIN_NAME);
         super.onDestroy();
     }
 
