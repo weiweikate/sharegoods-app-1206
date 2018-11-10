@@ -38,7 +38,6 @@ import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
-import com.meeruu.sharegoods.rn.PreLoadReactDelegate;
 import com.meeruu.sharegoods.service.VersionUpdateService;
 import com.meeruu.sharegoods.utils.LoadingDialog;
 import com.umeng.socialize.UMShareAPI;
@@ -82,7 +81,7 @@ public class MainRNActivity extends ReactActivity {
     }
 
     //自定义MyReactDelegate
-    class MyReactDelegate extends PreLoadReactDelegate {
+    class MyReactDelegate extends ReactActivityDelegate {
 
         public MyReactDelegate(Activity activity, @javax.annotation.Nullable String mainComponentName) {
             super(activity, mainComponentName);

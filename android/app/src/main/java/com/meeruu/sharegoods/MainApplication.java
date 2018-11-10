@@ -19,8 +19,6 @@ import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.qiyu.imService.QiyuImageLoader;
 import com.meeruu.sharegoods.handler.CrashHandler;
 import com.meeruu.sharegoods.rn.RNPackage;
-import com.meeruu.sharegoods.rn.ReactNativePreLoader;
-import com.meeruu.sharegoods.ui.MainRNActivity;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;

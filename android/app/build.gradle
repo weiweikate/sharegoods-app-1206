@@ -97,16 +97,15 @@ dependencies {
     api project(path: ':commonlib')
     api project(path: ':qiyu_service')
     api project(path: ':qrcode')
-    compile 'com.squareup.picasso:picasso:2.5.2'
 
     debugImplementation('com.squareup.leakcanary:leakcanary-android:1.+') {
         exclude(module: 'support-core-utils')
     }
-    releaseImplementation ('com.squareup.leakcanary:leakcanary-android-no-op:1.+'){
+    releaseImplementation('com.squareup.leakcanary:leakcanary-android-no-op:1.+') {
         exclude(module: 'support-core-utils')
     }
     // Optional, if you use support library fragments:
-    debugImplementation ('com.squareup.leakcanary:leakcanary-support-fragment:1.+'){
+    debugImplementation('com.squareup.leakcanary:leakcanary-support-fragment:1.+') {
         exclude(module: 'support-core-utils')
     }
     api rootProject.ext.dependencies.support
@@ -116,6 +115,7 @@ dependencies {
     api rootProject.ext.dependencies.wechat
     api rootProject.ext.dependencies.recyclerview
     api rootProject.ext.dependencies.glide
+    annotationProcessor rootProject.ext.dependencies.glideprocessor
 
     implementation(rootProject.ext.dependencies.sophix) {
         exclude(module: 'alicloud-android-utdid')

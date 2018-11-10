@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
@@ -14,16 +13,14 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.EventDispatcher;
-import com.meeruu.Banner.BannerLayout;
-import com.meeruu.Banner.adapter.WebBannerAdapter;
 import com.meeruu.Banner.event.DidScrollToIndexEvent;
 import com.meeruu.Banner.event.DidSelectItemAtIndexEvent;
 import com.meeruu.MRBanner.mzbanner.MZBannerView;
 import com.meeruu.MRBanner.mzbanner.holder.MZHolderCreator;
 import com.meeruu.MRBanner.mzbanner.holder.MZViewHolder;
+import com.meeruu.commonlib.utils.DisplayImageUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.sharegoods.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Map;
@@ -45,20 +42,22 @@ public class ReactBannerManager extends SimpleViewManager<MZBannerView> {
     protected MZBannerView createViewInstance(ThemedReactContext reactContext) {
         this.reactContext = reactContext;
         dispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
-        MZBannerView mzBannerView = new MZBannerView(reactContext,false);
+        MZBannerView mzBannerView = new MZBannerView(reactContext, false);
         return mzBannerView;
     }
 
     @ReactProp(name = "imgUrlArray")
     public void setImgUrlArray(final MZBannerView view, @Nullable ReadableArray sources) {
-        List urls = sources.toArrayList();
-        view.setPages(urls, new MZHolderCreator<BannerPaddingViewHolder>() {
-            @Override
-            public BannerPaddingViewHolder createViewHolder() {
-                return new BannerPaddingViewHolder();
-            }
-        });
-        view.start();
+        if (sources != null) {
+            List urls = sources.toArrayList();
+            view.setPages(urls, new MZHolderCreator<BannerPaddingViewHolder>() {
+                @Override
+                public BannerPaddingViewHolder createViewHolder() {
+                    return new BannerPaddingViewHolder();
+                }
+            });
+            view.start();
+        }
     }
 
     @ReactProp(name = "autoInterval")
@@ -96,13 +95,10 @@ public class ReactBannerManager extends SimpleViewManager<MZBannerView> {
         @Override
         public void onBind(Context context, int position, String data) {
             // 数据绑定
-//            mImageView.setImageResource(data);
-            LogUtils.d("sssss"+data);
-            Picasso.with(context.getApplicationContext()).load(data).into(mImageView);
-
-
-            // Glide.with(context.getApplicationContext()).load(data).into(mImageView);
-
+            LogUtils.d("ssss" + data);
+            if (context != null) {
+                DisplayImageUtils.displayImage(context, data, mImageView);
+            }
         }
     }
 }

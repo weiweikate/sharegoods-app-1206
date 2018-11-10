@@ -42,5 +42,13 @@ public class ParameterUtils {
     public static final int NETWORK_ELSE_CACHED = 20; //先查询网络数据，如果没有，再查询本地缓
     public static final int REQUEST_CODE_INSTALL = 38;
     public static final int REQUEST_CODE_MANAGE_APP_SOURCE = 39;
+    /**
+     * 一般图片url宽高
+     */
+    public static final String IMG_URL_WH = "%1$s?x-oss-process=image/resize,m_lfit,w_%2$s,h_%3$s";
+    /**
+     * 圆形图片url宽高
+     */
+    public static final String CIRCLE_IMG_URL_WH = "%1$s?x-oss-process=image/resize,m_pad,w_%2$s,h_%3$s";
 
 }

@@ -1,6 +1,5 @@
 package com.meeruu.sharegoods;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -19,10 +18,7 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
-import com.meeruu.sharegoods.rn.ReactNativePreLoader;
 import com.meeruu.sharegoods.ui.MainRNActivity;
-
-import java.lang.ref.SoftReference;
 
 /**
  * @author louis
@@ -49,8 +45,8 @@ public class MainActivity extends BaseActivity {
         setChangeStatusTrans(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        SoftReference<Activity> softReference = new SoftReference<Activity>(MainActivity.this);
-        ReactNativePreLoader.preLoad(softReference, ParameterUtils.RN_MAIN_NAME);
+//        SoftReference<Activity> softReference = new SoftReference<Activity>(MainActivity.this);
+//        ReactNativePreLoader.preLoad(softReference, ParameterUtils.RN_MAIN_NAME);
     }
 
     @Override
