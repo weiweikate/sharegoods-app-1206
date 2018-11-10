@@ -26,10 +26,10 @@ import hasFinished from '../res/homeBaseImg/icon_tool_refund.png';
 
 import inviteFr from '../res/homeBaseImg/icon3_16.png';
 import coupons from '../res/homeBaseImg/icon3_16-09.png';
-import myData from '../res/homeBaseImg/icon3_16-10.png';
-import myCollet from '../res/homeBaseImg/icon3_31.png';
-import myHelper from '../res/homeBaseImg/icon_31-12.png';
-import address from '../res/homeBaseImg/icon31-13.png';
+import myData from '../res/homeBaseImg/iconData.png';
+import myCollet from '../res/homeBaseImg/iconCollect.png';
+import myHelper from '../res/homeBaseImg/iconService.png';
+import address from '../res/homeBaseImg/iconAddress.png';
 import levelBg from '../res/homeBaseImg/me_bg_vip_nor.png';
 import setting from '../res/homeBaseImg/tongyong_icon_shezhi_nor.png';
 import service from '../res/homeBaseImg/tongyong_icon_xiaoxi_nor.png';
@@ -457,7 +457,7 @@ export default class MinePage extends BasePage {
     };
 
     renderOrderStates = () => {
-        let statesImage = [waitPay, waitDelivery, hasFinished, waitReceive];
+        let statesImage = [waitPay, waitDelivery, waitReceive,hasFinished];
         let statesText = ['待付款', '待发货', '待收货', '售后/退款'];
         let arr = [];
         for (let i = 0; i < statesImage.length; i++) {

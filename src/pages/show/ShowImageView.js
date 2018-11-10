@@ -27,7 +27,7 @@ export default class ShowImageView extends Component {
         return <View style={styles.wrapper}>
             <ViewPager
                 swiperShow={true}
-                arrayData={items}
+                arrayData={items.slice()}
                 renderItem={this._renderViewPageItem.bind(this)}
                 autoplay={true}
                 loop={false}

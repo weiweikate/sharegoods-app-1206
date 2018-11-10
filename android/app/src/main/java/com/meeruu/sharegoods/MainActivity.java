@@ -18,8 +18,12 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
+import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.rn.ReactNativePreLoader;
 import com.meeruu.sharegoods.ui.MainRNActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * @author louis
@@ -151,7 +155,6 @@ public class MainActivity extends BaseActivity {
     //跳转到首页
     private void goIndex() {
         startActivity(new Intent(MainActivity.this, MainRNActivity.class));
-        finish();
     }
 
     @Override
@@ -200,5 +203,12 @@ public class MainActivity extends BaseActivity {
 //            default:
 //                break;
 //        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void hideSplash(HideSplashEvent event) {
+        if (hasBasePer && needGo && !hasGo) {
+            finish();
+        }
     }
 }

@@ -57,7 +57,6 @@ public class ReactNativePreLoader {
             ViewGroup parent = (ViewGroup) rootView.getParent();
             if (parent != null) {
                 parent.removeView(rootView);
-                rootView = null;
             }
         } catch (Throwable e) {
             LogUtils.e("ReactNativePreLoader", e.getMessage());

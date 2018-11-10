@@ -30,6 +30,7 @@ import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 // const url = '/static/protocol/extensionExplain.html'
+import apiEnvironment from '../../../../api/ApiEnvironment';
 
 type Props = {};
 export default class UserPromotionPage extends BasePage<Props> {
@@ -56,7 +57,10 @@ export default class UserPromotionPage extends BasePage<Props> {
     };
 
     goExplicationPage = () => {
-        this.$navigate('mine/promotion/PromotionRulePage')
+        this.$navigate('HtmlPage', {
+            title: '推广说明',
+            uri: `${apiEnvironment.getCurrentH5Url()}/static/protocol/extensionExplain.html`
+        });
     };
 
     $NavBarRenderRightItem = () => {

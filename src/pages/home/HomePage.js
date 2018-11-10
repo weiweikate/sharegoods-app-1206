@@ -7,7 +7,7 @@ import {
     RefreshControl,
     ImageBackground,
     TouchableWithoutFeedback,
-    Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter,InteractionManager
+    Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
@@ -39,6 +39,7 @@ import StringUtils from '../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../../comm/res';
 
+var TimerMixin = require('react-timer-mixin');
 const closeImg = res.button.cancel_white_circle;
 /**
  * @author zhangjian
@@ -74,11 +75,7 @@ export default class HomePage extends PureComponent {
     constructor(props) {
         super(props);
         homeModule.loadHomeList();
-        // 检测版本更新
-        this.getVersion();
-        // this.getMessageData();
     }
-
 
 
     getVersion = async () => {
@@ -151,9 +148,12 @@ export default class HomePage extends PureComponent {
     componentDidMount() {
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         InteractionManager.runAfterInteractions(() => {
-            this.getMessageData();
+            this.timer = TimerMixin.setTimeout(() => {
+                // 检测版本更新
+                // this.getVersion();
+                this.getMessageData();
+            }, 2500);
         });
-
     }
 
     componentWillUnmount() {
@@ -243,19 +243,19 @@ export default class HomePage extends PureComponent {
     }
 
     getMessageData = () => {
-        var currStr =  new Date().getTime() + '';
-         AsyncStorage.getItem('lastMessageTime').then((value)=>{
-                if (value == null || parseInt(currStr)-parseInt(value)>24*60*60*1000) {
-                    MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
-                        if (!EmptyUtils.isEmptyArr(res.data.data)) {
-                            this.messageModal && this.messageModal.open();
-                            this.setState({
-                                showMessage: true,
-                                messageData: res.data.data
-                            });
-                        }
-                    });
-                }
+        var currStr = new Date().getTime() + '';
+        AsyncStorage.getItem('lastMessageTime').then((value) => {
+            if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
+                MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
+                    if (!EmptyUtils.isEmptyArr(res.data.data)) {
+                        this.messageModal && this.messageModal.open();
+                        this.setState({
+                            showMessage: true,
+                            messageData: res.data.data
+                        });
+                    }
+                });
+            }
         });
         AsyncStorage.setItem('lastMessageTime', currStr);
 

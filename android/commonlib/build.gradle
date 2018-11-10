@@ -27,6 +27,7 @@ dependencies {
     api rootProject.ext.dependencies.zxing
     api rootProject.ext.dependencies.walle
     api rootProject.ext.dependencies.multidex
+    api rootProject.ext.dependencies.glide
     // From node_modules
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
