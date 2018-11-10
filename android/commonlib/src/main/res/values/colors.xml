@@ -16,4 +16,6 @@
     <color name="app_main_color">#F00006</color>
     <!-- 横向进度跳背景颜色 -->
     <color name="bg_progress">#F0F0F0</color>
+    <!-- 默认图片背景颜色 -->
+    <color name="bg_img">#efefef</color>
 </resources>
