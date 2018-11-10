@@ -19,10 +19,10 @@ platform :ios do
   desc "Push a new beta build to pgyer"
   lane :to_pgyer do
     # 如果你没有申请adhoc证书，sigh会自动帮你申请，并且添加到Xcode里
-    #sigh(
-    # app_identifier: 'com.meeruu.sharegoods',
-    # adhoc: true
-    #)
+    sigh(
+     app_identifier: 'com.meeruu.sharegoods',
+     adhoc: true
+    )
     # 以下两个action来自fastlane-plugin-versioning，
     # 第一个递增 Build，第二个设定Version。
     # 如果你有多个target，就必须指定target的值，否则它会直接找找到的第一个plist修改
