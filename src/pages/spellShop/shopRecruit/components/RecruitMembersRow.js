@@ -13,7 +13,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import PeopleImg from '../src/dy_07.png';
-import ArrowImg from '../src/xjt_03.png';
+// import ArrowImg from '../src/xjt_03.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 
@@ -31,7 +31,7 @@ export default class AssistantRow extends Component {
                 <Image style={styles.topIcon} source={PeopleImg}/>
                 <Text style={styles.topTitle}>{'店铺成员'}</Text>
                 <Text style={styles.topDescText}>{`${storeUserList.length || 0}人`}</Text>
-                <Image style={styles.topArrow} source={ArrowImg}/>
+                {/*<Image style={styles.topArrow} source={ArrowImg}/>*/}
             </TouchableOpacity>
             <View style={styles.dash}/>
             <ScrollView bounces={false} showsHorizontalScrollIndicator={false}>
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle
     },
     topDescText: {
+        marginRight: 21,
         fontSize: 12,
         color: DesignRule.textColor_secondTitle,
         flex: 1,
