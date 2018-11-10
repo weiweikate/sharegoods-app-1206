@@ -1,105 +1,104 @@
-package com.meeruu.sharegoods;
+package  com.meeruu.sharegoods;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewStub;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
+import  android.content.Intent;
+import  android.os.Bundle;
+import  android.os.CountDownTimer;
+import  android.os.Handler;
+import  android.os.Message;
+import  android.text.TextUtils;
+import  android.view.MotionEvent;
+import  android.view.View;
+import  android.view.ViewStub;
+import  android.widget.FrameLayout;
+import  android.widget.ImageView;
+import  android.widget.TextView;
 
-import com.meeruu.commonlib.base.BaseActivity;
-import com.meeruu.commonlib.handler.WeakHandler;
-import com.meeruu.commonlib.utils.ParameterUtils;
-import com.meeruu.commonlib.utils.SPCacheUtils;
-import com.meeruu.commonlib.utils.ScreenUtils;
-import com.meeruu.sharegoods.event.HideSplashEvent;
-import com.meeruu.sharegoods.rn.ReactNativePreLoader;
-import com.meeruu.sharegoods.ui.MainRNActivity;
+import  com.meeruu.commonlib.base.BaseActivity;
+import  com.meeruu.commonlib.handler.WeakHandler;
+import  com.meeruu.commonlib.utils.ParameterUtils;
+import  com.meeruu.commonlib.utils.SPCacheUtils;
+import  com.meeruu.commonlib.utils.ScreenUtils;
+import  com.meeruu.sharegoods.event.HideSplashEvent;
+import  com.meeruu.sharegoods.rn.ReactNativePreLoader;
+import  com.meeruu.sharegoods.ui.MainRNActivity;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import  org.greenrobot.eventbus.Subscribe;
+import  org.greenrobot.eventbus.ThreadMode;
 
 /**
- * @author louis
- * @desc 启动页
- * @time created at 17/3/30 下午4:50
- * @company www.smartstudy.com
+ *  @author  louis
+ *  @desc  启动页
+ *  @time  created  at  17/3/30  下午4:50
+ *  @company  www.smartstudy.com
  */
-public class MainActivity extends BaseActivity {
+public  class  MainActivity  extends  BaseActivity  {
 
-    private ImageView ivAdv;
-    private TextView tvGo;
+    private  ImageView  ivAdv;
+    private  TextView  tvGo;
 
-    private WeakHandler mHandler;
-    private boolean needGo = false;
-    private boolean isFirst = true;
-    private boolean hasGo = false;
-    private String adId;
-    private String title;
-    private String adUrl;
-    private CountDownTimer countDownTimer = null;
+    private  WeakHandler  mHandler;
+    private  boolean  needGo  =  false;
+    private  boolean  isFirst  =  true;
+    private  boolean  hasGo  =  false;
+    private  String  adId;
+    private  String  title;
+    private  String  adUrl;
+    private  CountDownTimer  countDownTimer  =  null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected  void  onCreate(Bundle  savedInstanceState)  {
         setChangeStatusTrans(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        ReactNativePreLoader.preLoad(getApplicationContext(), ParameterUtils.RN_MAIN_NAME);
+        ReactNativePreLoader.preLoad(getApplicationContext(),  ParameterUtils.RN_MAIN_NAME);
     }
 
     @Override
-    protected void onDestroy() {
+    protected  void  onDestroy()  {
         releaseRes();
-        ReactNativePreLoader.deatchView(ParameterUtils.RN_MAIN_NAME);
         super.onDestroy();
     }
 
-    private void releaseRes() {
-        if (mHandler != null) {
-            mHandler = null;
+    private  void  releaseRes()  {
+        if  (mHandler  !=  null)  {
+            mHandler  =  null;
         }
-        if (countDownTimer != null) {
+        if  (countDownTimer  !=  null)  {
             countDownTimer.onFinish();
-            countDownTimer = null;
+            countDownTimer  =  null;
         }
     }
 
     @Override
-    protected void onResume() {
+    protected  void  onResume()  {
         super.onResume();
-        if (hasBasePer) {
-//            splashP.getAdInfo();
+        if  (hasBasePer)  {
+//                        splashP.getAdInfo();
         }
-        if (isFirst) {
-            isFirst = false;
-            String imgUrl = (String) SPCacheUtils.get("adImg", "");
-            if (!TextUtils.isEmpty(imgUrl)) {
+        if  (isFirst)  {
+            isFirst  =  false;
+            String  imgUrl  =  (String)  SPCacheUtils.get("adImg",  "");
+            if  (!TextUtils.isEmpty(imgUrl))  {
                 //有广告时延迟时间增加
-                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 4000);
-            } else {
-                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT, 2500);
+                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT,  4000);
+            }  else  {
+                mHandler.sendEmptyMessageDelayed(ParameterUtils.EMPTY_WHAT,  2500);
             }
-        } else {
-            if (needGo && hasBasePer) {
+        }  else  {
+            if  (needGo  &&  hasBasePer)  {
                 goIndex();
             }
         }
     }
 
     @Override
-    protected void initViewAndData() {
-        String imgUrl = (String) SPCacheUtils.get("adImg", "");
-        if (!TextUtils.isEmpty(imgUrl)) {
-            ((ViewStub) findViewById(R.id.vs_adv)).inflate();
-            ivAdv = findViewById(R.id.iv_adv);
-            tvGo = findViewById(R.id.tv_go);
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) ivAdv.getLayoutParams();
+    protected  void  initViewAndData()  {
+        String  imgUrl  =  (String)  SPCacheUtils.get("adImg",  "");
+        if  (!TextUtils.isEmpty(imgUrl))  {
+            ((ViewStub)  findViewById(R.id.vs_adv)).inflate();
+            ivAdv  =  findViewById(R.id.iv_adv);
+            tvGo  =  findViewById(R.id.tv_go);
+            FrameLayout.LayoutParams  params = (FrameLayout.LayoutParams) ivAdv.getLayoutParams();
             params.width = ScreenUtils.getScreenWidth();
             params.height = (ScreenUtils.getScreenWidth() * 7) / 5;
             ivAdv.setLayoutParams(params);
@@ -156,7 +155,6 @@ public class MainActivity extends BaseActivity {
     //跳转到首页
     private void goIndex() {
         startActivity(new Intent(MainActivity.this, MainRNActivity.class));
-        finish();
     }
 
     @Override
@@ -209,7 +207,8 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void hideSplash(HideSplashEvent event) {
-        startActivity(new Intent(MainActivity.this, MainRNActivity.class));
-        finish();
+        if (hasBasePer && needGo && !hasGo) {
+            finish();
+        }
     }
 }
