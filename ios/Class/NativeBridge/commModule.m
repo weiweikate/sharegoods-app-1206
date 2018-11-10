@@ -254,5 +254,9 @@ RCT_EXPORT_METHOD(RN_ImageCompression:(NSString*) path
   callback(@[]);
   NSLog(@"执行结束");
 }
+RCT_EXPORT_METHOD(removeLaunch){
+  AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+  [delegate removeLaunch];
+}
 
 @end
