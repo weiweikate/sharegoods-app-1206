@@ -3,9 +3,9 @@ package com.meeruu.sharegoods.rn;
 import android.app.Activity;
 import android.view.ViewGroup;
 
-import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactRootView;
 import com.meeruu.commonlib.utils.LogUtils;
+import com.meeruu.sharegoods.MainApplication;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class ReactNativePreLoader {
         // 1.创建ReactRootView
         ReactRootView rootView = new ReactRootView(activity);
         rootView.startReactApplication(
-                ((ReactApplication) activity.getApplication()).getReactNativeHost().getReactInstanceManager(),
+                ((MainApplication) activity.getApplication()).getReactNativeHost().getReactInstanceManager(),
                 componentName,
                 null);
 
@@ -57,6 +57,7 @@ public class ReactNativePreLoader {
             ViewGroup parent = (ViewGroup) rootView.getParent();
             if (parent != null) {
                 parent.removeView(rootView);
+                rootView = null;
             }
         } catch (Throwable e) {
             LogUtils.e("ReactNativePreLoader", e.getMessage());
