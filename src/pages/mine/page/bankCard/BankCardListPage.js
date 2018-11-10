@@ -72,6 +72,9 @@ class BankCardListPage extends BasePage {
             backgroundColor:DesignRule.textColor_mainTitle
         },
        leftNavImage:res.button.white_back_img,
+        leftImageStyle:{
+            width:9,height:15
+        },
         titleStyle:{
             color:'white'
         }
