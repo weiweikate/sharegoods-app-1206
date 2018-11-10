@@ -21,9 +21,10 @@ import CodeIcon from './res/icon_03-03.png';
 import PhoneIcon from './res/icon_03-04.png';
 
 import QbIcon from './res/dzfhj_03-03.png';
-import ZuanIcon from './res/cs_12.png';
+import detail_cishu from './res/detail_cishu.png';
 import MoneyIcon from './res/ccz_03.png';
-import RmbIcon from './res/zje_11.png';
+import detail_zongti from './res/detail_zongti.png';
+import detail_benci from './res/detail_benci.png';
 
 import BasePage from '../../../BasePage';
 import DateUtils from '../../../utils/DateUtils';
@@ -149,13 +150,13 @@ export default class ShopAssistantDetailPage extends BasePage {
                 </ImageBackground>
                 {this._renderRow(QbIcon, '加入店铺时间', DateUtils.formatDate(updateTime, 'yyyy年MM月dd'))}
                 {this.renderSepLine()}
-                {this._renderRow(ZuanIcon, '参与店铺分红次数', `${dealerTotalBonusCount || 0}次`)}
+                {this._renderRow(detail_cishu, '参与店铺分红次数', `${dealerTotalBonusCount || 0}次`)}
                 {this.renderSepLine()}
                 {this._renderRow(MoneyIcon, '共获得分红总额', `${((dealerTotalBonus || 0) - (dealerThisTimeBonus || 0))}元`)}
                 {this.renderSepLine()}
-                {this._renderRow(RmbIcon, '总体贡献度', this._totalContribution())}
+                {this._renderRow(detail_zongti, '总体贡献度', this._totalContribution())}
                 {this.renderSepLine()}
-                {this._renderRow(RmbIcon, '本次贡献值', this._currContribution())}
+                {this._renderRow(detail_benci, '本次贡献值', this._currContribution())}
             </ScrollView>);
     };
 
