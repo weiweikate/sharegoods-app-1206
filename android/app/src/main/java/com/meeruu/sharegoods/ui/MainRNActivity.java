@@ -38,6 +38,7 @@ import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
+import com.meeruu.sharegoods.rn.PreLoadReactDelegate;
 import com.meeruu.sharegoods.service.VersionUpdateService;
 import com.meeruu.sharegoods.utils.LoadingDialog;
 import com.umeng.socialize.UMShareAPI;
@@ -65,7 +66,6 @@ public class MainRNActivity extends ReactActivity {
     private WeakHandler myHandler;
     private String lastVersion;
     private ReactApplicationContext mContext;
-    public static final String COMPONENT_NAME = "sharegoods";
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -73,7 +73,7 @@ public class MainRNActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return COMPONENT_NAME;
+        return ParameterUtils.RN_MAIN_NAME;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class MainRNActivity extends ReactActivity {
     }
 
     //自定义MyReactDelegate
-    class MyReactDelegate extends ReactActivityDelegate {
+    class MyReactDelegate extends PreLoadReactDelegate {
 
         public MyReactDelegate(Activity activity, @javax.annotation.Nullable String mainComponentName) {
             super(activity, mainComponentName);

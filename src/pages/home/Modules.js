@@ -90,17 +90,7 @@ class ClassifyModules {
             id: 1,
             route: 'topic/DownPricePage',
             linkTypeCode: 'ZT2018000012'
-        }];
-
-        HomeApi.classify().then(res => {
-            if (res.code === 10000 && res.data) {
-                let classifys = [...this.classifyList, ...res.data]
-                if (classifys[9]) {
-                    classifys[9].route = 'home/search/CategorySearchPage'
-                }
-                this.classifyList = classifys
-            }
-        })
+        }]
     };
 }
 
@@ -249,9 +239,6 @@ class HomeModule {
         }, {
             id: 1,
             type: homeType.classify
-        }, {
-            id: 2,
-            type: homeType.user
         }, {
             id: 3,
             type: homeType.ad

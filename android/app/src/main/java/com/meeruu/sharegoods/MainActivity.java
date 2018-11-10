@@ -18,6 +18,7 @@ import com.meeruu.commonlib.handler.WeakHandler;
 import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
+import com.meeruu.sharegoods.rn.ReactNativePreLoader;
 import com.meeruu.sharegoods.ui.MainRNActivity;
 
 /**
@@ -45,11 +46,13 @@ public class MainActivity extends BaseActivity {
         setChangeStatusTrans(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ReactNativePreLoader.preLoad(MainActivity.this, ParameterUtils.RN_MAIN_NAME);
     }
 
     @Override
     protected void onDestroy() {
         releaseRes();
+        ReactNativePreLoader.deatchView(ParameterUtils.RN_MAIN_NAME);
         super.onDestroy();
     }
 
@@ -120,10 +123,8 @@ public class MainActivity extends BaseActivity {
                 switch (msg.what) {
                     case ParameterUtils.EMPTY_WHAT:
                         needGo = true;
-                        if (hasBasePer) {
-                            if (!hasGo) {
-                                goIndex();
-                            }
+                        if (hasBasePer && !hasGo) {
+                            goIndex();
                         }
                         break;
                     default:

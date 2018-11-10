@@ -29,6 +29,7 @@ import { PageLoadingState } from '../../../../components/pageDecorator/PageState
 import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
+// const url = '/static/protocol/extensionExplain.html'
 
 type Props = {};
 export default class UserPromotionPage extends BasePage<Props> {

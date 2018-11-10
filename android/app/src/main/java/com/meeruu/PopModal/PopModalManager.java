@@ -83,7 +83,6 @@ public class PopModalManager extends ViewGroupManager<PopModal> implements Activ
 
     @Override
     public void onDestroy(Activity activity) {
-//        PopModal.mContext = null;
     }
 
     @Override
