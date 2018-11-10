@@ -169,6 +169,14 @@ export default class MyCashAccountPage extends BasePage {
     };
     onRefresh = () => {
      this.currentPage = 1;
+        MineApi.getUser().then(res => {
+            let data = res.data;
+            user.saveUserInfo(data);
+        }).catch(err => {
+            if (err.code === 10009) {
+                this.props.navigation.navigate('login/login/LoginPage');
+            }
+        });
         this.getDataFromNetwork();
     };
     onLoadMore = () => {

@@ -116,7 +116,7 @@ export default class MyHelperPage extends BasePage {
                         <UIImage source={phoneIcon} style={{ height: 23, width: 23 }} resizeMode={'contain'}/>
                         <View style={{marginLeft:2,justifyContent:'center',alignItems:'center'}}>
                         <Text style={[styles.textFontstyle]}>咨询电话</Text>
-                        <Text style={styles.text2Style}>8：30-24：00</Text>
+                        <Text style={styles.text2Style}>9：00-21：00</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -128,7 +128,7 @@ export default class MyHelperPage extends BasePage {
                         <UIImage source={personIcon} style={{ height: 23, width: 24 }} esizeMode={'contain'}/>
                         <View style={{marginLeft:2,justifyContent:'center',alignItems:'center'}}>
                         <Text style={[styles.textFontstyle, { marginTop: 5 }]}>在线客服</Text>
-                        <Text style={styles.text2Style}>8：30-24：00</Text>
+                        <Text style={styles.text2Style}>9：00-21：00</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

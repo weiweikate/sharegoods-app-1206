@@ -68,8 +68,8 @@ export default class HelperQuestionListPage extends BasePage {
                 width: ScreenUtils.width, height: 80, position: 'absolute', bottom: 0,
                 alignItems: 'center', justifyContent: 'center'
             }}>
-                <Text style={{ fontSize: 13, color: '#999999' }}>联系客服 8888-8888</Text>
-                <Text style={{ fontSize: 13, color: '#999999' }}>早9:00 - 18:00</Text>
+                <Text style={{ fontSize: 13, color: '#999999' }}>联系客服 400-9696-365</Text>
+                <Text style={{ fontSize: 13, color: '#999999' }}>早9:00 - 21:00</Text>
             </View>
         );
     }
