@@ -272,6 +272,10 @@ export default class TopicDetailPage extends BasePage {
 
     //立即购买
     _bottomAction = (type) => {
+        if (!user.isLogin) {
+            this.props.navigation.navigate('login/login/LoginPage');
+            return;
+        }
         if (type === 1) {//设置提醒
             this._followAction();
         } else if (type === 2) {//立即拍

@@ -202,6 +202,10 @@ export default class ProductDetailPage extends BasePage {
                 break;
             case 'gwc':
             case 'buy': {
+                if (!user.isLogin) {
+                    this.props.navigation.navigate('login/login/LoginPage');
+                    return;
+                }
                 this.state.goType = type;
                 this.SelectionPage.show(this.state.data, this._selectionViewConfirm);
             }
