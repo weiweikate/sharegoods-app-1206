@@ -200,7 +200,12 @@ export default class ProductDetailPage extends BasePage {
                 });
                 break;
             case 'gwc':
+                break;
             case 'buy':
+                if (!user.isLogin) {
+                    this.props.navigation.navigate('login/login/LoginPage');
+                    return;
+                }
                 this.state.goType = type;
                 this.SelectionPage.show(this.state.data, this._selectionViewConfirm);
                 break;
@@ -276,7 +281,9 @@ export default class ProductDetailPage extends BasePage {
                             backgroundColor: DesignRule.lineColor_inColorBg
                         }}/>
                         <Text style={{
-                            padding: 15
+                            padding: 15,
+                            color: DesignRule.textColor_instruction,
+                            fontSize: 13
                         }}>{`划线价格：指商品的专柜价、吊牌价、正品零售价、厂商指导价或该商品的曾经展示过销售价等，并非原价，仅供参考\n未划线价格：指商品的实时价格，不因表述的差异改变性质。具体成交价格根据商品参加活动，或会员使用优惠券、积分等发生变化最终以订单`}</Text>
                     </View>
                 </View>;

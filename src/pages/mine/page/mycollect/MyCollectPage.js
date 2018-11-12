@@ -15,7 +15,6 @@ import UIText from '../../../../components/ui/UIText';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { SwipeListView } from '../../../../components/ui/react-native-swipe-list-view';
-import RefreshList from '../../../../components/ui/RefreshList';
 import res from '../../../../comm/res';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
@@ -24,6 +23,7 @@ import StarIcon from '../../../spellShop/recommendSearch/src/xj_10.png';
 import invalidIcon from '../../res/setting/shoucang_icon_shixiao_nor.png'
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
+import { NavigationActions } from 'react-navigation';
 
 @observer
 export default class MyCollectPage extends BasePage {
@@ -166,23 +166,6 @@ export default class MyCollectPage extends BasePage {
         );
     };
 
-    renderBodyView = () => {
-        return (
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-                <RefreshList
-                    data={this.state.viewData}
-                    renderItem={this.renderItem}
-                    onRefresh={this.onRefresh}
-                    onLoadMore={this.onLoadMore}
-                    extraData={this.state}
-                    isEmpty={this.state.isEmpty}
-                    emptyIcon={res.placeholder.messageNoData}
-                    emptyTip={'暂无数据'}
-                />
-
-            </View>
-        );
-    };
     onLoadMore = () => {
        this.currentPage++;
         this.getDataFromNetwork();
@@ -270,21 +253,86 @@ export default class MyCollectPage extends BasePage {
             />
         );
     };
+gotoLookAround(){
+    const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+            NavigationActions.navigate({
+                routeName: 'Tab',
+                params: {}
+            })
+        ]
+    });
+    this.props.navigation.dispatch(resetAction);
+}
+        _renderEmptyView = () => {
+            return (
+                <View style={{
+                    backgroundColor: DesignRule.bgColor,
+                    flex: 1,
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}>
+                    <Image
+                        source={res.placeholder.noCollect}
+                        style={{
+                            height: 115,
+                            width: 115
+                        }}
+                    />
+                    <Text
+                        style={{
+                            marginTop: 10,
+                            fontSize: 15,
+                            color: DesignRule.textColor_secondTitle
+                        }}
+                    >
+                        去收藏点什么吧
+                    </Text>
+                    <Text
+                        style={{
+                            marginTop: 10,
+                            fontSize: 12,
+                            color: DesignRule.textColor_secondTitle
+                        }}
+                    >
+                        快去商城逛逛吧~
+                    </Text>
 
-    _renderEmptyView = () => {
-        return (
-            <View style={{
-                flex: 1,
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}>
-                <Text>
-                    ~暂无店铺收藏~!
-                </Text>
-            </View>
-        );
-    };
+                    <TouchableOpacity
+                        onPress={
+                            () => {
+                                this.gotoLookAround();
+                            }
+                        }
+                    >
+                        <View
+                            style={{
+                                marginTop: 22,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderColor: DesignRule.mainColor,
+                                borderWidth: 1,
+                                borderRadius: 25,
+                                width: 150,
+                                height: 50
+                            }}
+                        >
+                            <Text
+                                style={{
+
+                                    color: DesignRule.mainColor,
+                                    fontSize: 17
+                                }}
+                            >
+                                去逛逛
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            );
+        };
 
 }
 
