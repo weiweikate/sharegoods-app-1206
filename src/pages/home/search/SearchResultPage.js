@@ -14,6 +14,7 @@ import ResultSegmentView from './components/ResultSegmentView';
 import ResultHorizontalRow from './components/ResultHorizontalRow';
 import ResultVerticalRow from './components/ResultVerticalRow';
 import toGwc from './res/toGwc.png';
+import kongbaiye_ss_icon from './res/kongbaiye_ss_icon.png';
 import toTop from './res/toTop.png';
 import RouterMap from 'RouterMap';
 import HomeAPI from '../api/HomeAPI';
@@ -26,6 +27,8 @@ import { PageLoadingState, renderViewByLoadingState } from '../../../components/
 import { observer } from 'mobx-react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
+import DesignRule from 'DesignRule';
+
 
 @observer
 export default class SearchResultPage extends BasePage {
@@ -77,6 +80,11 @@ export default class SearchResultPage extends BasePage {
             netFailedProps: {
                 netFailedInfo: this.state.netFailedInfo,
                 reloadBtnClick: this._productList
+            },
+            emptyProps: {
+                source: kongbaiye_ss_icon,
+                description: '很抱歉',
+                subDescription: '没找到任何内容'
             }
         };
     };
@@ -235,7 +243,7 @@ export default class SearchResultPage extends BasePage {
     };
 
     //跳转
-    _clickItemAction = (text, index, hotWordId) => {
+    _clickItemAction = (text) => {
         this.params.categoryId = undefined;
         this.params.hotWordId = undefined;
         this.params.keywords = text;
@@ -247,11 +255,17 @@ export default class SearchResultPage extends BasePage {
     _renderKeyItem = ({ item }) => {
         return (
             <TouchableWithoutFeedback onPress={() => {
+                this.ResultSearchNav.changeText(item);
                 this._clickItemAction(item);
             }}>
                 <View>
-                    <Text style={{ fontSize: 13, color: '#222222', marginLeft: 16, paddingVertical: 15 }}>{item}</Text>
-                    <View style={{ height: 1, backgroundColor: '#DDDDDD', marginLeft: 16 }}/>
+                    <Text style={{
+                        fontSize: 13,
+                        color: DesignRule.textColor_mainTitle,
+                        marginLeft: 16,
+                        paddingVertical: 15
+                    }}>{item}</Text>
+                    <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inGrayBg, marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);
     };
@@ -309,8 +323,8 @@ export default class SearchResultPage extends BasePage {
                                  refreshing={this.state.refreshing}
                                  onRefresh={this._refreshing.bind(this)}
                                  title="下拉刷新"
-                                 tintColor="#999"
-                                 titleColor="#999"/>}
+                                 tintColor={DesignRule.textColor_instruction}
+                                 titleColor={DesignRule.textColor_instruction}/>}
                          onScroll={this._onScroll}
                          onEndReached={this._onEndReached.bind(this)}
                          onEndReachedThreshold={0.1}
@@ -345,16 +359,17 @@ export default class SearchResultPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <ResultSearchNav changeLayout={this._changeLayout}
+                                 ref={(ref) => this.ResultSearchNav = ref}
                                  goBack={() => {
                                      this.$navigateBack();
                                  }}
                                  isHorizontal={this.state.isHorizontal}
-                                 textInput={this.state.textInput}
+                                 defaultValue={this.params.keywords || this.params.name}
                                  onFocus={() => {
                                      this.setState({ onFocus: true });
                                  }}
                                  onChangeText={this._onChangeText}
-                                 onEndEditing={() => {
+                                 onSubmitEditing={() => {
                                      this._clickItemAction(this.state.textInput);
                                  }}
                 />
@@ -366,7 +381,7 @@ export default class SearchResultPage extends BasePage {
                         {ShopCartStore.getAllGoodsClassNumber === 0 ? null : <View style={{
                             position: 'absolute', top: 4, left: 4, height: 16,
                             paddingHorizontal: 4,
-                            backgroundColor: '#D51243',
+                            backgroundColor: DesignRule.mainColor,
                             borderRadius: 8, justifyContent: 'center', alignItems: 'center'
                         }}>
                             <Text style={{

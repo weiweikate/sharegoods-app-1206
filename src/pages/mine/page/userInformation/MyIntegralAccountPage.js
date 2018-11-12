@@ -3,24 +3,23 @@ import {
     NativeModules,
     StyleSheet,
     View,
-    Image,
+    ImageBackground,
     Text,
     TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList } from '../../../../components/ui';
 import AccountItem from '../../components/AccountItem';
-import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import registeredImg from '../../res/userInfoImg/list_icon_zhucei.png';
-import activityPresent from '../../res/userInfoImg/list_icon_hedong.png';
-import xiaofei from '../../res/userInfoImg/list_icon_xiaofe.png';
-import consumePointPage from '../../res/userInfoImg/consumePointPage.png';
+import singInImg from '../../res/userInfoImg/qdaojianli_icon.png';
+import taskImg from '../../res/userInfoImg/rwujianli_icon.png';
+import yiyuanImg from '../../res/userInfoImg/xiudozhanghu_icon_xjaingquan.png'
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge' ;
-import { observer } from "mobx-react/native";
+import { observer } from 'mobx-react/native';
+import DesignRule from 'DesignRule';
 
 @observer
 export default class MyIntegralAccountPage extends BasePage {
@@ -34,12 +33,12 @@ export default class MyIntegralAccountPage extends BasePage {
             passwordDis: false,
             phoneError: false,
             passwordError: false,
-            viewData: [
-            ],
+            viewData: [],
             blockMoney: 0.00,
             currentPage: 1,
             isEmpty: false
         };
+        this.currentPage = 1;
     }
 
     $navigationBarOptions = {
@@ -70,28 +69,32 @@ export default class MyIntegralAccountPage extends BasePage {
     renderHeader = () => {
         return (
             <View style={styles.container}>
-                <Image style={styles.imageBackgroundStyle} source={consumePointPage}/>
-                <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',marginRight:15}}>
-                <View style={styles.viewStyle}>
-                    <Text style={{
-                        marginLeft: 25,
-                        marginTop: 15,
-                        fontSize: 13,
-                        color: color.white,
-                        fontFamily: 'PingFangSC-Light'
-                    }}>秀豆账户(枚)</Text>
-                    <Text style={{
-                        marginLeft: 25,
-                        fontSize: 25,
-                        marginTop: 10,
-                        color: color.white
-                    }}>{user.userScore}</Text>
-                </View>
-                <TouchableOpacity style={styles.rectangleStyle} onPress={() => {
-                    this.$navigate('home/signIn/SignInPage')
+                <ImageBackground style={styles.imageBackgroundStyle}/>
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginRight: 15
                 }}>
-                    <Text style={{ fontSize: 15, color: color.white }}>兑换1元现金券</Text>
-                </TouchableOpacity>
+                    <View style={styles.viewStyle}>
+                        <Text style={{
+                            marginLeft: 25,
+                            marginTop: 15,
+                            fontSize: 13,
+                            color: 'white'
+                        }}>秀豆账户(枚)</Text>
+                        <Text style={{
+                            marginLeft: 25,
+                            fontSize: 25,
+                            marginTop: 10,
+                            color: 'white'
+                        }}>{user.userScore ? user.userScore : 0}</Text>
+                    </View>
+                    <TouchableOpacity style={styles.rectangleStyle} onPress={() => {
+                        this.$navigate('home/signIn/SignInPage');
+                    }}>
+                        <Text style={{ fontSize: 15, color: 'white' }}>兑换1元现金券</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
 
@@ -116,7 +119,7 @@ export default class MyIntegralAccountPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line, marginLeft: 48, marginRight: 48 }}/>
+            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg, marginLeft: 48, marginRight: 48 }}/>
 
         );
     };
@@ -131,14 +134,14 @@ export default class MyIntegralAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '注册赠送', '活动赠送', '秀豆消费','1元券兑换','签到'];
+        let use_type = ['', '注册赠送', '活动赠送', '秀豆消费', '1元券兑换', '签到奖励','任务奖励'];
 
-        let use_type_symbol = ['', '+', '+', '-','-','+'];
-        let use_let_img = ['', registeredImg, activityPresent, xiaofei,xiaofei,activityPresent];
-        let arrData = this.state.currentPage === 1 ? [] : this.state.viewData;
+        let use_type_symbol = ['', '+', '-',];
+        let use_let_img = ['', singInImg, taskImg, taskImg, yiyuanImg, singInImg,taskImg];
+        let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         Toast.showLoading();
         MineApi.userScoreQuery({
-            page: 1,
+            page: this.currentPage,
             size: 20
 
         }).then((response) => {
@@ -151,9 +154,9 @@ export default class MyIntegralAccountPage extends BasePage {
                         type: use_type[item.useType],
                         time: DataUtils.getFormatDate(item.createTime / 1000),
                         serialNumber: item.serialNo,
-                        capital: use_type_symbol[item.useType] + item.userScore,
+                        capital: use_type_symbol[item.usType] + item.userScore,
                         iconImage: use_let_img[item.useType],
-                        capitalRed: use_type_symbol[item.useType] === '-'
+                        capitalRed: use_type_symbol[item.usType] === '+'
 
 
                     });
@@ -164,40 +167,36 @@ export default class MyIntegralAccountPage extends BasePage {
             }
         }).catch(e => {
             Toast.hiddenLoading();
-            this.setState({ viewData: arrData, isEmpty:  true });
+            this.setState({ viewData: arrData, isEmpty: true });
 
         });
     };
     onRefresh = () => {
-        this.setState({
-            currentPage: 1
-        });
+        this.currentPage = 1;
         MineApi.getUser().then(res => {
             let data = res.data;
             user.saveUserInfo(data);
         }).catch(err => {
             if (err.code === 10009) {
-                this.props.navigation.navigate("login/login/LoginPage");
+                this.props.navigation.navigate('login/login/LoginPage');
             }
         });
         this.getDataFromNetwork();
     };
     onLoadMore = () => {
-        this.setState({
-            currentPage: this.state.currentPage + 1
-        });
+        this.currentPage++;
         this.getDataFromNetwork();
     };
 }
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1, backgroundColor: color.page_background
+        flex: 1, backgroundColor: DesignRule.bgColor
     },
     container: {}, imageBackgroundStyle: {
         position: 'absolute',
         height: 95,
-
+        backgroundColor:'#F2D4A2',
         width: ScreenUtils.width - 30,
         marginLeft: 15,
         marginRight: 15,
@@ -209,12 +208,12 @@ const styles = StyleSheet.create({
         height: 44,
         borderWidth: 1,
         borderRadius: 5,
-        borderColor: color.white,
+        borderColor: 'white',
         marginLeft: 15,
         marginRight: 15,
         justifyContent: 'center',
         alignItems: 'center',
-        padding:3
+        padding: 3
     }, viewStyle: {
         height: 95,
         marginTop: 10,

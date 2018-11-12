@@ -18,7 +18,6 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import buyerHasPay from '../res/buyerHasPay.png';
 import couponIcon from '../../mine/res/couponsImg/dingdan_icon_quan_nor.png';
-// import car from '../res/car.png';
 import arrow_right from '../res/arrow_right.png';
 import position from '../res/position.png';
 import GoodsDetailItem from '../components/GoodsDetailItem';
@@ -28,17 +27,18 @@ import SingleSelectionModal from '../components/BottomSingleSelectModal';
 import ShowMessageModal from '../components/ShowMessageModal';
 import productDetailHome from '../res/productDetailHome.png';
 import productDetailMessage from '../res/productDetailMessage.png';
+import logisticCar from './../res/car.png'
 import constants from '../../../constants/constants';
 import DateUtils from '../../../utils/DateUtils';
 import Toast from '../../../utils/bridge';
 import productDetailImg from '../res/productDetailImg.png';
 import moreIcon from '../../spellShop/myShop/res/more_icon.png';
-// import GoodsItem from '../components/GoodsItem';
 import GoodsGrayItem from '../components/GoodsGrayItem';
 import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { NavigationActions } from 'react-navigation';
+import DesignRule from 'DesignRule';
 
 class MyOrdersDetailPage extends BasePage {
     constructor(props) {
@@ -107,45 +107,74 @@ class MyOrdersDetailPage extends BasePage {
     };
     showMore = () => {
         this.setState({ isShowShowMessageModal: true });
+        this.messageModal && this.messageModal.open();
     };
     //**********************************ViewPart******************************************
     renderState = () => {
+        console.log('this.state.height',this.state.height);
         return (
             <View style={{ marginBottom: 10 }}>
                 <ImageBackground style={styles.redRectangle} source={productDetailImg}>
                     <UIImage source={buyerHasPay} style={{ height: 25, width: 25, marginTop: -22 }}/>
                     <View style={{ marginTop: -22 }}>
                         <UIText value={this.state.pageStateString.buyState} style={{
-                            color: color.white,
+                            color: 'white',
                             fontSize: 18,
                             marginLeft: 10
                         }}/>
                         {StringUtils.isNoEmpty(this.state.pageStateString.moreDetail) ?
                             <UIText value={this.state.pageStateString.moreDetail}
-                                    style={{ color: color.white, fontSize: 13, marginLeft: 10 }}/> : null
+                                    style={{ color: 'white', fontSize: 13, marginLeft: 10 }}/> : null
                         }
                     </View>
                 </ImageBackground>
-                <TouchableOpacity style={styles.whiteRectangle} onPress={() => {
+                <TouchableOpacity style={{
+                   minHeight:81,
+                    marginTop: 69,
+                    backgroundColor: 'white',
+                    marginLeft: 15,
+                    marginRight: 15,
+                    paddingTop:5,
+                    paddingBottom:5,
+                    justifyContent: 'space-between',
+                    borderRadius: 10,
+                    flex:1,
+                    flexDirection: 'row',
+                    alignItems: 'center'}} onPress={() => {
                     this.$navigate('order/logistics/LogisticsDetailsPage', {
                         orderNum: this.state.viewData.orderNum,
                         orderId: this.state.orderId,
                         expressNo: this.state.expressNo
-                    });
-                }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UIImage source={position} style={{ height: 19, width: 19, marginLeft: 21 }}/>
-                        <View>
-                            <UIText value={this.state.pageStateString.sellerState} style={{
-                                color: color.black_222,
-                                fontSize: 18,
-                                marginLeft: 10,
-                                marginRight: 46
-                            }}/>
+                    })
+                }}  onContentSizeChange={this.onContentSizeChange.bind(this)}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center'}} >
+                        <UIImage source={logisticCar} style={{ height: 19, width: 19, marginLeft: 21 }}/>
+                        <View style={{justifyContent:'center'}}>
+                            {typeof this.state.pageStateString.sellerState === 'string' ?
+                                <UIText value={this.state.pageStateString.sellerState} style={{
+                                    color: DesignRule.textColor_mainTitle_222,
+                                    fontSize: 18,
+                                    marginLeft: 10,
+                                    marginRight: 46
+                                }}/> :
+                                <View style={{flexDirection: 'row' }}>
+                                    <Text style={{
+                                        flex: 1,
+                                        fontSize: 15,
+                                         marginLeft:10,
+                                        color: DesignRule.textColor_mainTitle
+                                    }}>{this.state.pageStateString.sellerState[0]}</Text>
+                                    <Text style={{
+                                        fontSize: 15,
+                                        marginRight:46,
+                                        color: DesignRule.textColor_mainTitle
+                                    }}>{this.state.pageStateString.sellerState[1]}</Text>
+                                </View>
+                            }
                             {StringUtils.isNoEmpty(this.state.pageStateString.sellerTime) ?
                                 <UIText value={this.state.pageStateString.sellerTime}
                                         style={{
-                                            color: color.black_999,
+                                            color: DesignRule.textColor_instruction,
                                             fontSize: 13,
                                             marginLeft: 10,
                                             marginRight: 46
@@ -237,21 +266,19 @@ class MyOrdersDetailPage extends BasePage {
                             borderRadius: 5,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            borderColor: '#e60012',
+                            borderColor: DesignRule.mainColor,
                             marginLeft: 20
                         }}>
                             <Text style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 11,
-                                color: '#e60012',
+                                color: DesignRule.mainColor,
                                 padding: 3
                             }}>礼包</Text>
                         </View>
                         <Text style={{
                             marginLeft: 10,
-                            fontFamily: 'PingFang-SC-Medium',
                             fontSize: 12,
-                            color: '#999999'
+                            color: DesignRule.textColor_instruction
                         }}>{this.state.giftPackageName}</Text>
                     </View>
                     :
@@ -274,7 +301,7 @@ class MyOrdersDetailPage extends BasePage {
         for (let i = 0; i < this.state.afterSaleService.length; i++) {
             itemArr.push(
                 <TouchableOpacity key={i}
-                                  style={[styles.grayView, { borderColor: this.state.afterSaleService[i].isRed ? color.red : color.gray_DDD }]}
+                                  style={[styles.grayView, { borderColor: this.state.afterSaleService[i].isRed ? color.red : DesignRule.color_ddd }]}
                                   onPress={() => {
                                       this.afterSaleServiceClick(this.state.afterSaleService[i], i);
                                   }}>
@@ -295,7 +322,7 @@ class MyOrdersDetailPage extends BasePage {
                             height: 48,
                             justifyContent: 'flex-end',
                             alignItems: 'center',
-                            backgroundColor: color.white
+                            backgroundColor: 'white'
                         }}>
                             {this.renderMenus()}
                         </View>
@@ -307,7 +334,7 @@ class MyOrdersDetailPage extends BasePage {
     };
     renderFootder = () => {
         return (
-            <View style={{ backgroundColor: color.white }}>
+            <View style={{ backgroundColor: 'white' }}>
                 {this.state.orderType == 5 ? this.renderGiftaftersales() : null}
                 {(this.state.orderType == 5 || this.state.orderType == 98) && this.state.giftBagCoupons.length > 0 ?
                     <View>
@@ -328,19 +355,19 @@ class MyOrdersDetailPage extends BasePage {
                                     marginLeft: 36
                                 }}>
                                     <Text style={{
-                                        color: color.black_999,
+                                        color: DesignRule.textColor_instruction,
                                         fontSize: 13,
                                         alignSelf: 'center'
                                     }}>{item.couponName}</Text>
                                     <Text style={{
-                                        color: color.black_999,
+                                        color: DesignRule.textColor_instruction,
                                         fontSize: 13,
                                         alignSelf: 'center',
                                         marginRight: 14
                                     }}>x1</Text>
                                 </View>
                                 <View
-                                    style={{ marginLeft: 36, backgroundColor: '#F7F7F7', height: 0.5, width: '100%' }}/>
+                                    style={{ marginLeft: 36, backgroundColor: DesignRule.bgColor, height: 0.5, width: '100%' }}/>
                             </View>;
                         })}
                         {this.renderWideLine()}
@@ -349,43 +376,43 @@ class MyOrdersDetailPage extends BasePage {
                     :
                     null}
                 <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'商品总价'}
-                                leftTextStyle={{ color: color.black_999 }}
+                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
                                 rightText={StringUtils.formatMoneyString(this.state.viewData.goodsPrice)}
-                                rightTextStyle={{ color: color.black_999 }} isArrow={false}
+                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                 isLine={false}/>
                 <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'运费（快递）'}
-                                leftTextStyle={{ color: color.black_999 }}
+                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
                                 rightText={StringUtils.formatMoneyString(this.state.viewData.freightPrice)}
-                                rightTextStyle={{ color: color.black_999 }} isArrow={false}
+                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                 isLine={false}/>
                 <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'优惠券优惠'}
-                                leftTextStyle={{ color: color.black_999 }}
+                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
                                 rightText={'-' + StringUtils.formatMoneyString(this.state.viewData.couponPrice)}
-                                rightTextStyle={{ color: color.black_999 }} isArrow={false}
+                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                 isLine={false}/>
                 <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元现金券'}
-                                leftTextStyle={{ color: color.black_999 }}
+                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
                                 rightText={'-' + StringUtils.formatMoneyString(this.state.viewData.tokenCoin)}
-                                rightTextStyle={{ color: color.black_999 }} isArrow={false}
+                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
                                 isLine={false}/>
                 <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={'订单总价'}
-                                leftTextStyle={{ color: color.black_222, fontSize: 15 }}
+                                leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
                                 rightText={StringUtils.formatMoneyString(this.state.viewData.totalPrice)}
-                                rightTextStyle={{ color: color.black_222, fontSize: 15 }} isArrow={false}
+                                rightTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }} isArrow={false}
                                 isLine={false}/>
                 {this.renderLine()}
                 <UserSingleItem itemHeightStyle={{ height: 55 }} leftText={'实付款'}
-                                leftTextStyle={{ color: color.black_222, fontSize: 15 }}
+                                leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
                                 rightText={StringUtils.formatMoneyString(this.state.viewData.orderTotalPrice)}
                                 rightTextStyle={{ color: color.red, fontSize: 15 }} isArrow={false}
                                 isLine={false}/>
                 {this.renderWideLine()}
                 <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
                     <UIText value={'订单编号：' + this.state.viewData.orderNum}
-                            style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>
                     <TouchableOpacity style={{
                         borderWidth: 1,
-                        borderColor: color.gray_DDD,
+                        borderColor: DesignRule.color_ddd,
                         marginRight: 10,
                         justifyContent: 'center',
                         height: 22,
@@ -396,19 +423,22 @@ class MyOrdersDetailPage extends BasePage {
                     </TouchableOpacity>
                 </View>
                 <UIText value={'创建时间：' + DateUtils.getFormatDate(this.state.viewData.createTime / 1000)}
-                        style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>
-                {StringUtils.isEmpty(this.state.viewData.platformPayTime) && this.state.viewData.status > 1 ? null :
+                        style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>
+                {StringUtils.isNoEmpty(this.state.viewData.platformPayTime) && this.state.status > 1 ?
                     <UIText value={'平台付款时间：' + DateUtils.getFormatDate(this.state.viewData.platformPayTime / 1000)}
-                            style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/> : null}
+                {StringUtils.isNoEmpty(this.state.viewData.shutOffTime) && this.state.status > 5 ?
+                    <UIText value={'关闭时间：' + DateUtils.getFormatDate(this.state.viewData.shutOffTime / 1000)}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/> : null}
                 {StringUtils.isEmpty(this.state.viewData.cancelTime) ? null :
                     <UIText value={'取消时间：' + DateUtils.getFormatDate(this.state.viewData.cancelTime / 1000)}
-                            style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
                 {StringUtils.isNoEmpty(this.state.viewData.payTime) && (this.state.payType % 2 == 0) && this.state.viewData.status > 1 ?
                     <UIText value={'三方付款时间：' + DateUtils.getFormatDate(this.state.viewData.payTime / 1000)}
-                            style={{ color: color.black_999, fontSize: 13, marginLeft: 16, marginTop: 10 }}/> : null}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/> : null}
                 {StringUtils.isNoEmpty(this.state.viewData.outTradeNo) && (this.state.payType % 2 == 0) ?
                     <UIText value={'交易订单号：' + this.state.viewData.outTradeNo} style={{
-                        color: color.black_999,
+                        color: DesignRule.textColor_instruction,
                         fontSize: 13,
                         marginLeft: 16,
                         marginTop: 10,
@@ -416,7 +446,7 @@ class MyOrdersDetailPage extends BasePage {
                     }}/> : null}
                 {StringUtils.isEmpty(this.state.viewData.sendTime) ? null :
                     <UIText value={'发货时间：' + DateUtils.getFormatDate(this.state.viewData.sendTime / 1000)} style={{
-                        color: color.black_999,
+                        color: DesignRule.textColor_instruction,
                         fontSize: 13,
                         marginLeft: 16,
                         marginTop: 10,
@@ -426,7 +456,7 @@ class MyOrdersDetailPage extends BasePage {
                     <UIText
                         value={'完成时间：' + DateUtils.getFormatDate(this.state.viewData.deliverTime ? this.state.viewData.deliverTime / 1000 : this.state.viewData.finishTime / 1000)}
                         style={{
-                            color: color.black_999,
+                            color: DesignRule.textColor_instruction,
                             fontSize: 13,
                             marginLeft: 16,
                             marginTop: 10,
@@ -446,7 +476,7 @@ class MyOrdersDetailPage extends BasePage {
             itemArr.push(
                 <TouchableOpacity key={i} style={{
                     borderWidth: 1,
-                    borderColor: nameArr[i].isRed ? color.red : color.gray_DDD,
+                    borderColor: nameArr[i].isRed ? color.red : DesignRule.color_ddd,
                     height: 30,
                     borderRadius: 10,
                     marginRight: 15,
@@ -471,6 +501,7 @@ class MyOrdersDetailPage extends BasePage {
                         { icon: productDetailMessage, title: '消息' },
                         { icon: productDetailHome, title: '首页' }
                     ]}
+                    ref={(ref)=>this.messageModal = ref}
                     clickSelect={(index) => {
                         switch (index) {
                             case 0:
@@ -494,6 +525,7 @@ class MyOrdersDetailPage extends BasePage {
                 <CommonTwoChoiceModal
                     isShow={this.state.isShowDeleteOrderModal}
                     detail={{ title: '删除订单', context: '确定删除此订单吗', no: '取消', yes: '确认' }}
+                    ref={(ref)=>{this.deleteModal = ref;}}
                     closeWindow={() => {
                         this.setState({ isShowDeleteOrderModal: false });
                     }}
@@ -537,6 +569,7 @@ class MyOrdersDetailPage extends BasePage {
                     close={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
                     }}
+                    ref={(ref)=>this.receiveModal = ref}
                     yes={() => {
                         this.setState({ isShowReceiveGoodsModal: false });
                         Toast.showLoading();
@@ -555,6 +588,7 @@ class MyOrdersDetailPage extends BasePage {
                 />
                 <SingleSelectionModal
                     isShow={this.state.isShowSingleSelctionModal}
+                    ref={(ref)=>{this.cancelModal = ref}}
                     detail={['我不想买了', '信息填写错误，重新拍', '其他原因']}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
@@ -583,11 +617,15 @@ class MyOrdersDetailPage extends BasePage {
     onContentSizeChange(event) {
         this.setState({ height: event.nativeEvent.contentSize.height });
     }
-    renderAddress = () => {
+
+
+
+        renderAddress = () => {
+            console.log('this.state.heightaddredd',this.state.height);
         return (
             <View style={{
                 height: Math.max(83, this.state.height),
-                backgroundColor: color.white,
+                backgroundColor: 'white',
                 flexDirection: 'row',
                 paddingTop: 10,
                 paddingBottom: 10,
@@ -598,13 +636,12 @@ class MyOrdersDetailPage extends BasePage {
                     <View style={{ flex: 1, flexDirection: 'row' }}>
                         <Text style={{
                             flex: 1,
-                            fontFamily: 'PingFang-SC-Medium',
                             fontSize: 15,
-                            color: '#222222'
+                            color: DesignRule.textColor_mainTitle
                         }}>收货人：{this.state.viewData.receiverName}</Text>
                         <Text style={{
                             fontSize: 15,
-                            color: '#222222'
+                            color: DesignRule.textColor_mainTitle
                         }}>{this.state.viewData.receiverNum}</Text>
                     </View>
                     <UIText value={
@@ -613,7 +650,7 @@ class MyOrdersDetailPage extends BasePage {
                         + this.state.viewData.areaString
                         + this.state.viewData.receiverAddress
                     }
-                            style={{ color: color.black_999, fontSize: 15 }}/>
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 15 }}/>
                 </View>
             </View>
         );
@@ -621,12 +658,12 @@ class MyOrdersDetailPage extends BasePage {
 
     renderLine = () => {
         return (
-            <View style={{ height: 0.5, backgroundColor: color.line }}/>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
     //28:45:45后自动取消订单
@@ -730,7 +767,7 @@ class MyOrdersDetailPage extends BasePage {
             case 5:
                 if (isAfterSale) {
                     afterSaleService.push();
-                } else if ((data[index].finishTime||0)-(new Date().valueOf())<0) {
+                } else if ((data[index].finishTime || 0) - (new Date().valueOf()) < 0) {
                     afterSaleService.push();
                 }
                 else {
@@ -868,7 +905,7 @@ class MyOrdersDetailPage extends BasePage {
                 //等待买家付款
                 case 1:
                     this.startCutDownTime(data.shutOffTime);
-                    pageStateString.sellerState = '收货人：' + data.receiver + '                   ' + data.recevicePhone;
+                    pageStateString.sellerState = ['收货人：' + data.receiver,'' + data.recevicePhone];
                     pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
                     if (StringUtils.isEmpty(data.outTradeNo)) {
                         pageStateString.menu = [
@@ -961,7 +998,7 @@ class MyOrdersDetailPage extends BasePage {
                     pageStateString.moreDetail = data.buyerRemark;
                     break;
                 case 8://超时关闭
-                    pageStateString.sellerState = '收货人：' + data.receiver + '                   ' + data.recevicePhone;
+                    pageStateString.sellerState = ['收货人：' + data.receiver,'' + data.recevicePhone];
                     pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
                     pageStateString.moreDetail = data.buyerRemark;
                     if (data.orderType == 5 || data.orderType == 98) {
@@ -973,9 +1010,6 @@ class MyOrdersDetailPage extends BasePage {
                             }
                         ];
                     }
-                    break;
-                case 9:
-                    //no UI(can't enter this page)
                     break;
 
             }
@@ -1006,7 +1040,8 @@ class MyOrdersDetailPage extends BasePage {
                     autoConfirmTime: data.autoReceiveTime,//自动确认时间
                     deliverTime: data.deliverTime,
                     pickedUp: data.pickedUp,//
-                    cancelTime: data.cancelTime ? data.cancelTime : null//取消时间
+                    cancelTime: data.cancelTime ? data.cancelTime : null,//取消时间,
+                    shutOffTime:data.shutOffTime,//超时关闭时间
                 },
                 afterSaleService: this.getAfterSaleService(data.orderProductList, 0),
                 returnProductStatus: data.orderProductList[0].returnProductStatus,
@@ -1090,6 +1125,7 @@ class MyOrdersDetailPage extends BasePage {
         switch (menu.id) {
             case 1:
                 this.setState({ isShowSingleSelctionModal: true });
+                this.cancelModal && this.cancelModal.open();
                 break;
             case 2:
                 this.$navigate('payment/PaymentMethodPage', {
@@ -1153,11 +1189,13 @@ class MyOrdersDetailPage extends BasePage {
                 }
                 if (j == 0) {
                     this.setState({ isShowReceiveGoodsModal: true });
+                    this.receiveModal && this.receiveModal.open();
                 }
                 // this.setState({ isShowReceiveGoodsModal: true });
                 break;
             case 7:
                 this.setState({ isShowDeleteOrderModal: true });
+                this.deleteModal && this.deleteModal.open();
                 break;
             case 8:
                 Toast.showLoading();
@@ -1283,7 +1321,8 @@ class MyOrdersDetailPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: color.page_background
+        backgroundColor: DesignRule.bgColor,
+        marginBottom: ScreenUtils.safeBottom
     }, redRectangle: {
         width: ScreenUtils.width,
         height: 100,
@@ -1295,7 +1334,7 @@ const styles = StyleSheet.create({
     }, whiteRectangle: {
         height: 81,
         marginTop: 69,
-        backgroundColor: color.white,
+        backgroundColor: 'white',
         marginLeft: 15,
         marginRight: 15,
         justifyContent: 'space-between',
@@ -1304,23 +1343,22 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     grayView: {
-        width: 80,
+        width: 100,
         height: 30,
         borderRadius: 15,
-        backgroundColor: '#ffffff',
+        backgroundColor: 'white',
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: '#dddddd',
+        borderColor: DesignRule.lineColor_inGrayBg,
         marginRight: 15,
         justifyContent: 'center',
         alignItems: 'center',
         paddingLeft: 10,
         paddingRight: 10
     }, grayText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         lineHeight: 18,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     }
 });
 

@@ -21,7 +21,8 @@ import InfoRow from './components/InfoRow';
 import ActionSheetView from '../components/ActionSheetView';
 import ReportAlert from '../components/ReportAlert';
 // 图片资源
-import settingLogo from './res/dp_03-02.png';
+import NavLeft from './res/NavLeft.png';
+import shezhi from './res/shezhi.png';
 import icons8_Shop_50px from '../shopRecruit/src/icons8_Shop_50px.png';
 import icons9_shop from '../shopRecruit/src/icons9_shop.png';
 
@@ -30,8 +31,9 @@ import unSc_03 from './res/wsc_03.png';
 
 import RmbIcon from './res/zje_11.png';
 import ZuanIcon from './res/cs_12.png';
-import MoneyIcon from './res/fhje_14.png';
 import QbIcon from './res/dzfhj_03-03.png';
+import system_charge from './res/system-charge.png';
+import hangye_gift from './res/hangye-gift.png';
 
 import SpellShopApi from '../api/SpellShopApi';
 import DateUtils from '../../../utils/DateUtils';
@@ -41,6 +43,8 @@ import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 @observer
 export default class MyShopPage extends BasePage {
@@ -51,6 +55,7 @@ export default class MyShopPage extends BasePage {
             loadingState: PageLoadingState.loading,
             netFailedInfo: {},
             isRefresh: false,
+            tittle: '店铺详情',
 
             storeData: {},
             storeId: this.params.storeId || this.props.storeId,
@@ -60,31 +65,51 @@ export default class MyShopPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '店铺详情',
-        leftNavItemHidden: this.props.leftNavItemHidden
+        show: false
     };
-    $NavBarRenderRightItem = () => {
+    // leftNavItemHidden: this.props.leftNavItemHidden
+
+
+    _NavBarRenderRightItem = () => {
+        return (<View style={styles.transparentView}>
+                <View style={styles.leftBarItemContainer}>
+                    {!this.props.leftNavItemHidden ?
+                        <TouchableOpacity onPress={() => {
+                            this.$navigateBack();
+                        }}>
+                            <Image source={NavLeft}/>
+                        </TouchableOpacity> : null}
+                </View>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 17, color: '#ffffff' }}>{this.state.tittle}</Text>
+                </View>
+                {this._RightItem()}
+            </View>
+        );
+    };
+
+    _RightItem = () => {
         const { myStore, userStatus } = this.state.storeData;
         if (userStatus === 1) {
             return (
                 <View style={styles.rightBarItemContainer}>
                     <TouchableOpacity onPress={() => {
                         this.$navigate('spellShop/recommendSearch/RecommendPage');
-                    }
-                    }>
-                        <Image style={{ marginRight: 20 }} source={icons8_Shop_50px}/>
+                    }}>
+                        <Image style={{ marginRight: 10 }} source={icons8_Shop_50px}/>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this._clickSettingItem} style={styles.rightBarItemContainer}>
-                        <Image style={{ marginRight: 20 }} source={myStore ? settingLogo : icons9_shop}/>
+                    <TouchableOpacity onPress={this._clickSettingItem}>
+                        <Image source={myStore ? shezhi : icons9_shop}/>
                     </TouchableOpacity>
                 </View>
             );
         } else {
             return (
-                <TouchableOpacity onPress={this.state.isLike ? this._clickUnLikeItem : this._clickLikeItem}
-                                  style={styles.rightBarItemContainer}>
-                    <Image style={{ marginRight: 20 }} source={this.state.isLike ? onSc_03 : unSc_03}/>
-                </TouchableOpacity>
+                <View style={styles.rightBarItemContainer}>
+                    <TouchableOpacity onPress={this.state.isLike ? this._clickUnLikeItem : this._clickLikeItem}>
+                        <Image source={this.state.isLike ? onSc_03 : unSc_03}/>
+                    </TouchableOpacity>
+                </View>
             );
         }
     };
@@ -122,16 +147,13 @@ export default class MyShopPage extends BasePage {
         //店铺信息
         SpellShopApi.getById({ id: this.state.storeId }).then((data) => {
             let dataTemp = data.data || {};
+            const { userStatus } = dataTemp;
             this.setState({
                 loadingState: PageLoadingState.success,
                 isRefresh: false,
                 storeData: dataTemp,
-                storeId: dataTemp.id
-            }, () => {
-                const { userStatus } = dataTemp;
-                if (userStatus === 1) {
-                    this.$NavigationBarResetTitle('我的店铺');
-                }
+                storeId: dataTemp.id,
+                tittle: userStatus === 1 ? '我的店铺' : '店铺详情'
             });
         }).catch((error) => {
             this.$toastShow(error.msg);
@@ -284,22 +306,39 @@ export default class MyShopPage extends BasePage {
     };
 
     _renderBottom = () => {
-        let { myStore, saleBonus, totalTradeVolume, bonusCount, bossBonus, updateTime, createTime, userStatus } = this.state.storeData;
+        let {
+            userStatus, myStore,
+            clerkTotalBonusMoney, clerkBonusCount,
+            manager, totalTradeBalance, tradeBalance,
+            updateTime,
+            createTime
+        } = this.state.storeData;
+        //店员
+        //clerkTotalBonusMoney店员个人已完成分红总额
+        //clerkBonusCount店铺内个人分红次数
+        //加入时间
+
+        //店长
+        //totalTradeBalance累计收入- tradeBalance本月收入  店铺已完成分红总额
+        //bonusCount店长个人分红次数
+        //totalBonusMoney店长个人已获得分红金
+        //managerTotalBonusMoney作为店长的总分红
+        const { bonusCount, totalBonusMoney, managerTotalBonusMoney } = manager;
         if (userStatus === 1) {
             return (
                 <View>
-                    {myStore && this._renderRow(RmbIcon, '店铺已完成分红总额', `${saleBonus || 0}元`)}
+                    {myStore && this._renderRow(RmbIcon, '店铺已完成分红总额', `${(totalTradeBalance - tradeBalance) || 0}元`)}
                     <View style={{ height: 10 }}/>
 
                     {myStore ? this._renderRow(ZuanIcon, '个人分红次数', `${bonusCount || 0}次`)
-                        : this._renderRow(RmbIcon, '个人已完成交易总额', `${totalTradeVolume || 0}元`)}
+                        : this._renderRow(RmbIcon, '个人已完成分红总额', `${clerkTotalBonusMoney || 0}元`)}
                     {this.renderSepLine()}
 
-                    {myStore ? this._renderRow(MoneyIcon, '个人已获得分红金', `${saleBonus || 0}元`)
-                        : this._renderRow(ZuanIcon, '分红次数', `${bonusCount || 0}次`)}
+                    {myStore ? this._renderRow(system_charge, '个人已获得分红金', `${totalBonusMoney || 0}元`)
+                        : this._renderRow(ZuanIcon, '分红次数', `${clerkBonusCount || 0}次`)}
                     {myStore && this.renderSepLine()}
 
-                    {myStore ? this._renderRow(QbIcon, '个人获得店长分红金', `${bossBonus || 0}元`)
+                    {myStore ? this._renderRow(hangye_gift, '个人获得店长分红金', `${managerTotalBonusMoney || 0}元`)
                         : this._renderRow(QbIcon, '加入时间', DateUtils.formatDate(updateTime, 'yyyy-MM-dd'))}
                 </View>
             );
@@ -319,7 +358,7 @@ export default class MyShopPage extends BasePage {
         if (userStatus === 1 || StringUtils.isEmpty(userStatus)) {
             return null;
         }
-        let btnText = undefined;
+        let btnText;
         //2,10,店铺未没关闭&&允许加入&&人数未满
         let canJoin = (userStatus !== 10 && userStatus !== 2 && status !== 0) && (recruitStatus === 0 || recruitStatus === 1) && storeMaxUser > storeUserList.length;
         switch (userStatus) {
@@ -358,12 +397,12 @@ export default class MyShopPage extends BasePage {
                                  style={{
                                      height: 48,
                                      width: 150,
-                                     backgroundColor: canJoin ? '#D51243' : 'rgb(221,109,140)',
+                                     backgroundColor: canJoin ? DesignRule.mainColor : 'rgb(221,109,140)',
                                      borderRadius: 5,
                                      marginTop: 30,
                                      alignSelf: 'center', justifyContent: 'center', alignItems: 'center'
                                  }}>
-            <Text style={{ fontSize: 16, color: '#FFFFFF' }}>{btnText}</Text>
+            <Text style={{ fontSize: 16, color: 'white' }}>{btnText}</Text>
         </TouchableOpacity>;
     };
 
@@ -399,6 +438,7 @@ export default class MyShopPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
+                {this._NavBarRenderRightItem()}
                 {this.renderBodyView()}
                 <ActionSheetView ref={ref => {
                     this.actionSheetRef = ref;
@@ -423,10 +463,28 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    // 顶部条 右边item容器
+    transparentView: {
+        top: ScreenUtils.statusBarHeight,
+        height: 44,
+        backgroundColor: 'transparent',
+        position: 'absolute',
+        left: 15,
+        right: 15,
+        zIndex: 3,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
     rightBarItemContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'flex-end',
+        width: 88
+    },
+    leftBarItemContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        width: 88
     }
 });

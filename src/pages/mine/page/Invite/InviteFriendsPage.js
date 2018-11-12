@@ -31,6 +31,7 @@ import bridge from '../../../../utils/bridge'
 // import BaseUrl from '../../../../api/BaseUrl'
 import fanhui from '../../res/homeBaseImg/fanhui.png'
 import apiEnvironment from '../../../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
 
 type Props = {};
 export default class InviteFriendsPage extends BasePage<Props> {
@@ -129,13 +130,13 @@ export default class InviteFriendsPage extends BasePage<Props> {
                              top: autoSizeWidth(165),
                              left: autoSizeWidth(107.5),
                              position: 'absolute',
-                             backgroundColor: 'red',
+                             backgroundColor: DesignRule.mainColor,
                          }}/>
                 <UIText value = {'专属你的惊喜福利活动\n数量有限赶快参与吧～'}
                         style = {{
                             marginTop: autoSizeWidth(20),
                             fontSize: autoSizeWidth(18),
-                            color: '#666666',
+                            color: DesignRule.textColor_secondTitle,
                             lineHeight: autoSizeWidth(28)
                         }}
                 />
@@ -151,7 +152,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     <View style = {{flex: 1}}/>
                 </View>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
-                                // type={'miniProgram'}
+                                 // type={'promotionShare'}
                                //  imageJson={{
                                //      imageUrlStr: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1539577593172&di=c87eead9eb2e2073b50758daf6194c62&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F59c914525c484566292f8d8d3d29c964ca59c7ca.jpg',
                                //      titleStr: '商品标题',
@@ -159,8 +160,8 @@ export default class InviteFriendsPage extends BasePage<Props> {
                                //      QRCodeStr: '分享的链接'
                                //  }}
                                 webJson={{
-                                    title: '分享标题(当为图文分享时候使用)',
-                                    dec: '内容(当为图文分享时候使用)',
+                                    title: '邀请好友免费领取福利',
+                                    dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/register`,
                                     thumImage: 'logo.png'
                                 }}

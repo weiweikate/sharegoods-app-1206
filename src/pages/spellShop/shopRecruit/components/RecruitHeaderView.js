@@ -9,11 +9,14 @@ import {
 } from 'react-native';
 // 图片资源
 import HeaderBarBgImg from '../src/bg_02.png';
-import WhiteBgImg from '../src/bg_03.png';
-import AdminImg from '../src/dyxx_03.png';
+import Shape from '../src/Shape.png';
+import shoushi from '../src/shoushi.png';
+import xiuling from '../src/xiuling.png';
+
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
+import DesignRule from 'DesignRule';
 
 export default class RecommendRow extends Component {
 
@@ -27,98 +30,75 @@ export default class RecommendRow extends Component {
         return maxUser && maxUser <= storeUserList.length ? '已满足拼店要求' : '尚未满足拼店要求';
     };
 
+    _renderItems = (img, tittle, content) => {
+        return (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'row' }}>
+                <Image source={img}/>
+                <Text style={{ color: '#333333', fontSize: 13, marginLeft: 2 }}>{tittle}</Text>
+            </View>
+            <Text style={{ color: '#666666', fontSize: 13, marginTop: 8 }}>{content}</Text>
+        </View>);
+    };
+
     render() {
-        // const { name, storeNumber, storeUserName, starName, totalTradeVolume, bonusCount, manager = {} } = this.props.storeData;
-        const { name, storeNumber, totalTradeVolume, bonusCount, manager = {} } = this.props.storeData;
+        const { name, storeNumber, totalTradeBalance, bonusCount, manager = {} } = this.props.storeData;
         let { createTime, headUrl } = this.props.storeData;
         createTime = StringUtils.isNoEmpty(createTime) ? createTime : '';
         headUrl = StringUtils.isNoEmpty(headUrl) ? headUrl : '';
+        let totalTradeBalance1 = totalTradeBalance || 0;
+        totalTradeBalance1 = Math.floor(totalTradeBalance1 / 10000);
         return <View style={styles.bg}>
             <ImageBackground source={HeaderBarBgImg} style={styles.headerBg}>
-                <View style={{ marginTop: 30, flexDirection: 'row' }}>
+                <View style={{
+                    marginTop: 21 + ScreenUtils.headerHeight,
+                    flexDirection: 'row',
+                    marginLeft: ScreenUtils.autoSizeWidth(57)
+                }}>
                     <Image source={{ uri: headUrl }} style={styles.shopIcon}/>
-                    <View>
-                        <Text style={styles.shopName}>{name || ''}</Text>
-                        <Text style={styles.shopId}>店铺ID：{storeNumber || ''}</Text>
+                    <View style={{ justifyContent: 'center' }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.shopName}>{name || ''}</Text>
+                            <Text style={styles.shopId}>ID：{storeNumber || ''}</Text>
+                        </View>
+                        <Text style={{
+                            fontSize: 11,
+                            color: '#FFFFFF',
+                            marginTop: 5
+                        }}>{`${DateUtils.formatDate(createTime, 'yyyy-MM-dd')}日发起招募`}</Text>
+                        <Text style={{
+                            fontFamily: 'PingFangSC-Medium',
+                            fontSize: 13,
+                            color: '#FFFFFF',
+                            marginTop: 5
+                        }}>{this._judgeCanOpenShop()}</Text>
                     </View>
                 </View>
 
-                <Text style={{
-                    fontFamily: 'PingFang-SC-Medium',
-                    fontSize: 14,
-                    color: '#f7f7f7',
-                    marginTop: 20
-                }}>{`${DateUtils.formatDate(createTime, 'yyyy-MM-dd')}日发起招募`}</Text>
-                <Text style={{
-                    fontFamily: 'PingFang-SC-Medium',
-                    fontWeight: 'bold',
-                    fontSize: 14,
-                    color: '#f7f7f7',
-                    marginTop: 5
-                }}>{this._judgeCanOpenShop()}</Text>
-
-                <ImageBackground source={WhiteBgImg} style={styles.whiteBg}>
-                    <View style={{ height: 43, marginHorizontal: 0, flexDirection: 'row', alignItems: 'center' }}>
-                        <Image source={AdminImg} style={{ marginLeft: 17, marginRight: 6 }}/>
-                        <Text style={{
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 15,
-                            color: '#000000'
-                        }}>店长信息</Text>
+                <View style={styles.whiteBg}>
+                    <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
+                        {this._renderItems(Shape, '店长', manager.nickname || '')}
+                        <View style={{ backgroundColor: '#E4E4E4', width: 0.5, height: 41 }}/>
+                        {this._renderItems(shoushi, '会员等级', manager.levelName || '')}
+                        <View style={{ backgroundColor: '#E4E4E4', width: 0.5, height: 41 }}/>
+                        {this._renderItems(xiuling, '秀龄', `${Math.floor((new Date().getTime() - manager.regTime) / (24 * 3600 * 1000))}天`)}
                     </View>
-
-                    <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <Image style={{
-                            width: 44,
-                            height: 44,
-                            backgroundColor: '#eee',
-                            borderRadius: 22,
-                            marginLeft: 20,
-                            marginTop: 13
-                        }} source={{ uri: manager.headImg || '' }}/>
-                        <View style={{ flex: 1, marginHorizontal: 15, justifyContent: 'center' }}>
-
-                            <Text style={{
-                                fontFamily: 'PingFang-SC-Medium',
-                                fontSize: 13,
-                                color: '#222222'
-                            }}>店长：{manager.nickname || ''}</Text>
-
-                            <Text style={{
-                                fontFamily: 'PingFang-SC-Medium',
-                                fontSize: 13,
-                                color: '#666',
-                                marginTop: 6
-                            }}>等级：{manager.levelName || ''}</Text>
-                            <Text style={{
-                                fontFamily: 'PingFang-SC-Medium',
-                                fontSize: 13,
-                                color: '#666',
-                                marginTop: 6
-                            }}>{`参与平台${Math.floor((new Date().getTime() - manager.regTime) / (24 * 3600 * 1000))}天`}</Text>
-                        </View>
-                    </View>
+                    <View style={{ backgroundColor: '#E4E4E4', height: 0.5 }}/>
                     <View style={{
                         flexDirection: 'row',
-                        marginBottom: 15,
-                        paddingHorizontal: 19,
+                        height: 57,
+                        paddingHorizontal: 24,
+                        alignItems: 'center',
                         justifyContent: 'space-between'
                     }}>
+                        <Text
+                            style={{ fontSize: 12, color: '#666666' }}>完成总交易额：<Text
+                            style={{ color: '#FE1A54' }}>{totalTradeBalance1 < 1 ? '1万以内' : (totalTradeBalance1 > 10 ? '10万+' : `${totalTradeBalance1}万+`)}</Text></Text>
                         <Text style={{
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 13,
-                            color: '#c8c8c8',
-                            marginTop: 6
-                        }}>{`完成总交易额：${totalTradeVolume || 0}元`}</Text>
-
-                        <Text style={{
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 13,
-                            color: '#666',
-                            marginTop: 6
-                        }}>{`参与拼店分红：${bonusCount || 0}次`}</Text>
+                            fontSize: 12,
+                            color: '#666666'
+                        }}>参与平台分红：<Text style={{ color: '#FE1A54' }}>{`${bonusCount || 0}`}</Text>次</Text>
                     </View>
-                </ImageBackground>
+                </View>
             </ImageBackground>
         </View>;
     }
@@ -126,47 +106,35 @@ export default class RecommendRow extends Component {
 
 const styles = StyleSheet.create({
     bg: {
-        height: ScreenUtils.autoSizeWidth(223) + ScreenUtils.autoSizeWidth(98) + 10 + 10
+        height: ScreenUtils.headerHeight + ScreenUtils.autoSizeWidth(271)
     },
     //header背景
     headerBg: {
         width: ScreenUtils.width,
-        height: ScreenUtils.autoSizeWidth(223),
-        alignItems: 'center'
+        height: ScreenUtils.headerHeight + ScreenUtils.autoSizeWidth(173)
     },
     shopIcon: {
         marginRight: 10,
-        width: 50,
-        height: 50,
-        borderRadius: 2,
-        backgroundColor: '#eee',
-        borderWidth: 1,
-        borderColor: '#c8c8c8'
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: DesignRule.lineColor_inColorBg
     },
     shopName: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
-        color: '#f7f7f7'
+        color: '#FFFFFF'
     },
     shopId: {
-        fontFamily: 'PingFang-SC-Medium',
-        fontSize: 13,
-        color: '#f7f7f7',
-        marginTop: 8
+        marginLeft: ScreenUtils.autoSizeWidth(30),
+        fontSize: 11,
+        color: '#FFFFFF'
     },
     //白的面板背景
     whiteBg: {
-        marginTop: 10,
-        width: ScreenUtils.width - 24,
-        height: ScreenUtils.autoSizeWidth(175),
-        shadowColor: 'rgba(0, 0, 0, 0.1)',
-        shadowOffset: {
-            width: 0,
-            height: 0
-        },
-        overflow: 'hidden',
-        shadowRadius: 10,
-        shadowOpacity: 1,
-        borderRadius: 12
+        marginTop: 30,
+        backgroundColor: DesignRule.white,
+        marginHorizontal: 15,
+        height: ScreenUtils.autoSizeWidth(144),
+        borderRadius: 10
     }
 });

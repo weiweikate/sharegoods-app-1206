@@ -1,13 +1,14 @@
 /**
  * 空页面
  */
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     View,
     Keyboard,
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
+import DesignRule from 'DesignRule';
 
 export default class NullView extends Component {
     render() {
@@ -28,6 +29,6 @@ export default class NullView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f6f6f6',
-    },
+        backgroundColor: DesignRule.bgColor
+    }
 });

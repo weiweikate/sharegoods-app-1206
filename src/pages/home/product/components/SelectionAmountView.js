@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
+import DesignRule from 'DesignRule';
 
 /**
  * 选择数量view
@@ -97,10 +98,10 @@ export default class RecentSearchView extends Component {
                 justifyContent: 'space-between',
                 alignItems: 'center'
             }, this.props.style]}>
-                <Text style={{ color: '#666666', marginLeft: 16, fontSize: 13 }}>购买数量</Text>
+                <Text style={{ color: DesignRule.textColor_secondTitle, marginLeft: 16, fontSize: 13 }}>购买数量</Text>
                 <View style={{
                     flexDirection: 'row',
-                    borderColor: '#dddddd',
+                    borderColor: DesignRule.lineColor_inGrayBg,
                     borderWidth: 1,
                     borderRadius: 2,
                     marginRight: 16,
@@ -108,9 +109,9 @@ export default class RecentSearchView extends Component {
                 }}>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
                                       onPress={this._leftAction} disabled={type === 'after'}>
-                        <Text style={{ color: '#dddddd', fontSize: 15, paddingHorizontal: 11 }}>-</Text>
+                        <Text style={{ color: DesignRule.lineColor_inGrayBg, fontSize: 15, paddingHorizontal: 11 }}>-</Text>
                     </TouchableOpacity>
-                    <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
+                    <View style={{ height: 30, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <TextInput
                             style={{ width: 92 / 2.0, padding: 0 }}
@@ -123,10 +124,10 @@ export default class RecentSearchView extends Component {
                             editable={type !== 'after'}//false不可编辑
                         />
                     </View>
-                    <View style={{ height: 30, width: 1, backgroundColor: '#dddddd' }}/>
+                    <View style={{ height: 30, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
                                       onPress={this._rightAction} disabled={type === 'after'}>
-                        <Text style={{ color: '#222222', fontSize: 15, paddingHorizontal: 11 }}>+</Text>
+                        <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, paddingHorizontal: 11 }}>+</Text>
                     </TouchableOpacity>
                 </View>
             </View>

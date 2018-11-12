@@ -7,7 +7,7 @@ import UserApi from './userApi'
 const USERINFOCACHEKEY = 'UserInfo';
 const CARTDATA = 'cartData';
 const USERTOKEN = 'USERTOKEN'
-
+const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
 class User {
 
     @computed
@@ -135,7 +135,10 @@ class User {
     needWaiting = false;   //提供BasePage中repeatClick()
 
     @observable
-    token = ''
+    token = '';
+
+    @observable
+    upUserid = null;
 
     @action getToken = () => {
         if (this.token) {
@@ -215,7 +218,7 @@ class User {
         this.auzEndTime = info.auzEndTime;          //授权结束时间
         this.upDealerid = info.upDealerid;          //上级
         this.availableBalance = info.availableBalance;//可提现金额
-        this.blockedBalances = info.blockedBalances; //冻结金额
+        this.blockedBalance = info.blockedBalance; //冻结金额
         this.tokenCoin = info.tokenCoin;            //一元券数量
         this.blockedCoin = info.blockedCoin;        //冻结代币
         this.userScore = info.userScore;            //积分
@@ -237,6 +240,7 @@ class User {
         this.area = info.area;                      //
         this.storeBonusDto = info.storeBonusDto;    //
         this.realnameStatus = info.realnameStatus;    //
+        this.upUserid = info.upUserid;//上级ID，判断是否可以领推广红包
         if (saveToDisk) {
             AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
             });
@@ -342,8 +346,11 @@ class User {
         this.area = null;            //
         this.storeBonusDto = null;   //
         this.realnameStatus = null;   //
+        this.upUserid = null;
         // todo 清空cookie
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
+        AsyncStorage.removeItem(LASTSHOWPROMOTIONTIME).catch(e => {
+        });
 
         return AsyncStorage.removeItem(USERINFOCACHEKEY).catch(e => {
         });

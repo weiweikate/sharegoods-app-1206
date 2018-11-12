@@ -7,15 +7,15 @@ import {
     FlatList,
     Text,
     TouchableWithoutFeedback,
-    TouchableOpacity
+    TouchableOpacity, AsyncStorage,
+    ImageBackground
 } from 'react-native';
 
 import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
 import TopicDetailSegmentView from './components/TopicDetailSegmentView';
 import ScreenUtils from '../../utils/ScreenUtils';
-import xiangqing_btn_return_nor from './res/xiangqing_btn_return_nor.png';
-import xiangqing_btn_more_nor from './res/xiangqing_btn_more_nor.png';
+import res from '../../comm/res';
 import HTML from 'react-native-render-html';
 import HomeAPI from '../home/api/HomeAPI';
 import TopicApi from './api/TopicApi';
@@ -26,6 +26,15 @@ import CommShareModal from '../../comm/components/CommShareModal';
 import TopicDetailShowModal from './components/TopicDetailShowModal';
 import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
 import apiEnvironment from '../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
+const { px2dp } = ScreenUtils;
+import EmptyUtils from '../../utils/EmptyUtils';
+import redEnvelopeBg from '../home/product/res/red_envelope_bg.png';
+import StringUtils from '../../utils/StringUtils';
+import DateUtils from '../../utils/DateUtils';
+import CommModal from 'CommModal';
+
+const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
 
 export default class TopicDetailPage extends BasePage {
 
@@ -43,14 +52,39 @@ export default class TopicDetailPage extends BasePage {
             //正常数据 礼包
             data: {},
             //活动数据  降价拍和秒杀活动数据
-            activityData: {}
+            activityData: {},
+            canGetCoupon: false,
+            couponData: null,
+            hasGetCoupon: false
 
         };
     }
 
     componentDidMount() {
         this.loadPageData();
+        this.getPromotion();
     }
+
+    getPromotion = async () => {
+        try {
+            const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
+            if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
+                if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
+                    HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
+                        if (!EmptyUtils.isEmpty(data.data)) {
+                            this.setState({
+                                canGetCoupon: true,
+                                couponData: data.data
+                            });
+                            this.couponId = data.data.id;
+                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, Date.parse(new Date()).toString());
+                        }
+                    });
+                }
+            }
+        } catch (error) {
+        }
+    };
 
     componentWillUnmount() {
         this.__timer__ && clearInterval(this.__timer__);
@@ -59,6 +93,28 @@ export default class TopicDetailPage extends BasePage {
     loadPageData() {
         this._getActivityData();
     }
+
+    getCoupon = () => {
+        if (EmptyUtils.isEmpty(this.couponId)) {
+            this.setState({
+                canGetCoupon: false
+            });
+            this.$toastShow('领取失败！');
+        } else {
+            HomeAPI.givingPackageToUser({ id: this.couponId }).then((data) => {
+                this.setState({
+                    hasGetCoupon: true
+                });
+            }).catch((error) => {
+                this.setState({
+                    canGetCoupon: false
+                });
+                this.$toastShow(error.msg);
+            });
+
+        }
+    };
+
 
     //数据
     _getActivityData = () => {
@@ -98,7 +154,7 @@ export default class TopicDetailPage extends BasePage {
                     data: data.data || {}
                 }, () => {
                     if (this.state.data.type === 2) {//1普通礼包  2升级礼包
-                        this.TopicDetailShowModal.show('温馨提示');
+                        this.TopicDetailShowModal.show('温馨提醒', `${data.data.name}`, `秀购升级礼包为定制特殊商品`, `购买后即可立即享受晋升权限，该礼包产品不可退换货，如有产品质量问题，可联系客服进行申诉`);
                     }
                 });
             }).catch((error) => {
@@ -257,8 +313,8 @@ export default class TopicDetailPage extends BasePage {
                       containerStyle={{ backgroundColor: '#fff' }}/>
                 <View style={{ backgroundColor: 'white' }}>
                     <Text
-                        style={{ paddingVertical: 13, marginLeft: 15, fontSize: 15, color: '#222222' }}>价格说明</Text>
-                    <View style={{ height: 0.5, marginHorizontal: 0, backgroundColor: '#eee' }}/>
+                        style={{ paddingVertical: 13, marginLeft: 15, fontSize: 15, color: DesignRule.textColor_mainTitle }}>价格说明</Text>
+                    <View style={{ height: 0.5, marginHorizontal: 0, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                     <Text style={{
                         padding: 15
                     }}>{`划线价格：指商品的专柜价、吊牌价、正品零售价、厂商指导价或该商品的曾经展示过销售价等，并非原价，仅供参考\n未划线价格：指商品的实时价格，不因表述的差异改变性质。具体成交价格根据商品参加活动，或会员使用优惠券、积分等发生变化最终以订单`}</Text>
@@ -267,7 +323,7 @@ export default class TopicDetailPage extends BasePage {
         } else {
             return <View style={{ backgroundColor: 'white' }}>
                 <FlatList
-                    style={{ marginHorizontal: 16, marginVertical: 16, borderWidth: 0.5, borderColor: '#eee' }}
+                    style={{ marginHorizontal: 16, marginVertical: 16, borderWidth: 0.5, borderColor: DesignRule.lineColor_inColorBg }}
                     renderItem={this._renderSmallItem}
                     ItemSeparatorComponent={this._renderSeparatorComponent}
                     showsVerticalScrollIndicator={false}
@@ -279,10 +335,10 @@ export default class TopicDetailPage extends BasePage {
 
     _renderSmallItem = ({ item }) => {
         return <View style={{ flexDirection: 'row', height: 35 }}>
-            <View style={{ backgroundColor: '#DDDDDD', width: 70, justifyContent: 'center' }}>
+            <View style={{ backgroundColor: DesignRule.lineColor_inGrayBg, width: 70, justifyContent: 'center' }}>
                 <Text style={{
                     marginLeft: 10,
-                    color: '#222222',
+                    color: DesignRule.textColor_mainTitle,
                     fontSize: 12
                 }}>{this.state.activityType === 3 ? item.param || '' : item.paramName || ''}</Text>
             </View>
@@ -290,14 +346,14 @@ export default class TopicDetailPage extends BasePage {
                 flex: 1,
                 alignSelf: 'center',
                 marginLeft: 20,
-                color: '#999999',
+                color: DesignRule.textColor_instruction,
                 fontSize: 12
             }}>{item.paramValue || ' '}</Text>
         </View>;
     };
 
     _renderSeparatorComponent = () => {
-        return <View style={{ height: 0.5, backgroundColor: '#eee' }}/>;
+        return <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>;
     };
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
@@ -310,6 +366,73 @@ export default class TopicDetailPage extends BasePage {
             opacity: this.st
         });
     };
+
+    _renderCouponModal() {
+
+        let view = (
+            <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
+                <Text style={{ color: 'white', fontSize: px2dp(24) }}>
+                    领取成功
+                </Text>
+                <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
+                    可前往我的-优惠卷查看
+                </Text>
+            </View>
+        );
+
+        let button = (
+            <TouchableWithoutFeedback onPress={this.getCoupon}>
+                <Text
+                    style={{ position: 'absolute', top: px2dp(220), left: px2dp(115), color: '#80522A', fontSize: 14 }}>
+                    {`立即\n领取`}
+                </Text>
+            </TouchableWithoutFeedback>
+        );
+
+        return (
+            <CommModal visible={this.state.canGetCoupon}>
+                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center', justifyContent: 'center' }}>
+                    <ImageBackground source={redEnvelopeBg} style={{
+                        height: px2dp(362), width: px2dp(257),
+                        alignItems: 'center'
+                    }}>
+                        <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14), marginTop: 26 }}>
+                            {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.encryptPhone(this.state.couponData.phone)}
+                        </Text>
+                        <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14) }}>
+                            赠送了你一个红包
+                        </Text>
+
+                        <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(60), marginTop: 20 }}>
+                            {EmptyUtils.isEmpty(this.state.couponData) ? null : this.state.couponData.price}
+                            <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
+                                元
+                            </Text>
+                        </Text>
+                        <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(14), marginTop: 12 }}>
+                            红包抵扣金
+                        </Text>
+                        {this.state.hasGetCoupon ? null : button}
+
+                        {this.state.hasGetCoupon ? view : null}
+                    </ImageBackground>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.setState({
+                            canGetCoupon: false
+                        });
+                    }}>
+                        <Image source={res.button.tongyong_btn_close_white} style={{
+                            position: 'absolute',
+                            top: 107,
+                            right: 35,
+                            width: 24,
+                            height: 24
+                        }}/>
+                    </TouchableWithoutFeedback>
+                </View>
+            </CommModal>
+        );
+    }
 
     _render() {
         let bottomTittle, colorType;
@@ -372,7 +495,7 @@ export default class TopicDetailPage extends BasePage {
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
-                        <Image source={xiangqing_btn_return_nor}/>
+                        <Image source={res.button.show_detail_back}/>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
                         this.DetailNavShowModal.show((item) => {
@@ -381,7 +504,7 @@ export default class TopicDetailPage extends BasePage {
                                     this.$navigate('message/MessageCenterPage');
                                     break;
                                 case 1:
-                                    this.props.navigation.popToTop();
+                                    this.$navigateReset();
                                     break;
                                 case 2:
                                     this.shareModal.open();
@@ -389,7 +512,7 @@ export default class TopicDetailPage extends BasePage {
                             }
                         });
                     }}>
-                        <Image source={xiangqing_btn_more_nor}/>
+                        <Image source={res.button.show_share}/>
                     </TouchableWithoutFeedback>
                 </View>
 
@@ -404,7 +527,7 @@ export default class TopicDetailPage extends BasePage {
                 <View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49, backgroundColor: 'white' }}>
                     <TouchableOpacity style={{
                         height: 49,
-                        backgroundColor: colorType === 1 ? '#33B4FF' : (colorType === 2 ? '#D51243' : '#CCCCCC'),
+                        backgroundColor: colorType === 1 ? '#33B4FF' : (colorType === 2 ? DesignRule.mainColor : '#CCCCCC'),
                         justifyContent: 'center',
                         alignItems: 'center'
                     }} onPress={() => this._bottomAction(colorType)} disabled={!(colorType === 1 || colorType === 2)}>
@@ -432,9 +555,18 @@ export default class TopicDetailPage extends BasePage {
                                     dec: '商品详情',
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`,
                                     thumImage: productImgUrl
+                                }}
+                                miniProgramJson={{
+                                    title: productName,
+                                    dec: '商品详情',
+                                    thumImage: 'logo.png',
+                                    hdImageURL: productImgUrl,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`,
+                                    miniProgramPath: `/pages/index/index?type=${this.params.activityType}&id=${this.params.activityCode}`
                                 }}/>
                 <TopicDetailShowModal ref={(ref) => this.TopicDetailShowModal = ref}/>
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
+                {this._renderCouponModal()}
             </View>
         );
     }

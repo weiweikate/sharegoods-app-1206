@@ -10,6 +10,8 @@ import StringUtils from '../../utils/StringUtils';
 import BasePage from '../../BasePage';
 import arrow_right from '../order/res/arrow_right.png';
 import DateUtils from '../../utils/DateUtils';
+import EmptyUtils from '../../utils/EmptyUtils';
+import DesignRule from 'DesignRule';
 
 const payTypes = [1, 2, 4, 8, 16];
 const payTexts = ['纯平台', '微信(小程序)', '微信(APP)', '支付宝', '银联'];
@@ -25,7 +27,7 @@ export default class PayMessagePage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '支付详情',
+        title: this.params.type === 'pay_success' ? '支付详情' : '退款详情',
         show: true // false则隐藏导航
     };
 
@@ -52,11 +54,11 @@ export default class PayMessagePage extends BasePage {
     }
 
     toHelperPage = () => {
-        this.$navigate('mine/helper/HelperFeedbackPage');
+        this.$navigate('mine/helper/MyHelperPage');
     };
 
     commitQuestion = () => {
-        this.$navigate('mine/helper/MyHelperPage');
+        this.$navigate('mine/helper/HelperFeedbackPage');
     };
 
     renderSuccess() {
@@ -64,27 +66,26 @@ export default class PayMessagePage extends BasePage {
             <View style={styles.container}>
                 <View style={{
                     height: 131,
-                    backgroundColor: '#ffffff',
+                    backgroundColor: 'white',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     paddingVertical: 20
                 }}>
-                    <Text style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 15, color: '#222222' }}>支付订单</Text>
+                    <Text style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}>支付订单</Text>
                     <Text style={{
-                        fontFamily: 'PingFang-SC-Medium',
                         fontSize: 24,
-                        color: '#222222'
+                        color: DesignRule.textColor_mainTitle
                     }}>-{StringUtils.formatMoneyString(this.params.tradeAmount, false)}</Text>
                     <View style={{ backgroundColor: color.blue_4a9, borderRadius: 3 }}>
                         <Text style={{ color: 'white', margin: 1, fontSize: 11 }}>交易成功</Text>
                     </View>
                 </View>
                 <View style={{ height: 10 }}/>
-                <NewsDetailItem titles={'付款方式'} rightmg={this.getPayType(this.params.payType)} isshow={false}/>
+                <NewsDetailItem titles={'付款编号'} rightmg={this.params.outTradeNo} isshow={false}/>
+                {!EmptyUtils.isEmpty(this.params.orderNum) ? <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/> : null }
                 <NewsDetailItem titles={'创建时间'}
                                 rightmg={DateUtils.getFormatDate(this.params.time / 1000)}
                                 isshow={false}/>
-                <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/>
                 <View style={{ height: 10 }}/>
                 <NewsDetailItem titles={'订单疑问'} isshow={true} onPresses={() => this.toHelperPage()}/>
                 <NewsDetailItem titles={'投诉'} isshow={true} onPresses={() => this.commitQuestion()}/>
@@ -98,27 +99,26 @@ export default class PayMessagePage extends BasePage {
             <View style={styles.container}>
                 <View style={{
                     height: 131,
-                    backgroundColor: '#ffffff',
+                    backgroundColor: 'white',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     paddingVertical: 20
                 }}>
-                    <Text style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 15, color: '#222222' }}>订单退款</Text>
+                    <Text style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}>订单退款</Text>
                     <Text style={{
-                        fontFamily: 'PingFang-SC-Medium',
                         fontSize: 24,
-                        color: '#222222'
-                    }}>+{StringUtils.formatMoneyString(this.params.tradeAmount, false)}</Text>
+                        color: DesignRule.textColor_mainTitle
+                    }}>+{StringUtils.formatMoneyString(this.params.refundPrice, false)}</Text>
                     <View style={{ backgroundColor: '#FF7E00', borderRadius: 3 }}>
                         <Text style={{ color: 'white', margin: 1, fontSize: 11 }}>退款成功</Text>
                     </View>
                 </View>
                 <View style={{ height: 10 }}/>
-                <NewsDetailItem titles={'付款方式'} rightmg={this.getPayType(this.params.payType)} isshow={false}/>
+                <NewsDetailItem titles={'退款编号'} rightmg={this.params.refundNo} isshow={false}/>
+                {!EmptyUtils.isEmpty(this.params.orderNum) ? <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/> : null }
                 <NewsDetailItem titles={'创建时间'}
                                 rightmg={DateUtils.getFormatDate(this.params.time / 1000)}
                                 isshow={false}/>
-                <NewsDetailItem titles={'订单号'} rightmg={this.params.orderNum} isshow={false}/>
                 <View style={{ height: 10 }}/>
                 <NewsDetailItem titles={'订单疑问'} isshow={true} onPresses={() => this.toHelperPage()}/>
                 <NewsDetailItem titles={'投诉'} isshow={true} onPresses={() => this.commitQuestion()}/>
@@ -159,7 +159,7 @@ class NewsDetailItem extends Component {
                         {this.props.isshow ?
                             <UIImage source={arrow_right} style={{ width: 7, height: 10, marginRight: 13 }}/> : null}
                     </View>
-                    <View style={{ height: 1, backgroundColor: '#f7f7f7', width: ScreenUtils.width }}/>
+                    <View style={{ height: 1, backgroundColor: DesignRule.bgColor, width: ScreenUtils.width }}/>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -169,18 +169,17 @@ class NewsDetailItem extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7'
+        backgroundColor: DesignRule.bgColor
     },
     textitems: {
         width: ScreenUtils.width,
         height: 44,
-        backgroundColor: '#ffffff',
+        backgroundColor: 'white',
         borderStyle: 'solid'
     },
     textsingle: {
-        fontFamily: 'PingFang-SC-Regular',
         fontSize: 13,
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         marginLeft: 16,
         marginRight: 13
     },
@@ -189,7 +188,7 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width - 30,
         height: 111,
         borderRadius: 10,
-        backgroundColor: '#ffffff',
+        backgroundColor: 'white',
         shadowColor: 'rgba(153, 153, 153, 0.1)',
         shadowOffset: {
             width: 0,
@@ -199,9 +198,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 1
     },
     tilteposition: {
-        // fontFamily: "PingFang-SC-Bold",
         fontSize: 15,
-        color: '#e60012',
+        color: DesignRule.mainColor,
         marginLeft: 14
     },
     typetitleStyle: {

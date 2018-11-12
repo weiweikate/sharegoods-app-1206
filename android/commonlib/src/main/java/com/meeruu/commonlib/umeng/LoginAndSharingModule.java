@@ -4,13 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -36,6 +37,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.meeruu.commonlib.R;
 import com.meeruu.commonlib.bean.WXLoginBean;
 import com.meeruu.commonlib.utils.LogUtils;
+import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
@@ -51,6 +53,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.net.URI;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -167,10 +170,15 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 break;
         }
 
+        //分享类型为小程序，且不为微信会话
+        if(params.getInt("platformType") != 0 && shareType == 2){
+            shareType = 1;
+        }
+
 
         switch (shareType) {
             case 0:
-                UMImage image = fixThumImage(params.getString("thumImage"));
+                UMImage image = fixThumImage(params.getString("shareImage"));
                 new ShareAction(getCurrentActivity()).setPlatform(platform)//传入平台
                         .withMedia(image).setCallback(umShareListener)//回调监听器
                         .share();
@@ -213,13 +221,22 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     //本地路径RUL如（/user/logo.png）2.网络URL如(http//:logo.png) 3.项目里面的图片 如（logo.png）
     private UMImage fixThumImage(String url) {
         if (TextUtils.isEmpty(url)) {
-            return null;
+            return new UMImage(mContext, R.mipmap.ic_launcher);
         }
         if (url.startsWith("http")) {
             return new UMImage(getCurrentActivity(), url);//网络图片
-        } else if (url.startsWith("/")) {
-            File file = new File(url);
-            return new UMImage(mContext, file);//本地文件
+        } else if (url.startsWith("file") || url.startsWith("content")) {
+            try {
+                Uri uri = Uri.parse(url);
+                File file = new File(new URI(uri.toString()));
+                return new UMImage(mContext, file);
+            }catch (Exception e){
+
+            }
+
+            return new UMImage(mContext, R.mipmap.ic_launcher);
+
+
         } else {
             if (url.endsWith(".png") || url.endsWith(".jpg")) {
                 url = url.substring(0, url.length() - 4);
@@ -323,8 +340,51 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
 
         getBitmap(mContext, shareImageBean, success, fail);
+    }
 
 
+    @ReactMethod
+    public void createPromotionShareImage(String url, Callback success, Callback fail) {
+
+        drawPromotionShare(mContext, url, success, fail);
+    }
+
+    public static void drawPromotionShare(final Context context, final String url, final Callback success, final Callback fail) {
+        String info = url;
+        String str = "长按扫码打开连接";
+        Bitmap result = Bitmap.createBitmap(279, (int) (348), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.red_envelope_bg);
+
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int newWidth = 279;
+        int newHeight = 348;
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+
+        //获取想要缩放的matrix
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
+        Bitmap qrBitmap = createQRImage(info, 140, 140);
+        canvas.drawBitmap(qrBitmap, 70, 146, paint);
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(12);
+        Rect bounds = new Rect();
+        paint.getTextBounds(str, 0, str.length(), bounds);
+        canvas.drawText(str, (279 - bounds.width()) / 2, 306, paint);
+        String path = saveImageToCache(context, result, "sharePromotionImage.png");
+        if (!TextUtils.isEmpty(path)) {
+            success.invoke(path);
+        } else {
+            fail.invoke("图片生成失败");
+        }
+        bitmap.recycle();
     }
 
 
@@ -418,7 +478,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         Bitmap qrBitmap = createQRImage(info, 120, 120);
         canvas.drawBitmap(qrBitmap, 360, 520, paint);
-        String path = saveImageToCache(context, result);
+        String path = saveImageToCache(context, result, "shareImage.png");
         if (!TextUtils.isEmpty(path)) {
             success.invoke(path);
         } else {
@@ -456,13 +516,11 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void saveImage(String path) {
-        try {
-            MediaStore.Images.Media.insertImage(mContext.getContentResolver(), path, path, null);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        // 最后通知图库更新
-        mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(path)));
+        Uri uri = Uri.parse(path);
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        intent.setData(uri);
+        mContext.sendBroadcast(intent);
+        ToastUtils.showToast("保存成功");
     }
 
     @ReactMethod
@@ -473,7 +531,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             bitmap.recycle();
             return;
         }
-        String path = saveImageToCache(mContext, bitmap);
+        String path = saveImageToCache(mContext, bitmap, "shareImage.png");
         if (TextUtils.isEmpty(path)) {
             fail.invoke("图片保存失败！");
         } else {
@@ -497,7 +555,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         dView.setDrawingCacheEnabled(true);
         dView.buildDrawingCache();
         Bitmap bmp = dView.getDrawingCache();
-        String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "screenshotImage.png";
+        long date = System.currentTimeMillis();
+        String storePath = getDiskCachePath() + File.separator + date + "screenshotImage.png";
+
 
         File file = new File(storePath);
         if (bmp != null) {
@@ -564,11 +624,11 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         return null;
     }
 
-    private static String saveImageToCache(Context context, Bitmap bitmap) {
+    private static String saveImageToCache(Context context, Bitmap bitmap, String name) {
 
-        String path = getDiskCachePath(context);
+        String path = getDiskCachePath();
         long date = System.currentTimeMillis();
-        String fileName = date + "shareImage.png";
+        String fileName = date + name;
         File file = new File(path, fileName);
         if (file.exists()) {
             file.delete();
@@ -590,16 +650,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     /**
      * 获取cache路径
      *
-     * @param context
      * @return
      */
-    public static String getDiskCachePath(Context context) {
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable()) {
-            return context.getExternalCacheDir().getPath();
-        } else {
-            return context.getCacheDir().getPath();
-        }
+    public static String getDiskCachePath() {
+        File file = SDCardUtils.getFileDirPath("MR/picture");
+        return file.getAbsolutePath();
     }
-
-
 }

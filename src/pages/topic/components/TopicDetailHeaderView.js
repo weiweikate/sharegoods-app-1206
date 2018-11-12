@@ -17,6 +17,7 @@ import { isNoEmpty } from '../../../utils/StringUtils';
 import StringUtils from '../../../utils/StringUtils';
 import VideoView from '../../../components/ui/video/VideoView';
 // import user from '../../../model/user';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 /**
@@ -133,6 +134,7 @@ export default class TopicDetailHeaderView extends Component {
             <View>
                 {bannerImgList.length > 0 && this.state.swiperShow ? <ViewPager swiperShow={true}
                                                                                 loop={false}
+                                                                                autoplay={false}
                                                                                 bounces={true}
                                                                                 height={ScreenUtils.autoSizeWidth(377)}
                                                                                 arrayData={bannerImgList}
@@ -146,32 +148,32 @@ export default class TopicDetailHeaderView extends Component {
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{
                             marginTop: 14,
-                            color: '#222222',
+                            color: DesignRule.textColor_mainTitle,
                             fontSize: 15
                         }}>{tittle}</Text>
                         {activityType === 3 ?
                             <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
-                                <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
+                                <Text style={{ color: DesignRule.mainColor, fontSize: 18 }}>{`￥${nowPrice}起`}</Text>
                                 <Text style={{
                                     marginLeft: 5,
-                                    color: '#BBBBBB',
+                                    color: DesignRule.textColor_instruction,
                                     fontSize: 10,
                                     textDecorationLine: 'line-through'
                                 }}>{`￥${oldPrice}`}</Text>
                                 <Text style={{
                                     marginLeft: 5,
-                                    backgroundColor: 'red',
-                                    color: '#FFFFFF',
+                                    backgroundColor: DesignRule.mainColor,
+                                    color: 'white',
                                     fontSize: 10, paddingHorizontal: 5
                                 }}>{levelTypeName}</Text>
                             </View> : null}
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text style={{
-                                color: '#BBBBBB',
+                                color: DesignRule.textColor_instruction,
                                 fontSize: 11
                             }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : ''}元`}</Text>
                             <Text style={{
-                                color: '#666666',
+                                color: DesignRule.textColor_secondTitle,
                                 fontSize: 13,
                                 marginLeft: ScreenUtils.autoSizeWidth(108)
                             }}>{`月销售${isNoEmpty(monthSale) ? monthSale : 0}笔`}</Text>
@@ -186,10 +188,14 @@ export default class TopicDetailHeaderView extends Component {
                             justifyContent: 'space-between',
                             alignItems: 'center'
                         }} onPress={this.props.showDetailModal}>
-                            <Text style={{ color: '#666666', fontSize: 13, marginLeft: 16 }}>抢拍规则</Text>
+                            <Text style={{
+                                color: DesignRule.textColor_secondTitle,
+                                fontSize: 13,
+                                marginLeft: 16
+                            }}>抢拍规则</Text>
                             <Image style={{ marginRight: 16 }} source={xjt_03}/>
                         </TouchableOpacity>
-                        <View style={{ height: 1, backgroundColor: '#eeee' }}/>
+                        <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                     </View> : null}
                 <View style={{ backgroundColor: 'white', marginTop: activityType === 2 ? 0 : 10, marginBottom: 12 }}>
                     <View style={{
@@ -199,10 +205,10 @@ export default class TopicDetailHeaderView extends Component {
                         marginVertical: 16,
                         alignItems: 'center'
                     }}>
-                        <Text style={{ color: '#D51243', fontSize: 13 }}>服务</Text>
+                        <Text style={{ color: DesignRule.mainColor, fontSize: 13 }}>服务</Text>
                         <Text style={{
                             marginLeft: 11,
-                            color: '#666666',
+                            color: DesignRule.textColor_secondTitle,
                             fontSize: 13
                         }}>{`正品保证·急速发货 ${afterSaleServiceDaysTT === 0 ? `无售后服务` : `${afterSaleServiceDaysTT > 30 ? 30 : afterSaleServiceDaysTT || ''}天无理由退换`}`}</Text>
                     </View>

@@ -16,8 +16,7 @@ import {
     View,
     Text,
     ImageBackground,
-    TouchableWithoutFeedback,
-    TouchableOpacity
+    TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -25,6 +24,7 @@ import bg from './res/tuiguang_bg_nor.png';
 import MineApi from '../../api/MineApi';
 import RefreshList from '../../../../components/ui/RefreshList';
 import EmptyUtils from '../../../../utils/EmptyUtils';
+import DesignRule from 'DesignRule';
 
 const { px2dp, autoSizeWidth } = ScreenUtils;
 type Props = {};
@@ -46,12 +46,12 @@ export default class InvitePromotionPage extends BasePage<Props> {
     //下拉加载更多
     onLoadMore = () => {
         this.currentPage++;
-        this.getUserPromotionPromoter();
+        this.loadPageData();
     };
     //刷新
     onRefresh = () => {
         this.currentPage = 1;
-        this.getUserPromotionPromoter();
+        this.loadPageData();
     };
 
 
@@ -77,50 +77,41 @@ export default class InvitePromotionPage extends BasePage<Props> {
         });
     };
 
-    goExplicationPage = () => {
-        alert();
-    };
-
-    $NavBarRenderRightItem = () => {
-        return (
-            <TouchableOpacity onPress={this.goExplicationPage}>
-                <Text style={{ color: '#666666', fontSize: px2dp(12) }}>
-                    推广说明
-                </Text>
-            </TouchableOpacity>
-        );
-    };
-
-    _bind() {
-        this.loadPageData = this.loadPageData.bind(this);
-    }
-
 
     componentDidMount() {
         this.loadPageData();
     }
 
-    loadPageData() {
-    }
 
-    _itemRender = ({ item }) =>{
-        if (!item.userBuy) {
-            return null;
-        }
+    _itemRender = ({ item }) => {
+        let tip = (
+            <Text style={styles.itemTextStyle}>
+                库存不足
+            </Text>
+        );
+        let limit = (
+            <Text style={styles.itemTextStyle}>
+                {`每人限购${item.buyLimit}份`}
+            </Text>
+        );
         return (
             <View style={{ height: px2dp(63), width: ScreenUtils.width }}>
-                <TouchableWithoutFeedback onPress={()=>{
-                    this.$navigate('mine/promotion/PromotionPayPage',item)
+                <TouchableWithoutFeedback onPress={() => {
+                    if (item.userBuy && item.status === 1) {
+                        this.$navigate('mine/promotion/PromotionPayPage', item);
+                    }
                 }}>
-                    <View style={styles.itemWrapper}>
+                    <View style={[styles.itemWrapper, { backgroundColor: item.userBuy && (item.status === 1 )? 'white' : '#CCCCCC' }]}>
                         <Text style={styles.itemTextStyle}>
-                            {item.name}
+                            {item.name}{`/推广周期${item.cycle}天`}
                         </Text>
+                        {item.status === 2 ? tip : null}
+                        {(!item.userBuy && item.lime !== -1) ? limit : null}
                     </View>
                 </TouchableWithoutFeedback>
             </View>
         );
-    }
+    };
 
 
     _render() {
@@ -164,7 +155,6 @@ const styles = StyleSheet.create({
         paddingBottom: px2dp(32)
     },
     itemWrapper: {
-        backgroundColor: 'white',
         height: px2dp(48),
         width: ScreenUtils.width - px2dp(30),
         justifyContent: 'center',
@@ -172,7 +162,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         elevation: 2,
         borderRadius: px2dp(5),
-        shadowColor: '#000000',
+        shadowColor: DesignRule.mainColor,
         shadowOffset: { h: 2, w: 2 },
         shadowRadius: px2dp(6),
         shadowOpacity: 0.1

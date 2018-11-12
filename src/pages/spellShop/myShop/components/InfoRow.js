@@ -10,6 +10,7 @@ import {
     Image,
     StyleSheet,
 } from 'react-native';
+import DesignRule from 'DesignRule';
 
 export default class InfoRow extends Component {
 
@@ -39,15 +40,13 @@ const styles = StyleSheet.create({
         marginLeft: 25,
     },
     title: {
-        fontFamily: "PingFang-SC-Medium",
         fontSize: 13,
-        color: "#222222",
+        color: DesignRule.textColor_mainTitle,
         marginLeft: 4,
     },
     desc: {
-        fontFamily: "PingFang-SC-Medium",
         fontSize: 12,
-        color: "#666666",
+        color: DesignRule.textColor_secondTitle,
         flex: 1,
         textAlign: 'right',
         marginRight: 21

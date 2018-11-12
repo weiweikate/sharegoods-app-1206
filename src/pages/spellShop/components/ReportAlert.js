@@ -11,12 +11,14 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native';
-import Modal from 'CommModal'
+import Modal from 'CommModal';
+
 const MIN_SCREEN = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
 const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const PANNELHEIGHT = 340;
 const Animated_Duration = 300; //默认的动画持续时间
 import KeFuIcon from '../src/jbtk_03.png';
+import DesignRule from 'DesignRule';
 
 export default class ReportAlert extends Component {
 
@@ -125,7 +127,8 @@ export default class ReportAlert extends Component {
             return null;
         }
         return (
-            <Modal visible={this.state.modalVisible} onRequestClose={this._closeAnimated} transparent={true} style={styles.container}>
+            <Modal visible={this.state.modalVisible} onRequestClose={this._closeAnimated} transparent={true}
+                   style={styles.container}>
                 <View style={[styles.container, { backgroundColor: 'transparent' }]}>
                     <Animated.View
                         style={[
@@ -142,7 +145,7 @@ export default class ReportAlert extends Component {
                             position: 'absolute',
                             left: 40,
                             right: 40,
-                            height: PANNELHEIGHT,
+                            height: PANNELHEIGHT
                         },
                             {
                                 top: this.state.top,
@@ -151,7 +154,8 @@ export default class ReportAlert extends Component {
                             }
                         ]}
                     >
-                        <Image style={{position: 'absolute',top:0 ,zIndex:1,alignSelf:'center'}} source={KeFuIcon}/>
+                        <Image style={{ position: 'absolute', top: 0, zIndex: 1, alignSelf: 'center' }}
+                               source={KeFuIcon}/>
                         <View style={styles.whitePanel}>
                             <View style={styles.inputContainer}>
                                 <TextInput
@@ -159,7 +163,7 @@ export default class ReportAlert extends Component {
                                     multiline
                                     underlineColorAndroid={'transparent'}
                                     placeholder='请输入其他举报内容'
-                                    placeholderTextColor='#c8c8c8'
+                                    placeholderTextColor={DesignRule.textColor_hint}
                                     value={this.state.text}
                                     onChangeText={this._onChangeText}
                                     style={styles.input}/>
@@ -200,10 +204,10 @@ const styles = StyleSheet.create({
     title: {
         textAlign: 'center',
         fontSize: 15,
-        color: '#333'
+        color: DesignRule.textColor_mainTitle
     },
     whitePanel: {
-        flex:1,
+        flex: 1,
         marginTop: 31,
         backgroundColor: 'white',
         alignItems: 'center',
@@ -212,15 +216,15 @@ const styles = StyleSheet.create({
     inputContainer: {
         marginTop: 62,
         flex: 1,
-        backgroundColor: '#eeeeee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         padding: 10
     },
     input: {
         textAlignVertical: 'top',
         width: 235 / 375 * MIN_SCREEN,
         borderRadius: 2,
-        backgroundColor: '#eeeeee',
-        color: '#333'
+        backgroundColor: DesignRule.lineColor_inColorBg,
+        color: DesignRule.textColor_mainTitle
     },
     btnContainer: {
         flexDirection: 'row',
@@ -231,29 +235,27 @@ const styles = StyleSheet.create({
     submitContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#e60012',
+        backgroundColor: DesignRule.mainColor,
         marginRight: 36,
         width: 99,
         height: 32,
         borderRadius: 5
     },
     submitTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 16,
-        color: '#ffffff'
+        color: 'white'
     },
     cancelContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#dddddd',
+        backgroundColor: DesignRule.lineColor_inGrayBg,
         width: 99,
         height: 32,
         borderRadius: 5
     },
     cancelTitleText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 16,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     }
 });
 

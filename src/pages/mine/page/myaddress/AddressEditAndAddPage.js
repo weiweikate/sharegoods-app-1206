@@ -8,17 +8,25 @@ import StringUtils from '../../../../utils/StringUtils';
 import MineAPI from '../../api/MineApi';
 import UIText from '../../../../components/ui/UIText';
 import bridge from '../../../../utils/bridge';
-import addrSelectedIcon from '../../res/address/dizhi_btn_moren_sel.png';
-import addrUnSelectedIcon from '../../res/address/dizhi_btn_moren_nor.png';
 import UIImage from '../../../../components/ui/UIImage';
-
+import DesignRule from 'DesignRule';
+import res from '../../../../comm/res';
+const addrSelectedIcon = res.button.selected_circle_red;
+const addrUnSelectedIcon = res.button.unselected_circle;
+/**
+ * @author luoyongming
+ * @date on 2018/9/18
+ * @describe 设置页面
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
+ */
 const dismissKeyboard = require('dismissKeyboard');
 
 export default class AddressEditAndAddPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        rightTitleStyle: { color: '#D51243' },
+        rightTitleStyle: { color: DesignRule.mainColor },
         rightNavTitle: '保存'
     };
 
@@ -88,7 +96,6 @@ export default class AddressEditAndAddPage extends BasePage {
         }
     };
 
-
     constructor(props) {
         super(props);
         const { receiver, tel, address, areaText, provinceCode, cityCode, areaCode, isDefault, from } = this.props.navigation.state.params;
@@ -124,7 +131,7 @@ export default class AddressEditAndAddPage extends BasePage {
                     value={this.state.receiverText}
                 />
             </View>
-            <View style={{ height: 0.5, backgroundColor: '#EEEEEE' }}/>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
             <View style={styles.horizontalItem}>
                 <Text style={styles.itemLeftText}>联系电话</Text>
                 <TextInput
@@ -134,18 +141,18 @@ export default class AddressEditAndAddPage extends BasePage {
                     value={this.state.telText}
                 />
             </View>
-            <View style={{ height: 0.5, backgroundColor: '#EEEEEE' }}/>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
             <TouchableOpacity style={styles.horizontalItem} onPress={() => this._getCityPicker()}>
                 <Text style={[styles.itemLeftText, { flex: 1 }]}>所在地区</Text>
                 <Text>{this.state.areaText}</Text>
                 <Image source={IconGoTo} style={{ width: 12, height: 20, marginLeft: 4 }} resizeMode={'contain'}/>
             </TouchableOpacity>
-            <View style={{ height: 0.5, backgroundColor: '#EEEEEE' }}/>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
             <View style={{ backgroundColor: 'white' }}>
                 <TextInput
                     style={styles.itemAddressInput}
                     placeholder={'请输入详细地址~'}
-                    placeholderTextColor={'#999999'}
+                    placeholderTextColor={DesignRule.textColor_instruction}
                     maxLength={90}
                     multiline={true}
                     underlineColorAndroid={'transparent'}
@@ -212,13 +219,13 @@ const styles = StyleSheet.create({
         width: 64,
         marginRight: 6,
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     itemRightInput: {
         flex: 1,
         height: 40,
         padding: 0,
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         fontSize: 13
     },
     itemAddressInput: {
@@ -234,10 +241,10 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingTop: 12,
         paddingBottom: 12,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: 13,
         borderRadius: 5,
         borderWidth: 0.5,
-        borderColor: '#EEEEEE'
+        borderColor: DesignRule.lineColor_inColorBg
     }
 });

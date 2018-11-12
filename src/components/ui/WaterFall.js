@@ -127,6 +127,7 @@ export default class Masonry extends React.Component {
         infiniting: false
       }
       this.itemQueue = []
+      this.index = 1
     }
 
     /**
@@ -151,7 +152,8 @@ export default class Masonry extends React.Component {
       } else {
         if (this.itemQueue.length > 0) {
           const item = this.itemQueue.shift()
-          this.addItem(item, () => this.addItems())
+          this.index = this.index === 1 ? 0 : 1
+          this.addItem(item, () => this.addItems(), this.index)
         }
       }
     }
@@ -187,8 +189,8 @@ export default class Masonry extends React.Component {
       return this.state.columns.sort((a, b) => a.getHeight() - b.getHeight())
     }
 
-    addItem(item, callback) {
-      const minCol = this.sortColumns()[0]
+    addItem(item, callback, index) {
+      const minCol = this.state.columns[index]
       item.onLayout = callback
       minCol.addItems([item])
     }
@@ -198,6 +200,7 @@ export default class Masonry extends React.Component {
      * @private
      */
     _onRefresh() {
+      this.index = 1
       this.setState({refreshing: true})
       this.props.refreshing(this.refreshDone.bind(this))
     }

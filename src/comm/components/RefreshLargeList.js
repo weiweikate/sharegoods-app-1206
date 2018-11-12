@@ -10,9 +10,9 @@
  * largelist文档地址
  * https://github.com/bolan9999/react-native-largelist/blob/V1/README-cn.md
  */
-"use strict";
+'use strict';
 
-import React from "react";
+import React from 'react';
 import {
     View,
     Text,
@@ -20,10 +20,11 @@ import {
     StyleSheet,
     Image,
     NativeModules
-} from "react-native";
-import PropTypes from "prop-types";
-import { LargeList } from "react-native-largelist";
-import defaultNoData from "../res/defaultNoData.png";
+} from 'react-native';
+import PropTypes from 'prop-types';
+import { LargeList } from 'react-native-largelist';
+import res from '../res';
+import DesignRule from 'DesignRule';
 
 export default class RefreshLargeList extends React.Component {
     static propTypes = {
@@ -69,14 +70,14 @@ export default class RefreshLargeList extends React.Component {
         showsVerticalScrollIndicator: false,
         isSupportLoadingMore: true,
         showLoadingHub: false,
-        pageKey: "page",
-        sizeKey: "size",
+        pageKey: 'page',
+        sizeKey: 'size',
         pageSize: 10,
         defaultPage: 1,
         params: {},
-        defaultEmptyImage: defaultNoData,
-        defaultEmptyText: "没有数据",
-        defaultData:[]
+        defaultEmptyImage: res.placeholder.defaultNoData,
+        defaultEmptyText: '没有数据',
+        defaultData: []
     };
 
     constructor(props) {
@@ -87,7 +88,7 @@ export default class RefreshLargeList extends React.Component {
         this.state = {
             refreshing: false,
             loadingMore: false,
-            footerStatus: "idle",
+            footerStatus: 'idle',
             height: 0
         };
         this.data = props.defaultData;
@@ -124,9 +125,12 @@ export default class RefreshLargeList extends React.Component {
             return this.props.renderEmpty();
         } else {
             return (
-                <View style={{ height: this.state.height - 40, alignItems: "center", justifyContent: "center" }}>
+                <View style={{ height: this.state.height - 40, alignItems: 'center', justifyContent: 'center' }}>
                     <Image source={this.props.defaultEmptyImage} style={{ width: 100, height: 100 }}/>
-                    <Text style={{ marginTop: 10, color: "#666666" }}>{this.props.defaultEmptyText}</Text>
+                    <Text style={{
+                        marginTop: 10,
+                        color: DesignRule.textColor_secondTitle
+                    }}>{this.props.defaultEmptyText}</Text>
                 </View>
             );
         }
@@ -244,7 +248,10 @@ export default class RefreshLargeList extends React.Component {
     }
 
     _onRefresh() {
-        this.setState({ refreshing: true, footerStatus: "idle" });
+        if (this.state.refreshing === true) {
+            return;
+        }
+        this.setState({ refreshing: true, footerStatus: 'idle' });
         this.allLoadCompleted = false;
         let { onStartRefresh, url, params, defaultPage, onEndRefresh } = this.props;
         this.page = defaultPage;
@@ -257,13 +264,28 @@ export default class RefreshLargeList extends React.Component {
         }
     }
 
+    onRefresh() {
+        this.setState({ footerStatus: 'idle' });
+        this.allLoadCompleted = false;
+        let { onStartRefresh, url, params, defaultPage, onEndRefresh } = this.props;
+        this.page = defaultPage;
+        onStartRefresh && onStartRefresh();
+
+        if (url) {
+            this._getData(url, params, true);
+        } else {
+            onEndRefresh && onEndRefresh();
+        }
+    }
+
+
     _onLoadMore() {
         let { onStartLoadMore, url, params, isSupportLoadingMore } = this.props;
         if (isSupportLoadingMore === false) {
             return;
         }
         this.page++;
-        this.setState({ footerStatus: "loading", loadingMore: true });
+        this.setState({ footerStatus: 'loading', loadingMore: true });
         onStartLoadMore && onStartLoadMore();
         if (url) {
             this._getData(url, params, false);
@@ -282,15 +304,15 @@ export default class RefreshLargeList extends React.Component {
         url(params).then((result => {
             let netData = [];
             let allLoadCompleted = false;
-            let footerStatus = "idle";
+            let footerStatus = 'idle';
             if (handleRequestResult) {
-                netData = handleRequestResult(result, isRefresh);
+                netData = handleRequestResult(result, isRefresh) || [];
             } else {
-                netData = result.data.data;
+                netData = result.data.data || [];
             }
             if (netData.length < pageSize) {
                 allLoadCompleted = true;
-                footerStatus = "noMoreData";
+                footerStatus = 'noMoreData';
             }
             let dalay = 0;
             if (isRefresh === false) {
@@ -323,7 +345,7 @@ export default class RefreshLargeList extends React.Component {
             that.setState({
                 refreshing: false,
                 loadingMore: false,
-                footerStatus: "idle"
+                footerStatus: 'idle'
             });
         })
         ;
@@ -331,11 +353,11 @@ export default class RefreshLargeList extends React.Component {
 
     reloadData = () => {
         this.list.reloadData();
-    }
+    };
 
     reloadAll = () => {
         this.list.reloadAll();
-    }
+    };
 
     render() {
         let {
@@ -395,11 +417,11 @@ export class BaseLoadMoreComponent extends React.Component {
 
     render() {
         switch (this.props.status) {
-            case "idle":
+            case 'idle':
                 return this.renderIdleMore();
-            case "loading":
+            case 'loading':
                 return this.renderLoadingMore();
-            case "noMoreData":
+            case 'noMoreData':
                 return this.renderLoadCompleted();
         }
     }
@@ -438,12 +460,12 @@ class DefaultLoadMoreComponent extends BaseLoadMoreComponent {
 const styles = StyleSheet.create({
     footer: {
         height: 70,
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "row",
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row'
     },
     footerText: {
         fontSize: 12,
-        color: "#666666"
+        color: DesignRule.textColor_secondTitle
     }
 });

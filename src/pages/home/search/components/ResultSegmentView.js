@@ -8,6 +8,7 @@ import {
     Image
 } from 'react-native';
 import upDown from '../res/updown.png';
+import DesignRule from 'DesignRule';
 
 export default class SearchSegmentView extends Component {
 
@@ -39,7 +40,7 @@ export default class SearchSegmentView extends Component {
         }}>
             <View style={styles.btnContainer}>
                 <Text
-                    style={[styles.title, { color: this.state.selIndex === index ? '#e60012' : '#999999' }]}>{title}</Text>
+                    style={[styles.title, { color: this.state.selIndex === index ? DesignRule.mainColor : DesignRule.textColor_instruction }]}>{title}</Text>
                 {index === 2 && <Image source={upDown}/>}
             </View>
         </TouchableWithoutFeedback>;
@@ -58,7 +59,7 @@ export default class SearchSegmentView extends Component {
 const styles = StyleSheet.create({
     container: {
         height: 49,
-        backgroundColor: '#ffffff',
+        backgroundColor: 'white',
         flexDirection: 'row'
     },
     btnContainer: {
@@ -68,9 +69,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     title: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     }
 });
 

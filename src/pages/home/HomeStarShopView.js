@@ -1,14 +1,20 @@
-/**
- * 明星店铺
- */
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Image } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
-import { StarShopModule, homeModule } from './Modules'
+import { starShopModule, homeModule } from './Modules'
 import User from '../../model/user'
 import starImg from './res/star.png'
+import DesignRule from 'DesignRule';
+
+/**
+ * @author chenyangjun
+ * @date on 2018/9/7
+ * @describe 明星店铺
+ * @org www.sharegoodsmall.com
+ * @email chenyangjun@meeruu.com
+ */
 
 const Banner = ({backImage, title, press}) => <View style={styles.bannerContainer}>
     <ImageBackground style={styles.bannerImg}  source={backImage}>
@@ -55,11 +61,6 @@ const Cell = ({data, store, press}) => <View style={styles.cell}>
 
 @observer
 export default class HomeStarShopView extends Component {
-    constructor(props) {
-        super(props)
-        this.starShop = new StarShopModule()
-        this.starShop.loadShopList()
-    }
     _shopPress(shop) {
         console.log('_shopPress')
         const { navigation } = this.props
@@ -73,7 +74,7 @@ export default class HomeStarShopView extends Component {
     }
     render () {
         let cells = []
-        const { shopList } = this.starShop
+        const { shopList } = starShopModule
         if (shopList.length <= 0) {
             return <View/>
         }
@@ -98,7 +99,7 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     title: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
         fontWeight: '600'
     },
@@ -134,7 +135,7 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(15)
     },
     name: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(12)
     },
     level: {
@@ -157,11 +158,11 @@ let styles = StyleSheet.create({
         alignItems: 'center'
     },
     text: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(9)
     },
     member: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(10)
     },
     line: {
@@ -176,7 +177,7 @@ let styles = StyleSheet.create({
     },
     income: {
         fontSize: px2dp(11),
-        color: '#333'
+        color: DesignRule.textColor_mainTitle
     },
     allIncomeBox: {
         justifyContent: 'center',

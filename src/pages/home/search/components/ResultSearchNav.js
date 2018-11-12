@@ -10,13 +10,29 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import navBack from '../../../../components/pageDecorator/NavigatorBar/source/icon_header_back.png';
 import verticalRow from '../res/verticalRow.png';
 import horizontalRow from '../res/horizontalRow.png';
+import DesignRule from 'DesignRule';
+
 
 export default class ResultSearchNav extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { inputText: props.defaultValue || '' };
     }
+
+    onChangeText = (text) => {
+        this.setState({
+            inputText: text
+        }, () => {
+            this.props.onChangeText(text);
+        });
+    };
+
+    changeText = (text) => {
+        this.setState({
+            inputText: text
+        });
+    };
 
     render() {
         return (
@@ -30,10 +46,10 @@ export default class ResultSearchNav extends Component {
                                    keyboardType='web-search'
                                    underlineColorAndroid='transparent'
                                    placeholder={'请输入关键词搜索'}
-                                   placeholderTextColor='#C8C8C8'
-                                   value={this.props.textInput}
-                                   onChangeText={this.props.onChangeText}
-                                   onEndEditing={this.props.onEndEditing}
+                                   placeholderTextColor={DesignRule.textColor_hint}
+                                   value={this.state.inputText}
+                                   onChangeText={this.onChangeText}
+                                   onSubmitEditing={this.props.onSubmitEditing}
                                    onFocus={this.props.onFocus}
                         />
                     </View>
@@ -71,7 +87,7 @@ const styles = StyleSheet.create({
     inputView: {
         height: 30,
         borderRadius: 15,
-        backgroundColor: '#F7F7F7',
+        backgroundColor: DesignRule.bgColor,
         justifyContent: 'center',
         flex: 1,
         marginRight: 10

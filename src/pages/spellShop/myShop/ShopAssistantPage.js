@@ -19,6 +19,7 @@ import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import DesignRule from 'DesignRule';
 
 const sectionsArr = [
     'master',
@@ -33,7 +34,7 @@ export default class AssistantListPage extends BasePage {
     $navigationBarOptions = {
         title: '店员管理'
     };
-
+    //contribution/tradeBalance本月收入
     constructor(props) {
         super(props);
         this.state = {
@@ -129,13 +130,14 @@ export default class AssistantListPage extends BasePage {
 
     // 渲染行
     _renderItem = ({ item }) => {
+        const {tradeBalance} = this.params.storeData;
         if (item.roleType === 0) {//0店主
-            return <MasterRow item={item} onPress={this._clickAssistantDetail}/>;
+            return <MasterRow item={item} onPress={this._clickAssistantDetail} tradeBalance={tradeBalance}/>;
         } else {//1店员
             return (<AssistantRow item={item}
                                   isYourStore={this.params.storeData.myStore}
                                   onPress={this._clickAssistantDetail}
-                                  onPressDelete={this._clickDeleteAssistant}/>);
+                                  onPressDelete={this._clickDeleteAssistant} tradeBalance={tradeBalance}/>);
         }
 
     };
@@ -152,7 +154,7 @@ export default class AssistantListPage extends BasePage {
         return (<View style={{ height: 20, justifyContent: 'center', alignItems: 'center', marginTop: 11 }}>
             <Text style={{
                 fontSize: 13,
-                color: '#999999'
+                color: DesignRule.textColor_instruction
             }}>{title} ({data.length}人）</Text>
         </View>);
     };
@@ -199,6 +201,6 @@ const styles = StyleSheet.create({
         flex: 1
     },
     headerBg: {
-        backgroundColor: '#F6F6F6'
+        backgroundColor: DesignRule.bgColor
     }
 });

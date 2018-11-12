@@ -38,6 +38,7 @@ import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
+import com.meeruu.sharegoods.rn.PreLoadReactDelegate;
 import com.meeruu.sharegoods.service.VersionUpdateService;
 import com.meeruu.sharegoods.utils.LoadingDialog;
 import com.umeng.socialize.UMShareAPI;
@@ -46,6 +47,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+/**
+ * @author louis
+ * @date on 2018/9/3
+ * @describe Android react-native容器类
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
+ */
 public class MainRNActivity extends ReactActivity {
     private LoadingDialog mLoadingDialog;
     private boolean isShowLoadingDialog;
@@ -65,7 +73,7 @@ public class MainRNActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "sharegoods";
+        return ParameterUtils.RN_MAIN_NAME;
     }
 
     @Override
@@ -74,7 +82,7 @@ public class MainRNActivity extends ReactActivity {
     }
 
     //自定义MyReactDelegate
-    class MyReactDelegate extends ReactActivityDelegate {
+    class MyReactDelegate extends PreLoadReactDelegate {
 
         public MyReactDelegate(Activity activity, @javax.annotation.Nullable String mainComponentName) {
             super(activity, mainComponentName);
@@ -281,7 +289,6 @@ public class MainRNActivity extends ReactActivity {
                     isShowLoadingDialog = true;
                     mLoadingDialog.show();
                 }
-
             }
         } else {
             if (null != mLoadingDialog && isShowLoadingDialog) {
@@ -308,15 +315,11 @@ public class MainRNActivity extends ReactActivity {
                 decorView.setSystemUiVisibility(option);
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.setStatusBarColor(Color.TRANSPARENT);
-                //导航栏颜色也可以正常设置
-//                window.setNavigationBarColor(Color.TRANSPARENT);
             } else {
                 Window window = activity.getWindow();
                 WindowManager.LayoutParams attributes = window.getAttributes();
                 int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-                int flagTranslucentNavigation = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
                 attributes.flags |= flagTranslucentStatus;
-//                attributes.flags |= flagTranslucentNavigation;
                 window.setAttributes(attributes);
             }
         }

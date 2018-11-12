@@ -10,7 +10,7 @@ const SMSInterface = {
     // 新手机号验证码
     SMSNewPhone: ['/sms/sendNewPhoneMessage', { method: 'get',isRSA:true}],
     // 第一次设置交易密码验证码
-    SMSSalePhone: ['/sms/sendTransactionMessage', { method: 'get',isRSA:true}]
+    SMSSalePhone: ['/sms/sendTransactionMessage', { method: 'get',isRSA:true}],
 };
 
 const SMSAPI = ApiUtils(SMSInterface);
@@ -21,7 +21,8 @@ const SMSTool = {
         RegType: 1,
         OldPhoneType: 2,
         NewPhoneType: 3,
-        SalePwdType: 4
+        SalePwdType: 4,
+
     },
     /**
      *

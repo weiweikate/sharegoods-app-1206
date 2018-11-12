@@ -15,6 +15,8 @@ import user from '../../../../model/user';
 
 import VideoView from '../../../../components/ui/video/VideoView';
 import StringUtils from '../../../../utils/StringUtils';
+import DesignRule from 'DesignRule';
+
 
 const { px2dp } = ScreenUtils;
 
@@ -100,7 +102,7 @@ export default class DetailHeaderView extends Component {
             <View>
                 {productImgListTemp.length > 0 && this.state.swiperShow ? <ViewPager swiperShow={true}
                                                                                      loop={false}
-                                                                                     autoplay={true}
+                                                                                     autoplay={false}
                                                                                      bounces={true}
                                                                                      height={ScreenUtils.autoSizeWidth(377)}
                                                                                      arrayData={productImgListTemp}
@@ -118,32 +120,32 @@ export default class DetailHeaderView extends Component {
                     <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
                         <Text style={{
                             marginTop: 14,
-                            color: '#222222',
+                            color: DesignRule.textColor_mainTitle,
                             fontSize: 15
                         }}>{`${name}`}</Text>
                         <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
-                            <Text style={{ color: '#D51243', fontSize: 18 }}>{`￥${price}起`}</Text>
+                            <Text style={{ color: DesignRule.mainColor, fontSize: 18 }}>{`￥${price}起`}</Text>
                             <Text style={{
                                 marginLeft: 5,
-                                color: '#BBBBBB',
+                                color: DesignRule.textColor_instruction,
                                 fontSize: 10,
                                 textDecorationLine: 'line-through'
                             }}>{`￥${originalPrice}`}</Text>
                             <Text style={{
                                 marginLeft: 5,
-                                backgroundColor: 'red',
-                                color: '#FFFFFF',
+                                backgroundColor: DesignRule.mainColor,
+                                color: 'white',
                                 fontSize: 10, paddingHorizontal: 5
                             }}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelName}价` : '原价'}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text
                                 style={{
-                                    color: '#BBBBBB',
+                                    color: DesignRule.textColor_instruction,
                                     fontSize: 11
                                 }}>快递：{freight === 0 ? '包邮' : `${freight}元`}</Text>
                             <Text style={{
-                                color: '#666666',
+                                color: DesignRule.textColor_secondTitle,
                                 fontSize: 13,
                                 marginLeft: ScreenUtils.autoSizeWidth(108)
                             }}>{`月销售${monthSaleTotal}笔`}</Text>
@@ -158,10 +160,10 @@ export default class DetailHeaderView extends Component {
                         marginVertical: 13,
                         alignItems: 'center'
                     }}>
-                        <Text style={{ color: '#D51243', fontSize: 13 }}>服务</Text>
+                        <Text style={{ color: DesignRule.mainColor, fontSize: 13 }}>服务</Text>
                         <Text style={{
                             marginLeft: 11,
-                            color: '#666666',
+                            color: DesignRule.textColor_secondTitle,
                             fontSize: 13
                         }}>{`正品保证·急速发货 ${afterSaleServiceDays === 0 ? `无售后服务` : `${afterSaleServiceDays > 30 ? 30 : afterSaleServiceDays || ''}天无理由退换`}`}</Text>
                     </View>
@@ -183,7 +185,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     text: {
-        color: '#fff',
+        color: 'white',
         fontSize: px2dp(10),
         paddingHorizontal: 8
     }

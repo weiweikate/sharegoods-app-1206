@@ -7,9 +7,8 @@ import {
     TouchableOpacity,
     StyleSheet,
     TextInput,
-    Image,
+    Image
 } from 'react-native';
-import ColorUtil from '../../../utils/ColorUtil';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import StringUtils from '../../../utils/StringUtils';
@@ -18,6 +17,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
+import DesignRule from '../../../constants/DesignRule';
 
 const dismissKeyboard = require('dismissKeyboard');
 
@@ -73,7 +73,7 @@ class LoginTopViewModel {
                 return true;
             }
         } else {
-            if (this.password.length > 0) {
+            if (this.password.length > 3) {
                 return true;
             }
         }
@@ -97,7 +97,7 @@ export default class LoginTopView extends Component {
                         this.switchBtnClick(0);
                     }}>
                         <Text
-                            style={[Styles.switchBtnStyle, this.LoginModel.selectIndex ? { color: ColorUtil.ligtGray } : { color: ColorUtil.mainRedColor }]}>
+                            style={[Styles.switchBtnStyle, this.LoginModel.selectIndex ? { color: DesignRule.textColor_secondTitle } : { color: DesignRule.mainColor }]}>
                             验证码登录
                         </Text>
                         <View
@@ -107,7 +107,7 @@ export default class LoginTopView extends Component {
                         this.switchBtnClick(1);
                     }}>
                         <Text
-                            style={[Styles.switchBtnStyle, this.LoginModel.selectIndex ? { color: ColorUtil.mainRedColor } : { color: ColorUtil.ligtGray }]}>
+                            style={[Styles.switchBtnStyle, this.LoginModel.selectIndex ? { color: DesignRule.mainColor } : { color: DesignRule.textColor_secondTitle }]}>
                             密码登录
                         </Text>
                         <View
@@ -123,30 +123,33 @@ export default class LoginTopView extends Component {
                         placeholder='请输入手机号'
                         underlineColorAndroid={'transparent'}
                         keyboardType='numeric'
-                        onEndEditing={()=>{
+                        onEndEditing={() => {
 
-                           if(this.LoginModel.phoneNumber.length>0 && (!StringUtils.checkPhone(this.LoginModel.phoneNumber))) {
-                               bridge.$toast('手机号格式不对');
-                           }
+                            if (this.LoginModel.phoneNumber.length > 0 && (!StringUtils.checkPhone(this.LoginModel.phoneNumber))) {
+                                bridge.$toast('手机号格式不对');
+                            }
                         }}
                     />
                     <CommSpaceLine style={Styles.lineStyle}/>
                 </View>
                 {this.LoginModel.selectIndex ? this.renderPasswordLogin() : this.renderCodeLogin()}
-                <View style={[Styles.loginBtnStyle, this.LoginModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]}>
-                    <TouchableOpacity
-                        onPress={this.clickLoginBtn}
-                        activeOpacity={this.LoginModel.isCanClick ? 0.6 : 1}
-                    >
+                <TouchableOpacity
+                    onPress={this.clickLoginBtn}
+                    activeOpacity={this.LoginModel.isCanClick ? 0.6 : 1}
+                >
+                    <View
+                        style={[Styles.loginBtnStyle, this.LoginModel.isCanClick ? { backgroundColor: DesignRule.mainColor } : { backgroundColor: DesignRule.bgColor_grayHeader }]}>
+
                         <Text style={Styles.loginBtnTextStyle}>
                             登录
                         </Text>
-                    </TouchableOpacity>
-                </View>
+
+                    </View>
+                </TouchableOpacity>
                 <View style={Styles.oldUserLoginBgStyle}>
                     <TouchableOpacity onPress={this.props.oldUserLoginClick}>
                         <Text style={Styles.oldUserLoginBtn}>
-                            老用户激活
+                            老用户激活>>
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -189,8 +192,8 @@ export default class LoginTopView extends Component {
         if (this.LoginModel.dowTime > 0) {
             return;
         }
-        if (!netStatusTool.isConnected){
-            bridge.$toast('请检查网络是否连接')
+        if (!netStatusTool.isConnected) {
+            bridge.$toast('请检查网络是否连接');
             return;
         }
         if (StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
@@ -198,7 +201,7 @@ export default class LoginTopView extends Component {
             (new TimeDownUtils()).startDown((time) => {
                 this.LoginModel.dowTime = time;
             });
-            SMSTool.sendVerificationCode(0,this.LoginModel.phoneNumber)
+            SMSTool.sendVerificationCode(0, this.LoginModel.phoneNumber);
         } else {
             bridge.$toast('手机格式不对');
         }
@@ -281,14 +284,14 @@ const Styles = StyleSheet.create(
         },
         switchBtnStyle: {
             fontSize: 18,
-            color: ColorUtil.mainRedColor,
+            color: DesignRule.mainColor,
             paddingLeft: 20,
             paddingRight: 20,
             fontWeight: '600'
         },
         btnBottomLineStyle: {
             height: 2,
-            backgroundColor: ColorUtil.mainRedColor,
+            backgroundColor: DesignRule.mainColor,
             margin: 10
         },
         btnBottomLineNonStyle: {
@@ -314,36 +317,41 @@ const Styles = StyleSheet.create(
         codeTextStyle: {
             textAlign: 'center',
             width: 120,
-            color: ColorUtil.mainRedColor,
-            marginTop: 40
+            color: DesignRule.mainColor,
+            marginTop: 40,
+            fontSize: 13
         },
         loginBtnStyle: {
-            marginTop: 40,
-            marginLeft: 0,
+            marginTop: 20,
+            marginLeft: 15,
             height: 50,
-            width: ScreenUtils.width - 40,
-            borderRadius: 5,
-            backgroundColor: ColorUtil.mainRedColor
+            width: ScreenUtils.width - 70,
+            borderRadius: 25,
+            backgroundColor: DesignRule.mainColor,
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         loginBtnTextStyle: {
-            paddingTop: 18,
+            // paddingTop: 16,
             color: '#fff',
-            height: 48,
+            // height:,
             margin: 0,
             alignItems: 'center',
             textAlign: 'center',
-            fontSize: 14
+            fontSize: 17
         },
         oldUserLoginBgStyle: {
+            marginTop: 10,
             flexDirection: 'row-reverse'
         },
         oldUserLoginBtn: {
             width: 100,
             marginTop: 8,
             height: 35,
-            color: ColorUtil.ligtGray,
+            color: DesignRule.textColor_mainTitle,
             textAlign: 'center',
-            marginRight: 0
+            marginRight: 0,
+            fontSize: 13
         },
         seePasswordImageStyle: {
             width: 20,

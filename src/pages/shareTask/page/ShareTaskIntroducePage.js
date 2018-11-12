@@ -8,32 +8,41 @@
  * Created by huchao on 2018/10/18.
  *
  */
-"use strict";
-import React from "react";
+'use strict';
+import React from 'react';
 import {
     StyleSheet,
     View,
     ScrollView,
     TouchableWithoutFeedback,
     Image
-} from "react-native";
-import BasePage from "../../../BasePage";
+} from 'react-native';
+import BasePage from '../../../BasePage';
 import {
     UIText
-} from "../../../components/ui";
-import ScreenUtils from "../../../utils/ScreenUtils";
+} from '../../../components/ui';
+import ScreenUtils from '../../../utils/ScreenUtils';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import taskApi from '../api/taskApi';
+import CommShareModal from '../../../comm/components/CommShareModal';
+import user from '../../../model/user';
+import res from '../res';
+import DesignRule from 'DesignRule';
+const banner = res.banner;
 
 type Props = {};
 export default class ShareTaskIntroducePage extends BasePage<Props> {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            data: {}
+        };
         this._bind();
+
     }
 
     $navigationBarOptions = {
-        title: "任务说明",
+        title: '任务说明',
         show: true// false则隐藏导航
     };
 
@@ -46,38 +55,54 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
     }
 
     loadPageData() {
+        taskApi.taskDetail({ jobId: this.params.jobId }).then((result) => {
+                this.setState({ data: result.data });
+            }
+        ).catch((error) => {
+            this.$toastShow(error.msg);
+        });
     }
 
     _render() {
         return (
             <View style={styles.container}>
                 <ScrollView>
-                    <UIText value={"任务说明"} style={styles.title}/>
-                    <UIText value={"他当时发送到发"} style={styles.title}/>
+                    <UIText value={'任务说明'} style={styles.title}/>
+                    <UIText value={this.state.data.remarks} style={styles.title}/>
                     <Image
-                        source={{ uri: "http://e.hiphotos.baidu.com/zhidao/pic/item/00e93901213fb80eff53acbe34d12f2eb83894dd.jpg" }}
+                        source={banner}
                         style={styles.image}
                     />
                 </ScrollView>
-                <TouchableWithoutFeedback onPress={() => {
+                {this.params.status === 1 ? <TouchableWithoutFeedback onPress={() => {
                     this.shareModal.open();
                 }}>
                     <View style={{
-                        backgroundColor: "#D51243",
+                        backgroundColor: DesignRule.mainColor,
                         height: 50,
-                        alignItems: "center",
-                        justifyContent: "center"
+                        alignItems: 'center',
+                        justifyContent: 'center'
                     }}>
-                        <UIText value={"分享好友帮你点击"} style={{ color: "#FFFFFF", fontSize: 16 }}/>
+                        <UIText value={'分享好友帮你点击'} style={{ color: 'white', fontSize: 16 }}/>
                     </View>
-                </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback> : null}
                 <CommShareModal ref={(ref) => this.shareModal = ref}
-                webJson={{
-                title: '分享标题(当为图文分享时候使用)',
-                dec: '内容(当为图文分享时候使用)',
-                linkUrl: `${apiEnvironment.getCurrentH5Url()}/register`,
-                thumImage: 'logo.png'
-                }}
+                                type={'task'}
+                                // webJson={{
+                                //     title: '邀请好友可获得品牌推广的现金奖励',
+                                //     dec: '',
+                                //     linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.params.jobId}`,
+                                //     thumImage: 'logo.png'
+                                // }}
+                                // type={'miniProgram'}
+                                miniProgramJson={{
+                                    title: '邀请好友可获得品牌推广的现金奖励',
+                                    dec: '',
+                                    thumImage: 'logo.png',
+                                    hdImageURL: '',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/index/index`,
+                                    miniProgramPath: `/pages/my/task/task-share/task-share?inviteId=${user.id}&jobId=${this.params.id}`
+                                }}
                 />
             </View>
         );
@@ -90,20 +115,21 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 13,
-        color: "#222222",
+        color: DesignRule.textColor_mainTitle,
         marginHorizontal: 15,
         marginTop: 10
     },
     detail: {
         fontSize: 12,
-        color: "#222222",
+        color: DesignRule.textColor_mainTitle,
         marginHorizontal: 15,
         marginTop: 10
     },
     image: {
-        marginHorizontal: 15,
+        marginLeft: 15,
         marginTop: 15,
-        height: ScreenUtils.autoSizeWidth(460)
+        height: ScreenUtils.autoSizeWidth(460),
+        width: ScreenUtils.autoSizeWidth(346)
     }
 
 });

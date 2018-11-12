@@ -1,8 +1,17 @@
 import React from 'react';
 import CommModal from '../../comm/components/CommModal';
-import { DeviceEventEmitter, NativeModules, Platform, TouchableOpacity, View, ProgressBarAndroid } from 'react-native';
+import {
+    DeviceEventEmitter,
+    NativeModules,
+    Platform,
+    TouchableOpacity,
+    View,
+    ProgressBarAndroid,
+    AsyncStorage
+} from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIText from '../../components/ui/UIText';
+import DesignRule from 'DesignRule';
 
 export default class VersionUpdateModal extends React.Component {
 
@@ -16,12 +25,19 @@ export default class VersionUpdateModal extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (Platform.OS !== 'ios' && nextProps.updateData) {
-            this.currProgress = 0;
-            this.setState({
-                positiveTxt: nextProps.apkExist ? '立即安装' : '立即更新',
-                updateContent: nextProps.apkExist ? '是否安装V' + nextProps.updateData.version + '版本？' : '是否更新为V' + nextProps.updateData.version + '版本？'
-            });
+        if (nextProps.updateData) {
+            if (Platform.OS !== 'ios') {
+                this.currProgress = 0;
+                this.setState({
+                    positiveTxt: nextProps.apkExist ? '立即安装' : '立即更新',
+                    updateContent: nextProps.apkExist ? '是否安装V' + nextProps.updateData.version + '版本？' : '是否更新为V' + nextProps.updateData.version + '版本？'
+                });
+            } else {
+                this.setState({
+                    positiveTxt: '立即更新',
+                    updateContent: '是否更新为V' + nextProps.updateData.version + '版本？'
+                });
+            }
         }
     }
 
@@ -45,16 +61,23 @@ export default class VersionUpdateModal extends React.Component {
         }
     }
 
+    open = () => {
+        this.modal && this.modal.open();
+    };
+
     render() {
         return (<CommModal
             animationType='fade'
             transparent={true}
+            ref={(ref) => {
+                this.modal = ref;
+            }}
             visible={this.props.showUpdate}>
             <View style={{
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignContent: 'center',
-                backgroundColor: '#fff',
+                backgroundColor: 'white',
                 width: ScreenUtils.width - 84,
                 borderRadius: 10,
                 borderWidth: 0
@@ -62,7 +85,7 @@ export default class VersionUpdateModal extends React.Component {
                 <UIText value={this.state.updateContent}
                         style={{
                             fontSize: 17,
-                            color: '#333',
+                            color: DesignRule.textColor_mainTitle,
                             marginTop: 40,
                             marginBottom: 40,
                             alignSelf: 'center'
@@ -71,7 +94,7 @@ export default class VersionUpdateModal extends React.Component {
                     <ProgressBarAndroid
                         styleAttr={'Horizontal'}
                         indeterminate={false}
-                        color={'#d51243'}
+                        color={DesignRule.mainColor}
                         style={{
                             marginTop: 50,
                             marginLeft: 20,
@@ -84,7 +107,7 @@ export default class VersionUpdateModal extends React.Component {
                             style={{ alignSelf: 'center', marginBottom: 40, marginTop: 5 }}/>
                 </View>}
                 {this.state.showBtn ?
-                    <View style={{ height: 0.5, backgroundColor: '#eee' }}/> : null}
+                    <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/> : null}
                 <View style={{ flexDirection: 'row' }}>
                     {
                         this.props.forceUpdate ? null :
@@ -92,11 +115,13 @@ export default class VersionUpdateModal extends React.Component {
                                 <TouchableOpacity
                                     style={{ flex: 1, justifyContent: 'center', alignItems: 'center', height: 45 }}
                                     onPress={() => {
+                                        // 缓存状态
+                                        AsyncStorage.setItem('isToUpdate', this.props.updateData.version);
                                         this.props.onDismiss();
                                     }}>
-                                    <UIText value={'以后再说'} style={{ color: '#999' }}/>
+                                    <UIText value={'以后再说'} style={{ color: DesignRule.textColor_instruction }}/>
                                 </TouchableOpacity>
-                                < View style={{ width: 0.5, backgroundColor: '#eee' }}/>
+                                < View style={{ width: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                             </View>
                     }{
                     this.state.showBtn ?
@@ -106,14 +131,14 @@ export default class VersionUpdateModal extends React.Component {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 height: 45,
-                                backgroundColor: '#d51243',
+                                backgroundColor: DesignRule.mainColor,
                                 borderBottomRightRadius: 10,
                                 borderBottomLeftRadius: this.props.forceUpdate ? 10 : 0
                             }}
                             onPress={() => {
                                 this.toUpdate();
                             }}>
-                            <UIText value={this.state.positiveTxt} style={{ color: '#fff' }}/>
+                            <UIText value={this.state.positiveTxt} style={{ color: 'white' }}/>
                         </TouchableOpacity> : null
                 }
                 </View>

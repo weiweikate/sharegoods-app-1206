@@ -7,9 +7,11 @@ import {
     Animated,
     StyleSheet,
     Dimensions,
-    TouchableOpacity,
+    TouchableOpacity
 } from 'react-native';
-import Modal from 'CommModal'
+import Modal from 'CommModal';
+import DesignRule from 'DesignRule';
+
 
 const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const PANNELHEIGHT = 203;
@@ -17,7 +19,7 @@ const Animated_Duration = 300; //默认的动画持续时间
 export default class ConfirmAlert extends Component {
 
     static propTypes = {
-        confirmCallBack: PropTypes.func, //点击确定的回调函数
+        confirmCallBack: PropTypes.func //点击确定的回调函数
     };
 
     static defaultProps = {
@@ -36,18 +38,18 @@ export default class ConfirmAlert extends Component {
             modalVisible: false, //是否显示
             top: new Animated.Value(-PANNELHEIGHT), //白色面板顶部距离屏幕底部
             backOpacity: new Animated.Value(0), //背景颜色
-            alignType:'center'
+            alignType: 'center'
         };
     }
 
-    show = ({confirmCallBack,title,height,alignType})=>{
+    show = ({ confirmCallBack, title, height, alignType }) => {
         this.setState({
             height: height || PANNELHEIGHT,
-            alignType:alignType,
+            alignType: alignType,
             title: title || this.state.title,
             confirmCallBack: confirmCallBack || this.state.confirmCallBack,
             modalVisible: true
-        },this._startAnimated);
+        }, this._startAnimated);
     };
 
     //开始动画
@@ -96,16 +98,16 @@ export default class ConfirmAlert extends Component {
                 }
             )
         ]).start(() => {
-            this.setState({ modalVisible: false },()=>{
-                if(cb && typeof cb === 'function'){
+            this.setState({ modalVisible: false }, () => {
+                if (cb && typeof cb === 'function') {
                     cb();
                 }
             });
         });
     };
 
-    _clickOk = ()=>{
-        this._closeAnimated(()=>{
+    _clickOk = () => {
+        this._closeAnimated(() => {
             this.state.confirmCallBack && this.state.confirmCallBack();
         });
     };
@@ -115,7 +117,8 @@ export default class ConfirmAlert extends Component {
             return null;
         }
         return (
-            <Modal visible={this.state.modalVisible} onRequestClose={this._closeAnimated} transparent={true} style={styles.container}>
+            <Modal visible={this.state.modalVisible} onRequestClose={this._closeAnimated} transparent={true}
+                   style={styles.container}>
                 <View style={[styles.container, { backgroundColor: 'transparent' }]}>
                     <Animated.View
                         style={[
@@ -133,48 +136,45 @@ export default class ConfirmAlert extends Component {
                             {
                                 top: this.state.top,
                                 opacity: this.state.backOpacity,
-                                height: this.state.height,
+                                height: this.state.height
                             }
                         ]}
                     >
-                        <View style={{flex: 1}}>
+                        <View style={{ flex: 1 }}>
                             <Text style={{
-                                fontFamily: "PingFang-SC-Medium",
                                 fontSize: 15,
-                                color: "#666666",
+                                color: DesignRule.textColor_secondTitle,
                                 textAlign: this.state.alignType,
                                 marginHorizontal: 15,
-                                marginVertical:30,
+                                marginVertical: 30
                             }}>{this.state.title}</Text>
                         </View>
-                        <View style={{flexDirection: 'row',alignItems: 'center',marginBottom: 27}}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 27 }}>
                             <TouchableOpacity onPress={this._clickOk} style={{
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                backgroundColor: '#e60012',
+                                backgroundColor: DesignRule.mainColor,
                                 marginRight: 36,
                                 width: 99,
                                 height: 32,
-                                borderRadius: 5,
+                                borderRadius: 5
                             }}>
                                 <Text style={{
-                                    fontFamily: "PingFang-SC-Medium",
                                     fontSize: 16,
-                                    color: "#ffffff"
+                                    color: 'white'
                                 }}>确认</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={this._closeAnimated} style={{
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                backgroundColor: '#dddddd',
+                                backgroundColor: DesignRule.lineColor_inGrayBg,
                                 width: 99,
                                 height: 32,
-                                borderRadius: 5,
+                                borderRadius: 5
                             }}>
                                 <Text style={{
-                                    fontFamily: "PingFang-SC-Medium",
                                     fontSize: 16,
-                                    color: "#999999"
+                                    color: DesignRule.textColor_instruction
                                 }}>取消</Text>
                             </TouchableOpacity>
                         </View>
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     title: {
         textAlign: 'center',
         fontSize: 15,
-        color: '#333'
+        color: DesignRule.textColor_mainTitle
     },
     whitePanel: {
         position: 'absolute',
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
         height: PANNELHEIGHT,
         backgroundColor: 'white',
         alignItems: 'center',
-        borderRadius: 5,
+        borderRadius: 5
     }
 });
 

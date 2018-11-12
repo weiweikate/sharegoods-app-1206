@@ -4,14 +4,21 @@ import {
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import bridge from '../../../../utils/bridge';
 import MineAPI from '../../api/MineApi';
 import SMSTool from '../../../../utils/SMSTool';
+import DesignRule from 'DesignRule';
 
+/**
+ * @author chenxiang
+ * @date on 2018/9/18
+ * @describe 设置页面
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
+ */
 export default class EditPhoneNumPage extends BasePage {
 
     // 导航配置
@@ -33,7 +40,7 @@ export default class EditPhoneNumPage extends BasePage {
         return (<View style={{ flex: 1 }}>
             <UIText value={'短信验证码将发送至绑定手机： ' + oldNum}
                     style={{
-                        color: '#999999',
+                        color: DesignRule.textColor_instruction,
                         fontSize: 13,
                         marginTop: 15,
                         marginLeft: 16
@@ -45,10 +52,10 @@ export default class EditPhoneNumPage extends BasePage {
                 alignItems: 'center',
                 marginTop: 10
             }}>
-                <UIText value={'验证码'} style={{ fontSize: 13, color: '#000000', marginLeft: 20 }}/>
+                <UIText value={'验证码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}/>
                 <TextInput underlineColorAndroid={'transparent'}
-                           style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 20 }}
-                           placeholder={'请输入验证码'} placeholderTextColor={'#C8C8C8'}
+                           style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}
+                           placeholder={'请输入验证码'} placeholderTextColor={DesignRule.textColor_hint}
                            onChangeText={(text) => {
                                const newText = text.replace(/[^\d]+/, '');
                                this.setState({ code: newText });
@@ -58,22 +65,22 @@ export default class EditPhoneNumPage extends BasePage {
                 <TouchableOpacity onPress={() => this._onGetCode(oldNum)}
                                   disabled={this.state.vertifyCodeTime > 0 ? true : false}>
                     <UIText value={this.state.vertifyCodeTime > 0 ? this.state.vertifyCodeTime + '秒后重新获取' : '获取验证码'}
-                            style={{ color: '#D85674', fontSize: 11, marginRight: 15 }}/>
+                            style={{ color: '#D85674', fontSize: 13, marginRight: 15 }}/>
                 </TouchableOpacity>
             </View>
 
             <TouchableOpacity style={{
                 marginTop: 42,
-                backgroundColor: color.red,
+                backgroundColor: DesignRule.mainColor,
                 width: ScreenUtils.width - 84,
-                height: 48,
+                height: 50,
                 marginLeft: 42,
                 marginRight: 42,
                 alignItems: 'center',
                 justifyContent: 'center',
-                borderRadius: 5
+                borderRadius: 25
             }} onPress={() => this._toNext(oldNum)}>
-                <Text style={{ fontSize: 13, color: 'white' }}>下一步</Text>
+                <Text style={{ fontSize: 17, color: 'white' }}>下一步</Text>
             </TouchableOpacity>
         </View>);
     }
@@ -114,5 +121,4 @@ export default class EditPhoneNumPage extends BasePage {
             bridge.$toast(data.msg);
         });
     };
-
 }

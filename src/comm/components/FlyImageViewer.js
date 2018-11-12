@@ -16,222 +16,222 @@ import {
     CameraRoll,
     Platform,
     StyleSheet
-} from 'react-native'
+} from 'react-native';
 //import * as typings from './image-viewer.type'
 // import {TransmitTransparently} from 'nt-transmit-transparently'
-import ImageZoom from 'FlyImageZoom'
-import ScreenUtils from "../../utils/ScreenUtils";
-//import styles from './image-viewerStyle'
+import ImageZoom from 'FlyImageZoom';
+import ScreenUtils from '../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
-let staticStyle = {show : false,
-currentShowIndex : 0,
-imageSizes : [] ,
-isShowMenu : false,};
+let staticStyle = {
+    show: false,
+    currentShowIndex: 0,
+    imageSizes: [],
+    isShowMenu: false
+};
 
-// interface Window {
-//     Image: {
-//         prototype: HTMLImageElement,
-//         new (): HTMLImageElement
-//     }
-// }
-declare var window: Window
+declare var window: Window;
 // var ScreenWidth = Dimensions.get('window').width;
 //@TransmitTransparently('style')
 export default class FlyImageViewer extends Component {
 
-getStyle(width: number, height: number){
-      return {
-          modalContainer: {
-              backgroundColor: '#000',
-              justifyContent: 'center',
-              alignItems: 'center',
-              overflow: 'hidden'
-          } ,
-          watchOrigin: {
-              position: 'absolute',
-              width: width,
-              bottom: 20,
-              justifyContent: 'center',
-              alignItems: 'center'
-          } ,
-          watchOriginTouchable: {
-              paddingLeft: 10,
-              paddingRight: 10,
-              paddingTop: 5,
-              paddingBottom: 5,
-              borderRadius: 30,
-              borderColor: 'white',
-              borderWidth: 0.5,
-              backgroundColor: 'rgba(0, 0, 0, 0.1)'
-          } ,
-          watchOriginText: {
-              color: 'white',
-              backgroundColor: 'transparent'
-          } ,
-          imageStyle: {} ,
-          container: {
-              backgroundColor: 'black'
-          } ,
-          // 多图浏览需要调整整体位置的盒子
-          moveBox: {
-              flexDirection: 'row',
-              alignItems: 'center'
-          } ,
-          menuContainer: {
-              position: 'absolute',
-              width: width,
-              height: height,
-              left: 0,
-              bottom: 0
-          } ,
-          menuShadow: {
-              position: 'absolute',
-              width: width,
-              height: height,
-              backgroundColor: 'black',
-              left: 0,
-              bottom: 0,
-              opacity: 0.2,
-              zIndex: 10
-          } ,
-          menuContent: {
-              position: 'absolute',
-              width: width,
-              left: 0,
-              bottom: 0,
-              zIndex: 11
-          },
-          operateContainer: {
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'white',
-              height: 40,
-              borderBottomColor: '#ccc',
-              borderBottomWidth: 1
-          } ,
-          operateText: {
-              color: '#333'
-          },
-          loadingTouchable: {
-              width: width,
-              height: height
-          } ,
-          loadingContainer: {
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: width,
-              height: height
-          } ,
-          failContainer: {
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: width,
-              height: height
-          } ,
-          failImage: {
-              width: 90,
-              height: 60
-          },
-          arrowLeftContainer: {
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              left: 0,
-              justifyContent: 'center'
-          } ,
-          arrowRightContainer: {
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              right: 0,
-              justifyContent: 'center'
-          }
-      }
-  }
-
-    static defaultProps = { show : false,
-    imageUrls : [] ,
-    enableImageZoom : true,
-    visible : false,
-
-    flipThreshold : 80,
-    maxOverflow : 300,
-    failImageSource : '',
-    index : 0,
-    saveToLocalByLongPress : true,
-    menuContext : {
-        saveToLocal: '保存到相册',
-        cancel: '取消'
-    },
-
-    onShowModal : () => {
+    getStyle(width: number, height: number) {
+        return {
+            modalContainer: {
+                backgroundColor: DesignRule.textColor_mainTitle,
+                justifyContent: 'center',
+                alignItems: 'center',
+                overflow: 'hidden'
+            },
+            watchOrigin: {
+                position: 'absolute',
+                width: width,
+                bottom: 20,
+                justifyContent: 'center',
+                alignItems: 'center'
+            },
+            watchOriginTouchable: {
+                paddingLeft: 10,
+                paddingRight: 10,
+                paddingTop: 5,
+                paddingBottom: 5,
+                borderRadius: 30,
+                borderColor: 'white',
+                borderWidth: 0.5,
+                backgroundColor: 'rgba(0, 0, 0, 0.1)'
+            },
+            watchOriginText: {
+                color: 'white',
+                backgroundColor: 'transparent'
+            },
+            imageStyle: {},
+            container: {
+                backgroundColor: DesignRule.textColor_mainTitle
+            },
+            // 多图浏览需要调整整体位置的盒子
+            moveBox: {
+                flexDirection: 'row',
+                alignItems: 'center'
+            },
+            menuContainer: {
+                position: 'absolute',
+                width: width,
+                height: height,
+                left: 0,
+                bottom: 0
+            },
+            menuShadow: {
+                position: 'absolute',
+                width: width,
+                height: height,
+                backgroundColor: DesignRule.textColor_mainTitle,
+                left: 0,
+                bottom: 0,
+                opacity: 0.2,
+                zIndex: 10
+            },
+            menuContent: {
+                position: 'absolute',
+                width: width,
+                left: 0,
+                bottom: 0,
+                zIndex: 11
+            },
+            operateContainer: {
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'white',
+                height: 40,
+                borderBottomColor: DesignRule.textColor_placeholder,
+                borderBottomWidth: 1
+            },
+            operateText: {
+                color: DesignRule.textColor_mainTitle
+            },
+            loadingTouchable: {
+                width: width,
+                height: height
+            },
+            loadingContainer: {
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: width,
+                height: height
+            },
+            failContainer: {
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: width,
+                height: height
+            },
+            failImage: {
+                width: 90,
+                height: 60
+            },
+            arrowLeftContainer: {
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                justifyContent: 'center'
+            },
+            arrowRightContainer: {
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                right: 0,
+                justifyContent: 'center'
+            }
+        };
     }
-,
-    onCancel : () => {
-    },
 
-    loadingRender : () => {
-        return null;
-    },
+    static defaultProps = {
+        show: false,
+        imageUrls: [],
+        enableImageZoom: true,
+        visible: false,
 
-    onSaveToCamera : () => {
-    },
+        flipThreshold: 80,
+        maxOverflow: 300,
+        failImageSource: '',
+        index: 0,
+        saveToLocalByLongPress: true,
+        menuContext: {
+            saveToLocal: '保存到相册',
+            cancel: '取消'
+        },
 
-    onChange : () => {
-    }
-,
-    onClick : (close?: Function) => {
-        close()
-    },
+        onShowModal: () => {
+        }
+        ,
+        onCancel: () => {
+        },
 
-    onDoubleClick : (close?: Function) => {
+        loadingRender: () => {
+            return null;
+        },
 
-    },
+        onSaveToCamera: () => {
+        },
 
-    renderHeader : () => {
-        return null ;
-    },
+        onChange: () => {
+        }
+        ,
+        onClick: (close?: Function) => {
+            close();
+        },
 
-    renderFooter : () => {
-        return null;
-    },
+        onDoubleClick: (close?: Function) => {
 
-    renderIndicator : (currentIndex: number, allSize: number) => {
-        return React.createElement(View, {style: simpleStyle.count}, React.createElement(Text, {style: simpleStyle.countText}, currentIndex + '/' + allSize))
-    },
+        },
 
-    renderArrowLeft : () => {
-        return null ;
-    },
+        renderHeader: () => {
+            return null;
+        },
 
-    renderArrowRight : () => {
-        return null;
-    }};
-     state = {show : false,
-    currentShowIndex : 0,
-    imageSizes : [] ,
-    isShowMenu : false,};
+        renderFooter: () => {
+            return null;
+        },
+
+        renderIndicator: (currentIndex: number, allSize: number) => {
+            return React.createElement(View, { style: simpleStyle.count }, React.createElement(Text, { style: simpleStyle.countText }, currentIndex + '/' + allSize));
+        },
+
+        renderArrowLeft: () => {
+            return null;
+        },
+
+        renderArrowRight: () => {
+            return null;
+        }
+    };
+    state = {
+        show: false,
+        currentShowIndex: 0,
+        imageSizes: [],
+        isShowMenu: false
+    };
 
     // 背景透明度渐变动画
-     fadeAnim = new Animated.Value(0);
+    fadeAnim = new Animated.Value(0);
 
     // 当前基准位置
-     standardPositionX = 0;
+    standardPositionX = 0;
 
     // 整体位移，用来切换图片用
-     positionXNumber = 0;
-     positionX = new Animated.Value(0);
+    positionXNumber = 0;
+    positionX = new Animated.Value(0);
 
-     width = 0;
-     height = 0;
+    width = 0;
+    height = 0;
 
 
-styles = this.getStyle(0, 0);
+    styles = this.getStyle(0, 0);
     // 是否执行过 layout. fix 安卓不断触发 onLayout 的 bug
-     hasLayout = false;
+    hasLayout = false;
 
     // 记录已加载的图片 index
-     loadedIndex = new Map();
+    loadedIndex = new Map();
 
     componentWillMount() {
         this.init(this.props);
@@ -255,7 +255,7 @@ styles = this.getStyle(0, 0);
                 height: imageUrl.height || 0,
                 status: 'loading'
             });
-        })
+        });
 
         this.setState({
             currentShowIndex: nextProps.index,
@@ -271,7 +271,7 @@ styles = this.getStyle(0, 0);
                 toValue: 1,
                 duration: 200
             }).start();
-        })
+        });
     }
 
     /**
@@ -308,7 +308,7 @@ styles = this.getStyle(0, 0);
             this.setState({
                 imageSizes
             });
-        }
+        };
 
         if (this.state.imageSizes[index].status === 'success') {
             // 已经加载过就不会加载了
@@ -341,7 +341,7 @@ styles = this.getStyle(0, 0);
                 // 预加载失败
                 imageStatus.status = 'fail';
                 saveImageSize();
-            })
+            });
 
             // 获取图片大小
             if (image.width && image.height) {
@@ -370,7 +370,7 @@ styles = this.getStyle(0, 0);
                     // 获取大小失败
                     imageStatus.status = 'fail';
                     saveImageSize();
-                })
+                });
             }
         } else {
             const imageFetch = new window.Image();
@@ -380,23 +380,23 @@ styles = this.getStyle(0, 0);
                 imageStatus.height = imageFetch.height;
                 imageStatus.status = 'success';
                 saveImageSize();
-            }
+            };
             imageFetch.onerror = () => {
                 imageStatus.status = 'fail';
                 saveImageSize();
-            }
+            };
         }
     }
 
-    setImageWidthToScreenWidth = (imageStatus)=>{
-        if(imageStatus){
+    setImageWidthToScreenWidth = (imageStatus) => {
+        if (imageStatus) {
             let scale = imageStatus.width / ScreenUtils.width;
             imageStatus.height = imageStatus.height / scale;
             imageStatus.width = ScreenUtils.width;
         }
         return imageStatus;
 
-    }
+    };
 
 
     /**
@@ -463,14 +463,14 @@ styles = this.getStyle(0, 0);
         this.standardPositionX = this.positionXNumber;
         Animated.timing(this.positionX, {
             toValue: this.positionXNumber,
-            duration: 100,
+            duration: 100
         }).start();
 
         this.setState({
             currentShowIndex: this.state.currentShowIndex - 1
         }, () => {
             this.props.onChange(this.state.currentShowIndex);
-        })
+        });
     }
 
     /**
@@ -487,14 +487,14 @@ styles = this.getStyle(0, 0);
         this.standardPositionX = this.positionXNumber;
         Animated.timing(this.positionX, {
             toValue: this.positionXNumber,
-            duration: 100,
+            duration: 100
         }).start();
 
         this.setState({
             currentShowIndex: this.state.currentShowIndex + 1
         }, () => {
             this.props.onChange(this.state.currentShowIndex);
-        })
+        });
     }
 
     /**
@@ -504,7 +504,7 @@ styles = this.getStyle(0, 0);
         this.positionXNumber = this.standardPositionX;
         Animated.timing(this.positionX, {
             toValue: this.standardPositionX,
-            duration: 150,
+            duration: 150
         }).start();
     }
 
@@ -550,7 +550,7 @@ styles = this.getStyle(0, 0);
             return;
         }
 
-        this.hasLayout = true
+        this.hasLayout = true;
 
         this.width = event.nativeEvent.layout.width;
         this.height = event.nativeEvent.layout.height;
@@ -606,7 +606,7 @@ styles = this.getStyle(0, 0);
                         <Image style={[this.styles.imageStyle, { width: width, height: height }]}
                                source={{ uri: image }}/>
                     </ImageZoom>
-                )
+                );
             } else {
                 switch (imageInfo.status) {
                     case 'loading':
@@ -618,13 +618,13 @@ styles = this.getStyle(0, 0);
                                     {this.props.loadingRender()}
                                 </View>
                             </TouchableHighlight>
-                        )
+                        );
                     case 'success':
                         return (
                             <Image key={index}
                                    style={[this.styles.imageStyle, { width: width, height: height }]}
                                    source={{ uri: image }}/>
-                        )
+                        );
                     case 'fail':
                         return (
                             <ImageZoom key={index}
@@ -645,10 +645,10 @@ styles = this.getStyle(0, 0);
                                            style={this.styles.failImage}/>
                                 </TouchableOpacity>
                             </ImageZoom>
-                        )
+                        );
                 }
             }
-        })
+        });
 
         return (
             <Animated.View style={[this.styles.container, { opacity: this.fadeAnim }]}>
@@ -670,7 +670,8 @@ styles = this.getStyle(0, 0);
                     </TouchableWithoutFeedback>
                 </View>
 
-                <Animated.View style={[this.styles.moveBox, { transform: [{ translateX: this.positionX }] }, { width: this.width * this.props.imageUrls.length }]}>
+                <Animated.View
+                    style={[this.styles.moveBox, { transform: [{ translateX: this.positionX }] }, { width: this.width * this.props.imageUrls.length }]}>
                     {ImageElements}
                 </Animated.View>
 
@@ -688,7 +689,7 @@ styles = this.getStyle(0, 0);
 
                 {this.props.renderFooter()}
             </Animated.View>
-        )
+        );
     }
 
     /**
@@ -716,19 +717,19 @@ styles = this.getStyle(0, 0);
             <View style={this.styles.menuContainer}>
                 <View style={this.styles.menuShadow}/>
                 <View style={this.styles.menuContent}>
-                    <TouchableHighlight underlayColor="#F2F2F2"
+                    <TouchableHighlight underlayColor={DesignRule.color_f2}
                                         onPress={this.saveToLocal.bind(this)}
                                         style={this.styles.operateContainer}>
                         <Text style={this.styles.operateText}>{this.props.menuContext.saveToLocal}</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight underlayColor="#F2F2F2"
+                    <TouchableHighlight underlayColor={DesignRule.color_f2}
                                         onPress={this.handleLeaveMenu.bind(this)}
                                         style={this.styles.operateContainer}>
                         <Text style={this.styles.operateText}>{this.props.menuContext.cancel}</Text>
                     </TouchableHighlight>
                 </View>
             </View>
-        )
+        );
     }
 
     handleLeaveMenu() {
@@ -745,14 +746,14 @@ styles = this.getStyle(0, 0);
                 {this.getContent()}
                 {this.getMenu()}
             </View>
-        )
+        );
 
         return (
             <View onLayout={this.handleLayout.bind(this)}
                   style={[{ flex: 1, overflow: 'hidden' }, this.props.style]} {...this.props.others}>
                 {childs}
             </View>
-        )
+        );
 
     }
 }
@@ -777,111 +778,3 @@ const simpleStyle = StyleSheet.create({
         textShadowRadius: 0
     }
 });
-// module.exports = FlyImageViewer;
-// const styles = StyleSheet.create({
-//   modalContainer: {
-//              backgroundColor: '#000',
-//              justifyContent: 'center',
-//              alignItems: 'center',
-//              overflow: 'hidden'
-//          } ,
-//          watchOrigin: {
-//              position: 'absolute',
-//              width: 0,
-//              bottom: 20,
-//              justifyContent: 'center',
-//              alignItems: 'center'
-//          } ,
-//          watchOriginTouchable: {
-//              paddingLeft: 10,
-//              paddingRight: 10,
-//              paddingTop: 5,
-//              paddingBottom: 5,
-//              borderRadius: 30,
-//              borderColor: 'white',
-//              borderWidth: 0.5,
-//              backgroundColor: 'rgba(0, 0, 0, 0.1)'
-//          } ,
-//          watchOriginText: {
-//              color: 'white',
-//              backgroundColor: 'transparent'
-//          } ,
-//          imageStyle: {} ,
-//          container: {
-//              backgroundColor: 'black'
-//          } ,
-//          // 多图浏览需要调整整体位置的盒子
-//          moveBox: {
-//              flexDirection: 'row',
-//              alignItems: 'center'
-//          } ,
-//          menuContainer: {
-//              position: 'absolute',
-//              width: 0,
-//              height: 0,
-//              left: 0,
-//              bottom: 0
-//          } ,
-//          menuShadow: {
-//              position: 'absolute',
-//              width: 0,
-//              height: 0,
-//              backgroundColor: 'black',
-//              left: 0,
-//              bottom: 0,
-//              opacity: 0.2,
-//              zIndex: 10
-//          } ,
-//          menuContent: {
-//              position: 'absolute',
-//              width: 0,
-//              left: 0,
-//              bottom: 0,
-//              zIndex: 11
-//          } ,
-//          operateContainer: {
-//              justifyContent: 'center',
-//              alignItems: 'center',
-//              backgroundColor: 'white',
-//              height: 40,
-//              borderBottomColor: '#ccc',
-//              borderBottomWidth: 1
-//          } ,
-//          operateText: {
-//              color: '#333'
-//          },
-//          loadingTouchable: {
-//              width: 0,
-//              height: 0
-//          } ,
-//          loadingContainer: {
-//              justifyContent: 'center',
-//              alignItems: 'center',
-//              width: 0,
-//              height: 0
-//          } ,
-//          failContainer: {
-//              justifyContent: 'center',
-//              alignItems: 'center',
-//              width: 0,
-//              height: 0
-//          } ,
-//          failImage: {
-//              width: 90,
-//              height: 60
-//          },
-//          arrowLeftContainer: {
-//              position: 'absolute',
-//              top: 0,
-//              bottom: 0,
-//              left: 0,
-//              justifyContent: 'center'
-//          } ,
-//          arrowRightContainer: {
-//              position: 'absolute',
-//              top: 0,
-//              bottom: 0,
-//              right: 0,
-//              justifyContent: 'center'
-//          }
-// });

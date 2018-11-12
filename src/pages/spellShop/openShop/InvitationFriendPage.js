@@ -17,6 +17,7 @@ import BasePage from '../../../BasePage';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import bridge from '../../../utils/bridge';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
 
 const gap = -5;
 
@@ -106,8 +107,8 @@ export default class InvitationToShopPage extends BasePage {
                                 <QRCode
                                     value={'https://www.baidu.com/'}
                                     size={140 - 6}
-                                    bgColor='#333'
-                                    fgColor='white'/>
+                                    bgColor={DesignRule.textColor_mainTitle}
+                                    fgColor={'white'}/>
                             </View>
                             <Text style={styles.wxTip}>分享为您的店铺增添活力</Text>
                         </ImageBackground>
@@ -164,16 +165,15 @@ const styles = StyleSheet.create({
     topImg: {
         width: 65,
         height: 65,
-        backgroundColor: '#eee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 5,
         marginRight: 9
     },
 
 
     text: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
-        color: '#000000'
+        color: DesignRule.textColor_mainTitle
     },
     qrContainer: {
         width: 140,
@@ -182,13 +182,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 25,
         borderWidth: 1,
-        borderColor: '#D51243'
+        borderColor: DesignRule.mainColor
     },
 
     wxTip: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
-        color: '#D51243',
+        color: DesignRule.mainColor,
         marginTop: 15
     },
     bottomBtn: {
@@ -196,14 +195,13 @@ const styles = StyleSheet.create({
         width: 143,
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         borderWidth: 1,
         borderRadius: 5
     },
     textBtn: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 14,
-        color: '#D51243'
+        color: DesignRule.mainColor
     }
 
 });

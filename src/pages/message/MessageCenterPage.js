@@ -2,24 +2,28 @@
  * Created by nuomi on 2018/7/18.
  * 消息中心页面
  */
-import React from 'react'
-import { StyleSheet, View, Text, Image,DeviceEventEmitter,
-    TouchableOpacity,  ScrollView} from 'react-native'
+import React from 'react';
 import {
-    UIText,
-} from '../../components/ui'
-import {color} from "../../constants/Theme";
-import ScreenUtils from '../../utils/ScreenUtils'
+    StyleSheet, View, Text, Image, DeviceEventEmitter,
+    TouchableOpacity, ScrollView
+} from 'react-native';
+import {
+    UIText
+} from '../../components/ui';
+import { color } from '../../constants/Theme';
+import ScreenUtils from '../../utils/ScreenUtils';
 import BasePage from '../../BasePage';
-import noticeIcon from "./src/icon_03.png";
-import newsIcon from "./src/icon_06.png"
-import spellIcon from  "./src/icon_08.png"
-import arrow_right from '../order/res/arrow_right.png'
+import noticeIcon from './src/icon_03.png';
+import newsIcon from './src/icon_06.png';
+import spellIcon from './src/icon_08.png';
+import arrow_right from '../order/res/arrow_right.png';
 // import HomeApi from '../home/api/HomeAPI';
 // import Toast from '../../utils/bridge';
 
 import MessageApi from './api/MessageApi';
-import EmptyUtils from '../../utils/EmptyUtils'
+import EmptyUtils from '../../utils/EmptyUtils';
+import DesignRule from 'DesignRule';
+
 const { px2dp } = ScreenUtils;
 
 
@@ -27,106 +31,129 @@ export default class MessageCenterPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            viewData:[],
-            explain:"",
-            shopMessageCount:0,
-            noticeCount:0,
-            messageCount:0
-        }
+            viewData: [],
+            explain: '',
+            shopMessageCount: 0,
+            noticeCount: 0,
+            messageCount: 0
+        };
     }
+
     $navigationBarOptions = {
         show: true, // false则隐藏导航
-        title:'消息中心'
+        title: '消息中心'
     };
 
 
     componentDidMount() {
         this.loadPageData();
-        DeviceEventEmitter.addListener("contentViewed",this.loadPageData)
+        this.listener = DeviceEventEmitter.addListener('contentViewed', this.loadPageData);
     }
 
-    _render(){
-        return(
+    _render() {
+        return (
             <ScrollView style={styles.container}>
                 {this.renderBodyView()}
             </ScrollView>
-        )
+        );
     }
-    loadPageData(){
+
+    loadPageData() {
         MessageApi.getNewNoticeMessageCount().then(res => {
-                if(!EmptyUtils.isEmpty(res.data)){
-                    this.setState({
-                        shopMessageCount:res.data.shopMessageCount,
-                        noticeCount:res.data.noticeCount,
-                        messageCount:res.data.messageCount,
-                    })
-                }
-        }).catch((error)=>{
-            this.$toastShow(error.msg)
+            if (!EmptyUtils.isEmpty(res.data)) {
+                this.setState({
+                    shopMessageCount: res.data.shopMessageCount,
+                    noticeCount: res.data.noticeCount,
+                    messageCount: res.data.messageCount
+                });
+            }
+        }).catch((error) => {
+            this.$toastShow(error.msg);
         });
     }
 
-    componentWillUnmount(){
-        DeviceEventEmitter.removeAllListeners();
+    componentWillUnmount() {
+        this.listener && this.listener.remove();
     }
 
-    orderMenuJump(i){
-        switch(i){
+    orderMenuJump(i) {
+        switch (i) {
             case 0:
-              this.$navigate("message/NotificationPage");
+                this.$navigate('message/NotificationPage');
                 break;
             case 1:
-                this.$navigate("message/MessageGatherPage");
+                this.$navigate('message/MessageGatherPage');
                 break;
 
             case 2:
-                this.$navigate("message/ShopMessagePage");
+                this.$navigate('message/ShopMessagePage');
                 break;
         }
     }
-    renderBodyView=()=>{
-        let leftImage = [noticeIcon,newsIcon,spellIcon];
-        let leftText = ['通知','消息','拼店消息'];
+
+    renderBodyView = () => {
+        let leftImage = [noticeIcon, newsIcon, spellIcon];
+        let leftText = ['通知', '消息', '拼店消息'];
         let arr = [];
-        for (let i = 0;i < leftImage.length;i++){
+        for (let i = 0; i < leftImage.length; i++) {
             let count;
-            if(i === 0){
+            if (i === 0) {
                 count = this.state.noticeCount;
             }
-            if(i === 1){
+            if (i === 1) {
                 count = this.state.messageCount;
             }
-            if(i === 2){
+            if (i === 2) {
                 count = this.state.shopMessageCount;
             }
 
 
             arr.push(
-                <View key={i} style={{width:ScreenUtils.width,height:60,marginTop:11}}>
-                    <TouchableOpacity  style={{flex:1,justifyContent:'space-between',alignItems:'center',height:44,paddingLeft:21,paddingRight:28,backgroundColor:color.white,flexDirection:'row'}} onPress={()=>this.orderMenuJump(i)}>
-                        <View style={{flexDirection:'row',alignItems:'center'}}>
-                            <Image source={leftImage[i]} style={{height:35,}} resizeMode={'contain'}/>
-                            <UIText value={leftText[i]} style={[{fontSize:15,marginLeft:5}]}/>
+                <View key={i} style={{ width: ScreenUtils.width, height: 60, marginTop: 11 }}>
+                    <TouchableOpacity style={{
+                        flex: 1,
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        height: 44,
+                        paddingLeft: 21,
+                        paddingRight: 28,
+                        backgroundColor: 'white',
+                        flexDirection: 'row'
+                    }} onPress={() => this.orderMenuJump(i)}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Image source={leftImage[i]} style={{ height: 35 }} resizeMode={'contain'}/>
+                            <UIText value={leftText[i]} style={[{ fontSize: 15, marginLeft: 5 }]}/>
                         </View>
-                        <View style={{flexDirection:'row',alignItems:'center'}}>
-                            {count ? <View style={{marginRight:7,backgroundColor:color.red,borderRadius:px2dp(8.5),height:px2dp(17),paddingHorizontal:px2dp(9),alignItems:'center',justifyContent:'center'}}>
-                                <Text style={{color:"white",includeFontPadding:false, fontSize: px2dp(13)}}>{count}</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            {count ? <View style={{
+                                marginRight: 7,
+                                backgroundColor: color.red,
+                                borderRadius: px2dp(8.5),
+                                height: px2dp(17),
+                                paddingHorizontal: px2dp(9),
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}>
+                                <Text style={{
+                                    color: 'white',
+                                    includeFontPadding: false,
+                                    fontSize: px2dp(13)
+                                }}>{count}</Text>
                             </View> : null}
-                            <Image source={arrow_right} style={{height:14,}} resizeMode={'contain'}/>
+                            <Image source={arrow_right} style={{ height: 14 }} resizeMode={'contain'}/>
                         </View>
                     </TouchableOpacity>
                 </View>
-
-            )
+            );
         }
-        return arr
-    }
+        return arr;
+    };
 
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7'
+        backgroundColor: DesignRule.bgColor
     }
 });

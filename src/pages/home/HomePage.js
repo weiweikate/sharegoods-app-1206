@@ -1,8 +1,4 @@
-/**
- * 首页
- */
-
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
     View,
     StyleSheet,
@@ -10,12 +6,11 @@ import {
     Text,
     RefreshControl,
     ImageBackground,
-    InteractionManager,
     TouchableWithoutFeedback,
-    Image, Platform, NativeModules
+    Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
-import ShareTaskHomeAlert from '../shareTask/components/ShareTaskHomeAlert';
+import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
 import { homeType, homeModule, bannerModule } from './Modules';
 import HomeSearchView from './HomeSearchView';
@@ -37,21 +32,33 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import messageModalBg from './res/messageModalBg.png';
 import messageSelected from './res/messageSelected.png';
 import messageUnselected from './res/messageUnselected.png';
-import closeImg from '../shareTask/res/qiandao_btn_return_nor.png';
 import MineApi from '../mine/api/MineApi';
 import VersionUpdateModal from './VersionUpdateModal';
 import DeviceInfo from 'react-native-device-info';
+import StringUtils from '../../utils/StringUtils';
+import DesignRule from 'DesignRule';
+import res from '../../comm/res';
+
+var TimerMixin = require('react-timer-mixin');
+const closeImg = res.button.cancel_white_circle;
+/**
+ * @author zhangjian
+ * @date on 2018/9/7
+ * @describe 首页
+ * @org www.sharegoodsmall.com
+ * @email zhangjian@meeruu.com
+ */
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
 
 @observer
-export default class HomePage extends Component {
+export default class HomePage extends PureComponent {
 
     st = 0;
     shadowOpacity = 0.4;
 
-    headerH = statusBarHeight + 44;
+    headerH = statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0);
     state = {
         isShow: true,
         showMessage: false,
@@ -68,26 +75,35 @@ export default class HomePage extends Component {
     constructor(props) {
         super(props);
         homeModule.loadHomeList();
-        // 检测版本更新
-        this.getVersion();
     }
 
-    getVersion = () => {
+
+    getVersion = async () => {
+        let upVersion = '';
+        try {
+            upVersion = await AsyncStorage.getItem('isToUpdate');
+        } catch (error) {
+        }
+
         MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((res) => {
             if (res.data.upgrade === 1) {
-                if (Platform.OS !== 'ios') {
-                    NativeModules.commModule.apkExist(res.data.version, (exist) => {
+                if (StringUtils.isEmpty(upVersion) && upVersion !== res.data.version) {
+                    if (Platform.OS !== 'ios') {
+                        NativeModules.commModule.apkExist(res.data.version, (exist) => {
+                            this.setState({
+                                updateData: res.data,
+                                showUpdate: true,
+                                apkExist: exist
+                            });
+                            this.updateModal && this.updateModal.open();
+                        });
+                    } else {
                         this.setState({
                             updateData: res.data,
-                            showUpdate: true,
-                            apkExist: exist
+                            showUpdate: true
                         });
-                    });
-                } else {
-                    this.setState({
-                        updateData: res.data,
-                        showUpdate: true
-                    });
+                        this.updateModal && this.updateModal.open();
+                    }
                 }
                 if (res.data.forceUpdate === 1) {
                     // 强制更新
@@ -104,9 +120,12 @@ export default class HomePage extends Component {
             'willFocus',
             payload => {
                 const { state } = payload;
+                console.log('willFocusSubscription', state);
                 if (state && state.routeName === 'HomePage') {
+                    this.shareTaskIcon.queryTask();
                     this.setState({ isShow: true });
                 }
+
             }
         );
 
@@ -124,6 +143,21 @@ export default class HomePage extends Component {
     componentWillUnmount() {
         this.didBlurSubscription && this.didBlurSubscription.remove();
         this.willFocusSubscription && this.willFocusSubscription.remove();
+    }
+
+    componentDidMount() {
+        this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
+        InteractionManager.runAfterInteractions(() => {
+            this.timer = TimerMixin.setTimeout(() => {
+                // 检测版本更新
+                // this.getVersion();
+                this.getMessageData();
+            }, 2500);
+        });
+    }
+
+    componentWillUnmount() {
+        this.listener && this.listener.remove();
     }
 
     // 滑动头部透明度渐变
@@ -164,6 +198,10 @@ export default class HomePage extends Component {
         });
     };
 
+    _onScrollBeginDrag() {
+        this.shareTaskIcon.close();
+    }
+
     _keyExtractor = (item, index) => item.id + '';
     _renderItem = (item) => {
         let data = item.item;
@@ -187,7 +225,7 @@ export default class HomePage extends Component {
             return <HomeGoodsView data={data.itemData} navigation={this.props.navigation}/>;
         } else if (data.type === homeType.show) {
             const { isShow } = this.state;
-            return  <ShowView navigation={this.props.navigation} isShow={isShow}/>
+            return <ShowView navigation={this.props.navigation} isShow={isShow}/>;
         } else if (data.type === homeType.goodsTitle) {
             return <View style={styles.titleView}>
                 <Text style={styles.title}>为你推荐</Text>
@@ -204,27 +242,30 @@ export default class HomePage extends Component {
         homeModule.loadHomeList();
     }
 
-    componentDidMount() {
-        //this.shareModal.open();
-        InteractionManager.runAfterInteractions(() => {
-            // this.getMessageData();
-        });
-    }
-
     getMessageData = () => {
-        MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
-            if (!EmptyUtils.isEmptyArr(res.data.data)) {
-                this.setState({
-                    showMessage: true,
-                    messageData: res.data.data
+        var currStr = new Date().getTime() + '';
+        AsyncStorage.getItem('lastMessageTime').then((value) => {
+            if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
+                MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
+                    if (!EmptyUtils.isEmptyArr(res.data.data)) {
+                        this.messageModal && this.messageModal.open();
+                        this.setState({
+                            showMessage: true,
+                            messageData: res.data.data
+                        });
+                    }
                 });
             }
         });
+        AsyncStorage.setItem('lastMessageTime', currStr);
+
     };
 
     messageModalRender() {
         return (
-            <Modal visible={this.state.showMessage}>
+            <Modal ref={(ref) => {
+                this.messageModal = ref;
+            }} visible={this.state.showMessage}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.setState({
@@ -281,9 +322,27 @@ export default class HomePage extends Component {
 
     messageRender(item, index) {
         return (
-            <Text style={{ width: px2dp(230), height: px2dp(211) }}>
-                {item.content}
-            </Text>
+            <View onStartShouldSetResponder={() => true}>
+                <ScrollView showsVerticalScrollIndicator={false} style={{ showsVerticalScrollIndicator: false }}>
+                    <Text style={{
+                        color: DesignRule.textColor_mainTitle,
+                        fontSize: DesignRule.fontSize_secondTitle,
+                        alignSelf: 'center'
+                    }}>
+                        {item.title}
+                    </Text>
+                    <Text style={{
+                        width: px2dp(230),
+                        color: DesignRule.textColor_secondTitle,
+                        fontSize: DesignRule.fontSize_24,
+                        marginTop: 14,
+                        marginBottom: 10,
+                        height: 500
+                    }}>
+                        {item.content}
+                    </Text>
+                </ScrollView>
+            </View>
         );
     }
 
@@ -301,16 +360,16 @@ export default class HomePage extends Component {
                             refreshing={homeModule.isRefreshing}
                             onRefresh={this._onRefresh.bind(this)}
                             progressViewOffset={statusBarHeight + 44}
-                            colors={['#d51243']}
                             title="下拉刷新"
-                            tintColor="#999"
-                            titleColor="#999"
+                            tintColor={DesignRule.textColor_instruction}
+                            titleColor={DesignRule.textColor_instruction}
                         />
                     }
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={0.1}
                     showsVerticalScrollIndicator={false}
                     style={{ marginTop: bannerModule.bannerList.length > 0 ? 0 : statusBarHeight + 44 }}
+                    onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
@@ -323,33 +382,36 @@ export default class HomePage extends Component {
 
                 <HomeSearchView navigation={this.props.navigation}
                                 whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}/>
-                <ShareTaskHomeAlert ref={(ref) => this.shareModal = ref}
-                                    onPress={() => {
-                                        this.props.navigation.navigate('shareTask/ShareTaskListPage');
-                                    }}/>
+                <ShareTaskIcon style={{ position: 'absolute', right: 0, top: px2dp(220) - 40 }}
+                               ref={(ref) => {
+                                   this.shareTaskIcon = ref;
+                               }}
+                />
                 {this.messageModalRender()}
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
                                     apkExist={this.state.apkExist}
+                                    ref={(ref) => {
+                                        this.updateModal = ref;
+                                    }}
                                     forceUpdate={this.state.forceUpdate} onDismiss={() => {
                     this.setState({ showUpdate: false });
                 }}/>
             </View>
         );
     }
-
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7'
+        backgroundColor: DesignRule.bgColor
     },
     // headerBg
     navBarBg: {
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
-        height: statusBarHeight + 44,
+        height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
         backgroundColor: '#fff',
@@ -365,7 +427,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingLeft: 10,
         paddingRight: 10,
-        height: statusBarHeight + 44,
+        height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
         alignItems: 'center',
@@ -383,7 +445,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     title: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
         fontWeight: '600'
     },

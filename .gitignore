@@ -68,3 +68,7 @@ tsconfig.json
 /android/app/src/main/assets/index.android.bundle.meta
 /android/app/src/main/assets/index.android.bundle
 /android/app/release/
+
+.update
+/uploadPackage
+build

@@ -2,6 +2,7 @@
  * @author xzm
  * @date 2018/10/23
  */
+import RouterMap from 'RouterMap';
 
 const MessageUtils = {
 
@@ -19,6 +20,10 @@ const MessageUtils = {
                 pagParams.type = "pay_refund";
                 pagParams.time = time;
                 navigation.navigate("message/PayMessagePage", pagParams);
+                break;
+            case 105://优惠劵
+                navigation.navigate(RouterMap.CouponsPage);
+
                 break;
             case 107://秒杀
                 navigation.navigate("topic/TopicDetailPage", {
@@ -60,6 +65,10 @@ const MessageUtils = {
                     returnProductId: pagParams.returnProductId,
                     pageType: 2,
                 });
+                break
+            case 123://推广消息
+                pagParams = JSON.parse(params);
+                navigation.navigate('mine/promotion/PromotionDetailPage',pagParams)
                 break
             case 202://请出消息
             case 203://招募消息

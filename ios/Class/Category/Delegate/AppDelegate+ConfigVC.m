@@ -5,11 +5,19 @@
 //  Created by Max on 2018/8/13.
 //  Copyright © 2018年 Facebook. All rights reserved.
 //
+/**
+ * @author huyufeng
+ * @date on 2018/9/3
+ * @describe ios AppDelegate
+ * @org www.sharegoodsmall.com
+ * @email huyufeng@meeruu.com
+ */
 
 #import "AppDelegate+ConfigVC.h"
 #import <React/RCTRootView.h>
 #import <React/RCTBundleURLProvider.h>
 #import <SandBoxPreviewTool/SuspensionButton.h>
+#import <RCTHotUpdate.h>
 
 @implementation AppDelegate (ConfigVC)
 
@@ -18,19 +26,25 @@
   
   //TODO: 应用根控制器的view指向了RCTRootView。但RCTRootView加载jsCodeLocation对应的js代码是耗时操作。
   //未了避免白屏，可以添加launchscreen一样的view强行覆盖window.等待js代码被真正执行时，再出发native移除此view.
-  NSURL *jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-  
+  NSURL *jsCodeLocation;
+  #if DEBUG
+   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  #else
+   jsCodeLocation=[RCTHotUpdate bundleURL];
+  #endif
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"sharegoods"
                                                initialProperties:@{@"statusBarHeight":[NSNumber numberWithFloat:kStatusBarHeight]}
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+ 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   JRBaseVC *rootViewController = [JRBaseVC new];
   rootViewController.view = rootView;
   JRBaseNavVC * nav = [[JRBaseNavVC alloc] initWithRootViewController:rootViewController];
   self.window.rootViewController = nav;
   [self.window makeKeyAndVisible];
+  [NSThread sleepForTimeInterval:3];
 //  [self createDebugSuspensionButton];
 }
 // 创建悬浮球按钮
@@ -44,10 +58,6 @@
 }
 - (void)testA {
   NSLog(@"testa");
-//  [[JRShareManager sharedInstance]shareWithPlatefrom:nil Title:nil SubTitle:nil Image:nil LinkUrl:nil];
-//  [[JRShareManager sharedInstance]shareImage:nil imageUrl:nil];
-//  [JRLoadingAndToastTool showToast:@"你好你好你好你好你好你好你好你好" andDelyTime:3];
-//   long long allSize =  [[JRCacheManager sharedInstance]getAllCache];
   
   [[JRCacheManager sharedInstance]getAllCachesWithFinshBlock:^(unsigned long long memorySise) {
     

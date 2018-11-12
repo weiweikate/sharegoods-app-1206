@@ -16,7 +16,8 @@ import {
     StyleSheet,
     View,
     TouchableWithoutFeedback,
-    Text
+    Text,
+    TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -24,8 +25,12 @@ import MineApi from '../../api/MineApi';
 import RefreshList from '../../../../components/ui/RefreshList';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import DateUtils from '../../../../utils/DateUtils';
+import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
+// const url = '/static/protocol/extensionExplain.html'
+import apiEnvironment from '../../../../api/ApiEnvironment';
 
 type Props = {};
 export default class UserPromotionPage extends BasePage<Props> {
@@ -33,7 +38,8 @@ export default class UserPromotionPage extends BasePage<Props> {
         super(props);
         this.state = {
             data: [],
-            isEmpty: false
+            isEmpty: false,
+            loadingState:PageLoadingState.loading,
         };
         this.currentPage = 1;
     }
@@ -44,29 +50,62 @@ export default class UserPromotionPage extends BasePage<Props> {
     };
 
 
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+        };
+    };
+
+    goExplicationPage = () => {
+        this.$navigate('HtmlPage', {
+            title: '推广说明',
+            uri: `${apiEnvironment.getCurrentH5Url()}/static/protocol/extensionExplain.html`
+        });
+    };
+
+    $NavBarRenderRightItem = () => {
+        return (
+            <TouchableOpacity onPress={this.goExplicationPage}>
+                <Text style={{ color: DesignRule.textColor_secondTitle, fontSize: px2dp(12) }}>
+                    推广说明
+                </Text>
+            </TouchableOpacity>
+        );
+    };
+
     componentDidMount() {
-        this.getUserPromotionPromoter();
+        if(this.params.reload){
+            this.onRefresh();
+        }else {
+            this.getUserPromotionPromoter();
+        }
     }
 
     getUserPromotionPromoter = () => {
         MineApi.getUserPromotionPromoter({ page: this.currentPage, pageSize: 15 }).then(res => {
-            let arrs = this.currentPage == 1 ? [] : this.state.data;
+            let arrs = this.currentPage === 1 ? [] : this.state.data;
             if (!EmptyUtils.isEmptyArr(res.data.data)) {
                 res.data.data.map((item, index) => {
                     arrs.push(item);
                 });
                 this.setState({
-                    data: arrs
+                    data: arrs,
+                    loadingState: PageLoadingState.success
                 });
             } else {
                 if (EmptyUtils.isEmptyArr(this.state.data)) {
                     this.setState({
-                        isEmpty: true
+                        isEmpty: true,
+                        loadingState: PageLoadingState.success
                     });
                 }
             }
         }).catch((error) => {
-            this.$toastShow(error.msg);
+            if(this.currentPage === 1 && EmptyUtils.isEmptyArr(this.state.data)){
+                this.setState({
+                    loadingState: PageLoadingState.fail
+                })
+            }
         });
     };
 
@@ -85,6 +124,26 @@ export default class UserPromotionPage extends BasePage<Props> {
     /**************************viewpart********************************/
 
     _itemRender=({item}) =>{
+        let text;
+        if(item.status === 2){
+            text = (
+                <Text style={styles.grayTextStyle}>
+                    已结束
+                </Text>
+            )
+        }else if(item.status === 3){
+            text = (
+                <Text style={styles.grayTextStyle}>
+                    已取消
+                </Text>
+            )
+        }else {
+            text = (
+                <Text style={styles.grayTextStyle}>
+                    {`剩余推广金额￥${item.remain * item.price}`}
+                </Text>
+            )
+        }
         return (
             <View style={{ backgroundColor: 'white', marginBottom: px2dp(10) }}>
                 <View style={{
@@ -92,17 +151,15 @@ export default class UserPromotionPage extends BasePage<Props> {
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     paddingHorizontal: px2dp(15),
-                    borderBottomColor: '#DDDDDD',
-                    borderBottomWidth: px2dp(0.5)
+                    borderBottomColor: DesignRule.lineColor_inGrayBg,
+                    borderBottomWidth: ScreenUtils.onePixel
                 }}>
                     <View style={styles.itemInfoWrapper}>
                         <Text style={styles.blackTextStyle}>
                             {item.packageName}
                         </Text>
                         <View style={{height:px2dp(10)}}/>
-                        <Text style={styles.grayTextStyle}>
-                            {`剩余推广金额￥${item.remain * item.price}`}
-                        </Text>
+                        {text}
                     </View>
                     <TouchableWithoutFeedback onPress={()=>{
                         this.$navigate('mine/promotion/PromotionDetailPage',item)
@@ -116,7 +173,7 @@ export default class UserPromotionPage extends BasePage<Props> {
                 </View>
                 <View style={styles.bottomTextWrapper}>
                     <Text style={styles.bottomTextStyle}>
-                        {`购买时间：${DateUtils.formatDate(item.startTime)}`}
+                        {`购买时间：${DateUtils.formatDate(item.createTime)}`}
                     </Text>
                 </View>
             </View>
@@ -158,12 +215,12 @@ export default class UserPromotionPage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: DesignRule.bgColor,
         paddingTop: px2dp(10),
     },
     grayButtonWrapper: {
-        borderColor: '#DDDDDD',
-        borderWidth: px2dp(0.5),
+        borderColor: DesignRule.lineColor_inGrayBg,
+        borderWidth: ScreenUtils.onePixel,
         borderRadius: px2dp(5),
         width: px2dp(80),
         height: px2dp(35),
@@ -171,7 +228,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     redButtonWrapper: {
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         borderWidth: px2dp(1),
         borderRadius: px2dp(5),
         width: px2dp(80),
@@ -184,13 +241,12 @@ const styles = StyleSheet.create({
         paddingVertical: px2dp(15)
     },
     blackTextStyle: {
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(16),
-        fontFamily:'PingFangSC-Regular',
         includeFontPadding:false
     },
     grayTextStyle: {
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13),
         includeFontPadding:false
     },
@@ -200,7 +256,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: px2dp(15)
     },
     bottomTextStyle: {
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13),
         includeFontPadding:false
     },
@@ -212,11 +268,12 @@ const styles = StyleSheet.create({
         // position: 'absolute',
         // left: 0,
         // bottom: 0,
-        backgroundColor: '#D51243'
+        backgroundColor: DesignRule.mainColor,
+        marginBottom:ScreenUtils.safeBottom
     },
     bottomButtonTextStyle: {
         color: 'white',
-        fontSize: px2dp(13)
+        fontSize: px2dp(17)
     }
 
 

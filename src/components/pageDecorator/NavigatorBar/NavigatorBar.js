@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import BackIcon from './source/icon_header_back.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
+
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
@@ -48,7 +50,7 @@ export default class NavigatorBar extends Component {
         headerStyle: PropTypes.object,
         title: PropTypes.string,
         titleStyle: PropTypes.object,
-
+        leftImageStyle:PropTypes.object,
         leftNavTitle: PropTypes.string,
         leftNavImage: PropTypes.any,
         leftNavItemHidden: PropTypes.bool,
@@ -77,9 +79,13 @@ export default class NavigatorBar extends Component {
             hideNavBar,
             rightNavTitle,
             leftNavItemHidden,
-            rightNavItemHidden
+            rightNavItemHidden,
+            titleStyle,
+            leftImageStyle
         } = props;
         this.state = {
+            leftImageStyle,
+            titleStyle,
             title,
             hideNavBar,
             rightNavTitle,
@@ -149,7 +155,8 @@ export default class NavigatorBar extends Component {
     _renderLeftItem = () => {
         const {
             leftNavImage,
-            leftNavTitle
+            leftNavTitle,
+            leftImageStyle
         } = this.props;
 
         if (this.state.leftNavItemHidden) {
@@ -176,13 +183,13 @@ export default class NavigatorBar extends Component {
             return <TouchableOpacity
                 style={[styles.left,
                     {
-                        top: statusBarHeight
+                        top: statusBarHeight,
                     }]}
                 onPress={this._onLeftPressed}>
                 <Image
                     source={leftNavImage}
                     resizeMode={'stretch'}
-                    style={{ height: 15, width: 15 }}
+                    style={[{ height: 15, width: 15 ,},leftImageStyle]}
                 />
             </TouchableOpacity>;
         }
@@ -228,8 +235,8 @@ export default class NavigatorBar extends Component {
     };
 
     _renderTitle = () => {
-        const { title } = this.state;
-        return (<Text style={styles.title} numberOfLines={1}>{title || ' '}</Text>);
+        const { title ,titleStyle} = this.state;
+        return (<Text style={[styles.title,titleStyle]} numberOfLines={1}>{title || ' '}</Text>);
     };
 
     _renderStatusBar = () => {
@@ -292,10 +299,10 @@ const styles = StyleSheet.create({
     },
     title: {
         // marginTop:10,
-        fontSize: 16,
-        color: '#222',
+        fontSize: 18,
+        color: DesignRule.textColor_mainTitle,
         backgroundColor: 'transparent'
-        // backgroundColor:'red'
+        // backgroundColor:DesignRule.mainColor
     },
     left: {
         position: 'absolute',
@@ -322,7 +329,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
     },
     button: {
-        color: '#e60012',
+        color: DesignRule.mainColor,
         fontSize: 13
     }
 });

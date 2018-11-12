@@ -7,6 +7,7 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 export default class SearchSegmentView extends Component {
 
@@ -17,7 +18,7 @@ export default class SearchSegmentView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selIndex: 0,
+            selIndex: 0
         };
     }
 
@@ -38,7 +39,8 @@ export default class SearchSegmentView extends Component {
         }}>
             <View style={styles.itemContainer}>
                 <Text
-                    style={[styles.title, { color: this.state.selIndex === index ? '#e60012' : '#999999' }]}>{title}</Text>
+                    style={[styles.title, { color: this.state.selIndex === index ? DesignRule.bgColor_btn : '#999999' }]}>{title}</Text>
+                {index === this.state.selIndex && < View style={styles.itemLine}/>}
             </View>
         </TouchableWithoutFeedback>;
     };
@@ -60,8 +62,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         borderTopWidth: StyleSheet.hairlineWidth,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderTopColor: '#eeeeee',
-        borderBottomColor: '#eeeeee',
+        borderTopColor: DesignRule.lineColor_inColorBg,
+        borderBottomColor: DesignRule.lineColor_inColorBg,
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -77,9 +79,15 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     title: {
-        fontFamily: 'PingFang-SC-Medium',
-        fontSize: 13,
-        color: '#999999'
+        fontSize: 13
+    },
+    itemLine: {
+        position: 'absolute',
+        bottom: 0,
+        backgroundColor: DesignRule.bgColor_btn,
+        height: 2,
+        width: 50,
+        alignSelf: 'center'
     }
 });
 

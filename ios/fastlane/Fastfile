@@ -20,8 +20,8 @@ platform :ios do
   lane :to_pgyer do
     # 如果你没有申请adhoc证书，sigh会自动帮你申请，并且添加到Xcode里
     sigh(
-      app_identifier: 'com.meeruu.sharegoods',
-      adhoc: true
+     app_identifier: 'com.meeruu.sharegoods',
+     adhoc: true
     )
     # 以下两个action来自fastlane-plugin-versioning，
     # 第一个递增 Build，第二个设定Version。

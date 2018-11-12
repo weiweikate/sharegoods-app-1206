@@ -7,7 +7,6 @@ import {
     Text,
     Image
 } from 'react-native';
-import ColorUtil from '../../../utils/ColorUtil';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ProgressBarView from './ProgressBarView';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
@@ -15,10 +14,9 @@ import PropTypes from 'prop-types';
 import TopicAPI from '../api/TopicApi';
 import user from '../../../model/user';
 import bridge from '../../../utils/bridge';
-import ShopCartRes from '../../shopCart/res/ShopCartRes';
-import SbResTool from '../res/SbResTool';
+import res from '../res';
 import { getShowPrice } from '../model/TopicMudelTool';
-
+import DesignRule from 'DesignRule';
 
 // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
 const statues = {
@@ -31,9 +29,9 @@ const statues = {
 };
 
 const statuesImg = {
-    [statues.haveSoldOut]: ShopCartRes.noGoodImg,
-    [statues.timeOver]: SbResTool.zhuanti_jieshu,
-    [statues.handOver]: SbResTool.zhuanti_jieshu
+    [statues.haveSoldOut]: res.other.noGoodImg,
+    [statues.timeOver]: res.zhuanti_jieshu,
+    [statues.handOver]: res.zhuanti_jieshu
 };
 const statuesString = {
     [statues.isBeginning]: '马上抢',
@@ -139,7 +137,7 @@ export default class OpenPrizeItemView extends Component {
                                 <Text style={{
                                     height: 18,
                                     fontSize: 16,
-                                    color: ColorUtil.Color_d51243
+                                    color: DesignRule.mainColor
                                 }}>
                                     {
                                         // itemData.productType === 2
@@ -147,14 +145,14 @@ export default class OpenPrizeItemView extends Component {
                                         //     '¥' + itemData[typeName[itemData.productType][itemData.status]]
                                         //     :
                                         //     '¥' + itemData[typeName[itemData.productType]]
-                                       getShowPrice(itemData)
+                                        getShowPrice(itemData)
                                     }
                                 </Text>
                                 <Text style={{
                                     height: 11,
                                     fontSize: 11,
                                     textDecorationLine: 'line-through',
-                                    color: ColorUtil.Color_999999
+                                    color: DesignRule.textColor_instruction
                                 }}>
                                     {itemData.originalPrice}
                                 </Text>
@@ -164,10 +162,9 @@ export default class OpenPrizeItemView extends Component {
                                 itemData.status === 1 ?
                                     <View
                                         style={{
-                                            backgroundColor: ColorUtil.Color_f7f7f7,
+                                            backgroundColor: DesignRule.bgColor,
                                             height: 30,
                                             width: (ScreenUtils.width / 2 - 16) / 2,
-                                            borderRadius: 5,
                                             borderRadius: 5
                                         }}>
                                         <TouchableOpacity
@@ -187,7 +184,7 @@ export default class OpenPrizeItemView extends Component {
                                                 <Text
                                                     style={
                                                         {
-                                                            color: ColorUtil.Color_ffffff,
+                                                            color: 'white',
                                                             textAlign: 'center',
                                                             height: 30,
                                                             paddingTop: 8,
@@ -204,28 +201,28 @@ export default class OpenPrizeItemView extends Component {
                                     :
                                     <View
                                         style={[{
-                                            backgroundColor: ColorUtil.Color_d51243,
+                                            backgroundColor: DesignRule.mainColor,
                                             height: 30,
                                             width: (ScreenUtils.width / 2 - 16) / 2,
                                             borderRadius: 5
                                         },
                                             (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
-                                                ? { backgroundColor: ColorUtil.Color_f7f7f7 }
-                                                : { backgroundColor: ColorUtil.Color_d51243 }
+                                                ? { backgroundColor: DesignRule.bgColor }
+                                                : { backgroundColor: DesignRule.mainColor }
 
                                         ]}>
                                         <Text
                                             style={
                                                 [{
-                                                    color: ColorUtil.Color_ffffff,
+                                                    color: 'white',
                                                     textAlign: 'center',
                                                     height: 30,
                                                     paddingTop: 8,
                                                     fontSize: 12
                                                 },
                                                     (itemData.status === 3 || itemData.status === 4 || itemData.status === 5)
-                                                        ? { color: ColorUtil.Color_999999 }
-                                                        : { color: ColorUtil.Color_ffffff }
+                                                        ? { color: DesignRule.textColor_instruction }
+                                                        : { color: 'white' }
                                                 ]
                                             }
                                         >
@@ -279,7 +276,7 @@ const ItemStyles = StyleSheet.create({
     itemBgStyle: {
         width: ScreenUtils.width / 2,
         height: ScreenUtils.width / 2 + 100,
-        backgroundColor: ColorUtil.Color_f7f7f7,
+        backgroundColor: DesignRule.bgColor,
         padding: 8,
         paddingBottom: 0
     },
@@ -288,20 +285,20 @@ const ItemStyles = StyleSheet.create({
         backgroundColor: 'white'
     },
     itemTopImageStyle: {
-        // backgroundColor: 'red'
+        // backgroundColor: DesignRule.mainColor
         width: ScreenUtils.width / 2 - 16,
         height: ScreenUtils.width / 2 - 16
     },
 
     itemBottomTextStyle: {
         padding: 10,
-        color: ColorUtil.Color_222222,
+        color: DesignRule.textColor_mainTitle,
         width: ScreenUtils.width / 2 - 16,
         height: 37,
         fontSize: 12
     },
     itemFolloweTextStyle: {
-        color: ColorUtil.Color_33b4ff,
+        color: DesignRule.bgColor_blue,
         fontSize: 11,
         marginTop: 5,
         marginLeft: 0,

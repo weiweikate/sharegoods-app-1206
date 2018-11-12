@@ -6,12 +6,11 @@ import {
     Image,
     TextInput as RNTextInput,
     Text,
-    TouchableOpacity, ScrollView
+    TouchableOpacity, ScrollView, Alert
 } from 'react-native';
 import {
     UIText, UIImage, RefreshList
 } from '../../../components/ui';
-import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import position from '../res/position.png';
@@ -26,6 +25,8 @@ import OrderApi from './../api/orderApi';
 import MineApi from '../../mine/api/MineApi';
 import API from '../../../api';
 import { NavigationActions } from 'react-navigation';
+import DesignRule from 'DesignRule';
+import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 
 // let oldViewData, oldPriceList;
 export default class ConfirOrderPage extends BasePage {
@@ -77,7 +78,7 @@ export default class ConfirOrderPage extends BasePage {
                 <TouchableOpacity
                     style={{
                         height: Math.max(35, this.state.height),
-                        backgroundColor: color.white,
+                        backgroundColor: 'white',
                         flexDirection: 'row',
                         alignItems: 'center',
                         paddingTop: 10,
@@ -90,13 +91,12 @@ export default class ConfirOrderPage extends BasePage {
                         <View style={{ flex: 1, flexDirection: 'row' }}>
                             <Text style={{
                                 flex: 1,
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 15,
-                                color: '#222222'
+                                color: DesignRule.textColor_mainTitle
                             }}>收货人：{this.state.viewData.express.receiverName}</Text>
                             <Text style={{
                                 fontSize: 15,
-                                color: '#222222'
+                                color: DesignRule.textColor_mainTitle
                             }}>{this.state.viewData.express.receiverNum}</Text>
                         </View>
                         <UIText
@@ -107,23 +107,21 @@ export default class ConfirOrderPage extends BasePage {
                                 + this.state.viewData.express.receiverAddress
                             }
                             style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,
-                                color: '#222222',
+                                color: DesignRule.textColor_mainTitle,
                                 marginTop: 5
                             }}/>
                     </View>
                     <Image source={arrow_right} style={{ height: 14, marginRight: 15 }}/>
                 </TouchableOpacity> :
                 <TouchableOpacity
-                    style={{ height: 87, backgroundColor: color.white, flexDirection: 'row', alignItems: 'center' }}
+                    style={{ height: 87, backgroundColor: 'white', flexDirection: 'row', alignItems: 'center' }}
                     onPress={() => this.selectAddress()}>
                     <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }}/>
                     <View style={{ flex: 1, marginLeft: 15, marginRight: 20 }}>
                         <UIText value={'请添加一个收货人地址'} style={{
-                            fontFamily: 'PingFang-SC-Medium',
                             fontSize: 13,
-                            color: '#c8c8c8',
+                            color: DesignRule.textColor_hint,
                             marginLeft: 15
                         }}/>
                     </View>
@@ -141,7 +139,7 @@ export default class ConfirOrderPage extends BasePage {
 
                     <View style={{
                         marginTop: 20,
-                        backgroundColor: '#fff',
+                        backgroundColor: 'white',
                         flexDirection: 'row',
                         alignItems: 'center'
                     }}>
@@ -150,13 +148,12 @@ export default class ConfirOrderPage extends BasePage {
                             borderRadius: 5,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            borderColor: '#e60012',
+                            borderColor: DesignRule.mainColor,
                             marginLeft: 20
                         }}>
                             <Text style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 11,
-                                color: '#e60012',
+                                color: DesignRule.mainColor,
                                 padding: 3
                             }}>礼包</Text>
                         </View>
@@ -238,10 +235,10 @@ export default class ConfirOrderPage extends BasePage {
     };
     renderCouponsPackage = () => {
         return (
-            <View style={{ borderColor: '#DDDDDD', borderWidth: 1 }}>
+            <View style={{ borderColor: DesignRule.lineColor_inWhiteBg, borderWidth: 1 }}>
                 {this.state.viewData.couponList ?
                     this.state.viewData.couponList.map((item, index) => {
-                        return <View style={{ backgroundColor: 'white' }}>
+                        return <View style={{ backgroundColor: 'white' }} key={index}>
                             {index == 0 ? <Image source={couponIcon} style={{
                                 width: 15,
                                 height: 12,
@@ -256,23 +253,28 @@ export default class ConfirOrderPage extends BasePage {
                                 marginLeft: 36
                             }}>
                                 <Text style={{
-                                    color: color.black_999,
+                                    color: DesignRule.textColor_instruction,
                                     fontSize: 13,
                                     alignSelf: 'center'
                                 }}>{item.couponName}</Text>
                                 <Text style={{
-                                    color: color.black_999,
+                                    color: DesignRule.textColor_instruction,
                                     fontSize: 13,
                                     alignSelf: 'center',
                                     marginRight: 13.5
                                 }}>X1</Text>
                             </View>
-                            <View style={{ marginLeft: 36, backgroundColor: '#F7F7F7', height: 0.5, width: '100%' }}/>
+                            <View style={{
+                                marginLeft: 36,
+                                backgroundColor: DesignRule.bgColor,
+                                height: 0.5,
+                                width: '100%'
+                            }}/>
                         </View>;
                     })
                     :
                     null}
-                <View style={{ backgroundColor: '#F7F7F7', height: 10, width: '100%' }}/>
+                <View style={{ backgroundColor: DesignRule.bgColor, height: 10, width: '100%' }}/>
             </View>
         );
     };
@@ -284,27 +286,32 @@ export default class ConfirOrderPage extends BasePage {
                     <View
                         style={{ width: 264, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
                         <UIText value={'应付款：'} style={{
-                            fontFamily: 'PingFang-SC-Medium',
                             fontSize: 15,
-                            color: '#222222',
+                            color: DesignRule.textColor_mainTitle,
                             marginRight: 12
                         }}/>
                         <UIText
                             value={StringUtils.formatMoneyString(this.state.viewData.totalAmounts)}
                             style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 15,
-                                color: color.red,
+                                color: DesignRule.mainColor,
                                 marginRight: 12
                             }}/>
                     </View>
                     <TouchableOpacity
-                        style={{ flex: 1, backgroundColor: color.red, justifyContent: 'center', alignItems: 'center' }}
+                        style={{
+                            flex: 1,
+                            backgroundColor: DesignRule.mainColor,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'提交订单'}
-                                style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 16, color: '#ffffff' }}/>
+                                style={{ fontSize: 16, color: 'white' }}/>
                     </TouchableOpacity>
+
                 </View>
+                {this.renderLine()}
             </View>
         );
     };
@@ -360,19 +367,19 @@ export default class ConfirOrderPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 0.5, backgroundColor: color.line }}/>
+            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
 
     componentDidMount() {
         this.loadPageData();
         let arr = [];
-        console.log('loadmore',this.state.orderParam);
+        console.log('loadmore', this.state.orderParam);
         this.state.orderParam.orderProducts.map((item, index) => {
             arr.push({
                 priceId: item.priceId,
                 productId: item.productId,
-                amount:item.num
+                amount: item.num
             });
         });
         API.listAvailable({ page: 1, pageSize: 20, productPriceIds: arr }).then(res => {
@@ -444,14 +451,23 @@ export default class ConfirOrderPage extends BasePage {
                 }).catch(err => {
                     console.log('err', err);
                     Toast.hiddenLoading();
-
-                    this.$toastShow(err.msg);
                     if (err.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
                                 this.loadPageData();
                             }
                         });
+                    } else if (err.code === 10003 && err.msg.indexOf('不在限制的购买时间') !== -1) {
+                        Alert.alert('提示', err.msg, [
+                            {
+                                text: '确定', onPress: () => {
+                                    this.$navigateBack();
+                                }
+                            }
+                            // { text: '否' }
+                        ]);
+                    } else {
+                        this.$toastShow(err.msg);
                     }
                 });
                 break;
@@ -580,7 +596,7 @@ export default class ConfirOrderPage extends BasePage {
             buyerRemark: this.state.message,
             tokenCoin: this.state.tokenCoin,
             couponId: this.state.couponId,
-            address:this.state.viewData.express.receiverAddress
+            address: this.state.viewData.express.receiverAddress
         };
 
         if (StringUtils.isEmpty(this.state.viewData.express.areaCode)) {
@@ -610,7 +626,7 @@ export default class ConfirOrderPage extends BasePage {
                 }).catch(e => {
                     this.$loadingDismiss();
                     console.log(e);
-                    this.$toastShow(e.msg)
+                    this.$toastShow(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -633,7 +649,7 @@ export default class ConfirOrderPage extends BasePage {
                 }).catch(e => {
                     this.$loadingDismiss();
                     console.log(e);
-                    this.$toastShow(e.msg)
+                    this.$toastShow(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -663,7 +679,7 @@ export default class ConfirOrderPage extends BasePage {
                 }).catch(e => {
                     this.$loadingDismiss();
                     console.log(e);
-                    this.$toastShow(e.msg)
+                    this.$toastShow(e.msg);
                     if (e.code === 10009) {
                         this.$navigate('login/login/LoginPage', {
                             callback: () => {
@@ -688,6 +704,12 @@ export default class ConfirOrderPage extends BasePage {
                     let data = res.data;
                     user.saveUserInfo(data);
                 }).catch(err => {
+                    if (err.code === 54001) {
+                        this.$toastShow('商品库存不足！');
+                        shopCartCacheTool.getShopCartGoodsListData();
+                        this.$navigateBack();
+                    }
+
                 });
 
                 this.replaceRouteName(data);
@@ -695,7 +717,7 @@ export default class ConfirOrderPage extends BasePage {
             }).catch(e => {
                 this.$loadingDismiss();
                 console.log(e);
-                this.$toastShow(e.msg)
+                this.$toastShow(e.msg);
                 if (e.code === 10009) {
                     this.$navigate('login/login/LoginPage', {
                         callback: () => {
@@ -762,37 +784,35 @@ export default class ConfirOrderPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: '#f7f7f7', justifyContent: 'flex-end'
+        flex: 1, backgroundColor: DesignRule.bgColor, justifyContent: 'flex-end', marginBottom: ScreenUtils.safeBottom
     }, selectText: {
-        fontFamily: 'PingFang-SC-Medium', fontSize: 16, color: '#ffffff'
+        fontSize: 16, color: 'white'
     }, blackText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         lineHeight: 18,
-        color: '#000000'
+        color: DesignRule.textColor_mainTitle
     }, grayText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         lineHeight: 18,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     }, inputTextStyle: {
         marginLeft: 20, height: 40, flex: 1, backgroundColor: 'white', fontSize: 14
     }, selectView: {
         flex: 1,
         borderRadius: 3,
-        backgroundColor: '#61686c',
+        backgroundColor: DesignRule.textColor_secondTitle,
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: '#61686c',
+        borderColor: DesignRule.textColor_secondTitle,
         justifyContent: 'center',
         alignItems: 'center'
     }, unSelectView: {
         flex: 1,
         borderRadius: 3,
-        backgroundColor: color.white,
+        backgroundColor: 'white',
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: '#61686c',
+        borderColor: DesignRule.textColor_secondTitle,
         justifyContent: 'center',
         alignItems: 'center'
     }, couponsStyle: {

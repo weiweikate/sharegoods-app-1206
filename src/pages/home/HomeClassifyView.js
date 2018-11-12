@@ -7,14 +7,15 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
-    Image,
     Text
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import { ClassifyModules } from './Modules';
+import { classifyModules } from './Modules';
 import ScreenUtils from '../../utils/ScreenUtils';
 import user from '../../model/user'
+import DesignRule from 'DesignRule'
+import ImageLoad from '@mr/react-native-image-placeholder'
 
 const { px2dp } = ScreenUtils;
 
@@ -22,20 +23,22 @@ const Item = ({ data, onPress }) => {
     const {icon, img} = data
     let source = icon ? icon : {uri: img}
     return <TouchableOpacity style={styles.item} onPress={() => onPress(data)}>
-        <Image style={styles.icon} source={source}/>
+        <ImageLoad style={styles.icon} source={source}/>
         <View style={styles.space}/>
         <Text style={styles.name} numberOfLines={1}>{data.name}</Text>
     </TouchableOpacity>
 }
 
+/**
+ * @author chenyangjun
+ * @date on 2018/9/7
+ * @describe 首页头部分类view
+ * @org www.sharegoodsmall.com
+ * @email chenyangjun@meeruu.com
+ */
+
 @observer
 export default class HomeClassifyView extends Component {
-
-    constructor(props) {
-        super(props);
-        this.classifyModule = new ClassifyModules();
-        this.classifyModule.loadClassifyList();
-    }
 
     _onItemPress = (data) => {
         const { navigation } = this.props
@@ -46,12 +49,12 @@ export default class HomeClassifyView extends Component {
         if (data.img && data.name !== '全部分类') {
             navigation.navigate('home/search/SearchResultPage', { keywords: data.name })
         } else {
-            navigation.navigate(data.route)
+            navigation.navigate(data.route, {fromHome: true, id: 10, linkTypeCode: data.linkTypeCode})
         }
     }
 
     renderItems = () => {
-        const { classifyList } = this.classifyModule;
+        const { classifyList } = classifyModules;
         let itemViews = [];
         classifyList.map((value, index) => {
             itemViews.push(<Item key={index} data={value} onPress={(data) => {
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
         height: px2dp(6)
     },
     name: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(10)
     }
 });

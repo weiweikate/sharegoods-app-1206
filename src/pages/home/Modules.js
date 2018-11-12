@@ -39,7 +39,7 @@ export class BannerModules {
 
 export const bannerModule = new BannerModules();
 
-export class AdModules {
+class AdModules {
     @observable ad = [];
     loadAdList = flow(function* () {
         try {
@@ -51,25 +51,28 @@ export class AdModules {
     });
 }
 
+export const adModules = new AdModules();
+
 import schoolImg from './res/school.png';
-import makemoneyImg from './res/makemoney.png';
+import showImg from './res/show.png';
 import shareImg from './res/share.png';
 import signinImg from './res/signin.png';
 import spikeImg from './res/spike.png';
 
-export class ClassifyModules {
+class ClassifyModules {
     @observable classifyList = [];
     @action loadClassifyList = () => {
         this.classifyList = [{
-            icon: makemoneyImg,
-            name: '赚钱',
-            id: 1,
-            route: 'home/search/CategorySearchPage'
-        }, {
             icon: shareImg,
             name: '分享',
             id: 1,
-            route: 'home/search/CategorySearchPage'
+            route: 'topic/DownPricePage',
+            linkTypeCode: 'ZT2018000019'
+        }, {
+            icon: showImg,
+            name: '秀场',
+            id: 1,
+            route: 'show/ShowListPage'
         }, {
             icon: signinImg,
             name: '签到',
@@ -78,29 +81,22 @@ export class ClassifyModules {
             needLogin: 1
         }, {
             icon: schoolImg,
-            name: '学院',
+            name: '必看',
             id: 1,
-            route: 'home/search/CategorySearchPage'
+            route: 'show/ShowDetailPage'
         }, {
             icon: spikeImg,
             name: '秒杀',
             id: 1,
-            route: 'home/search/CategorySearchPage'
+            route: 'topic/DownPricePage',
+            linkTypeCode: 'ZT2018000012'
         }];
-
-        HomeApi.classify().then(res => {
-            if (res.code === 10000 && res.data) {
-                let classifys = [...this.classifyList, ...res.data]
-                if (classifys[9]) {
-                    classifys[9].route = 'home/search/CategorySearchPage'
-                }
-                this.classifyList = classifys
-            }
-        })
     };
 }
 
-export class StarShopModule {
+export const classifyModules = new ClassifyModules();
+
+class StarShopModule {
     @observable shopList = [];
 
     loadShopList = flow(function* () {
@@ -113,8 +109,10 @@ export class StarShopModule {
     });
 }
 
+export const starShopModule = new StarShopModule();
+
 //今日榜单
-export class TodayModule {
+class TodayModule {
     @observable todayList = [];
     loadTodayList = flow(function* () {
         try {
@@ -126,8 +124,10 @@ export class TodayModule {
     });
 }
 
+export const todayModule = new TodayModule();
+
 //精品推荐
-export class RecommendModule {
+class RecommendModule {
     @observable recommendList = [];
     loadRecommendList = flow(function* () {
         try {
@@ -139,8 +139,10 @@ export class RecommendModule {
     });
 }
 
+export const recommendModule = new RecommendModule();
+
 //专题
-export class SubjectModule {
+class SubjectModule {
     @observable subjectList = [];
     //记载专题
     loadSubjectList = flow(function* () {
@@ -152,6 +154,8 @@ export class SubjectModule {
         }
     });
 }
+
+export const subjectModule = new SubjectModule();
 
 const homeLinkType = {
     good: 1,
@@ -218,6 +222,16 @@ class HomeModule {
     //加载为你推荐列表
     loadHomeList = flow(function* () {
         this.isRefreshing = true;
+        setTimeout(() => {
+            this.isRefreshing = false;
+        }, 3000);
+        bannerModule.loadBannerList();
+        todayModule.loadTodayList();
+        adModules.loadAdList();
+        classifyModules.loadClassifyList();
+        starShopModule.loadShopList();
+        recommendModule.loadRecommendList();
+        subjectModule.loadSubjectList();
         this.page = 1;
         this.homeList = [{
             id: 0,
@@ -225,9 +239,6 @@ class HomeModule {
         }, {
             id: 1,
             type: homeType.classify
-        }, {
-            id: 2,
-            type: homeType.user
         }, {
             id: 3,
             type: homeType.ad
@@ -281,7 +292,7 @@ class HomeModule {
                     itemData: itemData,
                     type: homeType.goods,
                     id: 'goods'
-                })
+                });
             }
             this.homeList = [...this.homeList, ...home];
             this.isFetching = false;
@@ -297,7 +308,7 @@ class HomeModule {
 
     //加载为你推荐列表
     loadMoreHomeList = flow(function* () {
-        console.log('loadMoreHomeList', this.isFetching, this.isEnd, this.firstLoad)
+        console.log('loadMoreHomeList', this.isFetching, this.isEnd, this.firstLoad);
         if (this.isFetching) {
             return;
         }
@@ -337,12 +348,12 @@ class HomeModule {
                     itemData: itemData,
                     type: homeType.goods,
                     id: 'goods'
-                })
+                });
             }
             this.homeList = [...this.homeList, ...home];
             this.page++;
-            this.isFetching = false
-            this.isEnd = false
+            this.isFetching = false;
+            this.isEnd = false;
         } catch (error) {
             console.log(error);
         }

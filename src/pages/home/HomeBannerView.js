@@ -2,47 +2,47 @@
  * 首页轮播图
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils'
+import { View, StyleSheet, Image, TouchableWithoutFeedback, Platform } from 'react-native';
+import ScreenUtils from '../../utils/ScreenUtils';
+import ViewPager from '../../components/ui/ViewPager'
 const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
-import { bannerModule, homeModule } from './Modules'
-import ViewPager from '../../components/ui/ViewPager'
-const bannerHeight = px2dp(220)
+import { bannerModule, homeModule } from './Modules';
+const bannerHeight = px2dp(230);
+import MRBannerViewMode from '../../components/ui/bannerView/MRBannerViewMode'
 
 @observer
 export default class HomeBannerView extends Component {
-    constructor(props) {
-        super(props);
-        bannerModule.loadBannerList();
-    }
     state = {
-        index : 0
-    }
+        index: 0
+    };
+
     _renderViewPageItem(item) {
-        return <TouchableOpacity onPress={()=>this._onPressRow(item)}><Image style={styles.img} source={{uri: item}}/></TouchableOpacity>
+        return <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(item)}><Image style={styles.img}
+                                                                               source={{ uri: item }}/></TouchableWithoutFeedback>;
     }
+
     _renderPagination = (index, total) => {
-        const { bannerCount } = bannerModule
-        let items = []
+        const { bannerCount } = bannerModule;
+        let items = [];
         for (let i = 0; i < bannerCount; i++) {
             if (index === i) {
-                items.push(<View key={i} style={styles.activityIndex}/>)
+                items.push(<View key={i} style={styles.activityIndex}/>);
             } else {
-                items.push(<View key={i} style={styles.index}/>)
+                items.push(<View key={i} style={styles.index}/>);
             }
         }
-        return  <View style={styles.indexView}>
+        return <View style={styles.indexView}>
             {items}
-        </View>
-    }
-    _onPressRow = (item) => {
-        const { bannerCount, bannerList } = bannerModule
-        let data = null
+        </View>;
+    };
+    _onPressRowWithItem(item) {
+        const { bannerCount, bannerList } = bannerModule;
+        let data = null;
         for (let i = 0; i < bannerCount; i++) {
             if (bannerList[i].imgUrl === item) {
-                data = bannerList[i]
-                break
+                data = bannerList[i];
+                break;
             }
         }
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
@@ -50,19 +50,33 @@ export default class HomeBannerView extends Component {
         const { navigation } = this.props;
         navigation.navigate(router, params);
     }
+    _onPressRow = (index) => {
+        const { bannerList } = bannerModule;
+        let data =  bannerList[index]
+        const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+        let params = homeModule.paramsNavigate(data);
+        const { navigation } = this.props;
+        navigation.navigate(router, params);
+    };
+
     render() {
         const { bannerList } = bannerModule;
         if (bannerList.length === 0) {
             return null;
         }
 
-        let items = []
+        let items = [];
         bannerList.map(value => {
-            items.push(value.imgUrl)
-        })
+            items.push(value.imgUrl);
+        });
 
         return <View>
-             <ViewPager
+        {
+            Platform.OS === 'ios'
+            ?
+            <MRBannerViewMode imgUrlArray={items} bannerHeight={bannerHeight} modeStyle={1} onDidSelectItemAtIndex={(index)=>{this._onPressRow(index)}}/>
+            :
+            <ViewPager
                 swiperShow={true}
                 arrayData={items}
                 renderItem={this._renderViewPageItem.bind(this)}
@@ -73,8 +87,15 @@ export default class HomeBannerView extends Component {
                 index={0}
                 scrollsToTop={true}
             />
-        </View>
+        }
+        </View>;
     }
+
+    _renderPage = (item, num) => {
+        return <Image
+            source={{ uri: item }}
+            style={styles.page}/>;
+    };
 }
 
 const styles = StyleSheet.create({
@@ -106,5 +127,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#f4f4f4',
         marginLeft: px2dp(2.5),
         marginRight: px2dp(2.5)
+    },
+    page: {
+        width: ScreenUtils.width,
+        height: bannerHeight
     }
 });

@@ -4,49 +4,50 @@
 import React from 'react';
 import {
     StyleSheet, View, Text
-} from 'react-native'
-import ScreenUtils from '../../utils/ScreenUtils'
+} from 'react-native';
+import ScreenUtils from '../../utils/ScreenUtils';
 import BasePage from '../../BasePage';
+import DesignRule from 'DesignRule';
 
-export default class QuestionnairePage extends  BasePage{
-    constructor(props){
+export default class QuestionnairePage extends BasePage {
+    constructor(props) {
         super(props);
     }
 
     $navigationBarOptions = {
-        title:"问卷调查",
+        title: '问卷调查',
         show: true // false则隐藏导航
     };
-    _render(){
-        return(
+
+    _render() {
+        return (
             <View style={styles.container}>
-                <Text style={{fontWeight: 'bold'}}>
+                <Text style={{ fontWeight: 'bold' }}>
                     I am bold
-                    <Text style={{color: 'red'}}>
+                    <Text style={{ color: DesignRule.mainColor }}>
                         and red
                     </Text>
                 </Text>
             </View>
-        )
+        );
     }
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7'
+        backgroundColor: DesignRule.bgColor
     },
     textitems: {
         width: ScreenUtils.width,
         height: 44,
-        backgroundColor: "#ffffff",
-        borderStyle: "solid",
+        backgroundColor: 'white',
+        borderStyle: 'solid'
     },
     textsingle: {
-        fontFamily: "PingFang-SC-Regular",
         fontSize: 13,
-        color: "#999999",
-        marginLeft:16,
-        marginRight:13
+        color: DesignRule.textColor_instruction,
+        marginLeft: 16,
+        marginRight: 13
     }
 
 });

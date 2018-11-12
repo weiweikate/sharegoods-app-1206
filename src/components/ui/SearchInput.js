@@ -11,12 +11,12 @@ import {
 } from 'react-native';
 import close_input_img from '../../pages/order/res/input_clear.png';
 import search_img from '../../pages/order/res/search_icon.png';
-import { color } from '../../constants/Theme';
 import {
     UIText, UIImage
 } from '../../components/ui';
 import left_arrow from '../../pages/order/res/left_arrow.png';
 import ScreenUtils from '../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 /**
  * 搜索输入框组件
@@ -159,7 +159,7 @@ const styles = StyleSheet.create(
             paddingLeft: 16,
             // paddingRight: 16,
 
-            backgroundColor: color.white,
+            backgroundColor: 'white',
             alignItems: 'center' //元素垂直居中排布
         },
 
@@ -193,7 +193,7 @@ const styles = StyleSheet.create(
             paddingTop: 5,
             paddingBottom: 5,
             fontSize: 14,
-            color: '#333333',
+            color: DesignRule.textColor_mainTitle,
             backgroundColor: '#F0F0F0',
             borderRadius: 15
         },

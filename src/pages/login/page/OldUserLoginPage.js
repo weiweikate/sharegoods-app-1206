@@ -11,13 +11,12 @@ import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
 import { observable, computed, action } from 'mobx';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
-import ColorUtil from '../../../utils/ColorUtil';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import loginAndRegistRes from '../res/LoginAndRegistRes';
 import BasePage from '../../../BasePage';
 import LoginAPI from '../api/LoginApi';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
+import DesignRule from 'DesignRule';
 
 class OldUserLoginModel {
     @observable
@@ -83,8 +82,8 @@ export default class OldUserLoginPage extends BasePage {
 
     _render() {
         return (
-            <View style={{ flex: 1 }}>
-                <View style={{ backgroundColor: '#fff' }}>
+            <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
+                <View style={{ backgroundColor: DesignRule.bgColor }}>
                     <View style={{ marginTop: 30, justifyContent: 'center', alignItems: 'center' }}>
                         <Image style={{ width: 79, height: 79 }} source={LoginAndRegistRes.logoImage}/>
                     </View>
@@ -102,7 +101,7 @@ export default class OldUserLoginPage extends BasePage {
                         />
                         <CommSpaceLine style={Styles.lineStyle}/>
                     </View>
-                    <View style={{ marginLeft: 20, marginRight: 30, marginTop: 20 }}>
+                    <View style={{ marginLeft: 20, marginRight: 30, marginTop: 40 }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <TextInput
                                 style={Styles.inputTextStyle}
@@ -125,7 +124,7 @@ export default class OldUserLoginPage extends BasePage {
                         <CommSpaceLine style={Styles.lineStyle}/>
                     </View>
                     <View
-                        style={[Styles.oldUserLoginBtnStyle, this.oldUserLoginModel.isCanClick ? { opacity: 1 } : { opacity: 0.5 }]}>
+                        style={[Styles.oldUserLoginBtnStyle, this.oldUserLoginModel.isCanClick ? { backgroundColor: DesignRule.mainColor } : { backgroundColor: DesignRule.bgColor_grayHeader }]}>
                         <TouchableOpacity onPress={this.loginClick}>
                             <Text style={{
                                 textAlign: 'center',
@@ -141,27 +140,39 @@ export default class OldUserLoginPage extends BasePage {
                             </Text>
                         </TouchableOpacity>
                     </View>
-                </View>
 
-                <Image
-                    style={{
-                        width: ScreenUtils.width,
-                        position: 'absolute',
-                        bottom: 0,
-                        height: 80
-                    }}
-                    source={loginAndRegistRes.loginBottomImage}
-                    resizeMode='cover'/>
+                    <Text
+                        style={{
+                            marginTop: 20,
+                            height: 50,
+                            width: ScreenUtils.width - 40,
+                            textAlign: 'right',
+                            fontSize: 12,
+                            color: DesignRule.textColor_secondTitle
+                        }}
+                    >
+                        请使用经销商账号登录
+                    </Text>
+                </View>
+                {/*<Image*/}
+                {/*style={{*/}
+                {/*width: ScreenUtils.width,*/}
+                {/*position: 'absolute',*/}
+                {/*bottom: 0,*/}
+                {/*height: 80*/}
+                {/*}}*/}
+                {/*source={loginAndRegistRes.loginBottomImage}*/}
+                {/*resizeMode='cover'/>*/}
                 <Text
                     style={{
                         width: ScreenUtils.width,
                         position: 'absolute',
-                        bottom: 90,
+                        bottom: 50,
                         fontSize: 12,
-                        color: ColorUtil.Color_666666,
+                        color: DesignRule.textColor_secondTitle,
                         textAlign: 'center'
                     }}>
-                    客服电话:400-888-8888
+                    客服电话:400-9696-365
                 </Text>
             </View>
         );
@@ -169,8 +180,7 @@ export default class OldUserLoginPage extends BasePage {
 
     /*d点击登录*/
     loginClick = () => {
-        if (StringUtils.checkPhone(this.oldUserLoginModel.phoneNumber))
-        {
+        if (StringUtils.checkPhone(this.oldUserLoginModel.phoneNumber)) {
             this.$loadingShow();
             LoginAPI.existedUserVerify(
                 {
@@ -192,11 +202,11 @@ export default class OldUserLoginPage extends BasePage {
                 if (data.code === 10000) {
                     //存在老用户返回的code
                     this.$navigate('login/login/SetPasswordPage', {
-                        code: data.data.code ,
-                        phone:this.oldUserLoginModel.phoneNumber,
+                        code: data.data.code,
+                        phone: this.oldUserLoginModel.phoneNumber
                     });
                 } else {
-                       this.$toast(data.msg);
+                    this.$toast(data.msg);
                 }
             }).catch((data) => {
                 this.$loadingDismiss();
@@ -223,7 +233,7 @@ const Styles = StyleSheet.create(
         },
         rightTopTitleStyle: {
             fontSize: 15,
-            color: '#666'
+            color: DesignRule.textColor_secondTitle
         },
         otherLoginBgStyle: {
             marginBottom: -20,
@@ -242,9 +252,8 @@ const Styles = StyleSheet.create(
             marginLeft: 30,
             width: ScreenUtils.width - 60,
             marginTop: 40,
-            height: 45,
-            borderRadius: 5,
-            backgroundColor: ColorUtil.mainRedColor
+            height: 50,
+            borderRadius: 25
         },
         lineStyle: {
             marginTop: 3,

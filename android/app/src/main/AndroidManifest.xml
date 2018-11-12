@@ -60,15 +60,9 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <meta-data
-            android:name="design_width_in_dp"
-            android:value="750" />
-        <meta-data
-            android:name="design_height_in_dp"
-            android:value="1334" />
 
         <!-- 适配全面屏手机 -->
         <meta-data
@@ -132,7 +126,10 @@
         <activity
             android:name="com.facebook.react.devsupport.DevSettingsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.QrCodeScanActivity" />
+        <activity
+            android:name=".ui.QrCodeScanActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing|stateHidden" />
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
@@ -156,7 +153,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="tencent1075295003" />
+                <data android:scheme="tencent101512141" />
             </intent-filter>
         </activity>
         <activity

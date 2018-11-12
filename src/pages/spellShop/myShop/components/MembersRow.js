@@ -14,6 +14,7 @@ import {
 import PeopleImg from '../res/dy_07.png';
 import ArrowImg from '../res/xjt_03.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 export default class MembersRow extends Component {
 
@@ -29,7 +30,7 @@ export default class MembersRow extends Component {
     };
 
     render() {
-        const dealerList = this.props.dealerList || [];
+        let dealerList = this.props.dealerList || [];
         return (<View style={styles.container}>
             <TouchableOpacity onPress={this.props.onPressAllMembers}
                               activeOpacity={1}
@@ -44,10 +45,14 @@ export default class MembersRow extends Component {
                 {
                     dealerList.map((item, index) => {
                         const { headImg, nickName } = item || {};
-                        if (index > 10) {
+                        if (index > 9) {
                             return;
                         }
-                        return (<View style={{ alignItems: 'center', marginBottom: (index >= 5) ? 16 : 0 }} key={index}>
+                        return (<View style={{
+                            alignItems: 'center',
+                            marginTop: (index >= 5) ? 0 : 9,
+                            marginBottom: (index >= 5) ? 24 : 20
+                        }} key={index}>
                             {headImg ? <Image source={{ uri: headImg }}
                                               style={styles.headerImg}/> :
                                 <View style={styles.headerImg}/>}
@@ -74,14 +79,12 @@ const styles = StyleSheet.create({
         marginRight: 8
     },
     iconTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     iconDesc: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 12,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         flex: 1,
         textAlign: 'right'
     },
@@ -92,26 +95,24 @@ const styles = StyleSheet.create({
     gapLine: {
         marginHorizontal: 10,
         height: StyleSheet.hairlineWidth,
-        backgroundColor: '#dddddd'
+        backgroundColor: DesignRule.lineColor_inGrayBg
     },
     membersContainer: {
-        marginHorizontal: ScreenUtils.autoSizeWidth(23),
+        marginHorizontal: ScreenUtils.autoSizeWidth(30),
         flexDirection: 'row',
         flexWrap: 'wrap'
     },
     headerImg: {
-        width: 28,
-        height: 28,
-        backgroundColor: '#eee',
-        marginTop: 16,
-        borderRadius: 14
+        width: 40,
+        height: 40,
+        backgroundColor: DesignRule.lineColor_inColorBg,
+        borderRadius: 20
     },
     name: {
         marginTop: 5,
-        width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(23) * 2) / 5,
-        fontFamily: 'PingFang-SC-Medium',
+        width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(30) * 2) / 5,
         fontSize: 11,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         textAlign: 'center'
     }
 

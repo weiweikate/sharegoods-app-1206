@@ -1,157 +1,177 @@
-import React, {Component} from 'react'
-import { StyleSheet, ScrollView, Image, TouchableOpacity, View, Text, ActivityIndicator } from 'react-native'
-import ShowImageView from './ShowImageView'
-import backImg  from '../../comm/res/show_detail_back.png'
-import ScreenUtils from '../../utils/ScreenUtils'
-const { px2dp, width } = ScreenUtils
+import React, { Component } from 'react';
+import { StyleSheet, ScrollView, Image, TouchableOpacity, View, Text, ActivityIndicator } from 'react-native';
+import ShowImageView from './ShowImageView';
+import res from '../../comm/res';
+import ScreenUtils from '../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
+
+const { px2dp, width } = ScreenUtils;
 import HTML from 'react-native-render-html'
-import showConnectedImg from '../../comm/res/show_connected.png'
-import showConnectImg from '../../comm/res/show_connect.png'
-import showGoodImg from '../../comm/res/show_good.png'
-import showDidGoodImg from '../../comm/res/show_did_good.png'
-import seeImg from '../../comm/res/see.png'
-import showShareImg from '../../comm/res/show_share.png'
-import { ShowDetail } from './Show'
-import {observer} from 'mobx-react'
-import CommShareModal from '../../comm/components/CommShareModal'
-import user from '../../model/user'
+import { ShowDetail } from './Show';
+import { observer } from 'mobx-react';
+import CommShareModal from '../../comm/components/CommShareModal';
+import user from '../../model/user';
 import apiEnvironment from '../../api/ApiEnvironment';
 
-const Goods = ({data, press}) => <TouchableOpacity style={styles.goodsItem} onPress={()=>{press && press()}}>
-    <Image style={styles.goodImg} source={{uri: data.headImg ? data.headImg : ''}}/>
+const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} onPress={() => {
+    press && press();
+}}>
+    <Image style={styles.goodImg} source={{ uri: data.headImg ? data.headImg : '' }}/>
     <View style={styles.goodDetail}>
         <Text style={styles.name}>{data.name}</Text>
-        <View style={{height: px2dp(4)}}/>
+        <View style={{ height: px2dp(4) }}/>
         <Text style={styles.price}>￥ {data.price}起</Text>
     </View>
-</TouchableOpacity>
+</TouchableOpacity>;
 
 @observer
 export default class ShowDetailPage extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.params = this.props.navigation.state.params || {};
-        this.showDetailModule = new ShowDetail()
+        this.showDetailModule = new ShowDetail();
         // this.showDetailModule.loadDetail(this.params.id)
     }
+
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
-              const {state } = payload
-              console.log('willFocus', state)
-              if (state && state.routeName === 'show/ShowDetailPage') {
-                    this.showDetailModule.loadDetail(this.params.id)
-              }
+                const { state } = payload;
+                console.log('willFocus', state);
+                if (state && state.routeName === 'show/ShowDetailPage') {
+                    this.showDetailModule.loadDetail(this.params.id);
+                }
             }
-          );
+        );
     }
 
     componentWillUnmount() {
-        this.willFocusSubscription && this.willFocusSubscription.remove()
+        this.willFocusSubscription && this.willFocusSubscription.remove();
     }
+
     _goBack() {
-        const {navigation} = this.props
-        navigation.goBack(null)
+        const { navigation } = this.props;
+        navigation.goBack(null);
     }
+
     _goToGoodsPage(good) {
-        const {navigation} = this.props
+        const { navigation } = this.props;
         navigation.push('home/product/ProductDetailPage', {
             productCode: good.code
         });
     }
+
     _goodAction() {
-        console.log('_goodAction', user.isLogin)
+        console.log('_goodAction', user.isLogin);
         if (user.isLogin) {
-            this.showDetailModule.showGoodAction()
+            this.showDetailModule.showGoodAction();
         } else {
-            const {navigation} = this.props
-            navigation.push('login/login/LoginPage')
+            const { navigation } = this.props;
+            navigation.push('login/login/LoginPage');
         }
     }
+
     _collectAction() {
         if (user.isLogin) {
-            this.showDetailModule.showConnectAction()
+            this.showDetailModule.showConnectAction();
         } else {
-            const {navigation} = this.props
-            navigation.push('login/login/LoginPage')
+            const { navigation } = this.props;
+            navigation.push('login/login/LoginPage');
         }
     }
+
     _goToShare() {
-        this.shareModal && this.shareModal.open()
+        this.shareModal && this.shareModal.open();
     }
+
     render() {
-        const { detail, isGoodActioning, isCollecting } = this.showDetailModule
+        const { detail, isGoodActioning, isCollecting } = this.showDetailModule;
         if (!detail) {
-            return <View style={styles.loading}><ActivityIndicator size='large'/></View>
+            return <View style={styles.loading}><ActivityIndicator size='large'/></View>;
         }
-        let content = `<div>${detail.content}</div>`
-        let products = detail.products
-        return <View style={styles.container}><ScrollView style={styles.container}>
+        let content = `<div>${detail.content}</div>`;
+        let products = detail.products;
+        return <View style={styles.container}>
+            <ScrollView
+                style={styles.container}
+                showsVerticalScrollIndicator={false}
+            >
             <ShowImageView items={detail.imgs}/>
             <View style={styles.profileRow}>
                 <View style={styles.profileLeft}>
-                    <Image style={styles.portrait} source={{uri: detail.userHeadImg ? detail.userHeadImg : ''}}/>
+                    <Image style={styles.portrait} source={{ uri: detail.userHeadImg ? detail.userHeadImg : '' }}/>
                     <Text style={styles.showName}>{detail.userName ? detail.userName : ''}</Text>
                 </View>
                 <View style={styles.profileRight}>
-                    <Image source={seeImg}/>
+                    <Image source={res.button.see}/>
                     <Text style={styles.number}>{detail.click}</Text>
                 </View>
             </View>
-            <HTML html={content} imagesMaxWidth={width} containerStyle={{backgroundColor: '#fff', marginLeft: px2dp(15), marginRight: px2dp(15)}}/>
+            <HTML html={content} imagesMaxWidth={width} containerStyle={{
+                backgroundColor: '#fff',
+                marginLeft: px2dp(15),
+                marginRight: px2dp(15)
+            }} baseFontStyle={{ lineHeight: px2dp(25), color: DesignRule.textColor_mainTitle, fontSize: px2dp(13) }}/>
             <View style={styles.goodsView}>
                 {
                     products.map((value, index) => {
-                        return <Goods key={index} data={value} press={()=>{this._goToGoodsPage(value)}}/>
+                        return <Goods key={index} data={value} press={() => {
+                            this._goToGoodsPage(value);
+                        }}/>;
                     })
                 }
             </View>
-            <TouchableOpacity style={styles.backView} onPress={()=>this._goBack()}>
-                <Image source={backImg}/>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.shareView} onPress={()=>{this._goToShare()}}>
-                <Image source={showShareImg}/>
-            </TouchableOpacity>
         </ScrollView>
-        <View style={styles.bottom}>
-            {
-                isGoodActioning
-                ?
-                <View style={styles.bottomBtn}>
-                    <ActivityIndicator size='small'/>
-                </View>
-                :
-                <TouchableOpacity style={styles.bottomBtn} onPress={()=>this._goodAction()}>
-                    <Image style={styles.bottomGoodImg} source={detail.hadLike ? showDidGoodImg : showGoodImg}/>
-                    <Text style={styles.bottomText}> {detail.hadLike ? '已赞' : '赞'} · {detail.likeCount}</Text>
-                </TouchableOpacity>
-            }
-            <View style={styles.line}/>
-            {
-                isCollecting
-                ?
-                <View style={styles.bottomBtn}>
-                    <ActivityIndicator size='small'/>
-                </View>
-                :
-                <TouchableOpacity style={styles.bottomBtn} onPress={()=>this._collectAction()}>
-                    <Image style={styles.bottomGoodImg} source={detail.hadCollect ? showConnectedImg : showConnectImg}/>
-                    <Text style={styles.bottomText}>{detail.hadCollect ? '已收藏' : '收藏'} · {detail.collectCount}</Text>
-                </TouchableOpacity>
-            }
-        </View>
-        <CommShareModal ref={(ref) => this.shareModal = ref}
-                type={'miniProgram'}
-                miniProgramJson = {{
-                    title: detail.title,
-                    dec: '分享小程序子标题',
-                    thumImage: 'logo.png',
-                    hdImageURL: detail.img,
-                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/index/index`,
-                    miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}`}}
-        />
-        </View>
+            <View style={styles.bottom}>
+                {
+                    isGoodActioning
+                        ?
+                        <View style={styles.bottomBtn}>
+                            <ActivityIndicator size='small'/>
+                        </View>
+                        :
+                        <TouchableOpacity style={styles.bottomBtn} onPress={() => this._goodAction()}>
+                            <Image style={styles.bottomGoodImg} source={detail.hadLike ? res.button.show_did_good : res.button.show_good}/>
+                            <Text style={styles.bottomText}> {detail.hadLike ? '已赞' : '赞'} · {detail.likeCount}</Text>
+                        </TouchableOpacity>
+                }
+                <View style={styles.line}/>
+                {
+                    isCollecting
+                        ?
+                        <View style={styles.bottomBtn}>
+                            <ActivityIndicator size='small'/>
+                        </View>
+                        :
+                        <TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>
+                            <Image style={styles.bottomGoodImg}
+                                   source={detail.hadCollect ? res.button.show_connected : res.button.show_connect}/>
+                            <Text
+                                style={styles.bottomText}>{detail.hadCollect ? '已收藏' : '收藏'} · {detail.collectCount}</Text>
+                        </TouchableOpacity>
+                }
+            </View>
+            <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
+                <Image source={res.button.show_detail_back}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.shareView} onPress={() => {
+                this._goToShare();
+            }}>
+                <Image source={res.button.show_share}/>
+            </TouchableOpacity>
+            <CommShareModal ref={(ref) => this.shareModal = ref}
+                            type={'miniProgram'}
+                            miniProgramJson={{
+                                title: detail.title,
+                                dec: '分享小程序子标题',
+                                thumImage: 'logo.png',
+                                hdImageURL: detail.img,
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/index/index`,
+                                miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}`
+                            }}
+            />
+        </View>;
     }
 }
 
@@ -201,14 +221,14 @@ let styles = StyleSheet.create({
         width: ScreenUtils.width - 2 * px2dp(15),
         flexDirection: 'row',
         alignItems: 'center',
-        borderColor: '#eee',
+        borderColor: DesignRule.lineColor_inColorBg,
         borderWidth: ScreenUtils.onePixel,
         borderRadius: px2dp(2),
         marginBottom: px2dp(10)
     },
     goodImg: {
         height: px2dp(66),
-        width: px2dp(66),
+        width: px2dp(66)
     },
     goodDetail: {
         flex: 1,
@@ -217,12 +237,12 @@ let styles = StyleSheet.create({
     },
     name: {
         fontSize: px2dp(13),
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontWeight: '600'
     },
     price: {
         fontSize: px2dp(13),
-        color: '#FF1A54',
+        color: '#FF1A54'
     },
     goodsView: {
         marginTop: px2dp(17),
@@ -243,17 +263,13 @@ let styles = StyleSheet.create({
         color: '#fff',
         fontSize: px2dp(15)
     },
-    bottomGoodImg: {
-
-    },
+    bottomGoodImg: {},
     bottomText: {
         marginLeft: px2dp(8),
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(11)
     },
-    connectImg: {
-
-    },
+    connectImg: {},
     profileRow: {
         height: px2dp(45),
         alignItems: 'center',
@@ -266,7 +282,7 @@ let styles = StyleSheet.create({
         borderRadius: px2dp(15)
     },
     showName: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         marginLeft: px2dp(5),
         fontSize: px2dp(11)
     },
@@ -281,7 +297,7 @@ let styles = StyleSheet.create({
         alignItems: 'center'
     },
     number: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(11),
         marginLeft: px2dp(9)
     },
@@ -294,6 +310,7 @@ let styles = StyleSheet.create({
     line: {
         width: 1,
         height: px2dp(16),
-        backgroundColor: '#eee'
+        backgroundColor: DesignRule.lineColor_inColorBg
     }
-})
+});
+

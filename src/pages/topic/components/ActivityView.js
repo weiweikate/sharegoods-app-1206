@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import { isNoEmpty } from '../../../utils/StringUtils';
 import { formatDate } from '../../../utils/DateUtils';
+import DesignRule from 'DesignRule';
 
 export default class MyShop_RecruitPage extends Component {
 
@@ -146,7 +147,7 @@ export default class MyShop_RecruitPage extends Component {
         }
 
         return <View style={{
-            backgroundColor: begin ? '#33B4FF' : '#D51243',
+            backgroundColor: begin ? DesignRule.bgColor_blue : DesignRule.mainColor,
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between'
@@ -155,21 +156,29 @@ export default class MyShop_RecruitPage extends Component {
                 <Text style={{ color: 'white', fontSize: 18 }}>￥<Text
                     style={{ fontSize: 40 }}>{price}</Text></Text>
                 <View style={{ marginLeft: 10, justifyContent: 'center' }}>
-                    <Text style={{ color: '#F7F7F7', fontSize: 12, textDecorationLine: 'line-through' }}>{one}</Text>
                     <Text style={{
-                        color: '#F7F7F7',
+                        color: DesignRule.bgColor,
+                        fontSize: 12,
+                        textDecorationLine: 'line-through'
+                    }}>{one}</Text>
+                    <Text style={{
+                        color: DesignRule.bgColor,
                         fontSize: 10,
                         marginTop: 4
                     }}>{two}</Text>
                 </View>
             </View>
             {end ?
-                <Text style={{ color: '#FFFC00', fontSize: 13, marginRight: 15 }}>活动已结束</Text>
+                <Text style={{ color: DesignRule.color_yellow, fontSize: 13, marginRight: 15 }}>活动已结束</Text>
                 :
                 <View style={{ alignItems: 'flex-end' }}>
                     <View style={{ width: 106 + 30, alignItems: 'center' }}>
-                        <Text style={{ color: begin ? '#1B7BB3' : '#FFFC00', fontSize: 11 }}
-                              numberOfLines={1}>{three}</Text>
+                        <Text
+                            style={{
+                                color: begin ? DesignRule.textColor_deepBlue : DesignRule.color_yellow,
+                                fontSize: 11
+                            }}
+                            numberOfLines={1}>{three}</Text>
                     </View>
                     <View style={{
                         marginRight: 15,
@@ -177,13 +186,13 @@ export default class MyShop_RecruitPage extends Component {
                         width: 106,
                         height: 12,
                         borderRadius: 6,
-                        backgroundColor: begin ? '#2B99D9' : '#F1C11B',
+                        backgroundColor: begin ? DesignRule.bgColor_deepBlue : DesignRule.color_deepYellow,
                         flexDirection: 'row',
                         overflow: 'hidden'
                     }}>
                         {!begin ? <View style={{
                             width: (totalNumber - surplusNumber) / totalNumber * 106,
-                            backgroundColor: '#FFFC00'
+                            backgroundColor: DesignRule.color_yellow
                         }}/> : null}
                         <View style={{
                             position: 'absolute',
@@ -192,7 +201,7 @@ export default class MyShop_RecruitPage extends Component {
                             justifyContent: 'center'
                         }}>
                             <Text style={{
-                                color: begin ? '#F7F7F7' : '#D51243',
+                                color: begin ? DesignRule.bgColor : DesignRule.mainColor,
                                 fontSize: 11
                             }}>{four}</Text>
                         </View>

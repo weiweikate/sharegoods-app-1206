@@ -5,9 +5,9 @@ import {
     UIText
 } from '../../../components/ui';
 import connectStyle from '../../../components/ui/connectStyle';
-import { color } from '../../../constants/Theme';
 import locationBlack from '../res/locationBlack.png';
 import arrow_right from '../res/arrow_right.png';
+import DesignRule from 'DesignRule';
 
 const AddressItem = props => {
     this.defaultPress = () => {
@@ -23,7 +23,7 @@ const AddressItem = props => {
             height: 84,
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: color.white
+            backgroundColor: 'white'
         }
     } = props;
     this.renderRightImage = () => {
@@ -36,13 +36,17 @@ const AddressItem = props => {
         <TouchableOpacity style={style} onPress={() => onPress()}>
             <UIImage source={locationBlack} style={{ width: 18, height: 20, marginLeft: 17 }}/>
             <View style={{ flex: 1, marginLeft: 10 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <UIText value={name} style={{ color: color.black_999, fontSize: 15 }}/>
-                    <UIText value={phone} style={{ color: color.black_999, fontSize: 15 }}/>
+                <View style={{ flexDirection: 'row', paddingRight: 20}}>
+                    <UIText value={name}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 15, flex: 1, marginRight: 5 }}
+                            numberOfLines={1}/>
+                    <UIText value={phone} style={{ color: DesignRule.textColor_instruction, fontSize: 15 }}
+                            numberOfLines={1}/>
                 </View>
-                <UIText value={address} style={{ color: color.black_999, fontSize: 15 }} numberOfLines={2}/>
+                <UIText value={address} style={{ color: DesignRule.textColor_instruction, fontSize: 15 }}
+                        numberOfLines={2}/>
             </View>
-            {this.renderRightImage()}
+            {/*{this.renderRightImage()}*/}
         </TouchableOpacity>
     );
 };
@@ -51,7 +55,7 @@ const style = {
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: color.white
+        backgroundColor: 'white'
     }
 
 };

@@ -8,7 +8,6 @@ import {
     Text,
     TouchableOpacity
 } from 'react-native';
-import { color } from '../../../constants/Theme';
 import {
     UIText
 } from '../../../components/ui';
@@ -18,6 +17,7 @@ import StringUtils from '../../../utils/StringUtils';
 import DateUtils from '../../../utils/DateUtils';
 import constants from '../../../constants/constants';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+import DesignRule from 'DesignRule';
 
 const GoodsListItem = props => {
     const {
@@ -39,7 +39,7 @@ const GoodsListItem = props => {
         callBack,
         // autoReceiveTime,
         deliverTime,//发货时间
-        orderType,
+        orderType
     } = props;
     this.state = { pageStateString: '27:45:45后自动取消订单' };
 
@@ -47,7 +47,8 @@ const GoodsListItem = props => {
         let str = '1';
         let autoConfirmTime = Math.round((autoConfirmTime2 - new Date().valueOf()) / 1000);
         if (autoConfirmTime < 0) {
-            return '';
+            callBack();
+            return '超时关闭';
         }
         let time = (new TimeDownUtils()).getDateData2(autoConfirmTime2);
         if (time.hours === undefined && time.min === undefined && time.sec === undefined) {
@@ -63,105 +64,108 @@ const GoodsListItem = props => {
     //28:45:45后自动取消订单
     this.renderMenu = () => {
         let nameArr = constants.viewOrderStatus[orderStatus].menuData;
-            if (orderStatus == 1) {
+        if (orderStatus == 1) {
 
-                if (StringUtils.isNoEmpty(outTradeNo)) {
-                    nameArr = [{
-                        id: 1,
-                        operation: '取消订单',
-                        isRed: false
-                    },
-                        {
-                            id: 3,
-                            operation: '继续支付',
-                            isRed: true
-                        }
-                    ];
-                } else {
-                    nameArr = [{
-                        id: 1,
-                        operation: '取消订单',
-                        isRed: false
-                    },
-                        {
-                            id: 2,
-                            operation: '去支付',
-                            isRed: true
-                        }
-                    ];
-                }
-                return (
-                    <View style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between'
-                    }}>
-                        <View style={{ marginLeft: 5, flexDirection: 'row' }}>
-                            <Text
-                                style={{ color: '#D51243', fontSize: 13 }}>{this.startCutDownTime2(shutOffTime)}</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            {nameArr.map((item, i) => {
-                                return <TouchableOpacity style={{
-                                    borderWidth: 1,
-                                    borderColor: item.isRed ? color.red : color.gray_DDD,
-                                    height: 30,
-                                    borderRadius: 10,
-                                    marginRight: 15,
-                                    justifyContent: 'center',
-                                    paddingLeft: 20,
-                                    paddingRight: 20
-                                }} onPress={() => {
-                                    operationMenuClick(item)
-                                }}>
-                                    <Text
-                                        style={{ color: item.isRed ? color.red : color.gray_666 }}>{item.operation}</Text>
-                                </TouchableOpacity>;
-                            })}
-                        </View>
-                    </View>
-                );
+            if (StringUtils.isNoEmpty(outTradeNo)) {
+                nameArr = [{
+                    id: 1,
+                    operation: '取消订单',
+                    isRed: false
+                },
+                    {
+                        id: 3,
+                        operation: '继续支付',
+                        isRed: true
+                    }
+                ];
             } else {
-                if ((orderType === 5 || orderType === 98) && orderStatus >= 4) {
-                    nameArr = [{
-                        id: 7,
-                        operation: '删除订单',
-                        isRed: false
-                    }];
-                }
-              return  <View style={{ flexDirection: 'row' }}>
-                {nameArr.map((item, i) => {
-                    return <TouchableOpacity style={{
-                        borderWidth: 1,
-                        borderColor: item.isRed ? color.red : color.gray_DDD,
-                        height: 30,
-                        borderRadius: 10,
-                        marginRight: 15,
-                        justifyContent: 'center',
-                        paddingLeft: 20,
-                        paddingRight: 20
-                    }} onPress={() => {
-                        operationMenuClick(item)
-                    }}>
-                        <Text
-                            style={{ color: item.isRed ? color.red : color.gray_666 }}>{item.operation}</Text>
-                    </TouchableOpacity>;
-
-                }
-                )}
-              </View>
+                nameArr = [{
+                    id: 1,
+                    operation: '取消订单',
+                    isRed: false
+                },
+                    {
+                        id: 2,
+                        operation: '去支付',
+                        isRed: true
+                    }
+                ];
             }
+            return (
+                <View style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                }}>
+                    <View style={{ marginLeft: 5, flexDirection: 'row' }}>
+                        <Text
+                            style={{
+                                color: DesignRule.mainColor,
+                                fontSize: 13
+                            }}>{this.startCutDownTime2(shutOffTime)}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        {nameArr.map((item, i) => {
+                            return <TouchableOpacity key={i} style={{
+                                borderWidth: 1,
+                                borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd,
+                                height: 30,
+                                borderRadius: 10,
+                                marginRight: 15,
+                                justifyContent: 'center',
+                                paddingLeft: 20,
+                                paddingRight: 20
+                            }} onPress={() => {
+                                operationMenuClick(item);
+                            }}>
+                                <Text
+                                    style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}>{item.operation}</Text>
+                            </TouchableOpacity>;
+                        })}
+                    </View>
+                </View>
+            );
+        } else {
+            if ((orderType === 5 || orderType === 98) && orderStatus >= 4) {
+                nameArr = [{
+                    id: 7,
+                    operation: '删除订单',
+                    isRed: false
+                }];
+            }
+            return <View style={{ flexDirection: 'row' }}>
+                {nameArr.map((item, i) => {
+                        return <TouchableOpacity key={i} style={{
+                            borderWidth: 1,
+                            borderColor: item.isRed ? DesignRule.mainColor : DesignRule.color_ddd,
+                            height: 30,
+                            borderRadius: 10,
+                            marginRight: 15,
+                            justifyContent: 'center',
+                            paddingLeft: 20,
+                            paddingRight: 20
+                        }} onPress={() => {
+                            operationMenuClick(item);
+                        }}>
+                            <Text
+                                style={{ color: item.isRed ? DesignRule.mainColor : DesignRule.textColor_secondTitle }}>{item.operation}</Text>
+                        </TouchableOpacity>;
+
+                    }
+                )}
+            </View>;
+        }
 
     };
     this.renderLine = () => {
         return (
-            <View style={{ flex: 1, height: 0.5, backgroundColor: color.line }}/>
+            <View style={{ flex: 1, height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
     this.renderWideLine = () => {
         return (
-            <View style={{ flex: 1, height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ flex: 1, height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
     this.renderGoodsList = () => {
@@ -171,7 +175,7 @@ const GoodsListItem = props => {
                 <GoodsGrayItem
                     key={i}
                     uri={orderProduct[i].imgUrl}
-                    gift={orderType==5||orderType==98}
+                    gift={orderType == 5 || orderType == 98}
                     goodsName={orderProduct[i].productName}
                     salePrice={orderProduct[i].price}
                     category={orderProduct[i].spec}
@@ -184,12 +188,12 @@ const GoodsListItem = props => {
     };
     this.renderOrderNum = () => {
         return (
-            <View style={{ height: 44, backgroundColor: color.white, justifyContent: 'center' }}>
+            <View style={{ height: 44, backgroundColor: 'white', justifyContent: 'center' }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <UIText value={'订单编号：' + orderNum}
-                            style={{ fontSize: 13, color: color.black_222, marginLeft: 18 }}/>
+                            style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 18 }}/>
                     <UIText value={constants.viewOrderStatus[orderStatus].orderStatus}
-                            style={{ fontSize: 13, color: color.red, marginRight: 18 }}/>
+                            style={{ fontSize: 13, color: DesignRule.mainColor, marginRight: 18 }}/>
                 </View>
             </View>
         );
@@ -199,17 +203,18 @@ const GoodsListItem = props => {
             <View style={{
                 flex: 1,
                 height: 40,
-                backgroundColor: color.white,
+                backgroundColor: 'white',
                 justifyContent: 'flex-end',
                 alignItems: 'center',
                 flexDirection: 'row',
                 paddingRight: 16
             }}>
                 <UIText value={'共' + orderProduct.length + '件商品  合计：'}
-                        style={{ fontSize: 13, color: color.black_222 }}/>
-                <UIText value={StringUtils.formatMoneyString(totalPrice)} style={{ fontSize: 13, color: color.red }}/>
+                        style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
+                <UIText value={StringUtils.formatMoneyString(totalPrice)}
+                        style={{ fontSize: 13, color: DesignRule.mainColor }}/>
                 <UIText value={'（含运费' + StringUtils.formatMoneyString(freightPrice, false) + '）'}
-                        style={{ fontSize: 13, color: color.black_222 }}/>
+                        style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
             </View>
         );
     };
@@ -219,30 +224,30 @@ const GoodsListItem = props => {
             case 1:
             case 8:
                 aboutTime = <UIText value={'创建时间：' + DateUtils.getFormatDate(orderCreateTime / 1000)}
-                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                                    style={{ fontSize: 13, color: DesignRule.textColor_instruction }}/>;
                 break;
 
             case 2:
-                aboutTime = <UIText value={'付款时间：' + DateUtils.getFormatDate(platformPayTime / 1000)}
-                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                aboutTime = <UIText value={'支付时间：' + DateUtils.getFormatDate(platformPayTime / 1000)}
+                                    style={{ fontSize: 13, color: DesignRule.textColor_instruction }}/>;
                 break;
             case 3:
                 aboutTime = <UIText value={'发货时间：' + DateUtils.getFormatDate(sendTime / 1000)}
-                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                                    style={{ fontSize: 13, color: DesignRule.textColor_instruction }}/>;
                 break;
 
             case 4:
                 aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(deliverTime / 1000)}
-                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                                    style={{ fontSize: 13, color: DesignRule.textColor_instruction }}/>;
                 break;
             case 5:
             case 6:
                 aboutTime = <UIText value={'完成时间：' + DateUtils.getFormatDate(finishTime / 1000)}
-                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                                    style={{ fontSize: 13, color: DesignRule.textColor_instruction }}/>;
                 break;
             case 7:
                 aboutTime = <UIText value={'取消时间：' + DateUtils.getFormatDate(cancelTime / 1000)}
-                                    style={{ fontSize: 13, color: color.black_222 }}/>;
+                                    style={{ fontSize: 13, color: DesignRule.textColor_instruction }}/>;
                 break;
 
 
@@ -251,7 +256,7 @@ const GoodsListItem = props => {
             <View style={{
                 flex: 1,
                 height: 40,
-                backgroundColor: color.white,
+                backgroundColor: 'white',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
                 flexDirection: 'row',
@@ -278,7 +283,7 @@ const GoodsListItem = props => {
                     height: 48,
                     justifyContent: 'flex-end',
                     alignItems: 'center',
-                    backgroundColor: color.white
+                    backgroundColor: 'white'
                 }}>
                     {this.renderMenu()}
                 </View>

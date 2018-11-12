@@ -5,11 +5,11 @@ import {
     TextInput as RNTextInput
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import { color } from '../../../../constants/Theme';
 import { UIButton } from '../../../../components/ui';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
+import DesignRule from 'DesignRule';
 
 export default class NickNameModifyPage extends BasePage {
     constructor(props) {
@@ -47,7 +47,8 @@ export default class NickNameModifyPage extends BasePage {
                         height: 50,
                         marginLeft: 48,
                         marginRight: 48,
-                        backgroundColor: color.red
+                        borderRadius: 25,
+                        backgroundColor: DesignRule.mainColor
                     }}
                     onPress={() => this.save()}/>
             </View>
@@ -56,18 +57,18 @@ export default class NickNameModifyPage extends BasePage {
 
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
     save = () => {
         MineAPI.updateUserById({ type: 2, nickname: this.state.nickName }).then(res => {
             let length = this.state.nickName.trim().length;
-            if (length < 2 || length > 8) {
-                this.$toastShow('昵称长度位2-8位');
+            if (length < 2 || length > 16) {
+                this.$toastShow('昵称长度位2-16位');
                 return;
             }
             let containSpecial = RegExp(/[(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\-)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)(\<)(\>)(\?)(\)]+/);
-            if(containSpecial.test(this.state.nickName)){
+            if (containSpecial.test(this.state.nickName)) {
                 this.$toastShow('昵称不能包含特殊字符');
                 return;
             }
@@ -81,7 +82,7 @@ export default class NickNameModifyPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: color.page_background
+        flex: 1, backgroundColor: DesignRule.bgColor
     }, inputTextStyle: {
         height: 48, backgroundColor: 'white', fontSize: 14, paddingLeft: 14, paddingRight: 14
     }

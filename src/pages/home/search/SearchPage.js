@@ -14,6 +14,7 @@ import RouterMap from 'RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import Storage from '../../../utils/storage';
 import StringUtils from '../../../utils/StringUtils';
+import DesignRule from 'DesignRule';
 
 const recentDataKey = 'recentDataKey';
 export default class SearchPage extends BasePage {
@@ -123,8 +124,8 @@ export default class SearchPage extends BasePage {
                 this._clickItemAction(item);
             }}>
                 <View>
-                    <Text style={{ fontSize: 13, color: '#222222', marginLeft: 16, paddingVertical: 15 }}>{item}</Text>
-                    <View style={{ height: 1, backgroundColor: '#DDDDDD', marginLeft: 16 }}/>
+                    <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 16, paddingVertical: 15 }}>{item}</Text>
+                    <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inGrayBg, marginLeft: 16 }}/>
                 </View>
             </TouchableWithoutFeedback>);
     };
@@ -163,7 +164,7 @@ export default class SearchPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1, backgroundColor: DesignRule.bgColor
     }
 });
 

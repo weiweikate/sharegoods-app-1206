@@ -14,6 +14,8 @@ import {
     UIText, UIImage
 } from '../../../components/ui';
 import OrderApi from "../api/orderApi";
+import DesignRule from 'DesignRule';
+
 export default class SelectLogisticsCompanyPage extends BasePage {
     constructor(props) {
         super(props);
@@ -65,7 +67,7 @@ export default class SelectLogisticsCompanyPage extends BasePage {
                     renderSectionHeader = {this._renderSectionHeader}
                     sections = {this.state.logisticsCompanys}
                     keyExtractor = {(item, index) => item.name + index}
-                    ItemSeparatorComponent = {() => <View style = {{height: 0.5, backgroundColor: '#F7F7F7'}}/>}
+                    ItemSeparatorComponent = {() => <View style = {{height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg}}/>}
                 />
             </View>
         )
@@ -107,7 +109,7 @@ export default class SelectLogisticsCompanyPage extends BasePage {
 const styles = StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: '#f7f7f7',
+            backgroundColor: DesignRule.bgColor,
         },
         item_container: {
             backgroundColor: 'white',
@@ -121,18 +123,18 @@ const styles = StyleSheet.create({
             marginLeft: 17,
         },
         item_title:{
-            color: '#000000',
+            color: DesignRule.textColor_mainTitle,
             fontSize: 15,
             marginLeft: 17,
         },
         header_container: {
-            backgroundColor: '#f7f7f7',
+            backgroundColor: DesignRule.bgColor,
             flexDirection: 'row',
             height: 27,
             alignItems: 'center',
         },
         header_title:{
-            color: '#000000',
+            color: DesignRule.textColor_mainTitle,
             fontSize: 16,
             marginLeft: 17,
         }

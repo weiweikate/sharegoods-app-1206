@@ -1,16 +1,24 @@
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
-import addrSelectedImg from '../../res/address/dizhi_btn_moren_sel.png';
-import addrUnselectedImg from '../../res/address/dizhi_btn_moren_nor.png';
+import res from '../../../../comm/res';
 import addrBorderImgN from '../../res/address/dizhi_img_nor.png';
 import addrBorderImgS from '../../res/address/dizhi_img_sel.png';
 import addrRight from '../../res/address/dizhi_icon_moren_sel.png';
 import dingwei from '../../res/address/dizhi_icon_dingwei_nor.png';
+import NoMessage from '../../res/address/kongbeiye_icon_dizhi.png'
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
+/**
+ * @author luoyongming
+ * @date on 2018/9/18
+ * @describe 设置页面
+ * @org www.sharegoodsmall.com
+ * @email luoyongming@meeruu.com
+ */
 export default class AddressManagerPage extends BasePage {
 
     initIndex = -10;
@@ -18,7 +26,7 @@ export default class AddressManagerPage extends BasePage {
     // 导航配置
     $navigationBarOptions = {
         title: '地址管理',
-        rightTitleStyle: { color: '#D51243' },
+        rightTitleStyle: { color: DesignRule.mainColor },
         rightNavTitle: '添加新地址'
     };
 
@@ -53,6 +61,8 @@ export default class AddressManagerPage extends BasePage {
                         });
                     }
                 }
+            }else{
+
             }
             this.setState({
                 datas: response.data || []
@@ -61,6 +71,16 @@ export default class AddressManagerPage extends BasePage {
             bridge.$toast(data.msg);
         });
     }
+    // 空布局
+    _renderEmptyView = () => {
+        return (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Image source={NoMessage} style={{ width: 110, height: 110, marginTop: 112 }}/>
+                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 15, marginTop: 11 }}>暂无收货地址</Text>
+                <Text style={{ color: DesignRule.textColor_instruction, fontSize: 12, marginTop: 3 }}>快去添加吧～</Text>
+            </View>
+        );
+    };
 
     _render() {
         return (
@@ -69,6 +89,7 @@ export default class AddressManagerPage extends BasePage {
                     ListHeaderComponent={this._header}
                     ListFooterComponent={this._footer}
                     ItemSeparatorComponent={this._separator}
+                    ListEmptyComponent={this._renderEmptyView}
                     renderItem={this._renderItem}
                     extraData={this.state}
                     onRefresh={this.refreshing}
@@ -96,8 +117,15 @@ export default class AddressManagerPage extends BasePage {
                            }}/>
                     <View style={{ flex: 1, flexDirection: 'column' }}>
                         <View style={styles.cell_name_tel}>
-                            <Text style={{ flex: 1, fontSize: 15, color: '#222222' }}>收货人：{item.item.receiver}</Text>
-                            <Text style={{ fontSize: 15, color: '#222222' }}>{item.item.receiverPhone}</Text>
+                            <Text style={{
+                                flex: 1,
+                                fontSize: 15,
+                                color: DesignRule.textColor_mainTitle
+                            }}>收货人：{item.item.receiver}</Text>
+                            <Text style={{
+                                fontSize: 15,
+                                color: DesignRule.textColor_mainTitle
+                            }}>{item.item.receiverPhone}</Text>
                         </View>
                         <Text
                             numberOfLines={2}
@@ -105,30 +133,30 @@ export default class AddressManagerPage extends BasePage {
                             style={styles.cell_addr}>{item.item.province + item.item.city + item.item.area + item.item.address}</Text>
                     </View>
                 </View>
-                <View style={{ height: 0.5, backgroundColor: '#EBEBEB', marginTop: 15 }}/>
+                <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg, marginTop: 15 }}/>
                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 13, paddingBottom: 13 }}>
                     <TouchableOpacity style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginLeft: 16 }}
                                       onPress={() => this._onSelectImgClick(item.item, item.index)}>
                         <Image style={{ width: 16, height: 16, marginRight: 11 }}
-                               source={item.index === this.state.selectIndex ? addrSelectedImg : addrUnselectedImg}
+                               source={item.index === this.state.selectIndex ? res.button.selected_circle_red : res.button.unselected_circle}
                         />
                         <Text style={{
                             flex: 1,
                             fontSize: 13,
-                            color: item.index === this.state.selectIndex ? '#D51243' : '#999999'
+                            color: item.index === this.state.selectIndex ? DesignRule.mainColor : DesignRule.textColor_instruction
                         }}>默认地址</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}
                                       onPress={() => this._onEditAddress(item.item, item.index)}>
                         <Image style={{ width: 16, height: 17, marginRight: 4 }}
                                source={require('../../res/address/addr_edit.png')}/>
-                        <Text style={{ fontSize: 13, color: '#999999' }}>编辑</Text>
+                        <Text style={{ fontSize: 13, color: DesignRule.textColor_instruction }}>编辑</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 17 }}
                                       onPress={() => this._onDelAddress(item.item)}>
                         <Image style={{ width: 17, height: 15, marginRight: 6 }}
                                source={require('../../res/address/addr_del.png')}/>
-                        <Text style={{ fontSize: 13, color: '#999999' }}>删除</Text>
+                        <Text style={{ fontSize: 13, color: DesignRule.textColor_instruction }}>删除</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -209,8 +237,6 @@ export default class AddressManagerPage extends BasePage {
     _separator = () => {
         return <View style={{ height: 10, backgroundColor: 'transparent' }}/>;
     };
-
-
 }
 
 const styles = StyleSheet.create({
@@ -229,7 +255,7 @@ const styles = StyleSheet.create({
     },
     cell_addr: {
         fontSize: 13,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         paddingRight: 17,
         marginTop: 5
     },

@@ -10,9 +10,9 @@ import {
 
 import React, { Component } from 'react';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import ColorUtil from '../../../utils/ColorUtil';
 import { SbSectiontHeaderView, ActivityOneView } from './SbSectiontHeaderView';
 import PropTypes from 'prop-types';
+import DesignRule from 'DesignRule';
 
 export default class ThreeColumnListView extends Component {
 
@@ -25,7 +25,7 @@ export default class ThreeColumnListView extends Component {
             <SectionList
                 contentContainerStyle={Styles.list}
                 style={{
-                    backgroundColor: ColorUtil.Color_f7f7f7
+                    backgroundColor: DesignRule.bgColor
                 }}
                 numColumns={2}
                 stickySectionHeadersEnabled={false}
@@ -136,12 +136,12 @@ const Styles = StyleSheet.create({
         flexDirection: 'row',//设置横向布局
         flexWrap: 'wrap',  //设置换行显示
         alignItems: 'flex-start',
-        backgroundColor: '#FFFFFF'
+        backgroundColor: 'white'
     },
     itemBgStyle: {
         width: ScreenUtils.width / 3,
         height: ScreenUtils.width / 3 + 70,
-        backgroundColor: ColorUtil.Color_f7f7f7,
+        backgroundColor: DesignRule.bgColor,
         padding: 8,
         paddingBottom: 0
     },
@@ -150,7 +150,7 @@ const Styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     itemTopImageStyle: {
-        backgroundColor: 'red',
+        backgroundColor: DesignRule.mainColor,
 
         width: ScreenUtils.width / 3 - 16,
         height: ScreenUtils.width / 3 - 16
@@ -162,24 +162,24 @@ const Styles = StyleSheet.create({
         width: ScreenUtils.width / 3 - 16,
         height: 16,
         opacity: 0.3,
-        backgroundColor: 'black'
+        backgroundColor: DesignRule.textColor_mainTitle
     },
     itemTipTextStyle: {
         flex: 1,
         paddingTop: 3,
         fontSize: 11,
-        color: ColorUtil.Color_ffffff
+        color: 'white'
 
     },
     itemBottomTextStyle: {
         marginTop: 10,
-        color: ColorUtil.Color_222222,
+        color: DesignRule.textColor_mainTitle,
         width: ScreenUtils.width / 3 - 16,
         height: 28,
         fontSize: 12
     },
     itemBottomPriceTextStyle: {
-        color: ColorUtil.Color_d51243,
+        color: DesignRule.mainColor,
         fontSize: 16,
         marginTop: 10
     }

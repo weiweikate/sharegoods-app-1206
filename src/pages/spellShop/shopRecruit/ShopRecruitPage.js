@@ -7,7 +7,8 @@ import {
     ScrollView,
     TouchableOpacity,
     Image,
-    RefreshControl
+    RefreshControl,
+    TouchableWithoutFeedback
 } from 'react-native';
 
 
@@ -20,35 +21,49 @@ import ActionSheetView from '../components/ActionSheetView';
 import ReportAlert from '../components/ReportAlert';
 
 // 图片资源
+import NavLeft from './src/NavLeft.png';
 import icons8_Shop_50px from './src/icons8_Shop_50px.png';
 import icons9_shop from './src/icons9_shop.png';
 import spellStatusModel from '../model/SpellStatusModel';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
-import StringUtils from '../../../utils/StringUtils';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import DesignRule from 'DesignRule';
 
 export default class ShopRecruitPage extends BasePage {
 
-    // 导航配置
     $navigationBarOptions = {
-        title: '店铺人员招募中',
-        leftNavItemHidden: this.props.leftNavItemHidden
+        show: false
     };
+    //        leftNavItemHidden: this.props.leftNavItemHidden
 
-    $NavBarRenderRightItem = () => {
-        return <View style={styles.rightBarItemContainer}>
-            <TouchableOpacity onPress={() => {
-                this.$navigate('spellShop/recommendSearch/RecommendPage');
-            }
-            }>
-                <Image style={{ marginRight: 20 }} source={icons8_Shop_50px}/>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this._clickSettingItem}>
-                <Image style={{ marginRight: 20 }} source={icons9_shop}/>
-            </TouchableOpacity>
-        </View>;
+    _NavBarRenderRightItem = () => {
+        return (<View style={styles.transparentView}>
+                <View style={styles.leftBarItemContainer}>
+                    {!this.props.leftNavItemHidden ?
+                        <TouchableWithoutFeedback onPress={() => {
+                            this.$navigateBack();
+                        }}>
+                            <Image source={NavLeft}/>
+                        </TouchableWithoutFeedback> : null}
+                </View>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 17, color: '#ffffff' }}>店铺招募中</Text>
+                </View>
+                <View style={styles.rightBarItemContainer}>
+                    <TouchableOpacity onPress={() => {
+                        this.$navigate('spellShop/recommendSearch/RecommendPage');
+                    }
+                    }>
+                        <Image style={{ marginRight: 10 }} source={icons8_Shop_50px}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this._clickSettingItem}>
+                        <Image source={icons9_shop}/>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
     };
 
     constructor(props) {
@@ -110,9 +125,10 @@ export default class ShopRecruitPage extends BasePage {
     };
 
     _clickAllMembers = () => {
-        if (this.state.storeData.userStatus === 1) {
-            this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
-        }
+        //招募中先不跳
+        // if (this.state.storeData.userStatus === 1) {
+        //     this.$navigate('spellShop/myShop/ShopAssistantPage', { storeData: this.state.storeData });
+        // }
     };
     _clickSettingItem = () => {
         let arr = ['分享店铺', '举报'];
@@ -244,7 +260,7 @@ export default class ShopRecruitPage extends BasePage {
                                       style={[styles.unOpen, {
                                           width: this.state.canOpen ? ScreenUtils.autoSizeWidth(168) : ScreenUtils.autoSizeWidth(345)
                                       }]}>
-                        <Text style={{ fontSize: 16, color: '#e60012' }}>{'取消开启'}</Text>
+                        <Text style={{ fontSize: 16, color: DesignRule.mainColor }}>{'取消开启'}</Text>
                     </TouchableOpacity>
                     {
                         this.state.canOpen ? <TouchableOpacity onPress={this._openStore} style={styles.open}>
@@ -266,11 +282,10 @@ export default class ShopRecruitPage extends BasePage {
                                           style={[styles.unOpen, {
                                               width: ScreenUtils.autoSizeWidth(345)
                                           }]}>
-                            <Text style={{ fontSize: 16, color: '#e60012' }}>{'退出拼店'}</Text>
+                            <Text style={{ fontSize: 16, color: DesignRule.mainColor }}>{'退出拼店'}</Text>
                         </TouchableOpacity>
-                        : (spellStatusModel.storeId && StringUtils.isNoEmpty(spellStatusModel.storeStatus) && spellStatusModel.storeStatus !== 0) ? null :
-                        <TouchableOpacity onPress={this._joinStore}
-                                          style={[styles.OutStore]}>
+                        : <TouchableOpacity onPress={this._joinStore}
+                                            style={[styles.OutStore]}>
                             <Text style={{ fontSize: 16, color: 'white' }}>{'加入拼店'}</Text>
                         </TouchableOpacity>
                 }
@@ -282,14 +297,16 @@ export default class ShopRecruitPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
+                {this._NavBarRenderRightItem()}
                 <ScrollView showsVerticalScrollIndicator={false}
+                            style={DesignRule.bgColor}
                             refreshControl={
                                 <RefreshControl
                                     refreshing={this.state.refreshing}
                                     onRefresh={this._refreshing.bind(this)}
                                     title="下拉刷新"
-                                    tintColor="#999"
-                                    titleColor="#999"/>}>
+                                    tintColor={DesignRule.textColor_instruction}
+                                    titleColor={DesignRule.textColor_instruction}/>}>
                     {this.renderHeader()}
                     {this.renderMembers()}
                     {this.renderOpenShopSetting()}
@@ -318,24 +335,43 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
+    transparentView: {
+        top: ScreenUtils.statusBarHeight,
+        height: 44,
+        backgroundColor: 'transparent',
+        position: 'absolute',
+        left: 15,
+        right: 15,
+        zIndex: 3,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
     rightBarItemContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'flex-end',
+        width: 88
+    },
+    leftBarItemContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        width: 88
     },
     unOpen: {
         height: 48,
         borderRadius: 5,
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center'
     },
     OutStore: {
         width: ScreenUtils.autoSizeWidth(345),
         height: 48,
-        backgroundColor: '#D51243',
+        backgroundColor: DesignRule.mainColor,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center'
@@ -344,7 +380,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         width: ScreenUtils.autoSizeWidth(168),
         height: 48,
-        backgroundColor: '#D51243',
+        backgroundColor: DesignRule.mainColor,
         borderRadius: 5,
         justifyContent: 'center',
         alignItems: 'center'

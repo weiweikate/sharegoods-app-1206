@@ -13,6 +13,7 @@ import SelIcon from './res/xianzhong_03.png';
 import UnSelIcon from './res/weixianzhong_03-02.png';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
+import DesignRule from 'DesignRule';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -49,7 +50,7 @@ export default class InvitationSettingPage extends BasePage {
         SpellShopApi.getById({ id: this.params.storeData.storeId }).then((data) => {
             let dataTemp = data.data || {};
             this.setState({
-                selIndex: dataTemp.recruitStatus,
+                selIndex: dataTemp.recruitStatus
             });
         }).catch((error) => {
             this.$toastShow(error.msg);
@@ -122,12 +123,12 @@ const styles = StyleSheet.create({
     },
     rightItem: {
         fontSize: 15,
-        color: '#e60012'
+        color: DesignRule.mainColor
     },
     row: {
         width: SCREEN_WIDTH,
         height: 44,
-        backgroundColor: '#fff'
+        backgroundColor: 'white'
     },
     rowTop: {
         flexDirection: 'row',
@@ -136,14 +137,13 @@ const styles = StyleSheet.create({
         flex: 1
     },
     text: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         marginLeft: 11
     },
     line: {
-        backgroundColor: '#eeeeee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         marginHorizontal: 15,
-        height: StyleSheet.hairlineWidth,
+        height: StyleSheet.hairlineWidth
     }
 });

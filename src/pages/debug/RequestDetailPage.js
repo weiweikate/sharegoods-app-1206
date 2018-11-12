@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import { formatDate } from '../../utils/DateUtils';
 import BasePage from '../../BasePage';
+import DesignRule from 'DesignRule';
+
 
 export default class RequestDetailPage extends BasePage {
 
@@ -149,17 +151,17 @@ export default class RequestDetailPage extends BasePage {
                 this.foldAtIndex(index);
             }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={{ color: 'red' }}>{key}:</Text>
+                    <Text style={{ color: DesignRule.mainColor }}>{key}:</Text>
                     {
                         index < 3 ? null : <View>
-                            <Text style={{ color: 'red' }}>{this.state[index] ? '展开' : '收起'}</Text>
+                            <Text style={{ color: DesignRule.mainColor }}>{this.state[index] ? '展开' : '收起'}</Text>
                         </View>
                     }
                 </View>
             </TouchableWithoutFeedback>
             {
                 this.state[index] ? null :
-                    <Text selectable={true} style={{ flex: 1, color: '#333', marginLeft: index < 3 ? 10 : 0 }}>{
+                    <Text selectable={true} style={{ flex: 1, color: DesignRule.textColor_mainTitle, marginLeft: index < 3 ? 10 : 0 }}>{
                         typeof value === 'object' ? JSON.stringify(value, null, 4) : (key === 'status' && !value ? '请求异常，无法获取status状态' : value)
                     }</Text>
             }
@@ -174,7 +176,7 @@ export default class RequestDetailPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: DesignRule.bgColor,
     },
     cell: {
         backgroundColor: 'white',

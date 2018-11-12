@@ -7,8 +7,8 @@ ext {
 
     // 全局Android相关配置
     android = [
-            compileSdkVersion: 27,
-            buildToolsVersion: "28.0.2",
+            compileSdkVersion: 28,
+            buildToolsVersion: "28.0.3",
             applicationId    : "com.meeruu.sharegoods",
             minSdkVersion    : 16,
             targetSdkVersion : 27,
@@ -18,19 +18,22 @@ ext {
 
     dependencies = [
             //此处是27.+，需要在rn中做排除
-            support   : 'com.android.support:appcompat-v7:27.1.1',
-            rn        : 'com.facebook.react:react-native:+',
-            design    : 'com.android.support:design:27.1.1',
-            eventbus  : 'org.greenrobot:eventbus:3.0.0',
-            zxing     : 'com.google.zxing:core:3.+',
-            wechat    : 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+',
-            uapp      : 'com.umeng.sdk:analytics:latest.integration',
-            ucommon   : 'com.umeng.sdk:common:latest.integration',
-            walle     : 'com.meituan.android.walle:library:+',
-            sophix    : 'com.aliyun.ams:alicloud-android-hotfix:3.+',
-            fastjson  : 'com.alibaba:fastjson:1.1.68.android',
-            exoplayer : 'com.google.android.exoplayer:exoplayer:2.7.3',
-            exopOKhttp: 'com.google.android.exoplayer:extension-okhttp:2.7.3',
-            multidex  : 'com.android.support:multidex:1.0.3',
+            support     : 'com.android.support:appcompat-v7:27.1.1',
+            rn          : 'com.facebook.react:react-native:+',
+            design      : 'com.android.support:design:27.1.1',
+            eventbus    : 'org.greenrobot:eventbus:3.0.0',
+            zxing       : 'com.google.zxing:core:3.+',
+            wechat      : 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+',
+            uapp        : 'com.umeng.sdk:analytics:latest.integration',
+            ucommon     : 'com.umeng.sdk:common:latest.integration',
+            walle       : 'com.meituan.android.walle:library:+',
+            sophix      : 'com.aliyun.ams:alicloud-android-hotfix:3.+',
+            fastjson    : 'com.alibaba:fastjson:1.1.68.android',
+            exoplayer   : 'com.google.android.exoplayer:exoplayer:2.7.3',
+            exopOKhttp  : 'com.google.android.exoplayer:extension-okhttp:2.7.3',
+            multidex    : 'com.android.support:multidex:1.0.3',
+            recyclerview: 'com.android.support:recyclerview-v7:27.1.1',
+            glide          : 'com.github.bumptech.glide:glide:4.+',
+            glideprocessor : 'com.github.bumptech.glide:compiler:4.+',
     ]
 }

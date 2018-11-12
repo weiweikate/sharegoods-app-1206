@@ -8,23 +8,27 @@ import {
     ImageBackground
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import { RefreshList ,UIImage,UIText} from '../../../../components/ui';
-import AccountItem from '../../components/AccountItem';
-import { color } from '../../../../constants/Theme';
+import { RefreshList, UIImage, UIText } from '../../../../components/ui';
+// import AccountItem from '../../components/AccountItem';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 // import withdrawMoney from '../../res/userInfoImg/withdrawMoney.png';
-import tuiguang from '../../res/userInfoImg/list_icon_touguang.png';
-import salesCommissions from '../../res/userInfoImg/list_icon_xiaoshouticheng.png';
-import waitWithdrawCashBg from '../../res/userInfoImg/waitWithdrawCashBg2.png';
-import questionImage_white from '../../res/userInfoImg/questionImage_white.png'
+import withdrawMoney from '../../res/userInfoImg/xiangjzhanghu_icon03_14.png';
+import storeShare from '../../res/userInfoImg/xiangjzhanghu_icon03.png';
+import storeShareBonus from '../../res/userInfoImg/xiangjzhanghu_icon03_06.png';
+import shouyi from '../../res/userInfoImg/xiangjzhanghu_icon03_10.png';
+import xiaofei from '../../res/userInfoImg/xiangjzhanghu_icon03_12.png';
+import salesCommissions from '../../res/userInfoImg/xiangjzhanghu_icon03_08.png';
+import renwu from '../../res/userInfoImg/xiangjzhanghu_icon03_16.png';
+import questionImage_white from '../../res/userInfoImg/questionImage_white.png';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
 import topicShow from '../../../topic/res/topicShow.png';
 import topicShowClose from '../../../topic/res/topicShowClose.png';
-import CommModal from 'CommModal'
+import CommModal from 'CommModal';
+import DesignRule from 'DesignRule';
 
 export default class WaitingForWithdrawCashPage extends BasePage {
     constructor(props) {
@@ -39,15 +43,15 @@ export default class WaitingForWithdrawCashPage extends BasePage {
             passwordDis: false,
             phoneError: false,
             passwordError: false,
-            viewData: [
-            ],
+            viewData: [],
             restMoney: 1600.00,
             isEmpty: false,
             waitingForWithdrawMoney: 0,
             currentPage: 1,
             blockedBalance: this.params.blockedBalance,
-            modalVisible:false
+            modalVisible: false
         };
+        this.currentPage = 0;
     }
 
     $navigationBarOptions = {
@@ -76,22 +80,24 @@ export default class WaitingForWithdrawCashPage extends BasePage {
     renderHeader = () => {
         return (
             <View style={styles.container}>
-                <Image style={styles.imageBackgroundStyle} source={waitWithdrawCashBg}/>
+                <ImageBackground style={styles.imageBackgroundStyle}/>
                 <View style={styles.viewStyle}>
-                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: color.white }}>待提现余额(元)</Text>
+                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: 'white' }}>待提现余额(元)</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={{ height: 44, justifyContent: 'space-between', marginTop: 15 }}>
                             <Text style={{
                                 marginLeft: 25,
                                 fontSize: 25,
-                                color: color.white
+                                color: 'white'
                             }}>{StringUtils.formatMoneyString(this.state.blockedBalance, false)}</Text>
                         </View>
-                        <View style={{marginRight:20}}>
-                            <TouchableOpacity style={{flexDirection:'row',marginTop:10,paddingLeft:22,alignItems:'center'}}
-                            onPress={()=>this.show()}>
-                                <UIImage source={questionImage_white} style={{width:13,height:13,marginRight:3}}/>
-                                <UIText value={'提现说明'} style={{fontFamily: "PingFang-SC-Medium", fontSize: 11, color: "#ffffff"}}/>
+                        <View style={{ marginRight: 20 }}>
+                            <TouchableOpacity
+                                style={{ flexDirection: 'row', marginTop: 10, paddingLeft: 22, alignItems: 'center' }}
+                                onPress={() => this.show()}>
+                                <UIImage source={questionImage_white}
+                                         style={{ width: 13, height: 13, marginRight: 3 }}/>
+                                <UIText value={'提现说明'} style={{ fontSize: 11, color: 'white' }}/>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -103,7 +109,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
     };
     show = () => {
         this.setState({
-            modalVisible: true,
+            modalVisible: true
         });
     };
     _onPress = () => {
@@ -111,13 +117,14 @@ export default class WaitingForWithdrawCashPage extends BasePage {
             modalVisible: false
         });
     };
-    close=()=>{
+    close = () => {
         this.setState({
             modalVisible: false
         });
-    }
-    renderShowCommand(){
-        return(
+    };
+
+    renderShowCommand() {
+        return (
             <CommModal onRequestClose={this.close}
                        visible={this.state.modalVisible}
                        transparent={true}>
@@ -134,7 +141,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                         width: ScreenUtils.px2dp(290),
                         height: ScreenUtils.px2dp(360),
                         alignSelf: 'center',
-                        position: 'absolute',
+                        position: 'absolute'
                     }}>
                         <ImageBackground source={topicShow} style={{
                             width: ScreenUtils.px2dp(290),
@@ -144,28 +151,28 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                         }}>
                             <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }}>待提现账户说明</Text>
                         </ImageBackground>
-                        <View style={{marginLeft:ScreenUtils.px2dp(22)}}>
-                        <Text style={{
-                            marginTop: ScreenUtils.px2dp(25),
-                            color: '#000000',
-                            fontSize: ScreenUtils.px2dp(15)
-                        }}>什么是待提现账户？</Text>
-                        <Text style={{
-                            marginTop: ScreenUtils.px2dp(10),
-                            color: '#666666',
-                            fontSize: ScreenUtils.px2dp(13),
-                        }}>{`待提现账户为用户收益明细账户，可通过待提现账户查看收益情况`}</Text>
-                        </View>
-                        <View style={{marginLeft:ScreenUtils.px2dp(22)}}>
+                        <View style={{ marginLeft: ScreenUtils.px2dp(22) }}>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
-                                color: '#000000',
+                                color: DesignRule.textColor_mainTitle,
+                                fontSize: ScreenUtils.px2dp(15)
+                            }}>什么是待提现账户？</Text>
+                            <Text style={{
+                                marginTop: ScreenUtils.px2dp(10),
+                                color: DesignRule.textColor_secondTitle,
+                                fontSize: ScreenUtils.px2dp(13)
+                            }}>{`待提现账户为用户收益明细账户，可通过待提现账户查看收益情况`}</Text>
+                        </View>
+                        <View style={{ marginLeft: ScreenUtils.px2dp(22) }}>
+                            <Text style={{
+                                marginTop: ScreenUtils.px2dp(25),
+                                color: DesignRule.textColor_mainTitle,
                                 fontSize: ScreenUtils.px2dp(15)
                             }}>为何不能马上提现？</Text>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(10),
-                                color: '#666666',
-                                fontSize: ScreenUtils.px2dp(13),
+                                color: DesignRule.textColor_secondTitle,
+                                fontSize: ScreenUtils.px2dp(13)
                             }}>{`因为您下级或下下级的交易并未完全完成，所以账户中的余额暂时不可马上提现，当交易完成之后，系统回自动提现到您的余额账户`}</Text>
                         </View>
                         <TouchableOpacity style={{
@@ -179,29 +186,51 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                 </View>
 
             </CommModal>
-        )
+        );
     }
+
     renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity>
-                <AccountItem
-                    type={item.type}
-                    time={item.time}
-                    serialNumber={item.serialNumber}
-                    capital={item.capital}
-                    iconImage={item.iconImage}
-                    clickItem={() => {
-                        this.clickItem(index);
-                    }}
-                    capitalRed={item.capitalRed}
-                    needQuestionImage={item.needQuestionImage}
-                />
-            </TouchableOpacity>
+            <View style={styles.Itemcontainer}>
+                <View style={{ height: 90, justifyContent: 'center' }}>
+                    <UIImage source={item.iconImage} style={{ height: 50, width: 50, marginLeft: 16 }}/>
+                </View>
+                <View style={{ flex: 1, marginLeft: 16, marginRight: 16 }}>
+                    <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
+                        <UIText value={item.type} style={{ fontSize: 15 }}/>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{ fontSize: 12, color: DesignRule.textColor_secondTitle }}>预计收入</Text>
+                            <Text style={{ fontSize: 16, color: DesignRule.mainColor }}>{item.capital}</Text>
+                        </View>
+                    </View>
+                    <View style={{
+                        justifyContent: 'space-between',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginTop: 5
+                    }}>
+                        <UIText value={item.time} style={{ fontSize: 15, color: DesignRule.textColor_instruction }}/>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{ fontSize: 12, color: DesignRule.textColor_secondTitle }}>已入账:</Text>
+                            <Text style={{
+                                fontSize: 12,
+                                color: DesignRule.textColor_secondTitle
+                            }}>{item.realBalance === null ? '?' : item.realBalance}</Text>
+                        </View>
+                    </View>
+                </View>
+            </View>
+
         );
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line, marginLeft: 48, marginRight: 48 }}/>
+            <View style={{
+                height: 1,
+                backgroundColor: DesignRule.lineColor_inColorBg,
+                marginLeft: 48,
+                marginRight: 48
+            }}/>
         );
     };
 
@@ -220,87 +249,96 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '销售提成', '推广提成'];
-        let use_type_symbol = ['', '+', '+'];
-        let useLeftImg = ['', salesCommissions, tuiguang];
-        let arrData = this.state.currentPage === 1 ? [] : this.state.viewData;
+        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '推广提成', '任务奖励'];
+        let use_type_symbol = ['', '+', '-'];
+        let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
         Toast.showLoading();
-        MineApi.userBalanceQuery({ page: 1, size: 20, type: 1 }).then((response) => {
+        let arrData = this.currentPage == 1 ? [] : this.state.viewData;
+        MineApi.userBalanceQuery({ page: this.currentPage, size: 20, type: 2 }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
-            if (response.code === 10000) {
+            if (response.code == 10000) {
                 let data = response.data;
-
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
                         arrData.push({
                             type: use_type[item.useType],
                             time: DataUtils.getFormatDate(item.createTime / 1000),
-                            serialNumber: '流水号：' + item.serialNo,
-                            capital: use_type_symbol[item.useType] + item.balance,
+                            capital: use_type_symbol[item.biType] + item.balance,
                             iconImage: useLeftImg[item.useType],
-                            capitalRed: use_type_symbol[item.useType] === '-'
-
+                            realBalance: item.realBalance
                         });
                     });
                 }
-
                 this.setState({
                     viewData: arrData,
                     isEmpty: data.data && data.data.length !== 0 ? false : true
                 });
             } else {
                 this.$toastShow(response.msg);
-                this.setState({
-                    viewData: arrData,
-                    isEmpty:  true
-                });
 
             }
         }).catch(e => {
             Toast.hiddenLoading();
-            if (e.code === 10009) {
-                this.$navigate('login/login/LoginPage');
-            }
+            this.setState({
+                viewData: arrData,
+                isEmpty: true
+            });
         });
     };
     onRefresh = () => {
-        this.setState({currentPage:1},this.getDataFromNetwork());
+        this.currentPage = 1;
+        MineApi.getUser().then(res => {
+            let data = res.data;
+            user.saveUserInfo(data);
+        }).catch(err => {
+            if (err.code === 10009) {
+                this.props.navigation.navigate('login/login/LoginPage');
+            }
+        });
+        this.getDataFromNetwork();
     };
     onLoadMore = (page) => {
-        this.setState({currentPage:this.state.currentPage + 1},this.getDataFromNetwork());
+        this.currentPage++;
+        this.getDataFromNetwork();
     };
 }
 
 const styles = StyleSheet.create({
     mainContainer: {
-        flex: 1, backgroundColor: color.page_background
+        flex: 1, backgroundColor: DesignRule.bgColor
     },
     container: {}, imageBackgroundStyle: {
         position: 'absolute',
-        height: 140,
+        height: 95,
         width: ScreenUtils.width - 30,
         marginLeft: 15,
         marginRight: 15,
         marginTop: 10,
         marginBottom: 10,
-        borderRadius: 15
+        borderRadius: 15,
+        backgroundColor: DesignRule.bgColor_blueCard
     }, rectangleStyle: {
         width: 100,
         height: 44,
         borderWidth: 1,
         borderRadius: 5,
-        borderColor: color.white,
+        borderColor: 'white',
         marginRight: 15,
         justifyContent: 'center',
         marginTop: 20,
         alignItems: 'center'
     }, viewStyle: {
-        height: 140,
+        height: 95,
         marginTop: 10,
         marginBottom: 10,
         marginLeft: 15,
         marginRight: 15
+    }, Itemcontainer: {
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        height: 90,
+        alignItems: 'center'
     }
 });
 

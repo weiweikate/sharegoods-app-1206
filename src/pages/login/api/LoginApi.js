@@ -10,13 +10,17 @@ const api = {
     //验证码登陆
     codeLogin: '/user/userLogin/codeLogin',
     //密码登陆
-    passwordLogin: ['/user/userLogin/passwordLogin'],
+    passwordLogin: '/user/userLogin/passwordLogin',
     //app微信登陆
     appWechatLogin: '/user/userLogin/appWechatLogin',
     //老用户激活注册
     existedUserLogin: '/user/userLogin/existedUserLogin',
     //老用户验证
-    existedUserVerify:'/user/userLogin/existedUserVerify'
+    existedUserVerify:'/user/userLogin/existedUserVerify',
+    //注册领红包
+    userReceivePackage: ['/promotion/promotionPromoter/userReceivePackage',{method:'get'}],
+    //填写授权码
+    updateUserCodeById:  '/user/updateUserCodeById'
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';

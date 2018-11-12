@@ -13,7 +13,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import StarImg from '../src/dj_03.png';
 import StringUtils from '../../../../utils/StringUtils';
-
+import DesignRule from 'DesignRule';
 
 export default class RecommendRow extends Component {
 
@@ -40,8 +40,9 @@ export default class RecommendRow extends Component {
 
     render() {
         const { ...RecommendRowItem } = this.props.RecommendRowItem;
-        const { storeUserList } = RecommendRowItem;
-
+        //bonusNeedMoney总额 tradeBalance本月收入 totalTradeBalance累计收入
+        const { storeUserList, tradeBalance = 0, bonusNeedMoney = 0, totalTradeBalance = 0 } = RecommendRowItem;
+        let widthScale = bonusNeedMoney === 0 ? 0 : ((tradeBalance / bonusNeedMoney > 1) ? 1 : tradeBalance / bonusNeedMoney);
         const storeStar = RecommendRowItem.storeStarId;
         const starsArr = [];
         if (storeStar && typeof storeStar === 'number') {
@@ -75,17 +76,17 @@ export default class RecommendRow extends Component {
                         <View style={{
                             flexDirection: 'row', alignSelf: 'center',
                             width: ScreenUtils.autoSizeWidth(200), height: 5, marginTop: 6,
-                            borderRadius: 2, borderWidth: 0.5, borderColor: '#D51234'
+                            borderRadius: 2, borderWidth: 0.5, borderColor: DesignRule.bgColor_btn
                         }}>
                             <View style={{
-                                width: 44 / 100 * ScreenUtils.autoSizeWidth(200),
-                                backgroundColor: '#D51234'
+                                width: widthScale * ScreenUtils.autoSizeWidth(200),
+                                backgroundColor: DesignRule.bgColor_btn
                             }}/>
                         </View>
                         <Text style={{
                             marginTop: 8, marginBottom: 14.5, paddingHorizontal: 21.5,
-                            color: '#666666', fontSize: 10
-                        }}>{`距离下一次分红还差${1234}元`}</Text>
+                            color: DesignRule.textColor_secondTitle, fontSize: 10
+                        }}>{`距离下一次分红还差${(bonusNeedMoney - tradeBalance > 0) ? (bonusNeedMoney - tradeBalance) : 0}元`}</Text>
                     </View>
                     <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
                     <View style={{ width: 44 + 70, alignItems: 'center', justifyContent: 'center' }}>
@@ -108,18 +109,18 @@ export default class RecommendRow extends Component {
 
                 <View style={styles.bottomContainer}>
                     <View style={styles.moneyContainer}>
-                        <Text style={styles.moneyText}>店铺成员</Text>
-                        <Text style={styles.moneyText}>{RecommendRowItem.storeUserNum || 0}</Text>
+                        <Text style={styles.containTop}>店铺成员</Text>
+                        <Text style={styles.containBottom}>{RecommendRowItem.storeUserNum || 0}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
-                        <Text style={styles.moneyText}>店铺本月收入</Text>
-                        <Text style={styles.moneyText}>{`${RecommendRowItem.tradeVolume || 0}元`}</Text>
+                        <Text style={styles.containTop}>店铺本月收入</Text>
+                        <Text style={styles.containBottom}>{`${tradeBalance || 0}元`}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
-                        <Text style={styles.moneyText}>店铺累计收入</Text>
-                        <Text style={styles.moneyText}>{`${RecommendRowItem.totalTradeVolume || 0}元`}</Text>
+                        <Text style={styles.containTop}>店铺累计收入</Text>
+                        <Text style={styles.containBottom}>{`${totalTradeBalance || 0}元`}</Text>
                     </View>
                 </View>
 
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
     icon: {
         width: 50,
         height: 50,
-        backgroundColor: '#eee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 25
     },
     tittleContainer: {
@@ -164,35 +165,34 @@ const styles = StyleSheet.create({
         flex: 1
     },
     name: {
-        color: '#212121',
-        fontFamily: 'PingFang-SC-Medium',
+        color: DesignRule.textColor_mainTitle,
         fontSize: 14
     },
     member: {
-        color: '#666666',
-        fontFamily: 'PingFang-SC-Medium',
+        marginTop: 9,
+        color: DesignRule.textColor_instruction,
         fontSize: 11
     },
     joinBtn: {
         marginTop: 17,
         justifyContent: 'center',
         alignItems: 'center',
-        width: 70,
         height: 22,
         borderRadius: 11,
-        backgroundColor: '#D51243'
+        backgroundColor: DesignRule.bgColor_btn
     },
     joinText: {
+        fontFamily: 'PingFangSC-Medium',
         color: 'white',
-        fontFamily: 'PingFang-SC-Medium',
-        fontSize: 12
+        fontSize: 12,
+        paddingHorizontal: 8
     },
 
     midFlatList: {
         marginTop: 17
     },
     itemIcon: {
-        backgroundColor: '#eee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         width: 40,
         height: 40,
         borderRadius: 20
@@ -208,9 +208,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    moneyText: {
-        color: '#666666',
-        fontFamily: 'PingFang-SC-Medium',
+    containTop: {
+        fontFamily: 'PingFangSC-Light',
+        color: DesignRule.textColor_secondTitle,
+        fontSize: 10
+    },
+    containBottom: {
+        fontFamily: 'PingFangSC-Medium',
+        marginTop: 7,
+        color: DesignRule.textColor_secondTitle,
         fontSize: 11
     }
 

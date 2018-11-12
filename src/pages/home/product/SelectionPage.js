@@ -13,6 +13,7 @@ import SelectionAmountView from './components/SelectionAmountView';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import Modal from 'CommModal';
+import DesignRule from 'DesignRule';
 
 
 export default class SelectionPage extends Component {
@@ -80,6 +81,7 @@ export default class SelectionPage extends Component {
             this._indexCanSelectedItems();
 
         });
+        this.modal && this.modal.open();
     };
 
     _clickItemAction = (item, indexOfProp) => {
@@ -286,6 +288,7 @@ export default class SelectionPage extends Component {
         const { afterAmount, type } = this.state.propData;
         return (
             <Modal
+                ref={(ref)=>this.modal = ref}
                 animationType="none"
                 transparent={true}
                 visible={this.state.modalVisible}
@@ -312,11 +315,11 @@ export default class SelectionPage extends Component {
                             <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
                                 <View style={{
                                     height: 49,
-                                    backgroundColor: '#D51243',
+                                    backgroundColor: DesignRule.mainColor,
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }}>
-                                    <Text style={{ fontSize: 16, color: '#FFFFFF' }}>确认</Text>
+                                    <Text style={{ fontSize: 16, color: 'white' }}>确认</Text>
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>

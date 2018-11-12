@@ -24,7 +24,11 @@ import UserSingleItem from '../../components/UserSingleItem';
 import BusinessUtils from '../../components/BusinessUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
-
+import DesignRule from 'DesignRule';
+const htmlUrl = __DEV__ ?
+    'https://testh5.sharegoodsmall.com/static/protocol/privacy.html'
+    :
+    'https://testh5.sharegoodsmall.com/static/protocol/privacy.html';
 export default class IDVertify2Page extends BasePage {
 
     constructor(props) {
@@ -78,7 +82,7 @@ export default class IDVertify2Page extends BasePage {
                         <RNTextInput
                             style={styles.inputTextStyle}
                             onChangeText={text => this.setState({ name: text })}
-                            placeholder={'请输入真实姓名'}
+                            placeholder={'请填写证件上的真实姓名'}
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
@@ -94,7 +98,7 @@ export default class IDVertify2Page extends BasePage {
                         <RNTextInput
                             style={styles.inputTextStyle}
                             onChangeText={text => this.setState({ idNumber: text })}
-                            placeholder={'请输入证件号'}
+                            placeholder={'请填写证件上的证件号码'}
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
@@ -113,23 +117,22 @@ export default class IDVertify2Page extends BasePage {
                     </View>
                     <TouchableOpacity style={{
                         marginTop: 42,
-                        backgroundColor: color.red,
+                        backgroundColor: StringUtils.isNoEmpty(this.state.name) && StringUtils.isNoEmpty(this.state.idNumber) && StringUtils.isNoEmpty(this.state.backIdCard) && StringUtils.isNoEmpty(this.state.frontIdCard) ? color.red : '#cccccc',
                         width: ScreenUtils.width - 84,
                         height: 45,
                         marginLeft: 42,
                         marginRight: 42,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        borderRadius: 5
+                        borderRadius: 25
                     }} onPress={() => this.commit()}>
-                        <Text style={{ fontSize: 15, color: 'white' }}
+                        <Text style={{ fontSize: 17, color: 'white' }}
                               onPress={() => this.toLoginOut()}>提交</Text>
                     </TouchableOpacity>
                     <View style={{ alignItems: 'center' }}>
                         <UIText value={'（信息仅用户自己可见）'} style={{
-                            fontFamily: 'PingFang-SC-Medium',
                             fontSize: 13,
-                            color: '#999999',
+                            color: DesignRule.textColor_instruction,
                             marginTop: 7
                         }}/>
                         <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }}
@@ -139,13 +142,13 @@ export default class IDVertify2Page extends BasePage {
                             <Image source={this.state.agreeAggreement ? addressSelect : addressUnselect}
                                    style={{ width: 11, height: 11 }}/>
                             <UIText value={'提交认证代表您已同意'}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#999999' }}/>
+                                    style={{ fontSize: 11, color: DesignRule.textColor_instruction }}/>
                             <UIText value={'《实名认证协议》'}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#D62B56' }}
+                                    style={{ fontSize: 11, color: '#F00006' }}
                                     onPress={() => {
                                         this.$navigate('HtmlPage', {
-                                            title: '用户协议内容',
-                                            uri: 'https://reg.163.com/agreement_mobile_ysbh_wap.shtml?v=20171127'
+                                            title: '实名认证协议',
+                                            uri: htmlUrl
                                         });
                                     }}/>
                         </TouchableOpacity>
@@ -179,15 +182,15 @@ export default class IDVertify2Page extends BasePage {
     };
     renderHintInformation = () => {
         return (
-            <View style={{ height: 50, backgroundColor: '#e60012', justifyContent: 'center', paddingLeft: 15 }}>
+            <View style={{ height: 50, backgroundColor: DesignRule.mainColor, justifyContent: 'center', paddingLeft: 15 }}>
                 <UIText value={'请仔细检查姓名和证件号是否有误\n并重新上传图片，提交审核'}
-                        style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, lineHeight: 18, color: '#ffffff' }}/>
+                        style={{ fontSize: 13, lineHeight: 18, color: 'white' }}/>
             </View>
         );
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.gray_EEE }}/>
+            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
     renderWideLine = () => {
@@ -200,6 +203,9 @@ export default class IDVertify2Page extends BasePage {
             <View>
                 <TakePhotoModal
                     isShow={this.state.isShowTakePhotoModal}
+                    ref = {(ref)=>{
+                        this.takePhoteModal = ref;
+                    }}
                     closeWindow={() => {
                         this.setState({ isShowTakePhotoModal: false });
                     }}
@@ -301,29 +307,27 @@ export default class IDVertify2Page extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: color.page_background
+        flex: 1, backgroundColor: DesignRule.bgColor
     }, itemTitleView: {
         height: 48,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: DesignRule.bgColor,
         paddingLeft: 14,
         justifyContent: 'center'
     }, itemTitleText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     }, blackText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     grayText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
-        color: '#999999'
+        color: DesignRule.textColor_instruction
     }, accountStyle: {
         marginLeft: 16, color: color.loginTextBlack, width: 60
     }, inputTextStyle: {
-        marginLeft: 20, height: 40, flex: 1, backgroundColor: 'white', fontSize: 14
+         height: 40, flex: 1, backgroundColor: 'white', fontSize: 14,textAlign:'right',marginRight:15
     }
 });
+
 

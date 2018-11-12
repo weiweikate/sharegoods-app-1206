@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    StyleSheet,
     View,
     TouchableOpacity
 } from 'react-native';
@@ -8,13 +7,13 @@ import BasePage from '../../../BasePage';
 import {
     UIText, UIImage
 } from '../../../components/ui';
-import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import changeGoods from '../res/shouhou_icon_huanhuo_nor.png';
 import refuseGoodsAndMoney from '../res/shouhou_icon_tuihuo_nor.png';
 import refuseMoney from '../res/shouhou_icon_tuikuan_nor.png';
 import GoodsItem from '../components/GoodsGrayItem';
 import DateUtils from '../../../utils/DateUtils';
+import DesignRule from 'DesignRule';
 
 class AfterSaleServiceHomePage extends BasePage {
     constructor(props) {
@@ -45,7 +44,7 @@ class AfterSaleServiceHomePage extends BasePage {
     _render() {
         let productData = this.params.pageData.orderProductList[this.state.index];
         return (
-            <View style={styles.container}>
+            <View style={DesignRule.style_container}>
                 {this.renderWideLine()}
                 {this.renderServiceType()}
                 {this.renderLine()}
@@ -66,17 +65,17 @@ class AfterSaleServiceHomePage extends BasePage {
 
     renderOrderNum = () => {
         return (
-            <View style={{ height: 40, backgroundColor: color.white, justifyContent: 'center' }}>
+            <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
                 <UIText value={'订单编号：' + this.state.pageData.orderNum}
-                        style={{ color: color.black_222, fontSize: 13, marginLeft: 16 }}/>
+                        style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
     };
     renderOrderTime = () => {
         return (
-            <View style={{ height: 40, backgroundColor: color.white, justifyContent: 'center' }}>
+            <View style={{ height: 40, backgroundColor: 'white', justifyContent: 'center' }}>
                 <UIText value={'下单时间：' + DateUtils.getFormatDate(this.state.pageData.createTime / 1000)}
-                        style={{ color: color.black_222, fontSize: 13, marginLeft: 16 }}/>
+                        style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
             </View>
         );
     };
@@ -89,24 +88,25 @@ class AfterSaleServiceHomePage extends BasePage {
         let productData = this.params.pageData.orderProductList[this.state.index];
         let arr = [];
         for (let i = 0; i < image.length; i++) {
-           if ((productData.restrictions & status[i]) !== status[i]) {
-               arr.push(
-                   <TouchableOpacity style={{
-                       flexDirection: 'row',
-                       height: 79,
-                       alignItems: 'center',
-                       alignContent: 'center',
-                       marginBottom: 10,
-                       backgroundColor: color.white
-                   }} onPress={() => this.pageSelect(i)} key={i}>
-                       <UIImage source={image[i]} style={{ width: 50, height: 50, marginBottom: 10, marginLeft: 21 }}/>
-                       <View style={{ marginLeft: 10 }}>
-                           <UIText value={title[i]} style={{ fontSize: 16, color: color.black }}/>
-                           <UIText value={content[i]} style={{ fontSize: 15, color: color.gray_666 }}/>
-                       </View>
-                   </TouchableOpacity>
-               );
-           }
+            if ((productData.restrictions & status[i]) !== status[i]) {
+                arr.push(
+                    <TouchableOpacity style={{
+                        flexDirection: 'row',
+                        height: 79,
+                        alignItems: 'center',
+                        alignContent: 'center',
+                        marginBottom: 10,
+                        backgroundColor: 'white'
+                    }} onPress={() => this.pageSelect(i)} key={i}>
+                        <UIImage source={image[i]} style={{ width: 50, height: 50, marginBottom: 10, marginLeft: 21 }}/>
+                        <View style={{ marginLeft: 10 }}>
+                            <UIText value={title[i]} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
+                            <UIText value={content[i]}
+                                    style={{ fontSize: 15, color: DesignRule.textColor_secondTitle }}/>
+                        </View>
+                    </TouchableOpacity>
+                );
+            }
         }
         return arr;
     };
@@ -116,39 +116,39 @@ class AfterSaleServiceHomePage extends BasePage {
             case 0:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 0,
-                    orderProductId: orderProductId,
+                    orderProductId: orderProductId
                 });
                 break;
             case 1:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 1,
-                    orderProductId: orderProductId,
+                    orderProductId: orderProductId
                 });
                 break;
             case 2:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 2,
                     orderProductId: orderProductId,
-                    productId: this.params.pageData.orderProductList[this.state.index].productId,
+                    productId: this.params.pageData.orderProductList[this.state.index].productId
                 });
                 break;
         }
     };
     renderServiceType = () => {
         return (
-            <View style={{ backgroundColor: color.white, height: 40, justifyContent: 'center', paddingLeft: 15 }}>
-                <UIText value={'服务类型'} style={{ color: color.black_222, fontSize: 13 }}/>
+            <View style={{ backgroundColor: 'white', height: 40, justifyContent: 'center', paddingLeft: 15 }}>
+                <UIText value={'服务类型'} style={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}/>
             </View>
         );
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line }}/>
+            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
 
@@ -192,15 +192,9 @@ class AfterSaleServiceHomePage extends BasePage {
                 this.$navigate('home/product/ProductDetailPage', { productId: productData.productId });
                 break;
             default:
-                 break;
+                break;
         }
     };
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1, backgroundColor: color.page_background
-    }
-});
 
 export default AfterSaleServiceHomePage;

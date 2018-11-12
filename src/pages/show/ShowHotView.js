@@ -1,83 +1,112 @@
 /**
  * 精选热门
  */
-import React, {Component} from 'react'
-import { View, StyleSheet, Text } from 'react-native'
-import Waterfall from '../../components/ui/WaterFall'
-import ShowBannerView from './ShowBannerView'
-import ShowChoiceView from './ShowChoiceView'
-import ShowHotScrollView from './ShowHotScrollView'
-import {observer} from 'mobx-react'
-import { ShowRecommendModules, tag } from './Show'
-import ScreenUtils from '../../utils/ScreenUtils'
-const {  px2dp } = ScreenUtils
-import ItemView from './ShowHotItem'
+import React, { Component } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import Waterfall from '../../components/ui/WaterFall';
+import ShowBannerView from './ShowBannerView';
+import ShowChoiceView from './ShowChoiceView';
+import ShowHotScrollView from './ShowHotScrollView';
+import { observer } from 'mobx-react';
+import { ShowRecommendModules, tag } from './Show';
+import ScreenUtils from '../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
-const imgWidth = px2dp(168)
+const { px2dp } = ScreenUtils;
+import ItemView from './ShowHotItem';
+
+const imgWidth = px2dp(168);
 
 @observer
 export default class ShowHotView extends Component {
     constructor(props) {
-        super(props)
-        this.recommendModules = new ShowRecommendModules()
+        super(props);
+        this.recommendModules = new ShowRecommendModules();
     }
-    componentDidMount() {
-        this.recommendModules.loadRecommendList({generalize: tag.Recommend}).then(data => {
 
-            this.waterfall.addItems(data || [])
-        })
+    componentDidMount() {
+        this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
+            this.waterfall.addItems(data || []);
+        });
     }
+
     infiniting(done) {
         setTimeout(() => {
-            this.recommendModules.getMoreRecommendList({generalize: tag.Recommend}).then(data => {
-                this.waterfall.addItems(data || [])
-            })
-            done()
-        }, 1000)
+            this.recommendModules.getMoreRecommendList({ generalize: tag.Recommend }).then(data => {
+                this.waterfall.addItems(data || []);
+            });
+            done();
+        }, 1000);
     }
+
     refreshing(done) {
         setTimeout(() => {
-            done()
-        }, 1000)
+            this.waterfall.clear()
+            this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
+                this.waterfall.addItems(data || []);
+            });
+            done();
+        }, 1000);
     }
+
     _gotoDetail(data) {
-        const { navigation } = this.props
-        navigation.navigate('show/ShowDetailPage',  {id: data.id})
+        const { navigation } = this.props;
+        navigation.navigate('show/ShowDetailPage', { id: data.id });
     }
+
     renderItem = (data) => {
-        let imgWide = data.imgWide ? data.imgWide : 1
-        let imgHigh = data.imgHigh ? data.imgHigh : 1
-        let imgHeight = (imgHigh / imgWide) * imgWidth
-        return <ItemView imageStyle={{height: imgHeight}}  data={data} press={()=>{this._gotoDetail(data)}}/>
-    }
+        let imgWide = 1
+        let imgHigh = 1
+        if (data.coverImg) {
+            imgWide = data.coverImgWide ? data.coverImgWide : 1;
+            imgHigh = data.coverImgHigh ? data.coverImgHigh : 1;
+        } else {
+            imgWide = data.imgWide ? data.imgWide : 1;
+            imgHigh = data.imgHigh ? data.imgHigh : 1;
+        }
+        let imgHeight = (imgHigh / imgWide) * imgWidth;
+        return <ItemView
+            imageStyle={{ height: imgHeight }}
+            data={data}
+            press={() => {
+                this._gotoDetail(data);
+            }}
+            imageUrl={ data.coverImg }
+            />;
+    };
     renderHeader = () => {
         return <View><ShowBannerView navigation={this.props.navigation}/>
-        <ShowChoiceView navigation={this.props.navigation}/>
-        <ShowHotScrollView navigation={this.props.navigation}/>
+            <ShowChoiceView navigation={this.props.navigation}/>
+            <ShowHotScrollView navigation={this.props.navigation}/>
             <View style={styles.titleView}>
                 <Text style={styles.recTitle}>推荐</Text>
             </View>
-        </View>
-    }
-    _keyExtractor = (data) => data.id + ''
+        </View>;
+    };
+    _keyExtractor = (data) => data.id + '';
+
     render() {
-        return(
+        return (
             <View style={styles.container}>
                 <Waterfall
                     space={10}
-                    ref={(ref)=>{this.waterfall = ref}}
+                    ref={(ref) => {
+                        this.waterfall = ref;
+                    }}
                     columns={2}
                     infinite={true}
                     hasMore={true}
                     renderItem={item => this.renderItem(item)}
                     // renderInfinite={loading => this.renderLoadMore(loading)}
-                    renderHeader={()=>this.renderHeader()}
-                    containerStyle={{marginLeft: 15, marginRight: 15}}
+                    renderHeader={() => this.renderHeader()}
+                    containerStyle={{ marginLeft: 15, marginRight: 15 }}
                     keyExtractor={(data) => this._keyExtractor(data)}
-                    infiniting={(done)=>this.infiniting(done)}
+                    infiniting={(done) => this.infiniting(done)}
+                    showsVerticalScrollIndicator={false}
+                    refreshing={(done) => this.refreshing(done)}
                 />
             </View>
-        )
+        );
     }
 }
 
@@ -91,8 +120,8 @@ let styles = StyleSheet.create({
         justifyContent: 'center'
     },
     recTitle: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
         fontWeight: '600'
     }
-})
+});

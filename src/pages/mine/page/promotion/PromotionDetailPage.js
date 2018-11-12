@@ -25,9 +25,14 @@ import EmptyUtils from '../../../../utils/EmptyUtils';
 import RefreshList from '../../../../components/ui/RefreshList';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
+import apiEnvironment from '../../../../api/ApiEnvironment';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 type Props = {};
+import CommShareModal from '../../../../comm/components/CommShareModal'
+import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
+
 export default class PromotionDetailPage extends BasePage<Props> {
     constructor(props) {
         super(props);
@@ -35,7 +40,8 @@ export default class PromotionDetailPage extends BasePage<Props> {
             data: [],
             isEmpty: false,
             showCountDown: false,
-            countDownStr: ''
+            countDownStr: '',
+            loadingState: PageLoadingState.loading,
         };
         this.date = null;
         this.currentPage = 1;
@@ -44,6 +50,12 @@ export default class PromotionDetailPage extends BasePage<Props> {
     $navigationBarOptions = {
         title: '我的推广订单',
         show: true// false则隐藏导航
+    };
+
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+        };
     };
 
 
@@ -58,7 +70,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
     }
 
     startTimer = () => {
-        if (this.params.status === 0 || this.params.status === 1) {
+        if (this.params.status === 1) {
             this.date = Date.parse(new Date());
             if (this.date < this.params.endTime) {
                 this.timer = setInterval(() => {
@@ -67,17 +79,24 @@ export default class PromotionDetailPage extends BasePage<Props> {
                         let seconds = parseInt((this.params.endTime - this.date) / 1000);
                         this.setState({
                             showCountDown: true,
-                            countDownStr: `剩余推广时间： ${this.timeFormat(seconds)}`
+                            countDownStr: `剩余推广时间： ${this.timeFormat(seconds)}`,
+                            loadingState: PageLoadingState.success
                         });
                     } else {
                         this.setState({
-                            showCountDown: false
+                            showCountDown: false,
+                            loadingState: PageLoadingState.success
+
                         });
                         this.timer && clearTimeout(this.timer);
                     }
                 }, 1000);
             }
 
+        }else {
+            this.setState({
+                loadingState: PageLoadingState.success
+            })
         }
     };
 
@@ -102,7 +121,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
         MineApi.getPromotionReceiveRecord({
             page: this.currentPage,
             pageSize: 15,
-            packageId: this.params.packageId
+            packageId: this.params.id
         }).then(res => {
             let arrs = this.currentPage == 1 ? [] : this.state.data;
             if (!EmptyUtils.isEmptyArr(res.data.data)) {
@@ -127,12 +146,12 @@ export default class PromotionDetailPage extends BasePage<Props> {
     //下拉加载更多
     onLoadMore = () => {
         this.currentPage++;
-        this.getUserPromotionPromoter();
+        this.getPromotionReceiveRecord();
     };
     //刷新
     onRefresh = () => {
         this.currentPage = 1;
-        this.getUserPromotionPromoter();
+        this.getPromotionReceiveRecord();
     };
 
 
@@ -147,7 +166,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
                     height: px2dp(45),
                     justifyContent: 'space-between',
                     paddingHorizontal: px2dp(15),
-                    borderBottomColor: '#DDDDDD',
+                    borderBottomColor: DesignRule.lineColor_inGrayBg,
                     borderBottomWidth: px2dp(0.5)
                 }}>
                     <Text style={styles.blackTextStyle}>
@@ -171,7 +190,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
 
     _bottomButtonRender() {
         return (
-            <TouchableWithoutFeedback onPress={() => alert('a')}>
+            <TouchableWithoutFeedback onPress={() => {this.shareModal.open()}}>
                 <View style={styles.bottomButtonWrapper}>
                     <Text style={styles.bottomButtonTextStyle}>
                         分享我的推广
@@ -185,7 +204,7 @@ export default class PromotionDetailPage extends BasePage<Props> {
         return (
             <View style={{
                 width: ScreenUtils.width, height: px2dp(20), justifyContent: 'center',
-                alignItems: 'center', backgroundColor: '#D51243'
+                alignItems: 'center', backgroundColor: DesignRule.mainColor
             }}>
                 <Text style={{ color: 'white', fontSize: px2dp(13), includeFontPadding: false }}>
                     {this.state.countDownStr}
@@ -199,15 +218,33 @@ export default class PromotionDetailPage extends BasePage<Props> {
             <View style={styles.container}>
                 {this.state.showCountDown ? this._countDownRender() : null}
                 <RefreshList
+                    style={{marginBottom:ScreenUtils.safeBottom}}
                     data={this.state.data}
                     renderItem={this._itemRender}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
                     // extraData={this.state}
                     isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无发起推广'}
+                    emptyTip={'暂无数据'}
                 />
-                {this.state.showCountDown ? this._bottomButtonRender() : null}
+                {this._bottomButtonRender()}
+                <CommShareModal ref={(ref) => this.shareModal = ref}
+                                type={'promotionShare'}
+                                webJson={{
+                                    title: '邀请好友免费领取福利',
+                                    dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/promote?id=${this.params.id}`,
+                                    thumImage: 'logo.png',
+                                }}
+                                miniProgramJson={{
+                                    title: `邀请好友免费领取福利`,
+                                    dec:'属你的惊喜福利活动\n数量有限赶快参与吧～',
+                                    thumImage: 'logo.png',
+                                    hdImageURL: '',
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/promote?id=${this.params.id}`,
+                                    miniProgramPath: `/pages/index/index?type=100&id=${this.params.id}`
+                                }}
+                />
             </View>
         );
     }
@@ -216,11 +253,11 @@ export default class PromotionDetailPage extends BasePage<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7',
+        backgroundColor: DesignRule.bgColor,
         paddingBottom: px2dp(48)
     },
     grayButtonWrapper: {
-        borderColor: '#DDDDDD',
+        borderColor: DesignRule.lineColor_inGrayBg,
         borderWidth: px2dp(0.5),
         borderRadius: px2dp(5),
         width: px2dp(80),
@@ -229,7 +266,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     redButtonWrapper: {
-        borderColor: '#D51243',
+        borderColor: DesignRule.mainColor,
         borderWidth: px2dp(1),
         borderRadius: px2dp(5),
         width: px2dp(80),
@@ -243,16 +280,16 @@ const styles = StyleSheet.create({
         paddingVertical: px2dp(15)
     },
     blackTextStyle: {
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(16),
         fontWeight: 'bold'
     },
     grayTextStyle: {
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13)
     },
     redTextStyle: {
-        color: '#D51243',
+        color: DesignRule.mainColor,
         fontSize: px2dp(13)
     },
     bottomTextWrapper: {
@@ -261,7 +298,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: px2dp(15)
     },
     bottomTextStyle: {
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         fontSize: px2dp(13)
     },
     bottomButtonWrapper: {
@@ -271,11 +308,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         left: 0,
-        bottom: 0,
-        backgroundColor: '#D51243'
+        bottom: ScreenUtils.safeBottom,
+        backgroundColor: DesignRule.mainColor
     },
     bottomButtonTextStyle: {
-        color: 'white',
-        fontSize: px2dp(13)
+        color: DesignRule.white,
+        fontSize: px2dp(17)
     }
 });

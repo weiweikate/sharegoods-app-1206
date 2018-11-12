@@ -8,6 +8,7 @@ import rightImg from './res/right_arrow.png';
 import user from '../../model/user';
 import { observer } from 'mobx-react';
 import { MemberModule } from './Modules'
+import DesignRule from 'DesignRule';
 
 @observer
 export default class HomeUserView extends Component {
@@ -27,29 +28,42 @@ export default class HomeUserView extends Component {
             return <View/>;
         }
         let { levelName, experience } = user
-        const { memberLevels, totalExp, levelCount, levelNumber } = this.memberModule
-        console.log('experience', experience, levelName, totalExp, experience / totalExp, levelNumber)
+        const { memberLevels, levelCount } = this.memberModule
+
         experience = experience ? experience : 0
         let items = [];
         let levelNames = [];
         let lastExp = 0
-        let left = 0
         let total = px2dp(220) / levelCount
+        let expItems = []
         memberLevels.map((level, index) => {
             levelNames.push( <Text style={styles.level} key={'text' + index}>{level.name}</Text>)
             items.push(<View key={'circle' + index} style={styles.smallCircle}/>)
-            if (index === levelCount - 1) {
-                return
-            }
             if (level.name <= levelName) {
-                left += total
                 let otherExp =  experience - lastExp
-                console.log('experience - level.upgradeExp', experience - lastExp, otherExp)
-                items.push(<View key={'line' + index} style={[styles.progressLine, { backgroundColor: '#E7AE39'}]}>
-                    <View style={{flex: otherExp}}/><View style={{flex: lastExp - otherExp, backgroundColor: '#9B6D26' }}/>
-                </View>)
+                let currentExp = level.upgradeExp - lastExp
+                if (experience === 0) {
+                    items.push(<View key={'line' + index} style={[styles.progressLine, { backgroundColor: '#E7AE39'}]}>
+                         <View style={{flex: 1, backgroundColor: '#9B6D26' }}/>
+                    </View>)
+                } else {
+                    index !== levelCount - 1 && items.push(<View key={'line' + index} style={[styles.progressLine, { backgroundColor: '#E7AE39'}]}>
+                        <View style={{flex: otherExp}}/><View style={{flex: lastExp - otherExp, backgroundColor: '#9B6D26' }}/>
+                    </View>)
+                }
+                if (level.name === levelName) {
+                    let left = (otherExp / currentExp > 1 ? 1 : otherExp / currentExp)  *  total
+                    expItems.push(<View key={'user' + index} style={[styles.block, {paddingLeft: left}]}>
+                            <View style={[styles.levelBottomTextBg]}>
+                                <Text style={ styles.levelBottomText }> {experience} </Text>
+                            </View>
+                    </View>)
+                } else {
+                    index !== levelCount - 1 &&  expItems.push(<View key={'user' + index} style={styles.block}/>)
+                }
             } else {
-                items.push(<View key={'line' + index} style={[styles.progressLine]}/>)
+                index !== levelCount - 1 && items.push(<View key={'line' + index} style={[styles.progressLine]}/>)
+                index !== levelCount - 1 && expItems.push(<View key={'user' + index} style={styles.block}/>)
             }
             lastExp = level.upgradeExp
         });
@@ -68,10 +82,8 @@ export default class HomeUserView extends Component {
                             <View style={styles.progress}>
                                 {items}
                             </View>
-                            <View style={[styles.experience, {paddingLeft: left}]}>
-                                <View style={[styles.levelBottomTextBg]}>
-                                    <Text style={ styles.levelBottomText }> {experience} </Text>
-                                </View>
+                            <View style={styles.experience}>
+                                {expItems}
                             </View>
                         </View>
                     </View>
@@ -102,7 +114,7 @@ let styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: -px2dp(38) / 2
+        marginLeft: -px2dp(10)
     },
     levelBottomText: {
         color: '#9B6D26',
@@ -119,7 +131,7 @@ let styles = StyleSheet.create({
     title: {
         marginTop: px2dp(10),
         marginLeft: px2dp(10),
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(14)
     },
     left: {
@@ -171,7 +183,10 @@ let styles = StyleSheet.create({
         borderRadius: px2dp(25),
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        shadowColor: '#e7ae39',
+        shadowOffset: {width: 2, height: 2},
+        shadowOpacity: 0.6
     },
     progress: {
         height : px2dp(10),
@@ -211,5 +226,9 @@ let styles = StyleSheet.create({
         marginTop: px2dp(15),
         marginLeft: px2dp(14),
         flexDirection: 'row'
+    },
+    block: {
+        height: 15,
+        flex: 1
     }
 });

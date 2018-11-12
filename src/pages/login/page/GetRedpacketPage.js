@@ -5,17 +5,34 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
-    ImageBackground
+    ImageBackground,
+    TouchableWithoutFeedback
 } from 'react-native';
-import ColorUtil from '../../../utils/ColorUtil';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import bridge from '../../../utils/bridge';
+import CommModal from '../../../comm/components/CommModal';
+import { NavigationActions } from 'react-navigation';
+import LoginAPI from '../api/LoginApi';
+import StringUtils from '../../../utils/StringUtils';
+// import { TimeDownUtils } from '../../../utils/TimeDownUtils';
+import res from '../../../comm/res';
+const closeIcon = res.button.tongyong_btn_close_white;
+import DesignRule from '../../../constants/DesignRule';
+
 
 export default class GetRedpacketPage extends BasePage {
     constructor(props) {
         super(props);
+        this.state = {
+            showRedAlter: false,
+            // redPacketData: null
+            phone: '*****',
+            price: 0
+        };
+
+
     }
 
     // 导航配置
@@ -32,6 +49,119 @@ export default class GetRedpacketPage extends BasePage {
         );
     };
 
+    _renderCouponModal() {
+        const { px2dp } = ScreenUtils;
+        let view = (
+            <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
+                <Text style={{ color: 'white', fontSize: px2dp(24) }}>
+                    领取成功
+                </Text>
+                <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
+                    可前往我的-优惠券查看
+                </Text>
+            </View>
+        );
+
+        // let button = (
+        //     <TouchableWithoutFeedback onPress={this.getCoupon}>
+        //         <Text
+        //             style={{ position: 'absolute', top: px2dp(220), left: px2dp(115), color: '#80522A', fontSize: 14 }}>
+        //             {`立即\n领取`}
+        //         </Text>
+        //     </TouchableWithoutFeedback>
+        // );
+
+        return (
+            // this.state.canGetCoupon
+            <CommModal
+                ref={(ref) => {
+                    this.modal = ref;
+                }}
+                visible={this.state.showRedAlter}>
+                <TouchableOpacity
+                    onPress={
+                        () => {
+                            this._closeModal();
+                        }
+                    }
+                >
+                    <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center', justifyContent: 'center' }}>
+                        <ImageBackground source={LoginAndRegistRes.reg_bigRedPacketBg} style={{
+                            height: px2dp(362), width: px2dp(257),
+                            alignItems: 'center'
+                        }}>
+                            <Text style={{
+                                color: 'white',
+                                includeFontPadding: false,
+                                fontSize: px2dp(14),
+                                marginTop: 26
+                            }}>
+
+                                {/*{ this.state.redPacketData && this.state.redPacketData.phone?this.redPacketData.phone:''}*/}
+                                {StringUtils.formatPhoneNumber(this.state.phone)}
+                                {/*{EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.encryptPhone(this.state.couponData.phone)}*/}
+                            </Text>
+                            <Text style={{ color: 'white', includeFontPadding: false, fontSize: px2dp(14) }}>
+                                赠送了你一个红包
+                            </Text>
+
+                            <Text style={{
+                                includeFontPadding: false,
+                                color: 'white',
+                                fontSize: px2dp(60),
+                                marginTop: 20
+                            }}>
+
+                                {/*{this.state.redPacketData && this.state.redPacketData.price?this.state.redPacketData.price:''}*/}
+                                {StringUtils.formatMoneyString(this.state.price, false)}
+                                {/*{EmptyUtils.isEmpty(this.state.couponData) ? null : this.state.couponData.price}*/}
+                                <Text
+                                    style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
+                                    元
+                                </Text>
+                            </Text>
+                            <Text style={{
+                                includeFontPadding: false,
+                                color: 'white',
+                                fontSize: px2dp(14),
+                                marginTop: 12
+                            }}>
+                                红包抵扣金
+                            </Text>
+                            {/*{this.state.hasGetCoupon ? null : button}*/}
+                            {/*{button}*/}
+                            {view}
+                            {/*{this.state.hasGetCoupon ? view : null}*/}
+                        </ImageBackground>
+                        <TouchableWithoutFeedback onPress={() => {
+                            this._closeModal();
+                        }}>
+                            <Image source={closeIcon} style={{
+                                position: 'absolute',
+                                top: 110,
+                                right: 35,
+                                width: 24,
+                                height: 24
+                            }}/>
+                        </TouchableWithoutFeedback>
+                    </View>
+                </TouchableOpacity>
+            </CommModal>
+        );
+    }
+
+    _closeModal = () => {
+        this.setState({
+            showRedAlter: false
+        });
+        let resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
+            ]
+        });
+        this.props.navigation.dispatch(resetAction);
+    };
 
     _render() {
         return (
@@ -47,24 +177,25 @@ export default class GetRedpacketPage extends BasePage {
                 >
                     <Text
                         onPress={
-                            ()=>this.jumpToWriteCodePage()
+                            () => this.jumpToWriteCodePage()
                         }
                         style={{
-                            color:'#979797',
-                            height:20,
-                            width:100,
-                            fontSize:13,
-                            borderWidth:1,
-                            borderRadius:10,
-                            textAlign:'center',
-                            borderColor:'#979797',
-                            paddingTop:2,
+                            color: '#979797',
+                            height: 20,
+                            width: 100,
+                            fontSize: 13,
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            textAlign: 'center',
+                            borderColor: '#979797',
+                            paddingTop: 2
                         }}
 
                     >
                         填写授权码
                     </Text>
                 </View>
+                {this._renderCouponModal()}
             </View>
         );
     }
@@ -76,13 +207,13 @@ export default class GetRedpacketPage extends BasePage {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     marginTop: 40,
-                    backgroundColor: ColorUtil.Color_f7f7f7
+                    backgroundColor: DesignRule.bgColor
                 }}
             >
                 <Text
                     style={{
                         fontSize: 13,
-                        color: '#333',
+                        color: DesignRule.textColor_mainTitle,
                         marginLeft: 15
                     }}
                 >
@@ -109,11 +240,11 @@ export default class GetRedpacketPage extends BasePage {
                         <Text
                             style={{
                                 fontSize: 13,
-                                color: '#666',
+                                color: DesignRule.textColor_secondTitle,
                                 marginLeft: 5
                             }}
                             onPress={
-                                ()=>this._changeRedpacket()
+                                () => this._changeRedpacket()
                             }
                         >
                             换一批
@@ -126,9 +257,10 @@ export default class GetRedpacketPage extends BasePage {
     /**
      *
      */
-    _changeRedpacket=()=>{
+    _changeRedpacket = () => {
         bridge.$toast('换一批');
-    }
+        this.$toastShow('红包刷新成功');
+    };
     /**
      * 渲染红包列表
      * @return {*}
@@ -176,8 +308,8 @@ export default class GetRedpacketPage extends BasePage {
                 <TouchableOpacity
                     key={index}
                     onPress={
-                        ()=>{
-                          this.redPacketClick(index)
+                        () => {
+                            this.redPacketClick(index);
                         }
                     }
                 >
@@ -192,8 +324,6 @@ export default class GetRedpacketPage extends BasePage {
                             style={
                                 {
                                     flex: 1,
-                                    // justifyContent:'center',
-
                                     alignItems: 'center'
                                 }
                             }
@@ -203,8 +333,8 @@ export default class GetRedpacketPage extends BasePage {
                                 style={{
                                     marginTop: 20,
                                     height: 30,
-                                    color: ColorUtil.Color_ffffff,
-                                    textAlign:'center'
+                                    color: 'white',
+                                    textAlign: 'center'
                                 }}
                             >
                                 赠送红包
@@ -216,7 +346,7 @@ export default class GetRedpacketPage extends BasePage {
                                     marginTop: 35,
                                     color: '#80522A',
                                     fontSize: 13,
-                                    textAlign:'center',
+                                    textAlign: 'center'
                                 }}
 
                             >
@@ -237,14 +367,34 @@ export default class GetRedpacketPage extends BasePage {
      * 跳过函数
      */
     jump = () => {
-        this.$navigate('login/login/RegistPage');
+        let resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
+            ]
+        });
+        this.props.navigation.dispatch(resetAction);
     };
-    jumpToWriteCodePage=()=>{
-        bridge.$toast('跳转填写邀请码页面');
-    }
-    redPacketClick=(redPacketIndex)=>{
-      bridge.$toast('点击了第' + redPacketIndex + '红包');
-    }
+    jumpToWriteCodePage = () => {
+        this.$navigate('login/login/InviteCodePage');
+    };
+    redPacketClick = (redPacketIndex) => {
+        this.$loadingShow('加载中...');
+        LoginAPI.userReceivePackage({
+            type: 1
+        }).then(result => {
+            this.$loadingDismiss();
+            console.log(result);
+            this.setState({
+                showRedAlter: true,
+                phone: result.data.phone,
+                price: result.data.price
+            });
+        }).catch(reason => {
+            this.$loadingDismiss();
+            this.$toastShow(reason.msg);
+        });
+    };
 }
 
 const Styles = StyleSheet.create(
@@ -255,11 +405,11 @@ const Styles = StyleSheet.create(
             flex: 1,
             margin: 0,
             marginTop: -2,
-            backgroundColor: ColorUtil.Color_f7f7f7
+            backgroundColor: DesignRule.bgColor
         },
         rightTopTitleStyle: {
             fontSize: 15,
-            color: '#666'
+            color: DesignRule.textColor_secondTitle
         },
         topViewStyle: {
             height: ScreenUtils.px2dp(430)
@@ -268,10 +418,9 @@ const Styles = StyleSheet.create(
         },
         bottomViewStyle: {
             height: 100,
-            justifyContent:'center',
-            alignItems:'center'
+            justifyContent: 'center',
+            alignItems: 'center'
         }
-
     }
 );
 

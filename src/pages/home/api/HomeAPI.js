@@ -51,7 +51,11 @@ const api = {
     //首页分类
     classify: ['/config/advertisement/queryCategoryList', {method: 'get'}],
     //秀豆兑换比例
-    getExchange:['/common/config/getExchange',{method:'get'}]
+    getExchange:['/common/config/getExchange',{method:'get'}],
+    //获取红包  type1:获取红包信息并领取 type2：获取红包信息
+    getReceivePackage:['/promotion/promotionPromoter/userReceivePackage',{method:'get'}],
+    //商品页面用户领取红包-->杨小猛
+    givingPackageToUser:['/promotion/promotionPromoter/givingPackageToUser',{method:'get'}]
 }
 import ApiUtils from '../../../api/network/ApiUtils';
 

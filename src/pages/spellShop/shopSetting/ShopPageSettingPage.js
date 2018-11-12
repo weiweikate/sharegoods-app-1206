@@ -12,6 +12,7 @@ import {
 import ArrowImg from './res/xjt_03.png';
 import BasePage from '../../../BasePage';
 import DateUtils from '../../../utils/DateUtils';
+import DesignRule from 'DesignRule';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -131,17 +132,16 @@ const styles = StyleSheet.create({
         flex: 1
     },
     text: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     desc: {
         fontSize: 13,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         textAlign: 'right'
     },
     line: {
-        backgroundColor: '#eeeeee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         marginHorizontal: 15,
         height: StyleSheet.hairlineWidth
     },
@@ -151,27 +151,25 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: '#e60012',
+        borderColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center'
     },
     separateTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 16,
-        color: '#e60012'
+        color: DesignRule.mainColor
     },
     sendContainer: {
         marginTop: 10,
         width: 150,
         height: 48,
         borderRadius: 5,
-        backgroundColor: '#e60012',
+        backgroundColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center'
     },
     sendTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 16,
-        color: '#ffffff'
+        color: 'white'
     }
 });

@@ -13,9 +13,9 @@ import {
     TouchableOpacity
 } from 'react-native';
 import PeopleImg from '../src/dy_07.png';
-import ArrowImg from '../src/xjt_03.png';
-import DashImg from '../src/xt_03.png';
+// import ArrowImg from '../src/xjt_03.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 export default class AssistantRow extends Component {
 
@@ -29,23 +29,28 @@ export default class AssistantRow extends Component {
         return (<View style={styles.row}>
             <TouchableOpacity activeOpacity={1} onPress={this.props.clickAllMembers} style={styles.topRow}>
                 <Image style={styles.topIcon} source={PeopleImg}/>
-                <Text style={styles.topTitle}>{'参与成员'}</Text>
-                <Text style={styles.topDescText}>{`共${storeUserList.length || 0}人`}</Text>
-                <Image style={styles.topArrow} source={ArrowImg}/>
+                <Text style={styles.topTitle}>{'店铺成员'}</Text>
+                <Text style={styles.topDescText}>{`${storeUserList.length || 0}人`}</Text>
+                {/*<Image style={styles.topArrow} source={ArrowImg}/>*/}
             </TouchableOpacity>
-            <Image source={DashImg} style={styles.dash}/>
+            <View style={styles.dash}/>
             <ScrollView bounces={false} showsHorizontalScrollIndicator={false}>
                 <View style={styles.listContainer}>
                     {
                         storeUserList.map((item, index) => {
-                            const { headImg, nickName } = item;
-                            return (<View style={styles.item} key={index}>
-                                {
-                                    headImg ? <Image source={{ uri: headImg }}
-                                                     style={[styles.itemHeader, { marginTop: 0 }]}/> :
-                                        <View style={styles.itemHeader}/>
-                                }
-                                <Text numberOfLines={1} style={styles.itemTitleText}>{nickName || ' '}</Text>
+                            const { headImg, nickName } = item || {};
+                            if (index > 9) {
+                                return;
+                            }
+                            return (<View style={{
+                                alignItems: 'center',
+                                marginTop: (index >= 5) ? 0 : 9,
+                                marginBottom: (index >= 5) ? 24 : 20
+                            }} key={index}>
+                                {headImg ? <Image source={{ uri: headImg }}
+                                                  style={styles.headerImg}/> :
+                                    <View style={styles.headerImg}/>}
+                                <Text numberOfLines={1} style={styles.name}>{nickName || ''}</Text>
                             </View>);
                         })
                     }
@@ -60,7 +65,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     topRow: {
-        height: 38,
+        height: 40,
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -69,14 +74,13 @@ const styles = StyleSheet.create({
         marginRight: 8
     },
     topTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     topDescText: {
-        fontFamily: 'PingFang-SC-Medium',
+        marginRight: 21,
         fontSize: 12,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         flex: 1,
         textAlign: 'right'
     },
@@ -85,12 +89,14 @@ const styles = StyleSheet.create({
         marginRight: 21
     },
     dash: {
-        width: ScreenUtils.width - 15,
-        marginLeft: 15,
-        height: 0.5
+        width: ScreenUtils.width,
+        backgroundColor: '#E4E4E4',
+        height: 1
     },
     listContainer: {
-        flexDirection: 'row'
+        marginHorizontal: ScreenUtils.autoSizeWidth(30),
+        flexDirection: 'row',
+        flexWrap: 'wrap'
     },
     item: {
         justifyContent: 'center',
@@ -98,18 +104,17 @@ const styles = StyleSheet.create({
         marginLeft: 30,
         marginVertical: 15
     },
-    itemHeader: {
+    headerImg: {
         width: 40,
         height: 40,
-        backgroundColor: '#F6F6F6',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 20
     },
-    itemTitleText: {
-        marginTop: 10,
-        width: 40 + 20,
-        fontFamily: 'PingFang-SC-Medium',
+    name: {
+        marginTop: 5,
+        width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(30) * 2) / 5,
         fontSize: 11,
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         textAlign: 'center'
     }
 });

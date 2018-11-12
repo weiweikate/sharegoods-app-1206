@@ -1,8 +1,6 @@
 package com.meeruu.PopModal;
 
 import android.app.Activity;
-import android.util.Log;
-
 
 import com.facebook.common.activitylistener.ActivityListener;
 import com.facebook.react.bridge.ReadableArray;
@@ -24,7 +22,6 @@ import javax.annotation.Nullable;
 
 public class PopModalManager extends ViewGroupManager<PopModal> implements ActivityListener {
 
-    static final String TAG = "ModalAndroid";
     static final int show = 1;
     static final int close = 2;
 
@@ -35,8 +32,8 @@ public class PopModalManager extends ViewGroupManager<PopModal> implements Activ
 
     @Override
     protected PopModal createViewInstance(ThemedReactContext reactContext) {
-       final PopModal popModal = new PopModal(reactContext);
-       return popModal;
+        final PopModal popModal = new PopModal(reactContext);
+        return popModal;
     }
 
     @Override
@@ -53,22 +50,15 @@ public class PopModalManager extends ViewGroupManager<PopModal> implements Activ
     public void setVisible(PopModal view, ReadableArray array) {
         boolean visible = array.getBoolean(0);
         boolean update = array.getBoolean(1);//目的是强制更新
-        if(visible){
-           view.showOrUpdate();
-//           if(!view.isShow()){
-//               view.showOrUpdate();
-//           }
-       }else{
-           view.dismiss();
-//           if(view.isShow()){
-//               view.dismiss();
-//           }
-       }
+        if (visible) {
+            view.showOrUpdate();
+        } else {
+            view.dismiss();
+        }
     }
 
     @Override
     public void onActivityCreate(Activity activity) {
-
     }
 
     @Override
@@ -93,12 +83,10 @@ public class PopModalManager extends ViewGroupManager<PopModal> implements Activ
 
     @Override
     public void onDestroy(Activity activity) {
-//        PopModal.mContext = null;
     }
 
     @Override
     public void onDropViewInstance(PopModal view) {
-        Log.i(TAG,"onDropViewInstance");
         super.onDropViewInstance(view);
         view.onDropInstance();
     }
@@ -108,16 +96,15 @@ public class PopModalManager extends ViewGroupManager<PopModal> implements Activ
     public Map<String, Integer> getCommandsMap() {
         return MapBuilder.<String, Integer>builder()
                 .put("show", show)
-                .put("close",close)
+                .put("close", close)
                 .build();
     }
 
     @Override
     public void receiveCommand(PopModal root, int commandId, @Nullable ReadableArray args) {
         super.receiveCommand(root, commandId, args);
-        Log.i(TAG,args.getString(0));
         String key = args.getString(0);
-        switch (commandId){
+        switch (commandId) {
             case show:
                 root.showOrUpdate();
                 break;

@@ -2,40 +2,41 @@
  * Created by xiangchen on 2018/8/6.
  */
 import React, {
-    Component,
+    Component
 } from 'react';
 
 import {
     StyleSheet,
     View,
-    Text,
+    Text
 } from 'react-native';
+import DesignRule from 'DesignRule';
 
 const styles = StyleSheet.create({
     cardItemTimeRemainTxt: {
         fontSize: 20,
-        color: '#ee394b'
+        color: DesignRule.mainColor
     },
     text: {
         fontSize: 30,
-        color: '#FFF',
-        marginLeft: 2,
+        color: 'white',
+        marginLeft: 2
     },
     container: {
-        flexDirection: 'row',
+        flexDirection: 'row'
     },
     //时间文字
     defaultTime: {
         paddingHorizontal: 1,
-        backgroundColor: 'rgba(85, 85, 85, 1)',
+        backgroundColor: DesignRule.textColor_secondTitle,
         fontSize: 12,
         color: 'white',
         marginHorizontal: 3,
-        borderRadius: 2,
+        borderRadius: 2
     },
     //冒号
     defaultColon: {
-        fontSize: 12, color: 'rgba(85, 85, 85, 1)'
+        fontSize: 12, color: DesignRule.textColor_secondTitle
     }
 });
 export default class CountDownReact extends Component {
@@ -43,12 +44,13 @@ export default class CountDownReact extends Component {
         date: new Date(),
         days: {
             plural: '天',
-            singular: '天',
+            singular: '天'
         },
         hours: ':',
         mins: ':',
         segs: ':',
-        onEnd: () => {},
+        onEnd: () => {
+        },
 
         containerStyle: styles.container,//container 的style
         daysStyle: styles.defaultTime,//天数 字体的style
@@ -56,10 +58,11 @@ export default class CountDownReact extends Component {
         minsStyle: styles.defaultTime,//分钟 字体的style
         secsStyle: styles.defaultTime,//秒数 字体的style
         firstColonStyle: styles.defaultColon,//从左向右 第一个冒号 字体的style
-        secondColonStyle: styles.defaultColon,//从左向右 第2个冒号 字体的style
+        secondColonStyle: styles.defaultColon//从左向右 第2个冒号 字体的style
 
     };
-    constructor(props){
+
+    constructor(props) {
         super(props);
         const date = this.getDateData(parseInt((props.date1 - props.date2) / 1000));
         this.state = {
@@ -69,27 +72,29 @@ export default class CountDownReact extends Component {
                 hours: 0,
                 min: 0,
                 sec: 0,
-                millisec: 0,
+                millisec: 0
             }
-        }
+        };
 
 
     }
 
-    componentWillReceiveProps(nextProps){
-       if(this.props.dismiss){
-           this.stop();
-       }
-        const {date1,date2} = nextProps;
-        if(date1 !== this.props.date1 || date2 !== this.props.date2){
+    componentWillReceiveProps(nextProps) {
+        if (this.props.dismiss) {
+            this.stop();
+        }
+        const { date1, date2 } = nextProps;
+        if (date1 !== this.props.date1 || date2 !== this.props.date2) {
             let diff = parseInt((date1 - date2) / 1000);
-            if(diff <= 0){return;}
-            this.interval = setInterval(()=> {
+            if (diff <= 0) {
+                return;
+            }
+            this.interval = setInterval(() => {
 
                 diff--;
                 const date = this.getDateData(diff);
                 if (date) {
-                    this.setState({date:date});
+                    this.setState({ date: date });
                 } else {
                     this.stop();
                     this.props.onEnd();
@@ -102,26 +107,27 @@ export default class CountDownReact extends Component {
 
     componentDidMount() {
         //console.log(this.props.date);//"2017-03-29T00:00:00+00:00"
-        const {date1,date2} = this.props;
+        const { date1, date2 } = this.props;
         let diff = parseInt((date1 - date2) / 1000);
-       if(date1 > 0 && date2 > 0){
-           this.interval = setInterval(()=> {
-               diff--;
-               const date = this.getDateData(diff);
-               if (date) {
-                   this.setState({date:date});
-               } else {
-                   this.stop();
-                   this.props.onEnd();
-               }
-           }, 1000);
-       }
-       }
+        if (date1 > 0 && date2 > 0) {
+            this.interval = setInterval(() => {
+                diff--;
+                const date = this.getDateData(diff);
+                if (date) {
+                    this.setState({ date: date });
+                } else {
+                    this.stop();
+                    this.props.onEnd();
+                }
+            }, 1000);
+        }
+    }
 
 
     componentWillUnmount() {
         this.stop();
     }
+
     getDateData(diff) {
 
         if (diff <= 0) {
@@ -136,7 +142,7 @@ export default class CountDownReact extends Component {
             hours: 0,
             min: 0,
             sec: 0,
-            millisec: 0,
+            millisec: 0
         };
 
         if (diff >= (365.25 * 86400)) {
@@ -158,6 +164,7 @@ export default class CountDownReact extends Component {
         timeLeft.sec = diff;
         return timeLeft;
     }
+
     render() {
         const countDown = this.state.date;
         let days;
@@ -166,14 +173,15 @@ export default class CountDownReact extends Component {
         } else {
             days = this.props.days.plural;
         }
-        if(this.props.dismiss){
+        if (this.props.dismiss) {
             return null;
-        }else{
+        } else {
             return (
                 <View style={this.props.containerStyle}>
-                    { (countDown.days > 0) ? <Text style={this.props.daysStyle}>{ this.leadingZeros(countDown.days) + days}</Text> : null}
-                    <Text style={this.props.hoursStyle}>{ this.leadingZeros(countDown.hours)}</Text>
-                    <Text style={ this.props.firstColonStyle}>:</Text>
+                    {(countDown.days > 0) ?
+                        <Text style={this.props.daysStyle}>{this.leadingZeros(countDown.days) + days}</Text> : null}
+                    <Text style={this.props.hoursStyle}>{this.leadingZeros(countDown.hours)}</Text>
+                    <Text style={this.props.firstColonStyle}>:</Text>
                     <Text style={this.props.minsStyle}>{this.leadingZeros(countDown.min)}</Text>
                     <Text style={this.props.secondColonStyle}>:</Text>
                     <Text style={this.props.secsStyle}>{this.leadingZeros(countDown.sec)}</Text>
@@ -185,9 +193,11 @@ export default class CountDownReact extends Component {
         }
 
     }
+
     stop() {
         this.interval && clearInterval(this.interval);
     }
+
     leadingZeros(num, length = null) {
 
         let length_ = length;

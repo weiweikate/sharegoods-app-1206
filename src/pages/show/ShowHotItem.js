@@ -3,21 +3,30 @@
  */
 
 import React from 'react'
-import { View, Text, TouchableOpacity, ImageBackground, Image, StyleSheet } from 'react-native'
+import { View, Text, TouchableWithoutFeedback, Image, StyleSheet } from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 const {  px2dp } = ScreenUtils
-import seeImg from '../../comm/res/see_white.png'
-import maskImg from '../../comm/res/show_mask.png'
+import res from '../../comm/res';
+const seeImg = res.button.see_white;
+const maskImg = res.other.show_mask;
+import DesignRule from 'DesignRule'
+import ImageLoad from '@mr/react-native-image-placeholder'
 
-export default ({data, press, imageStyle}) => {
-    return <TouchableOpacity style={styles.item} onPress={()=>{press && press()}}>
-    <ImageBackground style={[styles.img, imageStyle]} source={{uri: data.img}}>
+export default ({data, press, imageStyle, imageUrl}) => {
+    let img = imageUrl
+    if (!img) {
+        img = data.img
+    }
+
+    return <TouchableWithoutFeedback onPress={()=>{press && press()}}>
+    <View style={styles.item}>
+    <ImageLoad style={[styles.img, imageStyle]} source={{uri: img}}>
         <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
         <View style={styles.numberView}>
             <Image style={styles.seeImg} source={seeImg}/>
             <Text style={styles.number}>{data.click ? data.click : 0}</Text>
         </View>
-    </ImageBackground>
+    </ImageLoad>
     <View style={styles.profile}>
         <Text numberOfLines={2} style={styles.title}>{data.pureContent ? data.pureContent.slice(0, 100) : ''}</Text>
         <View style={styles.row}>
@@ -27,7 +36,8 @@ export default ({data, press, imageStyle}) => {
             <Text style={styles.time}>{data.time}</Text>
         </View>
     </View>
-</TouchableOpacity>
+    </View>
+</TouchableWithoutFeedback>
 }
 
 let styles = StyleSheet.create({
@@ -53,7 +63,7 @@ let styles = StyleSheet.create({
         padding : px2dp(10)
     },
     title: {
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: px2dp(12)
     },
     row: {
@@ -80,7 +90,7 @@ let styles = StyleSheet.create({
         borderRadius: px2dp(15)
     },
     name: {
-        color: '#333',
+        color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(11),
         marginLeft: 5
     },

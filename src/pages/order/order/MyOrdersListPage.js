@@ -5,7 +5,15 @@ import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab
 import MyOrdersListView from './../components/MyOrdersListView';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import search from '../res/search.png';
-import { color } from '../../../constants/Theme';
+import DesignRule from 'DesignRule';
+
+/**
+ * @author chenxiang
+ * @date on 2018/9/7
+ * @describe 订单列表
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
+ */
 
 class MyOrdersListPage extends BasePage {
     constructor(props) {
@@ -40,10 +48,6 @@ class MyOrdersListPage extends BasePage {
         );
     };
 
-    loadPageData() {
-        //网络请求，业务处理
-    }
-
     gotoSearchPage = () => {
         this.$navigate('order/order/SearchPage', { keyWord: 'kafaka' });
     };
@@ -62,11 +66,11 @@ class MyOrdersListPage extends BasePage {
                     }}
                     //进界面的时候打算进第几个
                     initialPage={parseInt(this.state.index)}
-                    tabBarBackgroundColor='#fff'
-                    tabBarActiveTextColor='#D51243'
-                    tabBarInactiveTextColor='#999999'
+                    tabBarBackgroundColor='white'
+                    tabBarActiveTextColor={DesignRule.mainColor}
+                    tabBarInactiveTextColor={DesignRule.textColor_instruction}
                     tabBarTextStyle={{ fontSize: 15 }}
-                    tabBarUnderlineStyle={{ backgroundColor: '#D51243', height: 2 }}
+                    tabBarUnderlineStyle={{ backgroundColor: DesignRule.mainColor, height: 2 }}
                     renderTabBar={() => (
                         this.renterTabBar()
                     )}>
@@ -75,7 +79,7 @@ class MyOrdersListPage extends BasePage {
                         selectTab={this.state.selectTab}/>
 
                     <MyOrdersListView
-                        tabLabel={'待支付'} pageStatus={1}
+                        tabLabel={'待付款'} pageStatus={1}
                         nav={this.$navigate}
                         onLoadTabNumber={this.getStatesNumber} selectTab={this.state.selectTab}/>
                     <MyOrdersListView
@@ -100,14 +104,14 @@ class MyOrdersListPage extends BasePage {
         return (
             <ScrollableTabBar
                 style={{
-                    borderWidth: 0.5,
+                    borderWidth: 0.5
 
                 }}/>
         );
     };
     renderWideLine = () => {
         return (
-            <View style={{ flex: 1, height: 10, backgroundColor: color.page_background }}/>
+            <View style={{ flex: 0.5, height: 10, backgroundColor: DesignRule.bgColor }}/>
         );
     };
 }
@@ -117,8 +121,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FFFFFF'
-
+        backgroundColor: 'white',
+        marginBottom: ScreenUtils.safeBottom
     },
     welcome: {
         fontSize: 20,
@@ -127,7 +131,7 @@ const styles = StyleSheet.create({
     },
     instructions: {
         textAlign: 'center',
-        color: '#333333',
+        color: DesignRule.textColor_mainTitle,
         marginBottom: 5,
         fontSize: 28
     },

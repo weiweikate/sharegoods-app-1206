@@ -9,6 +9,7 @@ import bridge from '../../../../utils/bridge';
 import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import user from '../../../../model/user';
 import MineAPI from '../../api/MineApi';
+import DesignRule from 'DesignRule';
 
 export default class SetNewPhoneNumPage extends BasePage {
 
@@ -31,7 +32,7 @@ export default class SetNewPhoneNumPage extends BasePage {
             <View style={{ height: 38, justifyContent: 'center' }}>
                 <UIText value={'身份认证'}
                         style={{
-                            color: '#999999',
+                            color: DesignRule.textColor_instruction,
                             fontSize: 13,
                             marginLeft: 16
                         }}/>
@@ -45,10 +46,10 @@ export default class SetNewPhoneNumPage extends BasePage {
                         onChangeText={(text) => this.setState({ userName: text })}
                         value={this.state.userName}
                         placeholder={'请输入用户姓名'}
-                        placeholderTextColor={'#C8C8C8'}
+                        placeholderTextColor={DesignRule.textColor_hint}
                     />
                 </View>
-                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15 }} />
+                <View style={{ height: 0.5, backgroundColor: 'white', marginLeft: 15 }}/>
                 <View style={styles.horizontalItem}>
                     <Text style={styles.itemLeftText}>证件号码</Text>
                     <TextInput
@@ -57,7 +58,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                         onChangeText={(text) => this.setState({ cardNum: text })}
                         value={this.state.cardNum}
                         placeholder={'请输入证件号码'}
-                        placeholderTextColor={'#C8C8C8'}
+                        placeholderTextColor={DesignRule.textColor_hint}
                     />
                 </View>
             </View>
@@ -66,14 +67,14 @@ export default class SetNewPhoneNumPage extends BasePage {
                 marginTop: 54,
                 backgroundColor: color.red,
                 width: ScreenUtils.width - 84,
-                height: 48,
+                height: 50,
                 marginLeft: 42,
                 marginRight: 42,
                 alignItems: 'center',
                 justifyContent: 'center',
-                borderRadius: 5
+                borderRadius: 25
             }} onPress={() => this._toNext()}>
-                <Text style={{ fontSize: 13, color: 'white' }}>确认</Text>
+                <Text style={{ fontSize: 17, color: 'white' }}>确认</Text>
             </TouchableOpacity>
         </View>);
     }
@@ -135,13 +136,13 @@ const styles = StyleSheet.create({
     itemLeftText: {
         marginRight: 20,
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     itemRightInput: {
         flex: 1,
         height: 40,
         padding: 0,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: 13
     }
 });

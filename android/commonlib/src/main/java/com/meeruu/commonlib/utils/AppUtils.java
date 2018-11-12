@@ -23,13 +23,13 @@ public class AppUtils {
     /**
      * 获取应用程序名称
      */
-    public static String getAppName(Context context) {
+    public static String getAppName() {
         try {
-            PackageManager packageManager = context.getPackageManager();
+            PackageManager packageManager = BaseApplication.appContext.getPackageManager();
             PackageInfo packageInfo = packageManager.getPackageInfo(
-                    context.getPackageName(), 0);
+                    BaseApplication.appContext.getPackageName(), 0);
             int labelRes = packageInfo.applicationInfo.labelRes;
-            return context.getResources().getString(labelRes);
+            return BaseApplication.appContext.getResources().getString(labelRes);
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }

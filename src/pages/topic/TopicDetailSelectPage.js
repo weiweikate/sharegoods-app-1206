@@ -11,6 +11,7 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import icon_close from '../home/product/res/icon_close.png';
 import Modal from 'CommModal';
+import DesignRule from 'DesignRule';
 
 export default class TopicDetailSelectPage extends Component {
 
@@ -55,13 +56,13 @@ export default class TopicDetailSelectPage extends Component {
                     <View style={styles.containerView}>
                         <View>
                             <TouchableOpacity
-                                style={[styles.btn, { backgroundColor: '#D51243' }]}>
+                                style={[styles.btn, { backgroundColor: DesignRule.mainColor }]}>
                                 <Text
                                     style={[styles.btnText, { color: 'white' }]}>{obj.specValue}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: '#eeeeee' }}/>
+                    <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                 </View>
             );
         });
@@ -92,8 +93,8 @@ export default class TopicDetailSelectPage extends Component {
                             <Image style={{
                                 height: 107,
                                 width: 107,
-                                backgroundColor:'#eee',
-                                borderColor: '#EEEEEE',
+                                backgroundColor:DesignRule.lineColor_inColorBg,
+                                borderColor: DesignRule.lineColor_inColorBg,
                                 borderWidth: 1,
                                 borderRadius: 5,
                                 alignItems: 'center',
@@ -107,19 +108,18 @@ export default class TopicDetailSelectPage extends Component {
                             <View style={{ backgroundColor: 'white', marginTop: 20, height: 87 }}>
                                 <View style={{ marginLeft: 132 }}>
                                     <Text style={{
-                                        color: '#D51243',
+                                        color: DesignRule.mainColor,
                                         fontSize: 16,
-                                        fontFamily: 'PingFang-SC-Medium',
                                         marginTop: 16
                                     }}>{`￥${price}`}</Text>
                                     <Text
                                         style={{
-                                            color: '#222222',
+                                            color: DesignRule.textColor_mainTitle,
                                             fontSize: 13,
                                             marginTop: 8
                                         }}>{`库存${surplusNumber}件`}</Text>
                                     <Text style={{
-                                        color: '#222222',
+                                        color: DesignRule.textColor_mainTitle,
                                         fontSize: 13,
                                         marginTop: 8
                                     }}>{specs}</Text>
@@ -140,29 +140,29 @@ export default class TopicDetailSelectPage extends Component {
                                     justifyContent: 'space-between',
                                     alignItems: 'center'
                                 }]}>
-                                    <Text style={{ color: '#666666', marginLeft: 16, fontSize: 13 }}>购买数量</Text>
+                                    <Text style={{ color: DesignRule.textColor_secondTitle, marginLeft: 16, fontSize: 13 }}>购买数量</Text>
                                     <View style={{
                                         flexDirection: 'row',
-                                        borderColor: '#dddddd',
+                                        borderColor: DesignRule.lineColor_inGrayBg,
                                         borderWidth: 1,
                                         borderRadius: 2,
                                         marginRight: 16
                                     }}>
                                         <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
                                             <Text style={{
-                                                color: '#dddddd',
+                                                color: DesignRule.lineColor_inGrayBg,
                                                 fontSize: 15,
                                                 paddingHorizontal: 11
                                             }}>-</Text>
                                         </TouchableOpacity>
-                                        <View style={{ height: 21, width: 1, backgroundColor: '#dddddd' }}/>
+                                        <View style={{ height: 21, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                             <Text style={{ paddingHorizontal: 15 }}>{1}</Text>
                                         </View>
-                                        <View style={{ height: 21, width: 1, backgroundColor: '#dddddd' }}/>
+                                        <View style={{ height: 21, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                                         <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
                                             <Text style={{
-                                                color: '#222222',
+                                                color: DesignRule.textColor_mainTitle,
                                                 fontSize: 15,
                                                 paddingHorizontal: 11
                                             }}>+</Text>
@@ -174,11 +174,11 @@ export default class TopicDetailSelectPage extends Component {
                             <TouchableWithoutFeedback onPress={this._selectionViewConfirm}>
                                 <View style={{
                                     height: 49,
-                                    backgroundColor: '#D51243',
+                                    backgroundColor: DesignRule.mainColor,
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }}>
-                                    <Text style={{ fontSize: 16, color: '#FFFFFF' }}>确认</Text>
+                                    <Text style={{ fontSize: 16, color: 'white' }}>确认</Text>
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize: 13,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     },
 
     containerView: {

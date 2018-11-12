@@ -6,12 +6,12 @@ import {
     Image,
     TouchableOpacity
 } from 'react-native';
-import { color } from '../../../constants/Theme';
 import BonusExchangeSucceedBackground from '../../mine/res/userInfoImg/BonusExchangeSucceedBackground.png';
-import bonusClose from '../../mine/res/userInfoImg/bonusClose.png';
-import { UIImage } from '../../../components/ui';
+// import bonusClose from '../../mine/res/userInfoImg/bonusClose.png';
+// import { UIImage } from '../../../components/ui';
 import Modal from 'CommModal';
-import ScreenUtils from "../../../utils/ScreenUtils";
+import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from '../../../constants/DesignRule';
 /*
 * usage:
 * renderModal = () => {
@@ -43,11 +43,18 @@ export default class CommonTwoChoiceModal extends Component {
 
     };
 
+    open = () => {
+        this.modal && this.modal.open();
+    };
+
     render() {
         return (
             <Modal
                 animationType='fade'
                 transparent={true}
+                ref={ref => {
+                    this.modal = ref;
+                }}
                 onRequestClose={() => this.onRequestClose()}
                 visible={this.props.isShow}>
                 <View style={styles.modalStyle}>
@@ -69,20 +76,23 @@ export default class CommonTwoChoiceModal extends Component {
                 <TouchableOpacity style={{
                     width: 110,
                     height: 35,
-                    backgroundColor: color.red,
+                    backgroundColor: DesignRule.mainColor,
                     justifyContent: 'center',
                     borderRadius: 5
                 }} onPress={() => this.props.yes()}>
-                    <Text style={{ color: color.white, textAlign: 'center' }}>{this.props.detail.yes}</Text>
+                    <Text style={{ color: 'white', textAlign: 'center' }}>{this.props.detail.yes}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{
                     width: 110,
                     height: 35,
-                    backgroundColor: color.gray_DDD,
+                    backgroundColor: DesignRule.lineColor_inColorBg,
                     justifyContent: 'center',
                     borderRadius: 5
                 }} onPress={() => this.props.no()}>
-                    <Text style={{ color: color.black_999, textAlign: 'center' }}>{this.props.detail.no}</Text>
+                    <Text style={{
+                        color: DesignRule.textColor_instruction,
+                        textAlign: 'center'
+                    }}>{this.props.detail.no}</Text>
                 </TouchableOpacity>
             </View> :
             <View style={{
@@ -95,20 +105,23 @@ export default class CommonTwoChoiceModal extends Component {
                 <TouchableOpacity style={{
                     width: 110,
                     height: 35,
-                    backgroundColor: color.gray_DDD,
+                    backgroundColor: DesignRule.lineColor_inColorBg,
                     justifyContent: 'center',
                     borderRadius: 5
                 }} onPress={() => this.props.no()}>
-                    <Text style={{ color: color.black_999, textAlign: 'center' }}>{this.props.detail.no}</Text>
+                    <Text style={{
+                        color: DesignRule.textColor_instruction,
+                        textAlign: 'center'
+                    }}>{this.props.detail.no}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{
                     width: 110,
                     height: 35,
-                    backgroundColor: color.red,
+                    backgroundColor: DesignRule.mainColor,
                     justifyContent: 'center',
                     borderRadius: 5
                 }} onPress={() => this.props.yes()}>
-                    <Text style={{ color: color.white, textAlign: 'center' }}>{this.props.detail.yes}</Text>
+                    <Text style={{ color: 'white', textAlign: 'center' }}>{this.props.detail.yes}</Text>
                 </TouchableOpacity>
             </View>);
     };
@@ -126,8 +139,8 @@ export default class CommonTwoChoiceModal extends Component {
                         justifyContent: 'flex-start',
                         alignItems: 'flex-end'
                     }}>
-                        <UIImage source={bonusClose} style={{ width: 32, height: 32, marginTop: 43 }}
-                                 onPress={() => this.props.closeWindow()}/>
+                        {/*<UIImage source={bonusClose} style={{ width: 32, height: 32, marginTop: 43 }}*/}
+                                 {/*onPress={() => this.props.closeWindow()}/>*/}
                     </View>
                     <View style={{ height: 272, width: 295, justifyContent: 'space-between' }}>
                         <View style={{
@@ -155,16 +168,15 @@ const styles = StyleSheet.create({
     modalStyle: {
         justifyContent: 'flex-end',
         flex: 1,
-        width:ScreenUtils.width
+        width: ScreenUtils.width
     }, smallTextStyle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         marginTop: 10,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     }, titleTextStyle: {
-        fontSize: 24, color: color.blue_222, marginTop: 10
+        fontSize: 24, color: DesignRule.textColor_mainTitle, marginTop: 10
     }, contentTextStyle: {
-        fontSize: 15, color: color.blue_222, marginTop: 10
+        fontSize: 15, color: DesignRule.textColor_mainTitle, marginTop: 10
     }
 });
 

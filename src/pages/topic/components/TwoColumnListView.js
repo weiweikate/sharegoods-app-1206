@@ -10,9 +10,9 @@ import {
 
 import React, { Component } from 'react';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import ColorUtil from '../../../utils/ColorUtil';
 import { SbSectiontHeaderView, ActivityOneView } from './SbSectiontHeaderView';
 import PropTypes from 'prop-types';
+import DesignRule from 'DesignRule';
 
 export default class TwoColumnListView extends Component {
 
@@ -27,7 +27,7 @@ export default class TwoColumnListView extends Component {
                 <SectionList
                     contentContainerStyle={Styles.list}
                     style={{
-                        backgroundColor: ColorUtil.Color_f7f7f7
+                        backgroundColor: DesignRule.bgColor
                     }}
                     numColumns={2}
                     columnWrapperStyle={Styles.itemBgStyle}
@@ -95,8 +95,8 @@ export default class TwoColumnListView extends Component {
     };
     _itemClickAction = (item) => {
         console.log(item.key);
-        const {navigateTool} = this.props
-        navigateTool('topic/TopicDetailPage')
+        const { navigateTool } = this.props;
+        navigateTool('topic/TopicDetailPage');
 
     };
     _renderRowView = (item) => {
@@ -137,7 +137,7 @@ TwoColumnListView.propTypes = {
     //0无切换 1 有切换
     subjectType: PropTypes.number,
 
-    navigateTool:PropTypes.func,
+    navigateTool: PropTypes.func
 };
 
 const Styles = StyleSheet.create({
@@ -145,12 +145,12 @@ const Styles = StyleSheet.create({
         flexDirection: 'row',//设置横向布局
         flexWrap: 'wrap',  //设置换行显示
         // alignItems: 'flex-start',
-        backgroundColor: '#FFFFFF'
+        backgroundColor: 'white'
     },
     itemBgStyle: {
         width: ScreenUtils.width / 2,
         height: ScreenUtils.width / 2 + 70,
-        backgroundColor: ColorUtil.Color_f7f7f7,
+        backgroundColor: DesignRule.bgColor,
         padding: 8,
         paddingBottom: 0
     },
@@ -159,7 +159,7 @@ const Styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     itemTopImageStyle: {
-        backgroundColor: 'red',
+        backgroundColor: DesignRule.mainColor,
         width: ScreenUtils.width / 2 - 16,
         height: ScreenUtils.width / 2 - 16
     },
@@ -176,18 +176,18 @@ const Styles = StyleSheet.create({
         flex: 1,
         paddingTop: 3,
         fontSize: 11,
-        color: ColorUtil.Color_ffffff
+        color: 'white'
 
     },
     itemBottomTextStyle: {
         marginTop: 10,
-        color: ColorUtil.Color_222222,
+        color: DesignRule.textColor_mainTitle,
         width: ScreenUtils.width / 2 - 16,
         height: 28,
         fontSize: 12
     },
     itemBottomPriceTextStyle: {
-        color: ColorUtil.Color_d51243,
+        color: DesignRule.mainColor,
         fontSize: 16,
         marginTop: 10
     }

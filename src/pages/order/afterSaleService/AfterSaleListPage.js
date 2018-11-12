@@ -8,6 +8,7 @@
  * Created by huchao on 2018/10/16.
  *
  */
+
 'use strict';
 import React from 'react';
 import {
@@ -28,6 +29,7 @@ import refuseGoodsAndMoney from '../res/shouhou_icon_tuihuo_nor.png';
 import refuseMoney from '../res/shouhou_icon_tuikuan_nor.png';
 import RefreshLargeList from 'RefreshLargeList';
 import search from '../res/search.png';
+import DesignRule from 'DesignRule';
 
 type Props = {};
 export default class AfterSaleListPage extends BasePage<Props> {
@@ -48,13 +50,13 @@ export default class AfterSaleListPage extends BasePage<Props> {
     };
 
     $NavBarRenderRightItem = () => {
-        if (this.params.type === 'search'){
-            return null
+        if (this.params.type === 'search') {
+            return null;
         } else {
-            return(
+            return (
                 <TouchableOpacity onPress={this.gotoSearchPage}>
-                <Image source={search}/>
-            </TouchableOpacity>)
+                    <Image source={search}/>
+                </TouchableOpacity>);
         }
     };
 
@@ -70,10 +72,11 @@ export default class AfterSaleListPage extends BasePage<Props> {
 
     }
 
-    $refreshData(){
+    $refreshData() {
         // alert(this.list)
-      //  this.list._onRefresh && this.list._onRefresh();
+        //  this.list._onRefresh && this.list._onRefresh();
     }
+
     renderItem({ item }) {
         return (
             <View>
@@ -92,7 +95,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     alignItems: 'center',
                     backgroundColor: 'white',
                     borderTopWidth: 0.5,
-                    borderTopColor: '#CCCCCC'
+                    borderTopColor: DesignRule.textColor_placeholder
                 }}>
                     <UIImage source={[refuseMoney, refuseGoodsAndMoney, changeGoods][item.type - 1]}
                              style={styles.image}
@@ -140,7 +143,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
     _render() {
         let params = {};
         if (this.params.type === 'search') {
-            params = { orderNum: this.params.orderNum };
+            params = { condition: this.params.condition };
         } else {
             params = { status: 0 };
         }
@@ -152,7 +155,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     renderItem={this.renderItem}
                     params={params}
                     heightForCell={() => 160}
-                    ref={(ref) => {this.list = ref}}
+                    //  ref={(ref) => {this.list = ref}}
                 />
             </View>
         );
@@ -165,7 +168,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     text: {
-        color: '#D51243',
+        color: DesignRule.mainColor,
         fontSize: 13
     },
     btnContainer: {
@@ -174,12 +177,12 @@ const styles = StyleSheet.create({
         height: 30,
         width: 80,
         borderWidth: 0.5,
-        borderColor: '#666666',
+        borderColor: DesignRule.textColor_secondTitle,
         borderRadius: 15,
         marginRight: 15
     },
     btnText: {
-        color: '#666666',
+        color: DesignRule.textColor_secondTitle,
         fontSize: 13
     },
     image: {

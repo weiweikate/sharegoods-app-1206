@@ -5,6 +5,7 @@ import UIText from '../../../../components/ui/UIText';
 import arrow_right from '../../../mine/res/customerservice/icon_06-03.png';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
+import DesignRule from 'DesignRule';
 
 export default class SelectAreaPage extends BasePage {
 
@@ -64,7 +65,7 @@ export default class SelectAreaPage extends BasePage {
     };
 
     _separator = () => {
-        return <View style={{ height: 0.5, backgroundColor: '#EEEEEE' }}/>;
+        return <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>;
     };
 
     _onItemClick = (item) => {
@@ -108,9 +109,8 @@ const styles = StyleSheet.create({
         height: 48
     },
     blackText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         marginLeft: 15,
         flex: 1
     }

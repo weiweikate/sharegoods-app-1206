@@ -1,7 +1,6 @@
 import UserPromotionPage from './UserPromotionPage';
 import PromotionDetailPage from './PromotionDetailPage';
 import InvitePromotionPage from './InvitePromotionPage';
-import PromotionRulePage from './PromotionRulePage';
 import PromotionOrderPage from './PromotionOrderPage';
 import PromotionPayPage from './PromotionPayPage';
 
@@ -11,7 +10,6 @@ export default {
         UserPromotionPage,
         PromotionDetailPage,
         InvitePromotionPage,
-        PromotionRulePage,
         PromotionOrderPage,
         PromotionPayPage
     }

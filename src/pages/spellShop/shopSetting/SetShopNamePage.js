@@ -20,6 +20,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
+import DesignRule from 'DesignRule';
 
 export default class SetShopNamePage extends BasePage {
 
@@ -168,7 +169,7 @@ export default class SetShopNamePage extends BasePage {
                                    underlineColorAndroid={'transparent'}
                                    placeholder={'请输入店铺名称'}
                                    blurOnSubmit={false}
-                                   style={[styles.textInput, { color: this.state.text ? '#333' : '#c8c8c8' }]}/>
+                                   style={[styles.textInput, { color: DesignRule.textColor_mainTitle }]}/>
                     </View>
 
                     {
@@ -193,20 +194,20 @@ const styles = StyleSheet.create({
     },
     rightItem: {
         fontSize: 15,
-        color: '#e60012'
+        color: DesignRule.mainColor
     },
     headerImg: {
         width: 90,
         height: 90,
         borderRadius: 5,
-        backgroundColor: '#dddddd'
+        backgroundColor: DesignRule.lineColor_inGrayBg
     },
     whitePanel: {
         marginTop: 10,
         height: 170,
         marginHorizontal: 15,
         borderRadius: 5,
-        backgroundColor: '#ffffff',
+        backgroundColor: 'white',
         shadowColor: 'rgba(102, 102, 102, 0.1)',
         shadowOffset: {
             width: 0,
@@ -222,21 +223,20 @@ const styles = StyleSheet.create({
         width: 90,
         height: 25,
         borderRadius: 13,
-        backgroundColor: '#e60012',
+        backgroundColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center'
     },
     uploadTitle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
-        color: '#f7f7f7'
+        color: DesignRule.bgColor
     },
     textInputContainer: {
         marginTop: 10,
         marginHorizontal: 15,
         height: 44,
         borderRadius: 5,
-        backgroundColor: '#ffffff',
+        backgroundColor: 'white',
         shadowColor: 'rgba(102, 102, 102, 0.1)',
         shadowOffset: {
             width: 0,
@@ -249,28 +249,26 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 13,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         marginLeft: 11
     },
     textInput: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
         marginLeft: 9,
         marginRight: 11,
         flex: 1
     },
     btnRow: {
-        height: 48,
-        borderRadius: 5,
-        backgroundColor: '#D51243',
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: DesignRule.mainColor,
         marginHorizontal: 43,
         marginTop: ScreenUtils.autoSizeHeight(123),
         justifyContent: 'center',
         alignItems: 'center'
     },
     btnTitle: {
-        fontFamily: 'PingFang-SC-Medium',
-        fontSize: 13,
-        color: '#ffffff'
+        fontSize: 17,
+        color: 'white'
     }
 });

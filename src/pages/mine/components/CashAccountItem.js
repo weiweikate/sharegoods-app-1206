@@ -3,11 +3,11 @@ import {
     View,
     StyleSheet
 } from 'react-native';
-import { color } from '../../../constants/Theme';
 // import arrow_right from '../../order/res/arrow_right.png';
 import {
-    UIText, UIImage,NoMoreClick
+    UIText, UIImage, NoMoreClick
 } from '../../../components/ui';
+import DesignRule from '../../../constants/DesignRule';
 // status,//账单状态：0出账中，1待支付，2已支付，3逾期
 const CashAccountItem = props => {
     const {
@@ -29,13 +29,17 @@ const CashAccountItem = props => {
                 </View>
                 <View style={{ marginLeft: 10 }}>
                     <UIText value={type}/>
-                    <UIText value={time} style={{ color: color.black_999, fontSize: 13 }}/>
-                    <UIText value={serialNumber} style={{ color: color.black_999, fontSize: 13 }}/>
+                    <UIText value={time} style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
+                    <UIText value={serialNumber} style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
                 </View>
                 <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row' }}>
                     <View
                         style={{ marginRight: 15, height: 60, justifyContent: 'space-between' }}>
-                        <UIText value={capital}  style={{ color: capitalRed ? color.red : color.blue_222, fontSize: 16 }}/>
+                        <UIText value={capital}
+                                style={{
+                                    color: !capitalRed ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
+                                    fontSize: 16
+                                }}/>
                         <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                             <View style={{ height: 10, width: 7 }}/>
                         </View>
@@ -43,9 +47,9 @@ const CashAccountItem = props => {
                     </View>
                 </View>
             </NoMoreClick>
-            <View style={{ flex: 1, height: 1, backgroundColor: color.white }}>
+            <View style={{ flex: 1, height: 1, backgroundColor: 'white' }}>
                 <View
-                    style={{ flex: 1, height: 1, backgroundColor: color.line, marginLeft: 15 }}/>
+                    style={{ flex: 1, height: 1, backgroundColor: DesignRule.lineColor_inColorBg, marginLeft: 15 }}/>
             </View>
         </View>
 
@@ -55,7 +59,7 @@ const CashAccountItem = props => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: color.white,
+        backgroundColor: 'white',
         flexDirection: 'row',
         height: 90,
         alignItems: 'center'

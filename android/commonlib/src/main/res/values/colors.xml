@@ -12,5 +12,10 @@
     <color name="pickerview_bgColor_default">#FFFFFFFF</color>
     <!-- 主页头部背景色 -->
     <color name="app_top_color">#ffffff</color>
-
+    <!-- 主色调颜色 -->
+    <color name="app_main_color">#F00006</color>
+    <!-- 横向进度跳背景颜色 -->
+    <color name="bg_progress">#F0F0F0</color>
+    <!-- 默认图片背景颜色 -->
+    <color name="bg_img">#efefef</color>
 </resources>

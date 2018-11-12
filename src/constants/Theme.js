@@ -1,4 +1,6 @@
 import ScreenUtils from '../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
+
 
 const getUIScale = (value) => {
     return ScreenUtils.width / 375 * value;
@@ -6,12 +8,12 @@ const getUIScale = (value) => {
 const color = {
     main: '#EB2224',
     sub_main: '#FD6844',
-    page_background: '#F6F6F6',
+    page_background: '#F7F7F7',
     page_background2: '#F9F9F9',
     page_background3: '#F1F1F1',
     line: '#DCDCDC',
     one_color: '#F34646',
-    red: '#E60012',
+    red: '#F00006',
     lightPink: '#FEEEEE',
     pink: '#EB22245C',
     little_pink: '#EB222414',
@@ -35,23 +37,22 @@ const color = {
     black_999: '#999999',
     blue_4a9: '#4A90E2',
     blue_222: '#222222',
-    black000: '#000000',
+    black000: DesignRule.textColor_mainTitle,
 
     loginTextBlack: '#222222',
     otherLoginLine: '#DCDCDC',
-    hintTextColor: '#c8c8c8',
+    hintTextColor: DesignRule.textColor_hint,
     deliveryIncludeBlue: '#0186f5',
-    gray_DDD: '#DDDDDD',
-    gray_EEE: '#EEEEEE',
+    gray_DDD: DesignRule.lineColor_inGrayBg,
+    gray_EEE: DesignRule.lineColor_inColorBg,
     gray_FFF: '#FFFFFF',
     black_222: '#222204',
     gray_f7f7: '#f7f7f7',
     yellow_FF7: '#FF7E00',
-    gray_c8c: '#C8C8C8',
-    gray_bbb: '#BBBBBB',
+    gray_c8c: DesignRule.textColor_hint,
+    gray_bbb: DesignRule.textColor_instruction,
     green_47c: '#47c546',
     gray_666: '#666666',
-    gray_c8c: '#C8C8C8',
     gray_b4b: '#b4b4b4'
 };
 
@@ -103,22 +104,22 @@ const ui = {
     Line: {
         default: {
             height: ScreenUtils.onePixel,
-            backgroundColor: color.line
+            backgroundColor: DesignRule.lineColor_inColorBg
         },
         left_margin: {
             height: ScreenUtils.onePixel,
-            backgroundColor: color.line,
+            backgroundColor: DesignRule.lineColor_inColorBg,
             marginLeft: 20
         },
         between_margin: {
             height: ScreenUtils.onePixel,
-            backgroundColor: color.line,
+            backgroundColor: DesignRule.lineColor_inColorBg,
             marginLeft: 20,
             marginRight: 20
         },
         vertical: {
             width: ScreenUtils.onePixel,
-            backgroundColor: color.line
+            backgroundColor: DesignRule.lineColor_inColorBg
         }
     },
 
@@ -147,7 +148,7 @@ const ui = {
                 borderRadius: 5
             },
             btn_text: {
-                color: 'white',
+                color: DesignRule.white,
                 fontSize: 15
             }
         },
@@ -156,7 +157,7 @@ const ui = {
                 height: 50,
                 marginRight: 10,
                 marginLeft: 10,
-                backgroundColor: 'white',
+                backgroundColor: DesignRule.white,
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderWidth: ScreenUtils.onePixel,
@@ -231,7 +232,7 @@ const ui = {
                 width: 60,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             icon: {
                 width: 30,
@@ -248,7 +249,7 @@ const ui = {
                 width: 60,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             icon: {
                 width: 30,
@@ -266,17 +267,17 @@ const ui = {
         default: {
             badge: {
                 position: 'absolute',
-                backgroundColor: 'red',
+                backgroundColor: DesignRule.mainColor,
                 height: 20,
                 width: 20,
                 borderRadius: 10,
                 borderWidth: ScreenUtils.onePixel * 3,
-                borderColor: 'white',
+                borderColor: DesignRule.white,
                 justifyContent: 'center',
                 alignItems: 'center'
             },
             text: {
-                color: 'white'
+                color: DesignRule.white
             }
 
         }
@@ -289,7 +290,7 @@ const ui = {
                 width: ScreenUtils.width,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             left_icon: {
                 height: 25,
@@ -298,7 +299,7 @@ const ui = {
             },
             left_text: {
                 marginLeft: 10,
-                color: color.black_more_light
+                color: DesignRule.textColor_mainTitle_more_light
             },
             middle_text: {
                 flex: 1,
@@ -318,7 +319,7 @@ const ui = {
                 width: ScreenUtils.width,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             left_icon: {
                 height: 25,
@@ -348,7 +349,7 @@ const ui = {
                 width: ScreenUtils.width,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             left_icon: {
                 height: 50,
@@ -381,7 +382,7 @@ const ui = {
                 width: ScreenUtils.width,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             left_icon: {
                 height: 40,
@@ -412,7 +413,7 @@ const ui = {
                 alignItems: 'flex-start',
                 marginTop: 20,
                 marginBottom: 8,
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             left_icon: {
                 height: 32,
@@ -488,7 +489,7 @@ const ui = {
         default: {
             container: {
                 flexDirection: 'row',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             header_left: {
                 flex: 1,
@@ -526,7 +527,7 @@ const ui = {
         goods: {
             container: {
                 flexDirection: 'row',
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             header_left: {
                 flex: 1,
@@ -567,7 +568,7 @@ const ui = {
         default: {
             container: {
                 flexDirection: 'row',
-                backgroundColor: 'white',
+                backgroundColor: DesignRule.white,
                 height: ScreenUtils.headerHeight,
                 paddingTop: ScreenUtils.statusBarHeight,
                 paddingLeft: 15,
@@ -655,12 +656,12 @@ const ui = {
         default: {
             container: {
                 width: ScreenUtils.width,
-                backgroundColor: 'white'
+                backgroundColor: DesignRule.white
             },
             content_container: {
                 flexDirection: 'row',
                 height: 50,
-                backgroundColor: 'white',
+                backgroundColor: DesignRule.white,
                 justifyContent: 'center',
                 alignItems: 'center'
             },
@@ -691,7 +692,7 @@ const ui = {
                 width: ScreenUtils.width - 60,
                 marginLeft: 30,
                 marginRight: 30,
-                backgroundColor: color.white,
+                backgroundColor: 'white',
                 borderRadius: 5,
                 alignItems: 'center'
             },
@@ -720,7 +721,7 @@ const ui = {
         default: {
             container: {
                 width: 316,
-                backgroundColor: color.white,
+                backgroundColor: 'white',
                 alignItems: 'center',
                 borderRadius: 5
             },
@@ -742,14 +743,14 @@ const ui = {
                 alignItems: 'center'
             },
             top_middle_tx: {
-                color: color.black,
+                color: DesignRule.textColor_mainTitle,
                 fontSize: 14
             },
             top_right: {
                 flex: 1, alignItems: 'flex-end'
             },
             top_right_tx: {
-                color: color.black_more_light,
+                color: DesignRule.textColor_mainTitle_more_light,
                 fontSize: 12,
                 marginRight: 10
             },
@@ -764,12 +765,12 @@ const ui = {
                 marginBottom: 13
             },
             bottom_left_tx: {
-                color: color.black_more_light,
+                color: DesignRule.textColor_mainTitle_more_light,
                 fontSize: 14,
                 marginLeft: 10
             },
             bottom_middle_tx: {
-                color: color.black_light,
+                color: DesignRule.textColor_mainTitle_light,
                 fontSize: 14,
                 marginLeft: 10
             },
@@ -787,7 +788,7 @@ const ui = {
     GoodsListModelView: {
         default: {
             container: {
-                backgroundColor: '#F6F6F6',
+                backgroundColor: DesignRule.bgColor,
                 paddingLeft: getUIScale(20),
                 paddingRight: getUIScale(20),
                 paddingBottom: 10
@@ -841,7 +842,7 @@ const ui = {
                 width: 124,
                 height: 36,
                 borderRadius: 2,
-                // backgroundColor: 'red',
+                // backgroundColor: DesignRule.mainColor,
                 borderWidth: 1,
                 borderColor: '#EB2224',
                 justifyContent: 'center',
@@ -892,7 +893,6 @@ const ui = {
                 fontSize: 12,
                 lineHeight: 20
             },
-            name_text: {},
             name_text: {
                 fontWeight: 'bold'
             },

@@ -3,7 +3,6 @@ import {
     StyleSheet,
     View,
     Text,
-    Modal,
     ImageBackground
 } from 'react-native';
 import { color } from '../../../constants/Theme';
@@ -14,6 +13,8 @@ import {
 } from '../../../components/ui';
 import PasswordInput from './PasswordInput';
 import { observer } from 'mobx-react/native';
+import Modal from 'CommModal';
+import DesignRule from 'DesignRule';
 
 @observer
 class SettingTransactionModal extends Component {
@@ -38,11 +39,18 @@ class SettingTransactionModal extends Component {
 
     };
 
+    open = () => {
+        this.modal && this.modal.open();
+    };
+
     render() {
         return (
             <Modal
                 animationType='fade'
                 transparent={true}
+                ref={(ref) => {
+                    this.modal = ref;
+                }}
                 onRequestClose={() => this.onRequestClose()}
                 visible={this.props.isShow}>
                 <View style={styles.modalStyle}>
@@ -60,7 +68,7 @@ class SettingTransactionModal extends Component {
                     maxLength={6}
                     onChange={value => this.props.inputText(value)}/>
                 <UIText value={this.state.passwordInputError ? this.state.bottomText : ''}
-                        style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 11, color: '#e60012', marginTop: 9 }}/>
+                        style={{ fontSize: 11, color: DesignRule.mainColor, marginTop: 9 }}/>
             </View>
         );
     };
@@ -111,18 +119,16 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         flex: 1
     }, smallTextStyle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
         marginTop: 10,
-        color: '#666666'
+        color: DesignRule.textColor_secondTitle
     }, titleTextStyle: {
         fontSize: 24, color: color.blue_222, marginTop: 10
     }, contentTextStyle: {
         fontSize: 15, color: color.blue_222, marginTop: 10
     }, redTextStyle: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 15,
-        color: '#e60012'
+        color: DesignRule.mainColor
     }
 });
 

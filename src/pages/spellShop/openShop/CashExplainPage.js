@@ -11,6 +11,7 @@ import {
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
+import DesignRule from 'DesignRule';
 
 export default class CashExplainPage extends BasePage {
 
@@ -35,7 +36,12 @@ export default class CashExplainPage extends BasePage {
                 <View style={{ marginHorizontal: 15 }}>
 
                     {index !== 0 ?
-                        <View style={{ marginLeft: 8, width: 2, backgroundColor: '#d51243', height: 33 }}/> : null}
+                        <View style={{
+                            marginLeft: 8,
+                            width: 2,
+                            backgroundColor: DesignRule.mainColor,
+                            height: 33
+                        }}/> : null}
 
                     <View style={{ flexDirection: 'row' }}>
                         <View>
@@ -43,7 +49,12 @@ export default class CashExplainPage extends BasePage {
                                 <Text style={styles.circleText}>{index + 1}</Text>
                             </View>
                             {index !== maxIndex - 1 ?
-                                <View style={{ marginLeft: 8, width: 2, backgroundColor: '#d51243', flex: 1 }}/> : null}
+                                <View style={{
+                                    marginLeft: 8,
+                                    width: 2,
+                                    backgroundColor: DesignRule.mainColor,
+                                    flex: 1
+                                }}/> : null}
                         </View>
 
                         <Text style={styles.desc}>{title}</Text>
@@ -70,9 +81,8 @@ export default class CashExplainPage extends BasePage {
                 <Text style={{
                     alignSelf: 'center',
                     marginTop: 41,
-                    fontFamily: 'PingFang-SC-Medium',
                     fontSize: 17,
-                    color: '#000000'
+                    color: DesignRule.textColor_mainTitle
                 }}>保证金缴纳说明</Text>
                 <View style={{ marginTop: 32 }}>
                     {
@@ -87,9 +97,8 @@ export default class CashExplainPage extends BasePage {
                 }}>
                     <TouchableOpacity activeOpacity={0.5} onPress={this._clickOpen} style={styles.btnStyle}>
                         <Text style={{
-                            fontFamily: 'PingFang-SC-Medium',
-                            fontSize: 15,
-                            color: '#ffffff'
+                            fontSize: 17,
+                            color: 'white'
                         }}>缴纳保证金</Text>
                     </TouchableOpacity>
                     <Text style={styles.descText}>点击缴纳则默认已阅读并同意缴纳保证金</Text>
@@ -104,38 +113,35 @@ const styles = StyleSheet.create({
     circle: {
         width: 18,
         height: 18,
-        backgroundColor: '#d51243',
+        backgroundColor: DesignRule.mainColor,
         overflow: 'hidden',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 9
     },
     circleText: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 12,
         color: 'white'
     },
     desc: {
         marginLeft: 8,
         marginRight: 0,
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     btnStyle: {
         width: 170,
-        height: 43,
-        borderRadius: 5,
-        backgroundColor: '#d51243',
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: DesignRule.mainColor,
         overflow: 'hidden',
         justifyContent: 'center',
         alignItems: 'center'
     },
     descText: {
         marginTop: 10,
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 11,
-        color: '#999999',
+        color: DesignRule.textColor_instruction,
         textAlign: 'center'
     }
 });

@@ -14,6 +14,9 @@ import BasePage from '../../BasePage';
 import arrorw_rightIcon from '../order/res/arrow_right.png';
 import MessageApi from './api/MessageApi';
 import Toast from '../../utils/bridge';
+import DesignRule from 'DesignRule';
+import emptyIcon from './src/message_empty.png'
+
 
 export default class NotificationPage extends BasePage {
     constructor(props) {
@@ -59,29 +62,29 @@ export default class NotificationPage extends BasePage {
                 <View style={{ height: 49, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
                     <Text style={{ marginLeft: 15, fontSize: 15, color: color.red }}>公告</Text>
                 </View>
-                <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
+                <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: DesignRule.bgColor }}/>
                 <View style={{ height: 79, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
                     <Text style={{ marginLeft: 5, fontSize: 15 }}>{item.content}</Text>
                 </View>
-                <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
+                <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: DesignRule.bgColor }}/>
             </View>
         );
     };
 
     renderNoticeItem = ({ item, index }) => {
         return (
-            <View style={{ height: 168, width: ScreenUtils.width }}>
+            <View style={{ width: ScreenUtils.width }}>
                 <View style={styles.itemContents}>
                     <Text>{DateUtils.getFormatDate(item.startTime / 1000,'MM/dd hh:mm')}</Text>
                 </View>
-                <View style={{ height: 49, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
-                    <Text style={{ marginLeft: 15, fontSize: 15, color: '#222222' }}>{item.title}</Text>
+                <View style={{paddingVertical:17, flexDirection: 'row', alignItems: 'center', backgroundColor: 'white' }}>
+                    <Text style={{ marginLeft: 15, fontSize: 15, color: DesignRule.textColor_mainTitle }}>{item.title}</Text>
                 </View>
-                <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
-                <View style={{ height: 79, justifyContent: 'center', backgroundColor: 'white' }}>
+                <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: DesignRule.bgColor }}/>
+                <View style={{ justifyContent: 'center', backgroundColor: 'white',paddingVertical:32 }}>
                     <Text style={{ marginLeft: 15, fontSize: 15 }}>{item.content}</Text>
                 </View>
-                <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
+                <View style={{ height: 1.5, width: ScreenUtils.width, backgroundColor: DesignRule.bgColor }}/>
             </View>
         );
     };
@@ -157,6 +160,8 @@ export default class NotificationPage extends BasePage {
                     onLoadMore={this.onLoadMore}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
+                    emptyIcon={emptyIcon}
+                    emptyTip={'暂无消息通知~'}
                 />
             </View>
         );
@@ -172,11 +177,11 @@ export default class NotificationPage extends BasePage {
                     <Text style={{ marginLeft: 15, fontSize: 15, color: color.red }}>[有奖调研]</Text>
                     <Text style={{ marginLeft: 5, fontSize: 15 }}> 您对我们的产品还满意么？</Text>
                 </View>
-                <View style={{ height: 0.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
+                <View style={{ height: 0.5, width: ScreenUtils.width, backgroundColor: DesignRule.bgColor }}/>
                 <View style={{ height: 93, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
                     <Text style={{ marginLeft: 5, fontSize: 15 }}>想要了解您对我们的印象如何，参加调研，就有机会赢取丰富奖励！</Text>
                 </View>
-                <View style={{ height: 0.5, width: ScreenUtils.width, backgroundColor: '#f7f7f7' }}/>
+                <View style={{ height: 0.5, width: ScreenUtils.width, backgroundColor: DesignRule.bgColor }}/>
                 <View style={{ height: 41, backgroundColor: 'white' }}>
                     <TouchableOpacity activeOpacity={0.5} onPress={() => this.go2Questionnaire()}
                                       style={{
@@ -185,7 +190,7 @@ export default class NotificationPage extends BasePage {
                                           alignItems: 'center',
                                           justifyContent: 'center'
                                       }}>
-                        <Text style={{ fontSize: 13, color: '#999999' }}>查看详情</Text>
+                        <Text style={{ fontSize: 13, color: DesignRule.textColor_instruction }}>查看详情</Text>
                         <Image source={arrorw_rightIcon} style={{ width: 11, height: 10, marginLeft: 5 }}/>
                     </TouchableOpacity>
                 </View>
@@ -197,7 +202,7 @@ export default class NotificationPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7'
+        backgroundColor: DesignRule.bgColor
     },
     itemContents: {
         height: 37,

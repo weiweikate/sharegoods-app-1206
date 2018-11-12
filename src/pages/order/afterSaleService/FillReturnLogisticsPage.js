@@ -22,7 +22,7 @@ import StringUtils from "../../../utils/StringUtils";
 import EmptyUtils from '../../../utils/EmptyUtils';
 import bridge from '../../../utils/bridge';
 import OrderApi from '../api/orderApi'
-
+import DesignRule from 'DesignRule';
 
 export default class FillReturnLogisticsPage extends BasePage {
     constructor(props) {
@@ -86,8 +86,8 @@ export default class FillReturnLogisticsPage extends BasePage {
                     </View>
                 </ScrollView>
                 <TouchableWithoutFeedback onPress = {this.submit}>
-                    <View style = {{backgroundColor: '#D51243', height: 50, alignItems: 'center', justifyContent: 'center'}}>
-                        <UIText value = {'提交'} style = {{color: '#FFFFFF', fontSize: 16}}/>
+                    <View style = {{backgroundColor: DesignRule.bgColor_btn, height: 50, alignItems: 'center', justifyContent: 'center'}}>
+                        <UIText value = {'提交'} style = {{color: 'white', fontSize: 16}}/>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
@@ -153,7 +153,7 @@ export default class FillReturnLogisticsPage extends BasePage {
 const styles = StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: '#f7f7f7',
+            backgroundColor: DesignRule.bgColor,
         },
         item_container: {
             backgroundColor: 'white',
@@ -163,19 +163,19 @@ const styles = StyleSheet.create({
             alignItems: 'center',
         },
         item_title:{
-            color: '#222222',
+            color: DesignRule.textColor_mainTitle,
             fontSize: 13,
             marginLeft: 17,
         },
         item_detail:{
-            color: '#222222',
+            color: DesignRule.textColor_mainTitle,
             fontSize: 13,
             marginRight: 9,
             textAlign: 'right',
             flex: 1,
         },
         item_placeholder:{
-            color: '#C8C8C8',
+            color: DesignRule.textColor_hint,
             fontSize: 13,
             marginRight: 9,
             textAlign: 'right',

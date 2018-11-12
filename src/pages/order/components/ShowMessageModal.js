@@ -4,11 +4,12 @@ import {
     View,
     Text,
     Image,
-    Modal,
+    // Modal,
     TouchableOpacity
 } from 'react-native';
-import { color } from '../../../constants/Theme';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import Modal from 'CommModal';
+import DesignRule from 'DesignRule';
 
 class ShowMessageModal extends Component {
 
@@ -19,12 +20,19 @@ class ShowMessageModal extends Component {
         };
     }
 
+    open = () => {
+        this.modal && this.modal.open();
+    };
+
     render() {
         return (
             <Modal
                 animationType='fade'
                 transparent={true}
                 onRequestClose={() => {
+                }}
+                ref={(ref) => {
+                    this.modal = ref;
                 }}
                 visible={this.props.isShow && this.state.dis}>
                 <TouchableOpacity style={styles.modalStyle} onPress={() => {
@@ -43,7 +51,7 @@ class ShowMessageModal extends Component {
             itemArr.push(
                 <View key={i}>
                     <TouchableOpacity key={i}
-                                      style={{ height: 48, justifyContent: 'center', backgroundColor: color.white }}
+                                      style={{ height: 48, justifyContent: 'center', backgroundColor: 'white' }}
                                       onPress={() => {
                                           this.props.clickSelect(i);
                                       }}>
@@ -51,13 +59,12 @@ class ShowMessageModal extends Component {
                             <Image source={this.props.detail[i].icon} style={{ height: 18, width: 18 }}/>
                             <Text style={{
                                 marginLeft: 16,
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,
-                                color: '#000000'
+                                color: DesignRule.textColor_mainTitle
                             }}>{this.props.detail[i].title}</Text>
                         </View>
                     </TouchableOpacity>
-                    <View style={{ backgroundColor: color.gray_EEE, height: 1, marginLeft: 50 }}/>
+                    <View style={{ backgroundColor: DesignRule.lineColor_inColorBg, height: 1, marginLeft: 50 }}/>
                 </View>
             );
         }
@@ -73,7 +80,7 @@ class ShowMessageModal extends Component {
                 paddingRight: 35,
                 paddingTop: ScreenUtils.headerHeight
             }}>
-                <View style={{ backgroundColor: color.white, width: 143 }}>
+                <View style={{ backgroundColor: 'white', width: 143 }}>
                     {this.renderMenu()}
                 </View>
             </View>

@@ -20,6 +20,7 @@ public class ParameterUtils {
     public static final String RESPONSE_CODE_SUCCESS = "10000";  //响应成功码
     //无网络连接错误码
     public static final String RESPONE_CODE_NETERR = "net_err";
+    public static final String RN_MAIN_NAME = "sharegoods";
     // 应用更新
     public static final int FLAG_UPDATE = 1;
     // 应用强制更新
@@ -41,5 +42,13 @@ public class ParameterUtils {
     public static final int NETWORK_ELSE_CACHED = 20; //先查询网络数据，如果没有，再查询本地缓
     public static final int REQUEST_CODE_INSTALL = 38;
     public static final int REQUEST_CODE_MANAGE_APP_SOURCE = 39;
+    /**
+     * 一般图片url宽高
+     */
+    public static final String IMG_URL_WH = "%1$s?x-oss-process=image/resize,m_lfit,w_%2$s,h_%3$s";
+    /**
+     * 圆形图片url宽高
+     */
+    public static final String CIRCLE_IMG_URL_WH = "%1$s?x-oss-process=image/resize,m_pad,w_%2$s,h_%3$s";
 
 }

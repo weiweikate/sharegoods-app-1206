@@ -32,9 +32,10 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native';
 import NetNotConnectImage from './source/net_error.png'; //用于断网，超时展示
-import ServerErrorImage from './source/server_error.png'; //用于其他网络请求展示
+import ServerErrorImage from './source/net_error.png'; //用于其他网络请求展示
 const BugErrorCode = -20000;       //异常错误，请稍后再试 js bug error
 const NetUnKnowErrorCode = -20001; //未知错误,请稍后再试 (网络错误，但是没有错误码)
+import DesignRule from 'DesignRule';
 
 export default class NetFailedView extends Component {
 
@@ -131,16 +132,16 @@ export default class NetFailedView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f6f6f6',
-        // justifyContent: 'center',
+        // backgroundColor: DesignRule.bgColor,
+        justifyContent: 'center',
         alignItems: 'center',
     },
     img: {
-        marginTop: 116,
+        // marginTop: 116,
     },
     titleStyle: {
         fontSize: 15,
-        color: '#999',
+        color: DesignRule.textColor_instruction,
         marginTop: 28,
     },
     btn: {
@@ -151,12 +152,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
-        borderColor: "#e60012",
+        borderColor: DesignRule.mainColor,
         backgroundColor: 'transparent',
     },
     btnText: {
         fontSize: 16,
-        color: '#e60012',
+        color: DesignRule.mainColor,
         textAlign: 'center',
     },
 });

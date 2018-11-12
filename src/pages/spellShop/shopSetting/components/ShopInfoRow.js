@@ -8,6 +8,7 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
+import DesignRule from 'DesignRule';
 
 export default class ShopInfoRow extends Component {
 
@@ -50,9 +51,9 @@ const styles = StyleSheet.create({
     icon: {
         width: 50,
         height: 50,
-        backgroundColor: '#eee',
+        backgroundColor: DesignRule.lineColor_inColorBg,
         borderWidth: 1,
-        borderColor: '#c8c8c8'
+        borderColor: DesignRule.textColor_hint
     },
     right: {
         flex: 1,
@@ -60,13 +61,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     shopName: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
-        color: '#000000'
+        color: DesignRule.textColor_mainTitle
     },
     desc: {
         fontSize: 12,
-        color: '#666',
+        color: DesignRule.textColor_secondTitle,
         marginTop: 9
     }
 

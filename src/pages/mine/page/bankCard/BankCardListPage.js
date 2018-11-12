@@ -13,7 +13,6 @@ import BasePage from '../../../../BasePage';
 import {
     UIText
 } from '../../../../components/ui';
-import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import bankCard1 from './res/bankCard1.png';
@@ -21,10 +20,12 @@ import bankCard2 from './res/bankCard2.png';
 import bankCard3 from './res/bankCard3.png';
 import bankCard4 from './res/bankCard4.png';
 import bankCard5 from './res/bankCard5.png';
-import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
+import { SwipeListView, SwipeRow } from './../../../../components/ui/react-native-swipe-list-view';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
 import SettingTransactionModal from '../../components/SettingTransactionModal';
+import DesignRule from 'DesignRule';
+import res from '../../../../comm/res';
 
 const bankCardList = [bankCard1, bankCard2, bankCard3, bankCard4, bankCard5];
 
@@ -32,13 +33,6 @@ class BankCardListPage extends BasePage {
     constructor(props) {
         super(props);
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-        // this.initHeader({
-        //     title: '银行卡',
-        //     textColor:color.white,
-        //     backgroundColor:"#282d33",
-        //     leftIcon:left_arrow_white,
-        //     isShowLine:false,
-        // })
         this.state = {
             viewData: [
                 {
@@ -72,7 +66,20 @@ class BankCardListPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '银行卡'
+        title: '银行卡',
+        show:true,
+        headerStyle:{
+            backgroundColor:DesignRule.textColor_mainTitle
+        },
+       leftNavImage:res.button.white_back_img,
+        leftImageStyle:{
+            width:9,height:15
+        },
+        titleStyle:{
+            color:'white'
+        }
+
+
 
     };
 
@@ -86,7 +93,7 @@ class BankCardListPage extends BasePage {
                         style={[styles.addBankCardView, { marginTop: this.state.viewData.length == 0 ? 76 : 47 }]}
                         onPress={() => this.addBankCard()}>
                         <UIText value={'+ 点击添加银行卡'}
-                                style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 16, color: '#ffffff' }}/>
+                                style={{ fontSize: 16, color: 'white' }}/>
                     </TouchableOpacity>
                 </View>
                 {this.renderModal()}
@@ -108,13 +115,12 @@ class BankCardListPage extends BasePage {
                                          source={bankCardList[rowData.bankCardType]}
                                          resizeMode={'stretch'}>
                             <UIText value={rowData.bank_name}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 18, color: '#ffffff' }}/>
+                                    style={{ fontSize: 18, color: 'white' }}/>
                             <UIText value={'储蓄卡'}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#ffffff' }}/>
+                                    style={{ fontSize: 13, color: 'white' }}/>
                             <UIText value={StringUtils.formatBankCardNum(rowData.card_no)} style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 18,
-                                color: '#ffffff',
+                                color: 'white',
                                 marginTop: 15
                             }}/>
 
@@ -143,7 +149,7 @@ class BankCardListPage extends BasePage {
                           style={{ height: 110, flexDirection: 'row', marginTop: 10 }} key={i}>
                     <View style={styles.standaloneRowBack}>
                         <TouchableOpacity style={styles.deleteStyle} onPress={() => this.deleteBankCard(i)}>
-                            <Text style={{ color: color.white }}>删除</Text>
+                            <Text style={{ color: 'white' }}>删除</Text>
                         </TouchableOpacity>
                     </View>
                     <TouchableWithoutFeedback onPress={() => this.callBack(this.state.viewData[i])}>
@@ -151,13 +157,12 @@ class BankCardListPage extends BasePage {
                                          source={bankCardList[this.state.viewData[i].bankCardType]}
                                          resizeMode={'stretch'}>
                             <UIText value={this.state.viewData[i].bank_name}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 18, color: '#ffffff' }}/>
+                                    style={{ fontSize: 18, color: 'white' }}/>
                             <UIText value={'储蓄卡'}
-                                    style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: '#ffffff' }}/>
+                                    style={{ fontSize: 13, color: 'white' }}/>
                             <UIText value={StringUtils.formatBankCardNum(this.state.viewData[i].card_no)} style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 18,
-                                color: '#ffffff',
+                                color: 'white',
                                 marginTop: 15
                             }}/>
                         </ImageBackground>
@@ -170,18 +175,21 @@ class BankCardListPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: color.line }}/>
+            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
     renderWideLine = () => {
         return (
-            <View style={{ height: 10, height: 10 }}/>
+            <View style={{ height: 10 }}/>
         );
     };
     renderModal = () => {
         return (
             <SettingTransactionModal
                 isShow={this.state.isShowUnbindCardModal}
+                ref={(ref) => {
+                    this.modal = ref;
+                }}
                 detail={{ title: '请输入交易密码', context: '删除银行卡' }}
                 closeWindow={() => {
                     this.setState({ isShowUnbindCardModal: false });
@@ -253,6 +261,7 @@ class BankCardListPage extends BasePage {
             isShowUnbindCardModal: true,
             selectBankCard: index
         });
+        this.modal && this.modal.open();
     };
     addBankCard = () => {
         this.$navigate('mine/bankCard/AddBankCardPage', { callBack: () => this.loadPageData() });
@@ -267,7 +276,7 @@ class BankCardListPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, backgroundColor: '#383c45', paddingTop: 5
+        flex: 1, backgroundColor: DesignRule.textColor_mainTitle,marginTop:-1
     }, bankCardView: {
         height: 110,
         width: ScreenUtils.width - 30,
@@ -275,15 +284,15 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         paddingTop: 17,
-        paddingLeft: 68,
+        paddingLeft: 68
     }, backTextWhite: {
-        color: color.white,
+        color: 'white',
         marginRight: 20,
         borderRadius: 10,
         width: 60
     }, standaloneRowFront: {
         alignItems: 'center',
-        backgroundColor: color.white,
+        backgroundColor: 'white',
         justifyContent: 'center',
         height: 130,
         width: ScreenUtils.width,
@@ -291,7 +300,7 @@ const styles = StyleSheet.create({
         marginRight: 16
     }, standaloneRowBack: {
         alignItems: 'center',
-        backgroundColor: '#383c45',
+        backgroundColor: DesignRule.textColor_mainTitle,
         flex: 1,
         borderRadius: 10,
         flexDirection: 'row',
@@ -302,7 +311,7 @@ const styles = StyleSheet.create({
         width: 60,
         height: 110,
         borderRadius: 10,
-        backgroundColor: '#e60012',
+        backgroundColor: DesignRule.mainColor,
         justifyContent: 'center',
         alignItems: 'center'
     }, addBankCardView: {
@@ -313,7 +322,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderStyle: 'dashed',
         borderWidth: 2,
-        borderColor: '#ffffff',
+        borderColor: 'white',
         justifyContent: 'center',
         alignItems: 'center'
     }

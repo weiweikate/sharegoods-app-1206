@@ -10,6 +10,7 @@ import {
     ViewPropTypes
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
 
 export default class PasswordInput extends Component {
     static propTypes = {
@@ -142,12 +143,12 @@ const styles = StyleSheet.create({
     },
     inputItemBorderLeftWidth: {
         borderLeftWidth: ScreenUtils.isIOS ? 1.0 : 0.5,
-        borderColor: '#DDDDDD'
+        borderColor: DesignRule.lineColor_inGrayBg
     },
     iconStyle: {
         width: 16,
         height: 16,
-        backgroundColor: '#222',
+        backgroundColor: DesignRule.textColor_mainTitle,
         borderRadius: 8,
     },
 });

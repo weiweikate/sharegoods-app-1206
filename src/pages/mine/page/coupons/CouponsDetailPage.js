@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {
-    StyleSheet, View, Text,  DeviceEventEmitter,
+    StyleSheet, View, Text, DeviceEventEmitter,
     ImageBackground, Image
 } from 'react-native';
 
@@ -13,11 +13,12 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import usedBg from '../../res/couponsImg/youhuiquan_bg_zhihui.png';
 import unuesdBg from '../../res/couponsImg/youhuiquan_bg_nor.png';
 import tobeActive from '../../res/couponsImg/youhuiquan_icon_daijihuo_nor.png';
-import unactivatedBg from '../../res/couponsImg/youhuiquan_bg_zhihui.png';
 import ActivedIcon from '../../res/couponsImg/youhuiquan_icon_yishixiao_nor.png';
 import usedRIcon from '../../res/couponsImg/youhuiquan_icon_yishiyong_nor.png';
+import limitIcon from '../../res/couponsImg/youhuiquan_limit.png';
 import UIText from '../../../../components/ui/UIText';
 import user from '../../../../model/user';
+import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 
@@ -64,8 +65,8 @@ export default class CouponsDetailPage extends BasePage {
     }
 
     renderBodyView = (item) => {
-        let BG = item.status === 0 ? unuesdBg : (item.status === 3 ? unactivatedBg : usedBg);
-        let BGR = item.status === 0 ? '' : (item.status === 3 ? tobeActive : (item.status == 1 ? usedRIcon : ActivedIcon));
+        let BG = item.status === 0 && !item.levelimit ? unuesdBg : usedBg;
+        let BGR = item.status === 3 ? tobeActive : (item.status === 0 ? (item.levelimit ? limitIcon : '') : (item.status == 1 ? usedRIcon : ActivedIcon));
         return (
             <View style={{ flexDirection: 'column' }}>
                 <View style={{ alignItems: 'center' }}>
@@ -86,28 +87,37 @@ export default class CouponsDetailPage extends BasePage {
                                         item.type === 3 || item.type === 4 ? null :
                                             <View style={{ alignSelf: 'flex-end', marginBottom: 4 }}>
                                                 <Text
-                                                    style={{ fontSize: 14, color: '#222222', marginBottom: 2 }}>￥</Text>
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: DesignRule.textColor_mainTitle,
+                                                        marginBottom: 2
+                                                    }}>￥</Text>
                                             </View>}
                                     <View>
                                         <Text style={{
                                             fontSize: item.type === 4 ? 20 : 34,
-                                            color: '#222222'
+                                            color: DesignRule.textColor_mainTitle
                                         }}>{item.value}</Text>
                                     </View>
                                     {
                                         item.type === 3 ?
                                             <View style={{ alignSelf: 'flex-end', marginBottom: 2 }}>
                                                 <Text
-                                                    style={{ fontSize: 14, color: '#222222', marginBottom: 4 }}>折</Text>
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: DesignRule.textColor_mainTitle,
+                                                        marginBottom: 4
+                                                    }}>折</Text>
                                             </View> : null}
                                 </View>
                             </View>
 
                             <View style={{ flex: 1, alignItems: 'flex-start', marginLeft: 10 }}>
-                                <Text style={{ fontSize: 15, color: '#222222' }}>{item.name} </Text>
+                                <Text
+                                    style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}>{item.name} </Text>
                                 <Text style={{
                                     fontSize: 11,
-                                    color: '#999999',
+                                    color: DesignRule.textColor_instruction,
                                     marginTop: 6
                                 }}>使用有效期：{item.timeStr}</Text>
                             </View>
@@ -118,22 +128,31 @@ export default class CouponsDetailPage extends BasePage {
                                             marginRight: 15,
                                             marginTop: 15,
                                             fontSize: 14,
-                                            color: '#222'
+                                            color: DesignRule.textColor_mainTitle
                                         }}/> : null}
                         </View>
 
                         <View style={{ height: px2dp(33), justifyContent: 'center', marginLeft: 10 }}>
-                            <Text style={{ fontSize: 11, color: '#999999' }}>{item.limit}</Text>
+                            <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction }}>{item.limit}</Text>
                         </View>
 
                     </ImageBackground>
                 </View>
                 <View style={{ marginTop: 20, alignItems: 'flex-start', marginLeft: 10, flex: 1 }}>
-                    <Text style={{ marginTop: 5, color: '#222' }}>使用说明:</Text>
-                    <Text style={{ marginTop: 5, color: '#666', lineHeight: 25 }}>{item.remarks}</Text>
+                    <Text style={{ marginTop: 5, color: DesignRule.textColor_mainTitle }}>使用说明:</Text>
+                    <Text style={{
+                        marginTop: 5,
+                        color: DesignRule.textColor_secondTitle,
+                        lineHeight: 25
+                    }}>{item.remarks}</Text>
                 </View>
                 <View
-                    style={{ width: ScreenUtils.width, height: 180, alignItems: 'center', justifyContent: 'flex-end' }} />
+                    style={{
+                        width: ScreenUtils.width,
+                        height: 180,
+                        alignItems: 'center',
+                        justifyContent: 'flex-end'
+                    }}/>
             </View>
         );
     };
@@ -144,6 +163,6 @@ export default class CouponsDetailPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7'
+        backgroundColor: DesignRule.bgColor
     }
 });

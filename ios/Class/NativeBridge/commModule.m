@@ -24,6 +24,7 @@
 
 RCT_EXPORT_MODULE()
 
+
 RCT_EXPORT_METHOD(captureScreenImage:(NSDictionary *)info and:(RCTResponseSenderBlock)callback){
 
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -253,6 +254,12 @@ RCT_EXPORT_METHOD(RN_ImageCompression:(NSString*) path
   NSLog(@"执行开始");
   callback(@[]);
   NSLog(@"执行结束");
+}
+RCT_EXPORT_METHOD(removeLaunch){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate removeLaunch];
+  });
 }
 
 @end

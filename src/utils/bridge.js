@@ -57,12 +57,17 @@ export default {
      * @param onSuccess(path)
      * @param onError(errorStr)
      */
-    creatShareImage(jsonParam, onSuccess, onError = (errorStr) => {}) {
+    creatShareImage(jsonParam, onSuccess, onError = (errorStr) => {
+    }) {
         NativeModules.LoginAndShareModule.creatShareImage(jsonParam, onSuccess, onError);
+    },
+    createPromotionShareImage(qrString, onSuccess, onError = (errorStr) => {
+    }) {
+        NativeModules.LoginAndShareModule.createPromotionShareImage(qrString, onSuccess, onError);
     },
     /**
      * @param jsonParam
-    <<<<<<<<<<<<< 共同 <<<<<<<<<<<<<<
+     <<<<<<<<<<<<< 共同 <<<<<<<<<<<<<<
      shareType : 0图片分享 1 图文链接分享
      pplatformType:0 微信好友 1朋友圈 2qq好友 3qq空间 4微博
 
@@ -76,7 +81,7 @@ export default {
      <<<<<<<<<<<  shareType : 0图片分享 <<<<<<<<<<<<<<
      shareImage:分享的大图(本地URL)图片分享使用
 
-     <<<<<<<<<<<  shareType : 2图片分享 <<<<<<<<<<<<<<
+     <<<<<<<<<<<  shareType : 2小程序分享 <<<<<<<<<<<<<<
      title
      dec
      thumImage
@@ -86,13 +91,15 @@ export default {
      * @param onSuccess()
      * @param onError(errorStr)
      */
-    share(jsonParam, onSuccess, onError = (errorStr) => {}) {
+    share(jsonParam, onSuccess, onError = (errorStr) => {
+    }) {
         NativeModules.LoginAndShareModule.share(jsonParam, onSuccess, onError);
     },
-    saveImage(path){
+    saveImage(path) {
         NativeModules.LoginAndShareModule.saveImage(path);
     },
-    creatQRCodeImage(QRCodeStr, onSuccess, onError = (errorStr) => {}){
+    creatQRCodeImage(QRCodeStr, onSuccess, onError = (errorStr) => {
+    }) {
         NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
     },
     /**
@@ -105,11 +112,25 @@ export default {
      * allScreen: bool
      * }
      */
-    saveScreen(jsonParam, onSuccess, onError = (errorStr) => {}){
-        NativeModules.LoginAndShareModule.saveScreen(jsonParam||{allScreen: true},onSuccess, onError);
+    saveScreen(jsonParam, onSuccess, onError = (errorStr) => {
+    }) {
+        NativeModules.LoginAndShareModule.saveScreen(jsonParam || { allScreen: true }, onSuccess, onError);
     },
-    scanQRCode(onSuccess, onError = (errorStr) => {}){
+    scanQRCode(onSuccess, onError = (errorStr) => {
+    }) {
         NativeModules.QRCodeModule.scanQRCode(onSuccess, onError);
-    }
+    },
+
+    getTotalCacheSize(callback = () => {
+    }) {
+        NativeModules.commModule.getTotalCacheSize(callback);
+    },
+
+    clearAllCache(callback = () => {
+    }) {
+        NativeModules.commModule.clearAllCache(callback);
+    },
+
+    removeLaunch : () =>  NativeModules.commModule.removeLaunch()
 
 };

@@ -14,16 +14,16 @@ import {
 import { SwipeListView } from '../../../components/ui/react-native-swipe-list-view';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import ColorUtil from '../../../utils/ColorUtil';
 import {
     UIText,
     UIImage
 } from '../../../components/ui/index';
-import ShopCartRes from '../res/ShopCartRes';
+import res from '../res';
 import shopCartStore from '../model/ShopCartStore';
 import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import bridge from '../../../utils/bridge';
+import DesignRule from 'DesignRule';
 
 
 const activityCode = {
@@ -53,6 +53,7 @@ export default class ShopCartPage extends BasePage {
         title: '购物车',
         leftNavItemHidden: true
 
+
     };
 
     constructor(props) {
@@ -74,10 +75,6 @@ export default class ShopCartPage extends BasePage {
         this.didBlurSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                console.log('payload is run ----');
-                let offSet = this.contentList ? this.contentList.props.contentOffset : 'meiyou offset';
-                console.log(offSet);
-
                 if (this.isUnFishFirstRender &&
                     shopCartStore.data.length > 0 &&
                     this.contentList) {
@@ -86,61 +83,99 @@ export default class ShopCartPage extends BasePage {
                 }
             }
         );
-
-        // const {statusBarHeight} = ScreenUtils
-        // if (this.contentList){
-        //     this.contentList.refreshControl = <RefreshControl
-        //         refreshing={homeModule.isRefreshing}
-        //         onRefresh={this._onRefresh.bind(this)}
-        //         progressViewOffset={statusBarHeight + 44}
-        //         colors={['#d51243']}
-        //         title="下拉刷新"
-        //         tintColor="#999"
-        //         titleColor="#999"
-        //     />
-        // }
     }
-
 
     componentWillUnmount() {
         this.didBlurSubscription.remove();
-
     }
 
     _render() {
         return (
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
-                {/*{shopCartStore.data && shopCartStore.data.length > 0 ? this._renderListView() : this._renderEmptyView()}*/}
                 {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderListView() : this._renderEmptyView()}
-                {this._renderShopCartBottomMenu()}
+                {shopCartStore.cartData && shopCartStore.cartData.length > 0 ? this._renderShopCartBottomMenu() : null}
             </View>
-
-
         );
     }
 
     _renderEmptyView = () => {
         return (
             <View style={{
-                backgroundColor: ColorUtil.Color_f7f7f7,
+                backgroundColor: DesignRule.bgColor,
                 flex: 1,
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>
-                <Text>
-                    ~购物车暂无商品~!
+                <Image
+                    source={res.kongShopCartImg}
+                    style={{
+                        height: 115,
+                        width: 115
+                    }}
+                />
+                <Text
+                    style={{
+                        marginTop: 10,
+                        fontSize: 15,
+                        color: DesignRule.textColor_secondTitle
+                    }}
+                >
+                    去添加点什么吧
                 </Text>
+                <Text
+                    style={{
+                        marginTop: 10,
+                        fontSize: 12,
+                        color: DesignRule.textColor_secondTitle
+                    }}
+                >
+                    快去商城逛逛吧~
+                </Text>
+
+                <TouchableOpacity
+                    onPress={
+                        () => {
+                            this._gotoLookAround();
+                        }
+                    }
+                >
+                    <View
+                        style={{
+                            marginTop: 22,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderColor: DesignRule.mainColor,
+                            borderWidth: 1,
+                            borderRadius: 25,
+                            width: 150,
+                            height: 50
+                        }}
+                    >
+                        <Text
+                            style={{
+
+                                color: DesignRule.mainColor,
+                                fontSize: 17
+                            }}
+                        >
+                            去逛逛
+                        </Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         );
     };
 
+    _gotoLookAround = () => {
+        this.$navigateReset();
+    };
     _renderListView = () => {
         const tempArr = this.ds.cloneWithRows(shopCartStore.cartData);
         const { statusBarHeight } = ScreenUtils;
         return (
             <SwipeListView
-                style={{ backgroundColor: ColorUtil.Color_f7f7f7 }}
+                style={{ backgroundColor: DesignRule.bgColor }}
                 dataSource={tempArr}
                 disableRightSwipe={true}
                 // renderRow={ data => (
@@ -169,10 +204,10 @@ export default class ShopCartPage extends BasePage {
                         }
                         }
                         progressViewOffset={statusBarHeight + 44}
-                        colors={['#d51243']}
+                        colors={[DesignRule.mainColor]}
                         title="下拉刷新"
-                        tintColor="#999"
-                        titleColor="#999"
+                        tintColor={DesignRule.textColor_instruction}
+                        titleColor={DesignRule.textColor_instruction}
                     />
                 }
             />
@@ -192,7 +227,7 @@ export default class ShopCartPage extends BasePage {
                 style={[{
                     height: 49,
                     width: ScreenUtils.width,
-                    backgroundColor: ColorUtil.Color_ffffff
+                    backgroundColor: 'white'
                 },
                     (!hiddeLeft && ScreenUtils.tabBarHeight > 49)
                         ?
@@ -207,22 +242,21 @@ export default class ShopCartPage extends BasePage {
                         onPress={() => this._selectAll()}
                     >
                         <Image
-                            source={shopCartStore.computedSelect ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
+                            source={shopCartStore.computedSelect ? res.button.selected_circle_red : res.button.unselected_circle}
                             style={{ width: 22, height: 22 }}/>
 
                         <UIText
                             value={'全选'}
                             style={{
-                                fontFamily: 'PingFang-SC-Medium',
                                 fontSize: 13,
-                                color: '#999999',
+                                color: DesignRule.textColor_instruction,
                                 marginLeft: 10
                             }}/>
                     </TouchableOpacity>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <UIText
                             value={'合计'}
-                            style={{ fontFamily: 'PingFang-SC-Medium', fontSize: 13, color: ColorUtil.Color_222222 }}/>
+                            style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
                         <UIText
                             value={StringUtils.formatMoneyString(shopCartStore.getTotalMoney)}
                             style={styles.totalPrice}/>
@@ -232,7 +266,7 @@ export default class ShopCartPage extends BasePage {
                         >
                             <UIText
                                 value={`结算(${shopCartStore.getTotalSelectGoodsNum})`}
-                                style={{ color: ColorUtil.Color_ffffff, fontSize: 16 }}
+                                style={{ color: 'white', fontSize: 16 }}
                             />
                         </TouchableOpacity>
                     </View>
@@ -240,32 +274,7 @@ export default class ShopCartPage extends BasePage {
             </View>
         );
     };
-    _toBuyImmediately = () => {
-        // this.$navigate('LoginModal')
-        // return;
-        let [...selectArr] = shopCartStore.startSettlement();
-        if (selectArr.length <= 0) {
-            bridge.$toast('请先选择结算商品~');
-        } else {
-            let tempArr = [];
-            selectArr.map((goods) => {
-                tempArr.push({
-                    priceId: goods.priceId,
-                    num: goods.amount,
-                    productId: goods.productId
-                });
-            });
-            this.$navigate('order/order/ConfirOrderPage', {
-                orderParamVO: {
-                    orderType: 99,
-                    orderProducts: tempArr
-                }
-            });
-        }
-    };
-    _selectAll = () => {
-        shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
-    };
+
     _renderValidItem = (itemData, rowId, rowMap) => {
         return (
             <View>
@@ -277,7 +286,7 @@ export default class ShopCartPage extends BasePage {
                     style={styles.itemContainer}>
                     <View style={styles.standaloneRowFront}>
                         <UIImage
-                            source={itemData.isSelected ? ShopCartRes.selectImg : ShopCartRes.unSelectImg}
+                            source={itemData.isSelected ?  res.button.selected_circle_red : res.button.unselected_circle}
                             style={{ width: 22, height: 22, marginLeft: 10 }}
                             onPress={() => {
 
@@ -309,10 +318,10 @@ export default class ShopCartPage extends BasePage {
                                             left: 140,
                                             top: 20,
                                             fontSize: 10,
-                                            color: ColorUtil.mainRedColor,
+                                            color: DesignRule.mainColor,
                                             borderWidth: 1,
                                             borderRadius: 4,
-                                            borderColor: ColorUtil.mainRedColor
+                                            borderColor: DesignRule.mainColor
                                         }
                                     }
                                 />
@@ -327,9 +336,9 @@ export default class ShopCartPage extends BasePage {
                         {
                             itemData.status === 0 ?
                                 <UIImage
-                                    source={ShopCartRes.invalidGoodImg}
+                                    source={res.other.invalidGoodImg}
                                     style={{
-                                        // backgroundColor:'red',
+                                        // backgroundColor:DesignRule.mainColor,
                                         position: 'absolute',
                                         marginLeft: 55,
                                         width: 60,
@@ -357,11 +366,10 @@ export default class ShopCartPage extends BasePage {
                                     numberOfLines={2}
                                     style={{
                                         marginTop: 0,
-                                        fontFamily: 'PingFang-SC-Medium',
                                         fontSize: 13,
                                         lineHeight: 16,
                                         height: 32,
-                                        color: ColorUtil.Color_222222
+                                        color: DesignRule.textColor_mainTitle
                                     }}
                                 />
 
@@ -369,10 +377,24 @@ export default class ShopCartPage extends BasePage {
                                     value={itemData.specString ? itemData.specString : ''}
                                     numberOfLines={2}
                                     style={{
-                                        fontFamily: 'PingFang-SC-Medium',
                                         fontSize: 13,
-                                        color: ColorUtil.Color_999999
+                                        color: DesignRule.textColor_instruction
                                     }}/>
+
+                                {
+                                    itemData.amount > itemData.stock
+                                        ?
+                                        <UIText
+                                            value={'库存不足'}
+                                            numberOfLines={2}
+                                            style={{
+                                                fontSize: 11,
+                                                color: DesignRule.mainColor
+                                            }}/>
+                                        :
+                                        null
+                                }
+
                             </View>
                             <View style={{
                                 flexDirection: 'row',
@@ -381,7 +403,7 @@ export default class ShopCartPage extends BasePage {
                             }}>
                                 <UIText
                                     value={'￥ ' + StringUtils.formatMoneyString(itemData.price, false)}
-                                    style={{ fontSize: 14, color: '#e60012' }}/>
+                                    style={{ fontSize: 14, color: DesignRule.mainColor }}/>
                                 <View style={{ flexDirection: 'row' }}>
                                     <TouchableOpacity
                                         style={styles.rectangle}
@@ -392,7 +414,7 @@ export default class ShopCartPage extends BasePage {
                                         <UIText
                                             value={'-'}
                                             // style={{fontSize:15,color:data.num<=1?ColorUtil.Color_dddddd:ColorUtil.Color_222222}}
-                                            style={{ fontSize: 11, color: ColorUtil.Color_222222 }}
+                                            style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }}
                                         />
                                     </TouchableOpacity>
                                     <View style={[styles.rectangle, {
@@ -416,9 +438,6 @@ export default class ShopCartPage extends BasePage {
                                                 tempArr[rowId] = itemData;
                                                 shopCartStore.data = tempArr;
                                             }}
-                                            // onEndEditing={text => this.onNumberTextChange(itemData,text,rowId)}
-                                            // onSubmitEditing={text => this.onNumberTextChange(itemData,text,rowId)}
-                                            // onEndEditing={text => this.onNumberTextChange(itemData,text,rowId)}
                                             onEndEditing={text => this.onNumberTextChange(itemData, text, rowId)}
                                             placeholder=''
                                             keyboardType='numeric'
@@ -431,8 +450,8 @@ export default class ShopCartPage extends BasePage {
                                         }}>
                                         <UIText
                                             value={'+'}
-                                            // style={{fontSize:15,color:data.num>=data.stock?color.gray_DDD:color.black_222}}
-                                            style={{ fontSize: 11, color: ColorUtil.Color_222222 }}
+                                            // style={{fontSize:15,color:data.num>=data.stock?DesignRule.color_ddd:DesignRule.textColor_mainTitle_222}}
+                                            style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }}
 
                                         />
                                     </TouchableOpacity>
@@ -443,9 +462,9 @@ export default class ShopCartPage extends BasePage {
                 </TouchableHighlight>
 
                 <View
-                style={{
-                    backgroundColor:ColorUtil.Color_f7f7f7
-                }}
+                    style={{
+                        backgroundColor: DesignRule.bgColor
+                    }}
                 >
                     {
                         (
@@ -459,20 +478,21 @@ export default class ShopCartPage extends BasePage {
                                         height: 15,
                                         width: ScreenUtils.width,
                                         justifyContent: 'center',
-                                        alignItems: 'center'
-                                        // opacity:0.2
+                                        alignItems: 'center',
+                                        backgroundColor: DesignRule.mainColor
+
                                     },
                                         this._getSkillIsBegin(itemData) === 0
                                             ?
-                                            { backgroundColor: 'rgba(213, 18, 67, 0.5)' }
+                                            { opacity: 0.5 }
                                             :
-                                            { backgroundColor: 'rgba(213, 18, 67, 1)' }
+                                            { opacity: 1 }
                                     ]
                                 }
                             >
                                 <Text style={{
                                     flex: 1,
-                                    color: ColorUtil.Color_ffffff,
+                                    color: 'white',
                                     fontSize: 11
                                 }}>
                                     {
@@ -485,7 +505,7 @@ export default class ShopCartPage extends BasePage {
                             : null
                     }
                     <View
-                        style={{ height: 10, backgroundColor: ColorUtil.Color_f7f7f7, width: ScreenUtils.width }}
+                        style={{ height: 10, backgroundColor: DesignRule.bgColor, width: ScreenUtils.width }}
                     />
                 </View>
             </View>
@@ -519,10 +539,35 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _refreshFun = () => {
-
         shopCartStore.isRefresh = true;
         shopCartCacheTool.getShopCartGoodsListData();
-
+    };
+    /**
+     * 前往结算
+     * @private
+     */
+    _toBuyImmediately = () => {
+        shopCartStore.judgeIsCanSettlement((isCan, goodArr) => {
+            if (isCan) {
+                let tempArr = [];
+                goodArr.map((goods) => {
+                    tempArr.push({
+                        priceId: goods.priceId,
+                        num: goods.amount,
+                        productId: goods.productId
+                    });
+                });
+                this.$navigate('order/order/ConfirOrderPage', {
+                    orderParamVO: {
+                        orderType: 99,
+                        orderProducts: tempArr
+                    }
+                });
+            }
+        });
+    };
+    _selectAll = () => {
+        shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
     };
 
     _jumpToProductDetailPage = (itemData) => {
@@ -537,12 +582,7 @@ export default class ShopCartPage extends BasePage {
         });
     };
     onNumberTextChange = (itemData, text, rowId) => {
-        // console.log('------在执行');
-        // console.log(itemData)
-        // console.log(itemData.amount);
-        // console.log(typeof itemData.amount)
         if (isNaN(itemData.amount)) {
-            console.log('执行了判断内部函数');
             itemData.amount = 1;
             shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
@@ -552,6 +592,10 @@ export default class ShopCartPage extends BasePage {
         }
         if (itemData.amount <= 0) {
             itemData.amount = 1;
+        }
+        if (itemData.amount > 200) {
+            itemData.amount = 200;
+            bridge.$toast('单个商品最多200件');
         }
         shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         // if(StringUtils.checkIsPositionNumber(parseInt(text))) {
@@ -600,7 +644,7 @@ const
         },
         standaloneRowBack: {
             alignItems: 'center',
-            backgroundColor: ColorUtil.mainRedColor,
+            backgroundColor: DesignRule.mainColor,
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'flex-end',
@@ -610,7 +654,7 @@ const
         backUITextWhite: {
             // flex:1,
             marginRight: 0,
-            color: '#ffffff'
+            color: 'white'
         },
         standaloneRowFront: {
             alignItems: 'center',
@@ -625,14 +669,14 @@ const
             width: 30,
             justifyContent: 'center',
             borderWidth: 1,
-            borderColor: ColorUtil.Color_dddddd,
+            borderColor: DesignRule.lineColor_inColorBg,
             alignItems: 'center'
         },
 
         validItemContainer: {
             height: 140,
             flexDirection: 'row',
-            backgroundColor: ColorUtil.Color_f7f7f7
+            backgroundColor: DesignRule.bgColor
         },
         validProductImg: {
             width: 80,
@@ -652,13 +696,13 @@ const
         invalidItemContainer: {
             height: 100,
             flexDirection: 'row',
-            backgroundColor: ColorUtil.Color_ffffff
+            backgroundColor: 'white'
         },
         invalidUITextInvalid: {
             width: 38,
             height: 20,
             borderRadius: 10,
-            backgroundColor: '#999999',
+            backgroundColor: DesignRule.textColor_instruction,
             justifyContent: 'center',
             alignItems: 'center',
             marginLeft: 12
@@ -680,22 +724,21 @@ const
         CartBottomContainer: {
             width: ScreenUtils.width,
             height: 49,
-            backgroundColor: ColorUtil.Color_ffffff,
+            backgroundColor: 'white',
             justifyContent: 'space-between',
             flexDirection: 'row',
             alignItems: 'center'
         },
         totalPrice: {
-            fontFamily: 'PingFang-SC-Medium',
             fontSize: 13,
-            color: ColorUtil.mainRedColor,
+            color: DesignRule.mainColor,
             marginLeft: 10,
             marginRight: 10
         },
         selectGoodsNum: {
             width: 110,
             height: 49,
-            backgroundColor: ColorUtil.mainRedColor,
+            backgroundColor: DesignRule.mainColor,
             justifyContent: 'center',
             alignItems: 'center'
         },
@@ -706,7 +749,7 @@ const
             height: 30,
             width: 46,
             fontSize: 11,
-            color: ColorUtil.Color_222222,
+            color: DesignRule.textColor_mainTitle,
             alignSelf: 'center',
             justifyContent: 'center',
             textAlign: 'center',

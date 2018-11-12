@@ -10,6 +10,7 @@ import { TimeDownUtils } from '../../../../utils/TimeDownUtils';
 import MineAPI from '../../api/MineApi';
 import user from '../../../../model/user';
 import SMSTool from '../../../../utils/SMSTool';
+import DesignRule from 'DesignRule';
 
 export default class SetNewPhoneNumPage extends BasePage {
 
@@ -34,7 +35,7 @@ export default class SetNewPhoneNumPage extends BasePage {
             <View style={{ height: 40, justifyContent: 'center' }}>
                 <UIText value={this.state.tips}
                         style={{
-                            color: '#999999',
+                            color: DesignRule.textColor_instruction,
                             fontSize: 13,
                             marginLeft: 16
                         }}/>
@@ -51,7 +52,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                         }}
                         value={this.state.telText}
                         placeholder={'请输入新手机号'}
-                        placeholderTextColor={'#C8C8C8'}
+                        placeholderTextColor={DesignRule.textColor_hint}
                         keyboardType={'numeric'}
                     />
                 </View>
@@ -61,11 +62,11 @@ export default class SetNewPhoneNumPage extends BasePage {
                     flexDirection: 'row',
                     alignItems: 'center'
                 }}>
-                    <UIText value={'验证码'} style={{ fontSize: 13, color: '#000000', marginLeft: 20 }}/>
+                    <UIText value={'验证码'} style={{ fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}/>
                     <TextInput underlineColorAndroid={'transparent'}
-                               style={{ flex: 1, padding: 0, fontSize: 13, color: '#000000', marginLeft: 20 }}
+                               style={{ flex: 1, padding: 0, fontSize: 13, color: DesignRule.textColor_mainTitle, marginLeft: 20 }}
                                placeholder={'请输入验证码'}
-                               placeholderTextColor={'#C8C8C8'}
+                               placeholderTextColor={DesignRule.textColor_hint}
                                onChangeText={(text) => {
                                    const newText = text.replace(/[^\d]+/, '');
                                    this.setState({ code: newText });
@@ -75,7 +76,7 @@ export default class SetNewPhoneNumPage extends BasePage {
                     <TouchableOpacity onPress={() => this._onGetCode(this.state.telText)}
                                       disabled={this.state.vertifyCodeTime > 0 ? true : false}>
                         <UIText value={this.state.vertifyCodeTime > 0 ? this.state.vertifyCodeTime + '秒后重新获取' : '获取验证码'}
-                                style={{ color: '#D85674', fontSize: 11, marginRight: 15 }}/>
+                                style={{ color: '#D85674', fontSize: 13, marginRight: 15 }}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -84,14 +85,14 @@ export default class SetNewPhoneNumPage extends BasePage {
                 marginTop: 54,
                 backgroundColor: color.red,
                 width: ScreenUtils.width - 84,
-                height: 48,
+                height: 50,
                 marginLeft: 42,
                 marginRight: 42,
                 alignItems: 'center',
                 justifyContent: 'center',
-                borderRadius: 5
+                borderRadius: 25
             }} onPress={() => this._toNext()}>
-                <Text style={{ fontSize: 13, color: 'white' }}>绑定</Text>
+                <Text style={{ fontSize: 17, color: 'white' }}>绑定</Text>
             </TouchableOpacity>
         </View>);
     }
@@ -167,13 +168,13 @@ const styles = StyleSheet.create({
     itemLeftText: {
         marginRight: 20,
         fontSize: 13,
-        color: '#222222'
+        color: DesignRule.textColor_mainTitle
     },
     itemRightInput: {
         flex: 1,
         height: 40,
         padding: 0,
-        color: '#222222',
+        color: DesignRule.textColor_mainTitle,
         fontSize: 13
     }
 });

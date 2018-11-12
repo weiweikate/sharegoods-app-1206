@@ -13,7 +13,7 @@
 -keepclassmembers class * {
    public <init> (org.json.JSONObject);
 }
--keep public class com.meeruu.sharegoods.R$*{
+-keep public class com.mqiyukfeeruu.sharegoods.R$*{
 public static final int *;
 }
 -keepclassmembers enum * {
@@ -225,7 +225,7 @@ public static final int *;
 #hotfix
 -keep class com.taobao.sophix.**{*;}
 -keep class com.ta.utdid2.device.**{*;}
--keepclassmembers class com.meeruu.sharegoods.application.MRApplication {
+-keepclassmembers class com.meeruu.sharegoods.MainApplication {
     public <init>();
 }
 -keepclassmembers class com.meeruu.commonlib.base.BaseApplication {

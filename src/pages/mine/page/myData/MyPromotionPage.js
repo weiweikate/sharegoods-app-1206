@@ -15,15 +15,18 @@ import { PageLoadingState } from '../../../../components/pageDecorator/PageState
 import MineApi from '../../api/MineApi';
 import HTML from 'react-native-render-html';
 // 图片资源
-import HeaderBarBgImg from './res/txbg_02.png';
+import HeaderBarBgImg from './res/bg2.png';
 import WhiteBtImg from './res/dz_03-02.png';
 import RingImg from './../../res/homeBaseImg/bg_03.png';
 import CCZImg from './res/ccz_03.png';
 import ProgressImg from './res/jdt_05.png';
 // import {NavigationActions} from "react-navigation";
 import BasePage from '../../../../BasePage';
+import {UIImage} from '../../../../components/ui';
 import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+import DesignRule from 'DesignRule';
+import res from '../../../../comm/res';
 // 常量
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -31,7 +34,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 export default class MyPromotionPage extends BasePage {
 
     $navigationBarOptions = {
-        show: true, // false则隐藏导航
+        show: false, // false则隐藏导航
         title: '我的晋升情况'
     };
 
@@ -69,20 +72,20 @@ export default class MyPromotionPage extends BasePage {
         // 当前等级
         MineApi.getUserLevelInfo().then(response => {
             console.log(response);
-                // console.warn(JSON.stringify(response,null,4));
-                const { data } = response;
-                this.setState({
-                    loading: false,
-                    refreshing: false,
-                    netFailedInfo: null,
-                    levelName: data.levelName,
-                    experience: data.experience || 0,
-                    levelExperience: data.levelExperience || 0,
-                    headImg: data.headImg,
-                    realName: data.realName,
-                    loadingState: PageLoadingState.success,
-                    ...data
-                });
+            // console.warn(JSON.stringify(response,null,4));
+            const { data } = response;
+            this.setState({
+                loading: false,
+                refreshing: false,
+                netFailedInfo: null,
+                levelName: data.levelName,
+                experience: data.experience || 0,
+                levelExperience: data.levelExperience || 0,
+                headImg: data.headImg,
+                realName: data.realName,
+                loadingState: PageLoadingState.success,
+                ...data
+            });
         }).catch(err => {
             this.setState({
                 loading: false,
@@ -94,12 +97,12 @@ export default class MyPromotionPage extends BasePage {
                 this.props.navigation.navigate('login/login/LoginPage');
             }
         });
-        MineApi.getNextLevelInfo().then(res =>{
-            const {data} = res;
+        MineApi.getNextLevelInfo().then(res => {
+            const { data } = res;
             this.setState({
-                nextArr:data.content
-            })
-        })
+                nextArr: data.content
+            });
+        });
     };
 
 
@@ -109,7 +112,6 @@ export default class MyPromotionPage extends BasePage {
 
 
     renderHeader = () => {
-
         const progress = this.state.experience / this.state.levelExperience;
         const marginLeft = 315 / 375 * SCREEN_WIDTH * progress;
         const headerWidth = 65 / 375 * SCREEN_WIDTH;
@@ -124,11 +126,12 @@ export default class MyPromotionPage extends BasePage {
             }
         }
 
-        return <View style={{ height: 182 / 375 * SCREEN_WIDTH + 115 }}>
+        return <View style={{ height: 182 / 375 * SCREEN_WIDTH + 115 + ScreenUtils.statusBarHeight + 10}}>
             <ImageBackground source={HeaderBarBgImg} style={{
-                width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH,
-                flexDirection: 'row'
+                width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH+ScreenUtils.statusBarHeight+10,
+                flexDirection: 'row',paddingTop:ScreenUtils.statusBarHeight,
             }}>
+                <UIImage source={res.button.white_back_img} style={{marginLeft:15,width:9,height:15,marginTop:5}} onPress={()=>this.$navigateBack()}/>
                 <ImageBackground source={RingImg}
                                  style={styles.headerBg}>
                     {
@@ -143,7 +146,7 @@ export default class MyPromotionPage extends BasePage {
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginTop: 16,
-                    marginLeft: 16
+                    marginLeft: 10
                 }}>
                     <View style={{
                         justifyContent: 'center', alignItems: 'center', marginTop: 10, width: 89,
@@ -151,7 +154,7 @@ export default class MyPromotionPage extends BasePage {
                         borderRadius: 10,
                         borderStyle: 'solid',
                         borderWidth: 1,
-                        borderColor: '#ffffff'
+                        borderColor: 'white'
                     }}>
                         <Text style={styles.shopName}>{this.state.levelName || ' '}</Text>
                     </View>
@@ -161,20 +164,18 @@ export default class MyPromotionPage extends BasePage {
                 <View style={{ height: 43, marginHorizontal: 0, flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={CCZImg} style={{ marginLeft: 17, marginRight: 6 }}/>
                     <Text style={{
-                        fontFamily: 'PingFang-SC-Medium',
                         fontSize: 15,
-                        color: '#000000'
+                        color: DesignRule.textColor_mainTitle
                     }}>成长值</Text>
                 </View>
 
                 <View style={{ flex: 1, alignItems: 'center' }}>
                     <Text style={{
                         marginTop: 10,
-                        color: '#e60012',
+                        color: '#f00006',
                         fontSize: 10,
-                        fontFamily: 'PingFang-SC-Medium'
                     }}>{this.state.experience || 0}<Text style={{
-                        color: '#666666'
+                        color: DesignRule.textColor_secondTitle
                     }}>
                         /{this.state.levelExperience}
                     </Text></Text>
@@ -190,7 +191,7 @@ export default class MyPromotionPage extends BasePage {
                             marginLeft: marginLeft,
                             height: 8,
                             borderRadius: 4,
-                            backgroundColor: '#dddddd',
+                            backgroundColor: DesignRule.lineColor_inGrayBg,
                             borderBottomLeftRadius: radius,
                             borderTopLeftRadius: radius
                         }}/>
@@ -200,9 +201,8 @@ export default class MyPromotionPage extends BasePage {
 
                     <Text style={{
                         marginTop: 10,
-                        color: '#222222',
+                        color: DesignRule.textColor_mainTitle,
                         fontSize: 11,
-                        fontFamily: 'PingFang-SC-Medium'
                     }}>距离晋升还差<Text style={{
                         color: '#000',
                         fontSize: 15
@@ -217,19 +217,19 @@ export default class MyPromotionPage extends BasePage {
     renderWelfare() {
         // const arr = ['分红增加', '分红增加', '分红增加', '分红增加'];
         return (
-            <View style={{marginBottom:50}}>
+            <View style={{ marginBottom: 50 }}>
                 <View style={{ justifyContent: 'center', height: 44, backgroundColor: '#fff' }}>
                     <Text style={{
                         marginLeft: 14,
-                        fontFamily: 'PingFang-SC-Medium',
                         fontSize: 14,
-                        color: '#222222'
+                        color: DesignRule.textColor_mainTitle
                     }}>预计晋升后可获得哪些福利？</Text>
                 </View>
                 {this.renderSepLine()}
-                {this.state.nextArr?<HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
-                                          containerStyle={{ backgroundColor: '#fff' }}/>:null}
-
+                {this.state.nextArr ? <HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
+                                            containerStyle={{ backgroundColor: '#fff' }}
+                                            imagesInitialDimensions={ScreenUtils.width}
+                                            baseFontStyle={{ lineHeight: 25, color: DesignRule.textColor_secondTitle, fontSize: 13 }}/> : null}
             </View>
         );
     }
@@ -258,7 +258,7 @@ export default class MyPromotionPage extends BasePage {
                         />}>
                 {this.renderHeader()}
                 {this.renderWelfare()}
-                <View style={{backgroundColor:'f7f7f7',height:2}}/>
+                <View style={{ backgroundColor: '#f7f7f7', height: 2 }}/>
             </ScrollView>
         );
     };
@@ -318,7 +318,7 @@ export default class MyPromotionPage extends BasePage {
                     <View style={{
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: '#E60012',
+                        backgroundColor: '#f00006',
                         flex: 1,
                         height: 48
                     }}>
@@ -332,21 +332,21 @@ export default class MyPromotionPage extends BasePage {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        marginBottom: ScreenUtils.safeBottom,
     },
     headerBg: {
-        marginTop: 16,
-        marginLeft: 16,
-        marginRight: 23,
+        marginTop:26,
+        marginLeft: 10,
+        marginRight: 10,
         width: 105 / 375 * SCREEN_WIDTH,
         height: 105 / 375 * SCREEN_WIDTH,
         justifyContent: 'center',
         alignItems: 'center'
     },
     shopName: {
-        fontFamily: 'PingFang-SC-Medium',
         fontSize: 13,
-        color: '#ffffff'
+        color: 'white'
     },
     //白的面板背景
     whiteBg: {
