@@ -102,7 +102,7 @@ export default class MyCollectPage extends BasePage {
                         <Text style={[styles.desc, styles.margin]}>{item.userCount || 0}成员</Text>
                         <View style={styles.bottomRow}>
                             <Image source={MoneyIcon}/>
-                            <Text style={[styles.desc, { color: '#f39500' }]}>交易额:{item.totalTradeBalance}元</Text>
+                            <Text style={[styles.desc, { color: '#f39500' }]}>交易额:{item.totalTradeBalance?item.totalTradeBalance:0}元</Text>
                             <View style={{ flex: 1 }}/>
                             <View style={styles.starContainer}>
                                 {

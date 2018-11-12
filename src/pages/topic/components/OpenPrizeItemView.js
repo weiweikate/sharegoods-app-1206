@@ -14,10 +14,12 @@ import PropTypes from 'prop-types';
 import TopicAPI from '../api/TopicApi';
 import user from '../../../model/user';
 import bridge from '../../../utils/bridge';
-import res from '../res';
 import { getShowPrice } from '../model/TopicMudelTool';
 import DesignRule from 'DesignRule';
 import StringUtils from '../../../utils/StringUtils';
+import res from '../res';
+const noGoodImg = res.other.noGoodImg;
+const zhuanti_jieshu = res.zhuanti_jieshu;
 
 // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
 const statues = {
@@ -30,9 +32,9 @@ const statues = {
 };
 
 const statuesImg = {
-    [statues.haveSoldOut]: res.other.noGoodImg,
-    [statues.timeOver]: res.zhuanti_jieshu,
-    [statues.handOver]: res.zhuanti_jieshu
+    [statues.haveSoldOut]: noGoodImg,
+    [statues.timeOver]:  zhuanti_jieshu,
+    [statues.handOver]:  zhuanti_jieshu
 };
 const statuesString = {
     [statues.isBeginning]: '马上抢',
