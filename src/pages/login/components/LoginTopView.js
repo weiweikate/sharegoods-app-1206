@@ -36,6 +36,8 @@ class LoginTopViewModel {
     @observable
     dowTime = 0;
 
+
+
     @action
     savePhoneNumber(phoneNmber) {
         if (!phoneNmber) {
@@ -196,7 +198,9 @@ export default class LoginTopView extends Component {
             bridge.$toast('请检查网络是否连接');
             return;
         }
+
         if (StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
+            this.LoginModel.dowTime = 60;
             bridge.$toast('验证码发送成功,注意查收');
             (new TimeDownUtils()).startDown((time) => {
                 this.LoginModel.dowTime = time;

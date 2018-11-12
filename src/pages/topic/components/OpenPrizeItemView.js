@@ -14,9 +14,12 @@ import PropTypes from 'prop-types';
 import TopicAPI from '../api/TopicApi';
 import user from '../../../model/user';
 import bridge from '../../../utils/bridge';
-import res from '../res';
 import { getShowPrice } from '../model/TopicMudelTool';
 import DesignRule from 'DesignRule';
+import StringUtils from '../../../utils/StringUtils';
+import res from '../res';
+const noGoodImg = res.other.noGoodImg;
+const zhuanti_jieshu = res.zhuanti_jieshu;
 
 // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
 const statues = {
@@ -29,9 +32,9 @@ const statues = {
 };
 
 const statuesImg = {
-    [statues.haveSoldOut]: res.other.noGoodImg,
-    [statues.timeOver]: res.zhuanti_jieshu,
-    [statues.handOver]: res.zhuanti_jieshu
+    [statues.haveSoldOut]: noGoodImg,
+    [statues.timeOver]:  zhuanti_jieshu,
+    [statues.handOver]:  zhuanti_jieshu
 };
 const statuesString = {
     [statues.isBeginning]: '马上抢',
@@ -39,6 +42,8 @@ const statuesString = {
     [statues.timeOver]: '已结束',
     [statues.handOver]: '已结束'
 };
+
+
 
 export default class OpenPrizeItemView extends Component {
 
@@ -99,11 +104,6 @@ export default class OpenPrizeItemView extends Component {
                         <Text
                             style={ItemStyles.itemBottomTextStyle}
                             number={2}
-                            // onLayout={(e) => {
-                            //     if (e.nativeEvent.layout.height > 25) {//多于一行时改为红色
-                            //     }
-                            // }
-                            // }
                         >
                             {itemData.productName}
                         </Text>
@@ -140,11 +140,6 @@ export default class OpenPrizeItemView extends Component {
                                     color: DesignRule.mainColor
                                 }}>
                                     {
-                                        // itemData.productType === 2
-                                        //     ?
-                                        //     '¥' + itemData[typeName[itemData.productType][itemData.status]]
-                                        //     :
-                                        //     '¥' + itemData[typeName[itemData.productType]]
                                         getShowPrice(itemData)
                                     }
                                 </Text>
@@ -154,7 +149,7 @@ export default class OpenPrizeItemView extends Component {
                                     textDecorationLine: 'line-through',
                                     color: DesignRule.textColor_instruction
                                 }}>
-                                    {itemData.originalPrice}
+                                    {StringUtils.formatMoneyString(itemData.originalPrice)}
                                 </Text>
                             </View>
                             {/*右下角按钮*/}
@@ -178,18 +173,27 @@ export default class OpenPrizeItemView extends Component {
                                                     backgroundColor: '#33B4FF',
                                                     height: 30,
                                                     width: (ScreenUtils.width / 2 - 16) / 2,
-                                                    borderRadius: 5
+                                                    borderRadius: 5,
+                                                    flexDirection:'row',
+                                                    justifyContent:'center',
+                                                    alignItems:'center'
                                                 }}
                                             >
+                                                {
+                                                    this.state.itemData.notifyFlag?
+                                                        null
+                                                        :
+                                                        <Image
+                                                            source={res.zhuanti_tixing_img}
+                                                        />
+                                                }
+
                                                 <Text
                                                     style={
                                                         {
                                                             color: 'white',
-                                                            textAlign: 'center',
-                                                            height: 30,
-                                                            paddingTop: 8,
-                                                            fontSize: 12
-
+                                                            fontSize: 12,
+                                                            marginLeft:5
                                                         }
                                                     }
                                                 >
@@ -275,7 +279,7 @@ export default class OpenPrizeItemView extends Component {
 const ItemStyles = StyleSheet.create({
     itemBgStyle: {
         width: ScreenUtils.width / 2,
-        height: ScreenUtils.width / 2 + 100,
+        height: ScreenUtils.width / 2 + 105,
         backgroundColor: DesignRule.bgColor,
         padding: 8,
         paddingBottom: 0
