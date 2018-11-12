@@ -219,7 +219,7 @@ export default class CategorySearchPage extends BasePage {
             leftIndex: index
         });
         // 点击分类
-        if (this.state.leftIndex != index) {
+        if (this.state.leftIndex !== index) {
             // 先隐藏，后显示，起到刷新作用
             this.setState({
                 swiperShow: false,
@@ -248,11 +248,11 @@ export default class CategorySearchPage extends BasePage {
                     let datas = response.data || {};
                     let arr = [];
                     for (let i = 0, len = datas.productCategoryList.length; i < len; i++) {
-                        let item = {
+                        let data = {
                             title: datas.productCategoryList[i].name,
                             data: datas.productCategoryList[i].productCategoryList
                         };
-                        arr.push(item);
+                        arr.push(data);
                     }
                     this.setState({
                         sectionArr: arr,
@@ -275,8 +275,8 @@ export default class CategorySearchPage extends BasePage {
             <View style={{
                 flexDirection: 'column',
                 width: itemImgW,
-                marginRight: (item.index % 3 == 0 || item.index % 3 == 1) ? 15 : 10,
-                marginLeft: (item.index % 3 == 1 || item.index % 3 == 2) ? 15 : 10,
+                marginRight: (item.index % 3 === 0 || item.index % 3 === 1) ? 15 : 10,
+                marginLeft: (item.index % 3 === 1 || item.index % 3 === 2) ? 15 : 10,
                 alignItems: 'center'
             }}>
                 <PreLoadImage imageUri={item.item.img}

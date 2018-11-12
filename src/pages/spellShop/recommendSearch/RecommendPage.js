@@ -121,6 +121,10 @@ export default class RecommendPage extends BasePage {
                 loadingState: PageLoadingState.fail
             });
         });
+        this._getSwipers();
+    };
+
+    _getSwipers = () => {
         HomeAPI.getSwipers({
             type: 9
         }).then((data) => {
@@ -309,7 +313,6 @@ export default class RecommendPage extends BasePage {
                              onEndReached={this._onEndReached.bind(this)}
                              onEndReachedThreshold={0.1}
                              ListFooterComponent={this._ListFooterComponent}
-                             stickySectionHeadersEnabled={false}
                              showsVerticalScrollIndicator={false}
                              ListHeaderComponent={this._renderListHeader}
                              renderSectionHeader={this._renderSectionHeader}

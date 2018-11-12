@@ -1,4 +1,3 @@
-import res from '../../../../comm/res'//将公共的res导入
 const index = {
     mine_header_bg: require('./bg_img_user.png'),
     mine_setting_icon_gray:require('./mine_setting_icon_gray.png'),
@@ -20,6 +19,6 @@ const index = {
     mine_icon_notificate:require('./mine_icon_notificate.png'),
     mine_icon_mission:require('./mine_icon_mission.png'),
     mine_icon_discollect:require('./mine_icon_discollect.png'),
-    ...res
+    fanhui:require('./fanhui.png'),
 };
 export default index;
