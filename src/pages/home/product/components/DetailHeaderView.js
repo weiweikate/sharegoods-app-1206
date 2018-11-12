@@ -163,11 +163,11 @@ export default class DetailHeaderView extends Component {
                         marginVertical: 13,
                         alignItems: 'center'
                     }}>
-                        <Text style={{ color: DesignRule.mainColor, fontSize: 13 }}>服务</Text>
+                        <Text style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}>服务</Text>
                         <Text style={{
                             marginLeft: 11,
                             color: DesignRule.textColor_secondTitle,
-                            fontSize: 13
+                            fontSize: 12
                         }}>{`正品保证·急速发货 ${afterSaleServiceDays === 0 ? `无售后服务` : `${afterSaleServiceDays > 30 ? 30 : afterSaleServiceDays || ''}天无理由退换`}`}</Text>
                     </View>
                 </View>

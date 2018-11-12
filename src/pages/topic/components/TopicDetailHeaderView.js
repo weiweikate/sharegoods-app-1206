@@ -205,11 +205,11 @@ export default class TopicDetailHeaderView extends Component {
                         marginVertical: 16,
                         alignItems: 'center'
                     }}>
-                        <Text style={{ color: DesignRule.mainColor, fontSize: 13 }}>服务</Text>
+                        <Text style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}>服务</Text>
                         <Text style={{
                             marginLeft: 11,
                             color: DesignRule.textColor_secondTitle,
-                            fontSize: 13
+                            fontSize: 12
                         }}>{`正品保证·急速发货 ${afterSaleServiceDaysTT === 0 ? `无售后服务` : `${afterSaleServiceDaysTT > 30 ? 30 : afterSaleServiceDaysTT || ''}天无理由退换`}`}</Text>
                     </View>
                 </View>
