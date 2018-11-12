@@ -15,7 +15,6 @@ import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
 import TopicDetailSegmentView from './components/TopicDetailSegmentView';
 import ScreenUtils from '../../utils/ScreenUtils';
-import res from '../../comm/res';
 import HTML from 'react-native-render-html';
 import HomeAPI from '../home/api/HomeAPI';
 import TopicApi from './api/TopicApi';
@@ -34,7 +33,7 @@ import DateUtils from '../../utils/DateUtils';
 import CommModal from 'CommModal';
 
 const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
-import res from '../res';
+import res from './res';
 const  redEnvelopeBg = res.other.red_big_envelope;
 const tongyong_btn_close_white = res.button.tongyong_btn_close_white;
 const show_detail_back = res.button.show_detail_back;
