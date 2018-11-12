@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         marginRight: px2dp(8)
     },
     item: {
-        height: px2dp(17),
+        height: px2dp(34) / 2,
         flexDirection: 'row',
         alignItems: 'center'
     },

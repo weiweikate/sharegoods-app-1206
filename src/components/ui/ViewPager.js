@@ -2,6 +2,7 @@ import React ,{Component}from 'react';
 import PropTypes from 'prop-types';
 import {  View ,} from 'react-native';
 import Swiper from 'react-native-swiper';
+import EmptyUtils from '../../utils/EmptyUtils';
 
 // const ViewPager = props => {
 //     const {
@@ -130,7 +131,7 @@ class ViewPager extends Component{
                 if (this.props.swiperShow) {
                     return (
                         <Swiper
-                            // style={this.props.styles.wrapper}
+                            style={this.props.styles ? this.props.styles.wrapper : {}}
                                 height={this.props.height}
                                 paginationStyle={{ marginBottom: -20 }}
                                 horizontal={this.props.horizontal}
@@ -156,7 +157,7 @@ class ViewPager extends Component{
                 if (this.props.swiperShow) {
                     return (
                         <Swiper
-                            // style={this.props.styles.wrapper}
+                            style={this.props.styles ? this.props.styles.wrapper : {}}
                                 height={this.props.height}
                                 paginationStyle={{ marginBottom: -20 }}
                                 horizontal={this.props.horizontal}
@@ -196,7 +197,7 @@ class ViewPager extends Component{
 
 
     render(){
-        if(this.state.arrayData.length === 0){
+        if(EmptyUtils.isEmpty(this.state.arrayData) || this.state.arrayData.length === 0){
             return null;
         }
 

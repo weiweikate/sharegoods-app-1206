@@ -31,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGFloat itemWidth;
 /**视图间距*/
 @property (nonatomic, assign) CGFloat itemSpace;
+/**圆角*/
+@property (nonatomic, assign) CGFloat itemRadius;
 /**循环*/
 @property (nonatomic, assign) BOOL autoLoop;
 /**点击事件*/

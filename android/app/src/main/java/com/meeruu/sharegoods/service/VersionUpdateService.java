@@ -27,8 +27,8 @@ import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
-import com.meeruu.sharegoods.ui.MainRNActivity;
 import com.meeruu.sharegoods.R;
+import com.meeruu.sharegoods.ui.MainRNActivity;
 import com.meeruu.sharegoods.utils.AppContants;
 
 import java.io.File;
@@ -213,7 +213,7 @@ public class VersionUpdateService extends Service {
 
     public void downloadApk(final int flag) {
         File apkfile_file = SDCardUtils.getFileDirPath("MR/file");
-        String fileName = AppUtils.getAppName(this) + "_" + lastVersion + ".apk";
+        String fileName = AppUtils.getAppName() + "_" + lastVersion + ".apk";
         RequestManager.getInstance().downLoadFile(app.getDownLoadUrl(),
                 apkfile_file.getAbsolutePath() + File.separator + fileName,
                 new ReqProgressCallBack<File>() {

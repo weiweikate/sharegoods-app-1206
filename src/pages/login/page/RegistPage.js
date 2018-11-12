@@ -44,9 +44,9 @@ export default class RegistPage extends BasePage {
         // 生产布环境：https://h5.sharegoodsmall.com/static/protocol/service.html
 
         const htmlUrl = __DEV__ ?
-            'https://testh5.sharegoodsmall.com/static/protocol/service.html'
+            'https://uath5.sharegoodsmall.com/static/protocol/service.html'
             :
-            'https://testh5.sharegoodsmall.com/static/protocol/service.html';
+            'https://uath5.sharegoodsmall.com/static/protocol/service.html';
         return (
             <View style={{
                 flex: 1,
