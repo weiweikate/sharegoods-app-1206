@@ -150,7 +150,7 @@ export default class HomePage extends PureComponent {
         InteractionManager.runAfterInteractions(() => {
             this.timer = TimerMixin.setTimeout(() => {
                 // 检测版本更新
-                // this.getVersion();
+                this.getVersion();
                 this.getMessageData();
             }, 2500);
         });
