@@ -6,6 +6,9 @@ const index = {
     miaosha_qianggouzhong_img,
     zhuanti_tixing_img,
     zhuanti_jieshu,
+    xjt_03: require('./xjt_03.png'),
+    topicShow: require('./topicShow.png'),
+    topicShowClose: require('./topicShowClose.png'),
     ...res
 };
 export default index;
