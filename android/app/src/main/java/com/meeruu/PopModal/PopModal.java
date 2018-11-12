@@ -24,13 +24,11 @@ import com.facebook.react.uimanager.RootView;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.facebook.react.views.view.ReactViewGroup;
-import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Timer;
 
 import javax.annotation.Nullable;
 
@@ -144,7 +142,6 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
         onDropInstance();
         if (mHostView != null) {
             mHostView.removeAllViews();
-            mHostView = null;
         }
     }
 
@@ -255,14 +252,6 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
 
         public DialogRootViewGroup(Context context) {
             super(context);
-        }
-
-        @Override
-        public void onWindowFocusChanged(boolean hasWindowFocus) {
-            super.onWindowFocusChanged(hasWindowFocus);
-            if(hasWindowFocus){
-
-            }
         }
 
         @Override
