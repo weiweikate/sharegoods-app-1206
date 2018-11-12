@@ -28,8 +28,10 @@ import Toast from '../../../../utils/bridge';
 import topicShow from '../../../topic/res/topicShow.png';
 import topicShowClose from '../../../topic/res/topicShowClose.png';
 import CommModal from 'CommModal';
+import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
 
+@observer
 export default class WaitingForWithdrawCashPage extends BasePage {
     constructor(props) {
         super(props);
@@ -89,7 +91,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 marginLeft: 25,
                                 fontSize: 25,
                                 color: 'white'
-                            }}>{StringUtils.formatMoneyString(this.state.blockedBalance, false)}</Text>
+                            }}>{StringUtils.formatMoneyString(user.blockedBalance, false)}</Text>
                         </View>
                         <View style={{ marginRight: 20 }}>
                             <TouchableOpacity
