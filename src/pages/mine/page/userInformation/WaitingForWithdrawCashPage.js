@@ -28,8 +28,10 @@ import Toast from '../../../../utils/bridge';
 import topicShow from '../../../topic/res/topicShow.png';
 import topicShowClose from '../../../topic/res/topicShowClose.png';
 import CommModal from 'CommModal';
+import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
 
+@observer
 export default class WaitingForWithdrawCashPage extends BasePage {
     constructor(props) {
         super(props);
@@ -89,7 +91,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 marginLeft: 25,
                                 fontSize: 25,
                                 color: 'white'
-                            }}>{StringUtils.formatMoneyString(this.state.blockedBalance, false)}</Text>
+                            }}>{StringUtils.formatMoneyString(user.blockedBalance?user.blockedBalance:0, false)}</Text>
                         </View>
                         <View style={{ marginRight: 20 }}>
                             <TouchableOpacity
@@ -249,7 +251,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '推广提成', '任务奖励'];
+        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '现金红包', '任务奖励'];
         let use_type_symbol = ['', '+', '-'];
         let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
         Toast.showLoading();

@@ -7,7 +7,7 @@ import Waterfall from '../../components/ui/WaterFall';
 import { observer } from 'mobx-react';
 import { ShowRecommendModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
-
+import EmptyUtils from '../../utils/EmptyUtils'
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
 
@@ -58,8 +58,8 @@ export default class ShowHotView extends Component {
         let imgHigh = 1
         let img = ''
         if (data.generalize === tag.New || data.generalize === tag.Recommend) {
-            imgWide = data.coverImgWide ? data.coverImgWide : 1;
-            imgHigh = data.coverImgHigh ? data.coverImgHigh : 1;
+            imgWide = EmptyUtils.isEmpty(data.coverImgWide) ? 1 : data.coverImgWide;
+            imgHigh = EmptyUtils.isEmpty(data.coverImgHigh) ? 1 : data.coverImgHigh;
             img = data.coverImg
         } else {
             imgWide = data.imgWide ? data.imgWide : 1;
@@ -67,6 +67,7 @@ export default class ShowHotView extends Component {
             img = data.img
         }
         let imgHeight = (imgHigh / imgWide) * imgWidth;
+       
         // const itemHeight = this._getHeightForItem({item})
         return <ItemView imageStyle={{ height: imgHeight }} data={data} press={() => this._gotoDetail(data)} imageUrl={ img }/>;
     };

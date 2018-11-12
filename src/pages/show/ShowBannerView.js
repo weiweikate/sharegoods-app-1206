@@ -66,8 +66,11 @@ export default class ShowBannerView extends Component {
         this.setState({index:  e.nativeEvent.index})
     }
 
-    _onDidChange(item, index) {
-        this.setState({index: index})
+    _onDidChange(item, changeIndex) {
+        const {index} = this.state
+        if (index !== changeIndex) {
+            this.setState({index: changeIndex})
+        }
     }
 
     render() {
@@ -96,7 +99,7 @@ export default class ShowBannerView extends Component {
             <XGSwiper style={styles.swiper}
                 dataSource={bannerList}
                 width={ ScreenUtils.width }
-                height={ px2dp(150) }
+                height={ px2dp(175) }
                 renderRow={this.renderRow.bind(this)}
                 ratio={0.867}
                 onPress={this._onPressRowWithItem.bind(this)}

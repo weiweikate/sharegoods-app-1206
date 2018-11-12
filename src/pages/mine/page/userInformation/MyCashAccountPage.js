@@ -18,13 +18,14 @@ import shouyi from '../../res/userInfoImg/xiangjzhanghu_icon03_10.png';
 import xiaofei from '../../res/userInfoImg/xiangjzhanghu_icon03_12.png';
 import salesCommissions from '../../res/userInfoImg/xiangjzhanghu_icon03_08.png';
 import renwu from '../../res/userInfoImg/xiangjzhanghu_icon03_16.png'
-
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from './../../../../utils/bridge';
+import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
 
+@observer
 export default class MyCashAccountPage extends BasePage {
     constructor(props) {
         super(props);
@@ -47,7 +48,6 @@ export default class MyCashAccountPage extends BasePage {
 
     $navigationBarOptions = {
         title: '现金账户',
-
         show: true // false则隐藏导航
     };
 
@@ -81,7 +81,7 @@ export default class MyCashAccountPage extends BasePage {
                                 marginLeft: 25,
                                 fontSize: 25,
                                 color: 'white'
-                            }}>{StringUtils.formatMoneyString(this.state.restMoney, false)}</Text>
+                            }}>{StringUtils.formatMoneyString(user.availableBalance?user.availableBalance:0, false)}</Text>
                         </View>
                         <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
                             <Text style={{ fontSize: 15, color: 'white' }}>提现</Text>
@@ -129,7 +129,7 @@ export default class MyCashAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '推广提成','任务奖励'];
+        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '现金红包','任务奖励'];
         let use_type_symbol = ['', '+', '-',];
         let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions,renwu];
         Toast.showLoading();
