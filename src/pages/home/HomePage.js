@@ -39,7 +39,7 @@ import StringUtils from '../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../../comm/res';
 
-var TimerMixin = require('react-timer-mixin');
+let TimerMixin = require('react-timer-mixin');
 const closeImg = res.button.cancel_white_circle;
 /**
  * @author zhangjian
@@ -85,13 +85,13 @@ export default class HomePage extends PureComponent {
         } catch (error) {
         }
 
-        MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((res) => {
-            if (res.data.upgrade === 1) {
-                if (StringUtils.isEmpty(upVersion) && upVersion !== res.data.version) {
+        MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((resp) => {
+            if (resp.data.upgrade === 1) {
+                if (StringUtils.isEmpty(upVersion) && upVersion !== resp.data.version) {
                     if (Platform.OS !== 'ios') {
-                        NativeModules.commModule.apkExist(res.data.version, (exist) => {
+                        NativeModules.commModule.apkExist(resp.data.version, (exist) => {
                             this.setState({
-                                updateData: res.data,
+                                updateData: resp.data,
                                 showUpdate: true,
                                 apkExist: exist
                             });
@@ -99,13 +99,13 @@ export default class HomePage extends PureComponent {
                         });
                     } else {
                         this.setState({
-                            updateData: res.data,
+                            updateData: resp.data,
                             showUpdate: true
                         });
                         this.updateModal && this.updateModal.open();
                     }
                 }
-                if (res.data.forceUpdate === 1) {
+                if (resp.data.forceUpdate === 1) {
                     // 强制更新
                     this.setState({
                         forceUpdate: true
@@ -246,12 +246,12 @@ export default class HomePage extends PureComponent {
         var currStr = new Date().getTime() + '';
         AsyncStorage.getItem('lastMessageTime').then((value) => {
             if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-                MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
-                    if (!EmptyUtils.isEmptyArr(res.data.data)) {
+                MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {
+                    if (!EmptyUtils.isEmptyArr(resp.data.data)) {
                         this.messageModal && this.messageModal.open();
                         this.setState({
                             showMessage: true,
-                            messageData: res.data.data
+                            messageData: resp.data.data
                         });
                     }
                 });

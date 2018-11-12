@@ -26,6 +26,7 @@ import TopicDetailShowModal from './components/TopicDetailShowModal';
 import DetailNavShowModal from '../home/product/components/DetailNavShowModal';
 import apiEnvironment from '../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
+
 const { px2dp } = ScreenUtils;
 import EmptyUtils from '../../utils/EmptyUtils';
 import StringUtils from '../../utils/StringUtils';
@@ -34,7 +35,8 @@ import CommModal from 'CommModal';
 
 const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
 import res from './res';
-const  redEnvelopeBg = res.other.red_big_envelope;
+
+const redEnvelopeBg = res.other.red_big_envelope;
 const tongyong_btn_close_white = res.button.tongyong_btn_close_white;
 const show_detail_back = res.button.show_detail_back;
 const show_share = res.button.show_share;
@@ -316,8 +318,14 @@ export default class TopicDetailPage extends BasePage {
                       containerStyle={{ backgroundColor: '#fff' }}/>
                 <View style={{ backgroundColor: 'white' }}>
                     <Text
-                        style={{ paddingVertical: 13, marginLeft: 15, fontSize: 15, color: DesignRule.textColor_mainTitle }}>价格说明</Text>
-                    <View style={{ height: 0.5, marginHorizontal: 0, backgroundColor: DesignRule.lineColor_inColorBg }}/>
+                        style={{
+                            paddingVertical: 13,
+                            marginLeft: 15,
+                            fontSize: 15,
+                            color: DesignRule.textColor_mainTitle
+                        }}>价格说明</Text>
+                    <View
+                        style={{ height: 0.5, marginHorizontal: 0, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                     <Text style={{
                         padding: 15
                     }}>{`划线价格：指商品的专柜价、吊牌价、正品零售价、厂商指导价或该商品的曾经展示过销售价等，并非原价，仅供参考\n未划线价格：指商品的实时价格，不因表述的差异改变性质。具体成交价格根据商品参加活动，或会员使用优惠券、积分等发生变化最终以订单`}</Text>
@@ -326,7 +334,12 @@ export default class TopicDetailPage extends BasePage {
         } else {
             return <View style={{ backgroundColor: 'white' }}>
                 <FlatList
-                    style={{ marginHorizontal: 16, marginVertical: 16, borderWidth: 0.5, borderColor: DesignRule.lineColor_inColorBg }}
+                    style={{
+                        marginHorizontal: 16,
+                        marginVertical: 16,
+                        borderWidth: 0.5,
+                        borderColor: DesignRule.lineColor_inColorBg
+                    }}
                     renderItem={this._renderSmallItem}
                     ItemSeparatorComponent={this._renderSeparatorComponent}
                     showsVerticalScrollIndicator={false}
@@ -567,8 +580,12 @@ export default class TopicDetailPage extends BasePage {
                                     linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`,
                                     miniProgramPath: `/pages/index/index?type=${this.params.activityType}&id=${this.params.activityCode}`
                                 }}/>
-                <TopicDetailShowModal ref={(ref) => this.TopicDetailShowModal = ref}/>
-                <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
+                <TopicDetailShowModal ref={(ref) => {
+                    this.TopicDetailShowModal = ref;
+                }}/>
+                <DetailNavShowModal ref={(ref) => {
+                    this.DetailNavShowModal = ref;
+                }}/>
                 {this._renderCouponModal()}
             </View>
         );
