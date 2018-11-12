@@ -32,16 +32,16 @@ echo '------编译参数-----'
 echo envType: $envType  method:$method
 
 #重置项目根目录下config.json配置文件
-resetConfigJsonFile(){
-    configFilePath="../config.json"
-    cat $configFilePath | jq ".envType=\"${envType}\"" > tmpConfig.json && mv tmpConfig.json $configFilePath
-    if [ $Publish_Market = true ]; then
-        #发布应用市场的时候，一定要关闭调试面板
-        cat $configFilePath | jq ".showDebugPanel=false" > tmpConfig.json && mv tmpConfig.json $configFilePath
-    else
-        cat $configFilePath | jq ".showDebugPanel=true" > tmpConfig.json && mv tmpConfig.json $configFilePath
-    fi
-}
+#resetConfigJsonFile(){
+#   configFilePath="../config.json"
+#  cat $configFilePath | jq ".envType=\"${envType}\"" > tmpConfig.json && mv tmpConfig.json $configFilePath
+#   if [ $Publish_Market = true ]; then
+#       #发布应用市场的时候，一定要关闭调试面板
+#       cat $configFilePath | jq ".showDebugPanel=false" > tmpConfig.json && mv tmpConfig.json $configFilePath
+#   else
+#        cat $configFilePath | jq ".showDebugPanel=true" > tmpConfig.json && mv tmpConfig.json $configFilePath
+#    fi
+#}
 
 #创建文件夹以及安装ios描述文件
 createDirAndInstallProvision(){
