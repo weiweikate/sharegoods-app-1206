@@ -5,7 +5,8 @@ import {
     Text,
     // Modal,
     NativeModules,
-    TouchableOpacity
+    TouchableOpacity,
+    ScrollView
 } from 'react-native';
 import res from '../../../comm/res';
 import Modal from 'CommModal';
@@ -90,7 +91,7 @@ export default class BottomSingleSelectModal extends Component {
                 alignContent: 'center',
                 flexDirection: 'row'
             }}>
-                <View style={{ flex: 1, backgroundColor: 'white' }}>
+                <View style={{ height: ScreenUtils.height/3 * 2, backgroundColor: 'white', flex: 1, paddingBottom: ScreenUtils.safeBottom}}>
                     <View style={{
                         height: 48,
                         justifyContent: 'space-between',
@@ -107,7 +108,9 @@ export default class BottomSingleSelectModal extends Component {
                             <UIText value={' '} style={{ color: DesignRule.textColor_hint, fontSize: 24 }}/>
                         </TouchableOpacity>
                     </View>
+                    <ScrollView >
                     {this.renderMenu()}
+                    </ScrollView>
                     <View style={{ justifyContent: 'center', alignItems: 'center', height: 64 }}>
                         <UIButton
                             value={'确定'}

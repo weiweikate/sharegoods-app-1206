@@ -111,7 +111,8 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        paddingBottom: ScreenUtils.safeBottom
     },
     title: {
         fontSize: 13,
