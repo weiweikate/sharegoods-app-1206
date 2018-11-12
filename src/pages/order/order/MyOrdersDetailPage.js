@@ -19,7 +19,7 @@ import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import buyerHasPay from '../res/buyerHasPay.png';
 import couponIcon from '../../mine/res/couponsImg/dingdan_icon_quan_nor.png';
 import arrow_right from '../res/arrow_right.png';
-import position from '../res/position.png';
+import position from '../res/dizhi-icon.png';
 import GoodsDetailItem from '../components/GoodsDetailItem';
 import UserSingleItem from '../components/UserSingleItem';
 import CommonTwoChoiceModal from '../components/CommonTwoChoiceModal';
@@ -373,7 +373,7 @@ class MyOrdersDetailPage extends BasePage {
                                     position: 'absolute',
                                     left: 15,
                                     top: 12
-                                }}/> : null}
+                                }} /> : null}
                                 <View style={{
                                     height: 34,
                                     flexDirection: 'row',
@@ -657,7 +657,7 @@ class MyOrdersDetailPage extends BasePage {
                 paddingBottom: 10,
                 alignItems: 'center'
             }}>
-                <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }}/>
+                <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }} resizeMode={'contain'}/>
                 <View style={{ flex: 1, marginLeft: 15, marginRight: 20 }}>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
                         <Text style={{

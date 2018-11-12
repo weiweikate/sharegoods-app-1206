@@ -95,7 +95,7 @@ export default class TopicDetailSelectPage extends Component {
                             this._clickItemAction(obj, indexOfTop);
                         }}>
                         <Text
-                            style={[styles.btnText, { color: obj.isSelected ? 'white' : obj.canSelected ? DesignRule.textColor_secondTitle : 'white' }]}>{data[index].specValues}</Text>
+                            style={[styles.btnText, { color: obj.isSelected ? 'white' : obj.canSelected ? DesignRule.textColor_secondTitle : DesignRule.color_ddd }]}>{data[index].specValues}</Text>
                     </TouchableOpacity>
                 </View>
             );

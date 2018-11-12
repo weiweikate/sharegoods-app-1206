@@ -295,7 +295,7 @@ export default class PaymentMethodPage extends BasePage {
     };
     renderBottomOrder = () => {
         return (
-            <View style={{ paddingBottom: ScreenUtils.safeBottom }}>
+            <View style={{ paddingBottom: ScreenUtils.safeBottom ,backgroundColor:DesignRule.white}}>
                 <View style={{ height: ScreenUtils.onePixel, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                 <View style={{ height: ScreenUtils.px2dp(49), flexDirection: 'row' }}>
                     <View style={styles.bottomStyleContainer}>
