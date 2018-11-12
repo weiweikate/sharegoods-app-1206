@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 100
     }, grayView: {
-        width: 80,
+        width: 90,
         height: 30,
         borderRadius: 15,
         backgroundColor: 'white',

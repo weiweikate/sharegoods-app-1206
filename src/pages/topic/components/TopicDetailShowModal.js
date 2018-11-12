@@ -6,11 +6,12 @@ import {
     TouchableOpacity,
     Text
 } from 'react-native';
-import topicShow from '../res/topicShow.png';
-import topicShowClose from '../res/topicShowClose.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import CommModal from 'CommModal';
 import DesignRule from 'DesignRule';
+import res from '../res';
+const topicShow = res.topicShow;
+const topicShowClose = res.topicShowClose;
 
 export default class TopicDetailShowModal extends Component {
 
