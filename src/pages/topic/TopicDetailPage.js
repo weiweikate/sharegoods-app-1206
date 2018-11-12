@@ -29,12 +29,16 @@ import apiEnvironment from '../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 const { px2dp } = ScreenUtils;
 import EmptyUtils from '../../utils/EmptyUtils';
-import redEnvelopeBg from '../home/product/res/red_envelope_bg.png';
 import StringUtils from '../../utils/StringUtils';
 import DateUtils from '../../utils/DateUtils';
 import CommModal from 'CommModal';
 
 const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
+import res from '../res';
+const  redEnvelopeBg = res.other.red_big_envelope;
+const tongyong_btn_close_white = res.button.tongyong_btn_close_white;
+const show_detail_back = res.button.show_detail_back;
+const show_share = res.button.show_share;
 
 export default class TopicDetailPage extends BasePage {
 
@@ -421,7 +425,7 @@ export default class TopicDetailPage extends BasePage {
                             canGetCoupon: false
                         });
                     }}>
-                        <Image source={res.button.tongyong_btn_close_white} style={{
+                        <Image source={tongyong_btn_close_white} style={{
                             position: 'absolute',
                             top: 107,
                             right: 35,
@@ -495,7 +499,7 @@ export default class TopicDetailPage extends BasePage {
                     <TouchableWithoutFeedback onPress={() => {
                         this.$navigateBack();
                     }}>
-                        <Image source={res.button.show_detail_back}/>
+                        <Image source={show_detail_back}/>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => {
                         this.DetailNavShowModal.show((item) => {
@@ -512,7 +516,7 @@ export default class TopicDetailPage extends BasePage {
                             }
                         });
                     }}>
-                        <Image source={res.button.show_share}/>
+                        <Image source={show_share}/>
                     </TouchableWithoutFeedback>
                 </View>
 

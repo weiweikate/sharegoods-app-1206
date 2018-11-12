@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ViewPager from '../../../components/ui/ViewPager';
-import xjt_03 from '../res/xjt_03.png';
 import ActivityView from './ActivityView';
 import { isNoEmpty } from '../../../utils/StringUtils';
 import StringUtils from '../../../utils/StringUtils';
@@ -20,6 +19,8 @@ import VideoView from '../../../components/ui/video/VideoView';
 import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
+import res from '../res';
+const xjt_03 =  res.xjt_03;
 /**
  * 商品详情头部view
  */
