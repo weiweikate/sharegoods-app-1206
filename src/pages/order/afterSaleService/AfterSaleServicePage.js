@@ -53,7 +53,8 @@ class AfterSaleServicePage extends BasePage {
             selectionData: {}, //规格数据
             exchangePriceId: this.params.exchangePriceId,
             exchangeSpec: this.params.exchangeSpec,
-            exchangeSpecImg: this.params.exchangeSpecImg
+            exchangeSpecImg: this.params.exchangeSpecImg,
+            returnReasons: [],
         };
         this.loadSelectionData = this.loadSelectionData.bind(this);
     }
@@ -61,6 +62,7 @@ class AfterSaleServicePage extends BasePage {
     componentDidMount() {
 
         this.loadPageData();
+        this._getReturnReason();
     }
 
     $navigationBarOptions = {
@@ -279,8 +281,8 @@ class AfterSaleServicePage extends BasePage {
         );
     };
     renderModal = () => {
-        // let productData = this.state.productData;
-        let returnReasons = ['多拍/错拍/不想要', '快递/物流一直未收到', '未按约定时间发货', '商品/破损/少件/污渍等', '货物破损已拒签', '假冒品牌/产品', '退运费', '发票问题', '其他'];
+        // let productData = this.state.productData;getReturnReason
+        let returnReasons = this.state.returnReasons.map((item)=> {return item.value});
         return (
             <View>
                 <BottomSingleSelectModal
@@ -357,6 +359,15 @@ class AfterSaleServicePage extends BasePage {
             <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
+
+    _getReturnReason(){
+        let that = this;
+        OrderApi.getReturnReason({code: ['TKLY','THTK','HHLY'][this.params.pageType]}).then((result) => {
+            that.setState({returnReasons: result.data || []});
+        }).catch((error)=> {
+
+        });
+    }
 
     //**********************************BusinessPart******************************************
     showRefundReason = () => {
