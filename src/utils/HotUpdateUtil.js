@@ -1,7 +1,7 @@
 import {
     Platform,
     Alert,
-    Linking,
+    Linking
 } from 'react-native';
 import {
     isFirstTime,
@@ -12,7 +12,7 @@ import {
     switchVersionLater,
     markSuccess,
     packageVersion,
-    currentVersion,
+    currentVersion
 } from 'react-native-update';
 
 import _updateConfig from '../../update.json';
@@ -22,24 +22,25 @@ const { appKey } = _updateConfig[Platform.OS];
 
 class HotUpdateUtil {
 
-    static TIME_INTERVAL_KEY = 'TIME_INTERVAL_KEY'
+    static TIME_INTERVAL_KEY = 'TIME_INTERVAL_KEY';
 
-    appVersion = ''
-    hashVersion = ''
+    appVersion = '';
+    hashVersion = '';
 
     constructor() {
-        if (isFirstTime){
-            this.signSuccess()
+        if (isFirstTime) {
+            this.signSuccess();
         } else if (isRolledBack) {
-            alert("提示","刚刚更新失败,版本回滚")
+            console.log('刚刚更新失败,版本回滚');
         }
         /**
          * 暂存版本号,和哈希版本版本值
          * @type {*|string}
          */
-        this.appVersion = packageVersion || ''
-        this.hashVersion = currentVersion || ''
+        this.appVersion = packageVersion || '';
+        this.hashVersion = currentVersion || '';
     }
+
     /**
      * 标记更新成功
      */
@@ -73,12 +74,12 @@ class HotUpdateUtil {
      */
     checkUpdate = () => {
         checkUpdate(appKey).then(info => {
-            console.log(info)
+            console.log(info);
             if (info.expired) {
                 Alert.alert('提示', '您的应用版本已更新,请前往应用商店下载新的版本', [
                     {
                         text: '确定', onPress: () => {
-                            info.downloadUrl &&Linking.openURL(info.downloadUrl);
+                            info.downloadUrl && Linking.openURL(info.downloadUrl);
                         }
                     }
                 ]);
@@ -97,8 +98,9 @@ class HotUpdateUtil {
                     { text: '否' }
                 ]);
             }
-        }).catch(err => {
+        }).catch(e => {
             // Alert.alert('提示', '更新失败.');
+            throw e;
         });
     };
     /**
@@ -107,31 +109,31 @@ class HotUpdateUtil {
      * @return {boolean}
      */
 
-    isNeedToCheck = (timeInterval = 3) =>{
-        Storage.get(HotUpdateUtil.TIME_INTERVAL_KEY,undefined).then(res=>{
-            if (res === undefined){
-                Storage.set(HotUpdateUtil.TIME_INTERVAL_KEY, (new Date().getTime())).then(()=>{
+    isNeedToCheck = (timeInterval = 3) => {
+        Storage.get(HotUpdateUtil.TIME_INTERVAL_KEY, undefined).then(res => {
+            if (res === undefined) {
+                Storage.set(HotUpdateUtil.TIME_INTERVAL_KEY, (new Date().getTime())).then(() => {
                     //初次触发更新
                     this.checkUpdate();
-                }).catch(()=>{
+                }).catch(() => {
 
-                })
+                });
             } else {
                 if ((res + (24 * 3600 * 3)) < (new Date().getTime())) {
                     //三天未检测
                     this.checkUpdate();
-                    Storage.set(HotUpdateUtil.TIME_INTERVAL_KEY, (new Date().getTime())).then(()=>{
-                    }).catch(()=>{
-                    })
+                    Storage.set(HotUpdateUtil.TIME_INTERVAL_KEY, (new Date().getTime())).then(() => {
+                    }).catch(() => {
+                    });
                 }
             }
-        }).catch(()=>{
+        }).catch(() => {
             //提取错误则重新存储
-            Storage.set(HotUpdateUtil.TIME_INTERVAL_KEY, (new Date().getTime())).then(()=>{
-            }).catch(()=>{
-            })
-        })
-    }
+            Storage.set(HotUpdateUtil.TIME_INTERVAL_KEY, (new Date().getTime())).then(() => {
+            }).catch(() => {
+            });
+        });
+    };
 }
 
 const hotUpdateUtil = new HotUpdateUtil();

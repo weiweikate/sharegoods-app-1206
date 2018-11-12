@@ -73,7 +73,7 @@ export const getFormatDate = (timestamp, fmt = 'yyyy-MM-dd hh:mm:ss') => {
         }
         for (let k in date) {
             if (new RegExp('(' + k + ')').test(format)) {
-                format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                format = format.replace(RegExp.$1, RegExp.$1.length === 1
                     ? date[k] : ('00' + date[k]).substr(('' + date[k]).length));
             }
         }

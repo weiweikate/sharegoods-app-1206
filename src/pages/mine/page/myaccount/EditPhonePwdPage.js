@@ -145,7 +145,7 @@ export default class EditPhonePwdPage extends BasePage {
             bridge.$toast('请再次输入新密码');
             return;
         }
-        if (this.state.newPwdAgain != this.state.newPwd) {
+        if (this.state.newPwdAgain !== this.state.newPwd) {
             bridge.$toast('请确保两次输入的新密码一致');
             return;
         }

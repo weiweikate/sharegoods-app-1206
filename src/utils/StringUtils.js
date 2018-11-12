@@ -20,7 +20,7 @@ const formatMoneyString = (num, needSymbol = true) => {
     if ((temp.indexOf('.') + 3) < temp.length) {
         temp = temp.substr(0, temp.indexOf('.') + 3);
     }
-    if ((temp.indexOf('.') + 2 == temp.length)) {
+    if ((temp.indexOf('.') + 2 === temp.length)) {
         temp += '0';
     }
     if (needSymbol && temp.indexOf('¥') === -1) {
@@ -59,10 +59,10 @@ const formatString = (text, length = 10) => {
  * 如15577773333 => 155****3333
  */
 const formatPhoneNumber = (phone) => {
-    if (checkPhone(phone)){
+    if (checkPhone(phone)) {
         return '' + phone.replace(phone.substr(3, 4), '****');
     } else {
-        return '***********'
+        return '***********';
     }
 
 };
@@ -96,14 +96,14 @@ const isCardNo = (id) => {
         return false;
     }
     //校验码判断
-    let c = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);   //系数
-    let b = new Array('1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2');  //校验码对照表
+    let c = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];   //系数
+    let b = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];  //校验码对照表
     let id_array = id.split('');
     let sum = 0;
     for (let k = 0; k < 17; k++) {
         sum += parseInt(id_array[k]) * parseInt(c[k]);
     }
-    if (id_array[17].toUpperCase() != b[sum % 11].toUpperCase()) {
+    if (id_array[17].toUpperCase() !== b[sum % 11].toUpperCase()) {
         return false;
     }
     return true;
@@ -119,15 +119,15 @@ const checkBankCard = (bankCard) => {
     let bankno = bankCard;
     let lastNum = bankno.substr(bankno.length - 1, 1); //取出最后一位（与luhn进行比较）
     let first15Num = bankno.substr(0, bankno.length - 1); //前15或18位
-    let newArr = new Array();
+    let newArr = [];
     for (let i = first15Num.length - 1; i > -1; i--) { //前15或18位倒序存进数组
         newArr.push(first15Num.substr(i, 1));
     }
-    let arrJiShu = new Array(); //奇数位*2的积 <9
-    let arrJiShu2 = new Array(); //奇数位*2的积 >9
-    let arrOuShu = new Array(); //偶数位数组
+    let arrJiShu = []; //奇数位*2的积 <9
+    let arrJiShu2 = []; //奇数位*2的积 >9
+    let arrOuShu = []; //偶数位数组
     for (let j = 0; j < newArr.length; j++) {
-        if ((j + 1) % 2 == 1) { //奇数位
+        if ((j + 1) % 2 === 1) { //奇数位
             if (parseInt(newArr[j]) * 2 < 9) {
                 arrJiShu.push(parseInt(newArr[j]) * 2);
             } else {
@@ -139,8 +139,8 @@ const checkBankCard = (bankCard) => {
         }
     }
 
-    let jishu_child1 = new Array(); //奇数位*2 >9 的分割之后的数组个位数
-    let jishu_child2 = new Array(); //奇数位*2 >9 的分割之后的数组十位数
+    let jishu_child1 = []; //奇数位*2 >9 的分割之后的数组个位数
+    let jishu_child2 = []; //奇数位*2 >9 的分割之后的数组十位数
     for (let h = 0; h < arrJiShu2.length; h++) {
         jishu_child1.push(parseInt(arrJiShu2[h]) % 10);
         jishu_child2.push(parseInt(arrJiShu2[h]) / 10);
@@ -167,10 +167,10 @@ const checkBankCard = (bankCard) => {
     sumTotal = parseInt(sumJiShu) + parseInt(sumOuShu) + parseInt(sumJiShuChild1) + parseInt(sumJiShuChild2);
 
     //计算luhn值
-    let k = parseInt(sumTotal) % 10 == 0 ? 10 : parseInt(sumTotal) % 10;
+    let k = parseInt(sumTotal) % 10 === 0 ? 10 : parseInt(sumTotal) % 10;
     let luhn = 10 - k;
 
-    if (lastNum == luhn) {
+    if (lastNum === luhn) {
         return true;
     } else {
         return false;
