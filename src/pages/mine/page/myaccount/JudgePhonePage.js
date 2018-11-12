@@ -94,16 +94,18 @@ export default class JudgePhoneNumPage extends BasePage {
     _onGetCode = (tel) => {
         //获取验证码
         if (StringUtils.checkPhone(tel)) {
-            SMSTool.sendVerificationCode(SMSTool.SMSType.OldPhoneType, tel).then((data) => {
-                (new TimeDownUtils()).startDown((time) => {
-                    this.setState({
-                        vertifyCodeTime: time
-                    });
-                });
-                bridge.$toast('验证码已发送请注意查收');
-            }).catch((data) => {
-                bridge.$toast(data.msg);
-            });
+           if(this.state.vertifyCodeTime <= 0) {
+               SMSTool.sendVerificationCode(SMSTool.SMSType.OldPhoneType, tel).then((data) => {
+                   (new TimeDownUtils()).startDown((time) => {
+                       this.setState({
+                           vertifyCodeTime: time
+                       });
+                   });
+                   bridge.$toast('验证码已发送请注意查收');
+               }).catch((data) => {
+                   bridge.$toast(data.msg);
+               });
+           }
         } else {
             bridge.$toast('手机格式不对');
         }

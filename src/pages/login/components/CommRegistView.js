@@ -219,22 +219,25 @@ export default class CommRegistView extends Component {
                         </Text>
                     </TouchableOpacity>
                 </View>
-
-
             </View>
         );
     }
 
     /*获取验证码*/
     getVertifyCode = () => {
+
+
+
         if (this.registModel.dowTime > 0) {
             return;
         }
         if (!netStatusTool.isConnected) {
             bridge.$toast('请检测网络是否连接');
+            this.registModel.dowTime = 0 ;
             return;
         }
         if (StringUtils.checkPhone(this.registModel.phoneNumber)) {
+            this.registModel.dowTime = 60 ;
             bridge.$toast('验证码已发送请注意查收');
             (new TimeDownUtils()).startDown((time) => {
                 this.registModel.dowTime = time;
