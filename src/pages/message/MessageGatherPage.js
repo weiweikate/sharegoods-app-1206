@@ -56,7 +56,6 @@ export default class MessageGatherPage extends BasePage {
 
     componentDidMount() {
         this.loadPageData();
-        DeviceEventEmitter.emit("contentViewed");
     }
 
     //100普通，200拼店
@@ -162,6 +161,7 @@ export default class MessageGatherPage extends BasePage {
     loadPageData =()=> {
         Toast.showLoading()
         MessageAPI.queryMessage({page: 1, pageSize: 30, type:100}).then(res => {
+            DeviceEventEmitter.emit("contentViewed");
             Toast.hiddenLoading()
             if(StringUtils.isNoEmpty(res.data.data)){
                 let arrData = [];
