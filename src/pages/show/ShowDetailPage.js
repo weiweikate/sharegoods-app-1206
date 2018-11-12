@@ -105,10 +105,10 @@ export default class ShowDetailPage extends Component {
                 </View>
                 <View style={styles.profileRight}>
                     <Image source={res.button.see}/>
-                    <Text style={styles.number}>{detail.click}</Text>
+                    <Text style={styles.number}>{detail.click ? detail.click : 0}</Text>
                 </View>
             </View>
-            <HTML html={content} imagesMaxWidth={width} containerStyle={{
+            <HTML html={content} imagesInitialDimensions={{width: width, height: 0}} containerStyle={{
                 backgroundColor: '#fff',
                 marginLeft: px2dp(15),
                 marginRight: px2dp(15)

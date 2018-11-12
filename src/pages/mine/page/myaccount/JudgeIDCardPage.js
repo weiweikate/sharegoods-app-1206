@@ -82,12 +82,15 @@ export default class SetNewPhoneNumPage extends BasePage {
     _onGetCode = (tel) => {
         //获取验证码
         if (StringUtils.checkPhone(tel)) {
-            (new TimeDownUtils()).startDown((time) => {
-                this.setState({
-                    vertifyCodeTime: time
+
+            if(this.state.vertifyCodeTime <= 0){
+                (new TimeDownUtils()).startDown((time) => {
+                    this.setState({
+                        vertifyCodeTime: time
+                    });
                 });
-            });
-            bridge.$toast('验证码已发送请注意查收');
+                bridge.$toast('验证码已发送请注意查收');
+            }
         } else {
             bridge.$toast('手机格式不对');
         }
