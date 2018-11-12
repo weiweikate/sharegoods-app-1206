@@ -19,7 +19,7 @@ RCT_EXPORT_VIEW_PROPERTY(autoInterval,CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(itemWidth,CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(itemSpace,CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(autoLoop,BOOL)
-
+RCT_EXPORT_VIEW_PROPERTY(itemRadius,CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(onDidSelectItemAtIndex, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onDidScrollToIndex, RCTBubblingEventBlock)
 
@@ -75,6 +75,10 @@ RCT_EXPORT_VIEW_PROPERTY(onDidScrollToIndex, RCTBubblingEventBlock)
 
 - (__kindof UICollectionViewCell *)pagerView:(TYCyclePagerView *)pagerView cellForItemAtIndex:(NSInteger)index{
   MRBannerViewCell *cell = [pagerView dequeueReusableCellWithReuseIdentifier:@"MRBannerViewCell" forIndex:index];
+  if (_itemRadius) {
+    cell.layer.masksToBounds = YES;
+    cell.layer.cornerRadius = _itemRadius;
+  }
   NSString *tempUrlString = _imgUrlArray[index];
   [cell.imgView sd_setImageWithURL:[NSURL URLWithString: [tempUrlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]] placeholderImage:nil];
   if (_tittleArray && _tittleArray.count>index) {

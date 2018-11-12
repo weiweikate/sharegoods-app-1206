@@ -34,7 +34,6 @@ export default class NotificationPage extends BasePage {
     };
 
     componentDidMount() {
-        DeviceEventEmitter.emit('contentViewed');
         this.loadPageData();
     }
 
@@ -95,6 +94,7 @@ export default class NotificationPage extends BasePage {
     loadPageData =()=> {
         Toast.showLoading()
         MessageApi.queryNotice({ page: 1, pageSize: 15,type:200 }).then(res => {
+            DeviceEventEmitter.emit('contentViewed');
             Toast.hiddenLoading()
             if (StringUtils.isNoEmpty(res.data.data)) {
                 let arrs = [];

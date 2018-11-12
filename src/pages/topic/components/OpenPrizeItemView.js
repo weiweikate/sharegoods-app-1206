@@ -42,6 +42,8 @@ const statuesString = {
     [statues.handOver]: '已结束'
 };
 
+
+
 export default class OpenPrizeItemView extends Component {
 
     constructor(props) {
@@ -180,18 +182,27 @@ export default class OpenPrizeItemView extends Component {
                                                     backgroundColor: '#33B4FF',
                                                     height: 30,
                                                     width: (ScreenUtils.width / 2 - 16) / 2,
-                                                    borderRadius: 5
+                                                    borderRadius: 5,
+                                                    flexDirection:'row',
+                                                    justifyContent:'center',
+                                                    alignItems:'center'
                                                 }}
                                             >
+                                                {
+                                                    this.state.itemData.notifyFlag?
+                                                        null
+                                                        :
+                                                        <Image
+                                                            source={res.zhuanti_tixing_img}
+                                                        />
+                                                }
+
                                                 <Text
                                                     style={
                                                         {
                                                             color: 'white',
-                                                            textAlign: 'center',
-                                                            height: 30,
-                                                            paddingTop: 8,
-                                                            fontSize: 12
-
+                                                            fontSize: 12,
+                                                            marginLeft:5
                                                         }
                                                     }
                                                 >
@@ -277,7 +288,7 @@ export default class OpenPrizeItemView extends Component {
 const ItemStyles = StyleSheet.create({
     itemBgStyle: {
         width: ScreenUtils.width / 2,
-        height: ScreenUtils.width / 2 + 100,
+        height: ScreenUtils.width / 2 + 105,
         backgroundColor: DesignRule.bgColor,
         padding: 8,
         paddingBottom: 0

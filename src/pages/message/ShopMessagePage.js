@@ -57,7 +57,6 @@ export default class ShopMessagePage extends BasePage {
 
     componentDidMount() {
         this.loadPageData();
-        DeviceEventEmitter.emit("contentViewed");
     }
 
     confirmMessage = (id,confirm,createdBy,index) =>{
@@ -79,7 +78,8 @@ export default class ShopMessagePage extends BasePage {
     //100普通，200拼店
     /*加载数据*/
     loadPageData =()=> {
-        Toast.showLoading()
+        DeviceEventEmitter.emit("contentViewed");
+        Toast.showLoading();
         MessageAPI.queryMessage({page: 1, pageSize: 30, type:200}).then(res => {
             Toast.hiddenLoading()
             if(StringUtils.isNoEmpty(res.data.data)){
