@@ -148,7 +148,7 @@ export default class ShopAssistantDetailPage extends BasePage {
                         </View>
                     </View>
                 </ImageBackground>
-                {this._renderRow(QbIcon, '加入店铺时间', DateUtils.formatDate(updateTime, 'yyyy年MM月dd'))}
+                {this._renderRow(QbIcon, '加入店铺时间', DateUtils.formatDate(updateTime, 'yyyy年MM月dd日'))}
                 {this.renderSepLine()}
                 {this._renderRow(detail_cishu, '参与店铺分红次数', `${dealerTotalBonusCount || 0}次`)}
                 {this.renderSepLine()}
