@@ -103,6 +103,8 @@ class ShopCartStore {
      */
     @action
     packingShopCartGoodsData = (response) => {
+        let originArr = this.data.slice();
+
         if (response && response instanceof Array && response.length > 0) {
             let tempArr = [];
             response.forEach(item => {
@@ -121,6 +123,11 @@ class ShopCartStore {
                     }
                 })
 
+                originArr.map(originGood =>{
+                    if (originGood.productId === item.productId && item.priceId == originGood.priceId){
+                        item.isSelected = originGood.isSelected
+                    }
+                })
                 tempArr.push(item);
             });
             //将需要选中的数组清空
@@ -193,6 +200,7 @@ class ShopCartStore {
         ShopCartAPI.updateItem(
             itemData
         ).then((res) => {
+            this.needSelectGoods.push(itemData)
             this.getShopCartListData()
             // let [...temDataArr] = this.data.slice();
             // if (itemData.amount > 200){

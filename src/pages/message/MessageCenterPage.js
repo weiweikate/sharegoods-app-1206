@@ -58,7 +58,7 @@ export default class MessageCenterPage extends BasePage {
         );
     }
 
-    loadPageData() {
+    loadPageData=()=> {
         MessageApi.getNewNoticeMessageCount().then(res => {
             if (!EmptyUtils.isEmpty(res.data)) {
                 this.setState({

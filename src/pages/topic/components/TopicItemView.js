@@ -29,35 +29,17 @@ export default class TopicItemView extends Component {
                         Styles.itemBgStyle,
                         {
                             width: ScreenUtils.width / numOfColum,
-                            height: ScreenUtils.width / numOfColum + 55
                         }
                     ]}>
                     <View style={Styles.itemContentStyle}>
                         {/*头部image*/}
                         <PreLoadImage
-                            style={
-                                [
-                                    Styles.itemTopImageStyle,
-                                    {
-                                        width: ScreenUtils.width / numOfColum - 16,
-                                        height: ScreenUtils.width / numOfColum - 16
-                                    }
-                                ]}
+                            style={{
+                                width: ScreenUtils.width / numOfColum - 16,
+                                height: ScreenUtils.width / numOfColum - 16
+                            }}
                             imageUri={itemData.specImg}
                         />
-                        {/*<View style={*/}
-                        {/*[Styles.itemTipBgViewStyle,*/}
-                        {/*{*/}
-                        {/*marginTop: ScreenUtils.width / numOfColum - 16 - 16,*/}
-                        {/*width: ScreenUtils.width / numOfColum - 16*/}
-                        {/*}*/}
-                        {/*]*/}
-
-                        {/*}>*/}
-                        {/*/!*<Text style={Styles.itemTipTextStyle}>*!/*/}
-                        {/*/!*测试测试测试测试*!/*/}
-                        {/*/!*</Text>*!/*/}
-                        {/*</View>*/}
                         <Text
                             style={
                                 [
@@ -74,7 +56,6 @@ export default class TopicItemView extends Component {
                         <Text style={Styles.itemBottomPriceTextStyle}>
                             {StringUtils.formatMoneyString(itemData.originalPrice) + '起'}
                         </Text>
-
                     </View>
                 </View>
             </TouchableOpacity>
@@ -90,21 +71,15 @@ TopicItemView.propTypes = {
 const Styles = StyleSheet.create({
     itemBgStyle: {
         backgroundColor: DesignRule.bgColor,
-        padding: 8,
-        paddingBottom: 0
+        padding: 8
     },
     itemContentStyle: {
-        flex: 1,
-        backgroundColor: 'white'
-    },
-    itemTopImageStyle: {
-        // backgroundColor: DesignRule.mainColor
-
+        backgroundColor: 'white',
+        paddingBottom:8
     },
     itemTipBgViewStyle: {
         position: 'absolute',
         alignItems: 'center',
-
         height: 16,
         opacity: 0.3,
         backgroundColor: 'black'
@@ -125,6 +100,6 @@ const Styles = StyleSheet.create({
     itemBottomPriceTextStyle: {
         color: DesignRule.mainColor,
         fontSize: 16,
-        marginTop: 5
+        marginTop: 5,
     }
 });

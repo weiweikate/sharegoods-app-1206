@@ -126,11 +126,14 @@ class ViewPager extends Component{
 
 
     renderSwiper = () => {
+        let { ...props } = this.props;
+
         if (this.state.arrayData && this.state.arrayData.length > 0) {
             if (this.props.renderPagination) {
                 if (this.props.swiperShow) {
                     return (
                         <Swiper
+                            {...props}
                             style={this.props.styles ? this.props.styles.wrapper : {}}
                                 height={this.props.height}
                                 paginationStyle={{ marginBottom: -20 }}
@@ -157,6 +160,7 @@ class ViewPager extends Component{
                 if (this.props.swiperShow) {
                     return (
                         <Swiper
+                            {...props}
                             style={this.props.styles ? this.props.styles.wrapper : {}}
                                 height={this.props.height}
                                 paginationStyle={{ marginBottom: -20 }}

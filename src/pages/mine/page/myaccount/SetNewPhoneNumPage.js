@@ -100,19 +100,21 @@ export default class SetNewPhoneNumPage extends BasePage {
     _onGetCode = (tel) => {
         //获取验证码
         if (StringUtils.checkPhone(tel)) {
-            SMSTool.sendVerificationCode(SMSTool.SMSType.NewPhoneType, tel).then((data) => {
-                (new TimeDownUtils()).startDown((time) => {
-                    this.setState({
-                        vertifyCodeTime: time
+            if (this.state.vertifyCodeTime <= 0){
+                SMSTool.sendVerificationCode(SMSTool.SMSType.NewPhoneType, tel).then((data) => {
+                    (new TimeDownUtils()).startDown((time) => {
+                        this.setState({
+                            vertifyCodeTime: time
+                        });
                     });
+                    this.setState({
+                        tips: '我们将发送验证码到您的新手机上，请注意查收'
+                    });
+                    bridge.$toast('验证码已发送请注意查收');
+                }).catch((data) => {
+                    bridge.$toast(data.msg);
                 });
-                this.setState({
-                    tips: '我们将发送验证码到您的新手机上，请注意查收'
-                });
-                bridge.$toast('验证码已发送请注意查收');
-            }).catch((data) => {
-                bridge.$toast(data.msg);
-            });
+            }
         } else {
             bridge.$toast('手机格式不对');
         }

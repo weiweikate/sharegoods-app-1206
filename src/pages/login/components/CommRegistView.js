@@ -22,7 +22,6 @@ import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 
 class CommModel {
-
     //0代表注册,1代表设置账号密码 2忘记密码
     @observable
     viewType = 0;
@@ -47,7 +46,6 @@ class CommModel {
         }
         this.phoneNumber = phoneNmber;
     }
-
     @action
     savePassword(password) {
         if (!password) {
@@ -56,7 +54,6 @@ class CommModel {
         }
         this.password = password;
     }
-
     @action
     saveVertifyCode(vertifyCode) {
         if (!vertifyCode) {
@@ -65,8 +62,6 @@ class CommModel {
         }
         this.vertifyCode = vertifyCode;
     }
-
-
     @computed
     get isCanClick() {
         if (this.phoneNumber.length === 11 && this.vertifyCode.length > 0 && this.password.length >= 6 && this.isSelectProtocl) {
@@ -88,11 +83,9 @@ export default class CommRegistView extends Component {
         };
         this.registModel.phoneNumber = this.props.phone || '';
     }
-
     changeSelectState() {
         this.registModel.isSelectProtocl = !this.registModel.isSelectProtocl;
     }
-
     render() {
         return (
             <View >
@@ -121,7 +114,6 @@ export default class CommRegistView extends Component {
                     </View>
                     <CommSpaceLine style={[Styles.lineStyle, { marginLeft: 30, marginRight: 30 }]}/>
 
-
                     <View style={{ marginTop: 20, height: 40, marginLeft: 30, marginRight: 30 }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -137,7 +129,6 @@ export default class CommRegistView extends Component {
                                     placeholder='请输入验证码'
                                     underlineColorAndroid={'transparent'}
                                     keyboardType='numeric'
-
                                 />
                             </View>
                             <TouchableOpacity
@@ -187,9 +178,7 @@ export default class CommRegistView extends Component {
                             style={{ marginRight: 30, marginTop: 18 }}/>
 
                     </TouchableOpacity>
-
                 </View>
-
                 <View style={
                     [{
                         marginRight: 30,
@@ -219,8 +208,6 @@ export default class CommRegistView extends Component {
                         </Text>
                     </TouchableOpacity>
                 </View>
-
-
             </View>
         );
     }
@@ -232,9 +219,11 @@ export default class CommRegistView extends Component {
         }
         if (!netStatusTool.isConnected) {
             bridge.$toast('请检测网络是否连接');
+            this.registModel.dowTime = 0 ;
             return;
         }
         if (StringUtils.checkPhone(this.registModel.phoneNumber)) {
+            this.registModel.dowTime = 60 ;
             bridge.$toast('验证码已发送请注意查收');
             (new TimeDownUtils()).startDown((time) => {
                 this.registModel.dowTime = time;
@@ -245,12 +234,13 @@ export default class CommRegistView extends Component {
             bridge.$toast('手机格式不对');
         }
     };
-
     loginClick = () => {
         if (this.registModel.isCanClick) {
             this.props.loginClick(this.registModel.phoneNumber, this.registModel.vertifyCode, this.registModel.password);
         }
     };
+
+
 }
 
 const Styles = StyleSheet.create(

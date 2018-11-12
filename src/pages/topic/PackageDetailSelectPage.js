@@ -11,9 +11,10 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import StringUtils from '../../utils/StringUtils';
 import bridge from '../../utils/bridge';
-import icon_close from '../home/product/res/icon_close.png';
 import Modal from 'CommModal';
 import DesignRule from 'DesignRule';
+import res from './res';
+const icon_close = res.button.close_gray_circle;
 
 export default class TopicDetailSelectPage extends Component {
 
