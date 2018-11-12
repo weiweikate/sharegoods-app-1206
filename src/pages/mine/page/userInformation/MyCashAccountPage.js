@@ -81,7 +81,7 @@ export default class MyCashAccountPage extends BasePage {
                                 marginLeft: 25,
                                 fontSize: 25,
                                 color: 'white'
-                            }}>{StringUtils.formatMoneyString(user.availableBalance, false)}</Text>
+                            }}>{StringUtils.formatMoneyString(user.availableBalance?user.availableBalance:0, false)}</Text>
                         </View>
                         <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
                             <Text style={{ fontSize: 15, color: 'white' }}>提现</Text>

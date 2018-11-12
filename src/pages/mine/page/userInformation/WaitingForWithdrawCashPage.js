@@ -91,7 +91,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 marginLeft: 25,
                                 fontSize: 25,
                                 color: 'white'
-                            }}>{StringUtils.formatMoneyString(user.blockedBalance, false)}</Text>
+                            }}>{StringUtils.formatMoneyString(user.blockedBalance?user.blockedBalance:0, false)}</Text>
                         </View>
                         <View style={{ marginRight: 20 }}>
                             <TouchableOpacity
