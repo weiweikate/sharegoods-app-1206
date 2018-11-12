@@ -62,6 +62,7 @@ const api = {
     findAllExpress: ['/sysExpress/findAllExpress', {method: 'get'}],
     //售后订单列表 chengjun.wu
     queryAftermarketOrderList: '/order/queryAftermarketOrderList',
+    getReturnReason: ['/config/sysDictionary/queryDictionaryTypeList', {method: 'get'}],
 
 
 

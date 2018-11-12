@@ -208,7 +208,9 @@ public class MainActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void hideSplash(HideSplashEvent event) {
         if (hasBasePer && needGo && !hasGo) {
-            finish();
+            if (!isFinishing()) {
+                finish();
+            }
         }
     }
 }

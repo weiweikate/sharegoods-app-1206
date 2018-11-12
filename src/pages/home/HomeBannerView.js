@@ -2,15 +2,14 @@
  * 首页轮播图
  */
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, TouchableWithoutFeedback, Platform } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
-
+import ViewPager from '../../components/ui/ViewPager'
 const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
 import { bannerModule, homeModule } from './Modules';
-import ViewPager from '../../components/ui/ViewPager'
 const bannerHeight = px2dp(230);
-// import MRBannerViewMode from '../../components/ui/bannerView/MRBannerViewMode';
+import MRBannerViewMode from '../../components/ui/bannerView/MRBannerViewMode'
 
 @observer
 export default class HomeBannerView extends Component {
@@ -19,8 +18,8 @@ export default class HomeBannerView extends Component {
     };
 
     _renderViewPageItem(item) {
-        return <TouchableOpacity onPress={() => this._onPressRow(item)}><Image style={styles.img}
-                                                                               source={{ uri: item }}/></TouchableOpacity>;
+        return <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(item)}><Image style={styles.img}
+                                                                               source={{ uri: item }}/></TouchableWithoutFeedback>;
     }
 
     _renderPagination = (index, total) => {
@@ -37,7 +36,7 @@ export default class HomeBannerView extends Component {
             {items}
         </View>;
     };
-    _onPressRow = (item) => {
+    _onPressRowWithItem(item) {
         const { bannerCount, bannerList } = bannerModule;
         let data = null;
         for (let i = 0; i < bannerCount; i++) {
@@ -46,6 +45,14 @@ export default class HomeBannerView extends Component {
                 break;
             }
         }
+        const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
+        let params = homeModule.paramsNavigate(data);
+        const { navigation } = this.props;
+        navigation.navigate(router, params);
+    }
+    _onPressRow = (index) => {
+        const { bannerList } = bannerModule;
+        let data =  bannerList[index]
         const router = homeModule.homeNavigate(data.linkType, data.linkTypeCode);
         let params = homeModule.paramsNavigate(data);
         const { navigation } = this.props;
@@ -64,6 +71,11 @@ export default class HomeBannerView extends Component {
         });
 
         return <View>
+        {
+            Platform.OS === 'ios'
+            ?
+            <MRBannerViewMode imgUrlArray={items} bannerHeight={bannerHeight} modeStyle={1} onDidSelectItemAtIndex={(index)=>{this._onPressRow(index)}}/>
+            :
             <ViewPager
                 swiperShow={true}
                 arrayData={items}
@@ -75,7 +87,7 @@ export default class HomeBannerView extends Component {
                 index={0}
                 scrollsToTop={true}
             />
-            {/*<MRBannerViewMode imgUrlArray={items} bannerHeight={bannerHeight} modeStyle={1} onDidSelectItemAtIndex={(index)=>{alert(index)}}/>*/}
+        }
         </View>;
     }
 

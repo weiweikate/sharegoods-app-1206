@@ -1,33 +1,35 @@
-import React, {Component} from 'react'
-import { View, Image, StyleSheet, Text } from 'react-native'
-import ScreenUtils from '../../utils/ScreenUtils'
-const { width, px2dp } = ScreenUtils
-const imageHeight = width
-import ViewPager from '../../components/ui/ViewPager'
+import React, { Component } from 'react';
+import { View, Image, StyleSheet, Text } from 'react-native';
+import ScreenUtils from '../../utils/ScreenUtils';
+
+const { width, px2dp } = ScreenUtils;
+const imageHeight = width;
+import ViewPager from '../../components/ui/ViewPager';
 
 const renderPagination = (index, total) => <View style={styles.indexView}>
     <Text style={styles.text}>{index + 1} / {total}</Text>
-</View>
+</View>;
 
 export default class ShowImageView extends Component {
 
     state = {
         pageIndex: 0,
         total: 2
-    }
+    };
 
     _renderViewPageItem(item) {
-        return <Image style={styles.image} source={{uri: item}} resizeMode='contain'/>
+        return <Image style={styles.image} source={{ uri: item }} resizeMode='contain'/>;
     }
+
     render() {
-        let items = this.props.items
+        let items = this.props.items;
         if (!items) {
-            return <View/>
+            return <View/>;
         }
         return <View style={styles.wrapper}>
             <ViewPager
                 swiperShow={true}
-                arrayData={items}
+                arrayData={items.slice()}
                 renderItem={this._renderViewPageItem.bind(this)}
                 autoplay={true}
                 loop={false}
@@ -36,7 +38,7 @@ export default class ShowImageView extends Component {
                 index={0}
                 scrollsToTop={true}
             />
-        </View>
+        </View>;
     }
 }
 
@@ -64,4 +66,4 @@ let styles = StyleSheet.create({
         color: '#fff',
         fontSize: px2dp(10)
     }
-})
+});

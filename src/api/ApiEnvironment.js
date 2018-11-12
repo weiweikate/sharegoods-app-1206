@@ -16,6 +16,8 @@ class ApiEnvironment {
     constructor() {
         const envType = config.envType;
         this.envType = envType && Object.keys(ApiConfig).indexOf(envType) >= 0 ? envType : "dev";
+        //预上上线直接使用release
+        // this.envType =  "pre_release"
         this.defaultTimeout = 15; // 请求默认超时时间 单位秒
     }
 
