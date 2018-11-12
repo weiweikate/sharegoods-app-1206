@@ -9,7 +9,6 @@ import HotSearch from './HotSearch';
 import RecentSearch from './RecentSearch';
 import SearchInput from './SearchInput';
 import TakePhoneModal from './TakePhotoModal';
-import ExchangeTypeModal from './ExchangeTypeModal';
 import AddPhotos from './AddPhotos';
 import NoMoreClick from './NoMoreClick';
 import PasswordInput from './PasswordInput';
@@ -28,7 +27,6 @@ export {
     RecentSearch,
     SearchInput,
     TakePhoneModal,
-    ExchangeTypeModal,
     AddPhotos,
     NoMoreClick,
     PasswordInput,
