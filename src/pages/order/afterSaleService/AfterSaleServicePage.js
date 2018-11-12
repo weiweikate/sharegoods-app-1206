@@ -32,6 +32,7 @@ import HomeAPI from '../../home/api/HomeAPI';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import bridge from '../../../utils/bridge';
 import DesignRule from 'DesignRule';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 class AfterSaleServicePage extends BasePage {
     constructor(props) {
@@ -362,7 +363,7 @@ class AfterSaleServicePage extends BasePage {
 
     _getReturnReason(){
         let that = this;
-        OrderApi.getReturnReason({code: ['TKLY','THTK','HHLY'][this.params.pageType]}).then((result) => {
+        OrderApi.getReturnReason({code: ['TKLY','THTK','HHLY'][this.params.pageType+1]}).then((result) => {
             that.setState({returnReasons: result.data || []});
         }).catch((error)=> {
 
@@ -566,7 +567,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: DesignRule.bgColor,
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        paddingBottom: ScreenUtils.safeBottom
     }, inputTextStyle: {
         marginLeft: 20,
         marginRight: 20,

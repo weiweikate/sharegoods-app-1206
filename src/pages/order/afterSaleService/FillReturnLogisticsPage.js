@@ -19,6 +19,7 @@ import {
     UIText, UIImage
 } from '../../../components/ui';
 import StringUtils from "../../../utils/StringUtils";
+import ScreenUtils from "../../../utils/ScreenUtils";
 import EmptyUtils from '../../../utils/EmptyUtils';
 import bridge from '../../../utils/bridge';
 import OrderApi from '../api/orderApi'
@@ -154,6 +155,7 @@ const styles = StyleSheet.create({
         container: {
             flex: 1,
             backgroundColor: DesignRule.bgColor,
+            paddingBottom: ScreenUtils.safeBottom
         },
         item_container: {
             backgroundColor: 'white',
