@@ -173,8 +173,8 @@ export default class TopicDetailHeaderView extends Component {
                                 fontSize: 11
                             }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : ''}元`}</Text>
                             <Text style={{
-                                color: DesignRule.textColor_secondTitle,
-                                fontSize: 13,
+                                color: DesignRule.textColor_instruction,
+                                fontSize: 11,
                                 marginLeft: ScreenUtils.autoSizeWidth(108)
                             }}>{`月销售${isNoEmpty(monthSale) ? monthSale : 0}笔`}</Text>
                         </View>

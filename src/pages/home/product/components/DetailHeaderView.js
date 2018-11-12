@@ -131,12 +131,15 @@ export default class DetailHeaderView extends Component {
                                 fontSize: 10,
                                 textDecorationLine: 'line-through'
                             }}>{`￥${originalPrice}`}</Text>
-                            <Text style={{
-                                marginLeft: 5,
+                            <View style={{
                                 backgroundColor: DesignRule.mainColor,
-                                color: 'white',
-                                fontSize: 10, paddingHorizontal: 5
-                            }}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelName}价` : '原价'}</Text>
+                                marginLeft: 5,
+                                borderRadius:4,alignItems:'center',justifyContent:'center'}}>
+                                <Text style={{
+                                    color: 'white',
+                                    fontSize: 10, paddingHorizontal: 5,paddingVertical:2
+                                }}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelName}价` : '原价'}</Text>
+                            </View>
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
                             <Text
@@ -145,8 +148,8 @@ export default class DetailHeaderView extends Component {
                                     fontSize: 11
                                 }}>快递：{freight === 0 ? '包邮' : `${freight}元`}</Text>
                             <Text style={{
-                                color: DesignRule.textColor_secondTitle,
-                                fontSize: 13,
+                                color: DesignRule.textColor_instruction,
+                                fontSize: 11,
                                 marginLeft: ScreenUtils.autoSizeWidth(108)
                             }}>{`月销售${monthSaleTotal}笔`}</Text>
                         </View>
