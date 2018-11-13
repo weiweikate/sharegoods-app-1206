@@ -18,6 +18,7 @@ import arrowDown from '../../res/customerservice/icon_06.png';
 import res from '../../../../comm/res';
 import addPic from '../../res/customerservice/xk1_03.png';
 import deleteImage from '../../res/customerservice/deleteImage.png';
+import selectImg from  '../../res/customerservice/bangzu_dugou.png';
 import BusinessUtils from '../../components/BusinessUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import MineApi from '../../api/MineApi';
@@ -98,10 +99,6 @@ export default class HelperFeedbackPage extends BasePage {
         }
         let smallImgs = smallImagarr.join(';');
         let orignImgs = orignImagarr.join(';');
-        // if (this.state.selectIndex == -1 || this.state.detailContent == '' || orignImgs.length < 20) {
-        //     ToastAndroid.show('请完善反馈资料!', ToastAndroid.SHORT);
-        //     return;
-        // }
         if (this.state.selectIndex == -1) {
             this.$toastShow('请选择反馈类型!');
             return;
@@ -240,7 +237,7 @@ export default class HelperFeedbackPage extends BasePage {
                         <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
                             {this.state.CONFIG.map((item, i) => {
                                 return (
-                                    <TouchableOpacity key={i} style={{ height: 48, justifyContent: 'center' }}
+                                    <TouchableOpacity key={i} style={{ height: 48, justifyContent: 'space-between',flexDirection:'row',alignItems:'center' }}
                                                       activeOpacity={0.6}
                                                       onPress={() => this.selCourse(item.value, i)}>
                                         <Text style={{
@@ -248,6 +245,7 @@ export default class HelperFeedbackPage extends BasePage {
                                             fontSize: 15,
                                             marginLeft: 15
                                         }}>{item.value}</Text>
+                                        {i == this.state.selectIndex?<Image source={selectImg} style={{width:17,height:12,marginRight:19}}/>:<View style={{width:17,height:12,marginRight:19}}/>}
                                     </TouchableOpacity>
                                 );
                             })
@@ -279,7 +277,7 @@ export default class HelperFeedbackPage extends BasePage {
                         width: ScreenUtils.width,
                         height: 44,
                         backgroundColor: 'white',
-                        marginTop: 5,
+                        marginTop: 15,
                         justifyContent: 'space-between',
                         alignItems: 'center'
                     }} onPress={() => this.showTypeSelect()}>
@@ -388,15 +386,16 @@ const styles = StyleSheet.create({
     containerView1: {
         backgroundColor: 'white',
         width: ScreenUtils.width,
-        marginTop: 5,
+        marginTop: 14,
         height: 44,
         justifyContent: 'center',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        marginBottom:0.5
     },
     containerView2: {
         backgroundColor: 'white',
         width: ScreenUtils.width,
-        marginTop: 5,
+        marginTop: 10,
         height: 44,
         justifyContent: 'center',
         alignItems: 'flex-start'
