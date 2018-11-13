@@ -34,6 +34,11 @@ public class WaveViewManager extends SimpleViewManager<WaveLoadingView> {
         view.setWaveColor(waveColor);
     }
 
+    @ReactProp(name="waveLightColor")
+    public void setWaveLightColor(WaveLoadingView view, Integer waveLightColor){
+        view.setWaveLightColor(waveLightColor);
+    }
+
 
     @ReactProp(name="topTitleColor")
     public void setTopTitleColor(WaveLoadingView view, Integer topTitleColor){
