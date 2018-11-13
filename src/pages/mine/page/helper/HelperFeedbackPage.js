@@ -18,6 +18,7 @@ import arrowDown from '../../res/customerservice/icon_06.png';
 import res from '../../../../comm/res';
 import addPic from '../../res/customerservice/xk1_03.png';
 import deleteImage from '../../res/customerservice/deleteImage.png';
+import selectImg from '../../res/customerservice/bangzu_dugou.png';
 import BusinessUtils from '../../components/BusinessUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import MineApi from '../../api/MineApi';
@@ -25,6 +26,7 @@ import Modal from 'CommModal';
 
 const rightIcon = res.button.tongyon_icon_check_green;
 import DesignRule from 'DesignRule';
+import NavigatorBar from '../../../../components/pageDecorator/NavigatorBar/NavigatorBar';
 
 /**
  * @author chenxiang
@@ -100,10 +102,6 @@ export default class HelperFeedbackPage extends BasePage {
         }
         let smallImgs = smallImagarr.join(';');
         let orignImgs = orignImagarr.join(';');
-        // if (this.state.selectIndex == -1 || this.state.detailContent == '' || orignImgs.length < 20) {
-        //     ToastAndroid.show('请完善反馈资料!', ToastAndroid.SHORT);
-        //     return;
-        // }
         if (this.state.selectIndex == -1) {
             this.$toastShow('请选择反馈类型!');
             return;
@@ -195,7 +193,8 @@ export default class HelperFeedbackPage extends BasePage {
         if (isShowIcon) {
             return null;
         } else {
-            return <UIImage source={addPic} style={{ width: 83, height: 83, marginLeft: 15, borderRadius: 5 }}
+            return <UIImage source={addPic}
+                            style={{ width: 83, height: 83, marginLeft: 16, marginRight: 16, borderRadius: 5 }}
                             resizeMode={'stretch'}
                             onPress={() => this.choosePicker()}/>;
         }
@@ -203,7 +202,7 @@ export default class HelperFeedbackPage extends BasePage {
     };
     renderPhotoItem = (item, index) => {
         return (
-            <View style={{ marginRight: 8, marginBottom: 12 }} key={index}>
+            <View style={{ marginRight: 8 }} key={index}>
                 <Image style={styles.photo_item} source={{ uri: this.state.imageArr[index].imageUrl }}/>
                 <TouchableOpacity style={styles.delete_btn} onPress={() => this.deletePic(index)}>
                     <Image style={{ width: 24, height: 24 }} source={deleteImage}/>
@@ -234,31 +233,46 @@ export default class HelperFeedbackPage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => {
                     this.setState({ showModal: false });
                 }}>
-                    <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-                        <TouchableOpacity style={styles.modalContainer}
-                                          onPress={() => this.setState({ showModal: true })}>
-                            <Text style={{
-                                marginLeft: 10,
-                                fontSize: 15,
-                                color: DesignRule.textColor_instruction
-                            }}>请选择问题类型</Text>
-                            <Image source={arrowUp} style={{ width: 15, height: 15, marginRight: 10 }}/>
-                        </TouchableOpacity>
-                        <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
-                            {this.state.CONFIG.map((item, i) => {
-                                return (
-                                    <TouchableOpacity key={i} style={{ height: 48, justifyContent: 'center' }}
-                                                      activeOpacity={0.6}
-                                                      onPress={() => this.selCourse(item.value, i)}>
-                                        <Text style={{
-                                            color: i == this.state.selectIndex ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
-                                            fontSize: 15,
-                                            marginLeft: 15
-                                        }}>{item.value}</Text>
-                                    </TouchableOpacity>
-                                );
-                            })
-                            }
+                    <View>
+                        <View style={{ flex: 1, backgroundColor: DesignRule.lineColor_inColorBg }}>
+                            <NavigatorBar title={'问题反馈'} leftPressed={() => {
+                                this.props.navigation.goBack();
+                            }}/>
+                            <View style={styles.modalContainer}
+                                  onPress={() => this.setState({ showModal: true })}>
+                                <Text style={{
+                                    marginLeft: 16,
+                                    fontSize: 15,
+                                    color: DesignRule.textColor_instruction
+                                }}>请选择问题类型</Text>
+                                <Image source={arrowUp} style={{ width: 15, height: 15, marginRight: 10 }}/>
+                            </View>
+                            <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
+                                {this.state.CONFIG.map((item, i) => {
+                                    return (
+                                        <TouchableOpacity key={i} style={{
+                                            height: 48,
+                                            justifyContent: 'space-between',
+                                            flexDirection: 'row',
+                                            alignItems: 'center'
+                                        }}
+                                                          activeOpacity={0.6}
+                                                          onPress={() => this.selCourse(item.value, i)}>
+                                            <Text style={{
+                                                color: i == this.state.selectIndex ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
+                                                fontSize: 15,
+                                                marginLeft: 15
+                                            }}>{item.value}</Text>
+                                            {i == this.state.selectIndex ? <Image source={selectImg} style={{
+                                                width: 17,
+                                                height: 12,
+                                                marginRight: 19
+                                            }}/> : <View style={{ width: 17, height: 12, marginRight: 19 }}/>}
+                                        </TouchableOpacity>
+                                    );
+                                })
+                                }
+                            </View>
                         </View>
                     </View>
                 </TouchableWithoutFeedback>
@@ -286,20 +300,24 @@ export default class HelperFeedbackPage extends BasePage {
                         width: ScreenUtils.width,
                         height: 44,
                         backgroundColor: 'white',
-                        marginTop: 5,
+                        marginTop: 15,
                         justifyContent: 'space-between',
                         alignItems: 'center'
                     }} onPress={() => this.showTypeSelect()}>
                         <Text style={{
-                            marginLeft: 10,
+                            marginLeft: 16,
                             fontSize: 15,
                             color: DesignRule.textColor_mainTitle
                         }}>{this.state.course}</Text>
-                        <Image source={arrowDown} style={{ width: 15, height: 15, marginRight: 10 }}/>
+                        <Image source={arrowDown} style={{ width: 15, height: 15, marginRight: 16 }}/>
                     </TouchableOpacity>
                     <View style={styles.containerView1}>
                         <Text
-                            style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>详细说明</Text>
+                            style={{
+                                marginLeft: 16,
+                                fontSize: 15,
+                                color: DesignRule.textColor_mainTitle
+                            }}>详细说明（必填）</Text>
                     </View>
                     <View style={{ height: 130, backgroundColor: 'white' }}>
                         <AutoExpandingInput
@@ -310,11 +328,16 @@ export default class HelperFeedbackPage extends BasePage {
                             defaultValue={''}
                             underlineColorAndroid={'transparent'}
                         />
-                        <Text style={{ position: 'absolute', bottom: 10, right: 10 }}>{this.state.textLength}/90</Text>
+                        <Text style={{
+                            position: 'absolute',
+                            bottom: 10,
+                            right: 16,
+                            color: DesignRule.textColor_placeholder
+                        }}>{this.state.textLength}/90</Text>
                     </View>
                     <View style={styles.containerView2}>
                         <Text
-                            style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>上传图片</Text>
+                            style={{ marginLeft: 16, fontSize: 15, color: DesignRule.textColor_mainTitle }}>上传图片</Text>
                     </View>
                     <View style={styles.containerView3}>
                         {this.state.imageArr.map((item, index) => {
@@ -355,8 +378,8 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         backgroundColor: 'white',
-        fontSize: 14
-
+        fontSize: 14,
+        textAlignVertical: 'top'
     },
     headText: {
         fontSize: 22
@@ -387,7 +410,8 @@ const styles = StyleSheet.create({
         height: 44,
         backgroundColor: DesignRule.bgColor,
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 15
     },
     buttoncolorStyle: {
         width: 290,
@@ -400,15 +424,16 @@ const styles = StyleSheet.create({
     containerView1: {
         backgroundColor: 'white',
         width: ScreenUtils.width,
-        marginTop: 5,
+        marginTop: 14,
         height: 44,
         justifyContent: 'center',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        marginBottom: 0.5
     },
     containerView2: {
         backgroundColor: 'white',
         width: ScreenUtils.width,
-        marginTop: 5,
+        marginTop: 10,
         height: 44,
         justifyContent: 'center',
         alignItems: 'flex-start'
