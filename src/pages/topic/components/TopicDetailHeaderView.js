@@ -6,21 +6,20 @@ import {
     Text,
     View,
     TouchableOpacity,
-    Image,
-    TouchableWithoutFeedback
+    Image
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ViewPager from '../../../components/ui/ViewPager';
 import ActivityView from './ActivityView';
 import { isNoEmpty } from '../../../utils/StringUtils';
 import StringUtils from '../../../utils/StringUtils';
-import VideoView from '../../../components/ui/video/VideoView';
-// import user from '../../../model/user';
 import DesignRule from 'DesignRule';
+import TopicDetailBanner from './TopicDetailBanner';
 
 const { px2dp } = ScreenUtils;
 import res from '../res';
-const xjt_03 =  res.xjt_03;
+
+const xjt_03 = res.xjt_03;
 /**
  * 商品详情头部view
  */
@@ -37,57 +36,16 @@ export default class TopicDetailHeaderView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            swiperShow: false,
             haveVideo: false
         };
     }
 
     componentDidMount() {
-        setTimeout(() => {
-            this.setState({
-                swiperShow: true
-            });
-        }, 100);
     }
 
     updateTime(activityData, activityType, callBack) {
         this.ActivityView.saveActivityViewData(activityData, activityType, callBack);
     }
-
-    getImageList = (data) => {
-        if (data) {
-            return data.map((item, index) => {
-                return item.originalImg;
-            });
-        } else {
-            return null;
-        }
-    };
-
-    renderViewPageItem = (item, index) => {
-        const { activityType } = this.props;
-        if (item.videoUrl) {
-            return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover}/>;
-        } else {
-            const { originalImg } = item;
-            let imgList = this.getImageList(activityType === 3 ? this.props.data.imgFileList : this.props.data.productImgList);
-            return (
-                <TouchableWithoutFeedback onPress={() => {
-                    const params = { imageUrls: imgList, index: this.state.haveVideo ? index - 1 : index };
-                    const { navigation } = this.props;
-                    navigation && navigation.navigate('home/product/CheckBigImagesView', params);
-                }}>
-                    <Image source={{ uri: originalImg }}
-                           style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
-                           resizeMode="cover"
-                    />
-                </TouchableWithoutFeedback>
-            );
-        }
-    };
-    _renderPagination = (index, total) => <View style={styles.indexView}>
-        <Text style={styles.text}>{index + 1} / {total}</Text>
-    </View>;
 
     render() {
         const { activityType } = this.props;
@@ -133,15 +91,7 @@ export default class TopicDetailHeaderView extends Component {
         }
         return (
             <View>
-                {bannerImgList.length > 0 && this.state.swiperShow ? <ViewPager swiperShow={true}
-                                                                                loop={false}
-                                                                                autoplay={false}
-                                                                                bounces={true}
-                                                                                height={ScreenUtils.autoSizeWidth(377)}
-                                                                                arrayData={bannerImgList}
-                                                                                renderItem={this.renderViewPageItem}
-                                                                                renderPagination={this._renderPagination}/> :
-                    <View style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}/>}
+                {<TopicDetailBanner bannerImgList={bannerImgList} haveVideo={this.state.haveVideo}/>}
                 {activityType === 3 ? null : <ActivityView ref={(e) => {
                     this.ActivityView = e;
                 }} activityData={this.props.activityData} activityType={activityType}/>}
