@@ -306,7 +306,7 @@ export default class MinePage extends BasePage {
 
     accountRender = () => {
         return (
-            <ImageBackground source={mine_account_bg} style={{ marginTop: px2dp(11), marginHorizontal: px2dp(15) }}>
+            <ImageBackground source={mine_account_bg} style={{ marginTop: px2dp(11), marginHorizontal: px2dp(15),borderRadius:5,overflow:'hidden' }}>
                 <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
                     <Text style={{ fontSize: DesignRule.fontSize_secondTitle, color: DesignRule.white }}>
                         我的资产
@@ -322,95 +322,90 @@ export default class MinePage extends BasePage {
                     }}/>
                 <View style={{
                     flexDirection: 'row',
-                    paddingVertical: px2dp(22),
-                    paddingHorizontal: px2dp(15),
                     justifyContent: 'space-between'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', () => {
-                        this.go2CashDetailPage(1);
-                    })}
-                    {this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : user.userScore + '', '秀豆账户', () => {
-                        this.go2CashDetailPage(2);
-                    })}
-                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户', () => {
-                        this.go2CashDetailPage(3);
-                    })}
-
-                    {/*{this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', '#FF4F6E', () => {*/}
-                    {/*this.go2CashDetailPage(1);*/}
+                    {/*{this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', () => {*/}
+                        {/*this.go2CashDetailPage(1);*/}
+                    {/*})}*/}
+                    {/*{this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : user.userScore + '', '秀豆账户', () => {*/}
+                        {/*this.go2CashDetailPage(2);*/}
+                    {/*})}*/}
+                    {/*{this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户', () => {*/}
+                        {/*this.go2CashDetailPage(3);*/}
                     {/*})}*/}
 
-                    {/*{this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : user.userScore + '', '秀豆账户', DesignRule.bgColor_yellowCard, () => {*/}
-                    {/*this.go2CashDetailPage(2);*/}
-                    {/*})}*/}
-                    {/*{this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户', '#8EC7FF', () => {*/}
-                    {/*this.go2CashDetailPage(3);*/}
-                    {/*})}*/}
+                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', '#FF4F6E', () => {
+                    this.go2CashDetailPage(1);
+                    })}
+
+                    {this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : StringUtils.formatMoneyString(user.userScore,false) + '', '秀豆账户', DesignRule.bgColor_yellowCard, () => {
+                    this.go2CashDetailPage(2);
+                    })}
+                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户', '#8EC7FF', () => {
+                    this.go2CashDetailPage(3);
+                    })}
                 </View>
             </ImageBackground>
         );
     };
 
 
-    // getAdjustsFontSize = (text) => {
-    //     let fontSize = Math.sqrt(80 * 20 / text.length);
-    //     fontSize = Math.min(fontSize, 19);
-    //     return Math.max(fontSize, 1);
-    // };
+    getAdjustsFontSize = (text) => {
+        let fontSize = Math.sqrt(80 * 20 / text.length);
+        fontSize = Math.min(fontSize, 19);
+        return Math.max(fontSize, 1);
+    };
 
-    // accountItemView = (num, text, color, onPress) => {
-    //     console.log(num);
-    //     return (
-    //         <TouchableWithoutFeedback onPress={onPress}>
-    //             <View style={{
-    //                 backgroundColor: color,
-    //                 width: px2dp(110),
-    //                 height: px2dp(62),
-    //                 borderRadius: px2dp(5),
-    //                 elevation: 2,
-    //                 shadowColor: DesignRule.textColor_mainTitle,
-    //                 shadowOffset: { h: 2, w: 2 },
-    //                 shadowRadius: px2dp(6),
-    //                 shadowOpacity: 0.1,
-    //                 justifyContent: 'space-between',
-    //                 alignItems: 'center',
-    //                 paddingTop: px2dp(16),
-    //                 paddingBottom: px2dp(11)
-    //             }}>
-    //                 <Text allowFontScaling={true} style={{
-    //                     textAlign: 'center',
-    //                     color: 'white',
-    //                     includeFontPadding: false,
-    //                     width: 80,
-    //                     height: 20,
-    //                     fontSize: this.getAdjustsFontSize(num)
-    //                 }}>
-    //                     {num}
-    //                 </Text>
-    //
-    //                 <Text style={{ color: 'white', fontSize: px2dp(11), includeFontPadding: false }}>
-    //                     {text}
-    //                 </Text>
-    //
-    //             </View>
-    //         </TouchableWithoutFeedback>
-    //     );
-    // };
-
-    accountItemView = (num, text, func) => {
+    accountItemView = (num, text, color, onPress) => {
         return (
-            <TouchableWithoutFeedback onPress={func}>
-                <View style={{ alignItems: 'center' }}>
-                    <Text style={{ fontSize: DesignRule.fontSize_mainTitle, color: DesignRule.white }}>
+            <TouchableWithoutFeedback onPress={onPress}>
+                <View style={{
+                    // backgroundColor: color,
+                    width: px2dp(110),
+                    // borderRadius: px2dp(5),
+                    // elevation: 2,
+                    // shadowColor: DesignRule.textColor_mainTitle,
+                    // shadowOffset: { h: 2, w: 2 },
+                    // shadowRadius: px2dp(6),
+                    // shadowOpacity: 0.1,
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginTop: px2dp(27),
+                    marginBottom: px2dp(38)
+                }}>
+                    <Text allowFontScaling={true} style={{
+                        textAlign: 'center',
+                        color: 'white',
+                        includeFontPadding: false,
+                        width: 80,
+                        height: 20,
+                        fontSize: this.getAdjustsFontSize(num)
+                    }}>
                         {num}
                     </Text>
-                    <Text style={{ marginTop: px2dp(5), fontSize: DesignRule.fontSize_24, color: DesignRule.white }}>
+                    <View style={{height:9}}/>
+                    <Text style={{ color: 'white', fontSize: px2dp(11), includeFontPadding: false }}>
                         {text}
                     </Text>
                 </View>
             </TouchableWithoutFeedback>
         );
     };
+
+    // accountItemView = (num, text, func) => {
+    //     return (
+    //         <TouchableWithoutFeedback onPress={func}>
+    //             <View style={{ alignItems: 'center' }}>
+    //                 <Text style={{ fontSize: DesignRule.fontSize_mainTitle, color: DesignRule.white }}>
+    //                     {num}
+    //                 </Text>
+    //                 <Text style={{ marginTop: px2dp(5), fontSize: DesignRule.fontSize_24, color: DesignRule.white }}>
+    //                     {text}
+    //                 </Text>
+    //             </View>
+    //         </TouchableWithoutFeedback>
+    //     );
+    // };
 
     orderRender() {
         return (
