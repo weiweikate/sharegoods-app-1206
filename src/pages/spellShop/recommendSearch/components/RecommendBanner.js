@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import XGSwiper from '../../../../components/ui/XGSwiper';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -8,7 +8,7 @@ export class RecommendBanner extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            messageIndex: 1
+            messageIndex: 0
         };
     }
 
@@ -47,7 +47,7 @@ export class RecommendBanner extends Component {
                 <XGSwiper height={ScreenUtils.autoSizeWidth(150)} width={ScreenUtils.width}
                           renderRow={this._renderViewPageItem}
                           dataSource={EmptyUtils.isEmptyArr(bannerList) ? [] : bannerList}
-                          onDidChange={(item, index)=>{
+                          onDidChange={(item, index) => {
                               if (this.state.messageIndex !== index) {
                                   this.setState({
                                       messageIndex: index
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#eee',
         marginLeft: 2.5,
         marginRight: 2.5
-    },
+    }
 });
 
 

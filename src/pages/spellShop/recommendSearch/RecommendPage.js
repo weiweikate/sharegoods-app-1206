@@ -21,8 +21,6 @@ import RecommendRow from './components/RecommendRow';
 import SegementHeaderView from './components/RecommendSegmentView';
 import BasePage from '../../../BasePage';
 import SpellStatusModel from '../model/SpellStatusModel';
-import ViewPager from '../../../components/ui/ViewPager';
-import UIImage from '../../../components/ui/UIImage';
 import SpellShopApi from '../api/SpellShopApi';
 import HomeAPI from '../../home/api/HomeAPI';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
@@ -52,7 +50,6 @@ export default class RecommendPage extends BasePage {
             //data
             dataList: [{}],//默认一行显示状态页面使用 错误页 无数据页面
             adList: [],
-            swiperShow: false
         };
     }
 
@@ -76,11 +73,6 @@ export default class RecommendPage extends BasePage {
     };
 
     componentDidMount() {
-        setTimeout(() => {
-            this.setState({
-                swiperShow: true
-            });
-        }, 100);
         this._loadPageData();
         this._getSwipers();
     }
@@ -223,7 +215,7 @@ export default class RecommendPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        if (this.state.adList.length > 0 && this.state.swiperShow) {
+        if (this.state.adList.length > 0) {
             return <RecommendBanner bannerList = {this.state.adList} onPress = {this._clickItem}/>;
         } else {
             return null;
