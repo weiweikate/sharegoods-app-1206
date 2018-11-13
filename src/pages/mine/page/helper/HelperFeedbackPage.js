@@ -197,7 +197,7 @@ export default class HelperFeedbackPage extends BasePage {
     };
     renderPhotoItem = (item, index) => {
         return (
-            <View style={{ marginRight: 8, marginBottom: 12 }} key={index}>
+            <View style={{ marginRight: 8}} key={index}>
                 <Image style={styles.photo_item} source={{ uri: this.state.imageArr[index].imageUrl }}/>
                 <TouchableOpacity style={styles.delete_btn} onPress={() => this.deletePic(index)}>
                     <Image style={{ width: 24, height: 24 }} source={deleteImage}/>
