@@ -28,7 +28,7 @@ import RouterMap from 'RouterMap';
 import DesignRule from 'DesignRule';
 import res from '../res';
 import EmptyUtils from '../../../utils/EmptyUtils';
-import WaveView from 'WaveView';
+// import WaveView from 'WaveView';
 
 const {
     mine_header_bg,
@@ -281,34 +281,111 @@ export default class MinePage extends BasePage {
                         </TouchableWithoutFeedback>
                         {accreditID}
                     </View>
-                    <View style={{flex:1}}/>
-                    <View style={{alignSelf:'center',flexDirection:'row',alignItems:'center',height:50,paddingVertical:5,backgroundColor:'#efcd97',borderBottomLeftRadius:25,borderTopLeftRadius:25,paddingLeft:5}}>
-                        <WaveView topTitle={'V1'}
-                                  waveBackgroundColor={'white'}
-                                  waveColor={'#efa944'}
-                                  topTitleColor={'#f6d19e'}
-                                  topTitleSize={12}
-                                  progressValue={20}
-                        />
-                        <View style={{justifyContent:'space-between',marginLeft:5,marginRight:DesignRule.margin_page}}>
-                            <Text style={{color:DesignRule.textColor_mainTitle,fontSize:DesignRule.fontSize_threeTitle}}>
-                                黑金品鉴官
-                            </Text>
-                            <Text style={{color:DesignRule.white,fontSize:DesignRule.fontSize_22}}>
-                                查看权益>
-                            </Text>
-                        </View>
-                    </View>
+                    <View style={{ flex: 1 }}/>
+                    {/*<TouchableWithoutFeedback onPress={()=>{*/}
+                        {/*this.props.navigation.navigate(RouterMap.MyPromotionPage);*/}
+                    {/*}}>*/}
+                        {/*<View style={{*/}
+                            {/*alignSelf: 'center',*/}
+                            {/*flexDirection: 'row',*/}
+                            {/*alignItems: 'center',*/}
+                            {/*height: 50,*/}
+                            {/*paddingVertical: 5,*/}
+                            {/*backgroundColor: '#efcd97',*/}
+                            {/*borderBottomLeftRadius: 25,*/}
+                            {/*borderTopLeftRadius: 25,*/}
+                            {/*paddingLeft: 5*/}
+                        {/*}}>*/}
+                            {/*<WaveView topTitle={!EmptyUtils.isEmpty(user.levelName) ? user.levelName : 'VO'}*/}
+                                      {/*waveBackgroundColor={DesignRule.mainColor}*/}
+                                      {/*waveColor={'#efa944'}*/}
+                                      {/*waveLightColor={'#efcf69'}*/}
+                                      {/*topTitleColor={'#f6d19e'}*/}
+                                      {/*topTitleSize={12}*/}
+                                      {/*progressValue={20}*/}
+                            {/*/>*/}
+                            {/*<View style={{*/}
+                                {/*justifyContent: 'space-between',*/}
+                                {/*marginLeft: 5,*/}
+                                {/*marginRight: DesignRule.margin_page*/}
+                            {/*}}>*/}
+                                {/*<Text style={{*/}
+                                    {/*color: DesignRule.textColor_mainTitle,*/}
+                                    {/*fontSize: DesignRule.fontSize_threeTitle*/}
+                                {/*}}>*/}
+                                    {/*黑金品鉴官*/}
+                                {/*</Text>*/}
+                                {/*<Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_22 }}>*/}
+                                    {/*查看权益>*/}
+                                {/*</Text>*/}
+                            {/*</View>*/}
+                        {/*</View>*/}
+                    {/*</TouchableWithoutFeedback>*/}
                 </View>
             </ImageBackground>
         );
     };
 
+    // accountRender = () => {
+    //     return (
+    //         <ImageBackground source={mine_account_bg} style={{
+    //             marginTop: px2dp(11),
+    //             marginHorizontal: px2dp(15),
+    //             borderRadius: 5,
+    //             overflow: 'hidden'
+    //         }}>
+    //             <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
+    //                 <Text style={{ fontSize: DesignRule.fontSize_secondTitle, color: DesignRule.white }}>
+    //                     我的资产
+    //                 </Text>
+    //             </View>
+    //             <View
+    //                 style={{
+    //                     backgroundColor: DesignRule.lineColor_inColorBg,
+    //                     width: ScreenUtils.width - px2dp(30),
+    //                     height: ScreenUtils.onePixel,
+    //                     alignSelf: 'center',
+    //                     opacity: 0.7
+    //                 }}/>
+    //             <View style={{
+    //                 flexDirection: 'row',
+    //                 justifyContent: 'space-between'
+    //             }}>
+    //                 {/*{this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', () => {*/}
+    //                 {/*this.go2CashDetailPage(1);*/}
+    //                 {/*})}*/}
+    //                 {/*{this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : user.userScore + '', '秀豆账户', () => {*/}
+    //                 {/*this.go2CashDetailPage(2);*/}
+    //                 {/*})}*/}
+    //                 {/*{this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户', () => {*/}
+    //                 {/*this.go2CashDetailPage(3);*/}
+    //                 {/*})}*/}
+    //
+    //                 {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', '#FF4F6E', () => {
+    //                     this.go2CashDetailPage(1);
+    //                 })}
+    //
+    //                 {this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : StringUtils.formatMoneyString(user.userScore, false) + '', '秀豆账户', DesignRule.bgColor_yellowCard, () => {
+    //                     this.go2CashDetailPage(2);
+    //                 })}
+    //                 {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户', '#8EC7FF', () => {
+    //                     this.go2CashDetailPage(3);
+    //                 })}
+    //             </View>
+    //         </ImageBackground>
+    //     );
+    // };
+
+
     accountRender = () => {
         return (
-            <ImageBackground source={mine_account_bg} style={{ marginTop: px2dp(11), marginHorizontal: px2dp(15),borderRadius:5,overflow:'hidden' }}>
-                <View style={{ height: px2dp(44), paddingHorizontal: px2dp(15), justifyContent: 'center' }}>
-                    <Text style={{ fontSize: DesignRule.fontSize_secondTitle, color: DesignRule.white }}>
+            <View source={mine_account_bg} style={{
+                marginTop: px2dp(10),
+                backgroundColor:DesignRule.white,
+                paddingHorizontal:DesignRule.margin_page,
+            }}>
+                <View style={{ height: px2dp(44), justifyContent: 'center' }}>
+                    <Text style={{ fontSize: DesignRule.fontSize_secondTitle, color: DesignRule.textColor_secondTitle }}>
                         我的资产
                     </Text>
                 </View>
@@ -318,60 +395,55 @@ export default class MinePage extends BasePage {
                         width: ScreenUtils.width - px2dp(30),
                         height: ScreenUtils.onePixel,
                         alignSelf: 'center',
-                        opacity: 0.7
                     }}/>
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between'
                 }}>
                     {/*{this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', () => {*/}
-                        {/*this.go2CashDetailPage(1);*/}
+                    {/*this.go2CashDetailPage(1);*/}
                     {/*})}*/}
                     {/*{this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : user.userScore + '', '秀豆账户', () => {*/}
-                        {/*this.go2CashDetailPage(2);*/}
+                    {/*this.go2CashDetailPage(2);*/}
                     {/*})}*/}
                     {/*{this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户', () => {*/}
-                        {/*this.go2CashDetailPage(3);*/}
+                    {/*this.go2CashDetailPage(3);*/}
                     {/*})}*/}
 
                     {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', '#FF4F6E', () => {
-                    this.go2CashDetailPage(1);
+                        this.go2CashDetailPage(1);
                     })}
 
-                    {this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : StringUtils.formatMoneyString(user.userScore,false) + '', '秀豆账户', DesignRule.bgColor_yellowCard, () => {
-                    this.go2CashDetailPage(2);
+                    {this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : StringUtils.formatMoneyString(user.userScore, false) + '', '秀豆账户', DesignRule.bgColor_yellowCard, () => {
+                        this.go2CashDetailPage(2);
                     })}
                     {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户', '#8EC7FF', () => {
-                    this.go2CashDetailPage(3);
+                        this.go2CashDetailPage(3);
                     })}
                 </View>
-            </ImageBackground>
+            </View>
         );
-    };
-
-
-    getAdjustsFontSize = (text) => {
-        let fontSize = Math.sqrt(80 * 20 / text.length);
-        fontSize = Math.min(fontSize, 19);
-        return Math.max(fontSize, 1);
     };
 
     accountItemView = (num, text, color, onPress) => {
         return (
             <TouchableWithoutFeedback onPress={onPress}>
                 <View style={{
-                    // backgroundColor: color,
+                    backgroundColor: color,
                     width: px2dp(110),
-                    // borderRadius: px2dp(5),
-                    // elevation: 2,
-                    // shadowColor: DesignRule.textColor_mainTitle,
-                    // shadowOffset: { h: 2, w: 2 },
-                    // shadowRadius: px2dp(6),
-                    // shadowOpacity: 0.1,
+                    height:px2dp(62),
+                    borderRadius: px2dp(5),
+                    elevation: 2,
+                    shadowColor: DesignRule.textColor_mainTitle,
+                    shadowOffset: { h: 2, w: 2 },
+                    shadowRadius: px2dp(6),
+                    shadowOpacity: 0.1,
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     marginTop: px2dp(27),
-                    marginBottom: px2dp(38)
+                    marginBottom: px2dp(38),
+                    paddingTop:px2dp(16),
+                    paddingBottom:px2dp(11)
                 }}>
                     <Text allowFontScaling={true} style={{
                         textAlign: 'center',
@@ -383,7 +455,6 @@ export default class MinePage extends BasePage {
                     }}>
                         {num}
                     </Text>
-                    <View style={{height:9}}/>
                     <Text style={{ color: 'white', fontSize: px2dp(11), includeFontPadding: false }}>
                         {text}
                     </Text>
@@ -391,6 +462,48 @@ export default class MinePage extends BasePage {
             </TouchableWithoutFeedback>
         );
     };
+
+    getAdjustsFontSize = (text) => {
+        let fontSize = Math.sqrt(80 * 20 / text.length);
+        fontSize = Math.min(fontSize, 19);
+        return Math.max(fontSize, 1);
+    };
+
+    // accountItemView = (num, text, color, onPress) => {
+    //     return (
+    //         <TouchableWithoutFeedback onPress={onPress}>
+    //             <View style={{
+    //                 // backgroundColor: color,
+    //                 width: px2dp(110),
+    //                 // borderRadius: px2dp(5),
+    //                 // elevation: 2,
+    //                 // shadowColor: DesignRule.textColor_mainTitle,
+    //                 // shadowOffset: { h: 2, w: 2 },
+    //                 // shadowRadius: px2dp(6),
+    //                 // shadowOpacity: 0.1,
+    //                 justifyContent: 'space-between',
+    //                 alignItems: 'center',
+    //                 marginTop: px2dp(27),
+    //                 marginBottom: px2dp(38)
+    //             }}>
+    //                 <Text allowFontScaling={true} style={{
+    //                     textAlign: 'center',
+    //                     color: 'white',
+    //                     includeFontPadding: false,
+    //                     width: 80,
+    //                     height: 20,
+    //                     fontSize: this.getAdjustsFontSize(num)
+    //                 }}>
+    //                     {num}
+    //                 </Text>
+    //                 <View style={{ height: 9 }}/>
+    //                 <Text style={{ color: 'white', fontSize: px2dp(11), includeFontPadding: false }}>
+    //                     {text}
+    //                 </Text>
+    //             </View>
+    //         </TouchableWithoutFeedback>
+    //     );
+    // };
 
     // accountItemView = (num, text, func) => {
     //     return (
@@ -412,7 +525,7 @@ export default class MinePage extends BasePage {
             <View style={{
                 backgroundColor: 'white',
                 marginTop: DesignRule.margin_listGroup,
-                marginHorizontal: DesignRule.margin_page,
+                // marginHorizontal: DesignRule.margin_page,
                 borderRadius: px2dp(5)
             }}>
                 <View style={{
@@ -461,13 +574,13 @@ export default class MinePage extends BasePage {
                 backgroundColor: 'white',
                 flexWrap: 'wrap',
                 marginVertical: px2dp(10),
-                marginHorizontal: DesignRule.margin_page,
+                // marginHorizontal: DesignRule.margin_page,
                 borderRadius: px2dp(5)
             }}>
                 <View
-                    style={{ height: px2dp(44), paddingHorizontal: DesignRule.margin_card, justifyContent: 'center' }}>
+                    style={{ height: px2dp(44), paddingHorizontal: DesignRule.margin_page, justifyContent: 'center' }}>
                     <Text
-                        style={{ color: DesignRule.textColor_secondTitle, fontSize: DesignRule.fontSize_secondTitle }}>
+                        style={{ color: DesignRule.textColor_secondTitle, fontSize: DesignRule.fontSize_secondTitle ,includeFontPadding:false}}>
                         常用工具
                     </Text>
                 </View>

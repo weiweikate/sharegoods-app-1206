@@ -23,6 +23,7 @@ export default class WaveView extends PureComponent {
                 topTitle={this.props.topTitle}
                 waveBackgroundColor={processColor(this.props.waveBackgroundColor)}
                 waveColor = {processColor(this.props.waveColor)}
+                waveLightColor = {processColor(this.props.waveLightColor)}
                 topTitleColor = {processColor(this.props.topTitleColor)}
                 topTitleSize = {this.props.topTitleSize}
                 progressValue = {this.props.progressValue}

@@ -47,8 +47,9 @@ public class WaveLoadingView extends View {
     private static final float DEFAULT_WATER_LEVEL_RATIO = 0.5f;
     private static final float DEFAULT_WAVE_LENGTH_RATIO = 1.0f;
     private static final float DEFAULT_WAVE_SHIFT_RATIO = 0.0f;
-    private static final int DEFAULT_WAVE_PROGRESS_VALUE = 50;
+    private static final int DEFAULT_WAVE_PROGRESS_VALUE = 0;
     private static final int DEFAULT_WAVE_COLOR = Color.parseColor("#212121");
+    private static final int DEFAULT_WAVE_LIGHT_COLOR = Color.parseColor("#b2000000");
     private static final int DEFAULT_WAVE_BACKGROUND_COLOR = Color.parseColor("#00000000");
     private static final int DEFAULT_TITLE_COLOR = Color.parseColor("#212121");
     private static final int DEFAULT_STROKE_COLOR = Color.TRANSPARENT;
@@ -83,6 +84,7 @@ public class WaveLoadingView extends View {
     private float mAmplitudeRatio;
     private int mWaveBgColor;
     private int mWaveColor;
+    private int mWaveLightColor;
     private int mShapeType;
     private int mTriangleDirection;
     private int mRoundRectangleXY;
@@ -159,6 +161,7 @@ public class WaveLoadingView extends View {
 
         // Init Wave
         mWaveColor = attributes.getColor(R.styleable.WaveLoadingView_wlv_waveColor, DEFAULT_WAVE_COLOR);
+        mWaveLightColor = attributes.getColor(R.styleable.WaveLoadingView_wlv_waveColor, DEFAULT_WAVE_LIGHT_COLOR);
         mWaveBgColor = attributes.getColor(R.styleable.WaveLoadingView_wlv_wave_background_Color, DEFAULT_WAVE_BACKGROUND_COLOR);
 
         mWaveBgPaint.setColor(mWaveBgColor);
@@ -409,7 +412,8 @@ public class WaveLoadingView extends View {
 
                 float[] waveY = new float[endX];
 
-                wavePaint.setColor(adjustAlpha(mWaveColor, 0.3f));
+//                wavePaint.setColor(adjustAlpha(mWaveColor, 0.3f));
+                wavePaint.setColor(mWaveLightColor);
                 for (int beginX = 0; beginX < endX; beginX++) {
                     double wx = beginX * defaultAngularFrequency;
                     float beginY = (float) (mDefaultWaterLevel + defaultAmplitude * Math.sin(wx));
@@ -507,6 +511,18 @@ public class WaveLoadingView extends View {
 
     public int getWaveColor() {
         return mWaveColor;
+    }
+
+    public void setWaveLightColor(int color) {
+        mWaveLightColor = color;
+        // Need to recreate shader when color changed ?
+//        mWaveShader = null;
+        updateWaveShader();
+        invalidate();
+    }
+
+    public int getWaveLightColor() {
+        return mWaveLightColor;
     }
 
     public void setBorderWidth(float width) {
