@@ -28,6 +28,7 @@ import RouterMap from 'RouterMap';
 import DesignRule from 'DesignRule';
 import res from '../res';
 import EmptyUtils from '../../../utils/EmptyUtils';
+import WaveView from 'WaveView';
 
 const {
     mine_header_bg,
@@ -280,6 +281,24 @@ export default class MinePage extends BasePage {
                         </TouchableWithoutFeedback>
                         {accreditID}
                     </View>
+                    <View style={{flex:1}}/>
+                    <View style={{alignSelf:'center',flexDirection:'row',alignItems:'center',height:50,paddingVertical:5,backgroundColor:'#efcd97',borderBottomLeftRadius:25,borderTopLeftRadius:25,paddingLeft:5}}>
+                        <WaveView topTitle={'V1'}
+                                  waveBackgroundColor={'white'}
+                                  waveColor={'#efa944'}
+                                  topTitleColor={'#f6d19e'}
+                                  topTitleSize={12}
+                                  progressValue={20}
+                        />
+                        <View style={{justifyContent:'space-between',marginLeft:5,marginRight:DesignRule.margin_page}}>
+                            <Text style={{color:DesignRule.textColor_mainTitle,fontSize:DesignRule.fontSize_threeTitle}}>
+                                黑金品鉴官
+                            </Text>
+                            <Text style={{color:DesignRule.white,fontSize:DesignRule.fontSize_22}}>
+                                查看权益>
+                            </Text>
+                        </View>
+                    </View>
                 </View>
             </ImageBackground>
         );
@@ -307,14 +326,14 @@ export default class MinePage extends BasePage {
                     paddingHorizontal: px2dp(15),
                     justifyContent: 'space-between'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户',()=>{
-                        this.go2CashDetailPage(1)
+                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', () => {
+                        this.go2CashDetailPage(1);
                     })}
-                    {this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : user.userScore + '', '秀豆账户',()=>{
-                        this.go2CashDetailPage(2)
+                    {this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : user.userScore + '', '秀豆账户', () => {
+                        this.go2CashDetailPage(2);
                     })}
-                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户',()=>{
-                        this.go2CashDetailPage(3)
+                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户', () => {
+                        this.go2CashDetailPage(3);
                     })}
 
                     {/*{this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', '#FF4F6E', () => {*/}
