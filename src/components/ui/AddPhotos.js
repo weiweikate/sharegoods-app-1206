@@ -2,8 +2,9 @@ import { Component } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, DeviceEventEmitter } from 'react-native';
 import React from 'react';
 import NoMoreClick from '../ui/NoMoreClick';
-import addPic from '../../pages/mine/res/customerservice/xk1_03.png';
-import deleteImage from '../../pages/mine/res/customerservice/x.png';
+import res from '../../comm/res';
+const addPic = res.placeholder.add_three_pticture;
+const deleteImage = res.button.delete_picture;
 
 
 class AddPhotos extends Component {
