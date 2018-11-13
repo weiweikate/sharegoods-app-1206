@@ -23,16 +23,17 @@ export default class SetOrEditPayPwdPage extends BasePage {
 
     _render() {
         return <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-            <UIText value={this.state.tips} style={{ fontSize: 17, color: DesignRule.textColor_mainTitle, marginTop: 120 }}/>
+            <UIText value={this.state.tips}
+                    style={{ fontSize: 17, color: DesignRule.textColor_mainTitle, marginTop: 120 }}/>
             <Password maxLength={6} style={{ width: 345, marginTop: 30 }}
-                      onEnd={(pwd) => this._onext(pwd)} />
+                      onEnd={(pwd) => this._onext(pwd)}/>
         </View>;
     }
 
     _onext = (pwd) => {
         const { oldPwd, userName, cardNum, from, title, code } = this.props.navigation.state.params;
         if (StringUtils.isEmpty(oldPwd)) {
-            if (from == 'edit') {
+            if (from === 'edit') {
                 // 跳转到确认密码
                 this.$navigate('mine/account/SetOrEditPayPwdPage', {
                     userName,
@@ -53,11 +54,11 @@ export default class SetOrEditPayPwdPage extends BasePage {
                 });
             }
         } else {
-            if (oldPwd != pwd) {
+            if (oldPwd !== pwd) {
                 bridge.$toast('两次输入的密码不一致');
                 return;
             } else {
-                if (from == 'edit') {
+                if (from === 'edit') {
                     MineAPI.updateSalesOldPwdByIDCard({
                         idcard: cardNum,
                         realname: userName,

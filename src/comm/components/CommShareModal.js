@@ -360,7 +360,8 @@ export default class CommShareModal extends React.Component {
                                     <UIImage source={{ uri: this.state.path }}
                                              style={{
                                                  height: imageHeight,
-                                                 width: imageWidth
+                                                 width: imageWidth,
+                                                 backgroundColor: 'white'
                                              }}/>
                                 </TouchableWithoutFeedback>
                             </Animated.View> : null
