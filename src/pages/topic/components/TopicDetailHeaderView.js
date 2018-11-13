@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-    StyleSheet,
+    // StyleSheet,
     Text,
     View,
     TouchableOpacity,
     Image
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import ViewPager from '../../../components/ui/ViewPager';
+// import ViewPager from '../../../components/ui/ViewPager';
 import ActivityView from './ActivityView';
 import { isNoEmpty } from '../../../utils/StringUtils';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import TopicDetailBanner from './TopicDetailBanner';
 
-const { px2dp } = ScreenUtils;
+// const { px2dp } = ScreenUtils;
 import res from '../res';
 
 const xjt_03 = res.xjt_03;
@@ -169,20 +169,20 @@ export default class TopicDetailHeaderView extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-    indexView: {
-        position: 'absolute',
-        height: px2dp(20),
-        borderRadius: px2dp(10),
-        right: px2dp(14),
-        bottom: px2dp(20),
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    text: {
-        color: '#fff',
-        fontSize: px2dp(10),
-        paddingHorizontal: 8
-    }
-});
+// const styles = StyleSheet.create({
+//     indexView: {
+//         position: 'absolute',
+//         height: px2dp(20),
+//         borderRadius: px2dp(10),
+//         right: px2dp(14),
+//         bottom: px2dp(20),
+//         backgroundColor: 'rgba(0, 0, 0, 0.7)',
+//         alignItems: 'center',
+//         justifyContent: 'center'
+//     },
+//     text: {
+//         color: '#fff',
+//         fontSize: px2dp(10),
+//         paddingHorizontal: 8
+//     }
+// });
