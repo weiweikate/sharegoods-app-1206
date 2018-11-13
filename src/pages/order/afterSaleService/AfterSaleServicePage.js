@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import GoodsItem from '../components/GoodsGrayItem';
-//import ExchangeTypeModal from '../../../components/ui/ExchangeTypeModal';
 import {
     UIText, UIImage, AddPhotos, TakePhoneModal
 } from '../../../components/ui';

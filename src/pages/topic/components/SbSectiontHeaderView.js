@@ -57,7 +57,6 @@ class ActivityOneView extends Component {
 
     render() {
         const { imageUrl } = this.props;
-        // console.log('++++++' + temp);
         return (
             <View>
                 <PreLoadImage
@@ -71,7 +70,7 @@ class ActivityOneView extends Component {
 
 const ActivityOneViewStyles = StyleSheet.create({
     bgImageStyle: {
-        height: 100,
+        height: ScreenUtils.width * 7 / 15,
         width: ScreenUtils.width,
         backgroundColor: 'white'
     }
