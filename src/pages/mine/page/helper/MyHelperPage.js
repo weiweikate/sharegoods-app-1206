@@ -42,25 +42,37 @@ export default class MyHelperPage extends BasePage {
 
     renderHotQuestionList = () => {
         return (
-            <View style={{ width: ScreenUtils.width, backgroundColor: 'white' ,marginTop:-1}}>
+            <View style={{ width: ScreenUtils.width, backgroundColor: 'white', marginTop: -1 }}>
                 {this.state.typeList.map((item, index) => {
                     return (
                         <View key={index} style={styles.hotQuestionStyle}>
                             <TouchableOpacity activeOpacity={0.6} onPress={() => this.orderListq(item.list)}
                                               style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                                 <Image source={kf11} style={{ width: 37, height: 37 }}/>
-                                <Text style={{ fontSize: 11, color: DesignRule.textColor_secondTitle ,marginTop:2}}>{item.name}</Text>
+                                <Text style={{
+                                    fontSize: 11,
+                                    color: DesignRule.textColor_secondTitle,
+                                    marginTop: 2
+                                }}>{item.name}</Text>
                             </TouchableOpacity>
                             <View style={styles.hot2ViewStyle}>
                                 <View style={{ flex: 1, justifyContent: 'center' }}>
                                     <UIText onPress={() => this.gotoquestionDetail(item.list[0].id)}
-                                            style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_secondTitle }}
+                                            style={{
+                                                marginLeft: 10,
+                                                fontSize: 15,
+                                                color: DesignRule.textColor_secondTitle
+                                            }}
                                             value={item.list.length > 0 ? item.list[0].title : ''} numberOfLines={1}/>
                                 </View>
                                 <View style={{ width: '100%', height: 0.5, backgroundColor: '#c9c9c9' }}/>
                                 <View style={{ flex: 1, justifyContent: 'center', borderColor: '#c9c9c9' }}>
                                     <UIText onPress={() => this.gotoquestionDetail(item.list[1].id)}
-                                            style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_secondTitle }}
+                                            style={{
+                                                marginLeft: 10,
+                                                fontSize: 15,
+                                                color: DesignRule.textColor_secondTitle
+                                            }}
                                             value={item.list.length > 1 ? item.list[1].title : ''} numberOfLines={1}/>
                                 </View>
                             </View>
@@ -75,12 +87,12 @@ export default class MyHelperPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
-                    <View style={{ marginTop: 9, paddingLeft:36, backgroundColor: DesignRule.bgColor }}>
-                        <Image  source={csperson}
-                               resizeMode={'contain'} />
+                    <View style={{ marginTop: 9, paddingLeft: 36, backgroundColor: DesignRule.bgColor }}>
+                        <Image source={csperson}
+                               resizeMode={'contain'}/>
                     </View>
                     {this.renderHotQuestionList()}
-                    <View style={{ height: 1, backgroundColor: DesignRule.bgColor ,marginTop:-0.5}}/>
+                    <View style={{ height: 1, backgroundColor: DesignRule.bgColor, marginTop: -0.5 }}/>
                     <View style={{
                         alignItems: 'center',
                         height: 87,
@@ -111,24 +123,36 @@ export default class MyHelperPage extends BasePage {
                     height: 80, position: 'absolute', bottom: 0, alignItems: 'center', zIndex: 21
                 }}>
 
-                    <TouchableOpacity style={{ width: 58, height: 54, alignItems: 'center', flexDirection:'row', flex: 1 ,justifyContent:'center'}}
-                                      onPress={() => this.jump2Telephone()}>
-                        <UIImage source={phoneIcon} style={{ height: 23, width: 23 }} resizeMode={'contain'}/>
-                        <View style={{marginLeft:2,justifyContent:'center',alignItems:'center'}}>
-                        <Text style={[styles.textFontstyle]}>咨询电话</Text>
-                        <Text style={styles.text2Style}>9：00-21：00</Text>
+                    <TouchableOpacity style={{
+                        width: 58,
+                        height: 54,
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        flex: 1,
+                        justifyContent: 'center'
+                    }} onPress={() => this.jump2Telephone()}>
+                        <UIImage source={phoneIcon} style={{ height: 23, width: 23, marginTop: 3 }}/>
+                        <View style={{ marginLeft: 16, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={styles.textFontstyle}>咨询电话</Text>
+                            <Text style={styles.text2Style}>9：00-21：00</Text>
                         </View>
                     </TouchableOpacity>
 
-                    <View style={{ width: 1, height: '70%', backgroundColor: '#C5c5c5' }}/>
+                    <View style={{ width: 1, height: '50%', backgroundColor: DesignRule.lineColor_inColorBg }}/>
 
                     <TouchableOpacity
-                        style={{ width: 58, height: 54, alignItems: 'center', flexDirection:'row',justifyContent:'center', flex: 1 }}
-                        onPress={() => this.jumpQYIMPage()}>
-                        <UIImage source={personIcon} style={{ height: 23, width: 24 }} esizeMode={'contain'}/>
-                        <View style={{marginLeft:2,justifyContent:'center',alignItems:'center'}}>
-                        <Text style={[styles.textFontstyle, { marginTop: 5 }]}>在线客服</Text>
-                        <Text style={styles.text2Style}>9：00-21：00</Text>
+                        style={{
+                            width: 58,
+                            height: 54,
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            flex: 1
+                        }} onPress={() => this.jumpQYIMPage()}>
+                        <UIImage source={personIcon} style={{ height: 23, width: 24 }}/>
+                        <View style={{ marginLeft: 16, justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={styles.textFontstyle}>在线客服</Text>
+                            <Text style={styles.text2Style}>9：00-21：00</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -138,9 +162,11 @@ export default class MyHelperPage extends BasePage {
     jumpQYIMPage = () => {
         QYChatUtil.qiYUChat();
     };
-    jump2Telephone(){
-         Linking.openURL('tel:' + '400-9696-365').catch(e=>console.log(e))
+
+    jump2Telephone() {
+        Linking.openURL('tel:' + '400-9696-365').catch(e => console.log(e));
     }
+
     jumpTohelpPage() {
         console.log('fankui');
     }
@@ -206,7 +232,7 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width,
         height: 80,
         borderColor: '#c9c9c9',
-        borderBottomWidth:0.5
+        borderBottomWidth: 0.5
     },
     hot2ViewStyle: {
         alignItems: 'flex-start',
@@ -214,17 +240,15 @@ const styles = StyleSheet.create({
         flex: 2,
         borderColor: '#c9c9c9',
         // borderWidth: 0.5,
-        borderLeftWidth:0.5
+        borderLeftWidth: 0.5
     },
     textFontstyle: {
         fontSize: 16,
         color: DesignRule.textColor_mainTitle,
-        fontFamily:'PingFangSC-Regular',
-        marginTop:5
+        marginTop: 6
     },
-    text2Style:{
-        color:DesignRule.textColor_instruction,
-        fontSize:12,
-        fontFamily:'PingFangSC-Light'
+    text2Style: {
+        color: DesignRule.textColor_instruction,
+        fontSize: 12
     }
 });
