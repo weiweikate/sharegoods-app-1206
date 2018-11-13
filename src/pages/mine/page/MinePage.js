@@ -285,8 +285,9 @@ export default class MinePage extends BasePage {
                     <View style={{alignSelf:'center',flexDirection:'row',alignItems:'center',height:50,paddingVertical:5,backgroundColor:'#efcd97',borderBottomLeftRadius:25,borderTopLeftRadius:25,paddingLeft:5}}>
                         <WaveView topTitle={'V1'}
                                   waveBackgroundColor={'white'}
-                                  waveColor={'#efa944'}
+                                  waveColor={'#00ff00'}
                                   topTitleColor={'#f6d19e'}
+                                  waveLightColor={'#00ff00'}
                                   topTitleSize={12}
                                   progressValue={20}
                         />

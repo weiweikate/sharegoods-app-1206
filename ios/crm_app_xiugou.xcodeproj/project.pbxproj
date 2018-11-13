@@ -111,10 +111,13 @@
 		CD0F9621219027C800F7C2B0 /* libRCTHotUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0F95FC219027B400F7C2B0 /* libRCTHotUpdate.a */; };
 		CD11955721870DE1007F602E /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD11955421870DB6007F602E /* libRCTVideo.a */; };
 		CD14EA192183FC9A00480A06 /* XGImageCompression.m in Sources */ = {isa = PBXBuildFile; fileRef = CD14EA182183FC9A00480A06 /* XGImageCompression.m */; };
-		CD49D1DC219ABE15009BED04 /* WaveProgressView in Resources */ = {isa = PBXBuildFile; fileRef = CD49D1AE219ABE15009BED04 /* WaveProgressView */; };
 		CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5312171D8D2005FD4B3 /* UIViewController+Util.m */; };
 		CDA2F5352171D90E005FD4B3 /* NSObject+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F5342171D90E005FD4B3 /* NSObject+Util.m */; };
 		CDA2F57821744443005FD4B3 /* ShareImageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = CDA2F57721744443005FD4B3 /* ShareImageMaker.m */; };
+		CDAB6D1F219AC5F800DE6716 /* MRWaveViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAB6D1A219AC5F800DE6716 /* MRWaveViewManager.m */; };
+		CDAB6D20219AC5F800DE6716 /* TYWaveProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAB6D1B219AC5F800DE6716 /* TYWaveProgressView.m */; };
+		CDAB6D21219AC5F800DE6716 /* TYWaterWaveView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAB6D1C219AC5F800DE6716 /* TYWaterWaveView.m */; };
+		CDAB6D24219AC74800DE6716 /* MRWaveView.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAB6D23219AC74800DE6716 /* MRWaveView.m */; };
 		CDCB5BDA2196DF71006B5F4E /* UIImage+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CDCB5BD92196DF71006B5F4E /* UIImage+Util.m */; };
 		DF4AABE386544D87A6FBFFD0 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C21E6CAAF624B8198676636 /* MaterialCommunityIcons.ttf */; };
 /* End PBXBuildFile section */
@@ -610,7 +613,6 @@
 		CD11954E21870DB6007F602E /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		CD14EA172183FC9A00480A06 /* XGImageCompression.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XGImageCompression.h; sourceTree = "<group>"; };
 		CD14EA182183FC9A00480A06 /* XGImageCompression.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XGImageCompression.m; sourceTree = "<group>"; };
-		CD49D1AE219ABE15009BED04 /* WaveProgressView */ = {isa = PBXFileReference; lastKnownFileType = folder; path = WaveProgressView; sourceTree = "<group>"; };
 		CD70E065E4CA4080A9DF5465 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		CDA2F5302171D8D2005FD4B3 /* UIViewController+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Util.h"; sourceTree = "<group>"; };
 		CDA2F5312171D8D2005FD4B3 /* UIViewController+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Util.m"; sourceTree = "<group>"; };
@@ -618,6 +620,14 @@
 		CDA2F5342171D90E005FD4B3 /* NSObject+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Util.m"; sourceTree = "<group>"; };
 		CDA2F57621744443005FD4B3 /* ShareImageMaker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareImageMaker.h; sourceTree = "<group>"; };
 		CDA2F57721744443005FD4B3 /* ShareImageMaker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareImageMaker.m; sourceTree = "<group>"; };
+		CDAB6D19219AC5F800DE6716 /* TYWaterWaveView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYWaterWaveView.h; sourceTree = "<group>"; };
+		CDAB6D1A219AC5F800DE6716 /* MRWaveViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRWaveViewManager.m; sourceTree = "<group>"; };
+		CDAB6D1B219AC5F800DE6716 /* TYWaveProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYWaveProgressView.m; sourceTree = "<group>"; };
+		CDAB6D1C219AC5F800DE6716 /* TYWaterWaveView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TYWaterWaveView.m; sourceTree = "<group>"; };
+		CDAB6D1D219AC5F800DE6716 /* MRWaveViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRWaveViewManager.h; sourceTree = "<group>"; };
+		CDAB6D1E219AC5F800DE6716 /* TYWaveProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TYWaveProgressView.h; sourceTree = "<group>"; };
+		CDAB6D22219AC74800DE6716 /* MRWaveView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRWaveView.h; sourceTree = "<group>"; };
+		CDAB6D23219AC74800DE6716 /* MRWaveView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRWaveView.m; sourceTree = "<group>"; };
 		CDCB5BD82196DF71006B5F4E /* UIImage+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Util.h"; sourceTree = "<group>"; };
 		CDCB5BD92196DF71006B5F4E /* UIImage+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Util.m"; sourceTree = "<group>"; };
 		EB6EFB6B04564EBAB951820B /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
@@ -1091,7 +1101,7 @@
 		506835C421379B78001AB175 /* NativeBridge */ = {
 			isa = PBXGroup;
 			children = (
-				CD49D1AE219ABE15009BED04 /* WaveProgressView */,
+				CDAB6D18219AC5F800DE6716 /* WaveProgressView */,
 				506835C521379B78001AB175 /* CachesModule.h */,
 				506835C621379B78001AB175 /* CachesModule.m */,
 				506835C721379B78001AB175 /* commModule.h */,
@@ -1314,6 +1324,21 @@
 				CDA2F5312171D8D2005FD4B3 /* UIViewController+Util.m */,
 			);
 			path = UIViewController;
+			sourceTree = "<group>";
+		};
+		CDAB6D18219AC5F800DE6716 /* WaveProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				CDAB6D19219AC5F800DE6716 /* TYWaterWaveView.h */,
+				CDAB6D1C219AC5F800DE6716 /* TYWaterWaveView.m */,
+				CDAB6D1D219AC5F800DE6716 /* MRWaveViewManager.h */,
+				CDAB6D1A219AC5F800DE6716 /* MRWaveViewManager.m */,
+				CDAB6D1E219AC5F800DE6716 /* TYWaveProgressView.h */,
+				CDAB6D1B219AC5F800DE6716 /* TYWaveProgressView.m */,
+				CDAB6D22219AC74800DE6716 /* MRWaveView.h */,
+				CDAB6D23219AC74800DE6716 /* MRWaveView.m */,
+			);
+			path = WaveProgressView;
 			sourceTree = "<group>";
 		};
 		CDE20087217DBA69001146FF /* Recovered References */ = {
@@ -1886,7 +1911,6 @@
 			files = (
 				5068361321379B78001AB175 /* AlipaySDK.bundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				CD49D1DC219ABE15009BED04 /* WaveProgressView in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				5068363D21379B78001AB175 /* SGQRCode.bundle in Resources */,
 				49AE7C48A8514C03A1EA34A3 /* Entypo.ttf in Resources */,
@@ -2026,6 +2050,7 @@
 				5068363221379B78001AB175 /* JRDeviceInfo.m in Sources */,
 				5068360F21379B78001AB175 /* JRBaseVC.m in Sources */,
 				5068362B21379B78001AB175 /* EasyTextView.m in Sources */,
+				CDAB6D24219AC74800DE6716 /* MRWaveView.m in Sources */,
 				CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */,
 				5068362021379B78001AB175 /* EasyLoadingConfig.m in Sources */,
 				CDA2F5352171D90E005FD4B3 /* NSObject+Util.m in Sources */,
@@ -2033,12 +2058,14 @@
 				5068361521379B78001AB175 /* EasyAlertConfig.m in Sources */,
 				5068361121379B78001AB175 /* AppDelegate+ConfigVC.m in Sources */,
 				5068363621379B78001AB175 /* JRAddressPickView.m in Sources */,
+				CDAB6D21219AC5F800DE6716 /* TYWaterWaveView.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				5068362821379B78001AB175 /* EasyTextConfig.m in Sources */,
 				5068362621379B78001AB175 /* UIView+EasyShowExt.m in Sources */,
 				5068363921379B78001AB175 /* SGQRCodeScanManager.m in Sources */,
 				5068363321379B78001AB175 /* LoginAndShareModule.m in Sources */,
 				5068362121379B78001AB175 /* EasyLoadingGlobalConfig.m in Sources */,
+				CDAB6D1F219AC5F800DE6716 /* MRWaveViewManager.m in Sources */,
 				5068363B21379B78001AB175 /* WCQRCodeScanningVC.m in Sources */,
 				5068362421379B78001AB175 /* EasyShowLabel.m in Sources */,
 				5068361A21379B78001AB175 /* EasyAlertView.m in Sources */,
@@ -2050,6 +2077,7 @@
 				5068362D21379B78001AB175 /* JRServiceManager.m in Sources */,
 				5068362321379B78001AB175 /* EasyLoadingView.m in Sources */,
 				5068361C21379B78001AB175 /* EasyEmptyGlobalConfig.m in Sources */,
+				CDAB6D20219AC5F800DE6716 /* TYWaveProgressView.m in Sources */,
 				033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */,
 				5068361621379B78001AB175 /* EasyAlertGlobalConfig.m in Sources */,
 				5068363421379B78001AB175 /* JRPay.m in Sources */,

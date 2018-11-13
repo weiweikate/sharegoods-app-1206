@@ -74,8 +74,8 @@
     _firstWaveColor = [UIColor colorWithRed:223/255.0 green:83/255.0 blue:64/255.0 alpha:1];
     _secondWaveColor = [UIColor colorWithRed:236/255.0f green:90/255.0f blue:66/255.0f alpha:1];
     
-    waveGrowth = 0.85;
-    waveSpeed = 0.4/M_PI;
+    waveGrowth = 0.5;
+    waveSpeed = 0.2/M_PI;
     
     [self resetProperty];
 }
@@ -170,7 +170,7 @@
         increase = NO;
     }
     
-    waveAmplitude = variable*5;
+    waveAmplitude = variable*2;
 }
 
 -(void)getCurrentWave:(CADisplayLink *)displayLink{

@@ -6,7 +6,7 @@
 //  Copyright © 2018年 Facebook. All rights reserved.
 //
 
-#import "RCTViewManager.h"
+#import <React/RCTViewManager.h>
 
 @interface MRWaveViewManager : RCTViewManager
 

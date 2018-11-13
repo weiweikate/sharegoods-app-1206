@@ -18,5 +18,6 @@ const button = {
     white_back_img:require('./Pin_Left.png'),
     close_gray_circle: require('./close_gray_circle.png'),//灰色圆形关闭按钮
     delete_picture: require('./delete_picture.png'),//三角形 红色 删除图片的按钮
+    white_back: require('./white_back.png'),//三角形 红色 删除图片的按钮
 };
 export default button;
