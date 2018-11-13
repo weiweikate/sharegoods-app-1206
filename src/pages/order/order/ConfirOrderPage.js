@@ -13,7 +13,7 @@ import {
 } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import position from '../../order/res/dizhi-icon.png';
+import position from '../../order/res/dizhi.png';
 import arrow_right from '../res/arrow_right.png';
 import colorLine from '../res/addressLine.png';
 import couponIcon from '../../mine/res/couponsImg/dingdan_icon_quan_nor.png';
@@ -26,6 +26,7 @@ import MineApi from '../../mine/api/MineApi';
 import API from '../../../api';
 import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
+import userOrderNum from '../../../model/userOrderNum';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 
 // let oldViewData, oldPriceList;
@@ -68,23 +69,18 @@ export default class ConfirOrderPage extends BasePage {
         show: true // false则隐藏导航
     };
 
-    onContentSizeChange(event) {
-        this.setState({ height: event.nativeEvent.contentSize.height });
-    }
-
     //**********************************ViewPart******************************************
     renderAddress = () => {
         return (StringUtils.isNoEmpty(this.state.viewData.express.receiverNum) ?
                 <TouchableOpacity
                     style={{
-                        minHeight: 35,
+                        minHeight: 80,
                         backgroundColor: 'white',
                         flexDirection: 'row',
                         alignItems: 'center',
                         paddingTop: 10,
                         paddingBottom: 10
                     }}
-                    onContentSizeChange={this.onContentSizeChange.bind(this)}
                     onPress={() => this.selectAddress()}>
                     <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }} resizeMode={'contain'}/>
                     <View style={{ flex: 1, marginLeft: 15, marginRight: 15 }}>
@@ -112,7 +108,7 @@ export default class ConfirOrderPage extends BasePage {
                                 marginTop: 5
                             }}/>
                     </View>
-                    <Image source={arrow_right} style={{ height: 14, marginRight: 15 }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={{ width:10,height: 14, marginRight: 15 }} resizeMode={'contain'}/>
                 </TouchableOpacity> :
                 <TouchableOpacity
                     style={{ height: 87, backgroundColor: 'white', flexDirection: 'row', alignItems: 'center' }}
@@ -125,7 +121,7 @@ export default class ConfirOrderPage extends BasePage {
                             marginLeft: 15
                         }}/>
                     </View>
-                    <Image source={arrow_right} style={{ with:9,height: 14, marginRight: 15 }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={{ with:10,height: 14, marginRight: 15 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
         );
     };
@@ -616,6 +612,7 @@ export default class ConfirOrderPage extends BasePage {
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
                         let data = res.data;
+                        userOrderNum.getUserOrderNum();
                         user.saveUserInfo(data);
                     }).catch(err => {
                     });
@@ -640,6 +637,7 @@ export default class ConfirOrderPage extends BasePage {
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
                         let data = res.data;
+                        userOrderNum.getUserOrderNum();
                         user.saveUserInfo(data);
                     }).catch(err => {
                     });
@@ -671,6 +669,7 @@ export default class ConfirOrderPage extends BasePage {
                         this.$loadingDismiss();
                         let data = res.data;
                         user.saveUserInfo(data);
+                        userOrderNum.getUserOrderNum();
                     }).catch(err => {
                     });
                     this.replaceRouteName(data);
@@ -700,6 +699,7 @@ export default class ConfirOrderPage extends BasePage {
                 MineApi.getUser().then(res => {
                     this.$loadingDismiss();
                     let data = res.data;
+                    userOrderNum.getUserOrderNum();
                     user.saveUserInfo(data);
                 }).catch(err => {
                     if (err.code === 54001) {

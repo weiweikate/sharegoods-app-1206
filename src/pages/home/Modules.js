@@ -237,14 +237,14 @@ class HomeModule {
             id: 0,
             type: homeType.swiper
         }, {
+            id: 2,
+            type: homeType.user
+        }, {
             id: 1,
             type: homeType.classify
         }, {
             id: 3,
             type: homeType.ad
-        }, {
-            id: 4,
-            type: homeType.show
         }, {
             id: 7,
             type: homeType.starShop
@@ -393,16 +393,15 @@ export class MemberModule {
         return level;
     }
 
-    //选择专题
-    loadMembersInfo = flow(function* () {
-        try {
-            const res = yield HomeApi.getMembers();
-            console.log('loadMembersInfo', res.data);
-            this.memberLevels = res.data;
-        } catch (error) {
-            console.log(error);
-        }
-    });
+    // loadMembersInfo = flow(function* () {
+    //     try {
+    //         const res = yield HomeApi.getMembers();
+    //         console.log('loadMembersInfo', res.data);
+    //         this.memberLevels = res.data;
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // });
 }
 
 
