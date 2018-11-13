@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { View, Image, StyleSheet, TouchableWithoutFeedback, Text } from 'react-native';
-import XGSwiper from '../../../../components/ui/XGSwiper';
-import EmptyUtils from '../../../../utils/EmptyUtils';
-import ScreenUtils from '../../../../utils/ScreenUtils';
-import VideoView from '../../../../components/ui/video/VideoView';
-import StringUtils from '../../../../utils/StringUtils';
+import XGSwiper from '../../../components/ui/XGSwiper';
+import EmptyUtils from '../../../utils/EmptyUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import VideoView from '../../../components/ui/video/VideoView';
 
-export class DetailBanner extends Component {
+export class TopicDetailBanner extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -26,8 +25,8 @@ export class DetailBanner extends Component {
     };
 
     _renderStyle = () => {
-        const { productImgList } = this.props.data;
-        const bannerCount = productImgList.length;
+        const { bannerImgList } = this.props;
+        const bannerCount = bannerImgList.length;
         return <View style={styles.indexViewTwo}>
             <Text
                 style={styles.text}>{this.state.messageIndex + 1} / {bannerCount}</Text>
@@ -35,12 +34,12 @@ export class DetailBanner extends Component {
     };
 
     _renderViewPageItem = (item = {}, index) => {
-        const { productImgList } = this.props.data;
+        const { bannerImgList } = this.props;
         if (item.videoUrl) {
             return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover}/>;
         } else {
             const { originalImg } = item;
-            let imgList = this.getImageList(productImgList);
+            let imgList = this.getImageList(bannerImgList);
             return (
                 <TouchableWithoutFeedback onPress={() => {
                     const params = { imageUrls: imgList, index: this.state.haveVideo ? index - 1 : index };
@@ -57,24 +56,15 @@ export class DetailBanner extends Component {
     };
 
     render() {
-        //有视频第一个添加为视频
-        const { productImgList = [], product = {} } = this.props.data || {};
-        const { videoUrl, imgUrl } = product;
-
-        let productImgListTemp = [...productImgList];
-        if (StringUtils.isNoEmpty(videoUrl)) {
-            this.state.haveVideo = true;
-            productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });
-        } else {
-            this.state.haveVideo = false;
-        }
-        if (productImgListTemp.length > 0) {
+        this.state.haveVideo = this.props.haveVideo;
+        const { bannerImgList } = this.props;
+        if (bannerImgList.length > 0) {
             return (
                 <View>
                     <XGSwiper height={ScreenUtils.autoSizeWidth(377)} width={ScreenUtils.width}
                               loop={false}
                               renderRow={this._renderViewPageItem}
-                              dataSource={EmptyUtils.isEmptyArr(productImgListTemp) ? [] : productImgListTemp}
+                              dataSource={EmptyUtils.isEmptyArr(bannerImgList) ? [] : bannerImgList}
                               onWillChange={(item, index) => {
                                   if (this.state.messageIndex !== index) {
                                       this.setState({
@@ -110,4 +100,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default DetailBanner;
+export default TopicDetailBanner;
