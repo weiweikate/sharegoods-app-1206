@@ -38,12 +38,14 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:imgUrl] options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {
     
   } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+     dispatch_async(dispatch_get_main_queue(), ^{
     NSString *path = [weakSelf ceratShareImageWithProductImage:image titleStr:model.titleStr priceStr:model.priceStr QRCodeStr:model.QRCodeStr];
     if (path == nil || path.length == 0) {
       completion(nil, @"ShareImageMaker：保存图片到本地失败");
     }else{
        completion(path, nil);
     }
+         });
   }];
 }
 
@@ -71,7 +73,8 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   [QRCodeImage drawInRect:CGRectMake(180, 265, 55, 55)];
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  return [self save:image withPath:@"/Documents/QRCode.png"];
+  NSDate * date =[NSDate new];
+  return [self save:image withPath:[NSString stringWithFormat:@"/Documents/QRCode%lf.png",date.timeIntervalSince1970]];
 }
 
 /**
@@ -80,9 +83,10 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
 - (NSString *)save:(UIImage *)imgsave withPath:(NSString *)subPath{
   NSString * path =NSHomeDirectory();
   NSString * Pathimg =[path stringByAppendingString:subPath];
-  if ([UIImagePNGRepresentation(imgsave) writeToFile:Pathimg atomically:YES]) {
+  if ([UIImagePNGRepresentation(imgsave) writeToFile:Pathimg atomically:YES] == YES) {
     return Pathimg;
   }
+
   return @"";
 }
 

@@ -18,13 +18,13 @@ const CommonUtils = {
 
         // Handle Date
         if (obj instanceof Date) {
-            var copy = new Date();
+            let copy = new Date();
             copy.setTime(obj.getTime());
             return copy;
         }
         // Handle Array
         if (obj instanceof Array) {
-            var copy = [];
+            let copy = [];
             for (let i = 0, len = obj.length; i < len; ++i) {
                 copy[i] = CommonUtils.deepClone(obj[i]);
             }
@@ -32,7 +32,7 @@ const CommonUtils = {
         }
         // Handle Object
         if (obj instanceof Object) {
-            var copy = {};
+            let copy = {};
             for (let attr in obj) {
                 if (obj.hasOwnProperty(attr))
                     {copy[attr] = CommonUtils.deepClone(obj[attr]);}

@@ -81,14 +81,14 @@ export default class ProductDetailPage extends BasePage {
             if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
                 if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
                     HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
-                        if(!EmptyUtils.isEmpty(data.data)){
+                        if (!EmptyUtils.isEmpty(data.data)) {
                             this.couponModal && this.couponModal.open();
                             this.setState({
                                 canGetCoupon: true,
                                 couponData: data.data
                             });
                             this.couponId = data.data.id;
-                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME,Date.parse(new Date()).toString());
+                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, Date.parse(new Date()).toString());
                         }
                     });
                 }
@@ -194,17 +194,20 @@ export default class ProductDetailPage extends BasePage {
     //去购物车
     _bottomViewAction = (type) => {
         switch (type) {
-            case 'goGwc': {
+            case 'goGwc':
                 this.$navigate('shopCart/ShopCart', {
                     hiddeLeft: false
                 });
-            }
                 break;
             case 'gwc':
-            case 'buy': {
+                break;
+            case 'buy':
+                if (!user.isLogin) {
+                    this.props.navigation.navigate('login/login/LoginPage');
+                    return;
+                }
                 this.state.goType = type;
                 this.SelectionPage.show(this.state.data, this._selectionViewConfirm);
-            }
                 break;
         }
     };
@@ -266,10 +269,21 @@ export default class ProductDetailPage extends BasePage {
                           containerStyle={{ backgroundColor: '#fff' }}/>
                     <View style={{ backgroundColor: 'white' }}>
                         <Text
-                            style={{ paddingVertical: 13, marginLeft: 15, fontSize: 15, color: DesignRule.textColor_mainTitle }}>价格说明</Text>
-                        <View style={{ height: 0.5, marginHorizontal: 0, backgroundColor: DesignRule.lineColor_inColorBg }}/>
+                            style={{
+                                paddingVertical: 13,
+                                marginLeft: 15,
+                                fontSize: 15,
+                                color: DesignRule.textColor_mainTitle
+                            }}>价格说明</Text>
+                        <View style={{
+                            height: 0.5,
+                            marginHorizontal: 0,
+                            backgroundColor: DesignRule.lineColor_inColorBg
+                        }}/>
                         <Text style={{
-                            padding: 15
+                            padding: 15,
+                            color: DesignRule.textColor_instruction,
+                            fontSize: 13
                         }}>{`划线价格：指商品的专柜价、吊牌价、正品零售价、厂商指导价或该商品的曾经展示过销售价等，并非原价，仅供参考\n未划线价格：指商品的实时价格，不因表述的差异改变性质。具体成交价格根据商品参加活动，或会员使用优惠券、积分等发生变化最终以订单`}</Text>
                     </View>
                 </View>;
@@ -280,7 +294,12 @@ export default class ProductDetailPage extends BasePage {
         } else {
             return <View style={{ backgroundColor: 'white' }}>
                 <FlatList
-                    style={{ marginHorizontal: 16, marginVertical: 16, borderWidth: 0.5, borderColor: DesignRule.lineColor_inColorBg }}
+                    style={{
+                        marginHorizontal: 16,
+                        marginVertical: 16,
+                        borderWidth: 0.5,
+                        borderColor: DesignRule.lineColor_inColorBg
+                    }}
                     renderItem={this._renderSmallItem}
                     ItemSeparatorComponent={this._renderSeparatorComponent}
                     showsVerticalScrollIndicator={false}
@@ -293,7 +312,11 @@ export default class ProductDetailPage extends BasePage {
     _renderSmallItem = ({ item }) => {
         return <View style={{ flexDirection: 'row', height: 35 }}>
             <View style={{ backgroundColor: DesignRule.lineColor_inGrayBg, width: 70, justifyContent: 'center' }}>
-                <Text style={{ marginLeft: 10, color: DesignRule.textColor_mainTitle, fontSize: 12 }}>{item.paramName || ''}</Text>
+                <Text style={{
+                    marginLeft: 10,
+                    color: DesignRule.textColor_mainTitle,
+                    fontSize: 12
+                }}>{item.paramName || ''}</Text>
             </View>
             <Text style={{
                 flex: 1,
@@ -321,7 +344,7 @@ export default class ProductDetailPage extends BasePage {
     };
 
 
-    _renderCouponModal=()=> {
+    _renderCouponModal = () => {
 
         let view = (
             <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
@@ -344,7 +367,9 @@ export default class ProductDetailPage extends BasePage {
         );
 
         return (
-            <CommModal ref={(ref)=>{this.couponModal = ref;}} visible={this.state.canGetCoupon}>
+            <CommModal ref={(ref) => {
+                this.couponModal = ref;
+            }} visible={this.state.canGetCoupon}>
                 <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center', justifyContent: 'center' }}>
                     <ImageBackground source={redEnvelopeBg} style={{
                         height: px2dp(362), width: px2dp(257),
@@ -386,7 +411,7 @@ export default class ProductDetailPage extends BasePage {
                 </View>
             </CommModal>
         );
-    }
+    };
 
 
     _render() {

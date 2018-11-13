@@ -12,7 +12,7 @@ import { TabNav } from './Tab';
 //  import  TabNav  from './pages/payment/PaymentMethodPage';
 //  import  TabNav  from './pages/home/product/ProductDetailPage';
 //  import  TabNav  from '../pages/order/afterSaleService/FillReturnLogisticsPage';
-//  import  TabNav  from './pages/mine/page/Invite/InviteFriendsPage';
+//  import  TabNav  from '../pages/mine/page/Invite/InviteFriendsPage';
 // 业务模块
 import debug from '../pages/debug';
 import home from '../pages/home';

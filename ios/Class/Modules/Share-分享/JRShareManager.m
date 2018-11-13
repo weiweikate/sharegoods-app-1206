@@ -37,6 +37,9 @@ SINGLETON_FOR_CLASS(JRShareManager)
       return;
       
     }
+    if([shareModel.shareType integerValue] == 2 ){
+      shareModel.thumImage = shareModel.hdImageURL;
+    }
     [self shareWithPlatefrom:platefrom
                        Title:shareModel.title
                     SubTitle:shareModel.dec
@@ -153,7 +156,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
 
 - (id)getImageWithPath:(NSString *)imageUrl{
   if ([imageUrl hasPrefix:@"http"]){
-    return imageUrl;
+    return [imageUrl  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];;
   }else if ([imageUrl hasSuffix:@"/"]){
     return [UIImage imageWithContentsOfFile:imageUrl];
   }else{

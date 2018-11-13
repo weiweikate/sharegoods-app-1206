@@ -2,15 +2,15 @@ import ApiUtils from '../api/network/ApiUtils';
 
 const SMSInterface = {
     // 登陆验证码
-    SMSLogin: ['/sms/sendLoginMessage', { method: 'get',isRSA:true}],
+    SMSLogin: ['/sms/sendLoginMessage', { method: 'get', isRSA: true }],
     // 注册验证码
-    SMSReg: ['/sms/sendRegMessage', { method: 'get',isRSA:true}],
+    SMSReg: ['/sms/sendRegMessage', { method: 'get', isRSA: true }],
     // 旧手机验证码
-    SMSOldPhone: ['/sms/sendAuldPhoneMessage', { method: 'get',isRSA:true}],
+    SMSOldPhone: ['/sms/sendAuldPhoneMessage', { method: 'get', isRSA: true }],
     // 新手机号验证码
-    SMSNewPhone: ['/sms/sendNewPhoneMessage', { method: 'get',isRSA:true}],
+    SMSNewPhone: ['/sms/sendNewPhoneMessage', { method: 'get', isRSA: true }],
     // 第一次设置交易密码验证码
-    SMSSalePhone: ['/sms/sendTransactionMessage', { method: 'get',isRSA:true}],
+    SMSSalePhone: ['/sms/sendTransactionMessage', { method: 'get', isRSA: true }]
 };
 
 const SMSAPI = ApiUtils(SMSInterface);
@@ -21,7 +21,7 @@ const SMSTool = {
         RegType: 1,
         OldPhoneType: 2,
         NewPhoneType: 3,
-        SalePwdType: 4,
+        SalePwdType: 4
 
     },
     /**
@@ -36,27 +36,22 @@ const SMSTool = {
                 return SMSAPI.SMSLogin({
                     phone: phoneNumber
                 });
-                break;
             case this.SMSType.RegType:
                 return SMSAPI.SMSReg({
                     phone: phoneNumber
                 });
-                break;
             case this.SMSType.OldPhoneType:
                 return SMSAPI.SMSOldPhone({
                     phone: phoneNumber
                 });
-                break;
             case this.SMSType.NewPhoneType:
                 return SMSAPI.SMSNewPhone({
                     phone: phoneNumber
                 });
-                break;
             case this.SMSType.SalePwdType:
                 return SMSAPI.SMSSalePhone({
                     phone: phoneNumber
                 });
-                break;
             default:
                 break;
         }

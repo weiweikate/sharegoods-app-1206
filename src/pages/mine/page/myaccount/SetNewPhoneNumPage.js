@@ -128,7 +128,7 @@ export default class SetNewPhoneNumPage extends BasePage {
             bridge.$toast('请输入手机号');
             return;
         } else {
-            if (oldNum == tel) {
+            if (oldNum === tel) {
                 bridge.$toast('请输入新的手机号');
                 return;
             }
