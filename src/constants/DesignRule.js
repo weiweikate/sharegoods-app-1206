@@ -54,6 +54,7 @@ const sizes = {
     fontSize_NavTitle: 19,//导航lan文字大小
     fontSize_bigBtnText: autoSizeWidth(17),//大按钮里面的文字大小
     fontSize_mediumBtnText: autoSizeWidth(15),//中等大小按钮的文字大小
+    fontSize_mainTitle: autoSizeWidth(19),//一级标题文字大小
     fontSize_secondTitle: autoSizeWidth(15),//二级标题文字大小
     fontSize_threeTitle: autoSizeWidth(13),//三级标题文字大小
     fontSize_24: autoSizeWidth(12),//四级文案 辅助信息

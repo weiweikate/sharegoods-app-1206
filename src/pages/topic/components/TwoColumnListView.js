@@ -35,7 +35,7 @@ export default class TwoColumnListView extends Component {
                     /* 渲染头*/
                     renderSectionHeader={
                         ({ section }) => {
-                            if (section.key == 'one') {
+                            if (section.key === 'one') {
                                 return this._renderHeaderView(section.key);
                             } else {
                                 return this._renderActivityView(section.key);

@@ -184,7 +184,14 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         .share();
                 break;
             case 1:
-                image = fixThumImage(params.getString("thumImage"));
+
+                if(params.hasKey("hdImageURL")){
+                    image = fixThumImage(params.getString("hdImageURL"));
+
+                }else {
+                    image = fixThumImage(params.getString("thumImage"));
+                }
+
                 UMWeb web = new UMWeb(params.getString("linkUrl"));
                 web.setTitle(params.getString("title"));//标题
                 web.setThumb(image);  //缩略图

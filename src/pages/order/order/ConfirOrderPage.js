@@ -13,7 +13,7 @@ import {
 } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import position from '../res/position.png';
+import position from '../../order/res/dizhi-icon.png';
 import arrow_right from '../res/arrow_right.png';
 import colorLine from '../res/addressLine.png';
 import couponIcon from '../../mine/res/couponsImg/dingdan_icon_quan_nor.png';
@@ -77,7 +77,7 @@ export default class ConfirOrderPage extends BasePage {
         return (StringUtils.isNoEmpty(this.state.viewData.express.receiverNum) ?
                 <TouchableOpacity
                     style={{
-                        height: Math.max(35, this.state.height),
+                        minHeight: 35,
                         backgroundColor: 'white',
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -86,7 +86,7 @@ export default class ConfirOrderPage extends BasePage {
                     }}
                     onContentSizeChange={this.onContentSizeChange.bind(this)}
                     onPress={() => this.selectAddress()}>
-                    <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }}/>
+                    <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }} resizeMode={'contain'}/>
                     <View style={{ flex: 1, marginLeft: 15, marginRight: 15 }}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
                             <Text style={{
@@ -112,12 +112,12 @@ export default class ConfirOrderPage extends BasePage {
                                 marginTop: 5
                             }}/>
                     </View>
-                    <Image source={arrow_right} style={{ height: 14, marginRight: 15 }}/>
+                    <Image source={arrow_right} style={{ height: 14, marginRight: 15 }} resizeMode={'contain'}/>
                 </TouchableOpacity> :
                 <TouchableOpacity
                     style={{ height: 87, backgroundColor: 'white', flexDirection: 'row', alignItems: 'center' }}
                     onPress={() => this.selectAddress()}>
-                    <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }}/>
+                    <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }} resizeMode={'contain'}/>
                     <View style={{ flex: 1, marginLeft: 15, marginRight: 20 }}>
                         <UIText value={'请添加一个收货人地址'} style={{
                             fontSize: 13,
@@ -125,7 +125,7 @@ export default class ConfirOrderPage extends BasePage {
                             marginLeft: 15
                         }}/>
                     </View>
-                    <Image source={arrow_right} style={{ height: 14, marginRight: 15 }}/>
+                    <Image source={arrow_right} style={{ with:9,height: 14, marginRight: 15 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
         );
     };
@@ -228,14 +228,13 @@ export default class ConfirOrderPage extends BasePage {
         return (
             <View>
                 {this.renderCouponsPackage()}
-                {this.renderLine()}
                 {this.renderDetail()}
             </View>
         );
     };
     renderCouponsPackage = () => {
         return (
-            <View style={{ borderColor: DesignRule.lineColor_inWhiteBg, borderWidth: 1 }}>
+            <View style={{ borderColor: DesignRule.lineColor_inWhiteBg, borderWidth: 0.5 }}>
                 {this.state.viewData.couponList ?
                     this.state.viewData.couponList.map((item, index) => {
                         return <View style={{ backgroundColor: 'white' }} key={index}>
@@ -274,7 +273,6 @@ export default class ConfirOrderPage extends BasePage {
                     })
                     :
                     null}
-                <View style={{ backgroundColor: DesignRule.bgColor, height: 10, width: '100%' }}/>
             </View>
         );
     };
@@ -282,7 +280,7 @@ export default class ConfirOrderPage extends BasePage {
         return (
             <View>
                 {this.renderLine()}
-                <View style={{ height: 49, flexDirection: 'row' }}>
+                <View style={{ height: 49, flexDirection: 'row',backgroundColor:DesignRule.white}}>
                     <View
                         style={{ width: 264, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
                         <UIText value={'应付款：'} style={{
