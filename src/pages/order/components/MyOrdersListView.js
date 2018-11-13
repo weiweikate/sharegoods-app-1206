@@ -107,7 +107,7 @@ export default class MyOrdersListView extends Component {
                     yes={() => {
                         this.setState({ isShowDeleteOrderModal: false });
                         console.log(this.state.menu);
-                        if (this.state.menu.id === 9) {
+                        if (this.state.viewData[this.state.index].orderStatus === 6||this.state.viewData[this.state.index].orderStatus === 7||this.state.viewData[this.state.index].orderStatus === 8) {
                             Toast.showLoading();
                             OrderApi.deleteClosedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
                                 Toast.hiddenLoading();
@@ -117,7 +117,7 @@ export default class MyOrdersListView extends Component {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast(e.msg);
                             });
-                        } else if (this.state.menu.id === 7) {
+                        } else if (this.state.viewData[this.state.index].orderStatus === 4||this.state.viewData[this.state.index].orderStatus === 5) {
                             Toast.showLoading();
                             OrderApi.deleteCompletedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
                                 Toast.hiddenLoading();
