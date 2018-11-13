@@ -86,7 +86,7 @@ export default class XQSwiper extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.stopAutoPlay()
+        // this.stopAutoPlay()
         const { dataSource, width, height, horizontal, index, loop, ratio, autoplayTimeout, autoplayDirection, cardParams } = nextProps;
 
         const side = horizontal ? width : height
@@ -232,11 +232,11 @@ export default class XQSwiper extends Component {
                 this.onWillChange(this.ezswiper.dataSource[dataSourceIndex], dataSourceIndex)
             }
 
-            // const oldIndex = this.ezswiper.currentIndex
+            const oldIndex = this.ezswiper.currentIndex
             this.ezswiper.currentIndex = this.ezswiper.loop ? (this.scrollIndex + this.ezswiper.count - 1) % this.ezswiper.count : this.scrollIndex
-            // if (oldIndex !== this.ezswiper.currentIndex) {
+            if (oldIndex !== this.ezswiper.currentIndex || !oldIndex) {
                 this.onDidChange(this.ezswiper.dataSource[this.ezswiper.currentIndex], this.ezswiper.currentIndex)
-            // }
+            }
 
             this.updateAnimated(currentPageFloat, this.scrollIndex);
         }
