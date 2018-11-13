@@ -222,7 +222,7 @@ class WithdrawCashPage extends BasePage {
 
     onChangeText = (text) => {
         let money = this.state.money;
-        if (parseFloat(text) < parseFloat(this.state.availableBalance)) {
+        if (parseFloat(text) < parseFloat(user.availableBalance)) {
             this.setState({
                 money: text,
                 totalFee: parseFloat(this.state.serviceCharge) * parseFloat(text)
