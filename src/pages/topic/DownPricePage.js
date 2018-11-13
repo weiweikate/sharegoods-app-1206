@@ -155,7 +155,7 @@ export default class DownPricePage extends BasePage {
             sectionData = sectionList[this.state.selectNav].sectionDataList || [];
         }
         const { imgUrl } = this.dataModel;
-        this.$NavigationBarResetTitle(this.dataModel.topicTitle || '专题');
+        this.$NavigationBarResetTitle(this.dataModel.name);
         return (
             <ScrollView
                 alwaysBounceVertical={true}
