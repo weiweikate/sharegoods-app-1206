@@ -14,10 +14,10 @@ import ScreenUtils from '../utils/ScreenUtils';
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 
 const colors = {
-        mainColor: '#F00006',//主色调
+        mainColor: '#F00050',//主色调
         white: 'white',
         bgColor: '#F7F7F7',//背景色
-        bgColor_btn: '#F00006',//红色按钮背景色
+        bgColor_btn: '#F00050',//红色按钮背景色
         bgColor_btnSelect: '#EF154C',//红色按钮选中状态背景色
         bgColor_LVLabel: '#F2D3A2',//等级标签背景色
         bgColor_redCard: '#FF4F6E',//红色卡片背景色
