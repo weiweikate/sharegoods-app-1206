@@ -33,9 +33,9 @@ const colors = {
         textColor_instruction: '#999999',//说明文字
         textColor_placeholder: '#CCCCCC',//预填文字
         textColor_white: 'white',//白色文字
-        textColor_redWarn: '#F00006',//红色警告、提示文字
+        textColor_redWarn: '#F00050',//红色警告、提示文字
         textColor_blueURL: '#38ADFF',//文字链接
-        textColor_btnText: '#F00006',//按钮红色文字
+        textColor_btnText: '#F00050',//按钮红色文字
         textColor_hint: '#C8C8C8', //输入框背景字颜色
         bgColor_blue: '#33B4FF', //蓝色背景
         bgColor_deepBlue: '#2B99D9',//深蓝背景
