@@ -35,9 +35,6 @@ import DesignRule from 'DesignRule';
 export default class WaitingForWithdrawCashPage extends BasePage {
     constructor(props) {
         super(props);
-        // this.initHeader({
-        //     title: '待提现账户',
-        // })
         this.state = {
             phone: '',
             pwd: '',
@@ -46,7 +43,6 @@ export default class WaitingForWithdrawCashPage extends BasePage {
             phoneError: false,
             passwordError: false,
             viewData: [],
-            restMoney: 1600.00,
             isEmpty: false,
             waitingForWithdrawMoney: 0,
             currentPage: 1,

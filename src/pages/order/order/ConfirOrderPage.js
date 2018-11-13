@@ -26,6 +26,7 @@ import MineApi from '../../mine/api/MineApi';
 import API from '../../../api';
 import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
+import userOrderNum from '../../../model/userOrderNum';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 
 // let oldViewData, oldPriceList;
@@ -611,6 +612,7 @@ export default class ConfirOrderPage extends BasePage {
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
                         let data = res.data;
+                        userOrderNum.getUserOrderNum();
                         user.saveUserInfo(data);
                     }).catch(err => {
                     });
@@ -635,6 +637,7 @@ export default class ConfirOrderPage extends BasePage {
                     MineApi.getUser().then(res => {
                         this.$loadingDismiss();
                         let data = res.data;
+                        userOrderNum.getUserOrderNum();
                         user.saveUserInfo(data);
                     }).catch(err => {
                     });
@@ -666,6 +669,7 @@ export default class ConfirOrderPage extends BasePage {
                         this.$loadingDismiss();
                         let data = res.data;
                         user.saveUserInfo(data);
+                        userOrderNum.getUserOrderNum();
                     }).catch(err => {
                     });
                     this.replaceRouteName(data);
@@ -695,6 +699,7 @@ export default class ConfirOrderPage extends BasePage {
                 MineApi.getUser().then(res => {
                     this.$loadingDismiss();
                     let data = res.data;
+                    userOrderNum.getUserOrderNum();
                     user.saveUserInfo(data);
                 }).catch(err => {
                     if (err.code === 54001) {

@@ -42,12 +42,10 @@ export default class HelperFeedbackPage extends BasePage {
             showModal: false,
             isShowFinishModal: false,
             course: '请选择问题类型',
-            CONFIG: [{ value: '物流问题', detailId: 0 }, { value: '客服问题', detailId: 1 }, {
-                value: '物流问题',
-                detailId: 2
-            }, { value: '客服问题', detailId: 3 }, { value: '物流问题', detailId: 4 }, { value: '客服问题', detailId: 5 }],//value, item.detailId
+            CONFIG: [],//value, item.detailId
             selectIndex: -1,
-            imageArr: []
+            imageArr: [],
+            touchable:false
         };
 
     }
@@ -64,7 +62,7 @@ export default class HelperFeedbackPage extends BasePage {
                     CONFIG: res.data
                 });
             } else {
-                this.$toastShow('服务未返回类型数据，');
+                this.$toastShow('服务器未返回类型数据');
             }
         }).catch(err => {
             console.log(err);
@@ -112,22 +110,16 @@ export default class HelperFeedbackPage extends BasePage {
             this.$toastShow('反馈内容请大于10个字!');
             return;
         }
+        this.setState({touchable:true});
         MineApi.addFeedback({
             content: this.state.detailContent, typeKey: this.state.selectIndex || 1, smallImg: smallImgs,
             originalImg: orignImgs
         }).then(res => {
-            console.log(res);
-            if (res.code == 10000) {
-                this.setState({ isShowFinishModal: true });
+                this.setState({ isShowFinishModal: true ,touchable:false});
                 this.finishModal && this.finishModal.open();
-            } else {
-                this.$toastShow(res.msg);
-            }
         }).catch(err => {
-            if (err.code == 10009) {
-                this.$navigate('login/login/LoginPage');
-            }
-
+            this.setState({touchable:false});
+            this.$toastShow(err.msg);
         });
     }
 
@@ -240,10 +232,9 @@ export default class HelperFeedbackPage extends BasePage {
                     this.setState({ showModal: false });
                 }}>
                     <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-
                         <TouchableOpacity style={styles.modalContainer}
                                           onPress={() => this.setState({ showModal: true })}>
-                            <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>请选择问题类型</Text>
+                            <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_instruction }}>请选择问题类型</Text>
                             <Image source={arrowUp} style={{ width: 15, height: 15, marginRight: 10 }}/>
                         </TouchableOpacity>
                         <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
@@ -268,6 +259,14 @@ export default class HelperFeedbackPage extends BasePage {
             </Modal>
         );
     }
+    showTypeSelect(){
+        if(this.state.CONFIG.length>0){
+            this.setState({ showModal: true })
+        }else{
+            this.$toastShow('无反馈类型1');
+        }
+
+    }
 
     _render() {
         return (
@@ -283,7 +282,7 @@ export default class HelperFeedbackPage extends BasePage {
                         marginTop: 5,
                         justifyContent: 'space-between',
                         alignItems: 'center'
-                    }} onPress={() => this.setState({ showModal: true })}>
+                    }} onPress={() => this.showTypeSelect()}>
                         <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>{this.state.course}</Text>
                         <Image source={arrowDown} style={{ width: 15, height: 15, marginRight: 10 }}/>
                     </TouchableOpacity>
@@ -312,7 +311,7 @@ export default class HelperFeedbackPage extends BasePage {
                     </View>
 
                     <View style={{ width: ScreenUtils.width, height: 180, alignItems: 'center' }}>
-                        <TouchableOpacity activeOpacity={0.9}
+                        <TouchableOpacity activeOpacity={0.9}  disabled={this.state.touchable}
                                           style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' || this.state.detailContent.length < 10 ? DesignRule.lineColor_inGrayBg : color.red }]
 
                                           } onPress={() => this.feedback2server()}>
@@ -376,7 +375,7 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.bgColor,
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 55
+        marginTop: 44+5+ScreenUtils.statusBarHeight,
     },
     buttoncolorStyle: {
         width: 290,
