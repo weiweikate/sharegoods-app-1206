@@ -51,7 +51,7 @@ export default class HelperQuestionDetail extends BasePage {
         return (
             <View style={{ backgroundColor: DesignRule.bgColor, flex: 1 }}>
                 {this.state.content ? <HTML html={this.state.content} imagesMaxWidth={ScreenUtils.width}
-                                            containerStyle={{ backgroundColor: DesignRule.bgColor }}/> : null}
+                                            containerStyle={{ backgroundColor: DesignRule.bgColor ,padding:3}}/> : null}
                 <View style={{
                     width: ScreenUtils.width,
                     height: 80,
@@ -63,7 +63,7 @@ export default class HelperQuestionDetail extends BasePage {
                     paddingHorizontal: 33
                 }}>
                     <TouchableOpacity activeOpacity={0.6} onPress={() => this.feedbackNoUse()} style={{
-                        width: 150,
+                        width: 140,
                         height: 48,
                         borderRadius: 5,
                         borderWidth: 1,
@@ -78,7 +78,7 @@ export default class HelperQuestionDetail extends BasePage {
                         }}>{`没啥帮助?  (${this.state.noHelpNum > 9999 ? '9999+' : this.state.noHelpNum})`}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.6} onPress={() => this.feedbackGoodUse()} style={{
-                        width: 150,
+                        width: 140,
                         height: 48,
                         borderRadius: 5,
                         backgroundColor: this.state.type === null || this.state.type == 0 ? 'white' : DesignRule.mainColor,

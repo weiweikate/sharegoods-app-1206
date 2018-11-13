@@ -54,33 +54,7 @@ class MyOrdersDetailPage extends BasePage {
             isShowShowMessageModal: false,
             orderId: this.props.navigation.state.params.orderId,
             expressNo: '',
-            viewData: {
-                expressNo: '',
-                orderId: 1235,
-                list: [],
-                receiverName: '赵信',
-                receiverNum: '18254569878',
-                receiverAddress: '浙江省杭州市萧山区宁围镇鸿宁路望京商务C2-502',
-                provinceString: '浙江省',
-                cityString: '金华市',
-                areaString: '义乌市',
-                goodsPrice: 5292,//商品价格(detail.totalPrice-detail.freightPrice)
-                freightPrice: 5092,//运费（快递）
-                userScore: 0,//积分抵扣
-                tokenCoin: 0,//一元券抵扣
-                couponPrice: 0,//优惠券抵扣
-                totalPrice: 5292,//订单总价
-                orderTotalPrice: 5292,//需付款
-                orderNum: 2018070250371039050793800,//订单编号
-                createTime: 1530499145000,//创建时间
-                platformPayTime: 1530499145000,//平台付款时间
-                payTime: 1530499145000,//三方付款时间
-                outTradeNo: 2018070250371039050793800,//三方交易号
-                sendTime: 1530499145000,//发货时间
-                finishTime: 1530499145000,//成交时间
-                autoConfirmTime: 1533669382000,//自动确认时间
-                pickedUp: 2
-            },
+            viewData: {},
             //todo 这里的初始化仅仅为了减少判空处理的代码，后面会删除
             pageState: 1,
             pageStateString: constants.pageStateString[1],
