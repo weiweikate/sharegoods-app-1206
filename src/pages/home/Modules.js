@@ -237,11 +237,11 @@ class HomeModule {
             id: 0,
             type: homeType.swiper
         }, {
-            id: 1,
-            type: homeType.classify
-        }, {
             id: 2,
             type: homeType.user
+        }, {
+            id: 1,
+            type: homeType.classify
         }, {
             id: 3,
             type: homeType.ad
