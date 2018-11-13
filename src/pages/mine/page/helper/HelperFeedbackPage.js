@@ -5,7 +5,7 @@ import {
     Image,
     Text,
     TouchableOpacity,
-    TouchableWithoutFeedback, ScrollView
+    TouchableWithoutFeedback, ScrollView,ImageBackground
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -15,9 +15,12 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import AutoExpandingInput from '../../../../components/ui/AutoExpandingInput';
 import arrowUp from '../../res/customerservice/icon_06-03.png';
 import arrowDown from '../../res/customerservice/icon_06.png';
+import dasheLineImg from '../../res/customerservice/shux.png';
 import res from '../../../../comm/res';
-import addPic from '../../res/customerservice/xk1_03.png';
+// import addPic from '../../res/customerservice/xk1_03.png';
 import deleteImage from '../../res/customerservice/deleteImage.png';
+import selectImg from  '../../res/customerservice/bangzu_dugou.png';
+import xiangjiImg from '../../res/customerservice/shouhou_xiangji.png';
 import BusinessUtils from '../../components/BusinessUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import MineApi from '../../api/MineApi';
@@ -45,7 +48,8 @@ export default class HelperFeedbackPage extends BasePage {
             CONFIG: [],//value, item.detailId
             selectIndex: -1,
             imageArr: [],
-            touchable:false
+            touchable:false,
+            picNum:0
         };
 
     }
@@ -96,12 +100,8 @@ export default class HelperFeedbackPage extends BasePage {
             smallImagarr.push(this.state.imageArr[i].imageThumbUrl);
             orignImagarr.push(this.state.imageArr[i].imageUrl);
         }
-        let smallImgs = smallImagarr.join(';');
-        let orignImgs = orignImagarr.join(';');
-        // if (this.state.selectIndex == -1 || this.state.detailContent == '' || orignImgs.length < 20) {
-        //     ToastAndroid.show('请完善反馈资料!', ToastAndroid.SHORT);
-        //     return;
-        // }
+        let smallImgs = smallImagarr.join(',');
+        let orignImgs = orignImagarr.join(',');
         if (this.state.selectIndex == -1) {
             this.$toastShow('请选择反馈类型!');
             return;
@@ -192,15 +192,27 @@ export default class HelperFeedbackPage extends BasePage {
         if (isShowIcon) {
             return null;
         } else {
-            return <UIImage source={addPic} style={{ width: 83, height: 83, marginLeft: 15, borderRadius: 5 }}
-                            resizeMode={'stretch'}
-                            onPress={() => this.choosePicker()}/>;
+            return <ImageBackground style={{
+                width:83,
+                height:83,
+                borderColor:DesignRule.textColor_instruction,
+                marginLeft:10,
+                justifyContent:'center',
+                alignItems:'center'
+                }} source={dasheLineImg}>
+                <UIImage source={xiangjiImg} style={{ width:27, height: 22 }}
+                         resizeMode={'stretch'}
+                         onPress={() => this.choosePicker()}/>
+                <Text style={{fontSize:13,color:DesignRule.textColor_hint,marginTop:4}}>{this.state.imageArr.length}/3</Text>
+
+                </ImageBackground>
+
         }
 
     };
     renderPhotoItem = (item, index) => {
         return (
-            <View style={{ marginRight: 8, marginBottom: 12 }} key={index}>
+            <View style={{ marginLeft: 8}} key={index}>
                 <Image style={styles.photo_item} source={{ uri: this.state.imageArr[index].imageUrl }}/>
                 <TouchableOpacity style={styles.delete_btn} onPress={() => this.deletePic(index)}>
                     <Image style={{ width: 24, height: 24 }} source={deleteImage}/>
@@ -240,7 +252,7 @@ export default class HelperFeedbackPage extends BasePage {
                         <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
                             {this.state.CONFIG.map((item, i) => {
                                 return (
-                                    <TouchableOpacity key={i} style={{ height: 48, justifyContent: 'center' }}
+                                    <TouchableOpacity key={i} style={{ height: 48, justifyContent: 'space-between',flexDirection:'row',alignItems:'center' }}
                                                       activeOpacity={0.6}
                                                       onPress={() => this.selCourse(item.value, i)}>
                                         <Text style={{
@@ -248,6 +260,7 @@ export default class HelperFeedbackPage extends BasePage {
                                             fontSize: 15,
                                             marginLeft: 15
                                         }}>{item.value}</Text>
+                                        {i == this.state.selectIndex?<Image source={selectImg} style={{width:17,height:12,marginRight:19}}/>:<View style={{width:17,height:12,marginRight:19}}/>}
                                     </TouchableOpacity>
                                 );
                             })
@@ -263,7 +276,7 @@ export default class HelperFeedbackPage extends BasePage {
         if(this.state.CONFIG.length>0){
             this.setState({ showModal: true })
         }else{
-            this.$toastShow('无反馈类型1');
+            this.$toastShow('无反馈类型');
         }
 
     }
@@ -279,7 +292,7 @@ export default class HelperFeedbackPage extends BasePage {
                         width: ScreenUtils.width,
                         height: 44,
                         backgroundColor: 'white',
-                        marginTop: 5,
+                        marginTop: 15,
                         justifyContent: 'space-between',
                         alignItems: 'center'
                     }} onPress={() => this.showTypeSelect()}>
@@ -287,7 +300,7 @@ export default class HelperFeedbackPage extends BasePage {
                         <Image source={arrowDown} style={{ width: 15, height: 15, marginRight: 10 }}/>
                     </TouchableOpacity>
                     <View style={styles.containerView1}>
-                        <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>详细说明</Text>
+                        <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>详细说明（必填）</Text>
                     </View>
                     <View style={{ height: 130, backgroundColor: 'white' }}>
                         <AutoExpandingInput
@@ -301,7 +314,7 @@ export default class HelperFeedbackPage extends BasePage {
                         <Text style={{ position: 'absolute', bottom: 10, right: 10 }}>{this.state.textLength}/90</Text>
                     </View>
                     <View style={styles.containerView2}>
-                        <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>上传图片</Text>
+                        <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>上传图片（选填）</Text>
                     </View>
                     <View style={styles.containerView3}>
                         {this.state.imageArr.map((item, index) => {
@@ -388,15 +401,16 @@ const styles = StyleSheet.create({
     containerView1: {
         backgroundColor: 'white',
         width: ScreenUtils.width,
-        marginTop: 5,
+        marginTop: 14,
         height: 44,
         justifyContent: 'center',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        marginBottom:0.5
     },
     containerView2: {
         backgroundColor: 'white',
         width: ScreenUtils.width,
-        marginTop: 5,
+        marginTop: 10,
         height: 44,
         justifyContent: 'center',
         alignItems: 'flex-start'

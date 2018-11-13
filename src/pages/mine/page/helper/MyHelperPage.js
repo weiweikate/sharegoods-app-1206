@@ -15,14 +15,14 @@ import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import UIImage from '../../../../components/ui/UIImage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import csperson from '../../res/customerservice/kefu-img.png';
+import csperson from '../../res/customerservice/bangzu_kefu.png';
 // import backmg from '../../res/customerservice/xwduo.png';
 import kf11 from '../../res/customerservice/kf_11.png';
-import monenybpg from '../../res/customerservice/kf_20.png';
-import qbcIcon from '../../res/customerservice/kf_22.png';
-import autobcIon from '../../res/customerservice/kf_24.png';
-import phoneIcon from '../../res/customerservice/bangzukefu_icon.png';
-import personIcon from '../../res/customerservice/bangzyuef_icon.png';
+import monenybpg from '../../res/customerservice/bangzu_icon.png';
+import qbcIcon from '../../res/customerservice/bangzu_icon1.png';
+import autobcIon from '../../res/customerservice/bangzu_icon2.png';
+import phoneIcon from '../../res/customerservice/shouhou_icon_dianh.png';
+import personIcon from '../../res/customerservice/shouhou_icon_kefu.png';
 import QYChatUtil from './QYChatModel';
 import MineApi from '../../api/MineApi';
 import DesignRule from 'DesignRule';
@@ -75,7 +75,7 @@ export default class MyHelperPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
-                    <View style={{ marginTop: 9, paddingLeft:36, backgroundColor: DesignRule.bgColor }}>
+                    <View style={{ marginTop: 9, paddingLeft:18, backgroundColor: DesignRule.bgColor }}>
                         <Image  source={csperson}
                                resizeMode={'contain'} />
                     </View>
