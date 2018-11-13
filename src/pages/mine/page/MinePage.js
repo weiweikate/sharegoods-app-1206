@@ -202,7 +202,7 @@ export default class MinePage extends BasePage {
                       top: 0,
                       left: 0,
                       right: 0,
-                      height: ScreenUtils.isIOS ? (ScreenUtils.isIOSX ? 84 : 60) : 60,
+                      height: headerHeight,
                       opacity: 0
                   }}/>
         );
@@ -212,12 +212,12 @@ export default class MinePage extends BasePage {
         return (
             <View
                 style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
-                <View style={{ height: ScreenUtils.statusBarHeight }}/>
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     paddingRight: px2dp(15),
-                    height: 44
+                    height: headerHeight,
+                    paddingTop: ScreenUtils.statusBarHeight
                 }}>
                     <View style={{ flex: 1 }}/>
                     {/*<Text style={{ color: DesignRule.white, fontSize: px2dp(17), includeFontPadding: false }}>*/}
@@ -226,14 +226,15 @@ export default class MinePage extends BasePage {
                     <View style={{
                         flex: 1,
                         alignItems: 'center',
+                        alignSelf: 'center',
                         justifyContent: 'flex-end',
                         flexDirection: 'row'
                     }}>
                         <UIImage source={this.state.changeHeader ? mine_setting_icon_white : mine_setting_icon_gray}
-                                 style={{ height: px2dp(17), width: px2dp(17), marginRight: 15 }}
+                                 style={{ height: px2dp(21), width: px2dp(21), marginRight: 15 }}
                                  onPress={() => this.jumpToSettingPage()}/>
                         <UIImage source={this.state.changeHeader ? mine_message_icon_white : mine_message_icon_gray}
-                                 style={{ height: px2dp(17), width: px2dp(17) }}
+                                 style={{ height: px2dp(21), width: px2dp(21) }}
                                  onPress={() => this.jumpToServicePage()}/>
                     </View>
                 </View>
@@ -243,15 +244,14 @@ export default class MinePage extends BasePage {
 
     renderUserHead = () => {
         let accreditID = !EmptyUtils.isEmpty(user.code) ? (
-            <Text style={{ fontSize: px2dp(12), color: DesignRule.white, includeFontPadding: false, marginTop: 5 }}>
+            <Text style={{ fontSize: 11, color: DesignRule.white, includeFontPadding: false, marginTop: 5 }}>
                 {`授权ID: ${user.code}`}
             </Text>
         ) : null;
 
         return (
             <ImageBackground style={styles.headerBgStyle} source={mine_header_bg}>
-                <View style={{ flex: 1 }}/>
-                <View style={{ height: px2dp(54), marginBottom: px2dp(43), flexDirection: 'row' }}>
+                <View style={{ height: px2dp(54), flexDirection: 'row' }}>
                     <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
                         {
                             StringUtils.isEmpty(user.headImg) ?
@@ -260,10 +260,9 @@ export default class MinePage extends BasePage {
                         }
                     </TouchableWithoutFeedback>
                     <View style={{
-                        paddingVertical: px2dp(8),
                         height: px2dp(54),
-                        marginLeft: px2dp(8),
-                        justifyContent: 'space-between'
+                        marginLeft: px2dp(10),
+                        justifyContent: 'center'
                     }}>
                         <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -704,13 +703,14 @@ const styles = StyleSheet.create({
     headerBgStyle: {
         width: ScreenUtils.width,
         height: ScreenUtils.getImgHeightWithWidth(headerBgSize),
-        paddingTop: ScreenUtils.statusBarHeight
+        paddingTop: ScreenUtils.statusBarHeight,
+        justifyContent: 'center'
     },
     userIconStyle: {
         width: px2dp(54),
         height: px2dp(54),
         borderRadius: px2dp(27),
-        marginLeft: px2dp(23)
+        marginLeft: px2dp(21)
     },
     saveMoneyWrapper: {
         height: px2dp(34),

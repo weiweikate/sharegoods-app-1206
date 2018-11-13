@@ -92,7 +92,8 @@ const styles = StyleSheet.create({
     modalStyle: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         justifyContent: 'flex-end',
-        flex: 1
+        flex: 1,
+        width:ScreenUtils.width
     }
 });
 

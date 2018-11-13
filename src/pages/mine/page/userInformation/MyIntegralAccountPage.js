@@ -34,7 +34,6 @@ export default class MyIntegralAccountPage extends BasePage {
             phoneError: false,
             passwordError: false,
             viewData: [],
-            blockMoney: 0.00,
             currentPage: 1,
             isEmpty: false
         };

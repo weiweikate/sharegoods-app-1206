@@ -99,7 +99,7 @@ export default class ShowBannerView extends Component {
             <XGSwiper style={styles.swiper}
                 dataSource={bannerList}
                 width={ ScreenUtils.width }
-                height={ px2dp(175) }
+                height={ 200 }
                 renderRow={this.renderRow.bind(this)}
                 ratio={0.867}
                 onPress={this._onPressRowWithItem.bind(this)}

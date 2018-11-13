@@ -55,21 +55,21 @@ const isTomorrow = (date = new Date()) => {
     return (date.getTime() >= today && tomorrow >= date.getTime());
 };
 export const getFormatDate = (timestamp, fmt = 'yyyy-MM-dd hh:mm:ss') => {
-    timestamp = parseInt(timestamp.toString());
-    timestamp = parseInt(timestamp + '000');
+    timestamp = parseInt(timestamp.toString(), 0);
+    timestamp = parseInt(timestamp + '000', 0);
     let newDate = new Date(timestamp);
-    Date.prototype.format = function(format) {
+    const dateFormat = function(format) {
         let date = {
-            'M+': this.getMonth() + 1,
-            'd+': this.getDate(),
-            'h+': this.getHours(),
-            'm+': this.getMinutes(),
-            's+': this.getSeconds(),
-            'q+': Math.floor((this.getMonth() + 3) / 3),
-            'S+': this.getMilliseconds()
+            'M+': newDate.getMonth() + 1,
+            'd+': newDate.getDate(),
+            'h+': newDate.getHours(),
+            'm+': newDate.getMinutes(),
+            's+': newDate.getSeconds(),
+            'q+': Math.floor((newDate.getMonth() + 3) / 3),
+            'S+': newDate.getMilliseconds()
         };
         if (/(y+)/i.test(format)) {
-            format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+            format = format.replace(RegExp.$1, (newDate.getFullYear() + '').substr(4 - RegExp.$1.length));
         }
         for (let k in date) {
             if (new RegExp('(' + k + ')').test(format)) {
@@ -79,7 +79,7 @@ export const getFormatDate = (timestamp, fmt = 'yyyy-MM-dd hh:mm:ss') => {
         }
         return format;
     };
-    return newDate.format(fmt);
+    return dateFormat(fmt);
 };
 
 export default {
