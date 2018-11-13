@@ -200,7 +200,6 @@ export default class ProductDetailPage extends BasePage {
                 });
                 break;
             case 'gwc':
-                break;
             case 'buy':
                 if (!user.isLogin) {
                     this.props.navigation.navigate('login/login/LoginPage');
