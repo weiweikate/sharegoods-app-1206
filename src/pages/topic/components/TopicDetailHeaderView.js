@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-    StyleSheet,
+    // StyleSheet,
     Text,
     View,
     TouchableOpacity,
@@ -16,7 +16,7 @@ import StringUtils from '../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import TopicDetailBanner from './TopicDetailBanner';
 
-const { px2dp } = ScreenUtils;
+// const { px2dp } = ScreenUtils;
 import res from '../res';
 
 const xjt_03 = res.xjt_03;
