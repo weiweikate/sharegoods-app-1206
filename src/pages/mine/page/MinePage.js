@@ -307,9 +307,15 @@ export default class MinePage extends BasePage {
                     paddingHorizontal: px2dp(15),
                     justifyContent: 'space-between'
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户')}
-                    {this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : user.userScore + '', '秀豆账户')}
-                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户')}
+                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户',()=>{
+                        this.go2CashDetailPage(1)
+                    })}
+                    {this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : user.userScore + '', '秀豆账户',()=>{
+                        this.go2CashDetailPage(2)
+                    })}
+                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户',()=>{
+                        this.go2CashDetailPage(3)
+                    })}
 
                     {/*{this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', '#FF4F6E', () => {*/}
                     {/*this.go2CashDetailPage(1);*/}
@@ -372,16 +378,18 @@ export default class MinePage extends BasePage {
     //     );
     // };
 
-    accountItemView = (num, text) => {
+    accountItemView = (num, text, func) => {
         return (
-            <View style={{ alignItems: 'center' }}>
-                <Text style={{ fontSize: DesignRule.fontSize_mainTitle, color: DesignRule.white }}>
-                    {num}
-                </Text>
-                <Text style={{ marginTop: px2dp(5), fontSize: DesignRule.fontSize_24, color: DesignRule.white }}>
-                    {text}
-                </Text>
-            </View>
+            <TouchableWithoutFeedback onPress={func}>
+                <View style={{ alignItems: 'center' }}>
+                    <Text style={{ fontSize: DesignRule.fontSize_mainTitle, color: DesignRule.white }}>
+                        {num}
+                    </Text>
+                    <Text style={{ marginTop: px2dp(5), fontSize: DesignRule.fontSize_24, color: DesignRule.white }}>
+                        {text}
+                    </Text>
+                </View>
+            </TouchableWithoutFeedback>
         );
     };
 
