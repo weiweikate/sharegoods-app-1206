@@ -36,7 +36,7 @@ export default class RecommendRow extends Component {
                 <Image source={img}/>
                 <Text style={{ color: '#333333', fontSize: 13, marginLeft: 2 }}>{tittle}</Text>
             </View>
-            <Text style={{ color: '#666666', fontSize: 13, marginTop: 8 }}>{content}</Text>
+            <Text style={{ color: '#666666', fontSize: 13, marginTop: 8 }} numberOfLines={1}>{content}</Text>
         </View>);
     };
 
@@ -50,7 +50,7 @@ export default class RecommendRow extends Component {
         return <View style={styles.bg}>
             <ImageBackground source={HeaderBarBgImg} style={styles.headerBg}>
                 <View style={{
-                    marginTop: 21 + ScreenUtils.headerHeight,
+                    marginTop: ScreenUtils.autoSizeWidth(21) + ScreenUtils.headerHeight,
                     flexDirection: 'row',
                     marginLeft: ScreenUtils.autoSizeWidth(57)
                 }}>
@@ -85,7 +85,7 @@ export default class RecommendRow extends Component {
                     <View style={{ backgroundColor: '#E4E4E4', height: 0.5 }}/>
                     <View style={{
                         flexDirection: 'row',
-                        height: 57,
+                        height: ScreenUtils.autoSizeWidth(57),
                         paddingHorizontal: 24,
                         alignItems: 'center',
                         justifyContent: 'space-between'
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     },
     //白的面板背景
     whiteBg: {
-        marginTop: 30,
+        marginTop: ScreenUtils.autoSizeWidth(22.5),
         backgroundColor: DesignRule.white,
         marginHorizontal: 15,
         height: ScreenUtils.autoSizeWidth(144),

@@ -15,14 +15,14 @@ import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import UIImage from '../../../../components/ui/UIImage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import csperson from '../../res/customerservice/kefu-img.png';
+import csperson from '../../res/customerservice/bangzu_kefu.png';
 // import backmg from '../../res/customerservice/xwduo.png';
 import kf11 from '../../res/customerservice/kf_11.png';
-import monenybpg from '../../res/customerservice/kf_20.png';
-import qbcIcon from '../../res/customerservice/kf_22.png';
-import autobcIon from '../../res/customerservice/kf_24.png';
-import phoneIcon from '../../res/customerservice/bangzukefu_icon.png';
-import personIcon from '../../res/customerservice/bangzyuef_icon.png';
+import monenybpg from '../../res/customerservice/bangzu_icon.png';
+import qbcIcon from '../../res/customerservice/bangzu_icon1.png';
+import autobcIon from '../../res/customerservice/bangzu_icon2.png';
+import phoneIcon from '../../res/customerservice/shouhou_icon_dianh.png';
+import personIcon from '../../res/customerservice/shouhou_icon_kefu.png';
 import QYChatUtil from './QYChatModel';
 import MineApi from '../../api/MineApi';
 import DesignRule from 'DesignRule';
@@ -42,26 +42,26 @@ export default class MyHelperPage extends BasePage {
 
     renderHotQuestionList = () => {
         return (
-            <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
+            <View style={{ width: ScreenUtils.width, backgroundColor: 'white' ,marginTop:-1}}>
                 {this.state.typeList.map((item, index) => {
                     return (
                         <View key={index} style={styles.hotQuestionStyle}>
                             <TouchableOpacity activeOpacity={0.6} onPress={() => this.orderListq(item.list)}
                                               style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                                 <Image source={kf11} style={{ width: 37, height: 37 }}/>
-                                <Text style={{ fontSize: 11, color: DesignRule.textColor_secondTitle }}>{item.name}</Text>
+                                <Text style={{ fontSize: 11, color: DesignRule.textColor_secondTitle ,marginTop:2}}>{item.name}</Text>
                             </TouchableOpacity>
                             <View style={styles.hot2ViewStyle}>
                                 <View style={{ flex: 1, justifyContent: 'center' }}>
                                     <UIText onPress={() => this.gotoquestionDetail(item.list[0].id)}
                                             style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_secondTitle }}
-                                            value={item.list.length > 0 ? item.list[0].title : ''}/>
+                                            value={item.list.length > 0 ? item.list[0].title : ''} numberOfLines={1}/>
                                 </View>
                                 <View style={{ width: '100%', height: 0.5, backgroundColor: '#c9c9c9' }}/>
                                 <View style={{ flex: 1, justifyContent: 'center', borderColor: '#c9c9c9' }}>
                                     <UIText onPress={() => this.gotoquestionDetail(item.list[1].id)}
                                             style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_secondTitle }}
-                                            value={item.list.length > 1 ? item.list[1].title : ''}/>
+                                            value={item.list.length > 1 ? item.list[1].title : ''} numberOfLines={1}/>
                                 </View>
                             </View>
                         </View>
@@ -75,12 +75,12 @@ export default class MyHelperPage extends BasePage {
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView>
-                    <View style={{ marginTop: 1, paddingLeft:36, backgroundColor: 'white' }}>
+                    <View style={{ marginTop: 9, paddingLeft:18, backgroundColor: DesignRule.bgColor }}>
                         <Image  source={csperson}
-                               resizeMode="contain"/>
+                               resizeMode={'contain'} />
                     </View>
                     {this.renderHotQuestionList()}
-                    <View style={{ height: 1, backgroundColor: DesignRule.bgColor }}/>
+                    <View style={{ height: 1, backgroundColor: DesignRule.bgColor ,marginTop:-0.5}}/>
                     <View style={{
                         alignItems: 'center',
                         height: 87,
@@ -206,19 +206,21 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width,
         height: 80,
         borderColor: '#c9c9c9',
-        borderWidth: 0.5
+        borderBottomWidth:0.5
     },
     hot2ViewStyle: {
         alignItems: 'flex-start',
         justifyContent: 'center',
         flex: 2,
         borderColor: '#c9c9c9',
-        borderWidth: 0.5
+        // borderWidth: 0.5,
+        borderLeftWidth:0.5
     },
     textFontstyle: {
         fontSize: 16,
         color: DesignRule.textColor_mainTitle,
-        fontFamily:'PingFangSC-Regular'
+        fontFamily:'PingFangSC-Regular',
+        marginTop:5
     },
     text2Style:{
         color:DesignRule.textColor_instruction,

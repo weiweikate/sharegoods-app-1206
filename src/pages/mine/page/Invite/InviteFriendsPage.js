@@ -108,20 +108,20 @@ export default class InviteFriendsPage extends BasePage<Props> {
         return (
             <View style={styles.container}>
                 <Image source={bg}
-                       style={{width: ScreenUtils.width, height: ScreenUtils.height, position: 'absolute'}}/>
+                       style={{ width: ScreenUtils.width, height: ScreenUtils.height, position: 'absolute' }}/>
                 <View style={{ flex: 1 }}/>
                 <UIImage source={wenan}
                          style={{
                              width: autoSizeWidth(160),
                              height: autoSizeWidth(70),
-                             marginBottom: 10,
+                             marginBottom: 30,
                              alignSelf: 'flex-start',
-                             marginLeft: 20
+                             marginLeft: 60
                          }}/>
                 <UIImage source={hongbao}
                          style={{
                              width: autoSizeWidth(350),
-                             height: autoSizeWidth(350 * 1.2)
+                             height: autoSizeWidth(490) + ScreenUtils.safeBottom
 
                          }}/>
                 <TouchableWithoutFeedback onPress={() => {
@@ -145,38 +145,46 @@ export default class InviteFriendsPage extends BasePage<Props> {
                 </TouchableWithoutFeedback>
                 <View style={{
                     backgroundColor: 'white', padding: 8,
-                    width: autoSizeWidth(190),
-                    height: autoSizeWidth(190),
-                    bottom: autoSizeWidth(160),
-                    left: autoSizeWidth(80 + 12.5),
+                    width: autoSizeWidth(180),
+                    height: autoSizeWidth(180),
+                    bottom: autoSizeWidth(200),
+                    left: autoSizeWidth(85 + 12.5),
                     position: 'absolute',
                     shadowColor: DesignRule.mainColor,
                     shadowOpacity: 0.3
                 }}>
                     <UIImage source={{ uri: this.state.path }}
                              style={{
-                                 width: autoSizeWidth(170),
-                                 height: autoSizeWidth(170)
+                                 width: autoSizeWidth(160),
+                                 height: autoSizeWidth(160)
                              }}/>
                 </View>
-                <View style={{ flexDirection: 'row', position: 'absolute', left: 0, width: ScreenUtils.width, bottom: 20 + ScreenUtils.safeBottom,alignItems:'center', paddingHorizontal: 30}}>
+                <View style={{
+                    flexDirection: 'row',
+                    position: 'absolute',
+                    left: 0,
+                    width: ScreenUtils.width,
+                    bottom: 35 + ScreenUtils.safeBottom,
+                    alignItems: 'center',
+                    paddingHorizontal: 40
+                }}>
                     <TouchableOpacity onPress={this._saveImg} disabled={this.state.disable}>
-                            <ImageBackground source={button} style={styles.btnContainer} onPress={this._saveImg}>
+                        <ImageBackground source={button} style={styles.btnContainer} onPress={this._saveImg}>
 
                             <Text style={styles.btnText}>
                                 保存图片
                             </Text>
-                            </ImageBackground>
+                        </ImageBackground>
                     </TouchableOpacity>
-                    <View style={{flex: 1}} />
+                    <View style={{ flex: 1 }}/>
                     <TouchableOpacity onPress={() => {
                         this.shareModal.open();
                     }}>
-                            <ImageBackground source={button} style={styles.btnContainer}>
+                        <ImageBackground source={button} style={styles.btnContainer}>
                             <Text style={styles.btnText}>
                                 分享至...
                             </Text>
-                            </ImageBackground>
+                        </ImageBackground>
                     </TouchableOpacity>
                 </View>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
@@ -217,8 +225,7 @@ const styles = StyleSheet.create({
         height: autoSizeWidth(50),
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: autoSizeWidth(),
-        backgroundColor: 'red',
+        backgroundColor: 'red'
     },
     btnText: {
         fontSize: DesignRule.fontSize_mediumBtnText,

@@ -15,7 +15,6 @@ import {
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 import HeaderBarBgImg from '../res/txbg_02.png';
-import WhiteBtImg from '../res/dz_03-02.png';
 import StarImg from '../res/dj_03.png';
 import CCZImg from '../res/ccz_03.png';
 import ProgressImg from '../res/jdt_05.png';
@@ -53,7 +52,7 @@ export default class ShopHeader extends Component {
 
         return <View style={styles.container}>
             <ImageBackground source={HeaderBarBgImg} style={styles.imgBg}>
-                <View source={WhiteBtImg} style={styles.whiteBg}>
+                <View style={styles.whiteBg}>
                     <View style={{
                         flexDirection: 'row',
                         marginTop: px2dp(25),
