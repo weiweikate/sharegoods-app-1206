@@ -31,12 +31,13 @@ export default class App extends Component {
         appData.setStatusBarHeight(props.statusBarHeight);
         // geolocation.init({
         //     ios: "f85b644981f8642aef08e5a361e9ab6b",
-        //     android: "043b24fe18785f33c491705ffe5b6935"
+        //     android: "4a3ff7c2164aaf7d67a98fb9b88ae0e6"
         // }).then(() => {
         //     return geolocation.getLastLocation()
         // }).then(result => {
         //     console.log('geolocation result', result)
         // })
+
 
         super(props);
         this.state = {

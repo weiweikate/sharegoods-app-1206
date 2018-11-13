@@ -24,6 +24,7 @@ import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
 import com.qiyukf.unicorn.api.Unicorn;
 import com.qiyukf.unicorn.api.YSFOptions;
+import com.reactlibrary.RNGeolocationPackage;
 import com.squareup.leakcanary.LeakCanary;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
@@ -119,7 +120,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new SvgPackage(),
                     new ImagePickerPackage(),
                     new AutoHeightWebViewPackage(),
-                    new ReactVideoPackage()
+                    new ReactVideoPackage(),
+                    new RNGeolocationPackage()
             );
         }
 
