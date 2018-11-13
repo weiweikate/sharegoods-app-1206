@@ -31,6 +31,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
@@ -60,7 +61,8 @@ import java.util.Map;
 public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "LoginAndShareModule";
-
+    private static final int BLACK = 0xff000000;
+    private static final int PADDING_SIZE_MIN = 20;
     private static class ShareListener implements UMShareListener {
         Callback success;
         Callback fail;
@@ -605,8 +607,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             if (url == null || "".equals(url) || url.length() < 1) {
                 return null;
             }
-            Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();
+            Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
             hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+            hints.put(EncodeHintType.MARGIN,0);
             // 图像数据转换，使用了矩阵转换
             BitMatrix bitMatrix = new QRCodeWriter().encode(url, BarcodeFormat.QR_CODE, width, height, hints);
             int[] pixels = new int[width * height];
@@ -630,6 +633,11 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
         return null;
     }
+
+
+
+
+
 
     private static String saveImageToCache(Context context, Bitmap bitmap, String name) {
 
