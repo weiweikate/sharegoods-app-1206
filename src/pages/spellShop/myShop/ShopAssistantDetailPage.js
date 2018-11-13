@@ -46,8 +46,6 @@ export default class ShopAssistantDetailPage extends BasePage {
     $navigationBarOptions = {
         show: false
     };
-    // leftNavItemHidden: this.props.leftNavItemHidden
-
 
     _NavBarRenderRightItem = () => {
         return (<View style={styles.transparentView}>
