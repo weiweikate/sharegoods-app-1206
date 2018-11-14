@@ -118,8 +118,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="com.meeruu.sharegoods"
-                    android:scheme="sharegoods" />
+                    android:host="com.meeruu.sharegoods.mobile"
+                    android:scheme="meeruu" />
             </intent-filter>
         </activity>
         <activity

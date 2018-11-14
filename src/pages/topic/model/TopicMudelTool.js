@@ -30,7 +30,7 @@ const typeName = {
     [productTypes.skill]: 'seckillPrice',
     //降价拍需要判断statue 如果为1 则为startPrice 如果为2 则为 markdownPrice
     [productTypes.down]: downPriceParam,
-    [productTypes.giftPackage]: '暂无',
+    [productTypes.giftPackage]: 'originalPrice',
     [productTypes.helpFree]: '暂无',
     [productTypes.newTopic]: '暂无',
     [productTypes.normalProduct] : 'originalPrice'
