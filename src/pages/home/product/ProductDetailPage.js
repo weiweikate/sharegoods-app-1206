@@ -195,10 +195,8 @@ export default class ProductDetailPage extends BasePage {
     //去购物车
     _bottomViewAction = (type) => {
         switch (type) {
-            case 'goGwc':
-                this.$navigate('shopCart/ShopCart', {
-                    hiddeLeft: false
-                });
+            case 'jlj':
+                this.shareModal.open();
                 break;
             case 'gwc':
             case 'buy':
@@ -416,7 +414,7 @@ export default class ProductDetailPage extends BasePage {
 
 
     _render() {
-        const { price = 0, product = {} } = this.state.data || {};
+        const { price = 0, product = {} ,shareMoney} = this.state.data || {};
         const { name = '', imgUrl } = product;
 
         return (
@@ -428,6 +426,9 @@ export default class ProductDetailPage extends BasePage {
                                    this.$navigateBack();
                                }}
                                navRLeft={() => {
+                                   this.$navigate('shopCart/ShopCart', {
+                                       hiddeLeft: false
+                                   });
                                }}
                                navRRight={() => {
                                    this.DetailNavShowModal.show((item) => {
@@ -452,7 +453,7 @@ export default class ProductDetailPage extends BasePage {
                              keyExtractor={(item, index) => `${index}`}
                              sections={[{ data: [{}] }]}
                              scrollEventThrottle={10}/>
-                <DetailBottomView bottomViewAction={this._bottomViewAction}/>
+                <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney = {shareMoney}/>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'Image'}

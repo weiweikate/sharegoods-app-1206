@@ -3,17 +3,21 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
-    View
+    View,
+    Text
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import res from '../../../../comm/res/index';
 import detailNavView from '../res/detailNavView';
 import DesignRule from '../../../../constants/DesignRule';
+import { observer } from 'mobx-react';
+import ShopCartStore from '../../../shopCart/model/ShopCartStore';
 
 /**
  * 商品详情bannerView
  */
 
+@observer
 export default class DetailNavView extends Component {
 
     constructor(props) {
@@ -52,7 +56,7 @@ export default class DetailNavView extends Component {
                             source={this.state.scale ? detailNavView.detail_back_down : res.button.show_detail_back}/>
                     </TouchableOpacity>
                 </View>
-               {/*图片*/}
+                {/*图片*/}
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     {this.state.scale ? <Image source={{ uri: this.props.source }} style={{
                         width: 38,
@@ -68,6 +72,17 @@ export default class DetailNavView extends Component {
                     }} style={styles.btnContainer}>
                         <Image style={{ marginRight: 10 }}
                                source={this.state.scale ? detailNavView.detail_car_down : detailNavView.detail_car_up}/>
+                        {ShopCartStore.getAllGoodsClassNumber === 0 ? null : <View style={{
+                            position: 'absolute', top: 4, right: 4, height: 16,
+                            paddingHorizontal: 4,
+                            backgroundColor: DesignRule.mainColor,
+                            borderRadius: 8, justifyContent: 'center', alignItems: 'center'
+                        }}>
+                            <Text style={{
+                                color: 'white',
+                                fontSize: 10
+                            }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
+                        </View>}
                     </TouchableOpacity> : null}
                     {/*分享相关*/}
                     <TouchableOpacity onPress={() => {
@@ -95,20 +110,20 @@ const styles = StyleSheet.create({
     },
     rightBarItemContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'flex-end',
         width: 88,
         height: 44
     },
     leftBarItemContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'flex-start',
         width: 88,
         height: 44
     },
     btnContainer: {
         width: 44,
-        alignItems: 'center'
+        height:44,
+        alignItems: 'center',
+        justifyContent:'center'
     }
 });
