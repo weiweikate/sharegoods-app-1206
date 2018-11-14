@@ -35,6 +35,7 @@ import user from '../../../model/user';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import StringUtils from '../../../utils/StringUtils';
 import DateUtils from '../../../utils/DateUtils';
+import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 
 /**
  * @author chenyangjun
@@ -196,14 +197,25 @@ export default class ProductDetailPage extends BasePage {
     _bottomViewAction = (type) => {
         switch (type) {
             case 'jlj':
-                this.shareModal.open();
-                break;
-            case 'gwc':
-            case 'buy':
                 if (!user.isLogin) {
-                    this.props.navigation.navigate('login/login/LoginPage');
+                    this.ConfirmAlert.show({
+                        title: '登录后分享才能赚取赏金', rightText: '去登录', confirmCallBack: () => {
+                            this.$navigate('login/login/LoginPage');
+                        }, closeCallBack: () => {
+                            this.shareModal.open();
+                        }
+                    });
+                } else {
+                    this.shareModal.open();
+                }
+                break;
+            case 'buy': {
+                if (!user.isLogin) {
+                    this.$navigate('login/login/LoginPage');
                     return;
                 }
+            }
+            case 'gwc':
                 this.state.goType = type;
                 this.SelectionPage.show(this.state.data, this._selectionViewConfirm);
                 break;
@@ -346,10 +358,10 @@ export default class ProductDetailPage extends BasePage {
     _renderCouponModal = () => {
 
         let view = (
-            <TouchableWithoutFeedback onPress={()=>{
+            <TouchableWithoutFeedback onPress={() => {
                 this.setState({
-                    canGetCoupon:false
-                })
+                    canGetCoupon: false
+                });
                 this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: user.availableBalance });
             }}>
                 <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
@@ -391,7 +403,7 @@ export default class ProductDetailPage extends BasePage {
                         </Text>
 
                         <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(60), marginTop: 20 }}>
-                            {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.formatMoneyString(this.state.couponData.price,false)}
+                            {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.formatMoneyString(this.state.couponData.price, false)}
                             <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
                                 元
                             </Text>
@@ -423,14 +435,14 @@ export default class ProductDetailPage extends BasePage {
 
 
     _render() {
-        const { price = 0, product = {} ,shareMoney} = this.state.data || {};
+        const { price = 0, product = {}, shareMoney } = this.state.data || {};
         const { name = '', imgUrl } = product;
 
         return (
             <View style={styles.container}>
                 <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
                 <DetailNavView ref={(e) => this.DetailNavView = e}
-                               source = {imgUrl}
+                               source={imgUrl}
                                navBack={() => {
                                    this.$navigateBack();
                                }}
@@ -462,7 +474,7 @@ export default class ProductDetailPage extends BasePage {
                              keyExtractor={(item, index) => `${index}`}
                              sections={[{ data: [{}] }]}
                              scrollEventThrottle={10}/>
-                <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney = {shareMoney}/>
+                <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney={shareMoney}/>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'Image'}
@@ -487,6 +499,7 @@ export default class ProductDetailPage extends BasePage {
                                     miniProgramPath: `/pages/index/index?type=99&id=${product.id}`
                                 }}/>
                 <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
+                <ConfirmAlert ref={(ref) => this.ConfirmAlert = ref}/>
                 {this._renderCouponModal()}
             </View>
         );
@@ -507,6 +520,6 @@ const styles = StyleSheet.create({
         right: 0,
         zIndex: 2,
         opacity: 0
-    },
+    }
 });
 
