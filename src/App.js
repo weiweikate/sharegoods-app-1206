@@ -10,7 +10,8 @@ import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
-    View
+    View,
+    Platform
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import RouterMap from './navigation/RouterMap';
@@ -20,7 +21,7 @@ import apiEnvironment from './api/ApiEnvironment';
 import CONFIG from '../config';
 import appData from './model/appData';
 import { netStatus } from './comm/components/NoNetHighComponent';
-import bridge from './utils/bridge'
+import bridge from './utils/bridge';
 // import hotUpdateUtil from './utils/HotUpdateUtil';
 
 // import geolocation from '@mr/react-native-geolocation'
@@ -56,23 +57,26 @@ export default class App extends Component {
 
     componentDidMount() {
         //热更新 先注释掉
-        bridge.removeLaunch()
+        bridge.removeLaunch();
         // hotUpdateUtil.isNeedToCheck();
     }
 
     render() {
+        const prefix = Platform.OS == 'android' ? 'meeruu://com.meeruu.sharegoods.mobile/' : 'meeruu://';
         return (
             <View style={styles.container}>
-                <Navigator screenProps={this.props.params}
-                           ref={(e) => {
-                               global.$navigator = e;
-                           }}
-                           onNavigationStateChange={(prevState, currentState) => {
-                               let curRouteName = getCurrentRouteName(currentState);
-                               // 拦截当前router的名称
-                               console.log(curRouteName);
-                               global.$routes = currentState.routes;
-                           }}/>
+                <Navigator
+                    uriPrefix={prefix}
+                    screenProps={this.props.params}
+                    ref={(e) => {
+                        global.$navigator = e;
+                    }}
+                    onNavigationStateChange={(prevState, currentState) => {
+                        let curRouteName = getCurrentRouteName(currentState);
+                        // 拦截当前router的名称
+                        console.log(curRouteName);
+                        global.$routes = currentState.routes;
+                    }}/>
                 {
                     CONFIG.showDebugPanel ? <DebugButton onPress={this.showDebugPage}><Text
                         style={{ color: 'white' }}>调试页</Text></DebugButton> : null
