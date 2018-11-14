@@ -18,7 +18,6 @@ export default class ShowListPage extends BasePage {
         show: false
     }
 
-    // 禁用某个页面的手势
     static navigationOptions = {
         
     };
@@ -39,8 +38,8 @@ export default class ShowListPage extends BasePage {
                     if (showSelectedDetail.selectedShow) {
                         return
                     }
-                    const {page} = this.state
-                    page === 0 ? this.showHotViewRef && this.showHotViewRef.refresh() : this.showHotFindeView && this.showHotFindeView.refresh()
+                    this.showHotViewRef && this.showHotViewRef.refresh()
+                    this.showHotFindeView && this.showHotFindeView.refresh()
                 }
             }
         );
