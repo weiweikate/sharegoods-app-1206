@@ -63,8 +63,16 @@ const bannerRoute = {
     [homeLinkType.store]: 'spellShop/MyShop_RecruitPage'
 };
 
-export class ShowBannerModules {
+export const showTypes = {
+    choice: 'choice',
+    hot: 'hot',
+    recommend: 'recommend',
+    banner: 'banner'
+}
+
+class ShowBannerModules {
     @observable bannerList = []
+    @observable type = showTypes.banner
     @computed get bannerCount() {
         return this.bannerList.length
     }
@@ -111,8 +119,12 @@ export class ShowBannerModules {
 
 }
 
-export class ShowChoiceModules {
+export const showBannerModules = new ShowBannerModules()
+
+
+class ShowChoiceModules {
     @observable choiceList = []
+    @observable type = showTypes.choice
     @computed get choiceCount() {
         return this.choiceList.length
     }
@@ -126,8 +138,11 @@ export class ShowChoiceModules {
     })
 }
 
-export class ShowHotModules {
+export const showChoiceModules = new ShowChoiceModules()
+
+class ShowHotModules {
     @observable hotList = []
+    @observable type = showTypes.hot
     @computed get hotCount() {
         return this.hotList.length
     }
@@ -141,12 +156,28 @@ export class ShowHotModules {
     })
 }
 
+export const showHotModules = new ShowHotModules()
+
+class ShowSelectedDetail {
+    @observable selectedShow = null
+    @observable selectedType = 0
+    @action selectedShowAction = (data, type) => {
+        this.selectedShow = data
+        this.selectedType = type
+    }
+}
+
+export const showSelectedDetail = new ShowSelectedDetail()
 
 export class ShowRecommendModules {
     @observable recommendList = []
     @observable selectedList = new Map()
     @observable page = 1
     @observable collectPage = 1
+    @observable isRefreshing = false
+    @observable type = showTypes.recommend
+    @observable isEnd = false
+
     @computed get recommendCount() {
         return this.recommendList.length
     }
@@ -154,7 +185,13 @@ export class ShowRecommendModules {
     @action loadRecommendList = (params) => {
         let currentDate = new Date()
         this.page = 1
+        this.isEnd = false
+        showChoiceModules.loadChoiceList()
+        showBannerModules.loadBannerList()
+        showHotModules.loadHotList()
+        this.isRefreshing = true
         return ShowApi.showQuery({...params, page: this.page}).then(result => {
+            this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 this.page += 1
                 let data = result.data.data
@@ -175,10 +212,22 @@ export class ShowRecommendModules {
     }
 
     @action getMoreRecommendList = (params) => {
+        if (this.isEnd) {
+            return Promise.reject(-1)
+        }
+        if (this.isRefreshing) {
+            return Promise.reject(-1)
+        }
         let currentDate = new Date()
+        this.isRefreshing = true
         return ShowApi.showQuery({page: this.page, ...params}).then(result => {
+            this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 let data = result.data.data
+                if (!data) {
+                    this.isEnd = true
+                    return Promise.resolve([])
+                }
                 if (data && data.length !== 0) {
                     this.page += 1
                     data.map(value => {
@@ -186,6 +235,7 @@ export class ShowRecommendModules {
                     })
                     return Promise.resolve(data)
                 } else {
+                    this.isEnd = true
                     return Promise.resolve([])
                 }
             } else {
@@ -209,9 +259,12 @@ export class ShowRecommendModules {
     }
 
     @action loadCollect = () => {
+        this.isEnd = true
         let currentDate = new Date()
         this.collectPage = 1
+        this.isRefreshing = true
         return ShowApi.showCollectList({page: this.collectPage}).then(result => {
+            this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 this.collectPage += 1
                 let data = result.data.data
@@ -232,10 +285,22 @@ export class ShowRecommendModules {
     }
 
     @action getMoreCollect = () => {
+        if (this.isEnd) {
+            return Promise.reject(-1)
+        }
+        if (this.isRefreshing) {
+            return Promise.reject(-1)
+        }
         let currentDate = new Date()
+        this.isRefreshing = true
         return ShowApi.showCollectList({page: this.collectPage}).then(result => {
+            this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 let data = result.data.data
+                if (!data) {
+                    this.isEnd = true
+                    return Promise.resolve([])
+                }
                 if (data && data.length !== 0) {
                     this.collectPage += 1
                     data.map(value => {
@@ -243,6 +308,7 @@ export class ShowRecommendModules {
                     })
                     return Promise.resolve(data)
                 } else {
+                    this.isEnd = true
                     return Promise.resolve([])
                 }
             } else {
@@ -263,7 +329,6 @@ export class ShowDetail {
     @action loadDetail = flow(function * (id) {
         try {
             const result = yield ShowApi.showDetail({id: id})
-            console.log('result', result.data)
             this.detail = result.data
         } catch (error) {
             console.log(error)
@@ -290,7 +355,6 @@ export class ShowDetail {
             }
         } catch(error) {
             this.isGoodActioning = false
-            console.log(error)
             Toast.$toast(error.msg)
         }
     })
@@ -315,7 +379,6 @@ export class ShowDetail {
             }
         } catch(error) {
             this.isCollecting = false
-            console.log(error)
             Toast.$toast(error.msg)
         }
     })

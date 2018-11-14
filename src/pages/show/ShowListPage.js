@@ -8,21 +8,46 @@ import ShowHotView from './ShowHotView'
 import ShowHotFindView from './ShowHotFindView'
 import backIconImg from '../../components/pageDecorator/NavigatorBar/source/icon_header_back.png'
 import DesignRule from 'DesignRule';
+import { showSelectedDetail } from './Show';
+import { observer } from 'mobx-react';
 
+@observer
 export default class ShowListPage extends BasePage {
     $navigationBarOptions = {
         title: '',
         show: false
     }
 
+    // 禁用某个页面的手势
+    static navigationOptions = {
+        
+    };
+
     state = {
         page: 0,
         left: false
     }
 
-
     componentWillMount() {
         this.setState({ left: this.params.fromHome })
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                console.log('willFocus', state);
+                if (state && state.routeName === 'ShowListPage') {
+                    if (showSelectedDetail.selectedShow) {
+                        return
+                    }
+                    const {page} = this.state
+                    page === 0 ? this.showHotViewRef && this.showHotViewRef.refresh() : this.showHotFindeView && this.showHotFindeView.refresh()
+                }
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
     _gotoPage(number) {
@@ -73,10 +98,10 @@ export default class ShowListPage extends BasePage {
                 onChangeTab={(number)=>this._onChangeTab(number)}
             >
                 <View key={1} style={styles.container} tabLabel="" >
-                    <ShowHotView navigation={navigation}/>
+                    <ShowHotView navigation={navigation} ref={(ref)=> {this.showHotViewRef = ref}}/>
                 </View>
-                <View key={2}  style={styles.container} tabLabel="   " >
-                    <ShowHotFindView navigation={navigation}/>
+                <View key={2}  style={styles.container} tabLabel="   ">
+                    <ShowHotFindView navigation={navigation} ref={(ref) => {this.showHotFindeView = ref}}/>
                 </View>
             </ScrollableTabView>
         </View>
