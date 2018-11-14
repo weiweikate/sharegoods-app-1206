@@ -15,6 +15,7 @@ import bridge from '../../../utils/bridge';
 import UserModel from '../../../model/user';
 import DeviceInfo from 'react-native-device-info';
 import DesignRule from '../../../constants/DesignRule';
+import { homeModule } from '../../home/Modules'
 
 /**
  * @author huyufeng
@@ -151,6 +152,7 @@ export default class RegistPage extends BasePage {
             this.$loadingDismiss();
             UserModel.saveUserInfo(data.data);
             UserModel.saveToken(data.data.token);
+            homeModule.loadHomeList()
             this.$navigate('login/login/GetRedpacketPage');
         }).catch((data) => {
             this.$loadingDismiss();
