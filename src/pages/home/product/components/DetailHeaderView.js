@@ -2,23 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-    StyleSheet,
     Text,
-    View,
-    Image,
-    TouchableWithoutFeedback
+    View
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import ViewPager from '../../../../components/ui/ViewPager';
 import ProductActivityView from './ProductActivityView';
 import user from '../../../../model/user';
-
-import VideoView from '../../../../components/ui/video/VideoView';
-import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
-
-
-const { px2dp } = ScreenUtils;
+import DetailBanner from './DetailBanner';
 
 /**
  * 商品详情头部view
@@ -34,81 +25,24 @@ export default class DetailHeaderView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            swiperShow: false,
             haveVideo: false
         };
     }
 
     componentDidMount() {
-        setTimeout(() => {
-            this.setState({
-                swiperShow: true
-            });
-        }, 100);
     }
 
     updateTime(activityData, activityType, callBack) {
         this.ProductActivityView.saveActivityViewData(activityData, activityType, callBack);
     }
 
-    getImageList = (data) => {
-        if (data) {
-            return data.map((item, index) => {
-                return item.originalImg;
-            });
-        } else {
-            return null;
-        }
-    };
-
-    _renderViewPageItem = (item = {}, index) => {
-        if (item.videoUrl) {
-            return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover}/>;
-        } else {
-            const { originalImg } = item;
-            let imgList = this.getImageList(this.props.data.productImgList);
-            return (
-                <TouchableWithoutFeedback onPress={() => {
-                    const params = { imageUrls: imgList, index: this.state.haveVideo ? index - 1 : index };
-                    const { navigation } = this.props;
-                    navigation && navigation.navigate('home/product/CheckBigImagesView', params);
-                }}>
-                    <Image source={{ uri: originalImg }}
-                           style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
-                           resizeMode="cover"
-                    />
-                </TouchableWithoutFeedback>
-            );
-        }
-    };
-
-    _renderPagination = (index, total) => <View style={styles.indexView}>
-        <Text style={styles.text}>{index + 1} / {total}</Text>
-    </View>;
-
     render() {
         const { activityType } = this.props;
-        const { productImgList = [], freight = 0, monthSaleTotal = 0, price = 0, originalPrice = 0, product = {}, priceType = '' } = this.props.data || {};
-        const { name = '', afterSaleServiceDays, videoUrl, imgUrl } = product;
-        //有视频第一个添加为视频
-        let productImgListTemp = [...productImgList];
-        if (StringUtils.isNoEmpty(videoUrl)) {
-            this.state.haveVideo = true;
-            productImgListTemp.unshift({ videoUrl: videoUrl, videoCover: imgUrl });
-        } else {
-            this.state.haveVideo = false;
-        }
+        const { freight = 0, monthSaleTotal = 0, price = 0, originalPrice = 0, product = {}, priceType = '' } = this.props.data || {};
+        const { name = '', afterSaleServiceDays } = product;
         return (
             <View>
-                {productImgListTemp.length > 0 && this.state.swiperShow ? <ViewPager swiperShow={true}
-                                                                                     loop={false}
-                                                                                     autoplay={false}
-                                                                                     bounces={true}
-                                                                                     height={ScreenUtils.autoSizeWidth(377)}
-                                                                                     arrayData={productImgListTemp}
-                                                                                     renderItem={(item, index) => this._renderViewPageItem(item, index)}
-                                                                                     renderPagination={this._renderPagination}/> :
-                    <View style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}/>}
+                <DetailBanner data={this.props.data} navigation={this.props.navigation}/>
                 {activityType === 1 || activityType === 2 ?
                     <ProductActivityView activityType={activityType}
                                          ref={(e) => {
@@ -134,10 +68,11 @@ export default class DetailHeaderView extends Component {
                             <View style={{
                                 backgroundColor: DesignRule.mainColor,
                                 marginLeft: 5,
-                                borderRadius:4,alignItems:'center',justifyContent:'center'}}>
+                                borderRadius: 4, alignItems: 'center', justifyContent: 'center'
+                            }}>
                                 <Text style={{
                                     color: 'white',
-                                    fontSize: 10, paddingHorizontal: 5,paddingVertical:2
+                                    fontSize: 10, paddingHorizontal: 5, paddingVertical: 2
                                 }}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelName}价` : '原价'}</Text>
                             </View>
                         </View>
@@ -175,21 +110,3 @@ export default class DetailHeaderView extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    indexView: {
-        position: 'absolute',
-        height: px2dp(20),
-        borderRadius: px2dp(10),
-        right: px2dp(14),
-        bottom: px2dp(20),
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    text: {
-        color: 'white',
-        fontSize: px2dp(10),
-        paddingHorizontal: 8
-    }
-});

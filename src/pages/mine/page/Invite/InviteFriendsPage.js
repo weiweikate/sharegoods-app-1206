@@ -25,20 +25,17 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import {
     UIImage
 } from '../../../../components/ui';
-// import bg_01 from '../../res/customerservice/bg_01.png'
-// import bg from '../../res/customerservice/bg.png'
+
 const autoSizeWidth = ScreenUtils.autoSizeWidth;
 import CommShareModal from '../../../../comm/components/CommShareModal';
 import bridge from '../../../../utils/bridge';
-// import BaseUrl from '../../../../api/BaseUrl'
-// import fanhui from '../../res/homeBaseImg/fanhui.png';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 import res from '../../res';
 
 const {
-    homeBaseImg: {
-        fanhui
+    button: {
+        white_back
     },
     invite: {
         bg,
@@ -136,22 +133,24 @@ export default class InviteFriendsPage extends BasePage<Props> {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
-                        <UIImage source={fanhui}
+                        <UIImage source={white_back}
                                  style={{
-                                     width: 13,
-                                     height: 22
+                                     width: 10,
+                                     height: 18
                                  }}/>
                     </View>
                 </TouchableWithoutFeedback>
                 <View style={{
-                    backgroundColor: 'white', padding: 8,
+                    backgroundColor: 'white',
                     width: autoSizeWidth(180),
                     height: autoSizeWidth(180),
                     bottom: autoSizeWidth(200),
                     left: autoSizeWidth(85 + 12.5),
                     position: 'absolute',
                     shadowColor: DesignRule.mainColor,
-                    shadowOpacity: 0.3
+                    shadowOpacity: 0.3,
+                    justifyContent:'center',
+                    alignItems:'center',
                 }}>
                     <UIImage source={{ uri: this.state.path }}
                              style={{
@@ -182,7 +181,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     }}>
                         <ImageBackground source={button} style={styles.btnContainer}>
                             <Text style={styles.btnText}>
-                                分享至...
+                                立即邀请
                             </Text>
                         </ImageBackground>
                     </TouchableOpacity>

@@ -61,8 +61,9 @@ export default class RecommendRow extends Component {
                                                                source={{ uri: RecommendRowItem.headUrl || '' }}/> :
                                 <View style={styles.icon}/>}
                             <View style={styles.tittleContainer}>
-                                <Text style={styles.name}>{RecommendRowItem.name || ''}</Text>
-                                <Text style={styles.member}>{`店主: ${RecommendRowItem.storeUserName || ''}`}</Text>
+                                <Text style={styles.name} numberOfLines={1}>{RecommendRowItem.name || ''}</Text>
+                                <Text style={styles.member}
+                                      numberOfLines={1}>{`店主: ${RecommendRowItem.storeUserName || ''}`}</Text>
                             </View>
                         </View>
                         <FlatList
@@ -89,7 +90,11 @@ export default class RecommendRow extends Component {
                         }}>{`距离下一次分红还差${(bonusNeedMoney - tradeBalance > 0) ? (bonusNeedMoney - tradeBalance) : 0}元`}</Text>
                     </View>
                     <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
-                    <View style={{ width: 44 + 70, alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{
+                        width: ScreenUtils.autoSizeWidth(44 + 70),
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                             {
                                 starsArr.map((item, index) => {

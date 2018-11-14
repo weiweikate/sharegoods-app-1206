@@ -6,7 +6,8 @@
 
 import React, { PureComponent } from 'react';
 import {
-    requireNativeComponent
+    requireNativeComponent,
+    processColor
 } from 'react-native';
 
 const MRWaveView = requireNativeComponent('MRWaveView');
@@ -17,7 +18,16 @@ export default class WaveView extends PureComponent {
 
     render(){
         return(
-            <MRWaveView style={{height:100,width:100}} topTitle={'V1'}/>
+            <MRWaveView
+                style={{height:40,width:40}}
+                topTitle={this.props.topTitle}
+                waveBackgroundColor={processColor(this.props.waveBackgroundColor)}
+                waveColor = {processColor(this.props.waveColor)}
+                waveLightColor = {processColor(this.props.waveLightColor)}
+                topTitleColor = {processColor(this.props.topTitleColor)}
+                topTitleSize = {this.props.topTitleSize}
+                progressValue = {this.props.progressValue}
+            />
         )
     }
 

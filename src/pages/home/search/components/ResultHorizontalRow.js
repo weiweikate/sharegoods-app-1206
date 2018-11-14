@@ -81,8 +81,8 @@ const styles = StyleSheet.create({
     },
     img: {
         backgroundColor: DesignRule.lineColor_inColorBg,
-        height: 170,
-        width: 170
+        height: (ScreenUtils.width - 30 - 5) / 2,
+        width: (ScreenUtils.width - 30 - 5) / 2
     }
 });
 
