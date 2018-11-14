@@ -17,7 +17,8 @@ import {
     View,
     TouchableWithoutFeedback,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -74,11 +75,21 @@ export default class UserPromotionPage extends BasePage<Props> {
     };
 
     componentDidMount() {
-        if(this.params.reload){
+        this.listener = DeviceEventEmitter.addListener("payPromotionSuccess",()=>{
             this.onRefresh();
-        }else {
-            this.getUserPromotionPromoter();
-        }
+        })
+        // if(this.params.callback && this.params.callback.reload){
+        //     alert();
+        //     this.onRefresh();
+        // }else {
+        //     this.getUserPromotionPromoter();
+        // }
+        this.getUserPromotionPromoter();
+
+    }
+
+    componentWillUnmount() {
+        this.listener && this.listener.remove();
     }
 
     getUserPromotionPromoter = () => {
