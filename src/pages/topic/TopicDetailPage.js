@@ -392,14 +392,23 @@ export default class TopicDetailPage extends BasePage {
     _renderCouponModal() {
 
         let view = (
+            <TouchableWithoutFeedback onPress={()=>{
+                this.setState({
+                    canGetCoupon:false
+                })
+                this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: user.availableBalance });
+            }}>
             <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
                 <Text style={{ color: 'white', fontSize: px2dp(24) }}>
                     领取成功
                 </Text>
                 <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
-                    可前往我的-优惠卷查看
+                    可前往我的-
+                    <Text style={{ textDecorationLine: 'underline' }}>现金账户</Text>
+                    查看
                 </Text>
             </View>
+            </TouchableWithoutFeedback>
         );
 
         let button = (
