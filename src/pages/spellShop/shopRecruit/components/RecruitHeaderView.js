@@ -36,7 +36,12 @@ export default class RecommendRow extends Component {
                 <Image source={img}/>
                 <Text style={{ color: '#333333', fontSize: 13, marginLeft: 2 }}>{tittle}</Text>
             </View>
-            <Text style={{ color: '#666666', fontSize: 13, marginTop: 8 }} numberOfLines={1}>{content}</Text>
+            <Text style={{
+                color: '#666666',
+                fontSize: 13,
+                marginTop: 8,
+                paddingHorizontal: ScreenUtils.autoSizeWidth(8)
+            }} numberOfLines={1}>{content}</Text>
         </View>);
     };
 
