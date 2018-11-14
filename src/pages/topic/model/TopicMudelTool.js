@@ -1,7 +1,6 @@
 
 
 // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
-import StringUtils from '../../../utils/StringUtils';
 
 const statues = {
     deleteStatue: 0,
