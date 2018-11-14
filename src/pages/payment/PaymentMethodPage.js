@@ -7,7 +7,8 @@ import {
     Image,
     ScrollView,
     AppState,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    DeviceEventEmitter
 } from 'react-native';
 import BasePage from '../../BasePage';
 import { UIText } from '../../components/ui';
@@ -214,7 +215,8 @@ export default class PaymentMethodPage extends BasePage {
                     }}>
                         <TouchableWithoutFeedback onPress={() => {
                             this.setState({ payPromotionSuccess: false });
-                            this.$navigateBack('mine/promotion/UserPromotionPage', { reload: true });
+                            DeviceEventEmitter.emit("payPromotionSuccess");
+                            this.$navigateBack('mine/promotion/UserPromotionPage');
                         }}>
                             <View style={{
                                 borderRadius: 5,
