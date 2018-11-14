@@ -6,7 +6,7 @@ import { View, Image, StyleSheet, Platform } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import { showBannerModules } from './Show'
+import { showBannerModules, showSelectedDetail } from './Show'
 import ScreenUtils from '../../utils/ScreenUtils'
 import MRBannerView from '../../components/ui/bannerView/MRBannerView'
 import XGSwiper from '../../components/ui/XGSwiper'
@@ -30,6 +30,7 @@ export default class ShowBannerView extends Component {
     }
 
     _onPressRow(e) {
+        showSelectedDetail.selectedShowAction(1, showBannerModules.type)
         let index = e.nativeEvent.index
         const { bannerList } = showBannerModules
         let item = bannerList[index]

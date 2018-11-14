@@ -8,7 +8,7 @@ import ShowBannerView from './ShowBannerView';
 import ShowChoiceView from './ShowChoiceView';
 import ShowHotScrollView from './ShowHotScrollView';
 import { observer } from 'mobx-react';
-import { ShowRecommendModules, tag } from './Show';
+import { ShowRecommendModules, tag, showSelectedDetail } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 
@@ -40,6 +40,7 @@ export default class ShowHotView extends Component {
     }
 
     refresh() {
+        this.waterfall.scrollToTop()
         this.waterfall.index = 1
         this.waterfall && this.waterfall.clear()
         this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
@@ -58,6 +59,8 @@ export default class ShowHotView extends Component {
     }
 
     _gotoDetail(data) {
+        showSelectedDetail.selectedShowAction(data, this.recommendModules.type)
+        
         const { navigation } = this.props;
         navigation.navigate('show/ShowDetailPage', { id: data.id });
     }

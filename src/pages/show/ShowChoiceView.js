@@ -6,37 +6,62 @@ import { View, StyleSheet, Text, Image, TouchableWithoutFeedback } from 'react-n
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import { showChoiceModules } from './Show'
+import { showChoiceModules, showSelectedDetail } from './Show'
 import res from '../../comm/res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule'
 import ImageLoad from '@mr/react-native-image-placeholder'
 
-const Card = ({item, press}) => <TouchableWithoutFeedback style={styles.card} onPress={()=> press && press()}>
-    <View style={styles.card}>
-    <ImageLoad style={styles.imgView} source={{uri:item.coverImg}} resizeMode={'cover'}>
-        <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
-        <Text style={styles.dis} numberOfLines={2}>{item.pureContent ? item.pureContent.slice(0, 100).trim() : ''}</Text>
-    </ImageLoad>
-    <View style={styles.profileView}>
-        <Image style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg : ''}}/>
-        <Text style={styles.name}>{item.userName}</Text>
-        <View style={{flex: 1}}/>
-        <View style={styles.rightRow}>
-            <Image source={seeImg}/>
-            <Text style={styles.number}>{item.click ? item.click : 0}</Text>
+class Card extends Component {
+
+    state = {
+        readNumber: 0
+    }
+
+    componentWillMount() {
+        const { item } = this.props
+        this.setState({readNumber: item.click})
+    }
+
+    _onSelectedCard() {
+        const { press } = this.props
+        press && press()
+        setTimeout(() => {
+            const { readNumber } = this.state
+            this.setState({readNumber: readNumber + 1})
+        }, 1000);
+    }
+
+    render () {
+        const {item } = this.props
+        const { readNumber } = this.state
+        return <TouchableWithoutFeedback style={styles.card} onPress={()=> this._onSelectedCard()}>
+        <View style={styles.card}>
+        <ImageLoad style={styles.imgView} source={{uri:item.coverImg}} resizeMode={'cover'}>
+            <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
+            <Text style={styles.dis} numberOfLines={2}>{item.pureContent ? item.pureContent.slice(0, 100).trim() : ''}</Text>
+        </ImageLoad>
+        <View style={styles.profileView}>
+            <Image style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg : ''}}/>
+            <Text style={styles.name}>{item.userName}</Text>
+            <View style={{flex: 1}}/>
+            <View style={styles.rightRow}>
+                <Image source={seeImg}/>
+                <Text style={styles.number}>{readNumber ? readNumber : 0}</Text>
+            </View>
         </View>
-    </View>
-    </View>
-</TouchableWithoutFeedback>
+        </View>
+    </TouchableWithoutFeedback>
+    }
+}
 
 @observer
 export default class ShowChoiceView extends Component {
 
     _onChoiceAction(item) {
+        showSelectedDetail.selectedShowAction(item, showChoiceModules.type)
         const { navigation } = this.props
-        showChoiceModules.selectedChoiceId(item.id)
         navigation.navigate('show/ShowDetailPage', {id: item.id})
     }
 

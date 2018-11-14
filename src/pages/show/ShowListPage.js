@@ -8,12 +8,20 @@ import ShowHotView from './ShowHotView'
 import ShowHotFindView from './ShowHotFindView'
 import backIconImg from '../../components/pageDecorator/NavigatorBar/source/icon_header_back.png'
 import DesignRule from 'DesignRule';
+import { showSelectedDetail } from './Show';
+import { observer } from 'mobx-react';
 
+@observer
 export default class ShowListPage extends BasePage {
     $navigationBarOptions = {
         title: '',
         show: false
     }
+
+    // 禁用某个页面的手势
+    static navigationOptions = {
+        
+    };
 
     state = {
         page: 0,
@@ -28,6 +36,9 @@ export default class ShowListPage extends BasePage {
                 const { state } = payload;
                 console.log('willFocus', state);
                 if (state && state.routeName === 'ShowListPage') {
+                    if (showSelectedDetail.selectedShow) {
+                        return
+                    }
                     const {page} = this.state
                     page === 0 ? this.showHotViewRef && this.showHotViewRef.refresh() : this.showHotFindeView && this.showHotFindeView.refresh()
                 }

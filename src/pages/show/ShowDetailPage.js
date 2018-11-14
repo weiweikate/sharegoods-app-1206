@@ -28,9 +28,8 @@ const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} on
 export default class ShowDetailPage extends Component {
     constructor(props) {
         super(props);
-        this.params = this.props.navigation.state.params || {};
-        this.showDetailModule = new ShowDetail();
-        // this.showDetailModule.loadDetail(this.params.id)
+        this.params = this.props.navigation.state.params || {}
+        this.showDetailModule = new ShowDetail()
     }
 
     componentWillMount() {
@@ -40,7 +39,7 @@ export default class ShowDetailPage extends Component {
                 const { state } = payload;
                 console.log('willFocus', state);
                 if (state && state.routeName === 'show/ShowDetailPage') {
-                    this.showDetailModule.loadDetail(this.params.id);
+                    this.showDetailModule.loadDetail(this.params.id)
                 }
             }
         );
