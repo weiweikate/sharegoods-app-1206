@@ -531,7 +531,7 @@ class MyOrdersDetailPage extends BasePage {
                     }}
                     yes={() => {
                         this.setState({ isShowDeleteOrderModal: false });
-                        if (this.state.menu.id === 7) {
+                        if (this.state.status === 4||this.state.status === 5) {
                             Toast.hiddenLoading();
                             Toast.showLoading();
                             OrderApi.deleteCompletedOrder({ orderNum: this.state.viewData.orderNum }).then((response) => {
@@ -544,7 +544,7 @@ class MyOrdersDetailPage extends BasePage {
                                 NativeModules.commModule.toast(e.msg);
                             });
 
-                        } else if (this.state.menu.id === 9) {
+                        } else if (this.state.status === 6||this.state.status === 7||this.state.status === 8) {
                             Toast.showLoading();
                             OrderApi.deleteClosedOrder({ orderNum: this.state.viewData.orderNum }).then((response) => {
                                 Toast.hiddenLoading();

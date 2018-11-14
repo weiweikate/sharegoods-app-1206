@@ -3,7 +3,6 @@ import {
 } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
-import IconGoTo from '../../../mine/res/customerservice/icon_06-03.png';
 import StringUtils from '../../../../utils/StringUtils';
 import MineAPI from '../../api/MineApi';
 import UIText from '../../../../components/ui/UIText';
@@ -11,6 +10,7 @@ import bridge from '../../../../utils/bridge';
 import UIImage from '../../../../components/ui/UIImage';
 import DesignRule from 'DesignRule';
 import res from '../../../../comm/res';
+
 const addrSelectedIcon = res.button.selected_circle_red;
 const addrUnSelectedIcon = res.button.unselected_circle;
 /**
@@ -21,6 +21,7 @@ const addrUnSelectedIcon = res.button.unselected_circle;
  * @email luoyongming@meeruu.com
  */
 const dismissKeyboard = require('dismissKeyboard');
+const arrow_right = res.button.arrow_right;
 
 export default class AddressEditAndAddPage extends BasePage {
 
@@ -145,7 +146,7 @@ export default class AddressEditAndAddPage extends BasePage {
             <TouchableOpacity style={styles.horizontalItem} onPress={() => this._getCityPicker()}>
                 <Text style={[styles.itemLeftText, { flex: 1 }]}>所在地区</Text>
                 <Text>{this.state.areaText}</Text>
-                <Image source={IconGoTo} style={{ width: 12, height: 20, marginLeft: 4 }} resizeMode={'contain'}/>
+                <Image source={arrow_right} style={{ width: 12, height: 20, marginLeft: 4 }} resizeMode={'contain'}/>
             </TouchableOpacity>
             <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
             <View style={{ backgroundColor: 'white' }}>

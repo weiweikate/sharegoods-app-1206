@@ -13,7 +13,6 @@ import CommonTwoChoiceModal from '../../model/CommonTwoChoiceModal';
 import UIText from '../../../../components/ui/UIText';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import arrow_right from '../../../mine/res/customerservice/icon_06-03.png';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
@@ -22,6 +21,7 @@ import bridge from '../../../../utils/bridge';
 import CommModal from 'CommModal';
 import DesignRule from 'DesignRule';
 import QYChatUtil from '../helper/QYChatModel';
+import res from '../../res';
 
 /**
  * @author luoyongming
@@ -30,6 +30,9 @@ import QYChatUtil from '../helper/QYChatModel';
  * @org www.sharegoodsmall.com
  * @email luoyongming@meeruu.com
  */
+
+const arrow_right = res.button.arrow_right;
+
 class SettingPage extends BasePage {
     constructor(props) {
         super(props);
@@ -178,7 +181,12 @@ class SettingPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg, marginLeft: 15, marginRight: 15 }}/>
+            <View style={{
+                height: 0.5,
+                backgroundColor: DesignRule.lineColor_inColorBg,
+                marginLeft: 15,
+                marginRight: 15
+            }}/>
         );
     };
     toLoginOut = () => {
@@ -207,7 +215,7 @@ class SettingPage extends BasePage {
                     shopCartStore.data = [];
                     this.$navigateReset();
                     MineApi.signOut();
-                    QYChatUtil.qiYULogout()
+                    QYChatUtil.qiYULogout();
                     this.$loadingDismiss();
 
                 }}

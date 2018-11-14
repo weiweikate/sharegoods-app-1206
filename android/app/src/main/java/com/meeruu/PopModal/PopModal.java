@@ -3,6 +3,7 @@ package com.meeruu.PopModal;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.view.Gravity;
@@ -36,6 +37,8 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
 
 
     private DialogRootViewGroup mHostView;
+    private Rect rect;
+
     private @Nullable
     PopupWindow popupWindow;
     public static WeakReference<ReactContext> mContext;
@@ -171,6 +174,14 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             return;
         }
         popupWindow = new PopupWindow(currentActivity);
+        if (Build.VERSION.SDK_INT >= 24) {
+            if (rect == null) {
+                rect = new Rect();
+            }
+            mHostView.getGlobalVisibleRect(rect);
+            int h = mHostView.getResources().getDisplayMetrics().heightPixels - rect.bottom;
+            popupWindow.setHeight(h);
+        }
         popupWindow.setFocusable(true);
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         popupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
