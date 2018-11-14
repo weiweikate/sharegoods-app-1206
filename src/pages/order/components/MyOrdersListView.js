@@ -13,6 +13,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import userOrderNum from '../../../model/userOrderNum';
 import DesignRule from 'DesignRule';
 import emptyIcon from '../res/kongbeuye_dingdan.png';
+import MineApi from '../../mine/api/MineApi';
 export default class MyOrdersListView extends Component {
     constructor(props) {
         super(props);
@@ -26,7 +27,8 @@ export default class MyOrdersListView extends Component {
             isShowSingleSelctionModal: false,
             isShowReceiveGoodsModal: false,
             menu: {},
-            index: -1
+            index: -1,
+            CONFIG:[]
         };
         this.currentPage = 1;
     }
@@ -165,7 +167,7 @@ export default class MyOrdersListView extends Component {
                     ref={(ref) => {
                         this.cancelModal = ref;
                     }}
-                    detail={['我不想买了', '信息填写错误，重新拍', '其他原因']}
+                    detail={this.state.CONFIG}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
                     }}
@@ -173,7 +175,7 @@ export default class MyOrdersListView extends Component {
                         this.setState({ isShowSingleSelctionModal: false });
                         Toast.showLoading();
                         OrderApi.cancelOrder({
-                            buyerRemark: ['我不想买了', '信息填写错误，重新拍', '其他原因'][index],
+                            buyerRemark: this.state.CONFIG[index],
                             orderNum: this.state.viewData[this.state.index].orderNum
                         }).then((response) => {
                             Toast.hiddenLoading();
@@ -248,8 +250,24 @@ export default class MyOrdersListView extends Component {
     componentDidMount() {
         //网络请求，业务处理
         this.getDataFromNetwork();
+       this.getCancelOrder();
         DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.onRefresh());
         this.timeDown();
+    }
+    getCancelOrder(){
+        let arrs=[];
+        MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(res => {
+            if (res.code == 10000 && StringUtils.isNoEmpty(res.data)) {
+                res.data.map((item,i)=>{
+                    arrs.push(item.value)
+                })
+                this.setState({
+                    CONFIG: arrs
+                });
+            }
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     timeDown() {
@@ -445,8 +463,13 @@ export default class MyOrdersListView extends Component {
         this.setState({ menu: menu, index: index });
         switch (menu.id) {
             case 1:
-                this.setState({ isShowSingleSelctionModal: true });
-                this.cancelModal && this.cancelModal.open();
+                if(this.state.CONFIG.length>0){
+                    this.setState({ isShowSingleSelctionModal: true });
+                    this.cancelModal && this.cancelModal.open();
+                }else{
+                    NativeModules.commModule.toast('无取消理由');
+                }
+
                 break;
             case 2:
                 this.props.nav('payment/PaymentMethodPage', {

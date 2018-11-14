@@ -2,7 +2,8 @@ import React from 'react';
 import {
     View,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    ScrollView
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -49,13 +50,15 @@ export default class HelperQuestionDetail extends BasePage {
 
     _render() {
         return (
-            <View style={{ backgroundColor: DesignRule.bgColor, flex: 1 }}>
+            <View  style={{ backgroundColor: DesignRule.bgColor, flex: 1 }}>
+            <ScrollView  style={{marginBottom:209}}>
                 {this.state.content ? <HTML html={this.state.content} imagesMaxWidth={ScreenUtils.width}
-                                            containerStyle={{ backgroundColor: DesignRule.bgColor ,padding:3}}/> : null}
+                                            containerStyle={{ backgroundColor: DesignRule.bgColor ,padding:5}}/> : null}
+            </ScrollView>
                 <View style={{
                     width: ScreenUtils.width,
                     height: 80,
-                    position: 'absolute',
+                    position:'absolute',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     bottom: 109,
@@ -93,7 +96,6 @@ export default class HelperQuestionDetail extends BasePage {
                         }}>{`有用  (${this.state.useHelpNum > 9999 ? '9999+' : this.state.useHelpNum})`}</Text>
                     </TouchableOpacity>
                 </View>
-
             </View>
         );
     }
