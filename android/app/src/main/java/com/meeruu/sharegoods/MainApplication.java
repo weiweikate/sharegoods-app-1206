@@ -86,7 +86,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
                 CrashHandler.getInstance().init(this);
             }
             // 七鱼初始化
-            Unicorn.init(this, "aa15b0b8c2a1bc1bf0341e244c049961", options(), new QiyuImageLoader(this));
+            Unicorn.init(this, "b87fd67831699ca494a9d3de266cd3b0", options(), new QiyuImageLoader(this));
         }
     }
 

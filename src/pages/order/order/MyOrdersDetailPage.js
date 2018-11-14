@@ -139,14 +139,14 @@ class MyOrdersDetailPage extends BasePage {
                         expressNo: this.state.expressNo
                     })
                 }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center'}} >
+                    <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'space-between'}} >
                         <UIImage source={logisticCar} style={{ height: 19, width: 19, marginLeft: 21 }}/>
-                        <View style={{justifyContent:'center'}}>
+                        <View style={{justifyContent:'center',flex:1}}>
                             {typeof this.state.pageStateString.sellerState === 'string' ?
                                 <View style={{ marginLeft: 10}}>
                                 <UIText value={this.state.pageStateString.sellerState} style={{
                                     color: DesignRule.textColor_mainTitle,
-                                    fontSize: 18,
+                                    fontSize: 15,
                                     marginRight: 46
                                 }}/>
                                     {StringUtils.isNoEmpty(this.state.pageStateString.logisticsTime)?
@@ -162,11 +162,12 @@ class MyOrdersDetailPage extends BasePage {
                                         flex:1,
                                         fontSize: 15,
                                          marginLeft:10,
+                                        marginRight:3,
                                         color: DesignRule.textColor_instruction
                                     }}>{this.state.pageStateString.sellerState[0]}</Text>
                                     <Text style={{
                                         fontSize: 15,
-                                        marginRight:46,
+                                        marginRight:16,
                                         color: DesignRule.textColor_instruction
                                     }}>{this.state.pageStateString.sellerState[1]}</Text>
                                 </View>
@@ -177,15 +178,16 @@ class MyOrdersDetailPage extends BasePage {
                                             color: DesignRule.textColor_instruction,
                                             fontSize: 13,
                                             marginLeft: 10,
-                                            marginRight: 46,
+                                            marginRight: 16,
                                             marginTop:5
                                         }}/>
                                 : null}
 
                         </View>
+                        <UIImage source={arrow_right} style={{ height: 19, width: 19, marginRight: 11 }}
+                                 resizeMode={'contain'}/>
                     </View>
-                    <UIImage source={arrow_right} style={{ height: 19, width: 19, marginRight: 11 }}
-                             resizeMode={'contain'}/>
+
                 </TouchableOpacity>
             </View>
 
@@ -651,7 +653,7 @@ class MyOrdersDetailPage extends BasePage {
                         + this.state.viewData.areaString
                         + this.state.viewData.receiverAddress
                     }
-                            style={{ color: DesignRule.textColor_instruction, fontSize: 15 }}/>
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 15 ,marginTop:5}}/>
                 </View>
             </View>
         );
@@ -905,8 +907,8 @@ class MyOrdersDetailPage extends BasePage {
                 //等待买家付款
                 case 1:
                     this.startCutDownTime(data.shutOffTime);
-                    pageStateString.sellerState = ['收货人：' + data.receiver,'' + data.recevicePhone];
-                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    pageStateString.sellerState = ['收货人:' + data.receiver,'' + data.recevicePhone];
+                    pageStateString.sellerTime = '收货地址:' + data.province + data.city + data.area + data.address;
                     if (StringUtils.isEmpty(data.outTradeNo)) {
                         pageStateString.menu = [
                             {
@@ -1306,11 +1308,8 @@ const styles = StyleSheet.create({
          marginRight: 15,
          paddingTop:5,
          paddingBottom:5,
-         justifyContent: 'space-between',
          borderRadius: 10,
-         flex:1,
-         flexDirection: 'row',
-         alignItems: 'center'
+         justifyContent:'center'
      }
 });
 
