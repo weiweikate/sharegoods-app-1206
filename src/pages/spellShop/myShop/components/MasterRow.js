@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import ShopMasterIcon from '../res/dz_03.png';
 import DesignRule from 'DesignRule';
+import StringUtils from '../../../../utils/StringUtils';
 
 export default class MasterRow extends Component {
 
@@ -33,7 +34,8 @@ export default class MasterRow extends Component {
 
     render() {
         let {headImg,nickName,levelName,contribution} = this.props.item;
-        const {tradeBalance} = this.props;
+        let {tradeBalance} = this.props;
+        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : tradeBalance;
         return (<TouchableWithoutFeedback onPress={this._clickAssistantDetail}>
             <View style={styles.container}>
                 <Image style={styles.iconGap} source={ShopMasterIcon}/>

@@ -20,12 +20,12 @@ export default class OpenShopExplainPage extends BasePage {
         title: '开店'
     };
 
-    _onPress = ()=>{
-        this.$navigate('HtmlPage',{
-            title:'拼店管理条例',
-            uri:`${apiEnvironment.getCurrentH5Url()}/static/protocol/pindian.html`
-        })
-    }
+    _onPress = () => {
+        this.$navigate('HtmlPage', {
+            title: '拼店管理条例',
+            uri: `${apiEnvironment.getCurrentH5Url()}/static/protocol/pindian.html`
+        });
+    };
 
     _clickOpen = () => {
         this.$navigate('spellShop/openShop/CashExplainPage');
@@ -38,7 +38,12 @@ export default class OpenShopExplainPage extends BasePage {
                 <View style={{ marginHorizontal: 15 }}>
 
                     {index !== 0 ?
-                        <View style={{ marginLeft: 8, width: 2, backgroundColor: DesignRule.mainColor, height: 33 }}/> : null}
+                        <View style={{
+                            marginLeft: 8,
+                            width: 2,
+                            backgroundColor: DesignRule.mainColor,
+                            height: 33
+                        }}/> : null}
 
                     <View style={{ flexDirection: 'row' }}>
                         <View>
@@ -46,11 +51,21 @@ export default class OpenShopExplainPage extends BasePage {
                                 <Text style={styles.circleText}>{index + 1}</Text>
                             </View>
                             {index !== maxIndex - 1 ?
-                                <View style={{ marginLeft: 8, width: 2, backgroundColor: DesignRule.mainColor, flex: 1 }}/> : null}
+                                <View style={{
+                                    marginLeft: 8,
+                                    width: 2,
+                                    backgroundColor: DesignRule.mainColor,
+                                    flex: 1
+                                }}/> : null}
                         </View>
 
-                        <Text style={styles.desc}>{title}</Text>
-
+                        <View style={styles.desc}>
+                            <Text style={{
+                                marginRight: 0,
+                                fontSize: 13,
+                                color: DesignRule.textColor_mainTitle
+                            }}>{title}</Text>
+                        </View>
                     </View>
                 </View>
 
@@ -98,7 +113,7 @@ export default class OpenShopExplainPage extends BasePage {
 
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.descText}>点击我要开店则默认同意</Text>
-                        <TouchableOpacity onPress = {this._onPress}>
+                        <TouchableOpacity onPress={this._onPress}>
                             <Text style={[styles.descText, { color: DesignRule.mainColor }]}>《拼店管理条例》</Text>
                         </TouchableOpacity>
                     </View>
@@ -126,9 +141,7 @@ const styles = StyleSheet.create({
     },
     desc: {
         marginLeft: 8,
-        marginRight: 0,
-        fontSize: 13,
-        color: DesignRule.textColor_mainTitle
+        flex: 1
     },
     btnStyle: {
         width: 170,
