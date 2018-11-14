@@ -14,7 +14,7 @@
 
 /**三方key 或者 通知key相关宏**/
 
-#define KQiYuKey         @"aa15b0b8c2a1bc1bf0341e244c049961" //七鱼key
+#define KQiYuKey         @"b87fd67831699ca494a9d3de266cd3b0" //七鱼key
 #define KJSPushKey       @"7fde54543daf045a209a7abf"  //极光appkey
 
 #define KWechatAppKey    @"wx401bc973f010eece"  //微信key
