@@ -28,6 +28,7 @@ import CommModal from '../../../comm/components/CommModal';
 import redEnvelopeBg from './res/red_envelope_bg.png';
 import DesignRule from 'DesignRule';
 
+import DetailNavView from './components/DetailNavView';
 
 const { px2dp } = ScreenUtils;
 import user from '../../../model/user';
@@ -337,6 +338,7 @@ export default class ProductDetailPage extends BasePage {
         } else {
             this.st = 1;
         }
+        this.DetailNavView.updateWithScale(this.st);
         this._refHeader.setNativeProps({
             opacity: this.st
         });
@@ -420,31 +422,29 @@ export default class ProductDetailPage extends BasePage {
         return (
             <View style={styles.container}>
                 <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
-                <View style={styles.transparentView}>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.$navigateBack();
-                    }}>
-                        <Image source={res.button.show_detail_back}/>
-                    </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.DetailNavShowModal.show((item) => {
-                            switch (item.index) {
-                                case 0:
-                                    this.$navigate('message/MessageCenterPage');
-                                    this.DetailNavShowModal.close();
-                                    break;
-                                case 1:
-                                    this.$navigateReset();
-                                    break;
-                                case 2:
-                                    this.shareModal.open();
-                                    break;
-                            }
-                        });
-                    }}>
-                        <Image source={res.button.show_share}/>
-                    </TouchableWithoutFeedback>
-                </View>
+                <DetailNavView ref={(e) => this.DetailNavView = e}
+                               source = {imgUrl}
+                               navBack={() => {
+                                   this.$navigateBack();
+                               }}
+                               navRLeft={() => {
+                               }}
+                               navRRight={() => {
+                                   this.DetailNavShowModal.show((item) => {
+                                       switch (item.index) {
+                                           case 0:
+                                               this.$navigate('message/MessageCenterPage');
+                                               this.DetailNavShowModal.close();
+                                               break;
+                                           case 1:
+                                               this.$navigateReset();
+                                               break;
+                                           case 2:
+                                               this.shareModal.open();
+                                               break;
+                                       }
+                                   });
+                               }}/>
 
                 <SectionList onScroll={this._onScroll}
                              ListHeaderComponent={this._renderListHeader}

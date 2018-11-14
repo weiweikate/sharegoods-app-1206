@@ -320,7 +320,7 @@ export default class ShopRecruitPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/register`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download`,
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>
