@@ -31,7 +31,7 @@ export default ({data, press, imageStyle, imageUrl}) => {
         <Text numberOfLines={2} style={styles.title}>{data.pureContent ? data.pureContent.slice(0, 100) : ''}</Text>
         <View style={styles.row}>
             <Image style={styles.portrait} source={{uri:data.userHeadImg ? data.userHeadImg : ''}}/>
-            <Text style={styles.name}>{data.userName ? data.userName.slice(0, 5) + '...' : ''}</Text>
+            <Text style={styles.name}>{data.userName && data.userName.length > 5 ? data.userName.slice(0, 5) + '...' : data.userName}</Text>
             <View style={{flex: 1}}/>
             <Text style={styles.time}>{data.time}</Text>
         </View>
@@ -59,17 +59,22 @@ let styles = StyleSheet.create({
         height: px2dp(30)
     },
     profile: {
-        height: px2dp(90),
-        padding : px2dp(10)
+        height: px2dp(90)
     },
     title: {
         color: DesignRule.textColor_secondTitle,
-        fontSize: px2dp(12)
+        fontSize: px2dp(12),
+        paddingTop : px2dp(10),
+        paddingRight : px2dp(10),
+        paddingLeft : px2dp(10)
     },
     row: {
         flexDirection: 'row',
         alignItems: 'center',
-        height: px2dp(53)
+        height: px2dp(53),
+        justifyContent: 'space-between',
+        paddingRight : px2dp(10),
+        paddingLeft : px2dp(10)
     },
     titleView: {
         height: px2dp(53),
@@ -96,8 +101,7 @@ let styles = StyleSheet.create({
     },
     time: {
         color: '#939393',
-        fontSize: px2dp(11),
-        marginRight: px2dp(10)
+        fontSize: px2dp(11)
     },
     mask: {
         position: 'absolute',

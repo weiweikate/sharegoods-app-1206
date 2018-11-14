@@ -10,6 +10,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import CommModal from 'CommModal';
 import DesignRule from 'DesignRule';
 import res from '../res';
+
 const topicShow = res.topicShow;
 const topicShowClose = res.topicShowClose;
 
@@ -45,7 +46,9 @@ export default class TopicDetailShowModal extends Component {
         return (
             <CommModal onRequestClose={this.close}
                        visible={this.state.modalVisible}
-                       ref={(ref)=>{this.modal = ref;}}
+                       ref={(ref) => {
+                           this.modal = ref;
+                       }}
                        transparent={true}>
                 <View style={{
                     backgroundColor: 'rgba(0,0,0,0.5)', top: 0,
@@ -72,16 +75,17 @@ export default class TopicDetailShowModal extends Component {
                             <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }}>{this.state.tittle}</Text>
                         </ImageBackground>
                         <View style={{ flex: 1, alignItems: 'center' }}>
-                            <Text style={{
+                            {this.state.name?<Text style={{
                                 marginTop: ScreenUtils.px2dp(31),
                                 color: DesignRule.textColor_mainTitle,
                                 fontSize: ScreenUtils.px2dp(15), textAlign: 'center'
-                            }}>{`${this.state.name || ''}\n${this.state.subName || ''}`}</Text>
+                            }}>{`${this.state.name || ''}`}</Text>:null}
+
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
                                 color: DesignRule.textColor_secondTitle,
                                 fontSize: ScreenUtils.px2dp(14),
-                                paddingHorizontal: ScreenUtils.px2dp(32),
+                                paddingHorizontal: ScreenUtils.px2dp(32)
                             }}>{`${this.state.content || ''}`}</Text>
                         </View>
 
