@@ -141,14 +141,16 @@ export default class InviteFriendsPage extends BasePage<Props> {
                     </View>
                 </TouchableWithoutFeedback>
                 <View style={{
-                    backgroundColor: 'white', padding: 8,
+                    backgroundColor: 'white',
                     width: autoSizeWidth(180),
                     height: autoSizeWidth(180),
                     bottom: autoSizeWidth(200),
                     left: autoSizeWidth(85 + 12.5),
                     position: 'absolute',
                     shadowColor: DesignRule.mainColor,
-                    shadowOpacity: 0.3
+                    shadowOpacity: 0.3,
+                    justifyContent:'center',
+                    alignItems:'center',
                 }}>
                     <UIImage source={{ uri: this.state.path }}
                              style={{
