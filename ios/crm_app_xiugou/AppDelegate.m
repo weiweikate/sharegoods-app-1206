@@ -25,6 +25,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  
+  [self JR_ConfigAPNS:application didFinishLaunchingWithOptions:launchOptions];
   [self JR_ConfigLib:application didFinishLaunchingWithOptions:launchOptions];
   [self JR_ConfigVC:application didFinishLaunchingWithOptions:launchOptions];
   [self addLaunchToWindow];

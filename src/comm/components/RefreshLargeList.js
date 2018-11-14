@@ -326,7 +326,7 @@ export default class RefreshLargeList extends React.Component {
             }
             setTimeout(() => {
                 that.forceUpdate();
-                that.list.reloadData();
+                that.list && that.list.reloadData();
                 that.allLoadCompleted = allLoadCompleted;
                 that.setState({
                     refreshing: false,

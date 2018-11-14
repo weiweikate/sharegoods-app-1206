@@ -16,7 +16,6 @@ import user from '../../../model/user';
 import bridge from '../../../utils/bridge';
 import { getShowPrice } from '../model/TopicMudelTool';
 import DesignRule from 'DesignRule';
-import StringUtils from '../../../utils/StringUtils';
 import res from '../res';
 const noGoodImg = res.other.noGoodImg;
 const zhuanti_jieshu = res.zhuanti_jieshu;
@@ -149,7 +148,7 @@ export default class OpenPrizeItemView extends Component {
                                     textDecorationLine: 'line-through',
                                     color: DesignRule.textColor_instruction
                                 }}>
-                                    {StringUtils.formatMoneyString(itemData.originalPrice)}
+                                    {'¥'+itemData.originalPrice}
                                 </Text>
                             </View>
                             {/*右下角按钮*/}

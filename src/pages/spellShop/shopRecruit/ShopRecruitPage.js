@@ -131,10 +131,7 @@ export default class ShopRecruitPage extends BasePage {
         // }
     };
     _clickSettingItem = () => {
-        let arr = ['分享店铺', '举报'];
-        if (this.state.storeData.myStore) {
-            arr = ['分享店铺'];
-        }
+        let arr = ['分享店铺'];
         this.actionSheetRef.show({
             items: arr
         }, (item, index) => {

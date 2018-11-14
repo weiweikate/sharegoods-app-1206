@@ -9,8 +9,8 @@ import {
 import ScreenUtils from '../../../utils/ScreenUtils';
 import PreLoadImage from '../../../components/ui/preLoadImage/PreLoadImage';
 import PropTypes from 'prop-types';
-import StringUtils from '../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
+import { getShowPrice } from '../model/TopicMudelTool';
 
 export default class TopicItemView extends Component {
 
@@ -54,7 +54,8 @@ export default class TopicItemView extends Component {
                         </Text>
 
                         <Text style={Styles.itemBottomPriceTextStyle}>
-                            {StringUtils.formatMoneyString(itemData.originalPrice) + '起'}
+                            {/*{ '¥'+itemData.originalPrice+ '起'}*/}
+                            { getShowPrice(itemData)+ '起'}
                         </Text>
                     </View>
                 </View>
