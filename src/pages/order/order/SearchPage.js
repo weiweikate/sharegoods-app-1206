@@ -164,14 +164,18 @@ class SearchPage extends BasePage {
         }
         //把搜索框里的值存起来
         if (StringUtils.isNoEmpty(inputText)) {
-            if (this.state.recentData.indexOf(inputText) === -1) {//数组去重
-                if (this.state.recentData.length < 10) {
-                    this.state.recentData.push(inputText);
-                } else {
-                    this.state.recentData.shift(array);
-                    this.state.recentData.push(inputText);
-                }
-            }
+            // if (this.state.recentData.indexOf(inputText) === -1) {//数组去重
+            //     if (this.state.recentData.length < 10) {
+            //         this.state.recentData.push(inputText);
+            //     } else {
+            //         this.state.recentData.shift(array);
+            //         this.state.recentData.push(inputText);
+            //     }
+            // }
+            this.state.recentData.length == 10 ? this.state.recentData.splice(9, 1) : this.state.recentData
+            this.state.recentData.unshift(inputText)
+            let setArr = new Set(this.state.recentData)
+            this.state.recentData=[...setArr]
             console.log('最近搜索记录=' + array);
             // let data = JSON.stringify(array);
             Storage.set(recentDataKey, this.state.recentData);

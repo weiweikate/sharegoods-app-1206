@@ -78,7 +78,7 @@ class MyOrdersDetailPage extends BasePage {
     };
     $NavBarRenderRightItem = () => {
         return (
-            <TouchableOpacity onPress={this.showMore}>
+            <TouchableOpacity onPress={this.showMore} style={{width:20,height:44,alignItems:'center',justifyContent:'center'}}>
                 <Image source={moreIcon} style={{ width: 20, height: 5, marginRight: 10 }} resizeMode='contain'/>
             </TouchableOpacity>
         );
@@ -143,7 +143,7 @@ class MyOrdersDetailPage extends BasePage {
                         <UIImage source={logisticCar} style={{ height: 19, width: 19, marginLeft: 21 }}/>
                         <View style={{justifyContent:'center'}}>
                             {typeof this.state.pageStateString.sellerState === 'string' ?
-                                <View style={{ marginLeft: 10,}}>
+                                <View style={{ marginLeft: 10}}>
                                 <UIText value={this.state.pageStateString.sellerState} style={{
                                     color: DesignRule.textColor_mainTitle,
                                     fontSize: 18,
@@ -157,9 +157,9 @@ class MyOrdersDetailPage extends BasePage {
                                     }} value={DateUtils.getFormatDate(this.state.pageStateString.logisticsTime / 1000)}/>:null}
                                 </View>
                                 :
-                                <View style={{flexDirection: 'row' }}>
+                                <View style={{flexDirection: 'row'}}>
                                     <Text style={{
-                                        flex: 1,
+                                        flex:1,
                                         fontSize: 15,
                                          marginLeft:10,
                                         color: DesignRule.textColor_instruction
@@ -177,7 +177,8 @@ class MyOrdersDetailPage extends BasePage {
                                             color: DesignRule.textColor_instruction,
                                             fontSize: 13,
                                             marginLeft: 10,
-                                            marginRight: 46
+                                            marginRight: 46,
+                                            marginTop:5
                                         }}/>
                                 : null}
 

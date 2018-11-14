@@ -192,7 +192,7 @@ export default class ConfirOrderPage extends BasePage {
                 <TouchableOpacity style={styles.couponsStyle}>
                     <UIText value={'运费'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText value={StringUtils.formatMoneyString(this.state.viewData.totalFreightFee)}
+                        <UIText value={this.state.viewData.totalFreightFee}
                                 style={[styles.grayText]}/>
                     </View>
                 </TouchableOpacity>
