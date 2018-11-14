@@ -59,7 +59,11 @@ function addSubModule(module, prefixPath) {
             addSubModule(item, p);
         } else if (typeof item === 'function') {
             const path = `${p}/${pageName}`;
-            Router[path] = { screen: item };
+            Router[path] = {
+                screen: item,
+                path:'path/'+pageName
+            };
+
             PageKey[pageName] = path;
         }
     });
