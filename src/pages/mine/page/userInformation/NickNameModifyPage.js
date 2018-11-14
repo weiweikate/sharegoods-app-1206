@@ -21,7 +21,7 @@ export default class NickNameModifyPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '个人资料',
+        title: '修改昵称',
         show: true // false则隐藏导航
     };
 

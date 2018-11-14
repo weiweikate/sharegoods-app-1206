@@ -11,6 +11,7 @@ import ShowListPage from '../pages/show/ShowListPage';
 import user from '../model/user';
 import RouterMap from './RouterMap';
 import DesignRule from 'DesignRule';
+import { showSelectedDetail } from '../pages/show/Show';
 
 export const TabNav = TabNavigator(
     {
@@ -27,6 +28,11 @@ export const TabNav = TabNavigator(
                     return (
                         <Image style={styles.tabBarIcon} source={res.tab.home_n}/>
                     );
+                },
+                tabBarOnPress: (tab) => {
+                    showSelectedDetail.selectedShowAction(null, 0)
+                    const { jumpToIndex, scene } = tab;
+                    jumpToIndex(scene.index);
                 }
             }
         },
@@ -43,6 +49,11 @@ export const TabNav = TabNavigator(
                     return (
                         <Image style={styles.tabBarIcon} source={res.tab.discover_n}/>
                     );
+                },
+                tabBarOnPress: (tab) => {
+                    showSelectedDetail.selectedShowAction(null, 0)
+                    const { jumpToIndex, scene } = tab;
+                    jumpToIndex(scene.index);
                 }
             }
         },
@@ -59,12 +70,17 @@ export const TabNav = TabNavigator(
                     return (
                         <Image style={styles.tabBarIcon} source={res.tab.group_n}/>
                     );
+                },
+                tabBarOnPress: (tab) => {
+                    showSelectedDetail.selectedShowAction(null, 0)
+                    const { jumpToIndex, scene } = tab;
+                    jumpToIndex(scene.index);
                 }
             }
         },
         ShopCartPage: {
             screen: ShopCart,
-            navigationOptions: {
+            navigationOptions: ({ navigation }) => ({
                 tabBarLabel: '购物车',
                 tabBarIcon: ({ focused }) => {
                     if (focused) {
@@ -75,8 +91,13 @@ export const TabNav = TabNavigator(
                     return (
                         <Image style={styles.tabBarIcon} source={res.tab.cart_n}/>
                     );
+                },
+                tabBarOnPress: (tab) => {
+                    showSelectedDetail.selectedShowAction(null, 0)
+                    const { jumpToIndex, scene } = tab;
+                    jumpToIndex(scene.index);
                 }
-            }
+            })
         },
         MinePage: {
             screen: Mine,
@@ -93,6 +114,7 @@ export const TabNav = TabNavigator(
                     );
                 },
                 tabBarOnPress: (tab) => {
+                    showSelectedDetail.selectedShowAction(null, 0)
                     const { jumpToIndex, scene } = tab;
                     if (user && user.isLogin) {
                         jumpToIndex(scene.index);

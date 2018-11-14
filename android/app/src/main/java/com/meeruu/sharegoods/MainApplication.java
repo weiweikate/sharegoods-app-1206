@@ -6,6 +6,12 @@ import android.support.multidex.MultiDex;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
+import com.brentvatne.react.ReactVideoPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import cn.reactnative.modules.update.UpdatePackage;
+import com.horcrux.svg.SvgPackage;
+import com.imagepicker.ImagePickerPackage;
+import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -86,7 +92,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
                 CrashHandler.getInstance().init(this);
             }
             // 七鱼初始化
-            Unicorn.init(this, "aa15b0b8c2a1bc1bf0341e244c049961", options(), new QiyuImageLoader(this));
+            Unicorn.init(this, "b87fd67831699ca494a9d3de266cd3b0", options(), new QiyuImageLoader(this));
         }
     }
 
@@ -113,15 +119,15 @@ public class MainApplication extends BaseApplication implements ReactApplication
             return Arrays.<ReactPackage>asList(
                     new RNPackage(),
                     new MainReactPackage(),
-                    new UpdatePackage(),
-                    new RNDeviceInfo(),
-                    new LinearGradientPackage(),
-                    new VectorIconsPackage(),
-                    new SvgPackage(),
-                    new ImagePickerPackage(),
-                    new AutoHeightWebViewPackage(),
-                    new ReactVideoPackage(),
-                    new RNGeolocationPackage()
+            new ReactVideoPackage(),
+            new VectorIconsPackage(),
+            new UpdatePackage(),
+            new SvgPackage(),
+            new ImagePickerPackage(),
+            new RNDeviceInfo(),
+            new AutoHeightWebViewPackage(),
+            new RNGeolocationPackage(),
+                    new LinearGradientPackage()
             );
         }
 

@@ -42,6 +42,14 @@ const Router = {
 };
 const PageKey = {};
 
+function getPathWithPageName(pageName) {
+    if (pageName === 'RegistPage') {
+        return 'path/'+pageName+'/:phone'
+    }else {
+        return 'path/'+pageName;
+    }
+}
+
 
 // 添加模块内子路由配置
 function addSubModule(module, prefixPath) {
@@ -59,9 +67,10 @@ function addSubModule(module, prefixPath) {
             addSubModule(item, p);
         } else if (typeof item === 'function') {
             const path = `${p}/${pageName}`;
+            let  pathValue = getPathWithPageName(pageName)
             Router[path] = {
                 screen: item,
-                path:'path/'+pageName
+                path:pathValue
             };
 
             PageKey[pageName] = path;
@@ -85,5 +94,6 @@ addSubModule(show);
 addSubModule(shareTask);
 console.log('Router', Object.keys(Router));
 console.log(Router);
+console.log('Path',Object.values(Router))
 export { PageKey };
 export default Router;
