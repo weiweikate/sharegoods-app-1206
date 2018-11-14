@@ -20,7 +20,7 @@ import {
 } from '../../../components/ui/index';
 import res from '../res';
 import shopCartStore from '../model/ShopCartStore';
-import StringUtils from '../../../utils/StringUtils';
+// import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import bridge from '../../../utils/bridge';
 import DesignRule from 'DesignRule';
@@ -258,7 +258,7 @@ export default class ShopCartPage extends BasePage {
                             value={'合计'}
                             style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
                         <UIText
-                            value={StringUtils.formatMoneyString(shopCartStore.getTotalMoney)}
+                            value={'¥'+shopCartStore.getTotalMoney}
                             style={styles.totalPrice}/>
                         <TouchableOpacity
                             style={styles.selectGoodsNum}
