@@ -44,25 +44,8 @@ export default class ShowConnectPage extends BasePage {
         this.recommendModules = new ShowRecommendModules();
     }
 
-    componentWillMount() {
-        this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            payload => {
-                const { state } = payload;
-                console.log('willFocus', state);
-                if (state && state.routeName === 'show/ShowConnectPage') {
-                    this._refreshData()
-                }
-            }
-        );
-    }
-
-    componentWillUnmount() {
-        this.willFocusSubscription && this.willFocusSubscription.remove();
-    }
-
     componentDidMount() {
-        // this._refreshData();
+        this._refreshData();
     }
 
     _refreshData() {

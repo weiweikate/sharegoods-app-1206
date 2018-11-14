@@ -38,8 +38,7 @@ import DeviceInfo from 'react-native-device-info';
 import StringUtils from '../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../../comm/res';
-
-let TimerMixin = require('react-timer-mixin');
+import TimerMixin from 'react-timer-mixin'
 const closeImg = res.button.cancel_white_circle;
 /**
  * @author zhangjian
@@ -148,7 +147,7 @@ export default class HomePage extends PureComponent {
     componentDidMount() {
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         InteractionManager.runAfterInteractions(() => {
-            this.timer = TimerMixin.setTimeout(() => {
+            TimerMixin.setTimeout(() => {
                 // 检测版本更新
                 this.getVersion();
                 this.getMessageData();

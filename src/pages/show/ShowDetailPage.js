@@ -4,7 +4,6 @@ import ShowImageView from './ShowImageView';
 import res from '../../comm/res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
-
 const { px2dp, width } = ScreenUtils;
 import HTML from 'react-native-render-html'
 import { ShowDetail } from './Show';

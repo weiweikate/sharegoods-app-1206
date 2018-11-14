@@ -176,6 +176,7 @@ export class ShowRecommendModules {
     @observable collectPage = 1
     @observable isRefreshing = false
     @observable type = showTypes.recommend
+    @observable isEnd = false
 
     @computed get recommendCount() {
         return this.recommendList.length
@@ -184,6 +185,7 @@ export class ShowRecommendModules {
     @action loadRecommendList = (params) => {
         let currentDate = new Date()
         this.page = 1
+        this.isEnd = false
         showChoiceModules.loadChoiceList()
         showBannerModules.loadBannerList()
         showHotModules.loadHotList()
@@ -210,6 +212,9 @@ export class ShowRecommendModules {
     }
 
     @action getMoreRecommendList = (params) => {
+        if (this.isEnd) {
+            return Promise.reject(-1)
+        }
         if (this.isRefreshing) {
             return Promise.reject(-1)
         }
@@ -219,6 +224,10 @@ export class ShowRecommendModules {
             this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 let data = result.data.data
+                if (!data) {
+                    this.isEnd = true
+                    return Promise.resolve([])
+                }
                 if (data && data.length !== 0) {
                     this.page += 1
                     data.map(value => {
@@ -226,6 +235,7 @@ export class ShowRecommendModules {
                     })
                     return Promise.resolve(data)
                 } else {
+                    this.isEnd = true
                     return Promise.resolve([])
                 }
             } else {
@@ -249,6 +259,7 @@ export class ShowRecommendModules {
     }
 
     @action loadCollect = () => {
+        this.isEnd = true
         let currentDate = new Date()
         this.collectPage = 1
         this.isRefreshing = true
@@ -274,6 +285,9 @@ export class ShowRecommendModules {
     }
 
     @action getMoreCollect = () => {
+        if (this.isEnd) {
+            return Promise.reject(-1)
+        }
         if (this.isRefreshing) {
             return Promise.reject(-1)
         }
@@ -283,6 +297,10 @@ export class ShowRecommendModules {
             this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 let data = result.data.data
+                if (!data) {
+                    this.isEnd = true
+                    return Promise.resolve([])
+                }
                 if (data && data.length !== 0) {
                     this.collectPage += 1
                     data.map(value => {
@@ -290,6 +308,7 @@ export class ShowRecommendModules {
                     })
                     return Promise.resolve(data)
                 } else {
+                    this.isEnd = true
                     return Promise.resolve([])
                 }
             } else {

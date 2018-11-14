@@ -12,6 +12,7 @@ const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule'
 import ImageLoad from '@mr/react-native-image-placeholder'
+import TimerMixin from 'react-timer-mixin'
 
 class Card extends Component {
 
@@ -27,10 +28,11 @@ class Card extends Component {
     _onSelectedCard() {
         const { press } = this.props
         press && press()
-        setTimeout(() => {
+
+        TimerMixin.setTimeout(() => {
             const { readNumber } = this.state
             this.setState({readNumber: readNumber + 1})
-        }, 1000);
+        }, 800)
     }
 
     render () {
