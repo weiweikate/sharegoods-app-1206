@@ -391,7 +391,7 @@ export default class ProductDetailPage extends BasePage {
                         </Text>
 
                         <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(60), marginTop: 20 }}>
-                            {EmptyUtils.isEmpty(this.state.couponData) ? null : this.state.couponData.price}
+                            {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.formatMoneyString(this.state.couponData.price,false)}
                             <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
                                 元
                             </Text>
