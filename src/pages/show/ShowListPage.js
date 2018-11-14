@@ -20,9 +20,23 @@ export default class ShowListPage extends BasePage {
         left: false
     }
 
-
     componentWillMount() {
         this.setState({ left: this.params.fromHome })
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                console.log('willFocus', state);
+                if (state && state.routeName === 'ShowListPage') {
+                    const {page} = this.state
+                    page === 0 ? this.showHotViewRef && this.showHotViewRef.refresh() : this.showHotFindeView && this.showHotFindeView.refresh()
+                }
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
     _gotoPage(number) {
@@ -73,10 +87,10 @@ export default class ShowListPage extends BasePage {
                 onChangeTab={(number)=>this._onChangeTab(number)}
             >
                 <View key={1} style={styles.container} tabLabel="" >
-                    <ShowHotView navigation={navigation}/>
+                    <ShowHotView navigation={navigation} ref={(ref)=> {this.showHotViewRef = ref}}/>
                 </View>
-                <View key={2}  style={styles.container} tabLabel="   " >
-                    <ShowHotFindView navigation={navigation}/>
+                <View key={2}  style={styles.container} tabLabel="   ">
+                    <ShowHotFindView navigation={navigation} ref={(ref) => {this.showHotFindeView = ref}}/>
                 </View>
             </ScrollableTabView>
         </View>

@@ -38,6 +38,14 @@ export default class ShowHotView extends Component {
         }, 1000);
     }
 
+    refresh() {
+        this.waterfall.index = 1
+        this.recommendModules.loadRecommendList().then(data => {
+            this.waterfall.clear();
+            this.waterfall.addItems(data);
+        });
+    }
+
     refreshing(done) {
         setTimeout(() => {
             this.recommendModules.loadRecommendList().then(data => {

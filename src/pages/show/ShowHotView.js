@@ -25,9 +25,9 @@ export default class ShowHotView extends Component {
     }
 
     componentDidMount() {
-        this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
-            this.waterfall.addItems(data || []);
-        });
+        // this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
+        //     this.waterfall.addItems(data || []);
+        // });
     }
 
     infiniting(done) {
@@ -37,6 +37,14 @@ export default class ShowHotView extends Component {
             });
             done();
         }, 1000);
+    }
+
+    refresh() {
+        this.waterfall.index = 1
+        this.waterfall && this.waterfall.clear()
+        this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
+            this.waterfall && this.waterfall.addItems(data || []);
+        })
     }
 
     refreshing(done) {
