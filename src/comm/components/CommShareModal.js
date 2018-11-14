@@ -189,6 +189,11 @@ export default class CommShareModal extends React.Component {
 
     render() {
         let array = [];
+        let { isLogin, needLogin } = this.props;
+        let isShow = false;
+        if (needLogin === true && isLogin === false) {
+            isShow = true;
+        }
         array.push({
             image: res.share.weiXin, title: '微信好友', onPress: () => {
                 this.share(0);
@@ -364,6 +369,17 @@ export default class CommShareModal extends React.Component {
                                                  backgroundColor: 'white'
                                              }}/>
                                 </TouchableWithoutFeedback>
+                                {
+                                    isShow ? <UIText value={'登陆以后分享才能获取赏金'}
+                                                     style={{ position: 'absolute', left: 0, right:0 ,height: 20, top: imageWidth - 20 ,
+                                                         backgroundColor: 'rgba(0,0,0,0.3)',
+                                                         fontSize: 12,
+                                                         textAlign: 'center',
+                                                         color: 'white',
+                                                     }}/>
+                                        : null
+
+                                }
                             </Animated.View> : null
                     }
                 </View>
