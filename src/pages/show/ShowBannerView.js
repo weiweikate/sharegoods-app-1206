@@ -6,21 +6,14 @@ import { View, Image, StyleSheet, Platform } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import { ShowBannerModules } from './Show'
+import { showBannerModules } from './Show'
 import ScreenUtils from '../../utils/ScreenUtils'
 import MRBannerView from '../../components/ui/bannerView/MRBannerView'
 import XGSwiper from '../../components/ui/XGSwiper'
 @observer
 export default class ShowBannerView extends Component {
-
     state = {
         index: 0
-    }
-
-    constructor(props) {
-        super(props)
-        this.bannerModule = new ShowBannerModules()
-        this.bannerModule.loadBannerList()
     }
 
     renderRow(item) {
@@ -30,25 +23,25 @@ export default class ShowBannerView extends Component {
     }
 
     _onPressRowWithItem(item) {
-        const router = this.bannerModule.bannerNavigate(item.linkType, item.linkTypeCode);
-        let params = this.bannerModule.paramsNavigate(item);
+        const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
+        let params = showBannerModules.paramsNavigate(item);
         const { navigation } = this.props;
         navigation.navigate(router, params);
     }
 
     _onPressRow(e) {
         let index = e.nativeEvent.index
-        const { bannerList } = this.bannerModule
+        const { bannerList } = showBannerModules
         let item = bannerList[index]
-        const router = this.bannerModule.bannerNavigate(item.linkType, item.linkTypeCode);
-        let params = this.bannerModule.paramsNavigate(item);
+        const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
+        let params = showBannerModules.paramsNavigate(item);
         const { navigation } = this.props;
         navigation.navigate(router, params);
     }
 
     renderIndexView() {
         const { index } = this.state
-        const { bannerCount } = this.bannerModule
+        const { bannerCount } = showBannerModules
         let items = []
         for (let i = 0; i < bannerCount; i++) {
             if (index === i) {
@@ -74,7 +67,7 @@ export default class ShowBannerView extends Component {
     }
 
     render() {
-        const { bannerList } = this.bannerModule
+        const { bannerList } = showBannerModules
         if (!bannerList || bannerList.length <= 0) {
             return <View/>
         }

@@ -63,7 +63,7 @@ const bannerRoute = {
     [homeLinkType.store]: 'spellShop/MyShop_RecruitPage'
 };
 
-export class ShowBannerModules {
+class ShowBannerModules {
     @observable bannerList = []
     @computed get bannerCount() {
         return this.bannerList.length
@@ -111,10 +111,16 @@ export class ShowBannerModules {
 
 }
 
-export class ShowChoiceModules {
+export const showBannerModules = new ShowBannerModules()
+
+class ShowChoiceModules {
     @observable choiceList = []
+    @observable selectedId = 0
     @computed get choiceCount() {
         return this.choiceList.length
+    }
+    @action selectedChoiceId = (id) => {
+        this.selectedId = id
     }
     @action loadChoiceList = flow(function * (params) {
         try {
@@ -126,7 +132,9 @@ export class ShowChoiceModules {
     })
 }
 
-export class ShowHotModules {
+export const showChoiceModules = new ShowChoiceModules()
+
+class ShowHotModules {
     @observable hotList = []
     @computed get hotCount() {
         return this.hotList.length
@@ -141,6 +149,7 @@ export class ShowHotModules {
     })
 }
 
+export const showHotModules = new ShowHotModules()
 
 export class ShowRecommendModules {
     @observable recommendList = []
@@ -154,6 +163,9 @@ export class ShowRecommendModules {
     @action loadRecommendList = (params) => {
         let currentDate = new Date()
         this.page = 1
+        showChoiceModules.loadChoiceList()
+        showBannerModules.loadBannerList()
+        showHotModules.loadHotList()
         return ShowApi.showQuery({...params, page: this.page}).then(result => {
             if (parseInt(result.code, 0) === 10000) {
                 this.page += 1
@@ -263,7 +275,6 @@ export class ShowDetail {
     @action loadDetail = flow(function * (id) {
         try {
             const result = yield ShowApi.showDetail({id: id})
-            console.log('result', result.data)
             this.detail = result.data
         } catch (error) {
             console.log(error)
@@ -290,7 +301,6 @@ export class ShowDetail {
             }
         } catch(error) {
             this.isGoodActioning = false
-            console.log(error)
             Toast.$toast(error.msg)
         }
     })
@@ -315,7 +325,6 @@ export class ShowDetail {
             }
         } catch(error) {
             this.isCollecting = false
-            console.log(error)
             Toast.$toast(error.msg)
         }
     })

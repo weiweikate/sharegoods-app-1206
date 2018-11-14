@@ -6,7 +6,7 @@ import { View, StyleSheet, Text, Image, TouchableWithoutFeedback } from 'react-n
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import { ShowChoiceModules } from './Show'
+import { showChoiceModules } from './Show'
 import res from '../../comm/res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
@@ -34,19 +34,14 @@ const Card = ({item, press}) => <TouchableWithoutFeedback style={styles.card} on
 @observer
 export default class ShowChoiceView extends Component {
 
-    constructor(props) {
-        super(props)
-        this.choiceModule = new ShowChoiceModules()
-        this.choiceModule.loadChoiceList()
-    }
-
     _onChoiceAction(item) {
         const { navigation } = this.props
+        showChoiceModules.selectedChoiceId(item.id)
         navigation.navigate('show/ShowDetailPage', {id: item.id})
     }
 
     render() {
-        const { choiceList } = this.choiceModule
+        const { choiceList } = showChoiceModules
         let items = []
         if (!choiceList) {
             return <View/>

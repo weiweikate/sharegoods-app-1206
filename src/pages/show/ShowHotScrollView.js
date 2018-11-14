@@ -6,7 +6,7 @@ import { View, ScrollView, StyleSheet, Text, Image, TouchableWithoutFeedback } f
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import { ShowHotModules } from './Show'
+import { showHotModules } from './Show'
 import res from '../../comm/res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
@@ -31,19 +31,13 @@ const HotItem = ({item, press}) => <TouchableWithoutFeedback onPress={()=> press
 @observer
 export default class ShowHotScrollView extends Component {
 
-    constructor(props) {
-        super(props)
-        this.hotModule = new ShowHotModules()
-        this.hotModule.loadHotList()
-    }
-
     _hotItemAction(item) {
         const { navigation } = this.props
         navigation.navigate('show/ShowDetailPage', {id: item.id})
     }
 
     render() {
-        const { hotList } = this.hotModule
+        const { hotList } = showHotModules
         let items = []
         if (!hotList){
             return <View/>
