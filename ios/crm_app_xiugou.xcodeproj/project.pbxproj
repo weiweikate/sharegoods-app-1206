@@ -103,6 +103,7 @@
 		5068364421379E0B001AB175 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5068364321379E0B001AB175 /* CoreMotion.framework */; };
 		5068364621379E1D001AB175 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5068364521379E1D001AB175 /* CoreFoundation.framework */; };
 		5068364821379E2B001AB175 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5068364721379E2B001AB175 /* Foundation.framework */; };
+		50FB633F219AC4C100A35334 /* AppDelegate+APNS.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FB633E219AC4C100A35334 /* AppDelegate+APNS.m */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		61E64F46690C4B7EBB9DD7A2 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE4716B854E34520B3C18596 /* EvilIcons.ttf */; };
 		69ACA7D3874C47C996A4953D /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5CBA12ABF35C456EBC68A503 /* MaterialIcons.ttf */; };
@@ -624,6 +625,8 @@
 		5068364321379E0B001AB175 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		5068364521379E1D001AB175 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		5068364721379E2B001AB175 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		50FB633D219AC4C100A35334 /* AppDelegate+APNS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+APNS.h"; sourceTree = "<group>"; };
+		50FB633E219AC4C100A35334 /* AppDelegate+APNS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+APNS.m"; sourceTree = "<group>"; };
 		5AEC9711CAB3D2A4643117DC /* Pods-crm_app_xiugou.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.release.xcconfig"; path = "Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.release.xcconfig"; sourceTree = "<group>"; };
 		5B249F0BC3614D4082E40B00 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		5CBA12ABF35C456EBC68A503 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
@@ -978,6 +981,8 @@
 				5068357321379B78001AB175 /* AppDelegate+ConfigLib.m */,
 				5068357421379B78001AB175 /* AppDelegate+ConfigVC.h */,
 				5068357521379B78001AB175 /* AppDelegate+ConfigVC.m */,
+				50FB633D219AC4C100A35334 /* AppDelegate+APNS.h */,
+				50FB633E219AC4C100A35334 /* AppDelegate+APNS.m */,
 			);
 			path = Delegate;
 			sourceTree = "<group>";
@@ -2143,6 +2148,7 @@
 				5068363221379B78001AB175 /* JRDeviceInfo.m in Sources */,
 				5068360F21379B78001AB175 /* JRBaseVC.m in Sources */,
 				5068362B21379B78001AB175 /* EasyTextView.m in Sources */,
+				50FB633F219AC4C100A35334 /* AppDelegate+APNS.m in Sources */,
 				CDAB6D24219AC74800DE6716 /* MRWaveView.m in Sources */,
 				CDA2F5322171D8D2005FD4B3 /* UIViewController+Util.m in Sources */,
 				5068362021379B78001AB175 /* EasyLoadingConfig.m in Sources */,
