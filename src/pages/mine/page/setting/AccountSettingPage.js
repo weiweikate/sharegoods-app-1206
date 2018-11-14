@@ -4,14 +4,15 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-import arrow_right from '../../../mine/res/customerservice/icon_06-03.png';
 import user from '../../../../model/user';
 import { observer } from 'mobx-react/native';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
+import res from '../../res';
 
+const arrow_right = res.button.arrow_right;
 @observer
 export default class AccountSettingPage extends BasePage {
 

@@ -179,7 +179,7 @@ export default class DownPricePage extends BasePage {
                     imageUri={imgUrl}
                     style={{
                         width: ScreenUtils.width,
-                        height: ScreenUtils.width * 188 / 375
+                        height: ScreenUtils.width * 7 / 15
                     }}
                 />
 

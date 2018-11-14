@@ -30,7 +30,7 @@ export class DetailBanner extends Component {
         const bannerCount = productImgList.length;
         return <View style={styles.indexViewTwo}>
             <Text
-                style={styles.text}>{this.state.messageIndex + 1} / {this.state.haveVideo ? bannerCount + 1 : bannerCount}</Text>
+                style={styles.text}>{this.state.messageIndex + 1} / {bannerCount}</Text>
         </View>;
     };
 

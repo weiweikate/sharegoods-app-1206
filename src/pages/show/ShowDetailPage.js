@@ -161,7 +161,7 @@ export default class ShowDetailPage extends Component {
                 <Image source={res.button.show_share}/>
             </TouchableOpacity>
             <CommShareModal ref={(ref) => this.shareModal = ref}
-                            type={'miniProgram'}
+                            type={'task'}
                             miniProgramJson={{
                                 title: detail.title,
                                 dec: '分享小程序子标题',
