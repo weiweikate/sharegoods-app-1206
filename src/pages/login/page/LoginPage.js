@@ -17,6 +17,7 @@ import { NavigationActions } from 'react-navigation';
 import DeviceInfo from 'react-native-device-info';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
+import { homeModule } from '../../home/Modules'
 
 /**
  * @author huyufeng
@@ -123,7 +124,8 @@ export default class LoginPage extends BasePage {
                 } else if (res.code === 10000) {
                     UserModel.saveUserInfo(res.data);
                     UserModel.saveToken(res.data.token);
-                    bridge.$toast('登陆成功');
+                    bridge.$toast('登录成功');
+                    homeModule.loadHomeList()
                     this.$navigateBack();
                 }
             }).catch((error) => {
@@ -162,7 +164,8 @@ export default class LoginPage extends BasePage {
                 this.$loadingDismiss();
                 UserModel.saveUserInfo(data.data);
                 UserModel.saveToken(data.data.token);
-                bridge.$toast('登陆成功');
+                bridge.$toast('登录成功');
+                homeModule.loadHomeList()
                 if (this.params.callback) {
                     let resetAction = NavigationActions.reset({
                         index: 0,
@@ -198,7 +201,8 @@ export default class LoginPage extends BasePage {
                 UserModel.saveUserInfo(data.data);
                 UserModel.saveToken(data.data.token);
                 DeviceEventEmitter.emit('homePage_message',null);
-                bridge.$toast('登陆成功');
+                bridge.$toast('登录成功');
+                homeModule.loadHomeList()
                 this.params.callback && this.params.callback();
                 if (this.params.callback) {
                     let resetAction = NavigationActions.reset({

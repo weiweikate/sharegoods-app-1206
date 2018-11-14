@@ -102,6 +102,7 @@ export default class ShowBannerView extends Component {
                 height={ 200 }
                 renderRow={this.renderRow.bind(this)}
                 ratio={0.867}
+                loop={false}
                 onPress={this._onPressRowWithItem.bind(this)}
                 onDidChange={this._onDidChange.bind(this)}/>
         }
