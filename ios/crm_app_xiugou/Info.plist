@@ -74,6 +74,16 @@
 				<string>wb182724926</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>meeruu</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>meeruu</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>2</string>

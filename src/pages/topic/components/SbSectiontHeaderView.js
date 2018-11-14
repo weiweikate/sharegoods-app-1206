@@ -30,6 +30,7 @@ class SbSectiontHeaderView extends Component {
             <View>
                 <Image
                     style={SbSectiontHeaderViewStyles.topImageStyle}
+
                 />
                 {subjectType === 1 ?
                     <SubSwichView/> : null}
@@ -43,7 +44,7 @@ class SbSectiontHeaderView extends Component {
 const SbSectiontHeaderViewStyles = StyleSheet.create({
     topImageStyle: {
         width: ScreenUtils.width,
-        height: ScreenUtils.width * 188 / 375,
+        height: ScreenUtils.width * 375 / 750,
         backgroundColor: DesignRule.mainColor
     }
 });
@@ -62,6 +63,7 @@ class ActivityOneView extends Component {
                 <PreLoadImage
                     imageUri={imageUrl}
                     style={ActivityOneViewStyles.bgImageStyle}
+
                 />
             </View>
         );
@@ -70,7 +72,7 @@ class ActivityOneView extends Component {
 
 const ActivityOneViewStyles = StyleSheet.create({
     bgImageStyle: {
-        height: ScreenUtils.width * 7 / 15,
+        height: ScreenUtils.width * 16 / 75,
         width: ScreenUtils.width,
         backgroundColor: 'white'
     }

@@ -362,7 +362,7 @@ class AfterSaleServicePage extends BasePage {
 
     _getReturnReason(){
         let that = this;
-        OrderApi.getReturnReason({code: ['TKLY','THTK','HHLY'][this.params.pageType+1]}).then((result) => {
+        OrderApi.getReturnReason({code: ['TKLY','THTK','HHLY'][this.params.pageType]}).then((result) => {
             that.setState({returnReasons: result.data || []});
         }).catch((error)=> {
 

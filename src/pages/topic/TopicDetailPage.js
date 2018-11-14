@@ -159,7 +159,7 @@ export default class TopicDetailPage extends BasePage {
                     data: data.data || {}
                 }, () => {
                     if (this.state.data.type === 2) {//1普通礼包  2升级礼包
-                        this.TopicDetailShowModal.show('温馨提醒', `${data.data.name}`, `秀购升级礼包为定制特殊商品`, `购买后即可立即享受晋升权限，该礼包产品不可退换货，如有产品质量问题，可联系客服进行申诉`);
+                        this.TopicDetailShowModal.show('温馨提醒', `${data.data.name}`, null, `秀购升级礼包为定制特殊商品，购买后即可立即享受晋升权限，该礼包产品不可退换货，如有产品质量问题，可联系客服进行申诉`);
                     }
                 });
             }).catch((error) => {
@@ -304,7 +304,7 @@ export default class TopicDetailPage extends BasePage {
                                       activityData={this.state.activityData}
                                       navigation={this.props.navigation}
                                       showDetailModal={() => {
-                                          this.TopicDetailShowModal.show('降价拍规则');
+                                          this.TopicDetailShowModal.show('降价拍规则', null, null, `降价拍活动规则说明：\n降价拍活动开启后，每到规定时间都降低销售价；\n什么时候降价？每个活动，每个商品的降价时间都是不固定的；\n参与降价拍的商品是有限的，而且每个商品的购买都是有限制的；\n降价拍活动时间？每个活动的时间都是规定的，直到商品拍卖结束位置；\n关于购买限制？每个用户购买成功后都会扣除购买机会，即时退款也无法增加购买次数；`);
                                       }}/>;
     };
 
@@ -389,17 +389,26 @@ export default class TopicDetailPage extends BasePage {
         });
     };
 
-    _renderCouponModal() {
+    _renderCouponModal=()=> {
 
         let view = (
+            <TouchableWithoutFeedback onPress={()=>{
+                this.setState({
+                    canGetCoupon:false
+                })
+                this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: user.availableBalance });
+            }}>
             <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
                 <Text style={{ color: 'white', fontSize: px2dp(24) }}>
                     领取成功
                 </Text>
                 <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
-                    可前往我的-优惠卷查看
+                    可前往我的-
+                    <Text style={{ textDecorationLine: 'underline' }}>现金账户</Text>
+                    查看
                 </Text>
             </View>
+            </TouchableWithoutFeedback>
         );
 
         let button = (
@@ -426,7 +435,7 @@ export default class TopicDetailPage extends BasePage {
                         </Text>
 
                         <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(60), marginTop: 20 }}>
-                            {EmptyUtils.isEmpty(this.state.couponData) ? null : this.state.couponData.price}
+                            {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.formatMoneyString(this.state.couponData.price,false)}
                             <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
                                 元
                             </Text>

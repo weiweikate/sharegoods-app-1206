@@ -57,7 +57,13 @@ export default class CashExplainPage extends BasePage {
                                 }}/> : null}
                         </View>
 
-                        <Text style={styles.desc}>{title}</Text>
+                        <View style={styles.desc}>
+                            <Text style={{
+                                marginRight: 0,
+                                fontSize: 13,
+                                color: DesignRule.textColor_mainTitle
+                            }}>{title}</Text>
+                        </View>
 
                     </View>
                 </View>
@@ -125,9 +131,7 @@ const styles = StyleSheet.create({
     },
     desc: {
         marginLeft: 8,
-        marginRight: 0,
-        fontSize: 13,
-        color: DesignRule.textColor_mainTitle
+        flex:1
     },
     btnStyle: {
         width: 170,
