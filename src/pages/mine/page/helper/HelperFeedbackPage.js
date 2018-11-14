@@ -50,6 +50,7 @@ export default class HelperFeedbackPage extends BasePage {
             course: '请选择问题类型',
             CONFIG: [],//value, item.detailId
             selectIndex: -1,
+            typeKey:-1,
             imageArr: [],
             touchable: false,
             picNum: 0
@@ -78,11 +79,12 @@ export default class HelperFeedbackPage extends BasePage {
     }
 
     //选择具体的反馈类型
-    selCourse(course, i) {
+    selCourse(course,id, i) {
         this.setState({
             showModal: false,
             course: course,
-            selectIndex: i
+            selectIndex: i,
+            typeKey:id
         });
     }
 
@@ -105,7 +107,7 @@ export default class HelperFeedbackPage extends BasePage {
         }
         let smallImgs = smallImagarr.join(',');
         let orignImgs = orignImagarr.join(',');
-        if (this.state.selectIndex == -1) {
+        if (this.state.typeKey == -1) {
             this.$toastShow('请选择反馈类型!');
             return;
         }
@@ -115,7 +117,7 @@ export default class HelperFeedbackPage extends BasePage {
         }
         this.setState({ touchable: true });
         MineApi.addFeedback({
-            content: this.state.detailContent, typeKey: this.state.selectIndex || 1, smallImg: smallImgs,
+            content: this.state.detailContent, typeKey: this.state.typeKey || 1, smallImg: smallImgs,
             originalImg: orignImgs
         }).then(res => {
             this.setState({ isShowFinishModal: true, touchable: false });
@@ -280,7 +282,7 @@ export default class HelperFeedbackPage extends BasePage {
                                             alignItems: 'center'
                                         }}
                                                           activeOpacity={0.6}
-                                                          onPress={() => this.selCourse(item.value, i)}>
+                                                          onPress={() => this.selCourse(item.value, item.detailId,i)}>
                                             <Text style={{
                                                 color: i == this.state.selectIndex ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
                                                 fontSize: 15,

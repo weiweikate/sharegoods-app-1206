@@ -43,6 +43,7 @@ import user from '../../../model/user';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
+import MineApi from '../../mine/api/MineApi';
 
 class MyOrdersDetailPage extends BasePage {
     constructor(props) {
@@ -59,7 +60,8 @@ class MyOrdersDetailPage extends BasePage {
             pageState: 1,
             pageStateString: constants.pageStateString[1],
             menu: {},
-            giftBagCoupons: []
+            giftBagCoupons: [],
+            cancelArr:[]
         };
     }
 
@@ -197,6 +199,23 @@ class MyOrdersDetailPage extends BasePage {
     componentDidMount() {
         DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.loadPageData());
         this.loadPageData();
+        this.getCancelOrder();
+
+    }
+    getCancelOrder(){
+        let arrs=[];
+        MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(res => {
+            if (res.code == 10000 && StringUtils.isNoEmpty(res.data)) {
+                res.data.map((item,i)=>{
+                    arrs.push(item.value)
+                })
+                this.setState({
+                    cancelArr: arrs
+                });
+            }
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     componentWillUnmount() {
@@ -592,7 +611,7 @@ class MyOrdersDetailPage extends BasePage {
                 <SingleSelectionModal
                     isShow={this.state.isShowSingleSelctionModal}
                     ref={(ref)=>{this.cancelModal = ref}}
-                    detail={['我不想买了', '信息填写错误，重新拍', '其他原因']}
+                    detail={this.state.cancelArr}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
                     }}
@@ -600,7 +619,7 @@ class MyOrdersDetailPage extends BasePage {
                         this.setState({ isShowSingleSelctionModal: false });
                         Toast.showLoading();
                         OrderApi.cancelOrder({
-                            buyerRemark: ['我不想买了', '信息填写错误，重新拍', '其他原因'][index],
+                            buyerRemark: this.state.cancelArr[index],
                             orderNum: this.state.viewData.orderNum
                         }).then((response) => {
                             Toast.hiddenLoading();
@@ -1092,8 +1111,13 @@ class MyOrdersDetailPage extends BasePage {
         this.setState({ menu: menu });
         switch (menu.id) {
             case 1:
-                this.setState({ isShowSingleSelctionModal: true });
-                this.cancelModal && this.cancelModal.open();
+                if(this.state.cancelArr.length>0){
+                    this.setState({ isShowSingleSelctionModal: true });
+                    this.cancelModal && this.cancelModal.open();
+                }else{
+                    this.$toastShow('无取消类型！');
+                }
+
                 break;
             case 2:
                 this.$navigate('payment/PaymentMethodPage', {
