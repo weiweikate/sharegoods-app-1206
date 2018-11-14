@@ -402,7 +402,7 @@ export default class ShopCartPage extends BasePage {
                                 alignItems: 'center'
                             }}>
                                 <UIText
-                                    value={'￥ ' + StringUtils.formatMoneyString(itemData.price, false)}
+                                    value={'￥ ' + itemData.price}
                                     style={{ fontSize: 14, color: DesignRule.mainColor }}/>
                                 <View style={{ flexDirection: 'row' }}>
                                     <TouchableOpacity
