@@ -434,7 +434,6 @@ export default class ProductDetailPage extends BasePage {
                                        switch (item.index) {
                                            case 0:
                                                this.$navigate('message/MessageCenterPage');
-                                               this.DetailNavShowModal.close();
                                                break;
                                            case 1:
                                                this.$navigateReset();
@@ -499,16 +498,5 @@ const styles = StyleSheet.create({
         zIndex: 2,
         opacity: 0
     },
-    transparentView: {
-        backgroundColor: 'transparent',
-        position: 'absolute',
-        top: ScreenUtils.statusBarHeight,
-        left: 16,
-        right: 16,
-        zIndex: 3,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    }
 });
 
