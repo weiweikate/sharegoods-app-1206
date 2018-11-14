@@ -121,7 +121,7 @@ export default class ConfirOrderPage extends BasePage {
                             marginLeft: 15
                         }}/>
                     </View>
-                    <Image source={arrow_right} style={{ with:10,height: 14, marginRight: 15 }} resizeMode={'contain'}/>
+                    <Image source={arrow_right} style={{ width:10,height: 14, marginRight: 15 }} resizeMode={'contain'}/>
                 </TouchableOpacity>
         );
     };
@@ -192,7 +192,7 @@ export default class ConfirOrderPage extends BasePage {
                 <TouchableOpacity style={styles.couponsStyle}>
                     <UIText value={'运费'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText value={StringUtils.formatMoneyString(this.state.viewData.totalFreightFee)}
+                        <UIText value={this.state.viewData.totalFreightFee}
                                 style={[styles.grayText]}/>
                     </View>
                 </TouchableOpacity>
