@@ -11,7 +11,7 @@
 
 import ScreenUtils from '../utils/ScreenUtils';
 
-const autoSizeWidth = ScreenUtils.autoSizeWidth;
+const {autoSizeWidth, onePixel} = ScreenUtils;
 
 const colors = {
         mainColor: '#F00050',//主色调
@@ -65,7 +65,8 @@ const sizes = {
     margin_card: autoSizeWidth(10),//卡片之间的间距
     margin_listGroup: autoSizeWidth(10),//列表组之间的间距
     margin_imageText: autoSizeWidth(10),//图文间距
-    height_bigBtn: autoSizeWidth(49)//按钮高度
+    height_bigBtn: autoSizeWidth(49),//按钮高度
+    lineHeight: onePixel
 };
 
 const styles = {
