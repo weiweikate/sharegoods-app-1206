@@ -31,7 +31,7 @@ const Profile = ({avatar, name, level, member, income, allIncome}) => <View styl
     <Image style={styles.avatar} source={avatar}/>
     <View style={styles.nameBox}>
         <View style={styles.nameView}>
-            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.name}>{name ? name : ''}</Text>
             <ImageBackground style={styles.level} source={starImg}>
                 <Text style={styles.levelText}>{level}</Text>
             </ImageBackground>
