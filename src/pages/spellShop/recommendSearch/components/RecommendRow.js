@@ -31,7 +31,8 @@ export default class RecommendRow extends Component {
         return (<TouchableOpacity onPress={() => {
         }} style={[styles.itemIcon, { marginLeft: 15 }]}>
             {StringUtils.isNoEmpty(item.headImg) ?
-                <Image style={styles.itemIcon} source={{ uri: item.headImg }}/> : null}
+                <Image style={styles.itemIcon} source={{ uri: item.headImg }}/> :
+                <View style={[styles.itemIcon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
         </TouchableOpacity>);
     };
     _onPress = () => {
@@ -57,9 +58,9 @@ export default class RecommendRow extends Component {
                 <View style={styles.topViewContainer}>
                     <View style={{ flex: 1 }}>
                         <View style={styles.headerViewContainer}>
-                            {RecommendRowItem.headUrl ? <Image style={styles.icon}
-                                                               source={{ uri: RecommendRowItem.headUrl || '' }}/> :
-                                <View style={styles.icon}/>}
+                            {StringUtils.isNoEmpty(RecommendRowItem.headUrl) ? <Image style={styles.icon}
+                                                                                      source={{ uri: RecommendRowItem.headUrl }}/> :
+                                <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                             <View style={styles.tittleContainer}>
                                 <Text style={styles.name} numberOfLines={1}>{RecommendRowItem.name || ''}</Text>
                                 <Text style={styles.member}
@@ -87,7 +88,7 @@ export default class RecommendRow extends Component {
                         <Text style={{
                             marginTop: 8, marginBottom: 14.5, paddingHorizontal: 21.5,
                             color: DesignRule.textColor_secondTitle, fontSize: 10
-                        }}>{`距离下一次分红还差${(bonusNeedMoney - tradeBalance > 0) ? (bonusNeedMoney - tradeBalance) : 0}元`}</Text>
+                        }}>{`距离下一次分红还差${(bonusNeedMoney - tradeBalance > 0) ? (bonusNeedMoney - tradeBalance).toFixed(2) : 0}元`}</Text>
                     </View>
                     <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
                     <View style={{
@@ -161,7 +162,6 @@ const styles = StyleSheet.create({
     icon: {
         width: 50,
         height: 50,
-        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 25
     },
     tittleContainer: {
@@ -197,7 +197,6 @@ const styles = StyleSheet.create({
         marginTop: 17
     },
     itemIcon: {
-        backgroundColor: DesignRule.lineColor_inColorBg,
         width: 40,
         height: 40,
         borderRadius: 20

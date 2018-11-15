@@ -54,7 +54,7 @@ export default class AssistantRow extends Component {
             <View style={sty}>
                 {
                     headImg ? <Image source={{ uri: headImg }} style={styles.headerImg}/> :
-                        <View style={styles.headerImg}/>
+                        <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>
                 }
                 <View style={styles.right}>
                     <Text style={styles.name}>{nickName || ' '}</Text>
@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
     headerImg: {
         width: 28,
         height: 28,
-        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 14,
         marginLeft: 20,
         marginTop: 15

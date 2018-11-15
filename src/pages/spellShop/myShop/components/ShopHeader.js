@@ -59,7 +59,8 @@ export default class ShopHeader extends Component {
                         marginLeft: px2dp(20),
                         marginRight: px2dp(20)
                     }}>
-                        <Image style={styles.headerImg} source={{ uri: headUrl }}/>
+                        <Image style={styles.headerImg}
+                               source={{ uri: StringUtils.isNoEmpty(headUrl) ? headUrl : '' }}/>
                         <View style={styles.shopInContainer}>
                             <Text style={styles.shopName}>{name || ''}</Text>
                             <Text style={styles.shopId}>ID：{storeNumber || ''}</Text>
@@ -112,7 +113,7 @@ export default class ShopHeader extends Component {
                         </ImageBackground>
 
                         <Text
-                            style={styles.chaju}>距离分红还差{(bonusNeedMoney - tradeBalance) > 0 ? (bonusNeedMoney - tradeBalance) : 0}元</Text>
+                            style={styles.chaju}>距离分红还差{(bonusNeedMoney - tradeBalance) > 0 ? (bonusNeedMoney - tradeBalance).toFixed(2) : 0}元</Text>
 
                         <Text style={styles.fenghong}>预计该次分红金可得<Text style={{ color: '#F00006', fontSize: 13 }}>
                             {currentUserSettle || 0}

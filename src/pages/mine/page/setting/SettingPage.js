@@ -49,7 +49,8 @@ class SettingPage extends BasePage {
             updateData: {},
             showUpdate: false,
             version: DeviceInfo.getVersion(),
-            updateContent: ''
+            updateContent: '',
+            value: true
         };
     }
 
@@ -60,11 +61,11 @@ class SettingPage extends BasePage {
     };
 
     //CachesModule
-    _componentDidMount() {
-        this.getAllCachesSize();
+    componentDidMount() {
+        // this.getAllCachesSize();
         bridge.isPushStopped((value) => {
             this.setState({
-                value
+                value: !value
             });
         });
     }
