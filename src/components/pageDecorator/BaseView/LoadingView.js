@@ -12,7 +12,8 @@ import {
     View,
     Image,
     StyleSheet,
-    ActivityIndicator, Easing, Animated
+    // ActivityIndicator,
+    Easing, Animated
 } from 'react-native';
 import DesignRule from 'DesignRule';
 import res from '../../../comm/res/other/loading_bar.png';
@@ -92,23 +93,23 @@ export default class LoadingView extends Component {
                     }} source={res}/>
                 </View>
             </View>);
-        const {
-            style,
-            source,
-            imgStyle
-        } = this.props;
-        return (<View style={[styles.container, style]}>
-            {/*{this._renderLoading(source,imgStyle)}*/}
-            {/*<Image style={{width:100,height:100}} source={res}/>*/}
-            (<Animated.Image style={{
-            transform: [{
-                rotateZ: this.state.rotateValue.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: ['0deg', '360deg']
-                })
-            }]
-        }} source={res}/>);
-        </View>);
+        // const {
+        //     style,
+        //     source,
+        //     imgStyle
+        // } = this.props;
+        // return (<View style={[styles.container, style]}>
+        //     {/*{this._renderLoading(source,imgStyle)}*/}
+        //     {/*<Image style={{width:100,height:100}} source={res}/>*/}
+        //     (<Animated.Image style={{
+        //     transform: [{
+        //         rotateZ: this.state.rotateValue.interpolate({
+        //             inputRange: [0, 1],
+        //             outputRange: ['0deg', '360deg']
+        //         })
+        //     }]
+        // }} source={res}/>);
+        // </View>);
     }
 }
 
