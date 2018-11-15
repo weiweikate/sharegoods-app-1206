@@ -35,15 +35,7 @@ export default class InvitationToShopPage extends BasePage {
     info = {};
 
     componentDidMount() {
-        this.creatQRCodeImage(`${apiEnvironment.getCurrentH5Url()}/download`);
     }
-
-    creatQRCodeImage(QRCodeStr) {
-        bridge.creatQRCodeImage(QRCodeStr, (path) => {
-            this.setState({ path });
-        });
-    }
-
     //截屏
     _saveImg = () => {
         this.setState({
@@ -105,7 +97,7 @@ export default class InvitationToShopPage extends BasePage {
                             </View>
                             <View style={styles.qrContainer}>
                                 <QRCode
-                                    value={'https://www.baidu.com/'}
+                                    value={`${apiEnvironment.getCurrentH5Url()}/download`}
                                     size={140 - 6}
                                     bgColor={DesignRule.textColor_mainTitle}
                                     fgColor={'white'}/>

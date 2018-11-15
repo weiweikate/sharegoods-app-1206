@@ -24,7 +24,7 @@ import ReportAlert from '../components/ReportAlert';
 import NavLeft from './res/NavLeft.png';
 import shezhi from './res/shezhi.png';
 import icons8_Shop_50px from '../shopRecruit/src/icons8_Shop_50px.png';
-import icons9_shop from '../shopRecruit/src/icons9_shop.png';
+import my_Shop_gengduo from './res/my_Shop_gengduo.png';
 
 import onSc_03 from './res/sc_03.png';
 import unSc_03 from './res/wsc_03.png';
@@ -99,7 +99,7 @@ export default class MyShopPage extends BasePage {
                         <Image style={{ marginRight: 10 }} source={icons8_Shop_50px}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={this._clickSettingItem}>
-                        <Image source={myStore ? shezhi : icons9_shop}/>
+                        <Image source={myStore ? shezhi : my_Shop_gengduo}/>
                     </TouchableOpacity>
                 </View>
             );
@@ -451,7 +451,7 @@ export default class MyShopPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/register`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download`,
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>

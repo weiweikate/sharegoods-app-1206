@@ -28,6 +28,7 @@ import CommModal from '../../../comm/components/CommModal';
 import redEnvelopeBg from './res/red_envelope_bg.png';
 import DesignRule from 'DesignRule';
 
+import DetailNavView from './components/DetailNavView';
 
 const { px2dp } = ScreenUtils;
 import user from '../../../model/user';
@@ -194,10 +195,8 @@ export default class ProductDetailPage extends BasePage {
     //去购物车
     _bottomViewAction = (type) => {
         switch (type) {
-            case 'goGwc':
-                this.$navigate('shopCart/ShopCart', {
-                    hiddeLeft: false
-                });
+            case 'jlj':
+                this.shareModal.open();
                 break;
             case 'gwc':
             case 'buy':
@@ -337,6 +336,7 @@ export default class ProductDetailPage extends BasePage {
         } else {
             this.st = 1;
         }
+        this.DetailNavView.updateWithScale(this.st);
         this._refHeader.setNativeProps({
             opacity: this.st
         });
@@ -423,37 +423,37 @@ export default class ProductDetailPage extends BasePage {
 
 
     _render() {
-        const { price = 0, product = {} } = this.state.data || {};
+        const { price = 0, product = {} ,shareMoney} = this.state.data || {};
         const { name = '', imgUrl } = product;
 
         return (
             <View style={styles.container}>
                 <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
-                <View style={styles.transparentView}>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.$navigateBack();
-                    }}>
-                        <Image source={res.button.show_detail_back}/>
-                    </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.DetailNavShowModal.show((item) => {
-                            switch (item.index) {
-                                case 0:
-                                    this.$navigate('message/MessageCenterPage');
-                                    this.DetailNavShowModal.close();
-                                    break;
-                                case 1:
-                                    this.$navigateReset();
-                                    break;
-                                case 2:
-                                    this.shareModal.open();
-                                    break;
-                            }
-                        });
-                    }}>
-                        <Image source={res.button.show_share}/>
-                    </TouchableWithoutFeedback>
-                </View>
+                <DetailNavView ref={(e) => this.DetailNavView = e}
+                               source = {imgUrl}
+                               navBack={() => {
+                                   this.$navigateBack();
+                               }}
+                               navRLeft={() => {
+                                   this.$navigate('shopCart/ShopCart', {
+                                       hiddeLeft: false
+                                   });
+                               }}
+                               navRRight={() => {
+                                   this.DetailNavShowModal.show((item) => {
+                                       switch (item.index) {
+                                           case 0:
+                                               this.$navigate('message/MessageCenterPage');
+                                               break;
+                                           case 1:
+                                               this.$navigateReset();
+                                               break;
+                                           case 2:
+                                               this.shareModal.open();
+                                               break;
+                                       }
+                                   });
+                               }}/>
 
                 <SectionList onScroll={this._onScroll}
                              ListHeaderComponent={this._renderListHeader}
@@ -462,7 +462,7 @@ export default class ProductDetailPage extends BasePage {
                              keyExtractor={(item, index) => `${index}`}
                              sections={[{ data: [{}] }]}
                              scrollEventThrottle={10}/>
-                <DetailBottomView bottomViewAction={this._bottomViewAction}/>
+                <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney = {shareMoney}/>
                 <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 type={'Image'}
@@ -508,16 +508,5 @@ const styles = StyleSheet.create({
         zIndex: 2,
         opacity: 0
     },
-    transparentView: {
-        backgroundColor: 'transparent',
-        position: 'absolute',
-        top: ScreenUtils.statusBarHeight,
-        left: 16,
-        right: 16,
-        zIndex: 3,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    }
 });
 
