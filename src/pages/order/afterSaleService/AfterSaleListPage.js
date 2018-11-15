@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height: 30,
         width: 80,
-        borderWidth: 1,
+        borderWidth: DesignRule.lineHeight,
         borderColor: DesignRule.textColor_secondTitle,
         borderRadius: 15,
         marginRight: 15
