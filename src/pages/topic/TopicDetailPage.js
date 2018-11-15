@@ -210,7 +210,6 @@ export default class TopicDetailPage extends BasePage {
         const { status } = this.state.data;
         const { productStatus } = this.state.activityData;
         let superStatus = this.state.activityType === 3 ? status : productStatus;
-        superStatus === 2;
         //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)
         return superStatus;
     };
@@ -564,7 +563,7 @@ export default class TopicDetailPage extends BasePage {
                 }
             }
         }
-        //是否已下架
+        //已下架 不能点击
         let superStatus = this._getSuperStatus();
         let disable = superStatus === 2;
         if (disable) {
@@ -617,6 +616,7 @@ export default class TopicDetailPage extends BasePage {
                              showsVerticalScrollIndicator={false}
                              sections={[{ data: [{}] }]}
                              scrollEventThrottle={10}/>
+                //下架提示disable
                 <View style={{
                     height: 49 + ScreenUtils.safeBottom + (disable ? 20 : 0),
                     backgroundColor: 'white'
