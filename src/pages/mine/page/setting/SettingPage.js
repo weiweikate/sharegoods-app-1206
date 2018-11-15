@@ -63,11 +63,13 @@ class SettingPage extends BasePage {
     //CachesModule
     componentDidMount() {
         // this.getAllCachesSize();
-        bridge.isPushStopped((value) => {
-            this.setState({
-                value: !value
+        if (Platform.OS === 'android') {
+            bridge.isPushStopped((value) => {
+                this.setState({
+                    value: !value
+                });
             });
-        });
+        }
     }
 
 
