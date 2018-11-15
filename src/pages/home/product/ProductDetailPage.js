@@ -87,12 +87,24 @@ export default class ProductDetailPage extends BasePage {
     };
 
     componentDidMount() {
-        this.loadPageData();
+        this.getPromotion();
     }
 
-    loadPageData() {
-        this._getProductDetail();
-        this.getPromotion();
+    componentWillMount() {
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                console.log('willFocus', state);
+                if (state && state.routeName === 'home/product/ProductDetailPage') {
+                    this._getProductDetail();
+                }
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
     getPromotion = async () => {
