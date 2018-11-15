@@ -94,7 +94,9 @@ let styles = StyleSheet.create({
         height: px2dp(273),
         flexDirection: 'row',
         marginRight: px2dp(15),
-        marginLeft: px2dp(15)
+        marginLeft: px2dp(15),
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     space: {
         width: px2dp(5)
