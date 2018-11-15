@@ -23,7 +23,7 @@ export default class HomeUserView extends Component {
 
     _goToPromotionPage() {
         const { navigation } = this.props;
-        navigation && navigation.navigate('mine/MyPromotionPage');
+        navigation && navigation.navigate('mine/userInformation/WaitingForWithdrawCashPage');
     }
 
     render() {
