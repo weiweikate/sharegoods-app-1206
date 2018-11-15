@@ -25,7 +25,6 @@
 #import <React/RCTLinkingManager.h>
 
 
-
 @implementation AppDelegate (ConfigLib)
 -(void)JR_ConfigLib:(UIApplication *)application  didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
