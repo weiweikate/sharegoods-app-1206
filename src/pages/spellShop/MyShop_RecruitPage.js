@@ -108,7 +108,7 @@ export default class MyShop_RecruitPage extends BasePage {
                 {dic.loadingState === PageLoadingState.fail ?
                     <NavigatorBar title={'店铺详情'} leftPressed={() => {
                         this.$navigateBack();
-                    }}/> : null}
+                    }} leftNavItemHidden={!this.params.storeId}/> : null}
                 {renderViewByLoadingState(this._getPageStateOptions(),this._renderContainer)}
             </View>
         );
