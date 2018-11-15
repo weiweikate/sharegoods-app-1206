@@ -445,13 +445,14 @@ export default class MyCouponsItems extends Component {
             API.listAvailable({ page: this.currentPage, pageSize: 10, productPriceIds: arr }).then(res => {
                 let data = res.data || {};
                 let dataList = data.data || [];
-                console.log('dataList')
+                console.log('dataList');
+                this.isLoadMore = false;
+                this.parseData(dataList);
                 if (dataList.length === 0) {
                     this.isEnd = true;
                     return;
                 }
-                this.isLoadMore = false;
-                this.parseData(dataList);
+
             }).catch(result => {
                 this.isLoadMore = false;
                 UI.$toast(result.msg);
@@ -482,10 +483,14 @@ export default class MyCouponsItems extends Component {
                 let dataList = data.data || [];
                 this.isLoadMore = false;
                 this.parseData(dataList);
-                if (dataList.length === 0&&!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 ) {
+                if (dataList.length === 0 ) {
                     this.isEnd = true;
                     return;
                 }
+                // if (dataList.length === 0&&!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 ) {
+                //     this.isEnd = true;
+                //     return;
+                // }
 
             }).catch(result => {
                 this.isLoadMore = false;

@@ -30,7 +30,6 @@ import DesignRule from 'DesignRule';
 const { px2dp } = ScreenUtils;
 import EmptyUtils from '../../utils/EmptyUtils';
 import StringUtils from '../../utils/StringUtils';
-import DateUtils from '../../utils/DateUtils';
 import CommModal from 'CommModal';
 import DetailNavView from '../home/product/components/DetailNavView';
 
@@ -89,7 +88,8 @@ export default class TopicDetailPage extends BasePage {
     getPromotion = async () => {
         try {
             const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
-            if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
+            var currStr = new Date().getTime() + '';
+            if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
                 if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
                     HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
                         if (!EmptyUtils.isEmpty(data.data)) {
@@ -98,7 +98,7 @@ export default class TopicDetailPage extends BasePage {
                                 couponData: data.data
                             });
                             this.couponId = data.data.id;
-                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, Date.parse(new Date()).toString());
+                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, currStr);
                         }
                     });
                 }
