@@ -62,6 +62,11 @@ class SettingPage extends BasePage {
     //CachesModule
     _componentDidMount() {
         this.getAllCachesSize();
+        bridge.isPushStopped((value) => {
+            this.setState({
+                value
+            });
+        });
     }
 
 
@@ -83,20 +88,27 @@ class SettingPage extends BasePage {
                         <Image source={arrow_right}/>
                     </TouchableOpacity>
                     {this.renderLine()}
-                    <TouchableOpacity style={styles.viewStyle}>
-                        <UIText value={'消息推送'} style={styles.blackText}/>
-                        <Switch value={this.state.value}
-                                onTintColor={'#00D914'}
-                                thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
-                                tintColor={DesignRule.textColor_hint}
-                                onValueChange={(value) => {
-                                    this.setState({
-                                        value: value,
-                                        changeTxt: value ? 'switch 打开了' : 'switch 关闭了'
-                                    });
-                                }}/>
-                    </TouchableOpacity>
-                    {this.renderLine()}
+                    {Platform.OS === 'ios' ? null :
+                        <View>
+                            <TouchableOpacity style={styles.viewStyle}>
+                                <UIText value={'消息推送'} style={styles.blackText}/>
+                                <Switch value={this.state.value}
+                                        onTintColor={'#00D914'}
+                                        thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
+                                        tintColor={DesignRule.textColor_hint}
+                                        onValueChange={(value) => {
+                                            this.setState({
+                                                value: value
+                                            });
+                                            if (value) {
+                                                bridge.resumePush();
+                                            } else {
+                                                bridge.stopPush();
+                                            }
+                                        }}/>
+                            </TouchableOpacity>
+                            {this.renderLine()}
+                        </View>}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.clearAllCaches()}>
                         <UIText value={'清除缓存'} style={styles.blackText}/>
                         <UIText value={desc}
@@ -321,7 +333,7 @@ class SettingPage extends BasePage {
         });
         if (Platform.OS === 'ios') {
             // 前往appstore
-            Linking.openURL('https://itunes.apple.com/cn/app/id1439275146')
+            Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
         } else {
             // 更新app
             NativeModules.commModule.updateable(JSON.stringify(this.state.updateData), false);

@@ -34,6 +34,7 @@ import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.meeruu.sharegoods.utils.DataCleanManager;
+import cn.jpush.android.api.JPushInterface;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -382,5 +383,20 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void removeLaunch() {
         EventBus.getDefault().post(new HideSplashEvent());
+    }
+
+    @ReactMethod
+    public void stopPush() {
+        JPushInterface.stopPush(getApplicationContext());
+    }
+
+    @ReactMethod
+    public void resumePush() {
+        JPushInterface.resumePush(getApplicationContext());
+    }
+
+    @ReactMethod
+    public void isPushStopped(Callback callback) {
+        callback.invoke(JPushInterface.isPushStopped(mContext));
     }
 }
