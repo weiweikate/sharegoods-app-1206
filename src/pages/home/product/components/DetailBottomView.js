@@ -73,7 +73,7 @@ export default class DetailBottomView extends Component {
                         <Text style={{ color: DesignRule.white, fontSize: 25 }}>赚</Text>
                         <View style={{ marginLeft: 5 }}>
                             <Text style={{ color: DesignRule.white, fontSize: 11 }}>品牌奖励金</Text>
-                            <View style={{
+                            {shareMoney === 0 ? null : <View style={{
                                 marginTop: 6,
                                 alignItems: 'center'
                             }} maxWidth={ScreenUtils.autoSizeWidth(100)}>
@@ -82,7 +82,8 @@ export default class DetailBottomView extends Component {
                                     fontSize: 11
                                 }}
                                       numberOfLines={2}>{StringUtils.isNoEmpty(shareMoney) ? `￥${shareMoney}` : '￥?'}</Text>
-                            </View>
+                            </View>}
+
                         </View>
                     </TouchableOpacity>
                 </View>
