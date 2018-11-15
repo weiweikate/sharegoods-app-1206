@@ -481,7 +481,7 @@ export default class ProductDetailPage extends BasePage {
 
     _renderContent = () => {
         const { price = 0, product = {}, shareMoney, status } = this.state.data || {};
-        const { name = '', imgUrl } = product;
+        let { name = '', imgUrl, buyLimit, leftBuyNum } = product;
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <DetailNavView ref={(e) => this.DetailNavView = e}
@@ -516,7 +516,8 @@ export default class ProductDetailPage extends BasePage {
                          keyExtractor={(item, index) => `${index}`}
                          sections={[{ data: [{}] }]}
                          scrollEventThrottle={10}/>
-            <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney={shareMoney} status={status}/>
+            <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney={shareMoney} status={status}
+                              buyLimit={buyLimit} leftBuyNum={leftBuyNum}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'Image'}
