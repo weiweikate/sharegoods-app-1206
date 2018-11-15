@@ -40,7 +40,7 @@ class AfterSaleServicePage extends BasePage {
             isShowSingleSelctionModal: false,
             isShowTakePhotoModal: false,
             pageType: this.params.pageType ? this.params.pageType : 0, //  0(退款),1(退货退款),2(换货)
-            activeProduct: ['', '退回商品需由买家承担运费，请确保不影响商品完好', '仅可更好同规格或者同价格的商品'],
+            activeProduct: ['', '退回商品需由买家承担运费，请确保不影响商品完好', '仅可更换同规格或者同价格的商品'],
             reason: ['退款原因', '退货原因', '换货原因'],
             inputReason: ['退款说明', '退货说明', '换货说明'],
             productData: {},// 里面包含了商品、订单id、价格等信息

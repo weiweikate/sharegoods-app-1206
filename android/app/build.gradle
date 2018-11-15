@@ -85,6 +85,7 @@ android {
 }
 
 dependencies {
+
     api fileTree(include: ['*.jar'], dir: 'libs')
     api project(':react-native-update')
     api project(':react-native-video')

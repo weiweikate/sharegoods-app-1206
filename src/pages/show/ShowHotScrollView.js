@@ -6,44 +6,64 @@ import { View, ScrollView, StyleSheet, Text, Image, TouchableWithoutFeedback } f
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import { ShowHotModules } from './Show'
+import { showHotModules, showSelectedDetail } from './Show'
 import res from '../../comm/res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule';
 import ImageLoad from '@mr/react-native-image-placeholder'
+import TimerMixin from 'react-timer-mixin'
 
-const HotItem = ({item, press}) => <TouchableWithoutFeedback onPress={()=> press && press()}>
-    <View style={styles.item}>
-    <ImageLoad style={styles.imgBack} source={{uri: item.coverImg}}>
-        <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
-        <View style={styles.row}>
-            <Text style={styles.remark} numberOfLines={1}>{item.pureContent ? item.pureContent.slice(0, 30).trim() : ''}</Text>
-            <View style={styles.right}>
-                <Image source={seeImg}/>
-                <Text style={styles.number}>{item.click ? item.click : 0}</Text>
+class HotItem extends Component {
+    state = {
+        readNumber: 0
+    }
+
+    componentWillMount() {
+        const { item } = this.props
+        this.setState({readNumber: item.click ? item.click : 0})
+    }
+
+    _onSelectedItem() {
+        const { press } = this.props
+        press && press()
+        TimerMixin.setTimeout(() => {
+            const { readNumber } = this.state
+            this.setState({readNumber: readNumber + 1})
+        }, 800)
+    }
+
+    render() {
+        const {item} = this.props
+        const {readNumber } = this.state
+        return <TouchableWithoutFeedback onPress={()=> {this._onSelectedItem()}}>
+        <View style={styles.item}>
+        <ImageLoad style={styles.imgBack} source={{uri: item.coverImg}}>
+            <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
+            <View style={styles.row}>
+                <Text style={styles.remark} numberOfLines={1}>{item.pureContent ? item.pureContent.slice(0, 30).trim() : ''}</Text>
+                <View style={styles.right}>
+                    <Image source={seeImg}/>
+                    <Text style={styles.number}>{readNumber}</Text>
+                </View>
             </View>
+        </ImageLoad>
         </View>
-    </ImageLoad>
-    </View>
-</TouchableWithoutFeedback>
+    </TouchableWithoutFeedback>
+    }
+}
 
 @observer
 export default class ShowHotScrollView extends Component {
 
-    constructor(props) {
-        super(props)
-        this.hotModule = new ShowHotModules()
-        this.hotModule.loadHotList()
-    }
-
     _hotItemAction(item) {
+        showSelectedDetail.selectedShowAction(item, showHotModules.type)
         const { navigation } = this.props
         navigation.navigate('show/ShowDetailPage', {id: item.id})
     }
 
     render() {
-        const { hotList } = this.hotModule
+        const { hotList } = showHotModules
         let items = []
         if (!hotList){
             return <View/>
