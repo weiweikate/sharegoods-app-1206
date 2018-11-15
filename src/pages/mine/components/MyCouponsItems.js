@@ -26,6 +26,7 @@ import user from '../../../model/user';
 import { UIText, UIImage } from '../../../components/ui';
 import DesignRule from 'DesignRule';
 import { NavigationActions } from 'react-navigation';
+import MineApi from '../api/MineApi';
 
 const { px2dp } = ScreenUtils;
 
@@ -508,9 +509,18 @@ export default class MyCouponsItems extends Component {
         console.log('refresh');
            this.isEnd=false;
             this.currentPage = 1;
+            this.getUserInfo();
             this.getDataFromNetwork();
 
     };
+    getUserInfo(){
+        MineApi.getUser().then(res => {
+                let data = res.data;
+                user.saveUserInfo(data);
+        }).catch(err => {
+            console.log(err);
+        });
+    }
 
     onLoadMore = () => {
         console.log('onLoadMore',this.isEnd);

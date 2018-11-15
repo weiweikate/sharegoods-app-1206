@@ -308,24 +308,33 @@ export default class ShopCartPage extends BasePage {
                         {
                             activityString[itemData.activityType]
                                 ?
-                                <UIText
-                                    value={
-                                        activityString[itemData.activityType]
-                                    }
-                                    style={
-                                        {
-                                            position: 'absolute',
-                                            padding: 2,
-                                            left: 140,
-                                            top: 20,
-                                            fontSize: 10,
-                                            color: DesignRule.mainColor,
-                                            borderWidth: 1,
-                                            borderRadius: 4,
-                                            borderColor: DesignRule.mainColor
+                                <View
+                                style={{
+                                    position: 'absolute',
+                                    left: 140,
+                                    top: 20,
+                                    justifyContent:'center',
+                                    alignItems:'center',
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    borderColor: DesignRule.mainColor,
+                                    // borderColor:'black',
+                                    width:16,
+                                    height:16
+                                }}
+                                >
+                                    <UIText
+                                        value={
+                                            activityString[itemData.activityType]
                                         }
-                                    }
-                                />
+                                        style={
+                                            {
+                                                fontSize: 10,
+                                                color: DesignRule.mainColor,
+                                            }
+                                        }
+                                    />
+                                </View>
                                 : null
                         }
 
