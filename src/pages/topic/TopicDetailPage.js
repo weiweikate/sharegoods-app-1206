@@ -30,7 +30,6 @@ import DesignRule from 'DesignRule';
 const { px2dp } = ScreenUtils;
 import EmptyUtils from '../../utils/EmptyUtils';
 import StringUtils from '../../utils/StringUtils';
-import DateUtils from '../../utils/DateUtils';
 import CommModal from 'CommModal';
 import DetailNavView from '../home/product/components/DetailNavView';
 

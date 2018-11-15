@@ -34,7 +34,6 @@ const { px2dp } = ScreenUtils;
 import user from '../../../model/user';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import StringUtils from '../../../utils/StringUtils';
-import DateUtils from '../../../utils/DateUtils';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
