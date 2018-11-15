@@ -34,7 +34,7 @@ import {
 import NetNotConnectImage from './source/net_error.png'; //用于断网，超时展示
 import ServerErrorImage from './source/net_error.png'; //用于其他网络请求展示
 const BugErrorCode = -20000;       //异常错误，请稍后再试 js bug error
-const NetUnKnowErrorCode = -20001; //未知错误,请稍后再试 (网络错误，但是没有错误码)
+// const NetUnKnowErrorCode = -20001; //未知错误,请稍后再试 (网络错误，但是没有错误码)
 import DesignRule from 'DesignRule';
 
 export default class NetFailedView extends Component {
