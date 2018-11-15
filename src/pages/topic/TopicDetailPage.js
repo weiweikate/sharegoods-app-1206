@@ -592,6 +592,11 @@ export default class TopicDetailPage extends BasePage {
                                navBack={() => {
                                    this.$navigateBack();
                                }}
+                               navRLeft={() => {
+                                   this.$navigate('shopCart/ShopCart', {
+                                       hiddeLeft: false
+                                   });
+                               }}
                                navRRight={() => {
                                    this.DetailNavShowModal.show((item) => {
                                        switch (item.index) {
@@ -652,12 +657,12 @@ export default class TopicDetailPage extends BasePage {
                                     imageUrlStr: productImgUrl,
                                     titleStr: productName,
                                     priceStr: `￥${productPrice}`,
-                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`
+                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.id || ''}`
                                 }}
                                 webJson={{
                                     title: productName,
                                     dec: '商品详情',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.id || ''}`,
                                     thumImage: productImgUrl
                                 }}
                                 miniProgramJson={{
@@ -665,8 +670,8 @@ export default class TopicDetailPage extends BasePage {
                                     dec: '商品详情',
                                     thumImage: 'logo.png',
                                     hdImageURL: productImgUrl,
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`,
-                                    miniProgramPath: `/pages/index/index?type=${this.params.activityType}&id=${this.params.activityCode}`
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.id || ''}`,
+                                    miniProgramPath: `/pages/index/index?type=${this.params.activityType}&id=${this.params.activityCode}&inviteId=${user.id || ''}`
                                 }}/>
                 <TopicDetailShowModal ref={(ref) => {
                     this.TopicDetailShowModal = ref;
