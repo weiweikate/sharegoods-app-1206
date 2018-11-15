@@ -235,10 +235,12 @@ export default class BasePage extends Component {
         Toast.showLoading(msg,params)
     };
     $loadingDismiss = (callBack) => {
-        if (!this.$loadingHub) {
-            return;
-        }
-        this.$loadingHub.dismiss(typeof callBack === 'function' ? callBack : null);
+        Toast.hiddenLoading();
+
+        // if (!this.$loadingHub) {
+        //     return;
+        // }
+        // this.$loadingHub.dismiss(typeof callBack === 'function' ? callBack : null);
     };
 }
 
