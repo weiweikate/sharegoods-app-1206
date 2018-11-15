@@ -74,18 +74,18 @@ export default class MyCashAccountPage extends BasePage {
             <View style={styles.container}>
                 <ImageBackground style={styles.imageBackgroundStyle} />
                 <View style={styles.viewStyle}>
-                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: 'white' }}>账户余额(元)</Text>
+                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 13, color: 'white' }}>账户余额(元)</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ height: 44, justifyContent: 'space-between', marginTop: 15 }}>
+                        <View style={{ height: 44, justifyContent: 'space-between', marginTop: 10 }}>
                             <Text style={{
                                 marginLeft: 25,
-                                fontSize: 25,
+                                fontSize: 24    ,
                                 color: 'white'
                             }}>{StringUtils.formatMoneyString(user.availableBalance?user.availableBalance:0, false)}</Text>
                         </View>
-                        <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
-                            <Text style={{ fontSize: 15, color: 'white' }}>提现</Text>
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>*/}
+                            {/*<Text style={{ fontSize: 15, color: 'white' }}>提现</Text>*/}
+                        {/*</TouchableOpacity>*/}
                     </View>
                 </View>
             </View>

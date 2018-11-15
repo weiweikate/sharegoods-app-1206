@@ -19,7 +19,7 @@
  * />
  */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
@@ -29,7 +29,7 @@ import {
     Platform,
     StyleSheet,
     TouchableOpacity,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback
 } from 'react-native';
 import NetNotConnectImage from './source/net_error.png'; //用于断网，超时展示
 import ServerErrorImage from './source/net_error.png'; //用于其他网络请求展示
@@ -47,13 +47,13 @@ export default class NetFailedView extends Component {
         //图片以及样式
         style: PropTypes.any,           // 样式
         source: PropTypes.any,          // 图片素材
-        imageStyle: PropTypes.any,      // 图片样式
+        imageStyle: PropTypes.any      // 图片样式
     };
 
     // 默认属性
     static defaultProps = {
         buttonText: '重新加载', // 重新加载按钮title
-        showReloadBtn: true,
+        showReloadBtn: true
     };
 
     // 解析失败原因
@@ -61,13 +61,15 @@ export default class NetFailedView extends Component {
         const netFailedInfo = this.props.netFailedInfo || {};
         if (netFailedInfo instanceof Error) {
             return {
-                code: BugErrorCode,
-                msg: '异常错误，请稍后再试',
+                //BugErrorCode
+                code: '',
+                msg: '异常错误，请稍后再试'
             };
         } else {
             return {
-                code: netFailedInfo.code || NetUnKnowErrorCode,
-                msg: netFailedInfo.msg || '未知错误,请稍后再试',
+                //netFailedInfo.code || NetUnKnowErrorCode
+                code: '',
+                msg: netFailedInfo.msg || '未知错误,请稍后再试'
             };
         }
     };
@@ -119,7 +121,7 @@ export default class NetFailedView extends Component {
                 <Image source={this._getImgSource(source, code)} style={imgS}/>
 
                 <Text style={styles.titleStyle}>
-                    {BugErrorCode === code ? '' : `（${code}）`}{msg}
+                    {BugErrorCode === code ? '' : `${code}`}{msg}
                 </Text>
 
                 {showReloadBtn ? this._renderReloadButton(buttonText) : null}
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
         flex: 1,
         // backgroundColor: DesignRule.bgColor,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     img: {
         // marginTop: 116,
@@ -143,6 +145,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: DesignRule.textColor_instruction,
         marginTop: 28,
+        textAlign : 'center'
     },
     btn: {
         width: 150,
@@ -153,11 +156,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderWidth: 1,
         borderColor: DesignRule.mainColor,
-        backgroundColor: 'transparent',
+        backgroundColor: 'transparent'
     },
     btnText: {
         fontSize: 16,
         color: DesignRule.mainColor,
-        textAlign: 'center',
-    },
+        textAlign: 'center'
+    }
 });

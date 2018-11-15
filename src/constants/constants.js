@@ -281,7 +281,7 @@ let constants = {
             index:6,
             buyState:'已完成',
             moreDetail:'',
-            sellerState:'已签收',
+            sellerState:'已关闭',
             // sellerTime:'2018-04-25 12:45:45',
             disNextView:true,
             menu:[
@@ -299,7 +299,7 @@ let constants = {
             index:7,
             buyState:'交易关闭',
             moreDetail:'',
-            sellerState:'已签收',
+            sellerState:'已关闭',
             // sellerTime:'2018-04-25 12:45:45',
             disNextView:true,
             menu:[

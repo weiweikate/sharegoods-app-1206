@@ -3,51 +3,43 @@ import PropTypes from 'prop-types';
 import {
     View,
     Text,
-    // Modal,
-    Animated,
     StyleSheet,
-    Dimensions,
     TouchableOpacity
 } from 'react-native';
 import Modal from 'CommModal';
 import DesignRule from 'DesignRule';
+import ScreenUtils from '../../utils/ScreenUtils';
 
 
-const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
-const PANNELHEIGHT = 203;
-const Animated_Duration = 300; //默认的动画持续时间
+// const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
+// const PANNELHEIGHT = 203;
+// const Animated_Duration = 300; //默认的动画持续时间
 export default class ConfirmAlert extends Component {
-
-    static propTypes = {
-        confirmCallBack: PropTypes.func //点击确定的回调函数
-    };
-
-    static defaultProps = {
-        confirmCallBack: () => {
-            console.warn('DelAnnouncementAlert miss confirmCallBack func');
-        }
-    };
 
     constructor(props) {
         super(props);
         this.state = {
-            height: PANNELHEIGHT,
+            // height: PANNELHEIGHT,
             title: props.title,
-            confirmCallBack: props.confirmCallBack,
             //私有state
             modalVisible: false, //是否显示
-            top: new Animated.Value(-PANNELHEIGHT), //白色面板顶部距离屏幕底部
-            backOpacity: new Animated.Value(0), //背景颜色
-            alignType: 'center'
+            // top: new Animated.Value(-PANNELHEIGHT), //白色面板顶部距离屏幕底部
+            // backOpacity: new Animated.Value(0), //背景颜色
+            alignType: 'center',
+            leftText: '取消',
+            rightText: '确认'
         };
     }
 
-    show = ({ confirmCallBack, title, height, alignType }) => {
+    show = ({ closeCallBack, confirmCallBack, title, height, alignType, leftText, rightText }) => {
         this.setState({
-            height: height || PANNELHEIGHT,
-            alignType: alignType,
+            // height: height || PANNELHEIGHT,
+            alignType: alignType || this.state.alignType,
+            leftText: leftText || this.state.leftText,
+            rightText: rightText || this.state.rightText,
             title: title || this.state.title,
-            confirmCallBack: confirmCallBack || this.state.confirmCallBack,
+            confirmCallBack: confirmCallBack,
+            closeCallBack: closeCallBack,
             modalVisible: true
         }, this._startAnimated);
     };
@@ -55,24 +47,24 @@ export default class ConfirmAlert extends Component {
     //开始动画
     _startAnimated = () => {
         //底部到顶部的
-        Animated.parallel([
-            Animated.timing(
-                //透明度
-                this.state.top,
-                {
-                    toValue: (MAX_SCREEN - this.state.height) / 2,
-                    duration: Animated_Duration
-                }
-            ),
-            Animated.timing(
-                //透明度
-                this.state.backOpacity,
-                {
-                    toValue: 1,
-                    duration: Animated_Duration
-                }
-            )
-        ]).start();
+        // Animated.parallel([
+        //     Animated.timing(
+        //         //透明度
+        //         this.state.top,
+        //         {
+        //             toValue: (MAX_SCREEN - this.state.height) / 2,
+        //             duration: Animated_Duration
+        //         }
+        //     ),
+        //     Animated.timing(
+        //         //透明度
+        //         this.state.backOpacity,
+        //         {
+        //             toValue: 1,
+        //             duration: Animated_Duration
+        //         }
+        //     )
+        // ]).start();
     };
 
     /**
@@ -80,36 +72,42 @@ export default class ConfirmAlert extends Component {
      * @callBack 动画结束的回到函数
      **/
     _closeAnimated = (cb) => {
-        Animated.parallel([
-            Animated.timing(
-                //透明度
-                this.state.top,
-                {
-                    toValue: -this.state.height,
-                    duration: (Animated_Duration * 2) / 3
-                }
-            ),
-            Animated.timing(
-                //透明度
-                this.state.backOpacity,
-                {
-                    toValue: 0,
-                    duration: (Animated_Duration * 2) / 3
-                }
-            )
-        ]).start(() => {
-            this.setState({ modalVisible: false }, () => {
-                if (cb && typeof cb === 'function') {
-                    cb();
-                }
-            });
+        this.setState({ modalVisible: false }, () => {
+            this.state.closeCallBack && this.state.closeCallBack();
         });
+        // Animated.parallel([
+        //     Animated.timing(
+        //         //透明度
+        //         this.state.top,
+        //         {
+        //             toValue: -this.state.height,
+        //             duration: (Animated_Duration * 2) / 3
+        //         }
+        //     ),
+        //     Animated.timing(
+        //         //透明度
+        //         this.state.backOpacity,
+        //         {
+        //             toValue: 0,
+        //             duration: (Animated_Duration * 2) / 3
+        //         }
+        //     )
+        // ]).start(() => {
+        //     this.setState({ modalVisible: false }, () => {
+        //         if (cb && typeof cb === 'function') {
+        //             cb();
+        //         }
+        //     });
+        // });
     };
 
     _clickOk = () => {
-        this._closeAnimated(() => {
+        this.setState({ modalVisible: false }, () => {
             this.state.confirmCallBack && this.state.confirmCallBack();
         });
+        // this._closeAnimated(() => {
+        //     this.state.confirmCallBack && this.state.confirmCallBack();
+        // });
     };
 
     render() {
@@ -117,68 +115,67 @@ export default class ConfirmAlert extends Component {
             return null;
         }
         return (
-            <Modal visible={this.state.modalVisible} onRequestClose={this._closeAnimated} transparent={true}
-                   style={styles.container}>
+            <Modal visible={this.state.modalVisible} onRequestClose={this._closeAnimated} transparent={true}>
                 <View style={[styles.container, { backgroundColor: 'transparent' }]}>
-                    <Animated.View
-                        style={[
-                            styles.container,
-                            {
-                                backgroundColor: 'rgba(0,0,0,0.5)',
-                                opacity: this.state.backOpacity
-                            }
-                        ]}
-                    />
+                    {/*<Animated.View*/}
+                    {/*style={[*/}
+                    {/*styles.container,*/}
+                    {/*{*/}
+                    {/*backgroundColor: 'rgba(0,0,0,0.5)',*/}
+                    {/*opacity: this.state.backOpacity*/}
+                    {/*}*/}
+                    {/*]}*/}
+                    {/*/>*/}
 
-                    <Animated.View
-                        style={[
-                            styles.whitePanel,
-                            {
-                                top: this.state.top,
-                                opacity: this.state.backOpacity,
-                                height: this.state.height
-                            }
-                        ]}
-                    >
-                        <View style={{ flex: 1 }}>
-                            <Text style={{
-                                fontSize: 15,
-                                color: DesignRule.textColor_secondTitle,
-                                textAlign: this.state.alignType,
-                                marginHorizontal: 15,
-                                marginVertical: 30
-                            }}>{this.state.title}</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 27 }}>
-                            <TouchableOpacity onPress={this._clickOk} style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                backgroundColor: DesignRule.mainColor,
-                                marginRight: 36,
-                                width: 99,
-                                height: 32,
-                                borderRadius: 5
-                            }}>
-                                <Text style={{
-                                    fontSize: 16,
-                                    color: 'white'
-                                }}>确认</Text>
-                            </TouchableOpacity>
+                    {/*<Animated.View*/}
+                    {/*style={[*/}
+                    {/*styles.whitePanel,*/}
+                    {/*{*/}
+                    {/*top: this.state.top,*/}
+                    {/*opacity: this.state.backOpacity,*/}
+                    {/*height: this.state.height*/}
+                    {/*}*/}
+                    {/*]}*/}
+                    {/*>*/}
+                    <View style={styles.whitePanel}>
+                        <Text style={{
+                            fontSize: 15,
+                            color: DesignRule.textColor_secondTitle,
+                            textAlign: this.state.alignType,
+                            marginHorizontal: 16,
+                            marginVertical: 32
+                        }} textAlign={this.state.alignType}>{this.state.title}</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 16 }}>
                             <TouchableOpacity onPress={this._closeAnimated} style={{
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 backgroundColor: DesignRule.lineColor_inGrayBg,
-                                width: 99,
+                                width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(16 * 6)) / 2,
                                 height: 32,
                                 borderRadius: 5
                             }}>
                                 <Text style={{
                                     fontSize: 16,
                                     color: DesignRule.textColor_instruction
-                                }}>取消</Text>
+                                }}>{this.state.leftText}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={this._clickOk} style={{
+                                marginLeft: ScreenUtils.autoSizeWidth(16 * 2),
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: DesignRule.mainColor,
+                                width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(16 * 5)) / 2,
+                                height: 32,
+                                borderRadius: 5
+                            }}>
+                                <Text style={{
+                                    fontSize: 16,
+                                    color: 'white'
+                                }}>{this.state.rightText}</Text>
                             </TouchableOpacity>
                         </View>
-                    </Animated.View>
+                    </View>
+                    {/*</Animated.View>*/}
                 </View>
             </Modal>
         );
@@ -192,29 +189,18 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        bottom: 0
+        bottom: 0,
+        justifyContent: 'center'
     },
-    titleContainer: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: 50,
+    whitePanel: {
         backgroundColor: 'white',
-        flexDirection: 'row',
-        paddingHorizontal: 20
+        borderRadius: 5,
+        marginHorizontal: 16
     },
     title: {
         textAlign: 'center',
         fontSize: 15,
         color: DesignRule.textColor_mainTitle
-    },
-    whitePanel: {
-        position: 'absolute',
-        left: 40,
-        right: 40,
-        height: PANNELHEIGHT,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        borderRadius: 5
     }
 });
 

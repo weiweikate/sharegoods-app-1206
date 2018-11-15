@@ -43,6 +43,7 @@ export default class MyCouponsItems extends Component {
             tokenCoinNum: this.props.justOne
         };
         this.currentPage = 0;
+        this.isLoadMore = false;
     }
 
     fmtDate(obj) {
@@ -438,15 +439,14 @@ export default class MyCouponsItems extends Component {
                     amount: item.num
                 });
             });
+            this.isLoadMore = true;
             API.listAvailable({ page: this.currentPage, pageSize: 10, productPriceIds: arr }).then(res => {
                 let data = res.data || {};
                 let dataList = data.data || [];
-                // this.setState({ isEmpty: false }, this._renderEmptyView);
+                this.isLoadMore = false;
                 this.parseData(dataList);
             }).catch(result => {
-                if (result.code === 10009) {
-                    this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
-                }
+                this.isLoadMore = false;
                 UI.$toast(result.msg);
             });
         } else if (this.props.justOne && status == 0) {
@@ -473,17 +473,12 @@ export default class MyCouponsItems extends Component {
             }).then(result => {
                 let data = result.data || {};
                 let dataList = data.data || [];
-                // this.setState({ isEmpty: false }, this._renderEmptyView);
-                //this.parseData(dataList);
-
-                // this.setState({ viewData: dataList });
+                this.isLoadMore = false;
                 this.parseData(dataList);
 
 
             }).catch(result => {
-                if (result.code === 10009) {
-                    this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
-                }
+                this.isLoadMore = false;
                 UI.$toast(result.msg);
             });
         }
@@ -502,17 +497,19 @@ export default class MyCouponsItems extends Component {
 
     onRefresh = () => {
         console.log('refresh');
-        this.currentPage = 1;
-        this.getDataFromNetwork();
-
+        if (!this.isLoadMore) {
+            this.currentPage = 1;
+            this.getDataFromNetwork();
+        }
 
     };
 
     onLoadMore = () => {
         console.log('onLoadMore');
-        this.currentPage++;
-        this.getDataFromNetwork();
-
+        if (!this.isLoadMore) {
+            this.currentPage++;
+            this.getDataFromNetwork();
+        }
     };
 
     clickItem = (index, item) => {
