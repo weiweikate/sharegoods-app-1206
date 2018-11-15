@@ -34,7 +34,7 @@ export default class SearchRecruitingRow extends Component {
                 <View style={styles.headerViewContainer}>
                     {item.headUrl ? <Image style={styles.icon}
                                            source={{ uri: item.headUrl || '' }}/> :
-                        <View style={styles.icon}/>}
+                        <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                     <View style={styles.tittleContainer}>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.name} numberOfLines={1}>{item.name || ''}</Text>
@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
     icon: {
         width: ScreenUtils.autoSizeWidth(50),
         height: ScreenUtils.autoSizeWidth(50),
-        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: ScreenUtils.autoSizeWidth(25)
     },
     tittleContainer: {

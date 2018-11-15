@@ -25,9 +25,12 @@ export default class DetailBottomView extends Component {
     }
 
     render() {
-        let { shareMoney, status } = this.props;
-        let disable = status === 2;
+        let { shareMoney, status, buyLimit, leftBuyNum } = this.props;
+        //限购
+        let isLimit = buyLimit !== -1 && leftBuyNum === 0;
         //status2：产品下架
+        let disable = status === 2;
+        let cantBuy = disable || isLimit;
         return (
             <View style={{ height: 49 + ScreenUtils.safeBottom + (disable ? 20 : 0), backgroundColor: 'white' }}>
                 {disable ? <View style={{
@@ -40,9 +43,9 @@ export default class DetailBottomView extends Component {
                 </View> : null}
                 <View style={styles.container}>
                     <TouchableOpacity style={{ width: 63, justifyContent: 'center', alignItems: 'center' }}
-                                      onPress={() => this.props.bottomViewAction('gwc')} disabled={disable}>
+                                      onPress={() => this.props.bottomViewAction('gwc')} disabled={cantBuy}>
                         <Image style={{ marginBottom: 6 }}
-                               source={disable ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
+                               source={cantBuy ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
                         <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction }}>购物车</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -50,10 +53,13 @@ export default class DetailBottomView extends Component {
                             flex: 1,
                             justifyContent: 'center',
                             alignItems: 'center',
-                            backgroundColor: disable ? DesignRule.textColor_placeholder : DesignRule.mainColor
+                            backgroundColor: cantBuy ? DesignRule.textColor_placeholder : DesignRule.mainColor
                         }}
-                        onPress={() => this.props.bottomViewAction('buy')} disabled={disable}>
-                        <Text style={{ color: DesignRule.white, fontSize: 14 }}>立即购买</Text>
+                        onPress={() => this.props.bottomViewAction('buy')} disabled={cantBuy}>
+                        <Text style={{
+                            color: isLimit ? DesignRule.textColor_instruction : DesignRule.white,
+                            fontSize: 14
+                        }}>{isLimit ? '您已经购买过该商品' : '立即购买'}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
@@ -67,7 +73,7 @@ export default class DetailBottomView extends Component {
                         <Text style={{ color: DesignRule.white, fontSize: 25 }}>赚</Text>
                         <View style={{ marginLeft: 5 }}>
                             <Text style={{ color: DesignRule.white, fontSize: 11 }}>品牌奖励金</Text>
-                            <View style={{
+                            {shareMoney === 0 ? null : <View style={{
                                 marginTop: 6,
                                 alignItems: 'center'
                             }} maxWidth={ScreenUtils.autoSizeWidth(100)}>
@@ -76,7 +82,8 @@ export default class DetailBottomView extends Component {
                                     fontSize: 11
                                 }}
                                       numberOfLines={2}>{StringUtils.isNoEmpty(shareMoney) ? `￥${shareMoney}` : '￥?'}</Text>
-                            </View>
+                            </View>}
+
                         </View>
                     </TouchableOpacity>
                 </View>

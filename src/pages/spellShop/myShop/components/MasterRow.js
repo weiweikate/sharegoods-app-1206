@@ -41,7 +41,7 @@ export default class MasterRow extends Component {
                 <Image style={styles.iconGap} source={ShopMasterIcon}/>
                 <View style={styles.row}>
                     {
-                        headImg ? <Image source={{uri: headImg}} style={styles.headerImg}/> : <View style={styles.headerImg}/>
+                        headImg ? <Image source={{uri: headImg}} style={styles.headerImg}/> : <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>
                     }
                     <View style={styles.right}>
                         <Text style={styles.name}>{(nickName || '  ')}</Text>
@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
     headerImg: {
         width: 28,
         height: 28,
-        backgroundColor: '#f6a3aa',
         borderRadius: 14,
         marginLeft: 20,
         marginTop: 15

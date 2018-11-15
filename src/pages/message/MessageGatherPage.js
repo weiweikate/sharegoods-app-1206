@@ -31,7 +31,7 @@ export default class MessageGatherPage extends BasePage {
             isEmpty: false,
             // currentPage: 1,
         }
-        this.createdTime = null;
+        this.displayTime = null;
         this.currentPage = 1;
     }
     $navigationBarOptions = {
@@ -160,7 +160,7 @@ export default class MessageGatherPage extends BasePage {
 
     loadPageData =()=> {
         Toast.showLoading()
-        MessageAPI.queryMessage({page: 1, pageSize: 30, type:100}).then(res => {
+        MessageAPI.queryMessage({page: 1, pageSize: 10, type:100}).then(res => {
             DeviceEventEmitter.emit("contentViewed");
             Toast.hiddenLoading()
             if(StringUtils.isNoEmpty(res.data.data)){
@@ -169,7 +169,7 @@ export default class MessageGatherPage extends BasePage {
                     arrData.push(item);
                 });
                 if(!EmptyUtils.isEmptyArr(arrData)){
-                    this.createdTime = arrData[arrData.length - 1].createdTime;
+                    this.displayTime = arrData[arrData.length - 1].displayTime;
                 }
                 this.setState({viewData: arrData})
             }else{
@@ -387,7 +387,7 @@ export default class MessageGatherPage extends BasePage {
 
     renderItem = ({item, index})=> {
         let btn = (
-            <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.props.navigation,item.paramType,item.param,item.createdTime)}}>
+            <TouchableWithoutFeedback onPress={()=>{MessageUtils.goDetailPage(this.props.navigation,item.paramType,item.param,item.displayTime)}}>
                 <View style={{height:33,width:ScreenUtils.width, alignItems: 'center',justifyContent:'center',backgroundColor:'white'}}>
                     <Text style={{color:DesignRule.textColor_secondTitle,fontSize:px2dp(13)}}>
                         查看详情>>
@@ -419,12 +419,12 @@ export default class MessageGatherPage extends BasePage {
     }
     onRefresh = () => {
         this.currentPage = 1;
-        this.createdTime = null;
+        this.displayTime = null;
         this.getDataFromNetwork()
     }
 
     getDataFromNetwork = ()=> {
-        MessageAPI.queryMessage({page: this.currentPage, pageSize: 15,type:100,createdTime:this.createdTime}).then(res => {
+        MessageAPI.queryMessage({page: this.currentPage, pageSize: 10,type:100,createdTime:this.displayTime}).then(res => {
             if(!EmptyUtils.isEmpty(res)){
                 let arrData = CommonUtils.deepClone(this.state.viewData);
                 if(this.currentPage === 1){
@@ -435,12 +435,12 @@ export default class MessageGatherPage extends BasePage {
                 });
 
                 if(!EmptyUtils.isEmptyArr(arrData)){
-                    this.createdTime = arrData[arrData.length - 1].createdTime;
+                    this.displayTime = arrData[arrData.length - 1].displayTime;
                 }
-                this.setState({viewData: arrData})
+                this.setState({viewData: arrData});
             }
         }).catch((error)=>{
-            this.$toastShow(error.msg)
+            this.$toastShow(error.msg);
         })
     }
 
@@ -539,7 +539,7 @@ export default class MessageGatherPage extends BasePage {
     //     })
     // }
 
-    _render() {
+    _render=()=> {
         return (
             <View style={styles.container}>
                 <RefreshList

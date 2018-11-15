@@ -481,7 +481,7 @@ export default class ProductDetailPage extends BasePage {
 
     _renderContent = () => {
         const { price = 0, product = {}, shareMoney, status } = this.state.data || {};
-        const { name = '', imgUrl } = product;
+        let { name = '', imgUrl, buyLimit, leftBuyNum } = product;
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <DetailNavView ref={(e) => this.DetailNavView = e}
@@ -516,7 +516,8 @@ export default class ProductDetailPage extends BasePage {
                          keyExtractor={(item, index) => `${index}`}
                          sections={[{ data: [{}] }]}
                          scrollEventThrottle={10}/>
-            <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney={shareMoney} status={status}/>
+            <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney={shareMoney} status={status}
+                              buyLimit={buyLimit} leftBuyNum={leftBuyNum}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
             <CommShareModal ref={(ref) => this.shareModal = ref}
                             type={'Image'}
@@ -524,12 +525,12 @@ export default class ProductDetailPage extends BasePage {
                                 imageUrlStr: imgUrl,
                                 titleStr: `${name}`,
                                 priceStr: `￥${price}`,
-                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`
+                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}?upuserid=${user.id || ''}`
                             }}
                             webJson={{
                                 title: `${name}`,
                                 dec: '商品详情',
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`,
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}?upuserid=${user.id || ''}`,
                                 thumImage: imgUrl
                             }}
                             miniProgramJson={{
@@ -537,8 +538,8 @@ export default class ProductDetailPage extends BasePage {
                                 dec: '商品详情',
                                 thumImage: 'logo.png',
                                 hdImageURL: imgUrl,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`,
-                                miniProgramPath: `/pages/index/index?type=99&id=${product.id}`
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}?upuserid=${user.id || ''}`,
+                                miniProgramPath: `/pages/index/index?type=99&id=${product.id}&inviteId=${user.id || ''}`
                             }}/>
             <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
             <ConfirmAlert ref={(ref) => this.ConfirmAlert = ref}/>
