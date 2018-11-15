@@ -158,28 +158,21 @@ class SettingPage extends BasePage {
                 },
                 {
                     text: '确定', onPress: () => {
-                        setInterval(this.clearCache(), 1000);
-
+                        if (ScreenUtils.isIOS) {
+                            CachesModule.clearCaches(() => {
+                                this.getAllCachesSize();
+                            });
+                        } else {
+                            bridge.clearAllCache(() => {
+                                this.getAllCachesSize();
+                            });
+                        }
                     }
                 }
             ]
         );
     };
-    clearCache = () => {
-        if (!'0.0Byte'.equals(this.state.memorySize)) {
-            if (ScreenUtils.isIOS) {
-                CachesModule.clearCaches(() => {
-                    this.getAllCachesSize();
-                });
-            } else {
-                bridge.clearAllCache(() => {
-                    this.getAllCachesSize();
-                });
-            }
-        } else {
-            clearInterval();
-        }
-    };
+
     getAllCachesSize = () => {
         if (ScreenUtils.isIOS) {
             CachesModule && CachesModule.getCachesSize((allSize) => {

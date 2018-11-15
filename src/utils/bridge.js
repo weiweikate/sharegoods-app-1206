@@ -121,9 +121,22 @@ export default {
         NativeModules.QRCodeModule.scanQRCode(onSuccess, onError);
     },
 
-    getTotalCacheSize(callback = () => {
-    }) {
-        NativeModules.commModule.getTotalCacheSize(callback);
+    // getTotalCacheSize(callback = () => {
+    // }) {
+    //     NativeModules.commModule.getTotalCacheSize(callback);
+    // },
+//
+//     CachesModule && CachesModule.getCachesSize((allSize) => {
+//     let temp = getSizeFromat(allSize);
+//     this.setState({
+//         memorySize: temp
+//     });
+// });
+    getTotalCacheSize(callback) {
+        NativeModules.commModule.getTotalCacheSize(size => {
+            alert('laile')
+            callback(size);
+        });
     },
 
     clearAllCache(callback = () => {
@@ -135,5 +148,6 @@ export default {
 
     stopPush: () => NativeModules.commModule.stopPush(),
     resumePush: () => NativeModules.commModule.resumePush(),
-    isPushStopped: (callback=()=>{}) => NativeModules.commModule.isPushStopped(callback)
+    isPushStopped: (callback = () => {
+    }) => NativeModules.commModule.isPushStopped(callback)
 };
