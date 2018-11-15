@@ -172,6 +172,7 @@ class SettingPage extends BasePage {
             ]
         );
     };
+
     getAllCachesSize = () => {
         if (ScreenUtils.isIOS) {
             CachesModule && CachesModule.getCachesSize((allSize) => {

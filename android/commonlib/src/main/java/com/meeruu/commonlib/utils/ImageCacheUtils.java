@@ -50,6 +50,10 @@ public class ImageCacheUtils {
         }
     }
 
+    public void deleteCacheFloder() {
+        deleteFolderFile(ImageExternalCatchFile.getAbsolutePath(), true);
+    }
+
     /**
      * 清除图片内存缓存
      */
@@ -113,7 +117,7 @@ public class ImageCacheUtils {
      * @param filePath       filePath
      * @param deleteThisPath deleteThisPath
      */
-    public void deleteFolderFile(String filePath, boolean deleteThisPath) {
+    public static void deleteFolderFile(String filePath, boolean deleteThisPath) {
         if (!TextUtils.isEmpty(filePath)) {
             try {
                 File file = new File(filePath);

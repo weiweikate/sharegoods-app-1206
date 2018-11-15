@@ -34,7 +34,6 @@ import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
-import com.meeruu.sharegoods.utils.DataCleanManager;
 import com.qiyukf.unicorn.api.Unicorn;
 
 import org.greenrobot.eventbus.EventBus;
@@ -385,7 +384,7 @@ public class CommModule extends ReactContextBaseJavaModule {
         try {
             // 清楚七鱼缓存
             Unicorn.clearCache();
-            DataCleanManager.clearAllCache(mContext);
+            ImageCacheUtils.getInstance().deleteCacheFloder();
             callback.invoke();
         } catch (Exception e) {
             LogUtils.d(e.getMessage());
