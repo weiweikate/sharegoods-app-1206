@@ -82,7 +82,6 @@ export default class TopicDetailPage extends BasePage {
 
 
     componentDidMount() {
-        this.loadPageData();
         this.getPromotion();
     }
 
@@ -108,12 +107,22 @@ export default class TopicDetailPage extends BasePage {
         }
     };
 
-    componentWillUnmount() {
-        this.__timer__ && clearInterval(this.__timer__);
+    componentWillMount() {
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                console.log('willFocus', state);
+                if (state && state.routeName === 'topic/TopicDetailPage') {
+                    this._getActivityData();
+                }
+            }
+        );
     }
 
-    loadPageData() {
-        this._getActivityData();
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.__timer__ && clearInterval(this.__timer__);
     }
 
     getCoupon = () => {
@@ -225,14 +234,14 @@ export default class TopicDetailPage extends BasePage {
             this.setState({
                 loadingState: PageLoadingState.success
             }, () => {
-                this._needPushToNormal();
-                this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this.updateActivityStatus);
-
-                HomeAPI.getProductDetail({
+                    HomeAPI.getProductDetail({
                     id: productId
                 }).then((data) => {
                     this.setState({
                         data: data.data || {}
+                    },()=>{
+                        this._needPushToNormal();
+                        this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this.updateActivityStatus);
                     });
                 }).catch((error) => {
                     this.$toastShow(error.msg);
