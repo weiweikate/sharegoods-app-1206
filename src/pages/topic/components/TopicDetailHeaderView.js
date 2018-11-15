@@ -91,7 +91,7 @@ export default class TopicDetailHeaderView extends Component {
         }
         return (
             <View>
-                {<TopicDetailBanner bannerImgList={bannerImgList} haveVideo={this.state.haveVideo}/>}
+                {<TopicDetailBanner bannerImgList={bannerImgList} haveVideo={this.state.haveVideo} navigation = {this.props.navigation}/>}
                 {activityType === 3 ? null : <ActivityView ref={(e) => {
                     this.ActivityView = e;
                 }} activityData={this.props.activityData} activityType={activityType}/>}

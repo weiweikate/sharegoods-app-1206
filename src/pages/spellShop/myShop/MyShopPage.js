@@ -126,6 +126,23 @@ export default class MyShopPage extends BasePage {
         };
     };
 
+    componentWillMount() {
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                console.log('willFocus', state);
+                if (state && state.routeName === 'SpellShopPage') {
+                    this._loadPageData();
+                }
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove();
+    }
+
     componentDidMount() {
         this._loadPageData();
     }

@@ -150,7 +150,7 @@ export default class ConfirmAlert extends Component {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 backgroundColor: DesignRule.lineColor_inGrayBg,
-                                width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(16 * 6)) / 2,
+                                width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(16 * 8)) / 2,
                                 height: 32,
                                 borderRadius: 5
                             }}>
@@ -164,7 +164,7 @@ export default class ConfirmAlert extends Component {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 backgroundColor: DesignRule.mainColor,
-                                width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(16 * 5)) / 2,
+                                width: (ScreenUtils.width - ScreenUtils.autoSizeWidth(16 * 8)) / 2,
                                 height: 32,
                                 borderRadius: 5
                             }}>
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     whitePanel: {
         backgroundColor: 'white',
         borderRadius: 5,
-        marginHorizontal: 16
+        marginHorizontal: 32
     },
     title: {
         textAlign: 'center',

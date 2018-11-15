@@ -245,7 +245,7 @@ export default class SearchResultPage extends BasePage {
     //跳转
     _clickItemAction = (text) => {
         if (StringUtils.isEmpty(text)){
-            this.$toastShow('请输入内容搜索')
+            this.$toastShow('搜索内容不能为空')
             return;
         }
         this.params.categoryId = undefined;
