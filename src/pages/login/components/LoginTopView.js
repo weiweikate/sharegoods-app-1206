@@ -123,10 +123,9 @@ export default class LoginTopView extends Component {
                         value={this.LoginModel.phoneNumber}
                         onChangeText={text => this.LoginModel.savePhoneNumber(text)}
                         placeholder='请输入手机号'
-                        underlineColorAndroid={'transparent'}
+                        underlineColorAndroid='transparent'
                         keyboardType='numeric'
                         onEndEditing={() => {
-
                             if (this.LoginModel.phoneNumber.length > 0 && (!StringUtils.checkPhone(this.LoginModel.phoneNumber))) {
                                 bridge.$toast('手机号格式不对');
                             }
