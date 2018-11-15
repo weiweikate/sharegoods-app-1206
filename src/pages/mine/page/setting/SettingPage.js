@@ -4,7 +4,8 @@ import {
     View,
     Image,
     NativeModules,
-    TouchableOpacity, Alert, Switch, Text, Platform, AsyncStorage
+    TouchableOpacity, Alert, Switch, Text, Platform, AsyncStorage,
+    Linking
 } from 'react-native';
 
 const { CachesModule } = NativeModules;
@@ -299,7 +300,7 @@ class SettingPage extends BasePage {
     // 版本检测
     getNewVersion = () => {
         // Android调用原生检测版本
-        MineApi.getVersion({ vsersion: this.state.version }).then((res) => {
+        MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((res) => {
             if (res.data.upgrade === 1) {
                 this.setState({
                     updateData: res.data,
@@ -321,6 +322,7 @@ class SettingPage extends BasePage {
         });
         if (Platform.OS === 'ios') {
             // 前往appstore
+            Linking.openURL('https://itunes.apple.com/cn/app/id1439275146')
         } else {
             // 更新app
             NativeModules.commModule.updateable(JSON.stringify(this.state.updateData), false);

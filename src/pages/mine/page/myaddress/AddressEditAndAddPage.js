@@ -144,8 +144,8 @@ export default class AddressEditAndAddPage extends BasePage {
             </View>
             <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
             <TouchableOpacity style={styles.horizontalItem} onPress={() => this._getCityPicker()}>
-                <Text style={[styles.itemLeftText, { flex: 1 }]}>所在地区</Text>
-                <Text>{this.state.areaText}</Text>
+                <Text style={[styles.itemLeftText, ]}>所在地区</Text>
+                <Text style={{flex:1}}>{this.state.areaText}</Text>
                 <Image source={arrow_right} style={{ width: 12, height: 20, marginLeft: 4 }} resizeMode={'contain'}/>
             </TouchableOpacity>
             <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>

@@ -7,7 +7,7 @@ import Waterfall from '../../components/ui/WaterFall';
 import { observer } from 'mobx-react';
 import { ShowRecommendModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
-
+import EmptyUtils from '../../utils/EmptyUtils'
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
 import BasePage from '../../BasePage';
@@ -51,6 +51,7 @@ export default class ShowConnectPage extends BasePage {
     _refreshData() {
         this.recommendModules.loadCollect().then(data => {
             this.setState({ firstLoad: false });
+            this.waterfall.index = 1
             this.waterfall.clear();
             if (data && data.length > 0) {
                 this.waterfall.addItems(data);
@@ -141,8 +142,8 @@ export default class ShowConnectPage extends BasePage {
         let imgHigh = 1;
         let img = '';
         if (data.generalize === tag.New || data.generalize === tag.Recommend) {
-            imgWide = data.coverImgWide ? data.coverImgWide : 1;
-            imgHigh = data.coverImgHigh ? data.coverImgHigh : 1;
+            imgWide = EmptyUtils.isEmpty(data.coverImgWide) ? 1 : data.coverImgWide;
+            imgHigh = EmptyUtils.isEmpty(data.coverImgHigh) ? 1 : data.coverImgHigh;
             img = data.coverImg;
         } else {
             imgWide = data.imgWide ? data.imgWide : 1;
