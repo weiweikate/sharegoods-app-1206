@@ -616,7 +616,7 @@ export default class TopicDetailPage extends BasePage {
                              showsVerticalScrollIndicator={false}
                              sections={[{ data: [{}] }]}
                              scrollEventThrottle={10}/>
-                {//下架提示disable}
+                {/*下架提示disable*/}
                 <View style={{
                     height: 49 + ScreenUtils.safeBottom + (disable ? 20 : 0),
                     backgroundColor: 'white'
