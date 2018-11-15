@@ -1,12 +1,13 @@
 package com.meeruu.sharegoods.rn;
 
-import android.app.Activity;
 import android.view.ViewGroup;
 
 import com.facebook.react.ReactRootView;
 import com.meeruu.commonlib.utils.LogUtils;
+import com.meeruu.sharegoods.MainActivity;
 import com.meeruu.sharegoods.MainApplication;
 
+import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,18 +18,18 @@ public class ReactNativePreLoader {
     /**
      * 初始化ReactRootView，并添加到缓存
      *
-     * @param activity
+     * @param softReference
      * @param componentName
      */
-    public static void preLoad(Activity activity, String componentName) {
+    public static void preLoad(SoftReference<MainActivity> softReference, String componentName) {
 
         if (CACHE.get(componentName) != null) {
             return;
         }
         // 1.创建ReactRootView
-        ReactRootView rootView = new ReactRootView(activity);
+        ReactRootView rootView = new ReactRootView(softReference.get());
         rootView.startReactApplication(
-                ((MainApplication) activity.getApplication()).getReactNativeHost().getReactInstanceManager(),
+                ((MainApplication) softReference.get().getApplication()).getReactNativeHost().getReactInstanceManager(),
                 componentName,
                 null);
 
