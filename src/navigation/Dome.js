@@ -11,7 +11,7 @@
 'use strict';
 import React from 'react';
 import {
-  StyleSheet,
+  // StyleSheet,
   View,
     Text,
     TouchableOpacity
@@ -86,4 +86,4 @@ export default class Dome extends BasePage {
   }
 }
 
-const styles = StyleSheet.create({});
+// const styles = StyleSheet.create({});
