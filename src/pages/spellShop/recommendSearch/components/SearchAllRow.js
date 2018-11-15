@@ -50,7 +50,7 @@ export default class RecommendRow extends Component {
                         <View style={styles.headerViewContainer}>
                             {RecommendRowItem.headUrl ? <Image style={styles.icon}
                                                                source={{ uri: RecommendRowItem.headUrl || '' }}/> :
-                                <View style={styles.icon}/>}
+                                <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                             <View style={styles.tittleContainer}>
                                 <Text style={styles.name} numberOfLines={1}>{RecommendRowItem.name || ''}</Text>
                                 <Text style={styles.member} numberOfLines={1}>{`店主: ${RecommendRowItem.storeUserName || ''}`}</Text>
@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
     icon: {
         width: 50,
         height: 50,
-        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 25
     },
     tittleContainer: {

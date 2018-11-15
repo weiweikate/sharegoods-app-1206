@@ -31,7 +31,8 @@ export default class RecommendRow extends Component {
         return (<TouchableOpacity onPress={() => {
         }} style={[styles.itemIcon, { marginLeft: 15 }]}>
             {StringUtils.isNoEmpty(item.headImg) ?
-                <Image style={styles.itemIcon} source={{ uri: item.headImg }}/> : null}
+                <Image style={styles.itemIcon} source={{ uri: item.headImg }}/> :
+                <View style={[styles.itemIcon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
         </TouchableOpacity>);
     };
     _onPress = () => {
@@ -57,9 +58,9 @@ export default class RecommendRow extends Component {
                 <View style={styles.topViewContainer}>
                     <View style={{ flex: 1 }}>
                         <View style={styles.headerViewContainer}>
-                            {RecommendRowItem.headUrl ? <Image style={styles.icon}
-                                                               source={{ uri: RecommendRowItem.headUrl || '' }}/> :
-                                <View style={styles.icon}/>}
+                            {StringUtils.isNoEmpty(RecommendRowItem.headUrl) ? <Image style={styles.icon}
+                                                                                      source={{ uri: RecommendRowItem.headUrl }}/> :
+                                <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                             <View style={styles.tittleContainer}>
                                 <Text style={styles.name} numberOfLines={1}>{RecommendRowItem.name || ''}</Text>
                                 <Text style={styles.member}
@@ -161,7 +162,6 @@ const styles = StyleSheet.create({
     icon: {
         width: 50,
         height: 50,
-        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 25
     },
     tittleContainer: {
@@ -197,7 +197,6 @@ const styles = StyleSheet.create({
         marginTop: 17
     },
     itemIcon: {
-        backgroundColor: DesignRule.lineColor_inColorBg,
         width: 40,
         height: 40,
         borderRadius: 20
