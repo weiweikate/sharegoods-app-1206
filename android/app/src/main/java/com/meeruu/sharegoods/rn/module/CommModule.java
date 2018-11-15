@@ -177,8 +177,8 @@ public class CommModule extends ReactContextBaseJavaModule {
      * 功能显示加载弹窗
      */
     @ReactMethod
-    public void showLoadingDialog() {
-        loadingDialog(true);
+    public void showLoadingDialog(String msg) {
+        loadingDialog(true,msg);
     }
 
     @ReactMethod
@@ -189,6 +189,13 @@ public class CommModule extends ReactContextBaseJavaModule {
     public void loadingDialog(boolean isShow) {
         LoadingDialogEvent event = new LoadingDialogEvent();
         event.setShow(isShow);
+        EventBus.getDefault().post(event);
+    }
+
+    public void loadingDialog(boolean isShow,String msg) {
+        LoadingDialogEvent event = new LoadingDialogEvent();
+        event.setShow(isShow);
+        event.setMsg(msg);
         EventBus.getDefault().post(event);
     }
 
