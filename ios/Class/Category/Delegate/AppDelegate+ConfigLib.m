@@ -97,19 +97,11 @@
 {
   BOOL result=NO;
    result = [[UMSocialManager defaultManager] handleOpenURL:url];
-  if (result) {
-    return result;
+  if (!result) {
+     [[JRPay sharedPay] handleOpenUrl:url];
   }
-  
   result = [RCTLinkingManager application:application openURL:url
                         sourceApplication:nil annotation:nil];
-  if (result) {
-    return result;
-  }
-  
-  if (!result) {
-      [[JRPay sharedPay] handleOpenUrl:url];
-  }
   return YES;
 }
 
