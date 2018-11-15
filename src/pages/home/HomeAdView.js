@@ -1,7 +1,8 @@
 import React from 'react'
 import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
-import { adModules , homeModule} from './Modules'
+import { homeModule} from './Modules'
+import { adModules } from './HomeAdModel'
 import {observer} from 'mobx-react';
 import BasePage from '../../BasePage'
 import ImageLoad from '@mr/react-native-image-placeholder'
@@ -15,6 +16,11 @@ export default class HomeAdView extends BasePage {
         const params = homeModule.paramsNavigate(value)
         navigation.navigate(router, params)
     }
+
+    _loadingIndicator() {
+        return <View style={{flex: 1, backgroundColor: '#f00'}}/>
+    }
+
     render() {
         const {ad} = adModules
         let items = []
@@ -23,8 +29,10 @@ export default class HomeAdView extends BasePage {
                 items.push(<TouchableWithoutFeedback key={index} onPress={()=>this._adAction(value)}>
                     <View style={[styles.featureBox1, styles.radius]}>
                     <ImageLoad
+                        isCached={true}
                         source={{ uri: value.imgUrl }}
-                        style={styles.featureBox1Image}/>
+                        style={styles.featureBox1Image}
+                        />
                     </View>
                 </TouchableWithoutFeedback>)
             } else if (index === 1) {
@@ -32,8 +40,10 @@ export default class HomeAdView extends BasePage {
                     <TouchableWithoutFeedback key={index} onPress={()=>this._adAction(value)}>
                         <View style={[styles.featureBox2,styles.radius]}>
                         <ImageLoad
+                            isCached={true}
                             source={{ uri: value.imgUrl}}
-                            style={styles.featureBox2Image}/>
+                            style={styles.featureBox2Image}
+                            />
                         </View>
                     </TouchableWithoutFeedback>
                 )
@@ -42,7 +52,9 @@ export default class HomeAdView extends BasePage {
                     <View style={[styles.featureBox3, styles.radius]}>
                     <ImageLoad
                         source={{ uri:  value.imgUrl }}
-                        style={styles.featureBox2Image}/>
+                        style={styles.featureBox2Image}
+                        isCached={true}
+                        />
                     </View>
                 </TouchableWithoutFeedback>)
             }

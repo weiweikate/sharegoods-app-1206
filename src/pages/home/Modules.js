@@ -1,57 +1,8 @@
 import { observable, computed, action, flow } from 'mobx';
 import HomeApi from './api/HomeAPI';
-
-export const homeType = {
-    swiper: 1,           //轮播
-    ad: 2,       //推荐
-    subject: 6,         //专题
-    starShop: 3,       //明星店铺
-    today: 4,             //今日榜单
-    recommend: 5,     //精品推荐
-    goods: 8,
-    other: 'other',
-    classify: 'classify',
-    goodsTitle: 'goodsTitle',
-    user: 'user',
-    show: 'show'            //秀场
-};
-
-export class BannerModules {
-    @observable bannerList = [];
-
-    @computed get bannerCount() {
-        return this.bannerList.length;
-    }
-
-    @observable opacity = 1;
-
-    @action
-    loadBannerList = flow(function* () {
-        try {
-            const res = yield HomeApi.getSwipers({ type: homeType.swiper });
-            this.opacity = res.data && res.data.length > 0 ? 0 : 1;
-            this.bannerList = res.data;
-        } catch (error) {
-            console.log(error);
-        }
-    });
-}
-
-export const bannerModule = new BannerModules();
-
-class AdModules {
-    @observable ad = [];
-    loadAdList = flow(function* () {
-        try {
-            const res = yield HomeApi.getAd({ type: homeType.ad });
-            this.ad = res.data;
-        } catch (error) {
-            console.log(error);
-        }
-    });
-}
-
-export const adModules = new AdModules();
+import { homeType }  from './HomeTypes'
+import { bannerModule } from './HomeBannerModel'
+import { adModules } from './HomeAdModel'
 
 import schoolImg from './res/school.png';
 import showImg from './res/show.png';

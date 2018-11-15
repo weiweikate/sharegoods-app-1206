@@ -12,7 +12,9 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
-import { homeType, homeModule, bannerModule } from './Modules';
+import { homeModule } from './Modules'
+import { homeType } from './HomeTypes'
+import { bannerModule } from './HomeBannerModel'
 import HomeSearchView from './HomeSearchView';
 import HomeClassifyView from './HomeClassifyView';
 import HomeStarShopView from './HomeStarShopView';
