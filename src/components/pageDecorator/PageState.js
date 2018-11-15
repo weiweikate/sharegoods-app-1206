@@ -7,7 +7,7 @@ import {View} from 'react-native'
 import {
     NullView,
     EmptyView,
-    LoadingView,
+    // LoadingView,
     NetFailedView
 } from './BaseView';
 
@@ -34,7 +34,7 @@ function renderViewByLoadingState(loadingStateAndSetting, renderSuccessView) {
     }
     const {
         loadingState,
-        loadingProps = {},    //加载中样式
+        // loadingProps = {},    //加载中样式
         netFailedProps = {},  //请求失败样式
         emptyProps = {}       //空数据样式
     } = loadingStateAndSetting;

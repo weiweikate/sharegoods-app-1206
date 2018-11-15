@@ -12,7 +12,7 @@ import {
     View,
     Image,
     StyleSheet,
-    ActivityIndicator,
+    // ActivityIndicator,
 } from 'react-native';
 import DesignRule from 'DesignRule';
 import res from '../../../comm/res/other/loading_bar.png';
