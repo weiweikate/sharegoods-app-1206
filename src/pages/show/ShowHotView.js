@@ -6,7 +6,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import Waterfall from '../../components/ui/WaterFall';
 import ShowBannerView from './ShowBannerView';
 import ShowChoiceView from './ShowChoiceView';
-import ShowHotScrollView from './ShowHotScrollView';
+// import ShowHotScrollView from './ShowHotScrollView';
 import { observer } from 'mobx-react';
 import { ShowRecommendModules, tag, showSelectedDetail } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
@@ -14,13 +14,13 @@ import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
-
+  
 const imgWidth = px2dp(168);
 
 @observer
 export default class ShowHotView extends Component {
     constructor(props) {
-        super(props);
+           super(props);
         this.recommendModules = new ShowRecommendModules();
     }
 
@@ -88,7 +88,7 @@ export default class ShowHotView extends Component {
     renderHeader = () => {
         return <View><ShowBannerView navigation={this.props.navigation}/>
             <ShowChoiceView navigation={this.props.navigation}/>
-            <ShowHotScrollView navigation={this.props.navigation}/>
+            {/* <ShowHotScrollView navigation={this.props.navigation}/> */}
             <View style={styles.titleView}>
                 <Text style={styles.recTitle}>推荐</Text>
             </View>
