@@ -71,7 +71,7 @@ export default class SearchResultPage extends BasePage {
     }
 
     componentDidMount() {
-        this._productList();
+        // this._productList();
     }
 
     _getPageStateOptions = () => {

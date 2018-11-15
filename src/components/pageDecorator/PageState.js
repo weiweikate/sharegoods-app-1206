@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-
+import {View} from 'react-native'
 import {
     NullView,
     EmptyView,
@@ -45,7 +45,8 @@ function renderViewByLoadingState(loadingStateAndSetting, renderSuccessView) {
     };
     switch (loadingState) {
         case PageLoadingState.loading:
-            return <LoadingView {...loadingProps} />;
+            // return <LoadingView {...loadingProps} />;
+        return(<View style={{height:100,width:100,backgroundColor:'red'}}/>)
         case PageLoadingState.fail:
             return <NetFailedView {...netFailedProps} />;
         case PageLoadingState.empty:

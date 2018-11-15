@@ -15,6 +15,8 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import DesignRule from 'DesignRule';
+import res from '../../../comm/res/other/loading_bar.png';
+const{loading_bar} = res;
 
 export default class LoadingView extends Component {
 
@@ -30,11 +32,12 @@ export default class LoadingView extends Component {
       if (source){
         return (<Image style={imgStyle} source={source}/>);
       } else {
-        return (<ActivityIndicator
-            animating={true}
-            color={'gray'}
-            size={'small'}
-        />);
+        // return (<ActivityIndicator
+        //     animating={true}
+        //     color={'gray'}
+        //     size={'small'}
+        // />);
+          return (<Image style={{width:100,height:100,backgroundColor:'red'}} source={loading_bar}/>);
       }
     };
 
