@@ -17,7 +17,6 @@ import PreLoadImage from '../../components/ui/preLoadImage/PreLoadImage';
 import SubSwichView from './components/SubSwichView';
 import TopicItemView from './components/TopicItemView';
 import DesignRule from 'DesignRule';
-import shopCartStore from '../shopCart/model/ShopCartStore';
 
 const { statusBarHeight } = ScreenUtils;
 @observer
