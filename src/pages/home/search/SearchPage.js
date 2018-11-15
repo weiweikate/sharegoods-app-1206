@@ -97,6 +97,10 @@ export default class SearchPage extends BasePage {
     };
     //跳转
     _clickItemAction = (text, index, hotWordId) => {
+        if (StringUtils.isEmpty(text)){
+            this.$toastShow('请输入内容搜索')
+            return;
+        }
         text = StringUtils.trim(text);
         if (StringUtils.isNoEmpty(text)) {
             if (!this.state.recentData.includes(text)) {

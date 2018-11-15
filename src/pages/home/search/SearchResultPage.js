@@ -244,6 +244,10 @@ export default class SearchResultPage extends BasePage {
 
     //跳转
     _clickItemAction = (text) => {
+        if (StringUtils.isEmpty(text)){
+            this.$toastShow('请输入内容搜索')
+            return;
+        }
         this.params.categoryId = undefined;
         this.params.hotWordId = undefined;
         this.params.keywords = text;
