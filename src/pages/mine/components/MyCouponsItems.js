@@ -44,6 +44,8 @@ export default class MyCouponsItems extends Component {
         };
         this.currentPage = 0;
         this.isLoadMore = false;
+        this.isEnd = false;
+        setTimeout(()=>this.onRefresh(),500);
     }
 
     fmtDate(obj) {
@@ -386,7 +388,6 @@ export default class MyCouponsItems extends Component {
                     levelimit: false
                 });
             }
-
             dataList.map((item) => {
                 arrData.push({
                     id: item.id,
@@ -443,6 +444,11 @@ export default class MyCouponsItems extends Component {
             API.listAvailable({ page: this.currentPage, pageSize: 10, productPriceIds: arr }).then(res => {
                 let data = res.data || {};
                 let dataList = data.data || [];
+                console.log('dataList')
+                if (dataList.length === 0) {
+                    this.isEnd = true;
+                    return;
+                }
                 this.isLoadMore = false;
                 this.parseData(dataList);
             }).catch(result => {
@@ -475,7 +481,10 @@ export default class MyCouponsItems extends Component {
                 let dataList = data.data || [];
                 this.isLoadMore = false;
                 this.parseData(dataList);
-
+                if (dataList.length === 0&&!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 ) {
+                    this.isEnd = true;
+                    return;
+                }
 
             }).catch(result => {
                 this.isLoadMore = false;
@@ -497,16 +506,15 @@ export default class MyCouponsItems extends Component {
 
     onRefresh = () => {
         console.log('refresh');
-        if (!this.isLoadMore) {
+           this.isEnd=false;
             this.currentPage = 1;
             this.getDataFromNetwork();
-        }
 
     };
 
     onLoadMore = () => {
-        console.log('onLoadMore');
-        if (!this.isLoadMore) {
+        console.log('onLoadMore',this.isEnd);
+        if (!this.isLoadMore&&!this.isEnd) {
             this.currentPage++;
             this.getDataFromNetwork();
         }
