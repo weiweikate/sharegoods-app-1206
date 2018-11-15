@@ -93,9 +93,9 @@ export default class CommRegistView extends Component {
                     <View style={{
                         marginLeft: 30,
                         marginRight: 20,
-                        marginTop: 50,
+                        marginTop: 30,
                         flexDirection: 'row',
-                        alignItems: 'center'
+                        alignItems: 'center',
                     }}>
                         <Text style={{ marginRight: 20 }}>
                             手机号
@@ -112,7 +112,7 @@ export default class CommRegistView extends Component {
                         />
 
                     </View>
-                    <CommSpaceLine style={[Styles.lineStyle, { marginLeft: 30, marginRight: 30 }]}/>
+                    <CommSpaceLine style={[Styles.lineStyle, { marginLeft: 30, marginRight: 30,marginTop:20 }]}/>
 
                     <View style={{ marginTop: 20, height: 40, marginLeft: 30, marginRight: 30 }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -147,7 +147,7 @@ export default class CommRegistView extends Component {
 
                 {/*下部输入框*/}
                 <View style={{
-                    marginTop: 30,
+                    marginTop: 10,
                     flexDirection: 'row',
                     backgroundColor: 'white',
                     height: 50,

@@ -39,8 +39,9 @@ import res from './res';
 
 const redEnvelopeBg = res.other.red_big_envelope;
 const tongyong_btn_close_white = res.button.tongyong_btn_close_white;
-// const show_detail_back = res.button.show_detail_back;
-// const show_share = res.button.show_share;
+import { PageLoadingState, renderViewByLoadingState } from '../../components/pageDecorator/PageState';
+import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
+
 
 export default class TopicDetailPage extends BasePage {
 
@@ -61,10 +62,25 @@ export default class TopicDetailPage extends BasePage {
             activityData: {},
             canGetCoupon: false,
             couponData: null,
-            hasGetCoupon: false
+            hasGetCoupon: false,
 
+            loadingState: PageLoadingState.loading,
+            netFailedInfo: {}
         };
     }
+
+    _getPageStateOptions = () => {
+        let superStatus = this._getSuperStatus();
+        return {
+            loadingState: this.state.loadingState,
+            netFailedProps: {
+                buttonText: superStatus === 0 ? '去首页' : '重新加载',
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: superStatus === 0 ? (() => this.$navigateReset()) : (() => this._getActivityData())
+            }
+        };
+    };
+
 
     componentDidMount() {
         this.loadPageData();
@@ -125,47 +141,45 @@ export default class TopicDetailPage extends BasePage {
     //数据
     _getActivityData = () => {
         if (this.state.activityType === 1) {
-            this.$loadingShow();
             TopicApi.seckill_findByCode({
                 code: this.params.activityCode
             }).then((data) => {
                 this.state.activityData = data.data || {};
                 this._getProductDetail(this.state.activityData.productId);
-                this._needPushToNormal();
-                this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this.updateActivityStatus);
             }).catch((error) => {
-                this.$loadingDismiss();
-                this.$toastShow(error.msg);
+                this._error(error);
             });
         } else if (this.state.activityType === 2) {
-            this.$loadingShow();
             TopicApi.activityDepreciate_findById({
                 code: this.params.activityCode
             }).then((data) => {
                 this.state.activityData = data.data || {};
                 this._getProductDetail(this.state.activityData.productId);
-                this._needPushToNormal();
-                this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this.updateActivityStatus);
             }).catch((error) => {
-                this.$loadingDismiss();
-                this.$toastShow(error.msg);
+                this._error(error);
             });
         } else if (this.state.activityType === 3) {
-            this.$loadingShow();
             TopicApi.findActivityPackageDetail({
                 code: this.params.activityCode
             }).then((data) => {
-                this.$loadingDismiss();
-                this.setState({
-                    data: data.data || {}
-                }, () => {
-                    if (this.state.data.type === 2) {//1普通礼包  2升级礼包
-                        this.TopicDetailShowModal.show('温馨提醒', `${data.data.name}`, null, `秀购升级礼包为定制特殊商品，购买后即可立即享受晋升权限，该礼包产品不可退换货，如有产品质量问题，可联系客服进行申诉`);
-                    }
-                });
+                this.state.data = data.data || {};
+                let superStatus = this._getSuperStatus();
+                if (superStatus === 0) {
+                    this.setState({
+                        loadingState: PageLoadingState.fail,
+                        netFailedInfo: { msg: `该商品走丢了\n去看看别的商品吧` }
+                    });
+                } else {
+                    this.setState({
+                        loadingState: PageLoadingState.success
+                    }, () => {
+                        if (this.state.data.type === 2) {//1普通礼包  2升级礼包
+                            this.TopicDetailShowModal.show('温馨提醒', `${data.data.name}`, null, `秀购升级礼包为定制特殊商品，购买后即可立即享受晋升权限，该礼包产品不可退换货，如有产品质量问题，可联系客服进行申诉`);
+                        }
+                    });
+                }
             }).catch((error) => {
-                this.$loadingDismiss();
-                this.$toastShow(error.msg);
+                this._error(error);
             });
         }
     };
@@ -185,21 +199,46 @@ export default class TopicDetailPage extends BasePage {
         }
     };
 
-    _getProductDetail = (productId) => {
-        HomeAPI.getProductDetail({
-            id: productId
-        }).then((data) => {
-            this.$loadingDismiss();
-            this.setState({
-                data: data.data || {}
-            });
-        }).catch((error) => {
-            this.setState({
-                data: error || {}
-            });
-            this.$loadingDismiss();
-            this.$toastShow(error.msg);
+    _error = (error) => {
+        this.setState({
+            loadingState: PageLoadingState.fail,
+            netFailedInfo: error
         });
+    };
+
+    _getSuperStatus = () => {
+        const { status } = this.state.data;
+        const { productStatus } = this.state.activityData;
+        let superStatus = this.state.activityType === 3 ? status : productStatus;
+        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)
+        return superStatus;
+    };
+
+    _getProductDetail = (productId) => {
+        let superStatus = this._getSuperStatus();
+        if (superStatus === 0) {
+            this.setState({
+                loadingState: PageLoadingState.fail,
+                netFailedInfo: { msg: `该商品走丢了\n去看看别的商品吧` }
+            });
+        } else {
+            this.setState({
+                loadingState: PageLoadingState.success
+            }, () => {
+                this._needPushToNormal();
+                this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this.updateActivityStatus);
+
+                HomeAPI.getProductDetail({
+                    id: productId
+                }).then((data) => {
+                    this.setState({
+                        data: data.data || {}
+                    });
+                }).catch((error) => {
+                    this.$toastShow(error.msg);
+                });
+            });
+        }
     };
 
     //订阅
@@ -333,8 +372,8 @@ export default class TopicDetailPage extends BasePage {
                         style={{ height: 0.5, marginHorizontal: 0, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                     <Text style={{
                         padding: 15,
-                        color:DesignRule.textColor_instruction,
-                        fontSize:13
+                        color: DesignRule.textColor_instruction,
+                        fontSize: 13
                     }}>{`划线价格：指商品的专柜价、吊牌价、正品零售价、厂商指导价或该商品的曾经展示过销售价等，并非原价，仅供参考\n未划线价格：指商品的实时价格，不因表述的差异改变性质。具体成交价格根据商品参加活动，或会员使用优惠券、积分等发生变化最终以订单`}</Text>
                 </View>
             </View>;
@@ -391,25 +430,25 @@ export default class TopicDetailPage extends BasePage {
         });
     };
 
-    _renderCouponModal=()=> {
+    _renderCouponModal = () => {
 
         let view = (
-            <TouchableWithoutFeedback onPress={()=>{
+            <TouchableWithoutFeedback onPress={() => {
                 this.setState({
-                    canGetCoupon:false
-                })
+                    canGetCoupon: false
+                });
                 this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: user.availableBalance });
             }}>
-            <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
-                <Text style={{ color: 'white', fontSize: px2dp(24) }}>
-                    领取成功
-                </Text>
-                <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
-                    可前往我的-
-                    <Text style={{ textDecorationLine: 'underline' }}>现金账户</Text>
-                    查看
-                </Text>
-            </View>
+                <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
+                    <Text style={{ color: 'white', fontSize: px2dp(24) }}>
+                        领取成功
+                    </Text>
+                    <Text style={{ color: 'white', fontSize: px2dp(11), marginTop: px2dp(5) }}>
+                        可前往我的-
+                        <Text style={{ textDecorationLine: 'underline' }}>现金账户</Text>
+                        查看
+                    </Text>
+                </View>
             </TouchableWithoutFeedback>
         );
 
@@ -437,7 +476,7 @@ export default class TopicDetailPage extends BasePage {
                         </Text>
 
                         <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(60), marginTop: 20 }}>
-                            {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.formatMoneyString(this.state.couponData.price,false)}
+                            {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.formatMoneyString(this.state.couponData.price, false)}
                             <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
                                 元
                             </Text>
@@ -465,9 +504,23 @@ export default class TopicDetailPage extends BasePage {
                 </View>
             </CommModal>
         );
-    }
+    };
 
     _render() {
+        let superStatus = this._getSuperStatus();
+        let dic = this._getPageStateOptions();
+        return (
+            <View style={styles.container}>
+                {dic.loadingState === PageLoadingState.fail ?
+                    <NavigatorBar title={superStatus === 0 ? '暂无商品' : ''} leftPressed={() => {
+                        this.$navigateBack();
+                    }}/> : null}
+                {renderViewByLoadingState(this._getPageStateOptions(), this._renderContainer)}
+            </View>
+        );
+    }
+
+    _renderContainer = () => {
         let bottomTittle, colorType;
         if (this.state.activityType === 3) {
             //buyTime当前时间是否可购买 userBuy是否有权限
@@ -477,6 +530,10 @@ export default class TopicDetailPage extends BasePage {
             if (buyTime && userBuy && buyLimit !== -1 && leftBuyNum === 0) {//可以买&&限购&&0
                 bottomTittle = `每人限购${buyLimit}次（您已购买过本商品）`;
             } else if (buyTime && userBuy) {
+                colorType = 2;
+            }
+            //未登录先让看
+            if (!user.isLogin) {
                 colorType = 2;
             }
         } else {
@@ -506,6 +563,12 @@ export default class TopicDetailPage extends BasePage {
                 }
             }
         }
+        //已下架 不能点击
+        let superStatus = this._getSuperStatus();
+        let disable = superStatus === 2;
+        if (disable) {
+            colorType = 0;
+        }
 
         let productPrice, productName, productImgUrl;
         if (this.state.activityType === 3) {
@@ -525,7 +588,7 @@ export default class TopicDetailPage extends BasePage {
             <View style={styles.container}>
                 <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
                 <DetailNavView ref={(e) => this.DetailNavView = e}
-                               source = {productImgUrl}
+                               source={productImgUrl}
                                navBack={() => {
                                    this.$navigateBack();
                                }}
@@ -553,7 +616,19 @@ export default class TopicDetailPage extends BasePage {
                              showsVerticalScrollIndicator={false}
                              sections={[{ data: [{}] }]}
                              scrollEventThrottle={10}/>
-                <View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49, backgroundColor: 'white' }}>
+                {/*下架提示disable*/}
+                <View style={{
+                    height: 49 + ScreenUtils.safeBottom + (disable ? 20 : 0),
+                    backgroundColor: 'white'
+                }}>
+                    {disable ? <View style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: 20,
+                        backgroundColor: 'rgba(0,0,0,0.5)'
+                    }}>
+                        <Text style={{ color: DesignRule.white, fontSize: 13 }}>商品已经下架啦~</Text>
+                    </View> : null}
                     <TouchableOpacity style={{
                         height: 49,
                         backgroundColor: colorType === 1 ? '#33B4FF' : (colorType === 2 ? DesignRule.mainColor : '#CCCCCC'),
@@ -602,7 +677,7 @@ export default class TopicDetailPage extends BasePage {
                 {this._renderCouponModal()}
             </View>
         );
-    }
+    };
 
 }
 
@@ -619,6 +694,6 @@ const styles = StyleSheet.create({
         right: 0,
         zIndex: 2,
         opacity: 0
-    },
+    }
 });
 

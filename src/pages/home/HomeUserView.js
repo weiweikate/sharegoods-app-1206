@@ -7,17 +7,6 @@ import user from '../../model/user'
 import { observer } from 'mobx-react'
 import res from './res'
 
-
-
-const levels = {
-    'V0': '黄金',
-    'V1': '铂金',
-    'V2': '黑金',
-    'V3': '钻石',
-    'V4': '达人',
-    'V5': '名人'
-}
-
 @observer
 export default class HomeUserView extends Component {
 
@@ -30,13 +19,10 @@ export default class HomeUserView extends Component {
         if (!user.isLogin) {
             return <View/>
         }
-        let { levelName } = user
-        if (!levelName) {
-            return <View/>
-        }
+        let { levelRemark } = user
         return  <View style={styles.container}>
             <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 0}}  colors={['#fff6e7', '#fedb99']} style={styles.inContainer}>
-                <Text style={styles.title}>尊敬的</Text><View style={styles.levelName}><Text style={styles.text}>{levels[levelName] ? levels[levelName] : levelName}</Text></View><Text style={styles.text}>品鉴官，您好！</Text>
+                <Text style={styles.title}>尊敬的</Text>{levelRemark ? <View style={styles.levelName}><Text style={styles.text}>{levelRemark.length >= 5 ? levelRemark.slice(0, 4) : levelRemark}</Text></View> : null}<Text style={styles.text}>品鉴官，您好！</Text>
                 <View style={{flex: 1}}/>
                 <TouchableOpacity onPress={() => this._goToPromotionPage()}>
                     <ImageBackground style={styles.btnBack} source={res.userLevel} resizeMode={'stretch'}>

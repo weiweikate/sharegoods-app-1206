@@ -2,7 +2,7 @@
  * 热门发现
  */
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import Waterfall from '../../components/ui/WaterFall';
 import { observer } from 'mobx-react';
 import { ShowRecommendModules, tag, showSelectedDetail } from './Show';
@@ -84,6 +84,12 @@ export default class ShowHotView extends Component {
     };
     _keyExtractor = (data) => data.id + '' + data.currentDate;
 
+    _renderInfinite() {
+        return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
+            {this.recommendModules.isEnd ? <Text style={styles.text}>已加载全部</Text> : this.recommendModules.isRefreshing ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
+        </View>
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -101,6 +107,7 @@ export default class ShowHotView extends Component {
                     infiniting={(done) => this.infiniting(done)}
                     refreshing={(done) => this.refreshing(done)}
                     showsVerticalScrollIndicator={false}
+                    renderInfinite={()=> this._renderInfinite()}
                 />
             </View>
         );
@@ -111,5 +118,9 @@ let styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: px2dp(12)
+    },
+    text: {
+        color: '#999',
+        fontSize: px2dp(11)
     }
 });

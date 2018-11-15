@@ -177,6 +177,12 @@ export default class ShowConnectPage extends BasePage {
         this.$navigateReset();
     }
 
+    _renderInfinite() {
+        return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
+            {this.recommendModules.isEnd ? <Text style={styles.text}>已加载全部</Text> : this.recommendModules.isRefreshing ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
+        </View>
+    }
+
     _render() {
         const { allSelected, select, firstLoad, isEmpty } = this.state;
         if (firstLoad) {
@@ -211,6 +217,7 @@ export default class ShowConnectPage extends BasePage {
                     keyExtractor={(data) => this._keyExtractor(data)}
                     infiniting={(done) => this.infiniting(done)}
                     refreshing={(done) => this.refreshing(done)}
+                    renderInfinite={()=>this._renderInfinite()}
                 />
                 {
                     select
@@ -321,5 +328,9 @@ let styles = StyleSheet.create({
     goToText: {
         color: '#E60012',
         fontSize: px2dp(17)
+    },
+    text: {
+        color: '#999',
+        fontSize: px2dp(11)
     }
 });
