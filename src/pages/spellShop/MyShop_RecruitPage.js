@@ -11,9 +11,10 @@ import MyShopPage from './myShop/MyShopPage';
 import ShopRecruitPage from './shopRecruit/ShopRecruitPage';
 import RecommendPage from './recommendSearch/RecommendPage';
 import SpellShopApi from './api/SpellShopApi';
-import { PageLoadingState } from '../../components/pageDecorator/PageState';
+import { PageLoadingState ,renderViewByLoadingState} from '../../components/pageDecorator/PageState';
 import spellStatusModel from './model/SpellStatusModel';
 import NoAccessPage from './NoAccessPage';
+import NavigatorBar from '../../components/pageDecorator/NavigatorBar'
 
 @observer
 export default class MyShop_RecruitPage extends BasePage {
@@ -31,7 +32,7 @@ export default class MyShop_RecruitPage extends BasePage {
         show: false
     };
 
-    $getPageStateOptions = () => {
+    _getPageStateOptions = () => {
         return {
             loadingState: this.state.loadingState,
             netFailedProps: {
@@ -101,9 +102,14 @@ export default class MyShop_RecruitPage extends BasePage {
     };
 
     _render() {
+        let dic = this._getPageStateOptions();
         return (
             <View style={styles.container}>
-                {this._renderContainer()}
+                {dic.loadingState === PageLoadingState.fail ?
+                    <NavigatorBar title={'店铺详情'} leftPressed={() => {
+                        this.$navigateBack();
+                    }}/> : null}
+                {renderViewByLoadingState(this._getPageStateOptions(),this._renderContainer)}
             </View>
         );
     }

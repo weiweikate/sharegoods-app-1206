@@ -30,7 +30,6 @@ import DesignRule from 'DesignRule';
 const { px2dp } = ScreenUtils;
 import EmptyUtils from '../../utils/EmptyUtils';
 import StringUtils from '../../utils/StringUtils';
-import DateUtils from '../../utils/DateUtils';
 import CommModal from 'CommModal';
 import DetailNavView from '../home/product/components/DetailNavView';
 
@@ -90,7 +89,8 @@ export default class TopicDetailPage extends BasePage {
     getPromotion = async () => {
         try {
             const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
-            if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
+            var currStr = new Date().getTime() + '';
+            if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
                 if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
                     HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
                         if (!EmptyUtils.isEmpty(data.data)) {
@@ -99,7 +99,7 @@ export default class TopicDetailPage extends BasePage {
                                 couponData: data.data
                             });
                             this.couponId = data.data.id;
-                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, Date.parse(new Date()).toString());
+                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, currStr);
                         }
                     });
                 }
@@ -419,8 +419,10 @@ export default class TopicDetailPage extends BasePage {
     };
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
-        if (Y < 100) {
-            this.st = Y * 0.01;
+        if (Y < 44) {
+            this.st = 0;
+        } else if (Y < ScreenUtils.autoSizeWidth(377)) {
+            this.st = (Y - 44) / (ScreenUtils.autoSizeWidth(377) - 44);
         } else {
             this.st = 1;
         }
@@ -592,6 +594,11 @@ export default class TopicDetailPage extends BasePage {
                                navBack={() => {
                                    this.$navigateBack();
                                }}
+                               navRLeft={() => {
+                                   this.$navigate('shopCart/ShopCart', {
+                                       hiddeLeft: false
+                                   });
+                               }}
                                navRRight={() => {
                                    this.DetailNavShowModal.show((item) => {
                                        switch (item.index) {
@@ -652,12 +659,12 @@ export default class TopicDetailPage extends BasePage {
                                     imageUrlStr: productImgUrl,
                                     titleStr: productName,
                                     priceStr: `￥${productPrice}`,
-                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`
+                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.id || ''}`
                                 }}
                                 webJson={{
                                     title: productName,
                                     dec: '商品详情',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.id || ''}`,
                                     thumImage: productImgUrl
                                 }}
                                 miniProgramJson={{
@@ -665,8 +672,8 @@ export default class TopicDetailPage extends BasePage {
                                     dec: '商品详情',
                                     thumImage: 'logo.png',
                                     hdImageURL: productImgUrl,
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}`,
-                                    miniProgramPath: `/pages/index/index?type=${this.params.activityType}&id=${this.params.activityCode}`
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/${this.params.activityType}/${this.params.activityCode}?upuserid=${user.id || ''}`,
+                                    miniProgramPath: `/pages/index/index?type=${this.params.activityType}&id=${this.params.activityCode}&inviteId=${user.id || ''}`
                                 }}/>
                 <TopicDetailShowModal ref={(ref) => {
                     this.TopicDetailShowModal = ref;

@@ -34,7 +34,6 @@ const { px2dp } = ScreenUtils;
 import user from '../../../model/user';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import StringUtils from '../../../utils/StringUtils';
-import DateUtils from '../../../utils/DateUtils';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
@@ -98,7 +97,8 @@ export default class ProductDetailPage extends BasePage {
     getPromotion = async () => {
         try {
             const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
-            if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
+            var currStr = new Date().getTime() + '';
+            if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
                 if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
                     HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
                         if (!EmptyUtils.isEmpty(data.data)) {
@@ -108,7 +108,7 @@ export default class ProductDetailPage extends BasePage {
                                 couponData: data.data
                             });
                             this.couponId = data.data.id;
-                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, Date.parse(new Date()).toString());
+                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, currStr);
                         }
                     });
                 }
@@ -373,8 +373,10 @@ export default class ProductDetailPage extends BasePage {
     };
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
-        if (Y < 100) {
-            this.st = Y * 0.01;
+        if (Y < 44) {
+            this.st = 0;
+        } else if (Y < ScreenUtils.autoSizeWidth(377)) {
+            this.st = (Y - 44) / (ScreenUtils.autoSizeWidth(377) - 44);
         } else {
             this.st = 1;
         }
@@ -525,12 +527,12 @@ export default class ProductDetailPage extends BasePage {
                                 imageUrlStr: imgUrl,
                                 titleStr: `${name}`,
                                 priceStr: `￥${price}`,
-                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`
+                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}?upuserid=${user.id || ''}`
                             }}
                             webJson={{
                                 title: `${name}`,
                                 dec: '商品详情',
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`,
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}?upuserid=${user.id || ''}`,
                                 thumImage: imgUrl
                             }}
                             miniProgramJson={{
@@ -538,8 +540,8 @@ export default class ProductDetailPage extends BasePage {
                                 dec: '商品详情',
                                 thumImage: 'logo.png',
                                 hdImageURL: imgUrl,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`,
-                                miniProgramPath: `/pages/index/index?type=99&id=${product.id}`
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}?upuserid=${user.id || ''}`,
+                                miniProgramPath: `/pages/index/index?type=99&id=${product.id}&inviteId=${user.id || ''}`
                             }}/>
             <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
             <ConfirmAlert ref={(ref) => this.ConfirmAlert = ref}/>
