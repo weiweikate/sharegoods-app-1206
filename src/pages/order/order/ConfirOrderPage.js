@@ -27,7 +27,7 @@ import API from '../../../api';
 import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
 import userOrderNum from '../../../model/userOrderNum';
-import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
+// import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 
 // let oldViewData, oldPriceList;
 export default class ConfirOrderPage extends BasePage {
@@ -460,7 +460,12 @@ export default class ConfirOrderPage extends BasePage {
                             }
                             // { text: '否' }
                         ]);
-                    } else {
+                    } else if (err.code === 54001) {
+                        this.$toastShow('商品库存不足！');
+                        // shopCartCacheTool.getShopCartGoodsListData();
+                        this.$navigateBack();
+                    }
+                    else {
                         this.$toastShow(err.msg);
                     }
                 });
@@ -704,7 +709,7 @@ export default class ConfirOrderPage extends BasePage {
                 }).catch(err => {
                     if (err.code === 54001) {
                         this.$toastShow('商品库存不足！');
-                        shopCartCacheTool.getShopCartGoodsListData();
+                        // shopCartCacheTool.getShopCartGoodsListData();
                         this.$navigateBack();
                     }
 
