@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import {
-    UIText, UIImage, TakePhotoModal
+    UIText, UIImage, TakePhotoModal,NoMoreClick
 } from '../../../../components/ui';
 import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
@@ -115,7 +115,7 @@ export default class IDVertify2Page extends BasePage {
                         {this.renderBackIdCard()}
                         {this.renderFrontIdCard()}
                     </View>
-                    <TouchableOpacity style={{
+                    <NoMoreClick style={{
                         marginTop: 42,
                         backgroundColor: StringUtils.isNoEmpty(this.state.name) && StringUtils.isNoEmpty(this.state.idNumber) && StringUtils.isNoEmpty(this.state.backIdCard) && StringUtils.isNoEmpty(this.state.frontIdCard) ? color.red : '#cccccc',
                         width: ScreenUtils.width - 84,
@@ -126,9 +126,8 @@ export default class IDVertify2Page extends BasePage {
                         justifyContent: 'center',
                         borderRadius: 25
                     }} onPress={() => this.commit()}>
-                        <Text style={{ fontSize: 17, color: 'white' }}
-                              onPress={() => this.toLoginOut()}>提交</Text>
-                    </TouchableOpacity>
+                        <Text style={{ fontSize: 17, color: 'white' }}>提交</Text>
+                    </NoMoreClick>
                     <View style={{ alignItems: 'center' }}>
                         <UIText value={'（信息仅用户自己可见）'} style={{
                             fontSize: 13,

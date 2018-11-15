@@ -43,6 +43,7 @@ import user from '../../../model/user';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
+import MineApi from '../../mine/api/MineApi';
 
 class MyOrdersDetailPage extends BasePage {
     constructor(props) {
@@ -59,7 +60,8 @@ class MyOrdersDetailPage extends BasePage {
             pageState: 1,
             pageStateString: constants.pageStateString[1],
             menu: {},
-            giftBagCoupons: []
+            giftBagCoupons: [],
+            cancelArr:[]
         };
     }
 
@@ -78,7 +80,7 @@ class MyOrdersDetailPage extends BasePage {
     };
     $NavBarRenderRightItem = () => {
         return (
-            <TouchableOpacity onPress={this.showMore}>
+            <TouchableOpacity onPress={this.showMore} style={{width:20,height:44,alignItems:'center',justifyContent:'center'}}>
                 <Image source={moreIcon} style={{ width: 20, height: 5, marginRight: 10 }} resizeMode='contain'/>
             </TouchableOpacity>
         );
@@ -139,14 +141,14 @@ class MyOrdersDetailPage extends BasePage {
                         expressNo: this.state.expressNo
                     })
                 }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center'}} >
+                    <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'space-between'}} >
                         <UIImage source={logisticCar} style={{ height: 19, width: 19, marginLeft: 21 }}/>
-                        <View style={{justifyContent:'center'}}>
+                        <View style={{justifyContent:'center',flex:1}}>
                             {typeof this.state.pageStateString.sellerState === 'string' ?
-                                <View style={{ marginLeft: 10,}}>
+                                <View style={{ marginLeft: 10}}>
                                 <UIText value={this.state.pageStateString.sellerState} style={{
                                     color: DesignRule.textColor_mainTitle,
-                                    fontSize: 18,
+                                    fontSize: 15,
                                     marginRight: 46
                                 }}/>
                                     {StringUtils.isNoEmpty(this.state.pageStateString.logisticsTime)?
@@ -157,16 +159,17 @@ class MyOrdersDetailPage extends BasePage {
                                     }} value={DateUtils.getFormatDate(this.state.pageStateString.logisticsTime / 1000)}/>:null}
                                 </View>
                                 :
-                                <View style={{flexDirection: 'row' }}>
+                                <View style={{flexDirection: 'row'}}>
                                     <Text style={{
-                                        flex: 1,
+                                        flex:1,
                                         fontSize: 15,
                                          marginLeft:10,
+                                        marginRight:3,
                                         color: DesignRule.textColor_instruction
                                     }}>{this.state.pageStateString.sellerState[0]}</Text>
                                     <Text style={{
                                         fontSize: 15,
-                                        marginRight:46,
+                                        marginRight:16,
                                         color: DesignRule.textColor_instruction
                                     }}>{this.state.pageStateString.sellerState[1]}</Text>
                                 </View>
@@ -177,14 +180,16 @@ class MyOrdersDetailPage extends BasePage {
                                             color: DesignRule.textColor_instruction,
                                             fontSize: 13,
                                             marginLeft: 10,
-                                            marginRight: 46
+                                            marginRight: 16,
+                                            marginTop:5
                                         }}/>
                                 : null}
 
                         </View>
+                        <UIImage source={arrow_right} style={{ height: 19, width: 19, marginRight: 11 }}
+                                 resizeMode={'contain'}/>
                     </View>
-                    <UIImage source={arrow_right} style={{ height: 19, width: 19, marginRight: 11 }}
-                             resizeMode={'contain'}/>
+
                 </TouchableOpacity>
             </View>
 
@@ -194,6 +199,23 @@ class MyOrdersDetailPage extends BasePage {
     componentDidMount() {
         DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.loadPageData());
         this.loadPageData();
+        this.getCancelOrder();
+
+    }
+    getCancelOrder(){
+        let arrs=[];
+        MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(res => {
+            if (res.code == 10000 && StringUtils.isNoEmpty(res.data)) {
+                res.data.map((item,i)=>{
+                    arrs.push(item.value)
+                })
+                this.setState({
+                    cancelArr: arrs
+                });
+            }
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     componentWillUnmount() {
@@ -589,7 +611,7 @@ class MyOrdersDetailPage extends BasePage {
                 <SingleSelectionModal
                     isShow={this.state.isShowSingleSelctionModal}
                     ref={(ref)=>{this.cancelModal = ref}}
-                    detail={['我不想买了', '信息填写错误，重新拍', '其他原因']}
+                    detail={this.state.cancelArr}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
                     }}
@@ -597,7 +619,7 @@ class MyOrdersDetailPage extends BasePage {
                         this.setState({ isShowSingleSelctionModal: false });
                         Toast.showLoading();
                         OrderApi.cancelOrder({
-                            buyerRemark: ['我不想买了', '信息填写错误，重新拍', '其他原因'][index],
+                            buyerRemark: this.state.cancelArr[index],
                             orderNum: this.state.viewData.orderNum
                         }).then((response) => {
                             Toast.hiddenLoading();
@@ -650,7 +672,7 @@ class MyOrdersDetailPage extends BasePage {
                         + this.state.viewData.areaString
                         + this.state.viewData.receiverAddress
                     }
-                            style={{ color: DesignRule.textColor_instruction, fontSize: 15 }}/>
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 15 ,marginTop:5}}/>
                 </View>
             </View>
         );
@@ -904,8 +926,8 @@ class MyOrdersDetailPage extends BasePage {
                 //等待买家付款
                 case 1:
                     this.startCutDownTime(data.shutOffTime);
-                    pageStateString.sellerState = ['收货人：' + data.receiver,'' + data.recevicePhone];
-                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    pageStateString.sellerState = ['收货人:' + data.receiver,'' + data.recevicePhone];
+                    pageStateString.sellerTime = '收货地址:' + data.province + data.city + data.area + data.address;
                     if (StringUtils.isEmpty(data.outTradeNo)) {
                         pageStateString.menu = [
                             {
@@ -1089,8 +1111,13 @@ class MyOrdersDetailPage extends BasePage {
         this.setState({ menu: menu });
         switch (menu.id) {
             case 1:
-                this.setState({ isShowSingleSelctionModal: true });
-                this.cancelModal && this.cancelModal.open();
+                if(this.state.cancelArr.length>0){
+                    this.setState({ isShowSingleSelctionModal: true });
+                    this.cancelModal && this.cancelModal.open();
+                }else{
+                    this.$toastShow('无取消类型！');
+                }
+
                 break;
             case 2:
                 this.$navigate('payment/PaymentMethodPage', {
@@ -1305,11 +1332,8 @@ const styles = StyleSheet.create({
          marginRight: 15,
          paddingTop:5,
          paddingBottom:5,
-         justifyContent: 'space-between',
          borderRadius: 10,
-         flex:1,
-         flexDirection: 'row',
-         alignItems: 'center'
+         justifyContent:'center'
      }
 });
 

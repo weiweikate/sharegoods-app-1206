@@ -235,6 +235,10 @@ export default class Masonry extends React.Component {
       })
     }
 
+    scrollToTop() {
+      this.scrollRef && this.scrollRef.scrollTo({x: 0, y: 0, animated: false})
+    }
+
     render() {
       let loadMore = this.props.infinite ?
         (this.props.renderInfinite ? this.props.renderInfinite(this.state.infiniting) : <LoadMore loading={this.state.infiniting}/>)
@@ -242,6 +246,7 @@ export default class Masonry extends React.Component {
 
       return (
         <ScrollView
+          ref={(ref) => {this.scrollRef = ref}}
           refreshControl={
             this.props.refresh ?
               <RefreshControl
