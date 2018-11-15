@@ -80,7 +80,7 @@ export default class ShopMessagePage extends BasePage {
     loadPageData =()=> {
         DeviceEventEmitter.emit("contentViewed");
         Toast.showLoading();
-        MessageAPI.queryMessage({page: 1, pageSize: 30, type:200}).then(res => {
+        MessageAPI.queryMessage({page: 1, pageSize: 10, type:200}).then(res => {
             Toast.hiddenLoading()
             if(StringUtils.isNoEmpty(res.data.data)){
                 let arrData = [];
@@ -424,7 +424,7 @@ export default class ShopMessagePage extends BasePage {
     }
 
     getDataFromNetwork() {
-        MessageAPI.queryMessage({page: this.currentPage, pageSize: 15, type:200,createdTime: this.createdTime}).then(res => {
+        MessageAPI.queryMessage({page: this.currentPage, pageSize: 10, type:200,createdTime: this.createdTime}).then(res => {
             if(StringUtils.isNoEmpty(res.data.data)){
                 if(!EmptyUtils.isEmptyArr(arrData)){
                     this.createdTime = res.data.data[res.data.data.length - 1].createdTime;
