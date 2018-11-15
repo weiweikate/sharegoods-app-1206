@@ -45,6 +45,7 @@ export default class MyCouponsItems extends Component {
         this.currentPage = 0;
         this.isLoadMore = false;
         this.isEnd = false;
+        setTimeout(()=>this.onRefresh(),500);
     }
 
     fmtDate(obj) {
