@@ -26,6 +26,7 @@ import com.meeruu.commonlib.bean.IdNameBean;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.FileUtils;
+import com.meeruu.commonlib.utils.ImageCacheUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
@@ -34,14 +35,15 @@ import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.meeruu.sharegoods.utils.DataCleanManager;
-
-import cn.jpush.android.api.JPushInterface;
+import com.qiyukf.unicorn.api.Unicorn;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.jpush.android.api.JPushInterface;
 
 
 public class CommModule extends ReactContextBaseJavaModule {
@@ -364,7 +366,7 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getTotalCacheSize(Callback callback) {
         try {
-            String s = DataCleanManager.getTotalCacheSize(mContext);
+            long s = ImageCacheUtils.getInstance().getCacheSize(mContext);
             callback.invoke(s);
         } catch (Exception e) {
             LogUtils.d(e.getMessage());
@@ -374,6 +376,8 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void clearAllCache(Callback callback) {
         try {
+            // 清楚七鱼缓存
+            Unicorn.clearCache();
             DataCleanManager.clearAllCache(mContext);
             callback.invoke();
         } catch (Exception e) {
