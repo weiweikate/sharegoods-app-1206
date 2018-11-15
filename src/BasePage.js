@@ -23,6 +23,7 @@ import { netStatus } from './comm/components/NoNetHighComponent';
 import res from './comm/res';
 import bridge from './utils/bridge';
 import DesignRule from 'DesignRule';
+import Toast from './utils/bridge';
 
 export default class BasePage extends Component {
     constructor(props) {
@@ -227,10 +228,11 @@ export default class BasePage extends Component {
         bridge.$toast(title);
     };
     $loadingShow = (msg, params) => {
-        if (!this.$loadingHub) {
-            return;
-        }
-        this.$loadingHub.loadingShow(msg, params || {});
+        // if (!this.$loadingHub) {
+        //     return;
+        // }
+        // this.$loadingHub.loadingShow(msg, params || {});
+        Toast.showLoading(msg,params)
     };
     $loadingDismiss = (callBack) => {
         if (!this.$loadingHub) {

@@ -281,6 +281,7 @@ public class MainRNActivity extends ReactActivity {
         if (event.isShow()) {
             if (null == mLoadingDialog) {
                 mLoadingDialog = new LoadingDialog(this, R.style.LoadingDialog);
+                mLoadingDialog.setCancelable(false);
             }
             if (isShowLoadingDialog) {
                 return;
