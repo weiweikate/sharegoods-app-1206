@@ -9,12 +9,9 @@ import {
 } from 'react-native';
 import xiangqing_btn_gouwuche_nor from '../res/xiangqing_btn_gouwuche_nor.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import ShopCartStore from '../../../shopCart/model/ShopCartStore';
-import { observer } from 'mobx-react';
 import DesignRule from 'DesignRule';
+import StringUtils from '../../../../utils/StringUtils';
 
-
-@observer
 export default class DetailBottomView extends Component {
 
     static propTypes = {
@@ -27,33 +24,46 @@ export default class DetailBottomView extends Component {
     }
 
     render() {
-        return (<View style={{ height: ScreenUtils.isIOSX ? 49 + 33 : 49, backgroundColor: 'white' }}>
+        let { shareMoney } = this.props;
+        return (<View style={{ height: 49 + ScreenUtils.safeBottom, backgroundColor: 'white' }}>
             <View style={styles.container}>
                 <TouchableOpacity style={{ width: 63, justifyContent: 'center', alignItems: 'center' }}
-                                  onPress={() => this.props.bottomViewAction('goGwc')}>
+                                  onPress={() => this.props.bottomViewAction('gwc')}>
                     <Image style={{ marginBottom: 6 }} source={xiangqing_btn_gouwuche_nor}/>
                     <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction }}>购物车</Text>
-                    {ShopCartStore.getAllGoodsClassNumber === 0 ? null : <View style={{
-                        position: 'absolute', top: 4, right: 4, height: 16,
-                        paddingHorizontal: 4,
-                        backgroundColor: DesignRule.mainColor,
-                        borderRadius: 8, justifyContent: 'center', alignItems: 'center'
-                    }}>
-                        <Text style={{
-                            color: 'white',
-                            fontSize: 10
-                        }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
-                    </View>}
-                </TouchableOpacity>
-                <View style = {{width:0.5,height:49,backgroundColor:DesignRule.lineColor_inColorBg}}/>
-                <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                                  onPress={() => this.props.bottomViewAction('buy')}>
-                    <Text>立即购买</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={{ flex: 1, backgroundColor: DesignRule.mainColor, justifyContent: 'center', alignItems: 'center' }}
-                    onPress={() => this.props.bottomViewAction('gwc')}>
-                    <Text style={{ color: 'white' }}>加入购物车</Text>
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: DesignRule.mainColor
+                    }}
+                    onPress={() => this.props.bottomViewAction('buy')}>
+                    <Text style={{ color: DesignRule.white, fontSize: 14 }}>立即购买</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={{
+                        flex: 1,
+                        backgroundColor: '#FBBB50',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'row'
+                    }}
+                    onPress={() => this.props.bottomViewAction('jlj')}>
+                    <Text style={{ color: DesignRule.white, fontSize: 25 }}>赚</Text>
+                    <View style={{ marginLeft: 5 }}>
+                        <Text style={{ color: DesignRule.white, fontSize: 11 }}>品牌奖励金</Text>
+                        <View style={{
+                            marginTop: 6,
+                            alignItems:'center'
+                        }} maxWidth={ScreenUtils.autoSizeWidth(100)}>
+                            <Text style={{
+                                color: DesignRule.white,
+                                fontSize: 11,
+                            }} numberOfLines = {2}>{StringUtils.isNoEmpty(shareMoney) ? `￥${shareMoney}` : '￥?'}</Text>
+                        </View>
+                    </View>
                 </TouchableOpacity>
             </View>
 

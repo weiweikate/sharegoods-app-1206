@@ -32,14 +32,15 @@ import EmptyUtils from '../../utils/EmptyUtils';
 import StringUtils from '../../utils/StringUtils';
 import DateUtils from '../../utils/DateUtils';
 import CommModal from 'CommModal';
+import DetailNavView from '../home/product/components/DetailNavView';
 
 const LASTSHOWPROMOTIONTIME = 'LASTSHOWPROMOTIONTIME';
 import res from './res';
 
 const redEnvelopeBg = res.other.red_big_envelope;
 const tongyong_btn_close_white = res.button.tongyong_btn_close_white;
-const show_detail_back = res.button.show_detail_back;
-const show_share = res.button.show_share;
+// const show_detail_back = res.button.show_detail_back;
+// const show_share = res.button.show_share;
 
 export default class TopicDetailPage extends BasePage {
 
@@ -384,6 +385,7 @@ export default class TopicDetailPage extends BasePage {
         } else {
             this.st = 1;
         }
+        this.DetailNavView.updateWithScale(this.st);
         this._refHeader.setNativeProps({
             opacity: this.st
         });
@@ -522,30 +524,26 @@ export default class TopicDetailPage extends BasePage {
         return (
             <View style={styles.container}>
                 <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
-                <View style={styles.transparentView}>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.$navigateBack();
-                    }}>
-                        <Image source={show_detail_back}/>
-                    </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.DetailNavShowModal.show((item) => {
-                            switch (item.index) {
-                                case 0:
-                                    this.$navigate('message/MessageCenterPage');
-                                    break;
-                                case 1:
-                                    this.$navigateReset();
-                                    break;
-                                case 2:
-                                    this.shareModal.open();
-                                    break;
-                            }
-                        });
-                    }}>
-                        <Image source={show_share}/>
-                    </TouchableWithoutFeedback>
-                </View>
+                <DetailNavView ref={(e) => this.DetailNavView = e}
+                               source = {productImgUrl}
+                               navBack={() => {
+                                   this.$navigateBack();
+                               }}
+                               navRRight={() => {
+                                   this.DetailNavShowModal.show((item) => {
+                                       switch (item.index) {
+                                           case 0:
+                                               this.$navigate('message/MessageCenterPage');
+                                               break;
+                                           case 1:
+                                               this.$navigateReset();
+                                               break;
+                                           case 2:
+                                               this.shareModal.open();
+                                               break;
+                                       }
+                                   });
+                               }}/>
 
                 <SectionList onScroll={this._onScroll}
                              ListHeaderComponent={this._renderListHeader}
@@ -622,17 +620,5 @@ const styles = StyleSheet.create({
         zIndex: 2,
         opacity: 0
     },
-    transparentView: {
-        backgroundColor: 'transparent',
-        position: 'absolute',
-        top: ScreenUtils.statusBarHeight,
-        left: 16,
-        right: 16,
-        zIndex: 3,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    }
-
 });
 
