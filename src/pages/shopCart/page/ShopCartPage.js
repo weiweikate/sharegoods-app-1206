@@ -81,6 +81,7 @@ export default class ShopCartPage extends BasePage {
                     this.contentList.scrollTo({ x: 0, y: 1, animated: true });
                     this.isUnFishFirstRender = false;
                 }
+                shopCartCacheTool.getShopCartGoodsListData();
             }
         );
     }

@@ -166,17 +166,9 @@ SINGLETON_FOR_CLASS(JRShareManager)
 
 #pragma 微信登陆
 -(void)getUserInfoForPlatform:(UMSocialPlatformType)platformType withCallBackBlock:(loginFinshBlock)finshBlock{
-  BOOL wx = [[UIApplication sharedApplication]canOpenURL:[NSURL URLWithString:@"weixin://"]];
-  //  if (!wx) {
-  //     NSDictionary * dic = @{@"msg":@"未安装微信"};
-  //    if (finshBlock) {
-  //          finshBlock(@[dic]);
-  //      }
-  ////    [JRLoadingAndToastTool showToast:@"未安装微信" andDelyTime:2];
-  ////    return;
-  //  }
+ 
   [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_WechatSession currentViewController:self.currentViewController_XG completion:^(id result, NSError *error) {
-    UMSocialUserInfoResponse * res = result ;
+    UMSocialUserInfoResponse * res = result;
     NSDictionary *dicData = @{
                               @"openid":res.openid?res.openid:[NSNull null],
                               @"systemVersion":[JRDeviceInfo systemVersion],
