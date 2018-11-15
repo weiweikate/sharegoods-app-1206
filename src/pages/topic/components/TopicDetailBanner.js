@@ -16,9 +16,13 @@ export class TopicDetailBanner extends Component {
 
     getImageList = (data) => {
         if (data) {
-            return data.map((item, index) => {
-                return item.originalImg;
+            let tempArr = [];
+            data.forEach((item, index) => {
+                if (!item.videoUrl) {
+                    tempArr.push(item.originalImg);
+                }
             });
+            return tempArr;
         } else {
             return null;
         }
