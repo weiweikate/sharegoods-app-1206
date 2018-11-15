@@ -131,6 +131,9 @@ export default {
         NativeModules.commModule.clearAllCache(callback);
     },
 
-    removeLaunch : () =>  NativeModules.commModule.removeLaunch()
+    removeLaunch: () => NativeModules.commModule.removeLaunch(),
 
+    stopPush: () => NativeModules.commModule.stopPush(),
+    resumePush: () => NativeModules.commModule.resumePush(),
+    isPushStopped: () => NativeModules.commModule.isPushStopped()
 };
