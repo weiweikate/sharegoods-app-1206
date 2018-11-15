@@ -419,8 +419,10 @@ export default class TopicDetailPage extends BasePage {
     };
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
-        if (Y < 100) {
-            this.st = Y * 0.01;
+        if (Y < 44) {
+            this.st = 0;
+        } else if (Y < ScreenUtils.autoSizeWidth(377)) {
+            this.st = (Y - 44) / (ScreenUtils.autoSizeWidth(377) - 44);
         } else {
             this.st = 1;
         }
