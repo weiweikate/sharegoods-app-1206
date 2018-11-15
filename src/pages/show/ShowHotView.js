@@ -95,6 +95,11 @@ export default class ShowHotView extends Component {
         </View>;
     };
     _keyExtractor = (data) => data.id + '';
+    _renderInfinite() {
+        return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
+            {this.recommendModules.isEnd ? <Text style={styles.text}>已加载全部</Text> : this.recommendModules.isRefreshing ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
+        </View>
+    }
 
     render() {
         return (
@@ -115,6 +120,7 @@ export default class ShowHotView extends Component {
                     infiniting={(done) => this.infiniting(done)}
                     showsVerticalScrollIndicator={false}
                     refreshing={(done) => this.refreshing(done)}
+                    renderInfinite={()=>this._renderInfinite()}
                 />
             </View>
         );
@@ -134,5 +140,9 @@ let styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
         fontWeight: '600'
+    },
+    text: {
+        color: '#999',
+        fontSize: px2dp(11)
     }
 });
