@@ -173,7 +173,7 @@ export default class LoginTopView extends Component {
                         value={this.LoginModel.vertifyCode}
                         onChangeText={text => this.LoginModel.saveVertifyCode(text)}
                         placeholder='请输入验证码'
-                        underlineColorAndroid={'transparent'}
+                        underlineColorAndroid='transparent'
                         keyboardType='numeric'
                     />
                     <TouchableOpacity
