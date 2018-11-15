@@ -135,5 +135,5 @@ export default {
 
     stopPush: () => NativeModules.commModule.stopPush(),
     resumePush: () => NativeModules.commModule.resumePush(),
-    isPushStopped: () => NativeModules.commModule.isPushStopped()
+    isPushStopped: (callback=()=>{}) => NativeModules.commModule.isPushStopped(callback)
 };
