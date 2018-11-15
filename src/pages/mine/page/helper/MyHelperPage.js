@@ -100,7 +100,7 @@ export default class MyHelperPage extends BasePage {
                         marginTop: 10,
                         backgroundColor: 'white'
                     }}>
-                        <TouchableOpacity activeOpacity={0.6} onPress={() => console.log('退款进度')}
+                        <TouchableOpacity activeOpacity={0.6} onPress={() => this.$navigate('order/afterSaleService/AfterSaleListPage')}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={monenybpg} style={{ width: 37, height: 37 }}/>
                             <Text style={styles.textFontstyle}>退款进度</Text>

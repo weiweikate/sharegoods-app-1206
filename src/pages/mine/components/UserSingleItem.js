@@ -11,9 +11,9 @@ import {
     Text,
     StyleSheet
 } from 'react-native';
-import right_arrow from '../res/homeBaseImg/icon3_07.png';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
+import res from '../res';
 
 export default class UserSingleItem extends Component {
     constructor(props) {
@@ -76,7 +76,7 @@ export default class UserSingleItem extends Component {
         return (!isArrow ? null :
                 <View style={{ justifyContent: 'center', marginRight: 15, flexDirection: 'row', alignItems: 'center' }}>
                     {this.renderheadImage()}
-                    <Image source={right_arrow} style={{ width: 8, height: 15 }}/>
+                    <Image source={res.button.arrow_right} />
                 </View>
         );
     };
