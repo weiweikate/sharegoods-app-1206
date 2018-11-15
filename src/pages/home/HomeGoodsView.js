@@ -91,7 +91,6 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(7)
     },
     cell: {
-        backgroundColor: '#fff',
         height: px2dp(273),
         flexDirection: 'row',
         marginRight: px2dp(15),

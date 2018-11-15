@@ -80,12 +80,12 @@ class SettingPage extends BasePage {
                 <View style={{ backgroundColor: 'white' }}>
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAccountSettingPage()}>
                         <UIText value={'账号与安全'} style={styles.blackText}/>
-                        <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                        <Image source={arrow_right}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAddressManagePage()}>
                         <UIText value={'收货地址管理'} style={styles.blackText}/>
-                        <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                        <Image source={arrow_right}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     {Platform.OS === 'ios' ? null :
@@ -117,7 +117,7 @@ class SettingPage extends BasePage {
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
                         <UIText value={'关于我们'} style={styles.blackText}/>
-                        <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                        <Image source={arrow_right}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle}
@@ -125,7 +125,6 @@ class SettingPage extends BasePage {
                         <UIText value={'版本检测'} style={[styles.blackText, { flex: 1 }]}/>
                         <UIText value={'当前版本v' + this.state.version}
                                 style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
-                        <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={{

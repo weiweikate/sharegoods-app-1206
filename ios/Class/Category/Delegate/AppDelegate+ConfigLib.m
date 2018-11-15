@@ -22,6 +22,7 @@
 #import <UMShare/UMShare.h>
 #import <UMCommon/UMCommon.h>
 #import "IQKeyboardManager.h"
+#import <React/RCTLinkingManager.h>
 
 
 
@@ -88,16 +89,19 @@
   
 }
 -(void)configQYLib{
-  [[QYSDK sharedSDK] registerAppId:KQiYuKey appName:@"app名字"];
+  [[QYSDK sharedSDK] registerAppId:KQiYuKey appName:@"秀购"];
 }
 #pragma mark - delegate
 //支持目前所有iOS系统
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-  BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url];
+  BOOL result=NO;
+   result = [[UMSocialManager defaultManager] handleOpenURL:url];
   if (!result) {
-      [[JRPay sharedPay] handleOpenUrl:url];
+     [[JRPay sharedPay] handleOpenUrl:url];
   }
+  result = [RCTLinkingManager application:application openURL:url
+                        sourceApplication:nil annotation:nil];
   return YES;
 }
 

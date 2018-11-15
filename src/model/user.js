@@ -73,6 +73,8 @@ class User {
     @observable
     levelId = null;         //用户等级层级 number
     @observable
+    levelRemark = null;
+    @observable
     dType = null;           //经销商类型
     @observable
     auzBeginTime = null;    //授权开始时间
@@ -230,6 +232,7 @@ class User {
         this.roleType = info.roleType;              //
         this.level = info.level;                    //
         this.levelName = info.levelName;            //
+        this.levelRemark = info.levelRemark
         this.experience = info.experience;
         this.salePsw = info.salePsw;                //
         this.hadSalePassword = info.hadSalePassword; // 是否设置过交易密码
@@ -337,6 +340,7 @@ class User {
         this.roleType = null;        //
         this.level = null;           //
         this.levelName = null;       //
+        this.levelRemark = null;
         this.salePsw = null;         //
         this.hadSalePassword = false;
         this.salePswSalt = null;     //

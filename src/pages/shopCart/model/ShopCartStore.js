@@ -1,6 +1,10 @@
 import { observable, action, computed } from 'mobx';
 import ShopCartAPI from '../api/ShopCartApi';
 import bridge from '../../../utils/bridge';
+import MineApi from '../../mine/api/MineApi';
+import user from '../../../model/user';
+import QYChatUtil from '../../mine/page/helper/QYChatModel';
+import shopCartCacheTool from './ShopCartCacheTool';
 
 
 class ShopCartStore {
@@ -118,7 +122,7 @@ class ShopCartStore {
 
                 //从订单过来的选中
                 this.needSelectGoods.map(selectGood =>{
-                    if (selectGood.productId === item.productId && selectGood.priceId === item.priceId){
+                    if (selectGood.productId === item.productId && selectGood.priceId === item.priceId && item.status !== 0){
                         item.isSelected = true
                     }
                 })
@@ -268,9 +272,6 @@ class ShopCartStore {
     /*加入购物车*/
     addItemToShopCart(item) {
         if (item) {
-            if (item instanceof Array && item.length > 0) {
-                bridge.$toast('批量加入购物车未对接');
-            } else {
                 //加入单个商品
                 bridge.showLoading();
                 ShopCartAPI.addItem({
@@ -284,10 +285,19 @@ class ShopCartStore {
                     this.getShopCartListData();
                 }).catch((error) => {
                     bridge.$toast(error.msg || '加入购物车失败');
+                    if (error.code === 10009) {
+                        user.clearUserInfo();
+                        user.clearToken();
+                        //清空购物车
+                        this.data = [];
+                        MineApi.signOut();
+                        QYChatUtil.qiYULogout();
+                        shopCartCacheTool.addGoodItem(item)
+                    }else {
+                        bridge.$toast(error.msg)
+                    }
                     bridge.hiddenLoading();
                 });
-            }
-
         } else {
             bridge.$toast('添加商品不能为空');
         }
