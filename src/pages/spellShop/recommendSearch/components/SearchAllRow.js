@@ -69,7 +69,7 @@ export default class RecommendRow extends Component {
                         <Text style={{
                             marginTop: 8, marginBottom: 14.5, paddingHorizontal: 21.5,
                             color: DesignRule.textColor_secondTitle, fontSize: 10
-                        }}>{`距离下一次分红还差${(bonusNeedMoney - tradeBalance > 0) ? (bonusNeedMoney - tradeBalance) : 0}元`}</Text>
+                        }}>{`距离下一次分红还差${(bonusNeedMoney - tradeBalance > 0) ? (bonusNeedMoney - tradeBalance).toFixed(2) : 0}元`}</Text>
                     </View>
                     <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
                     <View style={{ width: ScreenUtils.autoSizeWidth(44 + 70), alignItems: 'center', justifyContent: 'center' }}>
