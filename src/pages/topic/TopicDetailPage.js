@@ -39,8 +39,8 @@ import res from './res';
 
 const redEnvelopeBg = res.other.red_big_envelope;
 const tongyong_btn_close_white = res.button.tongyong_btn_close_white;
-const show_detail_back = res.button.show_detail_back;
-const show_share = res.button.show_share;
+// const show_detail_back = res.button.show_detail_back;
+// const show_share = res.button.show_share;
 
 export default class TopicDetailPage extends BasePage {
 
