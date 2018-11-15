@@ -32,6 +32,7 @@ import bridge from '../../../../utils/bridge';
 import apiEnvironment from '../../../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import user from '../../../../model/user';
 
 const {
     button: {
@@ -197,7 +198,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                                 webJson={{
                                     title: '邀请好友免费领取福利',
                                     dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/register`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/register?upuserid=${user.id || ''}`,
                                     thumImage: 'logo.png'
                                 }}
                     // miniProgramJson = {{
