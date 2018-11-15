@@ -592,6 +592,11 @@ export default class TopicDetailPage extends BasePage {
                                navBack={() => {
                                    this.$navigateBack();
                                }}
+                               navRLeft={() => {
+                                   this.$navigate('shopCart/ShopCart', {
+                                       hiddeLeft: false
+                                   });
+                               }}
                                navRRight={() => {
                                    this.DetailNavShowModal.show((item) => {
                                        switch (item.index) {
