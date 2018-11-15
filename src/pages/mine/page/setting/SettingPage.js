@@ -183,7 +183,6 @@ class SettingPage extends BasePage {
             });
         } else {
             bridge.getTotalCacheSize((allSize) => {
-                alert(allSize);
                 let temp = getSizeFromat(allSize);
                 this.setState({
                     memorySize: temp
