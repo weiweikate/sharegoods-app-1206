@@ -14,9 +14,7 @@ import {
     Image
 } from 'react-native';
 import NavigatorBar from './components/pageDecorator/NavigatorBar/index';
-import {
-    LoadingHub
-} from './components/pageDecorator/BaseView';
+
 import { renderViewByLoadingState } from './components/pageDecorator/PageState';
 import { NavigationActions } from 'react-navigation';
 import { netStatus } from './comm/components/NoNetHighComponent';
@@ -96,9 +94,6 @@ export default class BasePage extends Component {
                 {this.$isMonitorNetworkStatus() && netStatus.isConnected === false ?
                     this._renderDefaultNoNet() :
                     this.renderContianer()}
-                <LoadingHub ref={(loadingHub) => {
-                    this.$loadingHub = loadingHub;
-                }}/>
             </View>
         );
     }
@@ -227,20 +222,11 @@ export default class BasePage extends Component {
     $toastShow = (title) => {
         bridge.$toast(title);
     };
-    $loadingShow = (msg, params) => {
-        // if (!this.$loadingHub) {
-        //     return;
-        // }
-        // this.$loadingHub.loadingShow(msg, params || {});
-        Toast.showLoading(msg,params)
+    $loadingShow = (msg, timeout = 0,callback=()=>{}) => {
+        Toast.showLoading(msg,timeout,callback())
     };
     $loadingDismiss = (callBack) => {
-        Toast.hiddenLoading();
-
-        // if (!this.$loadingHub) {
-        //     return;
-        // }
-        // this.$loadingHub.dismiss(typeof callBack === 'function' ? callBack : null);
+        Toast.hiddenLoading(callBack);
     };
 }
 

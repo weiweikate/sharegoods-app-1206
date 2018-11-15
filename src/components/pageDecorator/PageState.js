@@ -3,22 +3,20 @@
  */
 
 import React from 'react';
-// import {View} from 'react-native'
 import {
     NullView,
     EmptyView,
-    // LoadingView,
     NetFailedView
 } from './BaseView';
-import LoadingView from './BaseView/LoadingView'
+import LoadingView from './BaseView/LoadingView';
 
 // 可枚举的页面数据加载状态
 const PageLoadingState = {
-    loading: "loading",
-    empty: "empty",
-    success: "success",
-    fail: "fail",
-    null: "null"
+    loading: 'loading',
+    empty: 'empty',
+    success: 'success',
+    fail: 'fail',
+    null: 'null'
 };
 
 /**
@@ -35,7 +33,7 @@ function renderViewByLoadingState(loadingStateAndSetting, renderSuccessView) {
     }
     const {
         loadingState,
-        // loadingProps = {},    //加载中样式
+        loadingProps = {},    //加载中样式
         netFailedProps = {},  //请求失败样式
         emptyProps = {}       //空数据样式
     } = loadingStateAndSetting;
@@ -46,7 +44,7 @@ function renderViewByLoadingState(loadingStateAndSetting, renderSuccessView) {
     };
     switch (loadingState) {
         case PageLoadingState.loading:
-            return <LoadingView  />;
+            return <LoadingView  {...loadingProps}/>;
         case PageLoadingState.fail:
             return <NetFailedView {...netFailedProps} />;
         case PageLoadingState.empty:
