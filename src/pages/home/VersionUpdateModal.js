@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     View,
     ProgressBarAndroid,
-    AsyncStorage
+    AsyncStorage,
+    Linking
 } from 'react-native';
 import ScreenUtils from '../../utils/ScreenUtils';
 import UIText from '../../components/ui/UIText';
@@ -148,7 +149,8 @@ export default class VersionUpdateModal extends React.Component {
 
     toUpdate = () => {
         if (Platform.OS === 'ios') {
-            // TODO 前往appstore
+            // 前往appstore
+            Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
         } else {
 
             if (this.props.updateData.forceUpdate === 1) {
