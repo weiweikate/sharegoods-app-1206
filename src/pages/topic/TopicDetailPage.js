@@ -479,6 +479,10 @@ export default class TopicDetailPage extends BasePage {
             } else if (buyTime && userBuy) {
                 colorType = 2;
             }
+            //未登录先让看
+            if (!user.isLogin) {
+                colorType = 2;
+            }
         } else {
             //状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
             const { notifyFlag, surplusNumber, limitNumber, limitFlag, status, beginTime } = this.state.activityData;
