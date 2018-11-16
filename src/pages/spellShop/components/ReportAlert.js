@@ -17,8 +17,9 @@ const MIN_SCREEN = Math.min(Dimensions.get('window').width, Dimensions.get('wind
 const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const PANNELHEIGHT = 340;
 const Animated_Duration = 300; //默认的动画持续时间
-import KeFuIcon from '../src/jbtk_03.png';
 import DesignRule from 'DesignRule';
+import res from '../res'
+const KeFuIcon = res.jbtk_03;
 
 export default class ReportAlert extends Component {
 

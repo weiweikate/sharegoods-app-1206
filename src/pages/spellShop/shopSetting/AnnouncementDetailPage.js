@@ -8,9 +8,10 @@ import {
     ScrollView,
     ImageBackground
 } from 'react-native';
-import Banner from './res/banner_02.png';
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
+import res from '../res';
+const Banner = res.shopSetting.banner_02;
 
 export default class AnnouncementDetailPage extends BasePage {
 
