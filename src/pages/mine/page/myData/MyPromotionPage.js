@@ -136,7 +136,7 @@ export default class MyPromotionPage extends BasePage {
             }}>
                 <UIImage source={res.button.white_back_img} style={{marginLeft:15,marginTop:5 ,width:9,height:15}} onPress={()=>this.$navigateBack()}/>
 
-                <View style={{flexDirection:'row',alignItems:'center',marginLeft:51,marginBottom:40}}>
+                <View style={{flexDirection:'row',alignItems:'center',marginLeft:25,marginBottom:40}}>
                     {
                         this.state.headImg ?
                             <Image style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 }}
