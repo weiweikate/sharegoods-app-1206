@@ -126,7 +126,7 @@ export default class MyIntegralAccountPage extends BasePage {
     //**********************************BusinessPart******************************************
     componentDidMount() {
 
-        this.getDataFromNetwork();
+     this.onRefresh();
     }
 
     clickItem = (index) => {

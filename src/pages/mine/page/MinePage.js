@@ -156,25 +156,12 @@ export default class MinePage extends BasePage {
             isRefreshing: true
         });
         MineApi.getUser().then(res => {
-            if (res.code == 10000) {
                 let data = res.data;
                 user.saveUserInfo(data);
-                this.setState({
-                    availableBalance: data.availableBalance,
-                    headImg: data.headImg,
-                    levelName: data.levelName,
-                    userScore: data.userScore ? data.userScore : 0,
-                    blockedBalance: data.blockedBalance,
-                    isRefreshing: false
-                });
-            }
         }).catch(err => {
             this.setState({
                 isRefreshing: false
             });
-            if (err.code === 10009) {
-                this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
-            }
         });
     };
 

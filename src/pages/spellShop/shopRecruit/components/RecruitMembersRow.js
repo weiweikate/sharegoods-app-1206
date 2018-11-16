@@ -12,10 +12,10 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
-import PeopleImg from '../src/dy_07.png';
-// import ArrowImg from '../src/xjt_03.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+const PeopleImg = res.shopRecruit.dy_07;
 
 export default class AssistantRow extends Component {
 

@@ -8,15 +8,17 @@ import {
     ImageBackground
 } from 'react-native';
 // 图片资源
-import HeaderBarBgImg from '../src/bg_02.png';
-import Shape from '../src/Shape.png';
-import shoushi from '../src/shoushi.png';
-import xiuling from '../src/xiuling.png';
+import res from '../../res';
+const HeaderBarBgImg = res.shopRecruit.bg_02;
+const Shape = res.shopRecruit.Shape;
+const shoushi = res.shopRecruit.shoushi;
+const xiuling = res.shopRecruit.xiuling;
 
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
+
 
 export default class RecommendRow extends Component {
 

@@ -10,8 +10,9 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import StarImg from '../src/dj_03.png';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+const StarImg = res.recommendSearch.dj_03;
 
 export default class RecommendRow extends Component {
 
