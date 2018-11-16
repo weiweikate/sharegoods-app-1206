@@ -26,7 +26,7 @@ PODS:
   - JPush (3.1.0):
     - JCore (~> 1.2.0)
   - MBProgressHUD (1.1.0)
-  - QIYU_iOS_SDK (4.2.1)
+  - QIYU_iOS_SDK (4.6.0)
   - SandBoxPreviewTool (1.1)
   - SDWebImage (4.4.2):
     - SDWebImage/Core (= 4.4.2)
@@ -60,7 +60,7 @@ DEPENDENCIES:
   - IQKeyboardManager
   - JPush (= 3.1.0)
   - MBProgressHUD
-  - QIYU_iOS_SDK (~> 4.2.1)
+  - QIYU_iOS_SDK (~> 4.6.0)
   - SandBoxPreviewTool
   - SDWebImage
   - TYCyclePagerView
@@ -103,7 +103,7 @@ SPEC CHECKSUMS:
   JCore: 14706de2640b25fb77dbd02332696491407f37c9
   JPush: 5921e25ad13e0386351079217b009f2039084eac
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
-  QIYU_iOS_SDK: 9dc5cb1dee3abdccca56cc282ecbfc841e366680
+  QIYU_iOS_SDK: 2ba6a1d3513314bad95fd005b89fd4cad0039812
   SandBoxPreviewTool: 2d837db4409c74c9a8047838f5b320c08161fad1
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   TYCyclePagerView: b70858c9b5d0e80e1e3129ff5ceb027eb0f76d44
@@ -115,6 +115,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 3117412f8aafde4758cac1e8d20b93c67cafcfef
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: fcb509f14bbb0abc84218291edf8838de277ee42
+PODFILE CHECKSUM: e0c77ba4eb989c21b5d983428be75bd023a68299
 
 COCOAPODS: 1.5.3

@@ -19,7 +19,7 @@ import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 
-const dismissKeyboard = require('dismissKeyboard');
+// const dismissKeyboard = require('dismissKeyboard');
 
 class LoginTopViewModel {
     /*0代表验证码登录 1代表密码登录*/
@@ -40,15 +40,15 @@ class LoginTopViewModel {
 
     @action
     savePhoneNumber(phoneNmber) {
-        if (!phoneNmber) {
+        if (!phoneNmber || phoneNmber.length === 0) {
             this.phoneNumber = '';
             return;
         }
-        if( 0 <= parseInt(phoneNmber.charAt(phoneNmber.length - 1)) &&
-            parseInt(phoneNmber.charAt(phoneNmber.length - 1)) <= 9 )
-        {
+        // if( 0 <= parseInt(phoneNmber.charAt(phoneNmber.length - 1)) &&
+        //     parseInt(phoneNmber.charAt(phoneNmber.length - 1)) <= 9 )
+        // {
             this.phoneNumber = phoneNmber;
-        }
+        // }
     }
 
     @action
@@ -130,7 +130,7 @@ export default class LoginTopView extends Component {
                         underlineColorAndroid='transparent'
                         keyboardType='numeric'
                         onEndEditing={() => {
-                            if (this.LoginModel.phoneNumber.length > 0 && (!StringUtils.checkPhone(this.LoginModel.phoneNumber))) {
+                            if (!StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
                                 bridge.$toast('手机号格式不对');
                             }
                         }}
@@ -164,7 +164,7 @@ export default class LoginTopView extends Component {
     }
 
     switchBtnClick = (index) => {
-        dismissKeyboard();
+        // dismissKeyboard();
         this.LoginModel.selectIndex = index;
     };
     renderCodeLogin = () => {
