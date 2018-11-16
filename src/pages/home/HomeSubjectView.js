@@ -3,16 +3,18 @@
  */
 
 import React, {Component} from 'react'
-import {View , ScrollView, StyleSheet, Text, Image, TouchableOpacity} from 'react-native'
+import {View , ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
-import { subjectModule, homeModule } from './Modules'
+import { homeModule } from './Modules'
+import { subjectModule } from './HomeSubjectModel'
 import { getShowPrice } from '../topic/model/TopicMudelTool'
 import DesignRule from 'DesignRule'
+import ImageLoad from '@mr/react-native-image-placeholder'
 
 const GoodItems = ({img, title, money, press}) => <TouchableOpacity style={styles.goodsView} onPress={()=>{press && press()}}>
-    <Image style={styles.goodImg} source={{uri:img ? img : ''}}/>
+    <ImageLoad cacheable={true} style={styles.goodImg} source={{uri:img ? encodeURI(img) : ''}}/>
     <Text style={styles.goodsTitle} numberOfLines={2}>{title}</Text>
     <Text style={styles.money}>{money} 起</Text>
 </TouchableOpacity>
@@ -27,7 +29,6 @@ const MoreItem = ({press}) => <TouchableOpacity style={styles.moreView} onPress=
 
 const ActivityItem = ({data, press, goodsPress}) => {
     const {imgUrl, topicBannerProductDTOList} = data
-    console.log('ActivityItem', imgUrl)
     let goodsItem = []
     topicBannerProductDTOList && topicBannerProductDTOList.map((value,index) => {
         if (index >= 8) {
@@ -47,7 +48,7 @@ const ActivityItem = ({data, press, goodsPress}) => {
     return <View>
         <TouchableOpacity style={styles.bannerBox} onPress={()=>{press && press()}}>
             <View style={styles.bannerView}>
-                <Image style={styles.banner} source={{uri: imgUrl ? imgUrl : ''}} resizeMode={'cover'}/>
+                <ImageLoad cacheable={true} style={styles.banner} source={{uri: imgUrl ? encodeURI(imgUrl) : ''}}/>
             </View>
         </TouchableOpacity>
         {

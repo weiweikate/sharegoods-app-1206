@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.BV.LinearGradient.LinearGradientPackage;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
 import com.brentvatne.react.ReactVideoPackage;
@@ -119,15 +120,16 @@ public class MainApplication extends BaseApplication implements ReactApplication
             return Arrays.<ReactPackage>asList(
                     new RNPackage(),
                     new MainReactPackage(),
-            new ReactVideoPackage(),
-            new VectorIconsPackage(),
-            new UpdatePackage(),
-            new SvgPackage(),
-            new ImagePickerPackage(),
-            new RNDeviceInfo(),
-            new AutoHeightWebViewPackage(),
-            new RNGeolocationPackage(),
-                    new LinearGradientPackage()
+                    new ReactVideoPackage(),
+                    new VectorIconsPackage(),
+                    new UpdatePackage(),
+                    new SvgPackage(),
+                    new ImagePickerPackage(),
+                    new RNDeviceInfo(),
+                    new AutoHeightWebViewPackage(),
+                    new RNGeolocationPackage(),
+                    new LinearGradientPackage(),
+                    new RNFetchBlobPackage()
             );
         }
 
