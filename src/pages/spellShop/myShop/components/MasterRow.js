@@ -9,9 +9,10 @@ import {
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
-import ShopMasterIcon from '../res/dz_03.png';
 import DesignRule from 'DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
+import res from '../../res';
+const ShopMasterIcon = res.myShop.dz_03;
 
 export default class MasterRow extends Component {
 

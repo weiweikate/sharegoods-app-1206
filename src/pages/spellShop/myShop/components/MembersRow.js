@@ -11,10 +11,11 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-import PeopleImg from '../res/dy_07.png';
-import ArrowImg from '../res/xjt_03.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+const PeopleImg = res.myShop.dy_07;
+const ArrowImg = res.myShop.xjt_03;
 
 export default class MembersRow extends Component {
 

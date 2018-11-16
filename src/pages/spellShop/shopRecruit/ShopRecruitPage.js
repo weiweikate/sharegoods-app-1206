@@ -21,15 +21,16 @@ import ActionSheetView from '../components/ActionSheetView';
 import ReportAlert from '../components/ReportAlert';
 
 // 图片资源
-import NavLeft from './src/NavLeft.png';
-import icons8_Shop_50px from './src/icons8_Shop_50px.png';
-import icons9_shop from './src/icons9_shop.png';
 import spellStatusModel from '../model/SpellStatusModel';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import DesignRule from 'DesignRule';
+import res from '../res';
+const NavLeft = res.shopRecruit.NavLeft;
+const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
+const icons9_shop = res.shopRecruit.icons9_shop;
 
 export default class ShopRecruitPage extends BasePage {
 

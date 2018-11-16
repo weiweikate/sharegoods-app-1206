@@ -36,7 +36,7 @@ import constants from '../../../constants/constants';
 import DateUtils from '../../../utils/DateUtils';
 import Toast from '../../../utils/bridge';
 import productDetailImg from '../res/productDetailImg.png';
-import moreIcon from '../../spellShop/myShop/res/more_icon.png';
+import moreIcon from '..//res/more_icon.png';
 import GoodsGrayItem from '../components/GoodsGrayItem';
 import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
