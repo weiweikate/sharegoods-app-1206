@@ -21,19 +21,6 @@ import InfoRow from './components/InfoRow';
 import ActionSheetView from '../components/ActionSheetView';
 import ReportAlert from '../components/ReportAlert';
 // 图片资源
-import NavLeft from './res/NavLeft.png';
-import shezhi from './res/shezhi.png';
-import icons8_Shop_50px from '../shopRecruit/src/icons8_Shop_50px.png';
-import my_Shop_gengduo from './res/my_Shop_gengduo.png';
-
-import onSc_03 from './res/sc_03.png';
-import unSc_03 from './res/wsc_03.png';
-
-import RmbIcon from './res/zje_11.png';
-import ZuanIcon from './res/cs_12.png';
-import QbIcon from './res/dzfhj_03-03.png';
-import system_charge from './res/system-charge.png';
-import hangye_gift from './res/hangye-gift.png';
 
 import SpellShopApi from '../api/SpellShopApi';
 import DateUtils from '../../../utils/DateUtils';
@@ -45,7 +32,19 @@ import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import res from '../res';
 
+const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
+const NavLeft = res.myShop.NavLeft;
+const shezhi = res.myShop.shezhi;
+const my_Shop_gengduo = res.myShop.my_Shop_gengduo;
+const onSc_03 = res.myShop.sc_03;
+const unSc_03 = res.myShop.wsc_03;
+const RmbIcon = res.myShop.zje_11;
+const ZuanIcon = res.myShop.cs_12;
+const QbIcon = res.myShop.dzfhj_03_03;
+const system_charge = res.myShop.system_charge;
+const hangye_gift = res.myShop.hangye_gift;
 @observer
 export default class MyShopPage extends BasePage {
 
@@ -327,9 +326,11 @@ export default class MyShopPage extends BasePage {
             userStatus, myStore,
             clerkTotalBonusMoney, clerkBonusCount,
             manager, totalTradeBalance, tradeBalance,
-            updateTime,
+            storeUser,
             createTime
         } = this.state.storeData;
+        storeUser = storeUser || {};
+        let updateTime = StringUtils.isNoEmpty(storeUser.updateTime) ? DateUtils.formatDate(storeUser.updateTime, 'yyyy-MM-dd') : '';
         //店员
         //clerkTotalBonusMoney店员个人已完成分红总额
         //clerkBonusCount店铺内个人分红次数
@@ -356,7 +357,7 @@ export default class MyShopPage extends BasePage {
                     {myStore && this.renderSepLine()}
 
                     {myStore ? this._renderRow(hangye_gift, '个人获得店长分红金', `${managerTotalBonusMoney || 0}元`)
-                        : this._renderRow(QbIcon, '加入时间', DateUtils.formatDate(updateTime, 'yyyy-MM-dd'))}
+                        : this._renderRow(QbIcon, '加入时间', updateTime)}
                 </View>
             );
         } else {

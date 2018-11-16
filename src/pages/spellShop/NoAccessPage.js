@@ -7,9 +7,12 @@ import {
 import SpellStatusModel from './model/SpellStatusModel';
 import ScreenUtils from '../../utils/ScreenUtils';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
-import pindianzhaojilingbgd from './src/pindianzhaojilingbgd.png';
-import pindianzhaojiling from './src/pindianzhaojiling.png';
 import DesignRule from 'DesignRule';
+import res from './res';
+const {
+    pindianzhaojilingbgd,
+    pindianzhaojiling
+} = res;
 
 export default class NoAccessPage extends Component {
     render() {

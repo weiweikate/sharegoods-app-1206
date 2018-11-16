@@ -123,7 +123,19 @@ export default class ShowConnectPage extends BasePage {
     }
 
     _selectedAction(data) {
-        const { selectedList } = this.state;
+        const { selectedList, allSelected, collectData } = this.state;
+
+        if (allSelected) {
+            let selecteds = {}
+            collectData.map((value) => {
+                if (value.id !== data.id) {
+                    selecteds[value.id] = value.id
+                }
+            })
+            this.setState({ allSelected: false, selectedList: selecteds})
+            return
+        }
+
         if (selectedList[data.id]) {
             delete selectedList[data.id];
         } else {

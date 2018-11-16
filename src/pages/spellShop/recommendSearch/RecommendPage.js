@@ -12,9 +12,6 @@ import {
 } from 'react-native';
 
 import { observer } from 'mobx-react';
-//source
-import ShopItemLogo from './src/dp_03.png';
-import SearchItemLogo from './src/pdss_03.png';
 
 import ScreenUtils from '../../../utils/ScreenUtils';
 import RecommendRow from './components/RecommendRow';
@@ -28,6 +25,9 @@ import StringUtils from '../../../utils/StringUtils';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import DesignRule from 'DesignRule';
 import RecommendBanner from './components/RecommendBanner'
+import res from '../res';
+const ShopItemLogo = res.recommendSearch.dp_03;
+const SearchItemLogo = res.recommendSearch.pdss_03;
 
 
 @observer

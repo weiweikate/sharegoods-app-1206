@@ -30,7 +30,8 @@ export default class LoopScrollView extends React.Component {
         pagePadding: PropTypes.number,//默认页面间隔
         automatic: PropTypes.bool,
         interval: PropTypes.number,//秒
-        scrollToIndex:PropTypes.func,
+        scrollToIndex: PropTypes.func,
+        itemCorners: PropTypes.number
     };
     static defaultProps = {
         data: [],
@@ -38,7 +39,9 @@ export default class LoopScrollView extends React.Component {
         pagePadding: 10,
         automatic: true,
         interval: 3,
-        scrollToIndex: (index)=>{},
+        scrollToIndex: (index) => {
+        },
+        itemCorners: 0
     };
 
     constructor(props) {
@@ -51,14 +54,14 @@ export default class LoopScrollView extends React.Component {
 
     componentWillReceiveProps(nextProps) {
 
-            if (nextProps.automatic === true) {
-                this._startTimer();
-            } else {
-                this._endTimer();
-            }
+        if (nextProps.automatic === true) {
+            this._startTimer();
+        } else {
+            this._endTimer();
+        }
 
 
-        if (this.index > 1 + nextProps.data.length && nextProps.data.length > 0){
+        if (this.index > 1 + nextProps.data.length && nextProps.data.length > 0) {
             // let { style: { width }, pageWidth, pagePadding } = this.props;
             // let imageW = pageWidth || width;
             // this.scrollView && this.scrollView.scrollTo({ x: (imageW + pagePadding) * (2), animated: true });
@@ -77,7 +80,7 @@ export default class LoopScrollView extends React.Component {
     }
 
     _handleTimer() {
-        if (this.props.data.length < 1){
+        if (this.props.data.length < 1) {
             return;
         }
         let { style: { width }, pageWidth, pagePadding } = this.props;
@@ -106,7 +109,7 @@ export default class LoopScrollView extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.data.length < 1){
+        if (this.props.data.length < 1) {
             return;
         }
         this._scrollViewToFirst();
@@ -117,22 +120,22 @@ export default class LoopScrollView extends React.Component {
         }
     }
 
-    _getPageNumWithIndex(index){
-        let data =  this.props.data;
+    _getPageNumWithIndex(index) {
+        let data = this.props.data;
         if (data.length === 1) {
             return 0;
         } else if (data.length === 2) {
-            return [0, 1, 0, 1, 0, 1][index]
+            return [0, 1, 0, 1, 0, 1][index];
         } else if (data.length === 3) {
             return [1, 2, 0, 1, 2, 0, 1][index];
         } else {
-            if (index === 0){
+            if (index === 0) {
                 return data.length - 2;
-            } else if(index === 1){
-               return data.length - 1;
-            }else  if(index === data.length + 2){
+            } else if (index === 1) {
+                return data.length - 1;
+            } else if (index === data.length + 2) {
                 return 0;
-            }else if (index === data.length + 3){
+            } else if (index === data.length + 3) {
                 return 1;
             } else {
                 return index - 2;
@@ -141,11 +144,11 @@ export default class LoopScrollView extends React.Component {
     }
 
     _onScroll(e) {
-        if (this.props.data.length < 1){
+        if (this.props.data.length < 1) {
             return;
         }
         let index = this._getIndex(e);
-        if (this._getPageNumWithIndex(index) !== this._getPageNumWithIndex(this.index)){
+        if (this._getPageNumWithIndex(index) !== this._getPageNumWithIndex(this.index)) {
             this.props.scrollToIndex(this._getPageNumWithIndex(index));
         }
         this.index = index;
@@ -153,7 +156,7 @@ export default class LoopScrollView extends React.Component {
     }
 
     _onMomentumScrollEnd(e) {
-        if (this.props.data.length < 1){
+        if (this.props.data.length < 1) {
             return;
         }
         let index = this._getIndex(e);
@@ -162,8 +165,8 @@ export default class LoopScrollView extends React.Component {
             this._scrollViewToLast();
         } else if (this._isLast(index) === true) {
             this._scrollViewToFirst();
-        }else if (index === 0) {
-            if (this.props.data.length === 1){
+        } else if (index === 0) {
+            if (this.props.data.length === 1) {
                 this._scrollViewToLast();
             } else {
                 this._scrollViewToLast2();
@@ -172,7 +175,7 @@ export default class LoopScrollView extends React.Component {
     }
 
     _renderItem(item, index) {
-        let { style: { width, height }, pageWidth, pageHeight, pagePadding } = this.props;
+        let { style: { width, height }, pageWidth, pageHeight, pagePadding, itemCorners } = this.props;
         let imgUrl = item;
         let imageH = pageHeight || height;
         let imageW = pageWidth || width;
@@ -180,9 +183,16 @@ export default class LoopScrollView extends React.Component {
             imgUrl = item[this.props.imgKey];
         }
         return (
-            <TouchableWithoutFeedback key={imgUrl+index}>
+            <TouchableWithoutFeedback key={imgUrl + index}>
                 <Image source={{ uri: imgUrl }}
-                       style={{ height: imageH, width: imageW, marginHorizontal: pagePadding / 2 , backgroundColor: 'red'}}
+                       style={{
+                           height: imageH,
+                           width: imageW,
+                           marginHorizontal: pagePadding / 2,
+                           backgroundColor: 'red',
+                           borderRadius: itemCorners,
+                           overflow: 'hidden',
+                       }}
                 />
             </TouchableWithoutFeedback>
         );
@@ -191,7 +201,7 @@ export default class LoopScrollView extends React.Component {
     _getIndex(e) {
         let { style: { width }, pageWidth, pagePadding } = this.props;
         let imageW = pageWidth || width;
-        let index = e.nativeEvent.contentOffset.x / (imageW + pagePadding*1.0);
+        let index = e.nativeEvent.contentOffset.x / (imageW + pagePadding * 1.0);
         return (Math.round(index));
 
     }

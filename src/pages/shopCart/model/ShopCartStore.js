@@ -154,16 +154,28 @@ class ShopCartStore {
             return;
         }
         let isCanSettlement = true
+
+        let  tempArr = [];
         selectArr.map(good => {
             if (good.amount > good.stock) {
                 isCanSettlement = false
             }
+            if (good.amount > 0){
+                tempArr.push(good);
+            }
         })
+
+
         if (!isCanSettlement) {
             bridge.$toast('商品库存不足请确认~')
         }
 
-        callBack(isCanSettlement,selectArr)
+
+
+
+
+
+        callBack(isCanSettlement,tempArr)
     }
     /**
      * 获取结算选中商品
