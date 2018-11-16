@@ -96,7 +96,7 @@ export default class MyShop_RecruitPage extends BasePage {
 
             }
         } else {
-            return <NoAccessPage navigation={this.props.navigation}/>;
+            return <NoAccessPage navigation={this.props.navigation} leftNavItemHidden={!this.params.storeId}/>;
         }
 
     };
