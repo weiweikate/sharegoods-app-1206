@@ -12,7 +12,9 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
-import { homeType, homeModule, bannerModule } from './Modules';
+import { homeModule } from './Modules'
+import { homeType } from './HomeTypes'
+import { bannerModule } from './HomeBannerModel'
 import HomeSearchView from './HomeSearchView';
 import HomeClassifyView from './HomeClassifyView';
 import HomeStarShopView from './HomeStarShopView';
@@ -73,7 +75,7 @@ export default class HomePage extends PureComponent {
 
     constructor(props) {
         super(props);
-        homeModule.loadHomeList();
+        homeModule.loadHomeList(true);
     }
 
 
@@ -238,7 +240,7 @@ export default class HomePage extends PureComponent {
     }
 
     _onRefresh() {
-        homeModule.loadHomeList();
+        homeModule.loadHomeList(true);
     }
 
     getMessageData = () => {
