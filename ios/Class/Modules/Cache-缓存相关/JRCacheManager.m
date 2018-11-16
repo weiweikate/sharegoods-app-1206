@@ -57,7 +57,7 @@ SINGLETON_FOR_CLASS(JRCacheManager)
   } else { // 文件
     size = [mgr attributesOfItemAtPath:path error:nil].fileSize;
   }
-  size = size/1024;//kb
+  size = size;//kb
   return size;
 }
 -(void)getAllCachesWithFinshBlock:(getMomerySizeBlock)finshBlock{

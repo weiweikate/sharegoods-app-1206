@@ -75,8 +75,7 @@ export default class ShopCartPage extends BasePage {
         this.didBlurSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                if (this.isUnFishFirstRender &&
-                    shopCartStore.data.length > 0 &&
+                if (shopCartStore.data.length > 0 &&
                     this.contentList) {
                     this.contentList.scrollTo({ x: 0, y: 1, animated: true });
                     this.isUnFishFirstRender = false;
