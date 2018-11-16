@@ -3,8 +3,15 @@
  */
 import React, { Component } from 'react';
 import {
-    StyleSheet, View, ImageBackground,
-    Text, TouchableOpacity, Image, Modal, TextInput, FlatList
+    FlatList,
+    Image,
+    ImageBackground,
+    Modal,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
 // import RefreshList from './../../../components/ui/RefreshList';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -23,7 +30,7 @@ import UI from '../../../utils/bridge';
 import { observer } from 'mobx-react';
 import StringUtils from '../../../utils/StringUtils';
 import user from '../../../model/user';
-import { UIText, UIImage } from '../../../components/ui';
+import { UIImage, UIText } from '../../../components/ui';
 import DesignRule from 'DesignRule';
 import { NavigationActions } from 'react-navigation';
 import MineApi from '../api/MineApi';
@@ -41,12 +48,14 @@ export default class MyCouponsItems extends Component {
             isEmpty: true,
             explainList: [],
             showDialogModal: false,
-            tokenCoinNum: this.props.justOne
+            tokenCoinNum: this.props.justOne,
+            isFirstLoad: true
         };
         this.currentPage = 0;
         this.isLoadMore = false;
         this.isEnd = false;
-        setTimeout(()=>this.onRefresh(),500);
+        // setTimeout(() => this.onRefresh(), 10);
+        this.onRefresh();
     }
 
     fmtDate(obj) {
@@ -311,12 +320,13 @@ export default class MyCouponsItems extends Component {
                     data={this.state.viewData}
                     keyExtractor={this._keyExtractor}
                     renderItem={this.renderItem}
-                    onEndReachedThreshold={0.1}
-                    onEndReached={this.onLoadMore}
+                    onEndReachedThreshold={10}
+                    onEndReached={() => this.onLoadMore()}
                     ListEmptyComponent={this._renderEmptyView}
                     refreshing={false}
                     onRefresh={this.onRefresh}
                     showsVerticalScrollIndicator={false}
+                    initialNumToRender={5}
                 />
                 {this.renderDialogModal()}
                 {this.props.isgiveup ?
@@ -427,9 +437,7 @@ export default class MyCouponsItems extends Component {
 
     // 1表示刷新，2代表加载
     getDataFromNetwork = () => {
-
         let status = this.state.pageStatus;
-
         if (this.props.fromOrder && status == 0) {
             let arr = [];
             // ProductPriceIdPair=this.props.productIds;
@@ -443,6 +451,9 @@ export default class MyCouponsItems extends Component {
             });
             this.isLoadMore = true;
             API.listAvailable({ page: this.currentPage, pageSize: 10, productPriceIds: arr }).then(res => {
+                this.setState({
+                    isFirstLoad: false
+                });
                 let data = res.data || {};
                 let dataList = data.data || [];
                 console.log('dataList');
@@ -454,6 +465,9 @@ export default class MyCouponsItems extends Component {
                 }
 
             }).catch(result => {
+                this.setState({
+                    isFirstLoad: false
+                });
                 this.isLoadMore = false;
                 UI.$toast(result.msg);
             });
@@ -479,11 +493,14 @@ export default class MyCouponsItems extends Component {
                 status,
                 pageSize: 10
             }).then(result => {
+                this.setState({
+                    isFirstLoad: false
+                });
                 let data = result.data || {};
                 let dataList = data.data || [];
                 this.isLoadMore = false;
                 this.parseData(dataList);
-                if (dataList.length === 0 ) {
+                if (dataList.length === 0) {
                     this.isEnd = true;
                     return;
                 }
@@ -493,6 +510,9 @@ export default class MyCouponsItems extends Component {
                 // }
 
             }).catch(result => {
+                this.setState({
+                    isFirstLoad: false
+                });
                 this.isLoadMore = false;
                 UI.$toast(result.msg);
             });
@@ -512,24 +532,24 @@ export default class MyCouponsItems extends Component {
 
     onRefresh = () => {
         console.log('refresh');
-           this.isEnd=false;
-            this.currentPage = 1;
-            this.getUserInfo();
-            this.getDataFromNetwork();
-
+        this.isEnd = false;
+        this.currentPage = 1;
+        this.getUserInfo();
+        this.getDataFromNetwork();
     };
-    getUserInfo(){
+
+    getUserInfo() {
         MineApi.getUser().then(res => {
-                let data = res.data;
-                user.saveUserInfo(data);
+            let data = res.data;
+            user.saveUserInfo(data);
         }).catch(err => {
             console.log(err);
         });
     }
 
     onLoadMore = () => {
-        console.log('onLoadMore',this.isEnd);
-        if (!this.isLoadMore&&!this.isEnd) {
+        console.log('onLoadMore', this.isEnd);
+        if (!this.isLoadMore && !this.isEnd && !this.state.isFirstLoad) {
             this.currentPage++;
             this.getDataFromNetwork();
         }

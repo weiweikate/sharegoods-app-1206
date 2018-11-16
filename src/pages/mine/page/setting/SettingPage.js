@@ -23,6 +23,7 @@ import CommModal from 'CommModal';
 import DesignRule from 'DesignRule';
 import QYChatUtil from '../helper/QYChatModel';
 import res from '../../res';
+import { getSizeFromat } from '../../../../utils/FileSizeFormate';
 
 /**
  * @author luoyongming
@@ -45,7 +46,6 @@ class SettingPage extends BasePage {
             phoneError: false,
             passwordError: false,
             isShowLoginOutModal: false,
-            memorySize: 0,
             updateData: {},
             showUpdate: false,
             version: DeviceInfo.getVersion(),
@@ -62,7 +62,7 @@ class SettingPage extends BasePage {
 
     //CachesModule
     componentDidMount() {
-        // this.getAllCachesSize();
+        this.getAllCachesSize();
         if (Platform.OS === 'android') {
             bridge.isPushStopped((value) => {
                 this.setState({
@@ -75,7 +75,6 @@ class SettingPage extends BasePage {
 
     //**********************************ViewPart******************************************
     _render = () => {
-        const desc = !ScreenUtils.isIOS ? this.state.memorySize : ((this.state.memorySize / 1024 / 1024) > 1) ? `${(this.state.memorySize / 1024 / 1024).toFixed(2)}G` : (((this.state.memorySize / 1024) > 1) ? `${(this.state.memorySize / 1024).toFixed(2)}M` : `${(this.state.memorySize).toFixed(2)}kb`);
         return (
             <View style={styles.container}>
 
@@ -114,7 +113,7 @@ class SettingPage extends BasePage {
                         </View>}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.clearAllCaches()}>
                         <UIText value={'清除缓存'} style={styles.blackText}/>
-                        <UIText value={desc}
+                        <UIText value={this.state.memorySize}
                                 style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
@@ -162,7 +161,6 @@ class SettingPage extends BasePage {
                         if (ScreenUtils.isIOS) {
                             CachesModule.clearCaches(() => {
                                 this.getAllCachesSize();
-                                // 清楚七鱼缓存
                             });
                         } else {
                             bridge.clearAllCache(() => {
@@ -174,17 +172,20 @@ class SettingPage extends BasePage {
             ]
         );
     };
+
     getAllCachesSize = () => {
         if (ScreenUtils.isIOS) {
             CachesModule && CachesModule.getCachesSize((allSize) => {
+                let temp = getSizeFromat(allSize);
                 this.setState({
-                    memorySize: allSize
+                    memorySize: temp
                 });
             });
         } else {
             bridge.getTotalCacheSize((allSize) => {
+                let temp = getSizeFromat(allSize);
                 this.setState({
-                    memorySize: allSize
+                    memorySize: temp
                 });
             });
         }

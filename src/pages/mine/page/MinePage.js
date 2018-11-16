@@ -94,12 +94,8 @@ export default class MinePage extends BasePage {
             }
         };
     };
-    timeoutCallBack = () => {
-        this.$loadingDismiss();
-    };
 
     componentDidMount() {
-        userOrderNum.getUserOrderNum();
         this.refresh();
     }
 
@@ -126,7 +122,7 @@ export default class MinePage extends BasePage {
 
     refresh = () => {
         userOrderNum.getUserOrderNum();
-        this.$loadingShow('加载中...', { timeout: 1, timeoutCallBack: () => this.timeoutCallBack });
+        this.$loadingShow('加载中...', 1000);
         MineApi.getUser().then(res => {
             this.$loadingDismiss();
             if (res.code == 10000) {
