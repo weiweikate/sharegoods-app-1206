@@ -14,18 +14,25 @@ import msgBlack from './res/message_black.png';
 import msgWhite from './res/message_white.png';
 import UIText from '../../components/ui/UIText';
 import DesignRule from 'DesignRule';
-
+import User from '../../model/user';
 
 export default ({ navigation, whiteIcon }) =>
     <View style={styles.navBar}>
         <View style={styles.navContent}>
             <Image source={whiteIcon ? logoWhite : logoRed} style={styles.logo}/>
             <TouchableOpacity style={[styles.searchBox, { backgroundColor: whiteIcon ? 'white' : '#E4E5E6' }]}
-                              onPress={() => navigation.navigate('home/search/SearchPage')}>
+                              onPress={() => {
+                                  navigation.navigate('home/search/SearchPage');
+                              }}>
                 <Image source={searchImg} style={styles.searchIcon}/>
                 <UIText style={styles.inputText} value={'请输入关键词搜索'}/>
             </TouchableOpacity>
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('message/MessageCenterPage')}>
+            <TouchableWithoutFeedback onPress={() => {
+                if (!User.isLogin) {
+                    navigation.navigate('login/login/LoginPage');
+                    return;
+                }
+                navigation.navigate('message/MessageCenterPage')}}>
                 <Image source={whiteIcon ? msgWhite : msgBlack} style={styles.scanIcon}/>
             </TouchableWithoutFeedback>
         </View>

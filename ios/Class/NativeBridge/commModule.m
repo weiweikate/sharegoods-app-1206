@@ -164,9 +164,14 @@ RCT_EXPORT_METHOD(toast:(NSString*)msg){
 }
 
 //RN显示网络加载
-RCT_EXPORT_METHOD(showLoadingDialog){
+RCT_EXPORT_METHOD(showLoadingDialog:(NSString *)msg){
     dispatch_async(dispatch_get_main_queue(), ^{
-      [JRLoadingAndToastTool showLoadingText:@"提交中"];
+      if (msg) {
+         [JRLoadingAndToastTool showLoadingText:msg];
+      }else{
+         [JRLoadingAndToastTool showLoadingText:@"提交中"];
+      }
+     
     });
 }
 

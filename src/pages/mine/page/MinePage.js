@@ -94,12 +94,8 @@ export default class MinePage extends BasePage {
             }
         };
     };
-    timeoutCallBack = () => {
-        this.$loadingDismiss();
-    };
 
     componentDidMount() {
-        userOrderNum.getUserOrderNum();
         this.refresh();
     }
 
@@ -126,7 +122,7 @@ export default class MinePage extends BasePage {
 
     refresh = () => {
         userOrderNum.getUserOrderNum();
-        this.$loadingShow('加载中...', { timeout: 1, timeoutCallBack: () => this.timeoutCallBack });
+        this.$loadingShow('加载中...', 1000);
         MineApi.getUser().then(res => {
             this.$loadingDismiss();
             if (res.code == 10000) {
@@ -679,7 +675,7 @@ export default class MinePage extends BasePage {
 
     renderMenu = () => {
         let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_notificate, mine_icon_mission, mine_icon_discollect];
-        let leftText = ['邀请好友', '优惠券', '我的数据', '收藏店铺', '帮助与客服', '地址', '我的推广', '我的任务', '秀场收藏'];
+        let leftText = ['邀请好友', '优惠券', '我的晋升', '收藏店铺', '帮助与客服', '地址', '我的推广', '我的任务', '秀场收藏'];
 
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {

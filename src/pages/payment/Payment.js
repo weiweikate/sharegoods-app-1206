@@ -67,6 +67,9 @@ export class Payment {
             this.selectedTypes = data
         }
     }
+    @action clearPaymentType = () => {
+        this.selectedTypes = null
+    }
     //余额支付
     @action balancePay = flow(function * (params, ref) {
         try {

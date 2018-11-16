@@ -44,7 +44,12 @@ class CommModel {
             this.phoneNumber = '';
             return;
         }
-        this.phoneNumber = phoneNmber;
+
+        if( 0 <= parseInt(phoneNmber.charAt(phoneNmber.length - 1)) &&
+            parseInt(phoneNmber.charAt(phoneNmber.length - 1)) <= 9 )
+        {
+            this.phoneNumber = phoneNmber;
+        }
     }
     @action
     savePassword(password) {
@@ -93,9 +98,10 @@ export default class CommRegistView extends Component {
                     <View style={{
                         marginLeft: 30,
                         marginRight: 20,
-                        marginTop: 50,
+                        height:48,
                         flexDirection: 'row',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        paddingTop:5
                     }}>
                         <Text style={{ marginRight: 20 }}>
                             手机号
@@ -107,15 +113,15 @@ export default class CommRegistView extends Component {
                                 this.registModel.savePhoneNumber(text);
                             }}
                             placeholder='请输入手机号'
-                            underlineColorAndroid={'transparent'}
-                            keyboardType='default'
+                            underlineColorAndroid= 'transparent'
+                            keyboardType='numeric'
                         />
 
                     </View>
-                    <CommSpaceLine style={[Styles.lineStyle, { marginLeft: 30, marginRight: 30 }]}/>
+                    <CommSpaceLine style={[Styles.lineStyle, { marginLeft: 30, marginRight: 30}]}/>
 
-                    <View style={{ marginTop: 20, height: 40, marginLeft: 30, marginRight: 30 }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <View style={{ height: 50, marginLeft: 30, marginRight: 30 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' ,flex:1}}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={{ marginRight: 20 }}>
                                     验证码
@@ -147,7 +153,7 @@ export default class CommRegistView extends Component {
 
                 {/*下部输入框*/}
                 <View style={{
-                    marginTop: 30,
+                    marginTop: 10,
                     flexDirection: 'row',
                     backgroundColor: 'white',
                     height: 50,

@@ -34,7 +34,9 @@ const { px2dp } = ScreenUtils;
 import user from '../../../model/user';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import StringUtils from '../../../utils/StringUtils';
-import DateUtils from '../../../utils/DateUtils';
+import ConfirmAlert from '../../../components/ui/ConfirmAlert';
+import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
+import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
 
 /**
  * @author chenyangjun
@@ -62,24 +64,53 @@ export default class ProductDetailPage extends BasePage {
             activityType: 0,//请求到数据才能知道活动类型
             canGetCoupon: false,
             couponData: null,
-            hasGetCoupon: false
+            hasGetCoupon: false,
+
+            loadingState: PageLoadingState.loading,
+            netFailedInfo: {}
         };
         this.couponId = null;
     }
 
+    _getPageStateOptions = () => {
+        const { status } = this.state.data;
+        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)
+        return {
+            loadingState: this.state.loadingState,
+            netFailedProps: {
+                buttonText: status === 0 ? '去首页' : '重新加载',
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: status === 0 ? (() => this.$navigateReset()) : (() => this._getProductDetail())
+            }
+        };
+    };
+
     componentDidMount() {
-        this.loadPageData();
+        this.getPromotion();
     }
 
-    loadPageData() {
-        this._getProductDetail();
-        this.getPromotion();
+    componentWillMount() {
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                console.log('willFocus', state);
+                if (state && state.routeName === 'home/product/ProductDetailPage') {
+                    this._getProductDetail();
+                }
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
     getPromotion = async () => {
         try {
             const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME);
-            if (value == null || !DateUtils.isToday(new Date(parseInt(value)))) {
+            var currStr = new Date().getTime() + '';
+            if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
                 if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
                     HomeAPI.getReceivePackage({ type: 2 }).then((data) => {
                         if (!EmptyUtils.isEmpty(data.data)) {
@@ -89,7 +120,7 @@ export default class ProductDetailPage extends BasePage {
                                 couponData: data.data
                             });
                             this.couponId = data.data.id;
-                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, Date.parse(new Date()).toString());
+                            AsyncStorage.setItem(LASTSHOWPROMOTIONTIME, currStr);
                         }
                     });
                 }
@@ -121,26 +152,21 @@ export default class ProductDetailPage extends BasePage {
 
     //数据
     _getProductDetail = () => {
-        this.$loadingShow();
         if (this.params.productId) {
             HomeAPI.getProductDetail({
                 id: this.params.productId
             }).then((data) => {
-                this.$loadingDismiss();
                 this._savaData(data.data || {});
             }).catch((error) => {
-                this.$loadingDismiss();
-                this.$toastShow(error.msg);
+                this._error(error);
             });
         } else {
             HomeAPI.getProductDetailByCode({
                 code: this.params.productCode
             }).then((data) => {
-                this.$loadingDismiss();
                 this._savaData(data.data || {});
             }).catch((error) => {
-                this.$loadingDismiss();
-                this.$toastShow(error.msg);
+                this._error(error);
             });
         }
     };
@@ -176,10 +202,27 @@ export default class ProductDetailPage extends BasePage {
     };
 
     _savaData = (data) => {
+        let { status } = data;
+        //产品规格状0 ：产品删除 1：产品上架 2：产品下架(包含未上架的所有状态，出去删除状态)
+        if (status === 0) {
+            this.setState({
+                loadingState: PageLoadingState.fail,
+                netFailedInfo: { msg: `该商品走丢了\n去看看别的商品吧` }
+            });
+        } else {
+            this.setState({
+                loadingState: PageLoadingState.success,
+                data: data
+            }, () => {
+                this._getQueryByProductId();
+            });
+        }
+    };
+
+    _error = (error) => {
         this.setState({
-            data: data
-        }, () => {
-            this._getQueryByProductId();
+            loadingState: PageLoadingState.fail,
+            netFailedInfo: error
         });
     };
 
@@ -196,14 +239,25 @@ export default class ProductDetailPage extends BasePage {
     _bottomViewAction = (type) => {
         switch (type) {
             case 'jlj':
-                this.shareModal.open();
-                break;
-            case 'gwc':
-            case 'buy':
                 if (!user.isLogin) {
-                    this.props.navigation.navigate('login/login/LoginPage');
+                    this.ConfirmAlert.show({
+                        title: '登录后分享才能赚取赏金', rightText: '去登录', confirmCallBack: () => {
+                            this.$navigate('login/login/LoginPage');
+                        }, closeCallBack: () => {
+                            this.shareModal.open();
+                        }
+                    });
+                } else {
+                    this.shareModal.open();
+                }
+                break;
+            case 'buy': {
+                if (!user.isLogin) {
+                    this.$navigate('login/login/LoginPage');
                     return;
                 }
+            }
+            case 'gwc':
                 this.state.goType = type;
                 this.SelectionPage.show(this.state.data, this._selectionViewConfirm);
                 break;
@@ -331,8 +385,10 @@ export default class ProductDetailPage extends BasePage {
     };
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
-        if (Y < 100) {
-            this.st = Y * 0.01;
+        if (Y < 44) {
+            this.st = 0;
+        } else if (Y < ScreenUtils.autoSizeWidth(377)) {
+            this.st = (Y - 44) / (ScreenUtils.autoSizeWidth(377) - 44);
         } else {
             this.st = 1;
         }
@@ -346,10 +402,10 @@ export default class ProductDetailPage extends BasePage {
     _renderCouponModal = () => {
 
         let view = (
-            <TouchableWithoutFeedback onPress={()=>{
+            <TouchableWithoutFeedback onPress={() => {
                 this.setState({
-                    canGetCoupon:false
-                })
+                    canGetCoupon: false
+                });
                 this.$navigate('mine/userInformation/MyCashAccountPage', { availableBalance: user.availableBalance });
             }}>
                 <View style={{ position: 'absolute', bottom: 18, left: 0, right: 0, alignItems: 'center' }}>
@@ -391,7 +447,7 @@ export default class ProductDetailPage extends BasePage {
                         </Text>
 
                         <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(60), marginTop: 20 }}>
-                            {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.formatMoneyString(this.state.couponData.price,false)}
+                            {EmptyUtils.isEmpty(this.state.couponData) ? null : StringUtils.formatMoneyString(this.state.couponData.price, false)}
                             <Text style={{ includeFontPadding: false, color: 'white', fontSize: px2dp(15) }}>
                                 元
                             </Text>
@@ -423,74 +479,87 @@ export default class ProductDetailPage extends BasePage {
 
 
     _render() {
-        const { price = 0, product = {} ,shareMoney} = this.state.data || {};
-        const { name = '', imgUrl } = product;
-
+        this._renderContent();
+        const { status } = this.state.data;
+        let dic = this._getPageStateOptions();
         return (
             <View style={styles.container}>
-                <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
-                <DetailNavView ref={(e) => this.DetailNavView = e}
-                               source = {imgUrl}
-                               navBack={() => {
-                                   this.$navigateBack();
-                               }}
-                               navRLeft={() => {
-                                   this.$navigate('shopCart/ShopCart', {
-                                       hiddeLeft: false
-                                   });
-                               }}
-                               navRRight={() => {
-                                   this.DetailNavShowModal.show((item) => {
-                                       switch (item.index) {
-                                           case 0:
-                                               this.$navigate('message/MessageCenterPage');
-                                               break;
-                                           case 1:
-                                               this.$navigateReset();
-                                               break;
-                                           case 2:
-                                               this.shareModal.open();
-                                               break;
-                                       }
-                                   });
-                               }}/>
-
-                <SectionList onScroll={this._onScroll}
-                             ListHeaderComponent={this._renderListHeader}
-                             renderSectionHeader={this._renderSectionHeader}
-                             renderItem={this._renderItem}
-                             keyExtractor={(item, index) => `${index}`}
-                             sections={[{ data: [{}] }]}
-                             scrollEventThrottle={10}/>
-                <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney = {shareMoney}/>
-                <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
-                <CommShareModal ref={(ref) => this.shareModal = ref}
-                                type={'Image'}
-                                imageJson={{
-                                    imageUrlStr: imgUrl,
-                                    titleStr: `${name}`,
-                                    priceStr: `￥${price}`,
-                                    QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`
-                                }}
-                                webJson={{
-                                    title: `${name}`,
-                                    dec: '商品详情',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`,
-                                    thumImage: imgUrl
-                                }}
-                                miniProgramJson={{
-                                    title: `${name}`,
-                                    dec: '商品详情',
-                                    thumImage: 'logo.png',
-                                    hdImageURL: imgUrl,
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}`,
-                                    miniProgramPath: `/pages/index/index?type=99&id=${product.id}`
-                                }}/>
-                <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
-                {this._renderCouponModal()}
+                {dic.loadingState === PageLoadingState.fail ?
+                    <NavigatorBar title={status === 0 ? '暂无商品' : ''} leftPressed={() => {
+                        this.$navigateBack();
+                    }}/> : null}
+                {renderViewByLoadingState(this._getPageStateOptions(), this._renderContent)}
             </View>
         );
     }
+
+    _renderContent = () => {
+        const { price = 0, product = {}, shareMoney, status } = this.state.data || {};
+        let { name = '', imgUrl, buyLimit, leftBuyNum } = product;
+        return <View style={styles.container}>
+            <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
+            <DetailNavView ref={(e) => this.DetailNavView = e}
+                           source={imgUrl}
+                           navBack={() => {
+                               this.$navigateBack();
+                           }}
+                           navRLeft={() => {
+                               this.$navigate('shopCart/ShopCart', {
+                                   hiddeLeft: false
+                               });
+                           }}
+                           navRRight={() => {
+                               this.DetailNavShowModal.show((item) => {
+                                   switch (item.index) {
+                                       case 0:
+                                           this.$navigate('message/MessageCenterPage');
+                                           break;
+                                       case 1:
+                                           this.$navigateReset();
+                                           break;
+                                       case 2:
+                                           this.shareModal.open();
+                                           break;
+                                   }
+                               });
+                           }}/>
+            <SectionList onScroll={this._onScroll}
+                         ListHeaderComponent={this._renderListHeader}
+                         renderSectionHeader={this._renderSectionHeader}
+                         renderItem={this._renderItem}
+                         keyExtractor={(item, index) => `${index}`}
+                         sections={[{ data: [{}] }]}
+                         scrollEventThrottle={10}/>
+            <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney={shareMoney} status={status}
+                              buyLimit={buyLimit} leftBuyNum={leftBuyNum}/>
+            <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
+            <CommShareModal ref={(ref) => this.shareModal = ref}
+                            type={'Image'}
+                            imageJson={{
+                                imageUrlStr: imgUrl,
+                                titleStr: `${name}`,
+                                priceStr: `￥${price}`,
+                                QRCodeStr: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}?upuserid=${user.id || ''}`
+                            }}
+                            webJson={{
+                                title: `${name}`,
+                                dec: '商品详情',
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}?upuserid=${user.id || ''}`,
+                                thumImage: imgUrl
+                            }}
+                            miniProgramJson={{
+                                title: `${name}`,
+                                dec: '商品详情',
+                                thumImage: 'logo.png',
+                                hdImageURL: imgUrl,
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/product/99/${product.id}?upuserid=${user.id || ''}`,
+                                miniProgramPath: `/pages/index/index?type=99&id=${product.id}&inviteId=${user.id || ''}`
+                            }}/>
+            <DetailNavShowModal ref={(ref) => this.DetailNavShowModal = ref}/>
+            <ConfirmAlert ref={(ref) => this.ConfirmAlert = ref}/>
+            {this._renderCouponModal()}
+        </View>;
+    };
 
 }
 
@@ -507,6 +576,6 @@ const styles = StyleSheet.create({
         right: 0,
         zIndex: 2,
         opacity: 0
-    },
+    }
 });
 

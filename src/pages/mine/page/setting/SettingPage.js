@@ -23,6 +23,7 @@ import CommModal from 'CommModal';
 import DesignRule from 'DesignRule';
 import QYChatUtil from '../helper/QYChatModel';
 import res from '../../res';
+import { getSizeFromat } from '../../../../utils/FileSizeFormate';
 
 /**
  * @author luoyongming
@@ -45,11 +46,11 @@ class SettingPage extends BasePage {
             phoneError: false,
             passwordError: false,
             isShowLoginOutModal: false,
-            memorySize: 0,
             updateData: {},
             showUpdate: false,
             version: DeviceInfo.getVersion(),
-            updateContent: ''
+            updateContent: '',
+            value: true
         };
     }
 
@@ -60,14 +61,20 @@ class SettingPage extends BasePage {
     };
 
     //CachesModule
-    _componentDidMount() {
+    componentDidMount() {
         this.getAllCachesSize();
+        if (Platform.OS === 'android') {
+            bridge.isPushStopped((value) => {
+                this.setState({
+                    value: !value
+                });
+            });
+        }
     }
 
 
     //**********************************ViewPart******************************************
     _render = () => {
-        const desc = !ScreenUtils.isIOS ? this.state.memorySize : ((this.state.memorySize / 1024 / 1024) > 1) ? `${(this.state.memorySize / 1024 / 1024).toFixed(2)}G` : (((this.state.memorySize / 1024) > 1) ? `${(this.state.memorySize / 1024).toFixed(2)}M` : `${(this.state.memorySize).toFixed(2)}kb`);
         return (
             <View style={styles.container}>
 
@@ -75,37 +82,44 @@ class SettingPage extends BasePage {
                 <View style={{ backgroundColor: 'white' }}>
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAccountSettingPage()}>
                         <UIText value={'账号与安全'} style={styles.blackText}/>
-                        <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                        <Image source={arrow_right}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumpToAddressManagePage()}>
                         <UIText value={'收货地址管理'} style={styles.blackText}/>
-                        <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                        <Image source={arrow_right}/>
                     </TouchableOpacity>
                     {this.renderLine()}
-                    <TouchableOpacity style={styles.viewStyle}>
-                        <UIText value={'消息推送'} style={styles.blackText}/>
-                        <Switch value={this.state.value}
-                                onTintColor={'#00D914'}
-                                thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
-                                tintColor={DesignRule.textColor_hint}
-                                onValueChange={(value) => {
-                                    this.setState({
-                                        value: value,
-                                        changeTxt: value ? 'switch 打开了' : 'switch 关闭了'
-                                    });
-                                }}/>
-                    </TouchableOpacity>
-                    {this.renderLine()}
+                    {Platform.OS === 'ios' ? null :
+                        <View>
+                            <TouchableOpacity style={styles.viewStyle}>
+                                <UIText value={'消息推送'} style={styles.blackText}/>
+                                <Switch value={this.state.value}
+                                        onTintColor={'#00D914'}
+                                        thumbTintColor={Platform.OS === 'android' ? 'white' : ''}
+                                        tintColor={DesignRule.textColor_hint}
+                                        onValueChange={(value) => {
+                                            this.setState({
+                                                value: value
+                                            });
+                                            if (value) {
+                                                bridge.resumePush();
+                                            } else {
+                                                bridge.stopPush();
+                                            }
+                                        }}/>
+                            </TouchableOpacity>
+                            {this.renderLine()}
+                        </View>}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.clearAllCaches()}>
                         <UIText value={'清除缓存'} style={styles.blackText}/>
-                        <UIText value={desc}
+                        <UIText value={this.state.memorySize}
                                 style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle} onPress={() => this.jumptToAboutUsPage()}>
                         <UIText value={'关于我们'} style={styles.blackText}/>
-                        <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
+                        <Image source={arrow_right}/>
                     </TouchableOpacity>
                     {this.renderLine()}
                     <TouchableOpacity style={styles.viewStyle}
@@ -113,7 +127,6 @@ class SettingPage extends BasePage {
                         <UIText value={'版本检测'} style={[styles.blackText, { flex: 1 }]}/>
                         <UIText value={'当前版本v' + this.state.version}
                                 style={{ fontSize: 13, color: DesignRule.textColor_secondTitle }}/>
-                        <Image source={arrow_right} style={{ width: 12, height: 20 }} resizeMode={'contain'}/>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={{
@@ -148,7 +161,6 @@ class SettingPage extends BasePage {
                         if (ScreenUtils.isIOS) {
                             CachesModule.clearCaches(() => {
                                 this.getAllCachesSize();
-                                // 清楚七鱼缓存
                             });
                         } else {
                             bridge.clearAllCache(() => {
@@ -160,17 +172,20 @@ class SettingPage extends BasePage {
             ]
         );
     };
+
     getAllCachesSize = () => {
         if (ScreenUtils.isIOS) {
             CachesModule && CachesModule.getCachesSize((allSize) => {
+                let temp = getSizeFromat(allSize);
                 this.setState({
-                    memorySize: allSize
+                    memorySize: temp
                 });
             });
         } else {
             bridge.getTotalCacheSize((allSize) => {
+                let temp = getSizeFromat(allSize);
                 this.setState({
-                    memorySize: allSize
+                    memorySize: temp
                 });
             });
         }
@@ -322,7 +337,7 @@ class SettingPage extends BasePage {
         });
         if (Platform.OS === 'ios') {
             // 前往appstore
-            Linking.openURL('https://itunes.apple.com/cn/app/id1439275146')
+            Linking.openURL('https://itunes.apple.com/cn/app/id1439275146');
         } else {
             // 更新app
             NativeModules.commModule.updateable(JSON.stringify(this.state.updateData), false);

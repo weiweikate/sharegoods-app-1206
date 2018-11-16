@@ -7,7 +7,7 @@ import DesignRule from 'DesignRule'
 
 const Goods = ({goods, press}) => <TouchableOpacity style={styles.container} onPress={()=> press && press()}>
     <View style={styles.image}>
-        <Image style={styles.image} source={{uri: goods.imgUrl}}/>
+        <Image style={styles.image} source={{uri: goods.imgUrl ? goods.imgUrl : ''}}/>
         <View style={styles.titleView}>
             <Text style={styles.title} numberOfLines={1}>{goods.title}</Text>
         </View>
@@ -91,7 +91,6 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(7)
     },
     cell: {
-        backgroundColor: '#fff',
         height: px2dp(273),
         flexDirection: 'row',
         marginRight: px2dp(15),

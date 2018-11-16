@@ -281,7 +281,14 @@ public class MainRNActivity extends ReactActivity {
         if (event.isShow()) {
             if (null == mLoadingDialog) {
                 mLoadingDialog = new LoadingDialog(this, R.style.LoadingDialog);
+                mLoadingDialog.setCancelable(false);
             }
+
+            if(!TextUtils.isEmpty(event.getMsg())){
+                mLoadingDialog.setMessage(event.getMsg());
+            }
+
+
             if (isShowLoadingDialog) {
                 return;
             } else {

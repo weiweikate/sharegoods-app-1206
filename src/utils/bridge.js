@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import ScreenUtils from './ScreenUtils';
 import StringUtils from './StringUtils';
+import TimerMixin from 'react-timer-mixin'
 
 export default {
     $toast(msg) {
@@ -36,13 +37,21 @@ export default {
      * @param timeout   加载中最长展示时间(提示语展示时间)。单位秒。默认为0秒，无限loading。
      * Prompt:          loading是全局的，尽量慎用，在合适的场景中使用。
      */
-    showLoading(message, timeout) {
-        NativeModules.commModule.showLoadingDialog();
+    showLoading(message, timeout=0 , callback=()=>{}) {
+        NativeModules.commModule.showLoadingDialog(message);
+        if(timeout > 0){
+            TimerMixin.setTimeout(() => {
+                // 检测版本更新
+                NativeModules.commModule.hideLoadingDialog();
+                callback();
+            }, timeout);
+        }
     },
     /**
      * hiddenLoading  隐藏全局loading
      */
-    hiddenLoading() {
+    hiddenLoading(callback=()=>{}) {
+        callback();
         NativeModules.commModule.hideLoadingDialog();
     },
     /**
@@ -121,8 +130,18 @@ export default {
         NativeModules.QRCodeModule.scanQRCode(onSuccess, onError);
     },
 
-    getTotalCacheSize(callback = () => {
-    }) {
+    // getTotalCacheSize(callback = () => {
+    // }) {
+    //     NativeModules.commModule.getTotalCacheSize(callback);
+    // },
+//
+//     CachesModule && CachesModule.getCachesSize((allSize) => {
+//     let temp = getSizeFromat(allSize);
+//     this.setState({
+//         memorySize: temp
+//     });
+// });
+    getTotalCacheSize(callback=()=>{}) {
         NativeModules.commModule.getTotalCacheSize(callback);
     },
 
@@ -131,6 +150,10 @@ export default {
         NativeModules.commModule.clearAllCache(callback);
     },
 
-    removeLaunch : () =>  NativeModules.commModule.removeLaunch()
+    removeLaunch: () => NativeModules.commModule.removeLaunch(),
 
+    stopPush: () => NativeModules.commModule.stopPush(),
+    resumePush: () => NativeModules.commModule.resumePush(),
+    isPushStopped: (callback = () => {
+    }) => NativeModules.commModule.isPushStopped(callback)
 };

@@ -75,12 +75,12 @@ export default class ShopCartPage extends BasePage {
         this.didBlurSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                if (this.isUnFishFirstRender &&
-                    shopCartStore.data.length > 0 &&
+                if (shopCartStore.data.length > 0 &&
                     this.contentList) {
                     this.contentList.scrollTo({ x: 0, y: 1, animated: true });
                     this.isUnFishFirstRender = false;
                 }
+                shopCartCacheTool.getShopCartGoodsListData();
             }
         );
     }
@@ -307,24 +307,33 @@ export default class ShopCartPage extends BasePage {
                         {
                             activityString[itemData.activityType]
                                 ?
-                                <UIText
-                                    value={
-                                        activityString[itemData.activityType]
-                                    }
-                                    style={
-                                        {
-                                            position: 'absolute',
-                                            padding: 2,
-                                            left: 140,
-                                            top: 20,
-                                            fontSize: 10,
-                                            color: DesignRule.mainColor,
-                                            borderWidth: 1,
-                                            borderRadius: 4,
-                                            borderColor: DesignRule.mainColor
+                                <View
+                                style={{
+                                    position: 'absolute',
+                                    left: 140,
+                                    top: 20,
+                                    justifyContent:'center',
+                                    alignItems:'center',
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    borderColor: DesignRule.mainColor,
+                                    // borderColor:'black',
+                                    width:16,
+                                    height:16
+                                }}
+                                >
+                                    <UIText
+                                        value={
+                                            activityString[itemData.activityType]
                                         }
-                                    }
-                                />
+                                        style={
+                                            {
+                                                fontSize: 10,
+                                                color: DesignRule.mainColor,
+                                            }
+                                        }
+                                    />
+                                </View>
                                 : null
                         }
 

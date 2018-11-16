@@ -18,7 +18,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <SandBoxPreviewTool/SuspensionButton.h>
 #import <RCTHotUpdate.h>
-#import <React/RCTLinkingManager.h>
+
 
 
 @implementation AppDelegate (ConfigVC)
@@ -66,11 +66,12 @@
   }];
 }
 
-// Add this above the `@end`:
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-  return [RCTLinkingManager application:application openURL:url
-                      sourceApplication:sourceApplication annotation:annotation];
-}
+//// Add this above the `@end`:
+//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+//  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+//{
+//  
+//  
+
+//}
 @end

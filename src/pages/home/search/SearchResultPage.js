@@ -47,7 +47,7 @@ export default class SearchResultPage extends BasePage {
             loadingMore: false,//是否显示加载更多的菊花
             loadingMoreError: null,//加载更多是否报错
 
-            loadingState: PageLoadingState.loading,
+            loadingState: PageLoadingState.empty,
             netFailedInfo: {},
 
             showTop: false,
@@ -130,7 +130,7 @@ export default class SearchResultPage extends BasePage {
             let dataArr = data.data || [];
             this.setState({
                 refreshing: false,
-                noMore: dataArr.length < 10,
+                noMore: data.isMore === 0,
 
                 loadingState: dataArr.length === 0 ? PageLoadingState.empty : PageLoadingState.success,
                 productList: dataArr
@@ -158,7 +158,7 @@ export default class SearchResultPage extends BasePage {
                 data = data.data || {};
                 let dataArr = data.data || [];
                 this.setState({
-                    noMore: dataArr.length < 10,
+                    noMore: data.isMore === 0,
                     loadingMore: false,
                     loadingMoreError: null,
                     productList: this.state.productList.concat(dataArr || [])
@@ -244,6 +244,10 @@ export default class SearchResultPage extends BasePage {
 
     //跳转
     _clickItemAction = (text) => {
+        if (StringUtils.isEmpty(text)){
+            this.$toastShow('搜索内容不能为空')
+            return;
+        }
         this.params.categoryId = undefined;
         this.params.hotWordId = undefined;
         this.params.keywords = text;

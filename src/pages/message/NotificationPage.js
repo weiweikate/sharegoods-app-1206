@@ -93,7 +93,7 @@ export default class NotificationPage extends BasePage {
 
     loadPageData =()=> {
         Toast.showLoading()
-        MessageApi.queryNotice({ page: 1, pageSize: 15,type:200 }).then(res => {
+        MessageApi.queryNotice({ page: 1, pageSize: 10,type:200 }).then(res => {
             DeviceEventEmitter.emit('contentViewed');
             Toast.hiddenLoading()
             if (StringUtils.isNoEmpty(res.data.data)) {
@@ -129,7 +129,7 @@ export default class NotificationPage extends BasePage {
     };
 
     getDataFromNetwork =()=> {
-        MessageApi.queryNotice({ page: this.currentPage, pageSize: 15 ,type:200}).then(res => {
+        MessageApi.queryNotice({ page: this.currentPage, pageSize: 10 ,type:200}).then(res => {
             if (res.ok && typeof res.data === 'object' && StringUtils.isNoEmpty(res.data.data)) {
                 let arrs = this.currentPage == 1 ? [] : this.state.viewData;
                 res.data.data.map((item, index) => {
