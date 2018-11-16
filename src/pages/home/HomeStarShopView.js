@@ -33,7 +33,7 @@ const Profile = ({avatar, name, level, member, income, allIncome}) => <View styl
     <ImageLoad style={styles.avatar} source={avatar}/>
     <View style={styles.nameBox}>
         <View style={styles.nameView}>
-            <Text numberOfLines={1} style={styles.name}>{name ? name : ''}</Text>
+            {name ? <Text numberOfLines={1} style={styles.name}>{name.length > 5 ? name.slice(0, 5) + '...' : name}</Text> : null }
             <ImageBackground style={styles.level} source={starImg}>
                 <Text style={styles.levelText}>{level}</Text>
             </ImageBackground>
@@ -132,7 +132,7 @@ let styles = StyleSheet.create({
     avatar: {
         width: px2dp(45),
         height:  px2dp(45),
-        borderRadius: px2dp(45) / 2,
+        borderRadius: px2dp(45 / 2),
         marginLeft: px2dp(10),
         overflow: 'hidden'
     },
