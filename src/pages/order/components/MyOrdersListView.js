@@ -298,7 +298,7 @@ export default class MyOrdersListView extends Component {
             OrderApi.queryPage({
                 // orderNum: this.props.orderNum,
                 condition:this.props.orderNum,
-                page: 1,
+                page: this.currentPage,
                 size: constants.PAGESIZE
             }).then((response) => {
                 Toast.hiddenLoading();
@@ -427,11 +427,13 @@ export default class MyOrdersListView extends Component {
     };
 
     onRefresh = () => {
+        console.log('onRefresh',this.currentPage);
         this.currentPage = 1;
         this.getDataFromNetwork();
     };
 
-    onLoadMore = (page) => {
+    onLoadMore = () => {
+        console.log('onLoadMore',this.currentPage++);
         this.currentPage++;
         this.getDataFromNetwork();
     };
