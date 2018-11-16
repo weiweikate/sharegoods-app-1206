@@ -373,15 +373,14 @@ export default class HelperFeedbackPage extends BasePage {
                         })}
                         {this.renderAddItem()}
                     </View>
-
-                    <View style={{ width: ScreenUtils.width, height: 180, alignItems: 'center' }}>
                         <TouchableOpacity activeOpacity={0.9} disabled={this.state.touchable}
-                                          style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' || this.state.detailContent.length < 10 ? DesignRule.lineColor_inGrayBg : color.red }]
-
-                                          } onPress={() => this.feedback2server()}>
+                                          style={{alignItems:'center',justifyContent:'center',marginTop: 50}}
+                                          onPress={() => this.feedback2server()}>
+                            <View style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' || this.state.detailContent.length < 10 ? DesignRule.lineColor_inGrayBg : color.red }]}>
                             <Text style={{ fontSize: 16, color: '#fff' }}>提交</Text>
+                            </View>
                         </TouchableOpacity>
-                    </View>
+
                 </ScrollView>
             </View>
         );
@@ -447,7 +446,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 50
+
     },
     containerView1: {
         backgroundColor: 'white',
