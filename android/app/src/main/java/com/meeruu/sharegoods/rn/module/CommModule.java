@@ -373,7 +373,8 @@ public class CommModule extends ReactContextBaseJavaModule {
     public void getTotalCacheSize(Callback callback) {
         try {
             long s = ImageCacheUtils.getInstance().getCacheSize(mContext);
-            callback.invoke(s);
+            int reslut = new Long(s).intValue();
+            callback.invoke(reslut);
         } catch (Exception e) {
             LogUtils.d(e.getMessage());
         }
