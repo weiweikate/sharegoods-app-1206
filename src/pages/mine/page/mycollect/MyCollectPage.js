@@ -275,7 +275,7 @@ gotoLookAround(){
                     justifyContent: 'center'
                 }}>
                     <Image
-                        source={res.placeholder.noCollect}
+                        source={RES.placeholder.noCollect}
                         style={{
                             height: 115,
                             width: 115
