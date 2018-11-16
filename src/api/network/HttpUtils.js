@@ -80,6 +80,7 @@ export default class HttpUtils {
                 url = url + '?' + Qs.stringify(params);
             }
         }
+        url = decodeURIComponent(url);
 
         /**
          * @type {*|{nonce, timestamp, client, version, sign}}
