@@ -28,33 +28,21 @@ export default class HomeAdView extends BasePage {
             if (index === 0) {
                 items.push(<TouchableWithoutFeedback key={index} onPress={()=>this._adAction(value)}>
                     <View style={[styles.featureBox1, styles.radius]}>
-                    <ImageLoad
-                        isCached={true}
-                        source={{ uri: value.imgUrl }}
-                        style={styles.featureBox1Image}
-                        />
+                    <ImageLoad cacheable={true} source={{ uri: value.imgUrl }} style={styles.featureBox1Image}/>
                     </View>
                 </TouchableWithoutFeedback>)
             } else if (index === 1) {
                 items.push(
                     <TouchableWithoutFeedback key={index} onPress={()=>this._adAction(value)}>
                         <View style={[styles.featureBox2,styles.radius]}>
-                        <ImageLoad
-                            isCached={true}
-                            source={{ uri: value.imgUrl}}
-                            style={styles.featureBox2Image}
-                            />
+                        <ImageLoad cacheable={true} source={{ uri: value.imgUrl}} style={styles.featureBox2Image}/>
                         </View>
                     </TouchableWithoutFeedback>
                 )
             } else {
                 items.push(<TouchableWithoutFeedback key={index}onPress={()=>this._adAction(value)}>
                     <View style={[styles.featureBox3, styles.radius]}>
-                    <ImageLoad
-                        source={{ uri:  value.imgUrl }}
-                        style={styles.featureBox2Image}
-                        isCached={true}
-                        />
+                    <ImageLoad source={{ uri:  value.imgUrl }} style={styles.featureBox2Image} cacheable={true}/>
                     </View>
                 </TouchableWithoutFeedback>)
             }

@@ -29,6 +29,8 @@
   [self JR_ConfigVC:application didFinishLaunchingWithOptions:launchOptions];
   [self JR_ConfigAPNS:application didFinishLaunchingWithOptions:launchOptions];
   [self addLaunchToWindow];
+  NSString *docPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+  NSLog(@"%@", docPath);
   return YES;
 }
 - (void)addLaunchToWindow

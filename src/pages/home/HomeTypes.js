@@ -12,3 +12,22 @@ export const homeType = {
   user: 'user',
   show: 'show'            //秀场
 }
+
+
+const homeLinkType = {
+  good: 1,
+  subject: 2,
+  down: 3,
+  spike: 4,
+  package: 5,
+  store: 8
+};
+
+export const homeRoute = {
+  [homeLinkType.good]: 'home/product/ProductDetailPage',
+  [homeLinkType.subject]: 'topic/DownPricePage',
+  [homeLinkType.down]: 'topic/TopicDetailPage',
+  [homeLinkType.spike]: 'topic/TopicDetailPage',
+  [homeLinkType.package]: 'topic/TopicDetailPage',
+  [homeLinkType.store]: 'spellShop/MyShop_RecruitPage'
+};

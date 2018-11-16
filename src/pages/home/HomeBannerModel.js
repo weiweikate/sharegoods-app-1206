@@ -15,14 +15,14 @@ export class BannerModules {
 
   @observable opacity = 1;
 
-  @action
-  loadBannerList = flow(function* () {
+  @action loadBannerList = flow(function* (isCache) {
       try {
-        const storeRes = yield AsyncStorage.getItem(kHomeBannerStore)
-        if (storeRes) {
-          this.bannerList = JSON.parse(storeRes);
+        if (isCache) {
+          const storeRes = yield AsyncStorage.getItem(kHomeBannerStore)
+          if (storeRes) {
+            this.bannerList = JSON.parse(storeRes);
+          }
         }
-
           const res = yield HomeApi.getSwipers({ type: homeType.swiper });
           this.opacity = res.data && res.data.length > 0 ? 0 : 1;
           this.bannerList = res.data;

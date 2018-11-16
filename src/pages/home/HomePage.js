@@ -75,7 +75,7 @@ export default class HomePage extends PureComponent {
 
     constructor(props) {
         super(props);
-        homeModule.loadHomeList();
+        homeModule.loadHomeList(true);
     }
 
 
@@ -240,7 +240,7 @@ export default class HomePage extends PureComponent {
     }
 
     _onRefresh() {
-        homeModule.loadHomeList();
+        homeModule.loadHomeList(true);
     }
 
     getMessageData = () => {
