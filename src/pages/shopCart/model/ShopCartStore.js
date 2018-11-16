@@ -58,7 +58,7 @@ class ShopCartStore {
     get getTotalSelectGoodsNum() {
         let totalSelectNum = 0;
         this.data.slice().map(item => {
-            if (item.isSelected) {
+            if (item.isSelected && !isNaN(item.amount) ) {
                 totalSelectNum += item.amount;
             }
         });
@@ -69,12 +69,12 @@ class ShopCartStore {
     get getTotalMoney() {
         let totalMoney = 0.00;
         this.data.slice().map(item => {
-            if (item.isSelected) {
+            if (item.isSelected && !isNaN(item.amount) ) {
                 totalMoney = totalMoney + parseFloat(item.amount) * parseFloat(item.price);
             }
         });
 
-        return totalMoney;
+        return   Math.round(totalMoney * 100)/100;
 
 
     }
@@ -154,13 +154,12 @@ class ShopCartStore {
             return;
         }
         let isCanSettlement = true
-
         let  tempArr = [];
         selectArr.map(good => {
             if (good.amount > good.stock) {
                 isCanSettlement = false
             }
-            if (good.amount > 0){
+            if (good.amount > 0 && !isNaN(good.amount)){
                 tempArr.push(good);
             }
         })
@@ -169,12 +168,6 @@ class ShopCartStore {
         if (!isCanSettlement) {
             bridge.$toast('商品库存不足请确认~')
         }
-
-
-
-
-
-
         callBack(isCanSettlement,tempArr)
     }
     /**

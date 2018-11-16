@@ -442,15 +442,16 @@ export default class ShopCartPage extends BasePage {
                                             // onChangeText={(text) => this.setState({text})}
                                             onChangeText={text => {
                                                 console.log('输入后的值' + text);
-                                                if (isNaN(parseInt(text))){
-                                                    itemData.amount = 0
-                                                   return;
-                                                }else {
+                                                // if (isNaN(parseInt(text))){
+                                                //     // itemData.amount =
+                                                //
+                                                //    return;
+                                                // }else {
                                                     itemData.amount = parseInt(text);
                                                     let [...tempArr] = shopCartStore.data.slice();
                                                     tempArr[rowId] = itemData;
                                                     shopCartStore.data = tempArr;
-                                                }
+                                                // }
                                             }}
                                             onEndEditing={text => this.onNumberTextChange(itemData, text, rowId)}
                                             placeholder=''

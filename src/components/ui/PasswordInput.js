@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import DesignRule from 'DesignRule';
+
 /**
  * 交易密码框
  */
@@ -96,7 +97,7 @@ export default class PasswordInput extends Component {
                     <View key={i}
                           style={[styles.inputItem, styles.inputItemBorderLeftWidth, this.props.inputItemStyle]}>
                         {i < text.length ?
-                            <View style={[styles.iconStyle, this.props.iconStyle]} /> : null}
+                            <View style={[styles.iconStyle, this.props.iconStyle]}/> : null}
                     </View>);
             }
         }
@@ -104,7 +105,9 @@ export default class PasswordInput extends Component {
     }
 
     _onPress() {
-        this.refs.textInput.focus();
+        if (this.refs.textInput) {
+            this.refs.textInput.focus();
+        }
     }
 }
 
