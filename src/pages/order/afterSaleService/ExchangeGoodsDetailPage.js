@@ -217,7 +217,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                             {this.renderLine()}
                             <UserSingleItem itemHeightStyle={{ height: 44 }} leftText={'1元现金券'}
                                             leftTextStyle={{ color: DesignRule.textColor_mainTitle, fontSize: 13 }}
-                                            rightText={orderReturnAmounts.actualTokenCoin + '张'}
+                                            rightText={parseInt(orderReturnAmounts.actualTokenCoin) + '张'}
                                             rightTextStyle={{
                                                 color: DesignRule.textColor_mainTitle,
                                                 fontSize: 13,

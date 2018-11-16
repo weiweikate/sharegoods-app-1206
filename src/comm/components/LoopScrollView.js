@@ -157,10 +157,17 @@ export default class LoopScrollView extends React.Component {
             return;
         }
         let index = this._getIndex(e);
-        if (this._isFirst(index)) {
+        // alert(index);
+        if (this._isFirst(index) === true) {
             this._scrollViewToLast();
-        } else if (this._isLast(index)) {
+        } else if (this._isLast(index) === true) {
             this._scrollViewToFirst();
+        }else if (index === 0) {
+            if (this.props.data.length === 1){
+                this._scrollViewToLast();
+            } else {
+                this._scrollViewToLast2();
+            }
         }
     }
 
@@ -184,7 +191,7 @@ export default class LoopScrollView extends React.Component {
     _getIndex(e) {
         let { style: { width }, pageWidth, pagePadding } = this.props;
         let imageW = pageWidth || width;
-        let index = e.nativeEvent.contentOffset.x / (imageW + pagePadding);
+        let index = e.nativeEvent.contentOffset.x / (imageW + pagePadding*1.0);
         return (Math.round(index));
 
     }
@@ -198,6 +205,7 @@ export default class LoopScrollView extends React.Component {
     }
 
     _scrollViewToFirst() {
+        // alert('_scrollViewToFirst');
         let { style: { width }, pageWidth, pagePadding } = this.props;
         this.index = 2;
         let imageW = pageWidth || width;
@@ -205,11 +213,23 @@ export default class LoopScrollView extends React.Component {
     }
 
     _scrollViewToLast() {
+        // alert('_scrollViewToLast')
         let { style: { width }, pageWidth, pagePadding } = this.props;
         let imageW = pageWidth || width;
         this.index = this.props.data.length + 1;
         this.scrollView && this.scrollView.scrollTo({
             x: (imageW + pagePadding) * (this.props.data.length + 1),
+            animated: false
+        });
+    }
+
+    _scrollViewToLast2() {
+        // alert('_scrollViewToLast')
+        let { style: { width }, pageWidth, pagePadding } = this.props;
+        let imageW = pageWidth || width;
+        this.index = this.props.data.length;
+        this.scrollView && this.scrollView.scrollTo({
+            x: (imageW + pagePadding) * (this.props.data.length),
             animated: false
         });
     }
@@ -262,6 +282,7 @@ export default class LoopScrollView extends React.Component {
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
                         pagingEnabled={true}
+                        // snapToInterval={imageW + pagePadding}
                         scrollEventThrottle={12}
                         horizontal={true}>
                         {data.map((item, index) => {

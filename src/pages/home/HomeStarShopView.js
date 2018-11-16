@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
-import { starShopModule, homeModule } from './Modules'
+import { homeModule } from './Modules'
+import { starShopModule } from './HomeStarShopModel'
 import User from '../../model/user'
 import starImg from './res/star.png'
 import DesignRule from 'DesignRule';
+import ImageLoad from '@mr/react-native-image-placeholder'
 
 /**
  * @author chenyangjun
@@ -17,21 +19,21 @@ import DesignRule from 'DesignRule';
  */
 
 const Banner = ({backImage, title, press}) => <View style={styles.bannerContainer}>
-    <ImageBackground style={styles.bannerImg}  source={backImage}>
+    <ImageLoad style={styles.bannerImg}  source={backImage} cacheable={true}>
         <Text style={styles.bannerTitle}>{title}</Text>
         <TouchableOpacity style={styles.joinBtn} onPress={()=>press && press()}>
             <Text style={styles.join}>+ 申请加入</Text>
         </TouchableOpacity>
-    </ImageBackground>
+    </ImageLoad>
 </View>
 
 const Line = () => <View style={styles.line}/>
 
 const Profile = ({avatar, name, level, member, income, allIncome}) => <View style={styles.profile}>
-    <Image style={styles.avatar} source={avatar}/>
+    <ImageLoad style={styles.avatar} source={avatar}/>
     <View style={styles.nameBox}>
         <View style={styles.nameView}>
-            <Text style={styles.name}>{name ? name : ''}</Text>
+            {name ? <Text numberOfLines={1} style={styles.name}>{name.length > 5 ? name.slice(0, 5) + '...' : name}</Text> : null }
             <ImageBackground style={styles.level} source={starImg}>
                 <Text style={styles.levelText}>{level}</Text>
             </ImageBackground>
@@ -62,7 +64,6 @@ const Cell = ({data, store, press}) => <View style={styles.cell}>
 @observer
 export default class HomeStarShopView extends Component {
     _shopPress(shop) {
-        console.log('_shopPress')
         const { navigation } = this.props
         if (!User.isLogin) {
             navigation.navigate('login/login/LoginPage')
@@ -75,7 +76,7 @@ export default class HomeStarShopView extends Component {
     render () {
         let cells = []
         const { shopList } = starShopModule
-        if (shopList.length <= 0) {
+        if (shopList && shopList.length <= 0) {
             return <View/>
         }
         shopList.map((shop, index) => {
@@ -131,8 +132,9 @@ let styles = StyleSheet.create({
     avatar: {
         width: px2dp(45),
         height:  px2dp(45),
-        borderRadius: px2dp(45) / 2,
-        marginLeft: px2dp(15)
+        borderRadius: px2dp(45 / 2),
+        marginLeft: px2dp(10),
+        overflow: 'hidden'
     },
     name: {
         color: DesignRule.textColor_mainTitle,
