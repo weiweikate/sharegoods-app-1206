@@ -1,58 +1,12 @@
 import { observable, computed, action, flow } from 'mobx';
 import HomeApi from './api/HomeAPI';
-
-export const homeType = {
-    swiper: 1,           //轮播
-    ad: 2,       //推荐
-    subject: 6,         //专题
-    starShop: 3,       //明星店铺
-    today: 4,             //今日榜单
-    recommend: 5,     //精品推荐
-    goods: 8,
-    other: 'other',
-    classify: 'classify',
-    goodsTitle: 'goodsTitle',
-    user: 'user',
-    show: 'show'            //秀场
-};
-
-export class BannerModules {
-    @observable bannerList = [];
-
-    @computed get bannerCount() {
-        return this.bannerList.length;
-    }
-
-    @observable opacity = 1;
-
-    @action
-    loadBannerList = flow(function* () {
-        try {
-            const res = yield HomeApi.getSwipers({ type: homeType.swiper });
-            this.opacity = res.data && res.data.length > 0 ? 0 : 1;
-            this.bannerList = res.data;
-        } catch (error) {
-            console.log(error);
-        }
-    });
-}
-
-export const bannerModule = new BannerModules();
-
-class AdModules {
-    @observable ad = [];
-    loadAdList = flow(function* () {
-        try {
-            const res = yield HomeApi.getAd({ type: homeType.ad });
-            this.ad = res.data;
-        } catch (error) {
-            console.log(error);
-        }
-    });
-}
-
-export const adModules = new AdModules();
-
+import { homeType, homeRoute }  from './HomeTypes'
+import { bannerModule } from './HomeBannerModel'
+import { adModules } from './HomeAdModel'
+import { starShopModule } from './HomeStarShopModel'
+import { todayModule } from './HomeTodayModel'
+import { subjectModule } from './HomeSubjectModel'
+import { recommendModule } from './HomeRecommendModel'
 import schoolImg from './res/school.png';
 import showImg from './res/show.png';
 import shareImg from './res/share.png';
@@ -95,85 +49,6 @@ class ClassifyModules {
 }
 
 export const classifyModules = new ClassifyModules();
-
-class StarShopModule {
-    @observable shopList = [];
-
-    loadShopList = flow(function* () {
-        try {
-            const res = yield HomeApi.getStarShop({ type: homeType.starShop });
-            this.shopList = res.data;
-        } catch (error) {
-            console.log(error);
-        }
-    });
-}
-
-export const starShopModule = new StarShopModule();
-
-//今日榜单
-class TodayModule {
-    @observable todayList = [];
-    loadTodayList = flow(function* () {
-        try {
-            const res = yield HomeApi.getTodays({ type: homeType.today });
-            this.todayList = res.data;
-        } catch (error) {
-            console.log(error);
-        }
-    });
-}
-
-export const todayModule = new TodayModule();
-
-//精品推荐
-class RecommendModule {
-    @observable recommendList = [];
-    loadRecommendList = flow(function* () {
-        try {
-            const res = yield HomeApi.getRecommends({ type: homeType.recommend });
-            this.recommendList = res.data;
-        } catch (error) {
-            console.log(error);
-        }
-    });
-}
-
-export const recommendModule = new RecommendModule();
-
-//专题
-class SubjectModule {
-    @observable subjectList = [];
-    //记载专题
-    loadSubjectList = flow(function* () {
-        try {
-            const res = yield HomeApi.getSubject({ type: homeType.subject });
-            this.subjectList = res.data;
-        } catch (error) {
-            console.log(error);
-        }
-    });
-}
-
-export const subjectModule = new SubjectModule();
-
-const homeLinkType = {
-    good: 1,
-    subject: 2,
-    down: 3,
-    spike: 4,
-    package: 5,
-    store: 8
-};
-
-const homeRoute = {
-    [homeLinkType.good]: 'home/product/ProductDetailPage',
-    [homeLinkType.subject]: 'topic/DownPricePage',
-    [homeLinkType.down]: 'topic/TopicDetailPage',
-    [homeLinkType.spike]: 'topic/TopicDetailPage',
-    [homeLinkType.package]: 'topic/TopicDetailPage',
-    [homeLinkType.store]: 'spellShop/MyShop_RecruitPage'
-};
 
 //首页modules
 class HomeModule {
@@ -220,18 +95,18 @@ class HomeModule {
     };
 
     //加载为你推荐列表
-    loadHomeList = flow(function* () {
+    loadHomeList = flow(function* (isCache) {
         this.isRefreshing = true;
         setTimeout(() => {
             this.isRefreshing = false;
         }, 3000);
-        bannerModule.loadBannerList();
-        todayModule.loadTodayList();
-        adModules.loadAdList();
+        bannerModule.loadBannerList(isCache);
+        todayModule.loadTodayList(isCache);
+        adModules.loadAdList(isCache);
         classifyModules.loadClassifyList();
-        starShopModule.loadShopList();
-        recommendModule.loadRecommendList();
-        subjectModule.loadSubjectList();
+        starShopModule.loadShopList(isCache);
+        recommendModule.loadRecommendList(isCache);
+        subjectModule.loadSubjectList(isCache);
         this.page = 1;
         this.homeList = [{
             id: 0,
@@ -392,16 +267,6 @@ export class MemberModule {
         }
         return level;
     }
-
-    // loadMembersInfo = flow(function* () {
-    //     try {
-    //         const res = yield HomeApi.getMembers();
-    //         console.log('loadMembersInfo', res.data);
-    //         this.memberLevels = res.data;
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // });
 }
 
 

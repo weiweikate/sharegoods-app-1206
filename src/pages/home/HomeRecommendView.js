@@ -2,16 +2,18 @@
  * 精品推荐
  */
 import React, {Component} from 'react'
-import { View, ScrollView, StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
+import { View, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
-import {recommendModule, homeModule} from './Modules'
+import { homeModule} from './Modules'
 import DesignRule from 'DesignRule';
+import { recommendModule } from './HomeRecommendModel'
+import ImageLoad from '@mr/react-native-image-placeholder'
 
 const RecommendItem = ({item, press}) => <TouchableOpacity style={styles.item} onPress={()=> press && press()}>
     <View style={styles.imgView}>
-        <Image style={styles.img}  source={{uri:item.imgUrl}}/>
+        <ImageLoad cacheable={true} style={styles.img}  source={{uri:item.imgUrl}}/>
     </View>
 </TouchableOpacity>
 
