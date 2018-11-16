@@ -93,6 +93,7 @@ export default class ShowBannerView extends Component {
             <LoopScrollView
               style={{ height: px2dp(175), width: ScreenUtils.width }}
               pageWidth={ScreenUtil.width - px2dp(50)}
+              itemCorners={px2dp(5)}
               data={items}
               scrollToIndex={(index)=>{this.setState({index})}}
             />
