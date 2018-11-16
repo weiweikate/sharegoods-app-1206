@@ -20,7 +20,7 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     // From node_modules
     api rootProject.ext.dependencies.support
-    api 'com.amap.api:location:latest.integration'
+    api 'com.amap.api:location:4.3.0'
     // From node_modules
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'

@@ -42,7 +42,7 @@ export default class GoodsCell extends Component {
             ?
             <Goods goods={data[1]} press={()=> this._goodsAction(data[1])}/>
             :
-            null
+            <View style={styles.uncontainer}/>
         }
         </View>
     }
@@ -57,6 +57,10 @@ let styles = StyleSheet.create({
         borderColor: '#EDEDED',
         borderWidth: onePixel,
         overflow: 'hidden'
+    },
+    uncontainer: {
+        height: px2dp(267),
+        width: px2dp(172)
     },
     image: {
         height: px2dp(172),
@@ -94,7 +98,9 @@ let styles = StyleSheet.create({
         height: px2dp(273),
         flexDirection: 'row',
         marginRight: px2dp(15),
-        marginLeft: px2dp(15)
+        marginLeft: px2dp(15),
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     space: {
         width: px2dp(5)
