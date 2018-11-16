@@ -10,14 +10,15 @@ import {
     TouchableOpacity
 } from 'react-native';
 import QRCode from 'react-native-qrcode';
-import Banner from './src/yqhy_03.png';
-import Center from './src/yqhy_04.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import bridge from '../../../utils/bridge';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
+import res from '../res';
+const Banner = res.openShop.yqhy_03;
+const Center = res.openShop.yqhy_04;
 
 const gap = -5;
 

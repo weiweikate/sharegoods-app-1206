@@ -10,10 +10,11 @@ import {
 } from 'react-native';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const WhitePanelHeight = 128 / 375 * SCREEN_WIDTH;
-import BgIcon from './res/bg_07.png';
-import StarIcon from './res/wjx_03.png';
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
+import res from '../res';
+const BgIcon = res.shopSetting.bg_07;
+const StarIcon = res.shopSetting.wjx_03;
 
 export default class ShopScorePage extends BasePage {
 

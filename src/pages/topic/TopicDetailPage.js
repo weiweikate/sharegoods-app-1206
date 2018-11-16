@@ -199,10 +199,14 @@ export default class TopicDetailPage extends BasePage {
     };
 
     _needPushToNormal = () => {
+        if (this.havePushDone) {//现在视图出现会刷新数据,,跳过一次就不跳了
+            return;
+        }
         const { status, type } = this.state.activityData;
         //如果降价拍,秒杀&&结束&&需要   5秒跳转普通详情
         if (this.state.activityType !== 3 && (status === 4 || status === 5) && type === 1) {
             this.__timer__ = setTimeout(() => {
+                this.havePushDone = true;
                 this.$navigate('home/product/ProductDetailPage', { productId: this.state.activityData.productId });
             }, 5000);
         }

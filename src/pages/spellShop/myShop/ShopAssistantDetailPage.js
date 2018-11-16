@@ -12,27 +12,27 @@ import {
 } from 'react-native';
 //Source
 const SCREEN_WIDTH = Dimensions.get('window').width;
-import RingImg from './res/headBg.png';
-import HeaderBarBgImg from './res/txbg_03.png';
-//icon
-import NameIcon from './res/icon_03.png';
-import StarIcon from './res/icon_03-02.png';
-import CodeIcon from './res/icon_03-03.png';
-import PhoneIcon from './res/icon_03-04.png';
-
-import QbIcon from './res/dzfhj_03-03.png';
-import detail_cishu from './res/detail_cishu.png';
-import MoneyIcon from './res/ccz_03.png';
-import detail_zongti from './res/detail_zongti.png';
-import detail_benci from './res/detail_benci.png';
 
 import BasePage from '../../../BasePage';
 import DateUtils from '../../../utils/DateUtils';
 import SpellShopApi from '../api/SpellShopApi';
 import DesignRule from 'DesignRule';
-import NavLeft from './res/NavLeft.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import StringUtils from '../../../utils/StringUtils';
+import res from '../res';
+const RingImg = res.myShop.headBg;
+const HeaderBarBgImg = res.myShop.txbg_03;
+const NameIcon = res.myShop.icon_03;
+const StarIcon = res.myShop.icon_03_02;
+const CodeIcon = res.myShop.icon_03_03;
+const PhoneIcon = res.myShop.icon_03_04;
+const QbIcon = res.myShop.dzfhj_03_03;
+const detail_cishu = res.myShop.detail_cishu;
+const MoneyIcon = res.myShop.ccz_03;
+const detail_zongti = res.myShop.detail_zongti;
+const detail_benci = res.myShop.detail_benci;
+const NavLeft = res.myShop.NavLeft;
+
 
 export default class ShopAssistantDetailPage extends BasePage {
 

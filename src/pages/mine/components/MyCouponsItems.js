@@ -55,12 +55,17 @@ export default class MyCouponsItems extends Component {
         this.isLoadMore = false;
         this.isEnd = false;
         // setTimeout(() => this.onRefresh(), 10);
+    }
+
+    componentDidMount() {
         this.onRefresh();
     }
 
     fmtDate(obj) {
         return formatDate(obj, 'yyyy.MM.dd');
     }
+
+
 
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
@@ -314,6 +319,7 @@ export default class MyCouponsItems extends Component {
     };
 
     render() {
+        console.log("this.state.viewDat"+ this.state.viewData.length)
         return (
             <View style={styles.container}>
                 <FlatList
@@ -473,7 +479,7 @@ export default class MyCouponsItems extends Component {
             });
         } else if (this.props.justOne && status == 0) {
             let arrData = [];
-            if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0) {
+            if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && status === 0) {
                 arrData.push({
                     status: 0,
                     name: '可叠加使用',
@@ -485,7 +491,9 @@ export default class MyCouponsItems extends Component {
                     levelimit: false
                 });
             }
-            this.setState({ viewData: arrData });
+            this.setState({viewData: arrData});
+            this.isEnd = true;
+            return;
         }
         else {
             API.userCouponList({
