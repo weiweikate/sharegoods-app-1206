@@ -44,11 +44,11 @@ class LoginTopViewModel {
             this.phoneNumber = '';
             return;
         }
-        if( 0 <= parseInt(phoneNmber.charAt(phoneNmber.length - 1)) &&
-            parseInt(phoneNmber.charAt(phoneNmber.length - 1)) <= 9 )
-        {
+        // if( 0 <= parseInt(phoneNmber.charAt(phoneNmber.length - 1)) &&
+        //     parseInt(phoneNmber.charAt(phoneNmber.length - 1)) <= 9 )
+        // {
             this.phoneNumber = phoneNmber;
-        }
+        // }
     }
 
     @action
