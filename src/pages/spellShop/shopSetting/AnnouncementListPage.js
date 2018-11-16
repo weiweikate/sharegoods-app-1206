@@ -10,8 +10,8 @@ import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import { observer } from 'mobx-react/native';
 import SpellShopApi from '../api/SpellShopApi';
 import bridge from '../../../utils/bridge';
-
-const DefaultPageSize = 10;
+import { PageLoadingState } from '../../../components/pageDecorator/PageState';
+import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 // 是否显示删除按钮
 
 @observer
@@ -37,64 +37,85 @@ export default class AnnouncementListPage extends BasePage {
 
         this.state = {
             list: [],
-            refreshing: false,
-            loadingMore: false,
-            loadingMoreError: null,
-            noMore: false
+
+            loadingState: PageLoadingState.loading,
+            netFailedInfo: {},
+
+            //刷新
+            refreshing: false,//是否显示下拉的菊花
+            noMore: false,//是否能加载更多
+            loadingMore: false,//是否显示加载更多的菊花
+            loadingMoreError: null,//加载更多是否报错
+            page: 1
         };
-        this.numebr = 1;
     }
+
+    $getPageStateOptions = () => {
+        return {
+            loadingState: this.state.loadingState,
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: () => {
+                    this._loadPageData();
+                }
+            }
+        };
+    };
 
     componentDidMount() {
         this.loadPageData();
     }
 
-    // 加载首页数据
+    _onRefresh = () => {
+        this.setState({ refreshing: true }, this.loadPageData());
+    };
+
     loadPageData = () => {
+        this.state.page = 1;
         const { storeData } = this.params;
         SpellShopApi.queryByStoreId({
-            page: 1,
+            page: this.state.page,
             pageSize: 10,
             storeId: storeData.id
         }).then((data) => {
+            this.state.page++;
             let dateTemp = data.data || {};
+            let tempArr = dateTemp.data || [];
             this.setState({
-                list: dateTemp.data || [],
                 refreshing: false,
-                loadingMore: false,
-                loadingMoreError: null
+                loadingState: tempArr.length === 0 ? PageLoadingState.empty : PageLoadingState.success,
+                list: tempArr,
+                noMore: dateTemp.isMore === 0
             });
         }).catch((error) => {
             this.setState({
-                refreshing: false
-            }, () => {
-                bridge.$toast(error.msg);
+                refreshing: false,
+                loadingState: PageLoadingState.fail,
+                netFailedInfo: error
             });
         });
     };
 
     loadPageDataMore = () => {
         const { storeData } = this.params;
-        if (this.onEndReached) {
-            return;
-        }
         this.onEndReached = true;
         this.setState({
             loadingMore: true
         }, () => {
             SpellShopApi.queryByStoreId({
-                page: this.numebr + 1,
+                page: this.state.page,
                 pageSize: 10,
                 storeId: storeData.id
             }).then((data) => {
-                this.numebr++;
+                this.state.page++;
                 this.onEndReached = false;
                 let dateTemp = data.data || {};
+                let tempArr = dateTemp.data || [];
                 this.setState({
-                    list: dateTemp.data || [],
+                    list: this.state.list.concat(tempArr),
                     loadingMore: false,
                     loadingMoreError: false,
-                    noMore: data.data && data.data.length === 0
+                    noMore: dateTemp.isMore === 0
                 });
             }).catch((error) => {
                 this.setState({
@@ -123,6 +144,22 @@ export default class AnnouncementListPage extends BasePage {
         this.$navigate('spellShop/shopSetting/AnnouncementDetailPage', info);
     };
 
+    // 列表触底
+    _onEndReached = () => {
+        if (this.onEndReached || this.state.loadingState !== PageLoadingState.success || this.state.noMore) {
+            return;
+        }
+        this.loadPageDataMore();
+    };
+
+    _ListFooterComponent = () => {
+        if (this.state.loadingState !== PageLoadingState.success) {
+            return null;
+        }
+        return <ListFooter loadingMore={this.state.loadingMore}
+                           errorDesc={this.state.loadingMoreError}
+                           onPressLoadError={this._onEndReached}/>;
+    };
 
     // 渲染行
     _renderItem = ({ item }) => {
@@ -131,27 +168,6 @@ export default class AnnouncementListPage extends BasePage {
                                  onPressDelete={this._delItem} {...item} />);
     };
 
-    _onRefresh = () => {
-        this.setState({ refreshing: true }, this.loadPageData());
-    };
-
-
-    // 列表触底
-    _onEndReached = () => {
-        if (!this.state.list) {
-            return;
-        }
-        if (this.state.list.length < DefaultPageSize) {
-            return;
-        }
-        if (this.state.noMore) {
-            return;
-        }
-        // this.loadPageDataMore();
-    };
-
-    //下拉加载更多
-    //已经到低啦
     _render() {
         return (
             <View style={{ flex: 1 }}>
@@ -161,7 +177,8 @@ export default class AnnouncementListPage extends BasePage {
                           refreshing={this.state.refreshing}
                           onEndReached={this._onEndReached}
                           onEndReachedThreshold={0.1}
-                          keyExtractor={this._keyExtractor}/>
+                          keyExtractor={this._keyExtractor}
+                          ListFooterComponent={this._ListFooterComponent}/>
                 <ConfirmAlert ref="delAlert"/>
             </View>
         );

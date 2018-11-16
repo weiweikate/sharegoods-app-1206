@@ -8,7 +8,8 @@ import ViewPager from '../../components/ui/ViewPager';
 
 const { px2dp } = ScreenUtils;
 import { observer } from 'mobx-react';
-import { bannerModule, homeModule } from './Modules';
+import { homeModule } from './Modules';
+import { bannerModule } from './HomeBannerModel'
 
 const bannerHeight = px2dp(230);
 import MRBannerViewMode from '../../components/ui/bannerView/MRBannerViewMode';

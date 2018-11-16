@@ -1,7 +1,8 @@
 import React from 'react'
 import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
-import { adModules , homeModule} from './Modules'
+import { homeModule} from './Modules'
+import { adModules } from './HomeAdModel'
 import {observer} from 'mobx-react';
 import BasePage from '../../BasePage'
 import ImageLoad from '@mr/react-native-image-placeholder'
@@ -15,6 +16,11 @@ export default class HomeAdView extends BasePage {
         const params = homeModule.paramsNavigate(value)
         navigation.navigate(router, params)
     }
+
+    _loadingIndicator() {
+        return <View style={{flex: 1, backgroundColor: '#f00'}}/>
+    }
+
     render() {
         const {ad} = adModules
         let items = []
@@ -22,27 +28,21 @@ export default class HomeAdView extends BasePage {
             if (index === 0) {
                 items.push(<TouchableWithoutFeedback key={index} onPress={()=>this._adAction(value)}>
                     <View style={[styles.featureBox1, styles.radius]}>
-                    <ImageLoad
-                        source={{ uri: value.imgUrl }}
-                        style={styles.featureBox1Image}/>
+                    <ImageLoad cacheable={true} source={{ uri: value.imgUrl }} style={styles.featureBox1Image}/>
                     </View>
                 </TouchableWithoutFeedback>)
             } else if (index === 1) {
                 items.push(
                     <TouchableWithoutFeedback key={index} onPress={()=>this._adAction(value)}>
                         <View style={[styles.featureBox2,styles.radius]}>
-                        <ImageLoad
-                            source={{ uri: value.imgUrl}}
-                            style={styles.featureBox2Image}/>
+                        <ImageLoad cacheable={true} source={{ uri: value.imgUrl}} style={styles.featureBox2Image}/>
                         </View>
                     </TouchableWithoutFeedback>
                 )
             } else {
                 items.push(<TouchableWithoutFeedback key={index}onPress={()=>this._adAction(value)}>
                     <View style={[styles.featureBox3, styles.radius]}>
-                    <ImageLoad
-                        source={{ uri:  value.imgUrl }}
-                        style={styles.featureBox2Image}/>
+                    <ImageLoad source={{ uri:  value.imgUrl }} style={styles.featureBox2Image} cacheable={true}/>
                     </View>
                 </TouchableWithoutFeedback>)
             }

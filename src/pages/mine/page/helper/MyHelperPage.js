@@ -15,17 +15,21 @@ import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import UIImage from '../../../../components/ui/UIImage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import csperson from '../../res/customerservice/bangzu_kefu.png';
-// import backmg from '../../res/customerservice/xwduo.png';
-import kf11 from '../../res/customerservice/kf_11.png';
-import monenybpg from '../../res/customerservice/bangzu_icon.png';
-import qbcIcon from '../../res/customerservice/bangzu_icon1.png';
-import autobcIon from '../../res/customerservice/bangzu_icon2.png';
-import phoneIcon from '../../res/customerservice/shouhou_icon_dianh.png';
-import personIcon from '../../res/customerservice/shouhou_icon_kefu.png';
+
 import QYChatUtil from './QYChatModel';
 import MineApi from '../../api/MineApi';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+const {
+   top_kefu ,
+ icon_wenti ,
+ icon_tuikuan ,
+ icon_feedback ,
+ icon_auto_feedback ,
+ icon_phone ,
+icon_kefu,
+}=res.helperAndCustomerService;
+
 
 export default class MyHelperPage extends BasePage {
     constructor(props) {
@@ -48,7 +52,7 @@ export default class MyHelperPage extends BasePage {
                         <View key={index} style={styles.hotQuestionStyle}>
                             <TouchableOpacity activeOpacity={0.6} onPress={() => this.orderListq(item.list)}
                                               style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                <Image source={kf11} style={{ width: 37, height: 37 }}/>
+                                <Image source={icon_wenti} style={{ width: 37, height: 37 }}/>
                                 <Text style={{
                                     fontSize: 11,
                                     color: DesignRule.textColor_secondTitle,
@@ -88,7 +92,7 @@ export default class MyHelperPage extends BasePage {
             <View style={{ flex: 1 }}>
                 <ScrollView>
                     <View style={{ marginTop: 9, paddingLeft: 18, backgroundColor: DesignRule.bgColor }}>
-                        <Image source={csperson}
+                        <Image source={top_kefu}
                                resizeMode={'contain'}/>
                     </View>
                     {this.renderHotQuestionList()}
@@ -102,17 +106,17 @@ export default class MyHelperPage extends BasePage {
                     }}>
                         <TouchableOpacity activeOpacity={0.6} onPress={() => this.$navigate('order/afterSaleService/AfterSaleListPage')}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                            <Image source={monenybpg} style={{ width: 37, height: 37 }}/>
+                            <Image source={icon_tuikuan} style={{ width: 37, height: 37 }}/>
                             <Text style={styles.textFontstyle}>退款进度</Text>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack()}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                            <Image source={qbcIcon} style={{ width: 37, height: 37 }}/>
+                            <Image source={icon_feedback} style={{ width: 37, height: 37 }}/>
                             <Text style={styles.textFontstyle}>问题反馈</Text>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.6} onPress={() => console.log('自动退款')}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                            <Image source={autobcIon} style={{ width: 37, height: 37 }}/>
+                            <Image source={icon_auto_feedback} style={{ width: 37, height: 37 }}/>
                             <Text style={styles.textFontstyle}>自动退款</Text>
                         </TouchableOpacity>
                     </View>
@@ -132,7 +136,7 @@ export default class MyHelperPage extends BasePage {
                         justifyContent: 'center'
                     }}
                                       onPress={() => this.jump2Telephone()}>
-                        <UIImage source={phoneIcon} style={{ height: 23, width: 23 }} resizeMode={'contain'}/>
+                        <UIImage source={icon_phone} style={{ height: 23, width: 23 }} resizeMode={'contain'}/>
                         <View style={{ marginLeft: 2, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={[styles.textFontstyle]}>咨询电话</Text>
                             <Text style={styles.text2Style}>9：00-21：00</Text>
@@ -151,7 +155,7 @@ export default class MyHelperPage extends BasePage {
                             flex: 1
                         }}
                         onPress={() => this.jumpQYIMPage()}>
-                        <UIImage source={personIcon} style={{ height: 23, width: 24 }} esizeMode={'contain'}/>
+                        <UIImage source={icon_kefu} style={{ height: 23, width: 24 }} esizeMode={'contain'}/>
                         <View style={{ marginLeft: 2, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={[styles.textFontstyle, { marginTop: 5 }]}>在线客服</Text>
                             <Text style={styles.text2Style}>9：00-21：00</Text>

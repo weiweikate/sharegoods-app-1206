@@ -13,18 +13,19 @@ import UIImage from '../../../../components/ui/UIImage';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import AutoExpandingInput from '../../../../components/ui/AutoExpandingInput';
-import arrowUp from '../../res/customerservice/fankui_icon_shouhui_nor.png';
-import arrowDown from '../../res/customerservice/fankui_icon_zhankai_nor.png';
-import dasheLineImg from '../../res/customerservice/shux.png';
-import res from '../../../../comm/res';
-// import addPic from '../../res/customerservice/xk1_03.png';
-import deleteImage from '../../res/customerservice/deleteImage.png';
-import selectImg from '../../res/customerservice/bangzu_dugou.png';
-import xiangjiImg from '../../res/customerservice/shouhou_xiangji.png';
+import res from '../../res';
 import BusinessUtils from '../../components/BusinessUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import MineApi from '../../api/MineApi';
 import Modal from 'CommModal';
+const {
+    icon_arrow_up,
+    icon_arrow_down,
+    icon_dashframe,
+    icon_delete,
+    icon_red_select,
+    icon_camara,
+}=res.helperAndCustomerService;
 
 const rightIcon = res.button.tongyon_icon_check_green;
 import DesignRule from 'DesignRule';
@@ -205,8 +206,8 @@ export default class HelperFeedbackPage extends BasePage {
                 marginLeft: 16,
                 justifyContent: 'center',
                 alignItems: 'center'
-            }} source={dasheLineImg}>
-                <UIImage source={xiangjiImg} style={{ width: 27, height: 22 }}
+            }} source={icon_dashframe}>
+                <UIImage source={icon_camara} style={{ width: 27, height: 22 }}
                          resizeMode={'stretch'}
                          onPress={() => this.choosePicker()}/>
                 <Text style={{
@@ -225,7 +226,7 @@ export default class HelperFeedbackPage extends BasePage {
             <View style={{ marginLeft: 8 }} key={index}>
                 <Image style={styles.photo_item} source={{ uri: this.state.imageArr[index].imageUrl }}/>
                 <TouchableOpacity style={styles.delete_btn} onPress={() => this.deletePic(index)}>
-                    <Image style={{ width: 24, height: 24 }} source={deleteImage}/>
+                    <Image style={{ width: 24, height: 24 }} source={icon_delete}/>
                 </TouchableOpacity>
 
             </View>);
@@ -270,7 +271,7 @@ export default class HelperFeedbackPage extends BasePage {
                                     fontSize: 15,
                                     color: DesignRule.textColor_instruction
                                 }}>请选择问题类型</Text>
-                                <Image source={arrowUp} style={{ width: 10, height: 7, marginRight: 16 }}/>
+                                <Image source={icon_arrow_up} style={{ width: 10, height: 7, marginRight: 16 }}/>
                             </View>
                             <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
                                 {this.state.CONFIG.map((item, i) => {
@@ -288,7 +289,7 @@ export default class HelperFeedbackPage extends BasePage {
                                                 fontSize: 15,
                                                 marginLeft: 15
                                             }}>{item.value}</Text>
-                                            {i == this.state.selectIndex ? <Image source={selectImg} style={{
+                                            {i == this.state.selectIndex ? <Image source={icon_red_select} style={{
                                                 width: 17,
                                                 height: 12,
                                                 marginRight: 19
@@ -334,7 +335,7 @@ export default class HelperFeedbackPage extends BasePage {
                             fontSize: 15,
                             color: DesignRule.textColor_mainTitle
                         }}>{this.state.course}</Text>
-                        <Image source={arrowDown} style={{ width: 10, height: 7, marginRight: 16 }}/>
+                        <Image source={icon_arrow_down} style={{ width: 10, height: 7, marginRight: 16 }}/>
                     </TouchableOpacity>
                     <View style={styles.containerView1}>
                         <Text style={{
