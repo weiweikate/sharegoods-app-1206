@@ -9,7 +9,7 @@ import {observer} from 'mobx-react'
 import { showBannerModules, showSelectedDetail } from './Show'
 import ScreenUtils from '../../utils/ScreenUtils'
 import MRBannerView from '../../components/ui/bannerView/MRBannerView'
-import LoopScrollView from '../../comm/components/LoopScrollView'
+import XGSwiper from '../../components/ui/XGSwiper'
 @observer
 export default class ShowBannerView extends Component {
     state = {
@@ -90,13 +90,15 @@ export default class ShowBannerView extends Component {
                 onDidScrollToIndex={(index)=>{this._onDidScrollToIndex(index)}}
                 />
             :
-            <LoopScrollView
-              style={{ height: px2dp(175), width: ScreenUtils.width }}
-              pageWidth={ScreenUtil.width - px2dp(50)}
-              itemCorners={px2dp(5)}
-              data={items}
-              scrollToIndex={(index)=>{this.setState({index})}}
-            />
+            <XGSwiper style={styles.swiper}
+                dataSource={bannerList}
+                width={ ScreenUtils.width }
+                height={ 200 }
+                renderRow={this.renderRow.bind(this)}
+                ratio={0.867}
+                loop={false}
+                onPress={this._onPressRowWithItem.bind(this)}
+                onDidChange={this._onDidChange.bind(this)}/>
         }
             </View>
             {this.renderIndexView()}
