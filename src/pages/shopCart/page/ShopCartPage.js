@@ -442,10 +442,15 @@ export default class ShopCartPage extends BasePage {
                                             // onChangeText={(text) => this.setState({text})}
                                             onChangeText={text => {
                                                 console.log('输入后的值' + text);
-                                                itemData.amount = parseInt(text);
-                                                let [...tempArr] = shopCartStore.data.slice();
-                                                tempArr[rowId] = itemData;
-                                                shopCartStore.data = tempArr;
+                                                if (isNaN(parseInt(text))){
+                                                    itemData.amount = 0
+                                                   return;
+                                                }else {
+                                                    itemData.amount = parseInt(text);
+                                                    let [...tempArr] = shopCartStore.data.slice();
+                                                    tempArr[rowId] = itemData;
+                                                    shopCartStore.data = tempArr;
+                                                }
                                             }}
                                             onEndEditing={text => this.onNumberTextChange(itemData, text, rowId)}
                                             placeholder=''
@@ -598,15 +603,18 @@ export default class ShopCartPage extends BasePage {
         if (itemData.amount >= itemData.stock) {
             bridge.$toast('已达商品库存最大数');
             itemData.amount = itemData.stock;
+            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
         if (itemData.amount <= 0) {
             itemData.amount = 1;
+            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
         if (itemData.amount > 200) {
             itemData.amount = 200;
             bridge.$toast('单个商品最多200件');
+            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
-        shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+
         // if(StringUtils.checkIsPositionNumber(parseInt(text))) {
         //     itemData.amount = parseInt(text)
         //
