@@ -141,11 +141,8 @@ export default {
 //         memorySize: temp
 //     });
 // });
-    getTotalCacheSize(callback) {
-        NativeModules.commModule.getTotalCacheSize(size => {
-            alert('laile')
-            callback(size);
-        });
+    getTotalCacheSize(callback=()=>{}) {
+        NativeModules.commModule.getTotalCacheSize(callback);
     },
 
     clearAllCache(callback = () => {
