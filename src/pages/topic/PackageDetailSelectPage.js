@@ -158,14 +158,16 @@ export default class TopicDetailSelectPage extends Component {
             }
         });
 
-        //有选项取最小  没选项取最大
+        //有选项取最小  没选项取列数字最大
         if (tagList.length === 0) {
             const { specPriceList = {} } = this.state.data || {};
             for (let key in specPriceList) {
                 let tempArr = specPriceList[key];
+                let tempNum = 0;
                 tempArr.forEach((item) => {
-                    tagList.push(item.surplusNumber);
+                    tempNum = tempNum + item.surplusNumber;
                 });
+                tagList.push(tempNum);
             }
             surplusNumber = Math.max.apply(Math, tagList);
         } else {
