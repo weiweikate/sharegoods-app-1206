@@ -96,9 +96,27 @@ export default class MinePage extends BasePage {
     };
 
     componentDidMount() {
-        this.refresh();
-    }
 
+        // this.refresh();
+    }
+    componentWillUnmount() {
+        this.didBlurSubscription && this.didBlurSubscription.remove();
+    }
+    componentWillMount() {
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+
+                console.log('willFocusSubscriptionMine', state);
+                if (state && state.routeName === 'MinePage') {
+                    this.refresh();
+                }
+                ;
+            })
+
+
+    }
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
         if (Y < offset) {
@@ -122,24 +140,13 @@ export default class MinePage extends BasePage {
 
     refresh = () => {
         userOrderNum.getUserOrderNum();
-        this.$loadingShow('加载中...', 1000);
+        // this.$loadingShow('加载中...', 1000);
         MineApi.getUser().then(res => {
-            this.$loadingDismiss();
-            if (res.code == 10000) {
+            // this.$loadingDismiss();
                 let data = res.data;
                 user.saveUserInfo(data);
-                this.setState({
-                    availableBalance: data.availableBalance,
-                    headImg: data.headImg,
-                    levelName: data.levelName,
-                    userScore: data.userScore ? data.userScore : 0,
-                    blockedBalance: data.blockedBalance
-                });
-            }
         }).catch(err => {
-            if (err.code === 10009) {
-                this.props.navigation.navigate('login/login/LoginPage', { callback: this.refresh });
-            }
+            // this.$loadingDismiss();
         });
     };
 
@@ -396,15 +403,6 @@ export default class MinePage extends BasePage {
                     flexDirection: 'row',
                     justifyContent: 'space-between'
                 }}>
-                    {/*{this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', () => {*/}
-                    {/*this.go2CashDetailPage(1);*/}
-                    {/*})}*/}
-                    {/*{this.accountItemView(StringUtils.isEmpty(user.userScore) ? '0' : user.userScore + '', '秀豆账户', () => {*/}
-                    {/*this.go2CashDetailPage(2);*/}
-                    {/*})}*/}
-                    {/*{this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance), '待提现账户', () => {*/}
-                    {/*this.go2CashDetailPage(3);*/}
-                    {/*})}*/}
 
                     {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance), '现金账户', '#FF4F6E', () => {
                         this.go2CashDetailPage(1);
