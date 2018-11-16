@@ -75,10 +75,8 @@ android {
             }
         }
     }
-
     repositories {
         maven {
-            // sophix
             url "http://maven.aliyun.com/nexus/content/repositories/releases"
         }
     }
@@ -87,28 +85,15 @@ android {
 dependencies {
 
     api fileTree(include: ['*.jar'], dir: 'libs')
-    api project(':react-native-update')
-    api project(':react-native-video')
-    api project(':react-native-autoheight-webview')
-    api project(':react-native-vector-icons')
-    api project(':react-native-svg')
-    api project(':react-native-image-picker')
-    api project(':react-native-linear-gradient')
-    api project(':react-native-geolocation')
-    api project(':react-native-fetch-blob')
-    api project(':rn_deviceinfo')
-    api project(path: ':commonlib')
-    api project(path: ':qiyu_service')
-    api project(path: ':qrcode')
 
-    debugImplementation('com.squareup.leakcanary:leakcanary-android:1.+') {
+    debugImplementation('com.squareup.leakcanary:leakcanary-android:1.6.2') {
         exclude(module: 'support-core-utils')
     }
-    releaseImplementation('com.squareup.leakcanary:leakcanary-android-no-op:1.+') {
+    releaseImplementation('com.squareup.leakcanary:leakcanary-android-no-op:1.6.2') {
         exclude(module: 'support-core-utils')
     }
     // Optional, if you use support library fragments:
-    debugImplementation('com.squareup.leakcanary:leakcanary-support-fragment:1.+') {
+    debugImplementation('com.squareup.leakcanary:leakcanary-support-fragment:1.6.2') {
         exclude(module: 'support-core-utils')
     }
     api rootProject.ext.dependencies.support
@@ -122,6 +107,20 @@ dependencies {
 
     implementation(rootProject.ext.dependencies.sophix) {
         exclude(module: 'alicloud-android-utdid')
+        exclude(module: 'alicloud-android-ut')
     }
     api files('libs/alipaySdk-20180601.jar')
+    api project(':react-native-update')
+    api project(':react-native-video')
+    api project(':react-native-autoheight-webview')
+    api project(':react-native-vector-icons')
+    api project(':react-native-svg')
+    api project(':react-native-image-picker')
+    api project(':react-native-linear-gradient')
+    api project(':react-native-geolocation')
+    api project(':react-native-fetch-blob')
+    api project(':rn_deviceinfo')
+    api project(path: ':commonlib')
+    api project(path: ':qiyu_service')
+    api project(path: ':qrcode')
 }
