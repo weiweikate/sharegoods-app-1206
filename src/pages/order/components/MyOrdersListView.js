@@ -6,6 +6,7 @@ import StringUtils from '../../../utils/StringUtils';
 import GoodsListItem from './GoodsListItem';
 import SingleSelectionModal from './BottomSingleSelectModal';
 import CommonTwoChoiceModal from './CommonTwoChoiceModal';
+// import OrderUtils from './../components/OrderUtils';
 import Toast from '../../../utils/bridge';
 import user from '../../../model/user';
 import OrderApi from '../api/orderApi';
@@ -181,6 +182,7 @@ export default class MyOrdersListView extends Component {
                             Toast.hiddenLoading();
                             if (response.code === 10000) {
                                 NativeModules.commModule.toast('订单已取消');
+                                index=-1;
                                 this.onRefresh();
                             } else {
                                 NativeModules.commModule.toast(response.msg);

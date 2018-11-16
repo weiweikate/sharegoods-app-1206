@@ -117,8 +117,7 @@ export default class MyCashAccountPage extends BasePage {
 
     //**********************************BusinessPart******************************************
     componentDidMount() {
-
-        this.getDataFromNetwork();
+        this.onRefresh();
     }
 
     jumpToWithdrawCashPage = () => {
