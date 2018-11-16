@@ -367,7 +367,7 @@ export default class HomePage extends PureComponent {
                         />
                     }
                     onEndReached={this._onEndReached.bind(this)}
-                    onEndReachedThreshold={0.1}
+                    onEndReachedThreshold={0.2}
                     showsVerticalScrollIndicator={false}
                     style={{ marginTop: bannerModule.bannerList.length > 0 ? 0 : statusBarHeight + 44 }}
                     onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
