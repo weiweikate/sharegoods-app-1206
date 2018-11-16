@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Image, StyleSheet, TouchableWithoutFeedback, Text } from 'react-native';
+import { View, Image, StyleSheet, TouchableWithoutFeedback, Text, Platform } from 'react-native';
 import XGSwiper from '../../../../components/ui/XGSwiper';
+import ViewPager from '../../../../components/ui/ViewPager';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import VideoView from '../../../../components/ui/video/VideoView';
@@ -31,6 +32,13 @@ export class DetailBanner extends Component {
         return <View style={styles.indexViewTwo}>
             <Text
                 style={styles.text}>{this.state.messageIndex + 1} / {this.state.haveVideo ? bannerCount + 1 : bannerCount}</Text>
+        </View>;
+    };
+
+    _renderPagination = (index, total) => {
+        return <View style={styles.indexViewTwo}>
+            <Text
+                style={styles.text}>{index + 1}/{total}</Text>
         </View>;
     };
 
@@ -71,18 +79,33 @@ export class DetailBanner extends Component {
         if (productImgListTemp.length > 0) {
             return (
                 <View>
-                    <XGSwiper height={ScreenUtils.autoSizeWidth(377)} width={ScreenUtils.width}
-                              loop={false}
-                              renderRow={this._renderViewPageItem}
-                              dataSource={EmptyUtils.isEmptyArr(productImgListTemp) ? [] : productImgListTemp}
-                              onWillChange={(item, index) => {
-                                  if (this.state.messageIndex !== index) {
-                                      this.setState({
-                                          messageIndex: index
-                                      });
-                                  }
-                              }}/>
-                    {this._renderStyle()}
+                    {
+                        Platform.OS === 'ios' ?
+                            <XGSwiper height={ScreenUtils.autoSizeWidth(377)} width={ScreenUtils.width}
+                                      loop={false}
+                                      renderRow={this._renderViewPageItem}
+                                      dataSource={EmptyUtils.isEmptyArr(productImgListTemp) ? [] : productImgListTemp}
+                                      onWillChange={(item, index) => {
+                                          if (this.state.messageIndex !== index) {
+                                              this.setState({
+                                                  messageIndex: index
+                                              });
+                                          }
+                                      }}/>
+                            : <ViewPager
+                                swiperShow={true}
+                                arrayData={EmptyUtils.isEmptyArr(productImgListTemp) ? [] : productImgListTemp}
+                                renderItem={this._renderViewPageItem}
+                                height={ScreenUtils.autoSizeWidth(377)}
+                                scrollsToTop={true}
+                                autoplay={false}
+                                loop={false}
+                                renderPagination={this._renderPagination}
+                                index={0}
+                                bounces={true}
+                            />
+                    }
+                    {Platform.OS === 'ios' ? this._renderStyle() : null}
                 </View>
             );
         } else {
