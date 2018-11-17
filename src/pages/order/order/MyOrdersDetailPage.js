@@ -979,7 +979,7 @@ class MyOrdersDetailPage extends BasePage {
                             }
                         ];
                     }
-                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    // pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
                     pageStateString.logisticsTime=data.deliverTime?data.deliverTime:data.finishTime
                     break;
                 case 6://退货关闭
