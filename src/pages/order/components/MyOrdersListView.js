@@ -189,7 +189,7 @@ export default class MyOrdersListView extends Component {
                             }
                         }).catch(e => {
                             Toast.hiddenLoading();
-                            NativeModules.commModule.toast(e);
+                            NativeModules.commModule.toast(e.msg);
                         });
                     }}
                 />
