@@ -43,7 +43,7 @@ export default class AssistantListPage extends BasePage {
             netFailedInfo: {},
 
             list: [],
-            searchText: '',
+            searchText: ''
         };
     }
 
@@ -97,7 +97,7 @@ export default class AssistantListPage extends BasePage {
             this.setState({
                 refreshing: false,
                 list: [],
-                loadingState: PageLoadingState.success,
+                loadingState: PageLoadingState.fail,
                 netFailedInfo: error
             }, () => {
                 this.$toastShow(error.msg);
@@ -107,7 +107,10 @@ export default class AssistantListPage extends BasePage {
 
     // 店员详情
     _clickAssistantDetail = (userId) => {
-        this.$navigate('spellShop/myShop/ShopAssistantDetailPage', { userId });
+        const { myStore } = this.params.storeData;
+        if (myStore) {
+            this.$navigate('spellShop/myShop/ShopAssistantDetailPage', { userId });
+        }
     };
 
     // 删除具体店员
@@ -130,7 +133,7 @@ export default class AssistantListPage extends BasePage {
 
     // 渲染行
     _renderItem = ({ item }) => {
-        const {tradeBalance} = this.params.storeData;
+        const { tradeBalance } = this.params.storeData;
         if (item.roleType === 0) {//0店主
             return <MasterRow item={item} onPress={this._clickAssistantDetail} tradeBalance={tradeBalance}/>;
         } else {//1店员

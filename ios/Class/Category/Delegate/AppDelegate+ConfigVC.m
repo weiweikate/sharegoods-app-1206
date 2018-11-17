@@ -19,6 +19,8 @@
 #import <SandBoxPreviewTool/SuspensionButton.h>
 #import <RCTHotUpdate.h>
 
+
+
 @implementation AppDelegate (ConfigVC)
 
 -(void)JR_ConfigVC:(UIApplication *)application  didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -63,4 +65,13 @@
     
   }];
 }
+
+//// Add this above the `@end`:
+//- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+//  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+//{
+//  
+//  
+
+//}
 @end

@@ -19,7 +19,7 @@ import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import buyerHasPay from '../res/buyerHasPay.png';
 import couponIcon from '../../mine/res/couponsImg/dingdan_icon_quan_nor.png';
 import arrow_right from '../res/arrow_right.png';
-import position from '../res/position.png';
+import position from '../res/dizhi-icon.png';
 import GoodsDetailItem from '../components/GoodsDetailItem';
 import UserSingleItem from '../components/UserSingleItem';
 import CommonTwoChoiceModal from '../components/CommonTwoChoiceModal';
@@ -28,17 +28,22 @@ import ShowMessageModal from '../components/ShowMessageModal';
 import productDetailHome from '../res/productDetailHome.png';
 import productDetailMessage from '../res/productDetailMessage.png';
 import logisticCar from './../res/car.png'
+import tobePayIcon from './../res/dingdanxiangqing_icon_fuk.png';
+import finishPayIcon from './../res/dingdanxiangqing_icon_yiwangcheng.png';
+import hasDeliverIcon from './../res/dingdanxiangqing_icon_yifehe.png';
+import refuseIcon from './../res/dingdanxiangqing_icon_guangbi.png';
 import constants from '../../../constants/constants';
 import DateUtils from '../../../utils/DateUtils';
 import Toast from '../../../utils/bridge';
 import productDetailImg from '../res/productDetailImg.png';
-import moreIcon from '../../spellShop/myShop/res/more_icon.png';
+import moreIcon from '..//res/more_icon.png';
 import GoodsGrayItem from '../components/GoodsGrayItem';
 import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
+import MineApi from '../../mine/api/MineApi';
 
 class MyOrdersDetailPage extends BasePage {
     constructor(props) {
@@ -50,38 +55,13 @@ class MyOrdersDetailPage extends BasePage {
             isShowShowMessageModal: false,
             orderId: this.props.navigation.state.params.orderId,
             expressNo: '',
-            viewData: {
-                expressNo: '',
-                orderId: 1235,
-                list: [],
-                receiverName: '赵信',
-                receiverNum: '18254569878',
-                receiverAddress: '浙江省杭州市萧山区宁围镇鸿宁路望京商务C2-502',
-                provinceString: '浙江省',
-                cityString: '金华市',
-                areaString: '义乌市',
-                goodsPrice: 5292,//商品价格(detail.totalPrice-detail.freightPrice)
-                freightPrice: 5092,//运费（快递）
-                userScore: 0,//积分抵扣
-                tokenCoin: 0,//一元券抵扣
-                couponPrice: 0,//优惠券抵扣
-                totalPrice: 5292,//订单总价
-                orderTotalPrice: 5292,//需付款
-                orderNum: 2018070250371039050793800,//订单编号
-                createTime: 1530499145000,//创建时间
-                platformPayTime: 1530499145000,//平台付款时间
-                payTime: 1530499145000,//三方付款时间
-                outTradeNo: 2018070250371039050793800,//三方交易号
-                sendTime: 1530499145000,//发货时间
-                finishTime: 1530499145000,//成交时间
-                autoConfirmTime: 1533669382000,//自动确认时间
-                pickedUp: 2
-            },
+            viewData: {},
             //todo 这里的初始化仅仅为了减少判空处理的代码，后面会删除
             pageState: 1,
             pageStateString: constants.pageStateString[1],
             menu: {},
-            giftBagCoupons: []
+            giftBagCoupons: [],
+            cancelArr:[]
         };
     }
 
@@ -100,7 +80,7 @@ class MyOrdersDetailPage extends BasePage {
     };
     $NavBarRenderRightItem = () => {
         return (
-            <TouchableOpacity onPress={this.showMore}>
+            <TouchableOpacity onPress={this.showMore} style={{width:20,height:44,alignItems:'center',justifyContent:'center'}}>
                 <Image source={moreIcon} style={{ width: 20, height: 5, marginRight: 10 }} resizeMode='contain'/>
             </TouchableOpacity>
         );
@@ -111,11 +91,37 @@ class MyOrdersDetailPage extends BasePage {
     };
     //**********************************ViewPart******************************************
     renderState = () => {
-        console.log('this.state.height',this.state.height);
+        let leftTopIcon;
+        switch(this.state.status){
+            case 1:
+                leftTopIcon=tobePayIcon;
+                break;
+            case 2:
+                leftTopIcon = buyerHasPay;
+                break;
+            case 3:
+                leftTopIcon=hasDeliverIcon;
+                break;
+            case 4:
+            case 5:
+                leftTopIcon=finishPayIcon;
+                break;
+            case 6:
+            case 7:
+            case 8:
+                leftTopIcon=refuseIcon;
+                break;
+            default:
+            leftTopIcon = buyerHasPay;
+            break;
+
+
+
+        }
         return (
             <View style={{ marginBottom: 10 }}>
                 <ImageBackground style={styles.redRectangle} source={productDetailImg}>
-                    <UIImage source={buyerHasPay} style={{ height: 25, width: 25, marginTop: -22 }}/>
+                    <UIImage source={leftTopIcon} style={{ height: 25, width: 25, marginTop: -22 }}/>
                     <View style={{ marginTop: -22 }}>
                         <UIText value={this.state.pageStateString.buyState} style={{
                             color: 'white',
@@ -128,46 +134,43 @@ class MyOrdersDetailPage extends BasePage {
                         }
                     </View>
                 </ImageBackground>
-                <TouchableOpacity style={{
-                   minHeight:81,
-                    marginTop: 69,
-                    backgroundColor: 'white',
-                    marginLeft: 15,
-                    marginRight: 15,
-                    paddingTop:5,
-                    paddingBottom:5,
-                    justifyContent: 'space-between',
-                    borderRadius: 10,
-                    flex:1,
-                    flexDirection: 'row',
-                    alignItems: 'center'}} onPress={() => {
+                <TouchableOpacity style={styles.topOrderDetail} onPress={() => {
                     this.$navigate('order/logistics/LogisticsDetailsPage', {
                         orderNum: this.state.viewData.orderNum,
                         orderId: this.state.orderId,
                         expressNo: this.state.expressNo
                     })
-                }}  onContentSizeChange={this.onContentSizeChange.bind(this)}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center'}} >
+                }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'space-between'}} >
                         <UIImage source={logisticCar} style={{ height: 19, width: 19, marginLeft: 21 }}/>
-                        <View style={{justifyContent:'center'}}>
+                        <View style={{justifyContent:'center',flex:1}}>
                             {typeof this.state.pageStateString.sellerState === 'string' ?
+                                <View style={{ marginLeft: 10}}>
                                 <UIText value={this.state.pageStateString.sellerState} style={{
-                                    color: DesignRule.textColor_mainTitle_222,
-                                    fontSize: 18,
-                                    marginLeft: 10,
+                                    color: DesignRule.textColor_mainTitle,
+                                    fontSize: 15,
                                     marginRight: 46
-                                }}/> :
-                                <View style={{flexDirection: 'row' }}>
+                                }}/>
+                                    {StringUtils.isNoEmpty(this.state.pageStateString.logisticsTime)?
+                                    <UIText style={{
+                                        color: DesignRule.textColor_instruction,
+                                        fontSize:15,
+                                        marginTop:3
+                                    }} value={DateUtils.getFormatDate(this.state.pageStateString.logisticsTime / 1000)}/>:null}
+                                </View>
+                                :
+                                <View style={{flexDirection: 'row'}}>
                                     <Text style={{
-                                        flex: 1,
+                                        flex:1,
                                         fontSize: 15,
                                          marginLeft:10,
-                                        color: DesignRule.textColor_mainTitle
+                                        marginRight:3,
+                                        color: DesignRule.textColor_instruction
                                     }}>{this.state.pageStateString.sellerState[0]}</Text>
                                     <Text style={{
                                         fontSize: 15,
-                                        marginRight:46,
-                                        color: DesignRule.textColor_mainTitle
+                                        marginRight:16,
+                                        color: DesignRule.textColor_instruction
                                     }}>{this.state.pageStateString.sellerState[1]}</Text>
                                 </View>
                             }
@@ -177,14 +180,16 @@ class MyOrdersDetailPage extends BasePage {
                                             color: DesignRule.textColor_instruction,
                                             fontSize: 13,
                                             marginLeft: 10,
-                                            marginRight: 46
+                                            marginRight: 16,
+                                            marginTop:5
                                         }}/>
                                 : null}
 
                         </View>
+                        <UIImage source={arrow_right} style={{ height: 19, width: 19, marginRight: 11 }}
+                                 resizeMode={'contain'}/>
                     </View>
-                    <UIImage source={arrow_right} style={{ height: 19, width: 19, marginRight: 11 }}
-                             resizeMode={'contain'}/>
+
                 </TouchableOpacity>
             </View>
 
@@ -194,6 +199,23 @@ class MyOrdersDetailPage extends BasePage {
     componentDidMount() {
         DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.loadPageData());
         this.loadPageData();
+        this.getCancelOrder();
+
+    }
+    getCancelOrder(){
+        let arrs=[];
+        MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(res => {
+            if (res.code == 10000 && StringUtils.isNoEmpty(res.data)) {
+                res.data.map((item,i)=>{
+                    arrs.push(item.value)
+                })
+                this.setState({
+                    cancelArr: arrs
+                });
+            }
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     componentWillUnmount() {
@@ -347,7 +369,7 @@ class MyOrdersDetailPage extends BasePage {
                                     position: 'absolute',
                                     left: 15,
                                     top: 12
-                                }}/> : null}
+                                }} /> : null}
                                 <View style={{
                                     height: 34,
                                     flexDirection: 'row',
@@ -531,20 +553,20 @@ class MyOrdersDetailPage extends BasePage {
                     }}
                     yes={() => {
                         this.setState({ isShowDeleteOrderModal: false });
-                        if (this.state.menu.id === 7) {
+                        if (this.state.status === 4||this.state.status === 5) {
                             Toast.hiddenLoading();
                             Toast.showLoading();
                             OrderApi.deleteCompletedOrder({ orderNum: this.state.viewData.orderNum }).then((response) => {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast('订单已删除');
                                 this.$navigateBack();
-                                this.params.callBack && this.params.callback();
+                                this.params.callBack && this.params.callBack();
                             }).catch(e => {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast(e.msg);
                             });
 
-                        } else if (this.state.menu.id === 9) {
+                        } else if (this.state.status === 6||this.state.status === 7||this.state.status === 8) {
                             Toast.showLoading();
                             OrderApi.deleteClosedOrder({ orderNum: this.state.viewData.orderNum }).then((response) => {
                                 Toast.hiddenLoading();
@@ -589,7 +611,7 @@ class MyOrdersDetailPage extends BasePage {
                 <SingleSelectionModal
                     isShow={this.state.isShowSingleSelctionModal}
                     ref={(ref)=>{this.cancelModal = ref}}
-                    detail={['我不想买了', '信息填写错误，重新拍', '其他原因']}
+                    detail={this.state.cancelArr}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
                     }}
@@ -597,7 +619,7 @@ class MyOrdersDetailPage extends BasePage {
                         this.setState({ isShowSingleSelctionModal: false });
                         Toast.showLoading();
                         OrderApi.cancelOrder({
-                            buyerRemark: ['我不想买了', '信息填写错误，重新拍', '其他原因'][index],
+                            buyerRemark: this.state.cancelArr[index],
                             orderNum: this.state.viewData.orderNum
                         }).then((response) => {
                             Toast.hiddenLoading();
@@ -624,24 +646,24 @@ class MyOrdersDetailPage extends BasePage {
             console.log('this.state.heightaddredd',this.state.height);
         return (
             <View style={{
-                height: Math.max(83, this.state.height),
+                minHeight:83,
                 backgroundColor: 'white',
                 flexDirection: 'row',
                 paddingTop: 10,
                 paddingBottom: 10,
                 alignItems: 'center'
-            }} onContentSizeChange={this.onContentSizeChange.bind(this)}>
-                <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }}/>
+            }}>
+                <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }} resizeMode={'contain'}/>
                 <View style={{ flex: 1, marginLeft: 15, marginRight: 20 }}>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
                         <Text style={{
                             flex: 1,
                             fontSize: 15,
-                            color: DesignRule.textColor_mainTitle
+                            color: DesignRule.textColor_instruction
                         }}>收货人：{this.state.viewData.receiverName}</Text>
                         <Text style={{
                             fontSize: 15,
-                            color: DesignRule.textColor_mainTitle
+                            color: DesignRule.textColor_instruction
                         }}>{this.state.viewData.receiverNum}</Text>
                     </View>
                     <UIText value={
@@ -650,7 +672,7 @@ class MyOrdersDetailPage extends BasePage {
                         + this.state.viewData.areaString
                         + this.state.viewData.receiverAddress
                     }
-                            style={{ color: DesignRule.textColor_instruction, fontSize: 15 }}/>
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 15 ,marginTop:5}}/>
                 </View>
             </View>
         );
@@ -836,7 +858,6 @@ class MyOrdersDetailPage extends BasePage {
         }
         return afterSaleService;
     };
-
     loadPageData() {
         Toast.showLoading();
         OrderApi.lookDetail({
@@ -905,8 +926,8 @@ class MyOrdersDetailPage extends BasePage {
                 //等待买家付款
                 case 1:
                     this.startCutDownTime(data.shutOffTime);
-                    pageStateString.sellerState = ['收货人：' + data.receiver,'' + data.recevicePhone];
-                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    pageStateString.sellerState = ['收货人:' + data.receiver,'' + data.recevicePhone];
+                    pageStateString.sellerTime = '收货地址:' + data.province + data.city + data.area + data.address;
                     if (StringUtils.isEmpty(data.outTradeNo)) {
                         pageStateString.menu = [
                             {
@@ -935,10 +956,7 @@ class MyOrdersDetailPage extends BasePage {
                     break;
                 //买家已付款 待发货
                 case 2:
-                    //nothing need update Extraly
                     pageStateString.menu = [];
-                    // pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
-
                     break;
                 //卖家已发货 待收货
                 case 3:
@@ -947,17 +965,8 @@ class MyOrdersDetailPage extends BasePage {
                     break;
                 //   确认收货
                 case 4:
-                    if (data.orderType == 5 || data.orderType == 98) {
-                        pageStateString.menu = [
-                            {
-                                id: 7,
-                                operation: '删除订单',
-                                isRed: false
-                            }
-
-                        ];
-                    }
                     pageStateString.sellerState = '已签收';
+                    pageStateString.logisticsTime=data.deliverTime?data.deliverTime:data.finishTime
                     break;
                 //订单已完成
                 case 5:
@@ -970,21 +979,12 @@ class MyOrdersDetailPage extends BasePage {
                             }
                         ];
                     }
-                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    // pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    pageStateString.logisticsTime=data.deliverTime?data.deliverTime:data.finishTime
                     break;
                 case 6://退货关闭
-                    if (data.orderType == 5 || data.orderType == 98) {
-                        pageStateString.menu = [
-                            {
-                                id: 7,
-                                operation: '删除订单',
-                                isRed: false
-                            }
-                        ];
-                    }
-                    pageStateString.sellerState = '订单已关闭';
-                    break;
                 case 7://用户关闭
+                case 8://超时关闭
                     if (data.orderType == 5 || data.orderType == 98) {
                         pageStateString.menu = [
                             {
@@ -996,20 +996,7 @@ class MyOrdersDetailPage extends BasePage {
                     }
                     pageStateString.sellerState = '订单已关闭';
                     pageStateString.moreDetail = data.buyerRemark;
-                    break;
-                case 8://超时关闭
-                    pageStateString.sellerState = ['收货人：' + data.receiver,'' + data.recevicePhone];
-                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
-                    pageStateString.moreDetail = data.buyerRemark;
-                    if (data.orderType == 5 || data.orderType == 98) {
-                        pageStateString.menu = [
-                            {
-                                id: 7,
-                                operation: '删除订单',
-                                isRed: false
-                            }
-                        ];
-                    }
+                    pageStateString.logisticsTime=data.shutOffTime?data.shutOffTime:null
                     break;
 
             }
@@ -1124,8 +1111,13 @@ class MyOrdersDetailPage extends BasePage {
         this.setState({ menu: menu });
         switch (menu.id) {
             case 1:
-                this.setState({ isShowSingleSelctionModal: true });
-                this.cancelModal && this.cancelModal.open();
+                if(this.state.cancelArr.length>0){
+                    this.setState({ isShowSingleSelctionModal: true });
+                    this.cancelModal && this.cancelModal.open();
+                }else{
+                    this.$toastShow('无取消类型！');
+                }
+
                 break;
             case 2:
                 this.$navigate('payment/PaymentMethodPage', {
@@ -1208,11 +1200,6 @@ class MyOrdersDetailPage extends BasePage {
                     response.data.orderProducts.map((item, index) => {
                         cartData.push({ productId: item.productId, priceId: item.priceId, amount: item.num });
                     });
-                    // let params = {
-                    //     amount: response.data.orderProducts[0].num,
-                    //     priceId: response.data.orderProducts[0].priceId,
-                    //     productId: response.data.orderProducts[0].productId
-                    // };
                     shopCartCacheTool.addGoodItem(cartData);
                     this.$navigate('shopCart/ShopCart', { hiddeLeft: false });
                 }).catch(e => {
@@ -1265,8 +1252,6 @@ class MyOrdersDetailPage extends BasePage {
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 0,
                     orderProductId: this.state.orderType == 5 || this.state.orderType == 98 ? this.state.viewData.list[0].id : this.state.viewData.list[index].id
-                    // index: index,
-                    // refleshOrderDetail: () => this.loadPageData()
                 });
                 break;
             case 1:
@@ -1279,39 +1264,18 @@ class MyOrdersDetailPage extends BasePage {
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 0,
                     returnProductId: this.state.orderType == 5 || this.state.orderType == 98 ? this.state.viewData.list[0].returnProductId : this.state.viewData.list[index].returnProductId
-                    // index: index
                 });
                 break;
             case 3:
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 1,
-                    // pageData: this.state.viewData,
                     returnProductId: this.state.orderType == 5 || this.state.orderType == 98 ? this.state.viewData.list[0].returnProductId : this.state.viewData.list[index].returnProductId
-                    // index: index
                 });
                 break;
-            // case 4:
-            //     this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-            //         pageType: 6,
-            //         // pageData: this.state.viewData,
-            //         returnProductId: this.state.orderType==5||this.state.orderType==98?this.state.viewData.list[0].returnProductId:this.state.viewData.list[index].returnProductId
-            //         // index: index
-            //     });
-            //     break;
-            // case 5:
-            //     this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
-            //         pageType: 7,
-            //         // pageData: this.state.viewData,
-            //         returnProductId: this.state.orderType==5||this.state.orderType==98?this.state.viewData.list[0].returnProductId:this.state.viewData.list[index].returnProductId,
-            //         index: index
-            //     });
-            //     break;
             case 6:
                 this.$navigate('order/afterSaleService/ExchangeGoodsDetailPage', {
                     pageType: 2,
-                    // pageData: this.state.viewData,
                     returnProductId: this.state.orderType == 5 || this.state.orderType == 98 ? this.state.viewData.list[0].returnProductId : this.state.viewData.list[index].returnProductId
-                    // index: index
                 });
                 break;
         }
@@ -1343,7 +1307,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     grayView: {
-        width: 100,
+        width: 90,
         height: 30,
         borderRadius: 15,
         backgroundColor: 'white',
@@ -1359,7 +1323,18 @@ const styles = StyleSheet.create({
         fontSize: 13,
         lineHeight: 18,
         color: DesignRule.textColor_secondTitle
-    }
+    },
+     topOrderDetail:{
+         minHeight:81,
+         marginTop: 69,
+         backgroundColor: 'white',
+         marginLeft: 15,
+         marginRight: 15,
+         paddingTop:5,
+         paddingBottom:5,
+         borderRadius: 10,
+         justifyContent:'center'
+     }
 });
 
 export default MyOrdersDetailPage;

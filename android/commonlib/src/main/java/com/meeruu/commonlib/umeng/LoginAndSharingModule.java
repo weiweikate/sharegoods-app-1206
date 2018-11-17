@@ -11,7 +11,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -60,6 +59,8 @@ import java.util.Map;
 public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     private ReactApplicationContext mContext;
     public static final String MODULE_NAME = "LoginAndShareModule";
+    private static final int BLACK = 0xff000000;
+    private static final int PADDING_SIZE_MIN = 20;
 
     private static class ShareListener implements UMShareListener {
         Callback success;
@@ -86,7 +87,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-            ToastUtils.showToast("分享失败：" + throwable.getMessage());
+            ToastUtils.showToast("分享失败");
             if (fail != null) {
                 fail.invoke("失败" + throwable.getMessage());
             }
@@ -171,7 +172,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
 
         //分享类型为小程序，且不为微信会话
-        if(params.getInt("platformType") != 0 && shareType == 2){
+        if (params.getInt("platformType") != 0 && shareType == 2) {
             shareType = 1;
         }
 
@@ -184,7 +185,14 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                         .share();
                 break;
             case 1:
-                image = fixThumImage(params.getString("thumImage"));
+
+                if (params.hasKey("hdImageURL")) {
+                    image = fixThumImage(params.getString("hdImageURL"));
+
+                } else {
+                    image = fixThumImage(params.getString("thumImage"));
+                }
+
                 UMWeb web = new UMWeb(params.getString("linkUrl"));
                 web.setTitle(params.getString("title"));//标题
                 web.setThumb(image);  //缩略图
@@ -230,7 +238,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 Uri uri = Uri.parse(url);
                 File file = new File(new URI(uri.toString()));
                 return new UMImage(mContext, file);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
 
@@ -598,8 +606,9 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
             if (url == null || "".equals(url) || url.length() < 1) {
                 return null;
             }
-            Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();
+            Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
             hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+            hints.put(EncodeHintType.MARGIN, 0);
             // 图像数据转换，使用了矩阵转换
             BitMatrix bitMatrix = new QRCodeWriter().encode(url, BarcodeFormat.QR_CODE, width, height, hints);
             int[] pixels = new int[width * height];
@@ -623,6 +632,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         }
         return null;
     }
+
 
     private static String saveImageToCache(Context context, Bitmap bitmap, String name) {
 

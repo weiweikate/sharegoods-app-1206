@@ -6,6 +6,7 @@ import StringUtils from '../../../utils/StringUtils';
 import GoodsListItem from './GoodsListItem';
 import SingleSelectionModal from './BottomSingleSelectModal';
 import CommonTwoChoiceModal from './CommonTwoChoiceModal';
+// import OrderUtils from './../components/OrderUtils';
 import Toast from '../../../utils/bridge';
 import user from '../../../model/user';
 import OrderApi from '../api/orderApi';
@@ -13,6 +14,7 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import userOrderNum from '../../../model/userOrderNum';
 import DesignRule from 'DesignRule';
 import emptyIcon from '../res/kongbeuye_dingdan.png';
+import MineApi from '../../mine/api/MineApi';
 export default class MyOrdersListView extends Component {
     constructor(props) {
         super(props);
@@ -26,7 +28,8 @@ export default class MyOrdersListView extends Component {
             isShowSingleSelctionModal: false,
             isShowReceiveGoodsModal: false,
             menu: {},
-            index: -1
+            index: -1,
+            CONFIG:[]
         };
         this.currentPage = 1;
     }
@@ -107,7 +110,7 @@ export default class MyOrdersListView extends Component {
                     yes={() => {
                         this.setState({ isShowDeleteOrderModal: false });
                         console.log(this.state.menu);
-                        if (this.state.menu.id === 9) {
+                        if (this.state.viewData[this.state.index].orderStatus === 6||this.state.viewData[this.state.index].orderStatus === 7||this.state.viewData[this.state.index].orderStatus === 8) {
                             Toast.showLoading();
                             OrderApi.deleteClosedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
                                 Toast.hiddenLoading();
@@ -117,7 +120,7 @@ export default class MyOrdersListView extends Component {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast(e.msg);
                             });
-                        } else if (this.state.menu.id === 7) {
+                        } else if (this.state.viewData[this.state.index].orderStatus === 4||this.state.viewData[this.state.index].orderStatus === 5) {
                             Toast.showLoading();
                             OrderApi.deleteCompletedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
                                 Toast.hiddenLoading();
@@ -165,7 +168,7 @@ export default class MyOrdersListView extends Component {
                     ref={(ref) => {
                         this.cancelModal = ref;
                     }}
-                    detail={['我不想买了', '信息填写错误，重新拍', '其他原因']}
+                    detail={this.state.CONFIG}
                     closeWindow={() => {
                         this.setState({ isShowSingleSelctionModal: false });
                     }}
@@ -173,19 +176,20 @@ export default class MyOrdersListView extends Component {
                         this.setState({ isShowSingleSelctionModal: false });
                         Toast.showLoading();
                         OrderApi.cancelOrder({
-                            buyerRemark: ['我不想买了', '信息填写错误，重新拍', '其他原因'][index],
+                            buyerRemark: this.state.CONFIG[index],
                             orderNum: this.state.viewData[this.state.index].orderNum
                         }).then((response) => {
                             Toast.hiddenLoading();
                             if (response.code === 10000) {
                                 NativeModules.commModule.toast('订单已取消');
+                                index=-1;
                                 this.onRefresh();
                             } else {
                                 NativeModules.commModule.toast(response.msg);
                             }
                         }).catch(e => {
                             Toast.hiddenLoading();
-                            NativeModules.commModule.toast(e);
+                            NativeModules.commModule.toast(e.msg);
                         });
                     }}
                 />
@@ -248,8 +252,24 @@ export default class MyOrdersListView extends Component {
     componentDidMount() {
         //网络请求，业务处理
         this.getDataFromNetwork();
+        this.getCancelOrder();
         DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.onRefresh());
         this.timeDown();
+    }
+    getCancelOrder(){
+        let arrs=[];
+        MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(res => {
+            if (res.code == 10000 && StringUtils.isNoEmpty(res.data)) {
+                res.data.map((item,i)=>{
+                    arrs.push(item.value)
+                })
+                this.setState({
+                    CONFIG: arrs
+                });
+            }
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     timeDown() {
@@ -278,7 +298,7 @@ export default class MyOrdersListView extends Component {
             OrderApi.queryPage({
                 // orderNum: this.props.orderNum,
                 condition:this.props.orderNum,
-                page: 1,
+                page: this.currentPage,
                 size: constants.PAGESIZE
             }).then((response) => {
                 Toast.hiddenLoading();
@@ -407,11 +427,13 @@ export default class MyOrdersListView extends Component {
     };
 
     onRefresh = () => {
+        console.log('onRefresh',this.currentPage);
         this.currentPage = 1;
         this.getDataFromNetwork();
     };
 
-    onLoadMore = (page) => {
+    onLoadMore = () => {
+        // console.log('onLoadMore',this.currentPage++);
         this.currentPage++;
         this.getDataFromNetwork();
     };
@@ -445,8 +467,13 @@ export default class MyOrdersListView extends Component {
         this.setState({ menu: menu, index: index });
         switch (menu.id) {
             case 1:
-                this.setState({ isShowSingleSelctionModal: true });
-                this.cancelModal && this.cancelModal.open();
+                if(this.state.CONFIG.length>0){
+                    this.setState({ isShowSingleSelctionModal: true });
+                    this.cancelModal && this.cancelModal.open();
+                }else{
+                    NativeModules.commModule.toast('无取消理由');
+                }
+
                 break;
             case 2:
                 this.props.nav('payment/PaymentMethodPage', {

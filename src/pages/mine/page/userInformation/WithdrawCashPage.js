@@ -18,10 +18,13 @@ import StringUtils from '../../../../utils/StringUtils';
 import arrow_right from '../../../order/res/arrow_right.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import bank from '../../res/userInfoImg/commonBankCardIcon.png';
-import MineApi from '../../api/MineApi';
+// import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
+import user from '../../../../model/user';
+import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
 
+@observer
 class WithdrawCashPage extends BasePage {
     constructor(props) {
         super(props);
@@ -39,8 +42,8 @@ class WithdrawCashPage extends BasePage {
             bank_name: '',
             id: 0,
             card_type: 1,
-            blockedBalances: 100,
-            availableBalance: 200,
+            blockedBalances: 0,
+            availableBalance: 0,
             totalFee: 0
         };
     }
@@ -118,7 +121,7 @@ class WithdrawCashPage extends BasePage {
                     <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg, marginLeft: 15 }}/>
                 </View>
                 <UIText
-                    value={'可用余额' + StringUtils.formatMoneyString(this.state.availableBalance, false) + '元，不可提现金额' + StringUtils.formatMoneyString(this.state.blockedBalances, false) + '元'}
+                    value={'可用余额' + StringUtils.formatMoneyString(user.availableBalance, false) + '元，不可提现金额' + StringUtils.formatMoneyString(user.blockedBalance, false) + '元'}
                     style={{
                         color: DesignRule.textColor_secondTitle,
                         fontSize: 15,
@@ -189,37 +192,37 @@ class WithdrawCashPage extends BasePage {
     //**********************************BusinessPart******************************************
     loadPageData() {
         Toast.showLoading();
-        MineApi.findSettlementTotalByToken({}).then((response) => {
-            Toast.hiddenLoading();
-            if (response.ok) {
-                let data = response.data;
-                this.setState({ settlementTotal: data });
-            } else {
-                NativeModules.commModule.toast(response.msg);
-            }
-        }).catch(e => {
-            Toast.hiddenLoading();
-        });
-        MineApi.findBankCardAndBalance({}).then((response) => {
-            if (response.ok) {
-                this.setState({
-                    serviceCharge: StringUtils.isNoEmpty(response.data.serviceCharge) ? response.data.serviceCharge : 0,
-                    card_no: response.data.card_no,
-                    bank_name: response.data.bank_name,
-                    id: response.data.id,
-                    card_type: response.data.card_type,
-                    blockedBalances: StringUtils.isNoEmpty(response.data.blockedBalances) ? response.data.blockedBalances : 0,
-                    availableBalance: StringUtils.isNoEmpty(response.data.availableBalance) ? response.data.availableBalance : 0
-                });
-            } else {
-
-            }
-        });
+        // MineApi.findSettlementTotalByToken({}).then((response) => {
+        //     Toast.hiddenLoading();
+        //     if (response.ok) {
+        //         let data = response.data;
+        //         this.setState({ settlementTotal: data });
+        //     } else {
+        //         NativeModules.commModule.toast(response.msg);
+        //     }
+        // }).catch(e => {
+        //     Toast.hiddenLoading();
+        // });
+        // MineApi.findBankCardAndBalance({}).then((response) => {
+        //     if (response.ok) {
+        //         this.setState({
+        //             serviceCharge: StringUtils.isNoEmpty(response.data.serviceCharge) ? response.data.serviceCharge : 0,
+        //             card_no: response.data.card_no,
+        //             bank_name: response.data.bank_name,
+        //             id: response.data.id,
+        //             card_type: response.data.card_type,
+        //             blockedBalances: StringUtils.isNoEmpty(response.data.blockedBalances) ? response.data.blockedBalances : 0,
+        //             availableBalance: StringUtils.isNoEmpty(response.data.availableBalance) ? response.data.availableBalance : 0
+        //         });
+        //     } else {
+        //
+        //     }
+        // });
     }
 
     onChangeText = (text) => {
         let money = this.state.money;
-        if (parseFloat(text) < parseFloat(this.state.availableBalance)) {
+        if (parseFloat(text) < parseFloat(user.availableBalance)) {
             this.setState({
                 money: text,
                 totalFee: parseFloat(this.state.serviceCharge) * parseFloat(text)
@@ -229,6 +232,7 @@ class WithdrawCashPage extends BasePage {
         }
     };
     commit = () => {
+        NativeModules.commModule.toast('功能暂未开放！');
         // if (StringUtils.isEmpty(this.state.id)) {
         //     NativeModules.commModule.toast('请先选择银行卡');
         //     return;
@@ -251,16 +255,17 @@ class WithdrawCashPage extends BasePage {
         // });
     };
     selectBankCard = () => {
-        this.$navigate('mine/bankCard/BankCardListPage', {
-            callBack: (params) => {
-                this.setState({
-                    card_no: params.card_no,
-                    bank_name: params.bank_name,
-                    id: params.id,
-                    card_type: params.card_type
-                });
-            }
-        });
+        NativeModules.commModule.toast('功能暂未开放');
+    //     this.$navigate('mine/bankCard/BankCardListPage', {
+    //         callBack: (params) => {
+    //             this.setState({
+    //                 card_no: params.card_no,
+    //                 bank_name: params.bank_name,
+    //                 id: params.id,
+    //                 card_type: params.card_type
+    //             });
+    //         }
+    //     });
     };
 }
 

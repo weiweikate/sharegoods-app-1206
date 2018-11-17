@@ -35,13 +35,19 @@ export default class DownPricePage extends BasePage {
     }
 
     componentDidMount() {
-        const { linkTypeCode } = this.params;
-        console.log('-----' + linkTypeCode);
-        this.dataModel.loadTopicData(linkTypeCode);
+
+
         // this.$NavigationBarResetTitle(this.dataModel.name)
+
+        this.didBlurSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                const { linkTypeCode } = this.params;
+                console.log('-----' + linkTypeCode);
+                this.dataModel.loadTopicData(linkTypeCode);
+            }
+        );
     }
-
-
     /**
      * 渲染底部组列表
      * @param sections 所有组数据
@@ -155,7 +161,7 @@ export default class DownPricePage extends BasePage {
             sectionData = sectionList[this.state.selectNav].sectionDataList || [];
         }
         const { imgUrl } = this.dataModel;
-        this.$NavigationBarResetTitle(this.dataModel.topicTitle || '专题');
+        this.$NavigationBarResetTitle(this.dataModel.name);
         return (
             <ScrollView
                 alwaysBounceVertical={true}
@@ -179,7 +185,7 @@ export default class DownPricePage extends BasePage {
                     imageUri={imgUrl}
                     style={{
                         width: ScreenUtils.width,
-                        height: ScreenUtils.width * 188 / 375
+                        height: ScreenUtils.width * 7 / 15
                     }}
                 />
 

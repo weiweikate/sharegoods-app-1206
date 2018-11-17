@@ -179,22 +179,22 @@ class AddBankCardPage extends BasePage {
         if (!StringUtils.checkBankCard(bankCard)) {
             return;
         }
-        MineApi.findBankInfo({ bankCard: bankCard }).then((response) => {
-            if (response.ok) {
-                let data = response.data;
-                if (data.reason == 'Succes') {
-                    this.setState({
-                        result: data.result,
-                        bankName: data.result.bankname,
-                        cardType: data.result.iscreditcard == 1 ? 1 : 2
-                    });
-                }
-            } else {
-                NativeModules.commModule.toast(response.msg);
-            }
-        }).catch(e => {
-            Toast.hiddenLoading();
-        });
+        // MineApi.findBankInfo({ bankCard: bankCard }).then((response) => {
+        //     if (response.ok) {
+        //         let data = response.data;
+        //         if (data.reason == 'Succes') {
+        //             this.setState({
+        //                 result: data.result,
+        //                 bankName: data.result.bankname,
+        //                 cardType: data.result.iscreditcard == 1 ? 1 : 2
+        //             });
+        //         }
+        //     } else {
+        //         NativeModules.commModule.toast(response.msg);
+        //     }
+        // }).catch(e => {
+        //     Toast.hiddenLoading();
+        // });
     };
     renderWideLine = () => {
         return (

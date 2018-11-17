@@ -12,26 +12,27 @@ import {
 } from 'react-native';
 //Source
 const SCREEN_WIDTH = Dimensions.get('window').width;
-import RingImg from './res/headBg.png';
-import HeaderBarBgImg from './res/txbg_03.png';
-//icon
-import NameIcon from './res/icon_03.png';
-import StarIcon from './res/icon_03-02.png';
-import CodeIcon from './res/icon_03-03.png';
-import PhoneIcon from './res/icon_03-04.png';
-
-import QbIcon from './res/dzfhj_03-03.png';
-import detail_cishu from './res/detail_cishu.png';
-import MoneyIcon from './res/ccz_03.png';
-import detail_zongti from './res/detail_zongti.png';
-import detail_benci from './res/detail_benci.png';
 
 import BasePage from '../../../BasePage';
 import DateUtils from '../../../utils/DateUtils';
 import SpellShopApi from '../api/SpellShopApi';
 import DesignRule from 'DesignRule';
-import NavLeft from './res/NavLeft.png';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import StringUtils from '../../../utils/StringUtils';
+import res from '../res';
+const RingImg = res.myShop.headBg;
+const HeaderBarBgImg = res.myShop.txbg_03;
+const NameIcon = res.myShop.icon_03;
+const StarIcon = res.myShop.icon_03_02;
+const CodeIcon = res.myShop.icon_03_03;
+const PhoneIcon = res.myShop.icon_03_04;
+const QbIcon = res.myShop.dzfhj_03_03;
+const detail_cishu = res.myShop.detail_cishu;
+const MoneyIcon = res.myShop.ccz_03;
+const detail_zongti = res.myShop.detail_zongti;
+const detail_benci = res.myShop.detail_benci;
+const NavLeft = res.myShop.NavLeft;
+
 
 export default class ShopAssistantDetailPage extends BasePage {
 
@@ -45,8 +46,6 @@ export default class ShopAssistantDetailPage extends BasePage {
     $navigationBarOptions = {
         show: false
     };
-    // leftNavItemHidden: this.props.leftNavItemHidden
-
 
     _NavBarRenderRightItem = () => {
         return (<View style={styles.transparentView}>
@@ -86,21 +85,25 @@ export default class ShopAssistantDetailPage extends BasePage {
 
 
     // 总体贡献度
-    _totalContribution = (storeBonusDto) => {
+    _totalContribution = () => {
         //dealerTotalBonus(店员所有)/storeTotalBonus(店铺所有) 总体贡献度
-        const { dealerTotalBonus = 0, storeTotalBonus = 0 } = this.state.userInfo;
-        if (storeTotalBonus === 0) {
-            return '0%';
+        let { dealerTotalBonus = 0, storeTotalBonus = 0 } = this.state.userInfo;
+        dealerTotalBonus = StringUtils.isNoEmpty(dealerTotalBonus) ? dealerTotalBonus : 0;
+        storeTotalBonus = StringUtils.isNoEmpty(storeTotalBonus) ? storeTotalBonus : 0;
+        if (dealerTotalBonus === 0 || storeTotalBonus === 0) {
+            return '0.00%';
         }
         return `${((dealerTotalBonus / storeTotalBonus) * 100).toFixed(2)}%`;
     };
 
     // 本次贡献度
-    _currContribution = (storeBonusDto) => {
+    _currContribution = () => {
         //dealerThisTimeBonus(店员本次)/storeThisTimeBonus(店铺本次)
-        const { dealerThisTimeBonus = 0, storeThisTimeBonus = 0 } = this.state.userInfo;
-        if (storeThisTimeBonus === 0) {
-            return '0%';
+        let { dealerThisTimeBonus = 0, storeThisTimeBonus = 0 } = this.state.userInfo;
+        dealerThisTimeBonus = StringUtils.isEmpty(dealerThisTimeBonus) ? 0 : dealerThisTimeBonus;
+        storeThisTimeBonus = StringUtils.isEmpty(storeThisTimeBonus) ? 0 : storeThisTimeBonus;
+        if (dealerThisTimeBonus === 0 || storeThisTimeBonus === 0) {
+            return '0.00%';
         }
         return `${((dealerThisTimeBonus / storeThisTimeBonus) * 100).toFixed(2)}%`;
     };
@@ -130,13 +133,22 @@ export default class ShopAssistantDetailPage extends BasePage {
         return (
             <ScrollView style={{ flex: 1 }}>
                 <ImageBackground source={HeaderBarBgImg} style={styles.imgBg}>
-                    <View style = {{marginTop:ScreenUtils.headerHeight,flex:1,flexDirection:'row',alignItems:'center'}}>
+                    <View style={{
+                        marginTop: ScreenUtils.headerHeight,
+                        flex: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}>
                         <ImageBackground source={RingImg}
                                          style={styles.headerBg}>
                             {
                                 userInfo.headImg ?
                                     <Image
-                                        style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 }}
+                                        style={{
+                                            width: headerWidth,
+                                            height: headerWidth,
+                                            borderRadius: headerWidth / 2
+                                        }}
                                         source={{ uri: userInfo.headImg }}/> : null
                             }
                         </ImageBackground>
@@ -148,7 +160,7 @@ export default class ShopAssistantDetailPage extends BasePage {
                         </View>
                     </View>
                 </ImageBackground>
-                {this._renderRow(QbIcon, '加入店铺时间', DateUtils.formatDate(updateTime, 'yyyy年MM月dd'))}
+                {this._renderRow(QbIcon, '加入店铺时间', DateUtils.formatDate(updateTime, 'yyyy年MM月dd日'))}
                 {this.renderSepLine()}
                 {this._renderRow(detail_cishu, '参与店铺分红次数', `${dealerTotalBonusCount || 0}次`)}
                 {this.renderSepLine()}
@@ -196,7 +208,7 @@ const styles = StyleSheet.create({
     imgBg: {
         width: SCREEN_WIDTH,
         height: ScreenUtils.autoSizeWidth(162) + ScreenUtils.headerHeight,
-        marginBottom:11,
+        marginBottom: 11
     },
     headerBg: {
         marginLeft: 16,

@@ -32,7 +32,6 @@ class TotalTopicresultDataModel {
     @observable
     sectionDataList = [];
 
-
     @computed
     get topicTitle() {
         return this.name || '专题';
@@ -132,7 +131,7 @@ class TotalTopicresultDataModel {
         }
 
         this.sectionDataList = tempArr;
-        console.log(tempArr);
+        // console.log(tempArr);
     }
 
     /**

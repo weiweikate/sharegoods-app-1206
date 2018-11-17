@@ -1,6 +1,7 @@
 
 
 // 状态：0.删除 1.未开始 2.进行中 3.已售完 4.时间结束 5.手动结束
+
 const statues = {
     deleteStatue: 0,
     noBegin: 1,
@@ -29,7 +30,7 @@ const typeName = {
     [productTypes.skill]: 'seckillPrice',
     //降价拍需要判断statue 如果为1 则为startPrice 如果为2 则为 markdownPrice
     [productTypes.down]: downPriceParam,
-    [productTypes.giftPackage]: '暂无',
+    [productTypes.giftPackage]: 'originalPrice',
     [productTypes.helpFree]: '暂无',
     [productTypes.newTopic]: '暂无',
     [productTypes.normalProduct] : 'originalPrice'
@@ -38,9 +39,9 @@ const typeName = {
 function getShowPrice(itemData) {
     let showPrice = itemData.productType === 2
         ?
-        '¥ ' + itemData[typeName[itemData.productType][itemData.status]]
+         '¥'+itemData[typeName[itemData.productType][itemData.status]]
         :
-        '¥ ' + itemData[typeName[itemData.productType]];
+         '¥'+itemData[typeName[itemData.productType]];
     return showPrice;
 }
 

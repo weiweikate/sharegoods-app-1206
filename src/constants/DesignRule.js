@@ -11,13 +11,13 @@
 
 import ScreenUtils from '../utils/ScreenUtils';
 
-const autoSizeWidth = ScreenUtils.autoSizeWidth;
+const {autoSizeWidth, onePixel} = ScreenUtils;
 
 const colors = {
-        mainColor: '#F00006',//主色调
+        mainColor: '#F00050',//主色调
         white: 'white',
         bgColor: '#F7F7F7',//背景色
-        bgColor_btn: '#F00006',//红色按钮背景色
+        bgColor_btn: '#F00050',//红色按钮背景色
         bgColor_btnSelect: '#EF154C',//红色按钮选中状态背景色
         bgColor_LVLabel: '#F2D3A2',//等级标签背景色
         bgColor_redCard: '#FF4F6E',//红色卡片背景色
@@ -33,9 +33,9 @@ const colors = {
         textColor_instruction: '#999999',//说明文字
         textColor_placeholder: '#CCCCCC',//预填文字
         textColor_white: 'white',//白色文字
-        textColor_redWarn: '#F00006',//红色警告、提示文字
+        textColor_redWarn: '#F00050',//红色警告、提示文字
         textColor_blueURL: '#38ADFF',//文字链接
-        textColor_btnText: '#F00006',//按钮红色文字
+        textColor_btnText: '#F00050',//按钮红色文字
         textColor_hint: '#C8C8C8', //输入框背景字颜色
         bgColor_blue: '#33B4FF', //蓝色背景
         bgColor_deepBlue: '#2B99D9',//深蓝背景
@@ -54,6 +54,7 @@ const sizes = {
     fontSize_NavTitle: 19,//导航lan文字大小
     fontSize_bigBtnText: autoSizeWidth(17),//大按钮里面的文字大小
     fontSize_mediumBtnText: autoSizeWidth(15),//中等大小按钮的文字大小
+    fontSize_mainTitle: autoSizeWidth(19),//一级标题文字大小
     fontSize_secondTitle: autoSizeWidth(15),//二级标题文字大小
     fontSize_threeTitle: autoSizeWidth(13),//三级标题文字大小
     fontSize_24: autoSizeWidth(12),//四级文案 辅助信息
@@ -64,7 +65,8 @@ const sizes = {
     margin_card: autoSizeWidth(10),//卡片之间的间距
     margin_listGroup: autoSizeWidth(10),//列表组之间的间距
     margin_imageText: autoSizeWidth(10),//图文间距
-    height_bigBtn: autoSizeWidth(49)//按钮高度
+    height_bigBtn: autoSizeWidth(49),//按钮高度
+    lineHeight: onePixel
 };
 
 const styles = {

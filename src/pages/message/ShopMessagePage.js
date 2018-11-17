@@ -57,7 +57,6 @@ export default class ShopMessagePage extends BasePage {
 
     componentDidMount() {
         this.loadPageData();
-        DeviceEventEmitter.emit("contentViewed");
     }
 
     confirmMessage = (id,confirm,createdBy,index) =>{
@@ -79,8 +78,9 @@ export default class ShopMessagePage extends BasePage {
     //100普通，200拼店
     /*加载数据*/
     loadPageData =()=> {
-        Toast.showLoading()
-        MessageAPI.queryMessage({page: 1, pageSize: 30, type:200}).then(res => {
+        DeviceEventEmitter.emit("contentViewed");
+        Toast.showLoading();
+        MessageAPI.queryMessage({page: 1, pageSize: 10, type:200}).then(res => {
             Toast.hiddenLoading()
             if(StringUtils.isNoEmpty(res.data.data)){
                 let arrData = [];
@@ -424,7 +424,7 @@ export default class ShopMessagePage extends BasePage {
     }
 
     getDataFromNetwork() {
-        MessageAPI.queryMessage({page: this.currentPage, pageSize: 15, type:200,createdTime: this.createdTime}).then(res => {
+        MessageAPI.queryMessage({page: this.currentPage, pageSize: 10, type:200,createdTime: this.createdTime}).then(res => {
             if(StringUtils.isNoEmpty(res.data.data)){
                 if(!EmptyUtils.isEmptyArr(arrData)){
                     this.createdTime = res.data.data[res.data.data.length - 1].createdTime;

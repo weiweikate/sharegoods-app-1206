@@ -7,7 +7,7 @@ import DesignRule from 'DesignRule'
 
 const Goods = ({goods, press}) => <TouchableOpacity style={styles.container} onPress={()=> press && press()}>
     <View style={styles.image}>
-        <Image style={styles.image} source={{uri: goods.imgUrl}}/>
+        <Image style={styles.image} source={{uri: goods.imgUrl ? goods.imgUrl : ''}}/>
         <View style={styles.titleView}>
             <Text style={styles.title} numberOfLines={1}>{goods.title}</Text>
         </View>
@@ -42,7 +42,7 @@ export default class GoodsCell extends Component {
             ?
             <Goods goods={data[1]} press={()=> this._goodsAction(data[1])}/>
             :
-            null
+            <View style={styles.uncontainer}/>
         }
         </View>
     }
@@ -57,6 +57,10 @@ let styles = StyleSheet.create({
         borderColor: '#EDEDED',
         borderWidth: onePixel,
         overflow: 'hidden'
+    },
+    uncontainer: {
+        height: px2dp(267),
+        width: px2dp(172)
     },
     image: {
         height: px2dp(172),
@@ -91,11 +95,12 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(7)
     },
     cell: {
-        backgroundColor: '#fff',
         height: px2dp(273),
         flexDirection: 'row',
         marginRight: px2dp(15),
-        marginLeft: px2dp(15)
+        marginLeft: px2dp(15),
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     space: {
         width: px2dp(5)

@@ -11,9 +11,11 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import StringUtils from '../../utils/StringUtils';
 import bridge from '../../utils/bridge';
-import icon_close from '../home/product/res/icon_close.png';
 import Modal from 'CommModal';
 import DesignRule from 'DesignRule';
+import res from './res';
+
+const icon_close = res.button.close_gray_circle;
 
 export default class TopicDetailSelectPage extends Component {
 
@@ -31,6 +33,21 @@ export default class TopicDetailSelectPage extends Component {
     }
 
     show = (data, selectionViewConfirm) => {
+        //单规格的默认选择
+        const { specPriceList = {} } = data || {};
+        let indexOfTop = 0;
+        for (let key in specPriceList) {
+            let tempArr = specPriceList[key];
+            tempArr.forEach((item) => {
+                if (item.surplusNumber > 0 && tempArr.length === 1) {
+                    this.state.selectList[indexOfTop] = item.id;
+                    this.state.selectStrList[indexOfTop] = item.specValues;
+                    this.state.selectData[indexOfTop] = item;
+                }
+            });
+            indexOfTop++;
+        }
+
         this.setState({
             isShow: true,
             data: JSON.parse(JSON.stringify(data)) || {},
@@ -78,12 +95,8 @@ export default class TopicDetailSelectPage extends Component {
         let tagList = [];
         for (let index = 0; index < data.length; index++) {
             let obj = data[index];
-            obj.canSelected = obj.surplusNumber > 0;
-            if (obj.canSelected && data.length === 1) {
-                this.state.selectList[indexOfTop] = obj.id;
-                this.state.selectStrList[indexOfTop] = obj.specValues;
-                this.state.selectData[indexOfTop] = obj;
-            }
+            //单规格  默认选中状态不让选
+            obj.canSelected = obj.surplusNumber > 0 && data.length !== 1;
             obj.isSelected = obj.id === this.state.selectList[indexOfTop];
 
             tagList.push(
@@ -94,7 +107,7 @@ export default class TopicDetailSelectPage extends Component {
                             this._clickItemAction(obj, indexOfTop);
                         }}>
                         <Text
-                            style={[styles.btnText, { color: obj.isSelected ? 'white' : obj.canSelected ? DesignRule.textColor_secondTitle : 'white' }]}>{data[index].specValues}</Text>
+                            style={[styles.btnText, { color: obj.isSelected ? 'white' : obj.canSelected ? DesignRule.textColor_secondTitle : DesignRule.color_ddd }]}>{data[index].specValues}</Text>
                     </TouchableOpacity>
                 </View>
             );
@@ -117,7 +130,12 @@ export default class TopicDetailSelectPage extends Component {
                     <View style={styles.containerView}>
                         {this.rendTag(specPriceList[key], indexOfTop)}
                     </View>
-                    <View style={{ height: 1, marginTop: 15, marginLeft: 16, backgroundColor: DesignRule.lineColor_inColorBg }}/>
+                    <View style={{
+                        height: 1,
+                        marginTop: 15,
+                        marginLeft: 16,
+                        backgroundColor: DesignRule.lineColor_inColorBg
+                    }}/>
                 </View>
             );
             indexOfTop++;
@@ -133,18 +151,34 @@ export default class TopicDetailSelectPage extends Component {
     };
 
     render() {
-        let tagList = [];
-        const { specPriceList = {} } = this.state.data || {};
-        for (let key in specPriceList) {
-            let tempArr = specPriceList[key];
-            tempArr.forEach((item) => {
+        let surplusNumber, tagList = [];
+        this.state.selectData.forEach((item) => {
+            if (item) {
                 tagList.push(item.surplusNumber);
-            });
+            }
+        });
+
+        //有选项取最小  没选项取列数字最大
+        if (tagList.length === 0) {
+            const { specPriceList = {} } = this.state.data || {};
+            for (let key in specPriceList) {
+                let tempArr = specPriceList[key];
+                let tempNum = 0;
+                tempArr.forEach((item) => {
+                    tempNum = tempNum + item.surplusNumber;
+                });
+                tagList.push(tempNum);
+            }
+            surplusNumber = Math.max.apply(Math, tagList);
+        } else {
+            surplusNumber = Math.min.apply(Math, tagList);
         }
-        let surplusNumber = Math.min.apply(Math, tagList);
 
         const { imgUrl = '', levelPrice = '' } = this.state.data || {};
-        let specs = this.state.selectStrList.join(',');
+
+        let specs = this.state.selectStrList.filter((item) => {
+            return !StringUtils.isEmpty(item);
+        });
         return (
             <Modal animationType="none" transparent={true} visible={this.state.isShow}>
                 <View style={styles.container}>
@@ -186,7 +220,7 @@ export default class TopicDetailSelectPage extends Component {
                                         color: DesignRule.textColor_mainTitle,
                                         fontSize: 13,
                                         marginTop: 8
-                                    }}>{specs}</Text>
+                                    }}>{specs.join(',')}</Text>
                                 </View>
                                 <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}
                                                   onPress={this._close}>
@@ -204,7 +238,11 @@ export default class TopicDetailSelectPage extends Component {
                                     justifyContent: 'space-between',
                                     alignItems: 'center'
                                 }]}>
-                                    <Text style={{ color: DesignRule.textColor_secondTitle, marginLeft: 16, fontSize: 13 }}>购买数量</Text>
+                                    <Text style={{
+                                        color: DesignRule.textColor_secondTitle,
+                                        marginLeft: 16,
+                                        fontSize: 13
+                                    }}>购买数量</Text>
                                     <View style={{
                                         flexDirection: 'row',
                                         borderColor: DesignRule.lineColor_inGrayBg,
@@ -219,11 +257,19 @@ export default class TopicDetailSelectPage extends Component {
                                                 paddingHorizontal: 11
                                             }}>-</Text>
                                         </TouchableOpacity>
-                                        <View style={{ height: 21, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
+                                        <View style={{
+                                            height: 21,
+                                            width: 1,
+                                            backgroundColor: DesignRule.lineColor_inGrayBg
+                                        }}/>
                                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                             <Text style={{ paddingHorizontal: 15 }}>{1}</Text>
                                         </View>
-                                        <View style={{ height: 21, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
+                                        <View style={{
+                                            height: 21,
+                                            width: 1,
+                                            backgroundColor: DesignRule.lineColor_inGrayBg
+                                        }}/>
                                         <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
                                             <Text style={{
                                                 color: DesignRule.textColor_mainTitle,

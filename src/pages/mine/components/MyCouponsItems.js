@@ -3,8 +3,15 @@
  */
 import React, { Component } from 'react';
 import {
-    StyleSheet, View, ImageBackground,
-    Text, TouchableOpacity, Image, Modal, TextInput, FlatList
+    FlatList,
+    Image,
+    ImageBackground,
+    Modal,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
 // import RefreshList from './../../../components/ui/RefreshList';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -23,9 +30,10 @@ import UI from '../../../utils/bridge';
 import { observer } from 'mobx-react';
 import StringUtils from '../../../utils/StringUtils';
 import user from '../../../model/user';
-import { UIText, UIImage } from '../../../components/ui';
+import { UIImage, UIText } from '../../../components/ui';
 import DesignRule from 'DesignRule';
 import { NavigationActions } from 'react-navigation';
+import MineApi from '../api/MineApi';
 
 const { px2dp } = ScreenUtils;
 
@@ -40,14 +48,24 @@ export default class MyCouponsItems extends Component {
             isEmpty: true,
             explainList: [],
             showDialogModal: false,
-            tokenCoinNum: this.props.justOne
+            tokenCoinNum: this.props.justOne,
+            isFirstLoad: true
         };
         this.currentPage = 0;
+        this.isLoadMore = false;
+        this.isEnd = false;
+        // setTimeout(() => this.onRefresh(), 10);
+    }
+
+    componentDidMount() {
+        this.onRefresh();
     }
 
     fmtDate(obj) {
         return formatDate(obj, 'yyyy.MM.dd');
     }
+
+
 
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
@@ -301,18 +319,20 @@ export default class MyCouponsItems extends Component {
     };
 
     render() {
+        console.log("this.state.viewDat"+ this.state.viewData.length)
         return (
             <View style={styles.container}>
                 <FlatList
                     data={this.state.viewData}
                     keyExtractor={this._keyExtractor}
                     renderItem={this.renderItem}
-                    onEndReachedThreshold={0.1}
-                    onEndReached={this.onLoadMore}
+                    onEndReachedThreshold={10}
+                    onEndReached={() => this.onLoadMore()}
                     ListEmptyComponent={this._renderEmptyView}
                     refreshing={false}
                     onRefresh={this.onRefresh}
                     showsVerticalScrollIndicator={false}
+                    initialNumToRender={5}
                 />
                 {this.renderDialogModal()}
                 {this.props.isgiveup ?
@@ -385,7 +405,6 @@ export default class MyCouponsItems extends Component {
                     levelimit: false
                 });
             }
-
             dataList.map((item) => {
                 arrData.push({
                     id: item.id,
@@ -424,9 +443,7 @@ export default class MyCouponsItems extends Component {
 
     // 1表示刷新，2代表加载
     getDataFromNetwork = () => {
-
         let status = this.state.pageStatus;
-
         if (this.props.fromOrder && status == 0) {
             let arr = [];
             // ProductPriceIdPair=this.props.productIds;
@@ -438,20 +455,31 @@ export default class MyCouponsItems extends Component {
                     amount: item.num
                 });
             });
+            this.isLoadMore = true;
             API.listAvailable({ page: this.currentPage, pageSize: 10, productPriceIds: arr }).then(res => {
+                this.setState({
+                    isFirstLoad: false
+                });
                 let data = res.data || {};
                 let dataList = data.data || [];
-                // this.setState({ isEmpty: false }, this._renderEmptyView);
+                console.log('dataList');
+                this.isLoadMore = false;
                 this.parseData(dataList);
-            }).catch(result => {
-                if (result.code === 10009) {
-                    this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
+                if (dataList.length === 0) {
+                    this.isEnd = true;
+                    return;
                 }
+
+            }).catch(result => {
+                this.setState({
+                    isFirstLoad: false
+                });
+                this.isLoadMore = false;
                 UI.$toast(result.msg);
             });
         } else if (this.props.justOne && status == 0) {
             let arrData = [];
-            if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0) {
+            if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && status === 0) {
                 arrData.push({
                     status: 0,
                     name: '可叠加使用',
@@ -463,7 +491,9 @@ export default class MyCouponsItems extends Component {
                     levelimit: false
                 });
             }
-            this.setState({ viewData: arrData });
+            this.setState({viewData: arrData});
+            this.isEnd = true;
+            return;
         }
         else {
             API.userCouponList({
@@ -471,19 +501,27 @@ export default class MyCouponsItems extends Component {
                 status,
                 pageSize: 10
             }).then(result => {
+                this.setState({
+                    isFirstLoad: false
+                });
                 let data = result.data || {};
                 let dataList = data.data || [];
-                // this.setState({ isEmpty: false }, this._renderEmptyView);
-                //this.parseData(dataList);
-
-                // this.setState({ viewData: dataList });
+                this.isLoadMore = false;
                 this.parseData(dataList);
-
+                if (dataList.length === 0) {
+                    this.isEnd = true;
+                    return;
+                }
+                // if (dataList.length === 0&&!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 ) {
+                //     this.isEnd = true;
+                //     return;
+                // }
 
             }).catch(result => {
-                if (result.code === 10009) {
-                    this.props.nav.navigate('login/login/LoginPage', { callback: this.getDataFromNetwork });
-                }
+                this.setState({
+                    isFirstLoad: false
+                });
+                this.isLoadMore = false;
                 UI.$toast(result.msg);
             });
         }
@@ -502,17 +540,27 @@ export default class MyCouponsItems extends Component {
 
     onRefresh = () => {
         console.log('refresh');
+        this.isEnd = false;
         this.currentPage = 1;
+        this.getUserInfo();
         this.getDataFromNetwork();
-
-
     };
 
-    onLoadMore = () => {
-        console.log('onLoadMore');
-        this.currentPage++;
-        this.getDataFromNetwork();
+    getUserInfo() {
+        MineApi.getUser().then(res => {
+            let data = res.data;
+            user.saveUserInfo(data);
+        }).catch(err => {
+            console.log(err);
+        });
+    }
 
+    onLoadMore = () => {
+        console.log('onLoadMore', this.isEnd);
+        if (!this.isLoadMore && !this.isEnd && !this.state.isFirstLoad) {
+            this.currentPage++;
+            this.getDataFromNetwork();
+        }
     };
 
     clickItem = (index, item) => {

@@ -9,8 +9,10 @@ import {
     StyleSheet,
     TouchableWithoutFeedback
 } from 'react-native';
-import ShopMasterIcon from '../res/dz_03.png';
 import DesignRule from 'DesignRule';
+import StringUtils from '../../../../utils/StringUtils';
+import res from '../../res';
+const ShopMasterIcon = res.myShop.dz_03;
 
 export default class MasterRow extends Component {
 
@@ -33,13 +35,14 @@ export default class MasterRow extends Component {
 
     render() {
         let {headImg,nickName,levelName,contribution} = this.props.item;
-        const {tradeBalance} = this.props;
+        let {tradeBalance} = this.props;
+        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : tradeBalance;
         return (<TouchableWithoutFeedback onPress={this._clickAssistantDetail}>
             <View style={styles.container}>
                 <Image style={styles.iconGap} source={ShopMasterIcon}/>
                 <View style={styles.row}>
                     {
-                        headImg ? <Image source={{uri: headImg}} style={styles.headerImg}/> : <View style={styles.headerImg}/>
+                        headImg ? <Image source={{uri: headImg}} style={styles.headerImg}/> : <View style={[styles.headerImg, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>
                     }
                     <View style={styles.right}>
                         <Text style={styles.name}>{(nickName || '  ')}</Text>
@@ -78,7 +81,6 @@ const styles = StyleSheet.create({
     headerImg: {
         width: 28,
         height: 28,
-        backgroundColor: '#f6a3aa',
         borderRadius: 14,
         marginLeft: 20,
         marginTop: 15

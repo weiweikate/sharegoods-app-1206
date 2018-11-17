@@ -20,7 +20,7 @@ import {
 } from '../../../components/ui/index';
 import res from '../res';
 import shopCartStore from '../model/ShopCartStore';
-import StringUtils from '../../../utils/StringUtils';
+// import StringUtils from '../../../utils/StringUtils';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import bridge from '../../../utils/bridge';
 import DesignRule from 'DesignRule';
@@ -75,12 +75,12 @@ export default class ShopCartPage extends BasePage {
         this.didBlurSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                if (this.isUnFishFirstRender &&
-                    shopCartStore.data.length > 0 &&
+                if (shopCartStore.data.length > 0 &&
                     this.contentList) {
                     this.contentList.scrollTo({ x: 0, y: 1, animated: true });
                     this.isUnFishFirstRender = false;
                 }
+                shopCartCacheTool.getShopCartGoodsListData();
             }
         );
     }
@@ -258,7 +258,7 @@ export default class ShopCartPage extends BasePage {
                             value={'合计'}
                             style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
                         <UIText
-                            value={StringUtils.formatMoneyString(shopCartStore.getTotalMoney)}
+                            value={'¥'+shopCartStore.getTotalMoney}
                             style={styles.totalPrice}/>
                         <TouchableOpacity
                             style={styles.selectGoodsNum}
@@ -307,24 +307,33 @@ export default class ShopCartPage extends BasePage {
                         {
                             activityString[itemData.activityType]
                                 ?
-                                <UIText
-                                    value={
-                                        activityString[itemData.activityType]
-                                    }
-                                    style={
-                                        {
-                                            position: 'absolute',
-                                            padding: 2,
-                                            left: 140,
-                                            top: 20,
-                                            fontSize: 10,
-                                            color: DesignRule.mainColor,
-                                            borderWidth: 1,
-                                            borderRadius: 4,
-                                            borderColor: DesignRule.mainColor
+                                <View
+                                style={{
+                                    position: 'absolute',
+                                    left: 140,
+                                    top: 20,
+                                    justifyContent:'center',
+                                    alignItems:'center',
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    borderColor: DesignRule.mainColor,
+                                    // borderColor:'black',
+                                    width:16,
+                                    height:16
+                                }}
+                                >
+                                    <UIText
+                                        value={
+                                            activityString[itemData.activityType]
                                         }
-                                    }
-                                />
+                                        style={
+                                            {
+                                                fontSize: 10,
+                                                color: DesignRule.mainColor,
+                                            }
+                                        }
+                                    />
+                                </View>
                                 : null
                         }
 
@@ -402,7 +411,7 @@ export default class ShopCartPage extends BasePage {
                                 alignItems: 'center'
                             }}>
                                 <UIText
-                                    value={'￥ ' + StringUtils.formatMoneyString(itemData.price, false)}
+                                    value={'￥ ' + itemData.price}
                                     style={{ fontSize: 14, color: DesignRule.mainColor }}/>
                                 <View style={{ flexDirection: 'row' }}>
                                     <TouchableOpacity
@@ -433,10 +442,16 @@ export default class ShopCartPage extends BasePage {
                                             // onChangeText={(text) => this.setState({text})}
                                             onChangeText={text => {
                                                 console.log('输入后的值' + text);
-                                                itemData.amount = parseInt(text);
-                                                let [...tempArr] = shopCartStore.data.slice();
-                                                tempArr[rowId] = itemData;
-                                                shopCartStore.data = tempArr;
+                                                // if (isNaN(parseInt(text))){
+                                                //     // itemData.amount =
+                                                //
+                                                //    return;
+                                                // }else {
+                                                    itemData.amount = parseInt(text);
+                                                    let [...tempArr] = shopCartStore.data.slice();
+                                                    tempArr[rowId] = itemData;
+                                                    shopCartStore.data = tempArr;
+                                                // }
                                             }}
                                             onEndEditing={text => this.onNumberTextChange(itemData, text, rowId)}
                                             placeholder=''
@@ -589,15 +604,18 @@ export default class ShopCartPage extends BasePage {
         if (itemData.amount >= itemData.stock) {
             bridge.$toast('已达商品库存最大数');
             itemData.amount = itemData.stock;
+            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
         if (itemData.amount <= 0) {
             itemData.amount = 1;
+            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
         if (itemData.amount > 200) {
             itemData.amount = 200;
             bridge.$toast('单个商品最多200件');
+            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
-        shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+
         // if(StringUtils.checkIsPositionNumber(parseInt(text))) {
         //     itemData.amount = parseInt(text)
         //

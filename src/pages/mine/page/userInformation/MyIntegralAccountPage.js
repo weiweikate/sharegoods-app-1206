@@ -34,7 +34,6 @@ export default class MyIntegralAccountPage extends BasePage {
             phoneError: false,
             passwordError: false,
             viewData: [],
-            blockMoney: 0.00,
             currentPage: 1,
             isEmpty: false
         };
@@ -127,7 +126,7 @@ export default class MyIntegralAccountPage extends BasePage {
     //**********************************BusinessPart******************************************
     componentDidMount() {
 
-        this.getDataFromNetwork();
+     this.onRefresh();
     }
 
     clickItem = (index) => {
@@ -154,7 +153,7 @@ export default class MyIntegralAccountPage extends BasePage {
                         type: use_type[item.useType],
                         time: DataUtils.getFormatDate(item.createTime / 1000),
                         serialNumber: item.serialNo,
-                        capital: use_type_symbol[item.usType] + item.userScore,
+                        capital: use_type_symbol[item.usType] + (item.userScore?item.userScore:0),
                         iconImage: use_let_img[item.useType],
                         capitalRed: use_type_symbol[item.usType] === '+'
 

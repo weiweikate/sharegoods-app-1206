@@ -19,7 +19,7 @@ import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 
-const dismissKeyboard = require('dismissKeyboard');
+// const dismissKeyboard = require('dismissKeyboard');
 
 class LoginTopViewModel {
     /*0代表验证码登录 1代表密码登录*/
@@ -36,13 +36,18 @@ class LoginTopViewModel {
     @observable
     dowTime = 0;
 
+
     @action
     savePhoneNumber(phoneNmber) {
-        if (!phoneNmber) {
+        if (!phoneNmber || phoneNmber.length === 0) {
             this.phoneNumber = '';
             return;
         }
+        // if( 0 <= parseInt(phoneNmber.charAt(phoneNmber.length - 1)) &&
+        //     parseInt(phoneNmber.charAt(phoneNmber.length - 1)) <= 9 )
+        // {
         this.phoneNumber = phoneNmber;
+        // }
     }
 
     @action
@@ -121,11 +126,10 @@ export default class LoginTopView extends Component {
                         value={this.LoginModel.phoneNumber}
                         onChangeText={text => this.LoginModel.savePhoneNumber(text)}
                         placeholder='请输入手机号'
-                        underlineColorAndroid={'transparent'}
+                        underlineColorAndroid='transparent'
                         keyboardType='numeric'
                         onEndEditing={() => {
-
-                            if (this.LoginModel.phoneNumber.length > 0 && (!StringUtils.checkPhone(this.LoginModel.phoneNumber))) {
+                            if (!StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
                                 bridge.$toast('手机号格式不对');
                             }
                         }}
@@ -159,7 +163,7 @@ export default class LoginTopView extends Component {
     }
 
     switchBtnClick = (index) => {
-        dismissKeyboard();
+        // dismissKeyboard();
         this.LoginModel.selectIndex = index;
     };
     renderCodeLogin = () => {
@@ -171,7 +175,7 @@ export default class LoginTopView extends Component {
                         value={this.LoginModel.vertifyCode}
                         onChangeText={text => this.LoginModel.saveVertifyCode(text)}
                         placeholder='请输入验证码'
-                        underlineColorAndroid={'transparent'}
+                        underlineColorAndroid='transparent'
                         keyboardType='numeric'
                     />
                     <TouchableOpacity
@@ -196,7 +200,9 @@ export default class LoginTopView extends Component {
             bridge.$toast('请检查网络是否连接');
             return;
         }
+
         if (StringUtils.checkPhone(this.LoginModel.phoneNumber)) {
+            this.LoginModel.dowTime = 60;
             bridge.$toast('验证码发送成功,注意查收');
             (new TimeDownUtils()).startDown((time) => {
                 this.LoginModel.dowTime = time;

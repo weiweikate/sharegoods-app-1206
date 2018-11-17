@@ -2,7 +2,8 @@ import React from 'react';
 import {
     View,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    ScrollView
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -49,13 +50,15 @@ export default class HelperQuestionDetail extends BasePage {
 
     _render() {
         return (
-            <View style={{ backgroundColor: DesignRule.bgColor, flex: 1 }}>
+            <View  style={{ backgroundColor: DesignRule.bgColor, flex: 1 }}>
+            <ScrollView  style={{marginBottom:209}}>
                 {this.state.content ? <HTML html={this.state.content} imagesMaxWidth={ScreenUtils.width}
-                                            containerStyle={{ backgroundColor: DesignRule.bgColor }}/> : null}
+                                            containerStyle={{ backgroundColor: DesignRule.bgColor ,padding:5}}/> : null}
+            </ScrollView>
                 <View style={{
                     width: ScreenUtils.width,
                     height: 80,
-                    position: 'absolute',
+                    position:'absolute',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     bottom: 109,
@@ -63,7 +66,7 @@ export default class HelperQuestionDetail extends BasePage {
                     paddingHorizontal: 33
                 }}>
                     <TouchableOpacity activeOpacity={0.6} onPress={() => this.feedbackNoUse()} style={{
-                        width: 150,
+                        width: 140,
                         height: 48,
                         borderRadius: 5,
                         borderWidth: 1,
@@ -78,7 +81,7 @@ export default class HelperQuestionDetail extends BasePage {
                         }}>{`没啥帮助?  (${this.state.noHelpNum > 9999 ? '9999+' : this.state.noHelpNum})`}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.6} onPress={() => this.feedbackGoodUse()} style={{
-                        width: 150,
+                        width: 140,
                         height: 48,
                         borderRadius: 5,
                         backgroundColor: this.state.type === null || this.state.type == 0 ? 'white' : DesignRule.mainColor,
@@ -93,7 +96,6 @@ export default class HelperQuestionDetail extends BasePage {
                         }}>{`有用  (${this.state.useHelpNum > 9999 ? '9999+' : this.state.useHelpNum})`}</Text>
                     </TouchableOpacity>
                 </View>
-
             </View>
         );
     }

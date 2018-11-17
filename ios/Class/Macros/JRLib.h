@@ -24,6 +24,7 @@
 /** category **/
 #import "AppDelegate+ConfigVC.h"
 #import "AppDelegate+ConfigLib.h"
+#import "AppDelegate+APNS.h"
 /**other**/
 
 

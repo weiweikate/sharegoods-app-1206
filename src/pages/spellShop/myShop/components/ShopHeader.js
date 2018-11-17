@@ -14,14 +14,18 @@ import {
 } from 'react-native';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-import HeaderBarBgImg from '../res/txbg_02.png';
-import WhiteBtImg from '../res/dz_03-02.png';
-import StarImg from '../res/dj_03.png';
-import CCZImg from '../res/ccz_03.png';
-import ProgressImg from '../res/jdt_05.png';
+
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../../utils/ScreenUtils';
+
+const { px2dp } = ScreenUtils;
 import StringUtils from '../../../../utils/StringUtils';
+import res from '../../res';
+const HeaderBarBgImg = res.myShop.txbg_02;
+const StarImg = res.myShop.dj_03;
+const CCZImg = res.myShop.ccz_03;
+const ProgressImg = res.myShop.jdt_05;
+
 
 export default class ShopHeader extends Component {
 
@@ -51,9 +55,15 @@ export default class ShopHeader extends Component {
 
         return <View style={styles.container}>
             <ImageBackground source={HeaderBarBgImg} style={styles.imgBg}>
-                <View source={WhiteBtImg} style={styles.whiteBg}>
-                    <View style={{ flexDirection: 'row', marginTop: 25, marginLeft: 20, marginRight: 20 }}>
-                        <Image style={styles.headerImg} source={{ uri: headUrl }}/>
+                <View style={styles.whiteBg}>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginTop: px2dp(25),
+                        marginLeft: px2dp(20),
+                        marginRight: px2dp(20)
+                    }}>
+                        <Image style={styles.headerImg}
+                               source={{ uri: StringUtils.isNoEmpty(headUrl) ? headUrl : '' }}/>
                         <View style={styles.shopInContainer}>
                             <Text style={styles.shopName}>{name || ''}</Text>
                             <Text style={styles.shopId}>ID：{storeNumber || ''}</Text>
@@ -80,9 +90,9 @@ export default class ShopHeader extends Component {
                         </Text>
                     </View>
                     <View style={{
-                        marginHorizontal: 10,
-                        marginTop: 10,
-                        marginBottom: 15,
+                        marginHorizontal: px2dp(10),
+                        marginTop: px2dp(10),
+                        marginBottom: px2dp(15),
                         backgroundColor: '#E4E4E4',
                         height: 0.5
                     }}/>
@@ -94,8 +104,9 @@ export default class ShopHeader extends Component {
 
                         <ImageBackground source={ProgressImg} style={{
                             overflow: 'hidden',
-                            marginTop: 5,
-                            height: 7,
+                            marginTop: px2dp(5),
+                            borderRadius: px2dp(3.5),
+                            height: px2dp(7),
                             width: 315 / 375 * SCREEN_WIDTH
                         }}>
                             <View style={[styles.progressBg, {
@@ -105,7 +116,7 @@ export default class ShopHeader extends Component {
                         </ImageBackground>
 
                         <Text
-                            style={styles.chaju}>距离分红还差{(bonusNeedMoney - tradeBalance) > 0 ? (bonusNeedMoney - tradeBalance) : 0}元</Text>
+                            style={styles.chaju}>距离分红还差{(bonusNeedMoney - tradeBalance) > 0 ? (bonusNeedMoney - tradeBalance).toFixed(2) : 0}元</Text>
 
                         <Text style={styles.fenghong}>预计该次分红金可得<Text style={{ color: '#F00006', fontSize: 13 }}>
                             {currentUserSettle || 0}
@@ -130,16 +141,16 @@ const styles = StyleSheet.create({
         height: ScreenUtils.headerHeight + ScreenUtils.autoSizeWidth(173)
     },
     whiteBg: {
-        marginTop: ScreenUtils.headerHeight + 15,
+        marginTop: ScreenUtils.headerHeight + px2dp(15),
         backgroundColor: DesignRule.white,
-        marginHorizontal: 15,
+        marginHorizontal: px2dp(15),
         height: ScreenUtils.autoSizeWidth(249),
-        borderRadius: 10
+        borderRadius: px2dp(10)
     },
     headerImg: {
-        width: 60,
-        height: 60,
-        borderRadius: 30
+        width: px2dp(60),
+        height: px2dp(60),
+        borderRadius: px2dp(30)
     },
     shopInContainer: {
         flex: 1,
@@ -151,12 +162,12 @@ const styles = StyleSheet.create({
         color: '#333333'
     },
     shopId: {
-        marginTop: 5,
+        marginTop: px2dp(5),
         fontSize: 11,
         color: '#333333'
     },
     starRow: {
-        marginTop: 5,
+        marginTop: px2dp(5),
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -176,8 +187,8 @@ const styles = StyleSheet.create({
     },
 
     whiteBgTopRow: {
-        marginTop: 27,
-        marginLeft: 10,
+        marginTop: px2dp(27),
+        marginLeft: px2dp(10),
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -192,17 +203,16 @@ const styles = StyleSheet.create({
         fontSize: 11
     },
     progressBg: {
-        height: 7,
-        borderRadius: 4,
+        height: px2dp(7),
         backgroundColor: '#E4E4E4'
     },
     chaju: {
-        marginTop: 10,
+        marginTop: px2dp(10),
         color: DesignRule.textColor_secondTitle,
         fontSize: 11
     },
     fenghong: {
-        marginTop: 10,
+        marginTop: px2dp(10),
         color: DesignRule.textColor_secondTitle,
         fontSize: 12
     }

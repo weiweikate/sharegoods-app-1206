@@ -2,11 +2,12 @@ import BasePage from '../../../../BasePage';
 import { FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import UIText from '../../../../components/ui/UIText';
-import arrow_right from '../../../mine/res/customerservice/icon_06-03.png';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import DesignRule from 'DesignRule';
+import res from '../../../../comm/res';
 
+const arrow_right = res.button.arrow_right;
 export default class SelectAreaPage extends BasePage {
 
     // 导航配置

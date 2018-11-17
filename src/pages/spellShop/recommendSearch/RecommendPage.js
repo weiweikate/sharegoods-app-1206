@@ -12,23 +12,22 @@ import {
 } from 'react-native';
 
 import { observer } from 'mobx-react';
-//source
-import ShopItemLogo from './src/dp_03.png';
-import SearchItemLogo from './src/pdss_03.png';
 
 import ScreenUtils from '../../../utils/ScreenUtils';
 import RecommendRow from './components/RecommendRow';
 import SegementHeaderView from './components/RecommendSegmentView';
 import BasePage from '../../../BasePage';
 import SpellStatusModel from '../model/SpellStatusModel';
-import ViewPager from '../../../components/ui/ViewPager';
-import UIImage from '../../../components/ui/UIImage';
 import SpellShopApi from '../api/SpellShopApi';
 import HomeAPI from '../../home/api/HomeAPI';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import StringUtils from '../../../utils/StringUtils';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import DesignRule from 'DesignRule';
+import RecommendBanner from './components/RecommendBanner'
+import res from '../res';
+const ShopItemLogo = res.recommendSearch.dp_03;
+const SearchItemLogo = res.recommendSearch.pdss_03;
 
 
 @observer
@@ -51,7 +50,6 @@ export default class RecommendPage extends BasePage {
             //data
             dataList: [{}],//默认一行显示状态页面使用 错误页 无数据页面
             adList: [],
-            swiperShow: false
         };
     }
 
@@ -75,12 +73,8 @@ export default class RecommendPage extends BasePage {
     };
 
     componentDidMount() {
-        setTimeout(() => {
-            this.setState({
-                swiperShow: true
-            });
-        }, 100);
         this._loadPageData();
+        this._getSwipers();
     }
 
     _getSize = () => {
@@ -92,6 +86,7 @@ export default class RecommendPage extends BasePage {
             refreshing: true
         }, () => {
             this._loadPageData();
+            this._getSwipers();
             SpellStatusModel.getUser(0);
         });
     };
@@ -121,6 +116,9 @@ export default class RecommendPage extends BasePage {
                 loadingState: PageLoadingState.fail
             });
         });
+    };
+
+    _getSwipers = () => {
         HomeAPI.getSwipers({
             type: 9
         }).then((data) => {
@@ -217,42 +215,11 @@ export default class RecommendPage extends BasePage {
     };
 
     _renderListHeader = () => {
-        if (this.state.adList.length > 0 && this.state.swiperShow) {
-            return <ViewPager
-                swiperShow={true}
-                loop={false}
-                bounces={true}
-                height={ScreenUtils.autoSizeWidth(150)}
-                arrayData={this.state.adList}
-                renderItem={this._renderViewPageItem}
-                dotStyle={{
-                    height: 5,
-                    width: 5,
-                    borderRadius: 5,
-                    backgroundColor: '#eee',
-                    opacity: 0.4
-                }}
-                activeDotStyle={{
-                    height: 5,
-                    width: 30,
-                    borderRadius: 5,
-                    backgroundColor: '#eee'
-                }}
-            />;
+        if (this.state.adList.length > 0) {
+            return <RecommendBanner bannerList = {this.state.adList} onPress = {this._clickItem}/>;
         } else {
             return null;
         }
-    };
-
-    _renderViewPageItem = (item) => {
-        const { imgUrl } = item;
-        return (
-            <UIImage
-                source={{ uri: imgUrl }}
-                style={{ height: ScreenUtils.autoSizeWidth(150), width: ScreenUtils.width }}
-                onPress={() => this._clickItem(item)}
-                resizeMode="cover"
-            />);
     };
 
     _renderSectionHeader = () => {
@@ -309,7 +276,6 @@ export default class RecommendPage extends BasePage {
                              onEndReached={this._onEndReached.bind(this)}
                              onEndReachedThreshold={0.1}
                              ListFooterComponent={this._ListFooterComponent}
-                             stickySectionHeadersEnabled={false}
                              showsVerticalScrollIndicator={false}
                              ListHeaderComponent={this._renderListHeader}
                              renderSectionHeader={this._renderSectionHeader}

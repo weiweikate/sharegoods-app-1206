@@ -10,8 +10,9 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import StarImg from '../src/dj_03.png';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+const StarImg = res.recommendSearch.dj_03;
 
 export default class RecommendRow extends Component {
 
@@ -50,10 +51,10 @@ export default class RecommendRow extends Component {
                         <View style={styles.headerViewContainer}>
                             {RecommendRowItem.headUrl ? <Image style={styles.icon}
                                                                source={{ uri: RecommendRowItem.headUrl || '' }}/> :
-                                <View style={styles.icon}/>}
+                                <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                             <View style={styles.tittleContainer}>
-                                <Text style={styles.name}>{RecommendRowItem.name || ''}</Text>
-                                <Text style={styles.member}>{`店主: ${RecommendRowItem.storeUserName || ''}`}</Text>
+                                <Text style={styles.name} numberOfLines={1}>{RecommendRowItem.name || ''}</Text>
+                                <Text style={styles.member} numberOfLines={1}>{`店主: ${RecommendRowItem.storeUserName || ''}`}</Text>
                             </View>
                         </View>
                         <View style={{
@@ -69,10 +70,10 @@ export default class RecommendRow extends Component {
                         <Text style={{
                             marginTop: 8, marginBottom: 14.5, paddingHorizontal: 21.5,
                             color: DesignRule.textColor_secondTitle, fontSize: 10
-                        }}>{`距离下一次分红还差${(bonusNeedMoney - tradeBalance > 0) ? (bonusNeedMoney - tradeBalance) : 0}元`}</Text>
+                        }}>{`距离下一次分红还差${(bonusNeedMoney - tradeBalance > 0) ? (bonusNeedMoney - tradeBalance).toFixed(2) : 0}元`}</Text>
                     </View>
                     <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
-                    <View style={{ width: 44 + 70, alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{ width: ScreenUtils.autoSizeWidth(44 + 70), alignItems: 'center', justifyContent: 'center' }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                             {
                                 starsArr.map((item, index) => {
@@ -133,7 +134,6 @@ const styles = StyleSheet.create({
     icon: {
         width: 50,
         height: 50,
-        backgroundColor: DesignRule.lineColor_inColorBg,
         borderRadius: 25
     },
     tittleContainer: {

@@ -148,6 +148,7 @@ onError(NSSting)   失败的回调
 RCT_EXPORT_METHOD(creatQRCodeImage:(NSString *) QRCodeStr
                   onSuccess:(RCTResponseSenderBlock) onSuccess
                   onError:(RCTResponseSenderBlock) onError){
+   dispatch_async(dispatch_get_main_queue(), ^{
   [[ShareImageMaker sharedInstance] creatQRCodeImageWithQRCodeStr:QRCodeStr completion:^(NSString *pathStr, NSString *errorStr) {
     if (errorStr) {
       onError(@[errorStr]);
@@ -155,6 +156,7 @@ RCT_EXPORT_METHOD(creatQRCodeImage:(NSString *) QRCodeStr
       onSuccess(@[pathStr]);
     }
   }];
+   });
 }
 
 /**

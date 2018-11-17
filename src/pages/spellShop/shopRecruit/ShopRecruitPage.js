@@ -21,15 +21,16 @@ import ActionSheetView from '../components/ActionSheetView';
 import ReportAlert from '../components/ReportAlert';
 
 // 图片资源
-import NavLeft from './src/NavLeft.png';
-import icons8_Shop_50px from './src/icons8_Shop_50px.png';
-import icons9_shop from './src/icons9_shop.png';
 import spellStatusModel from '../model/SpellStatusModel';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import DesignRule from 'DesignRule';
+import res from '../res';
+const NavLeft = res.shopRecruit.NavLeft;
+const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
+const icons9_shop = res.shopRecruit.icons9_shop;
 
 export default class ShopRecruitPage extends BasePage {
 
@@ -91,6 +92,23 @@ export default class ShopRecruitPage extends BasePage {
         };
     };
 
+    componentWillMount() {
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                console.log('willFocus', state);
+                if (state && state.routeName === 'SpellShopPage') {
+                    this._loadPageData();
+                }
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove();
+    }
+
     componentDidMount() {
         this._loadPageData();
     }
@@ -131,10 +149,7 @@ export default class ShopRecruitPage extends BasePage {
         // }
     };
     _clickSettingItem = () => {
-        let arr = ['分享店铺', '举报'];
-        if (this.state.storeData.myStore) {
-            arr = ['分享店铺'];
-        }
+        let arr = ['分享店铺'];
         this.actionSheetRef.show({
             items: arr
         }, (item, index) => {
@@ -323,7 +338,7 @@ export default class ShopRecruitPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/register`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download`,
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>

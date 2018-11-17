@@ -27,7 +27,6 @@ class ShowMessageModal extends Component {
     render() {
         return (
             <Modal
-                animationType='fade'
                 transparent={true}
                 onRequestClose={() => {
                 }}
@@ -77,7 +76,7 @@ class ShowMessageModal extends Component {
                 flex: 1,
                 justifyContent: 'flex-start',
                 alignItems: 'flex-end',
-                paddingRight: 35,
+                paddingRight: 20,
                 paddingTop: ScreenUtils.headerHeight
             }}>
                 <View style={{ backgroundColor: 'white', width: 143 }}>
@@ -90,9 +89,10 @@ class ShowMessageModal extends Component {
 
 const styles = StyleSheet.create({
     modalStyle: {
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(0,0,0,0)',
         justifyContent: 'flex-end',
-        flex: 1
+        flex: 1,
+        width:ScreenUtils.width
     }
 });
 

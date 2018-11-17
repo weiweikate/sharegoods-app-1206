@@ -9,10 +9,11 @@ import {
     ScrollView,
     TouchableWithoutFeedback
 } from 'react-native';
-import ArrowImg from './res/xjt_03.png';
 import BasePage from '../../../BasePage';
 import DateUtils from '../../../utils/DateUtils';
 import DesignRule from 'DesignRule';
+import res from '../res';
+const ArrowImg = res.shopSetting.xjt_03;
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 

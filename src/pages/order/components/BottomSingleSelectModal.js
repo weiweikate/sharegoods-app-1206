@@ -5,7 +5,8 @@ import {
     Text,
     // Modal,
     NativeModules,
-    TouchableOpacity
+    TouchableOpacity,
+    ScrollView
 } from 'react-native';
 import res from '../../../comm/res';
 import Modal from 'CommModal';
@@ -79,10 +80,12 @@ export default class BottomSingleSelectModal extends Component {
             NativeModules.commModule.toast('请先勾选');
         } else {
             this.props.commit(this.state.currentSelect);
+            this.setState({currentSelect:-1})
         }
     };
 
     renderContent() {
+
         return (
             <View style={{
                 justifyContent: 'center',
@@ -90,7 +93,7 @@ export default class BottomSingleSelectModal extends Component {
                 alignContent: 'center',
                 flexDirection: 'row'
             }}>
-                <View style={{ flex: 1, backgroundColor: 'white' }}>
+                <View style={{ height: ScreenUtils.height/3 * 2, backgroundColor: 'white', flex: 1, paddingBottom: ScreenUtils.safeBottom}}>
                     <View style={{
                         height: 48,
                         justifyContent: 'space-between',
@@ -99,7 +102,7 @@ export default class BottomSingleSelectModal extends Component {
                         flexDirection: 'row'
                     }}>
                         <TouchableOpacity style={{ paddingLeft: 17, width: 50 }}
-                                          onPress={() => this.props.closeWindow()}>
+                                          onPress={() => {this.props.closeWindow(),this.setState({currentSelect: -1})}}>
                             <UIText value={'x'} style={{ color: DesignRule.textColor_hint, fontSize: 24 }}/>
                         </TouchableOpacity>
                         <UIText value={'请选择'}/>
@@ -107,7 +110,9 @@ export default class BottomSingleSelectModal extends Component {
                             <UIText value={' '} style={{ color: DesignRule.textColor_hint, fontSize: 24 }}/>
                         </TouchableOpacity>
                     </View>
+                    <ScrollView >
                     {this.renderMenu()}
+                    </ScrollView>
                     <View style={{ justifyContent: 'center', alignItems: 'center', height: 64 }}>
                         <UIButton
                             value={'确定'}

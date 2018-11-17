@@ -180,7 +180,8 @@ const styles = StyleSheet.create({
     },
     grayText: {
         fontSize: 15,
-        color: DesignRule.textColor_instruction
+        color: DesignRule.textColor_instruction,
+        padding:3
     },
     whiteText: {
         fontSize: 13,

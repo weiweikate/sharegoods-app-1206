@@ -49,7 +49,7 @@ export default class RecentSearchView extends Component {
                             this._clickItemAction(index);
                         }}>
                         <Text
-                            style={[styles.btnText, { color: canSelected ? DesignRule.textColor_mainTitle : 'white' }]}>{this.props.listData[index].specValue}</Text>
+                            style={[styles.btnText, { color: canSelected ? (isSelected?DesignRule.white:DesignRule.textColor_secondTitle) : DesignRule.color_ddd }]}>{this.props.listData[index].specValue}</Text>
                     </TouchableOpacity>
                 </View>
             );

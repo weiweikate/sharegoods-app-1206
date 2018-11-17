@@ -34,7 +34,7 @@ export default class SearchRecruitingRow extends Component {
                 <View style={styles.headerViewContainer}>
                     {item.headUrl ? <Image style={styles.icon}
                                            source={{ uri: item.headUrl || '' }}/> :
-                        <View style={styles.icon}/>}
+                        <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                     <View style={styles.tittleContainer}>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.name} numberOfLines={1}>{item.name || ''}</Text>
@@ -42,11 +42,11 @@ export default class SearchRecruitingRow extends Component {
                                 <Text style={styles.ingText}>招募中</Text>
                             </View>
                         </View>
-                        <Text style={styles.member}>{`店主: ${item.storeUserName || ''}`}</Text>
+                        <Text style={styles.member} numberOfLines={1}>{`店主: ${item.storeUserName || ''}`}</Text>
                     </View>
                 </View>
                 <View style={{ width: 1, height: 100, backgroundColor: 'rgb(244,231,221)' }}/>
-                <View style={{ width: 44 + 70, alignItems: 'center', justifyContent: 'center' }}>
+                <View style={{ width: ScreenUtils.autoSizeWidth(44 + 70), alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{
                         color: DesignRule.textColor_secondTitle,
                         fontSize: 10,
@@ -73,29 +73,28 @@ const styles = StyleSheet.create({
     rowContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginHorizontal: 15,
+        marginHorizontal: ScreenUtils.autoSizeWidth(15),
         marginTop: 10,
         backgroundColor: '#FEFAF7'
     },
     headerViewContainer: {
         flex: 1,
         paddingVertical: 25,
-        marginLeft: 15,
+        marginLeft: ScreenUtils.autoSizeWidth(15),
         flexDirection: 'row'
     },
     icon: {
-        width: 50,
-        height: 50,
-        backgroundColor: DesignRule.lineColor_inColorBg,
-        borderRadius: 25
+        width: ScreenUtils.autoSizeWidth(50),
+        height: ScreenUtils.autoSizeWidth(50),
+        borderRadius: ScreenUtils.autoSizeWidth(25)
     },
     tittleContainer: {
         justifyContent: 'center',
-        marginLeft: 11,
+        marginLeft: ScreenUtils.autoSizeWidth(11),
         flex: 1
     },
     name: {
-        maxWidth: ScreenUtils.autoSizeWidth(100),
+        maxWidth: ScreenUtils.autoSizeWidth(90),
         color: DesignRule.textColor_mainTitle,
         fontSize: 14
     },

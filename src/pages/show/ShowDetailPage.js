@@ -4,7 +4,6 @@ import ShowImageView from './ShowImageView';
 import res from '../../comm/res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
-
 const { px2dp, width } = ScreenUtils;
 import HTML from 'react-native-render-html'
 import { ShowDetail } from './Show';
@@ -28,9 +27,8 @@ const Goods = ({ data, press }) => <TouchableOpacity style={styles.goodsItem} on
 export default class ShowDetailPage extends Component {
     constructor(props) {
         super(props);
-        this.params = this.props.navigation.state.params || {};
-        this.showDetailModule = new ShowDetail();
-        // this.showDetailModule.loadDetail(this.params.id)
+        this.params = this.props.navigation.state.params || {}
+        this.showDetailModule = new ShowDetail()
     }
 
     componentWillMount() {
@@ -40,7 +38,7 @@ export default class ShowDetailPage extends Component {
                 const { state } = payload;
                 console.log('willFocus', state);
                 if (state && state.routeName === 'show/ShowDetailPage') {
-                    this.showDetailModule.loadDetail(this.params.id);
+                    this.showDetailModule.loadDetail(this.params.id)
                 }
             }
         );
@@ -105,10 +103,10 @@ export default class ShowDetailPage extends Component {
                 </View>
                 <View style={styles.profileRight}>
                     <Image source={res.button.see}/>
-                    <Text style={styles.number}>{detail.click}</Text>
+                    <Text style={styles.number}>{detail.click ? detail.click : 0}</Text>
                 </View>
             </View>
-            <HTML html={content} imagesMaxWidth={width} containerStyle={{
+            <HTML html={content} imagesInitialDimensions={{width: width, height: 0}} containerStyle={{
                 backgroundColor: '#fff',
                 marginLeft: px2dp(15),
                 marginRight: px2dp(15)
@@ -161,7 +159,7 @@ export default class ShowDetailPage extends Component {
                 <Image source={res.button.show_share}/>
             </TouchableOpacity>
             <CommShareModal ref={(ref) => this.shareModal = ref}
-                            type={'miniProgram'}
+                            type={'task'}
                             miniProgramJson={{
                                 title: detail.title,
                                 dec: '分享小程序子标题',

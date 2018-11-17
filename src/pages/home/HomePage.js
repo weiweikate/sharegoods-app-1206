@@ -12,7 +12,9 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
-import { homeType, homeModule, bannerModule } from './Modules';
+import { homeModule } from './Modules'
+import { homeType } from './HomeTypes'
+import { bannerModule } from './HomeBannerModel'
 import HomeSearchView from './HomeSearchView';
 import HomeClassifyView from './HomeClassifyView';
 import HomeStarShopView from './HomeStarShopView';
@@ -38,8 +40,7 @@ import DeviceInfo from 'react-native-device-info';
 import StringUtils from '../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../../comm/res';
-
-var TimerMixin = require('react-timer-mixin');
+import TimerMixin from 'react-timer-mixin'
 const closeImg = res.button.cancel_white_circle;
 /**
  * @author zhangjian
@@ -74,7 +75,7 @@ export default class HomePage extends PureComponent {
 
     constructor(props) {
         super(props);
-        homeModule.loadHomeList();
+        homeModule.loadHomeList(true);
     }
 
 
@@ -85,13 +86,13 @@ export default class HomePage extends PureComponent {
         } catch (error) {
         }
 
-        MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((res) => {
-            if (res.data.upgrade === 1) {
-                if (StringUtils.isEmpty(upVersion) && upVersion !== res.data.version) {
+        MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((resp) => {
+            if (resp.data.upgrade === 1) {
+                if (StringUtils.isEmpty(upVersion) && upVersion !== resp.data.version) {
                     if (Platform.OS !== 'ios') {
-                        NativeModules.commModule.apkExist(res.data.version, (exist) => {
+                        NativeModules.commModule.apkExist(resp.data.version, (exist) => {
                             this.setState({
-                                updateData: res.data,
+                                updateData: resp.data,
                                 showUpdate: true,
                                 apkExist: exist
                             });
@@ -99,13 +100,13 @@ export default class HomePage extends PureComponent {
                         });
                     } else {
                         this.setState({
-                            updateData: res.data,
+                            updateData: resp.data,
                             showUpdate: true
                         });
                         this.updateModal && this.updateModal.open();
                     }
                 }
-                if (res.data.forceUpdate === 1) {
+                if (resp.data.forceUpdate === 1) {
                     // 强制更新
                     this.setState({
                         forceUpdate: true
@@ -148,9 +149,9 @@ export default class HomePage extends PureComponent {
     componentDidMount() {
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
         InteractionManager.runAfterInteractions(() => {
-            this.timer = TimerMixin.setTimeout(() => {
+            TimerMixin.setTimeout(() => {
                 // 检测版本更新
-                // this.getVersion();
+                this.getVersion();
                 this.getMessageData();
             }, 2500);
         });
@@ -239,19 +240,19 @@ export default class HomePage extends PureComponent {
     }
 
     _onRefresh() {
-        homeModule.loadHomeList();
+        homeModule.loadHomeList(true);
     }
 
     getMessageData = () => {
         var currStr = new Date().getTime() + '';
         AsyncStorage.getItem('lastMessageTime').then((value) => {
             if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-                MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(res => {
-                    if (!EmptyUtils.isEmptyArr(res.data.data)) {
+                MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {
+                    if (!EmptyUtils.isEmptyArr(resp.data.data)) {
                         this.messageModal && this.messageModal.open();
                         this.setState({
                             showMessage: true,
-                            messageData: res.data.data
+                            messageData: resp.data.data
                         });
                     }
                 });
@@ -366,7 +367,7 @@ export default class HomePage extends PureComponent {
                         />
                     }
                     onEndReached={this._onEndReached.bind(this)}
-                    onEndReachedThreshold={0.1}
+                    onEndReachedThreshold={0.2}
                     showsVerticalScrollIndicator={false}
                     style={{ marginTop: bannerModule.bannerList.length > 0 ? 0 : statusBarHeight + 44 }}
                     onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}

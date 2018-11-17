@@ -37,6 +37,9 @@ SINGLETON_FOR_CLASS(JRShareManager)
       return;
       
     }
+    if([shareModel.shareType integerValue] == 2 ){
+      shareModel.thumImage = shareModel.hdImageURL;
+    }
     [self shareWithPlatefrom:platefrom
                        Title:shareModel.title
                     SubTitle:shareModel.dec
@@ -153,7 +156,7 @@ SINGLETON_FOR_CLASS(JRShareManager)
 
 - (id)getImageWithPath:(NSString *)imageUrl{
   if ([imageUrl hasPrefix:@"http"]){
-    return imageUrl;
+    return [imageUrl  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];;
   }else if ([imageUrl hasSuffix:@"/"]){
     return [UIImage imageWithContentsOfFile:imageUrl];
   }else{
@@ -163,17 +166,9 @@ SINGLETON_FOR_CLASS(JRShareManager)
 
 #pragma 微信登陆
 -(void)getUserInfoForPlatform:(UMSocialPlatformType)platformType withCallBackBlock:(loginFinshBlock)finshBlock{
-  BOOL wx = [[UIApplication sharedApplication]canOpenURL:[NSURL URLWithString:@"weixin://"]];
-  //  if (!wx) {
-  //     NSDictionary * dic = @{@"msg":@"未安装微信"};
-  //    if (finshBlock) {
-  //          finshBlock(@[dic]);
-  //      }
-  ////    [JRLoadingAndToastTool showToast:@"未安装微信" andDelyTime:2];
-  ////    return;
-  //  }
+ 
   [[UMSocialManager defaultManager] getUserInfoWithPlatform:UMSocialPlatformType_WechatSession currentViewController:self.currentViewController_XG completion:^(id result, NSError *error) {
-    UMSocialUserInfoResponse * res = result ;
+    UMSocialUserInfoResponse * res = result;
     NSDictionary *dicData = @{
                               @"openid":res.openid?res.openid:[NSNull null],
                               @"systemVersion":[JRDeviceInfo systemVersion],

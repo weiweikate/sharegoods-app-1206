@@ -18,13 +18,14 @@ import shouyi from '../../res/userInfoImg/xiangjzhanghu_icon03_10.png';
 import xiaofei from '../../res/userInfoImg/xiangjzhanghu_icon03_12.png';
 import salesCommissions from '../../res/userInfoImg/xiangjzhanghu_icon03_08.png';
 import renwu from '../../res/userInfoImg/xiangjzhanghu_icon03_16.png'
-
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from './../../../../utils/bridge';
+import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
 
+@observer
 export default class MyCashAccountPage extends BasePage {
     constructor(props) {
         super(props);
@@ -47,7 +48,6 @@ export default class MyCashAccountPage extends BasePage {
 
     $navigationBarOptions = {
         title: '现金账户',
-
         show: true // false则隐藏导航
     };
 
@@ -74,18 +74,18 @@ export default class MyCashAccountPage extends BasePage {
             <View style={styles.container}>
                 <ImageBackground style={styles.imageBackgroundStyle} />
                 <View style={styles.viewStyle}>
-                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 15, color: 'white' }}>账户余额(元)</Text>
+                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 13, color: 'white' }}>账户余额(元)</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ height: 44, justifyContent: 'space-between', marginTop: 15 }}>
+                        <View style={{ height: 44, justifyContent: 'space-between', marginTop: 10 }}>
                             <Text style={{
                                 marginLeft: 25,
-                                fontSize: 25,
+                                fontSize: 24    ,
                                 color: 'white'
-                            }}>{StringUtils.formatMoneyString(this.state.restMoney, false)}</Text>
+                            }}>{StringUtils.formatMoneyString(user.availableBalance?user.availableBalance:0, false)}</Text>
                         </View>
-                        <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
-                            <Text style={{ fontSize: 15, color: 'white' }}>提现</Text>
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>*/}
+                            {/*<Text style={{ fontSize: 15, color: 'white' }}>提现</Text>*/}
+                        {/*</TouchableOpacity>*/}
                     </View>
                 </View>
             </View>
@@ -117,8 +117,7 @@ export default class MyCashAccountPage extends BasePage {
 
     //**********************************BusinessPart******************************************
     componentDidMount() {
-
-        this.getDataFromNetwork();
+        this.onRefresh();
     }
 
     jumpToWithdrawCashPage = () => {
@@ -129,7 +128,7 @@ export default class MyCashAccountPage extends BasePage {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '推广提成','任务奖励'];
+        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '现金红包','任务奖励'];
         let use_type_symbol = ['', '+', '-',];
         let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions,renwu];
         Toast.showLoading();
@@ -142,7 +141,7 @@ export default class MyCashAccountPage extends BasePage {
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
                         arrData.push({
-                            type: use_type[item.useType],
+                            type: item.useType===3&&item.biType==1?'消费退款':use_type[item.useType],
                             time: DataUtils.getFormatDate(item.createTime / 1000),
                             serialNumber: '编号：' + item.serialNo,
                             capital: use_type_symbol[item.biType] + item.balance,

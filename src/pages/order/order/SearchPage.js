@@ -1,10 +1,17 @@
 import React from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, NativeModules, InteractionManager } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    NativeModules,
+    InteractionManager,
+    DeviceEventEmitter
+} from 'react-native';
 import BasePage from '../../../BasePage';
-import { HotSearch, RecentSearch, SearchInput } from './../../../components/ui';
+import { HotSearch, RecentSearch } from './../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import Storage from '../../../utils/storage';
-
+import SearchNav from '../../home/search/components/SearchNav';
 const dismissKeyboard = require('dismissKeyboard');
 //全局变量，历史搜索记录,因为是递加的
 let array = [];
@@ -38,6 +45,10 @@ class SearchPage extends BasePage {
     };
     componentDidMount(){
         this.loadPageData();
+        DeviceEventEmitter.addListener('inputText', (inputText) => { this.setState({ inputText: inputText }), this.startSearch(inputText)});
+    }
+    componentWillUnmount(){
+        DeviceEventEmitter.removeAllListeners('inputText');
     }
     loadPageData() {
         this.getRecentSearch();
@@ -74,29 +85,37 @@ class SearchPage extends BasePage {
     onChangeText = (inputText) => {
         this.setState({ inputText: inputText });
     };
+    //取消
+    _cancel = () => {
+        this.$navigateBack();
+    };
 
     _render() {
         // console.log("从上个页面传过来的inputText=" + this.params.inputText)
         return (
             <TouchableWithoutFeedback onPress={() => dismissKeyboard()}>
                 <View style={styles.container}>
+                    <SearchNav placeholder={'请输入关键词搜索'} onSubmitEditing={(inputText) => {
+                        this.setState({ inputText: inputText }), this.startSearch(inputText);
+                    }} cancel={this._cancel}
+                               onChangeText={this.onChangeText}/>
                     {/*页面展示内容*/}
-                    <SearchInput
-                        ref={'searchInput'}
-                        placeHolder={'请输入关键词'}
-                        inputText={this.state.inputText}
-                        onSubmitEditing={(inputText) => {
-                            this.setState({ inputText: inputText }), this.startSearch(inputText);
-                        }}
-                        buttonNavigateBack={() => {
-                            this.$navigateBack();
-                        }}
-                        onChangeText={(inputText) => this.onChangeText(inputText)}
-                        finish={() => {
-                            this.startSearch(this.state.inputText);
-                        }}
-                        searchString={this.state.searchString[this.state.pageType]}
-                    />
+                    {/*<SearchInput*/}
+                        {/*ref={'searchInput'}*/}
+                        {/*placeHolder={'请输入关键词'}*/}
+                        {/*inputText={this.state.inputText}*/}
+                        {/*onSubmitEditing={(inputText) => {*/}
+                            {/*this.setState({ inputText: inputText }), this.startSearch(inputText);*/}
+                        {/*}}*/}
+                        {/*buttonNavigateBack={() => {*/}
+                            {/*this.$navigateBack();*/}
+                        {/*}}*/}
+                        {/*onChangeText={(inputText) => this.onChangeText(inputText)}*/}
+                        {/*finish={() => {*/}
+                            {/*this.startSearch(this.state.inputText);*/}
+                        {/*}}*/}
+                        {/*searchString={this.state.searchString[this.state.pageType]}*/}
+                    {/*/>*/}
                     <View style={{ height: 1 }}/>
                     {this.renderRecentSearch()}
                     {this.renderHotSearch()}
@@ -164,14 +183,18 @@ class SearchPage extends BasePage {
         }
         //把搜索框里的值存起来
         if (StringUtils.isNoEmpty(inputText)) {
-            if (this.state.recentData.indexOf(inputText) === -1) {//数组去重
-                if (this.state.recentData.length < 10) {
-                    this.state.recentData.push(inputText);
-                } else {
-                    this.state.recentData.shift(array);
-                    this.state.recentData.push(inputText);
-                }
-            }
+            // if (this.state.recentData.indexOf(inputText) === -1) {//数组去重
+            //     if (this.state.recentData.length < 10) {
+            //         this.state.recentData.push(inputText);
+            //     } else {
+            //         this.state.recentData.shift(array);
+            //         this.state.recentData.push(inputText);
+            //     }
+            // }
+            this.state.recentData.length == 10 ? this.state.recentData.splice(9, 1) : this.state.recentData
+            this.state.recentData.unshift(inputText)
+            let setArr = new Set(this.state.recentData)
+            this.state.recentData=[...setArr]
             console.log('最近搜索记录=' + array);
             // let data = JSON.stringify(array);
             Storage.set(recentDataKey, this.state.recentData);

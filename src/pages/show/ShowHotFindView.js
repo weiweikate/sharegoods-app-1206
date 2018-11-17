@@ -2,12 +2,12 @@
  * 热门发现
  */
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import Waterfall from '../../components/ui/WaterFall';
 import { observer } from 'mobx-react';
-import { ShowRecommendModules, tag } from './Show';
+import { ShowRecommendModules, tag, showSelectedDetail } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
-
+import EmptyUtils from '../../utils/EmptyUtils'
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
 
@@ -38,6 +38,14 @@ export default class ShowHotView extends Component {
         }, 1000);
     }
 
+    refresh() {
+        this.waterfall.index = 1
+        this.recommendModules.loadRecommendList().then(data => {
+            this.waterfall.clear();
+            this.waterfall.addItems(data);
+        });
+    }
+
     refreshing(done) {
         setTimeout(() => {
             this.recommendModules.loadRecommendList().then(data => {
@@ -50,6 +58,9 @@ export default class ShowHotView extends Component {
 
     _gotoDetail(data) {
         const { navigation } = this.props;
+        data.click = data.click + 1
+        // this.recommendModules.recommendList.replace
+        showSelectedDetail.selectedShowAction(data, this.recommendModules.type)
         navigation.navigate('show/ShowDetailPage', { id: data.id });
     }
 
@@ -58,8 +69,8 @@ export default class ShowHotView extends Component {
         let imgHigh = 1
         let img = ''
         if (data.generalize === tag.New || data.generalize === tag.Recommend) {
-            imgWide = data.coverImgWide ? data.coverImgWide : 1;
-            imgHigh = data.coverImgHigh ? data.coverImgHigh : 1;
+            imgWide = EmptyUtils.isEmpty(data.coverImgWide) ? 1 : data.coverImgWide;
+            imgHigh = EmptyUtils.isEmpty(data.coverImgHigh) ? 1 : data.coverImgHigh;
             img = data.coverImg
         } else {
             imgWide = data.imgWide ? data.imgWide : 1;
@@ -67,10 +78,17 @@ export default class ShowHotView extends Component {
             img = data.img
         }
         let imgHeight = (imgHigh / imgWide) * imgWidth;
+       
         // const itemHeight = this._getHeightForItem({item})
         return <ItemView imageStyle={{ height: imgHeight }} data={data} press={() => this._gotoDetail(data)} imageUrl={ img }/>;
     };
     _keyExtractor = (data) => data.id + '' + data.currentDate;
+
+    _renderInfinite() {
+        return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
+            {this.recommendModules.isEnd ? <Text style={styles.text}>已加载全部</Text> : this.recommendModules.isRefreshing ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
+        </View>
+    }
 
     render() {
         return (
@@ -89,6 +107,7 @@ export default class ShowHotView extends Component {
                     infiniting={(done) => this.infiniting(done)}
                     refreshing={(done) => this.refreshing(done)}
                     showsVerticalScrollIndicator={false}
+                    renderInfinite={()=> this._renderInfinite()}
                 />
             </View>
         );
@@ -99,5 +118,9 @@ let styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: px2dp(12)
+    },
+    text: {
+        color: '#999',
+        fontSize: px2dp(11)
     }
 });

@@ -1,6 +1,10 @@
 import { observable, action, computed } from 'mobx';
 import ShopCartAPI from '../api/ShopCartApi';
 import bridge from '../../../utils/bridge';
+import MineApi from '../../mine/api/MineApi';
+import user from '../../../model/user';
+import QYChatUtil from '../../mine/page/helper/QYChatModel';
+import shopCartCacheTool from './ShopCartCacheTool';
 
 
 class ShopCartStore {
@@ -54,7 +58,7 @@ class ShopCartStore {
     get getTotalSelectGoodsNum() {
         let totalSelectNum = 0;
         this.data.slice().map(item => {
-            if (item.isSelected) {
+            if (item.isSelected && !isNaN(item.amount) ) {
                 totalSelectNum += item.amount;
             }
         });
@@ -65,12 +69,12 @@ class ShopCartStore {
     get getTotalMoney() {
         let totalMoney = 0.00;
         this.data.slice().map(item => {
-            if (item.isSelected) {
+            if (item.isSelected && !isNaN(item.amount) ) {
                 totalMoney = totalMoney + parseFloat(item.amount) * parseFloat(item.price);
             }
         });
 
-        return totalMoney;
+        return   Math.round(totalMoney * 100)/100;
 
 
     }
@@ -103,6 +107,8 @@ class ShopCartStore {
      */
     @action
     packingShopCartGoodsData = (response) => {
+        let originArr = this.data.slice();
+
         if (response && response instanceof Array && response.length > 0) {
             let tempArr = [];
             response.forEach(item => {
@@ -116,11 +122,16 @@ class ShopCartStore {
 
                 //从订单过来的选中
                 this.needSelectGoods.map(selectGood =>{
-                    if (selectGood.productId === item.productId && selectGood.priceId === item.priceId){
+                    if (selectGood.productId === item.productId && selectGood.priceId === item.priceId && item.status !== 0){
                         item.isSelected = true
                     }
                 })
 
+                originArr.map(originGood =>{
+                    if (originGood.productId === item.productId && item.priceId == originGood.priceId){
+                        item.isSelected = originGood.isSelected
+                    }
+                })
                 tempArr.push(item);
             });
             //将需要选中的数组清空
@@ -143,16 +154,21 @@ class ShopCartStore {
             return;
         }
         let isCanSettlement = true
+        let  tempArr = [];
         selectArr.map(good => {
             if (good.amount > good.stock) {
                 isCanSettlement = false
             }
+            if (good.amount > 0 && !isNaN(good.amount)){
+                tempArr.push(good);
+            }
         })
+
+
         if (!isCanSettlement) {
             bridge.$toast('商品库存不足请确认~')
         }
-
-        callBack(isCanSettlement,selectArr)
+        callBack(isCanSettlement,tempArr)
     }
     /**
      * 获取结算选中商品
@@ -193,6 +209,7 @@ class ShopCartStore {
         ShopCartAPI.updateItem(
             itemData
         ).then((res) => {
+            this.needSelectGoods.push(itemData)
             this.getShopCartListData()
             // let [...temDataArr] = this.data.slice();
             // if (itemData.amount > 200){
@@ -260,9 +277,6 @@ class ShopCartStore {
     /*加入购物车*/
     addItemToShopCart(item) {
         if (item) {
-            if (item instanceof Array && item.length > 0) {
-                bridge.$toast('批量加入购物车未对接');
-            } else {
                 //加入单个商品
                 bridge.showLoading();
                 ShopCartAPI.addItem({
@@ -276,10 +290,19 @@ class ShopCartStore {
                     this.getShopCartListData();
                 }).catch((error) => {
                     bridge.$toast(error.msg || '加入购物车失败');
+                    if (error.code === 10009) {
+                        user.clearUserInfo();
+                        user.clearToken();
+                        //清空购物车
+                        this.data = [];
+                        MineApi.signOut();
+                        QYChatUtil.qiYULogout();
+                        shopCartCacheTool.addGoodItem(item)
+                    }else {
+                        bridge.$toast(error.msg)
+                    }
                     bridge.hiddenLoading();
                 });
-            }
-
         } else {
             bridge.$toast('添加商品不能为空');
         }

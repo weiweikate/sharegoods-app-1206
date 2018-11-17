@@ -5,7 +5,7 @@ import {
     Image,
     Text,
     TouchableOpacity,
-    TouchableWithoutFeedback, ScrollView
+    TouchableWithoutFeedback, ScrollView, ImageBackground
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
@@ -13,17 +13,24 @@ import UIImage from '../../../../components/ui/UIImage';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import AutoExpandingInput from '../../../../components/ui/AutoExpandingInput';
-import arrowUp from '../../res/customerservice/icon_06-03.png';
-import arrowDown from '../../res/customerservice/icon_06.png';
-import res from '../../../../comm/res';
-import addPic from '../../res/customerservice/xk1_03.png';
-import deleteImage from '../../res/customerservice/deleteImage.png';
+import res from '../../res';
 import BusinessUtils from '../../components/BusinessUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import MineApi from '../../api/MineApi';
 import Modal from 'CommModal';
+const {
+    icon_arrow_up,
+    icon_arrow_down,
+    icon_dashframe,
+    icon_delete,
+    icon_red_select,
+    icon_camara,
+}=res.helperAndCustomerService;
+
 const rightIcon = res.button.tongyon_icon_check_green;
 import DesignRule from 'DesignRule';
+import NavigatorBar from '../../../../components/pageDecorator/NavigatorBar/NavigatorBar';
+
 /**
  * @author chenxiang
  * @date on 2018/9/18
@@ -42,12 +49,12 @@ export default class HelperFeedbackPage extends BasePage {
             showModal: false,
             isShowFinishModal: false,
             course: '请选择问题类型',
-            CONFIG: [{ value: '物流问题', detailId: 0 }, { value: '客服问题', detailId: 1 }, {
-                value: '物流问题',
-                detailId: 2
-            }, { value: '客服问题', detailId: 3 }, { value: '物流问题', detailId: 4 }, { value: '客服问题', detailId: 5 }],//value, item.detailId
+            CONFIG: [],//value, item.detailId
             selectIndex: -1,
-            imageArr: []
+            typeKey:-1,
+            imageArr: [],
+            touchable: false,
+            picNum: 0
         };
 
     }
@@ -64,7 +71,7 @@ export default class HelperFeedbackPage extends BasePage {
                     CONFIG: res.data
                 });
             } else {
-                this.$toastShow('服务未返回类型数据，');
+                this.$toastShow('服务器未返回类型数据');
             }
         }).catch(err => {
             console.log(err);
@@ -73,11 +80,12 @@ export default class HelperFeedbackPage extends BasePage {
     }
 
     //选择具体的反馈类型
-    selCourse(course, i) {
+    selCourse(course,id, i) {
         this.setState({
             showModal: false,
             course: course,
-            selectIndex: i
+            selectIndex: i,
+            typeKey:id
         });
     }
 
@@ -98,13 +106,9 @@ export default class HelperFeedbackPage extends BasePage {
             smallImagarr.push(this.state.imageArr[i].imageThumbUrl);
             orignImagarr.push(this.state.imageArr[i].imageUrl);
         }
-        let smallImgs = smallImagarr.join(';');
-        let orignImgs = orignImagarr.join(';');
-        // if (this.state.selectIndex == -1 || this.state.detailContent == '' || orignImgs.length < 20) {
-        //     ToastAndroid.show('请完善反馈资料!', ToastAndroid.SHORT);
-        //     return;
-        // }
-        if (this.state.selectIndex == -1) {
+        let smallImgs = smallImagarr.join(',');
+        let orignImgs = orignImagarr.join(',');
+        if (this.state.typeKey == -1) {
             this.$toastShow('请选择反馈类型!');
             return;
         }
@@ -112,22 +116,16 @@ export default class HelperFeedbackPage extends BasePage {
             this.$toastShow('反馈内容请大于10个字!');
             return;
         }
+        this.setState({ touchable: true });
         MineApi.addFeedback({
-            content: this.state.detailContent, typeKey: this.state.selectIndex || 1, smallImg: smallImgs,
+            content: this.state.detailContent, typeKey: this.state.typeKey || 1, smallImg: smallImgs,
             originalImg: orignImgs
         }).then(res => {
-            console.log(res);
-            if (res.code == 10000) {
-                this.setState({ isShowFinishModal: true });
-                this.finishModal && this.finishModal.open();
-            } else {
-                this.$toastShow(res.msg);
-            }
+            this.setState({ isShowFinishModal: true, touchable: false });
+            this.finishModal && this.finishModal.open();
         }).catch(err => {
-            if (err.code == 10009) {
-                this.$navigate('login/login/LoginPage');
-            }
-
+            this.setState({ touchable: false });
+            this.$toastShow(err.msg);
         });
     }
 
@@ -138,7 +136,7 @@ export default class HelperFeedbackPage extends BasePage {
                 transparent={true}
                 onRequestClose={() => {
                 }}
-                ref={(ref)=>{
+                ref={(ref) => {
                     this.finishModal = ref;
                 }}
                 visible={this.state.isShowFinishModal}>
@@ -155,7 +153,8 @@ export default class HelperFeedbackPage extends BasePage {
                     }}>
                         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <UIImage source={rightIcon} style={{ width: 70, height: 70 }}/>
-                            <UIText value={'提交成功！'} style={{ fontSize: 15, color: DesignRule.textColor_mainTitle, marginTop: 10 }}/>
+                            <UIText value={'提交成功！'}
+                                    style={{ fontSize: 15, color: DesignRule.textColor_mainTitle, marginTop: 10 }}/>
                             <UIText value={`您的反馈我们会认真查看`} style={{
                                 fontSize: 11,
                                 color: '#c6c6c6',
@@ -200,18 +199,34 @@ export default class HelperFeedbackPage extends BasePage {
         if (isShowIcon) {
             return null;
         } else {
-            return <UIImage source={addPic} style={{ width: 83, height: 83, marginLeft: 15, borderRadius: 5 }}
-                            resizeMode={'stretch'}
-                            onPress={() => this.choosePicker()}/>;
+            return <ImageBackground style={{
+                width: 83,
+                height: 83,
+                borderColor: DesignRule.textColor_instruction,
+                marginLeft: 16,
+                justifyContent: 'center',
+                alignItems: 'center'
+            }} source={icon_dashframe}>
+                <UIImage source={icon_camara} style={{ width: 27, height: 22 }}
+                         resizeMode={'stretch'}
+                         onPress={() => this.choosePicker()}/>
+                <Text style={{
+                    fontSize: 13,
+                    color: DesignRule.textColor_hint,
+                    marginTop: 4
+                }}>{this.state.imageArr.length}/3</Text>
+
+            </ImageBackground>;
+
         }
 
     };
     renderPhotoItem = (item, index) => {
         return (
-            <View style={{ marginRight: 8, marginBottom: 12 }} key={index}>
+            <View style={{ marginLeft: 8 }} key={index}>
                 <Image style={styles.photo_item} source={{ uri: this.state.imageArr[index].imageUrl }}/>
                 <TouchableOpacity style={styles.delete_btn} onPress={() => this.deletePic(index)}>
-                    <Image style={{ width: 24, height: 24 }} source={deleteImage}/>
+                    <Image style={{ width: 24, height: 24 }} source={icon_delete}/>
                 </TouchableOpacity>
 
             </View>);
@@ -239,34 +254,65 @@ export default class HelperFeedbackPage extends BasePage {
                 <TouchableWithoutFeedback onPress={() => {
                     this.setState({ showModal: false });
                 }}>
-                    <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-
-                        <TouchableOpacity style={styles.modalContainer}
-                                          onPress={() => this.setState({ showModal: true })}>
-                            <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>请选择问题类型</Text>
-                            <Image source={arrowUp} style={{ width: 15, height: 15, marginRight: 10 }}/>
-                        </TouchableOpacity>
-                        <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
-                            {this.state.CONFIG.map((item, i) => {
-                                return (
-                                    <TouchableOpacity key={i} style={{ height: 48, justifyContent: 'center' }}
-                                                      activeOpacity={0.6}
-                                                      onPress={() => this.selCourse(item.value, item.detailId)}>
-                                        <Text style={{
-                                            color: i == this.state.selectIndex ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
-                                            fontSize: 15,
-                                            marginLeft: 15
-                                        }}>{item.value}</Text>
-                                    </TouchableOpacity>
-                                );
-                            })
+                    <View>
+                        <NavigatorBar title={'问题反馈'} leftPressed={() => {
+                            if (this.state.showModal) {
+                                this.setState({ showModal: false });
+                                return;
                             }
+                            this.props.navigation.goBack();
+                        }}/>
+                        <View style={{ height: 15, backgroundColor: DesignRule.bgColor }}/>
+                        <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                            <View style={styles.modalContainer}
+                                  onPress={() => this.setState({ showModal: true })}>
+                                <Text style={{
+                                    marginLeft: 16,
+                                    fontSize: 15,
+                                    color: DesignRule.textColor_instruction
+                                }}>请选择问题类型</Text>
+                                <Image source={icon_arrow_up} style={{ width: 10, height: 7, marginRight: 16 }}/>
+                            </View>
+                            <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
+                                {this.state.CONFIG.map((item, i) => {
+                                    return (
+                                        <TouchableOpacity key={i} style={{
+                                            height: 48,
+                                            justifyContent: 'space-between',
+                                            flexDirection: 'row',
+                                            alignItems: 'center'
+                                        }}
+                                                          activeOpacity={0.6}
+                                                          onPress={() => this.selCourse(item.value, item.detailId,i)}>
+                                            <Text style={{
+                                                color: i == this.state.selectIndex ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
+                                                fontSize: 15,
+                                                marginLeft: 15
+                                            }}>{item.value}</Text>
+                                            {i == this.state.selectIndex ? <Image source={icon_red_select} style={{
+                                                width: 17,
+                                                height: 12,
+                                                marginRight: 19
+                                            }}/> : <View style={{ width: 17, height: 12, marginRight: 19 }}/>}
+                                        </TouchableOpacity>
+                                    );
+                                })
+                                }
+                            </View>
                         </View>
                     </View>
-
                 </TouchableWithoutFeedback>
             </Modal>
         );
+    }
+
+    showTypeSelect() {
+        if (this.state.CONFIG.length > 0) {
+            this.setState({ showModal: true });
+        } else {
+            this.$toastShow('无反馈类型');
+        }
+
     }
 
     _render() {
@@ -280,15 +326,23 @@ export default class HelperFeedbackPage extends BasePage {
                         width: ScreenUtils.width,
                         height: 44,
                         backgroundColor: 'white',
-                        marginTop: 5,
+                        marginTop: 15,
                         justifyContent: 'space-between',
                         alignItems: 'center'
-                    }} onPress={() => this.setState({ showModal: true })}>
-                        <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>{this.state.course}</Text>
-                        <Image source={arrowDown} style={{ width: 15, height: 15, marginRight: 10 }}/>
+                    }} onPress={() => this.showTypeSelect()}>
+                        <Text style={{
+                            marginLeft: 16,
+                            fontSize: 15,
+                            color: DesignRule.textColor_mainTitle
+                        }}>{this.state.course}</Text>
+                        <Image source={icon_arrow_down} style={{ width: 10, height: 7, marginRight: 16 }}/>
                     </TouchableOpacity>
                     <View style={styles.containerView1}>
-                        <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>详细说明</Text>
+                        <Text style={{
+                            marginLeft: 16,
+                            fontSize: 15,
+                            color: DesignRule.textColor_mainTitle
+                        }}>详细说明（必填）</Text>
                     </View>
                     <View style={{ height: 130, backgroundColor: 'white' }}>
                         <AutoExpandingInput
@@ -299,10 +353,19 @@ export default class HelperFeedbackPage extends BasePage {
                             defaultValue={''}
                             underlineColorAndroid={'transparent'}
                         />
-                        <Text style={{ position: 'absolute', bottom: 10, right: 10 }}>{this.state.textLength}/90</Text>
+                        <Text style={{
+                            color: DesignRule.textColor_instruction,
+                            position: 'absolute',
+                            bottom: 10,
+                            right: 16
+                        }}>{this.state.textLength}/90</Text>
                     </View>
                     <View style={styles.containerView2}>
-                        <Text style={{ marginLeft: 10, fontSize: 15, color: DesignRule.textColor_mainTitle }}>上传图片</Text>
+                        <Text style={{
+                            marginLeft: 16,
+                            fontSize: 15,
+                            color: DesignRule.textColor_mainTitle
+                        }}>上传图片（选填）</Text>
                     </View>
                     <View style={styles.containerView3}>
                         {this.state.imageArr.map((item, index) => {
@@ -310,15 +373,14 @@ export default class HelperFeedbackPage extends BasePage {
                         })}
                         {this.renderAddItem()}
                     </View>
-
-                    <View style={{ width: ScreenUtils.width, height: 180, alignItems: 'center' }}>
-                        <TouchableOpacity activeOpacity={0.9}
-                                          style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' || this.state.detailContent.length < 10 ? DesignRule.lineColor_inGrayBg : color.red }]
-
-                                          } onPress={() => this.feedback2server()}>
+                        <TouchableOpacity activeOpacity={0.9} disabled={this.state.touchable}
+                                          style={{alignItems:'center',justifyContent:'center',marginTop: 50}}
+                                          onPress={() => this.feedback2server()}>
+                            <View style={[styles.buttoncolorStyle, { backgroundColor: this.state.course == '请选择问题类型' || this.state.detailContent.length < 10 ? DesignRule.lineColor_inGrayBg : color.red }]}>
                             <Text style={{ fontSize: 16, color: '#fff' }}>提交</Text>
+                            </View>
                         </TouchableOpacity>
-                    </View>
+
                 </ScrollView>
             </View>
         );
@@ -343,7 +405,8 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         backgroundColor: 'white',
-        fontSize: 14
+        fontSize: 14,
+        textAlignVertical: 'top'
 
     },
     headText: {
@@ -373,10 +436,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: ScreenUtils.width,
         height: 44,
-        backgroundColor: DesignRule.bgColor,
+        backgroundColor: DesignRule.lineColor_inColorBg,
         justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: 55
+        alignItems: 'center'
     },
     buttoncolorStyle: {
         width: 290,
@@ -384,20 +446,21 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 50
+
     },
     containerView1: {
         backgroundColor: 'white',
         width: ScreenUtils.width,
-        marginTop: 5,
+        marginTop: 14,
         height: 44,
         justifyContent: 'center',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        marginBottom: 0.5
     },
     containerView2: {
         backgroundColor: 'white',
         width: ScreenUtils.width,
-        marginTop: 5,
+        marginTop: 10,
         height: 44,
         justifyContent: 'center',
         alignItems: 'flex-start'

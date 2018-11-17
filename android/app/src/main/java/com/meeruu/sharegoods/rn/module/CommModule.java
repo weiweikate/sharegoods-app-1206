@@ -26,6 +26,7 @@ import com.meeruu.commonlib.bean.IdNameBean;
 import com.meeruu.commonlib.utils.AppUtils;
 import com.meeruu.commonlib.utils.BitmapUtils;
 import com.meeruu.commonlib.utils.FileUtils;
+import com.meeruu.commonlib.utils.ImageCacheUtils;
 import com.meeruu.commonlib.utils.LogUtils;
 import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
@@ -33,13 +34,15 @@ import com.meeruu.sharegoods.bean.NetCommonParamsBean;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
-import com.meeruu.sharegoods.utils.DataCleanManager;
+import com.qiyukf.unicorn.api.Unicorn;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.jpush.android.api.JPushInterface;
 
 
 public class CommModule extends ReactContextBaseJavaModule {
@@ -174,8 +177,8 @@ public class CommModule extends ReactContextBaseJavaModule {
      * 功能显示加载弹窗
      */
     @ReactMethod
-    public void showLoadingDialog() {
-        loadingDialog(true);
+    public void showLoadingDialog(String msg) {
+        loadingDialog(true,msg);
     }
 
     @ReactMethod
@@ -186,6 +189,13 @@ public class CommModule extends ReactContextBaseJavaModule {
     public void loadingDialog(boolean isShow) {
         LoadingDialogEvent event = new LoadingDialogEvent();
         event.setShow(isShow);
+        EventBus.getDefault().post(event);
+    }
+
+    public void loadingDialog(boolean isShow,String msg) {
+        LoadingDialogEvent event = new LoadingDialogEvent();
+        event.setShow(isShow);
+        event.setMsg(msg);
         EventBus.getDefault().post(event);
     }
 
@@ -362,8 +372,9 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getTotalCacheSize(Callback callback) {
         try {
-            String s = DataCleanManager.getTotalCacheSize(mContext);
-            callback.invoke(s);
+            long s = ImageCacheUtils.getInstance().getCacheSize(mContext);
+            int reslut = new Long(s).intValue();
+            callback.invoke(reslut);
         } catch (Exception e) {
             LogUtils.d(e.getMessage());
         }
@@ -372,7 +383,9 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void clearAllCache(Callback callback) {
         try {
-            DataCleanManager.clearAllCache(mContext);
+            // 清楚七鱼缓存
+            Unicorn.clearCache();
+            ImageCacheUtils.getInstance().deleteCacheFloder();
             callback.invoke();
         } catch (Exception e) {
             LogUtils.d(e.getMessage());
@@ -382,5 +395,20 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void removeLaunch() {
         EventBus.getDefault().post(new HideSplashEvent());
+    }
+
+    @ReactMethod
+    public void stopPush() {
+        JPushInterface.stopPush(mContext);
+    }
+
+    @ReactMethod
+    public void resumePush() {
+        JPushInterface.resumePush(mContext);
+    }
+
+    @ReactMethod
+    public void isPushStopped(Callback callback) {
+        callback.invoke(JPushInterface.isPushStopped(mContext));
     }
 }

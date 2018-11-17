@@ -2,24 +2,24 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-    StyleSheet,
+    // StyleSheet,
     Text,
     View,
     TouchableOpacity,
-    Image,
-    TouchableWithoutFeedback
+    Image
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import ViewPager from '../../../components/ui/ViewPager';
-import xjt_03 from '../res/xjt_03.png';
+// import ViewPager from '../../../components/ui/ViewPager';
 import ActivityView from './ActivityView';
 import { isNoEmpty } from '../../../utils/StringUtils';
 import StringUtils from '../../../utils/StringUtils';
-import VideoView from '../../../components/ui/video/VideoView';
-// import user from '../../../model/user';
 import DesignRule from 'DesignRule';
+import TopicDetailBanner from './TopicDetailBanner';
 
-const { px2dp } = ScreenUtils;
+// const { px2dp } = ScreenUtils;
+import res from '../res';
+
+const xjt_03 = res.xjt_03;
 /**
  * 商品详情头部view
  */
@@ -36,57 +36,16 @@ export default class TopicDetailHeaderView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            swiperShow: false,
             haveVideo: false
         };
     }
 
     componentDidMount() {
-        setTimeout(() => {
-            this.setState({
-                swiperShow: true
-            });
-        }, 100);
     }
 
     updateTime(activityData, activityType, callBack) {
         this.ActivityView.saveActivityViewData(activityData, activityType, callBack);
     }
-
-    getImageList = (data) => {
-        if (data) {
-            return data.map((item, index) => {
-                return item.originalImg;
-            });
-        } else {
-            return null;
-        }
-    };
-
-    renderViewPageItem = (item, index) => {
-        const { activityType } = this.props;
-        if (item.videoUrl) {
-            return <VideoView videoUrl={item.videoUrl} videoCover={item.videoCover}/>;
-        } else {
-            const { originalImg } = item;
-            let imgList = this.getImageList(activityType === 3 ? this.props.data.imgFileList : this.props.data.productImgList);
-            return (
-                <TouchableWithoutFeedback onPress={() => {
-                    const params = { imageUrls: imgList, index: this.state.haveVideo ? index - 1 : index };
-                    const { navigation } = this.props;
-                    navigation && navigation.navigate('home/product/CheckBigImagesView', params);
-                }}>
-                    <Image source={{ uri: originalImg }}
-                           style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}
-                           resizeMode="cover"
-                    />
-                </TouchableWithoutFeedback>
-            );
-        }
-    };
-    _renderPagination = (index, total) => <View style={styles.indexView}>
-        <Text style={styles.text}>{index + 1} / {total}</Text>
-    </View>;
 
     render() {
         const { activityType } = this.props;
@@ -132,15 +91,7 @@ export default class TopicDetailHeaderView extends Component {
         }
         return (
             <View>
-                {bannerImgList.length > 0 && this.state.swiperShow ? <ViewPager swiperShow={true}
-                                                                                loop={false}
-                                                                                autoplay={false}
-                                                                                bounces={true}
-                                                                                height={ScreenUtils.autoSizeWidth(377)}
-                                                                                arrayData={bannerImgList}
-                                                                                renderItem={this.renderViewPageItem}
-                                                                                renderPagination={this._renderPagination}/> :
-                    <View style={{ height: ScreenUtils.autoSizeWidth(377), width: ScreenUtils.width }}/>}
+                {<TopicDetailBanner bannerImgList={bannerImgList} haveVideo={this.state.haveVideo} navigation = {this.props.navigation}/>}
                 {activityType === 3 ? null : <ActivityView ref={(e) => {
                     this.ActivityView = e;
                 }} activityData={this.props.activityData} activityType={activityType}/>}
@@ -173,8 +124,8 @@ export default class TopicDetailHeaderView extends Component {
                                 fontSize: 11
                             }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : ''}元`}</Text>
                             <Text style={{
-                                color: DesignRule.textColor_secondTitle,
-                                fontSize: 13,
+                                color: DesignRule.textColor_instruction,
+                                fontSize: 11,
                                 marginLeft: ScreenUtils.autoSizeWidth(108)
                             }}>{`月销售${isNoEmpty(monthSale) ? monthSale : 0}笔`}</Text>
                         </View>
@@ -205,11 +156,11 @@ export default class TopicDetailHeaderView extends Component {
                         marginVertical: 16,
                         alignItems: 'center'
                     }}>
-                        <Text style={{ color: DesignRule.mainColor, fontSize: 13 }}>服务</Text>
+                        <Text style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}>服务</Text>
                         <Text style={{
                             marginLeft: 11,
                             color: DesignRule.textColor_secondTitle,
-                            fontSize: 13
+                            fontSize: 12
                         }}>{`正品保证·急速发货 ${afterSaleServiceDaysTT === 0 ? `无售后服务` : `${afterSaleServiceDaysTT > 30 ? 30 : afterSaleServiceDaysTT || ''}天无理由退换`}`}</Text>
                     </View>
                 </View>
@@ -218,20 +169,20 @@ export default class TopicDetailHeaderView extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-    indexView: {
-        position: 'absolute',
-        height: px2dp(20),
-        borderRadius: px2dp(10),
-        right: px2dp(14),
-        bottom: px2dp(20),
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    text: {
-        color: '#fff',
-        fontSize: px2dp(10),
-        paddingHorizontal: 8
-    }
-});
+// const styles = StyleSheet.create({
+//     indexView: {
+//         position: 'absolute',
+//         height: px2dp(20),
+//         borderRadius: px2dp(10),
+//         right: px2dp(14),
+//         bottom: px2dp(20),
+//         backgroundColor: 'rgba(0, 0, 0, 0.7)',
+//         alignItems: 'center',
+//         justifyContent: 'center'
+//     },
+//     text: {
+//         color: '#fff',
+//         fontSize: px2dp(10),
+//         paddingHorizontal: 8
+//     }
+// });

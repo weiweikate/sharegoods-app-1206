@@ -24,12 +24,15 @@ import StringUtils from '../../../utils/StringUtils';
 import {
     UIText, UIImage
 } from '../../../components/ui';
-import changeGoods from '../res/shouhou_icon_huanhuo_nor.png';
-import refuseGoodsAndMoney from '../res/shouhou_icon_tuihuo_nor.png';
-import refuseMoney from '../res/shouhou_icon_tuikuan_nor.png';
 import RefreshLargeList from 'RefreshLargeList';
 import search from '../res/search.png';
 import DesignRule from 'DesignRule';
+import res from '../res';
+const {
+    icon_refund,
+    icon_return_goods,
+    icon_exchange
+} = res.afterSaleService;
 
 type Props = {};
 export default class AfterSaleListPage extends BasePage<Props> {
@@ -97,7 +100,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     borderTopWidth: 0.5,
                     borderTopColor: DesignRule.textColor_placeholder
                 }}>
-                    <UIImage source={[refuseMoney, refuseGoodsAndMoney, changeGoods][item.type - 1]}
+                    <UIImage source={[icon_refund, icon_return_goods, icon_exchange][item.type - 1]}
                              style={styles.image}
                     />
                     <UIText value={['仅退款', '退货退款', '换货'][item.type - 1]}
@@ -176,7 +179,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height: 30,
         width: 80,
-        borderWidth: 0.5,
+        borderWidth: DesignRule.lineHeight,
         borderColor: DesignRule.textColor_secondTitle,
         borderRadius: 15,
         marginRight: 15

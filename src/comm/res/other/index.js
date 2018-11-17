@@ -5,5 +5,7 @@ const other = {
     tongyong_logo_nor: require('./tongyong_logo_nor.png'),
     invalidGoodImg: require('./invalidGoodImg.png'),
     noGoodImg: require('./noGoodImg.png'),
+    red_big_envelope: require('./red_big_envelope.png'),
+    loading_bar:require('./loading_bar.png')
 };
 export default other;

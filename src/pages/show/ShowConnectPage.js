@@ -7,7 +7,7 @@ import Waterfall from '../../components/ui/WaterFall';
 import { observer } from 'mobx-react';
 import { ShowRecommendModules, tag } from './Show';
 import ScreenUtils from '../../utils/ScreenUtils';
-
+import EmptyUtils from '../../utils/EmptyUtils'
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
 import BasePage from '../../BasePage';
@@ -51,6 +51,7 @@ export default class ShowConnectPage extends BasePage {
     _refreshData() {
         this.recommendModules.loadCollect().then(data => {
             this.setState({ firstLoad: false });
+            this.waterfall.index = 1
             this.waterfall.clear();
             if (data && data.length > 0) {
                 this.waterfall.addItems(data);
@@ -122,7 +123,19 @@ export default class ShowConnectPage extends BasePage {
     }
 
     _selectedAction(data) {
-        const { selectedList } = this.state;
+        const { selectedList, allSelected, collectData } = this.state;
+
+        if (allSelected) {
+            let selecteds = {}
+            collectData.map((value) => {
+                if (value.id !== data.id) {
+                    selecteds[value.id] = value.id
+                }
+            })
+            this.setState({ allSelected: false, selectedList: selecteds})
+            return
+        }
+
         if (selectedList[data.id]) {
             delete selectedList[data.id];
         } else {
@@ -141,8 +154,8 @@ export default class ShowConnectPage extends BasePage {
         let imgHigh = 1;
         let img = '';
         if (data.generalize === tag.New || data.generalize === tag.Recommend) {
-            imgWide = data.coverImgWide ? data.coverImgWide : 1;
-            imgHigh = data.coverImgHigh ? data.coverImgHigh : 1;
+            imgWide = EmptyUtils.isEmpty(data.coverImgWide) ? 1 : data.coverImgWide;
+            imgHigh = EmptyUtils.isEmpty(data.coverImgHigh) ? 1 : data.coverImgHigh;
             img = data.coverImg;
         } else {
             imgWide = data.imgWide ? data.imgWide : 1;
@@ -174,6 +187,12 @@ export default class ShowConnectPage extends BasePage {
 
     goToHome() {
         this.$navigateReset();
+    }
+
+    _renderInfinite() {
+        return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
+            {this.recommendModules.isEnd ? <Text style={styles.text}>已加载全部</Text> : this.recommendModules.isRefreshing ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
+        </View>
     }
 
     _render() {
@@ -210,6 +229,7 @@ export default class ShowConnectPage extends BasePage {
                     keyExtractor={(data) => this._keyExtractor(data)}
                     infiniting={(done) => this.infiniting(done)}
                     refreshing={(done) => this.refreshing(done)}
+                    renderInfinite={()=>this._renderInfinite()}
                 />
                 {
                     select
@@ -320,5 +340,9 @@ let styles = StyleSheet.create({
     goToText: {
         color: '#E60012',
         fontSize: px2dp(17)
+    },
+    text: {
+        color: '#999',
+        fontSize: px2dp(11)
     }
 });

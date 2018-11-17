@@ -8,15 +8,17 @@ import {
     ImageBackground
 } from 'react-native';
 // 图片资源
-import HeaderBarBgImg from '../src/bg_02.png';
-import Shape from '../src/Shape.png';
-import shoushi from '../src/shoushi.png';
-import xiuling from '../src/xiuling.png';
+import res from '../../res';
+const HeaderBarBgImg = res.shopRecruit.bg_02;
+const Shape = res.shopRecruit.Shape;
+const shoushi = res.shopRecruit.shoushi;
+const xiuling = res.shopRecruit.xiuling;
 
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
+
 
 export default class RecommendRow extends Component {
 
@@ -36,7 +38,12 @@ export default class RecommendRow extends Component {
                 <Image source={img}/>
                 <Text style={{ color: '#333333', fontSize: 13, marginLeft: 2 }}>{tittle}</Text>
             </View>
-            <Text style={{ color: '#666666', fontSize: 13, marginTop: 8 }}>{content}</Text>
+            <Text style={{
+                color: '#666666',
+                fontSize: 13,
+                marginTop: 8,
+                paddingHorizontal: ScreenUtils.autoSizeWidth(8)
+            }} numberOfLines={1}>{content}</Text>
         </View>);
     };
 
@@ -50,7 +57,7 @@ export default class RecommendRow extends Component {
         return <View style={styles.bg}>
             <ImageBackground source={HeaderBarBgImg} style={styles.headerBg}>
                 <View style={{
-                    marginTop: 21 + ScreenUtils.headerHeight,
+                    marginTop: ScreenUtils.autoSizeWidth(21) + ScreenUtils.headerHeight,
                     flexDirection: 'row',
                     marginLeft: ScreenUtils.autoSizeWidth(57)
                 }}>
@@ -85,7 +92,7 @@ export default class RecommendRow extends Component {
                     <View style={{ backgroundColor: '#E4E4E4', height: 0.5 }}/>
                     <View style={{
                         flexDirection: 'row',
-                        height: 57,
+                        height: ScreenUtils.autoSizeWidth(57),
                         paddingHorizontal: 24,
                         alignItems: 'center',
                         justifyContent: 'space-between'
@@ -118,7 +125,6 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 30,
-        backgroundColor: DesignRule.lineColor_inColorBg
     },
     shopName: {
         fontSize: 13,
@@ -131,7 +137,7 @@ const styles = StyleSheet.create({
     },
     //白的面板背景
     whiteBg: {
-        marginTop: 30,
+        marginTop: ScreenUtils.autoSizeWidth(22.5),
         backgroundColor: DesignRule.white,
         marginHorizontal: 15,
         height: ScreenUtils.autoSizeWidth(144),
