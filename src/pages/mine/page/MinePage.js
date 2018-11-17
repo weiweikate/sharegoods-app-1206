@@ -158,6 +158,9 @@ export default class MinePage extends BasePage {
         MineApi.getUser().then(res => {
                 let data = res.data;
                 user.saveUserInfo(data);
+            this.setState({
+                isRefreshing: false
+            });
         }).catch(err => {
             this.setState({
                 isRefreshing: false
