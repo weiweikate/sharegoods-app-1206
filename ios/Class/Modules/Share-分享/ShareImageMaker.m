@@ -8,6 +8,7 @@
 
 #import "ShareImageMaker.h"
 #import <CoreImage/CoreImage.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @implementation ShareImageMakerModel
 
@@ -141,7 +142,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     return;
   }
   UIImage *QRCodeImage =  [self QRCodeWithStr:QRCodeStr];
-  NSString *path = [self save:QRCodeImage withPath:@"/Documents/InviteFriendsQRCode.png"];
+  NSString *path = [self save:QRCodeImage withPath:[NSString stringWithFormat:@"/Documents/InviteFriendsQRCode%lf.png", [NSDate new].timeIntervalSince1970]];
   if (path.length == 0 || path == nil) {
     completion(nil,@"保存二维码失败");
   }else{
@@ -169,11 +170,39 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   [@"长按二维码打开链接" drawInRect:CGRectMake(0, 340, 280, 30) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12], NSForegroundColorAttributeName: [UIColor whiteColor], NSParagraphStyleAttributeName: paragraphStyle}];
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  NSString * path = [self save:image withPath:@"/Documents/promotionShareImage.png"];
+  NSString * path = [self save:image withPath:[NSString stringWithFormat:@"/Documents/promotionShareImage.png"]];
   if (path == nil || path.length == 0) {
     completion(nil, @"ShareImageMaker：保存图片到本地失败");
   }else{
     completion(path, nil);
   }
+}
+
+- (void)saveInviteFriendsImage:(NSString*)QRString
+ completion:(completionBlock) completion
+{
+  UIImage *bgImage = [UIImage imageNamed:@"Invite_fiends_bg"];
+  UIImage *QRCodeImage =  [self QRCodeWithStr:QRString];
+  UIGraphicsBeginImageContext(CGSizeMake(750, 1334));
+  [bgImage drawInRect:CGRectMake(0, 0, 750, 1334)];
+  // 绘制图片
+  [QRCodeImage drawInRect:CGRectMake(225, 620, 310, 310)];
+  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  if(image){
+    __block ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
+    [lib writeImageToSavedPhotosAlbum:image.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+      NSLog(@"assetURL = %@, error = %@", assetURL, error);
+      lib = nil;
+      if (!error) {
+        completion(YES);
+      }else{
+        completion(NO);
+      }
+    }];
+  } else{
+     completion(NO);
+  }
+
 }
 @end

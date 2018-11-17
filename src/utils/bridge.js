@@ -111,6 +111,10 @@ export default {
     }) {
         NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
     },
+    saveInviteFriendsImage(QRString, onSuccess, onError = (errorStr) => {
+    }){
+        NativeModules.LoginAndShareModule.saveInviteFriendsImage(QRString,onSuccess, onError);
+    },
     /**
      * 保存当前页面到相册
      * {
