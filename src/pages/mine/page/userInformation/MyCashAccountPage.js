@@ -141,7 +141,7 @@ export default class MyCashAccountPage extends BasePage {
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
                         arrData.push({
-                            type: use_type[item.useType],
+                            type: item.useType===3&&item.biType==1?'消费退款':use_type[item.useType],
                             time: DataUtils.getFormatDate(item.createTime / 1000),
                             serialNumber: '编号：' + item.serialNo,
                             capital: use_type_symbol[item.biType] + item.balance,

@@ -189,7 +189,7 @@ export default class MyOrdersListView extends Component {
                             }
                         }).catch(e => {
                             Toast.hiddenLoading();
-                            NativeModules.commModule.toast(e);
+                            NativeModules.commModule.toast(e.msg);
                         });
                     }}
                 />
@@ -252,7 +252,7 @@ export default class MyOrdersListView extends Component {
     componentDidMount() {
         //网络请求，业务处理
         this.getDataFromNetwork();
-       this.getCancelOrder();
+        this.getCancelOrder();
         DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.onRefresh());
         this.timeDown();
     }
@@ -433,7 +433,7 @@ export default class MyOrdersListView extends Component {
     };
 
     onLoadMore = () => {
-        console.log('onLoadMore',this.currentPage++);
+        // console.log('onLoadMore',this.currentPage++);
         this.currentPage++;
         this.getDataFromNetwork();
     };
