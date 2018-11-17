@@ -47,6 +47,9 @@ class SearchPage extends BasePage {
         this.loadPageData();
         DeviceEventEmitter.addListener('inputText', (inputText) => { this.setState({ inputText: inputText }), this.startSearch(inputText)});
     }
+    componentWillUnmount(){
+        DeviceEventEmitter.removeAllListeners('inputText');
+    }
     loadPageData() {
         this.getRecentSearch();
         switch (this.state.pageType) {
