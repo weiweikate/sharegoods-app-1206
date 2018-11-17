@@ -37,7 +37,6 @@ class LoginTopViewModel {
     dowTime = 0;
 
 
-
     @action
     savePhoneNumber(phoneNmber) {
         if (!phoneNmber || phoneNmber.length === 0) {
@@ -47,7 +46,7 @@ class LoginTopViewModel {
         // if( 0 <= parseInt(phoneNmber.charAt(phoneNmber.length - 1)) &&
         //     parseInt(phoneNmber.charAt(phoneNmber.length - 1)) <= 9 )
         // {
-            this.phoneNumber = phoneNmber;
+        this.phoneNumber = phoneNmber;
         // }
     }
 
