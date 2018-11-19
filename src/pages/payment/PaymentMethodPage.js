@@ -23,7 +23,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import spellStatusModel from '../spellShop/model/SpellStatusModel';
 import DesignRule from 'DesignRule';
 import CommModal from 'CommModal';
-import res from '../../comm/res';
+import res from './res';
 import PasswordView from './PasswordView';
 
 const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) => {
