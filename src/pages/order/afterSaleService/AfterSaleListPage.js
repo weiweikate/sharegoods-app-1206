@@ -25,14 +25,16 @@ import {
     UIText, UIImage
 } from '../../../components/ui';
 import RefreshLargeList from 'RefreshLargeList';
-import search from '../res/search.png';
 import DesignRule from 'DesignRule';
 import res from '../res';
 const {
-    icon_refund,
-    icon_return_goods,
-    icon_exchange
-} = res.afterSaleService;
+    afterSaleService: {
+        icon_refund,
+        icon_return_goods,
+        icon_exchange
+    },
+    search
+} = res;
 
 type Props = {};
 export default class AfterSaleListPage extends BasePage<Props> {

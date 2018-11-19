@@ -5,9 +5,10 @@ import {
     UIText
 } from '../../../components/ui';
 import connectStyle from '../../../components/ui/connectStyle';
-import locationBlack from '../res/locationBlack.png';
-import arrow_right from '../res/arrow_right.png';
 import DesignRule from 'DesignRule';
+import res from '../res';
+const locationBlack = res.dizhi;
+const arrow_right = res.arrow_right;
 
 const AddressItem = props => {
     this.defaultPress = () => {

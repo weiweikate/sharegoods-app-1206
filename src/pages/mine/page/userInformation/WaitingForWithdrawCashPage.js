@@ -171,7 +171,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 marginTop: ScreenUtils.px2dp(10),
                                 color: DesignRule.textColor_secondTitle,
                                 fontSize: ScreenUtils.px2dp(13)
-                            }}>{`因为您下级或下下级的交易并未完全完成，所以账户中的余额暂时不可马上提现，当交易完成之后，系统回自动提现到您的余额账户`}</Text>
+                            }}>{`因为您下级或下下级的交易并未完全完成，所以账户中的余额暂时不可马上提现，当交易完成之后，系统会自动提现到您的余额账户`}</Text>
                         </View>
                         <TouchableOpacity style={{
                             top: 0,
@@ -189,33 +189,35 @@ export default class WaitingForWithdrawCashPage extends BasePage {
 
     renderItem = ({ item, index }) => {
         return (
-            <View style={styles.Itemcontainer}>
-                <View style={{ height: 90, justifyContent: 'center' }}>
-                    <UIImage source={item.iconImage} style={{ height: 50, width: 50, marginLeft: 16 }}/>
+            <View>
+                <View style={styles.Itemcontainer} >
+                    <View style={{ height: 90, justifyContent: 'center' }}>
+                        <UIImage source={item.iconImage}
+                                 style={{ height: 50, width: 50, marginLeft: 16 }}/>
+                    </View>
+                    <View style={{ marginLeft: 10 }}>
+                        <UIText value={item.type}/>
+                        <UIText value={item.time} style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
+                        <UIText value={item.realBalance === null ? '待入账：?' : `已入账：`+item.realBalance} style={{ color: DesignRule.textColor_secondTitle, fontSize: 12 }}/>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row' }}>
+                        <View
+                            style={{ marginRight: 15, height: 60, justifyContent: 'space-between' }}>
+                            <UIText value={item.capital}
+                                    style={{
+                                        color: !item.capitalRed ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
+                                        fontSize: 16
+                                    }}/>
+                            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                <View style={{ height: 10, width: 7 }}/>
+                            </View>
+                            <UIText value={''}/>
+                        </View>
+                    </View>
                 </View>
-                <View style={{ flex: 1, marginLeft: 16, marginRight: 16 }}>
-                    <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText value={item.type} style={{ fontSize: 15 }}/>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 12, color: DesignRule.textColor_secondTitle }}>预计收入</Text>
-                            <Text style={{ fontSize: 16, color: DesignRule.mainColor }}>{item.capital}</Text>
-                        </View>
-                    </View>
-                    <View style={{
-                        justifyContent: 'space-between',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        marginTop: 5
-                    }}>
-                        <UIText value={item.time} style={{ fontSize: 15, color: DesignRule.textColor_instruction }}/>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 12, color: DesignRule.textColor_secondTitle }}>已入账:</Text>
-                            <Text style={{
-                                fontSize: 12,
-                                color: DesignRule.textColor_secondTitle
-                            }}>{item.realBalance === null ? '?' : item.realBalance}</Text>
-                        </View>
-                    </View>
+                <View style={{ flex: 1, height: 1, backgroundColor: 'white' }}>
+                    <View
+                        style={{ flex: 1, height: 1, backgroundColor: DesignRule.lineColor_inColorBg, marginLeft: 15 }}/>
                 </View>
             </View>
 

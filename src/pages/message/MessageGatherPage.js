@@ -13,7 +13,6 @@ import StringUtils from "../../utils/StringUtils";
 import DateUtils from '../../utils/DateUtils';
 import BasePage from '../../BasePage';
 import {RefreshList} from "../../components/ui";
-import arrorw_rightIcon from "../order/res/arrow_right.png";
 import MessageAPI from '../message/api/MessageApi';
 import Toast from '../../utils/bridge';
 import EmptyUtils from "../../utils/EmptyUtils";
@@ -21,7 +20,9 @@ const { px2dp } = ScreenUtils;
 import CommonUtils from 'CommonUtils'
 import MessageUtils from './utils/MessageUtils'
 import DesignRule from 'DesignRule';
-import emptyIcon from './src/message_empty.png'
+import RES from './res';
+const emptyIcon = RES.message_empty;
+const arrorw_rightIcon = RES.button.arrow_right_black;
 
 export default class MessageGatherPage extends BasePage {
     constructor(props) {

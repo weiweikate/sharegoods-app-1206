@@ -10,13 +10,21 @@ import {
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
 import { observable, computed, action } from 'mobx';
-import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import LoginAPI from '../api/LoginApi';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import DesignRule from 'DesignRule';
+import res from '../res';
+
+const {
+    close_eye,
+    open_eye,
+    other: {
+        tongyong_logo_nor
+    }
+} = res;
 
 class OldUserLoginModel {
     @observable
@@ -85,7 +93,7 @@ export default class OldUserLoginPage extends BasePage {
             <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
                 <View style={{ backgroundColor: DesignRule.bgColor }}>
                     <View style={{ marginTop: 30, justifyContent: 'center', alignItems: 'center' }}>
-                        <Image style={{ width: 79, height: 79 }} source={LoginAndRegistRes.logoImage}/>
+                        <Image style={{ width: 79, height: 79 }} source={tongyong_logo_nor}/>
                     </View>
 
                     <View style={{ marginLeft: 20, marginRight: 30, marginTop: 60 }}>
@@ -118,7 +126,7 @@ export default class OldUserLoginPage extends BasePage {
                                 this.oldUserLoginModel.isSecuret = !this.oldUserLoginModel.isSecuret;
                             }}>
                                 <Image style={Styles.seePasswordImageStyle}
-                                       source={this.oldUserLoginModel.isSecuret ? LoginAndRegistRes.closeEyeImage : LoginAndRegistRes.openEyeImage}/>
+                                       source={this.oldUserLoginModel.isSecuret ? close_eye : open_eye}/>
                             </TouchableOpacity>
                         </View>
                         <CommSpaceLine style={Styles.lineStyle}/>

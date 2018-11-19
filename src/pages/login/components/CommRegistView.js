@@ -13,13 +13,18 @@ import React, { Component } from 'react';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
 import { observable, computed, action } from 'mobx';
-import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
+import res from '../res';
+
+const {
+    close_eye,
+    open_eye,
+} = res;
 
 class CommModel {
     //0代表注册,1代表设置账号密码 2忘记密码
@@ -45,12 +50,12 @@ class CommModel {
             return;
         }
 
-        if( 0 <= parseInt(phoneNmber.charAt(phoneNmber.length - 1)) &&
-            parseInt(phoneNmber.charAt(phoneNmber.length - 1)) <= 9 )
-        {
+        if (0 <= parseInt(phoneNmber.charAt(phoneNmber.length - 1)) &&
+            parseInt(phoneNmber.charAt(phoneNmber.length - 1)) <= 9) {
             this.phoneNumber = phoneNmber;
         }
     }
+
     @action
     savePassword(password) {
         if (!password) {
@@ -59,6 +64,7 @@ class CommModel {
         }
         this.password = password;
     }
+
     @action
     saveVertifyCode(vertifyCode) {
         if (!vertifyCode) {
@@ -67,6 +73,7 @@ class CommModel {
         }
         this.vertifyCode = vertifyCode;
     }
+
     @computed
     get isCanClick() {
         if (this.phoneNumber.length === 11 && this.vertifyCode.length > 0 && this.password.length >= 6 && this.isSelectProtocl) {
@@ -88,20 +95,22 @@ export default class CommRegistView extends Component {
         };
         this.registModel.phoneNumber = this.props.phone || '';
     }
+
     changeSelectState() {
         this.registModel.isSelectProtocl = !this.registModel.isSelectProtocl;
     }
+
     render() {
         return (
-            <View >
+            <View>
                 <View style={{ backgroundColor: 'white', marginTop: 10 }}>
                     <View style={{
                         marginLeft: 30,
                         marginRight: 20,
-                        height:48,
+                        height: 48,
                         flexDirection: 'row',
                         alignItems: 'center',
-                        paddingTop:5
+                        paddingTop: 5
                     }}>
                         <Text style={{ marginRight: 20 }}>
                             手机号
@@ -113,15 +122,20 @@ export default class CommRegistView extends Component {
                                 this.registModel.savePhoneNumber(text);
                             }}
                             placeholder='请输入手机号'
-                            underlineColorAndroid= 'transparent'
+                            underlineColorAndroid='transparent'
                             keyboardType='numeric'
                         />
 
                     </View>
-                    <CommSpaceLine style={[Styles.lineStyle, { marginLeft: 30, marginRight: 30}]}/>
+                    <CommSpaceLine style={[Styles.lineStyle, { marginLeft: 30, marginRight: 30 }]}/>
 
                     <View style={{ height: 50, marginLeft: 30, marginRight: 30 }}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' ,flex:1}}>
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            flex: 1
+                        }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={{ marginRight: 20 }}>
                                     验证码
@@ -180,7 +194,7 @@ export default class CommRegistView extends Component {
                         this.registModel.isSecuret = !this.registModel.isSecuret;
                     }}>
                         <Image
-                            source={this.registModel.isSecuret ? LoginAndRegistRes.closeEyeImage : LoginAndRegistRes.openEyeImage}
+                            source={this.registModel.isSecuret ? close_eye : open_eye}
                             style={{ marginRight: 30, marginTop: 18 }}/>
 
                     </TouchableOpacity>
@@ -225,17 +239,17 @@ export default class CommRegistView extends Component {
         }
         if (!netStatusTool.isConnected) {
             bridge.$toast('请检测网络是否连接');
-            this.registModel.dowTime = 0 ;
+            this.registModel.dowTime = 0;
             return;
         }
         if (StringUtils.checkPhone(this.registModel.phoneNumber)) {
-            this.registModel.dowTime = 60 ;
+            this.registModel.dowTime = 60;
             bridge.$toast('验证码已发送请注意查收');
             (new TimeDownUtils()).startDown((time) => {
                 this.registModel.dowTime = time;
             });
             // let SMSType = this.props.viewType === 1 ? SMSTool.OldPhoneType : SMSTool.RegType;
-            SMSTool.sendVerificationCode(this.props.viewType === 1 ? 2 : 1,this.registModel.phoneNumber)
+            SMSTool.sendVerificationCode(this.props.viewType === 1 ? 2 : 1, this.registModel.phoneNumber);
         } else {
             bridge.$toast('手机格式不对');
         }
