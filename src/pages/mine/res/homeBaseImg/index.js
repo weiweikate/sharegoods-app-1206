@@ -20,5 +20,6 @@ const index = {
     mine_icon_mission:require('./mine_icon_mission.png'),
     mine_icon_discollect:require('./mine_icon_discollect.png'),
     fanhui:require('./fanhui.png'),
+    arrowRight:require('./icon3_07.png')
 };
 export default index;
