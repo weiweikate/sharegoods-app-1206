@@ -4,7 +4,6 @@ import {
     StyleSheet,
     FlatList,
     Text,
-    RefreshControl,
     ImageBackground,
     TouchableWithoutFeedback,
     Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager
@@ -356,16 +355,8 @@ export default class HomePage extends PureComponent {
                     renderItem={this._renderItem.bind(this)}
                     keyExtractor={this._keyExtractor.bind(this)}
                     onScroll={this._onScroll.bind(this)}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={homeModule.isRefreshing}
-                            onRefresh={this._onRefresh.bind(this)}
-                            progressViewOffset={statusBarHeight + 44}
-                            title="下拉刷新"
-                            tintColor={DesignRule.textColor_instruction}
-                            titleColor={DesignRule.textColor_instruction}
-                        />
-                    }
+                    refreshing={homeModule.isRefreshing}
+                    onRefresh={this._onRefresh.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={0.2}
                     showsVerticalScrollIndicator={false}
