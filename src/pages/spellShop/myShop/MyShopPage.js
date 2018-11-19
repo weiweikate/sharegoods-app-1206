@@ -345,18 +345,18 @@ export default class MyShopPage extends BasePage {
         if (userStatus === 1) {
             return (
                 <View>
-                    {myStore && this._renderRow(RmbIcon, '店铺已完成分红总额', `${(totalTradeBalance - tradeBalance) || 0}元`)}
+                    {myStore && this._renderRow(RmbIcon, '店铺已完成分红总额', `${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}元`)}
                     <View style={{ height: 10 }}/>
 
                     {myStore ? this._renderRow(ZuanIcon, '个人分红次数', `${bonusCount || 0}次`)
-                        : this._renderRow(RmbIcon, '个人已完成分红总额', `${clerkTotalBonusMoney || 0}元`)}
+                        : this._renderRow(RmbIcon, '个人已完成分红总额', `${(clerkTotalBonusMoney || 0).toFixed(2)}元`)}
                     {this.renderSepLine()}
 
-                    {myStore ? this._renderRow(system_charge, '个人已获得分红金', `${totalBonusMoney || 0}元`)
+                    {myStore ? this._renderRow(system_charge, '个人已获得分红金', `${(totalBonusMoney || 0).toFixed(2)}元`)
                         : this._renderRow(ZuanIcon, '分红次数', `${clerkBonusCount || 0}次`)}
                     {myStore && this.renderSepLine()}
 
-                    {myStore ? this._renderRow(hangye_gift, '个人获得店长分红金', `${managerTotalBonusMoney || 0}元`)
+                    {myStore ? this._renderRow(hangye_gift, '个人获得店长分红金', `${(managerTotalBonusMoney || 0).toFixed(2)}元`)
                         : this._renderRow(QbIcon, '加入时间', updateTime)}
                 </View>
             );
@@ -372,7 +372,7 @@ export default class MyShopPage extends BasePage {
 
     _renderJoinBtn = () => {
         const { storeMaxUser, storeUserList = [], recruitStatus, userStatus, status } = this.state.storeData;
-        //有店&&没关闭(需要刷新 需求有待商榷)||已经加入||为空
+        //已经加入||为空
         if (userStatus === 1 || StringUtils.isEmpty(userStatus)) {
             return null;
         }
