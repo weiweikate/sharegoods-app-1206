@@ -1,14 +1,15 @@
-import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native'
-import ScreenUtil from '../../utils/ScreenUtils'
-const { px2dp, onePixel } = ScreenUtil
-import {observer} from 'mobx-react'
-import { homeModule } from './Modules'
-import { starShopModule } from './HomeStarShopModel'
-import User from '../../model/user'
-import starImg from './res/star.png'
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import ScreenUtil from '../../utils/ScreenUtils';
+
+const { px2dp, onePixel } = ScreenUtil;
+import { observer } from 'mobx-react';
+import { homeModule } from './Modules';
+import { starShopModule } from './HomeStarShopModel';
+import User from '../../model/user';
+import starImg from './res/star.png';
 import DesignRule from 'DesignRule';
-import ImageLoad from '@mr/react-native-image-placeholder'
+import ImageLoad from '@mr/react-native-image-placeholder';
 
 /**
  * @author chenyangjun
@@ -18,22 +19,24 @@ import ImageLoad from '@mr/react-native-image-placeholder'
  * @email chenyangjun@meeruu.com
  */
 
-const Banner = ({backImage, title, press}) => <View style={styles.bannerContainer}>
-    <ImageBackground style={styles.bannerImg}  source={backImage} cacheable={true}>
+
+const Banner = ({ backImage, title, press }) => <View style={styles.bannerContainer}>
+    <ImageBackground style={styles.bannerImg} source={backImage} cacheable={true}>
         <Text style={styles.bannerTitle}>{title}</Text>
-        <TouchableOpacity style={styles.joinBtn} onPress={()=>press && press()}>
+        <TouchableOpacity style={styles.joinBtn} onPress={() => press && press()}>
             <Text style={styles.join}>+ 申请加入</Text>
         </TouchableOpacity>
     </ImageBackground>
 </View>
 
-const Line = () => <View style={styles.line}/>
+const Line = () => <View style={styles.line}/>;
 
-const Profile = ({avatar, name, level, member, income, allIncome}) => <View style={styles.profile}>
+const Profile = ({ avatar, name, level, member, income, allIncome }) => <View style={styles.profile}>
     <ImageLoad style={styles.avatar} source={avatar}/>
     <View style={styles.nameBox}>
         <View style={styles.nameView}>
-            {name ? <Text numberOfLines={1} style={styles.name}>{name.length > 5 ? name.slice(0, 5) + '...' : name}</Text> : null }
+            {name ? <Text numberOfLines={1}
+                          style={styles.name}>{name.length > 5 ? name.slice(0, 5) + '...' : name}</Text> : null}
             <ImageBackground style={styles.level} source={starImg}>
                 <Text style={styles.levelText}>{level}</Text>
             </ImageBackground>
@@ -44,48 +47,51 @@ const Profile = ({avatar, name, level, member, income, allIncome}) => <View styl
     <Line/>
     <View style={styles.incomeBox}>
         <Text style={styles.text}>店铺本月收入</Text>
-        <View style={{height: px2dp(6)}}/>
+        <View style={{ height: px2dp(6) }}/>
         <Text style={styles.income}>{income}</Text>
     </View>
     <Line/>
     <View style={styles.allIncomeBox}>
         <Text style={styles.text}>店铺累计收入</Text>
-        <View style={{height: px2dp(6)}}/>
+        <View style={{ height: px2dp(6) }}/>
         <Text style={styles.income}>{allIncome}</Text>
     </View>
-</View>
+</View>;
 
-const Cell = ({data, store, press}) => <View style={styles.cell}>
-    <Banner backImage={{uri:data.imgUrl ? data.imgUrl : ''}} title={data.title} press={()=>press && press()}/>
-    <Profile avatar={{uri:store.headUrl ? store.headUrl : ''}} name={store.name} level={store.starName ? store.starName : 0} member={store.storeUserNum} income={store.tradeBalance} allIncome={store.totalTradeBalance}/>
-</View>
+const Cell = ({ data, store, press }) => <View style={styles.cell}>
+    <Banner backImage={{ uri: data.imgUrl ? data.imgUrl : '' }} title={data.title} press={() => press && press()}/>
+    <Profile avatar={{ uri: store.headUrl ? store.headUrl : '' }} name={store.name}
+             level={store.starName ? store.starName : 0} member={store.storeUserNum} income={store.tradeBalance}
+             allIncome={store.totalTradeBalance}/>
+</View>;
 
 
 @observer
 export default class HomeStarShopView extends Component {
     _shopPress(shop) {
-        const { navigation } = this.props
+        const { navigation } = this.props;
         if (!User.isLogin) {
-            navigation.navigate('login/login/LoginPage')
-            return
+            navigation.navigate('login/login/LoginPage');
+            return;
         }
-        let route  = homeModule.homeNavigate(8)
-        let params = homeModule.paramsNavigate(shop)
-        navigation.navigate(route, params)
+        let route = homeModule.homeNavigate(8);
+        let params = homeModule.paramsNavigate(shop);
+        navigation.navigate(route, params);
     }
-    render () {
-        let cells = []
-        const { shopList } = starShopModule
+
+    render() {
+        let cells = [];
+        const { shopList } = starShopModule;
         if (shopList && shopList.length <= 0) {
-            return <View/>
+            return <View/>;
         }
         shopList.map((shop, index) => {
-            cells.push(<Cell key={index} data={shop} store={shop.storeDTO} press={()=>this._shopPress(shop)}/>)
-        })
+            cells.push(<Cell key={index} data={shop} store={shop.storeDTO} press={() => this._shopPress(shop)}/>);
+        });
         return <View style={styles.container}>
             <View style={styles.titleView}><Text style={styles.title}>明星店铺</Text></View>
             {cells}
-        </View>
+        </View>;
     }
 }
 
@@ -104,9 +110,7 @@ let styles = StyleSheet.create({
         fontSize: px2dp(19),
         fontWeight: '600'
     },
-    bannerContainer: {
-
-    },
+    bannerContainer: {},
     cell: {
         height: px2dp(175),
         borderRadius: px2dp(5),
@@ -131,7 +135,7 @@ let styles = StyleSheet.create({
     },
     avatar: {
         width: px2dp(45),
-        height:  px2dp(45),
+        height: px2dp(45),
         borderRadius: px2dp(45 / 2),
         marginLeft: px2dp(10),
         overflow: 'hidden'
@@ -196,10 +200,10 @@ let styles = StyleSheet.create({
         borderRadius: px2dp(16) / 2,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#D51234'
+        backgroundColor: DesignRule.mainColor
     },
     join: {
         color: '#fff',
         fontSize: 10
     }
-})
+});

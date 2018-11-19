@@ -10,9 +10,11 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback
 } from 'react-native';
-import DeleteIcon from '../res/del-icon.png';
-import DashLine from '../res/xt_03.png';
+
 import DesignRule from 'DesignRule';
+import res from '../../res';
+const DeleteIcon = res.shopSetting.del_icon;
+const DashLine = res.shopSetting.xt_03;
 
 export default class AnnouncementRow extends Component {
 

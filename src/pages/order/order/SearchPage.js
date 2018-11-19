@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, TouchableWithoutFeedback, NativeModules, InteractionManager } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    NativeModules,
+    InteractionManager,
+    DeviceEventEmitter
+} from 'react-native';
 import BasePage from '../../../BasePage';
 import { HotSearch, RecentSearch } from './../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
@@ -38,6 +45,10 @@ class SearchPage extends BasePage {
     };
     componentDidMount(){
         this.loadPageData();
+        DeviceEventEmitter.addListener('inputText', (inputText) => { this.setState({ inputText: inputText }), this.startSearch(inputText)});
+    }
+    componentWillUnmount(){
+        DeviceEventEmitter.removeAllListeners('inputText');
     }
     loadPageData() {
         this.getRecentSearch();

@@ -36,7 +36,7 @@ import constants from '../../../constants/constants';
 import DateUtils from '../../../utils/DateUtils';
 import Toast from '../../../utils/bridge';
 import productDetailImg from '../res/productDetailImg.png';
-import moreIcon from '../../spellShop/myShop/res/more_icon.png';
+import moreIcon from '..//res/more_icon.png';
 import GoodsGrayItem from '../components/GoodsGrayItem';
 import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
@@ -979,7 +979,7 @@ class MyOrdersDetailPage extends BasePage {
                             }
                         ];
                     }
-                    pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    // pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
                     pageStateString.logisticsTime=data.deliverTime?data.deliverTime:data.finishTime
                     break;
                 case 6://退货关闭

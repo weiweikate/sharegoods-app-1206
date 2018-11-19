@@ -15,6 +15,7 @@
 @property(nonatomic, copy)NSString * QRCodeStr;
 @end
 typedef  void(^ShareImageMakercompletionBlock)(NSString * pathStr, NSString *errorStr);
+typedef  void(^completionBlock)(BOOL success);
 @interface ShareImageMaker : NSObject
 SINGLETON_FOR_HEADER(ShareImageMaker)
 /**
@@ -30,6 +31,9 @@ SINGLETON_FOR_HEADER(ShareImageMaker)
 
 - (void)createPromotionShareImageWithQRString:(NSString *)QRString
                                      completion:(ShareImageMakercompletionBlock) completion;
+
+- (void)saveInviteFriendsImage:(NSString*)QRString
+                    completion:(completionBlock) completion;
 @end
 
 

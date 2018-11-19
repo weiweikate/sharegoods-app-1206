@@ -9,11 +9,12 @@ import {
     ScrollView,
     TouchableWithoutFeedback
 } from 'react-native';
-import SelIcon from './res/xianzhong_03.png';
-import UnSelIcon from './res/weixianzhong_03-02.png';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import DesignRule from 'DesignRule';
+import res from '../res';
+const SelIcon = res.shopSetting.SelIcon;
+const UnSelIcon = res.shopSetting.UnSelIcon;
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 

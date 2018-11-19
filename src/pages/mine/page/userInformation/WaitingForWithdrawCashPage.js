@@ -234,10 +234,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
 
     //**********************************BusinessPart******************************************
     componentDidMount() {
-        if (!user.isLogin) {
-            this.$navigate('login/login/LoginPage');
-        }
-        this.getDataFromNetwork();
+       this.onRefresh();
     }
 
     jumpToWithdrawCashPage = () => {

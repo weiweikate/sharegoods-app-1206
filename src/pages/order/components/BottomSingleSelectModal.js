@@ -80,10 +80,12 @@ export default class BottomSingleSelectModal extends Component {
             NativeModules.commModule.toast('请先勾选');
         } else {
             this.props.commit(this.state.currentSelect);
+            this.setState({currentSelect:-1})
         }
     };
 
     renderContent() {
+
         return (
             <View style={{
                 justifyContent: 'center',
@@ -100,7 +102,7 @@ export default class BottomSingleSelectModal extends Component {
                         flexDirection: 'row'
                     }}>
                         <TouchableOpacity style={{ paddingLeft: 17, width: 50 }}
-                                          onPress={() => this.props.closeWindow()}>
+                                          onPress={() => {this.props.closeWindow(),this.setState({currentSelect: -1})}}>
                             <UIText value={'x'} style={{ color: DesignRule.textColor_hint, fontSize: 24 }}/>
                         </TouchableOpacity>
                         <UIText value={'请选择'}/>
