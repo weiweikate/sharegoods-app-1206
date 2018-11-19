@@ -33,6 +33,7 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
+
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = res.myShop.NavLeft;
 const shezhi = res.myShop.shezhi;
@@ -325,9 +326,11 @@ export default class MyShopPage extends BasePage {
             userStatus, myStore,
             clerkTotalBonusMoney, clerkBonusCount,
             manager, totalTradeBalance, tradeBalance,
-            updateTime,
+            storeUser,
             createTime
         } = this.state.storeData;
+        storeUser = storeUser || {};
+        let updateTime = StringUtils.isNoEmpty(storeUser.updateTime) ? DateUtils.formatDate(storeUser.updateTime, 'yyyy-MM-dd') : '';
         //店员
         //clerkTotalBonusMoney店员个人已完成分红总额
         //clerkBonusCount店铺内个人分红次数
@@ -354,7 +357,7 @@ export default class MyShopPage extends BasePage {
                     {myStore && this.renderSepLine()}
 
                     {myStore ? this._renderRow(hangye_gift, '个人获得店长分红金', `${managerTotalBonusMoney || 0}元`)
-                        : this._renderRow(QbIcon, '加入时间', DateUtils.formatDate(updateTime, 'yyyy-MM-dd'))}
+                        : this._renderRow(QbIcon, '加入时间', updateTime)}
                 </View>
             );
         } else {

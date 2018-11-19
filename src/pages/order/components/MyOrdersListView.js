@@ -6,6 +6,7 @@ import StringUtils from '../../../utils/StringUtils';
 import GoodsListItem from './GoodsListItem';
 import SingleSelectionModal from './BottomSingleSelectModal';
 import CommonTwoChoiceModal from './CommonTwoChoiceModal';
+// import OrderUtils from './../components/OrderUtils';
 import Toast from '../../../utils/bridge';
 import user from '../../../model/user';
 import OrderApi from '../api/orderApi';
@@ -181,13 +182,14 @@ export default class MyOrdersListView extends Component {
                             Toast.hiddenLoading();
                             if (response.code === 10000) {
                                 NativeModules.commModule.toast('订单已取消');
+                                index=-1;
                                 this.onRefresh();
                             } else {
                                 NativeModules.commModule.toast(response.msg);
                             }
                         }).catch(e => {
                             Toast.hiddenLoading();
-                            NativeModules.commModule.toast(e);
+                            NativeModules.commModule.toast(e.msg);
                         });
                     }}
                 />
@@ -250,7 +252,7 @@ export default class MyOrdersListView extends Component {
     componentDidMount() {
         //网络请求，业务处理
         this.getDataFromNetwork();
-       this.getCancelOrder();
+        this.getCancelOrder();
         DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.onRefresh());
         this.timeDown();
     }
@@ -296,7 +298,7 @@ export default class MyOrdersListView extends Component {
             OrderApi.queryPage({
                 // orderNum: this.props.orderNum,
                 condition:this.props.orderNum,
-                page: 1,
+                page: this.currentPage,
                 size: constants.PAGESIZE
             }).then((response) => {
                 Toast.hiddenLoading();
@@ -425,11 +427,13 @@ export default class MyOrdersListView extends Component {
     };
 
     onRefresh = () => {
+        console.log('onRefresh',this.currentPage);
         this.currentPage = 1;
         this.getDataFromNetwork();
     };
 
-    onLoadMore = (page) => {
+    onLoadMore = () => {
+        // console.log('onLoadMore',this.currentPage++);
         this.currentPage++;
         this.getDataFromNetwork();
     };

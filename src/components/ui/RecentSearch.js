@@ -66,11 +66,10 @@ class RecentSearch extends Component {
             // console.log('从父组件拿到最近搜索记录=' + this.props.recentData)
             for (let index = 0; index < this.props.recentData.length; index++) {
                 tagList.push(
-                    <View style={styles.tagText} key={index}>
-                        <Text onPress={() =>
-                            DeviceEventEmitter.emit('inputText', this.props.recentData[index])}
-                              key={index}>{StringUtils.formatString(this.props.recentData[index])}</Text>
-                    </View>
+                    <TouchableOpacity key={index} onPress={() =>
+                        DeviceEventEmitter.emit('inputText', this.props.recentData[index])}>
+                        <Text style={styles.tagText}>{StringUtils.formatString(this.props.recentData[index])}</Text>
+                    </TouchableOpacity>
                 );
             }
             return tagList;
@@ -102,7 +101,7 @@ const styles = StyleSheet.create(
             paddingRight: 20,
             paddingTop: 10,
             flexWrap: 'wrap',
-            alignItems: 'center'
+            alignItems: 'center',
         },
         tagText: {
             backgroundColor: '#DFDFDF',
