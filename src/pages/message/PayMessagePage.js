@@ -8,10 +8,11 @@ import { color } from '../../constants/Theme';
 import ScreenUtils from '../../utils/ScreenUtils';
 import StringUtils from '../../utils/StringUtils';
 import BasePage from '../../BasePage';
-import arrow_right from '../order/res/arrow_right.png';
 import DateUtils from '../../utils/DateUtils';
 import EmptyUtils from '../../utils/EmptyUtils';
 import DesignRule from 'DesignRule';
+import RES from './res';
+const arrow_right = RES.button.arrow_right_black;
 
 const payTypes = [1, 2, 4, 8, 16];
 const payTexts = ['纯平台', '微信(小程序)', '微信(APP)', '支付宝', '银联'];

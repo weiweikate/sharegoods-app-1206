@@ -6,9 +6,10 @@ import {
     Text,
     StyleSheet
 } from 'react-native';
-import right_arrow from '../res/arrow_right.png';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
+import res from '../res';
+const {right_arrow} = res;
 
 const UserSingleItem = props => {
 

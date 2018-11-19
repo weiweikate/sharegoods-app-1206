@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DateUtils from '../../../utils/DateUtils';
-import arrowIcon from '../src/icon-3_09.png';
 import DesignRule from 'DesignRule';
+import res from '../res';
+const {icon_3_09: arrowIcon } = res;
 
 export default class ShopMessageRow extends Component {
 

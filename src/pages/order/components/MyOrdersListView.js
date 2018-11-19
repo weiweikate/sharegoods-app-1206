@@ -13,8 +13,9 @@ import OrderApi from '../api/orderApi';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import userOrderNum from '../../../model/userOrderNum';
 import DesignRule from 'DesignRule';
-import emptyIcon from '../res/kongbeuye_dingdan.png';
 import MineApi from '../../mine/api/MineApi';
+import res from '../res';
+const emptyIcon = res.kongbeuye_dingdan;
 export default class MyOrdersListView extends Component {
     constructor(props) {
         super(props);

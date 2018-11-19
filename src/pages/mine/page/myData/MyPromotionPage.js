@@ -147,7 +147,7 @@ export default class MyPromotionPage extends BasePage {
                         justifyContent: 'center',
                         marginLeft: 10
                     }}>
-                        <Text style={{fontSize:15,color:'white'}}>{this.state.levelRemark}</Text>
+                        <Text style={{fontSize:15,color:'white'}}>{this.state.levelRemark?`${this.state.levelRemark}品鉴官`:''}</Text>
                         <ImageBackground style={{
                             justifyContent: 'center', alignItems: 'center', marginTop: 10,
                             height: 15,

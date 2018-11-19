@@ -6,12 +6,13 @@ import {
     Image,
     TouchableOpacity
 } from 'react-native';
-import BonusExchangeSucceedBackground from '../../mine/res/userInfoImg/BonusExchangeSucceedBackground.png';
 // import bonusClose from '../../mine/res/userInfoImg/bonusClose.png';
 // import { UIImage } from '../../../components/ui';
 import Modal from 'CommModal';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from '../../../constants/DesignRule';
+import res from '../res';
+const BonusExchangeSucceedBackground = res.other.bonus_exchange_succeed_bg;
 /*
 * usage:
 * renderModal = () => {

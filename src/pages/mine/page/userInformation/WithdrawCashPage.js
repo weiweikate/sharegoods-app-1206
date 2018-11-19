@@ -15,7 +15,6 @@ import {
     UIText, UIImage, UIButton
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
-import arrow_right from '../../../order/res/arrow_right.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import bank from '../../res/userInfoImg/commonBankCardIcon.png';
 // import MineApi from '../../api/MineApi';
@@ -23,6 +22,8 @@ import Toast from '../../../../utils/bridge';
 import user from '../../../../model/user';
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+const arrow_right = res.button.arrow_right_black;
 
 @observer
 class WithdrawCashPage extends BasePage {
