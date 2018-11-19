@@ -3,11 +3,12 @@ import { StyleSheet, View, Text,  Modal, TouchableOpacity, Image} from 'react-na
 // import BonusExchangeSucceedBackground from '../mine/res/userInfoImg/BonusExchangeSucceedBackground.png'
 // import bonusClose from '../mine/res/userInfoImg/bonusClose.png'
 // import { UIText, UIImage } from '../../components/ui'
-import closeImg from './res/close.png'
 import PasswordInput from '../mine/components/PasswordInput'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtils
 import PropTypes from 'prop-types';
+import res from './res';
+const closeImg = res.close;
 
 export default class PasswordView extends Component {
     static propTypes = {

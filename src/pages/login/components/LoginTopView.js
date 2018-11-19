@@ -10,7 +10,6 @@ import {
     Image
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
-import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -18,6 +17,12 @@ import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
+import res from '../res';
+
+const {
+    close_eye,
+    open_eye,
+} = res;
 
 // const dismissKeyboard = require('dismissKeyboard');
 
@@ -230,7 +235,7 @@ export default class LoginTopView extends Component {
                             this.LoginModel.isSecuret = !this.LoginModel.isSecuret;
                         }}>
                             <Image style={Styles.seePasswordImageStyle}
-                                   source={this.LoginModel.isSecuret ? LoginAndRegistRes.closeEyeImage : LoginAndRegistRes.openEyeImage}/>
+                                   source={this.LoginModel.isSecuret ? close_eye : open_eye}/>
                         </TouchableOpacity>
                         <CommSpaceLine style={{ marginLeft: 10, width: 1, marginTop: 35, height: 20 }}/>
                         <TouchableOpacity onPress={this.props.forgetPasswordClick}>

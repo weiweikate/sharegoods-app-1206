@@ -2,7 +2,7 @@
  * huchao
  * 填写退货物流
  */
-import React from 'react'
+import React from 'react';
 import {
     StyleSheet,
     View,
@@ -13,17 +13,23 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import GoodsItem from '../components/GoodsGrayItem';
-import arrow_right from '../res/arrow_right.png';
-import wuxiu_btn_saoma_nor from '../res/wuxiu_btn_saoma_nor.png';
 import {
     UIText, UIImage
 } from '../../../components/ui';
-import StringUtils from "../../../utils/StringUtils";
-import ScreenUtils from "../../../utils/ScreenUtils";
+import StringUtils from '../../../utils/StringUtils';
+import ScreenUtils from '../../../utils/ScreenUtils';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import bridge from '../../../utils/bridge';
-import OrderApi from '../api/orderApi'
+import OrderApi from '../api/orderApi';
 import DesignRule from 'DesignRule';
+import res from '../res';
+
+const {
+    afterSaleService: {
+        sao_yi_sao
+    },
+    arrow_right
+} = res;
 
 export default class FillReturnLogisticsPage extends BasePage {
     constructor(props) {
@@ -34,12 +40,12 @@ export default class FillReturnLogisticsPage extends BasePage {
             //物流公司名称
             logisticsCompanyName: null,
             //物流单号
-            logisticsNum: '',
-        }
+            logisticsNum: ''
+        };
         this._bindFunc();
     }
 
-    _bindFunc(){
+    _bindFunc() {
         this.selectLogisticsCompany = this.selectLogisticsCompany.bind(this);
         this.callBack = this.callBack.bind(this);
         this.submit = this.submit.bind(this);
@@ -51,8 +57,8 @@ export default class FillReturnLogisticsPage extends BasePage {
     };
 
     _render() {
-        return(
-            <View style = {styles.container}>
+        return (
+            <View style={styles.container}>
                 <ScrollView>
                     <GoodsItem
                         uri={this.state.pageData.specImg}
@@ -62,75 +68,83 @@ export default class FillReturnLogisticsPage extends BasePage {
                         goodsNum={this.state.pageData.num}
                         // onPress={() => this.jumpToProductDetailPage(this.state.pageData.list[this.state.index].productId)}
                     />
-                    <TouchableWithoutFeedback onPress = {this.selectLogisticsCompany}>
-                        <View style = {styles.item_container}>
-                            <UIText style = {styles.item_title}
-                                    value = {'物流公司'}/>
-                            <UIText style = {this.state.logisticsCompanyName ? styles.item_detail : styles.item_placeholder}
-                                    value = {this.state.logisticsCompanyName || '请选择物流公司'}/>
-                            <UIImage source={arrow_right} style = {{height: 9, width: 9, marginRight: 20}}/>
+                    <TouchableWithoutFeedback onPress={this.selectLogisticsCompany}>
+                        <View style={styles.item_container}>
+                            <UIText style={styles.item_title}
+                                    value={'物流公司'}/>
+                            <UIText
+                                style={this.state.logisticsCompanyName ? styles.item_detail : styles.item_placeholder}
+                                value={this.state.logisticsCompanyName || '请选择物流公司'}/>
+                            <UIImage source={arrow_right} style={{ height: 9, width: 9, marginRight: 20 }}/>
                         </View>
                     </TouchableWithoutFeedback>
-                    <View style = {styles.item_container}>
-                        <UIText style = {styles.item_title}
-                                value = {'物流单号'}/>
-                        <TextInput underlineColorAndroid = {'transparent'}
-                                   placeholder = {'请填写物流单号'}
-                                   style = {styles.item_detail}
-                                   onChangeText = {(text) => {this.setState({logisticsNum: text})}}
-                                   value = {this.state.logisticsNum}
-                                   keyboardType = {'number-pad'}
+                    <View style={styles.item_container}>
+                        <UIText style={styles.item_title}
+                                value={'物流单号'}/>
+                        <TextInput underlineColorAndroid={'transparent'}
+                                   placeholder={'请填写物流单号'}
+                                   style={styles.item_detail}
+                                   onChangeText={(text) => {
+                                       this.setState({ logisticsNum: text });
+                                   }}
+                                   value={this.state.logisticsNum}
+                                   keyboardType={'number-pad'}
                         />
-                        <TouchableWithoutFeedback onPress = {this.scanQRCode.bind(this)}>
-                        <UIImage source={wuxiu_btn_saoma_nor} style = {{height: 22, width: 22, marginRight: 20}}/>
+                        <TouchableWithoutFeedback onPress={this.scanQRCode.bind(this)}>
+                            <UIImage source={sao_yi_sao} style={{ height: 22, width: 22, marginRight: 20 }}/>
                         </TouchableWithoutFeedback>
                     </View>
                 </ScrollView>
-                <TouchableWithoutFeedback onPress = {this.submit}>
-                    <View style = {{backgroundColor: DesignRule.bgColor_btn, height: 50, alignItems: 'center', justifyContent: 'center'}}>
-                        <UIText value = {'提交'} style = {{color: 'white', fontSize: 16}}/>
+                <TouchableWithoutFeedback onPress={this.submit}>
+                    <View style={{
+                        backgroundColor: DesignRule.bgColor_btn,
+                        height: 50,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <UIText value={'提交'} style={{ color: 'white', fontSize: 16 }}/>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
-        )
+        );
     }
 
     /**
      * 选择物流公司
      */
-    selectLogisticsCompany(){
-        this.$navigate('order/afterSaleService/SelectLogisticsCompanyPage',{callBack: this.callBack});
+    selectLogisticsCompany() {
+        this.$navigate('order/afterSaleService/SelectLogisticsCompanyPage', { callBack: this.callBack });
     }
 
-    scanQRCode(){
+    scanQRCode() {
         let that = this;
-       bridge.scanQRCode((logisticsNum) => {
-           that.setState({logisticsNum: logisticsNum});
-       })
+        bridge.scanQRCode((logisticsNum) => {
+            that.setState({ logisticsNum: logisticsNum });
+        });
     }
 
-    callBack(logisticsCompanyName, logisticsNum){
-        this.setState({logisticsCompanyName, logisticsNum})
+    callBack(logisticsCompanyName, logisticsNum) {
+        this.setState({ logisticsCompanyName, logisticsNum });
     }
 
-    submit(){
-        if (EmptyUtils.isEmpty(this.state.logisticsCompanyName)){
-            this.$toastShow('请选择物流公司')
+    submit() {
+        if (EmptyUtils.isEmpty(this.state.logisticsCompanyName)) {
+            this.$toastShow('请选择物流公司');
             return;
         }
-        if (EmptyUtils.isEmpty(this.state.logisticsNum)){
-            this.$toastShow('请填写物流单号')
+        if (EmptyUtils.isEmpty(this.state.logisticsNum)) {
+            this.$toastShow('请填写物流单号');
             return;
         }
-        let returnAddress = this.params.pageData.returnAddress || {}
-        let {receiver, recevicePhone, provinceName, cityName, areaName, address} = returnAddress;
+        let returnAddress = this.params.pageData.returnAddress || {};
+        let { receiver, recevicePhone, provinceName, cityName, areaName, address } = returnAddress;
         let parmas = {
             expressNo: this.state.logisticsNum,
             expressName: this.state.logisticsCompanyName,
             id: this.params.pageData.id,
             backAddress: provinceName + cityName + areaName + address,
             backPhone: recevicePhone,
-            backReceiver: receiver,
+            backReceiver: receiver
         };
         this.$loadingShow();
         OrderApi.fillSendInfo(parmas).then(result => {
@@ -145,10 +159,7 @@ export default class FillReturnLogisticsPage extends BasePage {
     }
 
 
-
-
 }
-
 
 
 const styles = StyleSheet.create({
@@ -162,26 +173,26 @@ const styles = StyleSheet.create({
             flexDirection: 'row',
             height: 44,
             marginBottom: 10,
-            alignItems: 'center',
+            alignItems: 'center'
         },
-        item_title:{
+        item_title: {
             color: DesignRule.textColor_mainTitle,
             fontSize: 13,
-            marginLeft: 17,
+            marginLeft: 17
         },
-        item_detail:{
+        item_detail: {
             color: DesignRule.textColor_mainTitle,
             fontSize: 13,
             marginRight: 9,
             textAlign: 'right',
-            flex: 1,
+            flex: 1
         },
-        item_placeholder:{
+        item_placeholder: {
             color: DesignRule.textColor_hint,
             fontSize: 13,
             marginRight: 9,
             textAlign: 'right',
-            flex: 1,
+            flex: 1
         }
     }
 );

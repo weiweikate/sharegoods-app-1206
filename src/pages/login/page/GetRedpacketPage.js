@@ -10,16 +10,24 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import bridge from '../../../utils/bridge';
 import CommModal from '../../../comm/components/CommModal';
 import { NavigationActions } from 'react-navigation';
 import LoginAPI from '../api/LoginApi';
 import StringUtils from '../../../utils/StringUtils';
 // import { TimeDownUtils } from '../../../utils/TimeDownUtils';
-import res from '../../../comm/res';
-const closeIcon = res.button.tongyong_btn_close_white;
 import DesignRule from '../../../constants/DesignRule';
+import res from '../res';
+
+const {
+    refresh,
+    button: {
+        tongyong_btn_close_white: closeIcon
+    },
+    other: {
+        red_big_envelope
+    }
+} = res;
 
 
 export default class GetRedpacketPage extends BasePage {
@@ -86,7 +94,7 @@ export default class GetRedpacketPage extends BasePage {
                     }
                 >
                     <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center', justifyContent: 'center' }}>
-                        <ImageBackground source={LoginAndRegistRes.reg_bigRedPacketBg} style={{
+                        <ImageBackground source={red_big_envelope} style={{
                             height: px2dp(362), width: px2dp(257),
                             alignItems: 'center'
                         }}>
@@ -235,7 +243,7 @@ export default class GetRedpacketPage extends BasePage {
                                 width: 16,
                                 height: 16
                             }}
-                            source={LoginAndRegistRes.reg_Refresh}
+                            source={refresh}
                         />
                         <Text
                             style={{
@@ -327,7 +335,7 @@ export default class GetRedpacketPage extends BasePage {
                                     alignItems: 'center'
                                 }
                             }
-                            source={LoginAndRegistRes.reg_norRedPacketBg}
+                            source={red_big_envelope}
                         >
                             <Text
                                 style={{

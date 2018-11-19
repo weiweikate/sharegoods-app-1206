@@ -13,17 +13,22 @@ import {
 import { color } from '../../constants/Theme';
 import ScreenUtils from '../../utils/ScreenUtils';
 import BasePage from '../../BasePage';
-import noticeIcon from './src/icon_03.png';
-import newsIcon from './src/icon_06.png';
-import spellIcon from './src/icon_08.png';
-import arrow_right from '../order/res/arrow_right.png';
 // import HomeApi from '../home/api/HomeAPI';
 // import Toast from '../../utils/bridge';
 
 import MessageApi from './api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
 import DesignRule from 'DesignRule';
+import res from './res';
 
+const {
+    icon_03: noticeIcon,
+    icon_06: newsIcon,
+    icon_08: spellIcon,
+    button: {
+        arrow_right_black: arrow_right
+    }
+} = res;
 const { px2dp } = ScreenUtils;
 
 
@@ -58,19 +63,19 @@ export default class MessageCenterPage extends BasePage {
         );
     }
 
-    loadPageData=()=> {
-        MessageApi.getNewNoticeMessageCount().then(res => {
-            if (!EmptyUtils.isEmpty(res.data)) {
+    loadPageData = () => {
+        MessageApi.getNewNoticeMessageCount().then(result => {
+            if (!EmptyUtils.isEmpty(result.data)) {
                 this.setState({
-                    shopMessageCount: res.data.shopMessageCount,
-                    noticeCount: res.data.noticeCount,
-                    messageCount: res.data.messageCount
+                    shopMessageCount: result.data.shopMessageCount,
+                    noticeCount: result.data.noticeCount,
+                    messageCount: result.data.messageCount
                 });
             }
         }).catch((error) => {
             this.$toastShow(error.msg);
         });
-    }
+    };
 
     componentWillUnmount() {
         this.listener && this.listener.remove();
