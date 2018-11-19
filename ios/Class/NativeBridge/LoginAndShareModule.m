@@ -60,6 +60,19 @@ RCT_EXPORT_METHOD(saveScreen:(id)jsonParam
     }
   });
 }
+RCT_EXPORT_METHOD(saveInviteFriendsImage:(NSString *)qrString
+                  onSuccess:(RCTResponseSenderBlock)onSuccess
+                  onError:(RCTResponseSenderBlock)onError){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[ShareImageMaker sharedInstance]saveInviteFriendsImage:qrString completion:^(BOOL success) {
+      if (success) {
+        onSuccess(@[]);
+      }else{
+        onError(@[]);
+      }
+    }];
+  });
+}
 
 
 /**

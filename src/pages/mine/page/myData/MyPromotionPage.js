@@ -15,10 +15,9 @@ import { PageLoadingState } from '../../../../components/pageDecorator/PageState
 import MineApi from '../../api/MineApi';
 import HTML from 'react-native-render-html';
 // 图片资源
-import HeaderBarBgImg from './../../res/homeBaseImg/home_jingshenqingk_bg.png';
-import iconbg from './../../res/homeBaseImg/home_jingshnegqingk_icon.png'
-// import WhiteBtImg from './res/dz_03-02.png';
-// import RingImg from './../../res/homeBaseImg/bg_03.png';
+import HeaderBarBgImg from './res/bg2.png';
+import WhiteBtImg from './res/dz_03-02.png';
+import RingImg from './../../res/homeBaseImg/bg_03.png';
 import CCZImg from './res/ccz_03.png';
 import ProgressImg from './res/jdt_05.png';
 // import {NavigationActions} from "react-navigation";
@@ -80,7 +79,6 @@ export default class MyPromotionPage extends BasePage {
                 refreshing: false,
                 netFailedInfo: null,
                 levelName: data.levelName,
-                levelRemark:data.levelRemark,
                 experience: data.experience || 0,
                 levelExperience: data.levelExperience || 0,
                 headImg: data.headImg,
@@ -129,36 +127,40 @@ export default class MyPromotionPage extends BasePage {
         }
 
         return <View style={{ height: 182 / 375 * SCREEN_WIDTH + 115 + ScreenUtils.statusBarHeight + 10}}>
-
             <ImageBackground source={HeaderBarBgImg} style={{
-                width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH+ScreenUtils.statusBarHeight+30,
+                width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH+ScreenUtils.statusBarHeight+10,
                 flexDirection: 'row',paddingTop:ScreenUtils.statusBarHeight,
             }}>
-                <UIImage source={res.button.white_back_img} style={{marginLeft:15,marginTop:5 ,width:9,height:15}} onPress={()=>this.$navigateBack()}/>
-
-                <View style={{flexDirection:'row',alignItems:'center',marginLeft:25,marginBottom:40}}>
+                <UIImage source={res.button.white_back_img} style={{marginLeft:15,width:9,height:15}} onPress={()=>this.$navigateBack()}/>
+                <ImageBackground source={RingImg}
+                                 style={styles.headerBg}>
                     {
                         this.state.headImg ?
                             <Image style={{ width: headerWidth, height: headerWidth, borderRadius: headerWidth / 2 }}
                                    onError={({ nativeEvent: { error } }) => this._imgLoadFail(this.state.headImg, error)}
                                    source={{ uri: this.state.headImg }}/> : null
                     }
+                </ImageBackground>
+                <View style={{
+                    height: 105 / 375 * SCREEN_WIDTH,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 16,
+                    marginLeft: 10
+                }}>
                     <View style={{
-                        justifyContent: 'center',
-                        marginLeft: 10
+                        justifyContent: 'center', alignItems: 'center', marginTop: 10, width: 89,
+                        height: 20,
+                        borderRadius: 10,
+                        borderStyle: 'solid',
+                        borderWidth: 1,
+                        borderColor: 'white'
                     }}>
-                        <Text style={{fontSize:15,color:'white'}}>{this.state.levelRemark}</Text>
-                        <ImageBackground style={{
-                            justifyContent: 'center', alignItems: 'center', marginTop: 10,
-                            height: 15,
-                            width:35,
-                        }} source={iconbg}>
-                            <Text style={styles.shopName}>{this.state.levelName || ' '}</Text>
-                        </ImageBackground>
+                        <Text style={styles.shopName}>{this.state.levelName || ' '}</Text>
                     </View>
                 </View>
             </ImageBackground>
-            <View style={styles.whiteBg}>
+            <ImageBackground source={WhiteBtImg} style={styles.whiteBg}>
                 <View style={{ height: 43, marginHorizontal: 0, flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={CCZImg} style={{ marginLeft: 17, marginRight: 6 }}/>
                     <Text style={{
@@ -200,15 +202,15 @@ export default class MyPromotionPage extends BasePage {
                     <Text style={{
                         marginTop: 10,
                         color: DesignRule.textColor_mainTitle,
-                        fontSize: 12,
+                        fontSize: 11,
                     }}>距离晋升还差<Text style={{
-                        color: DesignRule.textColor_mainTitle,
-                        fontSize: 12
+                        color: '#000',
+                        fontSize: 15
                     }}>
-                        {(this.state.levelExperience - this.state.experience) > 0 ? `${this.state.levelExperience - this.state.experience}分` : '0分'}
-                    </Text>{(this.state.levelExperience - this.state.experience) > 0?null:<Text style={{color:DesignRule.mainColor,fontSize:11}}>(经验值已满)</Text>}</Text>
+                        {(this.state.levelExperience - this.state.experience) > 0 ? this.state.levelExperience - this.state.experience : 0}
+                    </Text>分</Text>
                 </View>
-            </View>
+            </ImageBackground>
         </View>;
     };
 
@@ -343,9 +345,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     shopName: {
-        fontSize: 11,
-        color: 'white',
-        marginLeft:10,
+        fontSize: 13,
+        color: 'white'
     },
     //白的面板背景
     whiteBg: {
@@ -354,15 +355,16 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 11,
         left: 11,
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
         shadowColor: 'rgba(0, 0, 0, 0.1)',
         shadowOffset: {
             width: 0,
             height: 0
         },
-        // overflow: 'hidden',
+        overflow: 'hidden',
         shadowRadius: 10,
         shadowOpacity: 1,
         borderRadius: 12
     }
 });
+
