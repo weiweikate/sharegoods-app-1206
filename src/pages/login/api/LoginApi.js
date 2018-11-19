@@ -1,16 +1,16 @@
 const api = {
     // 检查手机号是否已经注册过
-    findMemberByPhone: '/user/userSign/findMemberByPhone',
+    findMemberByPhone: ['/user/userSign/findMemberByPhone',{ isRSA: true }],
     // 注册时随机显示的四个邀请人
     queryInviterList: '/user/userSign/queryInviterList',
     //重置密码
-    resetPassword: '/user/userSign/resetPassword',
+    resetPassword: ['/user/userSign/resetPassword',{ isRSA: true }],
     //用户注册
-    signUser: '/user/userSign/signUser',
+    signUser: ['/user/userSign/signUser', { isRSA: true }],
     //验证码登陆
     codeLogin: '/user/userLogin/codeLogin',
     //密码登陆
-    passwordLogin: '/user/userLogin/passwordLogin',
+    passwordLogin: ['/user/userLogin/passwordLogin',{ isRSA: true }],
     //app微信登陆
     appWechatLogin: '/user/userLogin/appWechatLogin',
     //老用户激活注册
