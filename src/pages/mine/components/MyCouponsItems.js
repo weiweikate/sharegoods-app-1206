@@ -11,7 +11,8 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    View
+    View,
+    NativeModules
 } from 'react-native';
 // import RefreshList from './../../../components/ui/RefreshList';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -200,6 +201,7 @@ export default class MyCouponsItems extends Component {
                             underlineColorAndroid='transparent'
                             autoFocus={true}
                             defaultValue={'' + (this.state.tokenCoinNum < user.tokenCoin ? this.state.tokenCoinNum : user.tokenCoin)}
+                            value={''+this.state.tokenCoinNum}
                             onChangeText={this._onChangeText}
                             onFocus={this._onFocus}
                             style={{
@@ -264,6 +266,10 @@ export default class MyCouponsItems extends Component {
         }
         if (num == '') {
             this.setState({ tokenCoinNum: 0 });
+        }
+        if(parseInt(num)>user.tokenCoin){
+            NativeModules.commModule.toast(`最多选择${user.tokenCoin}张!`)
+            this.setState({tokenCoinNum:user.tokenCoin})
         }
     };
     _onFocus = () => {
