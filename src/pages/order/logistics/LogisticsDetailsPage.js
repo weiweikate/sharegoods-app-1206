@@ -6,7 +6,6 @@ import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LogisticsDetailItem from '../components/LogisticsDetailItem';
-import Toast from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
 import DesignRule from 'DesignRule';
 import res from '../res';
@@ -97,7 +96,6 @@ class LogisticsDetailsPage extends BasePage {
     renderHeader = () => {
         return (
             <View>
-
                 {this.renderBaiShiHuiTong()}
             </View>
         );
@@ -175,9 +173,9 @@ class LogisticsDetailsPage extends BasePage {
     loadPageData() {
         console.log(this.params);
         if (StringUtils.isNoEmpty(this.state.expressNo)) {
-            Toast.showLoading();
+            // Toast.showLoading();
             OrderApi.findLogisticsDetail({ expNum: this.state.expressNo }).then((response) => {
-                Toast.hiddenLoading();
+                // Toast.hiddenLoading();
                 console.log(response);
                 let arrData = [];
                 if (!response.data.showapi_res_body.flag) {
@@ -204,7 +202,7 @@ class LogisticsDetailsPage extends BasePage {
                     loadingState: 'success'
                 });
             }).catch(e => {
-                Toast.hiddenLoading();
+                // Toast.hiddenLoading();
                 this.$toastShow(e.msg);
                 // this.setState({
                 //     loadingState: 'fail'

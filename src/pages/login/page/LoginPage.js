@@ -9,7 +9,6 @@ import {
     Image, DeviceEventEmitter
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
-import loginAndRegistRes from '../res/LoginAndRegistRes';
 import BasePage from '../../../BasePage';
 import bridge from '../../../utils/bridge';
 import LoginAPI from '../api/LoginApi';
@@ -18,6 +17,13 @@ import DeviceInfo from 'react-native-device-info';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import { homeModule } from '../../home/Modules'
+import res from '../res';
+
+const {
+    share: {
+        weiXin
+    }
+} = res;
 
 /**
  * @author huyufeng
@@ -93,7 +99,7 @@ export default class LoginPage extends BasePage {
                         alignItems: 'center'
                     }}>
                         <TouchableOpacity onPress={this.weChatLoginClick}>
-                            <Image style={{ width: 50, height: 50 }} source={loginAndRegistRes.weixinImage}/>
+                            <Image style={{ width: 50, height: 50 }} source={weiXin}/>
                         </TouchableOpacity>
                     </View>
                 </View>
