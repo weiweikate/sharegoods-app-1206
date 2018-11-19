@@ -9,7 +9,7 @@ import {
     DeviceEventEmitter,
     TouchableOpacity
 } from 'react-native';
-import close_input_img from '../../pages/order/res/input_clear.png';
+import close_input_img from './searchBar/input_clear.png';
 import search_img from '../../pages/order/res/search_icon.png';
 import {
     UIText, UIImage

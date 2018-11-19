@@ -20,7 +20,6 @@ import {
 } from '../../../components/ui';
 import BottomSingleSelectModal from '../components/BottomSingleSelectModal';
 import StringUtils from '../../../utils/StringUtils';
-import arrow_right from '../res/arrow_right.png';
 import AutoExpandingInput from '../../../components/ui/AutoExpandingInput';
 import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
@@ -32,6 +31,9 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 import bridge from '../../../utils/bridge';
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
+import res from '../res';
+const {arrow_right} = res;
+
 
 class AfterSaleServicePage extends BasePage {
     constructor(props) {
