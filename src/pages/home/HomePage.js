@@ -11,9 +11,9 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
-import { homeModule } from './Modules'
-import { homeType } from './HomeTypes'
-import { bannerModule } from './HomeBannerModel'
+import { homeModule } from './Modules';
+import { homeType } from './HomeTypes';
+import { bannerModule } from './HomeBannerModel';
 import HomeSearchView from './HomeSearchView';
 import HomeClassifyView from './HomeClassifyView';
 import HomeStarShopView from './HomeStarShopView';
@@ -39,7 +39,8 @@ import DeviceInfo from 'react-native-device-info';
 import StringUtils from '../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../../comm/res';
-import TimerMixin from 'react-timer-mixin'
+import TimerMixin from 'react-timer-mixin';
+
 const closeImg = res.button.cancel_white_circle;
 /**
  * @author zhangjian
@@ -346,10 +347,16 @@ export default class HomePage extends PureComponent {
         );
     }
 
+    _renderTableHeader() {
+        return !bannerModule.isShowHeader ? null : <View style={{height : statusBarHeight + 44}}/>
+    }
+
     render() {
         const { homeList } = homeModule;
+
         return (
             <View style={styles.container}>
+                {this._renderTableHeader()}
                 <FlatList
                     data={homeList}
                     renderItem={this._renderItem.bind(this)}
@@ -360,7 +367,6 @@ export default class HomePage extends PureComponent {
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={0.2}
                     showsVerticalScrollIndicator={false}
-                    style={{ marginTop: bannerModule.bannerList.length > 0 ? 0 : statusBarHeight + 44 }}
                     onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}

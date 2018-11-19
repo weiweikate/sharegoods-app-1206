@@ -9,10 +9,8 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList, UIImage, UIText } from '../../../../components/ui';
-// import AccountItem from '../../components/AccountItem';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-// import withdrawMoney from '../../res/userInfoImg/withdrawMoney.png';
 import withdrawMoney from '../../res/userInfoImg/xiangjzhanghu_icon03_14.png';
 import storeShare from '../../res/userInfoImg/xiangjzhanghu_icon03.png';
 import storeShareBonus from '../../res/userInfoImg/xiangjzhanghu_icon03_06.png';
@@ -127,11 +125,11 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                        visible={this.state.modalVisible}
                        transparent={true}>
                 <View style={{
-                    backgroundColor: 'rgba(0,0,0,0.5)', top: 0,
-                    left: 0,
-                    bottom: 0,
-                    right: 0,
-                    position: 'absolute'
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    alignItems:'center',
+                    justifyContent:'center',
+                    flex:1,
+                    marginTop:60,
                 }}>
                     <View style={{
                         backgroundColor: 'white',
@@ -139,17 +137,20 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                         width: ScreenUtils.px2dp(290),
                         height: ScreenUtils.px2dp(360),
                         alignSelf: 'center',
-                        position: 'absolute'
+                        position: 'absolute',
+                        borderRadius:5
                     }}>
                         <ImageBackground source={topicShow} style={{
                             width: ScreenUtils.px2dp(290),
                             height: ScreenUtils.px2dp(71),
                             alignItems: 'center',
-                            justifyContent: 'center'
+                            justifyContent: 'center',
+                            borderRadius:5,
+
                         }}>
                             <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }}>待提现账户说明</Text>
                         </ImageBackground>
-                        <View style={{ marginLeft: ScreenUtils.px2dp(22) }}>
+                        <View style={{ marginLeft: ScreenUtils.px2dp(22),marginRight: ScreenUtils.px2dp(22) }}>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
                                 color: DesignRule.textColor_mainTitle,
@@ -161,7 +162,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 fontSize: ScreenUtils.px2dp(13)
                             }}>{`待提现账户为用户收益明细账户，可通过待提现账户查看收益情况`}</Text>
                         </View>
-                        <View style={{ marginLeft: ScreenUtils.px2dp(22) }}>
+                        <View style={{ marginLeft: ScreenUtils.px2dp(22),marginRight: ScreenUtils.px2dp(22) }}>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
                                 color: DesignRule.textColor_mainTitle,
@@ -171,11 +172,11 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 marginTop: ScreenUtils.px2dp(10),
                                 color: DesignRule.textColor_secondTitle,
                                 fontSize: ScreenUtils.px2dp(13)
-                            }}>{`因为您下级或下下级的交易并未完全完成，所以账户中的余额暂时不可马上提现，当交易完成之后，系统会自动提现到您的余额账户`}</Text>
+                            }}>{`你的推广成功后会获得平台的预计收益，而预计收益会因最终推广结果调整，最终推广成功后，待提现账户会自动提现至您的余额账户。`}</Text>
                         </View>
                         <TouchableOpacity style={{
-                            top: 0,
-                            right: 0,
+                            top: -42,
+                            right: -3,
                             position: 'absolute'
                         }} onPress={this._onPress}>
                             <Image source={topicShowClose}/>
