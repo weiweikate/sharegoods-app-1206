@@ -5,8 +5,6 @@ import {
 import React from 'react';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-import openEyeImage from '../../../login/res/ck_03-02.png';
-import closeEyeImage from '../../../login/res/yinc_03.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
@@ -14,6 +12,9 @@ import StringUtils from '../../../../utils/StringUtils';
 import user from '../../../../model/user';
 import shopCartStore from '../../../shopCart/model/ShopCartStore';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+const openEyeImage = res.button.open_eye;
+const closeEyeImage = res.button.close_eye;
 
 export default class EditPhonePwdPage extends BasePage {
 
