@@ -319,7 +319,7 @@ let constants = {
             moreDetail:'',
             // sellerState:'收货人：赵信                   13588462014',
             // sellerTime:'收货地址：浙江省杭州市萧山区宁围镇鸿宁路望京商务C2-502',
-            disNextView:false,
+            disNextView:true,
             menu:[
                 {
                     id:7,

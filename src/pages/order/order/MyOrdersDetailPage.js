@@ -140,7 +140,7 @@ class MyOrdersDetailPage extends BasePage {
                         orderId: this.state.orderId,
                         expressNo: this.state.expressNo
                     })
-                }}>
+                }} disabled={!this.state.expressNo}>
                     <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'space-between'}} >
                         <UIImage source={logisticCar} style={{ height: 19, width: 19, marginLeft: 21 }}/>
                         <View style={{justifyContent:'center',flex:1}}>
@@ -445,34 +445,33 @@ class MyOrdersDetailPage extends BasePage {
                     </TouchableOpacity>
                 </View>
                 <UIText value={'创建时间：' + DateUtils.getFormatDate(this.state.viewData.createTime / 1000)}
-                        style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>
+                        style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 ,marginBottom:10}}/>
                 {StringUtils.isNoEmpty(this.state.viewData.platformPayTime) && this.state.status > 1 ?
                     <UIText value={'平台付款时间：' + DateUtils.getFormatDate(this.state.viewData.platformPayTime / 1000)}
-                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/> : null}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginBottom: 10 }}/> : null}
                 {StringUtils.isNoEmpty(this.state.viewData.shutOffTime) && this.state.status > 5 ?
                     <UIText value={'关闭时间：' + DateUtils.getFormatDate(this.state.viewData.shutOffTime / 1000)}
-                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/> : null}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginBottom: 10 }}/> : null}
                 {StringUtils.isEmpty(this.state.viewData.cancelTime) ? null :
                     <UIText value={'取消时间：' + DateUtils.getFormatDate(this.state.viewData.cancelTime / 1000)}
-                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginBottom: 10 }}/>}
                 {StringUtils.isNoEmpty(this.state.viewData.payTime) && (this.state.payType % 2 == 0) && this.state.viewData.status > 1 ?
                     <UIText value={'三方付款时间：' + DateUtils.getFormatDate(this.state.viewData.payTime / 1000)}
-                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/> : null}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginBottom: 10 }}/> : null}
                 {StringUtils.isNoEmpty(this.state.viewData.outTradeNo) && (this.state.payType % 2 == 0) ?
                     <UIText value={'交易订单号：' + this.state.viewData.outTradeNo} style={{
                         color: DesignRule.textColor_instruction,
                         fontSize: 13,
                         marginLeft: 16,
-                        marginTop: 10,
-                        marginBottom: 10
+                        marginBottom: 10,
+                        // marginBottom: 10
                     }}/> : null}
                 {StringUtils.isEmpty(this.state.viewData.sendTime) ? null :
                     <UIText value={'发货时间：' + DateUtils.getFormatDate(this.state.viewData.sendTime / 1000)} style={{
                         color: DesignRule.textColor_instruction,
                         fontSize: 13,
                         marginLeft: 16,
-                        marginTop: 10,
-                        marginBottom: 10
+                        marginBottom: 10,
                     }}/>}
                 {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
                     <UIText
@@ -481,8 +480,7 @@ class MyOrdersDetailPage extends BasePage {
                             color: DesignRule.textColor_instruction,
                             fontSize: 13,
                             marginLeft: 16,
-                            marginTop: 10,
-                            marginBottom: 10
+                            marginBottom: 10,
                         }}/>}
                 {this.renderWideLine()}
                 <View style={{ height: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
