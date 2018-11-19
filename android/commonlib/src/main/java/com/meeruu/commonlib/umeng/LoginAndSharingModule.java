@@ -361,7 +361,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         drawInviteFriendsImage(mContext, url, success, fail);
     }
 
-//225，620，310
     public static void drawInviteFriendsImage(final Context context, final String url, final Callback success, final Callback fail){
         Bitmap result = Bitmap.createBitmap(750, (int) (1334), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
@@ -370,12 +369,20 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Bitmap qrBitmap = createQRImage(url, 310, 310);
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height);
-        canvas.drawBitmap(bitmap, 0, 0, paint);
+        int newWidth = 750;
+        int newHeight = 1333;
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+
+        //获取想要缩放的matrix
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        canvas.drawBitmap(bitmap,  0,0,paint);
         canvas.drawBitmap(qrBitmap, 225, 620, paint);
         String path = saveImageToCache(context, result, "inviteFriends.png");
-        String path = saveImageToCache(context, result, "inviteFriends.png");
 
+        path = "file://"+path;
         Uri uri = Uri.parse(path);
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(uri);
