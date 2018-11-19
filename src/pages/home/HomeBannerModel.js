@@ -15,7 +15,9 @@ export class BannerModules {
       return this.bannerList.length;
   }
 
-  @observable opacity = 1;
+  @computed get opacity() {
+      return this.bannerList && this.bannerList.length > 0 ? 0 : 1;
+  }
 
   @action loadBannerList = flow(function* (isCache) {
       try {
@@ -26,9 +28,8 @@ export class BannerModules {
           }
         }
           const res = yield HomeApi.getSwipers({ type: homeType.swiper });
-          this.opacity = res.data && res.data.length > 0 ? 0 : 1;
           this.bannerList = res.data;
-          if (res.data.length > 0) {
+          if (this.bannerList.length > 0) {
             this.isShowHeader = false
           } else {
             this.isShowHeader = true
