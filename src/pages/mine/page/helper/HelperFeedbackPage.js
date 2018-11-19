@@ -171,23 +171,23 @@ export default class HelperFeedbackPage extends BasePage {
                                 marginTop: 3
                             }}/>
                         </View>
-                        <View style={{
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundColor: DesignRule.lineColor_inColorBg,
-                            width: '100%',
-                            height: 40
-                        }}>
                             <TouchableOpacity onPress={() => {
                                 this.setState({ isShowFinishModal: false }), this.props.navigation.goBack();
-                            }}>
+                            }} style={{width:'100%'}}>
+                                <View style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    backgroundColor: DesignRule.lineColor_inColorBg,
+                                    width: '100%',
+                                    height: 40
+                                }}>
                                 <Text
                                     style={{
                                         fontSize: 15,
                                         color: DesignRule.textColor_mainTitle
                                     }}>确定</Text>
+                                </View>
                             </TouchableOpacity>
-                        </View>
                     </View>
                 </View>
             </Modal>

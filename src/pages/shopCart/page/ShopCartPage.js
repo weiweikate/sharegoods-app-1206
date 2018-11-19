@@ -607,22 +607,23 @@ export default class ShopCartPage extends BasePage {
         }
         if (isNaN(itemData.amount)) {
             itemData.amount = 1;
-            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+            // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
         if (itemData.amount >= itemData.stock) {
             bridge.$toast('已达商品库存最大数');
             itemData.amount = itemData.stock;
-            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+            // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
         if (itemData.amount <= 0) {
             itemData.amount = 1;
-            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+            // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
         if (itemData.amount > 200) {
             itemData.amount = 200;
             bridge.$toast('单个商品最多200件');
-            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+            // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
+        shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
     };
     /*action*/
     /*减号操作*/

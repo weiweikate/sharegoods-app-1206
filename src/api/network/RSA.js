@@ -18,6 +18,7 @@ function randomString(len) {
 
 const RSA = {
     sign(params = {}) {
+        // 'Security-Policy': 'SIGNATURE'
         let result = [];
         let nonce = randomString(16);
         let timestamp = +new Date();

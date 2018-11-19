@@ -67,7 +67,6 @@ export default class MyCouponsItems extends Component {
     }
 
 
-
     renderItem = ({ item, index }) => {
         // 优惠券状态 status  0-未使用 1-已使用 2-已失效 3-未激活
         let BG = item.status === 0 && !item.levelimit ? unuesdBg : usedBg;
@@ -118,7 +117,12 @@ export default class MyCouponsItems extends Component {
                         </View>
 
                         <View style={{ flex: 1, alignItems: 'flex-start', marginLeft: 10 }}>
-                            <Text style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}>{item.name} </Text>
+                            <Text style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}>
+                                {item.name}{item.type !== 99 ? null : <UIText value={'（可叠加使用）'} style={{
+                                fontSize: 11,
+                                color: DesignRule.textColor_instruction
+                            }}/>}
+                            </Text>
                             <Text style={{
                                 fontSize: 11,
                                 color: DesignRule.textColor_instruction,
@@ -201,7 +205,7 @@ export default class MyCouponsItems extends Component {
                             underlineColorAndroid='transparent'
                             autoFocus={true}
                             defaultValue={'' + (this.state.tokenCoinNum < user.tokenCoin ? this.state.tokenCoinNum : user.tokenCoin)}
-                            value={''+this.state.tokenCoinNum}
+                            value={'' + this.state.tokenCoinNum}
                             onChangeText={this._onChangeText}
                             onFocus={this._onFocus}
                             style={{
@@ -267,9 +271,9 @@ export default class MyCouponsItems extends Component {
         if (num == '') {
             this.setState({ tokenCoinNum: 0 });
         }
-        if(parseInt(num)>user.tokenCoin){
-            NativeModules.commModule.toast(`最多选择${user.tokenCoin}张!`)
-            this.setState({tokenCoinNum:user.tokenCoin})
+        if (parseInt(num) > user.tokenCoin) {
+            NativeModules.commModule.toast(`最多选择${user.tokenCoin}张!`);
+            this.setState({ tokenCoinNum: user.tokenCoin });
         }
     };
     _onFocus = () => {
@@ -325,7 +329,7 @@ export default class MyCouponsItems extends Component {
     };
 
     render() {
-        console.log("this.state.viewDat"+ this.state.viewData.length)
+        console.log('this.state.viewDat' + this.state.viewData.length);
         return (
             <View style={styles.container}>
                 <FlatList
@@ -402,7 +406,7 @@ export default class MyCouponsItems extends Component {
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
                 arrData.push({
                     status: 0,
-                    name: '可叠加使用',
+                    name: '1元现金券',
                     timeStr: '无时间限制',
                     value: 1,
                     limit: '全品类：无金额门槛',
@@ -488,7 +492,7 @@ export default class MyCouponsItems extends Component {
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && status === 0) {
                 arrData.push({
                     status: 0,
-                    name: '可叠加使用',
+                    name: '1元现金券',
                     timeStr: '无时间限制',
                     value: 1,
                     limit: '全品类：无金额门槛',
@@ -497,7 +501,7 @@ export default class MyCouponsItems extends Component {
                     levelimit: false
                 });
             }
-            this.setState({viewData: arrData});
+            this.setState({ viewData: arrData });
             this.isEnd = true;
             return;
         }
