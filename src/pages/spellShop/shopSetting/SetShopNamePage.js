@@ -79,20 +79,20 @@ export default class SetShopNamePage extends BasePage {
     }
 
     _complete = () => {
+        if (StringUtils.isEmpty(this.state.text)) {
+            this.$toastShow('请输入店铺名称');
+            return;
+        }
         if (this._checkIsHasSpecialStr(this.state.text)) {
             this.$toastShow('此名称带有特殊字符，请重新输入');
             return;
         }
-        if (StringUtils.isEmpty(this.state.storeHeadUrlOrigin)) {
-            this.$toastShow('店铺头像不能为空');
-            return;
-        }
-        if (StringUtils.isEmpty(this.state.text)) {
-            this.$toastShow('店铺名称不能为空');
-            return;
-        }
         if (this.state.text.length < 2 || this.state.text.length > 16) {
             this.$toastShow('店铺名称仅限2~16位字符');
+            return;
+        }
+        if (StringUtils.isEmpty(this.state.storeHeadUrlOrigin)) {
+            this.$toastShow('店铺头像不能为空');
             return;
         }
         if (this.params.storeData) {
