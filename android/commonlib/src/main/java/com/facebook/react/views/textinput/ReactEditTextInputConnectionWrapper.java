@@ -17,6 +17,8 @@ import android.view.inputmethod.InputConnectionWrapper;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.facebook.react.views.textinput.ReactEditText;
+import com.facebook.react.views.textinput.ReactTextInputKeyPressEvent;
 
 import javax.annotation.Nullable;
 
