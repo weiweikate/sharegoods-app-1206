@@ -104,6 +104,9 @@ export default class ShowConnectPage extends BasePage {
         setTimeout(() => {
             this.recommendModules.getMoreCollect().then(data => {
                 this.waterfall.addItems(data);
+                if (data.length > 0) {
+                    this.setState({allSelected : false})
+                }
                 this.state.collectData = [...this.state.collectData, ...data];
             });
             done();
@@ -141,12 +144,22 @@ export default class ShowConnectPage extends BasePage {
         } else {
             selectedList[data.id] = data.id;
         }
-        this.setState({ selectedList: selectedList });
+
+        this.setState({ selectedList: selectedList, allSelected : Object.keys(selectedList).length === this.state.collectData.length });
     }
 
     _selectedAllAction() {
-        const { allSelected } = this.state;
-        this.setState({ allSelected: !allSelected, selectedList: [] });
+        const { allSelected, collectData } = this.state;
+        if (allSelected)  {
+            this.setState({ allSelected: false, selectedList: {} });
+        } else {
+            let selects = {}
+            collectData.map(value => {
+                selects[value.id] = value.id
+            })
+            this.setState({ allSelected: true, selectedList: selects });
+        }
+       
     }
 
     renderItem = (data) => {
