@@ -166,16 +166,18 @@ export default class BasePage extends Component {
     };
     // 返回到首页
     $navigateReset = (routeName = 'Tab', params) => {
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({
-                    routeName: routeName,
-                    params: params
-                })
-            ]
-        });
-        this.props.navigation.dispatch(resetAction);
+        this.props.navigation.popToTop()
+        this.props.navigation.navigate('HomePage')
+        // const resetAction = NavigationActions.reset({
+        //     index: 0,
+        //     actions: [
+        //         NavigationActions.navigate({
+        //             routeName: routeName,
+        //             params: params
+        //         })
+        //     ]
+        // });
+        // this.props.navigation.dispatch(resetAction);
     };
     // 返回到首页
     $navigateResetLogin = () => {

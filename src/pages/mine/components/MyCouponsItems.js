@@ -33,7 +33,7 @@ import StringUtils from '../../../utils/StringUtils';
 import user from '../../../model/user';
 import { UIImage, UIText } from '../../../components/ui';
 import DesignRule from 'DesignRule';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
 import MineApi from '../api/MineApi';
 
 const { px2dp } = ScreenUtils;
@@ -317,15 +317,8 @@ export default class MyCouponsItems extends Component {
     };
 
     _gotoLookAround = () => {
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({
-                    routeName: 'Tab'
-                })
-            ]
-        });
-        this.props.nav.dispatch(resetAction);
+        this.props.nav.popToTop()
+        this.props.nav.navigate('HomePage')
     };
 
     render() {
