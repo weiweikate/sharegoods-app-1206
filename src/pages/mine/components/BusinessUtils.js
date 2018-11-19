@@ -3,6 +3,7 @@ import ImagePicker from 'react-native-image-picker';
 // import Toast from "../components/Toast"; //第三方相机
 import apiEnvironment from '../../../api/ApiEnvironment';
 import Toast from './../../../utils/bridge';
+import { RSA } from '../../../api/network/RSA';
 
 export default {
     /**
@@ -51,14 +52,19 @@ export default {
                    // if (apiEnvironment.envType.indexOf('dev') === 0) {//非dev,但是有端口号的，全部删除端口号
                    //     url = url + ':8102';
                    // }
+                    let singParams = RSA.sign({})
                    fetch(`${url}/common/upload/oss`, {
                        method: 'POST',
                        headers: {
                            'Content-Type': 'multipart/form-data',
-                           'Accept': 'application/json'
+                           'Accept': 'application/json',
+                           ...singParams
                        },
                        body: formData
                    }).then(resq => resq.json()).then(response => {
+                       console.log('+++++')
+                       console.log(response)
+                       console.log('+++++')
                        Toast.hiddenLoading();
                        if (response.code === 10000 && response.data) {
                            callBack({
@@ -71,6 +77,9 @@ export default {
                        }
                    }).catch(error => {
                        // Toast.hiddenLoading();
+                       console.log('+++++')
+                       console.log(error)
+                       console.log('+++++')
                        Toast.hiddenLoading();
                        callBack({ ok: false, msg: '上传图片失败' });
                        console.log(error);
