@@ -2,7 +2,7 @@ import res from '../../../comm/res';
 import afterSaleService from './afterSaleService'
 const index = {
     addressLine: require('./addressLine.png'),
-    arrow_right: require('./arrow_right.png'),
+    arrow_right: res.button.arrow_right_black,
     buyerHasPay: require('./buyerHasPay.png'),
     car: require('./car.png'),
     copy: require('./copy.png'),
