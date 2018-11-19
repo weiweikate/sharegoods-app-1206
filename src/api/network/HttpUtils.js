@@ -6,6 +6,7 @@ import apiEnvironment from '../ApiEnvironment';
 import user from '../../model/user'
 import DeviceInfo from 'react-native-device-info'
 import { RSA } from './RSA';
+import rsa_config from './rsa_config';
 // console.log('user token', user.getToken())
 
 const Qs = require('qs');
@@ -42,7 +43,6 @@ axios.defaults.timeout = 20000;
 
 // 记录日志
 function createHistory(response, requestStamp) {
-
 
     let responseStamp = +new Date();
     let requestHeader = response.config.headers;
@@ -101,8 +101,10 @@ export default class HttpUtils {
             let config = {
                 headers: {
                     ...signParam,
+                    'Security-Policy': 'SIGNATURE',//区分app和h5
                     'sg-token': token ? token : '',
-                    'platform': this.platform
+                    'platform': this.platform,
+                    'version':rsa_config.version
                 }
             }
             return axios.get(url, config)
@@ -120,6 +122,26 @@ export default class HttpUtils {
             return response.data;
         });
     }
+
+    // static upload(uri,isRSA,data,config){
+    //     let host = apiEnvironment.getCurrentHostUrl();
+    //     let url = uri.indexOf('http') > -1 ? uri : (host + uri);
+    //     let signParam = {}
+    //     if (isRSA){
+    //         signParam = RSA.sign()
+    //     }
+    //
+    //   return fetch(`${url}/common/upload/oss`, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'multipart/form-data',
+    //             'Accept': 'application/json',
+    //             ...singParams
+    //         },
+    //         body: data
+    //     }).then(resq => resq.json())
+    //
+    // }
 
     static post(uri,isRSA, data, config) {
         let host = apiEnvironment.getCurrentHostUrl();
@@ -145,6 +167,7 @@ export default class HttpUtils {
         let timeLineStart = +new Date();
         return user.getToken().then(token => {
             config.headers = {
+                'Security-Policy': 'SIGNATURE',//区分app和h5
                 'sg-token': token ? token : '',
                 'platform': this.platform,
                 ...signParam
