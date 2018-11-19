@@ -19,6 +19,9 @@ const button = {
     close_gray_circle: require('./close_gray_circle.png'),//灰色圆形关闭按钮
     delete_picture: require('./delete_picture.png'),//三角形 红色 删除图片的按钮
     white_back: require('./white_back.png'),//三角形 红色 删除图片的按钮
-    arrow_right: require('./arrow_right.png')// 向右灰色箭头
+    arrow_right: require('./arrow_right.png'),// 向右灰色箭头
+    arrow_right_black: require('./arrow_right_black.png'),// 向右黑色色箭头
+    open_eye: require('./open_eye.png'),// 灰色眼睛
+    close_eye: require('./close_eye.png')//灰色喝上4眼睛
 };
 export default button;

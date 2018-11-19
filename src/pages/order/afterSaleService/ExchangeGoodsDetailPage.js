@@ -14,23 +14,28 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import AddressItem from '../components/AddressItem';
-import addressLine from '../res/addressLine.png';
 import UserSingleItem from '../components/UserSingleItem';
 import { UIText, UIImage } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import GoodsItem from '../components/GoodsGrayItem';
-import applyRefundMessage from '../res/applyRefundMessage.png';
-import applyRefundPhone from '../res/applyRefundPhone.png';
-import right_arrow from '../res/arrow_right.png';
-import exchangeGoodsDetailBg from '../res/exchangeGoodsDetailBg.png';
 import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
-// import refusa_icon from '../res/tuikuan_icon_jujue_nor.png';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import QYChatUtil from '../../mine/page/helper/QYChatModel';
 import OrderApi from '../api/orderApi';
 import DesignRule from 'DesignRule';
-import ScreenUtils from '../../../utils/ScreenUtils'
+import ScreenUtils from '../../../utils/ScreenUtils';
+import res from '../res';
+
+const {
+    afterSaleService: {
+        applyRefundMessage,
+        applyRefundPhone,
+        exchangeGoodsDetailBg
+    },
+    right_arrow,
+    addressLine
+} = res;
 
 class ExchangeGoodsDetailPage extends BasePage {
     constructor(props) {

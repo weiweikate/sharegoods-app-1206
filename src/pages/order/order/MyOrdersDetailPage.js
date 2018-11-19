@@ -16,27 +16,14 @@ import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
-import buyerHasPay from '../res/buyerHasPay.png';
-import couponIcon from '../../mine/res/couponsImg/dingdan_icon_quan_nor.png';
-import arrow_right from '../res/arrow_right.png';
-import position from '../res/dizhi-icon.png';
 import GoodsDetailItem from '../components/GoodsDetailItem';
 import UserSingleItem from '../components/UserSingleItem';
 import CommonTwoChoiceModal from '../components/CommonTwoChoiceModal';
 import SingleSelectionModal from '../components/BottomSingleSelectModal';
 import ShowMessageModal from '../components/ShowMessageModal';
-import productDetailHome from '../res/productDetailHome.png';
-import productDetailMessage from '../res/productDetailMessage.png';
-import logisticCar from './../res/car.png'
-import tobePayIcon from './../res/dingdanxiangqing_icon_fuk.png';
-import finishPayIcon from './../res/dingdanxiangqing_icon_yiwangcheng.png';
-import hasDeliverIcon from './../res/dingdanxiangqing_icon_yifehe.png';
-import refuseIcon from './../res/dingdanxiangqing_icon_guangbi.png';
 import constants from '../../../constants/constants';
 import DateUtils from '../../../utils/DateUtils';
 import Toast from '../../../utils/bridge';
-import productDetailImg from '../res/productDetailImg.png';
-import moreIcon from '..//res/more_icon.png';
 import GoodsGrayItem from '../components/GoodsGrayItem';
 import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
@@ -44,6 +31,20 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
 import MineApi from '../../mine/api/MineApi';
+import res from '../res';
+const buyerHasPay = res.buyerHasPay;
+const couponIcon = res.coupons_icon;
+const arrow_right = res.arrow_right;
+const position = res.dizhi_icon;
+const productDetailHome = res.productDetailHome;
+const productDetailMessage =res.productDetailMessage;
+const logisticCar = res.car;
+const tobePayIcon = res.dingdanxiangqing_icon_fuk;
+const finishPayIcon = res.dingdanxiangqing_icon_yiwangcheng;
+const hasDeliverIcon = res.dingdanxiangqing_icon_yifehe;
+const refuseIcon = res.dingdanxiangqing_icon_guangbi;
+const productDetailImg = res.productDetailImg;
+const moreIcon = res.more_icon;
 
 class MyOrdersDetailPage extends BasePage {
     constructor(props) {

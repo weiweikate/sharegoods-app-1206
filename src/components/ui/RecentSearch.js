@@ -41,7 +41,7 @@ class RecentSearch extends Component {
                 <TouchableOpacity onPress={() => this.props.clearHistory()}>
                     <Image
                         style={styles.image}
-                        source={require('../../pages/order/res/search_delete.png')}
+                        source={require('./searchBar/search_delete.png')}
                     />
                 </TouchableOpacity>
             );

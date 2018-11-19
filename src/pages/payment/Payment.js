@@ -1,12 +1,13 @@
 import { observable, action, flow } from "mobx"
 import PaymentApi from './PaymentApi'
-import balanceImg from './res/balance.png'
-import bankImg from './res/bank.png'
-import wechatImg from './res/wechat.png'
-import alipayImg from './res/alipay.png'
 import Toast from '../../utils/bridge'
 import PayUtil from './PayUtil'
 import user from '../../model/user'
+import res from './res';
+const balanceImg = res.balance;
+const bankImg = res.bank;
+const wechatImg = res.wechat;
+const alipayImg = res.alipay;
 
 export const paymentType = {
     balance: 1, //余额支付
