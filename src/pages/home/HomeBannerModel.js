@@ -9,6 +9,8 @@ const kHomeBannerStore = '@home/kHomeBannerStore'
 export class BannerModules {
   @observable bannerList = [];
 
+  @observable isShowHeader = false;
+
   @computed get bannerCount() {
       return this.bannerList.length;
   }
@@ -26,6 +28,11 @@ export class BannerModules {
           const res = yield HomeApi.getSwipers({ type: homeType.swiper });
           this.opacity = res.data && res.data.length > 0 ? 0 : 1;
           this.bannerList = res.data;
+          if (res.data.length > 0) {
+            this.isShowHeader = false
+          } else {
+            this.isShowHeader = true
+          }
           AsyncStorage.setItem(kHomeBannerStore, JSON.stringify(res.data))
       } catch (error) {
           console.log(error);

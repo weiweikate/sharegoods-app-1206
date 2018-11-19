@@ -346,10 +346,16 @@ export default class HomePage extends PureComponent {
         );
     }
 
+    _renderTableHeader() {
+        return !bannerModule.isShowHeader ? null : <View style={{height : statusBarHeight + 44}}/>
+    }
+
     render() {
         const { homeList } = homeModule;
+
         return (
             <View style={styles.container}>
+                {this._renderTableHeader()}
                 <FlatList
                     data={homeList}
                     renderItem={this._renderItem.bind(this)}
@@ -360,7 +366,6 @@ export default class HomePage extends PureComponent {
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={0.2}
                     showsVerticalScrollIndicator={false}
-                    style={{ marginTop: bannerModule.bannerList.length > 0 ? 0 : statusBarHeight + 44 }}
                     onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
