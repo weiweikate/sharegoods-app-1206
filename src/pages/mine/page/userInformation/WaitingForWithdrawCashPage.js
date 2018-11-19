@@ -171,7 +171,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 marginTop: ScreenUtils.px2dp(10),
                                 color: DesignRule.textColor_secondTitle,
                                 fontSize: ScreenUtils.px2dp(13)
-                            }}>{`因为您下级或下下级的交易并未完全完成，所以账户中的余额暂时不可马上提现，当交易完成之后，系统回自动提现到您的余额账户`}</Text>
+                            }}>{`因为您下级或下下级的交易并未完全完成，所以账户中的余额暂时不可马上提现，当交易完成之后，系统会自动提现到您的余额账户`}</Text>
                         </View>
                         <TouchableOpacity style={{
                             top: 0,

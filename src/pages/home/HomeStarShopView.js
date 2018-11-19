@@ -19,6 +19,7 @@ import ImageLoad from '@mr/react-native-image-placeholder';
  * @email chenyangjun@meeruu.com
  */
 
+
 const Banner = ({ backImage, title, press }) => <View style={styles.bannerContainer}>
     <ImageBackground style={styles.bannerImg} source={backImage} cacheable={true}>
         <Text style={styles.bannerTitle}>{title}</Text>
@@ -26,7 +27,7 @@ const Banner = ({ backImage, title, press }) => <View style={styles.bannerContai
             <Text style={styles.join}>+ 申请加入</Text>
         </TouchableOpacity>
     </ImageBackground>
-</View>;
+</View>
 
 const Line = () => <View style={styles.line}/>;
 
