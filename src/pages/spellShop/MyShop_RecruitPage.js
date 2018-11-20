@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     View,
-    StyleSheet,
+    StyleSheet
 } from 'react-native';
 
 import BasePage from '../../BasePage';
@@ -11,10 +11,11 @@ import MyShopPage from './myShop/MyShopPage';
 import ShopRecruitPage from './shopRecruit/ShopRecruitPage';
 import RecommendPage from './recommendSearch/RecommendPage';
 import SpellShopApi from './api/SpellShopApi';
-import { PageLoadingState ,renderViewByLoadingState} from '../../components/pageDecorator/PageState';
+import { PageLoadingState, renderViewByLoadingState } from '../../components/pageDecorator/PageState';
 import spellStatusModel from './model/SpellStatusModel';
 import NoAccessPage from './NoAccessPage';
-import NavigatorBar from '../../components/pageDecorator/NavigatorBar'
+import NavigatorBar from '../../components/pageDecorator/NavigatorBar';
+import user from '../../model/user';
 
 @observer
 export default class MyShop_RecruitPage extends BasePage {
@@ -24,7 +25,8 @@ export default class MyShop_RecruitPage extends BasePage {
         this.state = {
             loadingState: PageLoadingState.loading,
             netFailedInfo: {},
-            data: {}
+            data: {},
+            isHome: !this.params.storeId
         };
     }
 
@@ -49,67 +51,91 @@ export default class MyShop_RecruitPage extends BasePage {
     }
 
     _loadPageData = () => {
-        //店铺信息   首页搜索和推荐过来的this.params.storeId
-        SpellShopApi.getById({ id: this.params.storeId }).then((data) => {
-            this.state.login = true;
-            let dataTemp = data.data || {};
-            this.setState({
-                loadingState: PageLoadingState.success,
-                data: dataTemp
-            });
-        }).catch((error) => {
-            if (error.code === 10009) {
-                this.state.login = false;
-            } else {
-                this.state.login = true;
+        const { isHome } = this.state;
+        spellStatusModel.getUser(0).then((data) => {
+            if (isHome) {//首页
+                this.setState({
+                    loadingState: PageLoadingState.success
+                });
+            } else {//其他店铺 有权限或者自己的能看
+                if (spellStatusModel.canSeeGroupStore || spellStatusModel.storeId === this.params.storeId) {
+                    SpellShopApi.getById({ id: this.params.storeId }).then((data) => {
+                        let dataTemp = data.data || {};
+                        this.setState({
+                            loadingState: PageLoadingState.success,
+                            data: dataTemp
+                        });
+                    }).catch((error) => {
+                        this._error(error);
+                    });
+                } else {
+                    this.setState({
+                        loadingState: PageLoadingState.success
+                    });
+                }
             }
-            this.setState({
-                loadingState: error.code === 10009 ? PageLoadingState.success : PageLoadingState.fail,
-                netFailedInfo: error
-            });
+        }).catch((error) => {
+            this._error(error);
+        });
+    };
+
+    _error = (error) => {
+        this.setState({
+            loadingState: error.code === 10009 ? PageLoadingState.success : PageLoadingState.fail,
+            netFailedInfo: error
         });
     };
 
     _renderContainer = () => {
-        const { status, myStore } = this.state.data;
-        let statust = this.params.storeId ? status : spellStatusModel.storeStatus;
-        if (this.params.storeId ? spellStatusModel.canSeeGroupStore && this.state.login : this.state.login) {
-            //首页搜索和推荐过来的this.params.storeId
+        const { isHome } = this.state;
+        const { status } = this.state.data;
+        let statust = isHome ? spellStatusModel.storeStatus : status;
+        //1.首页自己的店铺不管有无权限都能看
+        //2.首页推荐页面缴纳了保证金的不管有没有权限都能看
+
+        //3.非首页  自己的||有权限和首页逻辑一样
+        if (isHome ? user.isLogin : (spellStatusModel.canSeeGroupStore || spellStatusModel.storeId === this.params.storeId) && user.isLogin) {
+            //首页
             switch (statust) {
-                case 0:
                 case 1://店铺开启中
                     return <MyShopPage navigation={this.props.navigation}
-                                       leftNavItemHidden={!this.params.storeId}
-                                       storeId={this.params.storeId}
-                                       propReload={myStore && this._loadPageData}/>;
+                                       leftNavItemHidden={isHome}
+                                       storeId={this.params.storeId}/>;
                 case 3://招募中的店铺
                     return <ShopRecruitPage navigation={this.props.navigation}
-                                            leftNavItemHidden={!this.params.storeId}
+                                            leftNavItemHidden={isHome}
                                             storeId={this.params.storeId}
-                                            propReload={myStore && this._loadPageData}/>;
+                                            propReload={this._loadPageData}/>;//不是首页 关闭或者开启店铺
                 case 2://店铺已缴纳保证金
                     return (
-                        <RecommendPage navigation={this.props.navigation} leftNavItemHidden={!this.params.storeId}/>);
-                default:
-                    return (
-                        <RecommendPage navigation={this.props.navigation} leftNavItemHidden={!this.params.storeId}/>);
-
+                        <RecommendPage navigation={this.props.navigation} leftNavItemHidden={isHome}/>);
+                default://0 null
+                    if (spellStatusModel.canSeeGroupStore) {
+                        return (
+                            <RecommendPage navigation={this.props.navigation} leftNavItemHidden={isHome}/>);
+                    } else {
+                        return (
+                            <NoAccessPage navigation={this.props.navigation} leftNavItemHidden={isHome}/>);
+                    }
             }
         } else {
-            return <NoAccessPage navigation={this.props.navigation} leftNavItemHidden={!this.params.storeId}/>;
+            //拼店首页未登录   其他页面未登录||没权限
+            return <NoAccessPage navigation={this.props.navigation} leftNavItemHidden={isHome}/>;
         }
 
     };
 
     _render() {
         let dic = this._getPageStateOptions();
+        const { isHome } = this.state;
         return (
+            //隐藏了导航栏 失败需要自定义状态管理页面
             <View style={styles.container}>
                 {dic.loadingState === PageLoadingState.fail ?
-                    <NavigatorBar title={'店铺详情'} leftPressed={() => {
+                    <NavigatorBar title={isHome ? '拼店' : '店铺详情'} leftPressed={() => {
                         this.$navigateBack();
-                    }} leftNavItemHidden={!this.params.storeId}/> : null}
-                {renderViewByLoadingState(this._getPageStateOptions(),this._renderContainer)}
+                    }} leftNavItemHidden={isHome}/> : null}
+                {renderViewByLoadingState(this._getPageStateOptions(), this._renderContainer)}
             </View>
         );
     }
@@ -119,6 +145,6 @@ export default class MyShop_RecruitPage extends BasePage {
 const styles = StyleSheet.create({
     container: {
         flex: 1
-    },
+    }
 });
 
