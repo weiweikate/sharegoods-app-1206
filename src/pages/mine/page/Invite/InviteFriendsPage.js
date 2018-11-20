@@ -87,7 +87,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
         this.setState({
             disable: true
         }, () => {
-            bridge.saveScreen(null, () => {
+            bridge.saveInviteFriendsImage(this.linkUrl, () => {
                 this.$toastShow('保存成功');
                 this.__timer__ = setTimeout(() => {
                     this.setState({
