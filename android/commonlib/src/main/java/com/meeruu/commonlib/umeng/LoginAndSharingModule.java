@@ -285,7 +285,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
                 String name = map.get("name");//名称
                 String gender = map.get("gender");//性别
                 String iconurl = map.get("iconurl");//头像地址
-                LogUtils.d("======" + name);
                 umengDeleteOauth(SHARE_MEDIA.WEIXIN);
                 WXLoginBean bean = new WXLoginBean();
                 bean.setDevice(android.os.Build.DEVICE);

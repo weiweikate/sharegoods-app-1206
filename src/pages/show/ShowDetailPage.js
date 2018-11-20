@@ -125,8 +125,8 @@ export default class ShowDetailPage extends Component {
                 {
                     isCollecting
                     ?
-                    <View style={[styles.bottomBtn, {justifyContent: 'center'}]}>
-                        <ActivityIndicator size='small'/>
+                    <View style={[styles.bottomBtn]}>
+                        <ActivityIndicator style={styles.btnLoading} size='small'/>
                     </View>
                     :
                     <TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>
@@ -294,7 +294,7 @@ let styles = StyleSheet.create({
         marginLeft: px2dp(9)
     },
     bottomBtn: {
-        width: 100,
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -309,6 +309,9 @@ let styles = StyleSheet.create({
     text: {
         color: '#fff',
         fontSize: px2dp(14)
+    },
+    btnLoading: {
+        marginLeft: px2dp(26)
     }
 });
 

@@ -9,6 +9,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import DesignRule from 'DesignRule';
 import res from './res';
+
 const {
     pindianzhaojilingbgd,
     pindianzhaojiling
@@ -24,14 +25,16 @@ export default class NoAccessPage extends Component {
                               leftPressed={() => {
                                   this.props.navigation.goBack();
                               }}
-                              title={'拼店'}/>
+                              title={this.props.leftNavItemHidden?'拼店':'店铺详情'}/>
                 <ScrollView showsVerticalScrollIndicator={false}
                             refreshControl={<RefreshControl title="下拉刷新"
                                                             tintColor={DesignRule.textColor_instruction}
                                                             titleColor={DesignRule.textColor_instruction}
                                                             refreshing={SpellStatusModel.refreshing}
                                                             onRefresh={() => {
-                                                                SpellStatusModel.getUser(1);
+                                                                SpellStatusModel.getUser(1).then().catch((error)=>{
+
+                                                                });
                                                             }}/>}>
                     <View style={{ flex: 1 }}>
                         <ImageBackground style={{

@@ -1,5 +1,9 @@
 /**
- * Created by xiangchen on 2018/7/10.
+ * @author chenxiang
+ * @date on 2018/9/7
+ * @describe 首页
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
  */
 
 import React from 'react';
@@ -11,7 +15,6 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-// import UIImage from '../../../../components/ui/UIImage';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { SwipeListView } from '../../../../components/ui/react-native-swipe-list-view';
@@ -424,5 +427,3 @@ const styles = StyleSheet.create({
     }
 
 });
-
-
