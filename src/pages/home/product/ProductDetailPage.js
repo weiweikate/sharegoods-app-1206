@@ -15,6 +15,7 @@ import BasePage from '../../../BasePage';
 import DetailHeaderView from './components/DetailHeaderView';
 import DetailSegmentView from './components/DetailSegmentView';
 import DetailBottomView from './components/DetailBottomView';
+import DetailNavView from './components/DetailNavView';
 import SelectionPage from './SelectionPage';
 import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -36,7 +37,6 @@ import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/Navigat
 import res from '../res';
 
 const redEnvelopeBg = res.other.red_big_envelope;
-const DetailNavView = res.product.detailNavView;
 
 /**
  * @author chenyangjun
@@ -320,7 +320,7 @@ export default class ProductDetailPage extends BasePage {
             if (product.content) {
                 return <View>
                     <HTML html={product.content} imagesMaxWidth={ScreenUtils.width}
-                          imagesInitialDimensions={ScreenUtils.width}
+                          imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
                           containerStyle={{ backgroundColor: '#fff' }}/>
                     <View style={{ backgroundColor: 'white' }}>
                         <Text
