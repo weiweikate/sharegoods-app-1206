@@ -14,15 +14,18 @@ export const isNoEmpty = (input) => {
 * */
 const formatMoneyString = (num, needSymbol = true) => {
     let temp = (isNoEmpty(num) ? num : 0) + '';
-    if (temp.indexOf('.') === -1) {
-        temp += '.00';
-    }
-    if ((temp.indexOf('.') + 3) < temp.length) {
-        temp = temp.substr(0, temp.indexOf('.') + 3);
-    }
-    if ((temp.indexOf('.') + 2 === temp.length)) {
-        temp += '0';
-    }
+    // if (temp.indexOf('.') === -1) {
+    //     temp += '.00';
+    // }
+    //截取
+    // if ((temp.indexOf('.') + 3) < temp.length) {
+    //     temp = temp.substr(0, temp.indexOf('.') + 3);
+    // }
+    //添加
+    // if ((temp.indexOf('.') + 2 === temp.length)) {
+    //     temp += '0';
+    // }
+
     if (needSymbol && temp.indexOf('¥') === -1) {
         temp = '¥' + temp;
     }

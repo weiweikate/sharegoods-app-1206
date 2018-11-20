@@ -25,6 +25,7 @@ import DesignRule from 'DesignRule';
 import CommModal from 'CommModal';
 import res from './res';
 import PasswordView from './PasswordView';
+import { NavigationActions } from 'react-navigation';
 
 const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) => {
     let selected = isSelected;
@@ -102,6 +103,14 @@ export default class PaymentMethodPage extends BasePage {
             this.payment.availableBalance = data.availableBalance;
         });
         console.log('shouldPayMoney', this.state.shouldPayMoney);
+    }
+
+    $NavBarLeftPressed = () => {
+        const { paySuccessFul } = this.payment
+        const popAction = NavigationActions.pop({
+            n: paySuccessFul ? 2 : 1
+        });
+        this.props.navigation.dispatch(popAction);
     }
 
     componentDidMount() {
@@ -254,7 +263,7 @@ export default class PaymentMethodPage extends BasePage {
     renderPayResult() {
         return <PaymentResultView ref={(ref) => {
             this.paymentResultView = ref;
-        }} navigation={this.props.navigation}/>;
+        }} navigation={this.props.navigation} payment={this.payment}/>;
     }
 
     finishedPwd(password) {
