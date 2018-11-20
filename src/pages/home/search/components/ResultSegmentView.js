@@ -7,8 +7,10 @@ import {
     TouchableWithoutFeedback,
     Image
 } from 'react-native';
-import upDown from '../res/updown.png';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+
+const upDown = res.search.updown;
 
 export default class SearchSegmentView extends Component {
 

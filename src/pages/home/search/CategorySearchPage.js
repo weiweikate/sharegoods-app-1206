@@ -10,6 +10,9 @@ import UIText from '../../../components/ui/UIText';
 import UIImage from '../../../components/ui/UIImage';
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
+import res from '../res';
+
+const icon_search = res.search.icon_search;
 
 
 const itemImgW = (ScreenUtils.width - 110 - 2 * 10.5 - 2 * 30) / 3;
@@ -91,7 +94,7 @@ export default class CategorySearchPage extends BasePage {
             <View style={{ flexDirection: 'column' }}>
                 <View style={{ height: 60, alignItems: 'center', justifyContent: 'center' }}>
                     <TouchableOpacity style={styles.searchBox} onPress={() => this.go2SearchPage()}>
-                        <Image source={require('../res/icon_search.png')}
+                        <Image source={icon_search}
                                style={{ width: 22, height: 21, marginLeft: 20 }}/>
                         <View style={styles.inputText}/>
                     </TouchableOpacity>

@@ -25,7 +25,7 @@ const formatMoneyString = (num, needSymbol = true) => {
     // if ((temp.indexOf('.') + 2 === temp.length)) {
     //     temp += '0';
     // }
-    
+
     if (needSymbol && temp.indexOf('¥') === -1) {
         temp = '¥' + temp;
     }
