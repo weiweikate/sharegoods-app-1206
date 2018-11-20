@@ -1,16 +1,19 @@
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import React from 'react';
 import BasePage from '../../../../BasePage';
-import res from '../../../../comm/res';
-import addrBorderImgN from '../../res/address/dizhi_img_nor.png';
-import addrBorderImgS from '../../res/address/dizhi_img_sel.png';
-import addrRight from '../../res/address/dizhi_icon_moren_sel.png';
-import dingwei from '../../res/address/dizhi_icon_dingwei_nor.png';
-import NoMessage from '../../res/address/kongbeiye_icon_dizhi.png'
 import MineAPI from '../../api/MineApi';
 import bridge from '../../../../utils/bridge';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+
+const addrBorderImgN = res.address.dizhi_img_nor;
+const addrBorderImgS = res.address.dizhi_img_sel;
+const addrRight = res.address.dizhi_icon_moren_sel;
+const dingwei = res.address.dizhi_icon_dingwei_nor;
+const NoMessage = res.address.kongbeiye_icon_dizhi;
+const addr_edit =res.address.addr_edit;
+const addr_del =res.address.addr_del;
 
 /**
  * @author luoyongming
@@ -61,7 +64,7 @@ export default class AddressManagerPage extends BasePage {
                         });
                     }
                 }
-            }else{
+            } else {
 
             }
             this.setState({
@@ -71,6 +74,7 @@ export default class AddressManagerPage extends BasePage {
             bridge.$toast(data.msg);
         });
     }
+
     // 空布局
     _renderEmptyView = () => {
         return (
@@ -149,13 +153,13 @@ export default class AddressManagerPage extends BasePage {
                     <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }}
                                       onPress={() => this._onEditAddress(item.item, item.index)}>
                         <Image style={{ width: 16, height: 17, marginRight: 4 }}
-                               source={require('../../res/address/addr_edit.png')}/>
+                               source={addr_edit}/>
                         <Text style={{ fontSize: 13, color: DesignRule.textColor_instruction }}>编辑</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', marginRight: 17 }}
                                       onPress={() => this._onDelAddress(item.item)}>
                         <Image style={{ width: 17, height: 15, marginRight: 6 }}
-                               source={require('../../res/address/addr_del.png')}/>
+                               source={addr_del}/>
                         <Text style={{ fontSize: 13, color: DesignRule.textColor_instruction }}>删除</Text>
                     </TouchableOpacity>
                 </View>

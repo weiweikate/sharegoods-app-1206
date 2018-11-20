@@ -24,5 +24,7 @@ const index = {
     mine_level_background:require('./mine_level_background.png'),
     profile_banner:require('./profile_banner.png'),
 
+    home_jingshenqingk_bg:require('./home_jingshenqingk_bg.png'),
+    home_jingshnegqingk_icon: require('./home_jingshnegqingk_icon.png'),
 };
 export default index;

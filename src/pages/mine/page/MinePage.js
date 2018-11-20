@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
     StyleSheet,
     View,
@@ -51,7 +51,7 @@ const {
     mine_setting_icon_white,
     arrowRight,
     profile_banner,
-    mine_level_background
+    mine_level_background,
 } = res.homeBaseImg;
 
 
@@ -107,12 +107,12 @@ export default class MinePage extends BasePage {
 
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
-            "willFocus",
+            'willFocus',
             payload => {
                 const { state } = payload;
 
-                console.log("willFocusSubscriptionMine", state);
-                if (state && state.routeName === "MinePage") {
+                console.log('willFocusSubscriptionMine', state);
+                if (state && state.routeName === 'MinePage') {
                     this.refresh();
                 }
                 ;
@@ -174,10 +174,10 @@ export default class MinePage extends BasePage {
 
     jumpToUserInformationPage = () => {
         if (!user.isLogin) {
-            this.props.navigation.navigate("login/login/LoginPage");
+            this.props.navigation.navigate('login/login/LoginPage');
             return;
         }
-        this.props.navigation.navigate("mine/userInformation/UserInformationPage");
+        this.props.navigation.navigate('mine/userInformation/UserInformationPage');
     };
 
     //**********************************ViewPart******************************************
@@ -195,8 +195,8 @@ export default class MinePage extends BasePage {
         return (
             <View ref={(ref) => this.headerBg = ref}
                   style={{
-                      backgroundColor: "white",
-                      position: "absolute",
+                      backgroundColor: 'white',
+                      position: 'absolute',
                       top: 0,
                       left: 0,
                       right: 0,
@@ -304,7 +304,7 @@ export default class MinePage extends BasePage {
                                       waveLightColor={"#D01433"}
                                       topTitleColor={"#ffffff"}
                                       topTitleSize={12}
-                                      progressValue={EmptyUtils.isEmpty(user.level)? 0 : user*10}
+                                      progressValue={EmptyUtils.isEmpty(user.level)? 0 : user.level*10}
                                       style={{
                                           width: px2dp(44),
                                           height: px2dp(44)
@@ -539,7 +539,7 @@ export default class MinePage extends BasePage {
                                         color: DesignRule.textColor_instruction
                                     }}/>
                             <Image source={arrowRight} style={{ height: 12, marginLeft: 6 }}
-                                   resizeMode={"contain"}/>
+                                   resizeMode={'contain'}/>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>

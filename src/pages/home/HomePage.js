@@ -39,9 +39,8 @@ import TimerMixin from 'react-timer-mixin';
 import res from './res';
 
 const closeImg = res.button.cancel_white_circle;
-const messageModalBg = res.messageModalBg;
-const messageSelected = res.messageSelected;
 const messageUnselected = res.messageUnselected;
+const home_notice_bg = res.home_notice_bg;
 /**
  * @author zhangjian
  * @date on 2018/9/7
@@ -290,9 +289,9 @@ export default class HomePage extends PureComponent {
                         <Image source={closeImg} style={styles.messageCloseStyle}/>
                     </TouchableWithoutFeedback>
 
-                    <ImageBackground source={messageModalBg} style={styles.messageBgStyle}>
+                    <ImageBackground source={home_notice_bg} style={styles.messageBgStyle}>
                         <XQSwiper
-                            style={{ alignSelf: 'center', marginTop: 71, width: px2dp(230), height: px2dp(211) }}
+                            style={{ alignSelf: 'center', marginTop: px2dp(145), width: px2dp(230), height: px2dp(211)}}
                             height={px2dp(230)} width={px2dp(230)} renderRow={this.messageRender}
                             dataSource={EmptyUtils.isEmptyArr(this.state.messageData) ? [] : this.state.messageData}
                             loop={false}
@@ -317,8 +316,8 @@ export default class HomePage extends PureComponent {
         let indexs = [];
         for (let i = 0; i < this.state.messageData.length; i++) {
             let view = i === this.state.messageIndex ?
-                <Image source={messageSelected} style={styles.messageIndexStyle}/> :
-                <Image source={messageUnselected} style={styles.messageIndexStyle}/>;
+                <View  style={[styles.messageIndexStyle,{backgroundColor:'#FF427D'}]}/> :
+                <View source={messageUnselected} style={[styles.messageIndexStyle,{ backgroundColor: '#f4d7e4'}]}/>;
             indexs.push(view);
         }
         return (
@@ -462,8 +461,8 @@ const styles = StyleSheet.create({
         fontWeight: '600'
     },
     messageBgStyle: {
-        width: px2dp(300),
-        height: px2dp(405),
+        width: px2dp(295),
+        height: px2dp(390),
         marginTop: px2dp(20)
     },
     messageCloseStyle: {
@@ -474,7 +473,8 @@ const styles = StyleSheet.create({
         marginRight: ((ScreenUtils.width) - px2dp(300)) / 2
     },
     messageIndexStyle: {
-        width: px2dp(12),
-        height: px2dp(12)
+        width: px2dp(10),
+        height: px2dp(10),
+        borderRadius:px2dp(5)
     }
 });
