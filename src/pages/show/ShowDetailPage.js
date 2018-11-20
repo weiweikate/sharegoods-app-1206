@@ -90,6 +90,13 @@ export default class ShowDetailPage extends Component {
         }
         let content = `<div>${detail.content}</div>`;
         let products = detail.products;
+        let number = detail.click
+        if (!number) {
+            number = 0
+        }
+        if (number > 999999) {
+            number = 999999 + '+'
+        }
         return <View style={styles.container}>
             <ScrollView
                 style={styles.container}
@@ -103,7 +110,7 @@ export default class ShowDetailPage extends Component {
                 </View>
                 <View style={styles.profileRight}>
                     <Image source={res.button.see}/>
-                    <Text style={styles.number}>{detail.click ? detail.click : 0}</Text>
+                    <Text style={styles.number}>{number}</Text>
                 </View>
             </View>
             <HTML html={content} imagesInitialDimensions={{width: width, height: 0}} containerStyle={{
