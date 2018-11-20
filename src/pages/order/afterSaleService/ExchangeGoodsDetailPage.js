@@ -436,7 +436,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         alignItems: 'center',
                         alignContent: 'center'
                     }} onPress={() => this.contactSeller()}>
-                        <UIImage source={applyRefundMessage} style={{ width: 25, height: 23, marginBottom: 10 }}/>
+                        <UIImage source={applyRefundMessage} style={{ width: 25, height: 23, marginBottom: 6 }}/>
                         <View style={{ marginLeft: 10 }}>
                             <UIText value={'联系客服'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
                             <UIText value={'9:00-22:00'}
@@ -454,7 +454,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         alignItems: 'center',
                         alignContent: 'center'
                     }} onPress={() => this.callPhone()}>
-                        <UIImage source={applyRefundPhone} style={{ width: 25, height: 23, marginBottom: 10 }}/>
+                        <UIImage source={applyRefundPhone} style={{ width: 25, height: 23, marginBottom: 6 }}/>
                         <View style={{ marginLeft: 10 }}>
                             <UIText value={'客服电话'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
                             <UIText value={'9:00-22:00'}
