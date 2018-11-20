@@ -1,4 +1,3 @@
-import SpellShopPage from './SpellShopPage';
 import recommendSearch from './recommendSearch';
 import openShop from './openShop';
 import shopRecruit from './shopRecruit';
@@ -10,9 +9,6 @@ export default {
     //拼店模块
     moduleName: 'spellShop',
     childRoutes: {
-        //拼店首页
-        SpellShopPage,
-        //
         MyShop_RecruitPage,
         //推荐搜索模块
         recommendSearch,
