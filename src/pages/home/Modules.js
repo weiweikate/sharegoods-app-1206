@@ -103,7 +103,7 @@ class HomeModule {
         this.isRefreshing = true;
         setTimeout(() => {
             this.isRefreshing = false;
-        }, 3000);
+        }, 2000);
         bannerModule.loadBannerList(isCache);
         todayModule.loadTodayList(isCache);
         adModules.loadAdList(isCache);

@@ -153,7 +153,7 @@ export class Payment {
             } else {
                 Toast.hiddenLoading()
                 Toast.$toast(preStr.msg)
-                return
+                return ''
             }
 
         } catch (error) {
@@ -195,7 +195,7 @@ export class Payment {
                 const resultStr = yield PayUtil.appWXPay(prePay);
                 console.log(JSON.stringify(resultStr));
                 this.outTradeNo = preStr.data.outTradeNo
-                if (parseInt(resultStr.sdkCode, 0) !== 0) {
+                if (parseInt(resultStr.code, 0) !== 0) {
                     ref && ref.show(2, resultStr.msg)
                     Toast.hiddenLoading()
                     return ''
@@ -274,7 +274,7 @@ export class Payment {
 
 
     //推广套餐
-    @action payPromotionWithId = (password,packageId, ref) => {
+    @action payPromotionWithId = flow(function * (password, packageId, ref) {
         let type = (this.selectedBalace ? 1 : 0)
         if (this.selectedTypes) {
             type += this.selectedTypes.type
@@ -283,8 +283,8 @@ export class Payment {
 
         console.log('payStoreActoin', type)
 
-        return PaymentApi.payPromotion({type: type,packageId:packageId,salePassword:password}).then(result => {
-            console.log('this.selectedTypes', this.selectedTypes)
+        try {
+            let result = yield PaymentApi.payPromotion({type: type,packageId:packageId,salePassword:password})
             if (!this.selectedTypes && parseInt(result.code, 0) === 10000) {
                 Toast.hiddenLoading()
                 result.sdkCode = 0
@@ -296,7 +296,7 @@ export class Payment {
                     PayUtil.appWXPay(result.data).then(resultStr => {
                         Toast.hiddenLoading()
                         console.log('app wx pay', resultStr)
-                        if (parseInt(resultStr.sdkCode, 0) !== 0) {
+                        if (parseInt(resultStr.code, 0) !== 0) {
                             return Promise.reject(resultStr)
                         }
                         return Promise.resolve(resultStr)
@@ -304,7 +304,7 @@ export class Payment {
                 } else {
                     PayUtil.appAliPay(result.data).then(resultStr => {
                         Toast.hiddenLoading()
-                        if (parseInt(resultStr.code, 0) !== 0) {
+                        if (parseInt(resultStr.sdkCode, 0) !== 9000) {
                             return Promise.reject(resultStr)
                         }
                         result.sdkCode = 0
@@ -313,14 +313,14 @@ export class Payment {
                 }
             }
             Toast.hiddenLoading()
-            return Promise.reject(result)
-        }).catch(error => {
+            return Promise.reject(result) 
+        } catch(error) {
             console.log('payStoreActoin error', error)
             // Toast.$toast(error.msg)
             ref && ref.show(2, error.msg)
             Toast.hiddenLoading()
-        })
-    }
+        }
+    })
 
     //检查是否支付成功
     @action paySuccess = flow(function * (params) {

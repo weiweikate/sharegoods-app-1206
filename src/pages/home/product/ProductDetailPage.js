@@ -80,7 +80,7 @@ export default class ProductDetailPage extends BasePage {
             netFailedProps: {
                 buttonText: status === 0 ? '去首页' : '重新加载',
                 netFailedInfo: this.state.netFailedInfo,
-                reloadBtnClick: status === 0 ? (() => this.$navigateReset()) : (() => this._getProductDetail())
+                reloadBtnClick: status === 0 ? (() => this.$navigateBackToHome()) : (() => this._getProductDetail())
             }
         };
     };
@@ -518,7 +518,7 @@ export default class ProductDetailPage extends BasePage {
                                            this.$navigate('message/MessageCenterPage');
                                            break;
                                        case 1:
-                                           this.$navigateReset();
+                                           this.$navigateBackToHome();
                                            break;
                                        case 2:
                                            this.shareModal.open();

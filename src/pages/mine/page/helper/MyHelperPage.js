@@ -135,10 +135,10 @@ export default class MyHelperPage extends BasePage {
                         flex: 1,
                         justifyContent: 'center'
                     }}
-                                      onPress={() => this.jump2Telephone()}>
-                        <UIImage source={icon_phone} style={{ height: 23, width: 23 }} resizeMode={'contain'}/>
+                                      onPress={() => this.jumpQYIMPage()}>
+                        <UIImage source={icon_kefu} style={{ height: 23, width: 23 }} resizeMode={'contain'}/>
                         <View style={{ marginLeft: 2, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={[styles.textFontstyle]}>咨询电话</Text>
+                            <Text style={{fontFamily:'PingFangSC-Regular',fontSize:16,color:DesignRule.textColor_mainTitle_222}}>在线客服</Text>
                             <Text style={styles.text2Style}>9：00-21：00</Text>
                         </View>
                     </TouchableOpacity>
@@ -154,11 +154,11 @@ export default class MyHelperPage extends BasePage {
                             justifyContent: 'center',
                             flex: 1
                         }}
-                        onPress={() => this.jumpQYIMPage()}>
-                        <UIImage source={icon_kefu} style={{ height: 23, width: 24 }} esizeMode={'contain'}/>
+                        onPress={() => this.jump2Telephone()}>
+                        <UIImage source={icon_phone} style={{ height: 23, width: 24 }} esizeMode={'contain'}/>
                         <View style={{ marginLeft: 2, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={[styles.textFontstyle, { marginTop: 5 }]}>在线客服</Text>
-                            <Text style={styles.text2Style}>9：00-21：00</Text>
+                            <Text style={{fontFamily:'PingFangSC-Regular',fontSize:16,color:DesignRule.textColor_mainTitle_222}}>客服电话</Text>
+                            <Text style={styles.text2Style}>400-9696-365</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

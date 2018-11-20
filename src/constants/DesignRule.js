@@ -29,6 +29,7 @@ const colors = {
         lineColor_inWhiteBg: '#E4E4E4',//在白色背景的线的颜色
         lineColor_inGrayBg: '#D9D9D9',//在灰色背景的线的颜色
         textColor_mainTitle: '#333333',//主标题
+        textColor_mainTitle_222:'#222222',//?黑色的字
         textColor_secondTitle: '#666666',//二级标题
         textColor_instruction: '#999999',//说明文字
         textColor_placeholder: '#CCCCCC',//预填文字

@@ -24,7 +24,8 @@ import DesignRule from 'DesignRule';
 import QYChatUtil from '../helper/QYChatModel';
 import res from '../../res';
 import { getSizeFromat } from '../../../../utils/FileSizeFormate';
-
+import { homeModule } from '../../../home/Modules'
+ 
 /**
  * @author luoyongming
  * @date on 2018/9/13
@@ -229,7 +230,8 @@ class SettingPage extends BasePage {
                     user.clearToken();
                     //清空购物车
                     shopCartStore.data = [];
-                    this.$navigateReset();
+                    this.$navigateBackToHome();
+                    homeModule.loadHomeList()
                     MineApi.signOut();
                     QYChatUtil.qiYULogout();
                     this.$loadingDismiss();
