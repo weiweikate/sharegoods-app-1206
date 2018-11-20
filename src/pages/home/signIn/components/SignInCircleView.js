@@ -13,8 +13,9 @@ import {
     Image
 } from 'react-native';
 import ScreenUtils from "../../../../utils/ScreenUtils";
-import signingInIcon from '../res/qiandao_btn_return_nor.png';
 import DesignRule from 'DesignRule';
+import res from  '../../res';
+const signingInIcon = res.signIn.complete_check;
 
 
 /**

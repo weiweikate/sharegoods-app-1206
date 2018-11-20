@@ -7,8 +7,10 @@ import {
     TouchableOpacity
 } from 'react-native';
 import StringUtils from '../../../../utils/StringUtils';
-import icon_close from '../res/icon_close.png';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+
+const icon_close = res.product.icon_close;
 
 
 /**
@@ -85,7 +87,8 @@ export default class SelectionHeaderView extends Component {
                             marginTop: 6
                         }}>{selectStrListTemp.join(',')}</Text>
                     </View>
-                    <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }} onPress = {this.props.closeSelectionPage}>
+                    <TouchableOpacity style={{ position: 'absolute', top: 16, right: 16 }}
+                                      onPress={this.props.closeSelectionPage}>
                         <Image source={icon_close}/>
                     </TouchableOpacity>
                 </View>

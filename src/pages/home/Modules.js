@@ -1,17 +1,21 @@
 import { observable, computed, action, flow } from 'mobx';
 import HomeApi from './api/HomeAPI';
-import { homeType, homeRoute }  from './HomeTypes'
-import { bannerModule } from './HomeBannerModel'
-import { adModules } from './HomeAdModel'
-import { starShopModule } from './HomeStarShopModel'
-import { todayModule } from './HomeTodayModel'
-import { subjectModule } from './HomeSubjectModel'
-import { recommendModule } from './HomeRecommendModel'
-import schoolImg from './res/school.png';
-import showImg from './res/show.png';
-import shareImg from './res/share.png';
-import signinImg from './res/signin.png';
-import spikeImg from './res/spike.png';
+import { homeType, homeRoute } from './HomeTypes';
+import { bannerModule } from './HomeBannerModel';
+import { adModules } from './HomeAdModel';
+import { starShopModule } from './HomeStarShopModel';
+import { todayModule } from './HomeTodayModel';
+import { subjectModule } from './HomeSubjectModel';
+import { recommendModule } from './HomeRecommendModel';
+import res from './res';
+
+const {
+    school: schoolImg,
+    show: showImg,
+    share_icon: shareImg,
+    signin: signinImg,
+    spike: spikeImg
+} = res;
 
 class ClassifyModules {
     @observable classifyList = [];
