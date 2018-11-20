@@ -435,7 +435,7 @@ export default class PaymentMethodPage extends BasePage {
         if (parseInt(result.code, 0) === 10000) {
             this.paymentResultView.show(PaymentResult.sucess);
         } else {
-            Toast.$toast(result.msg);
+            this.paymentResultView.show(PaymentResult.fail);
         }
     }
 
