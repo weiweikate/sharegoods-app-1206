@@ -249,21 +249,30 @@ export default class HomePage extends PureComponent {
     }
 
     getMessageData = () => {
-        var currStr = new Date().getTime() + '';
-        AsyncStorage.getItem('lastMessageTime').then((value) => {
-            if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-                MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {
-                    if (!EmptyUtils.isEmptyArr(resp.data.data)) {
-                        this.messageModal && this.messageModal.open();
-                        this.setState({
-                            showMessage: true,
-                            messageData: resp.data.data
-                        });
-                    }
+        MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {
+            if (!EmptyUtils.isEmptyArr(resp.data.data)) {
+                this.messageModal && this.messageModal.open();
+                this.setState({
+                    showMessage: true,
+                    messageData: resp.data.data
                 });
             }
         });
-        AsyncStorage.setItem('lastMessageTime', currStr);
+        // var currStr = new Date().getTime() + '';
+        // AsyncStorage.getItem('lastMessageTime').then((value) => {
+        //     if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
+        //         MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {
+        //             if (!EmptyUtils.isEmptyArr(resp.data.data)) {
+        //                 this.messageModal && this.messageModal.open();
+        //                 this.setState({
+        //                     showMessage: true,
+        //                     messageData: resp.data.data
+        //                 });
+        //             }
+        //         });
+        //     }
+        // });
+        // AsyncStorage.setItem('lastMessageTime', currStr);
 
     };
 
