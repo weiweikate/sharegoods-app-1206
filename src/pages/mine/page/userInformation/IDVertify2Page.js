@@ -11,20 +11,22 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import {
-    UIText, UIImage, TakePhotoModal,NoMoreClick
+    UIText, UIImage, TakePhotoModal, NoMoreClick
 } from '../../../../components/ui';
 import { color } from '../../../../constants/Theme';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import IDcard_country from '../../res/userInfoImg/IDcard_country.png';
-import IDcard_persion from '../../res/userInfoImg/IDcard_persion.png';
-import addressSelect from '../../res/userInfoImg/addressSelect.png';
-import addressUnselect from '../../res/userInfoImg/addressUnselect.png';
 import UserSingleItem from '../../components/UserSingleItem';
 import BusinessUtils from '../../components/BusinessUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+
+const IDcard_country = res.userInfoImg.IDcard_country;
+const IDcard_persion = res.userInfoImg.IDcard_persion;
+const addressSelect = res.userInfoImg.addressSelect;
+const addressUnselect = res.userInfoImg.addressUnselect;
 const htmlUrl = __DEV__ ?
     'https://testh5.sharegoodsmall.com/static/protocol/privacy.html'
     :
@@ -181,7 +183,12 @@ export default class IDVertify2Page extends BasePage {
     };
     renderHintInformation = () => {
         return (
-            <View style={{ height: 50, backgroundColor: DesignRule.mainColor, justifyContent: 'center', paddingLeft: 15 }}>
+            <View style={{
+                height: 50,
+                backgroundColor: DesignRule.mainColor,
+                justifyContent: 'center',
+                paddingLeft: 15
+            }}>
                 <UIText value={'请仔细检查姓名和证件号是否有误\n并重新上传图片，提交审核'}
                         style={{ fontSize: 13, lineHeight: 18, color: 'white' }}/>
             </View>
@@ -202,7 +209,7 @@ export default class IDVertify2Page extends BasePage {
             <View>
                 <TakePhotoModal
                     isShow={this.state.isShowTakePhotoModal}
-                    ref = {(ref)=>{
+                    ref={(ref) => {
                         this.takePhoteModal = ref;
                     }}
                     closeWindow={() => {
@@ -325,7 +332,7 @@ const styles = StyleSheet.create({
     }, accountStyle: {
         marginLeft: 16, color: color.loginTextBlack, width: 60
     }, inputTextStyle: {
-         height: 40, flex: 1, backgroundColor: 'white', fontSize: 14,textAlign:'right',marginRight:15
+        height: 40, flex: 1, backgroundColor: 'white', fontSize: 14, textAlign: 'right', marginRight: 15
     }
 });
 

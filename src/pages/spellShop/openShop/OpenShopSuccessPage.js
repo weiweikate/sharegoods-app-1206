@@ -9,7 +9,7 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
-import res from '../../../comm/res';
+import res from '../res';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import DesignRule from 'DesignRule';

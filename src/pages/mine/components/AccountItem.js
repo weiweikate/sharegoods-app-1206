@@ -5,11 +5,12 @@ import {
     StyleSheet
 } from 'react-native';
 import MoreClickComponet from '../../../components/ui/NoMoreClick';
-import questionImage_gray from '../res/userInfoImg/questionImage_gray.png';
 import {
     UIText, UIImage
 } from '../../../components/ui';
 import DesignRule from 'DesignRule';
+import res from '../res';
+const questionImage_gray =  res.userInfoImg.questionImage_gray;
 
 const AccountItem = props => {
     const {

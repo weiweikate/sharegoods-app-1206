@@ -22,9 +22,10 @@ import BasePage from "../../../../BasePage";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 const { px2dp } = ScreenUtils;
 import UIText from "../../../../comm/components/UIText";
-import res from '../../../../comm/res';
+import res from '../../res';
 const icon = res.button.selected_circle_red;
 import DesignRule from 'DesignRule';
+import StringUtils from "../../../../utils/StringUtils";
 // import icon from '../../../../comm/res/button/selected_circle_red.png'
 
 type Props = {};
@@ -77,7 +78,7 @@ export default class PromotionPayPage extends BasePage<Props> {
                     <UIText style={{color:DesignRule.textColor_instruction,fontSize:px2dp(12)}} value={'固定金额红包'}/>
                 </View>
                 <View style={styles.itemWrapper}>
-                    <UIText style={{color:DesignRule.textColor_mainTitle,fontSize:px2dp(13),includeFontPadding:false}} value={`红包金额：${this.params.price}元`}/>
+                    <UIText style={{color:DesignRule.textColor_mainTitle,fontSize:px2dp(13),includeFontPadding:false}} value={`红包金额：${StringUtils.formatMoneyString(this.params.price,false)}元`}/>
                     <UIText  style={{color:DesignRule.textColor_instruction,fontSize:px2dp(11),includeFontPadding:false}} value={`（共发放${this.params.count}个红包）`}/>
                     <View style={{flex:1}}/>
                     <TouchableOpacity onPress={()=>{
