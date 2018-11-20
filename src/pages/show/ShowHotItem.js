@@ -36,6 +36,13 @@ export default class ShowHotItem extends Component {
     render() {
         const {data, imageStyle, imageUrl} = this.props
         const { readNumber } = this.state
+        let number = readNumber
+        if (!number) {
+            number = 0
+        }
+        if (number > 999999) {
+            number = 999999 + '+'
+        }
         let img = imageUrl
         if (!img) {
             img = data.img
@@ -46,7 +53,7 @@ export default class ShowHotItem extends Component {
             <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
             <View style={styles.numberView}>
                 <Image style={styles.seeImg} source={seeImg}/>
-                <Text style={styles.number}>{readNumber ? readNumber : 0}</Text>
+                <Text style={styles.number}>{number}</Text>
             </View>
         </ImageLoad>
         <View style={styles.profile}>
