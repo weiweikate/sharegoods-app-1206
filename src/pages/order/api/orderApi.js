@@ -28,9 +28,9 @@ const api = {
     // 查看物流详情
     findLogisticsDetail:['/order/logistics/findLogisticsDetail',{method:'get'}],
     //降价拍的确认订单
-    DepreciateMakeSureOrder:'/operator/activityDepreciate/makeSureOrder',
+    DepreciateMakeSureOrder:['/operator/activityDepreciate/makeSureOrder',{ isRSA: true }],
     //降价拍的提交订单 沈耀鑫
-    DepreciateSubmitOrder:'/operator/activityDepreciate/submitOrder',
+    DepreciateSubmitOrder:['/operator/activityDepreciate/submitOrder',{ isRSA: true }],
     //秒杀的确认订单
     SeckillMakeSureOrder:['/operator/seckill/makeSureOrder',{ isRSA: true }],
     //秒杀的提交订单
