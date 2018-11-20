@@ -7,7 +7,7 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
 import { showChoiceModules, showSelectedDetail } from './Show'
-import res from '../../comm/res';
+import res from './res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule'

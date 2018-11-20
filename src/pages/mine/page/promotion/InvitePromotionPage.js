@@ -26,6 +26,7 @@ import RefreshList from '../../../../components/ui/RefreshList';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import DesignRule from 'DesignRule';
 
+
 const { px2dp, autoSizeWidth } = ScreenUtils;
 type Props = {};
 export default class InvitePromotionPage extends BasePage<Props> {

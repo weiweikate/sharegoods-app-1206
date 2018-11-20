@@ -1,5 +1,9 @@
 /**
- * Created by xiangchen on 2018/7/10.
+ * @author chenxiang
+ * @date on 2018/9/7
+ * @describe 首页
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
  */
 
 import React from 'react';
@@ -11,13 +15,11 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-// import UIImage from '../../../../components/ui/UIImage';
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import { SwipeListView } from '../../../../components/ui/react-native-swipe-list-view';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
-import invalidIcon from '../../res/setting/shoucang_icon_shixiao_nor.png'
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
 import { NavigationActions } from 'react-navigation';
@@ -25,6 +27,7 @@ import { NavigationActions } from 'react-navigation';
 import RES from '../../res';
 const MoneyIcon = RES.money;
 const StarIcon = RES.colloct_start;
+const invalidIcon = RES.setting.shoucang_icon_shixiao_nor;
 @observer
 export default class MyCollectPage extends BasePage {
     constructor(props) {
@@ -424,5 +427,3 @@ const styles = StyleSheet.create({
     }
 
 });
-
-

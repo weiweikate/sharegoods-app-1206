@@ -7,10 +7,11 @@ import {
 import { VictoryPie } from 'victory-native';
 import MineApi from '../../api/MineApi';
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
-import Icon from './res/1_03.png';
-import Icon1 from './res/7.png';
-import Icon2 from './res/6_03.png';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+const Icon = res.myData.icon0;
+const Icon1 = res.myData.icon1;
+const Icon2 = res.myData.icon2;
 
 const colors = [
     '#ea822a',

@@ -18,7 +18,6 @@ import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import user from '../../../model/user';
-import arrowRight from '../res/homeBaseImg/icon3_07.png';
 
 import NoMoreClick from '../../../components/ui/NoMoreClick';
 import MineApi from '../api/MineApi';
@@ -50,7 +49,8 @@ const {
     mine_icon_mission,
     mine_icon_discollect,
     mine_message_icon_white,
-    mine_setting_icon_white
+    mine_setting_icon_white,
+    icon3_07: arrowRight
 } = res.homeBaseImg;
 
 

@@ -6,7 +6,7 @@ import React, {Component} from 'react'
 import { View, Text, TouchableWithoutFeedback, Image, StyleSheet } from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 const {  px2dp } = ScreenUtils
-import res from '../../comm/res';
+import res from './res';
 const seeImg = res.button.see_white;
 const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule'
