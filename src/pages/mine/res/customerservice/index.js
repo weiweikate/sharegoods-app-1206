@@ -12,8 +12,6 @@ const  helperAndCustomerService={
     icon_arrow_down:require('./fankui_icon_zhankai_down.png'),
     icon_dashframe:require('./xuxian_kuang.png'),
     icon_red_select:require('./bangzu_dugou.png')
-
-
 }
 
 export default helperAndCustomerService;

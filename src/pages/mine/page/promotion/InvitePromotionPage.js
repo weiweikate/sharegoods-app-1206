@@ -20,11 +20,12 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import bg from './res/tuiguang_bg_nor.png';
+import bg from './res/promotion_bg.png';
 import MineApi from '../../api/MineApi';
 import RefreshList from '../../../../components/ui/RefreshList';
 import EmptyUtils from '../../../../utils/EmptyUtils';
 import DesignRule from 'DesignRule';
+
 
 const { px2dp, autoSizeWidth } = ScreenUtils;
 type Props = {};
@@ -85,24 +86,26 @@ export default class InvitePromotionPage extends BasePage<Props> {
 
     _itemRender = ({ item }) => {
         let tip = (
-            <Text style={styles.itemTextStyle}>
+            <Text style={[styles.itemTextStyle,{color:item.userBuy && (item.status === 1 )? '#FF0050' : '#FF1F58'}]}>
                 库存不足
             </Text>
         );
         let limit = (
-            <Text style={styles.itemTextStyle}>
+            <Text style={[styles.itemTextStyle,{color:item.userBuy && (item.status === 1 )? '#FF0050' : '#FF1F58'}]}>
                 {`每人限购${item.buyLimit}份`}
             </Text>
         );
         return (
-            <View style={{ height: px2dp(63), width: ScreenUtils.width }}>
+            <View style={{ height: px2dp(65), width: ScreenUtils.width }}>
                 <TouchableWithoutFeedback onPress={() => {
                     if (item.userBuy && item.status === 1) {
                         this.$navigate('mine/promotion/PromotionPayPage', item);
                     }
                 }}>
-                    <View style={[styles.itemWrapper, { backgroundColor: item.userBuy && (item.status === 1 )? 'white' : '#CCCCCC' }]}>
-                        <Text style={styles.itemTextStyle}>
+                    <View style={[styles.itemWrapper, { backgroundColor: item.userBuy && (item.status === 1 )? '#FFDBB2' : '#e27381',
+                        opacity:item.userBuy && (item.status === 1 )? 1 : 0.9
+                    }]}>
+                        <Text style={[styles.itemTextStyle,{color:item.userBuy && (item.status === 1 )? '#FF0050' : '#FF1F58'}]}>
                             {item.name}{`/推广周期${item.cycle}天`}
                         </Text>
                         {item.status === 2 ? tip : null}
@@ -118,23 +121,14 @@ export default class InvitePromotionPage extends BasePage<Props> {
         return (
             <View style={styles.container}>
                 <ImageBackground source={bg} style={styles.imageStyle}>
-                    <Text style={{ color: 'white', fontSize: px2dp(20) }}>
-                        邀请推广是什么？
-                    </Text>
-                    <Text style={{ textAlign: 'center', color: 'white', fontSize: px2dp(13) }}>
-                        平台拥有很多没有上级用户的会员，{`\n`}
-                        您可以通过发送红包的方式进行绑定，{`\n`}
-                        平台提供分享通道
-                    </Text>
+                    <RefreshList data={this.state.data}
+                                 renderItem={this._itemRender}
+                                 style={{ marginTop: px2dp(15) }}
+                                 isEmpty={this.state.isEmpty}
+                                 onRefresh={this.onRefresh}
+                                 onLoadMore={this.onLoadMore}
+                    />
                 </ImageBackground>
-                <RefreshList data={this.state.data}
-                             renderItem={this._itemRender}
-                             style={{ marginTop: px2dp(15) }}
-                             isEmpty={this.state.isEmpty}
-                             onRefresh={this.onRefresh}
-                             onLoadMore={this.onLoadMore}
-
-                />
             </View>
         );
     }
@@ -148,27 +142,19 @@ const styles = StyleSheet.create({
     },
     imageStyle: {
         width: ScreenUtils.width,
-        height: autoSizeWidth(150),
         alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingTop: px2dp(25),
-        paddingBottom: px2dp(32)
+        paddingTop: px2dp(200),
     },
     itemWrapper: {
-        height: px2dp(48),
+        height: px2dp(58),
         width: ScreenUtils.width - px2dp(30),
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center',
-        elevation: 2,
         borderRadius: px2dp(5),
-        shadowColor: DesignRule.mainColor,
-        shadowOffset: { h: 2, w: 2 },
-        shadowRadius: px2dp(6),
-        shadowOpacity: 0.1
+
     },
     itemTextStyle: {
-        color: 'black',
         fontSize: px2dp(13)
     }
 });

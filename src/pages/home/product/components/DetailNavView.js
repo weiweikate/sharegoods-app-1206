@@ -7,11 +7,11 @@ import {
     Text
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import res from '../../../../comm/res/index';
-import detailNavView from '../res/detailNavView';
 import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import ShopCartStore from '../../../shopCart/model/ShopCartStore';
+import res from '../../res';
+const detailNavView = res.product.detailNavView;
 
 /**
  * 商品详情bannerView

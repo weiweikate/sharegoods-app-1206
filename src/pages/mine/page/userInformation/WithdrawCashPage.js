@@ -16,14 +16,15 @@ import {
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import bank from '../../res/userInfoImg/commonBankCardIcon.png';
 // import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
 import user from '../../../../model/user';
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+
 const arrow_right = res.button.arrow_right_black;
+const bank = res.userInfoImg.commonBankCardIcon;
 
 @observer
 class WithdrawCashPage extends BasePage {
@@ -257,16 +258,16 @@ class WithdrawCashPage extends BasePage {
     };
     selectBankCard = () => {
         NativeModules.commModule.toast('功能暂未开放');
-    //     this.$navigate('mine/bankCard/BankCardListPage', {
-    //         callBack: (params) => {
-    //             this.setState({
-    //                 card_no: params.card_no,
-    //                 bank_name: params.bank_name,
-    //                 id: params.id,
-    //                 card_type: params.card_type
-    //             });
-    //         }
-    //     });
+        //     this.$navigate('mine/bankCard/BankCardListPage', {
+        //         callBack: (params) => {
+        //             this.setState({
+        //                 card_no: params.card_no,
+        //                 bank_name: params.bank_name,
+        //                 id: params.id,
+        //                 card_type: params.card_type
+        //             });
+        //         }
+        //     });
     };
 }
 

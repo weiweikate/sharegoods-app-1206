@@ -15,20 +15,17 @@ import BasePage from '../../../BasePage';
 import DetailHeaderView from './components/DetailHeaderView';
 import DetailSegmentView from './components/DetailSegmentView';
 import DetailBottomView from './components/DetailBottomView';
+import DetailNavView from './components/DetailNavView';
 import SelectionPage from './SelectionPage';
 import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import res from '../../../comm/res';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
 import DetailNavShowModal from './components/DetailNavShowModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import CommModal from '../../../comm/components/CommModal';
-import redEnvelopeBg from './res/red_envelope_bg.png';
 import DesignRule from 'DesignRule';
-
-import DetailNavView from './components/DetailNavView';
 
 const { px2dp } = ScreenUtils;
 import user from '../../../model/user';
@@ -37,6 +34,9 @@ import StringUtils from '../../../utils/StringUtils';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
+import res from '../res';
+
+const redEnvelopeBg = res.other.red_big_envelope;
 
 /**
  * @author chenyangjun
@@ -80,7 +80,7 @@ export default class ProductDetailPage extends BasePage {
             netFailedProps: {
                 buttonText: status === 0 ? '去首页' : '重新加载',
                 netFailedInfo: this.state.netFailedInfo,
-                reloadBtnClick: status === 0 ? (() => this.$navigateReset()) : (() => this._getProductDetail())
+                reloadBtnClick: status === 0 ? (() => this.$navigateBackToHome()) : (() => this._getProductDetail())
             }
         };
     };
@@ -108,8 +108,8 @@ export default class ProductDetailPage extends BasePage {
 
     getPromotion = async () => {
         try {
-            if(user.isLogin){
-                const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME+user.id);
+            if (user.isLogin) {
+                const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME + user.id);
                 var currStr = new Date().getTime() + '';
                 if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
                     if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
@@ -121,7 +121,7 @@ export default class ProductDetailPage extends BasePage {
                                     couponData: data.data
                                 });
                                 this.couponId = data.data.id;
-                                AsyncStorage.setItem(LASTSHOWPROMOTIONTIME+user.id, currStr);
+                                AsyncStorage.setItem(LASTSHOWPROMOTIONTIME + user.id, currStr);
                             }
                         });
                     }
@@ -320,7 +320,7 @@ export default class ProductDetailPage extends BasePage {
             if (product.content) {
                 return <View>
                     <HTML html={product.content} imagesMaxWidth={ScreenUtils.width}
-                          imagesInitialDimensions={ScreenUtils.width}
+                          imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
                           containerStyle={{ backgroundColor: '#fff' }}/>
                     <View style={{ backgroundColor: 'white' }}>
                         <Text
@@ -518,7 +518,7 @@ export default class ProductDetailPage extends BasePage {
                                            this.$navigate('message/MessageCenterPage');
                                            break;
                                        case 1:
-                                           this.$navigateReset();
+                                           this.$navigateBackToHome();
                                            break;
                                        case 2:
                                            this.shareModal.open();

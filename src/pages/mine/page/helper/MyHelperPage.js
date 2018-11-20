@@ -1,5 +1,9 @@
 /**
- * Created by xiangchen on 2018/7/10.
+ * @author chenxiang
+ * @date on 2018/9/7
+ * @describe 首页
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
  */
 import React from 'react';
 import {

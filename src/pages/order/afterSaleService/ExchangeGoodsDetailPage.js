@@ -436,10 +436,10 @@ class ExchangeGoodsDetailPage extends BasePage {
                         alignItems: 'center',
                         alignContent: 'center'
                     }} onPress={() => this.contactSeller()}>
-                        <UIImage source={applyRefundMessage} style={{ width: 25, height: 23, marginBottom: 10 }}/>
+                        <UIImage source={applyRefundMessage} style={{ width: 25, height: 23, marginBottom: 6 }}/>
                         <View style={{ marginLeft: 10 }}>
                             <UIText value={'联系客服'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
-                            <UIText value={'9:00 -21:00'}
+                            <UIText value={'9:00-22:00'}
                                     style={{ fontSize: 12, color: DesignRule.textColor_instruction, marginTop: 3 }}/>
                         </View>
                     </TouchableOpacity>
@@ -454,10 +454,10 @@ class ExchangeGoodsDetailPage extends BasePage {
                         alignItems: 'center',
                         alignContent: 'center'
                     }} onPress={() => this.callPhone()}>
-                        <UIImage source={applyRefundPhone} style={{ width: 25, height: 23, marginBottom: 10 }}/>
+                        <UIImage source={applyRefundPhone} style={{ width: 25, height: 23, marginBottom: 6 }}/>
                         <View style={{ marginLeft: 10 }}>
                             <UIText value={'客服电话'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
-                            <UIText value={'9:00 -21:00'}
+                            <UIText value={'9:00-22:00'}
                                     style={{ fontSize: 12, color: DesignRule.textColor_instruction, marginTop: 3 }}/>
                         </View>
                     </TouchableOpacity>
@@ -477,7 +477,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 <UIText value={typeStr + '原因：' + pageData.returnReason} style={styles.refundReason}/>
                 {/*<UIText value={typeStr + '金额：' + StringUtils.formatMoneyString(pageData.totalRefundPrice)}*/}
                 {/*style={styles.refundReason}/>*/}
-                <UIText value={typeStr + '说明：' + pageData.remark} style={styles.refundReason}/>
+                <UIText value={typeStr + '说明：' + pageData.remark || ''} style={styles.refundReason}/>
                 <UIText value={'凭证图片：'} style={styles.refundReason}/>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingRight: 15 }}>
                     {this.renderCertificateImage()}
@@ -552,7 +552,8 @@ class ExchangeGoodsDetailPage extends BasePage {
                 };
             } else if (pageData.status === 6) {//已完成
                 detialCommpent = () => {
-                    return <UIText value={DateUtils.getFormatDate(pageData.payTime / 1000, 'yyyy年MM月dd日  hh:mm:ss')}
+                    let orderReturnAmounts = pageData.orderReturnAmounts || {};
+                    return <UIText value={DateUtils.getFormatDate(orderReturnAmounts.refundTime / 1000, 'yyyy年MM月dd日  hh:mm:ss')}
                                    style={styles.header_detail}/>;
                 };
             } else if (pageData.status === 1) {//申请中 applyTime	Long	1539250433000

@@ -7,7 +7,7 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
 import { showChoiceModules, showSelectedDetail } from './Show'
-import res from '../../comm/res';
+import res from './res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule'
@@ -38,6 +38,13 @@ class Card extends Component {
     render () {
         const {item } = this.props
         const { readNumber } = this.state
+        let number = readNumber
+        if (!number) {
+            number = 0
+        }
+        if (number > 999999) {
+            number = 999999 + '+'
+        }
         return <TouchableWithoutFeedback style={styles.card} onPress={()=> this._onSelectedCard()}>
         <View style={styles.card}>
         <ImageLoad style={styles.imgView} source={{uri:item.coverImg}} resizeMode={'cover'}>
@@ -50,7 +57,7 @@ class Card extends Component {
             <View style={{flex: 1}}/>
             <View style={styles.rightRow}>
                 <Image source={seeImg}/>
-                <Text style={styles.number}>{readNumber ? readNumber : 0}</Text>
+                <Text style={styles.number}>{ number }</Text>
             </View>
         </View>
         </View>

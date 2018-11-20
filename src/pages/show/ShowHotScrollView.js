@@ -7,7 +7,7 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
 import { showHotModules, showSelectedDetail } from './Show'
-import res from '../../comm/res';
+import res from './res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule';
@@ -35,7 +35,14 @@ class HotItem extends Component {
 
     render() {
         const {item} = this.props
-        const {readNumber } = this.state
+        const { readNumber } = this.state
+        let number = readNumber
+        if (!number) {
+            number = 0
+        }
+        if (number > 999999) {
+            number = 999999 + '+'
+        }
         return <TouchableWithoutFeedback onPress={()=> {this._onSelectedItem()}}>
         <View style={styles.item}>
         <ImageLoad style={styles.imgBack} source={{uri: item.coverImg}}>
@@ -44,7 +51,7 @@ class HotItem extends Component {
                 <Text style={styles.remark} numberOfLines={1}>{item.pureContent ? item.pureContent.slice(0, 30).trim() : ''}</Text>
                 <View style={styles.right}>
                     <Image source={seeImg}/>
-                    <Text style={styles.number}>{readNumber}</Text>
+                    <Text style={styles.number}>{ number }</Text>
                 </View>
             </View>
         </ImageLoad>

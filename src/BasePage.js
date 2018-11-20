@@ -164,6 +164,12 @@ export default class BasePage extends Component {
             console.warn(`js_navigate error: ${e.toString()}`);
         }
     };
+
+    $navigateBackToHome = () => {
+        this.props.navigation.popToTop()
+        this.props.navigation.navigate('HomePage')
+    }
+
     // 返回到首页
     $navigateReset = (routeName = 'Tab', params) => {
         const resetAction = NavigationActions.reset({
@@ -177,7 +183,7 @@ export default class BasePage extends Component {
         });
         this.props.navigation.dispatch(resetAction);
     };
-    // 返回到首页
+    // 返回到登录页面
     $navigateResetLogin = () => {
         const resetAction = NavigationActions.reset({
             index: 1,

@@ -8,15 +8,17 @@ import {
 } from 'react-native';
 import { isNoEmpty } from '../../../../utils/StringUtils';
 import { formatDate } from '../../../../utils/DateUtils';
-import whiteArrowRight from '../res/icon3_03.png';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+
+const whiteArrowRight = res.product.icon3_03;
 
 
 export default class ActivityView extends Component {
 
     static propTypes = {
         activityData: PropTypes.object.isRequired,
-        activityType: PropTypes.object.isRequired
+        activityType: PropTypes.number.isRequired
     };
 
     constructor(props) {
@@ -174,7 +176,7 @@ export default class ActivityView extends Component {
                         </View>
                         <View style={{
                             marginTop: 5,
-                            marginRight:15,
+                            marginRight: 15,
                             height: 15,
                             width: 106,
                             justifyContent: 'center',
@@ -187,7 +189,7 @@ export default class ActivityView extends Component {
                     </View>
 
                     <Image source={whiteArrowRight}
-                           style={{ height: 14, marginLeft: 2,marginRight:15 }}
+                           style={{ height: 14, marginLeft: 2, marginRight: 15 }}
                            resizeMode={'contain'}/>
                 </View>
             }

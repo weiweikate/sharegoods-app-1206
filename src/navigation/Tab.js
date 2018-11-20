@@ -3,7 +3,7 @@ import React from 'react';
 import Home from '../pages/home/HomePage';
 import Mine from '../pages/mine/page/MinePage';
 import ShopCart from '../pages/shopCart/page/ShopCartPage';
-import SpellShop from '../pages/spellShop/SpellShopPage';
+import MyShop_RecruitPage from '../pages/spellShop/MyShop_RecruitPage';
 import { StyleSheet, Image } from 'react-native';
 import res from '../comm/res';
 import ScreenUtils from '../utils/ScreenUtils';
@@ -57,8 +57,8 @@ export const TabNav = TabNavigator(
                 }
             }
         },
-        SpellShopPage: {
-            screen: SpellShop,
+        MyShop_RecruitPage: {
+            screen: MyShop_RecruitPage,
             navigationOptions: {
                 tabBarLabel: '拼店',
                 tabBarIcon: ({ focused }) => {

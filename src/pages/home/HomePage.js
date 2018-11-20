@@ -30,18 +30,17 @@ import Modal from 'CommModal';
 import XQSwiper from '../../components/ui/XGSwiper';
 import MessageApi from '../message/api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
-import messageModalBg from './res/messageModalBg.png';
-import messageSelected from './res/messageSelected.png';
-import messageUnselected from './res/messageUnselected.png';
 import MineApi from '../mine/api/MineApi';
 import VersionUpdateModal from './VersionUpdateModal';
 import DeviceInfo from 'react-native-device-info';
 import StringUtils from '../../utils/StringUtils';
 import DesignRule from 'DesignRule';
-import res from '../../comm/res';
 import TimerMixin from 'react-timer-mixin';
+import res from './res';
 
 const closeImg = res.button.cancel_white_circle;
+const messageUnselected = res.messageUnselected;
+const home_notice_bg = res.home_notice_bg;
 /**
  * @author zhangjian
  * @date on 2018/9/7
@@ -88,30 +87,35 @@ export default class HomePage extends PureComponent {
 
         MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((resp) => {
             if (resp.data.upgrade === 1) {
-                if (StringUtils.isEmpty(upVersion) && upVersion !== resp.data.version) {
-                    if (Platform.OS !== 'ios') {
-                        NativeModules.commModule.apkExist(resp.data.version, (exist) => {
-                            this.setState({
-                                updateData: resp.data,
-                                showUpdate: true,
-                                apkExist: exist
-                            });
-                            this.updateModal && this.updateModal.open();
-                        });
-                    } else {
-                        this.setState({
-                            updateData: resp.data,
-                            showUpdate: true
-                        });
-                        this.updateModal && this.updateModal.open();
-                    }
-                }
                 if (resp.data.forceUpdate === 1) {
                     // 强制更新
                     this.setState({
                         forceUpdate: true
                     });
+                }else {
+                    if (StringUtils.isEmpty(upVersion) && upVersion !== resp.data.version) {
+                        if (Platform.OS !== 'ios') {
+                            NativeModules.commModule.apkExist(resp.data.version, (exist) => {
+                                this.setState({
+                                    updateData: resp.data,
+                                    showUpdate: true,
+                                    apkExist: exist
+                                });
+                                this.updateModal && this.updateModal.open();
+                            });
+                        } else {
+                            this.setState({
+                                updateData: resp.data,
+                                showUpdate: true
+                            });
+                            this.updateModal && this.updateModal.open();
+                        }
+                    }else {
+
+                    }
                 }
+            }else {
+
             }
         });
     };
@@ -244,21 +248,30 @@ export default class HomePage extends PureComponent {
     }
 
     getMessageData = () => {
-        var currStr = new Date().getTime() + '';
-        AsyncStorage.getItem('lastMessageTime').then((value) => {
-            if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-                MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {
-                    if (!EmptyUtils.isEmptyArr(resp.data.data)) {
-                        this.messageModal && this.messageModal.open();
-                        this.setState({
-                            showMessage: true,
-                            messageData: resp.data.data
-                        });
-                    }
+        MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {
+            if (!EmptyUtils.isEmptyArr(resp.data.data)) {
+                this.messageModal && this.messageModal.open();
+                this.setState({
+                    showMessage: true,
+                    messageData: resp.data.data
                 });
             }
         });
-        AsyncStorage.setItem('lastMessageTime', currStr);
+        // var currStr = new Date().getTime() + '';
+        // AsyncStorage.getItem('lastMessageTime').then((value) => {
+        //     if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
+        //         MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {
+        //             if (!EmptyUtils.isEmptyArr(resp.data.data)) {
+        //                 this.messageModal && this.messageModal.open();
+        //                 this.setState({
+        //                     showMessage: true,
+        //                     messageData: resp.data.data
+        //                 });
+        //             }
+        //         });
+        //     }
+        // });
+        // AsyncStorage.setItem('lastMessageTime', currStr);
 
     };
 
@@ -276,9 +289,9 @@ export default class HomePage extends PureComponent {
                         <Image source={closeImg} style={styles.messageCloseStyle}/>
                     </TouchableWithoutFeedback>
 
-                    <ImageBackground source={messageModalBg} style={styles.messageBgStyle}>
+                    <ImageBackground source={home_notice_bg} style={styles.messageBgStyle}>
                         <XQSwiper
-                            style={{ alignSelf: 'center', marginTop: 71, width: px2dp(230), height: px2dp(211) }}
+                            style={{ alignSelf: 'center', marginTop: px2dp(145), width: px2dp(230), height: px2dp(211)}}
                             height={px2dp(230)} width={px2dp(230)} renderRow={this.messageRender}
                             dataSource={EmptyUtils.isEmptyArr(this.state.messageData) ? [] : this.state.messageData}
                             loop={false}
@@ -303,8 +316,8 @@ export default class HomePage extends PureComponent {
         let indexs = [];
         for (let i = 0; i < this.state.messageData.length; i++) {
             let view = i === this.state.messageIndex ?
-                <Image source={messageSelected} style={styles.messageIndexStyle}/> :
-                <Image source={messageUnselected} style={styles.messageIndexStyle}/>;
+                <View  style={[styles.messageIndexStyle,{backgroundColor:'#FF427D'}]}/> :
+                <View source={messageUnselected} style={[styles.messageIndexStyle,{ backgroundColor: '#f4d7e4'}]}/>;
             indexs.push(view);
         }
         return (
@@ -348,7 +361,7 @@ export default class HomePage extends PureComponent {
     }
 
     _renderTableHeader() {
-        return !bannerModule.isShowHeader ? null : <View style={{height : statusBarHeight + 44}}/>
+        return !bannerModule.isShowHeader ? null : <View style={{ height: statusBarHeight + 44 }}/>;
     }
 
     render() {
@@ -448,8 +461,8 @@ const styles = StyleSheet.create({
         fontWeight: '600'
     },
     messageBgStyle: {
-        width: px2dp(300),
-        height: px2dp(405),
+        width: px2dp(295),
+        height: px2dp(390),
         marginTop: px2dp(20)
     },
     messageCloseStyle: {
@@ -460,7 +473,8 @@ const styles = StyleSheet.create({
         marginRight: ((ScreenUtils.width) - px2dp(300)) / 2
     },
     messageIndexStyle: {
-        width: px2dp(12),
-        height: px2dp(12)
+        width: px2dp(10),
+        height: px2dp(10),
+        borderRadius:px2dp(5)
     }
 });

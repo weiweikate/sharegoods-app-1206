@@ -1,8 +1,8 @@
 const api = {
     // 确认订单
-    makeSureOrder: '/order/makeSureOrder',
+    makeSureOrder: ['/order/makeSureOrder',{ isRSA: true }],
     //order/submitOrder提交订单
-    submitOrder: '/order/submitOrder',
+    submitOrder: ['/order/submitOrder',{ isRSA: true }],
     //订单列表  订单状态（1：待支付 2：待发货 3：待收货 4：确认收货 5：已完成 6：退货关闭 7：用户关闭 8：超时关闭）
     queryPage: '/order/queryPage',
     // 用户预支付
@@ -28,17 +28,17 @@ const api = {
     // 查看物流详情
     findLogisticsDetail:['/order/logistics/findLogisticsDetail',{method:'get'}],
     //降价拍的确认订单
-    DepreciateMakeSureOrder:'/operator/activityDepreciate/makeSureOrder',
+    DepreciateMakeSureOrder:['/operator/activityDepreciate/makeSureOrder',{ isRSA: true }],
     //降价拍的提交订单 沈耀鑫
-    DepreciateSubmitOrder:'/operator/activityDepreciate/submitOrder',
+    DepreciateSubmitOrder:['/operator/activityDepreciate/submitOrder',{ isRSA: true }],
     //秒杀的确认订单
-    SeckillMakeSureOrder:'/operator/seckill/makeSureOrder',
+    SeckillMakeSureOrder:['/operator/seckill/makeSureOrder',{ isRSA: true }],
     //秒杀的提交订单
-    SeckillSubmitOrder:'/operator/seckill/submitOrder',
+    SeckillSubmitOrder:['/operator/seckill/submitOrder',{ isRSA: true }],
     //礼包的确认订单
-    PackageMakeSureOrder:'/operator/activitypackage/makeSureOrder',
+    PackageMakeSureOrder:['/operator/activitypackage/makeSureOrder',{ isRSA: true }],
     //礼包的提交订单
-    PackageSubmitOrder:'/operator/activitypackage/submitOrder',
+    PackageSubmitOrder:['/operator/activitypackage/submitOrder',{ isRSA: true }],
     //（陈帅）再来一单
     againOrder:'/order/againOrder',
     /**  售后模块相关接口 huchao */

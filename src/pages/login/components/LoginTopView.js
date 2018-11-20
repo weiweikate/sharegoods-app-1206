@@ -48,13 +48,8 @@ class LoginTopViewModel {
             this.phoneNumber = '';
             return;
         }
-        // if( 0 <= parseInt(phoneNmber.charAt(phoneNmber.length - 1)) &&
-        //     parseInt(phoneNmber.charAt(phoneNmber.length - 1)) <= 9 )
-        // {
         this.phoneNumber = phoneNmber;
-        // }
     }
-
     @action
     savePassword(password) {
         if (!password) {
@@ -63,7 +58,6 @@ class LoginTopViewModel {
         }
         this.password = password;
     }
-
     @action
     saveVertifyCode(vertifyCode) {
         if (!vertifyCode) {
@@ -72,7 +66,6 @@ class LoginTopViewModel {
         }
         this.vertifyCode = vertifyCode;
     }
-
     @computed
     get isCanClick() {
         if (this.phoneNumber.length < 11) {
@@ -96,6 +89,11 @@ export default class LoginTopView extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            isSecuret :true
+        }
+
 
     }
 
@@ -182,11 +180,12 @@ export default class LoginTopView extends Component {
                         placeholder='请输入验证码'
                         underlineColorAndroid='transparent'
                         keyboardType='numeric'
+                        multiline={false}
+                        secureTextEntry={false}
                     />
                     <TouchableOpacity
                         onPress={this.getVertifyCode}
                         activeOpacity={1}
-
                     >
                         <Text style={Styles.codeTextStyle}>
                             {this.LoginModel.dowTime > 0 ? `${this.LoginModel.dowTime}秒后重新获取` : '获取验证码'}
@@ -226,8 +225,8 @@ export default class LoginTopView extends Component {
                         value={this.LoginModel.password}
                         onChangeText={text => this.LoginModel.savePassword(text)}
                         placeholder='请输入密码'
-                        underlineColorAndroid={'transparent'}
-                        keyboardType='default'
+                        underlineColorAndroid='transparent'
+                        multiline={false}
                         secureTextEntry={this.LoginModel.isSecuret}
                     />
                     <View style={{ flexDirection: 'row' }}>
