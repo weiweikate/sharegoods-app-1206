@@ -24,6 +24,7 @@ import shopCartStore from '../model/ShopCartStore';
 import shopCartCacheTool from '../model/ShopCartCacheTool';
 import bridge from '../../../utils/bridge';
 import DesignRule from 'DesignRule';
+const dismissKeyboard = require('dismissKeyboard');
 
 
 const activityCode = {
@@ -566,6 +567,7 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _toBuyImmediately = () => {
+        dismissKeyboard();
         let [...selectArr] = shopCartStore.startSettlement();
         if (selectArr.length <= 0){
             this.$toastShow('请先选择结算商品~')
