@@ -204,7 +204,7 @@ export default class ShowConnectPage extends BasePage {
 
     _renderInfinite() {
         return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
-            {this.recommendModules.isEnd ? <Text style={styles.text}>已加载全部</Text> : this.recommendModules.isRefreshing ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
+            {this.recommendModules.isEnd ? <Text style={styles.text}>我也是有底线的</Text> : this.recommendModules.isRefreshing ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
         </View>
     }
 
@@ -236,7 +236,7 @@ export default class ShowConnectPage extends BasePage {
                     }}
                     columns={2}
                     infinite={true}
-                    hasMore={false}
+                    hasMore={true}
                     renderItem={item => this.renderItem(item)}
                     containerStyle={{ marginLeft: 15, marginRight: 15 }}
                     keyExtractor={(data) => this._keyExtractor(data)}
