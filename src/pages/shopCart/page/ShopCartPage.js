@@ -566,24 +566,75 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _toBuyImmediately = () => {
-        shopCartStore.judgeIsCanSettlement((isCan, goodArr) => {
-            if (isCan) {
-                let tempArr = [];
-                goodArr.map((goods) => {
-                    tempArr.push({
-                        priceId: goods.priceId,
-                        num: goods.amount,
-                        productId: goods.productId
-                    });
-                });
-                this.$navigate('order/order/ConfirOrderPage', {
-                    orderParamVO: {
-                        orderType: 99,
-                        orderProducts: tempArr
-                    }
-                });
+        let [...selectArr] = shopCartStore.startSettlement();
+        if (selectArr.length <= 0){
+            this.$toastShow('请先选择结算商品~')
+            // bridge.$toast('请先选择结算商品~');
+            return;
+        }
+        let isCanSettlement = true
+        let haveNaNGood = false
+        let  tempArr = [];
+        selectArr.map(good => {
+            if (good.amount > good.stock) {
+                isCanSettlement = false
             }
-        });
+            if (good.amount > 0 && !isNaN(good.amount)){
+                tempArr.push(good);
+            }
+            if (isNaN(good.amount)){
+                haveNaNGood = true
+                isCanSettlement = false
+            }
+        })
+
+        if (haveNaNGood){
+           this.$toastShow('存在选中商品数量为空,或存在正在编辑的商品,请确认~')
+            // bridge.$toast('存在选中商品数量为空,或存在正在编辑的商品,请确认~')
+            return;
+        }
+        if (!isCanSettlement) {
+            this.$toastShow('商品库存不足请确认~')
+            // bridge.$toast('商品库存不足请确认~')
+            return;
+        }
+        if (isCanSettlement && !haveNaNGood){
+            let buyGoodsArr = [];
+            tempArr.map((goods) => {
+                buyGoodsArr.push({
+                    priceId: goods.priceId,
+                    num: goods.amount,
+                    productId: goods.productId
+                });
+            });
+            this.$navigate('order/order/ConfirOrderPage', {
+                orderParamVO: {
+                    orderType: 99,
+                    orderProducts: buyGoodsArr
+                }
+            });
+        }
+
+        // return;
+        // /*********************************/
+        // shopCartStore.judgeIsCanSettlement((isCan, goodArr) => {
+        //     if (isCan) {
+        //         let tempArr = [];
+        //         goodArr.map((goods) => {
+        //             tempArr.push({
+        //                 priceId: goods.priceId,
+        //                 num: goods.amount,
+        //                 productId: goods.productId
+        //             });
+        //         });
+        //         this.$navigate('order/order/ConfirOrderPage', {
+        //             orderParamVO: {
+        //                 orderType: 99,
+        //                 orderProducts: tempArr
+        //             }
+        //         });
+        //     }
+        // });
     };
     _selectAll = () => {
         shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
@@ -657,8 +708,7 @@ export default class ShopCartPage extends BasePage {
     };
 }
 
-const
-    styles = StyleSheet.create({
+const styles = StyleSheet.create({
         container: {
             flex: 1,
             justifyContent: 'flex-end'
