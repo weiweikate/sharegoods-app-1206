@@ -199,7 +199,7 @@ export default class ShowConnectPage extends BasePage {
     _keyExtractor = (data) => data.id + '';
 
     goToHome() {
-        this.$navigateReset();
+        this.$navigateBackToHome();
     }
 
     _renderInfinite() {
