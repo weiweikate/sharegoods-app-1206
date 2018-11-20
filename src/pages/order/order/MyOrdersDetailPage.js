@@ -965,6 +965,7 @@ class MyOrdersDetailPage extends BasePage {
                 //   确认收货
                 case 4:
                     pageStateString.sellerState = '已签收';
+                    pageStateString.moreDetail='';
                     pageStateString.logisticsTime=data.deliverTime?data.deliverTime:data.finishTime
                     break;
                 //订单已完成
@@ -979,6 +980,7 @@ class MyOrdersDetailPage extends BasePage {
                         ];
                     }
                     // pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
+                    pageStateString.moreDetail='';
                     pageStateString.logisticsTime=data.deliverTime?data.deliverTime:data.finishTime
                     break;
                 case 6://退货关闭
