@@ -51,6 +51,7 @@ export default class PaymentResultView extends Component {
             result: result,
             message: message
         });
+        this.props.payment.paySuccessFul = result === PaymentResult.sucess
     }
 
     dismiss() {
