@@ -6,6 +6,7 @@ const share = {
     weibo: require('./weibo.png'),
     download: require('./download.png'),
     saveImage: require('./saveImage.png'),
-    copyURL: require('./copyURL.png')
+    copyURL: require('./copyURL.png'),
+    wechat: require('./wechat.png')
 };
 export default share;
