@@ -88,30 +88,35 @@ export default class HomePage extends PureComponent {
 
         MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((resp) => {
             if (resp.data.upgrade === 1) {
-                if (StringUtils.isEmpty(upVersion) && upVersion !== resp.data.version) {
-                    if (Platform.OS !== 'ios') {
-                        NativeModules.commModule.apkExist(resp.data.version, (exist) => {
-                            this.setState({
-                                updateData: resp.data,
-                                showUpdate: true,
-                                apkExist: exist
-                            });
-                            this.updateModal && this.updateModal.open();
-                        });
-                    } else {
-                        this.setState({
-                            updateData: resp.data,
-                            showUpdate: true
-                        });
-                        this.updateModal && this.updateModal.open();
-                    }
-                }
                 if (resp.data.forceUpdate === 1) {
                     // 强制更新
                     this.setState({
                         forceUpdate: true
                     });
+                }else {
+                    if (StringUtils.isEmpty(upVersion) && upVersion !== resp.data.version) {
+                        if (Platform.OS !== 'ios') {
+                            NativeModules.commModule.apkExist(resp.data.version, (exist) => {
+                                this.setState({
+                                    updateData: resp.data,
+                                    showUpdate: true,
+                                    apkExist: exist
+                                });
+                                this.updateModal && this.updateModal.open();
+                            });
+                        } else {
+                            this.setState({
+                                updateData: resp.data,
+                                showUpdate: true
+                            });
+                            this.updateModal && this.updateModal.open();
+                        }
+                    }else {
+
+                    }
                 }
+            }else {
+
             }
         });
     };
@@ -348,7 +353,7 @@ export default class HomePage extends PureComponent {
     }
 
     _renderTableHeader() {
-        return !bannerModule.isShowHeader ? null : <View style={{height : statusBarHeight + 44}}/>
+        return !bannerModule.isShowHeader ? null : <View style={{ height: statusBarHeight + 44 }}/>;
     }
 
     render() {
