@@ -371,7 +371,7 @@ export default class TopicDetailPage extends BasePage {
             return <View>
                 <HTML html={this.state.activityType === 3 ? this.state.data.content : product.content}
                       imagesMaxWidth={ScreenUtils.width}
-                      imagesInitialDimensions={ScreenUtils.width}
+                      imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
                       containerStyle={{ backgroundColor: '#fff' }}/>
                 <View style={{ backgroundColor: 'white' }}>
                     <Text
