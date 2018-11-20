@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-package com.facebook.react.views.textinput;
+package com.meeruu.sharegoods.rn.textinput;
 
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 
 /**
  * A class to implement the TextInput 'onKeyPress' API on android for soft keyboards.
- * It is instantiated in {@link ReactEditText#onCreateInputConnection(EditorInfo)}.
+ * It is instantiated in {@link com.facebook.react.views.textinput.ReactEditText#onCreateInputConnection(EditorInfo)}.
  * <p>
  * Android IMEs interface with EditText views through the {@link InputConnection} interface,
  * so any observable change in state of the EditText via the soft-keyboard, should be a side effect of

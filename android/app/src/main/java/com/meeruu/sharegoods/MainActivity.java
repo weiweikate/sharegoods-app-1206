@@ -19,7 +19,7 @@ import com.meeruu.commonlib.utils.ParameterUtils;
 import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.event.HideSplashEvent;
-import com.meeruu.sharegoods.rn.ReactNativePreLoader;
+import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
 import com.meeruu.sharegoods.ui.MainRNActivity;
 
 import org.greenrobot.eventbus.Subscribe;
