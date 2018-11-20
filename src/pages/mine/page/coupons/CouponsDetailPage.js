@@ -113,8 +113,12 @@ export default class CouponsDetailPage extends BasePage {
                             </View>
 
                             <View style={{ flex: 1, alignItems: 'flex-start', marginLeft: 10 }}>
-                                <Text
-                                    style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}>{item.name} </Text>
+                                <Text style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}>
+                                    {item.name}{item.type !== 99 ? null : <UIText value={'（可叠加使用）'} style={{
+                                    fontSize: 11,
+                                    color: DesignRule.textColor_instruction
+                                }}/>}
+                                </Text>
                                 <Text style={{
                                     fontSize: 11,
                                     color: DesignRule.textColor_instruction,
