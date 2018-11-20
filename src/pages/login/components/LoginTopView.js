@@ -24,7 +24,7 @@ const {
     open_eye,
 } = res;
 
-// const dismissKeyboard = require('dismissKeyboard');
+const dismissKeyboard = require('dismissKeyboard');
 
 class LoginTopViewModel {
     /*0代表验证码登录 1代表密码登录*/
@@ -126,7 +126,7 @@ export default class LoginTopView extends Component {
                 <View>
                     <TextInput
                         style={Styles.inputTextStyle}
-                        value={this.LoginModel.phoneNumber}
+                        value={   this.LoginModel.phoneNumber}
                         onChangeText={text => this.LoginModel.savePhoneNumber(text)}
                         placeholder='请输入手机号'
                         underlineColorAndroid='transparent'
@@ -231,6 +231,7 @@ export default class LoginTopView extends Component {
                     />
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity onPress={() => {
+                            dismissKeyboard();
                             this.LoginModel.isSecuret = !this.LoginModel.isSecuret;
                         }}>
                             <Image style={Styles.seePasswordImageStyle}
