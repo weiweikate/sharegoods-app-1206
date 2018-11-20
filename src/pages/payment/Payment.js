@@ -18,6 +18,7 @@ export const paymentType = {
 }
 
 export class Payment {
+    @observable paySuccessFul = false
     @observable availableBalance = 0
     @observable balancePayment = {
         type: paymentType.balance,
