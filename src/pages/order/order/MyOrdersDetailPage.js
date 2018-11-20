@@ -16,27 +16,14 @@ import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
-import buyerHasPay from '../res/buyerHasPay.png';
-import couponIcon from '../../mine/res/couponsImg/dingdan_icon_quan_nor.png';
-import arrow_right from '../res/arrow_right.png';
-import position from '../res/dizhi-icon.png';
 import GoodsDetailItem from '../components/GoodsDetailItem';
 import UserSingleItem from '../components/UserSingleItem';
 import CommonTwoChoiceModal from '../components/CommonTwoChoiceModal';
 import SingleSelectionModal from '../components/BottomSingleSelectModal';
 import ShowMessageModal from '../components/ShowMessageModal';
-import productDetailHome from '../res/productDetailHome.png';
-import productDetailMessage from '../res/productDetailMessage.png';
-import logisticCar from './../res/car.png'
-import tobePayIcon from './../res/dingdanxiangqing_icon_fuk.png';
-import finishPayIcon from './../res/dingdanxiangqing_icon_yiwangcheng.png';
-import hasDeliverIcon from './../res/dingdanxiangqing_icon_yifehe.png';
-import refuseIcon from './../res/dingdanxiangqing_icon_guangbi.png';
 import constants from '../../../constants/constants';
 import DateUtils from '../../../utils/DateUtils';
 import Toast from '../../../utils/bridge';
-import productDetailImg from '../res/productDetailImg.png';
-import moreIcon from '..//res/more_icon.png';
 import GoodsGrayItem from '../components/GoodsGrayItem';
 import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
@@ -44,6 +31,20 @@ import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
 import MineApi from '../../mine/api/MineApi';
+import res from '../res';
+const buyerHasPay = res.buyerHasPay;
+const couponIcon = res.coupons_icon;
+const arrow_right = res.arrow_right;
+const position = res.dizhi_icon;
+const productDetailHome = res.productDetailHome;
+const productDetailMessage =res.productDetailMessage;
+const logisticCar = res.car;
+const tobePayIcon = res.dingdanxiangqing_icon_fuk;
+const finishPayIcon = res.dingdanxiangqing_icon_yiwangcheng;
+const hasDeliverIcon = res.dingdanxiangqing_icon_yifehe;
+const refuseIcon = res.dingdanxiangqing_icon_guangbi;
+const productDetailImg = res.productDetailImg;
+const moreIcon = res.more_icon;
 
 class MyOrdersDetailPage extends BasePage {
     constructor(props) {
@@ -140,7 +141,7 @@ class MyOrdersDetailPage extends BasePage {
                         orderId: this.state.orderId,
                         expressNo: this.state.expressNo
                     })
-                }}>
+                }} disabled={!this.state.expressNo}>
                     <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'space-between'}} >
                         <UIImage source={logisticCar} style={{ height: 19, width: 19, marginLeft: 21 }}/>
                         <View style={{justifyContent:'center',flex:1}}>
@@ -445,34 +446,33 @@ class MyOrdersDetailPage extends BasePage {
                     </TouchableOpacity>
                 </View>
                 <UIText value={'创建时间：' + DateUtils.getFormatDate(this.state.viewData.createTime / 1000)}
-                        style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>
+                        style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 ,marginBottom:10}}/>
                 {StringUtils.isNoEmpty(this.state.viewData.platformPayTime) && this.state.status > 1 ?
                     <UIText value={'平台付款时间：' + DateUtils.getFormatDate(this.state.viewData.platformPayTime / 1000)}
-                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/> : null}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginBottom: 10 }}/> : null}
                 {StringUtils.isNoEmpty(this.state.viewData.shutOffTime) && this.state.status > 5 ?
                     <UIText value={'关闭时间：' + DateUtils.getFormatDate(this.state.viewData.shutOffTime / 1000)}
-                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/> : null}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginBottom: 10 }}/> : null}
                 {StringUtils.isEmpty(this.state.viewData.cancelTime) ? null :
                     <UIText value={'取消时间：' + DateUtils.getFormatDate(this.state.viewData.cancelTime / 1000)}
-                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginBottom: 10 }}/>}
                 {StringUtils.isNoEmpty(this.state.viewData.payTime) && (this.state.payType % 2 == 0) && this.state.viewData.status > 1 ?
                     <UIText value={'三方付款时间：' + DateUtils.getFormatDate(this.state.viewData.payTime / 1000)}
-                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/> : null}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginBottom: 10 }}/> : null}
                 {StringUtils.isNoEmpty(this.state.viewData.outTradeNo) && (this.state.payType % 2 == 0) ?
                     <UIText value={'交易订单号：' + this.state.viewData.outTradeNo} style={{
                         color: DesignRule.textColor_instruction,
                         fontSize: 13,
                         marginLeft: 16,
-                        marginTop: 10,
-                        marginBottom: 10
+                        marginBottom: 10,
+                        // marginBottom: 10
                     }}/> : null}
                 {StringUtils.isEmpty(this.state.viewData.sendTime) ? null :
                     <UIText value={'发货时间：' + DateUtils.getFormatDate(this.state.viewData.sendTime / 1000)} style={{
                         color: DesignRule.textColor_instruction,
                         fontSize: 13,
                         marginLeft: 16,
-                        marginTop: 10,
-                        marginBottom: 10
+                        marginBottom: 10,
                     }}/>}
                 {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
                     <UIText
@@ -481,8 +481,7 @@ class MyOrdersDetailPage extends BasePage {
                             color: DesignRule.textColor_instruction,
                             fontSize: 13,
                             marginLeft: 16,
-                            marginTop: 10,
-                            marginBottom: 10
+                            marginBottom: 10,
                         }}/>}
                 {this.renderWideLine()}
                 <View style={{ height: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>

@@ -14,23 +14,28 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import AddressItem from '../components/AddressItem';
-import addressLine from '../res/addressLine.png';
 import UserSingleItem from '../components/UserSingleItem';
 import { UIText, UIImage } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import GoodsItem from '../components/GoodsGrayItem';
-import applyRefundMessage from '../res/applyRefundMessage.png';
-import applyRefundPhone from '../res/applyRefundPhone.png';
-import right_arrow from '../res/arrow_right.png';
-import exchangeGoodsDetailBg from '../res/exchangeGoodsDetailBg.png';
 import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
-// import refusa_icon from '../res/tuikuan_icon_jujue_nor.png';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import QYChatUtil from '../../mine/page/helper/QYChatModel';
 import OrderApi from '../api/orderApi';
 import DesignRule from 'DesignRule';
-import ScreenUtils from '../../../utils/ScreenUtils'
+import ScreenUtils from '../../../utils/ScreenUtils';
+import res from '../res';
+
+const {
+    afterSaleService: {
+        applyRefundMessage,
+        applyRefundPhone,
+        exchangeGoodsDetailBg
+    },
+    right_arrow,
+    addressLine
+} = res;
 
 class ExchangeGoodsDetailPage extends BasePage {
     constructor(props) {
@@ -434,7 +439,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         <UIImage source={applyRefundMessage} style={{ width: 25, height: 23, marginBottom: 10 }}/>
                         <View style={{ marginLeft: 10 }}>
                             <UIText value={'联系客服'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
-                            <UIText value={'9:00 -21:00'}
+                            <UIText value={'9:00-22:00'}
                                     style={{ fontSize: 12, color: DesignRule.textColor_instruction, marginTop: 3 }}/>
                         </View>
                     </TouchableOpacity>
@@ -452,7 +457,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         <UIImage source={applyRefundPhone} style={{ width: 25, height: 23, marginBottom: 10 }}/>
                         <View style={{ marginLeft: 10 }}>
                             <UIText value={'客服电话'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
-                            <UIText value={'9:00 -21:00'}
+                            <UIText value={'9:00-22:00'}
                                     style={{ fontSize: 12, color: DesignRule.textColor_instruction, marginTop: 3 }}/>
                         </View>
                     </TouchableOpacity>
@@ -472,7 +477,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                 <UIText value={typeStr + '原因：' + pageData.returnReason} style={styles.refundReason}/>
                 {/*<UIText value={typeStr + '金额：' + StringUtils.formatMoneyString(pageData.totalRefundPrice)}*/}
                 {/*style={styles.refundReason}/>*/}
-                <UIText value={typeStr + '说明：' + pageData.remark} style={styles.refundReason}/>
+                <UIText value={typeStr + '说明：' + pageData.remark || ''} style={styles.refundReason}/>
                 <UIText value={'凭证图片：'} style={styles.refundReason}/>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingRight: 15 }}>
                     {this.renderCertificateImage()}
@@ -547,7 +552,8 @@ class ExchangeGoodsDetailPage extends BasePage {
                 };
             } else if (pageData.status === 6) {//已完成
                 detialCommpent = () => {
-                    return <UIText value={DateUtils.getFormatDate(pageData.payTime / 1000, 'yyyy年MM月dd日  hh:mm:ss')}
+                    let orderReturnAmounts = pageData.orderReturnAmounts || {};
+                    return <UIText value={DateUtils.getFormatDate(orderReturnAmounts.refundTime / 1000, 'yyyy年MM月dd日  hh:mm:ss')}
                                    style={styles.header_detail}/>;
                 };
             } else if (pageData.status === 1) {//申请中 applyTime	Long	1539250433000

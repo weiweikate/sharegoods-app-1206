@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, Image, TouchableOpacity, View, Text, ActivityIndicator } from 'react-native';
 import ShowImageView from './ShowImageView';
-import res from '../../comm/res';
+import res from './res';
 import ScreenUtils from '../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 const { px2dp, width } = ScreenUtils;
@@ -84,7 +84,7 @@ export default class ShowDetailPage extends Component {
     }
 
     render() {
-        const { detail, isGoodActioning, isCollecting } = this.showDetailModule;
+        const { detail, isCollecting } = this.showDetailModule;
         if (!detail) {
             return <View style={styles.loading}><ActivityIndicator size='large'/></View>;
         }
@@ -123,32 +123,22 @@ export default class ShowDetailPage extends Component {
         </ScrollView>
             <View style={styles.bottom}>
                 {
-                    isGoodActioning
-                        ?
-                        <View style={styles.bottomBtn}>
-                            <ActivityIndicator size='small'/>
-                        </View>
-                        :
-                        <TouchableOpacity style={styles.bottomBtn} onPress={() => this._goodAction()}>
-                            <Image style={styles.bottomGoodImg} source={detail.hadLike ? res.button.show_did_good : res.button.show_good}/>
-                            <Text style={styles.bottomText}> {detail.hadLike ? '已赞' : '赞'} · {detail.likeCount}</Text>
-                        </TouchableOpacity>
-                }
-                <View style={styles.line}/>
-                {
                     isCollecting
-                        ?
-                        <View style={styles.bottomBtn}>
-                            <ActivityIndicator size='small'/>
-                        </View>
-                        :
-                        <TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>
-                            <Image style={styles.bottomGoodImg}
-                                   source={detail.hadCollect ? res.button.show_connected : res.button.show_connect}/>
-                            <Text
-                                style={styles.bottomText}>{detail.hadCollect ? '已收藏' : '收藏'} · {detail.collectCount}</Text>
-                        </TouchableOpacity>
+                    ?
+                    <View style={[styles.bottomBtn]}>
+                        <ActivityIndicator style={styles.btnLoading} size='small'/>
+                    </View>
+                    :
+                    <TouchableOpacity style={styles.bottomBtn} onPress={() => this._collectAction()}>
+                        <Image style={styles.collectImg} source={detail.hadCollect ? res.collected : res.uncollected}/>
+                        <Text style={styles.bottomText}>{'人气值'} · {detail.collectCount}</Text>
+                    </TouchableOpacity>
                 }
+                <TouchableOpacity style={styles.leftButton} onPress={() => this._goToShare()}>
+                    <Image source={res.share}/>
+                    <View style={{width: px2dp(10)}}/>
+                    <Text style={styles.text}>秀一秀</Text>
+                </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.backView} onPress={() => this._goBack()}>
                 <Image source={res.button.show_detail_back}/>
@@ -194,7 +184,8 @@ let styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderTopWidth: ScreenUtils.onePixel,
-        borderTopColor: '#ddd'
+        borderTopColor: '#ddd',
+        justifyContent: 'space-between'
     },
     backView: {
         position: 'absolute',
@@ -223,6 +214,9 @@ let styles = StyleSheet.create({
         borderWidth: ScreenUtils.onePixel,
         borderRadius: px2dp(2),
         marginBottom: px2dp(10)
+    },
+    collectImg: {
+        marginLeft: px2dp(16)
     },
     goodImg: {
         height: px2dp(66),
@@ -302,13 +296,22 @@ let styles = StyleSheet.create({
     bottomBtn: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: 'center'
     },
-    line: {
-        width: 1,
-        height: px2dp(16),
-        backgroundColor: DesignRule.lineColor_inColorBg
+    leftButton: {
+        width: px2dp(125),
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: DesignRule.mainColor,
+        flexDirection: 'row',
+        height: px2dp(50)
+    },
+    text: {
+        color: '#fff',
+        fontSize: px2dp(14)
+    },
+    btnLoading: {
+        marginLeft: px2dp(26)
     }
 });
 

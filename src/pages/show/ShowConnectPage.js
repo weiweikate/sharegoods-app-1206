@@ -104,6 +104,9 @@ export default class ShowConnectPage extends BasePage {
         setTimeout(() => {
             this.recommendModules.getMoreCollect().then(data => {
                 this.waterfall.addItems(data);
+                if (data.length > 0) {
+                    this.setState({allSelected : false})
+                }
                 this.state.collectData = [...this.state.collectData, ...data];
             });
             done();
@@ -141,12 +144,22 @@ export default class ShowConnectPage extends BasePage {
         } else {
             selectedList[data.id] = data.id;
         }
-        this.setState({ selectedList: selectedList });
+
+        this.setState({ selectedList: selectedList, allSelected : Object.keys(selectedList).length === this.state.collectData.length });
     }
 
     _selectedAllAction() {
-        const { allSelected } = this.state;
-        this.setState({ allSelected: !allSelected, selectedList: [] });
+        const { allSelected, collectData } = this.state;
+        if (allSelected)  {
+            this.setState({ allSelected: false, selectedList: {} });
+        } else {
+            let selects = {}
+            collectData.map(value => {
+                selects[value.id] = value.id
+            })
+            this.setState({ allSelected: true, selectedList: selects });
+        }
+       
     }
 
     renderItem = (data) => {
@@ -186,12 +199,12 @@ export default class ShowConnectPage extends BasePage {
     _keyExtractor = (data) => data.id + '';
 
     goToHome() {
-        this.$navigateReset();
+        this.$navigateBackToHome();
     }
 
     _renderInfinite() {
         return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
-            {this.recommendModules.isEnd ? <Text style={styles.text}>已加载全部</Text> : this.recommendModules.isRefreshing ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
+            {this.recommendModules.isEnd ? <Text style={styles.text}>我也是有底线的</Text> : this.recommendModules.isRefreshing ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
         </View>
     }
 
@@ -223,7 +236,7 @@ export default class ShowConnectPage extends BasePage {
                     }}
                     columns={2}
                     infinite={true}
-                    hasMore={false}
+                    hasMore={true}
                     renderItem={item => this.renderItem(item)}
                     containerStyle={{ marginLeft: 15, marginRight: 15 }}
                     keyExtractor={(data) => this._keyExtractor(data)}

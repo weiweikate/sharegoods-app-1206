@@ -10,9 +10,11 @@ import {
     Image,
     Text
 } from 'react-native';
-import gwc from '../res/gwc.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+
+const gwc = res.search.gwc;
 
 
 export default class ResultHorizontalRow extends Component {
@@ -37,7 +39,12 @@ export default class ResultHorizontalRow extends Component {
             }}>
                 <View style={[styles.container]}>
                     <Image style={styles.img} source={{ uri: product.imgUrl }}/>
-                    <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, paddingHorizontal: 10, marginTop: 9 }}
+                    <Text style={{
+                        color: DesignRule.textColor_mainTitle,
+                        fontSize: 13,
+                        paddingHorizontal: 10,
+                        marginTop: 9
+                    }}
                           numberOfLines={2}>{`${name}`}</Text>
                     <View style={{
                         flexDirection: 'row',

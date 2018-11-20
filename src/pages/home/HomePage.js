@@ -4,7 +4,6 @@ import {
     StyleSheet,
     FlatList,
     Text,
-    RefreshControl,
     ImageBackground,
     TouchableWithoutFeedback,
     Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager
@@ -12,9 +11,9 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
-import { homeModule } from './Modules'
-import { homeType } from './HomeTypes'
-import { bannerModule } from './HomeBannerModel'
+import { homeModule } from './Modules';
+import { homeType } from './HomeTypes';
+import { bannerModule } from './HomeBannerModel';
 import HomeSearchView from './HomeSearchView';
 import HomeClassifyView from './HomeClassifyView';
 import HomeStarShopView from './HomeStarShopView';
@@ -31,17 +30,18 @@ import Modal from 'CommModal';
 import XQSwiper from '../../components/ui/XGSwiper';
 import MessageApi from '../message/api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
-import messageModalBg from './res/messageModalBg.png';
-import messageSelected from './res/messageSelected.png';
-import messageUnselected from './res/messageUnselected.png';
 import MineApi from '../mine/api/MineApi';
 import VersionUpdateModal from './VersionUpdateModal';
 import DeviceInfo from 'react-native-device-info';
 import StringUtils from '../../utils/StringUtils';
 import DesignRule from 'DesignRule';
-import res from '../../comm/res';
-import TimerMixin from 'react-timer-mixin'
+import TimerMixin from 'react-timer-mixin';
+import res from './res';
+
 const closeImg = res.button.cancel_white_circle;
+const messageModalBg = res.messageModalBg;
+const messageSelected = res.messageSelected;
+const messageUnselected = res.messageUnselected;
 /**
  * @author zhangjian
  * @date on 2018/9/7
@@ -347,29 +347,26 @@ export default class HomePage extends PureComponent {
         );
     }
 
+    _renderTableHeader() {
+        return !bannerModule.isShowHeader ? null : <View style={{height : statusBarHeight + 44}}/>
+    }
+
     render() {
         const { homeList } = homeModule;
+
         return (
             <View style={styles.container}>
+                {this._renderTableHeader()}
                 <FlatList
                     data={homeList}
                     renderItem={this._renderItem.bind(this)}
                     keyExtractor={this._keyExtractor.bind(this)}
                     onScroll={this._onScroll.bind(this)}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={homeModule.isRefreshing}
-                            onRefresh={this._onRefresh.bind(this)}
-                            progressViewOffset={statusBarHeight + 44}
-                            title="下拉刷新"
-                            tintColor={DesignRule.textColor_instruction}
-                            titleColor={DesignRule.textColor_instruction}
-                        />
-                    }
+                    refreshing={homeModule.isRefreshing}
+                    onRefresh={this._onRefresh.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={0.2}
                     showsVerticalScrollIndicator={false}
-                    style={{ marginTop: bannerModule.bannerList.length > 0 ? 0 : statusBarHeight + 44 }}
                     onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}

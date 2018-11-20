@@ -11,8 +11,9 @@ import {
     Text
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import gwc from '../res/gwc.png';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+const gwc = res.search.gwc;
 
 
 export default class SearchBar extends Component {

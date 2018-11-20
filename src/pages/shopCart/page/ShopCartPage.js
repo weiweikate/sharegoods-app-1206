@@ -168,7 +168,7 @@ export default class ShopCartPage extends BasePage {
     };
 
     _gotoLookAround = () => {
-        this.$navigateReset();
+        this.$navigateBackToHome();
     };
     _renderListView = () => {
         const tempArr = this.ds.cloneWithRows(shopCartStore.cartData);
@@ -258,7 +258,7 @@ export default class ShopCartPage extends BasePage {
                             value={'合计'}
                             style={{ fontSize: 13, color: DesignRule.textColor_mainTitle }}/>
                         <UIText
-                            value={'¥'+shopCartStore.getTotalMoney}
+                            value={'¥' + shopCartStore.getTotalMoney}
                             style={styles.totalPrice}/>
                         <TouchableOpacity
                             style={styles.selectGoodsNum}
@@ -286,7 +286,7 @@ export default class ShopCartPage extends BasePage {
                     style={styles.itemContainer}>
                     <View style={styles.standaloneRowFront}>
                         <UIImage
-                            source={itemData.isSelected ?  res.button.selected_circle_red : res.button.unselected_circle}
+                            source={itemData.isSelected ? res.button.selected_circle_red : res.button.unselected_circle}
                             style={{ width: 22, height: 22, marginLeft: 10 }}
                             onPress={() => {
 
@@ -308,19 +308,18 @@ export default class ShopCartPage extends BasePage {
                             activityString[itemData.activityType]
                                 ?
                                 <View
-                                style={{
-                                    position: 'absolute',
-                                    left: 140,
-                                    top: 20,
-                                    justifyContent:'center',
-                                    alignItems:'center',
-                                    borderWidth: 1,
-                                    borderRadius: 4,
-                                    borderColor: DesignRule.mainColor,
-                                    // borderColor:'black',
-                                    width:16,
-                                    height:16
-                                }}
+                                    style={{
+                                        position: 'absolute',
+                                        left: 140,
+                                        top: 20,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        borderWidth: 1,
+                                        borderRadius: 4,
+                                        borderColor: DesignRule.mainColor,
+                                        width: 16,
+                                        height: 16
+                                    }}
                                 >
                                     <UIText
                                         value={
@@ -329,19 +328,13 @@ export default class ShopCartPage extends BasePage {
                                         style={
                                             {
                                                 fontSize: 10,
-                                                color: DesignRule.mainColor,
+                                                color: DesignRule.mainColor
                                             }
                                         }
                                     />
                                 </View>
                                 : null
                         }
-
-
-                        {/*<UIImage*/}
-                        {/*source={{ uri: itemData.imgUrl ? itemData.imgUrl : '' }}*/}
-                        {/*style={[styles.validProductImg]}*/}
-                        {/*/>*/}
                         {
                             itemData.status === 0 ?
                                 <UIImage
@@ -422,8 +415,14 @@ export default class ShopCartPage extends BasePage {
                                     >
                                         <UIText
                                             value={'-'}
-                                            // style={{fontSize:15,color:data.num<=1?ColorUtil.Color_dddddd:ColorUtil.Color_222222}}
-                                            style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }}
+                                            style={
+                                                [styles.addOrReduceBtnStyle,
+                                                    itemData.status === 0 ?
+                                                        {
+                                                            color: DesignRule.textColor_placeholder
+                                                        } : null
+                                                ]
+                                            }
                                         />
                                     </TouchableOpacity>
                                     <View style={[styles.rectangle, {
@@ -431,27 +430,27 @@ export default class ShopCartPage extends BasePage {
                                         borderLeftWidth: 0,
                                         borderRightWidth: 0
                                     }]}>
-                                        {/*<UIText*/}
-                                        {/*style={styles.TextInputStyle}*/}
-                                        {/*value={itemData.amount}*/}
-                                        {/*/>*/}
                                         <TextInput
-                                            style={styles.TextInputStyle}
+                                            style={
+                                                [styles.TextInputStyle,
+                                                    itemData.status === 0 ?
+                                                        {
+                                                            color: DesignRule.textColor_placeholder
+                                                        } : null
+                                                ]
+                                            }
                                             value={itemData.amount ? '' + itemData.amount : ''}
                                             underlineColorAndroid={'transparent'}
-                                            // onChangeText={(text) => this.setState({text})}
                                             onChangeText={text => {
-                                                console.log('输入后的值' + text);
-                                                // if (isNaN(parseInt(text))){
-                                                //     // itemData.amount =
-                                                //
-                                                //    return;
-                                                // }else {
+                                                if (itemData.status === 0) {
+                                                    bridge.$toast('此商品已失效');
+                                                } else {
+                                                    console.log('输入后的值' + text);
                                                     itemData.amount = parseInt(text);
                                                     let [...tempArr] = shopCartStore.data.slice();
                                                     tempArr[rowId] = itemData;
                                                     shopCartStore.data = tempArr;
-                                                // }
+                                                }
                                             }}
                                             onEndEditing={text => this.onNumberTextChange(itemData, text, rowId)}
                                             placeholder=''
@@ -465,8 +464,14 @@ export default class ShopCartPage extends BasePage {
                                         }}>
                                         <UIText
                                             value={'+'}
-                                            // style={{fontSize:15,color:data.num>=data.stock?DesignRule.color_ddd:DesignRule.textColor_mainTitle_222}}
-                                            style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }}
+                                            style={
+                                                [styles.addOrReduceBtnStyle,
+                                                    itemData.status === 0 ?
+                                                        {
+                                                            color: DesignRule.textColor_placeholder
+                                                        } : null
+                                                ]
+                                            }
 
                                         />
                                     </TouchableOpacity>
@@ -546,7 +551,6 @@ export default class ShopCartPage extends BasePage {
         } else {
             return 2;
         }
-
     };
     /**
      * 下拉刷新
@@ -597,44 +601,49 @@ export default class ShopCartPage extends BasePage {
         });
     };
     onNumberTextChange = (itemData, text, rowId) => {
+        if (itemData.status === 0) {
+            bridge.$toast('此商品已失效');
+            return;
+        }
         if (isNaN(itemData.amount)) {
             itemData.amount = 1;
-            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+            // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
         if (itemData.amount >= itemData.stock) {
             bridge.$toast('已达商品库存最大数');
             itemData.amount = itemData.stock;
-            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+            // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
         if (itemData.amount <= 0) {
             itemData.amount = 1;
-            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+            // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
         if (itemData.amount > 200) {
             itemData.amount = 200;
             bridge.$toast('单个商品最多200件');
-            shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
+            // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         }
-
-        // if(StringUtils.checkIsPositionNumber(parseInt(text))) {
-        //     itemData.amount = parseInt(text)
-        //
-        // }
+        shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
     };
     /*action*/
     /*减号操作*/
     _reduceProductNum = (itemData, rowId) => {
+        if (itemData.status === 0) {
+            return;
+        }
+
         if (itemData.amount > 1) {
             itemData.amount--;
             shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
         } else if (itemData.amount === 1) {
             bridge.$toast('已达商品最小数量');
         }
-        // itemData.amount
     };
     /*加号按钮操作*/
     _addProductNum = (itemData, rowId) => {
-
+        if (itemData.status === 0) {
+            return;
+        }
         if (itemData.amount >= itemData.stock) {
             bridge.$toast('已达商品库存最大数');
         } else {
@@ -690,7 +699,10 @@ const
             borderColor: DesignRule.lineColor_inColorBg,
             alignItems: 'center'
         },
-
+        addOrReduceBtnStyle: {
+            fontSize: 11,
+            color: DesignRule.textColor_mainTitle
+        },
         validItemContainer: {
             height: 140,
             flexDirection: 'row',

@@ -25,7 +25,7 @@ export default class HomeUserView extends Component {
                 <Text style={styles.title}>尊敬的</Text>{levelRemark ? <View style={styles.levelName}><Text style={styles.text}>{levelRemark.length >= 5 ? levelRemark.slice(0, 4) : levelRemark}</Text></View> : null}<Text style={styles.text}>品鉴官，您好！</Text>
                 <View style={{flex: 1}}/>
                 <TouchableOpacity onPress={() => this._goToPromotionPage()}>
-                    <ImageBackground style={styles.btnBack} source={res.userLevel} resizeMode={'stretch'}>
+                    <ImageBackground style={styles.btnBack} source={res.user_level} resizeMode={'stretch'}>
                         <Text style={styles.see}>查看收益</Text>
                         <View style={{width: 8}}/>
                         <Image source={res.arrowRight}/>

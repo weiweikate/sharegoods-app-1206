@@ -1,6 +1,32 @@
 import res from '../../../comm/res';
 import afterSaleService from './afterSaleService'
 const index = {
+    addressLine: require('./addressLine.png'),
+    arrow_right: res.button.arrow_right_black,
+    buyerHasPay: require('./buyerHasPay.png'),
+    car: require('./car.png'),
+    copy: require('./copy.png'),
+    dingdanxiangqing_icon: require('./dingdanxiangqing_icon_fuk.png'),
+    dingdanxiangqing_icon_guangbi: require('./dingdanxiangqing_icon_guangbi.png'),
+    dingdanxiangqing_icon_yifehe: require('./dingdanxiangqing_icon_yifehe.png'),
+    dingdanxiangqing_icon_yiwangcheng: require('./dingdanxiangqing_icon_yiwangcheng.png'),
+    dingdanxianqing_icon_yifuk: require('./dingdanxianqing_icon_yifuk.png'),
+    dingdanxiangqing_icon_fuk: require('./dingdanxiangqing_icon_fuk.png'),
+    dizhi: require('./dizhi.png'),
+    dizhi_icon: require('./dizhi_icon.png'),
+    kongbeiye_wulian: require('./kongbeiye_wulian.png'),
+    kongbeuye_dingdan: require('./kongbeuye_dingdan.png'),
+    left_arrow: require('./left_arrow.png'),
+    logisticsBottom: require('./logisticsBottom.png'),
+    logisticsTop: require('./logisticsTop.png'),
+    more_icon: require('./more_icon.png'),
+    no_wuliu: require('./no_wuliu.png'),
+    productDetailHome: require('./productDetailHome.png'),
+    productDetailImg: require('./productDetailImg.png'),
+    productDetailMessage: require('./productDetailMessage.png'),
+    search_icon: require('./search_icon.png'),
+    search: require('./search.png'),
+    coupons_icon: require('./coupons_icon.png'),
     afterSaleService:{
         ...afterSaleService
     },

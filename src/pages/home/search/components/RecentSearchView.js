@@ -8,8 +8,10 @@ import {
     Image,
     TouchableOpacity
 } from 'react-native';
-import deleteImg from '../res/search_delete.png';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+
+const deleteImg = res.search.search_delete;
 
 /**
  * 最近搜索view
