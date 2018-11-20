@@ -17,7 +17,6 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import { SwipeListView } from '../../../../components/ui/react-native-swipe-list-view';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
-import invalidIcon from '../../res/setting/shoucang_icon_shixiao_nor.png'
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
 import { NavigationActions } from 'react-navigation';
@@ -25,6 +24,7 @@ import { NavigationActions } from 'react-navigation';
 import RES from '../../res';
 const MoneyIcon = RES.money;
 const StarIcon = RES.colloct_start;
+const invalidIcon = RES.setting.shoucang_icon_shixiao_nor;
 @observer
 export default class MyCollectPage extends BasePage {
     constructor(props) {

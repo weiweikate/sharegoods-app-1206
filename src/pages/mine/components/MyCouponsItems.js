@@ -17,15 +17,6 @@ import {
 // import RefreshList from './../../../components/ui/RefreshList';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
-import NoMessage from '../res/couponsImg/coupons_no_data.png';
-import usedBg from '../res/couponsImg/youhuiquan_bg_zhihui.png';
-import unuesdBg from '../res/couponsImg/youhuiquan_bg_nor.png';
-import tobeActive from '../res/couponsImg/youhuiquan_icon_daijihuo_nor.png';
-import ActivedIcon from '../res/couponsImg/youhuiquan_icon_yishixiao_nor.png';
-import usedRIcon from '../res/couponsImg/youhuiquan_icon_yishiyong_nor.png';
-import limitIcon from '../res/couponsImg/youhuiquan_limit.png';
-import plusIcon from '../res/couponsImg/youhuiquan_icon_jia_nor.png';
-import jianIcon from '../res/couponsImg/youhuiquan_icon_jian_nor.png';
 import API from '../../../api';
 import UI from '../../../utils/bridge';
 import { observer } from 'mobx-react';
@@ -35,8 +26,21 @@ import { UIImage, UIText } from '../../../components/ui';
 import DesignRule from 'DesignRule';
 // import { NavigationActions } from 'react-navigation';
 import MineApi from '../api/MineApi';
+import res from '../res';
+
+const NoMessage = res.couponsImg.coupons_no_data;
+const usedBg = res.couponsImg.youhuiquan_bg_zhihui;
+const unuesdBg = res.couponsImg.youhuiquan_bg_nor;
+const tobeActive = res.couponsImg.youhuiquan_icon_daijihuo_nor;
+const ActivedIcon = res.couponsImg.youhuiquan_icon_yishixiao_nor;
+const usedRIcon = res.couponsImg.youhuiquan_icon_yishiyong_nor;
+const limitIcon = res.couponsImg.youhuiquan_limit;
+const plusIcon = res.couponsImg.youhuiquan_icon_jia_nor;
+const jianIcon = res.couponsImg.youhuiquan_icon_jian_nor;
+
 
 const { px2dp } = ScreenUtils;
+
 
 @observer
 export default class MyCouponsItems extends Component {
@@ -317,8 +321,8 @@ export default class MyCouponsItems extends Component {
     };
 
     _gotoLookAround = () => {
-        this.props.nav.popToTop()
-        this.props.nav.navigate('HomePage')
+        this.props.nav.popToTop();
+        this.props.nav.navigate('HomePage');
     };
 
     render() {

@@ -10,8 +10,9 @@ import {
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import arrow_right from '../../res/homeBaseImg/icon3_07.png';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+const arrow_right =  res.homeBaseImg.icon3_07;
 
 /**
  * @author chenxiang

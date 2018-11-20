@@ -10,15 +10,18 @@ import {
 import BasePage from '../../../../BasePage';
 
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import usedBg from '../../res/couponsImg/youhuiquan_bg_zhihui.png';
-import unuesdBg from '../../res/couponsImg/youhuiquan_bg_nor.png';
-import tobeActive from '../../res/couponsImg/youhuiquan_icon_daijihuo_nor.png';
-import ActivedIcon from '../../res/couponsImg/youhuiquan_icon_yishixiao_nor.png';
-import usedRIcon from '../../res/couponsImg/youhuiquan_icon_yishiyong_nor.png';
-import limitIcon from '../../res/couponsImg/youhuiquan_limit.png';
 import UIText from '../../../../components/ui/UIText';
 import user from '../../../../model/user';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+const {
+    youhuiquan_bg_zhihui:  usedBg,
+    youhuiquan_bg_nor: unuesdBg,
+    youhuiquan_icon_daijihuo_nor: tobeActive,
+    youhuiquan_icon_yishixiao_nor: ActivedIcon,
+    youhuiquan_icon_yishiyong_nor: usedRIcon,
+    youhuiquan_limit: limitIcon
+} = res.couponsImg;
 
 const { px2dp } = ScreenUtils;
 
