@@ -34,7 +34,7 @@ export default class ShowListPage extends BasePage {
             payload => {
                 const { state } = payload;
                 console.log('willFocus', state);
-                if (state && state.routeName === 'ShowListPage') {
+                if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage') ) {
                     if (showSelectedDetail.selectedShow) {
                         return
                     }

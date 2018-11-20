@@ -13,9 +13,6 @@ import ResultSearchNav from './components/ResultSearchNav';
 import ResultSegmentView from './components/ResultSegmentView';
 import ResultHorizontalRow from './components/ResultHorizontalRow';
 import ResultVerticalRow from './components/ResultVerticalRow';
-import toGwc from './res/toGwc.png';
-import kongbaiye_ss_icon from './res/kongbaiye_ss_icon.png';
-import toTop from './res/toTop.png';
 import RouterMap from 'RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import DateUtils from '../../../utils/DateUtils';
@@ -28,6 +25,13 @@ import { observer } from 'mobx-react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import DesignRule from 'DesignRule';
+import res from '../res';
+
+const {
+    toGwc,
+    kongbaiye_ss_icon,
+    toTop
+} = res.search;
 
 
 @observer
@@ -244,8 +248,8 @@ export default class SearchResultPage extends BasePage {
 
     //跳转
     _clickItemAction = (text) => {
-        if (StringUtils.isEmpty(text)){
-            this.$toastShow('搜索内容不能为空')
+        if (StringUtils.isEmpty(text)) {
+            this.$toastShow('搜索内容不能为空');
             return;
         }
         this.params.categoryId = undefined;

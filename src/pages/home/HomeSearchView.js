@@ -7,14 +7,15 @@ import { View, StyleSheet, Image, TouchableOpacity, TouchableWithoutFeedback } f
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp, statusBarHeight } = ScreenUtils;
-import logoRed from './res/home_icon_logo_red.png';
-import logoWhite from './res/home_icon_logo_white.png';
-import searchImg from './res/icon_search.png';
-import msgBlack from './res/message_black.png';
-import msgWhite from './res/message_white.png';
 import UIText from '../../components/ui/UIText';
 import DesignRule from 'DesignRule';
 import User from '../../model/user';
+import res from './res';
+const logoRed = res.home_icon_logo_red;
+const logoWhite = res.home_icon_logo_white;
+const searchImg = res.icon_search;
+const msgBlack = res.message_black;
+const msgWhite = res.message_white;
 
 export default ({ navigation, whiteIcon }) =>
     <View style={styles.navBar}>

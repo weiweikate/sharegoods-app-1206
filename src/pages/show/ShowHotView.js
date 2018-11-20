@@ -19,8 +19,14 @@ const imgWidth = px2dp(168);
 
 @observer
 export default class ShowHotView extends Component {
+
+    state = {
+        isEnd: false,
+        isFetching: false
+    }
+
     constructor(props) {
-           super(props);
+        super(props);
         this.recommendModules = new ShowRecommendModules();
     }
 
@@ -32,18 +38,30 @@ export default class ShowHotView extends Component {
 
     infiniting(done) {
         setTimeout(() => {
+            const {isFetching} = this.state
+            if (isFetching) {
+                return
+            }
+            this.setState({isFetching: true})
             this.recommendModules.getMoreRecommendList({ generalize: tag.Recommend }).then(data => {
-                this.waterfall.addItems(data || []);
+                if (data && data.length !== 0) {
+                    this.waterfall.addItems(data);
+                    this.setState({ isFetching: false})
+                } else {
+                    this.setState({ isFetching: false, isEnd: true})
+                }
             });
             done();
         }, 1000);
     }
 
     refresh() {
+        this.setState({isEnd: false, isFetching: true})
         this.waterfall.scrollToTop()
         this.waterfall.index = 1
         this.waterfall && this.waterfall.clear()
         this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
+            this.setState({isFetching: false})
             this.waterfall && this.waterfall.addItems(data || []);
         })
     }
@@ -97,7 +115,7 @@ export default class ShowHotView extends Component {
     _keyExtractor = (data) => data.id + '';
     _renderInfinite() {
         return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
-            {this.recommendModules.isEnd ? <Text style={styles.text}>已加载全部</Text> : this.recommendModules.isRefreshing ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
+            {this.state.isEnd ? <Text style={styles.text}>我也是有底线的</Text> : this.state.isFetching ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
         </View>
     }
 

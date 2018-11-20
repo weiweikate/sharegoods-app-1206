@@ -153,7 +153,9 @@ class ShopCartStore {
             callBack(false,[]);
             return;
         }
+
         let isCanSettlement = true
+        let haveNaNGood = false
         let  tempArr = [];
         selectArr.map(good => {
             if (good.amount > good.stock) {
@@ -162,13 +164,23 @@ class ShopCartStore {
             if (good.amount > 0 && !isNaN(good.amount)){
                 tempArr.push(good);
             }
+            if (isNaN(good.amount)){
+                haveNaNGood = true
+                isCanSettlement = false
+            }
         })
 
-
+        if (haveNaNGood){
+            bridge.$toast('存在选中商品数量为空,或存在正在编辑的商品,请确认~')
+            return;
+        }
         if (!isCanSettlement) {
             bridge.$toast('商品库存不足请确认~')
+            return;
         }
-        callBack(isCanSettlement,tempArr)
+        if (isCanSettlement && !haveNaNGood){
+            callBack(isCanSettlement,tempArr)
+        }
     }
     /**
      * 获取结算选中商品
