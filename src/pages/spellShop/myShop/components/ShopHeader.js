@@ -116,10 +116,10 @@ export default class ShopHeader extends Component {
                         </ImageBackground>
 
                         <Text
-                            style={styles.chaju}>距离分红还差{(bonusNeedMoney - tradeBalance) > 0 ? (bonusNeedMoney - tradeBalance).toFixed(2) : 0}元</Text>
+                            style={styles.chaju}>距离分红还差{(bonusNeedMoney - tradeBalance) > 0 ? (bonusNeedMoney - tradeBalance).toFixed(2) : 0.00}元</Text>
 
                         <Text style={styles.fenghong}>预计该次分红金可得<Text style={{ color: '#F00006', fontSize: 13 }}>
-                            {currentUserSettle || 0}
+                            {(currentUserSettle || 0).toFixed(2)}
                         </Text>元</Text>
 
                     </View>
