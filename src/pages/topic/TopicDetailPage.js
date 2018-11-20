@@ -75,7 +75,7 @@ export default class TopicDetailPage extends BasePage {
             netFailedProps: {
                 buttonText: superStatus === 0 ? '去首页' : '重新加载',
                 netFailedInfo: this.state.netFailedInfo,
-                reloadBtnClick: superStatus === 0 ? (() => this.$navigateReset()) : (() => this._getActivityData())
+                reloadBtnClick: superStatus === 0 ? (() => this.$navigateBackToHome()) : (() => this._getActivityData())
             }
         };
     };
@@ -619,7 +619,7 @@ export default class TopicDetailPage extends BasePage {
                                                this.$navigate('message/MessageCenterPage');
                                                break;
                                            case 1:
-                                               this.$navigateReset();
+                                               this.$navigateBackToHome();
                                                break;
                                            case 2:
                                                this.shareModal.open();
