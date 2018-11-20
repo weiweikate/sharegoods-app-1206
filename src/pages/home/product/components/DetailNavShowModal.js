@@ -8,12 +8,17 @@ import {
     FlatList,
     Text
 } from 'react-native';
-import detailShowBg from '../res/detailShowBg.png';
-import message from '../res/message.png';
-import home from '../res/home.png';
-import share from '../res/share.png';
+
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+
+const {
+    detailShowBg,
+    message,
+    home,
+    share
+} = res.product;
 
 export default class DetailNavShowModal extends Component {
 

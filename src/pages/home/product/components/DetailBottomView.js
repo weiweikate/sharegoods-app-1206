@@ -7,11 +7,13 @@ import {
     TouchableOpacity,
     Image
 } from 'react-native';
-import xiangqing_btn_gouwuche_nor from '../res/xiangqing_btn_gouwuche_nor.png';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import StringUtils from '../../../../utils/StringUtils';
-import jiarugouwuche_no from '../res/jiarugouwuche_no.png';
+import res from '../../res';
+
+const xiangqing_btn_gouwuche_nor = res.product.xiangqing_btn_gouwuche_nor;
+const jiarugouwuche_no = res.product.jiarugouwuche_no;
 
 export default class DetailBottomView extends Component {
 

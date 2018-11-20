@@ -7,9 +7,10 @@ import { observer } from 'mobx-react';
 import { homeModule } from './Modules';
 import { starShopModule } from './HomeStarShopModel';
 import User from '../../model/user';
-import starImg from './res/star.png';
 import DesignRule from 'DesignRule';
 import ImageLoad from '@mr/react-native-image-placeholder';
+import res from './res';
+const starImg = res.star;
 
 /**
  * @author chenyangjun
