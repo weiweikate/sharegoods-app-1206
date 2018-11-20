@@ -46,6 +46,28 @@ export default class MyShop_RecruitPage extends BasePage {
         };
     };
 
+    componentWillMount() {
+        this.willFocusSubscription = this.props.navigation.addListener(
+            'willFocus',
+            payload => {
+                const { state } = payload;
+                console.log('willFocus', state);
+                if (!this.unFirst) {//第一次不加载
+                    this.unFirst = true;
+                    return;
+                }
+                if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候刷新user
+                    spellStatusModel.getUser(0).then().catch((error) => {
+                    });
+                }
+            }
+        );
+    }
+
+    componentWillUnmount() {
+        this.willFocusSubscription && this.willFocusSubscription.remove();
+    }
+
     componentDidMount() {
         this._loadPageData();
     }
