@@ -224,10 +224,6 @@ export class ShowRecommendModules {
             this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 let data = result.data.data
-                if (!data) {
-                    this.isEnd = true
-                    return Promise.resolve([])
-                }
                 if (data && data.length !== 0) {
                     this.page += 1
                     data.map(value => {
