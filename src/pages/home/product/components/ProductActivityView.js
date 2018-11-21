@@ -95,6 +95,7 @@ export default class ActivityView extends Component {
         hours = hours >= 10 ? hours : hours === 0 ? `00` : `0${hours}`;
         minutes = minutes >= 10 ? minutes : minutes === 0 ? `00` : `0${minutes}`;
         second = second >= 10 ? second : second === 0 ? `00` : `0${second}`;
+        leave4 = leave4 >= 10 ? leave4 : leave4 === 0 ? `00` : `0${leave4}`;
 
         let time = `${hours}:${minutes}:${second}:${leave4}`;
         return time;
