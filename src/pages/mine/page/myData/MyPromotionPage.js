@@ -222,9 +222,9 @@ export default class MyPromotionPage extends BasePage {
                 </View>
                 {this.renderSepLine()}
                 {this.state.nextArr ? <HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
-                                            containerStyle={{ backgroundColor: '#fff' }}
-                                            imagesInitialDimensions={ScreenUtils.width}
-                                            baseFontStyle={{ lineHeight: 25, color: DesignRule.textColor_secondTitle, fontSize: 13 }}/> : null}
+                                            containerStyle={{ backgroundColor: '#fff',padding:5 }}
+                                            imagesInitialDimensions={{width:ScreenUtils.width,height:0}}
+                                            baseFontStyle={{ lineHeight: 25, color: DesignRule.textColor_secondTitle, fontSize: 13, }}/> : null}
             </View>
         );
     }

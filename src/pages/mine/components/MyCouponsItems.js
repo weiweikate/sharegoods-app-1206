@@ -204,12 +204,11 @@ export default class MyCouponsItems extends Component {
                             marginLeft: px2dp(39)
                         }} resizeMode={'contain'} onPress={this.reduceTokenCoin}/>
                         <TextInput
-
-                            keyboardType={'numeric'}
+                            keyboardType='numeric'
                             underlineColorAndroid='transparent'
                             autoFocus={true}
-                            defaultValue={'' + (this.state.tokenCoinNum < user.tokenCoin ? this.state.tokenCoinNum : user.tokenCoin)}
-                            value={'' + this.state.tokenCoinNum}
+                            defaultValue={`${(this.state.tokenCoinNum < user.tokenCoin ? this.state.tokenCoinNum : user.tokenCoin)}`}
+                            value={this.state.tokenCoinNum}
                             onChangeText={this._onChangeText}
                             onFocus={this._onFocus}
                             style={{
