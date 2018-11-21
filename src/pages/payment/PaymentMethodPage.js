@@ -167,7 +167,6 @@ export default class PaymentMethodPage extends BasePage {
 
     _selectedBalancePay() {
         if (this.payment.selectedTypes && this.payment.availableBalance > this.state.shouldPayMoney) {
-            Toast.$toast('余额已经充足，不需要三方支付');
             this.payment.clearPaymentType();
         }
         this.payment.selectBalancePayment();
