@@ -5,11 +5,16 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
@@ -359,6 +364,126 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
     public void saveInviteFriendsImage(String url, Callback success, Callback fail) {
         drawInviteFriendsImage(mContext, url, success, fail);
     }
+
+    @ReactMethod
+    public void saveShopInviteFriendsImage(ReadableMap map, Callback success, Callback fail) {
+        drawShopInviteFriendsImage(mContext, map, success, fail);
+    }
+
+//    headerImg: `${shareInfo.headUrl}`,
+//    shopName: `${shareInfo.name}`,
+//    shopId: `ID: ${shareInfo.storeNumber}`,
+//    shopPerson: `店主: ${manager.nickname || ''}`,
+//    codeString: this.state.codeString,
+//    wxTip: this.state.wxTip
+    public static void drawShopInviteFriendsImage(final Context context, final ReadableMap map, final Callback success, final Callback fail){
+
+
+
+
+        Fresco.initialize(context);
+
+        String headerImgUrl = map.getString("headerImg");
+
+        ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(headerImgUrl)).setProgressiveRenderingEnabled(true).build();
+
+
+        DataSource<CloseableReference<CloseableImage>> dataSource = Fresco.getImagePipeline().fetchDecodedImage(imageRequest, context);
+
+        dataSource.subscribe(new BaseBitmapDataSubscriber() {
+
+            @Override
+            public void onNewResultImpl(Bitmap bitmap) {
+                drawShopInviteFriendsImageWithHeader(context, map,bitmap, success, fail);
+            }
+
+            @Override
+            public void onFailureImpl(DataSource dataSource) {
+                fail.invoke("店主图片下载失败");
+            }
+        }, CallerThreadExecutor.getInstance());
+
+
+
+
+    }
+
+
+    public static void drawShopInviteFriendsImageWithHeader(final Context context, final ReadableMap map,final Bitmap headerBitmap, final Callback success, final Callback fail){
+        Bitmap result = Bitmap.createBitmap(375, 667, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+
+
+
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.yqhy_04);
+//        Bitmap qrBitmap = createQRImage(url, 135, 135);
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int newWidth = 375;
+        int newHeight = 667;
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+
+
+        Bitmap whiteBitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.yqhy_03);
+
+        int whiteWidth = whiteBitmap.getWidth();
+        int whiteHeight = whiteBitmap.getHeight();
+        int newWhiteWidth = 269;
+        int newWhiteHeight = 340;
+        float scaleWidthWhite = ((float) newWhiteWidth) / whiteWidth;
+        float scaleHeightWhite = ((float) newWhiteHeight) / whiteHeight;
+
+
+        //获取想要缩放的matrix
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        canvas.drawBitmap(bitmap,  0,0,paint);
+
+        Matrix whiteMatrix = new Matrix();
+        whiteMatrix.postScale(scaleWidthWhite, scaleHeightWhite);
+        whiteBitmap = Bitmap.createBitmap(whiteBitmap, 0, 0, whiteWidth, whiteHeight, whiteMatrix, true);
+        canvas.drawBitmap(whiteBitmap, 50, 164, paint);
+
+
+        //头像
+        int headerW = headerBitmap.getWidth();
+        int headerH = headerBitmap.getHeight();
+        int newHeaderW = 68;
+        int newHeaderH = 68;
+        float scaleWidthHeader = ((float) newHeaderW) / headerW;
+        float scaleHeightHeader = ((float) newHeaderH) / headerH;
+        BitmapShader bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        Matrix headerMatrix = new Matrix();
+        headerMatrix.postScale(scaleWidthHeader, scaleHeightHeader);
+        final Rect rect = new Rect(0, 0, newHeaderH, newHeaderW);
+        final RectF rectF = new RectF(rect);
+        canvas.drawRoundRect(0, 0, newHeaderW, newHeaderH,newHeaderW/2,newHeaderW/2,paint);
+//        canvas.drawRoundRect(rectF, newHeaderH, newHeaderW, paint);
+        paint.setShader(bitmapShader);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        
+        Bitmap header = Bitmap.createBitmap(headerBitmap, 0, 0, headerW, headerH, headerMatrix, true);
+        canvas.drawBitmap(header, rect, rectF, paint);
+
+
+        //canvas.drawBitmap(qrBitmap, 225, 620, paint);
+        String path = saveImageToCache(context, result, "inviteShop.png");
+
+        path = "file://"+path;
+        Uri uri = Uri.parse(path);
+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        intent.setData(uri);
+        context.sendBroadcast(intent);
+        success.invoke();
+
+    }
+
+
 
     public static void drawInviteFriendsImage(final Context context, final String url, final Callback success, final Callback fail){
         Bitmap result = Bitmap.createBitmap(750, (int) (1334), Bitmap.Config.ARGB_8888);

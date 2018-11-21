@@ -231,7 +231,16 @@ export default class MyShopPage extends BasePage {
             }, (item, index) => {
                 if (index === 0) {
                     setTimeout(() => {
-                        this.shareModal.open();
+                        // this.shareModal.open();
+                        this.$loadingShow();
+                        SpellShopApi.getById().then((data) => {
+                            //邀请好友页面
+                            this.$loadingDismiss();
+                            this.$navigate('spellShop/openShop/InvitationFriendPage', { shareInfo: data.data || {} });
+                        }).catch((error) => {
+                            this.$loadingDismiss();
+                            this.$toastShow(error.msg);
+                        });
                     }, 500);
                 } else if (index === 1) {
                     // 举报弹框
