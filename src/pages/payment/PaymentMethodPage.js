@@ -88,7 +88,8 @@ export default class PaymentMethodPage extends BasePage {
         this.payment = new Payment();
         this.payment.payStore = this.params.payStore;
         this.payment.payPromotion = this.params.payPromotion;
-        if (this.state.shouldPayMoney === 0) {
+        console.log('this.state.shouldPayMoney', this.state.shouldPayMoney)
+        if (parseInt(this.state.shouldPayMoney, 0) === 0) {
             this.payment.selectedBalace = true;
         }
         if (this.params.outTradeNo) {
@@ -179,7 +180,7 @@ export default class PaymentMethodPage extends BasePage {
             if (value.type === paymentType.section) {
                 items.push(<Section key={index + ''} data={value}/>);
             } else {
-                items.push(<PayCell disabled={value.type !== paymentType.balance && this.state.shouldPayMoney === 0}
+                items.push(<PayCell disabled={value.type !== paymentType.balance && parseInt(this.state.shouldPayMoney, 0) === 0}
                                     key={index + ''} selectedTypes={selectedTypes} data={value}
                                     balance={availableBalance} press={() => this._selectedPayType(value)}/>);
             }
@@ -187,7 +188,7 @@ export default class PaymentMethodPage extends BasePage {
 
         return <View style={styles.container}><ScrollView style={styles.container}>
             <PayCell disabled={this.params.outTradeNo} data={balancePayment}
-                     isSelected={selectedBalace || this.state.shouldPayMoney === 0} balance={availableBalance}
+                     isSelected={selectedBalace || parseInt(this.state.shouldPayMoney, 0) === 0} balance={availableBalance}
                      press={() => this._selectedBalancePay(balancePayment)}/>
             {items}
         </ScrollView>
