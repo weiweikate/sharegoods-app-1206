@@ -70,7 +70,7 @@ export default class HelperQuestionListPage extends BasePage {
                 alignItems: 'center', justifyContent: 'center'
             }}>
                 <Text style={{ fontSize: 13, color: '#999999' }}>联系客服 400-9696-365</Text>
-                <Text style={{ fontSize: 13, color: '#999999' }}>早9:00 - 21:00</Text>
+                <Text style={{ fontSize: 13, color: '#999999' }}>早9:00 - 22:00</Text>
             </View>
         );
     }
