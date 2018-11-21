@@ -91,7 +91,8 @@ export default class TopicDetailHeaderView extends Component {
         }
         return (
             <View>
-                {<TopicDetailBanner bannerImgList={bannerImgList} haveVideo={this.state.haveVideo} navigation = {this.props.navigation}/>}
+                {<TopicDetailBanner bannerImgList={bannerImgList} haveVideo={this.state.haveVideo}
+                                    navigation={this.props.navigation}/>}
                 {activityType === 3 ? null : <ActivityView ref={(e) => {
                     this.ActivityView = e;
                 }} activityData={this.props.activityData} activityType={activityType}/>}
@@ -122,7 +123,7 @@ export default class TopicDetailHeaderView extends Component {
                             <Text style={{
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 11
-                            }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue.toFixed(2) : ''}元`}</Text>
+                            }}>快递：{freightValue === 0 ? `包邮` : `${isNoEmpty(freightValue) ? freightValue : ''}元`}</Text>
                             <Text style={{
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 11,

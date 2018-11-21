@@ -11,6 +11,7 @@ import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import ShopCartStore from '../../../shopCart/model/ShopCartStore';
 import res from '../../res';
+
 const detailNavView = res.product.detailNavView;
 
 /**
@@ -81,7 +82,7 @@ export default class DetailNavView extends Component {
                             <Text style={{
                                 color: 'white',
                                 fontSize: 10
-                            }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
+                            }}>{ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber}</Text>
                         </View>}
                     </TouchableOpacity> : null}
                     {/*分享相关*/}
@@ -122,8 +123,8 @@ const styles = StyleSheet.create({
     },
     btnContainer: {
         width: 44,
-        height:44,
+        height: 44,
         alignItems: 'center',
-        justifyContent:'center'
+        justifyContent: 'center'
     }
 });
