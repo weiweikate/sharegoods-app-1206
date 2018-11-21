@@ -24,10 +24,9 @@ import bg from './res/promotion_bg.png';
 import MineApi from '../../api/MineApi';
 import RefreshList from '../../../../components/ui/RefreshList';
 import EmptyUtils from '../../../../utils/EmptyUtils';
-import DesignRule from 'DesignRule';
 
 
-const { px2dp, autoSizeWidth } = ScreenUtils;
+const { px2dp } = ScreenUtils;
 type Props = {};
 export default class InvitePromotionPage extends BasePage<Props> {
     constructor(props) {

@@ -79,10 +79,10 @@ export default class ShopMessagePage extends BasePage {
     //100普通，200拼店
     /*加载数据*/
     loadPageData =()=> {
-        DeviceEventEmitter.emit("contentViewed");
         Toast.showLoading();
         MessageAPI.queryMessage({page: 1, pageSize: 10, type:200}).then(res => {
-            Toast.hiddenLoading()
+            Toast.hiddenLoading();
+            DeviceEventEmitter.emit("contentViewed");
             if(StringUtils.isNoEmpty(res.data.data)){
                 let arrData = [];
                 res.data.data.map((item, index) => {

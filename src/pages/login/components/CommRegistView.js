@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 
 import React, { Component } from 'react';
-
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
 import { observer } from 'mobx-react';
 import { observable, computed, action } from 'mobx';
@@ -20,6 +19,7 @@ import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
 import res from '../res';
+const dismissKeyboard = require('dismissKeyboard');
 
 const {
     close_eye,
@@ -191,6 +191,7 @@ export default class CommRegistView extends Component {
                     </View>
 
                     <TouchableOpacity onPress={() => {
+                        dismissKeyboard();
                         this.registModel.isSecuret = !this.registModel.isSecuret;
                     }}>
                         <Image
