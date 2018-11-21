@@ -190,26 +190,28 @@ export class ShowRecommendModules {
         showBannerModules.loadBannerList()
         showHotModules.loadHotList()
         this.isRefreshing = true
-        return ShowApi.showQuery({...params, page: this.page}).then(result => {
-            this.isRefreshing = false
-            if (parseInt(result.code, 0) === 10000) {
-                this.page += 1
-                let data = result.data.data
-                if (data && data.length > 0) {
-                    data.map(value => {
-                        value.currentDate = currentDate
-                    })
-                    return Promise.resolve(data)
-                } else {
-                    return Promise.resolve([])
-                }
-            } else {
-                return Promise.reject('获取列表错误')
-            }
-        }).catch(error => {
-            return Promise.reject(error)
-        })
+        return this.fetchRecommendList(params, currentDate, this.page)
     }
+
+    @action fetchRecommendList = (params, currentDate) => ShowApi.showQuery({...params, page: this.page, size: 10}).then(result => {
+        this.isRefreshing = false
+        if (parseInt(result.code, 0) === 10000) {
+            this.page += 1
+            let data = result.data.data
+            if (data && data.length > 0) {
+                data.map(value => {
+                    value.currentDate = currentDate
+                })
+                return Promise.resolve(data)
+            } else {
+                return Promise.resolve([])
+            }
+        } else {
+            return Promise.reject('获取列表错误')
+        }
+    }).catch(error => {
+        return Promise.reject(error)
+    })
 
     @action getMoreRecommendList = (params) => {
         if (this.isEnd) {
@@ -220,7 +222,7 @@ export class ShowRecommendModules {
         }
         let currentDate = new Date()
         this.isRefreshing = true
-        return ShowApi.showQuery({page: this.page, ...params}).then(result => {
+        return ShowApi.showQuery({page: this.page, ...params,size: 10}).then(result => {
             this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 let data = result.data.data
@@ -259,7 +261,7 @@ export class ShowRecommendModules {
         let currentDate = new Date()
         this.collectPage = 1
         this.isRefreshing = true
-        return ShowApi.showCollectList({page: this.collectPage}).then(result => {
+        return ShowApi.showCollectList({page: this.collectPage, size: 10}).then(result => {
             this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 this.collectPage += 1
@@ -289,7 +291,7 @@ export class ShowRecommendModules {
         }
         let currentDate = new Date()
         this.isRefreshing = true
-        return ShowApi.showCollectList({page: this.collectPage}).then(result => {
+        return ShowApi.showCollectList({page: this.collectPage, size: 10}).then(result => {
             this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 let data = result.data.data
