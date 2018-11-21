@@ -12,9 +12,10 @@ import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
-import cn.jpush.android.api.JPushInterface;
 
 import java.util.List;
+
+import cn.jpush.android.api.JPushInterface;
 
 public class BaseApplication extends MultiDexApplication {
 
@@ -72,13 +73,12 @@ public class BaseApplication extends MultiDexApplication {
                 // 禁止极光捕获crash
                 JPushInterface.stopCrashHandler(this);
             } else {
+                JPushInterface.initCrashHandler(this);
             }
             // 初始化分享
             UShare.init(this, umKey);
             // 初始化极光
             JPushInterface.init(this);
-            // 初始化极光
-//            JPushInterface.init(this);
         }
     }
 

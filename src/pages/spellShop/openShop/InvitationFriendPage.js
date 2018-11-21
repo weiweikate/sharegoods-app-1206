@@ -17,8 +17,10 @@ import bridge from '../../../utils/bridge';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 import res from '../res';
+
 const Banner = res.openShop.yqhy_03;
 const Center = res.openShop.yqhy_04;
+const yqhy_Btn = res.openShop.yqhy_Btn;
 
 const gap = -5;
 
@@ -30,30 +32,42 @@ export default class InvitationToShopPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = { disable: false };
+        this.state = {
+            disable: false,
+            codeString: `${apiEnvironment.getCurrentH5Url()}/download`,
+            wxTip: '分享至微信，为您的店铺增添活力'
+        };
     }
 
     info = {};
 
     componentDidMount() {
     }
+
     //截屏
     _saveImg = () => {
+        const shareInfo = this.params.shareInfo || {};
+        const { manager = {} } = shareInfo;
         this.setState({
             disable: true
         }, () => {
-            bridge.saveScreen(null, () => {
-                this.$toastShow('保存成功');
-                this.__timer__ = setTimeout(() => {
-                    this.setState({
-                        disable: false
-                    });
-                }, 2500);
+            bridge.saveShopInviteFriendsImage({
+                headerImg: `${shareInfo.headUrl}`,
+                shopName: `${shareInfo.name}`,
+                shopId: `ID: ${shareInfo.storeNumber}`,
+                shopPerson: `店主: ${manager.nickname || ''}`,
+                codeString: this.state.codeString,
+                wxTip: this.state.wxTip
             }, () => {
-                this.$toastShow('保存失败');
                 this.setState({
                     disable: false
                 });
+                this.$toastShow('保存成功');
+            }, () => {
+                this.setState({
+                    disable: false
+                });
+                this.$toastShow('保存失败');
             });
         });
     };
@@ -78,60 +92,72 @@ export default class InvitationToShopPage extends BasePage {
         // 需要分享的参数信息
         const shareInfo = this.params.shareInfo || {};
         const { manager = {} } = shareInfo;
+        const imgWidth = ScreenUtils.width;
+        const imgHeight = ScreenUtils.height - ScreenUtils.headerHeight;
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={{ alignItems: 'center' }}>
-                        <ImageBackground onLayout={this._onLayout} style={[styles.imgBg]}
-                                         source={Center}>
-                            <View style={styles.topContainer}>
-                                {
-                                    shareInfo.headUrl ?
-                                        <Image style={styles.topImg} source={{ uri: shareInfo.headUrl }}/> :
-                                        <View style={styles.topImg}/>
-                                }
-                                <View style={{ justifyContent: 'space-between' }}>
-                                    <Text style={styles.text}>{shareInfo.name || ''}</Text>
-                                    <Text style={styles.text}>店铺ID：{shareInfo.storeNumber || ''}</Text>
-                                    <Text style={styles.text}>店主：{manager.nickname || ''}</Text>
+                    <View style={{ flex: 1 }}>
+                        <ImageBackground style={{
+                            alignItems: 'center',
+                            width: imgWidth,
+                            height: imgHeight
+                        }} source={Center} resizeMode={'stretch'}>
+                            <ImageBackground style={{
+                                marginTop: ScreenUtils.autoSizeHeight(171),
+                                width: ScreenUtils.autoSizeWidth(325),
+                                height: ScreenUtils.autoSizeWidth(380)
+                            }} source={Banner}>
+                                <View style={{ height: ScreenUtils.autoSizeWidth(130), justifyContent: 'center' }}>
+                                    <View style={styles.topContainer}>
+                                        {
+                                            shareInfo.headUrl ?
+                                                <Image style={styles.topImg} source={{ uri: shareInfo.headUrl }}/> :
+                                                <View style={styles.topImg}/>
+                                        }
+                                        <View style={{ justifyContent: 'space-between' }}>
+                                            <Text style={styles.text}>{shareInfo.name || ''}</Text>
+                                            <Text style={styles.text}>店铺ID：{shareInfo.storeNumber || ''}</Text>
+                                            <Text style={styles.text}>店主：{manager.nickname || ''}</Text>
+                                        </View>
+                                    </View>
                                 </View>
+
+                                <View style={styles.qrContainer}>
+                                    <QRCode
+                                        value={this.state.codeString}
+                                        size={ScreenUtils.autoSizeWidth(136)}
+                                        bgColor={DesignRule.textColor_mainTitle}
+                                        fgColor={'white'}/>
+                                </View>
+                                <Text style={styles.wxTip}>{this.state.wxTip}</Text>
+                            </ImageBackground>
+                            <View style={{
+                                flexDirection: 'row',
+                                marginTop: ScreenUtils.autoSizeWidth(8),
+                                justifyContent: 'center'
+                            }}>
+                                <TouchableOpacity onPress={this._saveImg}
+                                                  disabled={this.state.disable}>
+                                    <ImageBackground source={yqhy_Btn} style={styles.bottomBtn}>
+                                        <Text style={styles.textBtn}>保存图片</Text>
+                                    </ImageBackground>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{ marginLeft: 20 }}
+                                                  onPress={this._shareImg}>
+                                    <ImageBackground source={yqhy_Btn} style={styles.bottomBtn}>
+                                        <Text style={styles.textBtn}>分享到...</Text>
+                                    </ImageBackground>
+                                </TouchableOpacity>
                             </View>
-                            <View style={styles.qrContainer}>
-                                <QRCode
-                                    value={`${apiEnvironment.getCurrentH5Url()}/download`}
-                                    size={140 - 6}
-                                    bgColor={DesignRule.textColor_mainTitle}
-                                    fgColor={'white'}/>
-                            </View>
-                            <Text style={styles.wxTip}>分享为您的店铺增添活力</Text>
                         </ImageBackground>
-                        <Image style={{
-                            position: 'absolute',
-                            top: 40
-                        }} onLayout={this._onLayoutImg} source={Banner}/>
-
-                        <View style={{ flexDirection: 'row', marginTop: 50, justifyContent: 'center' }}>
-                            <TouchableOpacity style={styles.bottomBtn} onPress={this._saveImg}
-                                              disabled={this.state.disable}>
-                                <Text style={styles.textBtn}>
-                                    保存图片
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[styles.bottomBtn, { marginLeft: 20 }]} onPress={this._shareImg}>
-                                <Text style={styles.textBtn}>
-                                    分享到...
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-
                     </View>
-
                 </ScrollView>
                 <CommShareModal ref={(ref) => this.shareModal = ref}
                                 webJson={{
                                     title: `加入店铺:${shareInfo.name}`,
                                     dec: '店铺',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download`,
+                                    linkUrl: this.state.codeString,
                                     thumImage: `${shareInfo.headUrl}`
                                 }}/>
             </View>
@@ -143,24 +169,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    imgBg: {
-        marginTop: 95,
-        alignItems: 'center',
-        width: ScreenUtils.autoSizeWidth(279),
-        height: ScreenUtils.autoSizeWidth(370),
-        borderRadius: 10,
-        overflow: 'hidden'
-    },
     topContainer: {
-        flexDirection: 'row',
-        marginTop: 42
+        flexDirection: 'row'
     },
     topImg: {
-        width: 65,
-        height: 65,
-        backgroundColor: DesignRule.lineColor_inColorBg,
-        borderRadius: 5,
-        marginRight: 9
+        width: ScreenUtils.autoSizeWidth(68),
+        height: ScreenUtils.autoSizeWidth(68),
+        borderRadius: ScreenUtils.autoSizeWidth(34),
+        marginRight: ScreenUtils.autoSizeWidth(12),
+        marginLeft: ScreenUtils.autoSizeWidth(26 + 14.5)
     },
 
 
@@ -169,32 +186,29 @@ const styles = StyleSheet.create({
         color: DesignRule.textColor_mainTitle
     },
     qrContainer: {
-        width: 140,
-        height: 140,
+        alignSelf: 'center',
+        width: ScreenUtils.autoSizeWidth(136),
+        height: ScreenUtils.autoSizeWidth(136),
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 25,
-        borderWidth: 1,
-        borderColor: DesignRule.mainColor
+        marginTop: ScreenUtils.autoSizeWidth(20)
     },
 
     wxTip: {
+        alignSelf: 'center',
         fontSize: 13,
-        color: DesignRule.mainColor,
+        color: DesignRule.textColor_secondTitle,
         marginTop: 15
     },
     bottomBtn: {
-        height: 42,
-        width: 143,
+        height: ScreenUtils.autoSizeWidth(35),
+        width: ScreenUtils.autoSizeWidth(94),
         justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: DesignRule.mainColor,
-        borderWidth: 1,
-        borderRadius: 5
+        alignItems: 'center'
     },
     textBtn: {
-        fontSize: 14,
-        color: DesignRule.mainColor
+        fontSize: 12,
+        color: DesignRule.textColor_mainTitle
     }
 
 });

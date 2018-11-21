@@ -42,6 +42,11 @@ android {
             include "armeabi-v7a", "x86"
         }
     }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
     signingConfigs {
         release {
             keyAlias KEY_ALIAS
