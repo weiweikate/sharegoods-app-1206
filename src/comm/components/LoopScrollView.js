@@ -21,7 +21,7 @@ import {
 import TimerMixin from 'react-timer-mixin';
 import PropTypes from 'prop-types';
 
-export default class LoopScrollView extends React.Component {
+export default class LoopScrollView extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,// 数组元素可以是object、string或 既有string 也有object
         imgKey: PropTypes.string,// 当数组元素是object 默认取字段"imgUrl"
@@ -50,9 +50,10 @@ export default class LoopScrollView extends React.Component {
         this._bind();
 
         this.state = {};
+        this.drag = false;
     }
 
-    componentWillReceiveProps(nextProps) {
+    shouldComponentUpdate(nextProps, nextState){
 
         if (nextProps.automatic === true) {
             this._startTimer();
@@ -60,14 +61,28 @@ export default class LoopScrollView extends React.Component {
             this._endTimer();
         }
 
-
-        if (this.index > 1 + nextProps.data.length && nextProps.data.length > 0) {
-            // let { style: { width }, pageWidth, pagePadding } = this.props;
-            // let imageW = pageWidth || width;
-            // this.scrollView && this.scrollView.scrollTo({ x: (imageW + pagePadding) * (2), animated: true });
-            this._scrollViewToFirst();
-            this.props.scrollToIndex(0);
+        if (this.index >  nextProps.data.length+1 && nextProps.data.length > 0 && nextProps.data.length < this.props.data.length) {
+            let { style: { width }, pageWidth, pagePadding } = this.props;
+            let imageW = pageWidth || width;
+            this.scrollView && this.scrollView.scrollTo({
+                x: (imageW + pagePadding) * (nextProps.data.length + 1),
+                animated: false
+            });
+            // this._scrollViewToFirst();
+            this.index = 1 + nextProps.data.length;
+            this.props.scrollToIndex(nextProps.data.length - 1);
         }
+        if (this.props.data.length === 0 && nextProps.data.length > 0){
+            this._scrollViewToFirst();
+        }
+
+        if (nextProps.data.length === 0){
+            this.index == 0;
+        }
+        return true;
+    }
+
+    componentDidUpdate() {
     }
 
 
@@ -97,12 +112,14 @@ export default class LoopScrollView extends React.Component {
     }
 
     _onScrollEndDrag() {
+        this.drag = false;
         if (this.props.automatic) {
             this._startTimer();
         }
     }
 
     _onScrollBeginDrag() {
+        this.drag = true;
         if (this.props.automatic) {
             this._endTimer();
         }
@@ -156,11 +173,11 @@ export default class LoopScrollView extends React.Component {
     }
 
     _onMomentumScrollEnd(e) {
-        if (this.props.data.length < 1) {
+        if (this.props.data.length < 1 || this.drag === true) {
             return;
         }
         let index = this._getIndex(e);
-        // alert(index);
+
         if (this._isFirst(index) === true) {
             this._scrollViewToLast();
         } else if (this._isLast(index) === true) {
@@ -191,7 +208,7 @@ export default class LoopScrollView extends React.Component {
                            marginHorizontal: pagePadding / 2,
                            backgroundColor: 'red',
                            borderRadius: itemCorners,
-                           overflow: 'hidden',
+                           overflow: 'hidden'
                        }}
                 />
             </TouchableWithoutFeedback>

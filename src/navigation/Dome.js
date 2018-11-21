@@ -44,6 +44,7 @@ export default class Dome extends BasePage {
 
   _bind() {
     this.loadPageData = this.loadPageData.bind(this);
+    this._scrollToIndex=this._scrollToIndex.bind(this);
   }
 
   componentDidMount() {
@@ -53,6 +54,10 @@ export default class Dome extends BasePage {
   loadPageData() {
   }
 
+  _scrollToIndex(index){
+     this.setState({index})
+  }
+
   _render() {
     return (
       <View style={DesignRule.style_container}>
@@ -60,7 +65,7 @@ export default class Dome extends BasePage {
               style={{height: 100, width: ScreenUtils.width}}
               pageWidth={ScreenUtils.width * 0.8}
               data={this.state.data}
-              scrollToIndex={(index)=>{this.setState({index})}}
+              scrollToIndex={this._scrollToIndex}
           />
           <Text>{this.state.index}</Text>
           <TouchableOpacity onPress={() => {this.setState({data: []})}}>
