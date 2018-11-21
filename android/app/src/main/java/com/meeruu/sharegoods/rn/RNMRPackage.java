@@ -20,7 +20,7 @@ import java.util.List;
  * Created by shangwf on 2017/9/14.
  */
 
-public class RNPackage implements ReactPackage {
+public class RNMRPackage implements ReactPackage {
 
     public CommModule mModule;
     public QYChatModule qyChatModule;

@@ -19,7 +19,7 @@ import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.qiyu.imService.QiyuImageLoader;
 import com.meeruu.sharegoods.handler.CrashHandler;
 import com.meeruu.sharegoods.rn.MainReactPackage;
-import com.meeruu.sharegoods.rn.RNPackage;
+import com.meeruu.sharegoods.rn.RNMRPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
@@ -112,7 +112,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
         @Override
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
-                    new RNPackage(),
+                    new RNMRPackage(),
                     new MainReactPackage(),
                     new ReactVideoPackage(),
                     new VectorIconsPackage(),
