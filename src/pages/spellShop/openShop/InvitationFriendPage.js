@@ -55,27 +55,20 @@ export default class InvitationToShopPage extends BasePage {
                 headerImg: `${shareInfo.headUrl}`,
                 shopName: `${shareInfo.name}`,
                 shopId: `ID: ${shareInfo.storeNumber}`,
-                shopPerson: `店主: ${manager.nickname}`,
+                shopPerson: `店主: ${manager.nickname || ''}`,
                 codeString: this.state.codeString,
                 wxTip: this.state.wxTip
             }, () => {
+                this.setState({
+                    disable: false
+                });
                 this.$toastShow('保存成功');
             }, () => {
+                this.setState({
+                    disable: false
+                });
                 this.$toastShow('保存失败');
             });
-            // bridge.saveScreen(null, () => {
-            //     this.$toastShow('保存成功');
-            //     this.__timer__ = setTimeout(() => {
-            //         this.setState({
-            //             disable: false
-            //         });
-            //     }, 2500);
-            // }, () => {
-            //     this.$toastShow('保存失败');
-            //     this.setState({
-            //         disable: false
-            //     });
-            // });
         });
     };
 
