@@ -37,6 +37,7 @@ import StringUtils from '../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import TimerMixin from 'react-timer-mixin';
 import res from './res';
+import homeModalManager from './model/HomeModalManager'
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
@@ -111,10 +112,12 @@ export default class HomePage extends PureComponent {
                             this.updateModal && this.updateModal.open();
                         }
                     }else {
+                        this.getMessageData();
 
                     }
                 }
             }else {
+                this.getMessageData();
 
             }
         });
@@ -130,6 +133,7 @@ export default class HomePage extends PureComponent {
                     this.shareTaskIcon.queryTask();
                     this.setState({ isShow: true });
                 }
+
 
             }
         );
@@ -148,6 +152,7 @@ export default class HomePage extends PureComponent {
     componentWillUnmount() {
         this.didBlurSubscription && this.didBlurSubscription.remove();
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.didBlurSubscription && this.didBlurSubscription.remove();
     }
 
     componentDidMount() {
@@ -155,8 +160,8 @@ export default class HomePage extends PureComponent {
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
                 // 检测版本更新
-                this.getVersion();
-                this.getMessageData();
+                // this.getVersion();
+                homeModalManager.getVersion().then((data)=> {alert(JSON.stringify(data))});
             }, 2500);
         });
     }
@@ -248,30 +253,22 @@ export default class HomePage extends PureComponent {
     }
 
     getMessageData = () => {
-        MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {
-            if (!EmptyUtils.isEmptyArr(resp.data.data)) {
-                this.messageModal && this.messageModal.open();
-                this.setState({
-                    showMessage: true,
-                    messageData: resp.data.data
+
+        var currStr = new Date().getTime() + '';
+        AsyncStorage.getItem('lastMessageTime').then((value) => {
+            if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
+                MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {
+                    if (!EmptyUtils.isEmptyArr(resp.data.data)) {
+                        this.messageModal && this.messageModal.open();
+                        this.setState({
+                            showMessage: true,
+                            messageData: resp.data.data
+                        });
+                    }
                 });
             }
         });
-        // var currStr = new Date().getTime() + '';
-        // AsyncStorage.getItem('lastMessageTime').then((value) => {
-        //     if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-        //         MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {
-        //             if (!EmptyUtils.isEmptyArr(resp.data.data)) {
-        //                 this.messageModal && this.messageModal.open();
-        //                 this.setState({
-        //                     showMessage: true,
-        //                     messageData: resp.data.data
-        //                 });
-        //             }
-        //         });
-        //     }
-        // });
-        // AsyncStorage.setItem('lastMessageTime', currStr);
+        AsyncStorage.setItem('lastMessageTime', currStr);
 
     };
 
