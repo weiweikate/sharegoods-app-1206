@@ -99,18 +99,18 @@ class HomeModule {
     };
 
     //加载为你推荐列表
-    loadHomeList = flow(function* (isCache) {
+    loadHomeList = flow(function* () {
         this.isRefreshing = true;
         setTimeout(() => {
             this.isRefreshing = false;
         }, 2000);
-        bannerModule.loadBannerList(isCache);
-        todayModule.loadTodayList(isCache);
-        adModules.loadAdList(isCache);
+        bannerModule.loadBannerList(this.firstLoad);
+        todayModule.loadTodayList(this.firstLoad);
+        adModules.loadAdList(this.firstLoad);
         classifyModules.loadClassifyList();
-        starShopModule.loadShopList(isCache);
-        recommendModule.loadRecommendList(isCache);
-        subjectModule.loadSubjectList(isCache);
+        starShopModule.loadShopList(this.firstLoad);
+        recommendModule.loadRecommendList(this.firstLoad);
+        subjectModule.loadSubjectList(this.firstLoad);
         this.page = 1;
         this.homeList = [{
             id: 0,

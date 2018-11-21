@@ -45,6 +45,7 @@ const hasDeliverIcon = res.dingdanxiangqing_icon_yifehe;
 const refuseIcon = res.dingdanxiangqing_icon_guangbi;
 const productDetailImg = res.productDetailImg;
 const moreIcon = res.more_icon;
+const timeUtils= new TimeDownUtils();
 
 class MyOrdersDetailPage extends BasePage {
     constructor(props) {
@@ -64,6 +65,7 @@ class MyOrdersDetailPage extends BasePage {
             giftBagCoupons: [],
             cancelArr:[]
         };
+
     }
 
     $navigationBarOptions = {
@@ -693,7 +695,7 @@ class MyOrdersDetailPage extends BasePage {
         if (autoConfirmTime < 0) {
             return;
         }
-        (new TimeDownUtils()).settimer((time) => {
+        timeUtils.settimer((time) => {
             let pageStateString = this.state.pageStateString;
             pageStateString.moreDetail = time.hours + ':' + time.min + ':' + time.sec + '后自动取消订单';
             this.setState({ pageStateString: pageStateString });
@@ -714,7 +716,7 @@ class MyOrdersDetailPage extends BasePage {
         if (autoConfirmTime < 0) {
             return;
         }
-        (new TimeDownUtils()).settimer(time => {
+        timeUtils.settimer(time => {
             let pageStateString = this.state.pageStateString;
             pageStateString.moreDetail = time.days + '天' + time.hours + ':' + time.min + ':' + time.sec + '后自动确认收货';
             this.setState({ pageStateString: pageStateString });
@@ -964,8 +966,18 @@ class MyOrdersDetailPage extends BasePage {
                     break;
                 //   确认收货
                 case 4:
+                    if (data.orderType == 5 || data.orderType == 98) {
+                        pageStateString.menu = [
+                            {
+                                id: 7,
+                                operation: '删除订单',
+                                isRed: false
+                            }
+                        ];
+                    }
                     pageStateString.sellerState = '已签收';
                     pageStateString.moreDetail='';
+                    timeUtils.stop();
                     pageStateString.logisticsTime=data.deliverTime?data.deliverTime:data.finishTime
                     break;
                 //订单已完成
@@ -981,6 +993,7 @@ class MyOrdersDetailPage extends BasePage {
                     }
                     // pageStateString.sellerTime = '收货地址：' + data.province + data.city + data.area + data.address;
                     pageStateString.moreDetail='';
+                    timeUtils.stop();
                     pageStateString.logisticsTime=data.deliverTime?data.deliverTime:data.finishTime
                     break;
                 case 6://退货关闭
