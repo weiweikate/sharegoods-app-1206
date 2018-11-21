@@ -431,8 +431,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
         int whiteWidth = whiteBitmap.getWidth();
         int whiteHeight = whiteBitmap.getHeight();
-        int newWhiteWidth = 269;
-        int newWhiteHeight = 340;
+        int newWhiteWidth = 325;
+        int newWhiteHeight = 380;
         float scaleWidthWhite = ((float) newWhiteWidth) / whiteWidth;
         float scaleHeightWhite = ((float) newWhiteHeight) / whiteHeight;
 
@@ -446,32 +446,56 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Matrix whiteMatrix = new Matrix();
         whiteMatrix.postScale(scaleWidthWhite, scaleHeightWhite);
         whiteBitmap = Bitmap.createBitmap(whiteBitmap, 0, 0, whiteWidth, whiteHeight, whiteMatrix, true);
-        canvas.drawBitmap(whiteBitmap, 50, 164, paint);
+        canvas.drawBitmap(whiteBitmap, 24, 164, paint);
 
 
         //头像
         int headerW = headerBitmap.getWidth();
         int headerH = headerBitmap.getHeight();
-        int newHeaderW = 68;
-        int newHeaderH = 68;
-        float scaleWidthHeader = ((float) newHeaderW) / headerW;
-        float scaleHeightHeader = ((float) newHeaderH) / headerH;
-        BitmapShader bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        int newHeaderLength = 68;
+        float scaleWidthHeader = ((float) newHeaderLength) / headerW;
+        float scaleHeightHeader = ((float) newHeaderLength) / headerH;
+        float scaleHeader = Math.max(scaleHeightHeader,scaleWidthHeader);
         Matrix headerMatrix = new Matrix();
-        headerMatrix.postScale(scaleWidthHeader, scaleHeightHeader);
-        final Rect rect = new Rect(0, 0, newHeaderH, newHeaderW);
-        final RectF rectF = new RectF(rect);
-        canvas.drawRoundRect(0, 0, newHeaderW, newHeaderH,newHeaderW/2,newHeaderW/2,paint);
-//        canvas.drawRoundRect(rectF, newHeaderH, newHeaderW, paint);
-        paint.setShader(bitmapShader);
+        headerMatrix.postScale(scaleHeader, scaleHeader);
 
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        
+
         Bitmap header = Bitmap.createBitmap(headerBitmap, 0, 0, headerW, headerH, headerMatrix, true);
-        canvas.drawBitmap(header, rect, rectF, paint);
+        header = createCircleImage(header,newHeaderLength);
+        canvas.drawBitmap(header, 70, 195, paint);
 
 
-        //canvas.drawBitmap(qrBitmap, 225, 620, paint);
+        String shopName = map.getString("shopName");
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(14);
+        Rect bounds = new Rect();
+        paint.getTextBounds(shopName, 0, shopName.length(), bounds);
+        canvas.drawText(shopName, 150, 215, paint);
+
+        String shopId = map.getString("shopId");
+        paint.setTextSize(13);
+        bounds = new Rect();
+        paint.getTextBounds(shopId, 0, shopId.length(), bounds);
+        canvas.drawText(shopId, 150, 235, paint);
+
+        String shopPerson = map.getString("shopPerson");
+        paint.setTextSize(13);
+        bounds = new Rect();
+        paint.getTextBounds(shopPerson, 0, shopPerson.length(), bounds);
+        canvas.drawText(shopPerson, 150, 255, paint);
+
+
+        Bitmap qrBitmap = createQRImage(map.getString("codeString"), 135, 135);
+        canvas.drawBitmap(qrBitmap, 120, 310, paint);
+
+
+        String wxTip = map.getString("wxTip");
+        paint.setTextSize(13);
+        bounds = new Rect();
+        paint.getTextBounds(shopPerson, 0, shopPerson.length(), bounds);
+        canvas.drawText(shopPerson, (375-bounds.width())/2, 255, paint);
+
+
         String path = saveImageToCache(context, result, "inviteShop.png");
 
         path = "file://"+path;
@@ -482,6 +506,38 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         success.invoke();
 
     }
+
+    /**
+     * 根据原图和变长绘制圆形图片
+     *
+     * @param source
+     * @param min
+     * @return
+     */
+    private static Bitmap createCircleImage(Bitmap source, int min)
+    {
+        final Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        Bitmap target = Bitmap.createBitmap(min, min, Bitmap.Config.ARGB_8888);
+        /**
+         * 产生一个同样大小的画布
+         */
+        Canvas canvas = new Canvas(target);
+        /**
+         * 首先绘制圆形
+         */
+        canvas.drawCircle(min / 2, min / 2, min / 2, paint);
+        /**
+         * 使用SRC_IN
+         */
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        /**
+         * 绘制图片
+         */
+        canvas.drawBitmap(source, 0, 0, paint);
+        return target;
+    }
+
 
 
 

@@ -304,7 +304,7 @@ export default class MinePage extends BasePage {
                                       waveLightColor={"#D01433"}
                                       topTitleColor={"#ffffff"}
                                       topTitleSize={12}
-                                      progressValue={user.isLogin && (user.levelFloor !== user.levelCeil)?(user.experience - user.levelFloor) /(user.levelCeil-user.levelFloor):0}
+                                      progressValue={user.token && (user.levelFloor !== user.levelCeil)?parseInt((user.experience - user.levelFloor) *100/(user.levelCeil-user.levelFloor)):0}
                                       style={{
                                           width: px2dp(44),
                                           height: px2dp(44)
@@ -319,7 +319,8 @@ export default class MinePage extends BasePage {
                                     color: DesignRule.textColor_mainTitle,
                                     fontSize: DesignRule.fontSize_threeTitle
                                 }}>
-                                    {user.isLogin ? `${user.levelRemark}品鉴官` : ""}
+                                    { `${user.levelRemark}品鉴官` }
+                                    {/*{user.token ? `${user.levelRemark}品鉴官` : ""}*/}
                                 </Text>
                                 <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_22 }}>
                                     查看权益>
