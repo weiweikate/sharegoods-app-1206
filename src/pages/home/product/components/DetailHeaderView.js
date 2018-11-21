@@ -81,7 +81,7 @@ export default class DetailHeaderView extends Component {
                                 style={{
                                     color: DesignRule.textColor_instruction,
                                     fontSize: 11
-                                }}>快递：{freight === 0 ? '包邮' : `${freight.toFixed(2)}元`}</Text>
+                                }}>快递：{freight === 0 ? '包邮' : `${freight}元`}</Text>
                             <Text style={{
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 11,
