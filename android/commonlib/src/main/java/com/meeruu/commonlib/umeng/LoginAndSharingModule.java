@@ -418,7 +418,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
 
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.yqhy_04);
-//        Bitmap qrBitmap = createQRImage(url, 135, 135);
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int newWidth = 375;
@@ -492,8 +491,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         String wxTip = map.getString("wxTip");
         paint.setTextSize(13);
         bounds = new Rect();
-        paint.getTextBounds(shopPerson, 0, shopPerson.length(), bounds);
-        canvas.drawText(shopPerson, (375-bounds.width())/2, 255, paint);
+        paint.getTextBounds(wxTip, 0, wxTip.length(), bounds);
+        canvas.drawText(wxTip, (375-bounds.width())/2, 470, paint);
 
 
         String path = saveImageToCache(context, result, "inviteShop.png");
