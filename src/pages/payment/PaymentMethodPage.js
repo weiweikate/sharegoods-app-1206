@@ -29,7 +29,7 @@ import { NavigationActions } from 'react-navigation';
 
 const PayCell = ({ data, isSelected, balance, press, selectedTypes, disabled }) => {
     let selected = isSelected;
-    if (data.type !== paymentType.balance && selectedTypes) {
+    if (data && data.type !== paymentType.balance && selectedTypes) {
         selected = selectedTypes.type === data.type;
     }
     return <TouchableOpacity style={styles.cell} disabled={disabled} onPress={() => press && press()}>
@@ -107,12 +107,12 @@ export default class PaymentMethodPage extends BasePage {
     }
 
     $NavBarLeftPressed = () => {
-        const { paySuccessFul } = this.payment
+        const { paySuccessFul } = this.payment;
         const popAction = NavigationActions.pop({
             n: paySuccessFul ? 2 : 1
         });
         this.props.navigation.dispatch(popAction);
-    }
+    };
 
     componentDidMount() {
         AppState.addEventListener('change', this._handleAppStateChange);
@@ -133,7 +133,7 @@ export default class PaymentMethodPage extends BasePage {
             paytype = 3;
         }
         if (state === 'active' && this.payment.outTradeNo) {
-            if (selectedTypes.type === paymentType.alipay) {
+            if (selectedTypes && selectedTypes.type === paymentType.alipay) {
                 this.payment.alipayCheck({
                     outTradeNo: this.payment.outTradeNo,
                     type: paymentType.alipay,
@@ -160,7 +160,7 @@ export default class PaymentMethodPage extends BasePage {
     _selectedPayType(value) {
         if (this.payment.selectedBalace && this.payment.availableBalance > this.state.shouldPayMoney) {
             Toast.$toast('余额充足，不需要三方支付');
-            return
+            return;
         }
         this.payment.selectPaymentType(value);
     }
@@ -233,7 +233,7 @@ export default class PaymentMethodPage extends BasePage {
                     }}>
                         <TouchableWithoutFeedback onPress={() => {
                             this.setState({ payPromotionSuccess: false });
-                            DeviceEventEmitter.emit("payPromotionSuccess");
+                            DeviceEventEmitter.emit('payPromotionSuccess');
                             this.$navigateBack('mine/promotion/UserPromotionPage');
                         }}>
                             <View style={{
@@ -315,7 +315,7 @@ export default class PaymentMethodPage extends BasePage {
     };
     renderBottomOrder = () => {
         return (
-            <View style={{ paddingBottom: ScreenUtils.safeBottom ,backgroundColor:DesignRule.white}}>
+            <View style={{ paddingBottom: ScreenUtils.safeBottom, backgroundColor: DesignRule.white }}>
                 <View style={{ height: ScreenUtils.onePixel, backgroundColor: DesignRule.lineColor_inColorBg }}/>
                 <View style={{ height: ScreenUtils.px2dp(49), flexDirection: 'row' }}>
                     <View style={styles.bottomStyleContainer}>
