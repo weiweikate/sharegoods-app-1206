@@ -55,8 +55,8 @@ import javax.annotation.Nullable;
 /**
  * Manages instances of TextInput.
  */
-@ReactModule(name = ReactTextInputManager.REACT_CLASS)
-public class ReactTextInputManager extends BaseViewManager<ReactEditText, LayoutShadowNode> {
+@ReactModule(name = ReactTextInputMRManager.REACT_CLASS)
+public class ReactTextInputMRManager extends BaseViewManager<ReactEditText, LayoutShadowNode> {
 
     protected static final String REACT_CLASS = "AndroidTextInput";
 

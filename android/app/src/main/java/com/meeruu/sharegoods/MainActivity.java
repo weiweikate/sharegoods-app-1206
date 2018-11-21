@@ -57,22 +57,6 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        releaseRes();
-        super.onDestroy();
-    }
-
-    private void releaseRes() {
-        if (mHandler != null) {
-            mHandler = null;
-        }
-        if (countDownTimer != null) {
-            countDownTimer.onFinish();
-            countDownTimer = null;
-        }
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         if (hasBasePer) {
@@ -91,6 +75,22 @@ public class MainActivity extends BaseActivity {
             if (needGo && hasBasePer) {
                 goIndex();
             }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        releaseRes();
+        super.onDestroy();
+    }
+
+    private void releaseRes() {
+        if (mHandler != null) {
+            mHandler = null;
+        }
+        if (countDownTimer != null) {
+            countDownTimer.onFinish();
+            countDownTimer = null;
         }
     }
 
