@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent } from "react";
 import {
     View,
     StyleSheet,
@@ -7,36 +7,36 @@ import {
     ImageBackground,
     TouchableWithoutFeedback,
     Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager
-} from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
-import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
-import { observer } from 'mobx-react';
-import { homeModule } from './Modules';
-import { homeType } from './HomeTypes';
-import { bannerModule } from './HomeBannerModel';
-import HomeSearchView from './HomeSearchView';
-import HomeClassifyView from './HomeClassifyView';
-import HomeStarShopView from './HomeStarShopView';
-import HomeTodayView from './HomeTodayView';
-import HomeRecommendView from './HomeRecommendView';
-import HomeSubjectView from './HomeSubjectView';
-import HomeBannerView from './HomeBannerView';
-import HomeAdView from './HomeAdView';
-import HomeGoodsView from './HomeGoodsView';
-import HomeUserView from './HomeUserView';
-import ShowView from '../show/ShowView';
-import LinearGradient from 'react-native-linear-gradient';
-import Modal from 'CommModal';
-import XQSwiper from '../../components/ui/XGSwiper';
-import MessageApi from '../message/api/MessageApi';
-import EmptyUtils from '../../utils/EmptyUtils';
-import MineApi from '../mine/api/MineApi';
-import VersionUpdateModal from './VersionUpdateModal';
-import DeviceInfo from 'react-native-device-info';
-import StringUtils from '../../utils/StringUtils';
-import DesignRule from 'DesignRule';
-import TimerMixin from 'react-timer-mixin';
-import res from './res';
+} from "react-native";
+import ScreenUtils from "../../utils/ScreenUtils";
+import ShareTaskIcon from "../shareTask/components/ShareTaskIcon";
+import { observer } from "mobx-react";
+import { homeModule } from "./Modules";
+import { homeType } from "./HomeTypes";
+import { bannerModule } from "./HomeBannerModel";
+import HomeSearchView from "./HomeSearchView";
+import HomeClassifyView from "./HomeClassifyView";
+import HomeStarShopView from "./HomeStarShopView";
+import HomeTodayView from "./HomeTodayView";
+import HomeRecommendView from "./HomeRecommendView";
+import HomeSubjectView from "./HomeSubjectView";
+import HomeBannerView from "./HomeBannerView";
+import HomeAdView from "./HomeAdView";
+import HomeGoodsView from "./HomeGoodsView";
+import HomeUserView from "./HomeUserView";
+import ShowView from "../show/ShowView";
+import LinearGradient from "react-native-linear-gradient";
+import Modal from "CommModal";
+import XQSwiper from "../../components/ui/XGSwiper";
+import MessageApi from "../message/api/MessageApi";
+import EmptyUtils from "../../utils/EmptyUtils";
+import VersionUpdateModal from "./VersionUpdateModal";
+import StringUtils from "../../utils/StringUtils";
+import DesignRule from "DesignRule";
+import TimerMixin from "react-timer-mixin";
+import res from "./res";
+import homeModalManager from "./model/HomeModalManager";
+import { withNavigationFocus } from "react-navigation";
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
@@ -53,7 +53,7 @@ const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
 
 @observer
-export default class HomePage extends PureComponent {
+class HomePage extends PureComponent {
 
     st = 0;
     shadowOpacity = 0.4;
@@ -78,69 +78,35 @@ export default class HomePage extends PureComponent {
     }
 
 
-    getVersion = async () => {
-        let upVersion = '';
-        try {
-            upVersion = await AsyncStorage.getItem('isToUpdate');
-        } catch (error) {
-        }
-
-        MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((resp) => {
-            if (resp.data.upgrade === 1) {
-                if (resp.data.forceUpdate === 1) {
-                    // 强制更新
-                    this.setState({
-                        forceUpdate: true
-                    });
-                }else {
-                    if (StringUtils.isEmpty(upVersion) && upVersion !== resp.data.version) {
-                        if (Platform.OS !== 'ios') {
-                            NativeModules.commModule.apkExist(resp.data.version, (exist) => {
-                                this.setState({
-                                    updateData: resp.data,
-                                    showUpdate: true,
-                                    apkExist: exist
-                                });
-                                this.updateModal && this.updateModal.open();
-                            });
-                        } else {
-                            this.setState({
-                                updateData: resp.data,
-                                showUpdate: true
-                            });
-                            this.updateModal && this.updateModal.open();
-                        }
-                    }else {
-
-                    }
-                }
-            }else {
-
-            }
-        });
-    };
-
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
+            "willFocus",
             payload => {
                 const { state } = payload;
-                console.log('willFocusSubscription', state);
-                if (state && state.routeName === 'HomePage') {
+                console.log("willFocusSubscription", state);
+                if (state && state.routeName === "HomePage") {
                     this.shareTaskIcon.queryTask();
                     this.setState({ isShow: true });
                 }
+
 
             }
         );
 
         this.didBlurSubscription = this.props.navigation.addListener(
-            'willBlur',
+            "willBlur",
             payload => {
                 const { state } = payload;
-                if (state && state.routeName === 'HomePage') {
+                if (state && state.routeName === "HomePage") {
                     this.setState({ isShow: false });
                 }
+            }
+        );
+
+        this.didFocusSubscription = this.props.navigation.addListener(
+            "didFocus",
+            payload => {
+                this.showModal();
             }
         );
     }
@@ -148,21 +114,106 @@ export default class HomePage extends PureComponent {
     componentWillUnmount() {
         this.didBlurSubscription && this.didBlurSubscription.remove();
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.didBlurSubscription && this.didBlurSubscription.remove();
+        this.didFocusSubscription && this.didFocusSubscription.remove();
     }
 
     componentDidMount() {
-        this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
+        this.listener = DeviceEventEmitter.addListener("homePage_message", this.getMessageData);
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
                 // 检测版本更新
-                this.getVersion();
-                this.getMessageData();
+                // this.getVersion();
+                homeModalManager.getVersion().then((data) => {
+                    homeModalManager.getMessage().then(data => {
+                        if (!this.props.isFocused) {
+                            return;
+                        }
+                        this.showModal();
+                    });
+                });
             }, 2500);
         });
     }
 
     componentWillUnmount() {
         this.listener && this.listener.remove();
+    }
+
+    showModal = () => {
+        if (EmptyUtils.isEmpty(homeModalManager.version)) {
+            this.showMessageModal();
+        } else {
+            this.showUpdateModal();
+        }
+    };
+
+    showUpdateModal = async () => {
+        if (!EmptyUtils.isEmpty(homeModalManager.version)) {
+            let upVersion = "";
+            try {
+                upVersion = await AsyncStorage.getItem("isToUpdate");
+            } catch (error) {
+
+            }
+
+            let resp = homeModalManager.version;
+            if (resp.data.upgrade === 1) {
+                if (resp.data.forceUpdate === 1) {
+                    // 强制更新
+                    this.setState({
+                        forceUpdate: true
+                    });
+                } else {
+                    if (StringUtils.isEmpty(upVersion) && upVersion !== resp.data.version) {
+                        if (Platform.OS !== "ios") {
+                            NativeModules.commModule.apkExist(resp.data.version, (exist) => {
+                                this.setState({
+                                    updateData: resp.data,
+                                    showUpdate: true,
+                                    apkExist: exist
+                                });
+                                this.updateModal && this.updateModal.open();
+                                homeModalManager.setVersion(null);
+                            });
+                        } else {
+                            this.setState({
+                                updateData: resp.data,
+                                showUpdate: true
+                            });
+                            this.updateModal && this.updateModal.open();
+                            homeModalManager.setVersion(null);
+                        }
+                    } else {
+                        this.showMessageModal();
+                    }
+                }
+            } else {
+                this.showMessageModal();
+
+            }
+        }
+    };
+
+
+    showMessageModal() {
+        if (!EmptyUtils.isEmpty(homeModalManager.homeMessage)) {
+            let resp = homeModalManager.homeMessage;
+            let currStr = new Date().getTime() + "";
+            AsyncStorage.getItem("lastMessageTime").then((value) => {
+                if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
+                    if (!EmptyUtils.isEmptyArr(resp.data.data)) {
+                        this.messageModal && this.messageModal.open();
+                        this.setState({
+                            showMessage: true,
+                            messageData: resp.data.data
+                        });
+                        homeModalManager.setHomeMessage(null);
+                    }
+                }
+            });
+            AsyncStorage.setItem("lastMessageTime", currStr);
+        }
     }
 
     // 滑动头部透明度渐变
@@ -207,7 +258,7 @@ export default class HomePage extends PureComponent {
         this.shareTaskIcon.close();
     }
 
-    _keyExtractor = (item, index) => item.id + '';
+    _keyExtractor = (item, index) => item.id + "";
     _renderItem = (item) => {
         let data = item.item;
         if (data.type === homeType.swiper) {
@@ -248,30 +299,15 @@ export default class HomePage extends PureComponent {
     }
 
     getMessageData = () => {
-        MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {
-            if (!EmptyUtils.isEmptyArr(resp.data.data)) {
-                this.messageModal && this.messageModal.open();
-                this.setState({
-                    showMessage: true,
-                    messageData: resp.data.data
+
+                MessageApi.queryNotice({ page: 1, pageSize: 10, type: 100 }).then(resp => {
+                    if (!EmptyUtils.isEmptyArr(resp.data.data)) {
+                        homeModalManager.setHomeMessage(resp);
+                        this.showModal();
+                    }
                 });
-            }
-        });
-        // var currStr = new Date().getTime() + '';
-        // AsyncStorage.getItem('lastMessageTime').then((value) => {
-        //     if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-        //         MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {
-        //             if (!EmptyUtils.isEmptyArr(resp.data.data)) {
-        //                 this.messageModal && this.messageModal.open();
-        //                 this.setState({
-        //                     showMessage: true,
-        //                     messageData: resp.data.data
-        //                 });
-        //             }
-        //         });
-        //     }
-        // });
-        // AsyncStorage.setItem('lastMessageTime', currStr);
+
+
 
     };
 
@@ -280,7 +316,7 @@ export default class HomePage extends PureComponent {
             <Modal ref={(ref) => {
                 this.messageModal = ref;
             }} visible={this.state.showMessage}>
-                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
+                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: "center" }}>
                     <TouchableWithoutFeedback onPress={() => {
                         this.setState({
                             showMessage: false
@@ -291,7 +327,12 @@ export default class HomePage extends PureComponent {
 
                     <ImageBackground source={home_notice_bg} style={styles.messageBgStyle}>
                         <XQSwiper
-                            style={{ alignSelf: 'center', marginTop: px2dp(145), width: px2dp(230), height: px2dp(211)}}
+                            style={{
+                                alignSelf: "center",
+                                marginTop: px2dp(145),
+                                width: px2dp(230),
+                                height: px2dp(211)
+                            }}
                             height={px2dp(230)} width={px2dp(230)} renderRow={this.messageRender}
                             dataSource={EmptyUtils.isEmptyArr(this.state.messageData) ? [] : this.state.messageData}
                             loop={false}
@@ -316,18 +357,18 @@ export default class HomePage extends PureComponent {
         let indexs = [];
         for (let i = 0; i < this.state.messageData.length; i++) {
             let view = i === this.state.messageIndex ?
-                <View  style={[styles.messageIndexStyle,{backgroundColor:'#FF427D'}]}/> :
-                <View source={messageUnselected} style={[styles.messageIndexStyle,{ backgroundColor: '#f4d7e4'}]}/>;
+                <View style={[styles.messageIndexStyle, { backgroundColor: "#FF427D" }]}/> :
+                <View source={messageUnselected} style={[styles.messageIndexStyle, { backgroundColor: "#f4d7e4" }]}/>;
             indexs.push(view);
         }
         return (
             <View style={{
-                flexDirection: 'row',
+                flexDirection: "row",
                 width: px2dp(120),
-                justifyContent: this.state.messageData.length === 1 ? 'center' : 'space-between',
+                justifyContent: this.state.messageData.length === 1 ? "center" : "space-between",
                 marginBottom: px2dp(12),
                 height: 12,
-                alignSelf: 'center'
+                alignSelf: "center"
             }}>
                 {indexs}
             </View>
@@ -341,7 +382,7 @@ export default class HomePage extends PureComponent {
                     <Text style={{
                         color: DesignRule.textColor_mainTitle,
                         fontSize: DesignRule.fontSize_secondTitle,
-                        alignSelf: 'center'
+                        alignSelf: "center"
                     }}>
                         {item.title}
                     </Text>
@@ -384,7 +425,7 @@ export default class HomePage extends PureComponent {
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
-                <LinearGradient colors={['#000', 'transparent']}
+                <LinearGradient colors={["#000", "transparent"]}
                                 ref={e => this.headerShadow = e}
                                 style={[styles.navBar, {
                                     height: this.headerH + 14,
@@ -393,7 +434,7 @@ export default class HomePage extends PureComponent {
 
                 <HomeSearchView navigation={this.props.navigation}
                                 whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}/>
-                <ShareTaskIcon style={{ position: 'absolute', right: 0, top: px2dp(220) - 40 }}
+                <ShareTaskIcon style={{ position: "absolute", right: 0, top: px2dp(220) - 40 }}
                                ref={(ref) => {
                                    this.shareTaskIcon = ref;
                                }}
@@ -412,6 +453,7 @@ export default class HomePage extends PureComponent {
     }
 }
 
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -419,46 +461,46 @@ const styles = StyleSheet.create({
     },
     // headerBg
     navBarBg: {
-        flexDirection: 'row',
+        flexDirection: "row",
         paddingLeft: 10,
         paddingRight: 10,
         height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "absolute",
         left: 0,
         right: 0,
         zIndex: 2
     },
     // header
     navBar: {
-        flexDirection: 'row',
+        flexDirection: "row",
         paddingLeft: 10,
         paddingRight: 10,
         height: statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0),
         width: ScreenUtils.width,
         paddingTop: statusBarHeight,
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
+        alignItems: "center",
+        justifyContent: "center",
+        position: "absolute",
         left: 0,
         right: 0,
         zIndex: 3
     },
     titleView: {
-        backgroundColor: '#fff',
+        backgroundColor: "#fff",
         height: px2dp(53),
         marginTop: px2dp(10),
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: "center",
+        justifyContent: "center"
     },
     title: {
         color: DesignRule.textColor_mainTitle,
         fontSize: px2dp(19),
-        fontWeight: '600'
+        fontWeight: "600"
     },
     messageBgStyle: {
         width: px2dp(295),
@@ -469,12 +511,14 @@ const styles = StyleSheet.create({
         width: px2dp(24),
         height: px2dp(24),
         marginTop: px2dp(100),
-        alignSelf: 'flex-end',
+        alignSelf: "flex-end",
         marginRight: ((ScreenUtils.width) - px2dp(300)) / 2
     },
     messageIndexStyle: {
         width: px2dp(10),
         height: px2dp(10),
-        borderRadius:px2dp(5)
+        borderRadius: px2dp(5)
     }
 });
+
+export default withNavigationFocus(HomePage);
