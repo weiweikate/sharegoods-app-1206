@@ -38,6 +38,7 @@ import DesignRule from 'DesignRule';
 import TimerMixin from 'react-timer-mixin';
 import res from './res';
 import homeModalManager from './model/HomeModalManager'
+import { withNavigationFocus } from 'react-navigation';
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
@@ -54,7 +55,7 @@ const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
 
 @observer
-export default class HomePage extends PureComponent {
+class HomePage extends PureComponent {
 
     st = 0;
     shadowOpacity = 0.4;
@@ -161,13 +162,20 @@ export default class HomePage extends PureComponent {
             TimerMixin.setTimeout(() => {
                 // 检测版本更新
                 // this.getVersion();
-                homeModalManager.getVersion().then((data)=> {alert(JSON.stringify(data))});
+                homeModalManager.getVersion().then((data)=> {
+
+                });
+                // this.getVersion();
             }, 2500);
         });
     }
 
     componentWillUnmount() {
         this.listener && this.listener.remove();
+    }
+
+    showModal(){
+
     }
 
     // 滑动头部透明度渐变
@@ -409,6 +417,8 @@ export default class HomePage extends PureComponent {
     }
 }
 
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -475,3 +485,5 @@ const styles = StyleSheet.create({
         borderRadius:px2dp(5)
     }
 });
+
+export default withNavigationFocus(HomePage);
