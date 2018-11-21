@@ -395,7 +395,7 @@ export default class SearchResultPage extends BasePage {
                             <Text style={{
                                 color: 'white',
                                 fontSize: 10
-                            }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
+                            }}>{ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber}</Text>
                         </View>}
                     </TouchableOpacity>
                     {this.state.showTop ? <TouchableOpacity onPress={this._onPressToTop}>
