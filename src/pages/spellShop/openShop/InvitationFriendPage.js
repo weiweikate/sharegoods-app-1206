@@ -32,7 +32,11 @@ export default class InvitationToShopPage extends BasePage {
 
     constructor(props) {
         super(props);
-        this.state = { disable: false };
+        this.state = {
+            disable: false,
+            codeString: `${apiEnvironment.getCurrentH5Url()}/download`,
+            wxTip: '分享至微信，为您的店铺增添活力'
+        };
     }
 
     info = {};
@@ -42,22 +46,36 @@ export default class InvitationToShopPage extends BasePage {
 
     //截屏
     _saveImg = () => {
+        const shareInfo = this.params.shareInfo || {};
+        const { manager = {} } = shareInfo;
         this.setState({
             disable: true
         }, () => {
-            bridge.saveScreen(null, () => {
+            bridge.saveShopInviteFriendsImage({
+                headerImg: `${shareInfo.headUrl}`,
+                shopName: `${shareInfo.name}`,
+                shopId: `ID: ${shareInfo.storeNumber}`,
+                shopPerson: `店主: ${manager.nickname}`,
+                codeString: this.state.codeString,
+                wxTip: this.state.wxTip
+            }, () => {
                 this.$toastShow('保存成功');
-                this.__timer__ = setTimeout(() => {
-                    this.setState({
-                        disable: false
-                    });
-                }, 2500);
             }, () => {
                 this.$toastShow('保存失败');
-                this.setState({
-                    disable: false
-                });
             });
+            // bridge.saveScreen(null, () => {
+            //     this.$toastShow('保存成功');
+            //     this.__timer__ = setTimeout(() => {
+            //         this.setState({
+            //             disable: false
+            //         });
+            //     }, 2500);
+            // }, () => {
+            //     this.$toastShow('保存失败');
+            //     this.setState({
+            //         disable: false
+            //     });
+            // });
         });
     };
 
@@ -97,7 +115,7 @@ export default class InvitationToShopPage extends BasePage {
                                 width: ScreenUtils.autoSizeWidth(325),
                                 height: ScreenUtils.autoSizeWidth(380)
                             }} source={Banner}>
-                                <View style = {{height:ScreenUtils.autoSizeWidth(130),justifyContent:'center'}}>
+                                <View style={{ height: ScreenUtils.autoSizeWidth(130), justifyContent: 'center' }}>
                                     <View style={styles.topContainer}>
                                         {
                                             shareInfo.headUrl ?
@@ -114,12 +132,12 @@ export default class InvitationToShopPage extends BasePage {
 
                                 <View style={styles.qrContainer}>
                                     <QRCode
-                                        value={`${apiEnvironment.getCurrentH5Url()}/download`}
+                                        value={this.state.codeString}
                                         size={ScreenUtils.autoSizeWidth(136)}
                                         bgColor={DesignRule.textColor_mainTitle}
                                         fgColor={'white'}/>
                                 </View>
-                                <Text style={styles.wxTip}>分享至微信，为您的店铺增添活力</Text>
+                                <Text style={styles.wxTip}>{this.state.wxTip}</Text>
                             </ImageBackground>
                             <View style={{
                                 flexDirection: 'row',
@@ -128,13 +146,13 @@ export default class InvitationToShopPage extends BasePage {
                             }}>
                                 <TouchableOpacity onPress={this._saveImg}
                                                   disabled={this.state.disable}>
-                                    <ImageBackground source = {yqhy_Btn} style={styles.bottomBtn}>
+                                    <ImageBackground source={yqhy_Btn} style={styles.bottomBtn}>
                                         <Text style={styles.textBtn}>保存图片</Text>
                                     </ImageBackground>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={{ marginLeft: 20 }}
                                                   onPress={this._shareImg}>
-                                    <ImageBackground source = {yqhy_Btn} style={styles.bottomBtn}>
+                                    <ImageBackground source={yqhy_Btn} style={styles.bottomBtn}>
                                         <Text style={styles.textBtn}>分享到...</Text>
                                     </ImageBackground>
                                 </TouchableOpacity>
@@ -146,7 +164,7 @@ export default class InvitationToShopPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${shareInfo.name}`,
                                     dec: '店铺',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download`,
+                                    linkUrl: this.state.codeString,
                                     thumImage: `${shareInfo.headUrl}`
                                 }}/>
             </View>
@@ -159,7 +177,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     topContainer: {
-        flexDirection: 'row',
+        flexDirection: 'row'
     },
     topImg: {
         width: ScreenUtils.autoSizeWidth(68),
