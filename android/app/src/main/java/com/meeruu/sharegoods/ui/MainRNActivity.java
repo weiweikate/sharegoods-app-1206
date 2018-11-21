@@ -28,6 +28,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.OnProgressListener;
 import com.meeruu.commonlib.handler.WeakHandler;
+import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.commonlib.utils.ParameterUtils;
@@ -38,7 +39,7 @@ import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
-import com.meeruu.sharegoods.rn.PreLoadReactDelegate;
+import com.meeruu.sharegoods.rn.preload.PreLoadReactDelegate;
 import com.meeruu.sharegoods.service.VersionUpdateService;
 import com.meeruu.sharegoods.utils.LoadingDialog;
 import com.umeng.socialize.UMShareAPI;
@@ -122,6 +123,13 @@ public class MainRNActivity extends ReactActivity {
             startService(it);
             bindService(it, conn, Context.BIND_AUTO_CREATE);
         }
+        UApp.pageSessionStart(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        UApp.pageSessionEnd(this);
     }
 
     @Override
@@ -284,7 +292,7 @@ public class MainRNActivity extends ReactActivity {
                 mLoadingDialog.setCancelable(false);
             }
 
-            if(!TextUtils.isEmpty(event.getMsg())){
+            if (!TextUtils.isEmpty(event.getMsg())) {
                 mLoadingDialog.setMessage(event.getMsg());
             }
 

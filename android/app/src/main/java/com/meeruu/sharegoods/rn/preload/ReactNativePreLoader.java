@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.rn;
+package com.meeruu.sharegoods.rn.preload;
 
 import android.view.ViewGroup;
 
