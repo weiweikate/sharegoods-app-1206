@@ -15,7 +15,7 @@ import BasePage from '../../../BasePage';
 import DetailHeaderView from './components/DetailHeaderView';
 import DetailSegmentView from './components/DetailSegmentView';
 import DetailBottomView from './components/DetailBottomView';
-import PriceExplain from './components/PriceExplain'
+import PriceExplain from './components/PriceExplain';
 import DetailNavView from './components/DetailNavView';
 import SelectionPage from './SelectionPage';
 import HomeAPI from '../api/HomeAPI';
@@ -516,7 +516,8 @@ export default class ProductDetailPage extends BasePage {
                          renderItem={this._renderItem}
                          keyExtractor={(item, index) => `${index}`}
                          sections={[{ data: [{}] }]}
-                         scrollEventThrottle={10}/>
+                         scrollEventThrottle={10}
+                         showsVerticalScrollIndicator={false}/>
             <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney={shareMoney} status={status}
                               buyLimit={buyLimit} leftBuyNum={leftBuyNum}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>

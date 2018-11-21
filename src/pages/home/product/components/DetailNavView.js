@@ -47,7 +47,8 @@ export default class DetailNavView extends Component {
     };
 
     render() {
-        return (<View style={styles.transparentView}>
+        return (
+            <View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {/*返回*/}
                     <TouchableOpacity onPress={() => {
@@ -102,9 +103,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         position: 'absolute',
         top: ScreenUtils.statusBarHeight,
-        left: 16,
-        right: 16,
         zIndex: 3,
+        left: 8,
+        right: 8,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
