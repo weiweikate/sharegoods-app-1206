@@ -34,7 +34,6 @@ export default class NickNameModifyPage extends BasePage {
                     style={styles.inputTextStyle}
                     onChangeText={text => this.setState({ nickName: text })}
                     placeholder={this.state.nickName}
-                    maxLength={8}
                     value={this.state.nickName}
                     underlineColorAndroid={'transparent'}
                 />
@@ -63,15 +62,16 @@ export default class NickNameModifyPage extends BasePage {
     save = () => {
         MineAPI.updateUserById({ type: 2, nickname: this.state.nickName }).then(res => {
             let length = this.state.nickName.trim().length;
+            console.log('nickname',this.state.nickName,length);
             if (length < 2 || length > 16) {
                 this.$toastShow('昵称长度位2-16位');
                 return;
             }
-            let containSpecial = RegExp(/[(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\-)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)(\<)(\>)(\?)(\)]+/);
-            if (containSpecial.test(this.state.nickName)) {
-                this.$toastShow('昵称不能包含特殊字符');
-                return;
-            }
+            // let containSpecial = RegExp(/[(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\-)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)(\<)(\>)(\?)(\)]+/);
+            // if (containSpecial.test(this.state.nickName)) {
+            //     this.$toastShow('昵称不能包含特殊字符');
+            //     return;
+            // }
             user.nickname = this.state.nickName;
             this.$navigateBack();
         }).catch(err => {

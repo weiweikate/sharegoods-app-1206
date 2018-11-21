@@ -118,7 +118,7 @@ export default class MyHelperPage extends BasePage {
                             <Image source={icon_feedback} style={{ width: 37, height: 37 }}/>
                             <Text style={styles.textFontstyle}>问题反馈</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.6} onPress={() => console.log('自动退款')}
+                        <TouchableOpacity activeOpacity={0.6} onPress={() => {this.props.navigation.navigate("order/order/MyOrdersListPage", { index: 0 })}}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_auto_feedback} style={{ width: 37, height: 37 }}/>
                             <Text style={styles.textFontstyle}>查看订单</Text>
