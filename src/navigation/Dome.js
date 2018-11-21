@@ -66,6 +66,7 @@ export default class Dome extends BasePage {
               pageWidth={ScreenUtils.width * 0.8}
               data={this.state.data}
               scrollToIndex={this._scrollToIndex}
+              // automatic={false}
           />
           <Text>{this.state.index}</Text>
           <TouchableOpacity onPress={() => {this.setState({data: []})}}>

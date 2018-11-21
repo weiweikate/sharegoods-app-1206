@@ -14,9 +14,10 @@ import React from 'react';
 
 import {
     View,
-    TouchableWithoutFeedback,
+    TouchableOpacity,
     ScrollView,
-    Image
+    Image,
+    Platform
 } from 'react-native';
 import TimerMixin from 'react-timer-mixin';
 import PropTypes from 'prop-types';
@@ -51,6 +52,8 @@ export default class LoopScrollView extends React.PureComponent {
 
         this.state = {};
         this.drag = false;
+        this._scrollViewToLast = this._scrollViewToLast.bind(this);
+        this._scrollViewToFirst = this._scrollViewToFirst.bind(this);
     }
 
     shouldComponentUpdate(nextProps, nextState){
@@ -82,9 +85,6 @@ export default class LoopScrollView extends React.PureComponent {
         return true;
     }
 
-    componentDidUpdate() {
-    }
-
 
     _startTimer() {
         this._endTimer();
@@ -100,7 +100,13 @@ export default class LoopScrollView extends React.PureComponent {
         }
         let { style: { width }, pageWidth, pagePadding } = this.props;
         let imageW = pageWidth || width;
-        this.scrollView && this.scrollView.scrollTo({ x: (imageW + pagePadding) * (this.index + 1), animated: true });
+        let index = this.index;
+        this.scrollView && this.scrollView.scrollTo({ x: (imageW + pagePadding) * (index + 1), animated: true });
+        if (Platform.OS !== 'ios'){
+            TimerMixin.setTimeout(()=> {// e.nativeEvent.contentOffset.x
+                this._onMomentumScrollEnd({nativeEvent: {contentOffset: {x: (imageW + pagePadding) * (index + 1)}}})
+            },750);
+        }
     }
 
     _endTimer() {
@@ -111,8 +117,16 @@ export default class LoopScrollView extends React.PureComponent {
 
     }
 
-    _onScrollEndDrag() {
+    _onScrollEndDrag(e) {
         this.drag = false;
+        let index = this._getIndex(e);
+        let velocityX = Platform.OS === 'ios'?e.nativeEvent.velocity.x: e.nativeEvent.velocity.x * -1;
+        if (velocityX > 0){
+            index = this.index+1;
+        } else if(velocityX < 0){
+            index = this.index-1;
+        }
+        this._scrollViewWithIndex(index);
         if (this.props.automatic) {
             this._startTimer();
         }
@@ -126,15 +140,15 @@ export default class LoopScrollView extends React.PureComponent {
     }
 
     componentDidMount() {
-        if (this.props.data.length < 1) {
-            return;
-        }
-        this._scrollViewToFirst();
-        this.index = 2;
-        this.props.scrollToIndex(0);
-        if (this.props.automatic) {
-            this._startTimer();
-        }
+            if (this.props.data.length < 1) {
+                return;
+            }
+            this._scrollViewToFirst();
+            this.index = 2;
+            this.props.scrollToIndex(0);
+            if (this.props.automatic) {
+                this._startTimer();
+            }
     }
 
     _getPageNumWithIndex(index) {
@@ -168,19 +182,23 @@ export default class LoopScrollView extends React.PureComponent {
         if (this._getPageNumWithIndex(index) !== this._getPageNumWithIndex(this.index)) {
             this.props.scrollToIndex(this._getPageNumWithIndex(index));
         }
+
+        // if (index !== this.index && this.drag === false){
+        //     this._scrollViewWithIndex(index);
+        // }
         this.index = index;
 
     }
 
     _onMomentumScrollEnd(e) {
-        if (this.props.data.length < 1 || this.drag === true) {
+         if (this.props.data.length < 1) {
             return;
         }
-        let index = this._getIndex(e);
-
+         let index = this._getIndex(e);
         if (this._isFirst(index) === true) {
             this._scrollViewToLast();
         } else if (this._isLast(index) === true) {
+            // alert(index);
             this._scrollViewToFirst();
         } else if (index === 0) {
             if (this.props.data.length === 1) {
@@ -200,18 +218,23 @@ export default class LoopScrollView extends React.PureComponent {
             imgUrl = item[this.props.imgKey];
         }
         return (
-            <TouchableWithoutFeedback key={imgUrl + index}>
+            <TouchableOpacity key={imgUrl + index}
+                              style={{
+                                  height: imageH,
+                                  width: imageW,
+                                  marginHorizontal: pagePadding / 2,
+                                  borderRadius: itemCorners,
+                                  overflow: 'hidden',
+                              }}
+            >
                 <Image source={{ uri: imgUrl }}
+                       user
                        style={{
                            height: imageH,
-                           width: imageW,
-                           marginHorizontal: pagePadding / 2,
-                           backgroundColor: 'red',
-                           borderRadius: itemCorners,
-                           overflow: 'hidden'
+                           width: imageW
                        }}
                 />
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         );
     }
 
@@ -232,22 +255,22 @@ export default class LoopScrollView extends React.PureComponent {
     }
 
     _scrollViewToFirst() {
-        // alert('_scrollViewToFirst');
-        let { style: { width }, pageWidth, pagePadding } = this.props;
-        this.index = 2;
-        let imageW = pageWidth || width;
-        this.scrollView && this.scrollView.scrollTo({ x: (imageW + pagePadding) * 2, animated: false });
+        TimerMixin.setTimeout(() => {
+            let { style: { width }, pageWidth, pagePadding } = this.props;
+            this.index = 2;
+            let imageW = pageWidth || width;
+            this.scrollView && this.scrollView.scrollTo({ x: (imageW + pagePadding) * 2, animated: false });
+        }, 100);
     }
 
     _scrollViewToLast() {
-        // alert('_scrollViewToLast')
-        let { style: { width }, pageWidth, pagePadding } = this.props;
-        let imageW = pageWidth || width;
-        this.index = this.props.data.length + 1;
-        this.scrollView && this.scrollView.scrollTo({
-            x: (imageW + pagePadding) * (this.props.data.length + 1),
-            animated: false
-        });
+            let { style: { width }, pageWidth, pagePadding } = this.props;
+            let imageW = pageWidth || width;
+            this.index = this.props.data.length + 1;
+            this.scrollView && this.scrollView.scrollTo({
+                x: (imageW + pagePadding) * (this.props.data.length + 1),
+                animated: false
+            });
     }
 
     _scrollViewToLast2() {
@@ -258,6 +281,16 @@ export default class LoopScrollView extends React.PureComponent {
         this.scrollView && this.scrollView.scrollTo({
             x: (imageW + pagePadding) * (this.props.data.length),
             animated: false
+        });
+    }
+
+    _scrollViewWithIndex(index){
+        let { style: { width }, pageWidth, pagePadding } = this.props;
+        let imageW = pageWidth || width;
+        this.index = this.props.data.length;
+        this.scrollView && this.scrollView.scrollTo({
+            x: (imageW + pagePadding) * (index),
+            animated: true
         });
     }
 
@@ -290,33 +323,33 @@ export default class LoopScrollView extends React.PureComponent {
     }
 
     render() {
-        let { style: { width, height }, pageWidth, pageHeight, data, pagePadding } = this.props;
-        let imageH = pageHeight || height;
+        let { style: { width }, pageWidth, data, pagePadding } = this.props;
+        // let imageH = pageHeight || height;
         let imageW = pageWidth || width;
         data = this._changData(data);
         return (
-            <View style={[this.props.style, { alignItems: 'center', justifyContent: 'center' }]}>
-                <View style={{ height: imageH, width: imageW + pagePadding, overflow: 'visible' }}>
+            <View style={[this.props.style, { alignItems: 'center', justifyContent: 'center'}]}>
                     <ScrollView
-                        style={{ overflow: 'visible' }}
+                        style={{
+                             paddingHorizontal: (width - imageW - pagePadding)/2
+                        }}
                         ref={(ref) => {
                             this.scrollView = ref;
                         }}
+                        removeClippedSubviews={false}
                         onScroll={this._onScroll.bind(this)}
                         onMomentumScrollEnd={this._onMomentumScrollEnd.bind(this)}
                         onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
                         onScrollEndDrag={this._onScrollEndDrag.bind(this)}
                         showsHorizontalScrollIndicator={false}
                         showsVerticalScrollIndicator={false}
-                        pagingEnabled={true}
-                        // snapToInterval={imageW + pagePadding}
-                        scrollEventThrottle={12}
+                        // scrollEventThrottle={6}
+                        // scrollEnabled={false}
                         horizontal={true}>
                         {data.map((item, index) => {
                             return (this._renderItem(item, index));
                         })}
                     </ScrollView>
-                </View>
             </View>
         );
     }
