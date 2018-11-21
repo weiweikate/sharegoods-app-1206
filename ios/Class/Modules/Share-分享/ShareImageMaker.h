@@ -34,6 +34,9 @@ SINGLETON_FOR_HEADER(ShareImageMaker)
 
 - (void)saveInviteFriendsImage:(NSString*)QRString
                     completion:(completionBlock) completion;
+
+- (void)saveShopInviteFriendsImage:(NSDictionary*)dic
+                    completion:(completionBlock) completion;
 @end
 
 
