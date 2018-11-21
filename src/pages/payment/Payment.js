@@ -197,7 +197,7 @@ export class Payment {
                 console.log(JSON.stringify(resultStr));
                 this.outTradeNo = preStr.data.outTradeNo
                 if (parseInt(resultStr.code, 0) !== 0) {
-                    ref && ref.show(2, resultStr.msg)
+                    // ref && ref.show(2, resultStr.msg)
                     Toast.hiddenLoading()
                     return ''
                 }

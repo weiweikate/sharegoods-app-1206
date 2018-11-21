@@ -33,8 +33,8 @@ export default class ShowListPage extends BasePage {
             'willFocus',
             payload => {
                 const { state } = payload;
-                console.log('willFocus', state);
-                if (state && state.routeName === 'ShowListPage') {
+                console.log('ShowListPage willFocus', state);
+                if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage') ) {
                     if (showSelectedDetail.selectedShow) {
                         return
                     }
@@ -43,6 +43,8 @@ export default class ShowListPage extends BasePage {
                 }
             }
         );
+
+        
     }
 
     componentWillUnmount() {

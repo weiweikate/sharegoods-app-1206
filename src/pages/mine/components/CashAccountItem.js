@@ -3,7 +3,6 @@ import {
     View,
     StyleSheet
 } from 'react-native';
-// import arrow_right from '../../order/res/arrow_right.png';
 import {
     UIText, UIImage, NoMoreClick
 } from '../../../components/ui';

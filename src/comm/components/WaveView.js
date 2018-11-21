@@ -19,7 +19,7 @@ export default class WaveView extends PureComponent {
     render(){
         return(
             <MRWaveView
-                style={{height:40,width:40}}
+                {...this.props}
                 topTitle={this.props.topTitle}
                 waveBackgroundColor={processColor(this.props.waveBackgroundColor)}
                 waveColor = {processColor(this.props.waveColor)}

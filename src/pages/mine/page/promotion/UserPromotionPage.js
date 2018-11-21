@@ -32,6 +32,7 @@ import DesignRule from 'DesignRule';
 const { px2dp } = ScreenUtils;
 // const url = '/static/protocol/extensionExplain.html'
 import apiEnvironment from '../../../../api/ApiEnvironment';
+import StringUtils from "../../../../utils/StringUtils";
 
 type Props = {};
 export default class UserPromotionPage extends BasePage<Props> {
@@ -151,7 +152,7 @@ export default class UserPromotionPage extends BasePage<Props> {
         }else {
             text = (
                 <Text style={styles.grayTextStyle}>
-                    {`剩余推广金额￥${item.remain * item.price}`}
+                    {`剩余推广金额${StringUtils.formatMoneyString(item.remain * item.price)}`}
                 </Text>
             )
         }

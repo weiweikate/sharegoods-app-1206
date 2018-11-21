@@ -104,6 +104,7 @@
 		5068364421379E0B001AB175 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5068364321379E0B001AB175 /* CoreMotion.framework */; };
 		5068364621379E1D001AB175 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5068364521379E1D001AB175 /* CoreFoundation.framework */; };
 		5068364821379E2B001AB175 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5068364721379E2B001AB175 /* Foundation.framework */; };
+		5077FC2721A401E3003B860D /* RSAEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5077FC2621A401E2003B860D /* RSAEncryptor.m */; };
 		50FB633F219AC4C100A35334 /* AppDelegate+APNS.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FB633E219AC4C100A35334 /* AppDelegate+APNS.m */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		61E64F46690C4B7EBB9DD7A2 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE4716B854E34520B3C18596 /* EvilIcons.ttf */; };
@@ -634,6 +635,8 @@
 		5068364321379E0B001AB175 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		5068364521379E1D001AB175 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		5068364721379E2B001AB175 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		5077FC2521A401E2003B860D /* RSAEncryptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSAEncryptor.h; sourceTree = "<group>"; };
+		5077FC2621A401E2003B860D /* RSAEncryptor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSAEncryptor.m; sourceTree = "<group>"; };
 		50FB633D219AC4C100A35334 /* AppDelegate+APNS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+APNS.h"; sourceTree = "<group>"; };
 		50FB633E219AC4C100A35334 /* AppDelegate+APNS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+APNS.m"; sourceTree = "<group>"; };
 		5AEC9711CAB3D2A4643117DC /* Pods-crm_app_xiugou.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.release.xcconfig"; path = "Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.release.xcconfig"; sourceTree = "<group>"; };
@@ -1142,6 +1145,7 @@
 		506835B721379B78001AB175 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				5077FC2421A4019A003B860D /* RSA */,
 				CD14EA162183FC2500480A06 /* ImageCompression */,
 				506835B821379B78001AB175 /* Cache-缓存相关 */,
 				506835BB21379B78001AB175 /* CustomService-客服 */,
@@ -1274,6 +1278,15 @@
 				506835E621379B78001AB175 /* SGQRCode.bundle */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		5077FC2421A4019A003B860D /* RSA */ = {
+			isa = PBXGroup;
+			children = (
+				5077FC2521A401E2003B860D /* RSAEncryptor.h */,
+				5077FC2621A401E2003B860D /* RSAEncryptor.m */,
+			);
+			path = RSA;
 			sourceTree = "<group>";
 		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
@@ -2193,6 +2206,7 @@
 				5068362621379B78001AB175 /* UIView+EasyShowExt.m in Sources */,
 				5068363921379B78001AB175 /* SGQRCodeScanManager.m in Sources */,
 				5068363321379B78001AB175 /* LoginAndShareModule.m in Sources */,
+				5077FC2721A401E3003B860D /* RSAEncryptor.m in Sources */,
 				5068362121379B78001AB175 /* EasyLoadingGlobalConfig.m in Sources */,
 				CDAB6D1F219AC5F800DE6716 /* MRWaveViewManager.m in Sources */,
 				5068363B21379B78001AB175 /* WCQRCodeScanningVC.m in Sources */,

@@ -22,18 +22,21 @@ export default class ShowHotView extends Component {
 
     state = {
         isEnd: false,
-        isFetching: false
+        isFetching: false,
+        
     }
 
     constructor(props) {
         super(props);
+        this.firstLoad = true
         this.recommendModules = new ShowRecommendModules();
     }
 
     componentDidMount() {
-        // this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
-        //     this.waterfall.addItems(data || []);
-        // });
+        if (this.firstLoad === true) {
+            console.log('ShowHotView firstLoad')
+            this.loadData()
+        }
     }
 
     infiniting(done) {
@@ -56,11 +59,20 @@ export default class ShowHotView extends Component {
     }
 
     refresh() {
+        console.log('ShowHotView refresh ')
+        if (this.firstLoad === true) {
+            return
+        }
+        this.loadData()
+    }
+
+    loadData() {
         this.setState({isEnd: false, isFetching: true})
         this.waterfall.scrollToTop()
         this.waterfall.index = 1
         this.waterfall && this.waterfall.clear()
         this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
+            this.firstLoad = false
             this.setState({isFetching: false})
             this.waterfall && this.waterfall.addItems(data || []);
         })

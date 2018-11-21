@@ -196,7 +196,7 @@ export default class CommShareModal extends React.Component {
             isShow = true;
         }
         array.push({
-            image: res.share.weiXin, title: '微信好友', onPress: () => {
+            image: res.share.wechat, title: '微信好友', onPress: () => {
                 this.share(0);
             }
         });

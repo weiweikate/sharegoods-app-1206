@@ -199,7 +199,9 @@ export default class ShowConnectPage extends BasePage {
     _keyExtractor = (data) => data.id + '';
 
     goToHome() {
-        this.$navigateBackToHome();
+        // this.$navigateBackToHome();
+        this.props.navigation.popToTop()
+        this.props.navigation.navigate('ShowListPage')
     }
 
     _renderInfinite() {

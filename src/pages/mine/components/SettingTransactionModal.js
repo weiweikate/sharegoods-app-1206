@@ -6,8 +6,6 @@ import {
     ImageBackground
 } from 'react-native';
 import { color } from '../../../constants/Theme';
-import BonusExchangeSucceedBackground from '../res/userInfoImg/BonusExchangeSucceedBackground.png';
-import bonusClose from '../res/userInfoImg/bonusClose.png';
 import {
     UIText, UIImage
 } from '../../../components/ui';
@@ -15,6 +13,10 @@ import PasswordInput from './PasswordInput';
 import { observer } from 'mobx-react/native';
 import Modal from 'CommModal';
 import DesignRule from 'DesignRule';
+import res from '../res';
+
+const BonusExchangeSucceedBackground = res.userInfoImg.BonusExchangeSucceedBackground;
+const bonusClose = res.userInfoImg.bonusClose;
 
 @observer
 class SettingTransactionModal extends Component {
