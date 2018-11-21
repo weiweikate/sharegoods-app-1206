@@ -15,21 +15,18 @@ import { PageLoadingState } from '../../../../components/pageDecorator/PageState
 import MineApi from '../../api/MineApi';
 import HTML from 'react-native-render-html';
 // 图片资源
-import HeaderBarBgImg from './../../res/homeBaseImg/home_jingshenqingk_bg.png';
-import iconbg from './../../res/homeBaseImg/home_jingshnegqingk_icon.png'
-// import WhiteBtImg from './res/dz_03-02.png';
-// import RingImg from './../../res/homeBaseImg/bg_03.png';
-import CCZImg from './res/ccz_03.png';
-import ProgressImg from './res/jdt_05.png';
-// import {NavigationActions} from "react-navigation";
 import BasePage from '../../../../BasePage';
 import {UIImage} from '../../../../components/ui';
 import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
-import res from '../../../../comm/res';
+import res from '../../res';
 // 常量
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const HeaderBarBgImg = res.homeBaseImg.home_jingshenqingk_bg;
+const iconbg = res.homeBaseImg.home_jingshnegqingk_icon;
+const CCZImg = res.myData.ccz_03;
+const ProgressImg = res.myData.jdt_05;
 
 
 export default class MyPromotionPage extends BasePage {
@@ -226,7 +223,7 @@ export default class MyPromotionPage extends BasePage {
                 {this.renderSepLine()}
                 {this.state.nextArr ? <HTML html={this.state.nextArr} imagesMaxWidth={ScreenUtils.width}
                                             containerStyle={{ backgroundColor: '#fff' }}
-                                            imagesInitialDimensions={ScreenUtils.width}
+                                            imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
                                             baseFontStyle={{ lineHeight: 25, color: DesignRule.textColor_secondTitle, fontSize: 13 }}/> : null}
             </View>
         );

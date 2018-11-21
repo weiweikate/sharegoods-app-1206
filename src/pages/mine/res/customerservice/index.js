@@ -4,7 +4,7 @@ const  helperAndCustomerService={
     icon_kefu:require('./shouhou_icon_kefu.png'),
     icon_camara:require('./shouhou_xiangji.png'),
     icon_delete:require('./deleteImage.png'),
-    icon_tuikuan:require('./bangzu__tuikuan_icon.png'),
+    icon_tuikuan:require('./bangzu_tuikuan_icon.png'),
     icon_feedback:require('./bangzu_fankui.png'),
     icon_auto_feedback:require('./bangzu_auto_tuikuan.png'),
     icon_wenti:require('./wenti_icon.png'),
@@ -12,8 +12,6 @@ const  helperAndCustomerService={
     icon_arrow_down:require('./fankui_icon_zhankai_down.png'),
     icon_dashframe:require('./xuxian_kuang.png'),
     icon_red_select:require('./bangzu_dugou.png')
-
-
 }
 
 export default helperAndCustomerService;

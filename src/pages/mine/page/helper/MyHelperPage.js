@@ -1,5 +1,9 @@
 /**
- * Created by xiangchen on 2018/7/10.
+ * @author chenxiang
+ * @date on 2018/9/7
+ * @describe 首页
+ * @org www.sharegoodsmall.com
+ * @email chenxiang@meeruu.com
  */
 import React from 'react';
 import {
@@ -52,11 +56,11 @@ export default class MyHelperPage extends BasePage {
                         <View key={index} style={styles.hotQuestionStyle}>
                             <TouchableOpacity activeOpacity={0.6} onPress={() => this.orderListq(item.list)}
                                               style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                <Image source={icon_wenti} style={{ width: 37, height: 37 }}/>
+                                <Image source={item.imgUrl?item.imgUrl:icon_wenti} style={{ width: 37, height: 37 }}/>
                                 <Text style={{
                                     fontSize: 11,
                                     color: DesignRule.textColor_secondTitle,
-                                    marginTop: 2
+                                    marginTop: 4
                                 }}>{item.name}</Text>
                             </TouchableOpacity>
                             <View style={styles.hot2ViewStyle}>
@@ -107,7 +111,7 @@ export default class MyHelperPage extends BasePage {
                         <TouchableOpacity activeOpacity={0.6} onPress={() => this.$navigate('order/afterSaleService/AfterSaleListPage')}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_tuikuan} style={{ width: 37, height: 37 }}/>
-                            <Text style={styles.textFontstyle}>退款进度</Text>
+                            <Text style={styles.textFontstyle}>查看售后</Text>
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack()}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -117,7 +121,7 @@ export default class MyHelperPage extends BasePage {
                         <TouchableOpacity activeOpacity={0.6} onPress={() => console.log('自动退款')}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_auto_feedback} style={{ width: 37, height: 37 }}/>
-                            <Text style={styles.textFontstyle}>自动退款</Text>
+                            <Text style={styles.textFontstyle}>查看订单</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ height: 177, backgroundColor: DesignRule.bgColor }}/>
@@ -137,9 +141,9 @@ export default class MyHelperPage extends BasePage {
                     }}
                                       onPress={() => this.jumpQYIMPage()}>
                         <UIImage source={icon_kefu} style={{ height: 23, width: 23 }} resizeMode={'contain'}/>
-                        <View style={{ marginLeft: 2, justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ marginLeft: 9, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{fontFamily:'PingFangSC-Regular',fontSize:16,color:DesignRule.textColor_mainTitle_222}}>在线客服</Text>
-                            <Text style={styles.text2Style}>9：00-21：00</Text>
+                            <Text style={styles.text2Style}>9:00-22:00</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -156,7 +160,7 @@ export default class MyHelperPage extends BasePage {
                         }}
                         onPress={() => this.jump2Telephone()}>
                         <UIImage source={icon_phone} style={{ height: 23, width: 24 }} esizeMode={'contain'}/>
-                        <View style={{ marginLeft: 2, justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ marginLeft: 9, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{fontFamily:'PingFangSC-Regular',fontSize:16,color:DesignRule.textColor_mainTitle_222}}>客服电话</Text>
                             <Text style={styles.text2Style}>400-9696-365</Text>
                         </View>
@@ -199,7 +203,8 @@ export default class MyHelperPage extends BasePage {
                     list.push({
                         name: item,
                         list: res.data[item],
-                        typeid: res.data[item][0].typeId
+                        typeid: res.data[item][0].typeId,
+                        imgUrl:res.data[item][0].imgUrl
                     });
                 });
                 this.setState({

@@ -7,7 +7,7 @@ const { px2dp, onePixel } = ScreenUtil
 import {observer} from 'mobx-react'
 import { HomeShowModules, tagName } from './Show';
 import DesignRule from 'DesignRule';
-import res from '../../comm/res'
+import res from './res'
 const homeShowImg = res.other.home_show;
 
 const TagView = ({ text }) => <View style={styles.tagView}>

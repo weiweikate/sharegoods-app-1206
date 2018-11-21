@@ -11,9 +11,7 @@ const resHome = {
     icon_search: require('./icon_search.png'),
     message_black: require('./message_black.png'),
     message_white: require('./message_white.png'),
-    messageModalBg: require('./messageModalBg.png'),
-    messageSelected: require('./messageSelected.png'),
-    messageUnselected: require('./messageUnselected.png'),
+    home_notice_bg:require('./home_notice_bg.png'),
     /** 首页5个icon*/
     school: require('./school.png'),
     share_icon: require('./share.png'),

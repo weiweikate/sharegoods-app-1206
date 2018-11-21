@@ -33,19 +33,19 @@ PODS:
   - SDWebImage/Core (4.4.2)
   - TYCyclePagerView (1.1.0)
   - UICKeyChainStore (2.1.1)
-  - UMCAnalytics (5.5.1):
+  - UMCAnalytics (5.5.2):
     - UMCCommon
-  - UMCCommon (1.5.2)
+  - UMCCommon (1.5.3)
   - UMCSecurityPlugins (1.0.6)
-  - UMCShare/Core (6.9.4):
+  - UMCShare/Core (6.9.5):
     - UMCCommon
-  - UMCShare/Social/ReducedQQ (6.9.4):
-    - UMCCommon
-    - UMCShare/Core
-  - UMCShare/Social/ReducedSina (6.9.4):
+  - UMCShare/Social/ReducedQQ (6.9.5):
     - UMCCommon
     - UMCShare/Core
-  - UMCShare/Social/ReducedWeChat (6.9.4):
+  - UMCShare/Social/ReducedSina (6.9.5):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/ReducedWeChat (6.9.5):
     - UMCCommon
     - UMCShare/Core
   - WechatOpenSDK (1.8.3)
@@ -108,10 +108,10 @@ SPEC CHECKSUMS:
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
   TYCyclePagerView: b70858c9b5d0e80e1e3129ff5ceb027eb0f76d44
   UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
-  UMCAnalytics: 0aff87e39008e2a650e5917430db0da2de2f8495
-  UMCCommon: 4392868ac47ff1b101663106bb114ba616fabbad
+  UMCAnalytics: 6654fd3c8201ff6da5c86a3ae29cd5c8436d3b7b
+  UMCCommon: 016af43c0f769feb1ae1861d65aaf2b23b89c9c7
   UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
-  UMCShare: aa233aecad67979930fe43f3a2f676023b669439
+  UMCShare: 552b29753f1b4da87b51d96545ed19e6263df397
   WechatOpenSDK: 3117412f8aafde4758cac1e8d20b93c67cafcfef
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 

@@ -21,7 +21,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
-import res from '../../../../comm/res';
+import res from '../../res';
 const  icon = res.button.tongyon_icon_check_green;
 
 type Props = {};

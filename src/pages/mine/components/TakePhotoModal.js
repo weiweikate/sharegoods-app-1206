@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import UIText from '../../../components/ui/UIText';
 import UIImage from '../../../components/ui/UIImage';
-import res from '../../../comm/res';
+import res from '../res';
 import DesignRule from 'DesignRule';
 
 const circleSelect = res.button.selected_circle_red;

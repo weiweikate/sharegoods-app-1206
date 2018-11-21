@@ -3,7 +3,7 @@ import {
     Text, ScrollView, Image, View
 } from 'react-native';
 import BasePage from '../../../../BasePage';
-import res from '../../../../comm/res';
+import res from '../../res';
 import DesignRule from 'DesignRule';
 const Logo = res.other.tongyong_logo_nor;
 
