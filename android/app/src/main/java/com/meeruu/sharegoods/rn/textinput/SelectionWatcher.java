@@ -11,7 +11,7 @@ package com.meeruu.sharegoods.rn.textinput;
 
 /**
  * Implement this interface to be informed of selection changes in the ReactTextEdit
- * This is used by the ReactTextInputManager to forward events from the EditText to JS
+ * This is used by the ReactTextInputMRManager to forward events from the EditText to JS
  */
 interface SelectionWatcher {
     void onSelectionChanged(int start, int end);
