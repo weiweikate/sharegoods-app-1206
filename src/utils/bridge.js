@@ -115,6 +115,13 @@ export default {
     }){
         NativeModules.LoginAndShareModule.saveInviteFriendsImage(QRString,onSuccess, onError);
     },
+
+    //{headerImg,shopName,shopId,shopPerson,codeString,wxTip}
+    saveShopInviteFriendsImage(jsonParam, onSuccess, onError = (errorStr) => {
+    }){
+        NativeModules.LoginAndShareModule.saveShopInviteFriendsImage(jsonParam,onSuccess, onError);
+    },
+
     /**
      * 保存当前页面到相册
      * {

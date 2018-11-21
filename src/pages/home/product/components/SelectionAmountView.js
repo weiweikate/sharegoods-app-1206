@@ -24,7 +24,7 @@ export default class RecentSearchView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            amount: props.type === 'after' ? this.props.afterAmount : 1
+            amount: props.type === 'after' ? this.props.afterAmount : 1//after退换货
         };
     }
 
@@ -121,7 +121,7 @@ export default class RecentSearchView extends Component {
                             value={`${this.state.amount}`}
                             onEndEditing={this._onEndEditing}
                             keyboardType='numeric'
-                            editable={type !== 'after'}//false不可编辑
+                            editable={false}//原先editable={type !== 'after'}
                         />
                     </View>
                     <View style={{ height: 30, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
