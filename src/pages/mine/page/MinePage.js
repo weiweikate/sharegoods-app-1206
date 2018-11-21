@@ -319,8 +319,7 @@ export default class MinePage extends BasePage {
                                     color: DesignRule.textColor_mainTitle,
                                     fontSize: DesignRule.fontSize_threeTitle
                                 }}>
-                                    { `${user.levelRemark}品鉴官` }
-                                    {/*{user.token ? `${user.levelRemark}品鉴官` : ""}*/}
+                                    {user.token ? `${user.levelRemark}品鉴官` : ""}
                                 </Text>
                                 <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_22 }}>
                                     查看权益>
