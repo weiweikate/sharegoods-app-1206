@@ -81,7 +81,7 @@ export default class ShareTaskIntroducePage extends BasePage<Props> {
                         backgroundColor: DesignRule.mainColor,
                         height: 50,
                         alignItems: 'center',
-                        justifyContent: 'center',
+                         justifyContent: 'center',
                         marginHorizontal: DesignRule.margin_page,
                         borderRadius: 5,
                     }}>
