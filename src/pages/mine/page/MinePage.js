@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
     StyleSheet,
     View,
@@ -9,7 +9,7 @@ import {
     Linking,
     Text,
     TouchableWithoutFeedback,
-    RefreshControl
+    RefreshControl, DeviceEventEmitter
 } from "react-native";
 import BasePage from "../../../BasePage";
 import UIText from "../../../components/ui/UIText";
@@ -27,6 +27,7 @@ import DesignRule from "DesignRule";
 import res from "../res";
 import EmptyUtils from "../../../utils/EmptyUtils";
 import WaveView from "WaveView";
+import MessageApi from "../../message/api/MessageApi";
 
 const {
     mine_header_bg,
@@ -51,7 +52,7 @@ const {
     mine_setting_icon_white,
     arrowRight,
     profile_banner,
-    mine_level_background,
+    mine_level_background
 } = res.homeBaseImg;
 
 
@@ -79,7 +80,8 @@ export default class MinePage extends BasePage {
             netFailedInfo: null,
             loadingState: PageLoadingState.success,
             isRefreshing: false,
-            changeHeader: true
+            changeHeader: true,
+            hasMessage: false
         };
     }
 
@@ -97,22 +99,23 @@ export default class MinePage extends BasePage {
     };
 
     componentDidMount() {
-
+        this.listener = DeviceEventEmitter.addListener("contentViewed", this.loadMessageCount);
         // this.refresh();
     }
 
     componentWillUnmount() {
         this.didBlurSubscription && this.didBlurSubscription.remove();
+        this.listener && this.listener.remove();
     }
 
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
+            "willFocus",
             payload => {
                 const { state } = payload;
-
-                console.log('willFocusSubscriptionMine', state);
-                if (state && state.routeName === 'MinePage') {
+                this.loadMessageCount();
+                console.log("willFocusSubscriptionMine", state);
+                if (state && state.routeName === "MinePage") {
                     this.refresh();
                 }
                 ;
@@ -120,6 +123,20 @@ export default class MinePage extends BasePage {
 
 
     }
+
+    loadMessageCount = () => {
+        MessageApi.getNewNoticeMessageCount().then(result => {
+            if (!EmptyUtils.isEmpty(result.data)) {
+                this.setState({
+                    hasMessage: result.data.shopMessageCount || result.data.noticeCount || result.data.messageCount
+                });
+            }
+        }).catch((error) => {
+            this.setState({
+                hasMessage:false
+            })
+        });
+    };
 
     _onScroll = (event) => {
         let Y = event.nativeEvent.contentOffset.y;
@@ -155,6 +172,7 @@ export default class MinePage extends BasePage {
     };
 
     _reload = () => {
+        this.loadMessageCount();
         userOrderNum.getUserOrderNum();
         this.setState({
             isRefreshing: true
@@ -174,10 +192,10 @@ export default class MinePage extends BasePage {
 
     jumpToUserInformationPage = () => {
         if (!user.isLogin) {
-            this.props.navigation.navigate('login/login/LoginPage');
+            this.props.navigation.navigate("login/login/LoginPage");
             return;
         }
-        this.props.navigation.navigate('mine/userInformation/UserInformationPage');
+        this.props.navigation.navigate("mine/userInformation/UserInformationPage");
     };
 
     //**********************************ViewPart******************************************
@@ -195,8 +213,8 @@ export default class MinePage extends BasePage {
         return (
             <View ref={(ref) => this.headerBg = ref}
                   style={{
-                      backgroundColor: 'white',
-                      position: 'absolute',
+                      backgroundColor: "white",
+                      position: "absolute",
                       top: 0,
                       left: 0,
                       right: 0,
@@ -235,9 +253,21 @@ export default class MinePage extends BasePage {
                         <UIImage source={this.state.changeHeader ? mine_setting_icon_white : mine_setting_icon_gray}
                                  style={{ height: px2dp(21), width: px2dp(21), marginRight: 15 }}
                                  onPress={() => this.jumpToSettingPage()}/>
-                        <UIImage source={this.state.changeHeader ? mine_message_icon_white : mine_message_icon_gray}
-                                 style={{ height: px2dp(21), width: px2dp(21) }}
-                                 onPress={() => this.jumpToServicePage()}/>
+                        <View>
+                            <UIImage source={this.state.changeHeader ? mine_message_icon_white : mine_message_icon_gray}
+                                     style={{ height: px2dp(21), width: px2dp(21) }}
+                                     onPress={() => this.jumpToServicePage()}/>
+                            {this.state.hasMessage ? <View style={{
+                                width: 10,
+                                height: 10,
+                                backgroundColor: this.state.changeHeader ?  DesignRule.white:DesignRule.mainColor ,
+                                position: "absolute",
+                                top: -3,
+                                right: -3,
+                                borderRadius: 5
+                            }}/> : null}
+
+                        </View>
                     </View>
                 </View>
             </View>
@@ -283,33 +313,34 @@ export default class MinePage extends BasePage {
                         {accreditID}
                     </View>
                     <View style={{ flex: 1 }}/>
-                    <TouchableWithoutFeedback onPress={() => {
-                        this.props.navigation.navigate(RouterMap.MyPromotionPage);
-                    }}>
-                        <ImageBackground style={{
-                            alignSelf: "center",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            height: px2dp(51),
-                            width: px2dp(139),
-                            paddingVertical: 5,
-                            backgroundColor: "#efcd97",
-                            borderBottomLeftRadius: 25,
-                            borderTopLeftRadius: 25,
-                            paddingLeft: px2dp(3.8)
-                        }} source={mine_level_background}>
-                            <WaveView topTitle={!EmptyUtils.isEmpty(user.levelName) ? user.levelName : "VO"}
-                                      waveBackgroundColor={DesignRule.mainColor}
-                                      waveColor={"#B1021B"}
-                                      waveLightColor={"#D01433"}
-                                      topTitleColor={"#ffffff"}
-                                      topTitleSize={12}
-                                      progressValue={user.token && (user.levelFloor !== user.levelCeil)?parseInt((user.experience - user.levelFloor) *100/(user.levelCeil-user.levelFloor)):0}
-                                      style={{
-                                          width: px2dp(44),
-                                          height: px2dp(44)
-                                      }}
-                            />
+
+                    <ImageBackground style={{
+                        alignSelf: "center",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        height: px2dp(51),
+                        width: px2dp(139),
+                        paddingVertical: 5,
+                        backgroundColor: "#efcd97",
+                        borderBottomLeftRadius: 25,
+                        borderTopLeftRadius: 25,
+                        paddingLeft: px2dp(3.8)
+                    }} source={mine_level_background}>
+                        <WaveView topTitle={!EmptyUtils.isEmpty(user.levelName) ? user.levelRemark : "VO"}
+                                  waveBackgroundColor={DesignRule.mainColor}
+                                  waveColor={"#B1021B"}
+                                  waveLightColor={"#D01433"}
+                                  topTitleColor={"#ffffff"}
+                                  topTitleSize={12}
+                                  progressValue={user.token && (user.levelFloor !== user.levelCeil) ? parseInt((user.experience - user.levelFloor) * 100 / (user.levelCeil - user.levelFloor)) : 0}
+                                  style={{
+                                      width: px2dp(44),
+                                      height: px2dp(44)
+                                  }}
+                        />
+                        <TouchableWithoutFeedback onPress={() => {
+                            this.props.navigation.navigate(RouterMap.MyPromotionPage);
+                        }}>
                             <View style={{
                                 justifyContent: "space-between",
                                 marginLeft: 5,
@@ -319,14 +350,14 @@ export default class MinePage extends BasePage {
                                     color: DesignRule.textColor_mainTitle,
                                     fontSize: DesignRule.fontSize_threeTitle
                                 }}>
-                                    {user.token ? `${user.levelRemark}品鉴官` : ""}
+                                    {user.token ? `${user.levelName}品鉴官` : ""}
                                 </Text>
                                 <Text style={{ color: DesignRule.white, fontSize: DesignRule.fontSize_22 }}>
                                     查看权益>
                                 </Text>
                             </View>
-                        </ImageBackground>
-                    </TouchableWithoutFeedback>
+                        </TouchableWithoutFeedback>
+                    </ImageBackground>
                 </View>
             </ImageBackground>
         );
@@ -466,7 +497,7 @@ export default class MinePage extends BasePage {
         return Math.max(fontSize, 1);
     };
 
-    accountItemView = (num, text, color, onPress) => {
+    accountItemView = (num, text, onPress) => {
         return (
             <TouchableWithoutFeedback onPress={onPress}>
                 <View style={{
@@ -539,7 +570,7 @@ export default class MinePage extends BasePage {
                                         color: DesignRule.textColor_instruction
                                     }}/>
                             <Image source={arrowRight} style={{ height: 12, marginLeft: 6 }}
-                                   resizeMode={'contain'}/>
+                                   resizeMode={"contain"}/>
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
@@ -615,8 +646,8 @@ export default class MinePage extends BasePage {
 
     renderMoreMoney = () => {
         return (
-            <TouchableWithoutFeedback onPress={()=>{
-                this.$navigate('show/ShowDetailPage', {id: 10});
+            <TouchableWithoutFeedback onPress={() => {
+                this.$navigate("ShowListPage");
 
             }}>
                 <Image style={styles.makeMoneyMoreBackground} source={profile_banner}/>
