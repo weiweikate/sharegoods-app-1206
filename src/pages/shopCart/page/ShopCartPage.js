@@ -419,7 +419,7 @@ export default class ShopCartPage extends BasePage {
                                             value={'-'}
                                             style={
                                                 [styles.addOrReduceBtnStyle,
-                                                    itemData.status === 0 ?
+                                                    (itemData.stock === 0 || itemData.status === 0) ?
                                                         {
                                                             color: DesignRule.textColor_placeholder
                                                         } : null
@@ -439,7 +439,7 @@ export default class ShopCartPage extends BasePage {
                                         <TextInput
                                             style={
                                                 [styles.TextInputStyle,
-                                                    itemData.status === 0 ?
+                                                    (itemData.stock === 0 || itemData.status === 0) ?
                                                         {
                                                             color: DesignRule.textColor_placeholder
                                                         } : null
@@ -477,7 +477,8 @@ export default class ShopCartPage extends BasePage {
                                             value={'+'}
                                             style={
                                                 [styles.addOrReduceBtnStyle,
-                                                    itemData.status === 0 ?
+
+                                                    (itemData.stock === 0 || itemData.status === 0) ?
                                                         {
                                                             color: DesignRule.textColor_placeholder
                                                         } : null
@@ -698,7 +699,10 @@ export default class ShopCartPage extends BasePage {
         if (itemData.status === 0) {
             return;
         }
-
+        if (itemData.stock === 0){
+            bridge.$toast('此商品库存为零不可编辑');
+            return;
+        }
         if (itemData.amount > 1) {
             itemData.amount--;
             shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
@@ -709,6 +713,10 @@ export default class ShopCartPage extends BasePage {
     /*加号按钮操作*/
     _addProductNum = (itemData, rowId) => {
         if (itemData.status === 0) {
+            return;
+        }
+        if (itemData.stock === 0){
+            bridge.$toast('此商品库存为零不可编辑');
             return;
         }
         if (itemData.amount >= itemData.stock) {
