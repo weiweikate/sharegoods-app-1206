@@ -137,7 +137,8 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                     alignItems: 'center',
                     justifyContent: 'center',
                     flex: 1,
-                    width:ScreenUtils.width
+                    width:ScreenUtils.width,
+                    marginTop:60
                 }}>
                     <View style={{
                         backgroundColor: 'white',
