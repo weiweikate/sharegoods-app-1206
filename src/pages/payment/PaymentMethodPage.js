@@ -88,6 +88,7 @@ export default class PaymentMethodPage extends BasePage {
         this.payment = new Payment();
         this.payment.payStore = this.params.payStore;
         this.payment.payPromotion = this.params.payPromotion;
+        console.log('this.state.shouldPayMoney', this.state.shouldPayMoney)
         if (parseInt(this.state.shouldPayMoney, 0) === 0) {
             this.payment.selectedBalace = true;
         }
