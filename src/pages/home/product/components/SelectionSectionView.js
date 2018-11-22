@@ -13,7 +13,7 @@ import DesignRule from 'DesignRule';
  * section规格 view
  */
 
-export default class RecentSearchView extends Component {
+export default class SelectionSectionView extends Component {
     static propTypes = {
         listData: PropTypes.array.isRequired,
         clickItemAction: PropTypes.func.isRequired,

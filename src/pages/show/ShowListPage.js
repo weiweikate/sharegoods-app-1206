@@ -39,7 +39,7 @@ export default class ShowListPage extends BasePage {
                         return
                     }
                     this.showHotViewRef && this.showHotViewRef.refresh()
-                    this.showHotFindeView && this.showHotFindeView.refresh()
+                    this.showHotFindeView && this.showHotFindeView.refreshing()
                 }
             }
         );

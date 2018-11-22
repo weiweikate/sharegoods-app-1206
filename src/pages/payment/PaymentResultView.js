@@ -82,7 +82,7 @@ export default class PaymentResultView extends Component {
                                     ?
                                     <Text style={styles.message}>{message}</Text>
                                     :
-                                    null
+                                    <Text style={styles.message}>请重新支付</Text>
                             }
                             <View style={{ flex: 1 }}/>
                             {
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         height: px2dp(30),
-        marginBottom: px2dp(20),
+        marginBottom: px2dp(15),
         marginLeft: px2dp(24),
         marginRight: px2dp(24),
         justifyContent: 'center'

@@ -13,7 +13,7 @@
         },
         "dev_wkl": {
             "name": "开发环境-wkl",
-            "host": "http://172.16.10.111:8180/gateway"
+            "host": "http://172.16.10.111:8903/gateway"
         },
         "dev": {
             "name": "开发环境",
@@ -31,7 +31,7 @@
         },
         "吴承骏Login": {
             "name": "测试环境_吴承骏",
-            "host": "http://172.16.10.19:8180/gateway"
+            "host": "http://172.16.10.19:8903/gateway"
         },
         "da_wei": {
             "name": "测试环境_大为",

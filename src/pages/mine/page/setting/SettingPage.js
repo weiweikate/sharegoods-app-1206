@@ -24,8 +24,8 @@ import DesignRule from 'DesignRule';
 import QYChatUtil from '../helper/QYChatModel';
 import res from '../../res';
 import { getSizeFromat } from '../../../../utils/FileSizeFormate';
-import { homeModule } from '../../../home/Modules'
- 
+import { homeModule } from '../../../home/Modules';
+
 /**
  * @author luoyongming
  * @date on 2018/9/13
@@ -141,8 +141,7 @@ class SettingPage extends BasePage {
                     justifyContent: 'center',
                     borderRadius: 25
                 }} onPress={() => this.toLoginOut()}>
-                    <Text style={{ fontSize: 17, color: 'white' }}
-                          onPress={() => this.toLoginOut()}>退出登录</Text>
+                    <Text style={{ fontSize: 17, color: 'white' }}>退出登录</Text>
                 </TouchableOpacity>
 
                 {this.renderModal()}
@@ -231,7 +230,7 @@ class SettingPage extends BasePage {
                     //清空购物车
                     shopCartStore.data = [];
                     this.$navigateBackToHome();
-                    homeModule.loadHomeList()
+                    homeModule.loadHomeList();
                     MineApi.signOut();
                     QYChatUtil.qiYULogout();
                     this.$loadingDismiss();
