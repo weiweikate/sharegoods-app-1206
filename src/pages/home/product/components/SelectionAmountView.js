@@ -15,7 +15,7 @@ import DesignRule from 'DesignRule';
  * 选择数量view
  */
 
-export default class RecentSearchView extends Component {
+export default class SelectionAmountView extends Component {
     static propTypes = {
         maxCount: PropTypes.any,
         amountClickAction: PropTypes.func.isRequired
@@ -29,7 +29,7 @@ export default class RecentSearchView extends Component {
     }
 
     _leftAction = () => {
-        if (this.state.amount === 1) {
+        if (this.state.amount <= 1) {
             return;
         }
         this.setState({
@@ -41,7 +41,7 @@ export default class RecentSearchView extends Component {
     };
 
     _rightAction = () => {
-        if (this.props.maxCount === this.state.amount) {
+        if (this.props.maxCount <= this.state.amount) {
             bridge.$toast('超出最大库存~');
             return;
         }
@@ -89,8 +89,28 @@ export default class RecentSearchView extends Component {
         }
     };
 
+    componentWillReceiveProps(nextProps) {
+        const { maxCount } = nextProps;
+        if (this.state.amount > maxCount) {
+            this.setState({
+                amount: maxCount
+            }, () => {
+                if (this.state.amount > 0) {
+                    bridge.$toast('超出最大库存~');
+                }
+
+                this.props.amountClickAction(maxCount);
+            });
+        }
+    }
+
+
     render() {
-        const { type } = this.props;
+        const { type, maxCount } = this.props;
+
+        let leftEnable = this.state.amount > 1;
+        let rightEnable = this.state.amount !== maxCount;
+
         return (
             <View style={[{
                 flexDirection: 'row',
@@ -109,7 +129,11 @@ export default class RecentSearchView extends Component {
                 }}>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
                                       onPress={this._leftAction} disabled={type === 'after'}>
-                        <Text style={{ color: DesignRule.lineColor_inGrayBg, fontSize: 15, paddingHorizontal: 11 }}>-</Text>
+                        <Text style={{
+                            color: leftEnable ? DesignRule.textColor_mainTitle : DesignRule.lineColor_inGrayBg,
+                            fontSize: 15,
+                            paddingHorizontal: 11
+                        }}>-</Text>
                     </TouchableOpacity>
                     <View style={{ height: 30, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -127,7 +151,11 @@ export default class RecentSearchView extends Component {
                     <View style={{ height: 30, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                     <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}
                                       onPress={this._rightAction} disabled={type === 'after'}>
-                        <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, paddingHorizontal: 11 }}>+</Text>
+                        <Text style={{
+                            color: rightEnable ? DesignRule.textColor_mainTitle : DesignRule.lineColor_inGrayBg,
+                            fontSize: 15,
+                            paddingHorizontal: 11
+                        }}>+</Text>
                     </TouchableOpacity>
                 </View>
             </View>
