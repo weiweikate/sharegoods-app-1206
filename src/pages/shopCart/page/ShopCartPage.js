@@ -251,7 +251,8 @@ export default class ShopCartPage extends BasePage {
                             style={{
                                 fontSize: 13,
                                 color: DesignRule.textColor_instruction,
-                                marginLeft: 10
+                                marginLeft: 10,
+                                paddingTop:4
                             }}/>
                     </TouchableOpacity>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>

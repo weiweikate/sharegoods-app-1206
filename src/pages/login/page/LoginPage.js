@@ -170,6 +170,8 @@ export default class LoginPage extends BasePage {
                 this.$loadingDismiss();
                 UserModel.saveUserInfo(data.data);
                 UserModel.saveToken(data.data.token);
+                DeviceEventEmitter.emit('homePage_message',null);
+                DeviceEventEmitter.emit('contentViewed',null);
                 bridge.$toast('登录成功');
                 homeModule.loadHomeList()
                 if (this.params.callback) {
@@ -207,6 +209,7 @@ export default class LoginPage extends BasePage {
                 UserModel.saveUserInfo(data.data);
                 UserModel.saveToken(data.data.token);
                 DeviceEventEmitter.emit('homePage_message',null);
+                DeviceEventEmitter.emit('contentViewed',null);
                 bridge.$toast('登录成功');
                 homeModule.loadHomeList()
                 this.params.callback && this.params.callback();
