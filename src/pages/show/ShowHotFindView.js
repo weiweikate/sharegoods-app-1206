@@ -27,7 +27,7 @@ export default class ShowHotView extends Component {
     }
 
     componentDidMount() {
-        this.refresh()
+        this.refreshing()
     }
 
     infiniting(done) {
@@ -50,23 +50,29 @@ export default class ShowHotView extends Component {
         }, 1000);
     }
 
-    refresh() {
-        this.waterfall.index = 1
-        this.setState({ isEnd: false, isFetching: true})
-        this.recommendModules.loadRecommendList().then(data => {
-            this.setState({ isFetching: false})
-            this.waterfall.clear();
-            this.waterfall.addItems(data);
-        });
-    }
+    // refreshing() {
+    //     this.waterfall.index = 1
+    //     this.setState({ isEnd: false, isFetching: true})
+    //     this.recommendModules.loadRecommendList().then(data => {
+    //         this.setState({ isFetching: false})
+    //         this.waterfall.clear();
+    //         this.waterfall.addItems(data);
+    //     });
+    // }
 
     refreshing(done) {
+        let currentDate = new Date()
+        this.setState({ isEnd: false, isFetching: true})
+        this.recommendModules.page = 1
+        this.recommendModules.isEnd = false
         setTimeout(() => {
-            this.recommendModules.loadRecommendList().then(data => {
-                this.waterfall.clear();
+            this.waterfall && this.waterfall.clear();
+            this.recommendModules.fetchRecommendList({}, currentDate).then(data => {
+                this.setState({ isFetching: false})
+                this.waterfall.index = 1
                 this.waterfall.addItems(data);
             });
-            done();
+            done && done();
         }, 1000);
     }
 

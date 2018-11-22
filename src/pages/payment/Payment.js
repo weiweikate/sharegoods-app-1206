@@ -3,11 +3,11 @@ import PaymentApi from './PaymentApi'
 import Toast from '../../utils/bridge'
 import PayUtil from './PayUtil'
 import user from '../../model/user'
-import res from './res';
-const balanceImg = res.balance;
-const bankImg = res.bank;
-const wechatImg = res.wechat;
-const alipayImg = res.alipay;
+import resource from './res';
+const balanceImg = resource.balance;
+const bankImg = resource.bank;
+const wechatImg = resource.wechat;
+const alipayImg = resource.alipay;
 
 export const paymentType = {
     balance: 1, //余额支付
@@ -149,6 +149,9 @@ export class Payment {
                 const prePayStr = preStr.data.prePayStr
                 this.outTradeNo = preStr.data.outTradeNo
                 const resultStr = yield PayUtil.appAliPay(prePayStr)
+                if (resultStr.code !== 9000) {
+                    throw new Error(resultStr.msg)
+                }
                 Toast.hiddenLoading();
                 return  resultStr
             } else {
@@ -160,7 +163,7 @@ export class Payment {
         } catch (error) {
             Toast.hiddenLoading()
             console.log(error)
-            ref && ref.show(2, error.msg)
+            ref && ref.show(2, error.msg || error.message)
             return error
         }
     })
@@ -196,10 +199,10 @@ export class Payment {
                 const resultStr = yield PayUtil.appWXPay(prePay);
                 console.log(JSON.stringify(resultStr));
                 this.outTradeNo = preStr.data.outTradeNo
-                if (parseInt(resultStr.code, 0) !== 0) {
+                if (parseInt(resultStr.sdkCode, 0) !== 0) {
                     // ref && ref.show(2, resultStr.msg)
                     Toast.hiddenLoading()
-                    return ''
+                    throw new Error(resultStr.msg)
                 }
                 // const checkStr = yield PaymentApi.wechatCheck({outTradeNo:preStr.data.outTradeNo , type:2})
                 Toast.hiddenLoading()
@@ -212,7 +215,7 @@ export class Payment {
 
         } catch (error) {
             Toast.hiddenLoading()
-            ref && ref.show(2, error.msg)
+            ref && ref.show(2, error.msg || error.message)
             console.log(error)
         }
     })
