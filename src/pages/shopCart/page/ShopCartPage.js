@@ -450,7 +450,6 @@ export default class ShopCartPage extends BasePage {
                                             onFocus={()=>{
                                                 if (itemData.stock === 0){
                                                     dismissKeyboard();
-                                                    bridge.$toast('该商品库存为0不可编辑');
                                                 }
                                             }}
                                             onChangeText={text => {
