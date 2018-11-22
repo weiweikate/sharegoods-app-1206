@@ -141,7 +141,7 @@ export default class MyHelperPage extends BasePage {
                     }}
                                       onPress={() => this.jumpQYIMPage()}>
                         <UIImage source={icon_kefu} style={{ height: 23, width: 23 }} resizeMode={'contain'}/>
-                        <View style={{ marginLeft: 9, justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ marginLeft: 9, justifyContent: 'center' }}>
                             <Text style={{fontFamily:'PingFangSC-Regular',fontSize:16,color:DesignRule.textColor_mainTitle_222}}>在线客服</Text>
                             <Text style={styles.text2Style}>9:00-22:00</Text>
                         </View>
@@ -160,7 +160,7 @@ export default class MyHelperPage extends BasePage {
                         }}
                         onPress={() => this.jump2Telephone()}>
                         <UIImage source={icon_phone} style={{ height: 23, width: 24 }} esizeMode={'contain'}/>
-                        <View style={{ marginLeft: 9, justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ marginLeft: 9, justifyContent: 'center', }}>
                             <Text style={{fontFamily:'PingFangSC-Regular',fontSize:16,color:DesignRule.textColor_mainTitle_222}}>客服电话</Text>
                             <Text style={styles.text2Style}>400-9696-365</Text>
                         </View>
