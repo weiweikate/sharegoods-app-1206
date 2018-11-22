@@ -193,33 +193,35 @@ export class ShowRecommendModules {
     }
 
     @action loadRecommendList = (params) => {
-        let currentDate = new Date();
-        this.page = 1;
-        this.isEnd = false;
-        showChoiceModules.loadChoiceList();
-        showBannerModules.loadBannerList();
-        showHotModules.loadHotList();
-        this.isRefreshing = true;
-        return ShowApi.showQuery({ ...params, page: this.page }).then(result => {
-            this.isRefreshing = false;
-            if (parseInt(result.code, 0) === 10000) {
-                this.page += 1;
-                let data = result.data.data;
-                if (data && data.length > 0) {
-                    data.map(value => {
-                        value.currentDate = currentDate;
-                    });
-                    return Promise.resolve(data);
-                } else {
-                    return Promise.resolve([]);
-                }
+        let currentDate = new Date()
+        this.page = 1
+        this.isEnd = false
+        showChoiceModules.loadChoiceList()
+        showBannerModules.loadBannerList()
+        showHotModules.loadHotList()
+        this.isRefreshing = true
+        return this.fetchRecommendList(params, currentDate, this.page)
+    }
+
+    @action fetchRecommendList = (params, currentDate) => ShowApi.showQuery({...params, page: this.page, size: 10}).then(result => {
+        this.isRefreshing = false
+        if (parseInt(result.code, 0) === 10000) {
+            this.page += 1
+            let data = result.data.data
+            if (data && data.length > 0) {
+                data.map(value => {
+                    value.currentDate = currentDate
+                })
+                return Promise.resolve(data)
             } else {
-                return Promise.reject('获取列表错误');
+                return Promise.resolve([])
             }
-        }).catch(error => {
-            return Promise.reject(error);
-        });
-    };
+        } else {
+            return Promise.reject('获取列表错误')
+        }
+    }).catch(error => {
+        return Promise.reject(error)
+    })
 
     @action getMoreRecommendList = (params) => {
         if (this.isEnd) {
@@ -228,10 +230,10 @@ export class ShowRecommendModules {
         if (this.isRefreshing) {
             return Promise.reject(-1);
         }
-        let currentDate = new Date();
-        this.isRefreshing = true;
-        return ShowApi.showQuery({ page: this.page, ...params }).then(result => {
-            this.isRefreshing = false;
+        let currentDate = new Date()
+        this.isRefreshing = true
+        return ShowApi.showQuery({page: this.page, ...params,size: 10}).then(result => {
+            this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 let data = result.data.data;
                 if (data && data.length !== 0) {
@@ -265,12 +267,12 @@ export class ShowRecommendModules {
     };
 
     @action loadCollect = () => {
-        this.isEnd = true;
-        let currentDate = new Date();
-        this.collectPage = 1;
-        this.isRefreshing = true;
-        return ShowApi.showCollectList({ page: this.collectPage }).then(result => {
-            this.isRefreshing = false;
+        this.isEnd = true
+        let currentDate = new Date()
+        this.collectPage = 1
+        this.isRefreshing = true
+        return ShowApi.showCollectList({page: this.collectPage, size: 10}).then(result => {
+            this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 this.collectPage += 1;
                 let data = result.data.data;
@@ -297,10 +299,10 @@ export class ShowRecommendModules {
         if (this.isRefreshing) {
             return Promise.reject(-1);
         }
-        let currentDate = new Date();
-        this.isRefreshing = true;
-        return ShowApi.showCollectList({ page: this.collectPage }).then(result => {
-            this.isRefreshing = false;
+        let currentDate = new Date()
+        this.isRefreshing = true
+        return ShowApi.showCollectList({page: this.collectPage, size: 10}).then(result => {
+            this.isRefreshing = false
             if (parseInt(result.code, 0) === 10000) {
                 let data = result.data.data;
                 if (!data) {

@@ -6,7 +6,8 @@ import {
     Modal,
     TouchableOpacity,
     FlatList,
-    Text
+    Text,
+    Platform
 } from 'react-native';
 
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -110,7 +111,7 @@ export default class DetailNavShowModal extends Component {
                 }}>
                     <ImageBackground
                         style={{
-                            top: ScreenUtils.headerHeight,
+                            top: Platform.OS === 'ios' ? ScreenUtils.headerHeight : 44,
                             right: 18,
                             position: 'absolute', width: bgWidth, height: bgHeight
                         }}

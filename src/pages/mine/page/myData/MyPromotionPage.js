@@ -131,7 +131,7 @@ export default class MyPromotionPage extends BasePage {
                 width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH+ScreenUtils.statusBarHeight+30,
                 flexDirection: 'row',paddingTop:ScreenUtils.statusBarHeight,
             }}>
-                <UIImage source={res.button.white_back_img} style={{marginLeft:15,marginTop:5 ,width:9,height:15}} onPress={()=>this.$navigateBack()}/>
+                <UIImage source={res.button.white_back_img} style={{marginLeft:15,marginTop:5, width: 10, height: 18}} onPress={()=>this.$navigateBack()}/>
 
                 <View style={{flexDirection:'row',alignItems:'center',marginLeft:25,marginBottom:40}}>
                     {

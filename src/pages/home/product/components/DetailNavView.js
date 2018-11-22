@@ -110,9 +110,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         position: 'absolute',
         top: ScreenUtils.statusBarHeight,
-        left: 16,
-        right: 16,
         zIndex: 3,
+        left: 8,
+        right: 8,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
