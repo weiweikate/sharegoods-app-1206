@@ -125,7 +125,7 @@ export default class MyPromotionPage extends BasePage {
             }
         }
 
-        return <View style={{ height: 182 / 375 * SCREEN_WIDTH + 115 + ScreenUtils.statusBarHeight + 10}}>
+        return <View style={{ height: 182 / 375 * SCREEN_WIDTH + 115 + ScreenUtils.statusBarHeight }}>
 
             <ImageBackground source={HeaderBarBgImg} style={{
                 width: SCREEN_WIDTH, height: 182 / 375 * SCREEN_WIDTH+ScreenUtils.statusBarHeight+30,
@@ -144,13 +144,13 @@ export default class MyPromotionPage extends BasePage {
                         justifyContent: 'center',
                         marginLeft: 10
                     }}>
-                        <Text style={{fontSize:15,color:'white'}}>{this.state.levelRemark?`${this.state.levelRemark}品鉴官`:''}</Text>
+                        <Text style={{fontSize:15,color:'white'}}>{this.state.levelName?`${this.state.levelName}品鉴官`:''}</Text>
                         <ImageBackground style={{
                             justifyContent: 'center', alignItems: 'center', marginTop: 10,
                             height: 15,
                             width:35,
                         }} source={iconbg}>
-                            <Text style={styles.shopName}>{this.state.levelName || ' '}</Text>
+                            <Text style={styles.shopName}>{this.state.levelRemark || ' '}</Text>
                         </ImageBackground>
                     </View>
                 </View>
