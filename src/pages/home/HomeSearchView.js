@@ -17,7 +17,7 @@ const searchImg = res.icon_search;
 const msgBlack = res.message_black;
 const msgWhite = res.message_white;
 
-export default ({ navigation, whiteIcon }) =>
+export default ({ navigation, whiteIcon,hasMessage }) =>
     <View style={styles.navBar}>
         <View style={styles.navContent}>
             <Image source={whiteIcon ? logoWhite : logoRed} style={styles.logo}/>
@@ -34,7 +34,18 @@ export default ({ navigation, whiteIcon }) =>
                     return;
                 }
                 navigation.navigate('message/MessageCenterPage')}}>
+                <View style={{height:32,width:32,justifyContent:'center',alignItems:'center'}}>
                 <Image source={whiteIcon ? msgWhite : msgBlack} style={styles.scanIcon}/>
+                    {hasMessage ? <View style={{
+                        width: 10,
+                        height: 10,
+                        backgroundColor: DesignRule.mainColor,
+                        position: "absolute",
+                        top: 2,
+                        right: 2,
+                        borderRadius: 5
+                    }}/> : null}
+                </View>
             </TouchableWithoutFeedback>
         </View>
         {
