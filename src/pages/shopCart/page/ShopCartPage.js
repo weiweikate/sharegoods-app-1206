@@ -251,7 +251,8 @@ export default class ShopCartPage extends BasePage {
                             style={{
                                 fontSize: 13,
                                 color: DesignRule.textColor_instruction,
-                                marginLeft: 10
+                                marginLeft: 10,
+                                paddingTop:4
                             }}/>
                     </TouchableOpacity>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -418,7 +419,7 @@ export default class ShopCartPage extends BasePage {
                                             value={'-'}
                                             style={
                                                 [styles.addOrReduceBtnStyle,
-                                                    itemData.status === 0 ?
+                                                    (itemData.stock === 0 || itemData.status === 0) ?
                                                         {
                                                             color: DesignRule.textColor_placeholder
                                                         } : null
@@ -431,10 +432,14 @@ export default class ShopCartPage extends BasePage {
                                         borderLeftWidth: 0,
                                         borderRightWidth: 0
                                     }]}>
+
+
+
+
                                         <TextInput
                                             style={
                                                 [styles.TextInputStyle,
-                                                    itemData.status === 0 ?
+                                                    (itemData.stock === 0 || itemData.status === 0) ?
                                                         {
                                                             color: DesignRule.textColor_placeholder
                                                         } : null
@@ -442,6 +447,11 @@ export default class ShopCartPage extends BasePage {
                                             }
                                             value={itemData.amount ? '' + itemData.amount : ''}
                                             underlineColorAndroid={'transparent'}
+                                            onFocus={()=>{
+                                                if (itemData.stock === 0){
+                                                    dismissKeyboard();
+                                                }
+                                            }}
                                             onChangeText={text => {
                                                 if (itemData.status === 0) {
                                                     bridge.$toast('此商品已失效');
@@ -467,7 +477,8 @@ export default class ShopCartPage extends BasePage {
                                             value={'+'}
                                             style={
                                                 [styles.addOrReduceBtnStyle,
-                                                    itemData.status === 0 ?
+
+                                                    (itemData.stock === 0 || itemData.status === 0) ?
                                                         {
                                                             color: DesignRule.textColor_placeholder
                                                         } : null
@@ -658,6 +669,10 @@ export default class ShopCartPage extends BasePage {
             bridge.$toast('此商品已失效');
             return;
         }
+        if (itemData.stock === 0){
+            bridge.$toast('此商品库存为零不可编辑');
+            return;
+        }
         if (isNaN(itemData.amount)) {
             itemData.amount = 1;
             // shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
@@ -684,7 +699,10 @@ export default class ShopCartPage extends BasePage {
         if (itemData.status === 0) {
             return;
         }
-
+        if (itemData.stock === 0){
+            bridge.$toast('此商品库存为零不可编辑');
+            return;
+        }
         if (itemData.amount > 1) {
             itemData.amount--;
             shopCartCacheTool.updateShopCartDataLocalOrService(itemData, rowId);
@@ -695,6 +713,10 @@ export default class ShopCartPage extends BasePage {
     /*加号按钮操作*/
     _addProductNum = (itemData, rowId) => {
         if (itemData.status === 0) {
+            return;
+        }
+        if (itemData.stock === 0){
+            bridge.$toast('此商品库存为零不可编辑');
             return;
         }
         if (itemData.amount >= itemData.stock) {
