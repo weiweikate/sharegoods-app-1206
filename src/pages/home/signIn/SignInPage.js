@@ -26,6 +26,7 @@ import EmptyUtils from '../../../utils/EmptyUtils';
 import MineApi from '../../mine/api/MineApi';
 import DesignRule from 'DesignRule';
 import res from '../res';
+import apiEnvironment from "../../../api/ApiEnvironment";
 
 const {
     sign_in_bg: signInImageBg,
@@ -125,7 +126,10 @@ export default class SignInPage extends BasePage {
     };
 
     showMore = () => {
-        this.$navigate('home/signIn/SignRulePage');
+        this.$navigate('HtmlPage', {
+            title: '推广说明',
+            uri: `${apiEnvironment.getCurrentH5Url()}/static/protocol/signInRule.html`
+        });
     };
 
     //签到
