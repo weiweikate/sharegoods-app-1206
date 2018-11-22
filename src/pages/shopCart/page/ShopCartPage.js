@@ -60,7 +60,6 @@ export default class ShopCartPage extends BasePage {
     constructor(props) {
         super(props);
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-        this.isUnFishFirstRender = true;
         this.contentList = null;
         let hiddeLeft = true;
         if (!(this.params.hiddeLeft === undefined)) {
@@ -72,14 +71,12 @@ export default class ShopCartPage extends BasePage {
     }
 
     componentDidMount() {
-        this.contentList && this.contentList._updateVisibleRows();
+        // this.contentList && this.contentList._updateVisibleRows();
         this.didBlurSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
-                if (shopCartStore.data.length > 0 &&
-                    this.contentList) {
-                    this.contentList.scrollTo({ x: 0, y: 1, animated: true });
-                    this.isUnFishFirstRender = false;
+                if (this.contentList) {
+                    this.contentList.scrollTo({ x: 0, y: 10, animated: true });
                 }
                 shopCartCacheTool.getShopCartGoodsListData();
             }
@@ -432,10 +429,6 @@ export default class ShopCartPage extends BasePage {
                                         borderLeftWidth: 0,
                                         borderRightWidth: 0
                                     }]}>
-
-
-
-
                                         <TextInput
                                             style={
                                                 [styles.TextInputStyle,
