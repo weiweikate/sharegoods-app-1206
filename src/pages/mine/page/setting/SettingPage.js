@@ -5,7 +5,8 @@ import {
     Image,
     NativeModules,
     TouchableOpacity, Alert, Switch, Text, Platform, AsyncStorage,
-    Linking
+    Linking,
+    DeviceEventEmitter
 } from 'react-native';
 
 const { CachesModule } = NativeModules;
@@ -230,6 +231,7 @@ class SettingPage extends BasePage {
                     //清空购物车
                     shopCartStore.data = [];
                     this.$navigateBackToHome();
+                    DeviceEventEmitter.emit('login_out');
                     homeModule.loadHomeList();
                     MineApi.signOut();
                     QYChatUtil.qiYULogout();

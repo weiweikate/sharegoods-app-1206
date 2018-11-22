@@ -51,7 +51,7 @@
 - (void)layoutSubviews{
   _waveView.frame = self.bounds;
   self.layer.cornerRadius = MIN(self.width/2.0, self.height/2.0);
-  _label.frame = CGRectMake(0, self.bounds.size.height/6, self.bounds.size.width, _topTitleSize);
+  _label.frame = CGRectMake(0, self.bounds.size.height*2/3.8 - _topTitleSize , self.bounds.size.width, _topTitleSize);
 //  _label.center = CGPointMake(self.center.x, self.height/6 + _label.height/2);
 }
 
