@@ -71,7 +71,7 @@ export default class ShareTaskHomeAlert extends React.Component {
                     <View style={styles.content}>
                         <UIText value={this.props.data.name} style={styles.title}/>
                         <UIImage source={renwu_icon_quan_nor} style={styles.contentImage}/>
-                        <UIText value={'品牌奖励任务\n' + this.props.data.desc} style={styles.detail}/>
+                        <UIText value={'完成推广任务\n' + this.props.data.desc} style={styles.detail}/>
                         <TouchableWithoutFeedback onPress={() => {
                             this.props.onPress && this.props.onPress();
                             this.close();
