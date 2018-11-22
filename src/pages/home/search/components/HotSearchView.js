@@ -13,7 +13,7 @@ import DesignRule from 'DesignRule';
  * 热门搜索view
  */
 
-export default class RecentSearchView extends Component {
+export default class HotSearchView extends Component {
     static propTypes = {
         listData: PropTypes.array.isRequired,
         clickItemAction: PropTypes.func.isRequired

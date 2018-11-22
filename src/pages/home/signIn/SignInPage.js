@@ -293,6 +293,12 @@ export default class SignInPage extends BasePage {
     };
 
     _willSignRender = () => {
+        let count;
+        if (this.state.signInData[3].continuous) {
+            count = this.state.signInData[3].continuous;
+        } else {
+            count = this.state.signInData[2].continuous ? this.state.signInData[2].continuous : 0;
+        }
         return (
             <ImageBackground
                 source={signInImageBg}
@@ -305,6 +311,9 @@ export default class SignInPage extends BasePage {
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>
+                <Text style={styles.signInCountTextStyle}>
+                    {`累计签到${count}天`}
+                </Text>
             </ImageBackground>
         );
     };

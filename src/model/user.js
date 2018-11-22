@@ -141,6 +141,13 @@ class User {
     @observable
     upUserid = null;
 
+
+    @observable
+    levelFloor = null;
+
+    @observable
+    levelCeil = null;
+
     @action getToken = () => {
         if (this.token) {
             return Promise.resolve(this.token)
@@ -243,6 +250,8 @@ class User {
         this.storeBonusDto = info.storeBonusDto;    //
         this.realnameStatus = info.realnameStatus;    //
         this.upUserid = info.upUserid;//上级ID，判断是否可以领推广红包
+        this.levelFloor = info.levelFloor;//用户上个等级的顶部
+        this.levelCeil = info.levelCeil; //升级需要的经验值
         if (saveToDisk) {
             AsyncStorage.setItem(USERINFOCACHEKEY, JSON.stringify(info)).catch(e => {
             });
@@ -350,6 +359,8 @@ class User {
         this.storeBonusDto = null;   //
         this.realnameStatus = null;   //
         this.upUserid = null;
+        this.levelCeil = null;
+        this.levelFloor = null;
         // todo 清空cookie
         //NativeModules.commModule.clearCookie(apiEnvironment.getCurrentHostUrl());
         // AsyncStorage.removeItem(LASTSHOWPROMOTIONTIME).catch(e => {

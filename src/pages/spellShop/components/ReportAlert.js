@@ -13,12 +13,12 @@ import {
 } from 'react-native';
 import Modal from 'CommModal';
 
-const MIN_SCREEN = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
 const MAX_SCREEN = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
-const PANNELHEIGHT = 340;
+const PANNELHEIGHT = ScreenUtils.autoSizeWidth(357);
 const Animated_Duration = 300; //默认的动画持续时间
 import DesignRule from 'DesignRule';
 import res from '../res'
+import ScreenUtils from '../../../utils/ScreenUtils';
 const KeFuIcon = res.jbtk_03;
 
 export default class ReportAlert extends Component {
@@ -64,7 +64,7 @@ export default class ReportAlert extends Component {
                 //透明度
                 this.state.top,
                 {
-                    toValue: (MAX_SCREEN - this.state.height) / 2 - 45,
+                    toValue:(MAX_SCREEN - this.state.height) / 2 - ScreenUtils.autoSizeHeight(135),
                     duration: Animated_Duration
                 }
             ),
@@ -194,19 +194,6 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0
     },
-    titleContainer: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: 50,
-        backgroundColor: 'white',
-        flexDirection: 'row',
-        paddingHorizontal: 20
-    },
-    title: {
-        textAlign: 'center',
-        fontSize: 15,
-        color: DesignRule.textColor_mainTitle
-    },
     whitePanel: {
         flex: 1,
         marginTop: 31,
@@ -222,7 +209,7 @@ const styles = StyleSheet.create({
     },
     input: {
         textAlignVertical: 'top',
-        width: 235 / 375 * MIN_SCREEN,
+        width: ScreenUtils.autoSizeWidth(211),
         borderRadius: 2,
         backgroundColor: DesignRule.lineColor_inColorBg,
         color: DesignRule.textColor_mainTitle
@@ -230,32 +217,32 @@ const styles = StyleSheet.create({
     btnContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 25,
-        marginTop: 25
+        marginBottom: 15,
+        marginTop: 15
     },
     submitContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: DesignRule.mainColor,
-        marginRight: 36,
-        width: 99,
-        height: 32,
+        marginRight: ScreenUtils.autoSizeWidth(36),
+        width: ScreenUtils.autoSizeWidth(99),
+        height: 34,
         borderRadius: 5
     },
     submitTitle: {
-        fontSize: 16,
+        fontSize: 14,
         color: 'white'
     },
     cancelContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: DesignRule.lineColor_inGrayBg,
-        width: 99,
-        height: 32,
+        width: ScreenUtils.autoSizeWidth(99),
+        height: 34,
         borderRadius: 5
     },
     cancelTitleText: {
-        fontSize: 16,
+        fontSize: 14,
         color: DesignRule.textColor_instruction
     }
 });
