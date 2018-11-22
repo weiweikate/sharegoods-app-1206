@@ -92,7 +92,7 @@ export default class OpenPrizeItemView extends Component {
                                             position: 'absolute',
                                             top: 10,
                                             left: 5,
-                                            width: ScreenUtils.width / 2 - 16 - 10,
+                                            width: ScreenUtils.width / 2 - 16 - 15,
                                             height: ScreenUtils.width / 2 - 16 - 15
                                         }
                                     }
