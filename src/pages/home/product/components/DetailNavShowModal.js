@@ -17,9 +17,19 @@ import res from '../../res';
 const {
     detailShowBg,
     message,
-    home,
-    share
+    detail_search,
+    share,
+    detail_kefu
 } = res.product;
+
+const bgHeight = ScreenUtils.autoSizeWidth(410 / 2.0);
+const bgWidth = 286 / 2.0;
+const ImgArr = [
+    { img: message, tittle: '消息', index: 0 },
+    { img: detail_search, tittle: '搜索', index: 1 },
+    { img: share, tittle: '分享', index: 2 },
+    { img: detail_kefu, tittle: '客服', index: 3 }
+];
 
 export default class DetailNavShowModal extends Component {
 
@@ -27,12 +37,14 @@ export default class DetailNavShowModal extends Component {
         super(props);
         this.state = {
             modalVisible: false, //是否显示
-            confirmCallBack: null
+            confirmCallBack: null,
+            messageCount: 0
         };
     }
 
-    show = (confirmCallBack) => {
+    show = (messageCount, confirmCallBack) => {
         this.setState({
+            messageCount: messageCount,
             modalVisible: true,
             confirmCallBack: confirmCallBack
         });
@@ -52,33 +64,41 @@ export default class DetailNavShowModal extends Component {
     };
 
     _renderItem = ({ item }) => {
-        return <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', height: 278 / 2.0 / 3.0 }}
-                                 onPress={() => this._onPress(item)}>
-            <Image source={item.img} style={{ marginLeft: 17 }}/>
-            <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 15 }}>{item.tittle}</Text>
+        return <TouchableOpacity
+            style={{ flexDirection: 'row', alignItems: 'center', height: bgHeight / ImgArr.length }}
+            onPress={() => this._onPress(item)}>
+            <Image source={item.img} style={{ marginLeft: 23 }}/>
+            <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginLeft: 15 }}>{item.tittle}</Text>
             <View style={{
-                height: 0.5,
-                backgroundColor: DesignRule.lineColor_inColorBg,
-                bottom: 0,
-                right: 0,
                 position: 'absolute',
-                width: 187 / 2.0
+                bottom: 0, left: 0, right: 0,
+                height: 1,
+                backgroundColor: DesignRule.lineColor_inColorBg
             }}/>
+            {item.index === 0 && this.state.messageCount > 0 ? <View style={{
+                position: 'absolute',
+                top: ScreenUtils.autoSizeWidth(9),
+                left: ScreenUtils.autoSizeWidth(31),
+                backgroundColor: DesignRule.mainColor,
+                borderRadius: 4
+            }}>
+                <Text style={{
+                    color: DesignRule.white,
+                    fontSize: 9,
+                    paddingHorizontal: 4,
+                    paddingVertical: 2
+                }}>{this.state.messageCount > 99 ? 99 : this.state.messageCount}</Text>
+            </View> : null}
         </TouchableOpacity>;
     };
 
     render() {
-        let ImgArr = [{ img: message, tittle: '消息', index: 0 }, { img: home, tittle: '首页', index: 1 }, {
-            img: share,
-            tittle: '分享',
-            index: 2
-        }];
         return (
             <Modal onRequestClose={this.close}
                    visible={this.state.modalVisible}
                    transparent={true}>
                 <TouchableOpacity style={{
-                    flex: 1, backgroundColor: 'transport',
+                    flex: 1,
                     top: 0,
                     left: 0,
                     bottom: 0,
@@ -93,7 +113,7 @@ export default class DetailNavShowModal extends Component {
                         style={{
                             top: Platform.OS === 'ios' ? ScreenUtils.headerHeight : 44,
                             right: 18,
-                            position: 'absolute', width: 286 / 2.0, height: 278 / 2.0
+                            position: 'absolute', width: bgWidth, height: bgHeight
                         }}
                         source={detailShowBg}>
                         <FlatList data={ImgArr}

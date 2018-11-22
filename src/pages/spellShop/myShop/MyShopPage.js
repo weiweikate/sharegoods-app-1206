@@ -71,7 +71,7 @@ export default class MyShopPage extends BasePage {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableOpacity onPress={() => {
+                        <TouchableOpacity style = {{width:44}} onPress={() => {
                             this.$navigateBack();
                         }}>
                             <Image source={NavLeft}/>
