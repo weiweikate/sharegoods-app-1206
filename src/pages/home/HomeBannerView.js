@@ -1,19 +1,19 @@
 /**
  * 首页轮播图
  */
-import React, { Component } from 'react';
-import { View, StyleSheet, Image, TouchableWithoutFeedback, Platform } from 'react-native';
-import ScreenUtils from '../../utils/ScreenUtils';
-import ViewPager from '../../components/ui/ViewPager';
+import React, { Component } from "react";
+import { View, StyleSheet, Image, TouchableWithoutFeedback, Platform } from "react-native";
+import ScreenUtils from "../../utils/ScreenUtils";
+import ViewPager from "../../components/ui/ViewPager";
 
 const { px2dp } = ScreenUtils;
-import { observer } from 'mobx-react';
-import { homeModule } from './Modules';
-import { bannerModule } from './HomeBannerModel'
+import { observer } from "mobx-react";
+import { homeModule } from "./Modules";
+import { bannerModule } from "./HomeBannerModel";
 
 const bannerHeight = px2dp(230);
-import MRBannerViewMode from '../../components/ui/bannerView/MRBannerViewMode';
-
+import MRBannerViewMode from "../../components/ui/bannerView/MRBannerViewMode";
+import OssImage from 'OssImage'
 @observer
 export default class HomeBannerView extends Component {
     state = {
@@ -21,8 +21,12 @@ export default class HomeBannerView extends Component {
     };
 
     _renderViewPageItem(item) {
-        return <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(item)}><Image style={styles.img}
-                                                                                               source={{ uri: item }}/></TouchableWithoutFeedback>;
+        return (
+            <TouchableWithoutFeedback onPress={() => this._onPressRowWithItem(item)}>
+                <OssImage style={styles.img}
+                       source={{ uri: item }}/>
+            </TouchableWithoutFeedback>
+        );
     }
 
     _renderPagination = (index, total) => {
@@ -77,7 +81,7 @@ export default class HomeBannerView extends Component {
 
         return <View>
             {
-                Platform.OS === 'ios'
+                Platform.OS === "ios"
                     ?
                     <MRBannerViewMode imgUrlArray={items} bannerHeight={bannerHeight} modeStyle={1}
                                       onDidSelectItemAtIndex={(index) => {
@@ -112,10 +116,10 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width
     },
     indexView: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "absolute",
         bottom: 0,
         width: ScreenUtils.width,
         height: px2dp(15)
@@ -124,7 +128,7 @@ const styles = StyleSheet.create({
         width: px2dp(24),
         height: px2dp(6),
         borderRadius: px2dp(3),
-        backgroundColor: '#fff',
+        backgroundColor: "#fff",
         marginLeft: px2dp(2.5),
         marginRight: px2dp(2.5)
     },
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
         width: px2dp(6),
         height: px2dp(6),
         borderRadius: px2dp(3),
-        backgroundColor: '#f4f4f4',
+        backgroundColor: "#f4f4f4",
         marginLeft: px2dp(2.5),
         marginRight: px2dp(2.5)
     },
