@@ -44,11 +44,11 @@ export default class DetailBottomView extends Component {
                     <Text style={{ color: DesignRule.white, fontSize: 13 }}>商品已经下架啦~</Text>
                 </View> : null}
                 <View style={styles.container}>
-                    <TouchableOpacity style={{ width: 63, justifyContent: 'center', alignItems: 'center' }}
+                    <TouchableOpacity style={{ width: ScreenUtils.autoSizeWidth(85), justifyContent: 'center', alignItems: 'center' }}
                                       onPress={() => this.props.bottomViewAction('gwc')} disabled={cantBuy}>
                         <Image style={{ marginBottom: 6 }}
                                source={cantBuy ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
-                        <Text style={{ fontSize: 11, color: DesignRule.textColor_instruction }}>购物车</Text>
+                        <Text style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }}>加入购物车</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
@@ -60,7 +60,7 @@ export default class DetailBottomView extends Component {
                         onPress={() => this.props.bottomViewAction('buy')} disabled={cantBuy}>
                         <Text style={{
                             color: isLimit ? DesignRule.textColor_instruction : DesignRule.white,
-                            fontSize: 14
+                            fontSize: 17
                         }}>{isLimit ? '您已经购买过该商品' : '立即购买'}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -69,24 +69,30 @@ export default class DetailBottomView extends Component {
                             backgroundColor: '#FBBB50',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            flexDirection: 'row'
                         }}
                         onPress={() => this.props.bottomViewAction('jlj')}>
-                        <Text style={{ color: DesignRule.white, fontSize: 25 }}>赚</Text>
-                        <View style={{ marginLeft: 5 }}>
-                            <Text style={{ color: DesignRule.white, fontSize: 11 }}>品牌奖励金</Text>
-                            {shareMoney === 0 ? null : <View style={{
-                                marginTop: 6,
-                                alignItems: 'center'
-                            }} maxWidth={ScreenUtils.autoSizeWidth(100)}>
-                                <Text style={{
-                                    color: DesignRule.white,
-                                    fontSize: 11
-                                }}
-                                      numberOfLines={2}>{StringUtils.isNoEmpty(shareMoney) ? `￥${shareMoney}` : '￥?'}</Text>
-                            </View>}
+                        {
+                            // shareMoney未空显示?  为0显示分享赚
+                            shareMoney === '0.00' ? <Text style={{ fontSize: 17, color: DesignRule.white }}>分享赚</Text>
+                                : <View style={{flexDirection: 'row'}}>
+                                    <Text style={{ color: DesignRule.white, fontSize: 25 }}>赚</Text>
+                                    <View style={{ marginLeft: 5 }}>
+                                        <Text style={{ color: DesignRule.white, fontSize: 11 }}>品牌奖励金</Text>
+                                        <View style={{
+                                            alignItems: 'center',
+                                            marginTop: 6
+                                        }} maxWidth={ScreenUtils.autoSizeWidth(100)}>
+                                            <Text style={{
+                                                color: DesignRule.white,
+                                                fontSize: 11
+                                            }}
+                                                  numberOfLines={2}>{StringUtils.isNoEmpty(shareMoney) ? `￥${shareMoney}` : '￥?'}</Text>
+                                        </View>
+                                    </View>
+                                </View>
+                        }
 
-                        </View>
+
                     </TouchableOpacity>
                 </View>
 

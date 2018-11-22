@@ -51,42 +51,46 @@ export default class DetailHeaderView extends Component {
                                          activityData={this.props.activityData}
                                          productActivityViewAction={this.props.productActivityViewAction}/> : null}
                 <View style={{ backgroundColor: 'white' }}>
-                    <View style={{ marginLeft: 16, width: ScreenUtils.width - 32 }}>
+                    <View style={{ marginLeft: 15, width: ScreenUtils.width - 30 }}>
                         <Text style={{
-                            marginTop: 14,
+                            marginTop: 10,
                             color: DesignRule.textColor_mainTitle,
-                            fontSize: 15
-                        }}>{`${name}`}</Text>
-                        <View style={{ flexDirection: 'row', marginTop: 21, alignItems: 'center' }}>
-                            <Text style={{ color: DesignRule.mainColor, fontSize: 18 }}>{`￥${price}起`}</Text>
+                            fontSize: 13
+                        }} numberOfLines={2}>{`${name}`}</Text>
+                        <View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center', height: 26 }}>
+                            <View style={{
+                                borderColor: DesignRule.textColor_redWarn,
+                                borderWidth: 1,
+                                borderRadius: 2, alignItems: 'center', justifyContent: 'center'
+                            }}>
+                                <Text style={{
+                                    color: DesignRule.textColor_redWarn,
+                                    fontSize: 10, paddingHorizontal: 6, paddingVertical: 2
+                                }}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelName}价` : '原价'}</Text>
+                            </View>
+                            <Text style={{
+                                color: DesignRule.textColor_redWarn,
+                                fontSize: 19,
+                                marginLeft: 5
+                            }}>{`￥${price}起`}</Text>
                             <Text style={{
                                 marginLeft: 5,
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 10,
                                 textDecorationLine: 'line-through'
                             }}>{`￥${originalPrice}`}</Text>
-                            <View style={{
-                                backgroundColor: DesignRule.mainColor,
-                                marginLeft: 5,
-                                borderRadius: 4, alignItems: 'center', justifyContent: 'center'
-                            }}>
-                                <Text style={{
-                                    color: 'white',
-                                    fontSize: 10, paddingHorizontal: 5, paddingVertical: 2
-                                }}>{priceType === 2 ? '拼店价' : priceType === 3 ? `${user.levelName}价` : '原价'}</Text>
-                            </View>
                         </View>
-                        <View style={{ flexDirection: 'row', marginTop: 18, marginBottom: 14, alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', marginTop: 5, marginBottom: 15, alignItems: 'center' }}>
                             <Text
                                 style={{
                                     color: DesignRule.textColor_instruction,
-                                    fontSize: 11
+                                    fontSize: 12
                                 }}>快递：{freight === 0 ? '包邮' : `${freight}元`}</Text>
                             <Text style={{
                                 color: DesignRule.textColor_instruction,
-                                fontSize: 11,
-                                marginLeft: ScreenUtils.autoSizeWidth(108)
-                            }}>{`月销售${monthSaleTotal}笔`}</Text>
+                                fontSize: 12,
+                                marginLeft: ScreenUtils.autoSizeWidth(67)
+                            }}>{`月销: ${monthSaleTotal}`}</Text>
                         </View>
                     </View>
                 </View>
