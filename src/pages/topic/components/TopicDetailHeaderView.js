@@ -30,7 +30,7 @@ export default class TopicDetailHeaderView extends Component {
     static propTypes = {
         data: PropTypes.object.isRequired,
         activityData: PropTypes.object.isRequired,
-        activityType: PropTypes.object.isRequired
+        activityType: PropTypes.number.isRequired
     };
 
     constructor(props) {
