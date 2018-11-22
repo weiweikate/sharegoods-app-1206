@@ -47,6 +47,7 @@ export default class DetailNavView extends Component {
     };
 
     render() {
+        const { messageCount } = this.props;
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {/*返回*/}
@@ -74,7 +75,7 @@ export default class DetailNavView extends Component {
                         <Image style={{ marginRight: 10 }}
                                source={this.state.scale ? detailNavView.detail_car_down : detailNavView.detail_car_up}/>
                         {ShopCartStore.getAllGoodsClassNumber === 0 ? null : <View style={{
-                            position: 'absolute', top: 4, right: 4, height: 16,
+                            position: 'absolute', top: 4, right: 8, height: 16,
                             paddingHorizontal: 4,
                             backgroundColor: DesignRule.mainColor,
                             borderRadius: 8, justifyContent: 'center', alignItems: 'center'
@@ -90,6 +91,13 @@ export default class DetailNavView extends Component {
                         this.props.navRRight && this.props.navRRight();
                     }} style={styles.btnContainer}>
                         <Image source={this.state.scale ? detailNavView.detail_more_down : res.button.show_share}/>
+                        {messageCount === 0 ? null : <View style={{
+                            position: 'absolute', top: 4, right: 8, height: 10,width:10,
+                            paddingHorizontal: 4,
+                            backgroundColor: DesignRule.mainColor,
+                            borderRadius: 5, justifyContent: 'center', alignItems: 'center'
+                        }}>
+                        </View>}
                     </TouchableOpacity>
                 </View>
             </View>
