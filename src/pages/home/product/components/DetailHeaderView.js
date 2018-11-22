@@ -90,7 +90,7 @@ export default class DetailHeaderView extends Component {
                                 color: DesignRule.textColor_instruction,
                                 fontSize: 12,
                                 marginLeft: ScreenUtils.autoSizeWidth(67)
-                            }}>{`月销售${monthSaleTotal}笔`}</Text>
+                            }}>{`月销: ${monthSaleTotal}`}</Text>
                         </View>
                     </View>
                 </View>

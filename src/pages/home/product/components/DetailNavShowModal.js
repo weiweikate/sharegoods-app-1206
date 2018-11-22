@@ -77,7 +77,7 @@ export default class DetailNavShowModal extends Component {
                    visible={this.state.modalVisible}
                    transparent={true}>
                 <TouchableOpacity style={{
-                    flex: 1, backgroundColor: 'transport',
+                    flex: 1,
                     top: 0,
                     left: 0,
                     bottom: 0,
