@@ -438,7 +438,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                     }} onPress={() => this.contactSeller()}>
                         <UIImage source={applyRefundMessage} style={{ width: 25, height: 23, marginBottom: 6 }}/>
                         <View style={{ marginLeft: 10 }}>
-                            <UIText value={'联系客服'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
+                            <UIText value={'在线客服'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
                             <UIText value={'9:00-22:00'}
                                     style={{ fontSize: 12, color: DesignRule.textColor_instruction, marginTop: 3 }}/>
                         </View>
@@ -457,7 +457,7 @@ class ExchangeGoodsDetailPage extends BasePage {
                         <UIImage source={applyRefundPhone} style={{ width: 25, height: 23, marginBottom: 6 }}/>
                         <View style={{ marginLeft: 10 }}>
                             <UIText value={'客服电话'} style={{ fontSize: 16, color: DesignRule.textColor_mainTitle }}/>
-                            <UIText value={'9:00-22:00'}
+                            <UIText value={'400-969-6365'}
                                     style={{ fontSize: 12, color: DesignRule.textColor_instruction, marginTop: 3 }}/>
                         </View>
                     </TouchableOpacity>
@@ -694,7 +694,7 @@ class ExchangeGoodsDetailPage extends BasePage {
 
     callPhone = () => {
         if ('400-9696-365') {
-            BusinessUtils.callPhone('400-9696-365');
+            BusinessUtils.callPhone('4009696365');
         } else {
             NativeModules.commModule.toast('电话号码不存在');
         }
