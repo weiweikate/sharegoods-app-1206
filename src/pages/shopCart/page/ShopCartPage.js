@@ -432,6 +432,10 @@ export default class ShopCartPage extends BasePage {
                                         borderLeftWidth: 0,
                                         borderRightWidth: 0
                                     }]}>
+
+
+
+
                                         <TextInput
                                             style={
                                                 [styles.TextInputStyle,
@@ -443,6 +447,12 @@ export default class ShopCartPage extends BasePage {
                                             }
                                             value={itemData.amount ? '' + itemData.amount : ''}
                                             underlineColorAndroid={'transparent'}
+                                            onFocus={()=>{
+                                                if (itemData.stock === 0){
+                                                    dismissKeyboard();
+                                                    bridge.$toast('该商品库存为0不可编辑');
+                                                }
+                                            }}
                                             onChangeText={text => {
                                                 if (itemData.status === 0) {
                                                     bridge.$toast('此商品已失效');
@@ -657,6 +667,10 @@ export default class ShopCartPage extends BasePage {
     onNumberTextChange = (itemData, text, rowId) => {
         if (itemData.status === 0) {
             bridge.$toast('此商品已失效');
+            return;
+        }
+        if (itemData.stock === 0){
+            bridge.$toast('此商品库存为零不可编辑');
             return;
         }
         if (isNaN(itemData.amount)) {
