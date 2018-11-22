@@ -22,7 +22,7 @@ import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
 
 import RES from '../../res';
 const MoneyIcon = RES.money;
@@ -257,16 +257,17 @@ export default class MyCollectPage extends BasePage {
         );
     };
 gotoLookAround(){
-    const resetAction = NavigationActions.reset({
-        index: 0,
-        actions: [
-            NavigationActions.navigate({
-                routeName: 'Tab',
-                params: {}
-            })
-        ]
-    });
-    this.props.navigation.dispatch(resetAction);
+    // const resetAction = NavigationActions.reset({
+    //     index: 0,
+    //     actions: [
+    //         NavigationActions.navigate({
+    //             routeName: 'Tab',
+    //             params: {}
+    //         })
+    //     ]
+    // });
+    // this.props.navigation.dispatch(resetAction);
+    this.$navigateBackToStore();
 }
         _renderEmptyView = () => {
             return (

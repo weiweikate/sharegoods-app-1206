@@ -80,7 +80,7 @@ export default class ShowHotView extends Component {
 
     refreshing(done) {
         setTimeout(() => {
-            this.waterfall.clear()
+            this.waterfall && this.waterfall.clear()
             this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
                 this.waterfall.addItems(data || []);
             });

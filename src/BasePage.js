@@ -170,6 +170,12 @@ export default class BasePage extends Component {
         this.props.navigation.navigate('HomePage')
     }
 
+    //返回拼店
+    $navigateBackToStore = () => {
+        this.props.navigation.popToTop()
+        this.props.navigation.navigate('MyShop_RecruitPage')
+    }
+
     // 返回到首页
     $navigateReset = (routeName = 'Tab', params) => {
         const resetAction = NavigationActions.reset({
