@@ -5,7 +5,7 @@ import {
     Image,
     Text,
     TouchableOpacity,
-    ImageBackground
+    ImageBackground,
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList, UIImage, UIText } from '../../../../components/ui';
@@ -108,6 +108,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         );
     };
     show = () => {
+        this.modal && this.modal.open();
         this.setState({
             modalVisible: true
         });
@@ -127,13 +128,16 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         return (
             <CommModal onRequestClose={this.close}
                        visible={this.state.modalVisible}
-                       transparent={true}>
+                       transparent={true}
+                       ref={(ref)=>{
+                           this.modal = ref;
+                       }}
+            >
                 <View style={{
-                    backgroundColor: 'rgba(0,0,0,0.5)',
                     alignItems: 'center',
                     justifyContent: 'center',
                     flex: 1,
-                    marginTop: 60
+                    width:ScreenUtils.width
                 }}>
                     <View style={{
                         backgroundColor: 'white',
@@ -178,14 +182,15 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 fontSize: ScreenUtils.px2dp(13)
                             }}>{`你的推广成功后会获得平台的预计收益，而预计收益会因最终推广结果调整，最终推广成功后，待提现账户会自动提现至您的余额账户。`}</Text>
                         </View>
-                        <TouchableOpacity style={{
-                            top: -42,
-                            right: -3,
-                            position: 'absolute'
-                        }} onPress={this._onPress}>
-                            <Image source={topicShowClose}/>
-                        </TouchableOpacity>
+
                     </View>
+                    <TouchableOpacity style={{
+                        top: 70,
+                        right: 40,
+                        position: 'absolute'
+                    }} onPress={this._onPress}>
+                        <Image style={{width:20,height:20}} source={topicShowClose}/>
+                    </TouchableOpacity>
                 </View>
 
             </CommModal>
