@@ -49,10 +49,10 @@ export default class ShowConnectPage extends BasePage {
     }
 
     _refreshData() {
+        this.waterfall && this.waterfall.clear();
         this.recommendModules.loadCollect().then(data => {
             this.setState({ firstLoad: false });
             this.waterfall.index = 1
-            this.waterfall.clear();
             if (data && data.length > 0) {
                 this.waterfall.addItems(data);
             } else {

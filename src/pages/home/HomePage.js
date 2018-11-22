@@ -37,6 +37,7 @@ import TimerMixin from "react-timer-mixin";
 import res from "./res";
 import homeModalManager from "./model/HomeModalManager";
 import { withNavigationFocus } from "react-navigation";
+import user from "../../model/user";
 
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
@@ -69,7 +70,8 @@ class HomePage extends PureComponent {
         forceUpdate: false,
         apkExist: false,
         shadowOpacity: this.shadowOpacity,
-        whiteIcon: true
+        whiteIcon: true,
+        hasMessage:false
     };
 
     constructor(props) {
@@ -83,6 +85,13 @@ class HomePage extends PureComponent {
             "willFocus",
             payload => {
                 const { state } = payload;
+                if(user.token){
+                    this.loadMessageCount();
+                }else {
+                    this.setState({
+                        hasMessage:false
+                    })
+                }
                 console.log("willFocusSubscription", state);
                 if (state && state.routeName === "HomePage") {
                     this.shareTaskIcon.queryTask();
@@ -120,6 +129,9 @@ class HomePage extends PureComponent {
 
     componentDidMount() {
         this.listener = DeviceEventEmitter.addListener("homePage_message", this.getMessageData);
+        this.listenerMessage = DeviceEventEmitter.addListener("contentViewed", this.loadMessageCount);
+        this.listenerLogout = DeviceEventEmitter.addListener("login_out", this.loadMessageCount);
+        this.loadMessageCount();
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
                 // 检测版本更新
@@ -138,7 +150,24 @@ class HomePage extends PureComponent {
 
     componentWillUnmount() {
         this.listener && this.listener.remove();
+        this.listenerMessage && this.listenerMessage.remove();
+        this.listenerLogout && this.listenerLogout.remove();
+
     }
+
+    loadMessageCount = () => {
+        MessageApi.getNewNoticeMessageCount().then(result => {
+            if (!EmptyUtils.isEmpty(result.data)) {
+                this.setState({
+                    hasMessage: result.data.shopMessageCount || result.data.noticeCount || result.data.messageCount
+                });
+            }
+        }).catch((error) => {
+            this.setState({
+                hasMessage:false
+            })
+        });
+    };
 
     showModal = () => {
         if (EmptyUtils.isEmpty(homeModalManager.version)) {
@@ -296,6 +325,7 @@ class HomePage extends PureComponent {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
+        this.loadMessageCount();
     }
 
     getMessageData = () => {
@@ -433,7 +463,9 @@ class HomePage extends PureComponent {
                                 }]}/>
 
                 <HomeSearchView navigation={this.props.navigation}
-                                whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}/>
+                                whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}
+                                hasMessage = {this.state.hasMessage}
+                />
                 <ShareTaskIcon style={{ position: "absolute", right: 0, top: px2dp(220) - 40 }}
                                ref={(ref) => {
                                    this.shareTaskIcon = ref;

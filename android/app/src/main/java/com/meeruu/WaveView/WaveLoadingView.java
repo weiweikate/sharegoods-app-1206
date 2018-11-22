@@ -337,10 +337,10 @@ public class WaveLoadingView extends View {
                 float top = mTopTitlePaint.measureText(mTopTitle);
                 // Draw the stroke of top text
                 canvas.drawText(mTopTitle, (getWidth() - top) / 2,
-                        getHeight() * 2 / 6.0f, mTopTitleStrokePaint);
+                        getHeight() * 2 / 3.8f, mTopTitleStrokePaint);
                 // Draw the top text
                 canvas.drawText(mTopTitle, (getWidth() - top) / 2,
-                        getHeight() * 2 / 6.0f, mTopTitlePaint);
+                        getHeight() * 2 / 3.8f, mTopTitlePaint);
             }
 
             if (!TextUtils.isEmpty(mCenterTitle)) {
