@@ -138,7 +138,7 @@ export default class SelectionAmountView extends Component {
                     <View style={{ height: 30, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <TextInput
-                            style={{ width: 92 / 2.0, padding: 0 }}
+                            style={{ width: 92 / 2.0, padding: 0 ,color: DesignRule.textColor_mainTitle}}
                             textAlign={'center'}
                             underlineColorAndroid='transparent'
                             onChangeText={this._onChangeText}
