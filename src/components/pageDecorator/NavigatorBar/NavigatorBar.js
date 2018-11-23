@@ -18,7 +18,7 @@ import DesignRule from 'DesignRule';
 
 const MAX_SCREENT = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
 const MIN_SCREENT = Math.min(Dimensions.get('window').width, Dimensions.get('window').height);
-const IPHONEX = (MIN_SCREENT === 375.00 && MAX_SCREENT === 812.0);
+const IPHONEX = (MIN_SCREENT === 375.00 && MAX_SCREENT === 812.0) || ScreenUtils.isIphoneMax;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export default class NavigatorBar extends Component {
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         justifyContent: 'center',
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
     },
     button: {
         color: DesignRule.mainColor,

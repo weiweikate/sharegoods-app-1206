@@ -2,11 +2,13 @@ import { AsyncStorage } from 'react-native';
 import { action, computed, observable } from 'mobx';
 import shopCartCacheTool from '../pages/shopCart/model/ShopCartCacheTool';
 //import apiEnvironment from '../api/ApiEnvironment';
-import UserApi from './userApi'
+import UserApi from './userApi';
+// import JPushUtils from '../utils/JPushUtils';
 
 const USERINFOCACHEKEY = 'UserInfo';
 const CARTDATA = 'cartData';
-const USERTOKEN = 'USERTOKEN'
+const USERTOKEN = 'USERTOKEN';
+
 class User {
 
     @computed
@@ -150,21 +152,21 @@ class User {
 
     @action getToken = () => {
         if (this.token) {
-            return Promise.resolve(this.token)
+            return Promise.resolve(this.token);
         } else {
             return AsyncStorage.getItem(USERTOKEN).then(token => {
-                this.token = token
-                return Promise.resolve(token)
-            })
+                this.token = token;
+                return Promise.resolve(token);
+            });
         }
-    }
+    };
 
     // 从缓存磁盘读取用户上一次使用的信息记录
     async readUserInfoFromDisk() {
         AsyncStorage.getItem(USERINFOCACHEKEY).then(infoStr => {
             if (infoStr && typeof infoStr === 'string') {
                 const info = JSON.parse(infoStr);
-                console.log('readUserInfoFromDisk', info)
+                console.log('readUserInfoFromDisk', info);
                 this.saveUserInfo(info, false);
             }
         }).catch(err => {
@@ -175,19 +177,20 @@ class User {
     @action
     async readToken() {
         AsyncStorage.getItem(USERTOKEN).then(token => {
-            this.token = token
+            this.token = token;
         }).catch(err => {
             console.warn('Error: user.readUserInfoFromDisk()\n' + err.toString());
         });
     }
 
     @action saveToken(token) {
-        console.log('saveToken',token)
+        console.log('saveToken', token);
         if (!token) {
-            return
+            return;
         }
-        this.token = token
-        AsyncStorage.setItem(USERTOKEN, token).catch(e => {});
+        this.token = token;
+        AsyncStorage.setItem(USERTOKEN, token).catch(e => {
+        });
     }
 
     // 设置用户信息
@@ -238,7 +241,7 @@ class User {
         this.roleType = info.roleType;              //
         this.level = info.level;                    //
         this.levelName = info.levelName;            //
-        this.levelRemark = info.levelRemark
+        this.levelRemark = info.levelRemark;
         this.experience = info.experience;
         this.salePsw = info.salePsw;                //
         this.hadSalePassword = info.hadSalePassword; // 是否设置过交易密码
@@ -258,8 +261,9 @@ class User {
         }
         //同步本地购物车
         shopCartCacheTool.synchronousData();
+        //推送
+        // JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
     }
-
     // 修改手机号
     @action
     changePhone(phone) {
@@ -336,7 +340,7 @@ class User {
         this.auzEndTime = null;      //授权结束时间
         this.upDealerid = null;      //上级
         this.availableBalance = null;//可提现金额
-        this.blockedBalances = null; //冻结金额
+        this.blockedBalance = null; //冻结金额
         this.tokenCoin = null;       //代币金额
         this.blockedCoin = null;     //冻结代币
         this.userScore = null;       //积分
@@ -371,8 +375,8 @@ class User {
     }
 
     @action clearToken() {
-        this.token = null
-        AsyncStorage.removeItem(USERTOKEN)
+        this.token = null;
+        AsyncStorage.removeItem(USERTOKEN);
     }
 
     // 清空离线购物车信息
@@ -403,10 +407,10 @@ class User {
         return UserApi.getUser().then(res => {
             if (res.code == 10000) {
                 let data = res.data;
-                this.saveUserInfo(data)
+                this.saveUserInfo(data);
             }
-            return res.data
-        })
+            return res.data;
+        });
     }
 
 

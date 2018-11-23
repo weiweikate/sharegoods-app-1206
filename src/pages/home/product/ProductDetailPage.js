@@ -36,6 +36,8 @@ import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import res from '../res';
+import MessageApi from '../../message/api/MessageApi';
+import QYChatUtil from '../../mine/page/helper/QYChatModel';
 
 const redEnvelopeBg = res.other.red_big_envelope;
 
@@ -66,6 +68,7 @@ export default class ProductDetailPage extends BasePage {
             canGetCoupon: false,
             couponData: null,
             hasGetCoupon: false,
+            messageCount: 0,//消息数量
 
             loadingState: PageLoadingState.loading,
             netFailedInfo: {}
@@ -98,6 +101,7 @@ export default class ProductDetailPage extends BasePage {
                 console.log('willFocus', state);
                 if (state && state.routeName === 'home/product/ProductDetailPage') {
                     this._getProductDetail();
+                    this._getMessageCount();
                 }
             }
         );
@@ -174,7 +178,7 @@ export default class ProductDetailPage extends BasePage {
             });
         }
     };
-
+    //活动数据
     _getQueryByProductId = () => {
         const { product = {} } = this.state.data;
         if (!product.id) {
@@ -201,7 +205,19 @@ export default class ProductDetailPage extends BasePage {
             }
         }).catch((error) => {
             this.$loadingDismiss();
-            this.$toastShow(error.msg);
+        });
+    };
+
+    //消息数据
+    _getMessageCount = () => {
+        MessageApi.getNewNoticeMessageCount().then(result => {
+            if (!EmptyUtils.isEmpty(result.data)) {
+                const { shopMessageCount, noticeCount, messageCount } = result.data;
+                this.setState({
+                    messageCount: shopMessageCount + noticeCount + messageCount
+                });
+            }
+        }).catch((error) => {
         });
     };
 
@@ -486,6 +502,7 @@ export default class ProductDetailPage extends BasePage {
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <DetailNavView ref={(e) => this.DetailNavView = e}
+                           messageCount={this.state.messageCount}
                            source={imgUrl}
                            navBack={() => {
                                this.$navigateBack();
@@ -496,16 +513,25 @@ export default class ProductDetailPage extends BasePage {
                                });
                            }}
                            navRRight={() => {
-                               this.DetailNavShowModal.show((item) => {
+                               this.DetailNavShowModal.show(this.state.messageCount, (item) => {
                                    switch (item.index) {
                                        case 0:
+                                           if (!user.isLogin) {
+                                               this.$navigate('login/login/LoginPage');
+                                               return;
+                                           }
                                            this.$navigate('message/MessageCenterPage');
                                            break;
                                        case 1:
-                                           this.$navigateBackToHome();
+                                           this.$navigate('home/search/SearchPage');
                                            break;
                                        case 2:
                                            this.shareModal.open();
+                                           break;
+                                       case 3:
+                                           setTimeout(() => {
+                                               QYChatUtil.qiYUChat();
+                                           }, 100);
                                            break;
                                    }
                                });

@@ -43,11 +43,11 @@ export default class ShopRecruitPage extends BasePage {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableWithoutFeedback onPress={() => {
+                        <TouchableOpacity style = {{width:44}} onPress={() => {
                             this.$navigateBack();
                         }}>
                             <Image source={NavLeft}/>
-                        </TouchableWithoutFeedback> : null}
+                        </TouchableOpacity> : null}
                 </View>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ fontSize: 17, color: '#ffffff' }}>店铺招募中</Text>

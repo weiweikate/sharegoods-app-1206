@@ -131,6 +131,7 @@ export default class LoginPage extends BasePage {
                     UserModel.saveUserInfo(res.data);
                     UserModel.saveToken(res.data.token);
                     bridge.$toast('登录成功');
+                    console.log(UserModel);
                     homeModule.loadHomeList()
                     this.$navigateBack();
                 }
@@ -174,6 +175,9 @@ export default class LoginPage extends BasePage {
                 DeviceEventEmitter.emit('contentViewed',null);
                 bridge.$toast('登录成功');
                 homeModule.loadHomeList()
+
+                console.log(UserModel)
+
                 if (this.params.callback) {
                     let resetAction = NavigationActions.reset({
                         index: 0,

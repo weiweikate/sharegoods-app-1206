@@ -24,8 +24,9 @@ import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import StringUtils from '../../../utils/StringUtils';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import DesignRule from 'DesignRule';
-import RecommendBanner from './components/RecommendBanner'
+import RecommendBanner from './components/RecommendBanner';
 import res from '../res';
+
 const ShopItemLogo = res.recommendSearch.dp_03;
 const SearchItemLogo = res.recommendSearch.pdss_03;
 
@@ -49,7 +50,7 @@ export default class RecommendPage extends BasePage {
             segmentIndex: 1,
             //data
             dataList: [{}],//默认一行显示状态页面使用 错误页 无数据页面
-            adList: [],
+            adList: []
         };
     }
 
@@ -216,7 +217,7 @@ export default class RecommendPage extends BasePage {
 
     _renderListHeader = () => {
         if (this.state.adList.length > 0) {
-            return <RecommendBanner bannerList = {this.state.adList} onPress = {this._clickItem}/>;
+            return <RecommendBanner bannerList={this.state.adList} onPress={this._clickItem}/>;
         } else {
             return null;
         }
@@ -264,7 +265,7 @@ export default class RecommendPage extends BasePage {
     _render() {
         return (
             <View style={{ flex: 1 }}>
-                <SectionList keyExtractor={(item, index) => `${index}`}
+                <SectionList keyExtractor={(item) => item.id + ''}
                              style={{ backgroundColor: DesignRule.bgColor }}
                              refreshControl={
                                  <RefreshControl
@@ -280,7 +281,8 @@ export default class RecommendPage extends BasePage {
                              ListHeaderComponent={this._renderListHeader}
                              renderSectionHeader={this._renderSectionHeader}
                              renderItem={this._renderItem}
-                             sections={[{ data: this.state.dataList }]}/>
+                             sections={[{ data: this.state.dataList }]}
+                             initialNumToRender={5}/>
             </View>
         );
     }

@@ -83,7 +83,7 @@ export default class MyCashAccountPage extends BasePage {
                                 marginLeft: 25,
                                 fontSize: 24,
                                 color: 'white'
-                            }}>{StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : 0, false)}</Text>
+                            }}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
                         </View>
                         {/*<TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>*/}
                         {/*<Text style={{ fontSize: 15, color: 'white' }}>提现</Text>*/}
@@ -140,7 +140,7 @@ export default class MyCashAccountPage extends BasePage {
         let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
         Toast.showLoading();
         let arrData = this.currentPage == 1 ? [] : this.state.viewData;
-        MineApi.userBalanceQuery({ page: this.currentPage, size: 20, type: 1 }).then((response) => {
+        MineApi.userBalanceQuery({ page: this.currentPage, size: 10, type: 1 }).then((response) => {
             Toast.hiddenLoading();
             console.log(response);
             if (response.code == 10000) {
@@ -151,7 +151,7 @@ export default class MyCashAccountPage extends BasePage {
                             type: item.useType === 3 && item.biType == 1 ? '消费退款' : use_type[item.useType],
                             time: DataUtils.getFormatDate(item.createTime / 1000),
                             serialNumber: '编号：' + item.serialNo,
-                            capital: use_type_symbol[item.biType] + item.balance,
+                            capital: use_type_symbol[item.biType] + (item.balance?item.balance:0.00),
                             iconImage: useLeftImg[item.useType],
                             capitalRed: use_type_symbol[item.biType] === '-'
                         });
@@ -186,8 +186,11 @@ export default class MyCashAccountPage extends BasePage {
         this.getDataFromNetwork();
     };
     onLoadMore = () => {
-        this.currentPage++;
-        this.getDataFromNetwork();
+        if(!this.state.isEmpty){
+            this.currentPage++;
+            this.getDataFromNetwork();
+        }
+
     };
 }
 
