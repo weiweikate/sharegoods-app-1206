@@ -30,9 +30,11 @@ export default class DetailBottomView extends Component {
         let { shareMoney, status, buyLimit, leftBuyNum } = this.props;
         //限购
         let isLimit = buyLimit !== -1 && leftBuyNum === 0;
-        //status2：产品下架
-        let disable = status === 2;
-        let cantBuy = disable || isLimit;
+        //status2：产品下架    1正常  2下架  3当前时间不能买
+        let disable = status === 2;//是否下架  样式
+
+        //btn不能点 变灰
+        let cantBuy = status !== 1 || isLimit;
         return (
             <View style={{ height: 49 + ScreenUtils.safeBottom + (disable ? 20 : 0), backgroundColor: 'white' }}>
                 {disable ? <View style={{
@@ -44,8 +46,9 @@ export default class DetailBottomView extends Component {
                     <Text style={{ color: DesignRule.white, fontSize: 13 }}>商品已经下架啦~</Text>
                 </View> : null}
                 <View style={styles.container}>
-                    <TouchableOpacity style={{ width: ScreenUtils.autoSizeWidth(85), justifyContent: 'center', alignItems: 'center' }}
-                                      onPress={() => this.props.bottomViewAction('gwc')} disabled={cantBuy}>
+                    <TouchableOpacity
+                        style={{ width: ScreenUtils.autoSizeWidth(85), justifyContent: 'center', alignItems: 'center' }}
+                        onPress={() => this.props.bottomViewAction('gwc')} disabled={cantBuy}>
                         <Image style={{ marginBottom: 6 }}
                                source={cantBuy ? jiarugouwuche_no : xiangqing_btn_gouwuche_nor}/>
                         <Text style={{ fontSize: 11, color: DesignRule.textColor_mainTitle }}>加入购物车</Text>
@@ -68,13 +71,13 @@ export default class DetailBottomView extends Component {
                             flex: 1,
                             backgroundColor: '#FBBB50',
                             justifyContent: 'center',
-                            alignItems: 'center',
+                            alignItems: 'center'
                         }}
                         onPress={() => this.props.bottomViewAction('jlj')}>
                         {
                             // shareMoney未空显示?  为0显示分享赚
                             shareMoney === '0.00' ? <Text style={{ fontSize: 17, color: DesignRule.white }}>分享赚</Text>
-                                : <View style={{flexDirection: 'row'}}>
+                                : <View style={{ flexDirection: 'row' }}>
                                     <Text style={{ color: DesignRule.white, fontSize: 25 }}>赚</Text>
                                     <View style={{ marginLeft: 5 }}>
                                         <Text style={{ color: DesignRule.white, fontSize: 11 }}>品牌奖励金</Text>

@@ -24,17 +24,20 @@ import QYChatUtil from './QYChatModel';
 import MineApi from '../../api/MineApi';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+
 const {
-   top_kefu ,
- icon_wenti ,
- icon_tuikuan ,
- icon_feedback ,
- icon_auto_feedback ,
- icon_phone ,
-icon_kefu,
-}=res.helperAndCustomerService;
+    top_kefu,
+    icon_wenti,
+    icon_tuikuan,
+    icon_feedback,
+    icon_auto_feedback,
+    icon_phone,
+    icon_kefu
+} = res.helperAndCustomerService;
+import user from '../../../../model/user';
+import { observer } from 'mobx-react/native';
 
-
+@observer
 export default class MyHelperPage extends BasePage {
     constructor(props) {
         super(props);
@@ -56,7 +59,8 @@ export default class MyHelperPage extends BasePage {
                         <View key={index} style={styles.hotQuestionStyle}>
                             <TouchableOpacity activeOpacity={0.6} onPress={() => this.orderListq(item.list)}
                                               style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                <Image source={item.imgUrl?item.imgUrl:icon_wenti} style={{ width: 37, height: 37 }}/>
+                                <Image source={item.imgUrl ? { uri: item.imgUrl } : icon_wenti}
+                                       style={{ width: 37, height: 37 }}/>
                                 <Text style={{
                                     fontSize: 11,
                                     color: DesignRule.textColor_secondTitle,
@@ -108,17 +112,17 @@ export default class MyHelperPage extends BasePage {
                         marginTop: 10,
                         backgroundColor: 'white'
                     }}>
-                        <TouchableOpacity activeOpacity={0.6} onPress={() => this.$navigate('order/afterSaleService/AfterSaleListPage')}
+                        <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack(1)}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_tuikuan} style={{ width: 37, height: 37 }}/>
                             <Text style={styles.textFontstyle}>查看售后</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack()}
+                        <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack(2)}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_feedback} style={{ width: 37, height: 37 }}/>
                             <Text style={styles.textFontstyle}>问题反馈</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.6} onPress={() => {this.props.navigation.navigate("order/order/MyOrdersListPage", { index: 0 })}}
+                        <TouchableOpacity activeOpacity={0.6} onPress={() => this.questionfeedBack(3)}
                                           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                             <Image source={icon_auto_feedback} style={{ width: 37, height: 37 }}/>
                             <Text style={styles.textFontstyle}>查看订单</Text>
@@ -142,7 +146,11 @@ export default class MyHelperPage extends BasePage {
                                       onPress={() => this.jumpQYIMPage()}>
                         <UIImage source={icon_kefu} style={{ height: 23, width: 23 }} resizeMode={'contain'}/>
                         <View style={{ marginLeft: 9, justifyContent: 'center' }}>
-                            <Text style={{fontFamily:'PingFangSC-Regular',fontSize:16,color:DesignRule.textColor_mainTitle_222}}>在线客服</Text>
+                            <Text style={{
+                                fontFamily: 'PingFangSC-Regular',
+                                fontSize: 16,
+                                color: DesignRule.textColor_mainTitle_222
+                            }}>在线客服</Text>
                             <Text style={styles.text2Style}>9:00-22:00</Text>
                         </View>
                     </TouchableOpacity>
@@ -160,8 +168,12 @@ export default class MyHelperPage extends BasePage {
                         }}
                         onPress={() => this.jump2Telephone()}>
                         <UIImage source={icon_phone} style={{ height: 23, width: 24 }} esizeMode={'contain'}/>
-                        <View style={{ marginLeft: 9, justifyContent: 'center', }}>
-                            <Text style={{fontFamily:'PingFangSC-Regular',fontSize:16,color:DesignRule.textColor_mainTitle_222}}>客服电话</Text>
+                        <View style={{ marginLeft: 9, justifyContent: 'center' }}>
+                            <Text style={{
+                                fontFamily: 'PingFangSC-Regular',
+                                fontSize: 16,
+                                color: DesignRule.textColor_mainTitle_222
+                            }}>客服电话</Text>
                             <Text style={styles.text2Style}>400-9696-365</Text>
                         </View>
                     </TouchableOpacity>
@@ -177,16 +189,23 @@ export default class MyHelperPage extends BasePage {
         Linking.openURL('tel:' + '400-9696-365').catch(e => console.log(e));
     }
 
-    jumpTohelpPage() {
-        console.log('fankui');
-    }
-
     orderListq(list) {
         this.$navigate('mine/helper/HelperQuestionListPage', { list });
     }
 
-    questionfeedBack() {
-        this.$navigate('mine/helper/HelperFeedbackPage');
+    questionfeedBack(type) {
+        if (!user.isLogin) {
+            this.$navigate('login/login/LoginPage');
+            return;
+        }
+        if (type === 1) {
+            this.$navigate('order/afterSaleService/AfterSaleListPage');
+        } else if (type === 2) {
+            this.$navigate('mine/helper/HelperFeedbackPage');
+        } else if (type === 3) {
+            this.$navigate('order/order/MyOrdersListPage', { index: 0 });
+        }
+
     }
 
     gotoquestionDetail(id) {
@@ -198,26 +217,20 @@ export default class MyHelperPage extends BasePage {
         let list = [];
         MineApi.queryHelpQuestionList().then(res => {
             console.log(res);
-            if (res.code == 10000) {
-                Object.keys(res.data).forEach(item => {
-                    list.push({
-                        name: item,
-                        list: res.data[item],
-                        typeid: res.data[item][0].typeId,
-                        imgUrl:res.data[item][0].imgUrl
-                    });
+            res.data.forEach(item => {
+                list.push({
+                    name: item.name,
+                    list: item.helpQuestionExtList,
+                    typeid: item.id,
+                    imgUrl: item.imgUrl
                 });
-                this.setState({
-                    typeList: list
-                });
-            } else {
-                this.$toastShow(res.msg);
-                this.setState({ isEmpty: true });
-            }
+            });
+            this.setState({
+                typeList: list
+            });
         }).catch(error => {
-            if (error.code === 10009) {
-                this.$navigate('login/login/LoginPage');
-            }
+            this.$toastShow(error.msg);
+            console.log(error);
         });
     }
 

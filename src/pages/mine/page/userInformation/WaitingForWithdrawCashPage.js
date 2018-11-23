@@ -32,7 +32,6 @@ const questionImage_white = res.userInfoImg.questionImage_white;
 import topicShow from '../../../topic/res/topicShow.png';
 import topicShowClose from '../../../topic/res/topicShowClose.png';
 
-
 @observer
 export default class WaitingForWithdrawCashPage extends BasePage {
     constructor(props) {
@@ -137,7 +136,8 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                     alignItems: 'center',
                     justifyContent: 'center',
                     flex: 1,
-                    width:ScreenUtils.width
+                    width:ScreenUtils.width,
+                    marginTop:60
                 }}>
                     <View style={{
                         backgroundColor: 'white',
@@ -311,9 +311,11 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         });
         this.getDataFromNetwork();
     };
-    onLoadMore = (page) => {
-        this.currentPage++;
-        this.getDataFromNetwork();
+    onLoadMore = () => {
+        if(!this.state.isEmpty){
+            this.currentPage++;
+            this.getDataFromNetwork();
+        }
     };
 }
 

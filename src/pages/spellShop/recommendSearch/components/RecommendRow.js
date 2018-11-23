@@ -14,6 +14,8 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import OssImage from 'OssImage';
+
 const StarImg = res.recommendSearch.dj_03;
 
 export default class RecommendRow extends Component {
@@ -32,7 +34,7 @@ export default class RecommendRow extends Component {
         return (<TouchableOpacity onPress={() => {
         }} style={[styles.itemIcon, { marginLeft: 15 }]}>
             {StringUtils.isNoEmpty(item.headImg) ?
-                <Image style={styles.itemIcon} source={{ uri: item.headImg }}/> :
+                <OssImage style={styles.itemIcon} source={{ uri: item.headImg }}/> :
                 <View style={[styles.itemIcon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
         </TouchableOpacity>);
     };
@@ -59,8 +61,8 @@ export default class RecommendRow extends Component {
                 <View style={styles.topViewContainer}>
                     <View style={{ flex: 1 }}>
                         <View style={styles.headerViewContainer}>
-                            {StringUtils.isNoEmpty(RecommendRowItem.headUrl) ? <Image style={styles.icon}
-                                                                                      source={{ uri: RecommendRowItem.headUrl }}/> :
+                            {StringUtils.isNoEmpty(RecommendRowItem.headUrl) ? <OssImage style={styles.icon}
+                                                                                         source={{ uri: RecommendRowItem.headUrl }}/> :
                                 <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                             <View style={styles.tittleContainer}>
                                 <Text style={styles.name} numberOfLines={1}>{RecommendRowItem.name || ''}</Text>
@@ -71,10 +73,11 @@ export default class RecommendRow extends Component {
                         <FlatList
                             style={styles.midFlatList}
                             data={storeUserList}
-                            keyExtractor={(item, index) => `${index}`}
+                            keyExtractor={(item) => item.id + ''}
                             renderItem={this.renderIconItem}
                             horizontal={true}
                             showsHorizontalScrollIndicator={false}
+                            initialNumToRender={5}
                         />
                         <View style={{
                             flexDirection: 'row', alignSelf: 'center',
