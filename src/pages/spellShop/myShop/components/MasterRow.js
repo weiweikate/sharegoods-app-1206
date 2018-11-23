@@ -36,7 +36,8 @@ export default class MasterRow extends Component {
     render() {
         let {headImg,nickName,levelName,contribution} = this.props.item;
         let {tradeBalance} = this.props;
-        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : tradeBalance;
+        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
+        contribution = StringUtils.isEmpty(contribution) ? 0 : parseFloat(contribution);
         return (<TouchableWithoutFeedback onPress={this._clickAssistantDetail}>
             <View style={styles.container}>
                 <Image style={styles.iconGap} source={ShopMasterIcon}/>

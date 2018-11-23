@@ -392,13 +392,13 @@ export default class MinePage extends BasePage {
                     flexDirection: "row",
                     justifyContent: "space-between"
                 }}>
-                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance, false), "现金账户", () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.availableBalance?user.availableBalance:'0.00', false), "现金账户", () => {
                         this.go2CashDetailPage(1);
                     })}
-                    {this.accountItemView(StringUtils.isEmpty(user.userScore) ? "0.00" : StringUtils.formatMoneyString(user.userScore, false) + "", "秀豆账户", () => {
+                    {this.accountItemView(user.userScore ?user.userScore+'': "0", "秀豆账户", () => {
                         this.go2CashDetailPage(2);
                     })}
-                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance, false), "待提现账户", () => {
+                    {this.accountItemView(StringUtils.formatMoneyString(user.blockedBalance?user.blockedBalance:'0.00', false), "待提现账户", () => {
                         this.go2CashDetailPage(3);
                     })}
 

@@ -255,7 +255,10 @@ class BankCardListPage extends BasePage {
         this.modal && this.modal.open();
     };
     addBankCard = () => {
-        this.$navigate('mine/bankCard/AddBankCardPage', { callBack: () => this.loadPageData() });
+        // this.$navigate('mine/bankCard/AddBankCardPage', { callBack: () => this.loadPageData() });
+        this.setState({
+            isShowUnbindCardModal:true
+        })
     };
     callBack = (item) => {
         if (this.params.callBack) {

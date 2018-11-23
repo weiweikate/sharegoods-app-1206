@@ -120,18 +120,19 @@ class TotalTopicresultDataModel {
                     let otherSections = {
                         key: otherSectionIndex,
                         bannerImg: otherSection.bannerImg,
-                        data: productlist.slice()
+                        data: productlist.slice(),
+                        aspectRatio:(otherSection.height/otherSection.width) || (16 / 75),
                     };
                     //开始加入从第二组开始的数据
                     sections.sectionDataList.push(otherSections);
                 });
             }
             tempArr.push(sections);
-            //   console.log(tempArr);
+              // console.log(tempArr);
         }
 
         this.sectionDataList = tempArr;
-        // console.log(tempArr);
+        console.log(tempArr);
     }
 
     /**
@@ -159,6 +160,7 @@ class TotalTopicresultDataModel {
         this.setRefresh(true)
         TopicAPI.findTopicById({
             code: topicCode
+            // code:'ZT2018000081'
         }).then(result => {
             this.saveResultDataWith(result.data);
             this.setRefresh(false)

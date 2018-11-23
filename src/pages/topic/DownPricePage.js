@@ -35,10 +35,7 @@ export default class DownPricePage extends BasePage {
     }
 
     componentDidMount() {
-
-
         // this.$NavigationBarResetTitle(this.dataModel.name)
-
         this.didBlurSubscription = this.props.navigation.addListener(
             'didFocus',
             payload => {
@@ -101,7 +98,7 @@ export default class DownPricePage extends BasePage {
                     }
                 }
             >
-                {section.key !== 'one' ? <ActivityOneView imageUrl={section.bannerImg}/> : null}
+                {section.key !== 'one' ? <ActivityOneView imageUrl={section.bannerImg} ratio={section.aspectRatio}/> : null}
 
                 {
                     sectionListData.map((itemData, itemIndex) => {

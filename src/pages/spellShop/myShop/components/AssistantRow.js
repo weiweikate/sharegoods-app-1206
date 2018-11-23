@@ -45,7 +45,8 @@ export default class AssistantRow extends Component {
     renderContent = (style) => {
         let { headImg, levelName, nickName, contribution } = this.props.item;
         let { tradeBalance } = this.props;
-        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : tradeBalance;
+        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
+        contribution = StringUtils.isEmpty(contribution) ? 0 : parseFloat(contribution);
         const sty = [styles.rowContainer];
         // TODO 等待后台确定贡献度 计算方式
         sty.push(style);
