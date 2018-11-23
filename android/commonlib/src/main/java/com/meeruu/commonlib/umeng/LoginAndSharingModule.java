@@ -567,7 +567,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         intent.setData(uri);
         context.sendBroadcast(intent);
         success.invoke();
-
     }
 
     public static void drawPromotionShare(final Context context, final String url, final Callback success, final Callback fail) {

@@ -57,6 +57,7 @@ const sizes = {
     fontSize_mediumBtnText: autoSizeWidth(15),//中等大小按钮的文字大小
     fontSize_mainTitle: autoSizeWidth(19),//一级标题文字大小
     fontSize_secondTitle: autoSizeWidth(15),//二级标题文字大小
+    fontSize_threeTitle_28: autoSizeWidth(14),//三级标题文字大小
     fontSize_threeTitle: autoSizeWidth(13),//三级标题文字大小
     fontSize_24: autoSizeWidth(12),//四级文案 辅助信息
     fontSize_22: autoSizeWidth(11),//五级文案
@@ -124,7 +125,8 @@ const styles = {
 const DesignRule = {
     ...colors,
     ...sizes,
-    ...styles
+    ...styles,
+    autoSizeWidth
 };
 
 export default DesignRule;
