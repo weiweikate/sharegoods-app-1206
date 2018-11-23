@@ -36,7 +36,6 @@ export default class ShowDetailPage extends Component {
             'willFocus',
             payload => {
                 const { state } = payload;
-                console.log('willFocus', state);
                 if (state && state.routeName === 'show/ShowDetailPage') {
                     this.showDetailModule.loadDetail(this.params.id)
                 }
@@ -102,7 +101,7 @@ export default class ShowDetailPage extends Component {
                 style={styles.container}
                 showsVerticalScrollIndicator={false}
             >
-            <ShowImageView items={detail.imgs}/>
+            <ShowImageView items={detail.imgs.slice()}/>
             <View style={styles.profileRow}>
                 <View style={styles.profileLeft}>
                     <Image style={styles.portrait} source={{ uri: detail.userHeadImg ? detail.userHeadImg : '' }}/>
