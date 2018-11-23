@@ -9,6 +9,7 @@
 #import <Photos/Photos.h>
 #import <Photos/PHAssetChangeRequest.h>
 #import "XGImageCompression.h"
+#import "JSPushManager.h"
 
 #define AppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
 
@@ -264,6 +265,38 @@ RCT_EXPORT_METHOD(removeLaunch){
   dispatch_async(dispatch_get_main_queue(), ^{
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [delegate removeLaunch];
+  });
+}
+/* 示例
+* 更新推送的
+ */
+RCT_EXPORT_METHOD(updatePushAlias:(id)paramAlias){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    NSDictionary * paramAliasDic = paramAlias;
+    NSLog(@"%@",paramAliasDic);
+    if (paramAlias[@"userId"]) {
+      [JSPushManager setAlias:paramAlias[@"userId"]];
+    }
+  });
+}
+/* 示例
+ * {
+ * environment: "测试"
+ * levelRemark: "V0"
+ * status: "已激活"
+ * version: "1.0.3"
+ * }
+ */
+RCT_EXPORT_METHOD(updatePushTags:(id)paramTags){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    NSDictionary * paramTagsDic = paramTags;
+    NSLog(@"%@",paramTagsDic);
+    NSMutableSet * aliasSet = [NSMutableSet new];
+    [aliasSet addObject:paramTagsDic[@"environment"]?paramTagsDic[@"environment"]:@"测试" ];
+    [aliasSet addObject:paramTagsDic[@"levelRemark"]?paramTagsDic[@"levelRemark"]:@"V0"];
+    [aliasSet addObject:paramTagsDic[@"status"]?paramTagsDic[@"status"]:@"网信会员"];
+    [aliasSet addObject:paramTagsDic[@"version"]?paramTagsDic[@"version"]:@"1.0.0"];
+    [JSPushManager setTags:aliasSet];
   });
 }
 
