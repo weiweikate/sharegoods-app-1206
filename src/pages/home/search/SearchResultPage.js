@@ -253,6 +253,7 @@ export default class SearchResultPage extends BasePage {
 
     //跳转
     _clickItemAction = (text) => {
+        text = text.replace(/(\s*$)/g, "")//去尾空格
         if (StringUtils.isEmpty(text)) {
             this.$toastShow('搜索内容不能为空');
             return;
