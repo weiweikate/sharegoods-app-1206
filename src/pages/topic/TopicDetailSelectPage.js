@@ -158,7 +158,7 @@ export default class TopicDetailSelectPage extends Component {
                                         </TouchableOpacity>
                                         <View style={{ height: 21, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                            <Text style={{ paddingHorizontal: 15 }}>{1}</Text>
+                                            <Text style={{ paddingHorizontal: 15 ,color: DesignRule.textColor_mainTitle}}>{1}</Text>
                                         </View>
                                         <View style={{ height: 21, width: 1, backgroundColor: DesignRule.lineColor_inGrayBg }}/>
                                         <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }}>
