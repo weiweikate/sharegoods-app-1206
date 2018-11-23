@@ -51,7 +51,7 @@ export default class SearchResultPage extends BasePage {
             loadingMore: false,//是否显示加载更多的菊花
             loadingMoreError: null,//加载更多是否报错
 
-            loadingState: PageLoadingState.empty,
+            loadingState: PageLoadingState.loading,
             netFailedInfo: {},
 
             showTop: false,

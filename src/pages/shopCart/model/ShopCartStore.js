@@ -255,6 +255,7 @@ class ShopCartStore {
                     'cacheList': localValue
                 };
             //存在本地缓存
+            this.setRefresh(true);
             ShopCartAPI.getRichItemList(
                 params
             ).then(res => {
