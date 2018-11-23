@@ -207,7 +207,6 @@ export default class TopicDetailPage extends BasePage {
                 });
             }
         }).catch((error) => {
-            this.$toastShow(error.msg);
         });
     };
 

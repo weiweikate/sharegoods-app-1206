@@ -204,7 +204,6 @@ export default class ProductDetailPage extends BasePage {
             }
         }).catch((error) => {
             this.$loadingDismiss();
-            this.$toastShow(error.msg);
         });
     };
 
@@ -218,7 +217,6 @@ export default class ProductDetailPage extends BasePage {
                 });
             }
         }).catch((error) => {
-            this.$toastShow(error.msg);
         });
     };
 
