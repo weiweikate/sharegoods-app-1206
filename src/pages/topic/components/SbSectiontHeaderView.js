@@ -53,16 +53,27 @@ const SbSectiontHeaderViewStyles = StyleSheet.create({
 class ActivityOneView extends Component {
 
     static propTypes = {
-        imageUrl: PropTypes.string.isRequired
+        imageUrl: PropTypes.string.isRequired,
+        ratio: PropTypes.number
     };
 
     render() {
-        const { imageUrl } = this.props;
+        const { imageUrl, ratio } = this.props;
+        console.log(this.props);
         return (
             <View>
                 <PreLoadImage
                     imageUri={imageUrl}
-                    style={ActivityOneViewStyles.bgImageStyle}
+                    style={[
+                        ActivityOneViewStyles.bgImageStyle,
+                        ratio ?
+                            {
+                                height: ScreenUtils.width * ratio
+                            }
+                            :
+                            null
+
+                    ]}
 
                 />
             </View>

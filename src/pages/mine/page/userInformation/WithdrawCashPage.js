@@ -1,6 +1,3 @@
-/**
- * Created by zhanglei on 2018/6/19.
- */
 import React from 'react';
 import {
     NativeModules,
@@ -27,7 +24,7 @@ const arrow_right = res.button.arrow_right_black;
 const bank = res.userInfoImg.commonBankCardIcon;
 
 @observer
-class WithdrawCashPage extends BasePage {
+export default class WithdrawCashPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
@@ -44,9 +41,6 @@ class WithdrawCashPage extends BasePage {
             bank_name: '',
             id: 0,
             card_type: 1,
-            blockedBalances: 0,
-            availableBalance: 0,
-            totalFee: 0
         };
     }
 
@@ -257,17 +251,16 @@ class WithdrawCashPage extends BasePage {
         // });
     };
     selectBankCard = () => {
-        NativeModules.commModule.toast('功能暂未开放');
-        //     this.$navigate('mine/bankCard/BankCardListPage', {
-        //         callBack: (params) => {
-        //             this.setState({
-        //                 card_no: params.card_no,
-        //                 bank_name: params.bank_name,
-        //                 id: params.id,
-        //                 card_type: params.card_type
-        //             });
-        //         }
-        //     });
+            this.$navigate('mine/bankCard/BankCardListPage', {
+                callBack: (params) => {
+                    this.setState({
+                        card_no: params.card_no,
+                        bank_name: params.bank_name,
+                        id: params.id,
+                        card_type: params.card_type
+                    });
+                }
+            });
     };
 }
 
@@ -277,4 +270,3 @@ const styles = StyleSheet.create({
     }
 });
 
-export default WithdrawCashPage;

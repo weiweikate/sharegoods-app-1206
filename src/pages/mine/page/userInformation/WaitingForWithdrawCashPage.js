@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList, UIImage, UIText } from '../../../../components/ui';
-import StringUtils from '../../../../utils/StringUtils';
+// import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
@@ -88,7 +88,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 marginLeft: 25,
                                 fontSize: 25,
                                 color: 'white'
-                            }}>{StringUtils.formatMoneyString(user.blockedBalance ? user.blockedBalance : 0, false)}</Text>
+                            }}>{user.blockedBalance ? user.blockedBalance : `0.00`}</Text>
                         </View>
                         <View style={{ marginRight: 20 }}>
                             <TouchableOpacity
