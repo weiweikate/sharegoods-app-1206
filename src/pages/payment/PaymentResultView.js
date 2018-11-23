@@ -82,7 +82,7 @@ export default class PaymentResultView extends Component {
                                     ?
                                     <Text style={styles.message}>{message}</Text>
                                     :
-                                    <Text style={styles.message}>请重新支付</Text>
+                                    null
                             }
                             <View style={{ flex: 1 }}/>
                             {
