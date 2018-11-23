@@ -83,7 +83,7 @@ export default class MyCashAccountPage extends BasePage {
                                 marginLeft: 25,
                                 fontSize: 24,
                                 color: 'white'
-                            }}>{StringUtils.formatMoneyString(user.availableBalance ? user.availableBalance : 0, false)}</Text>
+                            }}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
                         </View>
                         {/*<TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>*/}
                         {/*<Text style={{ fontSize: 15, color: 'white' }}>提现</Text>*/}
@@ -151,7 +151,7 @@ export default class MyCashAccountPage extends BasePage {
                             type: item.useType === 3 && item.biType == 1 ? '消费退款' : use_type[item.useType],
                             time: DataUtils.getFormatDate(item.createTime / 1000),
                             serialNumber: '编号：' + item.serialNo,
-                            capital: use_type_symbol[item.biType] + item.balance,
+                            capital: use_type_symbol[item.biType] + (item.balance?item.balance:0.00),
                             iconImage: useLeftImg[item.useType],
                             capitalRed: use_type_symbol[item.biType] === '-'
                         });

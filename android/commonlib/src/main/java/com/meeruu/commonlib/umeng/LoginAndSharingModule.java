@@ -578,7 +578,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         qrBitmap.recycle();
 
         success.invoke();
-
     }
 
     public static void drawPromotionShare(final Context context, final String url, final Callback success, final Callback fail) {

@@ -44,7 +44,8 @@ export default class ShopHeader extends Component {
             tradeBalance = 0, bonusNeedMoney = 0, currentUserSettle = 0
         } = this.props.item;
 
-        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : tradeBalance;
+        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
+        currentUserSettle = StringUtils.isEmpty(currentUserSettle) ? 0 : parseFloat(currentUserSettle);
 
         const starsArr = [];
         if (storeStarId && typeof storeStarId === 'number') {
