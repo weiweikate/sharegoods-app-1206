@@ -414,9 +414,6 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-
-
-
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.yqhy_04);
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
@@ -502,6 +499,13 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(uri);
         context.sendBroadcast(intent);
+
+        result.recycle();
+        bitmap.recycle();
+        whiteBitmap.recycle();
+        header.recycle();
+        qrBitmap.recycle();
+
         success.invoke();
 
     }
@@ -534,6 +538,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
          * 绘制图片
          */
         canvas.drawBitmap(source, 0, 0, paint);
+
         return target;
     }
 
@@ -566,6 +571,12 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         intent.setData(uri);
         context.sendBroadcast(intent);
+
+
+        result.recycle();
+        bitmap.recycle();
+        qrBitmap.recycle();
+
         success.invoke();
     }
 
@@ -604,7 +615,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             fail.invoke("图片生成失败");
         }
+
         bitmap.recycle();
+        result.recycle();
+        qrBitmap.recycle();
     }
 
 
@@ -704,6 +718,10 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             fail.invoke("图片生成失败");
         }
+
+
+        result.recycle();
+        qrBitmap.recycle();
     }
 
     private ShareImageBean parseParam(ReadableMap map) {
@@ -801,6 +819,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         } else {
             fail.invoke();
         }
+
+        bmp.recycle();
     }
 
 

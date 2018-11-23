@@ -16,16 +16,16 @@
             "host": "http://172.16.10.111:8903/gateway"
         },
         "dev": {
-            "name": "开发环境",
+            "name": "开发",
             "host": "http://devapi.sharegoodsmall.com/gateway"
         },
         "qa": {
-            "name": "测试环境",
+            "name": "测试",
             "host": "https://testapi.sharegoodsmall.com/gateway",
             "h5": "https://testh5.sharegoodsmall.com"
         },
         "online": {
-            "name": "生产环境",
+            "name": "生产",
             "host": "",
             "h5": "https://h5.sharegoodsmall.com"
         },
@@ -62,7 +62,7 @@
             "host":"http://172.16.10.21:8080/gateway"
         },
         "pre_release": {
-            "name": "预发布环境",
+            "name": "UAT",
             "host": "https://uatapi.sharegoodsmall.com/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         }

@@ -84,6 +84,16 @@
 //  [[QYSDK sharedSDK] updateApnsToken:deviceToken];
   //极光提交
   [JPUSHService registerDeviceToken:deviceToken];
+  [JPUSHService registrationIDCompletionHandler:^(int resCode, NSString *registrationID) {
+    NSLog(@"%@",registrationID);
+//    [JPUSHService setAlias:@"家人组" completion:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+//      NSLog(@"isRescode---%ld",iResCode);
+//    } seq:1];
+//    [JPUSHService setTags:@"userID" completion:^(NSInteger iResCode, NSSet *iTags, NSInteger seq) {
+//    } seq:1];
+  }];
+  
+
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo

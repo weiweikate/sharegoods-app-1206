@@ -14,22 +14,36 @@ export default class ShowImageView extends Component {
 
     state = {
         pageIndex: 0,
-        total: 2
+        total: 2,
+        items:[]
     };
+
+    constructor(props) {
+        super(props)
+        this.state.items = this.props.items
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const {items} = nextProps
+        console.log('componentWillReceiveProps', items, this.state.items)
+        if (items && items.length !== this.state.items.length) {
+            this.state.items = items
+        }
+    }
 
     _renderViewPageItem(item) {
         return <Image style={styles.image} source={{ uri: item }} resizeMode='contain'/>;
     }
 
     render() {
-        let items = this.props.items;
+        let items = this.state.items;
         if (!items) {
             return <View/>;
         }
         return <View style={styles.wrapper}>
             <ViewPager
                 swiperShow={true}
-                arrayData={items.slice()}
+                arrayData={items}
                 renderItem={this._renderViewPageItem.bind(this)}
                 autoplay={true}
                 loop={false}

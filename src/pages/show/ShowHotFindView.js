@@ -31,6 +31,7 @@ export default class ShowHotView extends Component {
     }
 
     infiniting(done) {
+        console.log('infiniting');
         setTimeout(() => {
             const {isFetching} = this.state
             if (isFetching) {
@@ -63,11 +64,10 @@ export default class ShowHotView extends Component {
     refreshing(done) {
         let currentDate = new Date()
         this.setState({ isEnd: false, isFetching: true})
-        this.recommendModules.page = 1
         this.recommendModules.isEnd = false
         setTimeout(() => {
             this.waterfall && this.waterfall.clear();
-            this.recommendModules.fetchRecommendList({}, currentDate).then(data => {
+            this.recommendModules.fetchRecommendList({}, currentDate, 1).then(data => {
                 this.setState({ isFetching: false})
                 this.waterfall.index = 1
                 this.waterfall.addItems(data);
