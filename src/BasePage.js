@@ -9,9 +9,9 @@
 import React, { Component } from 'react';
 import {
     View,
-    TouchableWithoutFeedback,
     Text,
-    Image
+    Image,
+    TouchableOpacity
 } from 'react-native';
 import NavigatorBar from './components/pageDecorator/NavigatorBar/index';
 
@@ -27,6 +27,8 @@ export default class BasePage extends Component {
     constructor(props) {
         super(props);
         this.params = this.props.navigation.state.params || {};
+        this.viewDidLoad = netStatus.isConnected;
+        // alert(this.viewDidLoad)
     }
 
     $navigationBarOptions = {
@@ -44,23 +46,55 @@ export default class BasePage extends Component {
     }
 
     $isMonitorNetworkStatus() {
-        return false;
+        return true;
     }
 
     _renderDefaultNoNet() {
         return (
             <View style={[this.props.style, { alignItems: 'center', justifyContent: 'center', flex: 1 }]}>
-                <TouchableWithoutFeedback onPress={() => {
+                <Image source={res.placeholder.netError}
+                       style={{ width: DesignRule.autoSizeWidth(120), height: DesignRule.autoSizeWidth(120) }}/>
+                <Text
+                    style={{
+                        color: DesignRule.textColor_instruction,
+                        fontSize: DesignRule.fontSize_threeTitle_28,
+                        includeFontPadding: false,
+                        marginTop: 10
+                    }}>
+                    网络请求失败
+                </Text>
+                <Text
+                    style={{
+                        color: DesignRule.textColor_instruction,
+                        fontSize: DesignRule.fontSize_22,
+                        marginTop: 5,
+                        includeFontPadding: false
+                    }}>
+                    请检查你的网络
+                </Text>
+                <TouchableOpacity onPress={() => {
                     if (netStatus.isConnected) {
+                        this.viewDidLoad = true;
                         this.$refreshData();
-                        this.setState({ isConnected: true });
+                        this.setState({ viewDidLoad: true });//为了触发render
                     }
                 }}>
-                    <View>
-                        <Image source={res.placeholder.netError} style={{ height: 100, width: 100 }}/>
-                        <Text style={{ marginTop: 10, color: DesignRule.textColor_secondTitle }}>无网络</Text>
+                    <View style={{
+                        height: 50,
+                        width: 150,
+                        borderRadius: 25,
+                        borderColor: DesignRule.bgColor_btn,
+                        borderWidth: DesignRule.lineHeight,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginTop: 20
+                    }}>
+                        <Text style={{
+                            color: DesignRule.bgColor_btn,
+                            fontSize: DesignRule.fontSize_mediumBtnText
+                        }}>重新加载</Text>
                     </View>
-                </TouchableWithoutFeedback>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -91,7 +125,7 @@ export default class BasePage extends Component {
                                                       this.$navigatorBar = bar;
                                                   }}/>
                 }
-                {this.$isMonitorNetworkStatus() && netStatus.isConnected === false ?
+                {this.$isMonitorNetworkStatus() && netStatus.isConnected === false && this.viewDidLoad === false ?
                     this._renderDefaultNoNet() :
                     this.renderContianer()}
             </View>
@@ -166,15 +200,15 @@ export default class BasePage extends Component {
     };
 
     $navigateBackToHome = () => {
-        this.props.navigation.popToTop()
-        this.props.navigation.navigate('HomePage')
-    }
+        this.props.navigation.popToTop();
+        this.props.navigation.navigate('HomePage');
+    };
 
     //返回拼店
     $navigateBackToStore = () => {
-        this.props.navigation.popToTop()
-        this.props.navigation.navigate('MyShop_RecruitPage')
-    }
+        this.props.navigation.popToTop();
+        this.props.navigation.navigate('MyShop_RecruitPage');
+    };
 
     // 返回到首页
     $navigateReset = (routeName = 'Tab', params) => {
@@ -234,8 +268,9 @@ export default class BasePage extends Component {
     $toastShow = (title) => {
         bridge.$toast(title);
     };
-    $loadingShow = (msg, timeout = 0,callback=()=>{}) => {
-        Toast.showLoading(msg,timeout,callback())
+    $loadingShow = (msg, timeout = 0, callback = () => {
+    }) => {
+        Toast.showLoading(msg, timeout, callback());
     };
     $loadingDismiss = (callBack) => {
         Toast.hiddenLoading(callBack);
