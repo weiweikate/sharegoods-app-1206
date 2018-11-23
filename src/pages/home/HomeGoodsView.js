@@ -12,7 +12,8 @@ const Goods = ({goods, press}) => <TouchableOpacity style={styles.container} onP
             <Text style={styles.title} numberOfLines={1}>{goods.title}</Text>
         </View>
     </View>
-    <Text style={styles.dis}  numberOfLines={2}>{goods.name}</Text>
+    <Text style={styles.dis} numberOfLines={2}>{goods.name}</Text>
+    <View style={{flex: 1}}/>
     <Text style={styles.money}>¥ {goods.price} 起</Text>
 </TouchableOpacity>
 
@@ -91,7 +92,7 @@ let styles = StyleSheet.create({
     money: {
         color: DesignRule.mainColor,
         fontSize: px2dp(14),
-        marginTop: px2dp(10),
+        marginBottom: 15,
         marginLeft: px2dp(7)
     },
     cell: {
