@@ -37,6 +37,7 @@ export default class ResultSearchNav extends Component {
     };
 
     changeText = (text) => {
+        text = text.replace(/(^\s*)/g, "")//去首空格
         this.setState({
             inputText: text
         });
