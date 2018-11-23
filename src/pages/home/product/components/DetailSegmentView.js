@@ -41,7 +41,7 @@ export default class DetailSegmentView extends Component {
                     style={[styles.title, { color: this.state.selectedIndex === index ? DesignRule.mainColor : DesignRule.textColor_instruction }]}>{title}</Text>
                 {this.state.selectedIndex === index ? <View style={{
                     width: 45,
-                    height: 3,
+                    height: 2,
                     bottom: 0,
                     position: 'absolute',
                     backgroundColor: DesignRule.mainColor
