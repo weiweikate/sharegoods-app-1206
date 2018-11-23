@@ -37,6 +37,7 @@ import { PageLoadingState, renderViewByLoadingState } from '../../../components/
 import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import res from '../res';
 import MessageApi from '../../message/api/MessageApi';
+import QYChatUtil from '../../mine/page/helper/QYChatModel';
 
 const redEnvelopeBg = res.other.red_big_envelope;
 
@@ -528,7 +529,9 @@ export default class ProductDetailPage extends BasePage {
                                            this.shareModal.open();
                                            break;
                                        case 3:
-                                           this.$navigate('mine/helper/MyHelperPage');
+                                           setTimeout(() => {
+                                               QYChatUtil.qiYUChat();
+                                           }, 100);
                                            break;
                                    }
                                });
