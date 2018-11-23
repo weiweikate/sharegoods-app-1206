@@ -16,6 +16,8 @@ import DesignRule from 'DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
 const emptyIcon = res.kongbeuye_dingdan;
+const noMoreData=false;
+const isFirst = true;
 export default class MyOrdersListView extends Component {
     constructor(props) {
         super(props);
@@ -34,16 +36,6 @@ export default class MyOrdersListView extends Component {
         };
         this.currentPage = 1;
     }
-
-    $getPageStateOptions = () => {
-        return {
-            loadingState: this.state.loadingState,
-            netFailedProps: {
-                netFailedInfo: this.state.netFailedInfo,
-                reloadBtnClick: this._reload
-            }
-        };
-    };
 
     renderItem = ({ item, index }) => {
         return (
@@ -245,14 +237,18 @@ export default class MyOrdersListView extends Component {
                 });
 
             });
+            this.setState({ viewData: arrData });
+        }else{
+            this.noMoreData=true;
+            // NativeModules.commModule.toast('无更多数据');
         }
-        this.setState({ viewData: arrData });
-
     };
 
     componentDidMount() {
         //网络请求，业务处理
-        this.getDataFromNetwork();
+        if(isFirst){
+            this.getDataFromNetwork();
+        }
         this.getCancelOrder();
         DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.onRefresh());
         this.timeDown();
@@ -303,13 +299,14 @@ export default class MyOrdersListView extends Component {
                 size: constants.PAGESIZE
             }).then((response) => {
                 Toast.hiddenLoading();
+                this.isFirst=false;
                 this.getList(response.data);
                 this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
             }).catch(e => {
                 Toast.hiddenLoading();
-                // NativeModules.commModule.toast(e.msg);
+                NativeModules.commModule.toast(e.msg);
                 if (e.code === 10009) {
-                    this.$navigate('login/login/LoginPage', {
+                    this.props.nav('login/login/LoginPage', {
                         callback: () => {
                             this.getDataFromNetwork();
                         }
@@ -326,12 +323,12 @@ export default class MyOrdersListView extends Component {
                     this.getList(response.data);
                     console.log(response);
                     this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
-
+                    this.isFirst=false;
                 }).catch(e => {
                     Toast.hiddenLoading();
-                    console.log(e);
+                    NativeModules.commModule.toast(e.msg);
                     if (e.code === 10009) {
-                        this.$navigate('login/login/LoginPage', {
+                       this.props.nav('login/login/LoginPage', {
                             callback: () => {
                                 this.getDataFromNetwork();
                             }
@@ -341,6 +338,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 1:
                 OrderApi.queryPage({ ...params, status: 1 }).then((response) => {
+                    this.isFirst=false;
                     Toast.hiddenLoading();
                     this.getList(response.data);
                     this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
@@ -348,7 +346,7 @@ export default class MyOrdersListView extends Component {
                     Toast.hiddenLoading();
                     //NativeModules.commModule.toast(e.msg);
                     if (e.code === 10009) {
-                        this.$navigate('login/login/LoginPage', {
+                        this.props.nav('login/login/LoginPage', {
                             callback: () => {
                                 this.getDataFromNetwork();
                             }
@@ -358,6 +356,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 2:
                 OrderApi.queryPage({ ...params, status: 2 }).then((response) => {
+                    this.isFirst=false;
                     Toast.hiddenLoading();
                     this.getList(response.data);
                     this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
@@ -366,7 +365,7 @@ export default class MyOrdersListView extends Component {
                     Toast.hiddenLoading();
                     // NativeModules.commModule.toast(e.msg);
                     if (e.code === 10009) {
-                        this.$navigate('login/login/LoginPage', {
+                        this.props.nav('login/login/LoginPage', {
                             callback: () => {
                                 this.getDataFromNetwork();
                             }
@@ -376,6 +375,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 3:
                 OrderApi.queryPage({ ...params, status: 3 }).then((response) => {
+                    this.isFirst=false;
                     Toast.hiddenLoading();
                     this.getList(response.data);
                     this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
@@ -384,7 +384,7 @@ export default class MyOrdersListView extends Component {
                     Toast.hiddenLoading();
                     // NativeModules.commModule.toast(e.msg);
                     if (e.code === 10009) {
-                        this.$navigate('login/login/LoginPage', {
+                        this.props.nav('login/login/LoginPage', {
                             callback: () => {
                                 this.getDataFromNetwork();
                             }
@@ -394,6 +394,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 4:
                 OrderApi.queryPage({ ...params, status: 4 }).then((response) => {
+                    this.isFirst=false;
                     Toast.hiddenLoading();
                     this.getList(response.data);
                     this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
@@ -402,7 +403,7 @@ export default class MyOrdersListView extends Component {
                     Toast.hiddenLoading();
                     // NativeModules.commModule.toast(e.msg);
                     if (e.code === 10009) {
-                        this.$navigate('login/login/LoginPage', {
+                        this.props.nav('login/login/LoginPage', {
                             callback: () => {
                                 this.getDataFromNetwork();
                             }
@@ -435,8 +436,10 @@ export default class MyOrdersListView extends Component {
 
     onLoadMore = () => {
         // console.log('onLoadMore',this.currentPage++);
-        this.currentPage++;
-        this.getDataFromNetwork();
+        if(!noMoreData){
+            this.currentPage++;
+            this.getDataFromNetwork();
+        }
     };
     clickItem = (index) => {
         let orderStatus = this.state.viewData[index].orderStatus;
