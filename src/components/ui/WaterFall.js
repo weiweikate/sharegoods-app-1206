@@ -211,14 +211,15 @@ export default class Masonry extends React.Component {
      * @private
      */
     _onInfinite(event) {
-      if (this.props.hasMore && this.state.infiniting) {return}
+      // console.log('_onInfinite', this.props.hasMore, this.state.infiniting)
+      // if (this.props.hasMore && this.state.infiniting) {return}
       let y = event.nativeEvent.contentOffset.y
       let height = event.nativeEvent.layoutMeasurement.height
       let contentHeight = event.nativeEvent.contentSize.height
-      if( y + height >= contentHeight - 20){
-        this.setState({
-          infiniting: true
-        })
+      if( y + height >= contentHeight - 100){
+        // this.setState({
+        //   infiniting: true
+        // })
         this.props.infiniting(this.infiniteDone.bind(this))
       }
     }
