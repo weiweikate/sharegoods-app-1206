@@ -1,4 +1,4 @@
-package com.meeruu.commonlib.customview.wenldbanner;
+package com.meeruu.sharegoods.ui.customview.wenldbanner;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -11,8 +11,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.meeruu.commonlib.R;
-import com.meeruu.commonlib.customview.wenldbanner.helper.Holder;
-import com.meeruu.commonlib.customview.wenldbanner.helper.UIContact;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.Holder;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.UIContact;
 
 import java.util.List;
 

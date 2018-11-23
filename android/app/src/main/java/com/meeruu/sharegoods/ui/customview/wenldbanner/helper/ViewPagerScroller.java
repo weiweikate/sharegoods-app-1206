@@ -1,4 +1,4 @@
-package com.meeruu.commonlib.customview.wenldbanner.helper;
+package com.meeruu.sharegoods.ui.customview.wenldbanner.helper;
 
 import android.content.Context;
 import android.view.animation.Interpolator;

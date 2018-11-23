@@ -1,4 +1,4 @@
-package com.meeruu.commonlib.customview.wenldbanner;
+package com.meeruu.sharegoods.ui.customview.wenldbanner;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,9 +7,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.meeruu.commonlib.R;
-import com.meeruu.commonlib.customview.wenldbanner.adapter.WenldPagerAdapter;
-import com.meeruu.commonlib.customview.wenldbanner.helper.Holder;
-import com.meeruu.commonlib.customview.wenldbanner.helper.ViewPagerScroller;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.adapter.WenldPagerAdapter;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.Holder;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.ViewPagerScroller;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
