@@ -38,7 +38,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
 
     private DialogRootViewGroup mHostView;
     private Rect rect;
-
+    EventDispatcher eventDispatcher;
     private @Nullable
     PopupWindow popupWindow;
     public static WeakReference<ReactContext> mContext;
@@ -52,6 +52,8 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
 
         context.addLifecycleEventListener(this);
         mHostView = new DialogRootViewGroup(context);
+        eventDispatcher =
+                context.getNativeModule(UIManagerModule.class).getEventDispatcher();
     }
 
     public boolean isShow() {
@@ -163,6 +165,7 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
     public void showOrUpdate() {
         // If the existing Dialog is currently up, we may need to redraw it or we may be able to update
         // the property without having to recreate the dialog
+
         if (popupWindow != null) {
             fitPopupWindowOverStatusBar(popupWindow, true);
             popupWindow.showAtLocation(mHostView, Gravity.BOTTOM, 0, 0);
@@ -174,6 +177,17 @@ public class PopModal extends ViewGroup implements LifecycleEventListener {
             return;
         }
         popupWindow = new PopupWindow(currentActivity);
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                eventDispatcher.dispatchEvent(
+                        new PopModalDismissEvent(
+                                PopModal.this.getId()));
+            }
+        });
+
+
         if (Build.VERSION.SDK_INT >= 24) {
             if (rect == null) {
                 rect = new Rect();

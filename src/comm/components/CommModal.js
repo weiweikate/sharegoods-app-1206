@@ -95,6 +95,9 @@ export default class CommModal extends PureComponent {
                 ref={(modalAndroid) => {
                     this.modalAndroid = modalAndroid;
                 }}
+                onModalDismiss={()=>{
+                    this.setState({ visible : false})
+                }}
                 visible={[this.state.visible, this.state.update]}>
                 <TouchableOpacity
                     activeOpacity={1}

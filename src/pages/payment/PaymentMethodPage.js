@@ -89,7 +89,7 @@ export default class PaymentMethodPage extends BasePage {
         this.payment.payStore = this.params.payStore;
         this.payment.payPromotion = this.params.payPromotion;
         console.log('this.state.shouldPayMoney', this.state.shouldPayMoney)
-        if (parseInt(this.state.shouldPayMoney, 0) === 0) {
+        if (parseFloat(this.state.shouldPayMoney).toFixed(2) === 0.00) {
             this.payment.selectedBalace = true;
         }
         if (this.params.outTradeNo) {
@@ -179,7 +179,7 @@ export default class PaymentMethodPage extends BasePage {
             if (value.type === paymentType.section) {
                 items.push(<Section key={index + ''} data={value}/>);
             } else {
-                items.push(<PayCell disabled={value.type !== paymentType.balance && parseInt(this.state.shouldPayMoney, 0) === 0}
+                items.push(<PayCell disabled={value.type !== paymentType.balance && parseFloat(this.state.shouldPayMoney).toFixed(2) === 0.00}
                                     key={index + ''} selectedTypes={selectedTypes} data={value}
                                     balance={availableBalance} press={() => this._selectedPayType(value)}/>);
             }
@@ -187,7 +187,7 @@ export default class PaymentMethodPage extends BasePage {
 
         return <View style={styles.container}><ScrollView style={styles.container}>
             <PayCell disabled={this.params.outTradeNo} data={balancePayment}
-                     isSelected={selectedBalace || parseInt(this.state.shouldPayMoney, 0) === 0} balance={availableBalance}
+                     isSelected={selectedBalace || parseFloat(this.state.shouldPayMoney).toFixed(2) === 0.00} balance={availableBalance}
                      press={() => this._selectedBalancePay(balancePayment)}/>
             {items}
         </ScrollView>
@@ -435,7 +435,7 @@ export default class PaymentMethodPage extends BasePage {
         if (parseInt(result.code, 0) === 10000) {
             this.paymentResultView.show(PaymentResult.sucess);
         } else {
-            this.paymentResultView.show(PaymentResult.fail, result);
+            this.paymentResultView.show(PaymentResult.fail, result.msg);
         }
     }
 

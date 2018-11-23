@@ -207,7 +207,6 @@ export default class TopicDetailPage extends BasePage {
                 });
             }
         }).catch((error) => {
-            this.$toastShow(error.msg);
         });
     };
 
@@ -622,6 +621,10 @@ export default class TopicDetailPage extends BasePage {
                                    this.DetailNavShowModal.show(this.state.messageCount, (item) => {
                                        switch (item.index) {
                                            case 0:
+                                               if (!user.isLogin) {
+                                                   this.$navigate('login/login/LoginPage');
+                                                   return;
+                                               }
                                                this.$navigate('message/MessageCenterPage');
                                                break;
                                            case 1:

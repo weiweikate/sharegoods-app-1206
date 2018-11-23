@@ -148,7 +148,7 @@ export default class MyIntegralAccountPage extends BasePage {
         Toast.showLoading();
         MineApi.userScoreQuery({
             page: this.currentPage,
-            size: 20
+            size: 10
 
         }).then((response) => {
             Toast.hiddenLoading();
@@ -190,8 +190,10 @@ export default class MyIntegralAccountPage extends BasePage {
         this.getDataFromNetwork();
     };
     onLoadMore = () => {
-        this.currentPage++;
-        this.getDataFromNetwork();
+        if(!this.state.isEmpty){
+            this.currentPage++;
+            this.getDataFromNetwork();
+        }
     };
 }
 

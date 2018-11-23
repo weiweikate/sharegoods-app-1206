@@ -29,6 +29,7 @@ export default class SearchBar extends Component {
 
 
     onChangeText = (text) => {
+        text = text.replace(/(^\s*)/g, "")//去首空格
         if (text !== '') {
             this.setState({
                 isShowInputClear: true,

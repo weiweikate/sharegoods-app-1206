@@ -275,7 +275,7 @@ export default class MyCouponsItems extends Component {
             this.setState({ tokenCoinNum: 0 });
         }
         if (parseInt(num) > user.tokenCoin) {
-            NativeModules.commModule.toast(`最多选择${user.tokenCoin}张!`);
+            NativeModules.commModule.toast(`1元券超出使用张数~`);
             this.setState({ tokenCoinNum: user.tokenCoin });
         }
     };
