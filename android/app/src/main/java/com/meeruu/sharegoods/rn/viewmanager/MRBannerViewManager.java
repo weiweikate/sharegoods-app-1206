@@ -29,7 +29,7 @@ public class MRBannerViewManager extends SimpleViewManager<AutoTurnViewPager> {
     @ReactProp(name = "imgUrlArray")
     public void setImgUrlArray(AutoTurnViewPager view, ReadableArray urls) {
         view.setPages(hold);
-        view.setmDatas();
+//        view.setmDatas();
     }
 
     @ReactProp(name = "autoInterval")
