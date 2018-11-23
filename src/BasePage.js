@@ -46,7 +46,7 @@ export default class BasePage extends Component {
     }
 
     $isMonitorNetworkStatus() {
-        return true;
+        return false;
     }
 
     _renderDefaultNoNet() {
