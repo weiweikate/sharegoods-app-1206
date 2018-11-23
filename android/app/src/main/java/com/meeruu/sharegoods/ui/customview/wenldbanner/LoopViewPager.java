@@ -1,4 +1,4 @@
-package com.meeruu.commonlib.customview.wenldbanner;
+package com.meeruu.sharegoods.ui.customview.wenldbanner;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -7,7 +7,12 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.meeruu.commonlib.customview.wenldbanner.adapter.WenldPagerAdapter;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.events.EventDispatcher;
+import com.meeruu.sharegoods.rn.viewmanager.onDidScrollToIndexEvent;
+import com.meeruu.sharegoods.rn.viewmanager.onDidSelectItemAtIndexEvent;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.adapter.WenldPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +24,8 @@ public class LoopViewPager extends ViewPager {
 
     private boolean isTouchScroll = true;
     private boolean canLoop = true;
+    private EventDispatcher eventDispatcher;
+
 
     public void setAdapter(WenldPagerAdapter adapter) {
         mAdapter = adapter;
@@ -119,15 +126,17 @@ public class LoopViewPager extends ViewPager {
 
     public LoopViewPager(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public LoopViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
+        eventDispatcher =
+                ((ReactContext) context).getNativeModule(UIManagerModule.class).getEventDispatcher();
         super.addOnPageChangeListener(onPageChangeListener);
     }
 
@@ -136,7 +145,6 @@ public class LoopViewPager extends ViewPager {
 
         @Override
         public void onPageSelected(int position) {
-
             int realPosition = getRealItem(position);
             if (mPreviousPosition != realPosition) {
                 mPreviousPosition = realPosition;
@@ -144,6 +152,9 @@ public class LoopViewPager extends ViewPager {
                     getmOuterPageChangeListeners().get(i).onPageSelected(realPosition);
                 }
             }
+            eventDispatcher.dispatchEvent(
+                    new onDidSelectItemAtIndexEvent(
+                            getId(), realPosition));
         }
 
         @Override
@@ -155,6 +166,8 @@ public class LoopViewPager extends ViewPager {
                 getmOuterPageChangeListeners().get(i).onPageScrolled(realPosition,
                         positionOffset, positionOffsetPixels);
             }
+            eventDispatcher.dispatchEvent(
+                    new onDidScrollToIndexEvent(getId(), realPosition));
         }
 
         @Override

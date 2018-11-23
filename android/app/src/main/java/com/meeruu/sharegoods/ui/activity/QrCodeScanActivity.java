@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.ui;
+package com.meeruu.sharegoods.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

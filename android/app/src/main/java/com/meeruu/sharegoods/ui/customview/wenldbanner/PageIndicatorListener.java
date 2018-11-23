@@ -1,4 +1,4 @@
-package com.meeruu.commonlib.customview.wenldbanner;
+package com.meeruu.sharegoods.ui.customview.wenldbanner;
 
 import android.support.v4.view.ViewPager;
 
