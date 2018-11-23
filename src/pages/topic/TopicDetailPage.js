@@ -42,6 +42,7 @@ const tongyong_btn_close_white = res.button.tongyong_btn_close_white;
 import { PageLoadingState, renderViewByLoadingState } from '../../components/pageDecorator/PageState';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
 import MessageAPI from '../message/api/MessageApi';
+import QYChatUtil from '../mine/page/helper/QYChatModel';
 
 
 export default class TopicDetailPage extends BasePage {
@@ -634,7 +635,9 @@ export default class TopicDetailPage extends BasePage {
                                                this.shareModal.open();
                                                break;
                                            case 3:
-                                               this.$navigate('mine/helper/MyHelperPage');
+                                               setTimeout(() => {
+                                                   QYChatUtil.qiYUChat();
+                                               }, 100);
                                                break;
                                        }
                                    });

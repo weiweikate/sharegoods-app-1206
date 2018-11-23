@@ -112,6 +112,7 @@
 		5077FCE221A4FE37003B860D /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5077FCDC21A4FE37003B860D /* NSData+Base64.m */; };
 		5077FCE321A4FE37003B860D /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5077FCDE21A4FE37003B860D /* NSString+Base64.m */; };
 		5077FCE621A504C5003B860D /* RSAManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5077FCE521A504C5003B860D /* RSAManager.m */; };
+		5077FDCA21A79326003B860D /* JSPushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5077FDC921A79326003B860D /* JSPushManager.m */; };
 		50FB633F219AC4C100A35334 /* AppDelegate+APNS.m in Sources */ = {isa = PBXBuildFile; fileRef = 50FB633E219AC4C100A35334 /* AppDelegate+APNS.m */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		61E64F46690C4B7EBB9DD7A2 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE4716B854E34520B3C18596 /* EvilIcons.ttf */; };
@@ -730,6 +731,8 @@
 		5077FCDE21A4FE37003B860D /* NSString+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Base64.m"; sourceTree = "<group>"; };
 		5077FCE421A504C5003B860D /* RSAManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSAManager.h; sourceTree = "<group>"; };
 		5077FCE521A504C5003B860D /* RSAManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RSAManager.m; sourceTree = "<group>"; };
+		5077FDC821A79326003B860D /* JSPushManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSPushManager.h; sourceTree = "<group>"; };
+		5077FDC921A79326003B860D /* JSPushManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSPushManager.m; sourceTree = "<group>"; };
 		50FB633D219AC4C100A35334 /* AppDelegate+APNS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+APNS.h"; sourceTree = "<group>"; };
 		50FB633E219AC4C100A35334 /* AppDelegate+APNS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+APNS.m"; sourceTree = "<group>"; };
 		5AEC9711CAB3D2A4643117DC /* Pods-crm_app_xiugou.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crm_app_xiugou.release.xcconfig"; path = "Pods/Target Support Files/Pods-crm_app_xiugou/Pods-crm_app_xiugou.release.xcconfig"; sourceTree = "<group>"; };
@@ -1241,6 +1244,7 @@
 		506835B721379B78001AB175 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				5077FD9721A7930D003B860D /* JSPush */,
 				5077FC2421A4019A003B860D /* RSA */,
 				CD14EA162183FC2500480A06 /* ImageCompression */,
 				506835B821379B78001AB175 /* Cache-缓存相关 */,
@@ -1500,6 +1504,15 @@
 				5077FCDA21A4FE37003B860D /* x509v3.h */,
 			);
 			path = openssl;
+			sourceTree = "<group>";
+		};
+		5077FD9721A7930D003B860D /* JSPush */ = {
+			isa = PBXGroup;
+			children = (
+				5077FDC821A79326003B860D /* JSPushManager.h */,
+				5077FDC921A79326003B860D /* JSPushManager.m */,
+			);
+			path = JSPush;
 			sourceTree = "<group>";
 		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
@@ -2432,6 +2445,7 @@
 				5068361A21379B78001AB175 /* EasyAlertView.m in Sources */,
 				5068361B21379B78001AB175 /* EasyEmptyConfig.m in Sources */,
 				5068360E21379B78001AB175 /* JRBaseNavVC.m in Sources */,
+				5077FDCA21A79326003B860D /* JSPushManager.m in Sources */,
 				5068363121379B78001AB175 /* commModule.m in Sources */,
 				5068362F21379B78001AB175 /* JRShareManager.m in Sources */,
 				5068362921379B78001AB175 /* EasyTextGlobalConfig.m in Sources */,

@@ -69,7 +69,6 @@ export default class ShopCartPage extends BasePage {
         }
         this.$navigationBarOptions.leftNavItemHidden = hiddeLeft;
     }
-
     componentDidMount() {
         // this.contentList && this.contentList._updateVisibleRows();
         this.didBlurSubscription = this.props.navigation.addListener(
@@ -81,6 +80,7 @@ export default class ShopCartPage extends BasePage {
                 shopCartCacheTool.getShopCartGoodsListData();
             }
         );
+        // shopCartCacheTool.getShopCartGoodsListData();
     }
 
     componentWillUnmount() {
