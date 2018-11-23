@@ -336,7 +336,7 @@ class User {
         this.auzEndTime = null;      //授权结束时间
         this.upDealerid = null;      //上级
         this.availableBalance = null;//可提现金额
-        this.blockedBalances = null; //冻结金额
+        this.blockedBalance = null; //冻结金额
         this.tokenCoin = null;       //代币金额
         this.blockedCoin = null;     //冻结代币
         this.userScore = null;       //积分
