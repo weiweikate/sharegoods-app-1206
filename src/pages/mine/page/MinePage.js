@@ -123,7 +123,7 @@ export default class MinePage extends BasePage {
 
 
     }
-    
+
     $isMonitorNetworkStatus() {
         return false;
     }
