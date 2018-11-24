@@ -21,12 +21,15 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.facebook.imagepipeline.core.ImagePipeline;
+import com.meeruu.commonlib.utils.DisplayImageUtils;
+
 public class ViewHolder {
     private SparseArray<View> mViews;
     private View mConvertView;
     private Context mContext;
-    private int viewType=0;
-    private int position=-1;
+    private int viewType = 0;
+    private int position = -1;
 
     public ViewHolder(Context context, View itemView) {
         mContext = context;
@@ -110,6 +113,12 @@ public class ViewHolder {
     public ViewHolder setImageDrawable(int viewId, Drawable drawable) {
         ImageView view = getView(viewId);
         view.setImageDrawable(drawable);
+        return this;
+    }
+
+    public ViewHolder setImageUrl(int viewId, String url) {
+        ImageView view = getView(viewId);
+        DisplayImageUtils.formatImgUrl(mContext, url, view);
         return this;
     }
 

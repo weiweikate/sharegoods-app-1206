@@ -20,4 +20,14 @@
         <attr name="isTouchScroll" format="boolean" />
         <attr name="reverse" format="boolean"/>
     </declare-styleable>
+    <declare-styleable name="RoundImageView">
+        <attr name="borderWidth" format="reference|dimension">
+        </attr>
+        <attr name="borderRadius" format="reference|dimension">
+        </attr>
+        <attr name="borderColor" format="reference|color">
+        </attr>
+        <attr name="hoverColor" format="reference|color">
+        </attr>
+    </declare-styleable>
 </resources>

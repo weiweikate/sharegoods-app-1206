@@ -24,7 +24,6 @@ public class LoopViewPager extends ViewPager {
 
     private boolean isTouchScroll = true;
     private boolean canLoop = true;
-    private EventDispatcher eventDispatcher;
 
 
     public void setAdapter(WenldPagerAdapter adapter) {
@@ -82,7 +81,7 @@ public class LoopViewPager extends ViewPager {
         return mAdapter.adapterPostiton2RealDataPosition(super.getCurrentItem());
     }
 
-    int getRealItem(int position) {
+    public int getRealItem(int position) {
         return mAdapter.adapterPostiton2RealDataPosition(position);
     }
 
@@ -135,8 +134,6 @@ public class LoopViewPager extends ViewPager {
     }
 
     private void init(Context context) {
-        eventDispatcher =
-                ((ReactContext) context).getNativeModule(UIManagerModule.class).getEventDispatcher();
         super.addOnPageChangeListener(onPageChangeListener);
     }
 
@@ -152,9 +149,6 @@ public class LoopViewPager extends ViewPager {
                     getmOuterPageChangeListeners().get(i).onPageSelected(realPosition);
                 }
             }
-            eventDispatcher.dispatchEvent(
-                    new onDidSelectItemAtIndexEvent(
-                            getId(), realPosition));
         }
 
         @Override
@@ -166,8 +160,6 @@ public class LoopViewPager extends ViewPager {
                 getmOuterPageChangeListeners().get(i).onPageScrolled(realPosition,
                         positionOffset, positionOffsetPixels);
             }
-            eventDispatcher.dispatchEvent(
-                    new onDidScrollToIndexEvent(getId(), realPosition));
         }
 
         @Override
