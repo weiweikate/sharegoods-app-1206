@@ -239,10 +239,10 @@ export default class SignInPage extends BasePage {
                 </Text>
                 <View style={styles.couponTextWrapper}>
                     <Text style={styles.couponNameTextStyle}>
-                        优惠券
+                        现金抵扣券
                     </Text>
                     <Text style={styles.couponTagTextStyle}>
-                        全程通用/无时间限制
+                        全场通用/无时间限制
                     </Text>
                 </View>
                 <View style={{ flex: 1 }}/>
