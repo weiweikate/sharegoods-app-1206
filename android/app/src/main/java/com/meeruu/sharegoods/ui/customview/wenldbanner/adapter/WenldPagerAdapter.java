@@ -75,6 +75,10 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
         return dataPosition;
     }
 
+    public Holder getHolderCreator() {
+        return holderCreator;
+    }
+
     /**
      * 返回真实数据的下标
      *
@@ -160,7 +164,11 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
     }
 
     public void setmDatas(List<T> mDatas) {
-        this.mDatas = mDatas;
+        if (this.mDatas != null) {
+            this.mDatas.addAll(mDatas);
+        } else {
+            this.mDatas = mDatas;
+        }
         setCanLoop(canLoop);
     }
 

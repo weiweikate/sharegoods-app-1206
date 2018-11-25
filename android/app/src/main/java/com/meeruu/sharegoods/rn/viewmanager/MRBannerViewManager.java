@@ -1,8 +1,8 @@
 package com.meeruu.sharegoods.rn.viewmanager;
 
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.ReadableArray;
@@ -14,19 +14,21 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.utils.DensityUtils;
-import com.meeruu.commonlib.utils.LogUtils;
-import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.ui.customview.wenldbanner.AutoTurnViewPager;
 import com.meeruu.sharegoods.ui.customview.wenldbanner.OnPageClickListener;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.PageIndicatorListener;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.WenldBanner;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @ReactModule(name = MRBannerViewManager.REACT_CLASS)
-public class MRBannerViewManager extends SimpleViewManager<AutoTurnViewPager> {
+public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> {
     protected static final String REACT_CLASS = "MRBannerView";
-    private BannerHold hold;
-    private EventDispatcher eventDispatcher;
-
+    public EventDispatcher eventDispatcher;
+    private PageIndicatorListener listener;
+    private ArrayList urls;
 
     @Override
     public String getName() {
@@ -34,100 +36,104 @@ public class MRBannerViewManager extends SimpleViewManager<AutoTurnViewPager> {
     }
 
     @Override
-    protected AutoTurnViewPager createViewInstance(final ThemedReactContext reactContext) {
-        hold = new BannerHold();
+    protected WenldBanner createViewInstance(final ThemedReactContext reactContext) {
         eventDispatcher =
                 reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
-//        FrameLayout frameLayout = new FrameLayout(reactContext);
-//        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        frameLayout.setLayoutParams(params);
-//        frameLayout.setClipChildren(false);
-        final AutoTurnViewPager viewPager = new AutoTurnViewPager(reactContext);
-        FrameLayout.LayoutParams pagerParams = new FrameLayout.LayoutParams(DensityUtils.dip2px(300), DensityUtils.dip2px(175));
-        viewPager.setClipToPadding(false);
-        viewPager.setClipChildren(false);
-        viewPager.setLayoutParams(pagerParams);
-        pagerParams.gravity = Gravity.CENTER;
-        viewPager.setId(R.id.banner_tag);
-        viewPager.setPages(hold);
-        viewPager.setCanTurn(true);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        WenldBanner banner = new WenldBanner(reactContext);
+        urls = new ArrayList<>();
+        urls.clear();
+        banner.setPages(new BannerHold(), urls);
+        initBannerEvent(banner);
+        return banner;
+    }
+
+    private void initBannerEvent(final WenldBanner banner) {
+        listener = new PageIndicatorListener() {
+            @Override
+            public void setmDatas(List mDatas) {
+            }
+
+            @Override
+            public List getmDatas() {
+                return urls;
+            }
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
 
             @Override
             public void onPageSelected(int position) {
-                LogUtils.d("onPageSelected======" + viewPager.getRealItem(position));
+                int realPos = position == 0 ? 0 : position % (urls.size() / 2);
                 eventDispatcher.dispatchEvent(
-                        new onDidScrollToIndexEvent(viewPager.getId(), viewPager.getRealItem(position)));
+                        new onDidScrollToIndexEvent(banner.getId(), realPos));
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
 
             }
-        });
-        viewPager.getAdapter().setOnItemClickListener(new OnPageClickListener() {
+        };
+        banner.setOnItemClickListener(new OnPageClickListener() {
             @Override
             public void onItemClick(int position) {
-                LogUtils.d("click======" + viewPager.getRealItem(position));
+                int realPos = position == 0 ? 0 : position % (urls.size() / 2);
                 eventDispatcher.dispatchEvent(
                         new onDidSelectItemAtIndexEvent(
-                                viewPager.getId(), viewPager.getRealItem(position)));
+                                banner.getId(), realPos));
             }
         });
-//        frameLayout.addView(viewPager);
-        return viewPager;
+        banner.setPageIndicatorListener(listener);
     }
 
     @ReactProp(name = "imgUrlArray")
-    public void setImgUrlArray(AutoTurnViewPager view, ReadableArray urls) {
-//        AutoTurnViewPager viewPager = view.findViewById(R.id.banner_tag);
-        if (view != null) {
-            int position = view.getCurrentItem();
-            view.setmDatas(urls.toArrayList());
-            view.getAdapter().notifyDataSetChanged(true);
-            view.setCurrentItem(position, false);
+    public void setImgUrlArray(WenldBanner view, ReadableArray urls) {
+        if (this.urls != null) {
+            this.urls.clear();
+            this.urls.addAll(urls.toArrayList());
+        } else {
+            this.urls = urls.toArrayList();
         }
+        view.setData(this.urls);
+        view.getViewPager().setOffscreenPageLimit(this.urls.size() * 300);
     }
 
     @ReactProp(name = "autoInterval")
-    public void setAutoInterval(AutoTurnViewPager view, Integer interval) {
-//        AutoTurnViewPager viewPager = view.findViewById(R.id.banner_tag);
-        view.setAutoTurnTime(interval * 1000);
+    public void setAutoInterval(WenldBanner view, Integer interval) {
+        AutoTurnViewPager viewPager = view.getViewPager();
+        viewPager.setAutoTurnTime(interval * 1000);
     }
 
     @ReactProp(name = "autoLoop")
-    public void setAutoLoop(AutoTurnViewPager view, Boolean autoLoop) {
-//        AutoTurnViewPager viewPager = view.findViewById(R.id.banner_tag);
-        view.setCanLoop(autoLoop);
+    public void setAutoLoop(WenldBanner view, Boolean autoLoop) {
+        AutoTurnViewPager viewPager = view.getViewPager();
+        viewPager.setCanLoop(autoLoop);
     }
 
     @ReactProp(name = "tittleArray")
-    public void setTittleArray(AutoTurnViewPager view, ReadableArray titles) {
+    public void setTittleArray(WenldBanner view, ReadableArray titles) {
     }
 
-//    @ReactProp(name = "itemWidth")
-//    public void setItemWidth(FrameLayout view, Integer width) {
-//        LogUtils.d("width===========" + width);
-//
-//        hold.setItemW(width);
-//    }
-//
-//    @ReactProp(name = "itemSpace")
-//    public void setItemSpace(FrameLayout view, Integer space) {
-//        LogUtils.d("space===========" + space);
-//
-//        hold.setSpace(space);
-//    }
-//
-//    @ReactProp(name = "itemRadius")
-//    public void setItemRadius(FrameLayout view, Integer radius) {
-//        LogUtils.d("radius===========" + radius);
-//        LogUtils.d("radius===========" + hold);
-//        hold.setRadius(radius);
-//    }
+    @ReactProp(name = "itemWidth")
+    public void setItemWidth(WenldBanner view, Integer width) {
+        AutoTurnViewPager viewPager = view.getViewPager();
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(DensityUtils.dip2px(width), ViewGroup.LayoutParams.MATCH_PARENT);
+        params.gravity = Gravity.CENTER;
+        viewPager.setLayoutParams(params);
+    }
+
+    @ReactProp(name = "itemSpace")
+    public void setItemSpace(WenldBanner view, Integer space) {
+        AutoTurnViewPager viewPager = view.getViewPager();
+        ((BannerHold) viewPager.getAdapter().getHolderCreator()).setSpace(space);
+    }
+
+    @ReactProp(name = "itemRadius")
+    public void setItemRadius(WenldBanner view, Integer radius) {
+        AutoTurnViewPager viewPager = view.getViewPager();
+        ((BannerHold) viewPager.getAdapter().getHolderCreator()).setRadius(radius);
+    }
 
     @Nullable
     @Override
@@ -138,7 +144,7 @@ public class MRBannerViewManager extends SimpleViewManager<AutoTurnViewPager> {
                         MapBuilder.of(
                                 "phasedRegistrationNames",
                                 MapBuilder.of(
-                                        "bubbled", "OnDidScrollToIndex")))
+                                        "bubbled", "onDidScrollToIndex")))
                 .put(
                         "MrOnDidSelectItemAtIndexEvent",
                         MapBuilder.of(
@@ -147,5 +153,11 @@ public class MRBannerViewManager extends SimpleViewManager<AutoTurnViewPager> {
                                         "bubbled", "onDidSelectItemAtIndex")))
 
                 .build();
+    }
+
+    @Override
+    public void onDropViewInstance(WenldBanner view) {
+        view.getUiContact().removeListener(listener);
+        super.onDropViewInstance(view);
     }
 }

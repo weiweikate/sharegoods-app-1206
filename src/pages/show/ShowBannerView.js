@@ -58,7 +58,6 @@ export default class ShowBannerView extends Component {
     }
 
     _onDidScrollToIndex(e) {
-        alert(e.nativeEvent.index);
         this.setState({ index: e.nativeEvent.index });
     }
 
@@ -79,21 +78,19 @@ export default class ShowBannerView extends Component {
             items.push(value.imgUrl);
         });
         return <View style={styles.container}>
-            <View style={styles.swiper}>
-                <MRBannerView
-                    style={[{ height: px2dp(175), width: ScreenUtils.width }]}
-                    imgUrlArray={items}
-                    itemWidth={px2dp(300)}
-                    itemSpace={px2dp(10)}
-                    itemRadius={5}
-                    onDidSelectItemAtIndex={(index) => {
-                        this._onPressRow(index);
-                    }}
-                    onDidScrollToIndex={(index) => {
-                        this._onDidScrollToIndex(index);
-                    }}
-                />
-            </View>
+            <MRBannerView
+                style={[{ height: px2dp(175), width: ScreenUtils.width }]}
+                imgUrlArray={items}
+                itemWidth={px2dp(300)}
+                itemSpace={px2dp(10)}
+                itemRadius={5}
+                onDidSelectItemAtIndex={(index) => {
+                    this._onPressRow(index);
+                }}
+                onDidScrollToIndex={(index) => {
+                    this._onDidScrollToIndex(index);
+                }}
+            />
             {this.renderIndexView()}
         </View>;
     }

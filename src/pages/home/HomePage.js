@@ -97,8 +97,6 @@ class HomePage extends PureComponent {
                     this.shareTaskIcon.queryTask();
                     this.setState({ isShow: true });
                 }
-
-
             }
         );
 

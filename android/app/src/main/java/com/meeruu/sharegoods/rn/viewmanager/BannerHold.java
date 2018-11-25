@@ -2,18 +2,17 @@ package com.meeruu.sharegoods.rn.viewmanager;
 
 import android.content.Context;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.meeruu.commonlib.customview.roundimage.RoundImageView;
-import com.meeruu.commonlib.utils.LogUtils;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.meeruu.commonlib.utils.DensityUtils;
+import com.meeruu.commonlib.utils.ImageLoadUtils;
 import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.Holder;
 import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.ViewHolder;
 
 public class BannerHold implements Holder<String> {
     private ViewHolder holder;
-    private int itemW;
     private int space;
     private int radius;
 
@@ -24,9 +23,15 @@ public class BannerHold implements Holder<String> {
     }
 
     @Override
-    public void UpdateUI(Context context, ViewHolder viewHolder, int position, String data) {
-        LogUtils.d("========" + data);
-        viewHolder.setImageUrl(R.id.iv_banner, data);
+    public void UpdateUI(Context context, ViewHolder viewHolder, int position, String imgUrl) {
+        SimpleDraweeView imageView = holder.getView(R.id.iv_banner);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imageView.getLayoutParams();
+        if (params.rightMargin != space) {
+            params.leftMargin = space;
+            params.rightMargin = space;
+            imageView.setLayoutParams(params);
+        }
+        ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, radius);
     }
 
     @Override
@@ -34,23 +39,11 @@ public class BannerHold implements Holder<String> {
         return 0;
     }
 
-    public void setItemW(int width) {
-        ImageView imageView = holder.getView(R.id.iv_banner);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imageView.getLayoutParams();
-        params.width = width;
-        imageView.setLayoutParams(params);
-    }
-
     public void setSpace(int space) {
-        ImageView imageView = holder.getView(R.id.iv_banner);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imageView.getLayoutParams();
-        params.leftMargin = space;
-        params.rightMargin = space;
-        imageView.setLayoutParams(params);
+        this.space = DensityUtils.dip2px(space);
     }
 
     public void setRadius(int radius) {
-        RoundImageView imageView = holder.getView(R.id.iv_banner);
-        imageView.setRadius(radius);
+        this.radius = DensityUtils.dip2px(radius);
     }
 }
