@@ -1,6 +1,9 @@
 import jsrsasign from 'jsrsasign';
 import rsa_config from './rsa_config';
 // 创建RSAKey对象
+// import {
+//     NativeModules
+// } from 'react-native';
 
 let may_key = '-----BEGIN PRIVATE KEY-----' + rsa_config.rsa_key + '-----END PRIVATE KEY-----';
 
@@ -43,6 +46,16 @@ const RSA = {
             // update data
             sig.updateString(result.join('&'));
             let s = sig.sign();
+
+            // //测试
+            // console.log('-----');
+            // // console.log(s)
+            // console.log(jsrsasign.hex2b64(s));
+            //
+            // NativeModules.commModule.signWith(result.join('&'), (jsonDic) => {
+            //     console.log('------原生加签');
+            //     console.log(jsonDic);
+            // });
             return {
                 nonce,
                 timestamp,
@@ -51,7 +64,7 @@ const RSA = {
                 sign: jsrsasign.hex2b64(s)
             };
         } catch (e) {
-            console.log('签名失败---参数---' + params)
+            console.log('签名失败---参数---' + params);
         }
 
     }
