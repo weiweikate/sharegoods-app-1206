@@ -12,6 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RSAManager : NSObject
 SINGLETON_FOR_HEADER(RSAManager)
+
+-(NSString *)signSHA1String:(NSString *)string;
+
+-(NSString *)signMD5String:(NSString *)string;
 @end
 
 NS_ASSUME_NONNULL_END

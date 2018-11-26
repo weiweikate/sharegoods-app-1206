@@ -180,7 +180,7 @@ export default class OldUserLoginPage extends BasePage {
                         color: DesignRule.textColor_secondTitle,
                         textAlign: 'center'
                     }}>
-                    客服电话:400-9696-365
+                    客服电话:400-969-6365
                 </Text>
             </View>
         );
