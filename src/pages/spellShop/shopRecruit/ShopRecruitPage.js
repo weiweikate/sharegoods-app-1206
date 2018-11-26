@@ -7,8 +7,7 @@ import {
     ScrollView,
     TouchableOpacity,
     Image,
-    RefreshControl,
-    TouchableWithoutFeedback
+    RefreshControl
 } from 'react-native';
 
 

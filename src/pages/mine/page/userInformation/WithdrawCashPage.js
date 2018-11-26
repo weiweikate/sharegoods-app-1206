@@ -1,12 +1,11 @@
 import React from 'react';
 import {
-    NativeModules,
     StyleSheet,
     View,
     TextInput as RNTextInput,
     Text,
-    TouchableOpacity
-} from 'react-native';
+    TouchableOpacity, Alert
+} from "react-native";
 import BasePage from '../../../../BasePage';
 import {
     UIText, UIImage, UIButton
@@ -19,7 +18,9 @@ import user from '../../../../model/user';
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
 import res from '../../res';
-
+import MineAPI from "../../api/MineApi";
+import BankTradingModal from "./../../components/BankTradingModal";
+import EmptyUtils from "../../../../utils/EmptyUtils";
 const arrow_right = res.button.arrow_right_black;
 const bank = res.userInfoImg.commonBankCardIcon;
 
@@ -39,8 +40,9 @@ export default class WithdrawCashPage extends BasePage {
             serviceCharge: 0.01,
             card_no: '',
             bank_name: '',
-            id: 0,
+            bankId: null,
             card_type: 1,
+            isShowModal:false
         };
     }
 
@@ -56,6 +58,22 @@ export default class WithdrawCashPage extends BasePage {
                 {StringUtils.isNoEmpty(this.state.card_no) ? this.renderBankView() : this.renderEmptyBankView()}
                 {this.renderWithdrawMoney()}
                 {this.renderButtom()}
+                <BankTradingModal
+                    ref={(ref) => {
+                        this.passwordView = ref;
+                    }}
+                    forgetAction={() => {}}
+                    closeAction={() => {
+                        this.setState({
+                            isShowModal: false
+                        });
+                    }}
+                    finishedAction={(password) => this.passwordFinish(password)}
+                    visible={this.state.isShowModal}
+
+                    title={"输入平台密码"}
+                    message={""}
+                />
             </View>
         );
     }
@@ -80,7 +98,7 @@ export default class WithdrawCashPage extends BasePage {
                     height: 48,
                     marginLeft: 48,
                     marginRight: 48,
-                    backgroundColor: StringUtils.isNoEmpty(this.state.card_no) ? DesignRule.mainColor : DesignRule.textColor_placeholder,
+                    backgroundColor: (StringUtils.isNoEmpty(this.state.card_no) && parseFloat(this.state.money))? DesignRule.mainColor : DesignRule.textColor_placeholder,
                     borderRadius: 25
                 }}
                 onPress={() => this.commit()}/>
@@ -104,6 +122,7 @@ export default class WithdrawCashPage extends BasePage {
                     backgroundColor: 'white'
                 }}>
                     <Text style={{ marginLeft: 15, color: DesignRule.textColor_mainTitle, fontSize: 30 }}>{'¥'}</Text>
+                    <View style={{height:20,width:1,backgroundColor:'#eeeeee',marginLeft:16}}/>
                     <RNTextInput
                         style={{ marginLeft: 20, height: 40, flex: 1, backgroundColor: 'white', fontSize: 14 }}
                         onChangeText={(text) => this.onChangeText(text)}
@@ -147,10 +166,10 @@ export default class WithdrawCashPage extends BasePage {
             >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <UIImage source={bank} style={{ width: 49, height: 49, marginLeft: 16 }}/>
-                    <View style={{ marginLeft: 10, alignItems: 'center' }}>
+                    <View style={{ marginLeft: 12 }}>
                         <UIText value={this.state.bank_name}
                                 style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}/>
-                        <UIText value={'尾号' + this.state.card_no + '  ' + this.state.card_type == 1 ? '储蓄卡' : '信用卡'}
+                        <UIText value={'尾号' + (this.state.card_no ? this.state.card_no.substring(this.state.card_no.length-4,this.state.card_no.length):'') + '  ' + this.state.card_type}
                                 style={{ fontSize: 13, color: DesignRule.textColor_instruction }}/>
                     </View>
                 </View>
@@ -217,18 +236,32 @@ export default class WithdrawCashPage extends BasePage {
     }
 
     onChangeText = (text) => {
-        let money = this.state.money;
-        if (parseFloat(text) < parseFloat(user.availableBalance)) {
-            this.setState({
-                money: text,
-                totalFee: parseFloat(this.state.serviceCharge) * parseFloat(text)
-            });
-        } else {
-            this.setState({ money: money });
-        }
+        this.setState({ money: text });
     };
     commit = () => {
-        NativeModules.commModule.toast('功能暂未开放！');
+        if (EmptyUtils.isEmpty(user.realname)) {
+            Alert.alert("未实名认证", "你还没有实名认证", [{
+                text: "稍后认证", onPress: () => {
+                }
+            }, {
+                text: "马上就去", onPress: () => {
+                    this.props.navigation.navigate("mine/userInformation/IDVertify2Page");
+                }
+            }]);
+            return;
+        }
+
+        if (!user.hadSalePassword) {
+            Alert.alert("未设置密码", "你还没有设置初始密码", [{
+                text: "稍后设置", onPress: () => {
+                }
+            }, {
+                text: "马上就去", onPress: () => {
+                    this.$navigate("mine/account/JudgePhonePage", { title: "设置交易密码" });
+                }
+            }]);
+            return;
+        }
         // if (StringUtils.isEmpty(this.state.id)) {
         //     NativeModules.commModule.toast('请先选择银行卡');
         //     return;
@@ -249,19 +282,46 @@ export default class WithdrawCashPage extends BasePage {
         //         NativeModules.commModule.toast(response.msg);
         //     }
         // });
+        // {
+        //     "bankId": 0,
+        //     "bankName": "string",
+        //     "cardNo": "string",
+        //     "payPassword": "string",
+        //     "withdrawBalance": 0
+        // }
+       this.setState({
+           isShowModal:true
+       });
+       this.passwordView.open();
     };
     selectBankCard = () => {
             this.$navigate('mine/bankCard/BankCardListPage', {
                 callBack: (params) => {
                     this.setState({
-                        card_no: params.card_no,
-                        bank_name: params.bank_name,
-                        id: params.id,
-                        card_type: params.card_type
+                        card_no: params.cardNo,
+                        bank_name: params.bankName,
+                        bankId: params.id,
+                        card_type: params.cardType
                     });
                 }
             });
     };
+
+    passwordFinish = ()=>{
+        let params = {
+            "bankId": this.state.bankId,
+            "bankName": this.state.bank_name,
+            "cardNo": this.state.card_no,
+            "payPassword": "123456",
+            "withdrawBalance": parseFloat(this.state.money)
+        }
+        MineAPI.userWithdrawApply(params).then((data)=>{
+            this.$toastShow('提交申请成功\n' +
+                '预计2个工作日内到款')
+        }).catch((err)=>{
+            this.$toastShow(err.msg);
+        });
+    }
 }
 
 const styles = StyleSheet.create({
