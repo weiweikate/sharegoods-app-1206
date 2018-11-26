@@ -8,7 +8,7 @@ import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.meeruu.sharegoods.ui.QrCodeScanActivity;
+import com.meeruu.sharegoods.ui.activity.QrCodeScanActivity;
 
 public class QRCodeModule extends ReactContextBaseJavaModule implements ActivityEventListener {
     public static final String MODULE_NAME = "QRCodeModule";

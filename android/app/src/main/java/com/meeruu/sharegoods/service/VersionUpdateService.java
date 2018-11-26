@@ -28,7 +28,7 @@ import com.meeruu.commonlib.utils.SDCardUtils;
 import com.meeruu.commonlib.utils.ToastUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.sharegoods.R;
-import com.meeruu.sharegoods.ui.MainRNActivity;
+import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 import com.meeruu.sharegoods.utils.AppContants;
 
 import java.io.File;

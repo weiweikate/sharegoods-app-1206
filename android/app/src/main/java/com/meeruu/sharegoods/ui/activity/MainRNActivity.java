@@ -1,4 +1,4 @@
-package com.meeruu.sharegoods.ui;
+package com.meeruu.sharegoods.ui.activity;
 
 import android.Manifest;
 import android.app.Activity;

@@ -1,4 +1,4 @@
-package com.meeruu.commonlib.customview.wenldbanner.adapter;
+package com.meeruu.sharegoods.ui.customview.wenldbanner.adapter;
 
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
@@ -7,8 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.meeruu.commonlib.customview.wenldbanner.helper.Holder;
-import com.meeruu.commonlib.customview.wenldbanner.helper.ViewHolder;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.Holder;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.ViewHolder;
 
 import java.util.LinkedList;
 import java.util.List;

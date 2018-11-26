@@ -1,7 +1,7 @@
-package com.meeruu.commonlib.customview.wenldbanner.helper;
+package com.meeruu.sharegoods.ui.customview.wenldbanner.helper;
 
-import com.meeruu.commonlib.customview.wenldbanner.AutoTurnViewPager;
-import com.meeruu.commonlib.customview.wenldbanner.PageIndicatorListener;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.AutoTurnViewPager;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.PageIndicatorListener;
 
 import java.util.List;
 
