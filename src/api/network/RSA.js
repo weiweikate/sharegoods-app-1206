@@ -20,7 +20,7 @@ function randomString(len) {
 }
 
 const RSA = {
-    sign(params = {}) {
+     sign(params = {}) {
         // 'Security-Policy': 'SIGNATURE'
         let result = [];
         let nonce = randomString(16);
@@ -51,10 +51,16 @@ const RSA = {
             // console.log('-----');
             // // console.log(s)
             // console.log(jsrsasign.hex2b64(s));
-            //
             // NativeModules.commModule.signWith(result.join('&'), (jsonDic) => {
             //     console.log('------原生加签');
             //     console.log(jsonDic);
+            //     return {
+            //         nonce,
+            //         timestamp,
+            //         client,
+            //         version,
+            //         sign: jsrsasign.hex2b64(s)
+            //     };
             // });
             return {
                 nonce,

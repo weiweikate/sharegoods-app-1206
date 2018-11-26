@@ -303,7 +303,7 @@ RCT_EXPORT_METHOD(updatePushTags:(id)paramTags){
 
 RCT_EXPORT_METHOD(signWith:(NSString *)signString callback:(RCTResponseSenderBlock)callBack){
   NSString * signedString = [[RSAManager sharedInstance] signSHA1String:signString];
-  NSLog(@"加签后的字符串-----原生---- %@",signedString);
+//  NSLog(@"加签后的字符串-----原生---- %@",signedString);
   if (callBack) {
     callBack(@[signedString]);
   }
