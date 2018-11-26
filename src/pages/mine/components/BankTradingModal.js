@@ -54,7 +54,7 @@ export default class BankTradingModal extends Component {
                                 <Text style={styles.title}>请输入交易密码</Text>
                             </View>
                             <TouchableOpacity style={styles.closeButton} onPress={()=>{this.props.closeAction()}}>
-                                <Image source={closeImg}/>
+                                <Image source={closeImg} style={{width:20,height:20}}/>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.line}/>
@@ -65,9 +65,9 @@ export default class BankTradingModal extends Component {
                             maxLength={6}
                             onChange={value => this.inputText(value)}
                         />
-                        {/*<TouchableOpacity style={styles.forget} onPress={()=>this.forgetAction()}>*/}
-                            {/*<Text style={styles.forgetText}>忘记支付密码</Text>*/}
-                        {/*</TouchableOpacity>*/}
+                        <TouchableOpacity style={styles.forget} onPress={()=>this.forgetAction()}>
+                            <Text style={styles.forgetText}>{this.props.instructions}</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={{flex: 309 / (ScreenUtils.headerHeight)}}/>

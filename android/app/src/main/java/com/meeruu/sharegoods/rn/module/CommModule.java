@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
@@ -20,6 +21,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.meeruu.commonlib.bean.IdNameBean;
@@ -40,7 +42,10 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -178,7 +183,7 @@ public class CommModule extends ReactContextBaseJavaModule {
      */
     @ReactMethod
     public void showLoadingDialog(String msg) {
-        loadingDialog(true,msg);
+        loadingDialog(true, msg);
     }
 
     @ReactMethod
@@ -192,7 +197,7 @@ public class CommModule extends ReactContextBaseJavaModule {
         EventBus.getDefault().post(event);
     }
 
-    public void loadingDialog(boolean isShow,String msg) {
+    public void loadingDialog(boolean isShow, String msg) {
         LoadingDialogEvent event = new LoadingDialogEvent();
         event.setShow(isShow);
         event.setMsg(msg);
@@ -410,5 +415,48 @@ public class CommModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void isPushStopped(Callback callback) {
         callback.invoke(JPushInterface.isPushStopped(mContext));
+    }
+    /*
+     * 推送相关方法
+     * userId
+     * */
+    @ReactMethod
+    public void updatePushAlias(ReadableMap data) {
+        if (data.hasKey("userId")) {
+            String lastVersion = data.getString("userId");
+            JPushInterface.setAlias(this.mContext, lastVersion,null);
+        }
+    }
+
+    /**
+     * @param data
+     * {
+     * environment: "测试"
+     * levelRemark: "V0"
+     * status: "已激活"
+     * version: "1.0.3"
+     * }
+     */
+    @ReactMethod
+    public void updatePushTags(ReadableMap data) {
+//        String environment;
+//        String levelRemark;
+//        String status;
+//        String version;
+        HashSet tagSet = new HashSet();
+
+        if (data.hasKey("environment")) {
+            tagSet.add(data.getString("environment"));
+        }
+        if (data.hasKey("levelRemark")){
+            tagSet.add(data.getString("levelRemark"));
+        }
+        if (data.hasKey("status")){
+            tagSet.add(data.getString("status"));
+        }
+        if (data.hasKey("version")){
+            tagSet.add(data.getString("version"));
+        }
+        JPushInterface.setTags(this.mContext,tagSet,null);
     }
 }
