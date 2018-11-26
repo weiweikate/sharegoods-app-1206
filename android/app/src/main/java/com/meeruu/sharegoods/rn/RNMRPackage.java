@@ -11,6 +11,7 @@ import com.meeruu.qiyu.imService.QYChatModule;
 import com.meeruu.sharegoods.rn.module.AppPayModule;
 import com.meeruu.sharegoods.rn.module.CommModule;
 import com.meeruu.sharegoods.rn.module.QRCodeModule;
+import com.meeruu.sharegoods.rn.viewmanager.MRBannerViewManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,9 +27,7 @@ public class RNMRPackage implements ReactPackage {
     public QYChatModule qyChatModule;
     public AppPayModule appPayModule;
     public LoginAndSharingModule loginAndSharingModule;
-    public PopModalManager popModalManager;
     public QRCodeModule qrCodeModule;
-    public WaveViewManager waveViewManager;
 
     /**
      * 创建Native Module
@@ -55,11 +54,10 @@ public class RNMRPackage implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
-        popModalManager = new PopModalManager();
-        waveViewManager = new WaveViewManager();
         return Arrays.<ViewManager>asList(
-                popModalManager,
-                waveViewManager);
+                new PopModalManager(),
+                new WaveViewManager(),
+                new MRBannerViewManager());
     }
 
 }
