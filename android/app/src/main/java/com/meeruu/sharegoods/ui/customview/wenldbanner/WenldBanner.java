@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.meeruu.commonlib.R;
+import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.Holder;
 import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.UIContact;
 
@@ -40,7 +40,7 @@ public class WenldBanner<T> extends RelativeLayout {
     private void init(Context context) {
         View hView = LayoutInflater.from(context).inflate(
                 R.layout.wenld_banner, this, true);
-        viewPager = (AutoTurnViewPager) hView.findViewById(R.id.vp_wenld_banner);
+        viewPager = hView.findViewById(R.id.vp_wenld_banner);
     }
 
     public WenldBanner setPages(Holder<T> holer, List<T> data) {
@@ -92,7 +92,7 @@ public class WenldBanner<T> extends RelativeLayout {
      * @return
      */
     public WenldBanner setPageIndicatorAlign(int... gravityAlign) {
-        LayoutParams layoutParams = (LayoutParams) indicatorView.getLayoutParams();
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) indicatorView.getLayoutParams();
         for (int i = 0; i < gravityAlign.length; i++) {
             layoutParams.addRule(gravityAlign[i]);
         }
@@ -209,6 +209,10 @@ public class WenldBanner<T> extends RelativeLayout {
 
     public boolean isReverse() {
         return viewPager.isReverse();
+    }
+
+    public void setOnItemClickListener(OnPageClickListener onItemClickListener) {
+        viewPager.setOnItemClickListener(onItemClickListener);
     }
 
     public AutoTurnViewPager getViewPager() {

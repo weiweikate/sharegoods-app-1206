@@ -30,8 +30,6 @@ ext {
             exoplayer   : 'com.google.android.exoplayer:exoplayer:2.7.3',
             exopOKhttp  : 'com.google.android.exoplayer:extension-okhttp:2.7.3',
             multidex    : 'com.android.support:multidex:1.0.3',
-            recyclerview: 'com.android.support:recyclerview-v7:27.1.1',
-            glide          : 'com.github.bumptech.glide:glide:4.8.0',
-            glideprocessor : 'com.github.bumptech.glide:compiler:4.8.0',
+            recyclerview: 'com.android.support:recyclerview-v7:27.1.1'
     ]
 }
