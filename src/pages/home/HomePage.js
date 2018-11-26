@@ -121,7 +121,6 @@ class HomePage extends PureComponent {
     componentWillUnmount() {
         this.didBlurSubscription && this.didBlurSubscription.remove();
         this.willFocusSubscription && this.willFocusSubscription.remove();
-        this.didBlurSubscription && this.didBlurSubscription.remove();
         this.didFocusSubscription && this.didFocusSubscription.remove();
     }
 

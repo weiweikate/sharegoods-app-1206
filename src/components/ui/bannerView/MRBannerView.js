@@ -25,7 +25,8 @@ export default class MRBannerView extends Component {
         //卡片间距
         itemSpace: PropTypes.number,
         //卡片圆角
-        itemRadius: PropTypes.number
+        itemRadius: PropTypes.number,
+        pageFocused: PropTypes.bool
     };
 
     render() {

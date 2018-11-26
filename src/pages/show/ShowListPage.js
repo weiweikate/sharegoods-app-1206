@@ -1,89 +1,114 @@
-import React from 'react'
-import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native'
-import BasePage from '../../BasePage'
-import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view'
-import ScreenUtils from '../../utils/ScreenUtils'
-const { px2dp } = ScreenUtils
-import ShowHotView from './ShowHotView'
-import ShowHotFindView from './ShowHotFindView'
-import backIconImg from '../../components/pageDecorator/NavigatorBar/source/icon_header_back.png'
+import React from 'react';
+import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
+import BasePage from '../../BasePage';
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
+import ScreenUtils from '../../utils/ScreenUtils';
+
+const { px2dp } = ScreenUtils;
+import ShowHotView from './ShowHotView';
+import ShowHotFindView from './ShowHotFindView';
+import backIconImg from '../../components/pageDecorator/NavigatorBar/source/icon_header_back.png';
 import DesignRule from 'DesignRule';
 import { showSelectedDetail } from './Show';
 import { observer } from 'mobx-react';
 
 @observer
 export default class ShowListPage extends BasePage {
+
     $navigationBarOptions = {
         title: '',
         show: false
-    }
-
-    static navigationOptions = {
-        
     };
+
+    static navigationOptions = {};
 
     state = {
         page: 0,
-        left: false
-    }
+        left: false,
+        pageFocused: false
+    };
 
     componentWillMount() {
-        this.setState({ left: this.params.fromHome })
+        this.setState({ left: this.params.fromHome });
         this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
                 const { state } = payload;
                 console.log('ShowListPage willFocus', state);
-                if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage') ) {
+                if (state && (state.routeName === 'ShowListPage' || state.routeName === 'show/ShowListPage')) {
                     if (showSelectedDetail.selectedShow) {
-                        return
+                        return;
                     }
-                    this.showHotViewRef && this.showHotViewRef.refresh()
-                    this.showHotFindeView && this.showHotFindeView.refreshing()
+                    this.showHotViewRef && this.showHotViewRef.refresh();
+                    this.showHotFindeView && this.showHotFindeView.refreshing();
                 }
+                this.setState({
+                    pageFocused: true
+                });
             }
         );
-
-        
+        this.didBlurSubscription = this.props.navigation.addListener(
+            'willBlur',
+            payload => {
+                this.pageFocused = false;
+                const { state } = payload;
+                if (state && state.routeName === 'HomePage') {
+                    this.setState({ isShow: false });
+                }
+                this.setState({
+                    pageFocused: false
+                });
+            }
+        );
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                this.setState({
+                    pageFocused: true
+                });
+            }
+        );
     }
 
     componentWillUnmount() {
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.didBlurSubscription && this.didBlurSubscription.remove();
+        this.didFocusSubscription && this.didFocusSubscription.remove();
     }
 
     _gotoPage(number) {
-        this.setState({page: number})
+        this.setState({ page: number });
     }
 
     _onChangeTab(number) {
-        this.setState({page: number.i})
+        this.setState({ page: number.i });
     }
 
     _onLeftPressed() {
-        this.props.navigation.goBack(null)
+        this.props.navigation.goBack(null);
     }
 
     _render() {
-        const {navigation} = this.props
-        const {page, left} = this.state
+        const { navigation } = this.props;
+        const { page, left } = this.state;
         return <View style={styles.container}>
             <View style={styles.header}>
                 {
                     left
-                    ?
-                    <TouchableOpacity style={styles.backImg}  onPress={()=>this._onLeftPressed()}>
-                        <Image source={backIconImg} style={styles.img}/>
-                    </TouchableOpacity>
-                    :
-                    <View style={styles.backImg}/>
+                        ?
+                        <TouchableOpacity style={styles.backImg} onPress={() => this._onLeftPressed()}>
+                            <Image source={backIconImg} style={styles.img}/>
+                        </TouchableOpacity>
+                        :
+                        <View style={styles.backImg}/>
                 }
                 <View style={styles.titleView}>
-                    <TouchableOpacity style={styles.items} onPress={()=> this._gotoPage(0)}>
+                    <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(0)}>
                         <Text style={page === 0 ? styles.activityIndex : styles.index}>精选热门</Text>
                         {page === 0 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
-                    <View style={{width: 50}}/>
-                    <TouchableOpacity style={styles.items} onPress={()=> this._gotoPage(1)}>
+                    <View style={{ width: 50 }}/>
+                    <TouchableOpacity style={styles.items} onPress={() => this._gotoPage(1)}>
                         <Text style={page === 1 ? styles.activityIndex : styles.index}>最新秀场</Text>
                         {page === 1 ? <View style={styles.line}/> : null}
                     </TouchableOpacity>
@@ -91,21 +116,26 @@ export default class ShowListPage extends BasePage {
                 <View style={styles.backImg}/>
             </View>
             <ScrollableTabView
-                ref={(ref)=>this.scrollableTabView = ref}
+                ref={(ref) => this.scrollableTabView = ref}
                 style={styles.tab}
                 page={this.state.page}
                 renderTabBar={() => <DefaultTabBar style={styles.tabBar}/>}
                 tabBarUnderlineStyle={styles.underline}
-                onChangeTab={(number)=>this._onChangeTab(number)}
+                onChangeTab={(number) => this._onChangeTab(number)}
+                showsVerticalScrollIndicator={false}
             >
-                <View key={1} style={styles.container} tabLabel="" >
-                    <ShowHotView navigation={navigation} ref={(ref)=> {this.showHotViewRef = ref}}/>
+                <View key={1} style={styles.container} tabLabel="">
+                    <ShowHotView navigation={navigation} ref={(ref) => {
+                        this.showHotViewRef = ref;
+                    }} pageFocus={this.state.pageFocused}/>
                 </View>
-                <View key={2}  style={styles.container} tabLabel="   ">
-                    <ShowHotFindView navigation={navigation} ref={(ref) => {this.showHotFindeView = ref}}/>
+                <View key={2} style={styles.container} tabLabel="   ">
+                    <ShowHotFindView navigation={navigation} ref={(ref) => {
+                        this.showHotFindeView = ref;
+                    }}/>
                 </View>
             </ScrollableTabView>
-        </View>
+        </View>;
     }
 }
 
@@ -127,15 +157,15 @@ let styles = StyleSheet.create({
     header: {
         height: ScreenUtils.headerHeight,
         paddingTop: ScreenUtils.statusBarHeight,
-        flexDirection: "row",
+        flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#fff'
     },
     backImg: {
-        height:44,
+        height: 44,
         width: ScreenUtils.headerHeight,
         paddingLeft: 15,
-        flexDirection: "row",
+        flexDirection: 'row',
         alignItems: 'center'
     },
     img: {
@@ -145,7 +175,7 @@ let styles = StyleSheet.create({
     titleView: {
         flex: 1,
         height: 44,
-        flexDirection: "row",
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -171,4 +201,4 @@ let styles = StyleSheet.create({
         width: 30,
         height: 1
     }
-})
+});

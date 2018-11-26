@@ -116,7 +116,7 @@ export default class ShowHotView extends Component {
         />;
     };
     renderHeader = () => {
-        return <View><ShowBannerView navigation={this.props.navigation}/>
+        return <View><ShowBannerView navigation={this.props.navigation} pageFocused={this.props.pageFocus}/>
             <ShowChoiceView navigation={this.props.navigation}/>
             {/* <ShowHotScrollView navigation={this.props.navigation}/> */}
             <View style={styles.titleView}>

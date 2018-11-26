@@ -3,6 +3,8 @@ package com.meeruu.commonlib.utils;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.DrawableRes;
+import android.text.TextUtils;
+import android.view.ViewTreeObserver;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.drawable.ScalingUtils;
@@ -43,14 +45,54 @@ public class ImageLoadUtils {
         loadImageAsCircle(uri, view);
     }
 
-    public static void loadNetImage(String url, SimpleDraweeView view) {
-        Uri uri = Uri.parse(url);
-        loadImage(uri, view, 0);
+    public static void loadNetImage(final String url, final SimpleDraweeView view) {
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            boolean hasMeasured = false;
+
+            @Override
+            public boolean onPreDraw() {
+                if (!hasMeasured) {
+                    int width = view.getMeasuredWidth();
+                    int height = view.getMeasuredHeight();
+                    String newUrl = url;
+                    if (width != 0 || height != 0) {
+                        if (!TextUtils.isEmpty(newUrl)) {
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                        }
+                    }
+                    Uri uri = Uri.parse(url);
+                    loadImage(uri, view, 0);
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    hasMeasured = true;
+                }
+                return true;
+            }
+        });
     }
 
-    public static void loadRoundNetImage(String url, SimpleDraweeView view, int radius) {
-        Uri uri = Uri.parse(url);
-        loadImage(uri, view, radius);
+    public static void loadRoundNetImage(final String url, final SimpleDraweeView view, final int radius) {
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            boolean hasMeasured = false;
+
+            @Override
+            public boolean onPreDraw() {
+                if (!hasMeasured) {
+                    int width = view.getMeasuredWidth();
+                    int height = view.getMeasuredHeight();
+                    String newUrl = url;
+                    if (width != 0 || height != 0) {
+                        if (!TextUtils.isEmpty(newUrl)) {
+                            newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
+                        }
+                    }
+                    Uri uri = Uri.parse(url);
+                    loadImage(uri, view, radius);
+                    view.getViewTreeObserver().removeOnPreDrawListener(this);
+                    hasMeasured = true;
+                }
+                return true;
+            }
+        });
     }
 
     public static void loadNetImageAsCircle(String url, SimpleDraweeView view) {

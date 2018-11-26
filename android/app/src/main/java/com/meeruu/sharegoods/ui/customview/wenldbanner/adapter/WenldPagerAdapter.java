@@ -75,10 +75,6 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
         return dataPosition;
     }
 
-    public Holder getHolderCreator() {
-        return holderCreator;
-    }
-
     /**
      * 返回真实数据的下标
      *
@@ -106,10 +102,6 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
             }
         }
         return adapterPosition;
-    }
-
-    public void setOnItemClickListener(OnPageClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -146,6 +138,10 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
         }
     }
 
+    public void setOnItemClickListener(OnPageClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     public void setViewPager(ViewPager viewPager) {
         this.wenldViewPager = viewPager;
     }
@@ -163,12 +159,12 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
         setCanLoop(true);
     }
 
+    public Holder getHolderCreator() {
+        return this.holderCreator;
+    }
+
     public void setmDatas(List<T> mDatas) {
-        if (this.mDatas != null) {
-            this.mDatas.addAll(mDatas);
-        } else {
-            this.mDatas = mDatas;
-        }
+        this.mDatas = mDatas;
         setCanLoop(canLoop);
     }
 
@@ -210,6 +206,7 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
                 }
             }
         });
+
         if (mDatas != null && !mDatas.isEmpty()) {
             if (myNotify || position != holder.getPosition()) {
                 // 恢复一下状态

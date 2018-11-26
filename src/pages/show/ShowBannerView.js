@@ -84,6 +84,7 @@ export default class ShowBannerView extends Component {
                 itemWidth={px2dp(300)}
                 itemSpace={px2dp(10)}
                 itemRadius={5}
+                pageFocused={this.props.pageFocused}
                 onDidSelectItemAtIndex={(index) => {
                     this._onPressRow(index);
                 }}
