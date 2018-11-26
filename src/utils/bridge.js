@@ -4,7 +4,8 @@ import {
 } from 'react-native';
 import ScreenUtils from './ScreenUtils';
 import StringUtils from './StringUtils';
-import TimerMixin from 'react-timer-mixin'
+import TimerMixin from 'react-timer-mixin';
+import {setCookieToken, setCookies, clearCookies} from '@mr/react-native-webview';
 
 export default {
     $toast(msg) {
@@ -166,5 +167,12 @@ export default {
     stopPush: () => NativeModules.commModule.stopPush(),
     resumePush: () => NativeModules.commModule.resumePush(),
     isPushStopped: (callback = () => {
-    }) => NativeModules.commModule.isPushStopped(callback)
+    }) => NativeModules.commModule.isPushStopped(callback),
+    setCookies: (data)=>{
+        setCookieToken(data.token,'172.16.10.117');
+        setCookies("userData", {id: data.id},'172.16.10.117');
+    },
+    clearCookies: ()=>{
+        clearCookies();
+    }
 };

@@ -159,6 +159,7 @@ export default class RegistPage extends BasePage {
             UserModel.saveToken(data.data.token);
             homeModule.loadHomeList()
             this.$navigate('login/login/GetRedpacketPage');
+            bridge.setCookies(data.data);
         }).catch((data) => {
             this.$loadingDismiss();
             bridge.$toast(data.msg);
