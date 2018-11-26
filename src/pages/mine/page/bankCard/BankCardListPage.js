@@ -18,10 +18,9 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import { SwipeListView, SwipeRow } from './../../../../components/ui/react-native-swipe-list-view';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
-import SettingTransactionModal from '../../components/SettingTransactionModal';
 import DesignRule from 'DesignRule';
 import res from '../../res';
-
+import BankTradingModal from './../../components/BankTradingModal'
 const {
     bankCard1,
     bankCard2,
@@ -32,7 +31,7 @@ const {
 
 const bankCardList = [bankCard1, bankCard2, bankCard3, bankCard4, bankCard5];
 
-class BankCardListPage extends BasePage {
+export default class BankCardListPage extends BasePage {
     constructor(props) {
         super(props);
         this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -87,7 +86,7 @@ class BankCardListPage extends BasePage {
                                 style={{ fontSize: 16, color: 'white' }}/>
                     </TouchableOpacity>
                 </View>
-                {this.renderModal()}
+                {this.renderBankModal()}
             </ScrollView>
 
         );
@@ -174,30 +173,21 @@ class BankCardListPage extends BasePage {
             <View style={{ height: 10 }}/>
         );
     };
-    renderModal = () => {
-        return (
-            <SettingTransactionModal
-                isShow={this.state.isShowUnbindCardModal}
-                ref={(ref) => {
-                    this.modal = ref;
-                }}
-                detail={{ title: '请输入交易密码', context: '删除银行卡' }}
-                closeWindow={() => {
-                    this.setState({ isShowUnbindCardModal: false });
-                }}
-                // passwordInputError={this.state.isShowUnbindCardModal}
-                //bottomText={'输入的密码有误'}
-                inputText={(text) => {
-                    if (text.length == 6) {
-                        setTimeout(() => {
-                            this.setState({ isShowUnbindCardModal: false });
-                            this.finishPasswordInput(text);
-                        }, 500);
-                    }
-                }}
+    renderBankModal=()=>{
+        return(
+            <BankTradingModal
+                forgetAction={() => this.forgetTransactionPassword()}
+                closeAction={() => this.setState({ isShowUnbindCardModal: false })}
+                visible={this.state.isShowUnbindCardModal}
+                finishedAction={(password) => this.finishedPwd(password)}
             />
-        );
-    };
+        )
+    }
+
+    finishedPwd(password) {
+        this.setState({isShowUnbindCardModal:false});
+        this.$navigate('mine/bankCard/AddBankCardPage', { callBack: () => this.loadPageData() });
+    }
 
     //**********************************BusinessPart******************************************
     loadPageData() {
@@ -255,7 +245,6 @@ class BankCardListPage extends BasePage {
         this.modal && this.modal.open();
     };
     addBankCard = () => {
-        // this.$navigate('mine/bankCard/AddBankCardPage', { callBack: () => this.loadPageData() });
         this.setState({
             isShowUnbindCardModal:true
         })
@@ -322,4 +311,3 @@ const styles = StyleSheet.create({
     }
 });
 
-export default BankCardListPage;

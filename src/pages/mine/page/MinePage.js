@@ -285,6 +285,14 @@ export default class MinePage extends BasePage {
             </Text>
         ) : null;
 
+        let name = '';
+
+        if(EmptyUtils.isEmpty(user.nickname)){
+            name = user.phone ? user.phone : "未登陆";
+        }else {
+            name = user.nickname.length > 6 ? user.nickname.substring(0,6)+'...' : user.nickname;
+        }
+
         return (
             <ImageBackground style={styles.headerBgStyle} source={mine_header_bg}>
                 <View style={{ height: px2dp(54), flexDirection: "row" }}>
@@ -302,12 +310,14 @@ export default class MinePage extends BasePage {
                     }}>
                         <TouchableWithoutFeedback onPress={this.jumpToUserInformationPage}>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                <Text style={{
+                                <Text
+                                    maxLength={6}
+                                    style={{
                                     color: DesignRule.white,
                                     fontSize: px2dp(18),
                                     includeFontPadding: false
                                 }}>
-                                    {`${user.nickname ? user.nickname : (user.phone ? user.phone : "未登陆")}`}
+                                    {name}
                                 </Text>
                                 <Image source={mine_icon_right}
                                        style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(16) }}

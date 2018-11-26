@@ -261,8 +261,7 @@ class User {
         }
         //同步本地购物车
         shopCartCacheTool.synchronousData();
-        //推送
-        // JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
+
     }
     // 修改手机号
     @action

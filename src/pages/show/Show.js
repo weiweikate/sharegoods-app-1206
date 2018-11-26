@@ -81,7 +81,6 @@ class ShowBannerModules {
     }
 
     @action loadBannerList = () => {
-        this.bannerList = [];
         ShowApi.showSwper({ type: 11 }).then(res => {
             if (res.code === 10000 && res.data) {
                 this.bannerList = res.data;

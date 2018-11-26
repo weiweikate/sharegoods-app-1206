@@ -16,6 +16,7 @@ import DeviceInfo from 'react-native-device-info';
 import DesignRule from '../../../constants/DesignRule';
 import { homeModule } from '../../home/Modules'
 import res from '../res';
+import JPushUtils from '../../../utils/JPushUtils';
 
 const {
     red_button_s,
@@ -159,6 +160,9 @@ export default class RegistPage extends BasePage {
             UserModel.saveToken(data.data.token);
             homeModule.loadHomeList()
             this.$navigate('login/login/GetRedpacketPage');
+
+            //推送
+            JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
         }).catch((data) => {
             this.$loadingDismiss();
             bridge.$toast(data.msg);

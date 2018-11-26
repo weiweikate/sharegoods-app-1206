@@ -1,70 +1,70 @@
 {
-    "showDebugPanel": true,
-    "envType": "qa",
-    "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
-    "env": {
-        "dev_mock": {
-            "name": "开发mock环境",
-            "host": "http://localhost:9090"
-        },
-        "dev_zb": {
-            "name": "开发环境-zb",
-            "host": "http://172.16.10.41:8903/gateway"
-        },
-        "dev_wkl": {
-            "name": "开发环境-wkl",
-            "host": "http://172.16.10.111:8903/gateway"
-        },
-        "dev": {
-            "name": "开发",
-            "host": "http://devapi.sharegoodsmall.com/gateway"
-        },
-        "qa": {
-            "name": "测试",
-            "host": "https://testapi.sharegoodsmall.com/gateway",
-            "h5": "https://testh5.sharegoodsmall.com"
-        },
-        "online": {
-            "name": "生产",
-            "host": "",
-            "h5": "https://h5.sharegoodsmall.com"
-        },
-        "吴承骏Login": {
-            "name": "测试环境_吴承骏",
-            "host": "http://172.16.10.19:8903/gateway"
-        },
-        "da_wei": {
-            "name": "测试环境_大为",
-            "host": "http://172.16.10.42:8180/gateway"
-        },
-        "gao_di": {
-            "name": "测试_高迪",
-            "host": "http://172.16.10.238:8180/gateway"
-        },
-        "zhou_hao": {
-            "name": "测试_周浩",
-            "host": "http://172.16.10.29:8180/gateway"
-        },
-        "shen_yaoxing": {
-            "name": "测试_沈耀鑫",
-            "host": "http://172.16.10.56:8180/gateway"
-        },
-        "dev_cs": {
-            "name": "开发环境-陈帅",
-            "host": "http://172.16.10.88:8180/gateway"
-        },
-        "dev_yxm": {
-            "name": "开发环境-杨小猛",
-            "host": "http://172.16.10.12:8180/gateway"
-        },
-        "申祥瑀":{
-            "name":"延签测试",
-            "host":"http://172.16.10.21:8080/gateway"
-        },
-        "pre_release": {
-            "name": "UAT",
-            "host": "https://uatapi.sharegoodsmall.com/gateway",
-            "h5": "https://uath5.sharegoodsmall.com"
-        }
+  "showDebugPanel": true,
+  "envType": "qa",
+  "__注释__": "[showDebugPanel]:是否显示调试面板   [envType]:决定网络启动后，默认的网络环境类型",
+  "env": {
+    "dev_mock": {
+      "name": "开发mock环境",
+      "host": "http://localhost:9090"
+    },
+    "dev_zb": {
+      "name": "开发环境-zb",
+      "host": "http://172.16.10.41:8903/gateway"
+    },
+    "dev_wkl": {
+      "name": "开发环境-wkl",
+      "host": "http://172.16.10.111:8903/gateway"
+    },
+    "dev": {
+      "name": "开发",
+      "host": "http://devapi.sharegoodsmall.com/gateway"
+    },
+    "qa": {
+      "name": "测试",
+      "host": "https://testapi.sharegoodsmall.com/gateway",
+      "h5": "https://testh5.sharegoodsmall.com"
+    },
+    "online": {
+      "name": "生产",
+      "host": "",
+      "h5": "https://h5.sharegoodsmall.com"
+    },
+    "吴承骏Login": {
+      "name": "测试环境_吴承骏",
+      "host": "http://172.16.10.19:8903/gateway"
+    },
+    "da_wei": {
+      "name": "测试环境_大为",
+      "host": "http://172.16.10.42:8180/gateway"
+    },
+    "gao_di": {
+      "name": "测试_高迪",
+      "host": "http://172.16.10.238:8180/gateway"
+    },
+    "zhou_hao": {
+      "name": "测试_周浩",
+      "host": "http://172.16.10.29:8180/gateway"
+    },
+    "shen_yaoxing": {
+      "name": "测试_沈耀鑫",
+      "host": "http://172.16.10.56:8180/gateway"
+    },
+    "dev_cs": {
+      "name": "开发环境-陈帅",
+      "host": "http://172.16.10.88:8180/gateway"
+    },
+    "dev_yxm": {
+      "name": "开发环境-杨小猛",
+      "host": "http://172.16.10.12:8180/gateway"
+    },
+    "申祥瑀": {
+      "name": "延签测试",
+      "host": "http://172.16.10.21:8080/gateway"
+    },
+    "pre_release": {
+      "name": "UAT",
+      "host": "https://uatapi.sharegoodsmall.com/gateway",
+      "h5": "https://uath5.sharegoodsmall.com"
     }
+  }
 }
