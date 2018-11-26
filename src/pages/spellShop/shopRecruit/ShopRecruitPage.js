@@ -8,7 +8,6 @@ import {
     TouchableOpacity,
     Image,
     RefreshControl,
-    TouchableWithoutFeedback
 } from 'react-native';
 
 
