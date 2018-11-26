@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.meeruu.sharegoods.ui.customview.wenldbanner.OnPageClickListener;
 import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.Holder;
 import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.ViewHolder;
 
@@ -23,6 +24,7 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
     ViewPager wenldViewPager;
     private LinkedList<ViewHolder> mViewHolderCache = null;
     private LinkedList<ViewHolder> mViewHolderUsedCache = null;
+    private OnPageClickListener onItemClickListener;
 
     @Override
     public int getCount() {
@@ -136,6 +138,10 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
         }
     }
 
+    public void setOnItemClickListener(OnPageClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     public void setViewPager(ViewPager viewPager) {
         this.wenldViewPager = viewPager;
     }
@@ -151,6 +157,10 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
         this.holderCreator = holderCreator;
         this.mDatas = datas;
         setCanLoop(true);
+    }
+
+    public Holder getHolderCreator() {
+        return this.holderCreator;
     }
 
     public void setmDatas(List<T> mDatas) {
@@ -188,6 +198,14 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
             holder = holderCreator.createView(wenldViewPager.getContext(), container, realPosition, viewType);
         }
         mViewHolderUsedCache.add(holder);
+        holder.getConvertView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(realPosition);
+                }
+            }
+        });
 
         if (mDatas != null && !mDatas.isEmpty()) {
             if (myNotify || position != holder.getPosition()) {
