@@ -185,8 +185,8 @@ export default class WaitingForWithdrawCashPage extends BasePage {
 
                     </View>
                     <TouchableOpacity style={{
-                        top: 70,
-                        right: 40,
+                        top: 65,
+                        right: 30,
                         position: 'absolute'
                     }} onPress={this._onPress}>
                         <Image style={{width:20,height:20}} source={topicShowClose}/>
