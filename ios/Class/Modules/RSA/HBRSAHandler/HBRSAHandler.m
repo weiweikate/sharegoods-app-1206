@@ -173,13 +173,20 @@ typedef enum {
     unsigned char *sig = (unsigned char *)malloc(256);
     unsigned int sig_len;
     
-    unsigned char sha1[20];
-    SHA1((unsigned char *)message, messageLength, sha1);
+    unsigned char sha1[32];
+//    SHA1((unsigned char *)message, messageLength, sha1);
+    SHA256((unsigned char *)message, messageLength, sha1);
     
-    int rsa_sign_valid = RSA_sign(NID_sha1
-                                          , sha1, 20
-                                          , sig, &sig_len
-                                          , _rsa_pri);
+//    int rsa_sign_valid = RSA_sign(NID_sha1
+//                                          , sha1, 20
+//                                          , sig, &sig_len
+//                                          , _rsa_pri);
+  
+  int rsa_sign_valid = RSA_sign(NID_sha256
+                                , sha1, 32
+                                , sig, &sig_len
+                                , _rsa_pri);
+  
     if (rsa_sign_valid == 1) {
         NSData* data = [NSData dataWithBytes:sig length:sig_len];
         
