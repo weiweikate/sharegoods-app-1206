@@ -94,7 +94,7 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    int cacheSize = datas.size() * 100;
+                    int cacheSize = datas.size() * 200;
                     view.getViewPager().setOffscreenPageLimit(cacheSize);
                 }
             }).start();
