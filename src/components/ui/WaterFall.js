@@ -46,6 +46,7 @@ export class Column extends React.Component {
             data={this.state.data}
             keyExtractor={this.props.keyExtractor}
             renderItem={this.renderItem.bind( this )}
+            initialNumToRender={6}
           />
         </View>
       )
