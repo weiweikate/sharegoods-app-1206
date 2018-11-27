@@ -20,7 +20,7 @@ import com.meeruu.commonlib.utils.SPCacheUtils;
 import com.meeruu.commonlib.utils.ScreenUtils;
 import com.meeruu.sharegoods.event.HideSplashEvent;
 import com.meeruu.sharegoods.rn.preload.ReactNativePreLoader;
-import com.meeruu.sharegoods.ui.MainRNActivity;
+import com.meeruu.sharegoods.ui.activity.MainRNActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -31,7 +31,7 @@ import java.lang.ref.SoftReference;
  * @author louis
  * @desc 启动页
  * @time created at 17/3/30 下午4:50
- * @company www.smartstudy.com
+ * @company www.sharegoodsmall.com
  */
 public class MainActivity extends BaseActivity {
 

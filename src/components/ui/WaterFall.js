@@ -259,6 +259,7 @@ export default class Masonry extends React.Component {
           onScroll={
             this.props.infinite ? this._onInfinite.bind(this) : null
           }
+          showsVerticalScrollIndicator={false}
           scrollEventThrottle={100}>
           {this.props.renderHeader ? this.props.renderHeader() : null}
           <View style={[{flexDirection: 'row'}, this.props.containerStyle]}>

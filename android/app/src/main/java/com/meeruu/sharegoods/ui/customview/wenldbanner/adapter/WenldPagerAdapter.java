@@ -1,4 +1,4 @@
-package com.meeruu.commonlib.customview.wenldbanner.adapter;
+package com.meeruu.sharegoods.ui.customview.wenldbanner.adapter;
 
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
@@ -7,8 +7,9 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.meeruu.commonlib.customview.wenldbanner.helper.Holder;
-import com.meeruu.commonlib.customview.wenldbanner.helper.ViewHolder;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.OnPageClickListener;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.Holder;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.ViewHolder;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
     ViewPager wenldViewPager;
     private LinkedList<ViewHolder> mViewHolderCache = null;
     private LinkedList<ViewHolder> mViewHolderUsedCache = null;
+    private OnPageClickListener onItemClickListener;
 
     @Override
     public int getCount() {
@@ -129,11 +131,15 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
 
     public void setCanLoop(boolean canLoop) {
         this.canLoop = canLoop;
-        boolean loop = canLoop ? (getRealCount() > 1 ? true : false) : false;
+        boolean loop = canLoop ? (getRealCount() > 0 ? true : false) : false;
         if (realCanLoop ^ loop) {
             realCanLoop = loop;
             mRealCanLoopObservable.notifyChanged();
         }
+    }
+
+    public void setOnItemClickListener(OnPageClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     public void setViewPager(ViewPager viewPager) {
@@ -151,6 +157,10 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
         this.holderCreator = holderCreator;
         this.mDatas = datas;
         setCanLoop(true);
+    }
+
+    public Holder getHolderCreator() {
+        return this.holderCreator;
     }
 
     public void setmDatas(List<T> mDatas) {
@@ -188,6 +198,14 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
             holder = holderCreator.createView(wenldViewPager.getContext(), container, realPosition, viewType);
         }
         mViewHolderUsedCache.add(holder);
+        holder.getConvertView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(realPosition);
+                }
+            }
+        });
 
         if (mDatas != null && !mDatas.isEmpty()) {
             if (myNotify || position != holder.getPosition()) {

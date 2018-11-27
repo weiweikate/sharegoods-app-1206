@@ -18,6 +18,7 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import { homeModule } from '../../home/Modules'
 import res from '../res';
+import JPushUtils from '../../../utils/JPushUtils';
 
 const {
     share: {
@@ -191,6 +192,9 @@ export default class LoginPage extends BasePage {
                 } else {
                     this.$navigateBack();
                 }
+
+                //推送
+                JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
             }).catch((data) => {
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
@@ -231,6 +235,9 @@ export default class LoginPage extends BasePage {
                 } else {
                     this.$navigateBack();
                 }
+
+                //推送
+                JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
             }).catch((data) => {
                 console.log(data);
                 this.$loadingDismiss();

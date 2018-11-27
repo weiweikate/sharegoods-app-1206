@@ -1,4 +1,4 @@
-package com.meeruu.commonlib.customview.wenldbanner;
+package com.meeruu.sharegoods.ui.customview.wenldbanner;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.meeruu.commonlib.customview.wenldbanner.adapter.WenldPagerAdapter;
+import com.meeruu.sharegoods.ui.customview.wenldbanner.adapter.WenldPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public class LoopViewPager extends ViewPager {
         return mAdapter.adapterPostiton2RealDataPosition(super.getCurrentItem());
     }
 
-    int getRealItem(int position) {
+    public int getRealItem(int position) {
         return mAdapter.adapterPostiton2RealDataPosition(position);
     }
 
@@ -212,5 +212,10 @@ public class LoopViewPager extends ViewPager {
     public void setPageTransformer(boolean reverseDrawingOrder, PageTransformer transformer) {
         this.transformer = transformer;
         super.setPageTransformer(reverseDrawingOrder, transformer);
+    }
+
+    public void setOnItemClickListener(OnPageClickListener onItemClickListener) {
+        if (mAdapter != null)
+            mAdapter.setOnItemClickListener(onItemClickListener);
     }
 }

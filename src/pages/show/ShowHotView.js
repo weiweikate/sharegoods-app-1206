@@ -14,7 +14,7 @@ import DesignRule from 'DesignRule';
 
 const { px2dp } = ScreenUtils;
 import ItemView from './ShowHotItem';
-  
+
 const imgWidth = px2dp(168);
 
 @observer
@@ -22,36 +22,36 @@ export default class ShowHotView extends Component {
 
     state = {
         isEnd: false,
-        isFetching: false,
-        
-    }
+        isFetching: false
+
+    };
 
     constructor(props) {
         super(props);
-        this.firstLoad = true
+        this.firstLoad = true;
         this.recommendModules = new ShowRecommendModules();
     }
 
     componentDidMount() {
         if (this.firstLoad === true) {
-            console.log('ShowHotView firstLoad')
-            this.loadData()
+            console.log('ShowHotView firstLoad');
+            this.loadData();
         }
     }
 
     infiniting(done) {
         setTimeout(() => {
-            const {isFetching} = this.state
+            const { isFetching } = this.state;
             if (isFetching) {
-                return
+                return;
             }
-            this.setState({isFetching: true})
+            this.setState({ isFetching: true });
             this.recommendModules.getMoreRecommendList({ generalize: tag.Recommend }).then(data => {
                 if (data && data.length !== 0) {
                     this.waterfall.addItems(data);
-                    this.setState({ isFetching: false})
+                    this.setState({ isFetching: false });
                 } else {
-                    this.setState({ isFetching: false, isEnd: true})
+                    this.setState({ isFetching: false, isEnd: true });
                 }
             });
             done();
@@ -59,28 +59,28 @@ export default class ShowHotView extends Component {
     }
 
     refresh() {
-        console.log('ShowHotView refresh ')
+        console.log('ShowHotView refresh ');
         if (this.firstLoad === true) {
-            return
+            return;
         }
-        this.loadData()
+        this.loadData();
     }
 
     loadData() {
-        this.setState({isEnd: false, isFetching: true})
-        this.waterfall.scrollToTop()
-        this.waterfall.index = 1
-        this.waterfall && this.waterfall.clear()
+        this.setState({ isEnd: false, isFetching: true });
+        this.waterfall.scrollToTop();
+        this.waterfall.index = 1;
+        this.waterfall && this.waterfall.clear();
         this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
-            this.firstLoad = false
-            this.setState({isFetching: false})
+            this.firstLoad = false;
+            this.setState({ isFetching: false });
             this.waterfall && this.waterfall.addItems(data || []);
-        })
+        });
     }
 
     refreshing(done) {
         setTimeout(() => {
-            this.waterfall && this.waterfall.clear()
+            this.waterfall && this.waterfall.clear();
             this.recommendModules.loadRecommendList({ generalize: tag.Recommend }).then(data => {
                 this.waterfall.addItems(data || []);
             });
@@ -89,15 +89,15 @@ export default class ShowHotView extends Component {
     }
 
     _gotoDetail(data) {
-        showSelectedDetail.selectedShowAction(data, this.recommendModules.type)
-        
+        showSelectedDetail.selectedShowAction(data, this.recommendModules.type);
+
         const { navigation } = this.props;
         navigation.navigate('show/ShowDetailPage', { id: data.id });
     }
 
     renderItem = (data) => {
-        let imgWide = 1
-        let imgHigh = 1
+        let imgWide = 1;
+        let imgHigh = 1;
         if (data.coverImg) {
             imgWide = data.coverImgWide ? data.coverImgWide : 1;
             imgHigh = data.coverImgHigh ? data.coverImgHigh : 1;
@@ -112,11 +112,11 @@ export default class ShowHotView extends Component {
             press={() => {
                 this._gotoDetail(data);
             }}
-            imageUrl={ data.coverImg }
-            />;
+            imageUrl={data.coverImg}
+        />;
     };
     renderHeader = () => {
-        return <View><ShowBannerView navigation={this.props.navigation}/>
+        return <View><ShowBannerView navigation={this.props.navigation} pageFocused={this.props.pageFocus}/>
             <ShowChoiceView navigation={this.props.navigation}/>
             {/* <ShowHotScrollView navigation={this.props.navigation}/> */}
             <View style={styles.titleView}>
@@ -125,10 +125,12 @@ export default class ShowHotView extends Component {
         </View>;
     };
     _keyExtractor = (data) => data.id + '';
+
     _renderInfinite() {
-        return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
-            {this.state.isEnd ? <Text style={styles.text}>我也是有底线的</Text> : this.state.isFetching ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
-        </View>
+        return <View style={{ justifyContent: 'center', alignItems: 'center', height: 50 }}>
+            {this.state.isEnd ? <Text style={styles.text}>我也是有底线的</Text> : this.state.isFetching ?
+                <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
+        </View>;
     }
 
     render() {
@@ -150,7 +152,7 @@ export default class ShowHotView extends Component {
                     infiniting={(done) => this.infiniting(done)}
                     showsVerticalScrollIndicator={false}
                     refreshing={(done) => this.refreshing(done)}
-                    renderInfinite={()=>this._renderInfinite()}
+                    renderInfinite={() => this._renderInfinite()}
                 />
             </View>
         );

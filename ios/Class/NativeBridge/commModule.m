@@ -10,6 +10,7 @@
 #import <Photos/PHAssetChangeRequest.h>
 #import "XGImageCompression.h"
 #import "JSPushManager.h"
+#import "RSAManager.h"
 
 #define AppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
 
@@ -298,6 +299,14 @@ RCT_EXPORT_METHOD(updatePushTags:(id)paramTags){
     [aliasSet addObject:paramTagsDic[@"version"]?paramTagsDic[@"version"]:@"1.0.0"];
     [JSPushManager setTags:aliasSet];
   });
+}
+
+RCT_EXPORT_METHOD(signWith:(NSString *)signString callback:(RCTResponseSenderBlock)callBack){
+  NSString * signedString = [[RSAManager sharedInstance] signSHA1String:signString];
+//  NSLog(@"加签后的字符串-----原生---- %@",signedString);
+  if (callBack) {
+    callBack(@[signedString]);
+  }
 }
 
 @end

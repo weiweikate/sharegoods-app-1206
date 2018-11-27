@@ -1,4 +1,4 @@
-package com.meeruu.commonlib.customview.wenldbanner.helper;
+package com.meeruu.sharegoods.ui.customview.wenldbanner.helper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -25,8 +25,8 @@ public class ViewHolder {
     private SparseArray<View> mViews;
     private View mConvertView;
     private Context mContext;
-    private int viewType=0;
-    private int position=-1;
+    private int viewType = 0;
+    private int position = -1;
 
     public ViewHolder(Context context, View itemView) {
         mContext = context;

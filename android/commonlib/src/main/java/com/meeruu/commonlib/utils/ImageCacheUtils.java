@@ -1,10 +1,7 @@
 package com.meeruu.commonlib.utils;
 
 import android.content.Context;
-import android.os.Looper;
 import android.text.TextUtils;
-
-import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -26,47 +23,10 @@ public class ImageCacheUtils {
         return inst;
     }
 
-    /**
-     * 清除图片磁盘缓存
-     */
-    public void clearImageDiskCache(final Context context, final boolean deleteDir) {
-        try {
-            if (Looper.myLooper() == Looper.getMainLooper()) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Glide.get(context).clearDiskCache();
-                        if (deleteDir) {
-                            SDCardUtils.getFileDirPath("MR" + File.separator + "cache");
-                            deleteFolderFile(ImageExternalCatchFile.getAbsolutePath(), false);
-                        }
-                    }
-                }).start();
-            } else {
-                Glide.get(context).clearDiskCache();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void deleteCacheFloder() {
         deleteFolderFile(ImageExternalCatchFile.getAbsolutePath(), true);
     }
 
-    /**
-     * 清除图片内存缓存
-     */
-    public void clearImageMemoryCache(Context context) {
-        try {
-            if (Looper.myLooper() == Looper.getMainLooper()) {
-                //只能在主线程执行
-                Glide.get(context).clearMemory();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * 获取Glide造成的缓存大小
