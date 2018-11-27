@@ -30,7 +30,6 @@ class SbSectiontHeaderView extends Component {
             <View>
                 <Image
                     style={SbSectiontHeaderViewStyles.topImageStyle}
-
                 />
                 {subjectType === 1 ?
                     <SubSwichView/> : null}
@@ -56,6 +55,18 @@ class ActivityOneView extends Component {
         imageUrl: PropTypes.string.isRequired,
         ratio: PropTypes.number
     };
+    constructor(props){
+        super(props)
+        this.state={
+            ratio:1
+        }
+
+        Image.getSize(this.props.imageUrl,(width,heigth)=>{
+            this.setState({
+                ratio:heigth/width
+            })
+        })
+    }
 
     render() {
         const { imageUrl, ratio } = this.props;
@@ -68,12 +79,16 @@ class ActivityOneView extends Component {
                         ActivityOneViewStyles.bgImageStyle,
                         ratio ?
                             {
-                                height: ScreenUtils.width * ratio
+                                height: ScreenUtils.width * this.state.ratio
                             }
                             :
-                            null
+                            {
+                                height: ScreenUtils.width * this.state.ratio
+                            }
 
                     ]}
+
+                    resizeMode={'stretch'}
 
                 />
             </View>
@@ -83,7 +98,7 @@ class ActivityOneView extends Component {
 
 const ActivityOneViewStyles = StyleSheet.create({
     bgImageStyle: {
-        height: ScreenUtils.width * 16 / 75,
+        // height: ScreenUtils.width * 16 / 75,
         width: ScreenUtils.width,
         backgroundColor: 'white'
     }

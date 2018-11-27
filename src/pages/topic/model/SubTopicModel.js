@@ -157,10 +157,9 @@ class TotalTopicresultDataModel {
      */
     @action
     loadTopicData(topicCode) {
-        this.setRefresh(true)
+        this.setRefresh(false)
         TopicAPI.findTopicById({
             code: topicCode
-            // code:'ZT2018000081'
         }).then(result => {
             this.saveResultDataWith(result.data);
             this.setRefresh(false)
