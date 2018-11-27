@@ -36,8 +36,6 @@ export default class WithdrawCashPage extends BasePage {
             passwordDis: false,
             phoneError: false,
             passwordError: false,
-            settlementTotal: 0,
-            serviceCharge: 0.01,
             card_no: '',
             bank_name: '',
             bankId: null,
@@ -85,6 +83,16 @@ export default class WithdrawCashPage extends BasePage {
 
     _getLastBankInfo(){
         MineAPI.getLastBankInfo().then((data)=>{
+
+            if(data && data.data){
+                this.setState({
+                    card_no: data.data.cardNo,
+                    bank_name: data.data.bankName,
+                    bankId: data.data.id,
+                    card_type: data.data.cardType
+                });
+            }
+
             this.getLastBankInfoSuccess= true;
             if(this.getLastBankInfoSuccess && this.getRateSuccess){
                 this.setState({
@@ -92,10 +100,9 @@ export default class WithdrawCashPage extends BasePage {
                 })
             }
         }).catch((error)=>{
-            this.$toastShow(error.msg);
-            this.getLastBankInfoSuccess= false;
+            this.getLastBankInfoSuccess= true;
             this.setState({
-                loadingState: PageLoadingState.fail
+                loadingState: PageLoadingState.success
             })
         })
     }
@@ -208,14 +215,16 @@ export default class WithdrawCashPage extends BasePage {
                     backgroundColor: (StringUtils.isNoEmpty(this.state.card_no) && parseFloat(this.state.money))? DesignRule.mainColor : DesignRule.textColor_placeholder,
                     borderRadius: 25
                 }}
-                // disabled={!(StringUtils.isNoEmpty(this.state.card_no) && parseFloat(this.state.money))}
+                disabled={!(StringUtils.isNoEmpty(this.state.card_no) && parseFloat(this.state.money))}
                 onPress={() => this.commit()}/>
         );
     };
     renderWithdrawMoney = () => {
         let tip = '';
         if(!EmptyUtils.isEmpty(this.state.rate)){
-            tip = tip + `额外扣除￥${this.state.rate*parseFloat(this.state.money)}手续费(费率${this.state.rate}%)`;
+            if(this.state.money && !isNaN(parseFloat(this.state.money))){
+                tip = tip + `额外扣除￥${this.state.rate*parseFloat(this.state.money)/100}手续费(费率${this.state.rate}%)`;
+            }
         }
         if(!EmptyUtils.isEmpty(this.state.whenLessAmount) && !EmptyUtils.isEmpty(this.state.fixedFee)){
             tip = tip + `提现金额低于￥${this.state.whenLessAmount}额外扣除￥${this.state.fixedFee}手续费`

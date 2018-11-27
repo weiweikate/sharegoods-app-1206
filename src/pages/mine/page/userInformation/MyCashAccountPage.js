@@ -1,23 +1,24 @@
-import React from 'react';
+import React from "react";
 import {
     StyleSheet,
     View,
     ImageBackground,
     Text,
     TouchableOpacity,
-} from 'react-native';
-import BasePage from '../../../../BasePage';
-import { RefreshList } from '../../../../components/ui';
-import AccountItem from '../../components/CashAccountItem';
-import StringUtils from '../../../../utils/StringUtils';
-import ScreenUtils from '../../../../utils/ScreenUtils';
-import DataUtils from '../../../../utils/DateUtils';
-import user from '../../../../model/user';
-import MineApi from '../../api/MineApi';
-import Toast from './../../../../utils/bridge';
-import { observer } from 'mobx-react/native';
-import DesignRule from 'DesignRule';
-import res from '../../res';
+    Alert
+} from "react-native";
+import BasePage from "../../../../BasePage";
+import { RefreshList } from "../../../../components/ui";
+import AccountItem from "../../components/CashAccountItem";
+import StringUtils from "../../../../utils/StringUtils";
+import ScreenUtils from "../../../../utils/ScreenUtils";
+import DataUtils from "../../../../utils/DateUtils";
+import user from "../../../../model/user";
+import MineApi from "../../api/MineApi";
+import Toast from "./../../../../utils/bridge";
+import { observer } from "mobx-react/native";
+import DesignRule from "DesignRule";
+import res from "../../res";
 
 const withdrawMoney = res.userInfoImg.xiangjzhanghu_icon03_14;
 const storeShare = res.userInfoImg.xiangjzhanghu_icon03;
@@ -33,8 +34,8 @@ export default class MyCashAccountPage extends BasePage {
         super(props);
         this.state = {
             id: user.id,
-            phone: '',
-            pwd: '',
+            phone: "",
+            pwd: "",
             thirdType: 1,
             passwordDis: false,
             phoneError: false,
@@ -49,7 +50,7 @@ export default class MyCashAccountPage extends BasePage {
     }
 
     $navigationBarOptions = {
-        title: '现金账户',
+        title: "现金账户",
         show: true // false则隐藏导航
     };
 
@@ -65,7 +66,7 @@ export default class MyCashAccountPage extends BasePage {
                     onLoadMore={this.onLoadMore}
                     extraData={this.state}
                     isEmpty={this.state.isEmpty}
-                    emptyTip={'暂无数据'}
+                    emptyTip={"暂无数据"}
                 />
             </View>
         );
@@ -76,18 +77,18 @@ export default class MyCashAccountPage extends BasePage {
             <View style={styles.container}>
                 <ImageBackground style={styles.imageBackgroundStyle}/>
                 <View style={styles.viewStyle}>
-                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 13, color: 'white' }}>账户余额(元)</Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ height: 44, justifyContent: 'space-between', marginTop: 10 }}>
+                    <Text style={{ marginLeft: 15, marginTop: 16, fontSize: 13, color: "white" }}>账户余额(元)</Text>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                        <View style={{ height: 44, justifyContent: "space-between", marginTop: 10 }}>
                             <Text style={{
                                 marginLeft: 25,
                                 fontSize: 24,
-                                color: 'white'
+                                color: "white"
                             }}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
                         </View>
-                        {/*<TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>*/}
-                        {/*<Text style={{ fontSize: 15, color: 'white' }}>提现</Text>*/}
-                        {/*</TouchableOpacity>*/}
+                        <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
+                            <Text style={{ fontSize: 15, color: "white" }}>提现</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -128,39 +129,33 @@ export default class MyCashAccountPage extends BasePage {
     }
 
     jumpToWithdrawCashPage = () => {
-        // if (EmptyUtils.isEmpty(user.realname)) {
-        //     Alert.alert("未实名认证", "你还没有实名认证", [{
-        //         text: "稍后认证", onPress: () => {
-        //         }
-        //     }, {
-        //         text: "马上就去", onPress: () => {
-        //             this.props.navigation.navigate("mine/userInformation/IDVertify2Page");
-        //         }
-        //     }]);
-        //     return;
-        // }
-        //
-        // if (!user.hadSalePassword) {
-        //     Alert.alert("未设置密码", "你还没有设置初始密码", [{
-        //         text: "稍后设置", onPress: () => {
-        //         }
-        //     }, {
-        //         text: "马上就去", onPress: () => {
-        //             this.$navigate("mine/account/JudgePhonePage", { title: "设置交易密码" });
-        //         }
-        //     }]);
-        //     return;
-        // }
-        this.$navigate('mine/userInformation/WithdrawCashPage');
-
+        MineApi.getUserBankInfo().then((data) => {
+            if (data.data && data.data.length > 0) {
+                this.$navigate("mine/userInformation/WithdrawCashPage");
+            } else {
+                Alert.alert("未绑定银行卡", "你还没有绑定银行卡", [{
+                    text: "稍后设置", onPress: () => {
+                    }
+                }, {
+                    text: "马上就去", onPress: () => {
+                        this.$navigate("mine/bankCard/BankCardListPage", {
+                            callBack: (params) => {
+                            }
+                        });
+                    }
+                }]);
+            }
+        }).catch((err) => {
+            this.$toastShow(err.msg);
+        });
     };
     clickItem = (index) => {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '用户收益', '提现支出', '消费支出', '店主分红', '店员分红', '销售提成', '现金红包', '任务奖励'];
-        let use_type_symbol = ['', '+', '-'];
-        let useLeftImg = ['', shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
+        let use_type = ["", "用户收益", "提现支出", "消费支出", "店主分红", "店员分红", "销售提成", "现金红包", "任务奖励"];
+        let use_type_symbol = ["", "+", "-"];
+        let useLeftImg = ["", shouyi, withdrawMoney, xiaofei, storeShare, storeShareBonus, salesCommissions, salesCommissions, renwu];
         Toast.showLoading();
         let arrData = this.currentPage == 1 ? [] : this.state.viewData;
         MineApi.userBalanceQuery({ page: this.currentPage, size: 10, type: 1 }).then((response) => {
@@ -171,12 +166,12 @@ export default class MyCashAccountPage extends BasePage {
                 if (data.data instanceof Array) {
                     data.data.map((item, index) => {
                         arrData.push({
-                            type: item.useType === 3 && item.biType == 1 ? '消费退款' : use_type[item.useType],
+                            type: item.useType === 3 && item.biType == 1 ? "消费退款" : use_type[item.useType],
                             time: DataUtils.getFormatDate(item.createTime / 1000),
-                            serialNumber: '编号：' + item.serialNo,
-                            capital: use_type_symbol[item.biType] + (item.balance?item.balance:0.00),
+                            serialNumber: "编号：" + item.serialNo,
+                            capital: use_type_symbol[item.biType] + (item.balance ? item.balance : 0.00),
                             iconImage: useLeftImg[item.useType],
-                            capitalRed: use_type_symbol[item.biType] === '-'
+                            capitalRed: use_type_symbol[item.biType] === "-"
                         });
                     });
                 }
@@ -203,13 +198,13 @@ export default class MyCashAccountPage extends BasePage {
             user.saveUserInfo(data);
         }).catch(err => {
             if (err.code === 10009) {
-                this.props.navigation.navigate('login/login/LoginPage');
+                this.props.navigation.navigate("login/login/LoginPage");
             }
         });
         this.getDataFromNetwork();
     };
     onLoadMore = () => {
-        if(!this.state.isEmpty){
+        if (!this.state.isEmpty) {
             this.currentPage++;
             this.getDataFromNetwork();
         }
@@ -223,9 +218,9 @@ const styles = StyleSheet.create({
         marginBottom: ScreenUtils.safeBottom
     },
     container: {}, imageBackgroundStyle: {
-        position: 'absolute',
+        position: "absolute",
         height: 95,
-        backgroundColor: '#FF4F6E',
+        backgroundColor: "#FF4F6E",
         width: ScreenUtils.width - 30,
         marginLeft: 15,
         marginRight: 15,
@@ -237,11 +232,11 @@ const styles = StyleSheet.create({
         height: 44,
         borderWidth: 1,
         borderRadius: 5,
-        borderColor: 'white',
+        borderColor: "white",
         marginLeft: 15,
         marginRight: 15,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
         padding: 3
     }, viewStyle: {
         height: 95,

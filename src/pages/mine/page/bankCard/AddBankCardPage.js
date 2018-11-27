@@ -17,7 +17,7 @@ import Toast from "../../../../utils/bridge";
 import user from "../../../../model/user";
 import DesignRule from "DesignRule";
 import { observer } from "mobx-react/native";
-
+var lastcommit = null;
 @observer
 class AddBankCardPage extends BasePage {
     constructor(props) {
@@ -32,34 +32,12 @@ class AddBankCardPage extends BasePage {
             passwordDis: false,
             phoneError: false,
             passwordError: false,
-            area: "330109",
-            city: "330100",
-            province: "330000",
-            cityPicker: "浙江省-杭州市-萧山区",
             refundsDescription: "",
             hasInputNum: 0,
             account: user.realname,
             bankName: null,
             cardNo: "",
             cardType: null,
-            result: {
-                // bankname: "浙江省农村信用社联合社",
-                // banknum: "14293300",
-                // cardprefixnum: "622858",
-                // cardname: "丰收卡(银联卡)",
-                // cardtype: "银联借记卡",
-                // cardprefixlength: 6,
-                // isLuhn: true,
-                // iscreditcard: 1,
-                // cardlength: 19,
-                // province: "浙江",
-                // city: "杭州",
-                // bankurl: null,
-                // enbankname: null,
-                // abbreviation: "ZJNX",
-                // bankimage: "http://auth.apis.la/bank/114_ZJNX.png",
-                // servicephone: null
-            }
         };
     }
 
@@ -214,12 +192,23 @@ class AddBankCardPage extends BasePage {
     }
 
     confirm = () => {
+        let now = new Date().getTime();
+        if(lastcommit != null && now-lastcommit<500){
+            lastcommit = now;
+            return;
+        }
+
         let params = {
             bankName: this.state.bankName,
             cardNo: this.state.cardNo,
             cardType: this.state.cardType,
             phone: this.state.phone
         };
+
+        lastcommit = now;
+
+
+
 
         // if (!StringUtils.checkBankCard(params.account)) {
         //     alert();
@@ -271,7 +260,7 @@ const styles = StyleSheet.create({
     }, accountStyle2: {
         marginLeft: 21, color: DesignRule.textColor_mainTitle, marginRight: 21
     }, inputTextStyle: {
-        marginLeft: 21, height: 40, flex: 1, backgroundColor: "white", fontSize: 14
+        marginLeft: 21, flex: 1, backgroundColor: "white", fontSize: 14
     }, detailAddress: {
         flex: 1,
         marginLeft: 20,
