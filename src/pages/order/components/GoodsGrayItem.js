@@ -46,7 +46,7 @@ export default class GoodsGrayItem extends React.Component {
         let { uri, goodsName, salePrice, category, goodsNum, onPress, gift } = this.props;
         return (
             <TouchableWithoutFeedback onPress={onPress}>
-                <View style={styles.container}>
+                <View style={[styles.container, this.props.style]}>
                     <UIImage source={{ uri: uri }} style={styles.image}/>
                     <View style={{ marginHorizontal: 10, flex: 1, height: 100 }}>
                         <View style={{ flexDirection: 'row', marginTop: 10 }}>

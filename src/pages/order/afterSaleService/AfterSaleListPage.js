@@ -92,6 +92,7 @@ export default class AfterSaleListPage extends BasePage<Props> {
                     salePrice={StringUtils.formatMoneyString(item.price)}
                     category={item.spec}
                     goodsNum={item.num}
+                    style={{backgroundColor: DesignRule.white}}
                     // onPress={() => this.jumpToProductDetailPage()}
                 />
                 <View style={{
