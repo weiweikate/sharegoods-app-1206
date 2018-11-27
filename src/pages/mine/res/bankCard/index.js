@@ -9,5 +9,6 @@ const bankCard = {
     bankGS: require('./bankGS.png'),
     bankJS: require('./bankJS.png'),
     left_arrow_white: require('./left_arrow_white.png'),
+    add_bank_button:require('./add_bank_button.png')
 };
 export default bankCard;
