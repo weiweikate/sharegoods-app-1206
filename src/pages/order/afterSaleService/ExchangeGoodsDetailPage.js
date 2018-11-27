@@ -17,7 +17,7 @@ import UserSingleItem from '../components/UserSingleItem';
 import { UIText, UIImage } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import GoodsItem from '../components/GoodsGrayItem';
-import DateUtils from '../../../utils/DateUtils';
+// import DateUtils from '../../../utils/DateUtils';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import OrderApi from '../api/orderApi';
 import DesignRule from 'DesignRule';
@@ -32,9 +32,6 @@ import {
 import res from '../res';
 
 const {
-    afterSaleService: {
-        exchangeGoodsDetailBg
-    },
     right_arrow,
     addressLine
 } = res;
