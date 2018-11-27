@@ -131,7 +131,7 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
 
     public void setCanLoop(boolean canLoop) {
         this.canLoop = canLoop;
-        boolean loop = canLoop ? (getRealCount() > 1 ? true : false) : false;
+        boolean loop = canLoop ? (getRealCount() > 0 ? true : false) : false;
         if (realCanLoop ^ loop) {
             realCanLoop = loop;
             mRealCanLoopObservable.notifyChanged();
