@@ -46,7 +46,6 @@ export default class ShareTaskListPage extends BasePage<Props> {
         this.seconds = 0;
         this.expansions = {};
         this.state = {id: ''};
-
     }
 
     $navigationBarOptions = {
