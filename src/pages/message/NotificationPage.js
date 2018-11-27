@@ -11,11 +11,12 @@ import DateUtils from '../../utils/DateUtils';
 import StringUtils from '../../utils/StringUtils';
 import RefreshList from '../../components/ui/RefreshList';
 import BasePage from '../../BasePage';
-import arrorw_rightIcon from '../order/res/arrow_right.png';
 import MessageApi from './api/MessageApi';
 import Toast from '../../utils/bridge';
 import DesignRule from 'DesignRule';
-import emptyIcon from './src/message_empty.png'
+import RES from './res';
+const emptyIcon = RES.message_empty;
+const arrorw_rightIcon = RES.button.arrow_right_black;
 
 
 export default class NotificationPage extends BasePage {

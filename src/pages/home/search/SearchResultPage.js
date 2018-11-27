@@ -13,9 +13,6 @@ import ResultSearchNav from './components/ResultSearchNav';
 import ResultSegmentView from './components/ResultSegmentView';
 import ResultHorizontalRow from './components/ResultHorizontalRow';
 import ResultVerticalRow from './components/ResultVerticalRow';
-import toGwc from './res/toGwc.png';
-import kongbaiye_ss_icon from './res/kongbaiye_ss_icon.png';
-import toTop from './res/toTop.png';
 import RouterMap from 'RouterMap';
 import HomeAPI from '../api/HomeAPI';
 import DateUtils from '../../../utils/DateUtils';
@@ -28,6 +25,13 @@ import { observer } from 'mobx-react';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import DesignRule from 'DesignRule';
+import res from '../res';
+
+const {
+    toGwc,
+    kongbaiye_ss_icon,
+    toTop
+} = res.search;
 
 
 @observer
@@ -47,7 +51,7 @@ export default class SearchResultPage extends BasePage {
             loadingMore: false,//是否显示加载更多的菊花
             loadingMoreError: null,//加载更多是否报错
 
-            loadingState: PageLoadingState.empty,
+            loadingState: PageLoadingState.loading,
             netFailedInfo: {},
 
             showTop: false,
@@ -79,7 +83,7 @@ export default class SearchResultPage extends BasePage {
             loadingState: this.state.loadingState,
             netFailedProps: {
                 netFailedInfo: this.state.netFailedInfo,
-                reloadBtnClick: this._productList
+                reloadBtnClick: this._emptyRequest
             },
             emptyProps: {
                 source: kongbaiye_ss_icon,
@@ -118,14 +122,20 @@ export default class SearchResultPage extends BasePage {
         });
     };
 
+    _emptyRequest = ()=>{
+        this.setState({
+            loadingState: PageLoadingState.loading,
+        },()=>{
+            this._productList();
+        })
+    }
+
     //数据
     _productList = () => {
         this.state.page = 1;
         let param = this._getParams();
-        this.$loadingShow();
         HomeAPI.productList(param).then((data) => {
             this.state.page++;
-            this.$loadingDismiss();
             data = data.data || {};
             let dataArr = data.data || [];
             this.setState({
@@ -136,7 +146,6 @@ export default class SearchResultPage extends BasePage {
                 productList: dataArr
             });
         }).catch((error) => {
-            this.$loadingDismiss();
             this.setState({
                 refreshing: false,
 
@@ -204,7 +213,7 @@ export default class SearchResultPage extends BasePage {
             this.state.sortModel = 2;
         }
         this.state.sortType = index + 1;
-        this._productList();
+        this._emptyRequest();
     };
 
     _onPressAtIndex = (productId) => {
@@ -244,8 +253,9 @@ export default class SearchResultPage extends BasePage {
 
     //跳转
     _clickItemAction = (text) => {
-        if (StringUtils.isEmpty(text)){
-            this.$toastShow('搜索内容不能为空')
+        text = text.replace(/(\s*$)/g, "")//去尾空格
+        if (StringUtils.isEmpty(text)) {
+            this.$toastShow('搜索内容不能为空');
             return;
         }
         this.params.categoryId = undefined;
@@ -391,7 +401,7 @@ export default class SearchResultPage extends BasePage {
                             <Text style={{
                                 color: 'white',
                                 fontSize: 10
-                            }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
+                            }}>{ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber}</Text>
                         </View>}
                     </TouchableOpacity>
                     {this.state.showTop ? <TouchableOpacity onPress={this._onPressToTop}>

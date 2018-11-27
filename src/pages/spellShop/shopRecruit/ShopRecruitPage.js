@@ -7,8 +7,7 @@ import {
     ScrollView,
     TouchableOpacity,
     Image,
-    RefreshControl,
-    TouchableWithoutFeedback
+    RefreshControl
 } from 'react-native';
 
 
@@ -28,6 +27,7 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import { PageLoadingState } from '../../../components/pageDecorator/PageState';
 import DesignRule from 'DesignRule';
 import res from '../res';
+
 const NavLeft = res.shopRecruit.NavLeft;
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const icons9_shop = res.shopRecruit.icons9_shop;
@@ -37,17 +37,16 @@ export default class ShopRecruitPage extends BasePage {
     $navigationBarOptions = {
         show: false
     };
-    //        leftNavItemHidden: this.props.leftNavItemHidden
 
     _NavBarRenderRightItem = () => {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableWithoutFeedback onPress={() => {
+                        <TouchableOpacity style={{ width: 44 }} onPress={() => {
                             this.$navigateBack();
                         }}>
                             <Image source={NavLeft}/>
-                        </TouchableWithoutFeedback> : null}
+                        </TouchableOpacity> : null}
                 </View>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ fontSize: 17, color: '#ffffff' }}>店铺招募中</Text>
@@ -74,7 +73,7 @@ export default class ShopRecruitPage extends BasePage {
             netFailedInfo: {},
             refreshing: false,
 
-            storeId: this.params.storeId || this.props.storeId,
+            storeId: this.props.storeId,
             storeData: {},
             canOpen: false
         };
@@ -85,9 +84,7 @@ export default class ShopRecruitPage extends BasePage {
             loadingState: this.state.loadingState,
             netFailedProps: {
                 netFailedInfo: this.state.netFailedInfo,
-                reloadBtnClick: () => {
-                    this._loadPageData();
-                }
+                reloadBtnClick: this._refreshing
             }
         };
     };
@@ -98,7 +95,7 @@ export default class ShopRecruitPage extends BasePage {
             payload => {
                 const { state } = payload;
                 console.log('willFocus', state);
-                if (state && state.routeName === 'SpellShopPage') {
+                if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候
                     this._loadPageData();
                 }
             }
@@ -118,6 +115,7 @@ export default class ShopRecruitPage extends BasePage {
             refreshing: true
         }, () => {
             this._loadPageData();
+            spellStatusModel.getUser(0);
         });
     };
 
@@ -176,14 +174,14 @@ export default class ShopRecruitPage extends BasePage {
             }
         });
     };
+
+    //关闭店铺
     _closeStore = () => {
         this.$loadingShow();
         SpellShopApi.closeStore({ status: 0 }).then((data) => {
-            //不是首页回退
             if (!this.props.leftNavItemHidden) {
                 this.$navigateBack();
             }
-            //刷新首页
             spellStatusModel.getUser(2);
             this.$loadingDismiss();
         }).catch((error) => {
@@ -195,13 +193,9 @@ export default class ShopRecruitPage extends BasePage {
     //开启店铺
     _openStore = () => {
         SpellShopApi.startStore({ status: 1 }).then((data) => {
-            //首页开店 直接刷新
-            if (this.props.propReload) {
+            if (!this.props.leftNavItemHidden) {
                 this.props.propReload();
-            } else {
-                this.$navigateBack();
             }
-            //刷新首页
             spellStatusModel.getUser(2);
         }).catch((error) => {
             this.$toastShow(error.msg);
@@ -215,11 +209,9 @@ export default class ShopRecruitPage extends BasePage {
             confirmCallBack: () => {
                 this.$loadingShow();
                 SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
-                    if (!this.props.propReload) {
-                        //不是首页刷新当前页面
+                    if (!this.props.leftNavItemHidden) {
                         this._loadPageData();
                     }
-                    //刷新首页
                     spellStatusModel.getUser(2);
                     this.$loadingDismiss();
                 }).catch((error) => {
@@ -235,11 +227,9 @@ export default class ShopRecruitPage extends BasePage {
     _quitStore = () => {
         this.$loadingShow();
         SpellShopApi.quitStore({ storeId: this.state.storeId }).then((data) => {
-            if (!this.props.propReload) {
-                //不是首页刷新当前页面
+            if (!this.props.leftNavItemHidden) {
                 this._loadPageData();
             }
-            //刷新首页
             spellStatusModel.getUser(2);
             this.$loadingDismiss();
         }).catch((error) => {

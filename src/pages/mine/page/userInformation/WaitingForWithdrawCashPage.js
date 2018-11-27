@@ -5,31 +5,32 @@ import {
     Image,
     Text,
     TouchableOpacity,
-    ImageBackground
+    ImageBackground,
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList, UIImage, UIText } from '../../../../components/ui';
-// import AccountItem from '../../components/AccountItem';
-import StringUtils from '../../../../utils/StringUtils';
+// import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-// import withdrawMoney from '../../res/userInfoImg/withdrawMoney.png';
-import withdrawMoney from '../../res/userInfoImg/xiangjzhanghu_icon03_14.png';
-import storeShare from '../../res/userInfoImg/xiangjzhanghu_icon03.png';
-import storeShareBonus from '../../res/userInfoImg/xiangjzhanghu_icon03_06.png';
-import shouyi from '../../res/userInfoImg/xiangjzhanghu_icon03_10.png';
-import xiaofei from '../../res/userInfoImg/xiangjzhanghu_icon03_12.png';
-import salesCommissions from '../../res/userInfoImg/xiangjzhanghu_icon03_08.png';
-import renwu from '../../res/userInfoImg/xiangjzhanghu_icon03_16.png';
-import questionImage_white from '../../res/userInfoImg/questionImage_white.png';
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge';
-import topicShow from '../../../topic/res/topicShow.png';
-import topicShowClose from '../../../topic/res/topicShowClose.png';
 import CommModal from 'CommModal';
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+
+const withdrawMoney = res.userInfoImg.xiangjzhanghu_icon03_14;
+const storeShare = res.userInfoImg.xiangjzhanghu_icon03;
+const storeShareBonus = res.userInfoImg.xiangjzhanghu_icon03_06;
+const shouyi = res.userInfoImg.xiangjzhanghu_icon03_10;
+const xiaofei = res.userInfoImg.xiangjzhanghu_icon03_12;
+const salesCommissions = res.userInfoImg.xiangjzhanghu_icon03_08;
+const renwu = res.userInfoImg.xiangjzhanghu_icon03_16;
+const questionImage_white = res.userInfoImg.questionImage_white;
+/** 先放在，不改*/
+import topicShow from '../../../topic/res/topicShow.png';
+import topicShowClose from '../../../topic/res/topicShowClose.png';
 
 @observer
 export default class WaitingForWithdrawCashPage extends BasePage {
@@ -87,7 +88,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 marginLeft: 25,
                                 fontSize: 25,
                                 color: 'white'
-                            }}>{StringUtils.formatMoneyString(user.blockedBalance?user.blockedBalance:0, false)}</Text>
+                            }}>{user.blockedBalance ? user.blockedBalance : `0.00`}</Text>
                         </View>
                         <View style={{ marginRight: 20 }}>
                             <TouchableOpacity
@@ -106,6 +107,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         );
     };
     show = () => {
+        this.modal && this.modal.open();
         this.setState({
             modalVisible: true
         });
@@ -125,13 +127,17 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         return (
             <CommModal onRequestClose={this.close}
                        visible={this.state.modalVisible}
-                       transparent={true}>
+                       transparent={true}
+                       ref={(ref)=>{
+                           this.modal = ref;
+                       }}
+            >
                 <View style={{
-                    backgroundColor: 'rgba(0,0,0,0.5)', top: 0,
-                    left: 0,
-                    bottom: 0,
-                    right: 0,
-                    position: 'absolute'
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flex: 1,
+                    width:ScreenUtils.width,
+                    marginTop:60
                 }}>
                     <View style={{
                         backgroundColor: 'white',
@@ -139,17 +145,20 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                         width: ScreenUtils.px2dp(290),
                         height: ScreenUtils.px2dp(360),
                         alignSelf: 'center',
-                        position: 'absolute'
+                        position: 'absolute',
+                        borderRadius: 5
                     }}>
                         <ImageBackground source={topicShow} style={{
                             width: ScreenUtils.px2dp(290),
                             height: ScreenUtils.px2dp(71),
                             alignItems: 'center',
-                            justifyContent: 'center'
+                            justifyContent: 'center',
+                            borderRadius: 5
+
                         }}>
                             <Text style={{ color: 'white', fontSize: ScreenUtils.px2dp(18) }}>待提现账户说明</Text>
                         </ImageBackground>
-                        <View style={{ marginLeft: ScreenUtils.px2dp(22) }}>
+                        <View style={{ marginLeft: ScreenUtils.px2dp(22), marginRight: ScreenUtils.px2dp(22) }}>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
                                 color: DesignRule.textColor_mainTitle,
@@ -161,7 +170,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 fontSize: ScreenUtils.px2dp(13)
                             }}>{`待提现账户为用户收益明细账户，可通过待提现账户查看收益情况`}</Text>
                         </View>
-                        <View style={{ marginLeft: ScreenUtils.px2dp(22) }}>
+                        <View style={{ marginLeft: ScreenUtils.px2dp(22), marginRight: ScreenUtils.px2dp(22) }}>
                             <Text style={{
                                 marginTop: ScreenUtils.px2dp(25),
                                 color: DesignRule.textColor_mainTitle,
@@ -171,16 +180,17 @@ export default class WaitingForWithdrawCashPage extends BasePage {
                                 marginTop: ScreenUtils.px2dp(10),
                                 color: DesignRule.textColor_secondTitle,
                                 fontSize: ScreenUtils.px2dp(13)
-                            }}>{`因为您下级或下下级的交易并未完全完成，所以账户中的余额暂时不可马上提现，当交易完成之后，系统回自动提现到您的余额账户`}</Text>
+                            }}>{`你的推广成功后会获得平台的预计收益，而预计收益会因最终推广结果调整，最终推广成功后，待提现账户会自动提现至您的余额账户。`}</Text>
                         </View>
-                        <TouchableOpacity style={{
-                            top: 0,
-                            right: 0,
-                            position: 'absolute'
-                        }} onPress={this._onPress}>
-                            <Image source={topicShowClose}/>
-                        </TouchableOpacity>
+
                     </View>
+                    <TouchableOpacity style={{
+                        top: 65,
+                        right: 30,
+                        position: 'absolute'
+                    }} onPress={this._onPress}>
+                        <Image style={{width:20,height:20}} source={topicShowClose}/>
+                    </TouchableOpacity>
                 </View>
 
             </CommModal>
@@ -189,33 +199,41 @@ export default class WaitingForWithdrawCashPage extends BasePage {
 
     renderItem = ({ item, index }) => {
         return (
-            <View style={styles.Itemcontainer}>
-                <View style={{ height: 90, justifyContent: 'center' }}>
-                    <UIImage source={item.iconImage} style={{ height: 50, width: 50, marginLeft: 16 }}/>
+            <View>
+                <View style={styles.Itemcontainer}>
+                    <View style={{ height: 90, justifyContent: 'center' }}>
+                        <UIImage source={item.iconImage}
+                                 style={{ height: 50, width: 50, marginLeft: 16 }}/>
+                    </View>
+                    <View style={{ marginLeft: 10 }}>
+                        <UIText value={item.type}/>
+                        <UIText value={item.time} style={{ color: DesignRule.textColor_instruction, fontSize: 13 }}/>
+                        <UIText value={item.realBalance === null ? '待入账：?' : `已入账：` + item.realBalance}
+                                style={{ color: DesignRule.textColor_secondTitle, fontSize: 12 }}/>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'flex-end', flexDirection: 'row' }}>
+                        <View
+                            style={{ marginRight: 15, height: 60, justifyContent: 'space-between' }}>
+                            <UIText value={item.capital}
+                                    style={{
+                                        color: !item.capitalRed ? DesignRule.mainColor : DesignRule.textColor_mainTitle,
+                                        fontSize: 16
+                                    }}/>
+                            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                <View style={{ height: 10, width: 7 }}/>
+                            </View>
+                            <UIText value={''}/>
+                        </View>
+                    </View>
                 </View>
-                <View style={{ flex: 1, marginLeft: 16, marginRight: 16 }}>
-                    <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
-                        <UIText value={item.type} style={{ fontSize: 15 }}/>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 12, color: DesignRule.textColor_secondTitle }}>预计收入</Text>
-                            <Text style={{ fontSize: 16, color: DesignRule.mainColor }}>{item.capital}</Text>
-                        </View>
-                    </View>
-                    <View style={{
-                        justifyContent: 'space-between',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        marginTop: 5
-                    }}>
-                        <UIText value={item.time} style={{ fontSize: 15, color: DesignRule.textColor_instruction }}/>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 12, color: DesignRule.textColor_secondTitle }}>已入账:</Text>
-                            <Text style={{
-                                fontSize: 12,
-                                color: DesignRule.textColor_secondTitle
-                            }}>{item.realBalance === null ? '?' : item.realBalance}</Text>
-                        </View>
-                    </View>
+                <View style={{ flex: 1, height: 1, backgroundColor: 'white' }}>
+                    <View
+                        style={{
+                            flex: 1,
+                            height: 1,
+                            backgroundColor: DesignRule.lineColor_inColorBg,
+                            marginLeft: 15
+                        }}/>
                 </View>
             </View>
 
@@ -234,7 +252,7 @@ export default class WaitingForWithdrawCashPage extends BasePage {
 
     //**********************************BusinessPart******************************************
     componentDidMount() {
-       this.onRefresh();
+        this.onRefresh();
     }
 
     jumpToWithdrawCashPage = () => {
@@ -293,9 +311,11 @@ export default class WaitingForWithdrawCashPage extends BasePage {
         });
         this.getDataFromNetwork();
     };
-    onLoadMore = (page) => {
-        this.currentPage++;
-        this.getDataFromNetwork();
+    onLoadMore = () => {
+        if(!this.state.isEmpty){
+            this.currentPage++;
+            this.getDataFromNetwork();
+        }
     };
 }
 

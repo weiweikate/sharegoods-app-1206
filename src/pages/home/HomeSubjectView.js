@@ -16,6 +16,7 @@ import ImageLoad from '@mr/react-native-image-placeholder'
 const GoodItems = ({img, title, money, press}) => <TouchableOpacity style={styles.goodsView} onPress={()=>{press && press()}}>
     <ImageLoad cacheable={true} style={styles.goodImg} source={{uri:img ? encodeURI(img) : ''}}/>
     <Text style={styles.goodsTitle} numberOfLines={2}>{title}</Text>
+    <View style={{flex: 1}}/>
     <Text style={styles.money}>{money} 起</Text>
 </TouchableOpacity>
 
@@ -166,7 +167,7 @@ let styles = StyleSheet.create({
     money: {
         color: DesignRule.mainColor,
         fontSize: px2dp(14),
-        marginTop: px2dp(8)
+        marginBottom: px2dp(10)
     },
     moreView: {
         width: px2dp(100),

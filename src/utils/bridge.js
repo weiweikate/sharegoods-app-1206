@@ -111,6 +111,17 @@ export default {
     }) {
         NativeModules.LoginAndShareModule.creatQRCodeImage(QRCodeStr, onSuccess, onError);
     },
+    saveInviteFriendsImage(QRString, onSuccess, onError = (errorStr) => {
+    }){
+        NativeModules.LoginAndShareModule.saveInviteFriendsImage(QRString,onSuccess, onError);
+    },
+
+    //{headerImg,shopName,shopId,shopPerson,codeString,wxTip}
+    saveShopInviteFriendsImage(jsonParam, onSuccess, onError = (errorStr) => {
+    }){
+        NativeModules.LoginAndShareModule.saveShopInviteFriendsImage(jsonParam,onSuccess, onError);
+    },
+
     /**
      * 保存当前页面到相册
      * {

@@ -4,7 +4,6 @@ import {
     StyleSheet,
     FlatList,
     Text,
-    RefreshControl,
     ImageBackground,
     TouchableWithoutFeedback,
     Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager
@@ -12,9 +11,9 @@ import {
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
-import { homeModule } from './Modules'
-import { homeType } from './HomeTypes'
-import { bannerModule } from './HomeBannerModel'
+import { homeModule } from './Modules';
+import { homeType } from './HomeTypes';
+import { bannerModule } from './HomeBannerModel';
 import HomeSearchView from './HomeSearchView';
 import HomeClassifyView from './HomeClassifyView';
 import HomeStarShopView from './HomeStarShopView';
@@ -31,17 +30,18 @@ import Modal from 'CommModal';
 import XQSwiper from '../../components/ui/XGSwiper';
 import MessageApi from '../message/api/MessageApi';
 import EmptyUtils from '../../utils/EmptyUtils';
-import messageModalBg from './res/messageModalBg.png';
-import messageSelected from './res/messageSelected.png';
-import messageUnselected from './res/messageUnselected.png';
-import MineApi from '../mine/api/MineApi';
 import VersionUpdateModal from './VersionUpdateModal';
-import DeviceInfo from 'react-native-device-info';
 import StringUtils from '../../utils/StringUtils';
 import DesignRule from 'DesignRule';
-import res from '../../comm/res';
-import TimerMixin from 'react-timer-mixin'
+import TimerMixin from 'react-timer-mixin';
+import res from './res';
+import homeModalManager from './model/HomeModalManager';
+import { withNavigationFocus } from 'react-navigation';
+import user from '../../model/user';
+
 const closeImg = res.button.cancel_white_circle;
+const messageUnselected = res.messageUnselected;
+const home_notice_bg = res.home_notice_bg;
 /**
  * @author zhangjian
  * @date on 2018/9/7
@@ -54,7 +54,7 @@ const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
 
 @observer
-export default class HomePage extends PureComponent {
+class HomePage extends PureComponent {
 
     st = 0;
     shadowOpacity = 0.4;
@@ -70,7 +70,8 @@ export default class HomePage extends PureComponent {
         forceUpdate: false,
         apkExist: false,
         shadowOpacity: this.shadowOpacity,
-        whiteIcon: true
+        whiteIcon: true,
+        hasMessage: false
     };
 
     constructor(props) {
@@ -79,54 +80,23 @@ export default class HomePage extends PureComponent {
     }
 
 
-    getVersion = async () => {
-        let upVersion = '';
-        try {
-            upVersion = await AsyncStorage.getItem('isToUpdate');
-        } catch (error) {
-        }
-
-        MineApi.getVersion({ version: DeviceInfo.getVersion() }).then((resp) => {
-            if (resp.data.upgrade === 1) {
-                if (StringUtils.isEmpty(upVersion) && upVersion !== resp.data.version) {
-                    if (Platform.OS !== 'ios') {
-                        NativeModules.commModule.apkExist(resp.data.version, (exist) => {
-                            this.setState({
-                                updateData: resp.data,
-                                showUpdate: true,
-                                apkExist: exist
-                            });
-                            this.updateModal && this.updateModal.open();
-                        });
-                    } else {
-                        this.setState({
-                            updateData: resp.data,
-                            showUpdate: true
-                        });
-                        this.updateModal && this.updateModal.open();
-                    }
-                }
-                if (resp.data.forceUpdate === 1) {
-                    // 强制更新
-                    this.setState({
-                        forceUpdate: true
-                    });
-                }
-            }
-        });
-    };
-
     componentWillMount() {
         this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
                 const { state } = payload;
+                if (user.token) {
+                    this.loadMessageCount();
+                } else {
+                    this.setState({
+                        hasMessage: false
+                    });
+                }
                 console.log('willFocusSubscription', state);
                 if (state && state.routeName === 'HomePage') {
                     this.shareTaskIcon.queryTask();
                     this.setState({ isShow: true });
                 }
-
             }
         );
 
@@ -139,26 +109,137 @@ export default class HomePage extends PureComponent {
                 }
             }
         );
+
+        this.didFocusSubscription = this.props.navigation.addListener(
+            'didFocus',
+            payload => {
+                this.showModal();
+            }
+        );
     }
 
     componentWillUnmount() {
         this.didBlurSubscription && this.didBlurSubscription.remove();
         this.willFocusSubscription && this.willFocusSubscription.remove();
+        this.didFocusSubscription && this.didFocusSubscription.remove();
     }
 
     componentDidMount() {
         this.listener = DeviceEventEmitter.addListener('homePage_message', this.getMessageData);
+        this.listenerMessage = DeviceEventEmitter.addListener('contentViewed', this.loadMessageCount);
+        this.listenerLogout = DeviceEventEmitter.addListener('login_out', this.loadMessageCount);
+        this.loadMessageCount();
         InteractionManager.runAfterInteractions(() => {
             TimerMixin.setTimeout(() => {
                 // 检测版本更新
-                this.getVersion();
-                this.getMessageData();
+                // this.getVersion();
+                homeModalManager.getVersion().then((data) => {
+                    homeModalManager.getMessage().then(data => {
+                        if (!this.props.isFocused) {
+                            return;
+                        }
+                        this.showModal();
+                    });
+                });
             }, 2500);
         });
     }
 
     componentWillUnmount() {
         this.listener && this.listener.remove();
+        this.listenerMessage && this.listenerMessage.remove();
+        this.listenerLogout && this.listenerLogout.remove();
+
+    }
+
+    loadMessageCount = () => {
+        MessageApi.getNewNoticeMessageCount().then(result => {
+            if (!EmptyUtils.isEmpty(result.data)) {
+                this.setState({
+                    hasMessage: result.data.shopMessageCount || result.data.noticeCount || result.data.messageCount
+                });
+            }
+        }).catch((error) => {
+            this.setState({
+                hasMessage: false
+            });
+        });
+    };
+
+    showModal = () => {
+        if (EmptyUtils.isEmpty(homeModalManager.version)) {
+            this.showMessageModal();
+        } else {
+            this.showUpdateModal();
+        }
+    };
+
+    showUpdateModal = async () => {
+        if (!EmptyUtils.isEmpty(homeModalManager.version)) {
+            let upVersion = '';
+            try {
+                upVersion = await AsyncStorage.getItem('isToUpdate');
+            } catch (error) {
+
+            }
+
+            let resp = homeModalManager.version;
+            if (resp.data.upgrade === 1) {
+                if (resp.data.forceUpdate === 1) {
+                    // 强制更新
+                    this.setState({
+                        forceUpdate: true
+                    });
+                } else {
+                    if (StringUtils.isEmpty(upVersion) && upVersion !== resp.data.version) {
+                        if (Platform.OS !== 'ios') {
+                            NativeModules.commModule.apkExist(resp.data.version, (exist) => {
+                                this.setState({
+                                    updateData: resp.data,
+                                    showUpdate: true,
+                                    apkExist: exist
+                                });
+                                this.updateModal && this.updateModal.open();
+                                homeModalManager.setVersion(null);
+                            });
+                        } else {
+                            this.setState({
+                                updateData: resp.data,
+                                showUpdate: true
+                            });
+                            this.updateModal && this.updateModal.open();
+                            homeModalManager.setVersion(null);
+                        }
+                    } else {
+                        this.showMessageModal();
+                    }
+                }
+            } else {
+                this.showMessageModal();
+
+            }
+        }
+    };
+
+
+    showMessageModal() {
+        if (!EmptyUtils.isEmpty(homeModalManager.homeMessage)) {
+            let resp = homeModalManager.homeMessage;
+            let currStr = new Date().getTime() + '';
+            AsyncStorage.getItem('lastMessageTime').then((value) => {
+                if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
+                    if (!EmptyUtils.isEmptyArr(resp.data.data)) {
+                        this.messageModal && this.messageModal.open();
+                        this.setState({
+                            showMessage: true,
+                            messageData: resp.data.data
+                        });
+                        homeModalManager.setHomeMessage(null);
+                    }
+                }
+            });
+            AsyncStorage.setItem('lastMessageTime', currStr);
+        }
     }
 
     // 滑动头部透明度渐变
@@ -241,24 +322,18 @@ export default class HomePage extends PureComponent {
 
     _onRefresh() {
         homeModule.loadHomeList(true);
+        this.loadMessageCount();
     }
 
     getMessageData = () => {
-        var currStr = new Date().getTime() + '';
-        AsyncStorage.getItem('lastMessageTime').then((value) => {
-            if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
-                MessageApi.queryNotice({ page: this.currentPage, pageSize: 10, type: 100 }).then(resp => {
-                    if (!EmptyUtils.isEmptyArr(resp.data.data)) {
-                        this.messageModal && this.messageModal.open();
-                        this.setState({
-                            showMessage: true,
-                            messageData: resp.data.data
-                        });
-                    }
-                });
+
+        MessageApi.queryNotice({ page: 1, pageSize: 10, type: 100 }).then(resp => {
+            if (!EmptyUtils.isEmptyArr(resp.data.data)) {
+                homeModalManager.setHomeMessage(resp);
+                this.showModal();
             }
         });
-        AsyncStorage.setItem('lastMessageTime', currStr);
+
 
     };
 
@@ -276,9 +351,14 @@ export default class HomePage extends PureComponent {
                         <Image source={closeImg} style={styles.messageCloseStyle}/>
                     </TouchableWithoutFeedback>
 
-                    <ImageBackground source={messageModalBg} style={styles.messageBgStyle}>
+                    <ImageBackground source={home_notice_bg} style={styles.messageBgStyle}>
                         <XQSwiper
-                            style={{ alignSelf: 'center', marginTop: 71, width: px2dp(230), height: px2dp(211) }}
+                            style={{
+                                alignSelf: 'center',
+                                marginTop: px2dp(145),
+                                width: px2dp(230),
+                                height: px2dp(211)
+                            }}
                             height={px2dp(230)} width={px2dp(230)} renderRow={this.messageRender}
                             dataSource={EmptyUtils.isEmptyArr(this.state.messageData) ? [] : this.state.messageData}
                             loop={false}
@@ -303,8 +383,8 @@ export default class HomePage extends PureComponent {
         let indexs = [];
         for (let i = 0; i < this.state.messageData.length; i++) {
             let view = i === this.state.messageIndex ?
-                <Image source={messageSelected} style={styles.messageIndexStyle}/> :
-                <Image source={messageUnselected} style={styles.messageIndexStyle}/>;
+                <View style={[styles.messageIndexStyle, { backgroundColor: '#FF427D' }]}/> :
+                <View source={messageUnselected} style={[styles.messageIndexStyle, { backgroundColor: '#f4d7e4' }]}/>;
             indexs.push(view);
         }
         return (
@@ -347,30 +427,28 @@ export default class HomePage extends PureComponent {
         );
     }
 
+    _renderTableHeader() {
+        return !bannerModule.isShowHeader ? null : <View style={{ height: statusBarHeight + 44 }}/>;
+    }
+
     render() {
         const { homeList } = homeModule;
+
         return (
             <View style={styles.container}>
+                {this._renderTableHeader()}
                 <FlatList
                     data={homeList}
                     renderItem={this._renderItem.bind(this)}
                     keyExtractor={this._keyExtractor.bind(this)}
                     onScroll={this._onScroll.bind(this)}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={homeModule.isRefreshing}
-                            onRefresh={this._onRefresh.bind(this)}
-                            progressViewOffset={statusBarHeight + 44}
-                            title="下拉刷新"
-                            tintColor={DesignRule.textColor_instruction}
-                            titleColor={DesignRule.textColor_instruction}
-                        />
-                    }
+                    refreshing={homeModule.isRefreshing}
+                    onRefresh={this._onRefresh.bind(this)}
                     onEndReached={this._onEndReached.bind(this)}
                     onEndReachedThreshold={0.2}
                     showsVerticalScrollIndicator={false}
-                    style={{ marginTop: bannerModule.bannerList.length > 0 ? 0 : statusBarHeight + 44 }}
                     onScrollBeginDrag={this._onScrollBeginDrag.bind(this)}
+                    progressViewOffset={ScreenUtils.headerHeight}
                 />
                 <View style={[styles.navBarBg, { opacity: bannerModule.opacity }]}
                       ref={e => this._refHeader = e}/>
@@ -382,7 +460,9 @@ export default class HomePage extends PureComponent {
                                 }]}/>
 
                 <HomeSearchView navigation={this.props.navigation}
-                                whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}/>
+                                whiteIcon={bannerModule.opacity === 1 ? false : this.state.whiteIcon}
+                                hasMessage={this.state.hasMessage}
+                />
                 <ShareTaskIcon style={{ position: 'absolute', right: 0, top: px2dp(220) - 40 }}
                                ref={(ref) => {
                                    this.shareTaskIcon = ref;
@@ -401,6 +481,7 @@ export default class HomePage extends PureComponent {
         );
     }
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -451,8 +532,8 @@ const styles = StyleSheet.create({
         fontWeight: '600'
     },
     messageBgStyle: {
-        width: px2dp(300),
-        height: px2dp(405),
+        width: px2dp(295),
+        height: px2dp(390),
         marginTop: px2dp(20)
     },
     messageCloseStyle: {
@@ -463,7 +544,10 @@ const styles = StyleSheet.create({
         marginRight: ((ScreenUtils.width) - px2dp(300)) / 2
     },
     messageIndexStyle: {
-        width: px2dp(12),
-        height: px2dp(12)
+        width: px2dp(10),
+        height: px2dp(10),
+        borderRadius: px2dp(5)
     }
 });
+
+export default withNavigationFocus(HomePage);

@@ -10,8 +10,9 @@ import {
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import arrow_right from '../../res/homeBaseImg/icon3_07.png';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+const arrow_right =  res.homeBaseImg.arrowRight;
 
 /**
  * @author chenxiang
@@ -69,7 +70,7 @@ export default class HelperQuestionListPage extends BasePage {
                 alignItems: 'center', justifyContent: 'center'
             }}>
                 <Text style={{ fontSize: 13, color: '#999999' }}>联系客服 400-9696-365</Text>
-                <Text style={{ fontSize: 13, color: '#999999' }}>早9:00 - 21:00</Text>
+                <Text style={{ fontSize: 13, color: '#999999' }}>早9:00 - 22:00</Text>
             </View>
         );
     }

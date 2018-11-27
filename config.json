@@ -13,25 +13,25 @@
         },
         "dev_wkl": {
             "name": "开发环境-wkl",
-            "host": "http://172.16.10.111:8180/gateway"
+            "host": "http://172.16.10.111:8903/gateway"
         },
         "dev": {
-            "name": "开发环境",
+            "name": "开发",
             "host": "http://devapi.sharegoodsmall.com/gateway"
         },
         "qa": {
-            "name": "测试环境",
+            "name": "测试",
             "host": "https://testapi.sharegoodsmall.com/gateway",
             "h5": "https://testh5.sharegoodsmall.com"
         },
         "online": {
-            "name": "生产环境",
+            "name": "生产",
             "host": "",
             "h5": "https://h5.sharegoodsmall.com"
         },
         "吴承骏Login": {
             "name": "测试环境_吴承骏",
-            "host": "http://172.16.10.19:8180/gateway"
+            "host": "http://172.16.10.19:8903/gateway"
         },
         "da_wei": {
             "name": "测试环境_大为",
@@ -57,8 +57,12 @@
             "name": "开发环境-杨小猛",
             "host": "http://172.16.10.12:8180/gateway"
         },
+        "申祥瑀": {
+            "name": "延签测试",
+            "host": "http://172.16.10.21:8080/gateway"
+        },
         "pre_release": {
-            "name": "预发布环境",
+            "name": "UAT",
             "host": "https://uatapi.sharegoodsmall.com/gateway",
             "h5": "https://uath5.sharegoodsmall.com"
         }

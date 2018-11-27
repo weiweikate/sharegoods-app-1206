@@ -10,7 +10,6 @@ import {
     Image
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
-import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import StringUtils from '../../../utils/StringUtils';
 import bridge from '../../../utils/bridge';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -18,8 +17,14 @@ import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import SMSTool from '../../../utils/SMSTool';
 import { netStatusTool } from '../../../api/network/NetStatusTool';
 import DesignRule from '../../../constants/DesignRule';
+import res from '../res';
 
-// const dismissKeyboard = require('dismissKeyboard');
+const {
+    close_eye,
+    open_eye,
+} = res;
+
+const dismissKeyboard = require('dismissKeyboard');
 
 class LoginTopViewModel {
     /*0代表验证码登录 1代表密码登录*/
@@ -43,13 +48,8 @@ class LoginTopViewModel {
             this.phoneNumber = '';
             return;
         }
-        // if( 0 <= parseInt(phoneNmber.charAt(phoneNmber.length - 1)) &&
-        //     parseInt(phoneNmber.charAt(phoneNmber.length - 1)) <= 9 )
-        // {
         this.phoneNumber = phoneNmber;
-        // }
     }
-
     @action
     savePassword(password) {
         if (!password) {
@@ -58,7 +58,6 @@ class LoginTopViewModel {
         }
         this.password = password;
     }
-
     @action
     saveVertifyCode(vertifyCode) {
         if (!vertifyCode) {
@@ -67,7 +66,6 @@ class LoginTopViewModel {
         }
         this.vertifyCode = vertifyCode;
     }
-
     @computed
     get isCanClick() {
         if (this.phoneNumber.length < 11) {
@@ -91,6 +89,11 @@ export default class LoginTopView extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            isSecuret :true
+        }
+
 
     }
 
@@ -123,7 +126,7 @@ export default class LoginTopView extends Component {
                 <View>
                     <TextInput
                         style={Styles.inputTextStyle}
-                        value={this.LoginModel.phoneNumber}
+                        value={   this.LoginModel.phoneNumber}
                         onChangeText={text => this.LoginModel.savePhoneNumber(text)}
                         placeholder='请输入手机号'
                         underlineColorAndroid='transparent'
@@ -177,11 +180,12 @@ export default class LoginTopView extends Component {
                         placeholder='请输入验证码'
                         underlineColorAndroid='transparent'
                         keyboardType='numeric'
+                        multiline={false}
+                        secureTextEntry={false}
                     />
                     <TouchableOpacity
                         onPress={this.getVertifyCode}
                         activeOpacity={1}
-
                     >
                         <Text style={Styles.codeTextStyle}>
                             {this.LoginModel.dowTime > 0 ? `${this.LoginModel.dowTime}秒后重新获取` : '获取验证码'}
@@ -221,16 +225,17 @@ export default class LoginTopView extends Component {
                         value={this.LoginModel.password}
                         onChangeText={text => this.LoginModel.savePassword(text)}
                         placeholder='请输入密码'
-                        underlineColorAndroid={'transparent'}
-                        keyboardType='default'
+                        underlineColorAndroid='transparent'
+                        multiline={false}
                         secureTextEntry={this.LoginModel.isSecuret}
                     />
                     <View style={{ flexDirection: 'row' }}>
                         <TouchableOpacity onPress={() => {
+                            dismissKeyboard();
                             this.LoginModel.isSecuret = !this.LoginModel.isSecuret;
                         }}>
                             <Image style={Styles.seePasswordImageStyle}
-                                   source={this.LoginModel.isSecuret ? LoginAndRegistRes.closeEyeImage : LoginAndRegistRes.openEyeImage}/>
+                                   source={this.LoginModel.isSecuret ? close_eye : open_eye}/>
                         </TouchableOpacity>
                         <CommSpaceLine style={{ marginLeft: 10, width: 1, marginTop: 35, height: 20 }}/>
                         <TouchableOpacity onPress={this.props.forgetPasswordClick}>

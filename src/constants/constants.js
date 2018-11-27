@@ -7,7 +7,7 @@ let constants = {
 
     //功能常量
     TO_LOGIN:'toLogin',//用户未登录
-    PAGESIZE:20,
+    PAGESIZE:10,
     CARTDATA:'cartData',//离线购物车数据
 
 
@@ -319,7 +319,7 @@ let constants = {
             moreDetail:'',
             // sellerState:'收货人：赵信                   13588462014',
             // sellerTime:'收货地址：浙江省杭州市萧山区宁围镇鸿宁路望京商务C2-502',
-            disNextView:false,
+            disNextView:true,
             menu:[
                 {
                     id:7,

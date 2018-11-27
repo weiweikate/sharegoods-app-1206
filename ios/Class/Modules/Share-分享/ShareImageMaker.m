@@ -8,6 +8,7 @@
 
 #import "ShareImageMaker.h"
 #import <CoreImage/CoreImage.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @implementation ShareImageMakerModel
 
@@ -141,7 +142,7 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
     return;
   }
   UIImage *QRCodeImage =  [self QRCodeWithStr:QRCodeStr];
-  NSString *path = [self save:QRCodeImage withPath:@"/Documents/InviteFriendsQRCode.png"];
+  NSString *path = [self save:QRCodeImage withPath:[NSString stringWithFormat:@"/Documents/InviteFriendsQRCode%lf.png", [NSDate new].timeIntervalSince1970]];
   if (path.length == 0 || path == nil) {
     completion(nil,@"保存二维码失败");
   }else{
@@ -169,11 +170,110 @@ SINGLETON_FOR_CLASS(ShareImageMaker)
   [@"长按二维码打开链接" drawInRect:CGRectMake(0, 340, 280, 30) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12], NSForegroundColorAttributeName: [UIColor whiteColor], NSParagraphStyleAttributeName: paragraphStyle}];
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  NSString * path = [self save:image withPath:@"/Documents/promotionShareImage.png"];
+  NSString * path = [self save:image withPath:[NSString stringWithFormat:@"/Documents/promotionShareImage.png"]];
   if (path == nil || path.length == 0) {
     completion(nil, @"ShareImageMaker：保存图片到本地失败");
   }else{
     completion(path, nil);
   }
 }
+
+- (void)saveInviteFriendsImage:(NSString*)QRString
+ completion:(completionBlock) completion
+{
+  UIImage *bgImage = [UIImage imageNamed:@"Invite_fiends_bg"];
+  UIImage *QRCodeImage =  [self QRCodeWithStr:QRString];
+  UIGraphicsBeginImageContext(CGSizeMake(750, 1334));
+  [bgImage drawInRect:CGRectMake(0, 0, 750, 1334)];
+  // 绘制图片
+  [QRCodeImage drawInRect:CGRectMake(225, 620, 310, 310)];
+  UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  if(image){
+    __block ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
+    [lib writeImageToSavedPhotosAlbum:image.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+      NSLog(@"assetURL = %@, error = %@", assetURL, error);
+      lib = nil;
+      if (!error) {
+        completion(YES);
+      }else{
+        completion(NO);
+      }
+    }];
+  } else{
+     completion(NO);
+  }
+
+}
+
+- (void)saveShopInviteFriendsImage:(NSDictionary*)dic completion:(completionBlock) completion{
+  NSString *headerImg = dic[@"headerImg"];
+  NSString *shopName = dic[@"shopName"];
+  NSString *shopId = dic[@"shopId"];
+  NSString *shopPerson = dic[@"shopPerson"];
+  NSString *codeString = dic[@"codeString"];
+  NSString *wxTip = dic[@"wxTip"];
+//  __weak ShareImageMaker * weakSelf = self;
+  NSString *imgUrl = [headerImg stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+  [[YYWebImageManager sharedManager] requestImageWithURL:[NSURL URLWithString:imgUrl] options:YYWebImageOptionShowNetworkActivity progress:^(NSInteger receivedSize, NSInteger expectedSize) {} transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+    if (image) {
+      UIGraphicsBeginImageContext(CGSizeMake(68*2, 68*2));
+      CGContextRef ref = UIGraphicsGetCurrentContext();
+      CGRect rect = CGRectMake(0, 0, 68*2, 68*2);
+      CGContextAddEllipseInRect(ref, rect);
+      CGContextClip(ref);
+      [image drawInRect:rect];
+      UIImage * headerImage = UIGraphicsGetImageFromCurrentImageContext();
+      UIGraphicsEndImageContext();
+      
+      UIGraphicsBeginImageContext(CGSizeMake(650, 760));
+      UIImage *contentImage = [UIImage imageNamed:@"shop_invite_friends_content"];
+      [contentImage drawInRect:CGRectMake(0, 0, 650, 760)];
+      //头像
+      [headerImage drawInRect:CGRectMake((26+14.5)*2, 31*2, 68*2,68*2)];
+      
+      CGFloat textLeft = (14.5+105)*2;
+      CGFloat textWidth = 180*2;
+      CGFloat textHeight = 14*2;
+      [shopName drawInRect:CGRectMake(textLeft, 34*2, textWidth, textHeight) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:28], NSForegroundColorAttributeName: [UIColor blackColor]}];
+      
+      [shopId drawInRect:CGRectMake(textLeft, 34*2 + 16 + 28, textWidth, textHeight) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:26], NSForegroundColorAttributeName: [UIColor blackColor]}];
+      
+      [shopPerson drawInRect:CGRectMake(textLeft, 34*2 + 16 + 28 + 16 + 26, textWidth, textHeight) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:26], NSForegroundColorAttributeName: [UIColor blackColor]}];
+      
+      UIImage *QRCodeImage =  [self QRCodeWithStr:codeString];
+      [QRCodeImage drawInRect:CGRectMake(189, (130+ 20)*2, 136*2, 136*2)];
+      
+      [wxTip drawInRect:CGRectMake((650-207*2)/2.0, (130+ 20)*2 + 136*2 + 54, 207*2, textHeight) withAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:26], NSForegroundColorAttributeName: [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1]}];
+      
+      UIImage *imageContent = UIGraphicsGetImageFromCurrentImageContext();
+      UIGraphicsEndImageContext();
+
+      UIGraphicsBeginImageContext(CGSizeMake(750, 1334));
+      UIImage *bgImage = [UIImage imageNamed:@"shop_invite_friends_bg"];
+      [bgImage drawInRect:CGRectMake(0, 0, 750, 1334)];
+      [imageContent drawInRect:CGRectMake(50, 171*2, 650, 760)];
+      UIImage *imageResult = UIGraphicsGetImageFromCurrentImageContext();
+      UIGraphicsEndImageContext();
+      
+      if(imageResult){
+        __block ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
+        [lib writeImageToSavedPhotosAlbum:imageResult.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+          NSLog(@"assetURL = %@, error = %@", assetURL, error);
+          lib = nil;
+          if (!error) {
+            completion(YES);
+          }else{
+            completion(NO);
+          }
+        }];
+      } else{
+        completion(NO);
+      }
+    }else{
+      completion(NO);
+    }
+  }];
+}
+
 @end

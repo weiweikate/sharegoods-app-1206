@@ -6,7 +6,7 @@ import {
     Image,
     DeviceEventEmitter,
     TouchableOpacity,
-    NativeModules
+    // NativeModules
 } from 'react-native';
 import { color } from './../../constants/Theme';
 import StringUtils from '../../utils/StringUtils';
@@ -41,7 +41,7 @@ class RecentSearch extends Component {
                 <TouchableOpacity onPress={() => this.props.clearHistory()}>
                     <Image
                         style={styles.image}
-                        source={require('../../pages/order/res/search_delete.png')}
+                        source={require('./searchBar/search_delete.png')}
                     />
                 </TouchableOpacity>
             );
@@ -50,8 +50,6 @@ class RecentSearch extends Component {
 
     //清除历史标签
     clearHistory = () => {
-        //本地数组清零
-        NativeModules.commModule.putNativeStore('input', '');
         //父组件的数组清零
         if (this.props.clearHistory) {
             this.props.clearHistory();

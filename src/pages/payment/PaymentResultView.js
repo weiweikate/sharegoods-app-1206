@@ -5,10 +5,10 @@ import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtil;
 import { NavigationActions } from 'react-navigation';
-import failImg from './res/fail.png';
-import res from '../../comm/res';
 const successImg = res.button.tongyon_icon_check_green;
 import DesignRule from 'DesignRule';
+import res from './res';
+const failImg = res.fail;
 export const PaymentResult = {
     sucess: 1,
     fail: 2
@@ -51,6 +51,7 @@ export default class PaymentResultView extends Component {
             result: result,
             message: message
         });
+        this.props.payment.paySuccessFul = result === PaymentResult.sucess
     }
 
     dismiss() {
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         height: px2dp(30),
-        marginBottom: px2dp(20),
+        marginBottom: px2dp(15),
         marginLeft: px2dp(24),
         marginRight: px2dp(24),
         justifyContent: 'center'

@@ -149,12 +149,13 @@ class AddBankCardPage extends BasePage {
                 <UIButton
                     value={'确认'}
                     style={{
-                        marginTop: 102,
-                        backgroundColor: DesignRule.mainColor,
-                        width: ScreenUtils.width - 96,
+                        marginTop: 58,
+                        backgroundColor: this.state.cardType?DesignRule.mainColor:DesignRule.textColor_placeholder,
+                        width: ScreenUtils.width - 86,
                         height: 48,
-                        marginLeft: 48,
-                        marginRight: 48
+                        borderRadius:25,
+                        marginLeft: 43,
+                        marginRight: 43
                     }}
                     onPress={() => this.confirm()}/>
             </View>

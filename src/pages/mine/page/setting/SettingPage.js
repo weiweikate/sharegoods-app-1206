@@ -5,7 +5,8 @@ import {
     Image,
     NativeModules,
     TouchableOpacity, Alert, Switch, Text, Platform, AsyncStorage,
-    Linking
+    Linking,
+    DeviceEventEmitter
 } from 'react-native';
 
 const { CachesModule } = NativeModules;
@@ -24,6 +25,7 @@ import DesignRule from 'DesignRule';
 import QYChatUtil from '../helper/QYChatModel';
 import res from '../../res';
 import { getSizeFromat } from '../../../../utils/FileSizeFormate';
+import { homeModule } from '../../../home/Modules';
 
 /**
  * @author luoyongming
@@ -140,8 +142,7 @@ class SettingPage extends BasePage {
                     justifyContent: 'center',
                     borderRadius: 25
                 }} onPress={() => this.toLoginOut()}>
-                    <Text style={{ fontSize: 17, color: 'white' }}
-                          onPress={() => this.toLoginOut()}>退出登录</Text>
+                    <Text style={{ fontSize: 17, color: 'white' }}>退出登录</Text>
                 </TouchableOpacity>
 
                 {this.renderModal()}
@@ -229,7 +230,9 @@ class SettingPage extends BasePage {
                     user.clearToken();
                     //清空购物车
                     shopCartStore.data = [];
-                    this.$navigateReset();
+                    this.$navigateBackToHome();
+                    DeviceEventEmitter.emit('login_out');
+                    homeModule.loadHomeList();
                     MineApi.signOut();
                     QYChatUtil.qiYULogout();
                     this.$loadingDismiss();

@@ -100,6 +100,20 @@ public class PopModalManager extends ViewGroupManager<PopModal> implements Activ
                 .build();
     }
 
+    @Nullable
+    @Override
+    public Map<String, Object> getExportedCustomBubblingEventTypeConstants() {
+        return MapBuilder.<String, Object>builder()
+                .put(
+                        "mrModalDismiss",
+                        MapBuilder.of(
+                                "phasedRegistrationNames",
+                                MapBuilder.of(
+                                        "bubbled","onModalDismiss")))
+
+                .build();
+    }
+
     @Override
     public void receiveCommand(PopModal root, int commandId, @Nullable ReadableArray args) {
         super.receiveCommand(root, commandId, args);

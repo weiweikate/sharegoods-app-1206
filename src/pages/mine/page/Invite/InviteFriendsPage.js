@@ -55,6 +55,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
             path: ''
         };
         this._bind();
+        this.linkUrl = `${apiEnvironment.getCurrentH5Url()}/register?upuserid=${user.id || ''}`;
     }
 
     $navigationBarOptions = {
@@ -72,7 +73,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
     }
 
     loadPageData() {
-        this.creatQRCodeImage(`${apiEnvironment.getCurrentH5Url()}/register`);
+        this.creatQRCodeImage(this.linkUrl);
     }
 
     creatQRCodeImage(QRCodeStr) {
@@ -86,7 +87,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
         this.setState({
             disable: true
         }, () => {
-            bridge.saveScreen(null, () => {
+            bridge.saveInviteFriendsImage(this.linkUrl, () => {
                 this.$toastShow('保存成功');
                 this.__timer__ = setTimeout(() => {
                     this.setState({
@@ -198,7 +199,7 @@ export default class InviteFriendsPage extends BasePage<Props> {
                                 webJson={{
                                     title: '邀请好友免费领取福利',
                                     dec: '属你的惊喜福利活动\n数量有限赶快参与吧～',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/register?upuserid=${user.id || ''}`,
+                                    linkUrl: this.linkUrl,
                                     thumImage: 'logo.png'
                                 }}
                     // miniProgramJson = {{

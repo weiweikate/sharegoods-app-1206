@@ -14,6 +14,7 @@ import {
 import BasePage from '../../BasePage';
 import TopicDetailHeaderView from './components/TopicDetailHeaderView';
 import TopicDetailSegmentView from './components/TopicDetailSegmentView';
+import PriceExplain from '../home/product/components/PriceExplain';
 import ScreenUtils from '../../utils/ScreenUtils';
 import HTML from 'react-native-render-html';
 import HomeAPI from '../home/api/HomeAPI';
@@ -40,6 +41,8 @@ const redEnvelopeBg = res.other.red_big_envelope;
 const tongyong_btn_close_white = res.button.tongyong_btn_close_white;
 import { PageLoadingState, renderViewByLoadingState } from '../../components/pageDecorator/PageState';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar/NavigatorBar';
+import MessageAPI from '../message/api/MessageApi';
+import QYChatUtil from '../mine/page/helper/QYChatModel';
 
 
 export default class TopicDetailPage extends BasePage {
@@ -62,6 +65,7 @@ export default class TopicDetailPage extends BasePage {
             canGetCoupon: false,
             couponData: null,
             hasGetCoupon: false,
+            messageCount: 0,//消息数量
 
             loadingState: PageLoadingState.loading,
             netFailedInfo: {}
@@ -75,7 +79,7 @@ export default class TopicDetailPage extends BasePage {
             netFailedProps: {
                 buttonText: superStatus === 0 ? '去首页' : '重新加载',
                 netFailedInfo: this.state.netFailedInfo,
-                reloadBtnClick: superStatus === 0 ? (() => this.$navigateReset()) : (() => this._getActivityData())
+                reloadBtnClick: superStatus === 0 ? (() => this.$navigateBackToHome()) : (() => this._getActivityData())
             }
         };
     };
@@ -115,6 +119,7 @@ export default class TopicDetailPage extends BasePage {
                 console.log('willFocus', state);
                 if (state && state.routeName === 'topic/TopicDetailPage') {
                     this._getActivityData();
+                    this._getMessageCount();
                 }
             }
         );
@@ -193,6 +198,20 @@ export default class TopicDetailPage extends BasePage {
         }
     };
 
+    //消息数据
+    _getMessageCount = () => {
+        MessageAPI.getNewNoticeMessageCount().then(result => {
+            if (!EmptyUtils.isEmpty(result.data)) {
+                const { shopMessageCount, noticeCount, messageCount } = result.data;
+                this.setState({
+                    messageCount: shopMessageCount + noticeCount + messageCount
+                });
+            }
+        }).catch((error) => {
+        });
+    };
+
+
     //倒计时到0的情况刷新页面
     updateActivityStatus = () => {
         this._getActivityData();
@@ -238,12 +257,12 @@ export default class TopicDetailPage extends BasePage {
             this.setState({
                 loadingState: PageLoadingState.success
             }, () => {
-                    HomeAPI.getProductDetail({
+                HomeAPI.getProductDetail({
                     id: productId
                 }).then((data) => {
                     this.setState({
                         data: data.data || {}
-                    },()=>{
+                    }, () => {
                         this._needPushToNormal();
                         this.TopicDetailHeaderView.updateTime(this.state.activityData, this.state.activityType, this.updateActivityStatus);
                     });
@@ -371,24 +390,9 @@ export default class TopicDetailPage extends BasePage {
             return <View>
                 <HTML html={this.state.activityType === 3 ? this.state.data.content : product.content}
                       imagesMaxWidth={ScreenUtils.width}
-                      imagesInitialDimensions={ScreenUtils.width}
+                      imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
                       containerStyle={{ backgroundColor: '#fff' }}/>
-                <View style={{ backgroundColor: 'white' }}>
-                    <Text
-                        style={{
-                            paddingVertical: 13,
-                            marginLeft: 15,
-                            fontSize: 15,
-                            color: DesignRule.textColor_mainTitle
-                        }}>价格说明</Text>
-                    <View
-                        style={{ height: 0.5, marginHorizontal: 0, backgroundColor: DesignRule.lineColor_inColorBg }}/>
-                    <Text style={{
-                        padding: 15,
-                        color: DesignRule.textColor_instruction,
-                        fontSize: 13
-                    }}>{`划线价格：指商品的专柜价、吊牌价、正品零售价、厂商指导价或该商品的曾经展示过销售价等，并非原价，仅供参考\n未划线价格：指商品的实时价格，不因表述的差异改变性质。具体成交价格根据商品参加活动，或会员使用优惠券、积分等发生变化最终以订单`}</Text>
-                </View>
+                <PriceExplain/>
             </View>;
         } else {
             return <View style={{ backgroundColor: 'white' }}>
@@ -404,6 +408,7 @@ export default class TopicDetailPage extends BasePage {
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => `${index}`}
                     data={this.state.activityType === 3 ? this.state.data.paramValueList || [] : this.state.data.paramList || []}/>
+                <PriceExplain/>
             </View>;
         }
     };
@@ -604,6 +609,7 @@ export default class TopicDetailPage extends BasePage {
                 <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
                 <DetailNavView ref={(e) => this.DetailNavView = e}
                                source={productImgUrl}
+                               messageCount={this.state.messageCount}
                                navBack={() => {
                                    this.$navigateBack();
                                }}
@@ -613,16 +619,25 @@ export default class TopicDetailPage extends BasePage {
                                    });
                                }}
                                navRRight={() => {
-                                   this.DetailNavShowModal.show((item) => {
+                                   this.DetailNavShowModal.show(this.state.messageCount, (item) => {
                                        switch (item.index) {
                                            case 0:
+                                               if (!user.isLogin) {
+                                                   this.$navigate('login/login/LoginPage');
+                                                   return;
+                                               }
                                                this.$navigate('message/MessageCenterPage');
                                                break;
                                            case 1:
-                                               this.$navigateReset();
+                                               this.$navigate('home/search/SearchPage');
                                                break;
                                            case 2:
                                                this.shareModal.open();
+                                               break;
+                                           case 3:
+                                               setTimeout(() => {
+                                                   QYChatUtil.qiYUChat();
+                                               }, 100);
                                                break;
                                        }
                                    });

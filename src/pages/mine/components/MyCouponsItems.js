@@ -11,20 +11,12 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    View
+    View,
+    NativeModules
 } from 'react-native';
 // import RefreshList from './../../../components/ui/RefreshList';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { formatDate } from '../../../utils/DateUtils';
-import NoMessage from '../res/couponsImg/coupons_no_data.png';
-import usedBg from '../res/couponsImg/youhuiquan_bg_zhihui.png';
-import unuesdBg from '../res/couponsImg/youhuiquan_bg_nor.png';
-import tobeActive from '../res/couponsImg/youhuiquan_icon_daijihuo_nor.png';
-import ActivedIcon from '../res/couponsImg/youhuiquan_icon_yishixiao_nor.png';
-import usedRIcon from '../res/couponsImg/youhuiquan_icon_yishiyong_nor.png';
-import limitIcon from '../res/couponsImg/youhuiquan_limit.png';
-import plusIcon from '../res/couponsImg/youhuiquan_icon_jia_nor.png';
-import jianIcon from '../res/couponsImg/youhuiquan_icon_jian_nor.png';
 import API from '../../../api';
 import UI from '../../../utils/bridge';
 import { observer } from 'mobx-react';
@@ -32,10 +24,23 @@ import StringUtils from '../../../utils/StringUtils';
 import user from '../../../model/user';
 import { UIImage, UIText } from '../../../components/ui';
 import DesignRule from 'DesignRule';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
 import MineApi from '../api/MineApi';
+import res from '../res';
+
+const NoMessage = res.couponsImg.coupons_no_data;
+const usedBg = res.couponsImg.youhuiquan_bg_zhihui;
+const unuesdBg = res.couponsImg.youhuiquan_bg_nor;
+const tobeActive = res.couponsImg.youhuiquan_icon_daijihuo_nor;
+const ActivedIcon = res.couponsImg.youhuiquan_icon_yishixiao_nor;
+const usedRIcon = res.couponsImg.youhuiquan_icon_yishiyong_nor;
+const limitIcon = res.couponsImg.youhuiquan_limit;
+const plusIcon = res.couponsImg.youhuiquan_icon_jia_nor;
+const jianIcon = res.couponsImg.youhuiquan_icon_jian_nor;
+
 
 const { px2dp } = ScreenUtils;
+
 
 @observer
 export default class MyCouponsItems extends Component {
@@ -64,7 +69,6 @@ export default class MyCouponsItems extends Component {
     fmtDate(obj) {
         return formatDate(obj, 'yyyy.MM.dd');
     }
-
 
 
     renderItem = ({ item, index }) => {
@@ -117,7 +121,12 @@ export default class MyCouponsItems extends Component {
                         </View>
 
                         <View style={{ flex: 1, alignItems: 'flex-start', marginLeft: 10 }}>
-                            <Text style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}>{item.name} </Text>
+                            <Text style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}>
+                                {item.name}{item.type !== 99 ? null : <UIText value={'（可叠加使用）'} style={{
+                                fontSize: 11,
+                                color: DesignRule.textColor_instruction
+                            }}/>}
+                            </Text>
                             <Text style={{
                                 fontSize: 11,
                                 color: DesignRule.textColor_instruction,
@@ -195,11 +204,11 @@ export default class MyCouponsItems extends Component {
                             marginLeft: px2dp(39)
                         }} resizeMode={'contain'} onPress={this.reduceTokenCoin}/>
                         <TextInput
-
-                            keyboardType={'numeric'}
+                            keyboardType='numeric'
                             underlineColorAndroid='transparent'
                             autoFocus={true}
-                            defaultValue={'' + (this.state.tokenCoinNum < user.tokenCoin ? this.state.tokenCoinNum : user.tokenCoin)}
+                            defaultValue={`${(this.state.tokenCoinNum < user.tokenCoin ? this.state.tokenCoinNum : user.tokenCoin)}`}
+                            value={this.state.tokenCoinNum}
                             onChangeText={this._onChangeText}
                             onFocus={this._onFocus}
                             style={{
@@ -265,6 +274,10 @@ export default class MyCouponsItems extends Component {
         if (num == '') {
             this.setState({ tokenCoinNum: 0 });
         }
+        if (parseInt(num) > user.tokenCoin) {
+            NativeModules.commModule.toast(`1元券超出使用张数~`);
+            this.setState({ tokenCoinNum: user.tokenCoin });
+        }
     };
     _onFocus = () => {
         let nums = (this.state.tokenCoinNum < user.tokenCoin) ? this.state.tokenCoinNum : user.tokenCoin;
@@ -307,19 +320,12 @@ export default class MyCouponsItems extends Component {
     };
 
     _gotoLookAround = () => {
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({
-                    routeName: 'Tab'
-                })
-            ]
-        });
-        this.props.nav.dispatch(resetAction);
+        this.props.nav.popToTop();
+        this.props.nav.navigate('HomePage');
     };
 
     render() {
-        console.log("this.state.viewDat"+ this.state.viewData.length)
+        console.log('this.state.viewDat' + this.state.viewData.length);
         return (
             <View style={styles.container}>
                 <FlatList
@@ -396,7 +402,7 @@ export default class MyCouponsItems extends Component {
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && this.state.pageStatus === 0 && !this.props.fromOrder) {
                 arrData.push({
                     status: 0,
-                    name: '可叠加使用',
+                    name: '1元现金券',
                     timeStr: '无时间限制',
                     value: 1,
                     limit: '全品类：无金额门槛',
@@ -482,7 +488,7 @@ export default class MyCouponsItems extends Component {
             if (!StringUtils.isEmpty(user.tokenCoin) && user.tokenCoin !== 0 && status === 0) {
                 arrData.push({
                     status: 0,
-                    name: '可叠加使用',
+                    name: '1元现金券',
                     timeStr: '无时间限制',
                     value: 1,
                     limit: '全品类：无金额门槛',
@@ -491,7 +497,7 @@ export default class MyCouponsItems extends Component {
                     levelimit: false
                 });
             }
-            this.setState({viewData: arrData});
+            this.setState({ viewData: arrData });
             this.isEnd = true;
             return;
         }

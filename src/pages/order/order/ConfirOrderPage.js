@@ -13,10 +13,6 @@ import {
 } from '../../../components/ui';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import position from '../../order/res/dizhi.png';
-import arrow_right from '../res/arrow_right.png';
-import colorLine from '../res/addressLine.png';
-import couponIcon from '../../mine/res/couponsImg/dingdan_icon_quan_nor.png';
 import GoodsItem from '../components/GoodsItem';
 import user from '../../../model/user';
 import Toast from '../../../utils/bridge';
@@ -24,12 +20,14 @@ import BasePage from '../../../BasePage';
 import OrderApi from './../api/orderApi';
 import MineApi from '../../mine/api/MineApi';
 import API from '../../../api';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
 import userOrderNum from '../../../model/userOrderNum';
-// import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
-
-// let oldViewData, oldPriceList;
+import res from '../res';
+const position = res.dizhi;
+const arrow_right = res.arrow_right;
+const colorLine = res.addressLine;
+const couponIcon = res.coupons_icon;
 export default class ConfirOrderPage extends BasePage {
     constructor(props) {
         super(props);
@@ -762,17 +760,24 @@ export default class ConfirOrderPage extends BasePage {
     };
 
     replaceRouteName(data) {
-        let replace = NavigationActions.replace({
-            key: this.props.navigation.state.key,
-            routeName: 'payment/PaymentMethodPage',
-            params: {
-                orderNum: data.orderNum,
-                amounts: this.state.viewData.totalAmounts,
-                pageType: 0,
-                availableBalance: data.user.availableBalance
-            }
-        });
-        this.props.navigation.dispatch(replace);
+        this.props.navigation.navigate('payment/PaymentMethodPage',
+        {
+            orderNum: data.orderNum,
+            amounts: this.state.viewData.totalAmounts,
+            pageType: 0,
+            availableBalance: data.user.availableBalance}
+        )
+        // let replace = NavigationActions.replace({
+        //     key: this.props.navigation.state.key,
+        //     routeName: 'payment/PaymentMethodPage',
+        //     params: {
+        //         orderNum: data.orderNum,
+        //         amounts: this.state.viewData.totalAmounts,
+        //         pageType: 0,
+        //         availableBalance: data.user.availableBalance
+        //     }
+        // });
+        // this.props.navigation.dispatch(replace);
     }
 }
 

@@ -19,13 +19,13 @@ export default class HomeUserView extends Component {
         if (!user.isLogin) {
             return <View/>
         }
-        let { levelRemark } = user
+        let { levelName } = user
         return  <View style={styles.container}>
             <LinearGradient  start={{x: 0, y: 0}} end={{x: 1, y: 0}}  colors={['#fff6e7', '#fedb99']} style={styles.inContainer}>
-                <Text style={styles.title}>尊敬的</Text>{levelRemark ? <View style={styles.levelName}><Text style={styles.text}>{levelRemark.length >= 5 ? levelRemark.slice(0, 4) : levelRemark}</Text></View> : null}<Text style={styles.text}>品鉴官，您好！</Text>
+                <Text style={styles.title}>尊敬的</Text>{levelName ? <View style={styles.levelName}><Text style={styles.text}>{levelName.length >= 5 ? levelName.slice(0, 4) + '...' : levelName}</Text></View> : null}<Text style={styles.text}>品鉴官，您好！</Text>
                 <View style={{flex: 1}}/>
                 <TouchableOpacity onPress={() => this._goToPromotionPage()}>
-                    <ImageBackground style={styles.btnBack} source={res.userLevel} resizeMode={'stretch'}>
+                    <ImageBackground style={styles.btnBack} source={res.user_level} resizeMode={'stretch'}>
                         <Text style={styles.see}>查看收益</Text>
                         <View style={{width: 8}}/>
                         <Image source={res.arrowRight}/>

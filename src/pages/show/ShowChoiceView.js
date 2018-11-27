@@ -7,12 +7,13 @@ import ScreenUtil from '../../utils/ScreenUtils'
 const { px2dp } = ScreenUtil
 import {observer} from 'mobx-react'
 import { showChoiceModules, showSelectedDetail } from './Show'
-import res from '../../comm/res';
+import res from './res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule'
 import ImageLoad from '@mr/react-native-image-placeholder'
 import TimerMixin from 'react-timer-mixin'
+import OssImage from 'OssImage';
 
 class Card extends Component {
 
@@ -38,6 +39,13 @@ class Card extends Component {
     render () {
         const {item } = this.props
         const { readNumber } = this.state
+        let number = readNumber
+        if (!number) {
+            number = 0
+        }
+        if (number > 999999) {
+            number = 999999 + '+'
+        }
         return <TouchableWithoutFeedback style={styles.card} onPress={()=> this._onSelectedCard()}>
         <View style={styles.card}>
         <ImageLoad style={styles.imgView} source={{uri:item.coverImg}} resizeMode={'cover'}>
@@ -45,12 +53,12 @@ class Card extends Component {
             <Text style={styles.dis} numberOfLines={2}>{item.pureContent ? item.pureContent.slice(0, 100).trim() : ''}</Text>
         </ImageLoad>
         <View style={styles.profileView}>
-            <Image style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg : ''}}/>
+            <OssImage style={styles.portrait} source={{uri:item.userHeadImg ? item.userHeadImg : ''}}/>
             <Text style={styles.name}>{item.userName}</Text>
             <View style={{flex: 1}}/>
             <View style={styles.rightRow}>
                 <Image source={seeImg}/>
-                <Text style={styles.number}>{readNumber ? readNumber : 0}</Text>
+                <Text style={styles.number}>{ number }</Text>
             </View>
         </View>
         </View>

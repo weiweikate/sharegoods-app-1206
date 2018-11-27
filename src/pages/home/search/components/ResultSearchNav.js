@@ -7,10 +7,18 @@ import {
     Image
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import navBack from '../../../../components/pageDecorator/NavigatorBar/source/icon_header_back.png';
-import verticalRow from '../res/verticalRow.png';
-import horizontalRow from '../res/horizontalRow.png';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+
+const {
+    button: {
+        icon_header_back: navBack
+    },
+    search: {
+        verticalRow,
+        horizontalRow
+    }
+} = res;
 
 
 export default class ResultSearchNav extends Component {
@@ -29,6 +37,7 @@ export default class ResultSearchNav extends Component {
     };
 
     changeText = (text) => {
+        text = text.replace(/(^\s*)/g, "")//去首空格
         this.setState({
             inputText: text
         });

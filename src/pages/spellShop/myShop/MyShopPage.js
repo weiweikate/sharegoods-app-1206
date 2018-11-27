@@ -57,7 +57,7 @@ export default class MyShopPage extends BasePage {
             tittle: '店铺详情',
 
             storeData: {},
-            storeId: this.params.storeId || this.props.storeId,
+            storeId: this.props.storeId,
             isLike: false
         };
     }
@@ -66,14 +66,12 @@ export default class MyShopPage extends BasePage {
     $navigationBarOptions = {
         show: false
     };
-    // leftNavItemHidden: this.props.leftNavItemHidden
 
-
-    _NavBarRenderRightItem = () => {
+    _NavBarRender = () => {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableOpacity onPress={() => {
+                        <TouchableOpacity style = {{width:44}} onPress={() => {
                             this.$navigateBack();
                         }}>
                             <Image source={NavLeft}/>
@@ -118,9 +116,7 @@ export default class MyShopPage extends BasePage {
             loadingState: this.state.loadingState,
             netFailedProps: {
                 netFailedInfo: this.state.netFailedInfo,
-                reloadBtnClick: () => {
-                    this._loadPageData();
-                }
+                reloadBtnClick: this._onRefresh
             }
         };
     };
@@ -131,7 +127,7 @@ export default class MyShopPage extends BasePage {
             payload => {
                 const { state } = payload;
                 console.log('willFocus', state);
-                if (state && state.routeName === 'SpellShopPage') {
+                if (state && state.routeName === 'MyShop_RecruitPage') {//tab出现的时候
                     this._loadPageData();
                 }
             }
@@ -150,8 +146,10 @@ export default class MyShopPage extends BasePage {
     _onRefresh = () => {
         this.setState({
             isRefresh: true
+        }, () => {
+            this._loadPageData();
+            spellStatusModel.getUser(0);
         });
-        this._loadPageData();
     };
 
     _loadPageData = () => {
@@ -254,11 +252,9 @@ export default class MyShopPage extends BasePage {
                 } else if (index === 2) {
                     this.$loadingShow();
                     SpellShopApi.quitStore({ storeId: this.state.storeId }).then((data) => {
-                        if (!this.props.propReload) {
-                            //不是首页刷新当前页面
+                        if (!this.props.leftNavItemHidden) {
                             this._loadPageData();
                         }
-                        //刷新首页
                         spellStatusModel.getUser(2);
                         this.$loadingDismiss();
                     }).catch((error) => {
@@ -294,14 +290,9 @@ export default class MyShopPage extends BasePage {
             confirmCallBack: () => {
                 this.$loadingShow();
                 SpellShopApi.addToStore({ storeId: this.state.storeId }).then((data) => {
-                    //加入肯定是推荐搜索来的   刷新首页和当前页
-                    this._loadPageData();
-
-                    if (!this.props.propReload) {
-                        //不是首页刷新当前页面
+                    if (!this.props.leftNavItemHidden) {
                         this._loadPageData();
                     }
-                    //刷新首页
                     spellStatusModel.getUser(2);
                     this.$loadingDismiss();
                 }).catch((error) => {
@@ -345,7 +336,7 @@ export default class MyShopPage extends BasePage {
         if (userStatus === 1) {
             return (
                 <View>
-                    {myStore && this._renderRow(RmbIcon, '店铺已完成分红总额', `${(totalTradeBalance - tradeBalance) || 0}元`)}
+                    {myStore && this._renderRow(RmbIcon, '店铺已完成分红总额', `${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}元`)}
                     <View style={{ height: 10 }}/>
 
                     {myStore ? this._renderRow(ZuanIcon, '个人分红次数', `${bonusCount || 0}次`)
@@ -372,7 +363,7 @@ export default class MyShopPage extends BasePage {
 
     _renderJoinBtn = () => {
         const { storeMaxUser, storeUserList = [], recruitStatus, userStatus, status } = this.state.storeData;
-        //有店&&没关闭(需要刷新 需求有待商榷)||已经加入||为空
+        //已经加入||为空
         if (userStatus === 1 || StringUtils.isEmpty(userStatus)) {
             return null;
         }
@@ -456,7 +447,7 @@ export default class MyShopPage extends BasePage {
     _render() {
         return (
             <View style={styles.container}>
-                {this._NavBarRenderRightItem()}
+                {this._NavBarRender()}
                 {this.renderBodyView()}
                 <ActionSheetView ref={ref => {
                     this.actionSheetRef = ref;

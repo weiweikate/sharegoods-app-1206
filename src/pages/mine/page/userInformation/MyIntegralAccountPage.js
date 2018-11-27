@@ -11,15 +11,17 @@ import BasePage from '../../../../BasePage';
 import { RefreshList } from '../../../../components/ui';
 import AccountItem from '../../components/AccountItem';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import singInImg from '../../res/userInfoImg/qdaojianli_icon.png';
-import taskImg from '../../res/userInfoImg/rwujianli_icon.png';
-import yiyuanImg from '../../res/userInfoImg/xiudozhanghu_icon_xjaingquan.png'
 import DataUtils from '../../../../utils/DateUtils';
 import user from '../../../../model/user';
 import MineApi from '../../api/MineApi';
 import Toast from '../../../../utils/bridge' ;
 import { observer } from 'mobx-react/native';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+
+const singInImg = res.userInfoImg.qdaojianli_icon;
+const taskImg = res.userInfoImg.rwujianli_icon;
+const yiyuanImg = res.userInfoImg.xiudozhanghu_icon_xjaingquan;
 
 @observer
 export default class MyIntegralAccountPage extends BasePage {
@@ -118,7 +120,12 @@ export default class MyIntegralAccountPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg, marginLeft: 48, marginRight: 48 }}/>
+            <View style={{
+                height: 1,
+                backgroundColor: DesignRule.lineColor_inColorBg,
+                marginLeft: 48,
+                marginRight: 48
+            }}/>
 
         );
     };
@@ -126,22 +133,22 @@ export default class MyIntegralAccountPage extends BasePage {
     //**********************************BusinessPart******************************************
     componentDidMount() {
 
-     this.onRefresh();
+        this.onRefresh();
     }
 
     clickItem = (index) => {
         // alert(index);
     };
     getDataFromNetwork = () => {
-        let use_type = ['', '注册赠送', '活动赠送', '秀豆消费', '1元券兑换', '签到奖励','任务奖励'];
+        let use_type = ['', '注册赠送', '活动赠送', '秀豆消费', '1元券兑换', '签到奖励', '任务奖励'];
 
-        let use_type_symbol = ['', '+', '-',];
-        let use_let_img = ['', singInImg, taskImg, taskImg, yiyuanImg, singInImg,taskImg];
+        let use_type_symbol = ['', '+', '-'];
+        let use_let_img = ['', singInImg, taskImg, taskImg, yiyuanImg, singInImg, taskImg];
         let arrData = this.currentPage === 1 ? [] : this.state.viewData;
         Toast.showLoading();
         MineApi.userScoreQuery({
             page: this.currentPage,
-            size: 20
+            size: 10
 
         }).then((response) => {
             Toast.hiddenLoading();
@@ -153,7 +160,7 @@ export default class MyIntegralAccountPage extends BasePage {
                         type: use_type[item.useType],
                         time: DataUtils.getFormatDate(item.createTime / 1000),
                         serialNumber: item.serialNo,
-                        capital: use_type_symbol[item.usType] + (item.userScore?item.userScore:0),
+                        capital: use_type_symbol[item.usType] + (item.userScore ? item.userScore : 0),
                         iconImage: use_let_img[item.useType],
                         capitalRed: use_type_symbol[item.usType] === '+'
 
@@ -183,8 +190,10 @@ export default class MyIntegralAccountPage extends BasePage {
         this.getDataFromNetwork();
     };
     onLoadMore = () => {
-        this.currentPage++;
-        this.getDataFromNetwork();
+        if(!this.state.isEmpty){
+            this.currentPage++;
+            this.getDataFromNetwork();
+        }
     };
 }
 
@@ -195,7 +204,7 @@ const styles = StyleSheet.create({
     container: {}, imageBackgroundStyle: {
         position: 'absolute',
         height: 95,
-        backgroundColor:'#F2D4A2',
+        backgroundColor: '#F2D4A2',
         width: ScreenUtils.width - 30,
         marginLeft: 15,
         marginRight: 15,

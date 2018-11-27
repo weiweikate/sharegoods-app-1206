@@ -6,7 +6,6 @@ import {
     Image
 } from 'react-native';
 import { observer } from 'mobx-react';
-import LoginAndRegistRes from '../res/LoginAndRegistRes';
 import BasePage from '../../../BasePage';
 import CommRegistView from '../components/CommRegistView';
 import ScreenUtils from '../../../utils/ScreenUtils';
@@ -16,6 +15,13 @@ import UserModel from '../../../model/user';
 import DeviceInfo from 'react-native-device-info';
 import DesignRule from '../../../constants/DesignRule';
 import { homeModule } from '../../home/Modules'
+import res from '../res';
+import JPushUtils from '../../../utils/JPushUtils';
+
+const {
+    red_button_s,
+    red_button_u,
+} = res;
 
 /**
  * @author huyufeng
@@ -75,7 +81,7 @@ export default class RegistPage extends BasePage {
                         });
                     }}>
                         <Image
-                            source={this.state.gouxuan ? LoginAndRegistRes.reg_GouXuan : LoginAndRegistRes.reg_WeiXuan}
+                            source={this.state.gouxuan ? red_button_s : red_button_u}
                             style={{ width: 11, height: 11, marginRight: 5 }}/>
                     </TouchableOpacity>
                     <Text style={{ fontSize: 11, color: DesignRule.textColor_secondTitle }}>
@@ -154,6 +160,9 @@ export default class RegistPage extends BasePage {
             UserModel.saveToken(data.data.token);
             homeModule.loadHomeList()
             this.$navigate('login/login/GetRedpacketPage');
+
+            //推送
+            JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
         }).catch((data) => {
             this.$loadingDismiss();
             bridge.$toast(data.msg);

@@ -9,7 +9,7 @@ import UserSingleItem from '../../components/UserSingleItem';
 import user from '../../../../model/user';
 import { observer } from 'mobx-react/native';
 import BusinessUtils from '../../components/BusinessUtils';
-
+import ScreenUtils from '../../../../utils/ScreenUtils';
 const dismissKeyboard = require('dismissKeyboard');
 import MineApi from '../../api/MineApi';
 import DesignRule from 'DesignRule';
@@ -96,7 +96,7 @@ export default class UserInformationPage extends BasePage {
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'授权ID'} rightText={user.code} rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isArrow={false}/>
-                <UserSingleItem leftText={'会员等级'} rightText={user.levelName}
+                <UserSingleItem leftText={'会员等级'} rightText={user.levelRemark}
                                 rightTextStyle={[styles.grayText, { color: 'white' }]}
                                 leftTextStyle={styles.blackText} isArrow={false} circleStyle={{
                     borderRadius: 10,
@@ -110,7 +110,7 @@ export default class UserInformationPage extends BasePage {
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'所在区域'}
                                 rightText={user.area ? user.province + user.city + user.area : ''}
-                                rightTextStyle={styles.grayText} leftTextStyle={styles.blackText} isLine={false}
+                                rightTextStyle={[styles.grayText,{maxWidth:ScreenUtils.width/5*3,numberOfLines:2}]} leftTextStyle={styles.blackText} isLine={false}
                                 onPress={() => this.renderGetCityPicker()}/>
                 {this.renderWideLine()}
                 <UserSingleItem leftText={'实名认证'} rightText={user.realname ? '已实名认证' : '未实名认证'}

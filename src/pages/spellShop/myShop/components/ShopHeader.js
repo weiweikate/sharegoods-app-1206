@@ -21,6 +21,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 const { px2dp } = ScreenUtils;
 import StringUtils from '../../../../utils/StringUtils';
 import res from '../../res';
+
 const HeaderBarBgImg = res.myShop.txbg_02;
 const StarImg = res.myShop.dj_03;
 const CCZImg = res.myShop.ccz_03;
@@ -44,7 +45,8 @@ export default class ShopHeader extends Component {
             tradeBalance = 0, bonusNeedMoney = 0, currentUserSettle = 0
         } = this.props.item;
 
-        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : tradeBalance;
+        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
+        currentUserSettle = StringUtils.isEmpty(currentUserSettle) ? 0 : parseFloat(currentUserSettle);
 
         const starsArr = [];
         if (storeStarId && typeof storeStarId === 'number') {
@@ -53,9 +55,13 @@ export default class ShopHeader extends Component {
             }
         }
 
-        return <View style={styles.container}>
-            <ImageBackground source={HeaderBarBgImg} style={styles.imgBg}>
-                <View style={styles.whiteBg}>
+        let unInShopHeight = userStatus === 1 ? 0 : 50;
+
+        return <View style={{ height: ScreenUtils.headerHeight + ScreenUtils.autoSizeWidth(279 - unInShopHeight) }}>
+            <ImageBackground source={HeaderBarBgImg}
+                             style={[styles.imgBg, { height: ScreenUtils.headerHeight + ScreenUtils.autoSizeWidth(173) }]}>
+                <View
+                    style={[styles.whiteBg, { height: ScreenUtils.autoSizeWidth(249 - unInShopHeight) }]}>
                     <View style={{
                         flexDirection: 'row',
                         marginTop: px2dp(25),
@@ -83,15 +89,15 @@ export default class ShopHeader extends Component {
                             </TouchableOpacity> : null}
                     </View>
 
-                    <View style={styles.whiteBgTopRow}>
+                    {userStatus === 1 ? <View style={styles.whiteBgTopRow}>
                         <Image source={CCZImg} style={styles.whiteBgTopRowIcon}/>
                         <Text style={styles.gongxian}>
                             贡献度：{`${tradeBalance === 0 ? 0 : ((currentUserSettle / tradeBalance) * 100).toFixed(2)}`}%
                         </Text>
-                    </View>
+                    </View> : null}
                     <View style={{
                         marginHorizontal: px2dp(10),
-                        marginTop: px2dp(10),
+                        marginTop: userStatus === 1 ? px2dp(10) : px2dp(19),
                         marginBottom: px2dp(15),
                         backgroundColor: '#E4E4E4',
                         height: 0.5
@@ -116,11 +122,12 @@ export default class ShopHeader extends Component {
                         </ImageBackground>
 
                         <Text
-                            style={styles.chaju}>距离分红还差{(bonusNeedMoney - tradeBalance) > 0 ? (bonusNeedMoney - tradeBalance).toFixed(2) : 0}元</Text>
+                            style={styles.chaju}>距离分红还差{(bonusNeedMoney - tradeBalance) > 0 ? (bonusNeedMoney - tradeBalance).toFixed(2) : 0.00}元</Text>
 
-                        <Text style={styles.fenghong}>预计该次分红金可得<Text style={{ color: '#F00006', fontSize: 13 }}>
-                            {currentUserSettle || 0}
-                        </Text>元</Text>
+                        {userStatus === 1 ?
+                            <Text style={styles.fenghong}>预计该次分红金可得<Text style={{ color: '#F00006', fontSize: 13 }}>
+                                {currentUserSettle || 0}
+                            </Text>元</Text> : null}
 
                     </View>
                 </View>
@@ -133,18 +140,13 @@ export default class ShopHeader extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        height: ScreenUtils.headerHeight + ScreenUtils.autoSizeWidth(271)
-    },
     imgBg: {
-        width: ScreenUtils.width,
-        height: ScreenUtils.headerHeight + ScreenUtils.autoSizeWidth(173)
+        width: ScreenUtils.width
     },
     whiteBg: {
         marginTop: ScreenUtils.headerHeight + px2dp(15),
         backgroundColor: DesignRule.white,
         marginHorizontal: px2dp(15),
-        height: ScreenUtils.autoSizeWidth(249),
         borderRadius: px2dp(10)
     },
     headerImg: {

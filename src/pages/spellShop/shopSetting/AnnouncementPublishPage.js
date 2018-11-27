@@ -13,6 +13,7 @@ import BasePage from '../../../BasePage';
 import StringUtils from '../../../utils/StringUtils';
 import SpellShopApi from '../api/SpellShopApi';
 import DesignRule from 'DesignRule';
+import ScreenUtils from '../../../utils/ScreenUtils';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -50,6 +51,9 @@ export default class AnnouncementPublishPage extends BasePage {
     };
 
     _onChangeText = (text) => {
+        if (text.length>180) {
+            return;
+        }
         this.setState({ text });
     };
 
@@ -71,10 +75,16 @@ export default class AnnouncementPublishPage extends BasePage {
                                        placeholder={'请输入公告内容......'}
                                        blurOnSubmit={false}
                                        style={[styles.textInput, color]}/>
+                            <Text style={{
+                                position: 'absolute',
+                                bottom: 10,
+                                right: 10,
+                                color:DesignRule.textColor_instruction
+                            }}>{`${this.state.text.length}/180`}</Text>
                         </View>
                         <View style={styles.btnRow}>
-                            {this.renderBtn(this._saveContent, styles.okBtn, styles.okTitle, '发布')}
                             {this.renderBtn(this._goBack, styles.canCelBtn, styles.canCelTitle, '取消')}
+                            {this.renderBtn(this._saveContent, styles.okBtn, styles.okTitle, '发布')}
                         </View>
                     </View>
                 </ScrollView>
@@ -111,7 +121,7 @@ const styles = StyleSheet.create({
     textInputContainer: {
         width: SCREEN_WIDTH - 30,
         backgroundColor: DesignRule.lineColor_inColorBg,
-        height: 262
+        height: ScreenUtils.autoSizeHeight(300)
     },
     textInput: {
         fontSize: 14,
@@ -139,7 +149,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: DesignRule.mainColor,
-        marginRight: 45,
         width: 110,
         height: 40,
         borderRadius: 5
@@ -154,6 +163,7 @@ const styles = StyleSheet.create({
         backgroundColor: DesignRule.lineColor_inWhiteBg,
         width: 110,
         height: 40,
+        marginRight: 45,
         borderRadius: 5
     },
     canCelTitle: {

@@ -6,15 +6,18 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.soloader.SoLoader;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.umeng.UApp;
 import com.meeruu.commonlib.umeng.UShare;
+import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meituan.android.walle.WalleChannelReader;
-import cn.jpush.android.api.JPushInterface;
 
 import java.util.List;
+
+import cn.jpush.android.api.JPushInterface;
 
 public class BaseApplication extends MultiDexApplication {
 
@@ -57,9 +60,8 @@ public class BaseApplication extends MultiDexApplication {
         // activity生命周期，onCreate之后
         ForegroundCallbacks.init(this);
         if (getProcessName(this).equals(getPackageName())) {
-            // 捕获闪退日志
-//            CrashHandler.getInstance().init(this);
             SoLoader.init(this, /* native exopackage */ false);
+            Fresco.initialize(this, ImagePipelineConfigUtils.getDefaultImagePipelineConfig(this));
             // umeng初始化
             String channel = WalleChannelReader.getChannel(this, "guanwang");
             String umKey = "5b7663a3f29d9830cb0000d8";
@@ -72,13 +74,12 @@ public class BaseApplication extends MultiDexApplication {
                 // 禁止极光捕获crash
                 JPushInterface.stopCrashHandler(this);
             } else {
+                JPushInterface.initCrashHandler(this);
             }
             // 初始化分享
             UShare.init(this, umKey);
             // 初始化极光
             JPushInterface.init(this);
-            // 初始化极光
-//            JPushInterface.init(this);
         }
     }
 

@@ -5,16 +5,16 @@ import { RefreshList, UIImage, UIText } from '../../../components/ui';
 import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import logisticsTop from '../res/logisticsTop.png';
-import logisticsBottom from '../res/logisticsBottom.png';
-import copy from '../res/copy.png';
-import logisticsIcon from '../res/logisticsIcon.png';
 import LogisticsDetailItem from '../components/LogisticsDetailItem';
-// import tryIcon from '../res/car.png';
-import Nowuliu from '../res/kongbeiye_wulian.png';
-import Toast from '../../../utils/bridge';
 import OrderApi from '../api/orderApi';
 import DesignRule from 'DesignRule';
+import res from '../res';
+
+const logisticsTop = res.logisticsTop;
+const logisticsBottom = res.logisticsBottom;
+const copy = res.copy;
+const logisticsIcon = res.dizhi;
+const Nowuliu = res.kongbeiye_wulian;
 
 // import {PageLoadingState} from 'PageState';
 
@@ -96,7 +96,6 @@ class LogisticsDetailsPage extends BasePage {
     renderHeader = () => {
         return (
             <View>
-
                 {this.renderBaiShiHuiTong()}
             </View>
         );
@@ -174,9 +173,9 @@ class LogisticsDetailsPage extends BasePage {
     loadPageData() {
         console.log(this.params);
         if (StringUtils.isNoEmpty(this.state.expressNo)) {
-            Toast.showLoading();
+            // Toast.showLoading();
             OrderApi.findLogisticsDetail({ expNum: this.state.expressNo }).then((response) => {
-                Toast.hiddenLoading();
+                // Toast.hiddenLoading();
                 console.log(response);
                 let arrData = [];
                 if (!response.data.showapi_res_body.flag) {
@@ -203,7 +202,7 @@ class LogisticsDetailsPage extends BasePage {
                     loadingState: 'success'
                 });
             }).catch(e => {
-                Toast.hiddenLoading();
+                // Toast.hiddenLoading();
                 this.$toastShow(e.msg);
                 // this.setState({
                 //     loadingState: 'fail'

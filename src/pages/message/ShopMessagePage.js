@@ -15,7 +15,6 @@ import StringUtils from "../../utils/StringUtils";
 import DateUtils from '../../utils/DateUtils';
 import BasePage from '../../BasePage';
 import {RefreshList} from "../../components/ui";
-import arrorw_rightIcon from "../order/res/arrow_right.png";
 import Toast from '../../utils/bridge';
 import EmptyUtils from '../../utils/EmptyUtils'
 import MessageAPI from "./api/MessageApi";
@@ -23,7 +22,9 @@ const { px2dp } = ScreenUtils;
 import CommonUtils from 'CommonUtils'
 import MessageUtils from './utils/MessageUtils'
 import DesignRule from 'DesignRule';
-import emptyIcon from './src/message_empty.png'
+import RES from './res';
+const emptyIcon = RES.message_empty;
+const arrorw_rightIcon = RES.button.arrow_right_black;
 export default class ShopMessagePage extends BasePage {
     constructor(props) {
         super(props);
@@ -78,10 +79,10 @@ export default class ShopMessagePage extends BasePage {
     //100普通，200拼店
     /*加载数据*/
     loadPageData =()=> {
-        DeviceEventEmitter.emit("contentViewed");
         Toast.showLoading();
         MessageAPI.queryMessage({page: 1, pageSize: 10, type:200}).then(res => {
-            Toast.hiddenLoading()
+            Toast.hiddenLoading();
+            DeviceEventEmitter.emit("contentViewed");
             if(StringUtils.isNoEmpty(res.data.data)){
                 let arrData = [];
                 res.data.data.map((item, index) => {

@@ -15,20 +15,18 @@ import BasePage from '../../../BasePage';
 import DetailHeaderView from './components/DetailHeaderView';
 import DetailSegmentView from './components/DetailSegmentView';
 import DetailBottomView from './components/DetailBottomView';
+import PriceExplain from './components/PriceExplain';
+import DetailNavView from './components/DetailNavView';
 import SelectionPage from './SelectionPage';
 import HomeAPI from '../api/HomeAPI';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import res from '../../../comm/res';
 import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import CommShareModal from '../../../comm/components/CommShareModal';
 import HTML from 'react-native-render-html';
 import DetailNavShowModal from './components/DetailNavShowModal';
 import apiEnvironment from '../../../api/ApiEnvironment';
 import CommModal from '../../../comm/components/CommModal';
-import redEnvelopeBg from './res/red_envelope_bg.png';
 import DesignRule from 'DesignRule';
-
-import DetailNavView from './components/DetailNavView';
 
 const { px2dp } = ScreenUtils;
 import user from '../../../model/user';
@@ -37,6 +35,11 @@ import StringUtils from '../../../utils/StringUtils';
 import ConfirmAlert from '../../../components/ui/ConfirmAlert';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import NavigatorBar from '../../../components/pageDecorator/NavigatorBar/NavigatorBar';
+import res from '../res';
+import MessageApi from '../../message/api/MessageApi';
+import QYChatUtil from '../../mine/page/helper/QYChatModel';
+
+const redEnvelopeBg = res.other.red_big_envelope;
 
 /**
  * @author chenyangjun
@@ -65,6 +68,7 @@ export default class ProductDetailPage extends BasePage {
             canGetCoupon: false,
             couponData: null,
             hasGetCoupon: false,
+            messageCount: 0,//消息数量
 
             loadingState: PageLoadingState.loading,
             netFailedInfo: {}
@@ -80,7 +84,7 @@ export default class ProductDetailPage extends BasePage {
             netFailedProps: {
                 buttonText: status === 0 ? '去首页' : '重新加载',
                 netFailedInfo: this.state.netFailedInfo,
-                reloadBtnClick: status === 0 ? (() => this.$navigateReset()) : (() => this._getProductDetail())
+                reloadBtnClick: status === 0 ? (() => this.$navigateBackToHome()) : (() => this._getProductDetail())
             }
         };
     };
@@ -97,6 +101,7 @@ export default class ProductDetailPage extends BasePage {
                 console.log('willFocus', state);
                 if (state && state.routeName === 'home/product/ProductDetailPage') {
                     this._getProductDetail();
+                    this._getMessageCount();
                 }
             }
         );
@@ -108,8 +113,8 @@ export default class ProductDetailPage extends BasePage {
 
     getPromotion = async () => {
         try {
-            if(user.isLogin){
-                const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME+user.id);
+            if (user.isLogin) {
+                const value = await AsyncStorage.getItem(LASTSHOWPROMOTIONTIME + user.id);
                 var currStr = new Date().getTime() + '';
                 if (value == null || parseInt(currStr) - parseInt(value) > 24 * 60 * 60 * 1000) {
                     if (user.isLogin && EmptyUtils.isEmpty(user.upUserid)) {
@@ -121,7 +126,7 @@ export default class ProductDetailPage extends BasePage {
                                     couponData: data.data
                                 });
                                 this.couponId = data.data.id;
-                                AsyncStorage.setItem(LASTSHOWPROMOTIONTIME+user.id, currStr);
+                                AsyncStorage.setItem(LASTSHOWPROMOTIONTIME + user.id, currStr);
                             }
                         });
                     }
@@ -173,7 +178,7 @@ export default class ProductDetailPage extends BasePage {
             });
         }
     };
-
+    //活动数据
     _getQueryByProductId = () => {
         const { product = {} } = this.state.data;
         if (!product.id) {
@@ -200,7 +205,19 @@ export default class ProductDetailPage extends BasePage {
             }
         }).catch((error) => {
             this.$loadingDismiss();
-            this.$toastShow(error.msg);
+        });
+    };
+
+    //消息数据
+    _getMessageCount = () => {
+        MessageApi.getNewNoticeMessageCount().then(result => {
+            if (!EmptyUtils.isEmpty(result.data)) {
+                const { shopMessageCount, noticeCount, messageCount } = result.data;
+                this.setState({
+                    messageCount: shopMessageCount + noticeCount + messageCount
+                });
+            }
+        }).catch((error) => {
         });
     };
 
@@ -320,30 +337,12 @@ export default class ProductDetailPage extends BasePage {
             if (product.content) {
                 return <View>
                     <HTML html={product.content} imagesMaxWidth={ScreenUtils.width}
-                          imagesInitialDimensions={ScreenUtils.width}
+                          imagesInitialDimensions={{ width: ScreenUtils.width, height: 0 }}
                           containerStyle={{ backgroundColor: '#fff' }}/>
-                    <View style={{ backgroundColor: 'white' }}>
-                        <Text
-                            style={{
-                                paddingVertical: 13,
-                                marginLeft: 15,
-                                fontSize: 15,
-                                color: DesignRule.textColor_mainTitle
-                            }}>价格说明</Text>
-                        <View style={{
-                            height: 0.5,
-                            marginHorizontal: 0,
-                            backgroundColor: DesignRule.lineColor_inColorBg
-                        }}/>
-                        <Text style={{
-                            padding: 15,
-                            color: DesignRule.textColor_instruction,
-                            fontSize: 13
-                        }}>{`划线价格：指商品的专柜价、吊牌价、正品零售价、厂商指导价或该商品的曾经展示过销售价等，并非原价，仅供参考\n未划线价格：指商品的实时价格，不因表述的差异改变性质。具体成交价格根据商品参加活动，或会员使用优惠券、积分等发生变化最终以订单`}</Text>
-                    </View>
+                    <PriceExplain/>
                 </View>;
             } else {
-                return null;
+                return <PriceExplain/>;
             }
 
         } else {
@@ -360,6 +359,7 @@ export default class ProductDetailPage extends BasePage {
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(item, index) => `${index}`}
                     data={this.state.data.paramList || []}/>
+                <PriceExplain/>
             </View>;
         }
     };
@@ -502,6 +502,7 @@ export default class ProductDetailPage extends BasePage {
         return <View style={styles.container}>
             <View ref={(e) => this._refHeader = e} style={styles.opacityView}/>
             <DetailNavView ref={(e) => this.DetailNavView = e}
+                           messageCount={this.state.messageCount}
                            source={imgUrl}
                            navBack={() => {
                                this.$navigateBack();
@@ -512,16 +513,25 @@ export default class ProductDetailPage extends BasePage {
                                });
                            }}
                            navRRight={() => {
-                               this.DetailNavShowModal.show((item) => {
+                               this.DetailNavShowModal.show(this.state.messageCount, (item) => {
                                    switch (item.index) {
                                        case 0:
+                                           if (!user.isLogin) {
+                                               this.$navigate('login/login/LoginPage');
+                                               return;
+                                           }
                                            this.$navigate('message/MessageCenterPage');
                                            break;
                                        case 1:
-                                           this.$navigateReset();
+                                           this.$navigate('home/search/SearchPage');
                                            break;
                                        case 2:
                                            this.shareModal.open();
+                                           break;
+                                       case 3:
+                                           setTimeout(() => {
+                                               QYChatUtil.qiYUChat();
+                                           }, 100);
                                            break;
                                    }
                                });
@@ -532,7 +542,8 @@ export default class ProductDetailPage extends BasePage {
                          renderItem={this._renderItem}
                          keyExtractor={(item, index) => `${index}`}
                          sections={[{ data: [{}] }]}
-                         scrollEventThrottle={10}/>
+                         scrollEventThrottle={10}
+                         showsVerticalScrollIndicator={false}/>
             <DetailBottomView bottomViewAction={this._bottomViewAction} shareMoney={shareMoney} status={status}
                               buyLimit={buyLimit} leftBuyNum={leftBuyNum}/>
             <SelectionPage ref={(ref) => this.SelectionPage = ref}/>

@@ -9,7 +9,6 @@ import {
     Image, DeviceEventEmitter
 } from 'react-native';
 import CommSpaceLine from '../../../comm/components/CommSpaceLine';
-import loginAndRegistRes from '../res/LoginAndRegistRes';
 import BasePage from '../../../BasePage';
 import bridge from '../../../utils/bridge';
 import LoginAPI from '../api/LoginApi';
@@ -18,6 +17,14 @@ import DeviceInfo from 'react-native-device-info';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import { homeModule } from '../../home/Modules'
+import res from '../res';
+import JPushUtils from '../../../utils/JPushUtils';
+
+const {
+    share: {
+        weiXin
+    }
+} = res;
 
 /**
  * @author huyufeng
@@ -93,7 +100,7 @@ export default class LoginPage extends BasePage {
                         alignItems: 'center'
                     }}>
                         <TouchableOpacity onPress={this.weChatLoginClick}>
-                            <Image style={{ width: 50, height: 50 }} source={loginAndRegistRes.weixinImage}/>
+                            <Image style={{ width: 50, height: 50 }} source={weiXin}/>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -125,6 +132,7 @@ export default class LoginPage extends BasePage {
                     UserModel.saveUserInfo(res.data);
                     UserModel.saveToken(res.data.token);
                     bridge.$toast('登录成功');
+                    console.log(UserModel);
                     homeModule.loadHomeList()
                     this.$navigateBack();
                 }
@@ -164,8 +172,13 @@ export default class LoginPage extends BasePage {
                 this.$loadingDismiss();
                 UserModel.saveUserInfo(data.data);
                 UserModel.saveToken(data.data.token);
+                DeviceEventEmitter.emit('homePage_message',null);
+                DeviceEventEmitter.emit('contentViewed',null);
                 bridge.$toast('登录成功');
                 homeModule.loadHomeList()
+
+                console.log(UserModel)
+
                 if (this.params.callback) {
                     let resetAction = NavigationActions.reset({
                         index: 0,
@@ -177,6 +190,9 @@ export default class LoginPage extends BasePage {
                 } else {
                     this.$navigateBack();
                 }
+
+                //推送
+                JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
             }).catch((data) => {
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);
@@ -201,6 +217,7 @@ export default class LoginPage extends BasePage {
                 UserModel.saveUserInfo(data.data);
                 UserModel.saveToken(data.data.token);
                 DeviceEventEmitter.emit('homePage_message',null);
+                DeviceEventEmitter.emit('contentViewed',null);
                 bridge.$toast('登录成功');
                 homeModule.loadHomeList()
                 this.params.callback && this.params.callback();
@@ -215,6 +232,9 @@ export default class LoginPage extends BasePage {
                 } else {
                     this.$navigateBack();
                 }
+
+                //推送
+                JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
             }).catch((data) => {
                 console.log(data);
                 this.$loadingDismiss();

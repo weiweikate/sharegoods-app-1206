@@ -7,11 +7,12 @@ import {
     Text
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import res from '../../../../comm/res/index';
-import detailNavView from '../res/detailNavView';
 import DesignRule from '../../../../constants/DesignRule';
 import { observer } from 'mobx-react';
 import ShopCartStore from '../../../shopCart/model/ShopCartStore';
+import res from '../../res';
+
+const detailNavView = res.product.detailNavView;
 
 /**
  * 商品详情bannerView
@@ -46,6 +47,7 @@ export default class DetailNavView extends Component {
     };
 
     render() {
+        const { messageCount } = this.props;
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {/*返回*/}
@@ -73,7 +75,7 @@ export default class DetailNavView extends Component {
                         <Image style={{ marginRight: 10 }}
                                source={this.state.scale ? detailNavView.detail_car_down : detailNavView.detail_car_up}/>
                         {ShopCartStore.getAllGoodsClassNumber === 0 ? null : <View style={{
-                            position: 'absolute', top: 4, right: 4, height: 16,
+                            position: 'absolute', top: 4, right: 8, height: 16,
                             paddingHorizontal: 4,
                             backgroundColor: DesignRule.mainColor,
                             borderRadius: 8, justifyContent: 'center', alignItems: 'center'
@@ -81,7 +83,7 @@ export default class DetailNavView extends Component {
                             <Text style={{
                                 color: 'white',
                                 fontSize: 10
-                            }}>{ShopCartStore.getAllGoodsClassNumber}</Text>
+                            }}>{ShopCartStore.getAllGoodsClassNumber > 99 ? 99 : ShopCartStore.getAllGoodsClassNumber}</Text>
                         </View>}
                     </TouchableOpacity> : null}
                     {/*分享相关*/}
@@ -89,6 +91,13 @@ export default class DetailNavView extends Component {
                         this.props.navRRight && this.props.navRRight();
                     }} style={styles.btnContainer}>
                         <Image source={this.state.scale ? detailNavView.detail_more_down : res.button.show_share}/>
+                        {messageCount === 0 ? null : <View style={{
+                            position: 'absolute', top: 4, right: 8, height: 10,width:10,
+                            paddingHorizontal: 4,
+                            backgroundColor: DesignRule.mainColor,
+                            borderRadius: 5, justifyContent: 'center', alignItems: 'center'
+                        }}>
+                        </View>}
                     </TouchableOpacity>
                 </View>
             </View>
@@ -101,9 +110,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         position: 'absolute',
         top: ScreenUtils.statusBarHeight,
-        left: 16,
-        right: 16,
         zIndex: 3,
+        left: 8,
+        right: 8,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
@@ -122,8 +131,8 @@ const styles = StyleSheet.create({
     },
     btnContainer: {
         width: 44,
-        height:44,
+        height: 44,
         alignItems: 'center',
-        justifyContent:'center'
+        justifyContent: 'center'
     }
 });

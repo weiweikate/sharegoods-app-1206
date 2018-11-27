@@ -15,44 +15,64 @@ const imgWidth = px2dp(168);
 
 @observer
 export default class ShowHotView extends Component {
+
+    state = {
+        isEnd: false,
+        isFetching: false
+    }
+
     constructor(props) {
         super(props);
-        this.recommendModules = new ShowRecommendModules();
+        this.recommendModules = new ShowRecommendModules()
     }
 
     componentDidMount() {
-        this.recommendModules.loadRecommendList().then(data => {
-            this.waterfall.addItems(data);
-        });
+        this.refreshing()
     }
 
     infiniting(done) {
+        console.log('infiniting');
         setTimeout(() => {
+            const {isFetching} = this.state
+            if (isFetching) {
+                return
+            }
+            this.setState({ isFetching: true})
             this.recommendModules.getMoreRecommendList().then(data => {
                 console.log('infiniting'.data);
-                if (data.length !== 0) {
+                if (data && data.length !== 0) {
                     this.waterfall.addItems(data);
+                    this.setState({ isFetching: false})
+                } else {
+                    this.setState({ isFetching: false, isEnd: true})
                 }
             });
             done();
         }, 1000);
     }
 
-    refresh() {
-        this.waterfall.index = 1
-        this.recommendModules.loadRecommendList().then(data => {
-            this.waterfall.clear();
-            this.waterfall.addItems(data);
-        });
-    }
+    // refreshing() {
+    //     this.waterfall.index = 1
+    //     this.setState({ isEnd: false, isFetching: true})
+    //     this.recommendModules.loadRecommendList().then(data => {
+    //         this.setState({ isFetching: false})
+    //         this.waterfall.clear();
+    //         this.waterfall.addItems(data);
+    //     });
+    // }
 
     refreshing(done) {
+        let currentDate = new Date()
+        this.setState({ isEnd: false, isFetching: true})
+        this.recommendModules.isEnd = false
         setTimeout(() => {
-            this.recommendModules.loadRecommendList().then(data => {
-                this.waterfall.clear();
+            this.waterfall && this.waterfall.clear();
+            this.recommendModules.fetchRecommendList({}, currentDate, 1).then(data => {
+                this.setState({ isFetching: false})
+                this.waterfall.index = 1
                 this.waterfall.addItems(data);
             });
-            done();
+            done && done();
         }, 1000);
     }
 
@@ -86,7 +106,7 @@ export default class ShowHotView extends Component {
 
     _renderInfinite() {
         return <View style={{justifyContent: 'center', alignItems: 'center', height: 50}}>
-            {this.recommendModules.isEnd ? <Text style={styles.text}>已加载全部</Text> : this.recommendModules.isRefreshing ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
+            {this.state.isEnd ? <Text style={styles.text}>我也是有底线的</Text> : this.state.isFetching ? <Text style={styles.text}>加载中...</Text> : <Text style={styles.text}>加载更多</Text>}
         </View>
     }
 

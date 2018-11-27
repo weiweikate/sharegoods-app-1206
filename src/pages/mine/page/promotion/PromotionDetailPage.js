@@ -32,6 +32,7 @@ const { px2dp } = ScreenUtils;
 type Props = {};
 import CommShareModal from '../../../../comm/components/CommShareModal'
 import { PageLoadingState } from '../../../../components/pageDecorator/PageState';
+import CountDownView from "./CountDownView";
 
 export default class PromotionDetailPage extends BasePage<Props> {
     constructor(props) {
@@ -61,61 +62,8 @@ export default class PromotionDetailPage extends BasePage<Props> {
 
     componentDidMount() {
         this.getPromotionReceiveRecord();
-        this.startTimer();
-
     }
 
-    componentWillUnmount() {
-        this.timer && clearTimeout(this.timer);
-    }
-
-    startTimer = () => {
-        if (this.params.status === 1) {
-            this.date = Date.parse(new Date());
-            if (this.date < this.params.endTime) {
-                this.timer = setInterval(() => {
-                    this.date = this.date + 1000;
-                    if (this.date < this.params.endTime) {
-                        let seconds = parseInt((this.params.endTime - this.date) / 1000);
-                        this.setState({
-                            showCountDown: true,
-                            countDownStr: `剩余推广时间： ${this.timeFormat(seconds)}`,
-                            loadingState: PageLoadingState.success
-                        });
-                    } else {
-                        this.setState({
-                            showCountDown: false,
-                            loadingState: PageLoadingState.success
-
-                        });
-                        this.timer && clearTimeout(this.timer);
-                    }
-                }, 1000);
-            }
-
-        }else {
-            this.setState({
-                loadingState: PageLoadingState.success
-            })
-        }
-    };
-
-    timeFormat(sec) {
-        let days = Math.floor(sec / 24 / 60 / 60);
-        let h = Math.floor(sec / 60 / 60 % 24);
-        let m = Math.floor(sec / 60 % 60);
-        let s = Math.floor(sec % 60);
-        if(s < 10) {
-            s = "0" + s;
-        }
-        if(m < 10) {
-            m = "0" + m;
-        }
-        if(h < 10) {
-            h = "0" + h;
-        }
-        return `${days}天${h}:${m}:${s}`;
-    }
 
     getPromotionReceiveRecord = () => {
         MineApi.getPromotionReceiveRecord({
@@ -129,17 +77,22 @@ export default class PromotionDetailPage extends BasePage<Props> {
                     arrs.push(item);
                 });
                 this.setState({
-                    data: arrs
+                    data: arrs,
+                    loadingState: PageLoadingState.success
                 });
             } else {
                 if (EmptyUtils.isEmptyArr(this.state.data)) {
                     this.setState({
-                        isEmpty: true
+                        isEmpty: true,
+                        loadingState: PageLoadingState.success
                     });
                 }
             }
         }).catch((error) => {
             this.$toastShow(error.msg);
+            this.setState({
+                loadingState: PageLoadingState.fail
+            })
         });
     };
 
@@ -216,7 +169,8 @@ export default class PromotionDetailPage extends BasePage<Props> {
     _render() {
         return (
             <View style={styles.container}>
-                {this.state.showCountDown ? this._countDownRender() : null}
+                {/*{this.state.showCountDown ? this._countDownRender() : null}*/}
+                {this.params.status === 1 ? <CountDownView endTime = {this.params.endTime} /> : null}
                 <RefreshList
                     style={{marginBottom:ScreenUtils.safeBottom}}
                     data={this.state.data}

@@ -30,7 +30,7 @@ export default class TopicDetailHeaderView extends Component {
     static propTypes = {
         data: PropTypes.object.isRequired,
         activityData: PropTypes.object.isRequired,
-        activityType: PropTypes.object.isRequired
+        activityType: PropTypes.number.isRequired
     };
 
     constructor(props) {
@@ -91,7 +91,8 @@ export default class TopicDetailHeaderView extends Component {
         }
         return (
             <View>
-                {<TopicDetailBanner bannerImgList={bannerImgList} haveVideo={this.state.haveVideo} navigation = {this.props.navigation}/>}
+                {<TopicDetailBanner bannerImgList={bannerImgList} haveVideo={this.state.haveVideo}
+                                    navigation={this.props.navigation}/>}
                 {activityType === 3 ? null : <ActivityView ref={(e) => {
                     this.ActivityView = e;
                 }} activityData={this.props.activityData} activityType={activityType}/>}

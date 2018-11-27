@@ -74,7 +74,7 @@ export default function configureResponseError(error) {
         }
     } else {
         result = {
-            msg: '服务器无返回',
+            msg: '网络连接异常，请检查您的网络连接',
             status: -1,
             code: -1
         };

@@ -7,16 +7,17 @@ import { View, StyleSheet, Image, TouchableOpacity, TouchableWithoutFeedback } f
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp, statusBarHeight } = ScreenUtils;
-import logoRed from './res/home_icon_logo_red.png';
-import logoWhite from './res/home_icon_logo_white.png';
-import searchImg from './res/icon_search.png';
-import msgBlack from './res/message_black.png';
-import msgWhite from './res/message_white.png';
 import UIText from '../../components/ui/UIText';
 import DesignRule from 'DesignRule';
 import User from '../../model/user';
+import res from './res';
+const logoRed = res.home_icon_logo_red;
+const logoWhite = res.home_icon_logo_white;
+const searchImg = res.icon_search;
+const msgBlack = res.message_black;
+const msgWhite = res.message_white;
 
-export default ({ navigation, whiteIcon }) =>
+export default ({ navigation, whiteIcon,hasMessage }) =>
     <View style={styles.navBar}>
         <View style={styles.navContent}>
             <Image source={whiteIcon ? logoWhite : logoRed} style={styles.logo}/>
@@ -33,7 +34,18 @@ export default ({ navigation, whiteIcon }) =>
                     return;
                 }
                 navigation.navigate('message/MessageCenterPage')}}>
+                <View style={{height:32,width:32,justifyContent:'center',alignItems:'center'}}>
                 <Image source={whiteIcon ? msgWhite : msgBlack} style={styles.scanIcon}/>
+                    {hasMessage ? <View style={{
+                        width: 10,
+                        height: 10,
+                        backgroundColor: DesignRule.mainColor,
+                        position: "absolute",
+                        top: 2,
+                        right: 2,
+                        borderRadius: 5
+                    }}/> : null}
+                </View>
             </TouchableWithoutFeedback>
         </View>
         {

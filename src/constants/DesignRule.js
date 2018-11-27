@@ -29,6 +29,7 @@ const colors = {
         lineColor_inWhiteBg: '#E4E4E4',//在白色背景的线的颜色
         lineColor_inGrayBg: '#D9D9D9',//在灰色背景的线的颜色
         textColor_mainTitle: '#333333',//主标题
+        textColor_mainTitle_222:'#222222',//?黑色的字
         textColor_secondTitle: '#666666',//二级标题
         textColor_instruction: '#999999',//说明文字
         textColor_placeholder: '#CCCCCC',//预填文字
@@ -56,6 +57,7 @@ const sizes = {
     fontSize_mediumBtnText: autoSizeWidth(15),//中等大小按钮的文字大小
     fontSize_mainTitle: autoSizeWidth(19),//一级标题文字大小
     fontSize_secondTitle: autoSizeWidth(15),//二级标题文字大小
+    fontSize_threeTitle_28: autoSizeWidth(14),//三级标题文字大小
     fontSize_threeTitle: autoSizeWidth(13),//三级标题文字大小
     fontSize_24: autoSizeWidth(12),//四级文案 辅助信息
     fontSize_22: autoSizeWidth(11),//五级文案
@@ -123,7 +125,8 @@ const styles = {
 const DesignRule = {
     ...colors,
     ...sizes,
-    ...styles
+    ...styles,
+    autoSizeWidth
 };
 
 export default DesignRule;

@@ -60,6 +60,39 @@ RCT_EXPORT_METHOD(saveScreen:(id)jsonParam
     }
   });
 }
+RCT_EXPORT_METHOD(saveInviteFriendsImage:(NSString *)qrString
+                  onSuccess:(RCTResponseSenderBlock)onSuccess
+                  onError:(RCTResponseSenderBlock)onError){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[ShareImageMaker sharedInstance]saveInviteFriendsImage:qrString completion:^(BOOL success) {
+      if (success) {
+        onSuccess(@[]);
+      }else{
+        onError(@[]);
+      }
+    }];
+  });
+}
+
+/**
+ 店铺邀请好友图片保存到相册
+
+ @param id {headerImg,shopName,shopId,shopPerson,codeString,wxTip}
+ @return 是否成功
+ */
+RCT_EXPORT_METHOD(saveShopInviteFriendsImage:(id)jsonParam
+                  onSuccess:(RCTResponseSenderBlock)onSuccess
+                  onError:(RCTResponseSenderBlock)onError){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[ShareImageMaker sharedInstance] saveShopInviteFriendsImage:jsonParam completion:^(BOOL success) {
+      if (success) {
+        onSuccess(@[]);
+      }else{
+        onError(@[]);
+      }
+    }];
+  });
+}
 
 
 /**

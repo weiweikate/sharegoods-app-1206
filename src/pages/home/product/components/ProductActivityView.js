@@ -8,15 +8,17 @@ import {
 } from 'react-native';
 import { isNoEmpty } from '../../../../utils/StringUtils';
 import { formatDate } from '../../../../utils/DateUtils';
-import whiteArrowRight from '../res/icon3_03.png';
 import DesignRule from 'DesignRule';
+import res from '../../res';
+
+const whiteArrowRight = res.product.icon3_03;
 
 
 export default class ActivityView extends Component {
 
     static propTypes = {
         activityData: PropTypes.object.isRequired,
-        activityType: PropTypes.object.isRequired
+        activityType: PropTypes.number.isRequired
     };
 
     constructor(props) {
@@ -93,6 +95,7 @@ export default class ActivityView extends Component {
         hours = hours >= 10 ? hours : hours === 0 ? `00` : `0${hours}`;
         minutes = minutes >= 10 ? minutes : minutes === 0 ? `00` : `0${minutes}`;
         second = second >= 10 ? second : second === 0 ? `00` : `0${second}`;
+        leave4 = leave4 >= 10 ? leave4 : leave4 === 0 ? `00` : `0${leave4}`;
 
         let time = `${hours}:${minutes}:${second}:${leave4}`;
         return time;
@@ -174,7 +177,7 @@ export default class ActivityView extends Component {
                         </View>
                         <View style={{
                             marginTop: 5,
-                            marginRight:15,
+                            marginRight: 15,
                             height: 15,
                             width: 106,
                             justifyContent: 'center',
@@ -187,7 +190,7 @@ export default class ActivityView extends Component {
                     </View>
 
                     <Image source={whiteArrowRight}
-                           style={{ height: 14, marginLeft: 2,marginRight:15 }}
+                           style={{ height: 14, marginLeft: 2, marginRight: 15 }}
                            resizeMode={'contain'}/>
                 </View>
             }

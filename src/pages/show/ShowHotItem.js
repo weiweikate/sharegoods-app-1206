@@ -6,12 +6,13 @@ import React, {Component} from 'react'
 import { View, Text, TouchableWithoutFeedback, Image, StyleSheet } from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 const {  px2dp } = ScreenUtils
-import res from '../../comm/res';
+import res from './res';
 const seeImg = res.button.see_white;
 const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule'
 import ImageLoad from '@mr/react-native-image-placeholder'
 import TimerMixin from 'react-timer-mixin'
+import OssImage from 'OssImage';
 
 export default class ShowHotItem extends Component {
     state = {
@@ -36,6 +37,13 @@ export default class ShowHotItem extends Component {
     render() {
         const {data, imageStyle, imageUrl} = this.props
         const { readNumber } = this.state
+        let number = readNumber
+        if (!number) {
+            number = 0
+        }
+        if (number > 999999) {
+            number = 999999 + '+'
+        }
         let img = imageUrl
         if (!img) {
             img = data.img
@@ -46,13 +54,13 @@ export default class ShowHotItem extends Component {
             <Image style={styles.mask} source={maskImg} resizeMode={'cover'}/>
             <View style={styles.numberView}>
                 <Image style={styles.seeImg} source={seeImg}/>
-                <Text style={styles.number}>{readNumber ? readNumber : 0}</Text>
+                <Text style={styles.number}>{number}</Text>
             </View>
         </ImageLoad>
         <View style={styles.profile}>
             <Text numberOfLines={2} style={styles.title}>{data.pureContent ? data.pureContent.slice(0, 100) : ''}</Text>
             <View style={styles.row}>
-                <Image style={styles.portrait} source={{uri:data.userHeadImg ? data.userHeadImg : ''}}/>
+                <OssImage style={styles.portrait} source={{uri:data.userHeadImg ? data.userHeadImg : ''}}/>
                 <Text style={styles.name}>{data.userName && data.userName.length > 5 ? data.userName.slice(0, 5) + '...' : data.userName}</Text>
                 <View style={{flex: 1}}/>
                 <Text style={styles.time}>{data.time}</Text>
