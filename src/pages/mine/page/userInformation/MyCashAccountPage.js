@@ -85,9 +85,9 @@ export default class MyCashAccountPage extends BasePage {
                                 color: 'white'
                             }}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
                         </View>
-                        <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
-                        <Text style={{ fontSize: 15, color: 'white' }}>提现</Text>
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>*/}
+                        {/*<Text style={{ fontSize: 15, color: 'white' }}>提现</Text>*/}
+                        {/*</TouchableOpacity>*/}
                     </View>
                 </View>
             </View>

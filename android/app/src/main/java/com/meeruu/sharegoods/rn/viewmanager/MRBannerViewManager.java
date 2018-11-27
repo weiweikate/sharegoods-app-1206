@@ -89,9 +89,15 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
     @ReactProp(name = "imgUrlArray")
     public void setImgUrlArray(final WenldBanner view, ReadableArray urls) {
         if (urls != null) {
-            view.setData(urls.toArrayList());
-            final int cacheSize = urls.toArrayList().size() * 300;
-            view.getViewPager().setOffscreenPageLimit(cacheSize);
+            final List datas = urls.toArrayList();
+            view.setData(datas);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int cacheSize = datas.size() * 200;
+                    view.getViewPager().setOffscreenPageLimit(cacheSize);
+                }
+            }).start();
         }
     }
 
@@ -165,6 +171,10 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
     @Override
     public void onDropViewInstance(WenldBanner view) {
         view.getUiContact().removeListener(listener);
+        view.removeAllViews();
+        view = null;
+        eventDispatcher = null;
+        eventDispatcher = null;
         super.onDropViewInstance(view);
     }
 
