@@ -4,7 +4,7 @@ import {
     View,
     ImageBackground,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import { RefreshList } from '../../../../components/ui';
@@ -85,9 +85,9 @@ export default class MyCashAccountPage extends BasePage {
                                 color: 'white'
                             }}>{user.availableBalance ? user.availableBalance : `0.00`}</Text>
                         </View>
-                        <TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>
-                        <Text style={{ fontSize: 15, color: 'white' }}>提现</Text>
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity style={styles.rectangleStyle} onPress={() => this.jumpToWithdrawCashPage()}>*/}
+                        {/*<Text style={{ fontSize: 15, color: 'white' }}>提现</Text>*/}
+                        {/*</TouchableOpacity>*/}
                     </View>
                 </View>
             </View>
@@ -128,6 +128,29 @@ export default class MyCashAccountPage extends BasePage {
     }
 
     jumpToWithdrawCashPage = () => {
+        // if (EmptyUtils.isEmpty(user.realname)) {
+        //     Alert.alert("未实名认证", "你还没有实名认证", [{
+        //         text: "稍后认证", onPress: () => {
+        //         }
+        //     }, {
+        //         text: "马上就去", onPress: () => {
+        //             this.props.navigation.navigate("mine/userInformation/IDVertify2Page");
+        //         }
+        //     }]);
+        //     return;
+        // }
+        //
+        // if (!user.hadSalePassword) {
+        //     Alert.alert("未设置密码", "你还没有设置初始密码", [{
+        //         text: "稍后设置", onPress: () => {
+        //         }
+        //     }, {
+        //         text: "马上就去", onPress: () => {
+        //             this.$navigate("mine/account/JudgePhonePage", { title: "设置交易密码" });
+        //         }
+        //     }]);
+        //     return;
+        // }
         this.$navigate('mine/userInformation/WithdrawCashPage');
 
     };

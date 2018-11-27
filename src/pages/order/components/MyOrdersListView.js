@@ -16,7 +16,6 @@ import DesignRule from 'DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
 const emptyIcon = res.kongbeuye_dingdan;
-const noMoreData=false;
 const isFirst = true;
 export default class MyOrdersListView extends Component {
     constructor(props) {
@@ -35,6 +34,7 @@ export default class MyOrdersListView extends Component {
             CONFIG:[]
         };
         this.currentPage = 1;
+        this.noMoreData = false;
     }
 
     renderItem = ({ item, index }) => {
@@ -436,7 +436,7 @@ export default class MyOrdersListView extends Component {
 
     onLoadMore = () => {
         // console.log('onLoadMore',this.currentPage++);
-        if(!noMoreData){
+        if(!this.noMoreData){
             this.currentPage++;
             this.getDataFromNetwork();
         }

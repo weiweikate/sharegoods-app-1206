@@ -24,15 +24,24 @@ export default class BankTradingModal extends Component {
         keyboardHeight: 0
     };
 
+    constructor(props){
+        super(props);
+        this.state={
+            value : ''
+        }
+    }
+
     onRequestClose() {
 
     }
 
-    inputText(value) {
+    inputText=(value)=> {
         console.log("inputText", value);
+
         if (value.length === 6) {
             Keyboard.dismiss();
             this.props.finishedAction(value);
+            this.passwordInput && this.passwordInput.clear();
         }
     }
 
@@ -77,6 +86,7 @@ export default class BankTradingModal extends Component {
                         <Text style={styles.input}>{this.props.message}</Text>
                         <View style={{ flex: 1 }}/>
                         <PasswordInput
+                            ref={(ref)=>{this.passwordInput = ref;}}
                             style={styles.password}
                             maxLength={6}
                             onChange={value => this.inputText(value)}

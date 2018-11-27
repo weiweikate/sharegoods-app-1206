@@ -94,7 +94,11 @@ const api = {
     //申请提现
     userWithdrawApply:['/user/withdraw/withdrawApply',{method:'post'}],
     //查询银行卡信息
-    findByBankCard:['/user/userBankInfo/findByBankCard',{method:'get'}]
+    findByBankCard:['/user/userBankInfo/findByBankCard',{method:'get'}],
+    //费率查询
+    queryRate:['/user/withdraw/queryRate',{method:'get'}],
+    //最后一次提现银行卡信息
+    getLastBankInfo:['/user/withdraw/lastBankInfo',{method:'get'}]
 
 
 };

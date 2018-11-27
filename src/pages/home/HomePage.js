@@ -393,7 +393,7 @@ class HomePage extends PureComponent {
         return (
             <View style={{
                 flexDirection: 'row',
-                width: px2dp(120),
+                width: px2dp(12*this.state.messageData.length),
                 justifyContent: this.state.messageData.length === 1 ? 'center' : 'space-between',
                 marginBottom: px2dp(12),
                 height: 12,
