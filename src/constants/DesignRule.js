@@ -11,7 +11,7 @@
 
 import ScreenUtils from '../utils/ScreenUtils';
 
-const {autoSizeWidth, onePixel} = ScreenUtils;
+const {autoSizeWidth, onePixel, safeBottom, width} = ScreenUtils;
 
 const colors = {
         mainColor: '#F00050',//主色调
@@ -126,7 +126,9 @@ const DesignRule = {
     ...colors,
     ...sizes,
     ...styles,
-    autoSizeWidth
+    autoSizeWidth,
+    safeBottom,
+    width
 };
 
 export default DesignRule;

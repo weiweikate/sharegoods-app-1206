@@ -29,10 +29,7 @@ public class BannerHold implements Holder<String> {
             params.rightMargin = space;
             imageView.setLayoutParams(params);
         }
-        imageView.setTag(imgUrl);
-        if (imageView.getTag() != null && imageView.getTag().equals(imgUrl)) {
-            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, radius);
-        }
+        ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, radius);
     }
 
     @Override

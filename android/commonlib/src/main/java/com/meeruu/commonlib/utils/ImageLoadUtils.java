@@ -60,7 +60,7 @@ public class ImageLoadUtils {
                             newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
                         }
                     }
-                    Uri uri = Uri.parse(url);
+                    Uri uri = Uri.parse(newUrl);
                     loadImage(uri, view, 0);
                     view.getViewTreeObserver().removeOnPreDrawListener(this);
                     hasMeasured = true;
@@ -85,7 +85,7 @@ public class ImageLoadUtils {
                             newUrl = String.format(ParameterUtils.IMG_URL_WH, url, width, height);
                         }
                     }
-                    Uri uri = Uri.parse(url);
+                    Uri uri = Uri.parse(newUrl);
                     loadImage(uri, view, radius);
                     view.getViewTreeObserver().removeOnPreDrawListener(this);
                     hasMeasured = true;
