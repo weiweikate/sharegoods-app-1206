@@ -169,8 +169,8 @@ export default {
     isPushStopped: (callback = () => {
     }) => NativeModules.commModule.isPushStopped(callback),
     setCookies: (data)=>{
-        setCookieToken(data.token,'172.16.10.117');
-        setCookies("userData", {id: data.id},'172.16.10.117');
+        setCookieToken(data.token,'devh5.sharegoodsmall.com');
+        setCookies("userData", {id: data.id},'devh5.sharegoodsmall.com');
     },
     clearCookies: ()=>{
         clearCookies();

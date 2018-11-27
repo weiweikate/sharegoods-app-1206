@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
         height: 30,
         width: 80,
         borderWidth: DesignRule.lineHeight,
-        borderColor: DesignRule.textColor_secondTitle,
+        borderColor: DesignRule.lineColor_inWhiteBg,
         borderRadius: 15,
         marginRight: 15
     },

@@ -62,7 +62,7 @@ export default class GoodsGrayItem extends React.Component {
                                 }}><Text style={{ fontSize: 12, color: DesignRule.mainColor }}>礼包</Text></View> : null}
                                 <Text style={[styles.title]} numberOfLines={2}>{goodsName}</Text>
                             </View>
-                            <UIText value={salePrice} style={styles.title}/>
+                            <UIText value={salePrice} style={[styles.title, {marginRight: 4}]}/>
                         </View>
                         <View style={{ marginTop: 10, marginRight: 5, flexDirection: 'row' }}>
                             <UIText value={category}
