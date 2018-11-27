@@ -23,11 +23,27 @@
 +(void)setAlias:(NSString *)alia{
   [JPUSHService setAlias:alia completion:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
     if (iResCode == 0) {
-      DLog(@"极光------更新标签成功");
+      DLog(@"极光------更新别名成功");
     }else{
-      DLog(@"极光------更新标签失败");
+      DLog(@"极光------更新别名失败");
     }
   } seq:[[JSPushManager getNowTimeTimestamp] integerValue]];
+  
+ 
+}
+
++(void)deleteAlias{
+  [JPUSHService deleteAlias:^(NSInteger iResCode, NSString *iAlias, NSInteger seq) {
+    if (iResCode == 0) {
+      DLog(@"极光----删除别名成功");
+    }else{
+       DLog(@"极光----删除别名失败");
+    }
+  } seq:1];
+}
+
++(NSString *)getRegistId{
+  return  [JPUSHService registrationID];
 }
 
 +(NSString *)getNowTimeTimestamp{

@@ -42,7 +42,7 @@ export default class ShopRecruitPage extends BasePage {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableOpacity style = {{width:44}} onPress={() => {
+                        <TouchableOpacity style={{ width: 44 }} onPress={() => {
                             this.$navigateBack();
                         }}>
                             <Image source={NavLeft}/>
