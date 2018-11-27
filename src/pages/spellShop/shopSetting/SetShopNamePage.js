@@ -21,11 +21,17 @@ import BusinessUtils from '../../mine/components/BusinessUtils';
 import SpellShopApi from '../api/SpellShopApi';
 import spellStatusModel from '../model/SpellStatusModel';
 import DesignRule from 'DesignRule';
+import res from '../../../comm/res';
+import openShopRes from '../res';
+
+const { px2dp } = ScreenUtils;
+const arrow_right = res.button.arrow_right_black;
+const { openShop_image_pre } = openShopRes.openShop;
 
 export default class SetShopNamePage extends BasePage {
 
     $navigationBarOptions = {
-        title: this.params.storeData ? '我的店铺' : '开店基础信息',
+        title: this.params.storeData ? '我的店铺' : '拼店信息设置',
         rightNavTitle: '完成',
         rightTitleStyle: styles.rightItem,
         rightNavItemHidden: !this.params.storeData
@@ -46,9 +52,14 @@ export default class SetShopNamePage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            text: null,
-            storeHeadUrl: null,
-            storeHeadUrlOrigin: null
+            storeHeadUrlOrigin: null,
+            textName: '',
+            textArea: '',
+            textProfile: '',
+
+            provinceCode: '',
+            cityCode: '',
+            areaCode: ''
         };
     }
 
@@ -58,8 +69,7 @@ export default class SetShopNamePage extends BasePage {
             SpellShopApi.getById({ id: this.params.storeData.storeId }).then((data) => {
                 let dataTemp = data.data || {};
                 this.setState({
-                    text: dataTemp.name,
-                    storeHeadUrl: dataTemp.headUrl,
+                    textName: dataTemp.name,
                     storeHeadUrlOrigin: dataTemp.headUrl
                 });
                 this.$loadingDismiss();
@@ -70,35 +80,38 @@ export default class SetShopNamePage extends BasePage {
         }
     }
 
-    _checkIsHasSpecialStr(str) {
-        let myReg = /^[a-zA-Z0-9_\u4e00-\u9fa5]{1,}$/;
-        if (!myReg.test(str)) {
-            return true;
-        }
-        return false;
-    }
-
     _complete = () => {
-        if (StringUtils.isEmpty(this.state.text)) {
-            this.$toastShow('请输入店铺名称');
-            return;
-        }
-        if (this._checkIsHasSpecialStr(this.state.text)) {
-            this.$toastShow('此名称带有特殊字符，请重新输入');
-            return;
-        }
-        if (this.state.text.length < 2 || this.state.text.length > 16) {
-            this.$toastShow('店铺名称仅限2~16位字符');
-            return;
-        }
         if (StringUtils.isEmpty(this.state.storeHeadUrlOrigin)) {
             this.$toastShow('店铺头像不能为空');
             return;
         }
+
+        if (StringUtils.isEmpty(this.state.textName)) {
+            this.$toastShow('请输入店铺名称');
+            return;
+        }
+        if (this._checkIsHasSpecialStr(this.state.textName)) {
+            this.$toastShow('店铺名称带有特殊字符，请重新输入');
+            return;
+        }
+        if (this.state.textName.length < 4 || this.state.textName.length > 16) {
+            this.$toastShow('店铺名称仅限4~16位字符');
+            return;
+        }
+
+        if (StringUtils.isEmpty(this.state.provinceCode) || StringUtils.isEmpty(this.state.provinceCode)) {
+            this.$toastShow('请选择店铺位置');
+            return;
+        }
+
         if (this.params.storeData) {
             SpellShopApi.updateStoreInfo({
                 name: this.state.text,
-                headUrl: this.state.storeHeadUrlOrigin
+                headUrl: this.state.storeHeadUrlOrigin,
+                provinceCode: this.state.provinceCode,
+                cityCode: this.state.cityCode,
+                areaCode: this.state.areaCode,
+                profile: this.state.textProfile
             }).then(() => {
                 this.$toastShow('修改成功');
                 this.params.myShopCallBack && this.params.myShopCallBack();
@@ -111,7 +124,11 @@ export default class SetShopNamePage extends BasePage {
             SpellShopApi.initStore({
                 name: this.state.text,
                 headUrl: this.state.storeHeadUrlOrigin,
-                status: 3
+                status: 3,
+                provinceCode: this.state.provinceCode,
+                cityCode: this.state.cityCode,
+                areaCode: this.state.areaCode,
+                profile: this.state.textProfile
             }).then(() => {
                 spellStatusModel.getUser(2);
                 this.$navigate('spellShop/openShop/OpenShopSuccessPage');
@@ -121,18 +138,22 @@ export default class SetShopNamePage extends BasePage {
         }
     };
 
-    _onChangeText = (text) => {
-        this.setState({ text });
-    };
+    /*检验特殊字符串*/
+    _checkIsHasSpecialStr(str) {
+        let myReg = /^[a-zA-Z0-9_\u4e00-\u9fa5]{1,}$/;
+        if (!myReg.test(str)) {
+            return true;
+        }
+        return false;
+    }
 
     //点击头像
     _clickHeader = () => {
         BusinessUtils.getImagePicker((response) => {
             if (response && typeof response === 'object' && response.ok) {
-                const { imageUrl, imageThumbUrl } = response;
-                if (imageUrl && imageThumbUrl) {
+                const { imageUrl } = response;
+                if (imageUrl) {
                     this.setState({
-                        storeHeadUrl: imageThumbUrl,
                         storeHeadUrlOrigin: imageUrl
                     });
                 }
@@ -142,45 +163,107 @@ export default class SetShopNamePage extends BasePage {
         });
     };
 
+    /*选择区域*/
+    _getCityPicker = () => {
+        this.$navigate('mine/address/SelectAreaPage', {
+            setArea: this.setArea.bind(this),
+            tag: 'province',
+            fatherCode: '0'
+        });
+    };
+
+    setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, areaText) {
+        this.setState({
+            textArea: areaText,
+            provinceCode: provinceCode,
+            cityCode: cityCode,
+            areaCode: areaCode
+        });
+    }
+
+    /*店铺简介输入*/
+    _onChangeText = (text) => {
+        if (text.length > 180) {
+            text = text.substring(0, 180);
+        }
+        this.setState({ textProfile: text });
+    };
+
+    _renderHeaderView = () => {
+        const uri = this.state.storeHeadUrlOrigin;
+        if (this.params.storeData) {
+            return <TouchableOpacity style={styles.updateWhite} onPress={this._clickHeader}>
+                <Image source={uri ? { uri } : openShop_image_pre} style={styles.updateImg}/>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={styles.updateText}>修改头像</Text>
+                    <Image source={arrow_right} style={styles.arrowImg}/>
+                </View>
+            </TouchableOpacity>;
+        } else {
+            return <View style={styles.whitePanel}>
+                <TouchableOpacity onPress={this._clickHeader}>
+                    <Image source={uri ? { uri } : openShop_image_pre} style={styles.headerImg}/>
+                </TouchableOpacity>
+            </View>;
+        }
+    };
+
     _render() {
-        const uri = this.state.storeHeadUrl;
         return (
             <View style={styles.container}>
                 <ScrollView>
-                    <View style={styles.whitePanel}>
-
-                        <TouchableOpacity onPress={this._clickHeader}>
-                            {
-                                uri ? <Image source={{ uri }} style={styles.headerImg}/> :
-                                    <View style={styles.headerImg}/>
-                            }
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={styles.uploadContainer} onPress={this._clickHeader}>
-                            <Text style={styles.uploadTitle}>{uri ? '重新上传' : '点击上传'}</Text>
-                        </TouchableOpacity>
-
-                    </View>
-
-                    <View style={styles.textInputContainer}>
-                        <Text style={styles.title}>请设置店铺名称:</Text>
-                        <TextInput value={this.state.text}
-                                   onChangeText={this._onChangeText}
+                    {/*头像*/}
+                    {this._renderHeaderView()}
+                    {/*店铺*/}
+                    <View style={styles.textContainer}>
+                        <Text style={styles.textTitle}>店铺名称</Text>
+                        <TextInput value={this.state.textName}
+                                   onChangeText={(text) => {
+                                       this.setState({
+                                           textName: text
+                                       });
+                                   }}
                                    underlineColorAndroid={'transparent'}
                                    placeholder={'请输入店铺名称'}
                                    blurOnSubmit={false}
-                                   style={[styles.textInput, { color: DesignRule.textColor_mainTitle }]}/>
+                                   style={[styles.textInput, { marginRight: 32 }]}/>
+                    </View>
+                    <View style={styles.viewLine}/>
+                    {/*区域*/}
+                    <View style={styles.textContainer}>
+                        <Text style={styles.textTitle}>拼店区域</Text>
+                        <TextInput value={this.state.textArea}
+                                   underlineColorAndroid={'transparent'}
+                                   placeholder={'请选择店铺位置'}
+                                   blurOnSubmit={false}
+                                   style={styles.textInput}
+                                   editable={false}/>
+                        <Image source={arrow_right} style={styles.arrowImg}/>
+                        <TouchableOpacity style={styles.bntArea}
+                                          onPress={this._getCityPicker}/>
+                    </View>
+                    {/*简介*/}
+                    <View style={styles.profileContainer}>
+                        <Text style={styles.profileTittle}>店铺简介</Text>
+                        <TextInput value={this.state.textProfile}
+                                   onChangeText={this._onChangeText}
+                                   underlineColorAndroid={'transparent'}
+                                   multiline
+                                   placeholder={'可以简单介绍下你拼店的目标方向'}
+                                   blurOnSubmit={false}
+                                   style={styles.profileText}/>
+                        <Text style={styles.profileTextAbsolute}>{`${this.state.textProfile.length}/180`}</Text>
                     </View>
 
-                    {
-                        this.params.storeData ? null : <TouchableWithoutFeedback onPress={this._complete}>
-                            <View style={styles.btnRow}>
-                                <Text style={styles.btnTitle}>开店</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                    }
-
                 </ScrollView>
+                {/*开店*/}
+                {
+                    this.params.storeData ? null : <TouchableWithoutFeedback onPress={this._complete}>
+                        <View style={styles.btnRow}>
+                            <Text style={styles.btnTitle}>开店</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                }
             </View>
         );
 
@@ -192,78 +275,106 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
+    arrowImg: {
+        marginLeft: 10,
+        marginRight: 15
+    },
+    /*右  完成*/
     rightItem: {
         fontSize: 15,
         color: DesignRule.mainColor
     },
-    headerImg: {
-        width: 90,
-        height: 90,
-        borderRadius: 5,
-        backgroundColor: DesignRule.lineColor_inGrayBg
-    },
-    whitePanel: {
-        marginTop: 10,
-        height: 170,
-        marginHorizontal: 15,
-        borderRadius: 5,
+    // 照片
+    //更新
+    updateWhite: {
+        height: px2dp(60),
+        marginBottom: px2dp(10),
         backgroundColor: 'white',
-        shadowColor: 'rgba(102, 102, 102, 0.1)',
-        shadowOffset: {
-            width: 0,
-            height: 0
-        },
-        shadowRadius: 10,
-        shadowOpacity: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    uploadContainer: {
-        marginTop: 15,
-        width: 90,
-        height: 25,
-        borderRadius: 13,
-        backgroundColor: DesignRule.mainColor,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    uploadTitle: {
-        fontSize: 13,
-        color: DesignRule.bgColor
-    },
-    textInputContainer: {
-        marginTop: 10,
-        marginHorizontal: 15,
-        height: 44,
-        borderRadius: 5,
-        backgroundColor: 'white',
-        shadowColor: 'rgba(102, 102, 102, 0.1)',
-        shadowOffset: {
-            width: 0,
-            height: 0
-        },
-        shadowRadius: 10,
-        shadowOpacity: 1,
+        alignItems: 'center',
         flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    updateImg: {
+        width: px2dp(40),
+        height: px2dp(40),
+        borderRadius: px2dp(20),
+        marginLeft: 15
+    },
+    updateText: {
+        fontSize: 13,
+        color: DesignRule.textColor_secondTitle
+    },
+    //开店
+    whitePanel: {
+        height: px2dp(150),
+        marginBottom: px2dp(13),
+        backgroundColor: 'white',
+        justifyContent: 'center',
         alignItems: 'center'
     },
-    title: {
+    headerImg: {
+        width: px2dp(80),
+        height: px2dp(80),
+        borderRadius: px2dp(40)
+    },
+    //文本栏 名称 区域
+    textContainer: {
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        height: px2dp(40),
+        alignItems: 'center'
+    },
+    textTitle: {
         fontSize: 13,
-        color: DesignRule.textColor_mainTitle,
-        marginLeft: 11
+        paddingLeft: 15,
+        paddingRight: 30,
+        color: DesignRule.textColor_mainTitle
     },
     textInput: {
+        textAlign: 'right',
+        color: DesignRule.textColor_secondTitle,
         fontSize: 13,
-        marginLeft: 9,
-        marginRight: 11,
         flex: 1
     },
+
+    viewLine: {
+        height: 0.5, backgroundColor: DesignRule.lineColor_inWhiteBg
+    },
+
+    bntArea: {
+        position: 'absolute', bottom: 0, right: 0, left: 0, top: 0
+    },
+
+    //店铺简介
+    profileContainer: {
+        marginTop: 10,
+        backgroundColor: 'white',
+        height: px2dp(200)
+    },
+    profileTittle: {
+        marginTop: 10,
+        marginLeft: 15,
+        marginBottom: 10,
+        fontSize: 13,
+        color: DesignRule.textColor_mainTitle
+    },
+    profileText: {
+        flex: 1,
+        textAlignVertical: 'top',
+        paddingHorizontal: 15,
+        color: DesignRule.textColor_secondTitle
+    },
+    profileTextAbsolute: {
+        position: 'absolute',
+        bottom: 10,
+        right: 10,
+        color: DesignRule.textColor_instruction
+    },
+    //开店按钮
     btnRow: {
+        marginBottom: ScreenUtils.safeBottom,
         height: 50,
-        borderRadius: 25,
         backgroundColor: DesignRule.mainColor,
-        marginHorizontal: 43,
-        marginTop: ScreenUtils.autoSizeHeight(123),
         justifyContent: 'center',
         alignItems: 'center'
     },
