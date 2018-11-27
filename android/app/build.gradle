@@ -125,6 +125,8 @@ dependencies {
     api project(':react-native-geolocation')
     api project(':react-native-fetch-blob')
     api project(':rn_deviceinfo')
+    api project(':react-native-cookies')
+    api project(':react-native-webview-bridge')
     api project(path: ':commonlib')
     api project(path: ':qiyu_service')
     api project(path: ':qrcode')
