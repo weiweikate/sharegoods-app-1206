@@ -38,7 +38,6 @@ const arrow_top =  res.button.arrow_top;
 const task_bg = res.task_bg;
 const redEnvelope = res.redEnvelope;
 type Props = {};
-import WebViewBridge from '@mr/react-native-webview';
 export default class ShareTaskListPage extends BasePage<Props> {
 
     constructor(props) {
@@ -141,23 +140,6 @@ export default class ShareTaskListPage extends BasePage<Props> {
                 />
             </View>
         );
-    }
-
-    _render(){
-        return(
-            <WebViewBridge
-                token={'Q/FHsj8FwJOOwXFVmjsx3ma7vMzNmfwkV9fb3ATP2wrUIEMJ8D1ljGozxckLWy2ESJkHzel6a3gasklC5Apw7//6tkTH3vD9jx3zwPvjR3qgVUJuoBE9UmK6Lzxe8ZH1pD8ThhwSMyqSw/Uv5TMRxg=='}
-                style={{flex: 1}}
-                // source={this.props.source} //uri: 'http://172.16.10.117:9528/topic/first'
-                source={{uri: 'http://172.16.10.117:9528/topic/first'}}
-                // postMessage={msg => this._postMessage(msg)}
-                 navigateAppPage={(r, p) => {this.$navigate(r, p)}}
-                // onLoadStart={() => this._onLoadStart()}
-                // onLoadEnd={() => this._onLoadEnd()}
-                // onError={e => this._onError(e)}
-                // onNavigationStateChange={event => this._onNavigationStateChange(event)}
-            />
-        )
     }
 
     renderItemSeparator = () => {
