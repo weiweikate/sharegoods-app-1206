@@ -88,9 +88,11 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
 
     @ReactProp(name = "imgUrlArray")
     public void setImgUrlArray(final WenldBanner view, ReadableArray urls) {
-        view.setData(urls.toArrayList());
-        final int cacheSize = urls.size() * 300;
-        view.getViewPager().setOffscreenPageLimit(cacheSize);
+        if (urls != null) {
+            view.setData(urls.toArrayList());
+            final int cacheSize = urls.toArrayList().size() * 300;
+            view.getViewPager().setOffscreenPageLimit(cacheSize);
+        }
     }
 
     @ReactProp(name = "autoInterval")
