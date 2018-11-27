@@ -12,26 +12,27 @@ import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.Holder;
 import com.meeruu.sharegoods.ui.customview.wenldbanner.helper.ViewHolder;
 
 public class BannerHold implements Holder<String> {
-    private ViewHolder holder;
     private int space;
     private int radius;
 
     @Override
     public ViewHolder createView(Context context, ViewGroup parent, int position, int viewType) {
-        holder = ViewHolder.createViewHolder(context, parent, R.layout.layout_mr_banner, getViewType(position));
-        return holder;
+        return ViewHolder.createViewHolder(context, parent, R.layout.layout_mr_banner, getViewType(position));
     }
 
     @Override
     public void UpdateUI(Context context, ViewHolder viewHolder, int position, String imgUrl) {
-        SimpleDraweeView imageView = holder.getView(R.id.iv_banner);
+        SimpleDraweeView imageView = viewHolder.getView(R.id.iv_banner);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imageView.getLayoutParams();
         if (params.rightMargin != space) {
             params.leftMargin = space;
             params.rightMargin = space;
             imageView.setLayoutParams(params);
         }
-        ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, radius);
+        imageView.setTag(imgUrl);
+        if (imageView.getTag() != null && imageView.getTag().equals(imgUrl)) {
+            ImageLoadUtils.loadRoundNetImage(imgUrl, imageView, radius);
+        }
     }
 
     @Override
