@@ -52,7 +52,8 @@ const {
     mine_setting_icon_white,
     arrowRight,
     profile_banner,
-    mine_level_background
+    mine_level_background,
+    mine_icon_mentor
 } = res.homeBaseImg;
 
 
@@ -729,8 +730,8 @@ export default class MinePage extends BasePage {
     }
 
     renderMenu = () => {
-        let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_notificate, mine_icon_mission, mine_icon_discollect, mine_icon_discollect];
-        let leftText = ["邀请好友", "优惠券", "我的晋升", "收藏店铺", "帮助与客服", "地址", "我的推广", "我的任务", "秀场收藏", "测试h5的交互"];
+        let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_notificate, mine_icon_mission, mine_icon_discollect, mine_icon_discollect,mine_icon_mentor];
+        let leftText = ["邀请好友", "优惠券", "我的晋升", "收藏店铺", "帮助与客服", "地址", "我的推广", "我的任务", "秀场收藏", "测试h5的交互",'导师'];
 
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
