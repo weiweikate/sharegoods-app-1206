@@ -13,6 +13,7 @@ import BasePage from '../../../BasePage';
 import DateUtils from '../../../utils/DateUtils';
 import DesignRule from 'DesignRule';
 import res from '../res';
+
 const ArrowImg = res.shopSetting.xjt_03;
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -84,7 +85,7 @@ export default class ShopPageSettingPage extends BasePage {
                         }, {
                             key: '店铺成立时间',
                             showArrow: false,
-                            value: this.params.storeData.createTime && DateUtils.formatDate(this.params.storeData.createTime, 'yyyy-MM-dd')
+                            value: this.params.storeData.createTimeStr
                         }].map((item, index) => {
                             return this.renderRow(item, index);
                         })

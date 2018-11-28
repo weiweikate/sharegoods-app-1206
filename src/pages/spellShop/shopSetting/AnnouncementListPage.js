@@ -56,7 +56,7 @@ export default class AnnouncementListPage extends BasePage {
             netFailedProps: {
                 netFailedInfo: this.state.netFailedInfo,
                 reloadBtnClick: () => {
-                    this._loadPageData();
+                    this.loadPageData();
                 }
             }
         };

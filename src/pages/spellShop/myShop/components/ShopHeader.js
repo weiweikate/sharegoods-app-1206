@@ -21,11 +21,10 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 const { px2dp } = ScreenUtils;
 import StringUtils from '../../../../utils/StringUtils';
 import res from '../../res';
+import TextTicker from 'react-native-text-ticker';
 
 const HeaderBarBgImg = res.myShop.txbg_02;
 const StarImg = res.myShop.dj_03;
-const CCZImg = res.myShop.ccz_03;
-const ProgressImg = res.myShop.jdt_05;
 
 
 export default class ShopHeader extends Component {
@@ -42,9 +41,10 @@ export default class ShopHeader extends Component {
         //贡献度currentUserSettle/tradeBalance
         let {
             headUrl, name, storeNumber, storeStarId, userStatus,
-            tradeBalance = 0, bonusNeedMoney = 0, currentUserSettle = 0
+            tradeBalance = 0, bonusNeedMoney = 0, currentUserSettle = 0,
+            storeNoticeVO = {}, profile
         } = this.props.item;
-
+        const { content } = storeNoticeVO;
         tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
         currentUserSettle = StringUtils.isEmpty(currentUserSettle) ? 0 : parseFloat(currentUserSettle);
 
@@ -54,97 +54,81 @@ export default class ShopHeader extends Component {
                 i <= 2 && starsArr.push(i);
             }
         }
-
-        let unInShopHeight = userStatus === 1 ? 0 : 50;
-
-        return <View style={{ height: ScreenUtils.headerHeight + ScreenUtils.autoSizeWidth(279 - unInShopHeight) }}>
-            <ImageBackground source={HeaderBarBgImg}
-                             style={[styles.imgBg, { height: ScreenUtils.headerHeight + ScreenUtils.autoSizeWidth(173) }]}>
-                <View
-                    style={[styles.whiteBg, { height: ScreenUtils.autoSizeWidth(249 - unInShopHeight) }]}>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginTop: px2dp(25),
-                        marginLeft: px2dp(20),
-                        marginRight: px2dp(20)
-                    }}>
-                        <Image style={styles.headerImg}
-                               source={{ uri: StringUtils.isNoEmpty(headUrl) ? headUrl : '' }}/>
-                        <View style={styles.shopInContainer}>
-                            <Text style={styles.shopName}>{name || ''}</Text>
-                            <Text style={styles.shopId}>ID：{storeNumber || ''}</Text>
-                            <View style={styles.starRow}>
-                                <Text style={{ fontSize: 11, color: '#999999' }}>店铺星级：</Text>
-                                {
-                                    starsArr.map((item, index) => {
-                                        return <Image key={index} source={StarImg}/>;
-                                    })
-                                }
-                            </View>
-                        </View>
-                        {userStatus === 1 ?
-                            <TouchableOpacity onPress={this.props.onPressShopAnnouncement}
-                                              style={styles.announcementContainer}>
-                                <Text style={styles.announcementTitle}>店铺公告</Text>
-                            </TouchableOpacity> : null}
-                    </View>
-
-                    {userStatus === 1 ? <View style={styles.whiteBgTopRow}>
-                        <Image source={CCZImg} style={styles.whiteBgTopRowIcon}/>
-                        <Text style={styles.gongxian}>
-                            贡献度：{`${tradeBalance === 0 ? 0 : ((currentUserSettle / tradeBalance) * 100).toFixed(2)}`}%
-                        </Text>
-                    </View> : null}
-                    <View style={{
-                        marginHorizontal: px2dp(10),
-                        marginTop: userStatus === 1 ? px2dp(10) : px2dp(19),
-                        marginBottom: px2dp(15),
-                        backgroundColor: '#E4E4E4',
-                        height: 0.5
-                    }}/>
-
-                    <View style={{ flex: 1, alignItems: 'center' }}>
-                        <Text style={styles.progress}>{tradeBalance || 0}<Text style={{
-                            color: DesignRule.textColor_secondTitle
-                        }}>/{bonusNeedMoney || 0}</Text></Text>
-
-                        <ImageBackground source={ProgressImg} style={{
-                            overflow: 'hidden',
-                            marginTop: px2dp(5),
-                            borderRadius: px2dp(3.5),
-                            height: px2dp(7),
-                            width: 315 / 375 * SCREEN_WIDTH
-                        }}>
-                            <View style={[styles.progressBg, {
-                                marginLeft: 315 / 375 * SCREEN_WIDTH * (bonusNeedMoney === 0 ? 0 :
-                                    (tradeBalance / bonusNeedMoney > 1 ? 1 : tradeBalance / bonusNeedMoney))
-                            }]}/>
-                        </ImageBackground>
-
-                        <Text
-                            style={styles.chaju}>距离分红还差{(bonusNeedMoney - tradeBalance) > 0 ? (bonusNeedMoney - tradeBalance).toFixed(2) : 0.00}元</Text>
-
-                        {userStatus === 1 ?
-                            <Text style={styles.fenghong}>预计该次分红金可得<Text style={{ color: '#F00006', fontSize: 13 }}>
-                                {currentUserSettle || 0}
-                            </Text>元</Text> : null}
-
-                    </View>
+        return <View>
+            <Image source={HeaderBarBgImg}
+                   style={[styles.imgBg]}/>
+            <View style={{
+                height: content ? px2dp(20) : 0,
+                marginTop: ScreenUtils.headerHeight,
+                backgroundColor: 'rgba(255,255,255,0.4)',
+                justifyContent: 'center'
+            }}>
+                <View style={{ marginHorizontal: 15 }}>
+                    <TextTicker
+                        style={{ fontSize: 12, color: DesignRule.white }}
+                        loop
+                        bounce
+                        repeatSpacer={100}
+                        marqueeDelay={2000}
+                    >{content || ''}</TextTicker>
                 </View>
+            </View>
+            <View style={[styles.whiteBg]}>
+                <View style={{
+                    flexDirection: 'row',
+                    marginTop: px2dp(15),
+                    marginHorizontal: px2dp(20)
+                }}>
+                    <Image style={styles.headerImg}
+                           source={{ uri: StringUtils.isNoEmpty(headUrl) ? headUrl : '' }}/>
+                    <View style={styles.shopInContainer}>
+                        <Text style={styles.shopName}>{name || ''}</Text>
+                        <Text style={styles.shopId}>ID：{storeNumber || ''}</Text>
+                        <View style={styles.starRow}>
+                            <Text style={{ fontSize: 11, color: '#999999' }}>店铺星级：</Text>
+                            {
+                                starsArr.map((item, index) => {
+                                    return <Image key={index} source={StarImg}/>;
+                                })
+                            }
+                        </View>
+                    </View>
 
-            </ImageBackground>
-
-
+                    <TouchableOpacity onPress={this.props.onPressShopAnnouncement}
+                                      style={styles.announcementContainer}>
+                        <Text style={styles.announcementTitle}>店铺公告</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{
+                    marginTop: px2dp(15),
+                    marginBottom: px2dp(10),
+                    backgroundColor: '#E4E4E4',
+                    height: 0.5
+                }}/>
+                <Text style={{
+                    color: DesignRule.textColor_mainTitle,
+                    fontSize: 13,
+                    marginHorizontal: px2dp(20)
+                }}>店铺简介</Text>
+                <Text style={{
+                    color: DesignRule.textColor_secondTitle,
+                    fontSize: 12,
+                    marginHorizontal: px2dp(20),
+                    marginTop: px2dp(5), marginBottom: px2dp(15)
+                }}>{StringUtils.isNoEmpty(profile) ? profile : '店家很懒，没有介绍自己~'}</Text>
+            </View>
         </View>;
     }
 }
 
 const styles = StyleSheet.create({
     imgBg: {
+        position: 'absolute',
+        left: 0, top: 0,
         width: ScreenUtils.width
     },
     whiteBg: {
-        marginTop: ScreenUtils.headerHeight + px2dp(15),
+        marginTop: px2dp(25),
         backgroundColor: DesignRule.white,
         marginHorizontal: px2dp(15),
         borderRadius: px2dp(10)
@@ -186,37 +170,6 @@ const styles = StyleSheet.create({
     announcementTitle: {
         fontSize: 11,
         color: '#F00006'
-    },
-
-    whiteBgTopRow: {
-        marginTop: px2dp(27),
-        marginLeft: px2dp(10),
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    gongxian: {
-        marginLeft: 5,
-        fontSize: 13,
-        color: '#333333'
-    },
-    //0/10000
-    progress: {
-        color: '#F00006',
-        fontSize: 11
-    },
-    progressBg: {
-        height: px2dp(7),
-        backgroundColor: '#E4E4E4'
-    },
-    chaju: {
-        marginTop: px2dp(10),
-        color: DesignRule.textColor_secondTitle,
-        fontSize: 11
-    },
-    fenghong: {
-        marginTop: px2dp(10),
-        color: DesignRule.textColor_secondTitle,
-        fontSize: 12
     }
 });
 

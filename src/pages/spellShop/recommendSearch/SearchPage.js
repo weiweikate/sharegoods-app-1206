@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 
 import SearchBar from '../../../components/ui/searchBar/SearchBar';
-import SearchSegmentView from './components/SearchSegmentView';
 import SearchRecruitingRow from './components/SearchRecruitingRow';
 import SearchAllRow from './components/SearchAllRow';
 import BasePage from '../../../BasePage';
@@ -25,7 +24,7 @@ export default class SearchPage extends BasePage {
 
     // 导航配置
     $navigationBarOptions = {
-        title: '搜索店铺'
+        show:false
     };
 
     constructor(props) {
@@ -42,7 +41,6 @@ export default class SearchPage extends BasePage {
             loadingState: PageLoadingState.loading,
             netFailedInfo: {},
 
-            selIndex: 0,
             keyword: '',
             dataList: [{}]//默认一行显示状态页面使用 错误页 无数据页面
         };
@@ -65,7 +63,6 @@ export default class SearchPage extends BasePage {
         SpellShopApi.queryByStatusAndKeyword({
             page: this.state.page,
             size: this.state.pageSize,
-            status: this.state.selIndex === 0 ? 1 : 3,
             keyword: this.state.keyword
         }).then((data) => {
             this.state.page++;
@@ -96,7 +93,6 @@ export default class SearchPage extends BasePage {
             SpellShopApi.queryByStatusAndKeyword({
                 page: this.state.page,
                 size: this.state.pageSize,
-                status: this.state.selIndex === 0 ? 1 : 3,
                 keyword: this.state.keyword
             }).then((data) => {
                 this.state.page++;
@@ -126,7 +122,6 @@ export default class SearchPage extends BasePage {
         this.setState({
             dataList: [{}],
             loadingState: PageLoadingState.loading,
-            selIndex: index
         }, () => {
             this._loadPageData();
         });
@@ -140,10 +135,6 @@ export default class SearchPage extends BasePage {
         return <SearchBar onChangeText={this._onChangeText}
                           title={this.state.keyword}
                           placeholder={'可通过搜索店铺/ID进行查找'}/>;
-    };
-
-    _renderHeader = () => {
-        return <SearchSegmentView onPressAtIndex={this._onPressAtIndex}/>;
     };
 
     // 渲染行
