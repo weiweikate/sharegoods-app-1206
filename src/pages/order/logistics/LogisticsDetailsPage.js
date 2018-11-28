@@ -2,7 +2,6 @@ import React from 'react';
 import { Image, NativeModules, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BasePage from '../../../BasePage';
 import { RefreshList, UIImage, UIText } from '../../../components/ui';
-import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import LogisticsDetailItem from '../components/LogisticsDetailItem';
@@ -52,7 +51,7 @@ class LogisticsDetailsPage extends BasePage {
             <TouchableOpacity style={styles.logisticsNumber} onPress={() => this.copyToClipboard()}>
                 <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
                     <UIText value={this.state.expressName + '：' + this.state.expressNo}
-                            style={{ color: color.yellow_FF7, marginLeft: 18 }}/>
+                            style={{ color: DesignRule.yellow_FF7, marginLeft: 18 }}/>
                     <UIImage source={copy} style={{ height: 17, width: 17, marginRight: 15 }}/>
                 </View>
             </TouchableOpacity>
@@ -77,7 +76,7 @@ class LogisticsDetailsPage extends BasePage {
                         marginTop: 15,
                         marginLeft: 15
                     }}>本数据由</Text>
-                    <Text style={{ fontSize: 13, color: color.deliveryIncludeBlue, marginTop: 15 }}>百世汇通</Text>
+                    <Text style={{ fontSize: 13, color: DesignRule.deliveryIncludeBlue, marginTop: 15 }}>百世汇通</Text>
                     <Text style={{ fontSize: 13, color: DesignRule.textColor_mainTitle_222, marginTop: 15 }}>提供</Text>
                 </View>
 
@@ -130,7 +129,7 @@ class LogisticsDetailsPage extends BasePage {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Image source={Nowuliu} style={{ width: 92, height: 61 }}/>
-                <Text style={{ color: '#909090', fontSize: 15, marginTop: 25 }}>暂无物流信息</Text>
+                <Text style={{ color: DesignRule.color_90, fontSize: 15, marginTop: 25 }}>暂无物流信息</Text>
             </View>
         );
     }

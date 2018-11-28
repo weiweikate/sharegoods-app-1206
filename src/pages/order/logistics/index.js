@@ -1,6 +1,7 @@
 // import LogisticsInformationPage from './LogisticsInformationPage';
 // import LogisticsCompanyPage from './LogisticsCompanyPage';
 import LogisticsDetailsPage from './LogisticsDetailsPage';
+import CheckLogisticsPage from './CheckLogisticsPage';
 
 export default {
     moduleName: 'logistics',    //模块名称
@@ -8,5 +9,6 @@ export default {
         // LogisticsInformationPage,
         // LogisticsCompanyPage,
         LogisticsDetailsPage,
+        CheckLogisticsPage
     }
 };
