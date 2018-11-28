@@ -66,6 +66,7 @@
 
     <application
         android:name=".application.SophixStubApplication"
+        android:largeHeap="true"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"

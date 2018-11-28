@@ -162,7 +162,7 @@ export default class RegistPage extends BasePage {
             DeviceEventEmitter.emit('contentViewed',null);
             homeModule.loadHomeList()
             this.$navigate('login/login/GetRedpacketPage');
-
+            bridge.setCookies(data.data);
             //推送
             JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
         }).catch((data) => {
