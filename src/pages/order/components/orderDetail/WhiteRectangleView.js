@@ -12,6 +12,7 @@ import StringUtils from '../../../../utils/StringUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import { orderDetailModel } from '../../model/OrderDetailModel';
 const arrow_right = res.arrow_right;
 const logisticCar = res.car;
 
@@ -23,7 +24,7 @@ export default class WhiteRectangleView extends Component{
         return(
             <TouchableOpacity style={styles.topOrderDetail} onPress={() => {
                 this.props.nav('order/logistics/LogisticsDetailsPage', {
-                    orderNum: this.props.orderNum,
+                    orderNum: orderDetailModel.orderNum,
                     orderId: this.props.orderId,
                     expressNo: this.props.expressNo
                 })

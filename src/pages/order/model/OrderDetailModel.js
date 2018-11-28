@@ -279,7 +279,7 @@ class OrderDetailAfterServiceModel{
     @observable
     sellerTime:'';
     @observable
-    totalAsList=null;
+    totalAsList={};
 
 
     @action

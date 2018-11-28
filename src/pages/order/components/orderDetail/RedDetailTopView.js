@@ -9,24 +9,25 @@ import {
 } from '../../../../components/ui';
 import StringUtils from '../../../../utils/StringUtils';
 import ScreenUtils from '../../../../utils/ScreenUtils';
-import { orderStatusModel } from '../../model/OrderDetailModel';
+import { orderDetailAfterServiceModel } from '../../model/OrderDetailModel';
 import { observer } from 'mobx-react/native';
-
+import res from '../../res';
+const productDetailImg = res.productDetailImg;
 @observer
 export default class RedDetailTopView extends Component{
     constructor(props){
         super(props);
     }
     render(){
-        const {statusMsg} = orderStatusModel
+        // const {statusMsg} = orderStatusModel
         return(
             <View>
-                <ImageBackground style={styles.redRectangle} source={this.props.productDetailImg}>
+                <ImageBackground style={styles.redRectangle} source={productDetailImg}>
                     <UIImage source={this.props.leftTopIcon} style={{ height: 25, width: 25, marginTop: -22 }}/>
                     <View style={{ marginTop: -22 }}>
-                        <UIText value={this.props.buyState} style={styles.textStyle}/>
-                        {StringUtils.isNoEmpty(statusMsg) ?
-                            <UIText value={statusMsg}
+                        <UIText value={orderDetailAfterServiceModel.totalAsList.buyState} style={styles.textStyle}/>
+                        {StringUtils.isNoEmpty(orderDetailAfterServiceModel.moreDetail) ?
+                            <UIText value={orderDetailAfterServiceModel.moreDetail}
                                     style={{ color: 'white', fontSize: 13, marginLeft: 10 }}/> : null
                         }
                     </View>

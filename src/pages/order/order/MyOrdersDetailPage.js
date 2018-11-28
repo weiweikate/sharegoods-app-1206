@@ -34,7 +34,6 @@ const tobePayIcon = res.dingdanxiangqing_icon_fuk;
 const finishPayIcon = res.dingdanxiangqing_icon_yiwangcheng;
 const hasDeliverIcon = res.dingdanxiangqing_icon_yifehe;
 const refuseIcon = res.dingdanxiangqing_icon_guangbi;
-const productDetailImg = res.productDetailImg;
 const moreIcon = res.more_icon;
 const timeUtils= new TimeDownUtils();
 import { observer } from 'mobx-react/native';
@@ -78,8 +77,8 @@ export default class MyOrdersDetailPage extends BasePage {
         return (
             <View style={{ marginBottom: 10 }}>
                 <RedDetailTopView
-                    productDetailImg={productDetailImg}
                     leftTopIcon={leftIconArr[orderDetailModel.status]}
+                    moreDetail={orderDetailAfterServiceModel.moreDetail}
                 />
                 <WhiteRectangleView
                     orderNum={orderDetailModel.orderNum}
