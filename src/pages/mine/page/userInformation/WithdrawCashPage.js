@@ -185,7 +185,7 @@ export default class WithdrawCashPage extends BasePage {
                     visible={this.state.isShowModal}
 
                     title={'请输入支付密码'}
-                    message={""}
+                    message={'请输入6位支付密码'}
                 />
             </View>
         );

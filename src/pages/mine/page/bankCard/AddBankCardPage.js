@@ -126,13 +126,14 @@ class AddBankCardPage extends BasePage {
                     value={"确认"}
                     style={{
                         marginTop: 58,
-                        backgroundColor: this.state.bankName ? DesignRule.mainColor : DesignRule.textColor_placeholder,
+                        backgroundColor: (this.state.bankName && this.state.phone) ? DesignRule.mainColor : DesignRule.textColor_placeholder,
                         width: ScreenUtils.width - 86,
                         height: 48,
                         borderRadius: 25,
                         marginLeft: 43,
                         marginRight: 43
                     }}
+                    disabled={!(this.state.bankName && this.state.phone)}
                     onPress={() => this.confirm()}/>
             </View>
         );
@@ -154,9 +155,17 @@ class AddBankCardPage extends BasePage {
     };
     getBankType = (bankCard) => {
         if(StringUtils.isEmpty(bankCard)){
+            this.setState({
+                bankName:null,
+                cardType:null
+            })
             return;
         }
         if (bankCard.length < 6) {
+            this.setState({
+                bankName:null,
+                cardType:null
+            })
             return;
         }
         MineApi.findByBankCard({ cardnumber: bankCard }).then((response) => {
@@ -165,8 +174,17 @@ class AddBankCardPage extends BasePage {
                     bankName:response.data[0],
                     cardType:response.data[1]
                 })
+            }else {
+                this.setState({
+                    bankName:null,
+                    cardType:null
+                })
             }
         }).catch(e => {
+            this.setState({
+                bankName:null,
+                cardType:null
+            })
             Toast.hiddenLoading();
         });
     };
@@ -207,10 +225,7 @@ class AddBankCardPage extends BasePage {
 
         lastcommit = now;
 
-
-
-
-        // if (!StringUtils.checkBankCard(params.account)) {
+        // if (!StringUtils.checkBankCard(params.cardNo)) {
         //     alert();
         //     this.$toastShow('请输入正确的银行卡号');
         //     return;
