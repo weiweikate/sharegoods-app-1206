@@ -80,8 +80,6 @@ export default class MyOrdersDetailPage extends BasePage {
                 <RedDetailTopView
                     productDetailImg={productDetailImg}
                     leftTopIcon={leftIconArr[orderDetailModel.status]}
-                    buyState={orderDetailAfterServiceModel.totalAsList.buyState}
-                    moreDetail={orderDetailAfterServiceModel.moreDetail}
                 />
                 <WhiteRectangleView
                     orderNum={orderDetailModel.orderNum}
@@ -446,6 +444,9 @@ export default class MyOrdersDetailPage extends BasePage {
     };
     loadPageData() {
         Toast.showLoading();
+
+        orderDetailModel.loadDetailInfo(this.state.orderId, user.id, this.params.status, this.params.orderNum)
+
         OrderApi.lookDetail({
             id: this.state.orderId,
             userId: user.id,

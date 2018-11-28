@@ -1,9 +1,41 @@
-import { observable, action, computed } from 'mobx';
-// import OrderApi from '../api/orderApi';
-// import bridge from '../../../utils/bridge';
-// import user from '../../../model/user';
+import { observable, action, computed } from 'mobx'
+import OrderApi from '../api/orderApi'
+
+export const orderStatus = {
+    prePayment: 1,
+    didPayment: 2
+}
+
+export const orderStatusMessage = {
+    [orderStatus.prePayment] : '等待买家付款',
+    [orderStatus.didPayment] : '买家已付款'
+}
+
+class OrderStatusModel {
+    @observable status = 0
+    @observable statusMsg = 0
+}
+
+export const orderStatusModel = new OrderStatusModel()
 
 class OrderDetailModel {
+
+    @observable detail = {}
+    @observable statusDic = [{
+
+    }]
+    @action loadDetailInfo(orderId, id, status, orderNum) {
+        OrderApi.lookDetail({
+            id: orderId,
+            userId: id,
+            status: status,
+            orderNum:orderNum
+        }).then(rep => {
+            this.detail = rep.data
+            orderStatusModel.status = rep.data.status
+            orderStatusModel.statusMsg = orderStatusMessage[rep.data.status]
+        })
+    }
 
     @observable
     address = '';
