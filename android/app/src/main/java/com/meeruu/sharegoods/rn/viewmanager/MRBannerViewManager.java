@@ -22,7 +22,6 @@ import com.meeruu.sharegoods.ui.customview.wenldbanner.OnPageClickListener;
 import com.meeruu.sharegoods.ui.customview.wenldbanner.PageIndicatorListener;
 import com.meeruu.sharegoods.ui.customview.wenldbanner.WenldBanner;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +30,6 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
     protected static final String REACT_CLASS = "MRBannerView";
     public EventDispatcher eventDispatcher;
     private PageIndicatorListener listener;
-    private ArrayList urls;
     private boolean pageFocus;
     private WenldBanner banner;
 
@@ -45,9 +43,7 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
         eventDispatcher =
                 reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         banner = new WenldBanner(reactContext);
-        urls = new ArrayList<>();
-        urls.clear();
-        banner.setPages(new BannerHold(), urls);
+        banner.getViewPager().setPages(new BannerHold());
         initBannerEvent(banner);
         return banner;
     }
@@ -60,7 +56,7 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
 
             @Override
             public List getmDatas() {
-                return urls;
+                return null;
             }
 
             @Override
@@ -92,15 +88,17 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
 
     @ReactProp(name = "imgUrlArray")
     public void setImgUrlArray(final WenldBanner view, ReadableArray urls) {
-        if (this.urls != null) {
-            this.urls.clear();
-            this.urls.addAll(urls.toArrayList());
-        } else {
-            this.urls = urls.toArrayList();
+        if (urls != null) {
+            final List datas = urls.toArrayList();
+            view.setData(datas);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int cacheSize = datas.size() * 200;
+                    view.getViewPager().setOffscreenPageLimit(cacheSize);
+                }
+            }).start();
         }
-        final int cacheSize = this.urls.size() * 300;
-        view.getViewPager().setOffscreenPageLimit(cacheSize);
-        view.setData(this.urls);
     }
 
     @ReactProp(name = "autoInterval")
@@ -173,6 +171,10 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
     @Override
     public void onDropViewInstance(WenldBanner view) {
         view.getUiContact().removeListener(listener);
+        view.removeAllViews();
+        view = null;
+        eventDispatcher = null;
+        eventDispatcher = null;
         super.onDropViewInstance(view);
     }
 

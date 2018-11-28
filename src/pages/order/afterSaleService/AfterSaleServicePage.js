@@ -16,7 +16,7 @@ import {
 import BasePage from '../../../BasePage';
 import GoodsItem from '../components/GoodsGrayItem';
 import {
-    UIText, UIImage, AddPhotos, TakePhoneModal
+    UIText, UIImage, AddPhotos
 } from '../../../components/ui';
 import BottomSingleSelectModal from '../components/BottomSingleSelectModal';
 import StringUtils from '../../../utils/StringUtils';
@@ -25,7 +25,7 @@ import DateUtils from '../../../utils/DateUtils';
 import BusinessUtils from '../../mine/components/BusinessUtils';
 
 import OrderApi from '../api/orderApi';
-import SelectionPage from '../../home/product/SelectionPage';
+// import SelectionPage from '../../home/product/SelectionPage';
 import HomeAPI from '../../home/api/HomeAPI';
 import EmptyUtils from '../../../utils/EmptyUtils';
 import bridge from '../../../utils/bridge';
@@ -42,7 +42,7 @@ class AfterSaleServicePage extends BasePage {
             isShowSingleSelctionModal: false,
             isShowTakePhotoModal: false,
             pageType: this.params.pageType ? this.params.pageType : 0, //  0(退款),1(退货退款),2(换货)
-            activeProduct: ['', '退回商品需由买家承担运费，请确保不影响商品完好', '仅可更换同规格或者同价格的商品'],
+            activeProduct: ['', '退回商品需由买家承担运费，请确保商品不影响二次销售', '仅可更换同规格的商品，请确保退换商品不影响二次销售'],
             reason: ['退款原因', '退货原因', '换货原因'],
             inputReason: ['退款说明', '退货说明', '换货说明'],
             productData: {},// 里面包含了商品、订单id、价格等信息
@@ -137,34 +137,27 @@ class AfterSaleServicePage extends BasePage {
             case 2:
                 return (
                     <View>
-                        {this.renderWideLine()}
-                        <TouchableOpacity style={{
-                            height: 48,
-                            backgroundColor: 'white',
-                            justifyContent: 'space-between',
-                            flexDirection: 'row',
-                            alignItems: 'center'
-                        }} onPress={() => this.exchangeType()}>
-                            <UIText value={'更换型号'}
-                                    style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
-                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                                <UIText style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginRight: 5 }}
-                                        value={this.state.exchangeSpec || '请选择'}/>
-                                <UIImage source={arrow_right} style={{ height: 10, width: 7, marginRight: 15 }}/>
-                            </View>
-                        </TouchableOpacity>
-                        <View style={{ height: 30, alignItems: 'center', flexDirection: 'row' }}>
-                            <UIText value={'*'} style={{ fontSize: 12, color: DesignRule.mainColor, marginLeft: 15 }}/>
-                            <UIText value={'请确保退换商品不影响二次销售'}
-                                    style={{ fontSize: 12, color: DesignRule.textColor_instruction }}/>
-                        </View>
                         {/*{this.renderWideLine()}*/}
-                        {/*<AddressItem*/}
-                        {/*name={this.state.pageData.receiverName}*/}
-                        {/*phone={this.state.pageData.receiverNum}*/}
-                        {/*address={this.state.pageData.receiverAddress}*/}
-                        {/*/>*/}
-                        {/*<UIImage source={addressLine} style={{ width: ScreenUtils.width, height: 3 }}/>*/}
+                        {/*<TouchableOpacity style={{*/}
+                            {/*height: 48,*/}
+                            {/*backgroundColor: 'white',*/}
+                            {/*justifyContent: 'space-between',*/}
+                            {/*flexDirection: 'row',*/}
+                            {/*alignItems: 'center'*/}
+                        {/*}} onPress={() => this.exchangeType()}>*/}
+                            {/*<UIText value={'更换型号'}*/}
+                                    {/*style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>*/}
+                            {/*<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>*/}
+                                {/*<UIText style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginRight: 5 }}*/}
+                                        {/*value={this.state.exchangeSpec || '请选择'}/>*/}
+                                {/*<UIImage source={arrow_right} style={{ height: 10, width: 7, marginRight: 15 }}/>*/}
+                            {/*</View>*/}
+                        {/*</TouchableOpacity>*/}
+                        {/*<View style={{ height: 30, alignItems: 'center', flexDirection: 'row' }}>*/}
+                            {/*<UIText value={'*'} style={{ fontSize: 12, color: DesignRule.mainColor, marginLeft: 15 }}/>*/}
+                            {/*<UIText value={'请确保退换商品不影响二次销售'}*/}
+                                    {/*style={{ fontSize: 12, color: DesignRule.textColor_instruction }}/>*/}
+                        {/*</View>*/}
                     </View>
                 );
                 break;
@@ -236,6 +229,8 @@ class AfterSaleServicePage extends BasePage {
                 }}>
                     <UIText value={'上传凭证'}
                             style={{ color: DesignRule.textColor_mainTitle, fontSize: 13, marginLeft: 16 }}/>
+                    <UIText value={'（最多3张）'}
+                            style={{ color: DesignRule.textColor_placeholder, fontSize: 13}}/>
                 </View>
                 <View
                     style={{ paddingLeft: 20, paddingRight: 20, marginBottom: 38, backgroundColor: 'white' }}>
@@ -243,6 +238,7 @@ class AfterSaleServicePage extends BasePage {
                         imageArr={this.state.imageArr}
                         addPic={() => this.addPic()}
                         deletePic={(index) => this.deletePic(index)}
+                        maxNum={3}
                     />
                 </View>
             </View>
@@ -301,18 +297,18 @@ class AfterSaleServicePage extends BasePage {
                         this.setState({ returnReason: returnReasons[index] });
                     }}
                 />
-                <TakePhoneModal
-                    isShow={this.state.isShowTakePhotoModal}
-                    closeWindow={() => {
-                        this.setState({ isShowTakePhotoModal: false });
-                    }}
-                    takePhoto={() => {
-                        this.setState({ isShowTakePhotoModal: false });
-                    }}
-                    selectPhoto={() => {
-                        this.setState({ isShowTakePhotoModal: false });
-                    }}
-                />
+                {/*<TakePhoneModal*/}
+                    {/*isShow={this.state.isShowTakePhotoModal}*/}
+                    {/*closeWindow={() => {*/}
+                        {/*this.setState({ isShowTakePhotoModal: false });*/}
+                    {/*}}*/}
+                    {/*takePhoto={() => {*/}
+                        {/*this.setState({ isShowTakePhotoModal: false });*/}
+                    {/*}}*/}
+                    {/*selectPhoto={() => {*/}
+                        {/*this.setState({ isShowTakePhotoModal: false });*/}
+                    {/*}}*/}
+                {/*/>*/}
                 {/*<ExchangeTypeModal*/}
                 {/*isShow={this.state.isShowExchangeTypeModal}*/}
                 {/*detail={[{ title: '颜色分类', arr: ['金色', '红色', '黑色', '银色'] }, {*/}
@@ -326,7 +322,7 @@ class AfterSaleServicePage extends BasePage {
                 {/*this.setState({ isShowExchangeTypeModal: false });*/}
                 {/*}}*/}
                 {/*/>*/}
-                <SelectionPage ref={(ref) => this.SelectionPage = ref}/>
+                {/*<SelectionPage ref={(ref) => this.SelectionPage = ref}/>*/}
             </View>
 
         );

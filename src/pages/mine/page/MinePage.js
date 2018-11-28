@@ -729,8 +729,8 @@ export default class MinePage extends BasePage {
     }
 
     renderMenu = () => {
-        let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_notificate, mine_icon_mission, mine_icon_discollect];
-        let leftText = ["邀请好友", "优惠券", "我的晋升", "收藏店铺", "帮助与客服", "地址", "我的推广", "我的任务", "秀场收藏"];
+        let leftImage = [mine_icon_invite, mine_coupon_icon, mine_icon_data, mine_icon_favorite_shop, mine_icon_help_service, mine_icon_address, mine_icon_notificate, mine_icon_mission, mine_icon_discollect, mine_icon_discollect];
+        let leftText = ["邀请好友", "优惠券", "我的晋升", "收藏店铺", "帮助与客服", "地址", "我的推广", "我的任务", "秀场收藏", "测试h5的交互"];
 
         let arr = [];
         for (let i = 0; i < leftImage.length; i++) {
@@ -827,7 +827,7 @@ export default class MinePage extends BasePage {
                 this.props.navigation.navigate(RouterMap.ShowConnectPage);
                 break;
             //邀请评分
-            case 9:
+            case 10:
                 //
                 const appId = "1";
                 const url = `https://itunes.apple.com/cn/app/id${appId}?mt=8`;
@@ -837,6 +837,10 @@ export default class MinePage extends BasePage {
                     console.warn(e);
                     // Toast.toast('无法前往AppStore');
                 });
+                break;
+            //邀请评分
+            case 9:
+                this.props.navigation.navigate(RouterMap.WebViewDemo);
                 break;
             default:
 

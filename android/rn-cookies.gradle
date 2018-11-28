@@ -1,0 +1,35 @@
+apply plugin: 'com.android.library'
+
+buildscript {
+    repositories {
+        jcenter()
+//        google()
+    }
+}
+
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    api rootProject.ext.dependencies.support
+    // From node_modules
+    api(rootProject.ext.dependencies.rn) {
+        exclude group: 'com.android.support'
+    }
+    implementation rootProject.ext.dependencies.exoplayer
+    api(rootProject.ext.dependencies.exopOKhttp) {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    }
+    api 'com.squareup.okhttp3:okhttp:3.6.0'
+}
