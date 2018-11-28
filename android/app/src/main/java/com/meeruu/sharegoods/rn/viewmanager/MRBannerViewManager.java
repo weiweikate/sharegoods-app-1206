@@ -1,7 +1,6 @@
 package com.meeruu.sharegoods.rn.viewmanager;
 
 import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -16,6 +15,7 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.meeruu.commonlib.callback.ForegroundCallbacks;
 import com.meeruu.commonlib.utils.DensityUtils;
 import com.meeruu.sharegoods.ui.customview.wenldbanner.AutoTurnViewPager;
 import com.meeruu.sharegoods.ui.customview.wenldbanner.OnPageClickListener;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @ReactModule(name = MRBannerViewManager.REACT_CLASS)
-public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> implements LifecycleObserver {
+public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> {
     protected static final String REACT_CLASS = "MRBannerView";
     public EventDispatcher eventDispatcher;
     private PageIndicatorListener listener;
@@ -45,6 +45,7 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
         banner = new WenldBanner(reactContext);
         banner.getViewPager().setPages(new BannerHold());
         initBannerEvent(banner);
+        initLifeEvent();
         return banner;
     }
 
@@ -86,18 +87,31 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
         banner.setPageIndicatorListener(listener);
     }
 
+    private void initLifeEvent() {
+        ForegroundCallbacks.get().addListener(new ForegroundCallbacks.Listener() {
+            @Override
+            public void onBecameForeground() {
+                if (pageFocus) {
+                    if (banner != null && !banner.isRunning()) {
+                        banner.getViewPager().setSuperCurrentItem(banner.getViewPager().getAdapter().startAdapterPosition(0), false);
+                        banner.startTurn();
+                    }
+                }
+            }
+
+            @Override
+            public void onBecameBackground() {
+                banner.getViewPager().stopTurning();
+            }
+        });
+    }
+
     @ReactProp(name = "imgUrlArray")
     public void setImgUrlArray(final WenldBanner view, ReadableArray urls) {
         if (urls != null) {
             final List datas = urls.toArrayList();
             view.setData(datas);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    int cacheSize = datas.size() * 200;
-                    view.getViewPager().setOffscreenPageLimit(cacheSize);
-                }
-            }).start();
+            view.getViewPager().setOffscreenPageLimit(datas.size() * 100);
         }
     }
 
@@ -128,6 +142,7 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
         this.pageFocus = focuse;
         if (focuse) {
             if (!view.isRunning()) {
+                banner.getViewPager().setSuperCurrentItem(banner.getViewPager().getAdapter().startAdapterPosition(0), false);
                 view.startTurn();
             }
         } else {
@@ -182,6 +197,7 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
     public void onResume() {
         if (pageFocus) {
             if (banner != null && !banner.isRunning()) {
+                banner.getViewPager().setSuperCurrentItem(banner.getViewPager().getAdapter().startAdapterPosition(0), false);
                 banner.startTurn();
             }
         }

@@ -95,7 +95,6 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
      * @return
      */
     public int controlAdapterPosition(int adapterPosition) {
-
         if (realCanLoop) {
             if (adapterPosition > getRealCount() * 400 || adapterPosition < getRealCount() * 200) {
                 return startAdapterPosition(adapterPostiton2RealDataPosition(adapterPosition));
@@ -131,7 +130,7 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
 
     public void setCanLoop(boolean canLoop) {
         this.canLoop = canLoop;
-        boolean loop = canLoop ? (getRealCount() > 0 ? true : false) : false;
+        boolean loop = canLoop ? (getRealCount() > 1 ? true : false) : false;
         if (realCanLoop ^ loop) {
             realCanLoop = loop;
             mRealCanLoopObservable.notifyChanged();
@@ -157,10 +156,6 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
         this.holderCreator = holderCreator;
         this.mDatas = datas;
         setCanLoop(true);
-    }
-
-    public Holder getHolderCreator() {
-        return this.holderCreator;
     }
 
     public void setmDatas(List<T> mDatas) {
@@ -225,4 +220,7 @@ public class WenldPagerAdapter<T> extends PagerAdapter {
         mRealCanLoopObservable.registerObserver(observer);
     }
 
+    public Holder getHolderCreator() {
+        return holderCreator;
+    }
 }

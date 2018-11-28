@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
+import StringUtils from '../../../../utils/StringUtils';
 
 
 export default class SearchBar extends Component {
@@ -29,7 +30,6 @@ export default class SearchBar extends Component {
 
 
     onChangeText = (text) => {
-        text = text.replace(/(^\s*)/g, "")//去首空格
         if (text !== '') {
             this.setState({
                 isShowInputClear: true,
@@ -42,12 +42,14 @@ export default class SearchBar extends Component {
             });
         }
 
+        text = StringUtils.trim(text)
         if (this.props.onChangeText) {
             this.props.onChangeText(text);
         }
     };
 
     onSubmitEditing = (text) => {
+        text = StringUtils.trim(text)
         //把输入框中的文字传给父组件
         if (this.props.onSubmitEditing) {
             this.props.onSubmitEditing(text);
