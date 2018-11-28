@@ -9,6 +9,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import StringUtils from '../../../../utils/StringUtils';
 
 const {
     button: {
@@ -32,12 +33,21 @@ export default class ResultSearchNav extends Component {
         this.setState({
             inputText: text
         }, () => {
+            text = StringUtils.trim(text)
             this.props.onChangeText(text);
         });
     };
 
+    onSubmitEditing = (text) => {
+        text = StringUtils.trim(text)
+        //把输入框中的文字传给父组件
+        if (this.props.onSubmitEditing) {
+            this.props.onSubmitEditing(text);
+        }
+    };
+
+    //点击key列表赋值
     changeText = (text) => {
-        text = text.replace(/(^\s*)/g, "")//去首空格
         this.setState({
             inputText: text
         });
@@ -58,7 +68,7 @@ export default class ResultSearchNav extends Component {
                                    placeholderTextColor={DesignRule.textColor_hint}
                                    value={this.state.inputText}
                                    onChangeText={this.onChangeText}
-                                   onSubmitEditing={this.props.onSubmitEditing}
+                                   onSubmitEditing={(event) => this.onSubmitEditing(event.nativeEvent.text)}
                                    onFocus={this.props.onFocus}
                         />
                     </View>
