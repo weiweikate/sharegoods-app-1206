@@ -3,7 +3,9 @@ package com.meeruu.sharegoods.rn.viewmanager;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -16,22 +18,25 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
+import com.meeruu.commonlib.customview.loopbanner.ConvenientBanner;
+import com.meeruu.commonlib.customview.loopbanner.holder.CBViewHolderCreator;
+import com.meeruu.commonlib.customview.loopbanner.holder.Holder;
+import com.meeruu.commonlib.customview.loopbanner.listener.OnItemClickListener;
+import com.meeruu.commonlib.customview.loopbanner.listener.OnPageChangeListener;
 import com.meeruu.commonlib.utils.DensityUtils;
-import com.meeruu.sharegoods.ui.customview.wenldbanner.AutoTurnViewPager;
-import com.meeruu.sharegoods.ui.customview.wenldbanner.OnPageClickListener;
-import com.meeruu.sharegoods.ui.customview.wenldbanner.PageIndicatorListener;
-import com.meeruu.sharegoods.ui.customview.wenldbanner.WenldBanner;
+import com.meeruu.sharegoods.R;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @ReactModule(name = MRBannerViewManager.REACT_CLASS)
-public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> {
+public class MRBannerViewManager extends SimpleViewManager<ConvenientBanner<String>> {
     protected static final String REACT_CLASS = "MRBannerView";
     public EventDispatcher eventDispatcher;
-    private PageIndicatorListener listener;
     private boolean pageFocus;
-    private WenldBanner banner;
+    private ConvenientBanner banner;
+    private List datas;
 
     @Override
     public String getName() {
@@ -39,43 +44,46 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
     }
 
     @Override
-    protected WenldBanner createViewInstance(final ThemedReactContext reactContext) {
+    protected ConvenientBanner createViewInstance(final ThemedReactContext reactContext) {
         eventDispatcher =
                 reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
-        banner = new WenldBanner(reactContext);
-        banner.getViewPager().setPages(new BannerHold());
+        banner = new ConvenientBanner(reactContext);
+        datas = new ArrayList();
+        banner.setPages(new CBViewHolderCreator() {
+            @Override
+            public Holder createHolder(View itemView) {
+                return new BannerViewHolder(itemView);
+            }
+
+            @Override
+            public int getLayoutId() {
+                return R.layout.layout_mr_banner;
+            }
+        }, datas);
         initBannerEvent(banner);
         initLifeEvent();
         return banner;
     }
 
-    private void initBannerEvent(final WenldBanner banner) {
-        listener = new PageIndicatorListener() {
+    private void initBannerEvent(final ConvenientBanner banner) {
+        banner.setOnPageChangeListener(new OnPageChangeListener() {
             @Override
-            public void setmDatas(List mDatas) {
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
             }
 
             @Override
-            public List getmDatas() {
-                return null;
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
             }
 
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
+            public void onPageSelected(int index) {
                 eventDispatcher.dispatchEvent(
-                        new onDidScrollToIndexEvent(banner.getId(), position));
+                        new onDidScrollToIndexEvent(banner.getId(), index));
             }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        };
-        banner.setOnItemClickListener(new OnPageClickListener() {
+        });
+        banner.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 banner.stopTurning();
@@ -84,7 +92,6 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
                                 banner.getId(), position));
             }
         });
-        banner.setPageIndicatorListener(listener);
     }
 
     private void initLifeEvent() {
@@ -92,58 +99,62 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
             @Override
             public void onBecameForeground() {
                 if (pageFocus) {
-                    if (banner != null && !banner.isRunning()) {
-                        banner.getViewPager().setSuperCurrentItem(banner.getViewPager().getAdapter().startAdapterPosition(0), false);
-                        banner.startTurn();
+                    if (banner != null && !banner.isTurning()) {
+//                        banner.getViewPager().setSuperCurrentItem(banner.getViewPager().getAdapter().startAdapterPosition(0), false);
+                        banner.startTurning();
                     }
                 }
             }
 
             @Override
             public void onBecameBackground() {
-                banner.getViewPager().stopTurning();
+                banner.stopTurning();
             }
         });
     }
 
     @ReactProp(name = "imgUrlArray")
-    public void setImgUrlArray(final WenldBanner view, ReadableArray urls) {
+    public void setImgUrlArray(final ConvenientBanner view, ReadableArray urls) {
         if (urls != null) {
-            final List datas = urls.toArrayList();
-            view.setData(datas);
-            view.getViewPager().setOffscreenPageLimit(datas.size() * 100);
+            if (datas.size() > 0) {
+                datas.clear();
+                datas.addAll(urls.toArrayList());
+            } else {
+                datas = urls.toArrayList();
+            }
+            view.notifyDataSetChanged();
         }
     }
 
     @ReactProp(name = "autoInterval")
-    public void setAutoInterval(WenldBanner view, Integer interval) {
-        view.setAutoTurnTime(interval * 1000);
+    public void setAutoInterval(ConvenientBanner view, Integer interval) {
+        view.startTurning(interval * 1000);
     }
 
     @ReactProp(name = "autoLoop")
-    public void setAutoLoop(WenldBanner view, Boolean autoLoop) {
+    public void setAutoLoop(ConvenientBanner view, Boolean autoLoop) {
         view.setCanLoop(autoLoop);
     }
 
     @ReactProp(name = "tittleArray")
-    public void setTittleArray(WenldBanner view, ReadableArray titles) {
+    public void setTittleArray(ConvenientBanner view, ReadableArray titles) {
     }
 
     @ReactProp(name = "itemWidth")
-    public void setItemWidth(WenldBanner view, Integer width) {
-        AutoTurnViewPager viewPager = view.getViewPager();
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(DensityUtils.dip2px(width), ViewGroup.LayoutParams.MATCH_PARENT);
-        params.gravity = Gravity.CENTER;
-        viewPager.setLayoutParams(params);
+    public void setItemWidth(ConvenientBanner view, Integer width) {
+//        AutoTurnViewPager viewPager = view.getViewPager();
+//        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(DensityUtils.dip2px(width), ViewGroup.LayoutParams.MATCH_PARENT);
+//        params.gravity = Gravity.CENTER;
+//        viewPager.setLayoutParams(params);
     }
 
     @ReactProp(name = "pageFocused")
-    public void pageFocused(WenldBanner view, Boolean focuse) {
+    public void pageFocused(ConvenientBanner view, Boolean focuse) {
         this.pageFocus = focuse;
         if (focuse) {
-            if (!view.isRunning()) {
-                banner.getViewPager().setSuperCurrentItem(banner.getViewPager().getAdapter().startAdapterPosition(0), false);
-                view.startTurn();
+            if (!view.isTurning()) {
+//                banner.getViewPager().setSuperCurrentItem(banner.getViewPager().getAdapter().startAdapterPosition(0), false);
+                view.startTurning();
             }
         } else {
             view.stopTurning();
@@ -151,15 +162,15 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
     }
 
     @ReactProp(name = "itemSpace")
-    public void setItemSpace(WenldBanner view, Integer space) {
-        AutoTurnViewPager viewPager = view.getViewPager();
-        ((BannerHold) viewPager.getAdapter().getHolderCreator()).setSpace(space);
+    public void setItemSpace(ConvenientBanner view, Integer space) {
+//        AutoTurnViewPager viewPager = view.getViewPager();
+//        ((BannerHold) viewPager.getAdapter().getHolderCreator()).setSpace(space);
     }
 
     @ReactProp(name = "itemRadius")
-    public void setItemRadius(WenldBanner view, Integer radius) {
-        AutoTurnViewPager viewPager = view.getViewPager();
-        ((BannerHold) viewPager.getAdapter().getHolderCreator()).setRadius(radius);
+    public void setItemRadius(ConvenientBanner view, Integer radius) {
+//        AutoTurnViewPager viewPager = view.getViewPager();
+//        ((BannerHold) viewPager.getAdapter().getHolderCreator()).setRadius(radius);
     }
 
 
@@ -184,8 +195,7 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
     }
 
     @Override
-    public void onDropViewInstance(WenldBanner view) {
-        view.getUiContact().removeListener(listener);
+    public void onDropViewInstance(ConvenientBanner view) {
         view.removeAllViews();
         view = null;
         eventDispatcher = null;
@@ -196,9 +206,9 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void onResume() {
         if (pageFocus) {
-            if (banner != null && !banner.isRunning()) {
-                banner.getViewPager().setSuperCurrentItem(banner.getViewPager().getAdapter().startAdapterPosition(0), false);
-                banner.startTurn();
+            if (banner != null && !banner.isTurning()) {
+//                banner.getViewPager().setSuperCurrentItem(banner.getViewPager().getAdapter().startAdapterPosition(0), false);
+                banner.startTurning();
             }
         }
     }
