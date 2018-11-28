@@ -12,6 +12,7 @@ const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule'
 import ImageLoad from '@mr/react-native-image-placeholder'
 import TimerMixin from 'react-timer-mixin'
+import OssImage from 'OssImage';
 
 export default class ShowHotItem extends Component {
     state = {
@@ -59,7 +60,7 @@ export default class ShowHotItem extends Component {
         <View style={styles.profile}>
             <Text numberOfLines={2} style={styles.title}>{data.pureContent ? data.pureContent.slice(0, 100) : ''}</Text>
             <View style={styles.row}>
-                <Image style={styles.portrait} source={{uri:data.userHeadImg ? data.userHeadImg : ''}}/>
+                <OssImage style={styles.portrait} source={{uri:data.userHeadImg ? data.userHeadImg : ''}}/>
                 <Text style={styles.name}>{data.userName && data.userName.length > 5 ? data.userName.slice(0, 5) + '...' : data.userName}</Text>
                 <View style={{flex: 1}}/>
                 <Text style={styles.time}>{data.time}</Text>

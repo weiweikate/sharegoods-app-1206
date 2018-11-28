@@ -221,6 +221,43 @@ function encryptPhone(s) {
     return s.substr(0, 3) + '****' + s.substr(7);
 }
 
+function parsingRoute(s) {
+    let index1 = s.indexOf('?');
+    let result = {};
+    if (index1 === -1) {
+        result = { routeName: s };
+    } else {
+        let routeName = s.slice(0, index1);
+        let subStr = s.slice(index1 + 1, s.length);
+        let keyVlaues = subStr.split('&');
+        keyVlaues = keyVlaues.filter((item) => {
+            if (item.indexOf('=') !== -1 && item.indexOf('=') !== item.length - 1 && item.indexOf('=') !== 0) {
+                // '='存在且不是最后一个位
+                return true;
+            } else {
+                return false;
+            }
+        });
+        let params = null;
+        keyVlaues.forEach((item) => {
+            let index = item.indexOf('=');
+            let key = item.slice(0, index);
+            let value = item.slice(index + 1, item.length);
+            if (params) {
+
+            } else {
+                params = {};
+            }
+            params[key] = value;
+
+        });
+        result = { routeName, params };
+    }
+
+    return result;
+}
+
+
 export default {
     isEmpty,
     isNoEmpty,
@@ -237,7 +274,8 @@ export default {
     clipboardGetString,
     trim,
     encryptPhone,
-    formatPhoneNumber
+    formatPhoneNumber,
+    parsingRoute
 };
 
 

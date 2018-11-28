@@ -84,7 +84,22 @@ const api = {
     //根据ID查询帮助有用/无用数量
     findQuestionEffectById:['/help/helpQuestion/findQuestionEffectById',{ method: 'get' }],
     //
-    payPromotion:['/promotion/promotionPromoter/pay',{method:'get'}]
+    payPromotion:['/promotion/promotionPromoter/pay',{method:'get'}],
+    //查询银行卡
+    getUserBankInfo:['/user/userBankInfo/findUserBankInfoByUserId',{method:'get'}],
+    //删除银行卡
+    deleteUserBank:['/user/userBankInfo/deleteUserBankInfoByUserId',{method:'get'}],
+    //添加银行卡
+    addUserBank:['/user/userBankInfo/addUserBankInfo',{method:'post'}],
+    //申请提现
+    userWithdrawApply:['/user/withdraw/withdrawApply',{method:'post'}],
+    //查询银行卡信息
+    findByBankCard:['/user/userBankInfo/findByBankCard',{method:'get'}],
+    //费率查询
+    queryRate:['/user/withdraw/queryRate',{method:'get'}],
+    //最后一次提现银行卡信息
+    getLastBankInfo:['/user/withdraw/lastBankInfo',{method:'get'}]
+
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';

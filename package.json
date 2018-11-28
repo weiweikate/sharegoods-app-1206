@@ -21,6 +21,9 @@
     "dependencies": {
         "@mr/react-native-geolocation": "0.0.10",
         "@mr/react-native-image-placeholder": "0.2.1",
+        "@mr/react-native-webview": "0.2.4",
+        "react-native-webview-bridge": "^0.40.1",
+        "@mr/react-native-cookies": "0.0.2",
         "axios": "0.18.0",
         "jsrsasign": "8.0.12",
         "mobx": "4.3.1",
