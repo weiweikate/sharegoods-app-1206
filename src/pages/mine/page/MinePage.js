@@ -5,8 +5,8 @@ import {
     ScrollView,
     ImageBackground,
     Image,
-    Platform,
-    Linking,
+    // Platform,
+    // Linking,
     Text,
     TouchableWithoutFeedback,
     RefreshControl, DeviceEventEmitter
@@ -827,21 +827,23 @@ export default class MinePage extends BasePage {
                 this.props.navigation.navigate(RouterMap.ShowConnectPage);
                 break;
             //邀请评分
-            case 10:
-                //
-                const appId = "1";
-                const url = `https://itunes.apple.com/cn/app/id${appId}?mt=8`;
-                Platform.OS === "ios" && Linking.canOpenURL(url).then(() => {
-                    Linking.openURL(url);
-                }).catch(e => {
-                    console.warn(e);
-                    // Toast.toast('无法前往AppStore');
-                });
-                break;
+            // case 10:
+            //     //
+            //     const appId = "1";
+            //     const url = `https://itunes.apple.com/cn/app/id${appId}?mt=8`;
+            //     Platform.OS === "ios" && Linking.canOpenURL(url).then(() => {
+            //         Linking.openURL(url);
+            //     }).catch(e => {
+            //         console.warn(e);
+            //         // Toast.toast('无法前往AppStore');
+            //     });
+            //     break;
             //邀请评分
             case 9:
                 this.props.navigation.navigate(RouterMap.WebViewDemo);
                 break;
+            case 10:
+                this.props.navigation.navigate(RouterMap.MyMentorPage)
             default:
 
                 break;
