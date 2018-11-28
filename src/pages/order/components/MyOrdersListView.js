@@ -14,8 +14,8 @@ import userOrderNum from '../../../model/userOrderNum';
 import DesignRule from 'DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
-const emptyIcon = res.kongbeuye_dingdan;
 
+const emptyIcon = res.kongbeuye_dingdan;
 const isFirst = true;
 export default class MyOrdersListView extends Component {
     constructor(props) {
@@ -31,7 +31,7 @@ export default class MyOrdersListView extends Component {
             isShowReceiveGoodsModal: false,
             menu: {},
             index: -1,
-            CONFIG:[]
+            CONFIG: []
         };
         this.currentPage = 1;
         this.noMoreData=false;
@@ -73,7 +73,7 @@ export default class MyOrdersListView extends Component {
         return (
             <View style={{ flex: 1, backgroundColor: DesignRule.bgColor }}>
                 <RefreshList
-                    style={{marginTop:10}}
+                    style={{ marginTop: 10 }}
                     data={this.state.viewData}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
@@ -103,7 +103,7 @@ export default class MyOrdersListView extends Component {
                     yes={() => {
                         this.setState({ isShowDeleteOrderModal: false });
                         console.log(this.state.menu);
-                        if (this.state.viewData[this.state.index].orderStatus === 6||this.state.viewData[this.state.index].orderStatus === 7||this.state.viewData[this.state.index].orderStatus === 8) {
+                        if (this.state.viewData[this.state.index].orderStatus === 6 || this.state.viewData[this.state.index].orderStatus === 7 || this.state.viewData[this.state.index].orderStatus === 8) {
                             Toast.showLoading();
                             OrderApi.deleteClosedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
                                 Toast.hiddenLoading();
@@ -113,7 +113,7 @@ export default class MyOrdersListView extends Component {
                                 Toast.hiddenLoading();
                                 NativeModules.commModule.toast(e.msg);
                             });
-                        } else if (this.state.viewData[this.state.index].orderStatus === 4||this.state.viewData[this.state.index].orderStatus === 5) {
+                        } else if (this.state.viewData[this.state.index].orderStatus === 4 || this.state.viewData[this.state.index].orderStatus === 5) {
                             Toast.showLoading();
                             OrderApi.deleteCompletedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
                                 Toast.hiddenLoading();
@@ -176,7 +176,7 @@ export default class MyOrdersListView extends Component {
                             Toast.hiddenLoading();
                             if (response.code === 10000) {
                                 NativeModules.commModule.toast('订单已取消');
-                                index=-1;
+                                index = -1;
                                 this.onRefresh();
                             } else {
                                 NativeModules.commModule.toast(response.msg);
@@ -239,28 +239,29 @@ export default class MyOrdersListView extends Component {
 
             });
             this.setState({ viewData: arrData });
-        }else{
-            this.noMoreData=true;
+        } else {
+            this.noMoreData = true;
             // NativeModules.commModule.toast('无更多数据');
         }
     };
 
     componentDidMount() {
         //网络请求，业务处理
-        if(isFirst){
+        if (isFirst) {
             this.getDataFromNetwork();
         }
         this.getCancelOrder();
         DeviceEventEmitter.addListener('OrderNeedRefresh', () => this.onRefresh());
         this.timeDown();
     }
-    getCancelOrder(){
-        let arrs=[];
+
+    getCancelOrder() {
+        let arrs = [];
         MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(res => {
             if (res.code == 10000 && StringUtils.isNoEmpty(res.data)) {
-                res.data.map((item,i)=>{
-                    arrs.push(item.value)
-                })
+                res.data.map((item, i) => {
+                    arrs.push(item.value);
+                });
                 this.setState({
                     CONFIG: arrs
                 });
@@ -295,12 +296,12 @@ export default class MyOrdersListView extends Component {
         if (this.props.orderNum) {
             OrderApi.queryPage({
                 // orderNum: this.props.orderNum,
-                condition:this.props.orderNum,
+                condition: this.props.orderNum,
                 page: this.currentPage,
                 size: constants.PAGESIZE
             }).then((response) => {
                 Toast.hiddenLoading();
-                this.isFirst=false;
+                this.isFirst = false;
                 this.getList(response.data);
                 this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
             }).catch(e => {
@@ -324,12 +325,12 @@ export default class MyOrdersListView extends Component {
                     this.getList(response.data);
                     console.log(response);
                     this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
-                    this.isFirst=false;
+                    this.isFirst = false;
                 }).catch(e => {
                     Toast.hiddenLoading();
                     NativeModules.commModule.toast(e.msg);
                     if (e.code === 10009) {
-                       this.props.nav('login/login/LoginPage', {
+                        this.props.nav('login/login/LoginPage', {
                             callback: () => {
                                 this.getDataFromNetwork();
                             }
@@ -339,7 +340,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 1:
                 OrderApi.queryPage({ ...params, status: 1 }).then((response) => {
-                    this.isFirst=false;
+                    this.isFirst = false;
                     Toast.hiddenLoading();
                     this.getList(response.data);
                     this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
@@ -357,7 +358,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 2:
                 OrderApi.queryPage({ ...params, status: 2 }).then((response) => {
-                    this.isFirst=false;
+                    this.isFirst = false;
                     Toast.hiddenLoading();
                     this.getList(response.data);
                     this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
@@ -376,7 +377,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 3:
                 OrderApi.queryPage({ ...params, status: 3 }).then((response) => {
-                    this.isFirst=false;
+                    this.isFirst = false;
                     Toast.hiddenLoading();
                     this.getList(response.data);
                     this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
@@ -395,7 +396,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 4:
                 OrderApi.queryPage({ ...params, status: 4 }).then((response) => {
-                    this.isFirst=false;
+                    this.isFirst = false;
                     Toast.hiddenLoading();
                     this.getList(response.data);
                     this.setState({ isEmpty: !(response.data && StringUtils.isNoEmpty(response.data) && StringUtils.isNoEmpty(response.data.data)) });
@@ -430,13 +431,15 @@ export default class MyOrdersListView extends Component {
     };
 
     onRefresh = () => {
-        console.log('onRefresh',this.currentPage);
+        console.log('onRefresh', this.currentPage);
         this.currentPage = 1;
         this.getDataFromNetwork();
     };
 
     onLoadMore = () => {
-        if(!this.noMoreData){
+
+        // console.log('onLoadMore',this.currentPage++);
+        if (!this.noMoreData) {
             this.currentPage++;
             this.getDataFromNetwork();
         }
@@ -471,10 +474,10 @@ export default class MyOrdersListView extends Component {
         this.setState({ menu: menu, index: index });
         switch (menu.id) {
             case 1:
-                if(this.state.CONFIG.length>0){
+                if (this.state.CONFIG.length > 0) {
                     this.setState({ isShowSingleSelctionModal: true });
                     this.cancelModal && this.cancelModal.open();
-                }else{
+                } else {
                     NativeModules.commModule.toast('无取消理由');
                 }
 

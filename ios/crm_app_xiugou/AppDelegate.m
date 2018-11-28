@@ -29,6 +29,8 @@
   [self JR_ConfigVC:application didFinishLaunchingWithOptions:launchOptions];
   [self JR_ConfigAPNS:application didFinishLaunchingWithOptions:launchOptions];
   [self addLaunchToWindow];
+  
+ 
   return YES;
 }
 - (void)addLaunchToWindow
@@ -42,6 +44,8 @@
 }
 - (void)removeLaunch
 {
+  //跳转指定页可以在这里写,启动时候
+//   [[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"meeruu://path/DebugPanelPage"]];
   [UIView animateWithDuration:1.5 animations:^{
     self.launchImgView.alpha = 0;
     self.launchImgView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);

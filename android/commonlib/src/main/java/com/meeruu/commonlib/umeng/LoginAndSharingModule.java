@@ -546,7 +546,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
 
 
     public static void drawInviteFriendsImage(final Context context, final String url, final Callback success, final Callback fail){
-        Bitmap result = Bitmap.createBitmap(750, (int) (1334), Bitmap.Config.ARGB_8888);
+        Bitmap result = Bitmap.createBitmap(750, (int) (1334), Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.invite_friends_bg);
@@ -561,8 +561,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         //获取想要缩放的matrix
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight);
-        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-        canvas.drawBitmap(bitmap,  0,0,paint);
+        Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        canvas.drawBitmap(newbitmap,  0,0,paint);
         canvas.drawBitmap(qrBitmap, 225, 620, paint);
         String path = saveImageToCache(context, result, "inviteFriends.png");
 
@@ -576,6 +576,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         result.recycle();
         bitmap.recycle();
         qrBitmap.recycle();
+        newbitmap.recycle();
 
         success.invoke();
     }
@@ -600,8 +601,8 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight);
 
-        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-        canvas.drawBitmap(bitmap, 0, 0, paint);
+        Bitmap newbitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        canvas.drawBitmap(newbitmap, 0, 0, paint);
         Bitmap qrBitmap = createQRImage(info, 140, 140);
         canvas.drawBitmap(qrBitmap, 70, 146, paint);
         paint.setColor(Color.WHITE);
@@ -619,6 +620,7 @@ public class LoginAndSharingModule extends ReactContextBaseJavaModule {
         bitmap.recycle();
         result.recycle();
         qrBitmap.recycle();
+        newbitmap.recycle();
     }
 
 

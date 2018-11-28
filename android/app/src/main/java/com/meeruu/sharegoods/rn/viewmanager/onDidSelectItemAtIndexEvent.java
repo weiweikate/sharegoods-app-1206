@@ -17,6 +17,7 @@ public class onDidSelectItemAtIndexEvent extends Event<onDidSelectItemAtIndexEve
             int index
     ) {
         super(viewId);
+        this.index = index;
     }
 
     @Override

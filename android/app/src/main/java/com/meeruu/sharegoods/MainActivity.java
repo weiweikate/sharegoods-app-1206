@@ -31,7 +31,7 @@ import java.lang.ref.SoftReference;
  * @author louis
  * @desc 启动页
  * @time created at 17/3/30 下午4:50
- * @company www.smartstudy.com
+ * @company www.sharegoodsmall.com
  */
 public class MainActivity extends BaseActivity {
 

@@ -228,6 +228,7 @@ class SettingPage extends BasePage {
                     // 正常退出，或者登录超时，都去清空数据
                     user.clearUserInfo();
                     user.clearToken();
+                    bridge.clearCookies();
                     //清空购物车
                     shopCartStore.data = [];
                     this.$navigateBackToHome();

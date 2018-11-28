@@ -1,25 +1,26 @@
 /**
  * 秀场banner
  */
-import React, {Component} from 'react'
-import { View, Image, StyleSheet, Platform } from 'react-native'
-import ScreenUtil from '../../utils/ScreenUtils'
-const { px2dp } = ScreenUtil
-import {observer} from 'mobx-react'
-import { showBannerModules, showSelectedDetail } from './Show'
-import ScreenUtils from '../../utils/ScreenUtils'
-import MRBannerView from '../../components/ui/bannerView/MRBannerView'
-import XGSwiper from '../../components/ui/XGSwiper'
+import React, { Component } from 'react';
+import { View, Image, StyleSheet } from 'react-native';
+import ScreenUtil from '../../utils/ScreenUtils';
+
+const { px2dp } = ScreenUtil;
+import { observer } from 'mobx-react';
+import { showBannerModules, showSelectedDetail } from './Show';
+import ScreenUtils from '../../utils/ScreenUtils';
+import MRBannerView from '../../components/ui/bannerView/MRBannerView';
+
 @observer
 export default class ShowBannerView extends Component {
     state = {
         index: 0
-    }
+    };
 
     renderRow(item) {
         return <View style={styles.imgView}>
-            <Image style={styles.img} source={{uri: item.imgUrl}}/>
-        </View>
+            <Image style={styles.img} source={{ uri: item.imgUrl }}/>
+        </View>;
     }
 
     _onPressRowWithItem(item) {
@@ -30,10 +31,10 @@ export default class ShowBannerView extends Component {
     }
 
     _onPressRow(e) {
-        showSelectedDetail.selectedShowAction(1, showBannerModules.type)
-        let index = e.nativeEvent.index
-        const { bannerList } = showBannerModules
-        let item = bannerList[index]
+        showSelectedDetail.selectedShowAction(1, showBannerModules.type);
+        let index = e.nativeEvent.index;
+        const { bannerList } = showBannerModules;
+        let item = bannerList[index];
         const router = showBannerModules.bannerNavigate(item.linkType, item.linkTypeCode);
         let params = showBannerModules.paramsNavigate(item);
         const { navigation } = this.props;
@@ -41,68 +42,61 @@ export default class ShowBannerView extends Component {
     }
 
     renderIndexView() {
-        const { index } = this.state
-        const { bannerCount } = showBannerModules
-        let items = []
+        const { index } = this.state;
+        const { bannerCount } = showBannerModules;
+        let items = [];
         for (let i = 0; i < bannerCount; i++) {
             if (index === i) {
-                items.push(<View key={i} style={styles.activityIndex}/>)
+                items.push(<View key={i} style={styles.activityIndex}/>);
             } else {
-                items.push(<View key={i} style={styles.index}/>)
+                items.push(<View key={i} style={styles.index}/>);
             }
         }
-        return  <View style={styles.indexView}>
+        return <View style={styles.indexView}>
             {items}
-        </View>
+        </View>;
     }
 
     _onDidScrollToIndex(e) {
-        this.setState({index:  e.nativeEvent.index})
+        this.setState({ index: e.nativeEvent.index });
     }
 
     _onDidChange(item, changeIndex) {
-        const {index} = this.state
+        const { index } = this.state;
         if (index !== changeIndex) {
-            this.setState({index: changeIndex})
+            this.setState({ index: changeIndex });
         }
     }
 
     render() {
-        const { bannerList } = showBannerModules
+        const { bannerList } = showBannerModules;
         if (!bannerList || bannerList.length <= 0) {
-            return <View/>
+            return <View/>;
         }
-        let items = []
+        let items = [];
         bannerList.map(value => {
-            items.push(value.imgUrl)
-        })
-        return <View style={styles.container}><View style={styles.swiper}>
-        {
-            Platform.OS === 'ios'
-            ?
+            items.push(value.imgUrl);
+        });
+        return <View style={styles.container}>
             <MRBannerView
-                style={[{ height: px2dp(175), width: ScreenUtils.width }]}
+                style={{
+                    height: px2dp(175),
+                    width: ScreenUtils.width
+                }}
                 imgUrlArray={items}
                 itemWidth={px2dp(300)}
                 itemSpace={px2dp(10)}
                 itemRadius={5}
-                onDidSelectItemAtIndex={(index)=>{this._onPressRow(index)}}
-                onDidScrollToIndex={(index)=>{this._onDidScrollToIndex(index)}}
-                />
-            :
-            <XGSwiper style={styles.swiper}
-                dataSource={bannerList}
-                width={ ScreenUtils.width }
-                height={ 200 }
-                renderRow={this.renderRow.bind(this)}
-                ratio={0.867}
-                loop={false}
-                onPress={this._onPressRowWithItem.bind(this)}
-                onDidChange={this._onDidChange.bind(this)}/>
-        }
-            </View>
+                pageFocused={this.props.pageFocused}
+                onDidSelectItemAtIndex={(index) => {
+                    this._onPressRow(index);
+                }}
+                onDidScrollToIndex={(index) => {
+                    this._onDidScrollToIndex(index);
+                }}
+            />
             {this.renderIndexView()}
-            </View>
+        </View>;
     }
 }
 
@@ -127,7 +121,7 @@ let styles = StyleSheet.create({
     imgView: {
         height: px2dp(175),
         borderRadius: px2dp(5),
-        overflow: 'hidden',
+        overflow: 'hidden'
     },
     item: {
         width: px2dp(280),
@@ -159,7 +153,7 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: px2dp(10)
     },
-    activityIndex : {
+    activityIndex: {
         width: 14,
         height: 6,
         borderRadius: 3,
@@ -173,4 +167,4 @@ let styles = StyleSheet.create({
         backgroundColor: '#DDE1E4',
         margin: 3
     }
-})
+});

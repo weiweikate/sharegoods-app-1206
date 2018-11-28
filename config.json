@@ -57,9 +57,9 @@
             "name": "开发环境-杨小猛",
             "host": "http://172.16.10.12:8180/gateway"
         },
-        "申祥瑀":{
-            "name":"延签测试",
-            "host":"http://172.16.10.21:8080/gateway"
+        "申祥瑀": {
+            "name": "延签测试",
+            "host": "http://172.16.10.21:8080/gateway"
         },
         "pre_release": {
             "name": "UAT",

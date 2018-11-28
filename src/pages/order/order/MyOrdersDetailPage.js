@@ -3,33 +3,42 @@ import {
     NativeModules,
     StyleSheet,
     View,
+    Text,
     TouchableOpacity,
-    Image, DeviceEventEmitter,
+    ImageBackground, Image, DeviceEventEmitter, Alert
 } from 'react-native';
 import BasePage from '../../../BasePage';
+import {
+    UIText, UIImage
+} from '../../../components/ui';
 import { RefreshList } from '../../../components/ui';
+import { color } from '../../../constants/Theme';
 import StringUtils from '../../../utils/StringUtils';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import { TimeDownUtils } from '../../../utils/TimeDownUtils';
 import GoodsDetailItem from '../components/GoodsDetailItem';
+import UserSingleItem from '../components/UserSingleItem';
+import CommonTwoChoiceModal from '../components/CommonTwoChoiceModal';
 import SingleSelectionModal from '../components/BottomSingleSelectModal';
 import ShowMessageModal from '../components/ShowMessageModal';
+import constants from '../../../constants/constants';
+import DateUtils from '../../../utils/DateUtils';
 import Toast from '../../../utils/bridge';
 import GoodsGrayItem from '../components/GoodsGrayItem';
 import OrderApi from '../api/orderApi';
 import user from '../../../model/user';
+import shopCartCacheTool from '../../shopCart/model/ShopCartCacheTool';
 import { NavigationActions } from 'react-navigation';
 import DesignRule from 'DesignRule';
 import MineApi from '../../mine/api/MineApi';
 import res from '../res';
-import RedDetailTopView from '../components/orderDetail/RedDetailTopView';
-import WhiteRectangleView from '../components/orderDetail/WhiteRectangleView';
-import DetailAddressView from '../components/orderDetail/DetailAddressView';
-import DetailBottomUnitView from '../components/orderDetail/DetailBottomUnitView';
-import {orderDetailModel,orderDetailAfterServiceModel,assistDetailModel} from '../model/OrderDetailModel';
 const buyerHasPay = res.buyerHasPay;
+const couponIcon = res.coupons_icon;
+const arrow_right = res.arrow_right;
+const position = res.dizhi_icon;
 const productDetailHome = res.productDetailHome;
 const productDetailMessage =res.productDetailMessage;
+const logisticCar = res.car;
 const tobePayIcon = res.dingdanxiangqing_icon_fuk;
 const finishPayIcon = res.dingdanxiangqing_icon_yiwangcheng;
 const hasDeliverIcon = res.dingdanxiangqing_icon_yifehe;
@@ -37,34 +46,45 @@ const refuseIcon = res.dingdanxiangqing_icon_guangbi;
 const productDetailImg = res.productDetailImg;
 const moreIcon = res.more_icon;
 const timeUtils= new TimeDownUtils();
-import { observer } from 'mobx-react/native';
-import GiftHeaderView from '../components/orderDetail/GiftHeaderView';
 
-@observer
-export default class MyOrdersDetailPage extends BasePage {
+class MyOrdersDetailPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
+            isShowReceiveGoodsModal: false,
+            isShowDeleteOrderModal: false,
             isShowSingleSelctionModal: false,
             isShowShowMessageModal: false,
-            orderId: this.params.orderId,
+            orderId: this.props.navigation.state.params.orderId,
             expressNo: '',
             viewData: {},
+            //todo 这里的初始化仅仅为了减少判空处理的代码，后面会删除
+            pageState: 1,
+            pageStateString: constants.pageStateString[1],
             menu: {},
             giftBagCoupons: [],
             cancelArr:[]
         };
-        assistDetailModel.setOrderId(this.params.orderId);
+
     }
 
     $navigationBarOptions = {
         title: '订单详情',
         show: true// false则隐藏导航
     };
+    $getPageStateOptions = () => {
+        return {
+            loadingState: 'success',
+            netFailedProps: {
+                netFailedInfo: this.state.netFailedInfo,
+                reloadBtnClick: this._reload
+            }
+        };
+    };
     $NavBarRenderRightItem = () => {
         return (
             <TouchableOpacity onPress={this.showMore} style={{width:20,height:44,alignItems:'center',justifyContent:'center'}}>
-                <Image source={moreIcon} style={{ width: 20, marginRight: 15 }} resizeMode='contain'/>
+                <Image source={moreIcon} style={{ width: 20, height: 5, marginRight: 10 }} resizeMode='contain'/>
             </TouchableOpacity>
         );
     };
@@ -74,24 +94,106 @@ export default class MyOrdersDetailPage extends BasePage {
     };
     //**********************************ViewPart******************************************
     renderState = () => {
-         let leftIconArr=[buyerHasPay,tobePayIcon,buyerHasPay,hasDeliverIcon,finishPayIcon,finishPayIcon,refuseIcon,refuseIcon,refuseIcon,refuseIcon];
+        let leftTopIcon;
+        switch(this.state.status){
+            case 1:
+                leftTopIcon=tobePayIcon;
+                break;
+            case 2:
+                leftTopIcon = buyerHasPay;
+                break;
+            case 3:
+                leftTopIcon=hasDeliverIcon;
+                break;
+            case 4:
+            case 5:
+                leftTopIcon=finishPayIcon;
+                break;
+            case 6:
+            case 7:
+            case 8:
+                leftTopIcon=refuseIcon;
+                break;
+            default:
+                leftTopIcon = buyerHasPay;
+                break;
+
+
+
+        }
         return (
             <View style={{ marginBottom: 10 }}>
-                <RedDetailTopView
-                    productDetailImg={productDetailImg}
-                    leftTopIcon={leftIconArr[orderDetailModel.status]}
-                    buyState={orderDetailAfterServiceModel.totalAsList.buyState}
-                    moreDetail={orderDetailAfterServiceModel.moreDetail}
-                />
-                <WhiteRectangleView
-                    orderNum={orderDetailModel.orderNum}
-                    orderId={assistDetailModel.orderId}
-                    expressNo={orderDetailModel.expressNo}
-                    sellerState={orderDetailAfterServiceModel.totalAsList.sellerState}
-                    logisticsTime={orderDetailAfterServiceModel.totalAsList.logisticsTime}
-                    sellerTime={orderDetailAfterServiceModel.totalAsList.sellerTime}
-                    nav={this.$navigate}
-                />
+                <ImageBackground style={styles.redRectangle} source={productDetailImg}>
+                    <UIImage source={leftTopIcon} style={{ height: 25, width: 25, marginTop: -22 }}/>
+                    <View style={{ marginTop: -22 }}>
+                        <UIText value={this.state.pageStateString.buyState} style={{
+                            color: 'white',
+                            fontSize: 18,
+                            marginLeft: 10
+                        }}/>
+                        {StringUtils.isNoEmpty(this.state.pageStateString.moreDetail) ?
+                            <UIText value={this.state.pageStateString.moreDetail}
+                                    style={{ color: 'white', fontSize: 13, marginLeft: 10 }}/> : null
+                        }
+                    </View>
+                </ImageBackground>
+                <TouchableOpacity style={styles.topOrderDetail} onPress={() => {
+                    this.$navigate('order/logistics/LogisticsDetailsPage', {
+                        orderNum: this.state.viewData.orderNum,
+                        orderId: this.state.orderId,
+                        expressNo: this.state.expressNo
+                    })
+                }} disabled={!this.state.expressNo}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'space-between'}} >
+                        <UIImage source={logisticCar} style={{ height: 19, width: 19, marginLeft: 21 }}/>
+                        <View style={{justifyContent:'center',flex:1}}>
+                            {typeof this.state.pageStateString.sellerState === 'string' ?
+                                <View style={{ marginLeft: 10}}>
+                                    <UIText value={this.state.pageStateString.sellerState} style={{
+                                        color: DesignRule.textColor_mainTitle,
+                                        fontSize: 15,
+                                        marginRight: 46
+                                    }}/>
+                                    {StringUtils.isNoEmpty(this.state.pageStateString.logisticsTime)?
+                                        <UIText style={{
+                                            color: DesignRule.textColor_instruction,
+                                            fontSize:15,
+                                            marginTop:3
+                                        }} value={DateUtils.getFormatDate(this.state.pageStateString.logisticsTime / 1000)}/>:null}
+                                </View>
+                                :
+                                <View style={{flexDirection: 'row'}}>
+                                    <Text style={{
+                                        flex:1,
+                                        fontSize: 15,
+                                        marginLeft:10,
+                                        marginRight:3,
+                                        color: DesignRule.textColor_instruction
+                                    }}>{this.state.pageStateString.sellerState[0]}</Text>
+                                    <Text style={{
+                                        fontSize: 15,
+                                        marginRight:16,
+                                        color: DesignRule.textColor_instruction
+                                    }}>{this.state.pageStateString.sellerState[1]}</Text>
+                                </View>
+                            }
+                            {StringUtils.isNoEmpty(this.state.pageStateString.sellerTime) ?
+                                <UIText value={this.state.pageStateString.sellerTime}
+                                        style={{
+                                            color: DesignRule.textColor_instruction,
+                                            fontSize: 13,
+                                            marginLeft: 10,
+                                            marginRight: 16,
+                                            marginTop:5
+                                        }}/>
+                                : null}
+
+                        </View>
+                        <UIImage source={arrow_right} style={{ height: 19, width: 19, marginRight: 11 }}
+                                 resizeMode={'contain'}/>
+                    </View>
+
+                </TouchableOpacity>
             </View>
 
         );
@@ -106,19 +208,21 @@ export default class MyOrdersDetailPage extends BasePage {
     getCancelOrder(){
         let arrs=[];
         MineApi.queryDictionaryTypeList({ code: 'QXDD' }).then(res => {
-            if (StringUtils.isNoEmpty(res.data)) {
-                res.data.map((item, i) => {
+            if (res.code == 10000 && StringUtils.isNoEmpty(res.data)) {
+                res.data.map((item,i)=>{
                     arrs.push(item.value)
+                })
+                this.setState({
+                    cancelArr: arrs
                 });
-                assistDetailModel.getCancelArr(arrs)
-            }}).catch(err => {
+            }
+        }).catch(err => {
             console.log(err);
         });
     }
 
     componentWillUnmount() {
         DeviceEventEmitter.removeAllListeners('OrderNeedRefresh');
-        timeUtils.stop();
     }
 
     _render = () => {
@@ -127,7 +231,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 <RefreshList
                     ListHeaderComponent={this.renderHeader}
                     ListFooterComponent={this.renderFootder}
-                    data={orderDetailModel.orderType === 5 ||orderDetailModel.orderType === 98 ? this.state.viewData.list : this.state.viewData.list}
+                    data={this.state.orderType === 5 || this.state.orderType === 98 ? this.state.viewData.list : this.state.viewData.list}
                     renderItem={this.renderItem}
                     onRefresh={this.onRefresh}
                     onLoadMore={this.onLoadMore}
@@ -140,7 +244,7 @@ export default class MyOrdersDetailPage extends BasePage {
         );
     };
     renderItem = ({ item, index }) => {
-        if (orderDetailModel.orderType === 5 || orderDetailModel.orderType === 98) {
+        if (this.state.orderType === 5 || this.state.orderType === 98) {
             return (
                 <GoodsGrayItem
                     uri={item.uri}
@@ -153,6 +257,7 @@ export default class MyOrdersDetailPage extends BasePage {
             );
         } else {
             return (
+                <TouchableOpacity>
                     <GoodsDetailItem
                         uri={item.uri}
                         goodsName={item.goodsName}
@@ -165,57 +270,250 @@ export default class MyOrdersDetailPage extends BasePage {
                         afterSaleService={item.afterSaleService}
                         afterSaleServiceClick={(menu) => this.afterSaleServiceClick(menu, index)}
                     />
+                </TouchableOpacity>
             );
         }
 
+    };
+    renderGiftPageHeader = () => {
+        return (
+            <View style={{ marginTop: 10 }}>
+                {this.state.orderType == 5 || this.state.orderType === 98 ?
+
+                    <View style={{
+                        marginTop: 20,
+                        backgroundColor: '#fff',
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}>
+                        <View style={{
+                            borderWidth: 1,
+                            borderRadius: 5,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderColor: DesignRule.mainColor,
+                            marginLeft: 20
+                        }}>
+                            <Text style={{
+                                fontSize: 11,
+                                color: DesignRule.mainColor,
+                                padding: 3
+                            }}>礼包</Text>
+                        </View>
+                        <Text style={{
+                            marginLeft: 10,
+                            fontSize: 12,
+                            color: DesignRule.textColor_instruction
+                        }}>{this.state.giftPackageName}</Text>
+                    </View>
+                    :
+                    null}
+            </View>
+        );
     };
     renderHeader = () => {
         return (
             <View>
                 {this.renderState()}
-                {this.state.pageStateString.disNextView ?  <DetailAddressView
-                    receiver={orderDetailModel.receiver}
-                    recevicePhone={orderDetailModel.recevicePhone}
-                    province={orderDetailModel.province}
-                    city={orderDetailModel.city}
-                    area={orderDetailModel.area}
-                    address={orderDetailModel.address}
-                /> : null}
-                <GiftHeaderView
-                    giftPackageName={this.state.giftPackageName}/>
+                {this.state.pageStateString.disNextView ? this.renderAddress() : null}
+                {this.renderGiftPageHeader()}
+            </View>
+        );
+    };
+    renderMenus = () => {
+        let itemArr = [];
+        console.log(this.state.afterSaleService);
+        for (let i = 0; i < this.state.afterSaleService.length; i++) {
+            itemArr.push(
+                <TouchableOpacity key={i}
+                                  style={[styles.grayView, { borderColor: this.state.afterSaleService[i].isRed ? color.red : DesignRule.color_ddd }]}
+                                  onPress={() => {
+                                      this.afterSaleServiceClick(this.state.afterSaleService[i], i);
+                                  }}>
+                    <Text
+                        style={[styles.grayText, { color: this.state.afterSaleService[i].isRed ? color.red : color.gray_666 }]}>{this.state.afterSaleService[i].operation}</Text>
+                </TouchableOpacity>
+            );
+        }
+        return itemArr;
+    };
+    renderGiftaftersales = () => {
+        return (
+            <View>
+                {this.state.afterSaleService.length === 0 ? null :
+                    <View>
+                        <View style={{
+                            flexDirection: 'row',
+                            height: 48,
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
+                            backgroundColor: 'white'
+                        }}>
+                            {this.renderMenus()}
+                        </View>
+                        {this.renderLine()}
+                    </View>
+                }
             </View>
         );
     };
     renderFootder = () => {
-        return(
-                <DetailBottomUnitView
-                    status={orderDetailModel.status}
-                    orderType={orderDetailModel.orderType}
-                    giftBagCoupons={this.state.giftBagCoupons}
-                    goodsPrice={orderDetailModel.goodsPrice}
-                    freightPrice={orderDetailModel.freightPrice}
-                    couponPrice={orderDetailModel.couponPrice}
-                    tokenCoin={orderDetailModel.couponPrice}
-                    totalPrice={orderDetailModel.totalPrice}
-                    needPrice={orderDetailModel.needPrice}
-                    orderNum={orderDetailModel.orderNum}
-                    createTime={orderDetailModel.createTime}
-                    platformPayTime={orderDetailModel.platformPayTime}
-                    shutOffTime={orderDetailModel.shutOffTime}
-                    cancelTime={orderDetailModel.cancelTime}
-                    payTime={orderDetailModel.payTime }
-                    sendTime={orderDetailModel.sendTime}
-                    deliverTime={orderDetailModel.deliverTime}
-                    finishTime={orderDetailModel.finishTime}
-                    payType={this.state.payType}
-                    outTradeNo={orderDetailModel.outTradeNo}
-                    goBack={()=>this.$navigateBack()}
-                    nav={this.$navigate}
-                    callBack={this.params.callBack &&this.params.callBack()}
-                    loadPageData={()=>this.loadPageData()}
-                />
-            )
+        return (
+            <View style={{ backgroundColor: 'white' }}>
+                {this.state.orderType == 5 ? this.renderGiftaftersales() : null}
+                {(this.state.orderType == 5 || this.state.orderType == 98) && this.state.giftBagCoupons.length > 0 ?
+                    <View>
+                        {this.renderLine()}
+                        {this.state.giftBagCoupons.map((item, index) => {
+                            return <View style={{ backgroundColor: 'white' }} key={index}>
+                                {index == 0 ? <Image source={couponIcon} style={{
+                                    width: 15,
+                                    height: 12,
+                                    position: 'absolute',
+                                    left: 15,
+                                    top: 12
+                                }} /> : null}
+                                <View style={{
+                                    height: 34,
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    marginLeft: 36
+                                }}>
+                                    <Text style={{
+                                        color: DesignRule.textColor_instruction,
+                                        fontSize: 13,
+                                        alignSelf: 'center'
+                                    }}>{item.couponName}</Text>
+                                    <Text style={{
+                                        color: DesignRule.textColor_instruction,
+                                        fontSize: 13,
+                                        alignSelf: 'center',
+                                        marginRight: 14
+                                    }}>x1</Text>
+                                </View>
+                                <View
+                                    style={{ marginLeft: 36, backgroundColor: DesignRule.bgColor, height: 0.5, width: '100%' }}/>
+                            </View>;
+                        })}
+                        {this.renderWideLine()}
+                    </View>
 
+                    :
+                    null}
+                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'商品总价'}
+                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
+                                rightText={StringUtils.formatMoneyString(this.state.viewData.goodsPrice)}
+                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
+                                isLine={false}/>
+                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'运费（快递）'}
+                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
+                                rightText={StringUtils.formatMoneyString(this.state.viewData.freightPrice)}
+                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
+                                isLine={false}/>
+                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'优惠券优惠'}
+                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
+                                rightText={'-' + StringUtils.formatMoneyString(this.state.viewData.couponPrice)}
+                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
+                                isLine={false}/>
+                <UserSingleItem itemHeightStyle={{ height: 25 }} leftText={'1元现金券'}
+                                leftTextStyle={{ color: DesignRule.textColor_instruction }}
+                                rightText={'-' + StringUtils.formatMoneyString(this.state.viewData.tokenCoin)}
+                                rightTextStyle={{ color: DesignRule.textColor_instruction }} isArrow={false}
+                                isLine={false}/>
+                <UserSingleItem itemHeightStyle={{ height: 35 }} leftText={'订单总价'}
+                                leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
+                                rightText={StringUtils.formatMoneyString(this.state.viewData.totalPrice)}
+                                rightTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }} isArrow={false}
+                                isLine={false}/>
+                {this.renderLine()}
+                <UserSingleItem itemHeightStyle={{ height: 55 }} leftText={'实付款'}
+                                leftTextStyle={{ color: DesignRule.textColor_mainTitle_222, fontSize: 15 }}
+                                rightText={StringUtils.formatMoneyString(this.state.viewData.orderTotalPrice)}
+                                rightTextStyle={{ color: color.red, fontSize: 15 }} isArrow={false}
+                                isLine={false}/>
+                {this.renderWideLine()}
+                <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
+                    <UIText value={'订单编号：' + this.state.viewData.orderNum}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 }}/>
+                    <TouchableOpacity style={{
+                        borderWidth: 1,
+                        borderColor: DesignRule.color_ddd,
+                        marginRight: 10,
+                        justifyContent: 'center',
+                        height: 22,
+                        width: 55,
+                        marginTop: 10
+                    }} onPress={() => this.copyOrderNumToClipboard()}>
+                        <Text style={{ paddingLeft: 10, paddingRight: 10 }}>复制</Text>
+                    </TouchableOpacity>
+                </View>
+                <UIText value={'创建时间：' + DateUtils.getFormatDate(this.state.viewData.createTime / 1000)}
+                        style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginTop: 10 ,marginBottom:10}}/>
+                {StringUtils.isNoEmpty(this.state.viewData.platformPayTime) && this.state.status > 1 ?
+                    <UIText value={'平台付款时间：' + DateUtils.getFormatDate(this.state.viewData.platformPayTime / 1000)}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginBottom: 10 }}/> : null}
+                {StringUtils.isNoEmpty(this.state.viewData.shutOffTime) && this.state.status > 5 ?
+                    <UIText value={'关闭时间：' + DateUtils.getFormatDate(this.state.viewData.shutOffTime / 1000)}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginBottom: 10 }}/> : null}
+                {StringUtils.isEmpty(this.state.viewData.cancelTime) ? null :
+                    <UIText value={'取消时间：' + DateUtils.getFormatDate(this.state.viewData.cancelTime / 1000)}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginBottom: 10 }}/>}
+                {StringUtils.isNoEmpty(this.state.viewData.payTime) && (this.state.payType % 2 == 0) && this.state.viewData.status > 1 ?
+                    <UIText value={'三方付款时间：' + DateUtils.getFormatDate(this.state.viewData.payTime / 1000)}
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 13, marginLeft: 16, marginBottom: 10 }}/> : null}
+                {StringUtils.isNoEmpty(this.state.viewData.outTradeNo) && (this.state.payType % 2 == 0) ?
+                    <UIText value={'交易订单号：' + this.state.viewData.outTradeNo} style={{
+                        color: DesignRule.textColor_instruction,
+                        fontSize: 13,
+                        marginLeft: 16,
+                        marginBottom: 10,
+                        // marginBottom: 10
+                    }}/> : null}
+                {StringUtils.isEmpty(this.state.viewData.sendTime) ? null :
+                    <UIText value={'发货时间：' + DateUtils.getFormatDate(this.state.viewData.sendTime / 1000)} style={{
+                        color: DesignRule.textColor_instruction,
+                        fontSize: 13,
+                        marginLeft: 16,
+                        marginBottom: 10,
+                    }}/>}
+                {StringUtils.isEmpty(this.state.viewData.finishTime) ? null :
+                    <UIText
+                        value={'完成时间：' + DateUtils.getFormatDate(this.state.viewData.deliverTime ? this.state.viewData.deliverTime / 1000 : this.state.viewData.finishTime / 1000)}
+                        style={{
+                            color: DesignRule.textColor_instruction,
+                            fontSize: 13,
+                            marginLeft: 16,
+                            marginBottom: 10,
+                        }}/>}
+                {this.renderWideLine()}
+                <View style={{ height: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
+                    {this.renderMenu()}
+                </View>
+            </View>
+        );
+    };
+    renderMenu = () => {
+        let nameArr = this.state.pageStateString.menu;
+        let itemArr = [];
+        for (let i = 0; i < nameArr.length; i++) {
+            itemArr.push(
+                <TouchableOpacity key={i} style={{
+                    borderWidth: 1,
+                    borderColor: nameArr[i].isRed ? color.red : DesignRule.color_ddd,
+                    height: 30,
+                    borderRadius: 10,
+                    marginRight: 15,
+                    justifyContent: 'center',
+                    paddingLeft: 20,
+                    paddingRight: 20
+                }} onPress={() => {
+                    this.operationMenuClick(nameArr[i]);
+                }}>
+                    <Text style={{ color: nameArr[i].isRed ? color.red : color.gray_666 }}>{nameArr[i].operation}</Text>
+                </TouchableOpacity>
+            );
+        }
+        return itemArr;
     };
     renderModal = () => {
         return (
@@ -246,19 +544,84 @@ export default class MyOrdersDetailPage extends BasePage {
                     }}
                     closeWindow={() => this.setState({ isShowShowMessageModal: false })}
                 />
-                <SingleSelectionModal
-                    isShow={assistDetailModel.isShowSingleSelctionModal}
-                    ref={(ref)=>{this.cancelModal = ref}}
-                    detail={assistDetailModel.cancelArr}
+
+                <CommonTwoChoiceModal
+                    isShow={this.state.isShowDeleteOrderModal}
+                    detail={{ title: '删除订单', context: '确定删除此订单吗', no: '取消', yes: '确认' }}
+                    ref={(ref)=>{this.deleteModal = ref;}}
                     closeWindow={() => {
-                        assistDetailModel.setIsShowSingleSelctionModal(false)
+                        this.setState({ isShowDeleteOrderModal: false });
+                    }}
+                    yes={() => {
+                        this.setState({ isShowDeleteOrderModal: false });
+                        if (this.state.status === 4||this.state.status === 5) {
+                            Toast.hiddenLoading();
+                            Toast.showLoading();
+                            OrderApi.deleteCompletedOrder({ orderNum: this.state.viewData.orderNum }).then((response) => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast('订单已删除');
+                                this.$navigateBack();
+                                this.params.callBack && this.params.callBack();
+                            }).catch(e => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast(e.msg);
+                            });
+
+                        } else if (this.state.status === 6||this.state.status === 7||this.state.status === 8) {
+                            Toast.showLoading();
+                            OrderApi.deleteClosedOrder({ orderNum: this.state.viewData.orderNum }).then((response) => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast('订单已删除');
+                                this.$navigateBack();
+                                this.params.callBack && this.params.callBack();
+                            }).catch(e => {
+                                Toast.hiddenLoading();
+                                NativeModules.commModule.toast(e.msg);
+                            });
+                        } else {
+                            NativeModules.commModule.toast('状态值异常，暂停操作');
+                        }
+                    }}
+                    no={() => {
+                        this.setState({ isShowDeleteOrderModal: false });
+                    }}
+                />
+                <CommonTwoChoiceModal
+                    isShow={this.state.isShowReceiveGoodsModal}
+                    detail={{ title: '确认收货', context: '是否确认收货?', no: '取消', yes: '确认' }}
+                    close={() => {
+                        this.setState({ isShowReceiveGoodsModal: false });
+                    }}
+                    ref={(ref)=>this.receiveModal = ref}
+                    yes={() => {
+                        this.setState({ isShowReceiveGoodsModal: false });
+                        Toast.showLoading();
+                        OrderApi.confirmReceipt({ orderNum: this.state.viewData.orderNum }).then((response) => {
+                            Toast.hiddenLoading();
+                            NativeModules.commModule.toast('确认收货成功');
+                            this.loadPageData();
+                        }).catch(e => {
+                            Toast.hiddenLoading();
+                            this.$toastShow(e.msg);
+                        });
+                    }}
+                    no={() => {
+                        this.setState({ isShowReceiveGoodsModal: false });
+                    }}
+                />
+                <SingleSelectionModal
+                    isShow={this.state.isShowSingleSelctionModal}
+                    ref={(ref)=>{this.cancelModal = ref}}
+                    detail={this.state.cancelArr}
+                    closeWindow={() => {
+                        this.setState({ isShowSingleSelctionModal: false });
                     }}
                     commit={(index) => {
-                        assistDetailModel.setIsShowSingleSelctionModal(false)
+                        this.setState({ isShowSingleSelctionModal: false });
                         Toast.showLoading();
                         OrderApi.cancelOrder({
-                            buyerRemark: assistDetailModel.cancelArr[index],
-                            orderNum: orderDetailModel.orderNum
+                            buyerRemark: this.state.cancelArr[index],
+                            orderNum: this.state.viewData.orderNum
                         }).then((response) => {
                             Toast.hiddenLoading();
                             NativeModules.commModule.toast('订单已取消');
@@ -272,6 +635,47 @@ export default class MyOrdersDetailPage extends BasePage {
                 />
             </View>
 
+        );
+    };
+    onContentSizeChange(event) {
+        this.setState({ height: event.nativeEvent.contentSize.height });
+    }
+
+
+
+    renderAddress = () => {
+        console.log('this.state.heightaddredd',this.state.height);
+        return (
+            <View style={{
+                minHeight:83,
+                backgroundColor: 'white',
+                flexDirection: 'row',
+                paddingTop: 10,
+                paddingBottom: 10,
+                alignItems: 'center'
+            }}>
+                <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }} resizeMode={'contain'}/>
+                <View style={{ flex: 1, marginLeft: 15, marginRight: 20 }}>
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <Text style={{
+                            flex: 1,
+                            fontSize: 15,
+                            color: DesignRule.textColor_instruction
+                        }}>收货人：{this.state.viewData.receiverName}</Text>
+                        <Text style={{
+                            fontSize: 15,
+                            color: DesignRule.textColor_instruction
+                        }}>{this.state.viewData.receiverNum}</Text>
+                    </View>
+                    <UIText value={
+                        '收货地址：' + this.state.viewData.provinceString
+                        + this.state.viewData.cityString
+                        + this.state.viewData.areaString
+                        + this.state.viewData.receiverAddress
+                    }
+                            style={{ color: DesignRule.textColor_instruction, fontSize: 15 ,marginTop:5}}/>
+                </View>
+            </View>
         );
     };
 
@@ -292,25 +696,37 @@ export default class MyOrdersDetailPage extends BasePage {
             return;
         }
         timeUtils.settimer((time) => {
-            orderDetailAfterServiceModel.moreDetail  = time.hours + ':' + time.min + ':' + time.sec + '后自动取消订单';
-            console.log(orderDetailAfterServiceModel.totalAsList);
+            let pageStateString = this.state.pageStateString;
+            pageStateString.moreDetail = time.hours + ':' + time.min + ':' + time.sec + '后自动取消订单';
+            this.setState({ pageStateString: pageStateString });
             if (time.hours === undefined && time.min === undefined && time.sec === undefined) {
-                orderDetailAfterServiceModel.moreDetail='';
+                this.setState({
+                    pageStateString: constants.pageStateString[10]
+                });
+                if (this.params.callBack) {
+                    this.params.callBack();
+                }
                 this.loadPageData();
             }
         }, autoConfirmTime);
     };
     //06天18:24:45后自动确认收货
-    startCutDownTime2 = (autoReceiveTime2) => {
-        let autoConfirmTime = Math.round((autoReceiveTime2 - new Date().valueOf()) / 1000);
+    startCutDownTime2 = (autoConfirmTime2) => {
+        let autoConfirmTime = Math.round((autoConfirmTime2 - new Date().valueOf()) / 1000);
         if (autoConfirmTime < 0) {
             return;
         }
         timeUtils.settimer(time => {
-            orderDetailAfterServiceModel.moreDetail = time.days + '天' + time.hours + ':' + time.min + ':' + time.sec + '后自动确认收货';
+            let pageStateString = this.state.pageStateString;
+            pageStateString.moreDetail = time.days + '天' + time.hours + ':' + time.min + ':' + time.sec + '后自动确认收货';
+            this.setState({ pageStateString: pageStateString });
             if (time.hours === undefined && time.min === undefined && time.sec === undefined) {
-                orderDetailAfterServiceModel.totalAsList= orderDetailAfterServiceModel.AfterServiceList[5];
-                orderDetailAfterServiceModel.moreDetail='';
+                this.setState({
+                    pageStateString: constants.pageStateString[5]
+                });
+                if (this.params.callBack) {
+                    this.params.callBack();
+                }
                 this.loadPageData();
             }
         }, autoConfirmTime);
@@ -441,8 +857,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 afterSaleService.push();
                 break;
         }
-        // return afterSaleService;
-        return orderDetailAfterServiceModel.currentAsList=afterSaleService;
+        return afterSaleService;
     };
     loadPageData() {
         Toast.showLoading();
@@ -454,8 +869,6 @@ export default class MyOrdersDetailPage extends BasePage {
         }).then((response) => {
             Toast.hiddenLoading();
             let data = response.data;
-            orderDetailModel.saveOrderDetailInfo(data);
-            console.log(orderDetailModel);
             let arr = [];
             if (data.orderType === 5 || data.orderType === 98) {//礼包。。。
                 data.orderProductList[0].orderProductPriceList.map((item, index) => {
@@ -495,9 +908,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 });
             }
 
-            // let pageStateString = constants.pageStateString[parseInt(data.status)];
-            let pageStateString =orderDetailAfterServiceModel.AfterServiceList[parseInt(data.status)];
-
+            let pageStateString = constants.pageStateString[parseInt(data.status)];
             /*
              * operationMenuCheckList
              * 取消订单                 ->  1
@@ -510,7 +921,7 @@ export default class MyOrdersDetailPage extends BasePage {
              * 再次购买                 ->  8
              * 删除订单(已关闭(取消))    ->  9
              * */
-            switch (parseInt(orderDetailModel.status)) {
+            switch (parseInt(data.status)) {
                 // case 0:
                 //     break
                 //等待买家付款
@@ -603,24 +1014,23 @@ export default class MyOrdersDetailPage extends BasePage {
                     break;
 
             }
-            orderDetailAfterServiceModel.totalAsList=pageStateString;
             this.setState({
                 viewData: {
                     expressNo: data.expressNo,
                     orderId: this.params.orderId,
                     list: arr,
-                    receiver: data.receiver,
-                    recevicePhone: data.recevicePhone,
-                    address: data.address,
-                    province: data.province,
-                    city: data.city,
-                    area: data.area,
+                    receiverName: data.receiver,
+                    receiverNum: data.recevicePhone,
+                    receiverAddress: data.address,
+                    provinceString: data.province,
+                    cityString: data.city,
+                    areaString: data.area,
                     goodsPrice: data.totalProductPrice,//商品价格(detail.totalPrice-detail.freightPrice)
                     freightPrice: data.freightPrice,//运费（快递）
                     tokenCoin: data.tokenCoin || 0,//一元券抵扣
                     couponPrice: data.couponPrice || 0,//优惠券抵扣
                     totalPrice: data.totalOrderPrice,//订单总价
-                    needPrice: data.needPrice,//需付款
+                    orderTotalPrice: data.needPrice,//需付款
                     orderNum: data.orderNum,//订单编号
                     createTime: data.createTime,//创建时间
                     platformPayTime: data.platformPayTime,//平台付款时间
@@ -628,7 +1038,7 @@ export default class MyOrdersDetailPage extends BasePage {
                     outTradeNo: data.outTradeNo,//三方交易号
                     sendTime: data.sendTime,//发货时间
                     finishTime: data.finishTime,//成交时间
-                    autoReceiveTime: data.autoReceiveTime,//自动确认时间
+                    autoConfirmTime: data.autoReceiveTime,//自动确认时间
                     deliverTime: data.deliverTime,
                     pickedUp: data.pickedUp,//
                     cancelTime: data.cancelTime ? data.cancelTime : null,//取消时间,
@@ -650,7 +1060,7 @@ export default class MyOrdersDetailPage extends BasePage {
                 giftBagCoupons: data.orderProductList[0] && data.orderProductList[0].giftBagCoupons ? data.orderProductList[0].giftBagCoupons : []
 
             });
-            console.log('setView', orderDetailModel);
+            console.log('setView', this.state.viewData);
         }).catch(e => {
             Toast.hiddenLoading();
             Toast.$toast(e.msg);
@@ -700,8 +1110,157 @@ export default class MyOrdersDetailPage extends BasePage {
                 break;
         }
     };
+    operationMenuClick = (menu) => {
+        /*
+         * 取消订单                 ->  1
+         * 去支付                   ->  2
+         * 继续支付                 ->  3
+         * 订单退款                 ->  4
+         * 查看物流                 ->  5
+         * 确认收货                 ->  6
+         * 删除订单(已完成)          ->  7
+         * 再次购买                 ->  8
+         * 删除订单(已关闭(取消))    ->  9
+         * */
+        this.setState({ menu: menu });
+        switch (menu.id) {
+            case 1:
+                if(this.state.cancelArr.length>0){
+                    this.setState({ isShowSingleSelctionModal: true });
+                    this.cancelModal && this.cancelModal.open();
+                }else{
+                    this.$toastShow('无取消类型！');
+                }
+
+                break;
+            case 2:
+                this.$navigate('payment/PaymentMethodPage', {
+                    orderNum: this.state.viewData.orderNum,
+                    amounts: this.state.viewData.orderTotalPrice
+                    // orderType: this.state.viewData.pickedUp - 1
+                });
+                break;
+            case 3:
+                this.$navigate('payment/PaymentMethodPage', {
+                    orderNum: this.state.viewData.orderNum,
+                    amounts: this.state.viewData.orderTotalPrice,
+                    outTradeNo: this.state.viewData.outTradeNo
+                });
+                break;
+            case 4:
+                // this.navigate(RouterPaths.AfterSaleServicePage,{
+                //     pageType:0,
+                //     pageData:this.state.viewData,
+                //     index:0,
+                // })
+                NativeModules.commModule.toast('目前仅支持单个商品退款');
+                break;
+            case 5:
+                this.$navigate('order/logistics/LogisticsDetailsPage', {
+                    orderNum: this.state.viewData.orderNum,
+                    orderId: this.state.orderId,
+                    expressNo: this.state.expressNo
+                });
+                break;
+            case 6:
+                console.log(this.state.viewData.list);
+                let j = 0;
+                let returnTypeArr = ['', '退款', '退货', '换货'];
+                for (let i = 0; i < this.state.viewData.list.length; i++) {
+                    let returnProductStatus = this.state.viewData.list[i].returnProductStatus || 99999;
+                    if (returnProductStatus === 1) {
+                        let content = '确认收货将关闭' + returnTypeArr[this.state.viewData.list[i].returnType] + '申请，确认收货吗？';
+                        Alert.alert('提示', `${ content }`, [
+                            {
+                                text: '取消', onPress: () => {
+                                }
+                            },
+                            {
+                                text: '确定', onPress: () => {
+                                    Toast.showLoading();
+                                    OrderApi.confirmReceipt({ orderNum: this.state.viewData.orderNum }).then((response) => {
+                                        Toast.hiddenLoading();
+                                        NativeModules.commModule.toast('确认收货成功');
+                                        this.getDataFromNetwork();
+                                    }).catch(e => {
+                                        Toast.hiddenLoading();
+                                        NativeModules.commModule.toast(e.msg);
+                                    });
+                                }
+                            }
+                        ], { cancelable: true });
+                        j++;
+                        break;
+                    }
+                }
+                if (j == 0) {
+                    this.setState({ isShowReceiveGoodsModal: true });
+                    this.receiveModal && this.receiveModal.open();
+                }
+                // this.setState({ isShowReceiveGoodsModal: true });
+                break;
+            case 7:
+                this.setState({ isShowDeleteOrderModal: true });
+                this.deleteModal && this.deleteModal.open();
+                break;
+            case 8:
+                Toast.showLoading();
+                OrderApi.againOrder({
+                    orderNum: this.state.viewData.orderNum,
+                    id: this.state.orderId
+                }).then((response) => {
+                    let cartData = [];
+                    Toast.hiddenLoading();
+                    response.data.orderProducts.map((item, index) => {
+                        cartData.push({ productId: item.productId, priceId: item.priceId, amount: item.num });
+                    });
+                    shopCartCacheTool.addGoodItem(cartData);
+                    this.$navigate('shopCart/ShopCart', { hiddeLeft: false });
+                }).catch(e => {
+                    Toast.hiddenLoading();
+                    NativeModules.commModule.toast(e.msg);
+                });
+                break;
+        }
+    };
+    copyOrderNumToClipboard = () => {
+        StringUtils.clipboardSetString(this.state.viewData.orderNum);
+        NativeModules.commModule.toast('订单号已经复制到剪切板');
+    };
     afterSaleServiceClick = (menu, index) => {
         console.log(menu);
+        // afterSaleService:[
+        //             {
+        //                 id:0,
+        //                 operation:'退款',
+        //                 isRed:false,
+        //             },{
+        //                 id:1,
+        //                 operation:'退换',
+        //                 isRed:false,
+        //             },{
+        //                 id:2,
+        //                 operation:'退款中',
+        //                 isRed:false,
+        //             },{
+        //                 id:3,
+        //                 operation:'退货中',
+        //                 isRed:false,
+        //             },{
+        //                 id:4,
+        //                 operation:'售后完成',
+        //                 isRed:true,
+        //             },{
+        //                 id:5,
+        //                 operation:'售后失败',
+        //                 isRed:true,
+        //             },
+        // {
+        //                 id:6,
+        //                 operation:'换货中',
+        //                 isRed:true,
+        //             },
+        //         ],
         switch (menu.id) {
             case 0:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
@@ -742,6 +1301,24 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: DesignRule.bgColor,
         marginBottom: ScreenUtils.safeBottom
+    }, redRectangle: {
+        width: ScreenUtils.width,
+        height: 100,
+        backgroundColor: color.red,
+        flexDirection: 'row',
+        paddingLeft: 22,
+        position: 'absolute',
+        alignItems: 'center'
+    }, whiteRectangle: {
+        height: 81,
+        marginTop: 69,
+        backgroundColor: 'white',
+        marginLeft: 15,
+        marginRight: 15,
+        justifyContent: 'space-between',
+        borderRadius: 10,
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     grayView: {
         width: 90,
@@ -761,16 +1338,17 @@ const styles = StyleSheet.create({
         lineHeight: 18,
         color: DesignRule.textColor_secondTitle
     },
-     topOrderDetail:{
-         minHeight:81,
-         marginTop: 69,
-         backgroundColor: 'white',
-         marginLeft: 15,
-         marginRight: 15,
-         paddingTop:5,
-         paddingBottom:5,
-         borderRadius: 10,
-         justifyContent:'center'
-     }
+    topOrderDetail:{
+        minHeight:81,
+        marginTop: 69,
+        backgroundColor: 'white',
+        marginLeft: 15,
+        marginRight: 15,
+        paddingTop:5,
+        paddingBottom:5,
+        borderRadius: 10,
+        justifyContent:'center'
+    }
 });
 
+export default MyOrdersDetailPage;

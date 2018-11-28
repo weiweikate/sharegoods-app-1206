@@ -65,9 +65,10 @@ export default {
         console.log(temObj);
         if (ScreenUtils.isIOS) {
             NativeModules.commModule.updatePushTags(temObj);
+        }else {
+            NativeModules.commModule.updatePushTags(temObj);
         }
     },
-
     /**
      * 更新别名 一个设备只能有一个别名
      * {
@@ -82,7 +83,8 @@ export default {
             };
             if (ScreenUtils.isIOS) {
                 NativeModules.commModule.updatePushAlias(tempObj);
-
+            }else {
+                NativeModules.commModule.updatePushAlias(tempObj);
             }
         }
     }
