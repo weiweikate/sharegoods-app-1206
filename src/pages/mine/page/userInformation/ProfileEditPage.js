@@ -22,15 +22,17 @@ import {
 import BasePage from "../../../../BasePage";
 import DesignRule from "../../../../constants/DesignRule";
 import ScreenUtils from "../../../../utils/ScreenUtils";
+import MineAPI from "../../api/MineApi";
+import user from "../../../../model/user";
 
 const { px2dp } = ScreenUtils;
 export default class ProfileEditPage extends BasePage {
     constructor(props) {
         super(props);
         this.state = {
-            textNum : 0
+            textNum: user.profile?user.profile.length:0,
+            profile: user.profile
         };
-        this._bind();
     }
 
     $navigationBarOptions = {
@@ -38,9 +40,9 @@ export default class ProfileEditPage extends BasePage {
         show: true// false则隐藏导航
     };
 
-    $NavBarRenderRightItem() {
+    $NavBarRenderRightItem=()=> {
         return (
-            <TouchableWithoutFeedback onPress={this._commitProfile}>
+            <TouchableWithoutFeedback onPress={() => {this._commitProfile()}}>
                 <Text style={styles.navRightItemStyle}>
                     完成
                 </Text>
@@ -48,25 +50,23 @@ export default class ProfileEditPage extends BasePage {
         );
     }
 
-    _bind() {
-        this.loadPageData = this.loadPageData.bind(this);
-    }
-
-    // _render(){
-    //     return<View style={{backgroundColor:'red',width:100,height:100}}/>
-    // }
 
 
-    componentDidMount() {
-        this.loadPageData();
-    }
 
-    loadPageData() {
-    }
 
-    _commitProfile() {
+    _commitProfile = () => {
+        MineAPI.updateUserById({ type: 6, profile: this.state.profile }).then((data) => {
+            this.$toastShow("编辑成功!");
+            MineAPI.getUser().then(res => {
+                let data = res.data;
+                user.saveUserInfo(data);
 
-    }
+            }).catch(err => {
+            });
+        }).catch((error) => {
+            this.$toastShow(error.msg);
+        });
+    };
 
     _render() {
         return (
@@ -78,16 +78,19 @@ export default class ProfileEditPage extends BasePage {
                     <TextInput style={styles.textInputStyle}
                                maxLength={90}
                                multiline={true}
+                               value={this.state.profile}
                                underlineColorAndroid={"transparent"}
-                               onChangeText={(text)=>{
-                                   if(text){
+                               onChangeText={(text) => {
+                                   if (text) {
                                        this.setState({
-                                           textNum:text.length
-                                       })
-                                   }else {
+                                           textNum: text.length,
+                                           profile: text
+                                       });
+                                   } else {
                                        this.setState({
-                                           textNum:0
-                                       })
+                                           textNum: 0,
+                                           profile: null
+                                       });
                                    }
                                }}
                     />
@@ -124,9 +127,9 @@ const styles = StyleSheet.create({
         padding: DesignRule.margin_page,
         textAlignVertical: "top"
     },
-    textLimitStyle:{
-        position:'absolute',
-        bottom:DesignRule.margin_page,
-        right:DesignRule.margin_page
+    textLimitStyle: {
+        position: "absolute",
+        bottom: DesignRule.margin_page,
+        right: DesignRule.margin_page
     }
 });

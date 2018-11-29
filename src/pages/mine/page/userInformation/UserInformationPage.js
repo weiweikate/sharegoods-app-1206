@@ -125,7 +125,8 @@ export default class UserInformationPage extends BasePage {
                                 onPress={() => this.jumpToIDVertify2Page()}/>
                 {this.renderWideLine()}
                 <UserSingleItem leftText={"简介"}
-                                rightText={user.area ? user.province + user.city + user.area : ""}
+                                itemHeightStyle={{ backgroundColor: 'white',paddingVertical:12}}
+                                rightText={user.profile ? user.profile : '未填写'}
                                 rightTextStyle={[styles.grayText, {
                                     maxWidth: ScreenUtils.width / 5 * 3,
                                     numberOfLines: 2
