@@ -64,7 +64,6 @@ export default class SubDownTimeView extends Component {
     }
 
     itemClick = (index) => {
-
         this.setState({
             selectState: index
         });
