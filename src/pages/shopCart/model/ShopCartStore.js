@@ -272,6 +272,7 @@ class ShopCartStore {
             //不存在本地缓存
         }
     };
+
     /*请求购物车商品*/
     getShopCartListData = () => {
         this.setRefresh(true);
@@ -336,7 +337,8 @@ class ShopCartStore {
              cacheList:oneMoreList
          }).then(result => {
             //添加完成再次拉取
-             this.getShopCartListData()
+            //  this.getShopCartListData()
+             this.packingShopCartGoodsData(result.data);
          }).catch(reason => {
              bridge.$toast(reason.msg)
          })
