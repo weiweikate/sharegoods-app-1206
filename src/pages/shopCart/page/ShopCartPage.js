@@ -75,18 +75,17 @@ export default class ShopCartPage extends BasePage {
             'didFocus',
             payload => {
                 if (this.contentList) {
-                    this.contentList.scrollTo({ x: 0, y: 10, animated: true });
+                    // this.contentList.scrollTo({ x: 0, y: 10, animated: true });
+                    // this.contentList.scrollTo({ x: 0, y: 0, animated: true });
                 }
                 shopCartCacheTool.getShopCartGoodsListData();
             }
         );
         // shopCartCacheTool.getShopCartGoodsListData();
     }
-
     componentWillUnmount() {
         this.didBlurSubscription.remove();
     }
-
     _render() {
         return (
             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'column' }}>
@@ -563,7 +562,6 @@ export default class ShopCartPage extends BasePage {
      * @private
      */
     _refreshFun = () => {
-        shopCartStore.isRefresh = true;
         shopCartCacheTool.getShopCartGoodsListData();
     };
     /**

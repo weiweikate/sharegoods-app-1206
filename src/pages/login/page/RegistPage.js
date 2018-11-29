@@ -164,10 +164,14 @@ export default class RegistPage extends BasePage {
             DeviceEventEmitter.emit('homePage_message',null);
             DeviceEventEmitter.emit('contentViewed',null);
             homeModule.loadHomeList()
-            this.$navigate('login/login/GetRedpacketPage');
+            // this.$navigate('login/login/GetRedpacketPage');
             bridge.setCookies(data.data);
             //推送
             JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
+            /**
+             * 跳转导师选择页面
+             */
+            this.$navigate('login/login/SelectMentorPage');
         }).catch((data) => {
             this.$loadingDismiss();
             bridge.$toast(data.msg);

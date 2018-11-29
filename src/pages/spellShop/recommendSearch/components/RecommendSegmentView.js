@@ -39,7 +39,8 @@ export default class RecommendSegmentView extends Component {
             this._onPress(index);
         }}>
             <View style={styles.itemContainer}>
-                <Text style={[styles.title, { color: this.state.selectIndex === index ? DesignRule.bgColor_btn : '#999999' }]}
+                <Text
+                    style={[styles.title, { color: this.state.selectIndex === index ? DesignRule.bgColor_btn : '#999999' }]}
                 >{title}</Text>
                 {index === this.state.selectIndex && < View style={styles.itemLine}/>}
             </View>
@@ -48,9 +49,9 @@ export default class RecommendSegmentView extends Component {
 
     render() {
         return (<View style={styles.container}>
-            {this._renderItem('新开店铺', 1)}
-            {this._renderItem('热门店铺', 2)}
-            {this._renderItem('所有店铺', 3)}
+            {this._renderItem('附近店铺', 1)}
+            <View style={{ width: ScreenUtils.autoSizeWidth(51) }}/>
+            {this._renderItem('新开店铺', 2)}
         </View>);
     }
 
@@ -62,10 +63,10 @@ const styles = StyleSheet.create({
         height: 40,
         backgroundColor: '#ffffff',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     itemContainer: {
-        flex: 1,
         height: 40,
         justifyContent: 'center',
         alignItems: 'center'
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontFamily: 'PingFangSC-Medium',
-        fontSize: 13,
+        fontSize: 13
     }
 });
 
