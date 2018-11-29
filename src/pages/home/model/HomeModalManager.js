@@ -45,6 +45,8 @@ class HomeModalManager {
                     this.setHomeMessage(resp);
                     return resp;
                 });
+            }else {
+                return Promise.resolve();
             }
         });
     }
