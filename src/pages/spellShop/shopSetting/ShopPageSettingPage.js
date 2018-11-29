@@ -71,7 +71,7 @@ export default class ShopPageSettingPage extends BasePage {
                             showArrow: true,
                             onPres: this._managerShop
                         }, {
-                            key: '店铺邀请设置',
+                            key: '店铺加入方式',
                             showArrow: true,
                             onPres: this._inviteSetting
                         }, {
@@ -79,7 +79,7 @@ export default class ShopPageSettingPage extends BasePage {
                             showArrow: true,
                             onPres: this._assistantManager
                         }, {
-                            key: '店铺评分',
+                            key: '店铺晋升',
                             showArrow: true,
                             onPres: this._scoreShop
                         }, {

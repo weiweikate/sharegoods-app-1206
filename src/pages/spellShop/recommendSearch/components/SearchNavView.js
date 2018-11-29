@@ -49,13 +49,14 @@ export default class SearchNavView extends Component {
     };
 
     _onFocus = () => {
+        this.oldText = this.state.inputText;
         this.setState({ onFocus: true }, () => {
             this.props.onFocus && this.props.onFocus(true);
         });
     };
 
     _cancel = () => {
-        this.setState({ onFocus: false }, () => {
+        this.setState({ onFocus: false, inputText: this.oldText }, () => {
             this.props.onFocus && this.props.onFocus(false);
         });
     };
@@ -69,7 +70,10 @@ export default class SearchNavView extends Component {
                     }} style={{ width: 48, justifyContent: 'center', alignItems: 'center' }}>
                         <Image source={icon_header_back}/>
                     </TouchableOpacity>}
-                    <View style={styles.inputView}>
+                    <View style={[styles.inputView, {
+                        marginLeft: this.state.onFocus ? 15 : 0,
+                        marginRight: !this.state.onFocus ? 15 : 0
+                    }]}>
                         <TextInput style={{ marginLeft: 15, padding: 0 }}
                                    keyboardType='web-search'
                                    underlineColorAndroid='transparent'
@@ -111,9 +115,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         backgroundColor: DesignRule.bgColor,
         justifyContent: 'center',
-        flex: 1,
-        marginLeft: 15,
-        marginRight: 10
+        flex: 1
     }
 });
 

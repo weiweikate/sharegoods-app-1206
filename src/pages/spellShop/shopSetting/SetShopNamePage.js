@@ -69,8 +69,13 @@ export default class SetShopNamePage extends BasePage {
             SpellShopApi.getById({ id: this.params.storeData.storeId }).then((data) => {
                 let dataTemp = data.data || {};
                 this.setState({
+                    storeHeadUrlOrigin: dataTemp.headUrl,
                     textName: dataTemp.name,
-                    storeHeadUrlOrigin: dataTemp.headUrl
+                    textArea: `${dataTemp.province || ''}${dataTemp.city || ''}`,
+                    textProfile: dataTemp.profile || '',
+
+                    provinceCode: dataTemp.provinceCode,
+                    cityCode: dataTemp.cityCode
                 });
                 this.$loadingDismiss();
             }).catch((error) => {
@@ -99,14 +104,14 @@ export default class SetShopNamePage extends BasePage {
             return;
         }
 
-        if (StringUtils.isEmpty(this.state.provinceCode) || StringUtils.isEmpty(this.state.provinceCode)) {
+        if (StringUtils.isEmpty(this.state.provinceCode) || StringUtils.isEmpty(this.state.cityCode)) {
             this.$toastShow('请选择店铺位置');
             return;
         }
 
         if (this.params.storeData) {
             SpellShopApi.updateStoreInfo({
-                name: this.state.text,
+                name: this.state.textName,
                 headUrl: this.state.storeHeadUrlOrigin,
                 provinceCode: this.state.provinceCode,
                 cityCode: this.state.cityCode,
@@ -122,7 +127,7 @@ export default class SetShopNamePage extends BasePage {
         } else {
             // 创建店铺，并设置店铺基础信息
             SpellShopApi.initStore({
-                name: this.state.text,
+                name: this.state.textName,
                 headUrl: this.state.storeHeadUrlOrigin,
                 status: 3,
                 provinceCode: this.state.provinceCode,

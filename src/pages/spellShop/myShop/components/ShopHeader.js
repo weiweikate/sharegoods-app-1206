@@ -7,13 +7,9 @@ import {
     Text,
     View,
     Image,
-    Dimensions,
     StyleSheet,
-    ImageBackground,
     TouchableOpacity
 } from 'react-native';
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
 
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../../utils/ScreenUtils';
@@ -36,17 +32,11 @@ export default class ShopHeader extends Component {
 
 
     render() {
-        //tradeBalance本月收入 bonusNeedMoney总额
-        // currentUserSettle当前用户的钱(预计分红)
-        //贡献度currentUserSettle/tradeBalance
         let {
-            headUrl, name, storeNumber, storeStarId, userStatus,
-            tradeBalance, bonusNeedMoney, currentUserSettle,
-            storeNoticeVO, profile
+            headUrl, name, storeNumber, storeStarId,
+            storeNoticeDTO, profile
         } = this.props.item;
-        const { content } = storeNoticeVO || {};
-        tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
-        currentUserSettle = StringUtils.isEmpty(currentUserSettle) ? 0 : parseFloat(currentUserSettle);
+        const { content } = storeNoticeDTO || {};
 
         const starsArr = [];
         if (storeStarId && typeof storeStarId === 'number') {

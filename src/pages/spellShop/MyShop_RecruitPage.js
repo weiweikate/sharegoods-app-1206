@@ -1,7 +1,8 @@
 import React from 'react';
 import {
     View,
-    StyleSheet
+    StyleSheet,
+    AppState
 } from 'react-native';
 
 import BasePage from '../../BasePage';
@@ -16,6 +17,9 @@ import spellStatusModel from './model/SpellStatusModel';
 import NoAccessPage from './NoAccessPage';
 import NavigatorBar from '../../components/pageDecorator/NavigatorBar';
 import user from '../../model/user';
+import Storage from '../../utils/storage';
+import geolocation from '@mr/geolocation';
+import ConfirmAlert from '../../components/ui/ConfirmAlert';
 
 @observer
 export default class MyShop_RecruitPage extends BasePage {
@@ -26,7 +30,8 @@ export default class MyShop_RecruitPage extends BasePage {
             loadingState: PageLoadingState.loading,
             netFailedInfo: {},
             data: {},
-            isHome: !this.params.storeId
+            isHome: !this.params.storeId,
+            permissionsErr: true
         };
     }
 
@@ -47,12 +52,29 @@ export default class MyShop_RecruitPage extends BasePage {
     };
 
     componentWillMount() {
+        AppState.addEventListener('change', this._handleAppStateChange);
+
         this.willFocusSubscription = this.props.navigation.addListener(
             'willFocus',
             payload => {
                 const { state } = payload;
-                console.log('willFocus', state);
-                if (!this.unFirst) {//第一次不加载
+
+                if (this.state.permissionsErr === false) {
+                    this.ConfirmAlert.show({
+                        title: `定位服务未开启，请进入系统【设置】【隐私】【定位服务】中打开开关，并且允许秀购使用定位服务`,
+                        closeCallBack:()=>{
+                            this.props.navigation.popToTop();
+                            this.props.navigation.navigate('HomePage');
+                        },
+                        confirmCallBack: () => {
+                            this.props.navigation.popToTop();
+                            this.props.navigation.navigate('HomePage');
+                        },
+                        rightText: '去设置'
+                    });
+                }
+
+                if (!this.unFirst) {//第一次不多余刷新user
                     this.unFirst = true;
                     return;
                 }
@@ -60,17 +82,37 @@ export default class MyShop_RecruitPage extends BasePage {
                     spellStatusModel.getUser(0).then().catch((error) => {
                     });
                 }
+
             }
         );
     }
 
     componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
         this.willFocusSubscription && this.willFocusSubscription.remove();
     }
 
     componentDidMount() {
         this._loadPageData();
     }
+
+    _handleAppStateChange = (nextAppState) => {
+        if (nextAppState === 'active') {
+            //初始化init  定位存储  和app变活跃 会定位
+            geolocation.getLastLocation().then(result => {
+                this.state.permissionsErr = true;
+                Storage.set('storage_MrLocation', result);
+            }).catch((error) => {
+                    if (error.code === 'permissionsErr') {
+                        //没有权限
+                        this.state.permissionsErr = false;
+                    } else {
+                        this.state.permissionsErr = true;
+                    }
+                }
+            );
+        }
+    };
 
     _loadPageData = () => {
         const { isHome } = this.state;
@@ -158,6 +200,7 @@ export default class MyShop_RecruitPage extends BasePage {
                         this.$navigateBack();
                     }} leftNavItemHidden={isHome}/> : null}
                 {renderViewByLoadingState(this._getPageStateOptions(), this._renderContainer)}
+                <ConfirmAlert ref={(ref) => this.ConfirmAlert = ref}/>
             </View>
         );
     }

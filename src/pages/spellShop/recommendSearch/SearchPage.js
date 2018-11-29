@@ -9,7 +9,6 @@ import {
     RefreshControl
 } from 'react-native';
 
-import SearchRecruitingRow from './components/SearchRecruitingRow';
 import SearchAllRow from './components/SearchAllRow';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
@@ -115,15 +114,6 @@ export default class SearchPage extends BasePage {
 
     };
 
-    _onPressAtIndex = (index) => {
-        this.setState({
-            dataList: [{}],
-            loadingState: PageLoadingState.loading
-        }, () => {
-            this._loadPageData();
-        });
-    };
-
     _clickShopAtRow = (item) => {
         this.$navigate('spellShop/MyShop_RecruitPage', { storeId: item.id });
     };
@@ -131,11 +121,7 @@ export default class SearchPage extends BasePage {
     // 渲染行
     _renderItem = (item) => {
         if (this.state.loadingState === PageLoadingState.success) {
-            if (this.state.selIndex === 0) {
-                return (<SearchAllRow RecommendRowOnPress={this._clickShopAtRow} RecommendRowItem={item.item}/>);
-            } else {
-                return (<SearchRecruitingRow onPress={this._clickShopAtRow} item={item.item}/>);
-            }
+            return (<SearchAllRow RecommendRowOnPress={this._clickShopAtRow} RecommendRowItem={item.item}/>);
         } else {
             return <View style={{ height: 300 }}>
                 {renderViewByLoadingState(this._getPageStateOptions(), null)}
@@ -178,9 +164,6 @@ export default class SearchPage extends BasePage {
 
     _onSubmitEditing = (text) => {
         let needUpdate = !StringUtils.isEmpty(text) && this.state.keyword !== text;
-        if (StringUtils.isEmpty(text)) {
-            this.$toastShow('搜索内容不能为空');
-        }
 
         let params = { showSectionList: true };
         if (needUpdate) {

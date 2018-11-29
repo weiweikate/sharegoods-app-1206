@@ -24,8 +24,8 @@ export default class ShopHeaderBonus extends Component {
         currentUserSettle = StringUtils.isEmpty(currentUserSettle) ? 0 : parseFloat(currentUserSettle);
         bonusNeedMoney = StringUtils.isEmpty(bonusNeedMoney) ? 0 : parseFloat(bonusNeedMoney);
 
-        let gxd = (tradeBalance === 0 ? 0 : ((currentUserSettle / tradeBalance) * 100)).toFixed(2);
-        let progress = bonusNeedMoney === 0 ? 0 : ((tradeBalance / bonusNeedMoney) * 100).toFixed(2);
+        let gxd = (tradeBalance === 0 ? 0.00 : ((currentUserSettle / tradeBalance) * 100)).toFixed(2);
+        let progress = bonusNeedMoney === 0 ? 0.00 : ((tradeBalance / bonusNeedMoney) * 100).toFixed(2);
         let box_img = shop_box_0;
         if (progress >= 100) {
             box_img = shop_box_100;
