@@ -1,4 +1,4 @@
-package com.meeruu.commonlib.customview.loopbanner.view;
+package com.meeruu.commonlib.customview.loopbanner;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -6,21 +6,21 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 
-public class CBLoopViewPager extends RecyclerView {
+public class LoopViewPager extends RecyclerView {
 
     private static final float FLING_SCALE_DOWN_FACTOR = 0.5f; // 减速因子
     private static final int FLING_MAX_VELOCITY = 3000; // 最大顺时滑动速度
     private static boolean mEnableLimitVelocity = true; // 最大顺时滑动速度
 
-    public CBLoopViewPager(Context context) {
+    public LoopViewPager(Context context) {
         super(context);
     }
 
-    public CBLoopViewPager(Context context, @Nullable AttributeSet attrs) {
+    public LoopViewPager(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public CBLoopViewPager(Context context, @Nullable AttributeSet attrs, int defStyle) {
+    public LoopViewPager(Context context, @Nullable AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
