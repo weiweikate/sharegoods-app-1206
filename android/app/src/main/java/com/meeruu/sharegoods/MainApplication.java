@@ -9,6 +9,7 @@ import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.shell.MainPackageConfig;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import com.horcrux.svg.SvgPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -16,13 +17,13 @@ import com.iou90.autoheightwebview.AutoHeightWebViewPackage;
 import com.meeruu.RNDeviceInfo.RNDeviceInfo;
 import com.meeruu.commonlib.base.BaseApplication;
 import com.meeruu.commonlib.callback.ForegroundCallbacks;
+import com.meeruu.commonlib.utils.ImagePipelineConfigUtils;
 import com.meeruu.commonlib.utils.Utils;
 import com.meeruu.qiyu.imService.QiyuImageLoader;
 import com.meeruu.sharegoods.handler.CrashHandler;
 import com.meeruu.sharegoods.rn.MainReactPackage;
 import com.meeruu.sharegoods.rn.RNMRPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.psykar.cookiemanager.CookieManagerModule;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import com.qiyukf.unicorn.api.StatusBarNotificationConfig;
 import com.qiyukf.unicorn.api.UICustomization;
@@ -39,8 +40,6 @@ import java.util.List;
 
 import cn.reactnative.modules.update.UpdateContext;
 import cn.reactnative.modules.update.UpdatePackage;
-
-import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
 /**
  * @author louis
@@ -116,9 +115,11 @@ public class MainApplication extends BaseApplication implements ReactApplication
 
         @Override
         protected List<ReactPackage> getPackages() {
+            MainPackageConfig.Builder builder = new MainPackageConfig.Builder();
+            builder.setFrescoConfig(ImagePipelineConfigUtils.getDefaultImagePipelineConfig(BaseApplication.appContext));
             return Arrays.<ReactPackage>asList(
                     new RNMRPackage(),
-                    new MainReactPackage(),
+                    new MainReactPackage(builder.build()),
                     new ReactVideoPackage(),
                     new VectorIconsPackage(),
                     new UpdatePackage(),
