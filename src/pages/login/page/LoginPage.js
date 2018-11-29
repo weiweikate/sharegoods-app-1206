@@ -154,7 +154,6 @@ export default class LoginPage extends BasePage {
     /*注册*/
     registBtnClick = () => {
         this.$navigate('login/login/RegistPage');
-        // this.$navigate('login/login/SelectMentorPage');
     };
 
     /*登陆*/
@@ -196,6 +195,7 @@ export default class LoginPage extends BasePage {
 
                 //推送
                 JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
+                /**/
             }).catch((data) => {
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);

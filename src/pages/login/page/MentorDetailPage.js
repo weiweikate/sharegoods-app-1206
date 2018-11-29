@@ -16,12 +16,16 @@ import {
     StyleSheet,
     View,
     Text,
+    Image,
+    TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
 import { NavigationActions } from 'react-navigation';
 import MentorItemView from '../components/MentorItemView';
 import UIText from '../../../comm/components/UIText';
+import LoginAPI from '../api/LoginApi';
+import bridge from '../../../utils/bridge';
 
 
 export default class MentorDetailPage extends BasePage {
@@ -56,48 +60,63 @@ export default class MentorDetailPage extends BasePage {
         this.props.navigation.dispatch(resetAction);
     };
 
-
     _render() {
+        const itemData = this.params.itemData;
+        console.log('详情页面');
+        console.log(itemData);
         return (
             <View style={styles.bgViewStyle}>
                 <View
                     style={styles.topBgViewStyle}
                 >
                     <MentorItemView
+                        itemData={itemData}
+                        isSelect={true}
                     />
                     <UIText
-                        value={'接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜' +
-                        '接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜' +
-                        '接胡搜接胡搜接胡搜接胡搜\n' +
-                        '接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜接胡搜\' +\n' +
-                        '                    \'接胡搜接胡搜接胡搜接胡搜\\n'}
+                        value={itemData.profile ? itemData.profile : '暂无简介~'}
                         style={styles.topTextViewStyle}
                     />
                 </View>
                 <View
                     style={styles.bottomBgViewStyle}
                 >
-                    <View
-                        style={styles.bottomBtnBgViewStyle}
+                    <TouchableOpacity
+                        onPress={
+                            () => {
+                                this._selectMentor();
+                            }
+                        }
                     >
-                        <UIText
-                            value={'选择该导师'}
-                            style={{
-                                fontSize: 17,
-                                color: DesignRule.white
-                            }}
-                            onPress={{
+                        <View
+                            style={styles.bottomBtnBgViewStyle}
+                        >
+                            <UIText
+                                value={'选择该导师'}
+                                style={{
+                                    fontSize: 17,
+                                    color: DesignRule.white
+                                }}
+                            />
+                        </View>
+                    </TouchableOpacity>
 
-                            }}
-                        />
-                    </View>
                 </View>
             </View>
         );
     }
-    _selectMentor=()=>{
 
-    }
+    _selectMentor = () => {
+        let mentorData = this.params.itemData;
+        LoginAPI.mentorBind({
+            code: mentorData.code
+        }).then(res => {
+            bridge.$toast(res.msg);
+            this.$navigateBackToHome();
+        }).catch(res => {
+            bridge.$toast(res.msg);
+        });
+    };
 }
 
 const styles = StyleSheet.create({
@@ -111,7 +130,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 50
     },
-    topTextViewStyle:{
+    topTextViewStyle: {
         padding: 20,
         color: DesignRule.textColor_secondTitle,
         fontSize: 12
@@ -119,16 +138,16 @@ const styles = StyleSheet.create({
     bottomBgViewStyle: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
 
     },
-    bottomBtnBgViewStyle:{
+    bottomBtnBgViewStyle: {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: DesignRule.mainColor,
         height: 49,
-        borderRadius:25,
-        width:290
+        borderRadius: 25,
+        width: 290
     },
     rightTopTitleStyle: {
         fontSize: 15,

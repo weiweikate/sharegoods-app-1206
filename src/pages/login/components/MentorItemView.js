@@ -10,13 +10,14 @@
  */
 'use strict';
 
-import React,{Component} from 'react';
+import React, { Component } from 'react';
 
 import {
     View,
     TouchableOpacity,
     Text,
-    Animated
+    Animated,
+    Image
 } from 'react-native';
 
 // import {
@@ -30,55 +31,69 @@ import ScreenUtils from '../../../utils/ScreenUtils';
 
 export default class MentorItemView extends Component {
     state = {
-        isSelected:false,
-        ImageWith: new Animated.Value(ScreenUtils.width/5 - 20),
-        ImageRadius : new Animated.Value((ScreenUtils.width/5-20)/2)
+        isSelected: false,
+        ImageWith: new Animated.Value(ScreenUtils.width / 5 - 20),
+        ImageRadius: new Animated.Value((ScreenUtils.width / 5 - 20) / 2)
     };
 
     constructor(props) {
         super(props);
-        this.state={
-            isSelect:true
+        this.state = {
+            isSelect: props.isSelect,
+            itemData: props.itemData
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps) {
+            this.state.isSelect = nextProps.isSelect;
+            this.state.itemData = nextProps.itemData;
         }
     }
 
     render() {
-        let ImageWidth = this.state.isSelect?Animated.Value(ScreenUtils.width/5):Animated.Value(ScreenUtils.width/5 - 20)
-        return (
-          <View
-              style={{
-                  width: ScreenUtils.width / 5,
-                   height: 100,
-                   alignItems: 'center',
-                   justifyContent: 'center'
-          }}
-           >
+        const ImageWidth = this.state.isSelect ? ScreenUtils.width / 5 : ScreenUtils.width / 5 - 20;
 
-             <TouchableOpacity
-                  onPress={() => {
-                   // this.state.isSelected? this._resetAnimation(): this._startAnimation();
-                   // this.state.isSelected = !this.state.isSelected;
-                   //    this.props.clickItemAction&&this.props.clickItemAction();
-                  }
+        return (
+            <View
+                style={{
+                    width: ScreenUtils.width / 5,
+                    height: 100,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
+                <TouchableOpacity
+                    onPress={() => {
+                        // this.state.isSelected? this._resetAnimation(): this._startAnimation();
+                        // this.state.isSelected = !this.state.isSelected;
+                        this.props.clickItemAction && this.props.clickItemAction(this.state.itemData);
+                    }
                     }
                 >
-                    <Animated.Image
-                    style={{
-                    backgroundColor: 'red',
-                    height: ImageWidth,
-                    width: ImageWidth,
-                    borderRadius: this.state.ImageRadius
-                    }}
+                    <Image
+                        source={
+                            {
+                                uri: this.state.itemData.headImg?this.state.itemData.headImg:''
+                            }
+
+                        }
+                        style={{
+                            height: ImageWidth,
+                            width: ImageWidth,
+                            borderRadius: ImageWidth / 2
+                        }}
                     />
                 </TouchableOpacity>
                 <Text
+                    numberOfLines={1}
                     style={{
                         marginTop: 15,
                         fontSize: 13,
                         color: DesignRule.textColor_mainTitle
                     }}
                 >
-                    导师
+                    {this.state.itemData.nickname?this.state.itemData.nickname:'暂无昵称~'}
                 </Text>
             </View>
         );
@@ -89,7 +104,7 @@ export default class MentorItemView extends Component {
         Animated.timing(
             this.state.ImageWith,
             {
-                toValue: ScreenUtils.width/5,
+                toValue: ScreenUtils.width / 5,
                 duration: 100
             }
         ).start();
@@ -97,28 +112,28 @@ export default class MentorItemView extends Component {
         Animated.timing(
             this.state.ImageRadius,
             {
-                toValue: ScreenUtils.width/5/2,
+                toValue: ScreenUtils.width / 5 / 2,
                 duration: 100
             }
         ).start();
     };
-    _resetAnimation=()=>{
+    _resetAnimation = () => {
         console.log('执行了动画');
         Animated.timing(
             this.state.ImageWith,
             {
-                toValue: ScreenUtils.width/5 - 20,
+                toValue: ScreenUtils.width / 5 - 20,
                 duration: 100
             }
         ).start();
         Animated.timing(
             this.state.ImageRadius,
             {
-                toValue: (ScreenUtils.width/5-20)/2,
+                toValue: (ScreenUtils.width / 5 - 20) / 2,
                 duration: 100
             }
         ).start();
-    }
+    };
 
 }
 

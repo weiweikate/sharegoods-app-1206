@@ -266,8 +266,7 @@ export default class GetRedpacketPage extends BasePage {
      *
      */
     _changeRedpacket = () => {
-        bridge.$toast('换一批');
-        this.$toastShow('红包刷新成功');
+       // this.
     };
     /**
      * 渲染红包列表
