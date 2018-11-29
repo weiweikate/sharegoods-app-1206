@@ -10,10 +10,12 @@ import {
     TouchableWithoutFeedback
 } from "react-native";
 import ScreenUtils from "../../../../utils/ScreenUtils";
+import ImageLoad from "@mr/react-native-image-placeholder";
 
 const { px2dp } = ScreenUtils;
 import res from "../../../spellShop/res";
 import DesignRule from "../../../../constants/DesignRule";
+import MineAPI from "../../api/MineApi";
 
 const HeaderBarBgImg = res.myShop.txbg_03;
 const white_back = res.button.white_back;
@@ -21,23 +23,58 @@ const white_back = res.button.white_back;
 const headerHeight = ScreenUtils.statusBarHeight + 44;
 
 export default class MyMentorPage extends BasePage {
+    constructor(props) {
+        super(props);
+        this.state = {
+            headImg: null,
+            nickName: "",
+            levelName: "",
+            code: "",
+            phone: "",
+            profile: ""
+        };
+    }
+
     $navigationBarOptions = {
         show: false
     };
 
+    componentDidMount() {
+        this._findLeader();
+    }
+
+    _findLeader = () => {
+        MineAPI.findLeader().then((data) => {
+            let info = data.data;
+            if (info) {
+                this.setState({
+                    headImg: info.headImg,
+                    nickName: info.nickname,
+                    levelName: `${info.levelName}品鉴官`,
+                    code: info.code,
+                    phone: info.phone,
+                    profile: info.profile ? info.profile : "这位导师很懒，什么也没留下~"
+                });
+            }else {
+                this.$toastShow('未查询到导师信息');
+            }
+        }).catch((error) => {
+            this.$toastShow(error.msg);
+        });
+    };
+
     _render() {
-        const str = "彦宏，百度公司创始人、董事长兼首席执行官，全面负责百度公司的战略规划和运营管理。 1991年，李彦宏毕业于北京大学信息管理专业，随后前往美国布法罗纽约州立大学完成计算机科学硕士学位，先后担任道·琼斯公司高级顾问...";
         return (
             <View style={styles.container}>
                 {this._headerRender()}
-                {this._itemRender("名称", "杨紫")}
+                {this._itemRender("名称", this.state.nickName)}
                 {this._lineRender()}
-                {this._itemRender("职称", "白金品鉴官")}
+                {this._itemRender("职称", this.state.levelName)}
                 {this._lineRender()}
-                {this._itemRender("授权号", "123456")}
+                {this._itemRender("授权号", this.state.code)}
                 {this._lineRender()}
-                {this._itemRender("手机号", "1577777777")}
-                {this._profileRender(str)}
+                {this._itemRender("手机号", this.state.phone)}
+                {this._profileRender(this.state.profile)}
                 {this._navRender()}
             </View>
         );
@@ -76,9 +113,14 @@ export default class MyMentorPage extends BasePage {
 
 
     _headerRender = () => {
+        let image = this.state.headImg ?
+            <ImageLoad source={{ uri: this.state.headImg }} style={styles.headerIconStyle}/> : null;
+
         return (
             <ImageBackground source={HeaderBarBgImg} style={styles.headerWrapper}>
-                <View style={styles.headerIconStyle}/>
+                <View style={styles.headerIconWrapper}>
+                    {image}
+                </View>
             </ImageBackground>
         );
     };
@@ -123,14 +165,20 @@ const styles = StyleSheet.create({
     headerWrapper: {
         width: ScreenUtils.width,
         height: px2dp(200),
-        alignItems: "center",
+        alignItems: "center"
+    },
+    headerIconWrapper: {
+        height: px2dp(80),
+        width: px2dp(80),
+        borderRadius: px2dp(40),
+        backgroundColor: "white",
+        marginTop: headerHeight + 20,
+        overflow:'hidden'
     },
     headerIconStyle: {
         height: px2dp(80),
         width: px2dp(80),
         borderRadius: px2dp(40),
-        backgroundColor: "white",
-        marginTop:headerHeight+20
     },
     itemWrapper: {
         height: px2dp(40),
@@ -154,7 +202,8 @@ const styles = StyleSheet.create({
         width: ScreenUtils.width,
         backgroundColor: DesignRule.white,
         marginTop: 7,
-        padding: DesignRule.margin_page
+        padding: DesignRule.margin_page,
+        height: px2dp(135)
     },
     profileTitleStyle: {
         includeFontPadding: false,
