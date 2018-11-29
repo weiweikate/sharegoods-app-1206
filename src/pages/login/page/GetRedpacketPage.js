@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import bridge from '../../../utils/bridge';
+// import bridge from '../../../utils/bridge';
 import CommModal from '../../../comm/components/CommModal';
 import { NavigationActions } from 'react-navigation';
 import LoginAPI from '../api/LoginApi';

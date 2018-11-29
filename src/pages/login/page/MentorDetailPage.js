@@ -16,7 +16,6 @@ import {
     StyleSheet,
     View,
     Text,
-    Image,
     TouchableOpacity
 } from 'react-native';
 import BasePage from '../../../BasePage';

@@ -23,7 +23,7 @@ import {
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
 import MentorItemView from '../components/MentorItemView';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import LoginAPI from '../api/LoginApi';
