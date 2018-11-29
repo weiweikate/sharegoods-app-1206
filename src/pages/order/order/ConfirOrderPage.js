@@ -202,6 +202,7 @@ export default class ConfirOrderPage extends BasePage {
                             style={styles.inputTextStyle}
                             onChangeText={text => this.setState({ message: text })}
                             placeholder={'选填：填写内容已与卖家协商确认'}
+                            placeholderTextColor={DesignRule.textColor_instruction}
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
