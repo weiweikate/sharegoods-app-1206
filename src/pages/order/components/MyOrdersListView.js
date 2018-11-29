@@ -565,7 +565,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 7:
                 // this.setState({ isShowDeleteOrderModal: true });
-                Alert.alert('',`确定删除此订单吗`, [
+                Alert.alert('',`确定删除此订单？`, [
                     {
                         text: `取消`, onPress: () => {
                         }
@@ -578,7 +578,7 @@ export default class MyOrdersListView extends Component {
                                 Toast.showLoading();
                                 OrderApi.deleteClosedOrder({ orderNum: this.state.viewData[this.state.index].orderNum }).then((response) => {
                                     Toast.hiddenLoading();
-                                    NativeModules.commModule.toast('订单已删除');
+                                    NativeModules.commModule.toast('订单已删除！');
                                     this.onRefresh();
                                 }).catch(e => {
                                     Toast.hiddenLoading();
@@ -633,7 +633,7 @@ export default class MyOrdersListView extends Component {
             case 9:
                 // this.setState({ isShowDeleteOrderModal: true });
                 // this.deleteModal && this.deleteModal.open();
-                Alert.alert('',`确定删除此订单吗`, [
+                Alert.alert('',`确定删除此订单？`, [
                     {
                         text: `取消`, onPress: () => {
                         }
