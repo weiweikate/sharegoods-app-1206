@@ -79,7 +79,10 @@ export default class ShowBannerView extends Component {
         });
         return <View style={styles.container}>
             <MRBannerView
-                style={[{ height: px2dp(175), width: ScreenUtils.width }]}
+                style={{
+                    height: px2dp(175),
+                    width: ScreenUtils.width
+                }}
                 imgUrlArray={items}
                 itemWidth={px2dp(300)}
                 itemSpace={px2dp(10)}

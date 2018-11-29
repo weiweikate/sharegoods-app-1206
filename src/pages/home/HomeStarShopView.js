@@ -22,12 +22,12 @@ const starImg = res.star;
 
 
 const Banner = ({ backImage, title, press }) => <View style={styles.bannerContainer}>
-    <ImageBackground style={styles.bannerImg} source={backImage} cacheable={true}>
+    <ImageLoad style={styles.bannerImg} source={backImage} cacheable={true}>
         <Text style={styles.bannerTitle}>{title}</Text>
         <TouchableOpacity style={styles.joinBtn} onPress={() => press && press()}>
             <Text style={styles.join}>+ 申请加入</Text>
         </TouchableOpacity>
-    </ImageBackground>
+    </ImageLoad>
 </View>
 
 const Line = () => <View style={styles.line}/>;
