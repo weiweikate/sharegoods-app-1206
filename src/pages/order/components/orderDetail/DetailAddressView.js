@@ -19,11 +19,11 @@ export default class DetailAddressView extends Component{
                 <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }} resizeMode={'contain'}/>
                 <View style={{ flex: 1, marginLeft: 15, marginRight: 20 }}>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
-                        <Text style={[styles.innerTextStyle,{flex:1}]}>收货人：{this.props.receiver}</Text>
-                        <Text style={styles.innerTextStyle}>{this.props.recevicePhone}</Text>
+                        <Text style={[styles.innerTextStyle,{flex:1}]}>收货人:{this.props.receiver}</Text>
+                        <Text style={[styles.innerTextStyle,{marginLeft:5}]}>{this.props.recevicePhone}</Text>
                     </View>
                     <UIText value={
-                        '收货地址：' + this.props.province
+                        '收货地址:' + this.props.province
                         + this.props.city
                         + this.props.area
                         + this.props.address

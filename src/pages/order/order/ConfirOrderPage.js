@@ -125,8 +125,8 @@ export default class ConfirOrderPage extends BasePage {
     };
     renderSelectImage = () => {
         return (
-            <View>
-                <View style={{}}>
+            <View style={{backgroundColor:'white'}}>
+                <View style={{marginBottom:10}}>
                     <Image source={colorLine} style={{ height: 3, width: ScreenUtils.width }}/>
                 </View>
                 {this.state.orderParam && this.state.orderParam.orderType === 3 ?
@@ -186,7 +186,6 @@ export default class ConfirOrderPage extends BasePage {
                     </TouchableOpacity>
                 }
                 {this.renderLine()}
-                {this.renderLine()}
                 <TouchableOpacity style={styles.couponsStyle}>
                     <UIText value={'运费'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -202,6 +201,7 @@ export default class ConfirOrderPage extends BasePage {
                             style={styles.inputTextStyle}
                             onChangeText={text => this.setState({ message: text })}
                             placeholder={'选填：填写内容已与卖家协商确认'}
+                            placeholerTextColor={'red'}
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
@@ -274,20 +274,19 @@ export default class ConfirOrderPage extends BasePage {
         return (
             <View>
                 {this.renderLine()}
-                <View style={{ height: 49, flexDirection: 'row',backgroundColor:DesignRule.white}}>
+                <View style={{ height: ScreenUtils.autoSizeHeight(49), flexDirection: 'row',backgroundColor:DesignRule.white}}>
                     <View
-                        style={{ width: 264, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
+                        style={{ width: ScreenUtils.autoSizeWidth(265), flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
                         <UIText value={'应付款：'} style={{
-                            fontSize: 15,
+                            fontSize: ScreenUtils.autoSizeWidth(15),
                             color: DesignRule.textColor_mainTitle,
-                            marginRight: 12
                         }}/>
                         <UIText
                             value={StringUtils.formatMoneyString(this.state.viewData.totalAmounts)}
                             style={{
-                                fontSize: 15,
+                                fontSize: ScreenUtils.autoSizeWidth(15),
                                 color: DesignRule.mainColor,
-                                marginRight: 12
+                                marginRight: ScreenUtils.autoSizeWidth(15)
                             }}/>
                     </View>
                     <TouchableOpacity
@@ -299,7 +298,7 @@ export default class ConfirOrderPage extends BasePage {
                         }}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'提交订单'}
-                                style={{ fontSize: 16, color: 'white' }}/>
+                                style={{ fontSize: ScreenUtils.autoSizeWidth(16), color: 'white', padding:2}}/>
                     </TouchableOpacity>
 
                 </View>

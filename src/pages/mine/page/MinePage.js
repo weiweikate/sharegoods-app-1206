@@ -199,7 +199,7 @@ export default class MinePage extends BasePage {
             this.props.navigation.navigate("login/login/LoginPage");
             return;
         }
-        this.props.navigation.navigate("mine/userInformation/UserInformationPage");
+        // this.props.navigation.navigate("mine/userInformation/UserInformationPage");
     };
 
     //**********************************ViewPart******************************************

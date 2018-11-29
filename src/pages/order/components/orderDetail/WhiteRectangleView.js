@@ -12,7 +12,7 @@ import StringUtils from '../../../../utils/StringUtils';
 import DateUtils from '../../../../utils/DateUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
-import { orderDetailModel } from '../../model/OrderDetailModel';
+import { assistDetailModel, orderDetailAfterServiceModel, orderDetailModel } from '../../model/OrderDetailModel';
 const arrow_right = res.arrow_right;
 const logisticCar = res.car;
 
@@ -25,35 +25,35 @@ export default class WhiteRectangleView extends Component{
             <TouchableOpacity style={styles.topOrderDetail} onPress={() => {
                 this.props.nav('order/logistics/LogisticsDetailsPage', {
                     orderNum: orderDetailModel.orderNum,
-                    orderId: this.props.orderId,
-                    expressNo: this.props.expressNo
+                    orderId: assistDetailModel.orderId,
+                    expressNo: orderDetailModel.expressNo
                 })
-            }} disabled={!this.props.expressNo}>
+            }} disabled={!orderDetailModel.expressNo}>
                 <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'space-between'}} >
                     <UIImage source={logisticCar} style={{ height: 19, width: 19, marginLeft: 21 }}/>
                     <View style={{justifyContent:'center',flex:1}}>
-                        {typeof this.props.sellerState === 'string' ?
+                        {typeof orderDetailAfterServiceModel.totalAsList.buyState === 'string' ?
                             <View style={{ marginLeft: 10}}>
-                                <UIText value={this.props.sellerState} style={{
+                                <UIText value={orderDetailAfterServiceModel.totalAsList.sellerState} style={{
                                     color: DesignRule.textColor_mainTitle,
                                     fontSize: 15,
                                     marginRight: 46
                                 }}/>
-                                {StringUtils.isNoEmpty(this.props.logisticsTime)?
+                                {StringUtils.isNoEmpty(orderDetailAfterServiceModel.totalAsList.logisticsTime)?
                                     <UIText style={{
                                         color: DesignRule.textColor_instruction,
                                         fontSize:15,
                                         marginTop:3
-                                    }} value={DateUtils.getFormatDate(this.props.logisticsTime / 1000)}/>:null}
+                                    }} value={DateUtils.getFormatDate(orderDetailAfterServiceModel.totalAsList.logisticsTime / 1000)}/>:null}
                             </View>
                             :
                             <View style={{flexDirection: 'row'}}>
-                                <Text style={styles.leftTextStyle}>{this.props.sellerState[0]}</Text>
-                                <Text style={styles.phoneStyle}>{this.props.sellerState[1]}</Text>
+                                <Text style={styles.leftTextStyle}>{orderDetailAfterServiceModel.totalAsList.sellerState[0]}</Text>
+                                <Text style={styles.phoneStyle}>{orderDetailAfterServiceModel.totalAsList.sellerState[1]}</Text>
                             </View>
                         }
-                        {StringUtils.isNoEmpty(this.props.sellerTime) ?
-                            <UIText value={this.props.sellerTime}
+                        {StringUtils.isNoEmpty(orderDetailAfterServiceModel.totalAsList.sellerTime) ?
+                            <UIText value={orderDetailAfterServiceModel.totalAsList.sellerTime}
                                     style={styles.DetailAddressStyle}/>
                             : null}
 
@@ -82,12 +82,11 @@ const styles=StyleSheet.create({
         flex:1,
         fontSize: 15,
         marginLeft:10,
-        marginRight:3,
         color: DesignRule.textColor_instruction
     },
     phoneStyle:{
         fontSize: 15,
-        marginRight:16,
+        marginLeft:15,
         color: DesignRule.textColor_instruction
     },
     DetailAddressStyle:{
