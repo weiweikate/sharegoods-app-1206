@@ -72,24 +72,24 @@ export default class ConfirOrderPage extends BasePage {
         return (StringUtils.isNoEmpty(this.state.viewData.express.receiverNum) ?
                 <TouchableOpacity
                     style={{
-                        minHeight: 80,
+                        minHeight: ScreenUtils.autoSizeWidth(80) ,
                         backgroundColor: 'white',
                         flexDirection: 'row',
                         alignItems: 'center',
-                        paddingTop: 10,
-                        paddingBottom: 10
+                        paddingTop: ScreenUtils.autoSizeWidth(10),
+                        paddingBottom: ScreenUtils.autoSizeWidth(10)
                     }}
                     onPress={() => this.selectAddress()}>
-                    <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }} resizeMode={'contain'}/>
-                    <View style={{ flex: 1, marginLeft: 15, marginRight: 15 }}>
+                    <UIImage source={position} style={{ height:ScreenUtils.autoSizeHeight(20) , width: ScreenUtils.autoSizeWidth(20), marginLeft:ScreenUtils.autoSizeWidth(20 ) }} resizeMode={'contain'}/>
+                    <View style={{ flex: 1, marginLeft:ScreenUtils.autoSizeWidth(15) , marginRight:ScreenUtils.autoSizeWidth(15)}}>
                         <View style={{ flex: 1, flexDirection: 'row' }}>
                             <Text style={{
                                 flex: 1,
-                                fontSize: 15,
+                                fontSize: ScreenUtils.px2dp(15),
                                 color: DesignRule.textColor_mainTitle
                             }}>收货人：{this.state.viewData.express.receiverName}</Text>
                             <Text style={{
-                                fontSize: 15,
+                                fontSize: ScreenUtils.px2dp(15),
                                 color: DesignRule.textColor_mainTitle
                             }}>{this.state.viewData.express.receiverNum}</Text>
                         </View>
@@ -101,9 +101,9 @@ export default class ConfirOrderPage extends BasePage {
                                 + this.state.viewData.express.receiverAddress
                             }
                             style={{
-                                fontSize: 13,
+                                fontSize:ScreenUtils.px2dp(13),
                                 color: DesignRule.textColor_mainTitle,
-                                marginTop: 5
+                                marginTop:ScreenUtils.autoSizeWidth(5)
                             }}/>
                     </View>
                     <Image source={arrow_right} style={{ width:10,height: 14, marginRight: 15 }} resizeMode={'contain'}/>
@@ -114,7 +114,7 @@ export default class ConfirOrderPage extends BasePage {
                     <UIImage source={position} style={{ height: 20, width: 20, marginLeft: 20 }} resizeMode={'contain'}/>
                     <View style={{ flex: 1, marginLeft: 15, marginRight: 20 }}>
                         <UIText value={'请添加一个收货人地址'} style={{
-                            fontSize: 13,
+                            fontSize: ScreenUtils.px2dp(13),
                             color: DesignRule.textColor_hint,
                             marginLeft: 15
                         }}/>
@@ -146,7 +146,7 @@ export default class ConfirOrderPage extends BasePage {
                             marginLeft: 20
                         }}>
                             <Text style={{
-                                fontSize: 11,
+                                fontSize: ScreenUtils.px2dp(11),
                                 color: DesignRule.mainColor,
                                 padding: 3
                             }}>礼包</Text>
@@ -174,6 +174,7 @@ export default class ConfirOrderPage extends BasePage {
 
                 {this.renderLine()}
                 {!user.tokenCoin ? null :
+                    <View>
                     <TouchableOpacity style={styles.couponsStyle}
                                       onPress={() => this.jumpToCouponsPage('justOne')}>
                         <UIText value={'1元现金券'} style={styles.blackText}/>
@@ -184,8 +185,9 @@ export default class ConfirOrderPage extends BasePage {
                             <Image source={arrow_right}/>
                         </View>
                     </TouchableOpacity>
+                        {this.renderLine()}
+                    </View>
                 }
-                {this.renderLine()}
                 <TouchableOpacity style={styles.couponsStyle}>
                     <UIText value={'运费'} style={styles.blackText}/>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -201,7 +203,8 @@ export default class ConfirOrderPage extends BasePage {
                             style={styles.inputTextStyle}
                             onChangeText={text => this.setState({ message: text })}
                             placeholder={'选填：填写内容已与卖家协商确认'}
-                            placeholerTextColor={'red'}
+                            placeholderTextColor={DesignRule.textColor_instruction}
+                            numberOfLines={1}
                             underlineColorAndroid={'transparent'}
                         />
                     </View>
@@ -247,12 +250,12 @@ export default class ConfirOrderPage extends BasePage {
                             }}>
                                 <Text style={{
                                     color: DesignRule.textColor_instruction,
-                                    fontSize: 13,
+                                    fontSize:ScreenUtils.px2dp(13) ,
                                     alignSelf: 'center'
                                 }}>{item.couponName}</Text>
                                 <Text style={{
                                     color: DesignRule.textColor_instruction,
-                                    fontSize: 13,
+                                    fontSize: ScreenUtils.px2dp(13) ,
                                     alignSelf: 'center',
                                     marginRight: 13.5
                                 }}>X1</Text>
@@ -278,13 +281,13 @@ export default class ConfirOrderPage extends BasePage {
                     <View
                         style={{ width: ScreenUtils.autoSizeWidth(265), flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
                         <UIText value={'应付款：'} style={{
-                            fontSize: ScreenUtils.autoSizeWidth(15),
+                            fontSize: ScreenUtils.px2dp(15),
                             color: DesignRule.textColor_mainTitle,
                         }}/>
                         <UIText
                             value={StringUtils.formatMoneyString(this.state.viewData.totalAmounts)}
                             style={{
-                                fontSize: ScreenUtils.autoSizeWidth(15),
+                                fontSize: ScreenUtils.px2dp(15),
                                 color: DesignRule.mainColor,
                                 marginRight: ScreenUtils.autoSizeWidth(15)
                             }}/>
@@ -298,7 +301,7 @@ export default class ConfirOrderPage extends BasePage {
                         }}
                         onPress={() => this.commitOrder()}>
                         <UIText value={'提交订单'}
-                                style={{ fontSize: ScreenUtils.autoSizeWidth(16), color: 'white', padding:2}}/>
+                                style={{ fontSize: ScreenUtils.px2dp(16), color: 'white', padding:2}}/>
                     </TouchableOpacity>
 
                 </View>
@@ -358,7 +361,7 @@ export default class ConfirOrderPage extends BasePage {
     };
     renderLine = () => {
         return (
-            <View style={{ height: 0.5, backgroundColor: DesignRule.lineColor_inColorBg }}/>
+            <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg }}/>
         );
     };
 
@@ -784,17 +787,17 @@ const styles = StyleSheet.create({
     container: {
         flex: 1, backgroundColor: DesignRule.bgColor, justifyContent: 'flex-end', marginBottom: ScreenUtils.safeBottom
     }, selectText: {
-        fontSize: 16, color: 'white'
+        fontSize: ScreenUtils.px2dp(16), color: 'white'
     }, blackText: {
-        fontSize: 13,
+        fontSize:  ScreenUtils.px2dp(13),
         lineHeight: 18,
         color: DesignRule.textColor_mainTitle
     }, grayText: {
-        fontSize: 13,
+        fontSize: ScreenUtils.px2dp(13),
         lineHeight: 18,
         color: DesignRule.textColor_instruction
     }, inputTextStyle: {
-        marginLeft: 20, height: 40, flex: 1, backgroundColor: 'white', fontSize: 14
+        marginLeft: 20, height: 40, flex: 1, backgroundColor: 'white', fontSize: ScreenUtils.px2dp(14),
     }, selectView: {
         flex: 1,
         borderRadius: 3,

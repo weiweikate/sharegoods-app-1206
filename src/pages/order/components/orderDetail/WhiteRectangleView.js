@@ -18,7 +18,9 @@ const logisticCar = res.car;
 
 
 export default class WhiteRectangleView extends Component{
-
+constructor(props){
+    super(props);
+}
 
     render(){
         return(
@@ -29,9 +31,9 @@ export default class WhiteRectangleView extends Component{
                     expressNo: orderDetailModel.expressNo
                 })
             }} disabled={!orderDetailModel.expressNo}>
-                <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'space-between'}} >
+                <View style={{ flexDirection: 'row', alignItems: 'center'}} >
                     <UIImage source={logisticCar} style={{ height: 19, width: 19, marginLeft: 21 }}/>
-                    <View style={{justifyContent:'center',flex:1}}>
+                    <View style={{justifyContent:'center'}}>
                         {typeof orderDetailAfterServiceModel.totalAsList.buyState === 'string' ?
                             <View style={{ marginLeft: 10}}>
                                 <UIText value={orderDetailAfterServiceModel.totalAsList.sellerState} style={{
@@ -47,15 +49,17 @@ export default class WhiteRectangleView extends Component{
                                     }} value={DateUtils.getFormatDate(orderDetailAfterServiceModel.totalAsList.logisticsTime / 1000)}/>:null}
                             </View>
                             :
-                            <View style={{flexDirection: 'row'}}>
-                                <Text style={styles.leftTextStyle}>{orderDetailAfterServiceModel.totalAsList.sellerState[0]}</Text>
-                                <Text style={styles.phoneStyle}>{orderDetailAfterServiceModel.totalAsList.sellerState[1]}</Text>
+                            <View style={{flexDirection:'row',paddingLeft:10,justifyContent:'flex-end',paddingRight:15}}>
+                                    <Text style={{flex:1,fontSize:15}}>{orderDetailAfterServiceModel.totalAsList.sellerState[0]}</Text>
+                                    <Text style={{fontSize:15,marginRight:30}}>{orderDetailAfterServiceModel.totalAsList.sellerState[1]}</Text>
                             </View>
                         }
+                        <View>
                         {StringUtils.isNoEmpty(orderDetailAfterServiceModel.totalAsList.sellerTime) ?
                             <UIText value={orderDetailAfterServiceModel.totalAsList.sellerTime}
                                     style={styles.DetailAddressStyle}/>
                             : null}
+                        </View>
 
                     </View>
                     <UIImage source={arrow_right} style={{ height: 14, width: 10, marginRight: 11 }}
@@ -81,19 +85,18 @@ const styles=StyleSheet.create({
     leftTextStyle:{
         flex:1,
         fontSize: 15,
-        marginLeft:10,
         color: DesignRule.textColor_instruction
     },
     phoneStyle:{
         fontSize: 15,
-        marginLeft:15,
+        marginLeft:25,
         color: DesignRule.textColor_instruction
     },
     DetailAddressStyle:{
         color: DesignRule.textColor_instruction,
         fontSize: 13,
         marginLeft: 10,
-        marginRight: 16,
-        marginTop:5
+        marginRight: 55,
+        marginTop:5,
     }
 })

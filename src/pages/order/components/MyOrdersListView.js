@@ -96,7 +96,7 @@ export default class MyOrdersListView extends Component {
                     ref={(ref) => {
                         this.deleteModal = ref;
                     }}
-                    detail={{ title: '删除订单', context: '确定删除此订单吗', no: '取消', yes: '确认' }}
+                    detail={{ title: '删除订单', context: '确定删除此订单?', no: '取消', yes: '确认' }}
                     closeWindow={() => {
                         this.setState({ isShowDeleteOrderModal: false });
                     }}
@@ -562,7 +562,7 @@ export default class MyOrdersListView extends Component {
                 break;
             case 7:
                 // this.setState({ isShowDeleteOrderModal: true });
-                Alert.alert('',`确定删除此订单吗`, [
+                Alert.alert('',`确定删除此订单?`, [
                     {
                         text: `取消`, onPress: () => {
                         }
@@ -630,7 +630,7 @@ export default class MyOrdersListView extends Component {
             case 9:
                 // this.setState({ isShowDeleteOrderModal: true });
                 // this.deleteModal && this.deleteModal.open();
-                Alert.alert('',`确定删除此订单吗`, [
+                Alert.alert('',`确定删除此订单吗?`, [
                     {
                         text: `取消`, onPress: () => {
                         }

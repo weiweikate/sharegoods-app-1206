@@ -28,6 +28,7 @@ import res from "../res";
 import EmptyUtils from "../../../utils/EmptyUtils";
 import WaveView from "WaveView";
 import MessageApi from "../../message/api/MessageApi";
+// import CheckLogisticsPage from '../../order/logistics/CheckLogisticsPage';
 
 const {
     mine_header_bg,
@@ -200,6 +201,8 @@ export default class MinePage extends BasePage {
             return;
         }
         // this.props.navigation.navigate("mine/userInformation/UserInformationPage");
+        // this.props.navigation.navigate("order/order/PromiseTestPage");
+        this.props.navigation.navigate("order/logistics/CheckLogisticsPage");
     };
 
     //**********************************ViewPart******************************************
