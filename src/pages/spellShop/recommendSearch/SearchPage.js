@@ -163,7 +163,7 @@ export default class SearchPage extends BasePage {
     };
 
     _onSubmitEditing = (text) => {
-        let needUpdate = !StringUtils.isEmpty(text) && this.state.keyword !== text;
+        let needUpdate = this.state.keyword !== text;
 
         let params = { showSectionList: true };
         if (needUpdate) {
