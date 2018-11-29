@@ -2,5 +2,4 @@
 <resources>
     <item name="statusbarutils_fake_status_bar_view" type="id" />
     <item name="statusbarutils_translucent_view" type="id" />
-    <item type="id" name="tag_position_key"></item>
 </resources>

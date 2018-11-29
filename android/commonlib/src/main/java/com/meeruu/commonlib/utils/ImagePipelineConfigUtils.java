@@ -38,10 +38,10 @@ public class ImagePipelineConfigUtils {
     private static final int MAX_DISK_CACHE_SIZE = 100 * ByteConstants.MB;
 
     //小图所放路径的文件夹名
-    private static final String IMAGE_PIPELINE_SMALL_CACHE_DIR = "ImagePipelineCacheSmall";
+    private static final String IMAGE_PIPELINE_SMALL_CACHE_DIR = "small_pic";
 
     //默认图所放路径的文件夹名
-    private static final String IMAGE_PIPELINE_CACHE_DIR = "ImagePipelineCacheDefault";
+    private static final String IMAGE_PIPELINE_CACHE_DIR = "default_pic";
 
     public static ImagePipelineConfig getDefaultImagePipelineConfig(Context context) {
 
@@ -60,7 +60,6 @@ public class ImagePipelineConfigUtils {
                 return bitmapCacheParams;
             }
         };
-
         //小图片的磁盘配置
         DiskCacheConfig diskSmallCacheConfig = DiskCacheConfig.newBuilder(context).setBaseDirectoryPath(SDCardUtils.getFileDirPath("MR/cache"))//缓存图片基路径
                 .setBaseDirectoryName(IMAGE_PIPELINE_SMALL_CACHE_DIR)//文件夹名
@@ -69,7 +68,6 @@ public class ImagePipelineConfigUtils {
                 .setMaxCacheSizeOnVeryLowDiskSpace(MAX_SMALL_DISK_VERYLOW_CACHE_SIZE)//缓存的最大大小,当设备极低磁盘空间
                 .setDiskTrimmableRegistry(NoOpDiskTrimmableRegistry.getInstance())
                 .build();
-
         //默认图片的磁盘配置
         DiskCacheConfig diskCacheConfig = DiskCacheConfig.newBuilder(context).setBaseDirectoryPath(SDCardUtils.getFileDirPath("MR/cache"))//缓存图片基路径
                 .setBaseDirectoryName(IMAGE_PIPELINE_CACHE_DIR)//文件夹名
