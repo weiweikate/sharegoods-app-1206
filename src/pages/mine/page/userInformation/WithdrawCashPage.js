@@ -4,7 +4,8 @@ import {
     View,
     TextInput as RNTextInput,
     Text,
-    TouchableOpacity, Alert
+    TouchableOpacity, Alert,
+    DeviceEventEmitter
 } from "react-native";
 import BasePage from '../../../../BasePage';
 import {
@@ -73,7 +74,21 @@ export default class WithdrawCashPage extends BasePage {
     };
 
     componentDidMount(){
+        this.listener = DeviceEventEmitter.addListener('unbindBank',(bankId)=>{
+            if(this.state.bankId === bankId){
+                this.setState({
+                    card_no: null,
+                    bank_name: null,
+                    bankId: null,
+                    card_type: null
+                });
+            }
+        })
         this.loadPageData();
+    }
+
+    componentWillUnmount() {
+        this.listener && this.listener.remove();
     }
 
     loadPageData=()=>{

@@ -111,7 +111,7 @@ public class MRBannerViewManager extends SimpleViewManager<WenldBanner<String>> 
         if (urls != null) {
             final List datas = urls.toArrayList();
             view.setData(datas);
-            view.getViewPager().setOffscreenPageLimit(datas.size() * 100);
+            view.getViewPager().setOffscreenPageLimit(200);
         }
     }
 

@@ -10,7 +10,8 @@ import {
     TouchableWithoutFeedback,
     ScrollView, ListView,
     RefreshControl,
-    Alert
+    Alert,
+    DeviceEventEmitter
 } from "react-native";
 import BasePage from "../../../../BasePage";
 import {
@@ -209,9 +210,11 @@ export default class BankCardListPage extends BasePage {
         this.setState({
             isShowUnbindCardModal: false
         });
-        MineApi.deleteUserBank({ id: this.state.viewData[this.selectBankCard].id, password: password }).then((data) => {
+        let id = this.state.viewData[this.selectBankCard].id;
+        MineApi.deleteUserBank({ id: id, password: password }).then((data) => {
             this.$loadingShow();
             this._getBankInfo();
+            DeviceEventEmitter.emit('unbindBank',id)
         }).catch((error) => {
             this.$toastShow(error.msg);
         });
