@@ -226,12 +226,6 @@ export default class LoginPage extends BasePage {
                 bridge.setCookies(data.data);
                 this.params.callback && this.params.callback();
 
-                // /**
-                //  * 跳转导师选择页面
-                //  */
-                // this.$navigate('login/login/SelectMentorPage');
-                // return;
-
                 if (this.params.callback) {
                   this.$navigateBackToHome();
                 } else {
