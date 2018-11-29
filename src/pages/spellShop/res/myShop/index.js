@@ -8,7 +8,6 @@ const index = {
     dy_07: require('./dy_07.png'),
     dz_03: require('./dz_03.png'),
     dzfhj_03_03: require('./dzfhj_03_03.png'),
-    hangye_gift: require('./hangye_gift.png'),
     headBg: require('./headBg.png'),
     icon_03_02: require('./icon_03_02.png'),
     icon_03_03: require('./icon_03_03.png'),
@@ -24,6 +23,11 @@ const index = {
     xjt_03: require('./xjt_03.png'),
     zje_11: require('./zje_11.png'),
     my_Shop_gengduo: require('./my_Shop_gengduo.png'),
-    icon_03: require('./icon_03.png')
+    icon_03: require('./icon_03.png'),
+    myShop_join: require('./myShop_join.png'),
+    shop_box_0: require('./shop_box_0.png'),
+    shop_box_25: require('./shop_box_25.png'),
+    shop_box_75: require('./shop_box_75.png'),
+    shop_box_100: require('./shop_box_100.png'),
 };
 export default index;

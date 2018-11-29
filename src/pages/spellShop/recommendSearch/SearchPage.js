@@ -9,28 +9,27 @@ import {
     RefreshControl
 } from 'react-native';
 
-import SearchBar from '../../../components/ui/searchBar/SearchBar';
-import SearchSegmentView from './components/SearchSegmentView';
-import SearchRecruitingRow from './components/SearchRecruitingRow';
 import SearchAllRow from './components/SearchAllRow';
 import BasePage from '../../../BasePage';
 import SpellShopApi from '../api/SpellShopApi';
 import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import DesignRule from 'DesignRule';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
-
+import SearchNavView from './components/SearchNavView';
+import StringUtils from '../../../utils/StringUtils';
 
 export default class SearchPage extends BasePage {
 
 
     // 导航配置
     $navigationBarOptions = {
-        title: '搜索店铺'
+        show: false
     };
 
     constructor(props) {
         super(props);
         this.state = {
+            showSectionList: true,
             //刷新
             refreshing: false,//是否显示下拉的菊花
             noMore: false,//没有了
@@ -42,7 +41,6 @@ export default class SearchPage extends BasePage {
             loadingState: PageLoadingState.loading,
             netFailedInfo: {},
 
-            selIndex: 0,
             keyword: '',
             dataList: [{}]//默认一行显示状态页面使用 错误页 无数据页面
         };
@@ -65,7 +63,6 @@ export default class SearchPage extends BasePage {
         SpellShopApi.queryByStatusAndKeyword({
             page: this.state.page,
             size: this.state.pageSize,
-            status: this.state.selIndex === 0 ? 1 : 3,
             keyword: this.state.keyword
         }).then((data) => {
             this.state.page++;
@@ -96,7 +93,6 @@ export default class SearchPage extends BasePage {
             SpellShopApi.queryByStatusAndKeyword({
                 page: this.state.page,
                 size: this.state.pageSize,
-                status: this.state.selIndex === 0 ? 1 : 3,
                 keyword: this.state.keyword
             }).then((data) => {
                 this.state.page++;
@@ -118,42 +114,14 @@ export default class SearchPage extends BasePage {
 
     };
 
-    _onChangeText = (keyword) => {
-        this.setState({ keyword }, this._loadPageData);
-    };
-
-    _onPressAtIndex = (index) => {
-        this.setState({
-            dataList: [{}],
-            loadingState: PageLoadingState.loading,
-            selIndex: index
-        }, () => {
-            this._loadPageData();
-        });
-    };
-
     _clickShopAtRow = (item) => {
         this.$navigate('spellShop/MyShop_RecruitPage', { storeId: item.id });
-    };
-
-    _renderListHeader = () => {
-        return <SearchBar onChangeText={this._onChangeText}
-                          title={this.state.keyword}
-                          placeholder={'可通过搜索店铺/ID进行查找'}/>;
-    };
-
-    _renderHeader = () => {
-        return <SearchSegmentView onPressAtIndex={this._onPressAtIndex}/>;
     };
 
     // 渲染行
     _renderItem = (item) => {
         if (this.state.loadingState === PageLoadingState.success) {
-            if (this.state.selIndex === 0) {
-                return (<SearchAllRow RecommendRowOnPress={this._clickShopAtRow} RecommendRowItem={item.item}/>);
-            } else {
-                return (<SearchRecruitingRow onPress={this._clickShopAtRow} item={item.item}/>);
-            }
+            return (<SearchAllRow RecommendRowOnPress={this._clickShopAtRow} RecommendRowItem={item.item}/>);
         } else {
             return <View style={{ height: 300 }}>
                 {renderViewByLoadingState(this._getPageStateOptions(), null)}
@@ -194,26 +162,53 @@ export default class SearchPage extends BasePage {
         };
     };
 
+    _onSubmitEditing = (text) => {
+        let needUpdate = !StringUtils.isEmpty(text) && this.state.keyword !== text;
+
+        let params = { showSectionList: true };
+        if (needUpdate) {
+            params = {
+                showSectionList: true,
+                keyword: text,
+                dataList: [{}],
+                loadingState: PageLoadingState.loading
+            };
+        }
+
+        this.setState(params, () => {
+            if (needUpdate) {
+                this._loadPageData();
+            }
+        });
+    };
+
+    _onFocus = (onFocus) => {
+        this.setState({
+            showSectionList: !onFocus
+        });
+    };
+
     _render() {
         return (
             <View style={styles.container}>
-                <SectionList keyExtractor={(item, index) => `${index}`}
-                             style={{ backgroundColor: DesignRule.bgColor }}
-                             refreshControl={
-                                 <RefreshControl
-                                     refreshing={this.state.refreshing}
-                                     onRefresh={this._refreshing.bind(this)}
-                                     title="下拉刷新"
-                                     tintColor={DesignRule.textColor_instruction}
-                                     titleColor={DesignRule.textColor_instruction}/>}
-                             onEndReached={this._onEndReached.bind(this)}
-                             onEndReachedThreshold={0.1}
-                             ListFooterComponent={this._ListFooterComponent}
-                             ListHeaderComponent={this._renderListHeader}
-                             renderSectionHeader={this._renderHeader}
-                             renderItem={this._renderItem}
-                             ItemSeparatorComponent={this._renderSeparatorComponent}
-                             sections={[{ data: this.state.dataList }]}/>
+                <SearchNavView onSubmitEditing={this._onSubmitEditing} onFocus={this._onFocus}
+                               navigation={this.props.navigation}/>
+                {this.state.showSectionList ? <SectionList keyExtractor={(item, index) => `${index}`}
+                                                           style={{ backgroundColor: DesignRule.bgColor }}
+                                                           refreshControl={
+                                                               <RefreshControl
+                                                                   refreshing={this.state.refreshing}
+                                                                   onRefresh={this._refreshing.bind(this)}
+                                                                   title="下拉刷新"
+                                                                   tintColor={DesignRule.textColor_instruction}
+                                                                   titleColor={DesignRule.textColor_instruction}/>}
+                                                           onEndReached={this._onEndReached.bind(this)}
+                                                           onEndReachedThreshold={0.1}
+                                                           ListFooterComponent={this._ListFooterComponent}
+                                                           renderItem={this._renderItem}
+                                                           ItemSeparatorComponent={this._renderSeparatorComponent}
+                                                           sections={[{ data: this.state.dataList }]}/>
+                    : <View style={{ flex: 1 }}/>}
             </View>
         );
     }

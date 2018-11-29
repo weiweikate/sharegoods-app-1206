@@ -33,14 +33,16 @@ export default class MembersRow extends Component {
 
     render() {
         let dealerList = this.props.dealerList || [];
+        const { userStatus } = this.props;
         return (<View style={styles.container}>
             <TouchableOpacity onPress={this.props.onPressAllMembers}
                               activeOpacity={1}
                               style={styles.allMembersRow}>
                 <Image style={styles.icon} source={PeopleImg}/>
                 <Text style={styles.iconTitle}>店铺成员</Text>
-                <Text style={styles.iconDesc}>{`共${dealerList.length}人`}</Text>
-                <Image style={styles.arrow} source={ArrowImg}/>
+                <Text
+                    style={[styles.iconDesc, { marginRight: userStatus !== 1 ? 21 : 0 }]}>{`共${dealerList.length}人`}</Text>
+                {userStatus === 1 ? <Image style={styles.arrow} source={ArrowImg}/> : null}
             </TouchableOpacity>
             <View style={styles.gapLine}/>
             <View style={styles.membersContainer}>
@@ -106,7 +108,8 @@ const styles = StyleSheet.create({
     },
     headerImg: {
         width: 40,
-        height: 40
+        height: 40,
+        borderRadius: 20
     },
     name: {
         marginTop: 5,

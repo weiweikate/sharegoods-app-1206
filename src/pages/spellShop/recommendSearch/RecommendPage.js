@@ -26,6 +26,8 @@ import { PageLoadingState, renderViewByLoadingState } from '../../../components/
 import DesignRule from 'DesignRule';
 import RecommendBanner from './components/RecommendBanner';
 import res from '../res';
+import geolocation from '@mr/geolocation';
+import Storage from '../../../utils/storage';
 
 const ShopItemLogo = res.recommendSearch.dp_03;
 const SearchItemLogo = res.recommendSearch.pdss_03;
@@ -48,6 +50,7 @@ export default class RecommendPage extends BasePage {
             netFailedInfo: {},
 
             segmentIndex: 1,
+            locationResult: {},//latitude  //longitude
             //data
             dataList: [{}],//默认一行显示状态页面使用 错误页 无数据页面
             adList: []
@@ -74,13 +77,25 @@ export default class RecommendPage extends BasePage {
     };
 
     componentDidMount() {
-        this._loadPageData();
+        Storage.get('storage_MrLocation', {}).then((value) => {
+                if (value) {
+                    this.state.locationResult = value;
+                    this._loadPageData();
+                } else {
+                    geolocation.getLastLocation().then(result => {
+                        this.state.locationResult = result;
+                        Storage.set('storage_MrLocation', result);
+                        this._loadPageData();
+                    });
+                }
+            }
+        );
         this._getSwipers();
     }
 
     _getSize = () => {
         const segmentIndex = this.state.segmentIndex;
-        return segmentIndex === 1 ? 5 : segmentIndex === 2 ? 8 : 5;
+        return segmentIndex === 1 ? 10 : 10;
     };
     _refreshing = () => {
         this.setState({
@@ -95,6 +110,8 @@ export default class RecommendPage extends BasePage {
     _loadPageData = () => {
         this.state.page = 1;
         SpellShopApi.queryHomeStore({
+            lat: this.state.locationResult.latitude,
+            log: this.state.locationResult.longitude,
             page: this.state.page,
             size: this._getSize(),
             type: this.state.segmentIndex
@@ -136,6 +153,8 @@ export default class RecommendPage extends BasePage {
             loadingMore: true
         }, () => {
             SpellShopApi.queryHomeStore({
+                lat: this.state.locationResult.latitude,
+                log: this.state.locationResult.longitude,
                 page: this.state.page,
                 size: this._getSize(),
                 type: this.state.segmentIndex
