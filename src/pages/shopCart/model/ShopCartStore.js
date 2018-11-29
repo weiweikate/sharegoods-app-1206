@@ -274,11 +274,13 @@ class ShopCartStore {
     };
     /*请求购物车商品*/
     getShopCartListData = () => {
+        this.setRefresh(true);
         ShopCartAPI.list().then(result => {
+            this.setRefresh(false);
             bridge.hiddenLoading();
             //组装购物车数据
             this.packingShopCartGoodsData(result.data);
-            this.setRefresh(false);
+
         }).catch(error => {
             bridge.hiddenLoading();
             bridge.$toast(error.msg);

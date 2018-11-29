@@ -141,6 +141,9 @@ public class VersionUpdateService extends Service {
             channel.enableLights(true);
             //是否在久按桌面图标时显示此渠道的通知
             channel.setShowBadge(true);
+            channel.enableVibration(false);
+            channel.setVibrationPattern(new long[]{0});
+            channel.setSound(null, null);
             mNotificationManager.createNotificationChannel(channel);
         }
         app = BaseApplication.getInstance();
