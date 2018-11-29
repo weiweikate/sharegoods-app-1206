@@ -24,6 +24,10 @@ const index = {
     zje_11: require('./zje_11.png'),
     my_Shop_gengduo: require('./my_Shop_gengduo.png'),
     icon_03: require('./icon_03.png'),
-    myShop_join: require('./myShop_join.png')
+    myShop_join: require('./myShop_join.png'),
+    shop_box_0: require('./shop_box_0.png'),
+    shop_box_25: require('./shop_box_25.png'),
+    shop_box_75: require('./shop_box_75.png'),
+    shop_box_100: require('./shop_box_100.png'),
 };
 export default index;

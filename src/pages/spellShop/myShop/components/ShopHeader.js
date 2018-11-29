@@ -41,10 +41,10 @@ export default class ShopHeader extends Component {
         //贡献度currentUserSettle/tradeBalance
         let {
             headUrl, name, storeNumber, storeStarId, userStatus,
-            tradeBalance = 0, bonusNeedMoney = 0, currentUserSettle = 0,
-            storeNoticeVO = {}, profile
+            tradeBalance, bonusNeedMoney, currentUserSettle,
+            storeNoticeVO, profile
         } = this.props.item;
-        const { content } = storeNoticeVO;
+        const { content } = storeNoticeVO || {};
         tradeBalance = StringUtils.isEmpty(tradeBalance) ? 0 : parseFloat(tradeBalance);
         currentUserSettle = StringUtils.isEmpty(currentUserSettle) ? 0 : parseFloat(currentUserSettle);
 
@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     },
     whiteBg: {
         marginTop: px2dp(25),
+        marginBottom: px2dp(15),
         backgroundColor: DesignRule.white,
         marginHorizontal: px2dp(15),
         borderRadius: px2dp(10)

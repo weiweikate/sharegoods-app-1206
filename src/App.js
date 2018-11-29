@@ -24,21 +24,21 @@ import { netStatus } from './comm/components/NoNetHighComponent';
 import bridge from './utils/bridge';
 // import hotUpdateUtil from './utils/HotUpdateUtil';
 
-// import geolocation from '@mr/react-native-geolocation'
+import geolocation from '@mr/react-native-geolocation';
 import Navigator, { getCurrentRouteName } from './navigation/Navigator';
+import Storage from './utils/storage';
 
 export default class App extends Component {
     constructor(props) {
         appData.setStatusBarHeight(props.statusBarHeight);
-        // geolocation.init({
-        //     ios: "f85b644981f8642aef08e5a361e9ab6b",
-        //     android: "4a3ff7c2164aaf7d67a98fb9b88ae0e6"
-        // }).then(() => {
-        //     return geolocation.getLastLocation()
-        // }).then(result => {
-        //     console.log('geolocation result', result)
-        // })
-
+        geolocation.init({
+            ios: 'f85b644981f8642aef08e5a361e9ab6b',
+            android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'
+        }).then(() => {
+            return geolocation.getLastLocation();
+        }).then(result => {
+            Storage.set('MRLocation', result);
+        });
 
         super(props);
         this.state = {

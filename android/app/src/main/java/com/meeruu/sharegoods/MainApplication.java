@@ -7,6 +7,7 @@ import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.lottie.LottiePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
@@ -119,6 +120,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
             return Arrays.<ReactPackage>asList(
                     new RNMRPackage(),
                     new MainReactPackage(),
+            new LottiePackage(),
                     new ReactVideoPackage(),
                     new VectorIconsPackage(),
                     new UpdatePackage(),

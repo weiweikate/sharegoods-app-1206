@@ -419,16 +419,16 @@ export default class MyShopPage extends BasePage {
     };
     // 主题内容
     renderBodyView = () => {
-        let { myStore, storeUserList } = this.state.storeData;
+        let { userStatus, storeUserList } = this.state.storeData;
         storeUserList = storeUserList || [];
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl
                             onRefresh={this._onRefresh} refreshing={this.state.isRefresh}/>}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
-                <ShopHeaderBonus storeData={this.state.storeData}/>
+                {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
                 <MembersRow dealerList={storeUserList.slice()}
-                            isYourStore={myStore}
+                            userStatus={userStatus}
                             onPressAllMembers={this._clickAllMembers}
                             onPressMemberItem={this._clickItemMembers}/>
                 {this._renderBottom()}
