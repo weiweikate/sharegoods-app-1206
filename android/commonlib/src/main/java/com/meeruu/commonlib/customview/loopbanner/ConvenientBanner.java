@@ -36,7 +36,7 @@ public class ConvenientBanner<T> extends RelativeLayout {
     private CBPageAdapter pageAdapter;
     private CBLoopViewPager viewPager;
     private ViewGroup loPageTurningPoint;
-    private long autoTurningTime = -1;
+    private long autoTurningTime = 5000;
     private boolean turning;
     private boolean canTurn = false;
     private boolean canLoop = true;
