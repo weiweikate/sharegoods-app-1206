@@ -7,6 +7,7 @@ import WithdrawCashPage from './WithdrawCashPage';
 import IDVertify2Page from './IDVertify2Page';
 import WaitingForWithdrawCashPage from './WaitingForWithdrawCashPage';
 import UserAgreementPage from './UserAgreementPage';
+import ProfileEditPage from './ProfileEditPage'
 
 
 export default {
@@ -19,6 +20,7 @@ export default {
         WithdrawCashPage,
         IDVertify2Page,
         WaitingForWithdrawCashPage,
-        UserAgreementPage
+        UserAgreementPage,
+        ProfileEditPage
     }
 };
