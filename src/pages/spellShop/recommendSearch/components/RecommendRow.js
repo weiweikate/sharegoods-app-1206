@@ -14,7 +14,7 @@ import ScreenUtils from '../../../../utils/ScreenUtils';
 import StringUtils from '../../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
-import OssImage from 'OssImage';
+import ImageLoad from '@mr/react-native-image-placeholder';
 
 const StarImg = res.recommendSearch.dj_03;
 
@@ -34,7 +34,7 @@ export default class RecommendRow extends Component {
         return (<TouchableOpacity onPress={() => {
         }} style={[styles.itemIcon, { marginLeft: 15 }]}>
             {StringUtils.isNoEmpty(item.headImg) ?
-                <OssImage style={styles.itemIcon} source={{ uri: item.headImg }}/> :
+                <ImageLoad style={styles.itemIcon} source={{ uri: item.headImg }} borderRadius={20}/> :
                 <View style={[styles.itemIcon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
         </TouchableOpacity>);
     };
@@ -64,8 +64,9 @@ export default class RecommendRow extends Component {
                 <View style={styles.topViewContainer}>
                     <View style={{ flex: 1 }}>
                         <View style={styles.headerViewContainer}>
-                            {StringUtils.isNoEmpty(RecommendRowItem.headUrl) ? <OssImage style={styles.icon}
-                                                                                         source={{ uri: RecommendRowItem.headUrl }}/> :
+                            {StringUtils.isNoEmpty(RecommendRowItem.headUrl) ? <ImageLoad style={styles.icon}
+                                                                                          borderRadius={25}
+                                                                                          source={{ uri: RecommendRowItem.headUrl }}/> :
                                 <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                             <View style={styles.tittleContainer}>
                                 <Text style={styles.name} numberOfLines={1}>{RecommendRowItem.name || ''}</Text>
@@ -168,8 +169,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         width: 50,
-        height: 50,
-        borderRadius: 25
+        height: 50
     },
     tittleContainer: {
         justifyContent: 'center',

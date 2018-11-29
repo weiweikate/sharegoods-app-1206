@@ -79,6 +79,7 @@ export default class RecommendPage extends BasePage {
     componentDidMount() {
         Storage.get('storage_MrLocation', {}).then((value) => {
                 if (value) {
+                    this.state.locationResult = value;
                     this._loadPageData();
                 } else {
                     geolocation.getLastLocation().then(result => {

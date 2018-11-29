@@ -18,6 +18,7 @@ const { px2dp } = ScreenUtils;
 import StringUtils from '../../../../utils/StringUtils';
 import res from '../../res';
 import TextTicker from 'react-native-text-ticker';
+import ImageLoad from '@mr/react-native-image-placeholder';
 
 const HeaderBarBgImg = res.myShop.txbg_02;
 const StarImg = res.myShop.dj_03;
@@ -69,8 +70,8 @@ export default class ShopHeader extends Component {
                     marginTop: px2dp(15),
                     marginHorizontal: px2dp(20)
                 }}>
-                    <Image style={styles.headerImg}
-                           source={{ uri: StringUtils.isNoEmpty(headUrl) ? headUrl : '' }}/>
+                    <ImageLoad style={styles.headerImg} borderRadius={px2dp(30)}
+                               source={{ uri: StringUtils.isNoEmpty(headUrl) ? headUrl : '' }}/>
                     <View style={styles.shopInContainer}>
                         <Text style={styles.shopName}>{name || ''}</Text>
                         <Text style={styles.shopId}>ID：{storeNumber || ''}</Text>
@@ -126,8 +127,7 @@ const styles = StyleSheet.create({
     },
     headerImg: {
         width: px2dp(60),
-        height: px2dp(60),
-        borderRadius: px2dp(30)
+        height: px2dp(60)
     },
     shopInContainer: {
         flex: 1,
