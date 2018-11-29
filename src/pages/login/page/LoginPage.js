@@ -108,6 +108,7 @@ export default class LoginPage extends BasePage {
         );
     }
 
+
     /*忘记密码*/
     forgetPasswordClick = () => {
         this.$navigate('login/login/ForgetPasswordPage');
@@ -134,6 +135,7 @@ export default class LoginPage extends BasePage {
                     bridge.$toast('登录成功');
                     console.log(UserModel);
                     homeModule.loadHomeList()
+                    bridge.setCookies(res.data);
                     this.$navigateBack();
                 }
             }).catch((error) => {
@@ -177,7 +179,7 @@ export default class LoginPage extends BasePage {
                 DeviceEventEmitter.emit('contentViewed',null);
                 bridge.$toast('登录成功');
                 homeModule.loadHomeList()
-
+                bridge.setCookies(data.data);
                 console.log(UserModel)
 
                 if (this.params.callback) {
@@ -221,6 +223,7 @@ export default class LoginPage extends BasePage {
                 DeviceEventEmitter.emit('contentViewed',null);
                 bridge.$toast('登录成功');
                 homeModule.loadHomeList()
+                bridge.setCookies(data.data);
                 this.params.callback && this.params.callback();
                 if (this.params.callback) {
                     let resetAction = NavigationActions.reset({

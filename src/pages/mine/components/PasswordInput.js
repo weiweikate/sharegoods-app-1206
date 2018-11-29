@@ -41,6 +41,12 @@ export default class PasswordInput extends Component {
         text: ''
     };
 
+    clear(){
+        this.setState({
+            text:''
+        })
+    }
+
     componentDidMount() {
         if (this.props.autoFocus) {
             InteractionManager.runAfterInteractions(() => {

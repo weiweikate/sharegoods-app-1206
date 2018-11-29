@@ -2,9 +2,6 @@ package com.meeruu.sharegoods.ui.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LifecycleRegistry;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -43,7 +40,6 @@ import com.meeruu.sharegoods.R;
 import com.meeruu.sharegoods.event.LoadingDialogEvent;
 import com.meeruu.sharegoods.event.VersionUpdateEvent;
 import com.meeruu.sharegoods.rn.preload.PreLoadReactDelegate;
-import com.meeruu.sharegoods.rn.viewmanager.MRBannerViewManager;
 import com.meeruu.sharegoods.service.VersionUpdateService;
 import com.meeruu.sharegoods.utils.LoadingDialog;
 import com.umeng.socialize.UMShareAPI;
@@ -59,7 +55,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * @org www.sharegoodsmall.com
  * @email luoyongming@meeruu.com
  */
-public class MainRNActivity extends ReactActivity implements LifecycleOwner {
+public class MainRNActivity extends ReactActivity {
     private LoadingDialog mLoadingDialog;
     private boolean isShowLoadingDialog;
     private String apkPath;
@@ -71,7 +67,6 @@ public class MainRNActivity extends ReactActivity implements LifecycleOwner {
     private WeakHandler myHandler;
     private String lastVersion;
     private ReactApplicationContext mContext;
-    private LifecycleRegistry mLifecycleRegistry;
 
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -85,12 +80,6 @@ public class MainRNActivity extends ReactActivity implements LifecycleOwner {
     @Override
     protected ReactActivityDelegate createReactActivityDelegate() {
         return new MyReactDelegate(this, getMainComponentName());
-    }
-
-    @NonNull
-    @Override
-    public Lifecycle getLifecycle() {
-        return mLifecycleRegistry;
     }
 
     //自定义MyReactDelegate
@@ -116,27 +105,17 @@ public class MainRNActivity extends ReactActivity implements LifecycleOwner {
         initHandler();
         initStatus();
         initServiceConn();
-        // 创建Lifecycle对象
-        mLifecycleRegistry = new LifecycleRegistry(this);
-        // 标记状态
-        mLifecycleRegistry.markState(Lifecycle.State.CREATED);
-        // 添加观察者
-        getLifecycle().addObserver(new MRBannerViewManager());
     }
 
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        // 标记状态
-        mLifecycleRegistry.markState(Lifecycle.State.STARTED);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // 标记状态
-        mLifecycleRegistry.markState(Lifecycle.State.RESUMED);
         // 继续下载apk
         if (isDestroy && BaseApplication.getInstance().isDownload()) {
             Intent it = new Intent(MainRNActivity.this, VersionUpdateService.class);
@@ -166,8 +145,6 @@ public class MainRNActivity extends ReactActivity implements LifecycleOwner {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //标记状态
-        mLifecycleRegistry.markState(Lifecycle.State.DESTROYED);
         UShare.release(this);
         if (isBinded) {
             unbindService(conn);

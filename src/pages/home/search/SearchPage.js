@@ -97,12 +97,10 @@ export default class SearchPage extends BasePage {
     };
     //跳转
     _clickItemAction = (text, index, hotWordId) => {
-        text = text.replace(/(\s*$)/g, "")//去尾空格
         if (StringUtils.isEmpty(text)){
             this.$toastShow('搜索内容不能为空')
             return;
         }
-        text = StringUtils.trim(text);
         if (StringUtils.isNoEmpty(text)) {
             if (!this.state.recentData.includes(text)) {
                 this.state.recentData.unshift(text);

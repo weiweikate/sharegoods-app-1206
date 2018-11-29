@@ -3,7 +3,7 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Image
+    Image, DeviceEventEmitter
 } from 'react-native';
 import { observer } from 'mobx-react';
 import BasePage from '../../../BasePage';
@@ -158,9 +158,11 @@ export default class RegistPage extends BasePage {
             this.$loadingDismiss();
             UserModel.saveUserInfo(data.data);
             UserModel.saveToken(data.data.token);
+            DeviceEventEmitter.emit('homePage_message',null);
+            DeviceEventEmitter.emit('contentViewed',null);
             homeModule.loadHomeList()
             this.$navigate('login/login/GetRedpacketPage');
-
+            bridge.setCookies(data.data);
             //推送
             JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
         }).catch((data) => {
