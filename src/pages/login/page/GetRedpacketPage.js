@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import ScreenUtils from '../../../utils/ScreenUtils';
-import bridge from '../../../utils/bridge';
+// import bridge from '../../../utils/bridge';
 import CommModal from '../../../comm/components/CommModal';
 import { NavigationActions } from 'react-navigation';
 import LoginAPI from '../api/LoginApi';
@@ -266,8 +266,7 @@ export default class GetRedpacketPage extends BasePage {
      *
      */
     _changeRedpacket = () => {
-        bridge.$toast('换一批');
-        this.$toastShow('红包刷新成功');
+       // this.
     };
     /**
      * 渲染红包列表

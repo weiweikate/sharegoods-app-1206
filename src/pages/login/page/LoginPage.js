@@ -195,6 +195,7 @@ export default class LoginPage extends BasePage {
 
                 //推送
                 JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
+                /**/
             }).catch((data) => {
                 this.$loadingDismiss();
                 bridge.$toast(data.msg);

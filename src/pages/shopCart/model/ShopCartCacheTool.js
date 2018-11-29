@@ -173,10 +173,12 @@ class ShopCartCacheTool {
     }
     /*获取购物车数据 总入口*/
     getShopCartGoodsListData() {
+        // shopCartStore.setRefresh(true);
         if (user.isLogin) {
             //用户登录状态
             shopCartStore.getShopCartListData();
         } else {
+            shopCartStore.setRefresh(false);
             //用户非登入状态
             Storage.get(ShopCartCacheTool.shopCartLocalStorageKey, []).then(res => {
                 //拿到数据后拉去详情
