@@ -5,9 +5,9 @@ import android.support.multidex.MultiDex;
 
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
-import com.airbnb.android.react.lottie.LottiePackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.lottie.LottiePackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainPackageConfig;
@@ -121,8 +121,6 @@ public class MainApplication extends BaseApplication implements ReactApplication
             return Arrays.<ReactPackage>asList(
                     new RNMRPackage(),
                     new MainReactPackage(builder.build()),
-                    new LottiePackage(),
-                    new MainReactPackage(builder.build()),
                     new ReactVideoPackage(),
                     new VectorIconsPackage(),
                     new UpdatePackage(),
@@ -134,7 +132,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new LinearGradientPackage(),
                     new RNFetchBlobPackage(),
                     new CookieManagerPackage(),
-                    new WebViewBridgePackage()
+                    new WebViewBridgePackage(),
+                    new LottiePackage()
             );
         }
 

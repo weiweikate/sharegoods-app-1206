@@ -35,9 +35,9 @@ class AddBankCardPage extends BasePage {
             refundsDescription: "",
             hasInputNum: 0,
             account: user.realname,
-            bankName: null,
+            bankName: '',
             cardNo: "",
-            cardType: null,
+            cardType: '',
         };
     }
 
@@ -46,6 +46,57 @@ class AddBankCardPage extends BasePage {
         title: "绑定银行卡"
 
     };
+
+    _formatPhone(text){
+        if(text){
+            let phone =  text.replace(/ /g,'');
+            if(phone && phone.length < 4){
+                return phone
+            }
+
+            if(phone && phone.length < 8){
+                return `${phone.substring(0,3)} ${phone.substring(3,phone.length)}`;
+            }
+
+            if(phone && phone.length > 7){
+                return `${phone.substring(0,3)} ${phone.substring(3,7)} ${phone.substring(7,phone.length)}`;
+            }
+        }else {
+            return text;
+        }
+
+    }
+
+    _formatCard(text){
+
+        if(text){
+            let phone =  text.replace(/ /g,'');
+            if(phone && phone.length < 5){
+                return phone
+            }
+
+            if(phone && phone.length < 9){
+                return `${phone.substring(0,4)} ${phone.substring(4,phone.length)}`;
+            }
+
+            if(phone && phone.length < 13){
+                return `${phone.substring(0,4)} ${phone.substring(4,8)} ${phone.substring(8,phone.length)}`;
+            }
+
+            if(phone && phone.length < 17){
+                return `${phone.substring(0,4)} ${phone.substring(4,8)} ${phone.substring(8,12)} ${phone.substring(12,phone.length)}`;
+            }
+
+            if(phone && phone.length > 16){
+                return `${phone.substring(0,4)} ${phone.substring(4,8)} ${phone.substring(8,12)} ${phone.substring(12,16)} ${phone.substring(16,phone.length)}`;
+            }
+        }else {
+            return text;
+        }
+
+
+
+    }
 
     //**********************************ViewPart******************************************
     _render() {
@@ -73,42 +124,32 @@ class AddBankCardPage extends BasePage {
                     alignItems: "center",
                     backgroundColor: "white"
                 }}>
-                    <Text style={styles.accountStyle}>{"卡号"}</Text>
+                    <Text style={styles.accountStyle}>{"预留手机号"}</Text>
                     <RNTextInput
                         style={styles.inputTextStyle}
-                        onChangeText={(text) => this.inputCardNum(text)}
-                        placeholder={"请输入卡号"}
-                        underlineColorAndroid={"transparent"}
-                        //onBlur={()=>this.getBankType()}
-                    />
-                </View>
-                {this.renderLine()}
-                <View style={{
-                    height: 45,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    backgroundColor: "white"
-                }}>
-                    <Text style={styles.accountStyle}>{"手机号"}</Text>
-                    <RNTextInput
-                        style={styles.inputTextStyle}
-                        onChangeText={text => this.setState({ phone: text })}
+                        onChangeText={text => this.setState({ phone: this._formatPhone(text) })}
+                        value={this.state.phone}
                         placeholder={"请输入手机号"}
                         underlineColorAndroid={"transparent"}
                         keyboardType='numeric'
                     />
                 </View>
+
                 <View style={{
                     height: 45,
                     flexDirection: "row",
                     alignItems: "center",
                     backgroundColor: "white",
-                    justifyContent: "space-between",
                     marginTop:10
                 }}>
-                    <Text style={styles.accountStyle}>{"银行"}</Text>
-                    <Text style={styles.accountStyle2}>{this.state.bankName}</Text>
-
+                    <Text style={styles.accountStyle}>{"卡号"}</Text>
+                    <RNTextInput
+                        style={styles.inputTextStyle}
+                        onChangeText={(text) => this.inputCardNum(text)}
+                        value={this.state.cardNo}
+                        placeholder={"请输入卡号"}
+                        underlineColorAndroid={"transparent"}
+                    />
                 </View>
                 {this.renderLine()}
                 <View style={{
@@ -119,7 +160,7 @@ class AddBankCardPage extends BasePage {
                     justifyContent: "space-between"
                 }}>
                     <Text style={styles.accountStyle}>{"卡类型"}</Text>
-                    <Text style={styles.accountStyle2}>{this.state.cardType}</Text>
+                    <Text style={styles.accountStyle2}>{`${this.state.bankName}  ${this.state.cardType}`}</Text>
 
                 </View>
                 <UIButton
@@ -150,21 +191,22 @@ class AddBankCardPage extends BasePage {
         );
     };
     inputCardNum = (cardNo) => {
-        this.setState({ cardNo: cardNo });
-        this.getBankType(cardNo);
+        this.setState({ cardNo: this._formatCard(cardNo) });
+        let card =  cardNo.replace(/ /g,'');
+        this.getBankType(card);
     };
     getBankType = (bankCard) => {
         if(StringUtils.isEmpty(bankCard)){
             this.setState({
-                bankName:null,
-                cardType:null
+                bankName:'',
+                cardType:''
             })
             return;
         }
         if (bankCard.length < 6) {
             this.setState({
-                bankName:null,
-                cardType:null
+                bankName:'',
+                cardType:''
             })
             return;
         }
@@ -176,16 +218,15 @@ class AddBankCardPage extends BasePage {
                 })
             }else {
                 this.setState({
-                    bankName:null,
-                    cardType:null
+                    bankName:'',
+                    cardType:''
                 })
             }
         }).catch(e => {
             this.setState({
-                bankName:null,
-                cardType:null
+                bankName:'',
+                cardType:''
             })
-            Toast.hiddenLoading();
         });
     };
     renderWideLine = () => {
@@ -218,9 +259,9 @@ class AddBankCardPage extends BasePage {
 
         let params = {
             bankName: this.state.bankName,
-            cardNo: this.state.cardNo,
+            cardNo: this.state.cardNo.replace(/ /g,''),
             cardType: this.state.cardType,
-            phone: this.state.phone
+            phone: this.state.phone.replace(/ /g,'')
         };
 
         lastcommit = now;

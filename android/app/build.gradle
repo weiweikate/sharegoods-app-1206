@@ -88,7 +88,8 @@ android {
 }
 
 dependencies {
-    compile project(':lottie-react-native')
+    api project(':lottie-react-native')
+
     api fileTree(include: ['*.jar'], dir: 'libs')
 
     debugImplementation('com.squareup.leakcanary:leakcanary-android:1.6.2') {
@@ -122,12 +123,10 @@ dependencies {
     api project(':react-native-linear-gradient')
     api project(':geolocation')
     api project(':react-native-fetch-blob')
+    api project(':rn_deviceinfo')
     api project(':react-native-cookies')
     api project(':react-native-webview-bridge')
-    implementation project(path: ':lottie-react-native', configuration: 'default')
-
     api project(path: ':commonlib')
     api project(path: ':qiyu_service')
     api project(path: ':qrcode')
-    api project(':rn_deviceinfo')
 }

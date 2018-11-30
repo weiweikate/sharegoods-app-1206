@@ -62,7 +62,7 @@ export default class MyShop_RecruitPage extends BasePage {
                 if (this.state.permissionsErr === false) {
                     this.ConfirmAlert.show({
                         title: `定位服务未开启，请进入系统【设置】【隐私】【定位服务】中打开开关，并且允许秀购使用定位服务`,
-                        closeCallBack:()=>{
+                        closeCallBack: () => {
                             this.props.navigation.popToTop();
                             this.props.navigation.navigate('HomePage');
                         },
@@ -99,15 +99,13 @@ export default class MyShop_RecruitPage extends BasePage {
     _handleAppStateChange = (nextAppState) => {
         if (nextAppState === 'active') {
             //初始化init  定位存储  和app变活跃 会定位
+            this.state.permissionsErr = true;
             geolocation.getLastLocation().then(result => {
-                this.state.permissionsErr = true;
                 Storage.set('storage_MrLocation', result);
             }).catch((error) => {
                     if (error.code === 'permissionsErr') {
                         //没有权限
                         this.state.permissionsErr = false;
-                    } else {
-                        this.state.permissionsErr = true;
                     }
                 }
             );
