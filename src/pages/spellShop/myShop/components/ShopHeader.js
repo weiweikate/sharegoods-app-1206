@@ -18,7 +18,7 @@ const { px2dp } = ScreenUtils;
 import StringUtils from '../../../../utils/StringUtils';
 import res from '../../res';
 import TextTicker from 'react-native-text-ticker';
-import ImageLoad from '@mr/react-native-image-placeholder';
+import ImageLoad from '@mr/image-placeholder';
 
 const HeaderBarBgImg = res.myShop.txbg_02;
 const StarImg = res.myShop.dj_03;

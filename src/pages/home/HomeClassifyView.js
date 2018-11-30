@@ -15,7 +15,7 @@ import { classifyModules } from './Modules';
 import ScreenUtils from '../../utils/ScreenUtils';
 import user from '../../model/user'
 import DesignRule from 'DesignRule'
-import ImageLoad from '@mr/react-native-image-placeholder'
+import ImageLoad from '@mr/image-placeholder'
 
 const { px2dp } = ScreenUtils;
 

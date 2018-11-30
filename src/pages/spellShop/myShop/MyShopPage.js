@@ -35,6 +35,7 @@ import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
 import LottieView from 'lottie-react-native';
+import user from '../../../model/user';
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = res.myShop.NavLeft;
@@ -313,10 +314,10 @@ export default class MyShopPage extends BasePage {
     _renderBottom = () => {
         let {
             userStatus, myStore,
-            clerkTotalBonusMoney, clerkBonusCount,
+            clerkBonusCount,
             manager, totalTradeBalance, tradeBalance,
             storeUser,
-            createTime, createTimeStr
+            createTimeStr
         } = this.state.storeData;
         storeUser = storeUser || {};
         let updateTime = StringUtils.isNoEmpty(storeUser.updateTime) ? DateUtils.formatDate(storeUser.updateTime, 'yyyy-MM-dd') : '';
@@ -330,7 +331,7 @@ export default class MyShopPage extends BasePage {
         //bonusCount店长个人分红次数
         //totalBonusMoney店长个人已获得分红金
         //managerTotalBonusMoney作为店长的总分红
-        const { bonusCount, totalBonusMoney, managerTotalBonusMoney } = manager;
+        const { totalBonusMoney } = manager;
         if (userStatus === 1) {
             return (
                 <View>
@@ -463,7 +464,7 @@ export default class MyShopPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.id || ''}`,
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>
