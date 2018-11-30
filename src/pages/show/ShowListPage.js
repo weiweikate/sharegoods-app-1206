@@ -5,8 +5,8 @@ import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-vi
 import ScreenUtils from '../../utils/ScreenUtils';
 
 const { px2dp } = ScreenUtils;
-import ShowHotView from './ShowHotView';
-import ShowHotFindView from './ShowHotFindView';
+// import ShowHotView from './ShowHotView';
+// import ShowHotFindView from './ShowHotFindView';
 import backIconImg from '../../components/pageDecorator/NavigatorBar/source/icon_header_back.png';
 import DesignRule from 'DesignRule';
 import { showSelectedDetail } from './Show';
@@ -25,7 +25,8 @@ export default class ShowListPage extends BasePage {
     state = {
         page: 0,
         left: false,
-        pageFocused: false
+        pageFocused: false,
+        needsExpensive: false
     };
 
     componentWillMount() {
@@ -68,6 +69,7 @@ export default class ShowListPage extends BasePage {
                 });
             }
         );
+        this.setState({needsExpensive: true})
     }
 
     componentWillUnmount() {
@@ -90,7 +92,15 @@ export default class ShowListPage extends BasePage {
 
     _render() {
         const { navigation } = this.props;
-        const { page, left } = this.state;
+        const { page, left, needsExpensive } = this.state;
+
+        let HotView = null
+        let HotFindView = null
+        if (needsExpensive) {
+            HotView = require('./ShowHotView').default;
+            HotFindView = require('./ShowHotFindView').default
+        }
+
         return <View style={styles.container}>
             <View style={styles.header}>
                 {
@@ -125,14 +135,26 @@ export default class ShowListPage extends BasePage {
                 showsVerticalScrollIndicator={false}
             >
                 <View key={1} style={styles.container} tabLabel="">
-                    <ShowHotView navigation={navigation} ref={(ref) => {
+                {
+                    needsExpensive
+                    ?
+                    <HotView navigation={navigation} ref={(ref) => {
                         this.showHotViewRef = ref;
                     }} pageFocus={this.state.pageFocused}/>
+                    :
+                    null
+                }
                 </View>
                 <View key={2} style={styles.container} tabLabel="   ">
-                    <ShowHotFindView navigation={navigation} ref={(ref) => {
+                {
+                    needsExpensive
+                    ?
+                    <HotFindView navigation={navigation} ref={(ref) => {
                         this.showHotFindeView = ref;
                     }}/>
+                    :
+                    null
+                }  
                 </View>
             </ScrollableTabView>
         </View>;

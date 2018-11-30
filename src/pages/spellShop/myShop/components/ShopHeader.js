@@ -38,6 +38,7 @@ export default class ShopHeader extends Component {
             storeNoticeDTO, profile
         } = this.props.item;
         let { content } = storeNoticeDTO || {};
+        content = content||'';
         content = content.replace(/[\r\n]/g, '');
         const starsArr = [];
         if (storeStarId && typeof storeStarId === 'number') {

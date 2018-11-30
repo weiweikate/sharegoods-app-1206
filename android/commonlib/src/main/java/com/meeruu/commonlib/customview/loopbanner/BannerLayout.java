@@ -230,7 +230,7 @@ public class BannerLayout extends FrameLayout {
         this.adapter = adapter;
         mRecyclerView.setAdapter(this.adapter);
         bannerSize = adapter.getItemCount();
-        mLayoutManager.setInfinite(bannerSize >= 3);
+        mLayoutManager.setInfinite(bannerSize >= 1);
         setPlaying(true);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
