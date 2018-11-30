@@ -611,6 +611,7 @@ export default class ShopCartPage extends BasePage {
                     productId: goods.productId
                 });
             });
+            this.$loadingShow()
             this.$navigate('order/order/ConfirOrderPage', {
                 orderParamVO: {
                     orderType: 99,
@@ -618,27 +619,6 @@ export default class ShopCartPage extends BasePage {
                 }
             });
         }
-
-        // return;
-        // /*********************************/
-        // shopCartStore.judgeIsCanSettlement((isCan, goodArr) => {
-        //     if (isCan) {
-        //         let tempArr = [];
-        //         goodArr.map((goods) => {
-        //             tempArr.push({
-        //                 priceId: goods.priceId,
-        //                 num: goods.amount,
-        //                 productId: goods.productId
-        //             });
-        //         });
-        //         this.$navigate('order/order/ConfirOrderPage', {
-        //             orderParamVO: {
-        //                 orderType: 99,
-        //                 orderProducts: tempArr
-        //             }
-        //         });
-        //     }
-        // });
     };
     _selectAll = () => {
         shopCartStore.isSelectAllItem(!shopCartStore.computedSelect);
@@ -687,6 +667,8 @@ export default class ShopCartPage extends BasePage {
     /*action*/
     /*减号操作*/
     _reduceProductNum = (itemData, rowId) => {
+
+
         if (itemData.status === 0) {
             return;
         }
