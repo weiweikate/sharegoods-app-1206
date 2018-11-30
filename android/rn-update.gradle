@@ -27,6 +27,7 @@ repositories {
 }
 
 dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }

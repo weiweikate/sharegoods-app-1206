@@ -3,31 +3,33 @@ apply plugin: 'com.android.library'
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
+        google()
     }
 }
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
+    publishNonDefault true
 
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
     }
-    lintOptions {
-        abortOnError false
-    }
-}
 
-repositories {
-    mavenCentral()
+    buildTypes {
+        debug {}
+        release {}
+    }
+
 }
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api rootProject.ext.dependencies.support
-    // From node_modules
     api(rootProject.ext.dependencies.rn) {
         exclude group: 'com.android.support'
     }
+    implementation 'com.airbnb.android:lottie:2.5.5'
 }
