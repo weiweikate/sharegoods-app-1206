@@ -36,6 +36,7 @@ const {
 export default class LoginPage extends BasePage {
     constructor(props) {
         super(props);
+        
     }
 
     // 禁用某个页面的手势
@@ -225,7 +226,6 @@ export default class LoginPage extends BasePage {
                 homeModule.loadHomeList()
                 bridge.setCookies(data.data);
                 this.params.callback && this.params.callback();
-
                 if (this.params.callback) {
                   this.$navigateBackToHome();
                 } else {
@@ -244,6 +244,7 @@ export default class LoginPage extends BasePage {
 
         }
     };
+
 }
 
 const Styles = StyleSheet.create(
