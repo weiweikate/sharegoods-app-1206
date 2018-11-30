@@ -36,6 +36,7 @@ const {
 export default class LoginPage extends BasePage {
     constructor(props) {
         super(props);
+        
     }
 
     // 禁用某个页面的手势
@@ -226,17 +227,10 @@ export default class LoginPage extends BasePage {
                 bridge.setCookies(data.data);
                 this.params.callback && this.params.callback();
                 if (this.params.callback) {
-                    let resetAction = NavigationActions.reset({
-                        index: 0,
-                        actions: [
-                            NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                        ]
-                    });
-                    this.props.navigation.dispatch(resetAction);
+                  this.$navigateBackToHome();
                 } else {
                     this.$navigateBack();
                 }
-
                 //推送
                 JPushUtils.updatePushTags(); JPushUtils.updatePushAlias();
             }).catch((data) => {
@@ -250,6 +244,7 @@ export default class LoginPage extends BasePage {
 
         }
     };
+
 }
 
 const Styles = StyleSheet.create(
