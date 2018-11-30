@@ -10,6 +10,7 @@ const { px2dp } = ScreenUtils;
 import PropTypes from "prop-types";
 import res from "./../../payment/res";
 import Modal from 'CommModal';
+import DesignRule from "../../../constants/DesignRule";
 const closeImg = res.close;
 
 export default class BankTradingModal extends Component {
@@ -17,7 +18,8 @@ export default class BankTradingModal extends Component {
         finishedAction: PropTypes.func,
         forgetAction: PropTypes.func.isRequired,
         visible: PropTypes.bool.isRequired,
-        closeAction: PropTypes.func.isRequired
+        closeAction: PropTypes.func.isRequired,
+        errMsg: PropTypes.string
     };
 
     state = {
@@ -36,8 +38,6 @@ export default class BankTradingModal extends Component {
     }
 
     inputText=(value)=> {
-        console.log("inputText", value);
-
         if (value.length === 6) {
             Keyboard.dismiss();
             this.props.finishedAction(value);
@@ -45,8 +45,8 @@ export default class BankTradingModal extends Component {
         }
     }
 
-    forgetAction() {
-        this.props.forgetAction();
+    forgetAction=()=> {
+        this.props.forgetAction && this.props.forgetAction();
     }
 
     close = () => {
@@ -91,7 +91,10 @@ export default class BankTradingModal extends Component {
                             maxLength={6}
                             onChange={value => this.inputText(value)}
                         />
-                        <TouchableOpacity style={styles.forget} onPress={() => this.forgetAction()}>
+                        <Text style={styles.msgStyle}>
+                            {this.props.errMsg || ''}
+                        </Text>
+                        <TouchableOpacity style={styles.forget} onPress={()=>{this.props.forgetAction()}}>
                             <Text style={styles.forgetText}>{this.props.instructions}</Text>
                         </TouchableOpacity>
                     </View>
@@ -165,5 +168,11 @@ const styles = StyleSheet.create({
     forgetText: {
         color: "#00A7F5",
         fontSize: px2dp(12)
+    },
+    msgStyle:{
+        color:DesignRule.mainColor,
+        fontSize:DesignRule.fontSize_threeTitle,
+        alignSelf:'center',
+
     }
 });
