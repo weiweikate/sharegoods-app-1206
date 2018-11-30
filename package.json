@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "precommit": "lint-staged",
-        "start": "node node_modules/react-native/local-cli/cli.js start --config ../../../../packager/config.js",
+        "start": "node node_modules/react-native/local-cli/cli.js start",
         "test": "jest",
         "format": "prettier --write './src/utils/*.{js,css,md}'",
         "lint": "eslint --ext .js ./src",

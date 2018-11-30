@@ -100,7 +100,9 @@ const api = {
     //最后一次提现银行卡信息
     getLastBankInfo:['/user/withdraw/lastBankInfo',{method:'get'}],
     //查询导师
-    findLeader:['/user/findLeader',{method:'get'}]
+    findLeader:['/user/findLeader',{method:'get'}],
+    //是否第一次提现
+    isFirstTimeWithdraw:['/user/withdraw/firstTimeWithdraw',{method:'get'}]
 
 
 };

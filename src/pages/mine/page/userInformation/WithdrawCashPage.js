@@ -5,7 +5,8 @@ import {
     TextInput as RNTextInput,
     Text,
     TouchableOpacity, Alert,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    TouchableWithoutFeedback
 } from "react-native";
 import BasePage from '../../../../BasePage';
 import {
@@ -24,6 +25,14 @@ import EmptyUtils from "../../../../utils/EmptyUtils";
 import { PageLoadingState } from "../../../../components/pageDecorator/PageState";
 const arrow_right = res.button.arrow_right_black;
 const bank = res.userInfoImg.bank_card_icon;
+
+function accMul(num1,num2){
+    var m=0,s1=num1.toString(),s2=num2.toString();
+    try{m+=s1.split(".")[1].length}catch(e){};
+    try{m+=s2.split(".")[1].length}catch(e){};
+    return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m);
+}
+
 
 @observer
 export default class WithdrawCashPage extends BasePage {
@@ -92,7 +101,7 @@ export default class WithdrawCashPage extends BasePage {
     }
 
     loadPageData=()=>{
-        this._getRate();
+       this._getRate();
         this._getLastBankInfo();
     }
 
@@ -238,7 +247,7 @@ export default class WithdrawCashPage extends BasePage {
         let tip = '';
         if(!EmptyUtils.isEmpty(this.state.rate)){
             if(this.state.money && !isNaN(parseFloat(this.state.money))){
-                tip = tip + `额外扣除￥${this.state.rate*parseFloat(this.state.money)/100}手续费(费率${this.state.rate}%)`;
+                tip = tip + `额外扣除￥${Math.ceil(accMul(this.state.rate/100,parseFloat(this.state.money))*100)/100}手续费(费率${this.state.rate}%)`;
             }
         }
         if(!EmptyUtils.isEmpty(this.state.whenLessAmount) && !EmptyUtils.isEmpty(this.state.fixedFee)){
@@ -275,18 +284,22 @@ export default class WithdrawCashPage extends BasePage {
                         keyboardType='numeric'
                     />
                 </View>
-                <View style={{ height: 1, backgroundColor: 'white' }}>
-                    <View style={{ height: 1, backgroundColor: DesignRule.lineColor_inColorBg, marginLeft: 15 }}/>
-                </View>
+                <View style={{ height: ScreenUtils.onePixel, backgroundColor: DesignRule.lineColor_inColorBg, marginHorizontal: DesignRule.margin_page }}/>
+                <View style={{flexDirection:'row',width:ScreenUtils.width,alignItems:'center',height:33,justifyContent:'space-between',paddingHorizontal:DesignRule.margin_page}}>
                 <UIText
-                    value={'可用余额' + StringUtils.formatMoneyString(user.availableBalance, false) + '元，不可提现金额' + StringUtils.formatMoneyString(user.blockedBalance, false) + '元'}
+                    value={(parseFloat(this.state.money) > parseFloat(user.availableBalance)) ? '金额已超出可提现金额' : '可用余额' + StringUtils.formatMoneyString(user.availableBalance, false) + '元，不可提现金额' + StringUtils.formatMoneyString(user.blockedBalance, false) + '元'}
                     style={{
-                        color: DesignRule.textColor_instruction,
+                        color:(parseFloat(this.state.money) > parseFloat(user.availableBalance)) ? DesignRule.mainColor :  DesignRule.textColor_instruction,
                         fontSize: 13,
-                        marginLeft: 15,
                         marginTop: 10,
                         height: 30
                     }}/>
+                    <TouchableWithoutFeedback onPress={()=>{this.setState({money:user.availableBalance})}}>
+                    <Text style={{color:'#007AFF',fontSize:DesignRule.fontSize_threeTitle,includeFontPadding:false}}>
+                        全部提现
+                    </Text>
+                    </TouchableWithoutFeedback>
+                </View>
                 <View style={{ backgroundColor: DesignRule.bgColor }}>
                     <UIText value={tip}
                             style={{ color: DesignRule.mainColor, fontSize: 12, marginLeft: 15, marginTop: 10 }}/>
@@ -337,7 +350,7 @@ export default class WithdrawCashPage extends BasePage {
             >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ marginLeft: 10, alignItems: 'center' }}>
-                        <UIText value={'请添加提现银行卡'} style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}/>
+                        <UIText value={'请选择提现银行卡'} style={{ fontSize: 15, color: DesignRule.textColor_mainTitle }}/>
                     </View>
                 </View>
                 <View style={{ justifyContent: 'center', marginRight: 15 }}>
@@ -353,6 +366,11 @@ export default class WithdrawCashPage extends BasePage {
         this.setState({ money: text });
     };
     commit = () => {
+        if(parseFloat(this.state.money) > parseFloat(user.availableBalance)){
+            this.$toastShow('超出金额限制');
+            return;
+        }
+
         if (EmptyUtils.isEmpty(user.realname)) {
             Alert.alert("未实名认证", "你还没有实名认证", [{
                 text: "稍后认证", onPress: () => {
@@ -403,6 +421,9 @@ export default class WithdrawCashPage extends BasePage {
         //     "payPassword": "string",
         //     "withdrawBalance": 0
         // }
+
+
+
        this.setState({
            isShowModal:true
        });
