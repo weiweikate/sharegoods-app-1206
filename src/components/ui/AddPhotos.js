@@ -4,7 +4,7 @@ import React from 'react';
 import NoMoreClick from '../ui/NoMoreClick';
 import res from '../../comm/res';
 import ScreenUtils from '../../utils/ScreenUtils'
-const addPic = res.placeholder.add_three_pticture;
+const addPic = res.placeholder.add_picture;
 const deleteImage = res.button.delete_picture;
 
 

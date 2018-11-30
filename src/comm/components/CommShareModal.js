@@ -135,9 +135,9 @@ export default class CommShareModal extends React.Component {
             params.dec = dec;
             params.linkUrl = linkUrl;
             params.thumImage = thumImage;
-            //gh_a7c8f565ea2e 测试  gh_aa91c3ea0f6c uat
+            //gh_a7c8f565ea2e uat  测试  gh_aa91c3ea0f6c 测试
             // params.userName = userName || 'gh_a7c8f565ea2e';//gh_aa91c3ea0f6c
-            params.userName = userName || 'gh_aa91c3ea0f6c';
+            params.userName = userName || 'gh_a7c8f565ea2e';
             params.miniProgramPath = miniProgramPath;
             params.hdImageURL = hdImageURL;
         }

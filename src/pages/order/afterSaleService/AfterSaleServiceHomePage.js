@@ -114,25 +114,25 @@ class AfterSaleServiceHomePage extends BasePage {
         return arr;
     };
     pageSelect = (index) => {
-        let orderProductId = this.params.pageData.orderProductList[this.state.index].id;
+        let orderProductNo = this.params.pageData.orderProductList[this.state.index].id;
         switch (index) {
             case 0:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 0,
-                    orderProductId: orderProductId
+                    orderProductNo,
                 });
                 break;
             case 1:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 1,
-                    orderProductId: orderProductId
+                    orderProductNo,
                 });
                 break;
             case 2:
                 this.$navigate('order/afterSaleService/AfterSaleServicePage', {
                     pageType: 2,
-                    orderProductId: orderProductId,
-                    productId: this.params.pageData.orderProductList[this.state.index].productId
+                    orderProductNo,
+                  //  productId: this.params.pageData.orderProductList[this.state.index].productId
                 });
                 break;
         }

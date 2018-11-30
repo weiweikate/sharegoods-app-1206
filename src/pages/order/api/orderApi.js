@@ -48,6 +48,7 @@ const api = {
     applyExchangeGoods: '/order/returnProduct/applyExchangeGoods',
     //（陈帅）申请退款退货
     applyReturnGoods: '/order/returnProduct/applyReturnGoods',
+
     //（陈帅）填写寄回信息
     fillSendInfo: '/order/returnProduct/fillSendInfo',
     //（陈帅）查看详情
@@ -62,13 +63,13 @@ const api = {
     findAllExpress: ['/sysExpress/findAllExpress', {method: 'get'}],
     //售后订单列表 chengjun.wu
     queryAftermarketOrderList: '/order/queryAftermarketOrderList',
+
     getReturnReason: ['/config/sysDictionary/queryDictionaryTypeList', {method: 'get'}],
-
-
-
-
-
-
+    //网关（顾佳豪）， 后台（陈帅）
+    afterSaleApply: '/after-sale/apply',
+    afterSaleDetail: '/after-sale/detail',
+    afterSaleCancel: '/after-sale/cancel',
+    afterSaleModify: '/after-sale/modify',
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';

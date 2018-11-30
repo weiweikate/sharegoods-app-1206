@@ -77,7 +77,8 @@ export default class OperationApplyView extends React.Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        height: 110
+        height: 110,
+        marginBottom: 10,
     },
     title: {
         height: 45,
