@@ -34,6 +34,7 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
+import user from '../../../model/user';
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = res.myShop.NavLeft;
@@ -454,7 +455,7 @@ export default class MyShopPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.id || ''}`,
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>
