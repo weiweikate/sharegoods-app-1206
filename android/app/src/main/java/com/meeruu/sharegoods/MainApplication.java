@@ -120,8 +120,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
             builder.setFrescoConfig(ImagePipelineConfigUtils.getDefaultImagePipelineConfig(BaseApplication.appContext));
             return Arrays.<ReactPackage>asList(
                     new RNMRPackage(),
-                    new MainReactPackage(),
-            new LottiePackage(),
+                    new LottiePackage(),
                     new MainReactPackage(builder.build()),
                     new ReactVideoPackage(),
                     new VectorIconsPackage(),
@@ -134,7 +133,8 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new LinearGradientPackage(),
                     new RNFetchBlobPackage(),
                     new CookieManagerPackage(),
-                    new WebViewBridgePackage()
+                    new WebViewBridgePackage(),
+                    new LottiePackage()
             );
         }
 
