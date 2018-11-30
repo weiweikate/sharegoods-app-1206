@@ -1,6 +1,6 @@
 import { action, observable } from "mobx";
 import orderApi from '../api/orderApi';
-import TimerMixin from 'react-timer-mixin';
+// import TimerMixin from 'react-timer-mixin';
 import { DeviceEventEmitter } from 'react-native';
 
 class AfterSaleDetailModel {
