@@ -10,7 +10,6 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 import BasePage from '../../../BasePage';
-import DateUtils from '../../../utils/DateUtils';
 import DesignRule from 'DesignRule';
 import res from '../res';
 

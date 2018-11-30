@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { Text, View, StyleSheet, Image, ImageBackground } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from '../../../../constants/DesignRule';
-// import LottieView from 'lottie-react-native';
+import LottieView from 'lottie-react-native';
 
 const { px2dp } = ScreenUtils;
 import res from '../../res';
@@ -12,6 +12,10 @@ const CCZImg = res.myShop.ccz_03;
 const { shop_box_0, shop_box_25, shop_box_75, shop_box_100 } = res.myShop;
 
 export default class ShopHeaderBonus extends Component {
+
+    componentDidMount() {
+        this.LottieView.play();
+    }
 
     render() {
         //tradeBalance本月收入 bonusNeedMoney总额 //进度
@@ -53,23 +57,31 @@ export default class ShopHeaderBonus extends Component {
                         marginBottom: px2dp(20)
                     }}>
                         <View style={{ width: px2dp(100), alignItems: 'center' }}>
-                            <Image style={{
+                            <ImageBackground style={{
                                 width: px2dp(60),
                                 height: px2dp(60)
-                            }} source={box_img}/>
+                            }} source={box_img}>
+                            </ImageBackground>
                             <Text style={{
                                 color: DesignRule.mainColor,
                                 fontSize: 10,
                                 marginTop: px2dp(5)
                             }} numberOfLines={2}>{tradeBalance}<Text
                                 style={{ color: DesignRule.textColor_mainTitle }}>元待分红</Text></Text>
+                            <LottieView autoPlay
+                                        ref={ref => {
+                                            this.LottieView = ref;
+                                        }}
+                                        style={{
+                                            width: px2dp(60),
+                                            height: px2dp(60),
+                                            backgroundColor: 'red'
+                                        }}
+                                        source={require('./animation_money.json')}
+                                        loop/>
+
                         </View>
-                        {/*<LottieView*/}
-                        {/*style={{ width: px2dp(60), height: px2dp(60), marginLeft: px2dp(20) ,backgroundColor:'red'}}*/}
-                        {/*source={require('./animation/LineAnimation.json')}*/}
-                        {/*autoPlay*/}
-                        {/*loop*/}
-                        {/*/>*/}
+
                         <View>
                             <Text style={{
                                 fontSize: 12,
