@@ -38,7 +38,7 @@ export default class ShopHeader extends Component {
             storeNoticeDTO, profile
         } = this.props.item;
         let { content } = storeNoticeDTO || {};
-        content = content||'';
+        content = content || '';
         content = content.replace(/[\r\n]/g, '');
         const starsArr = [];
         if (storeStarId && typeof storeStarId === 'number') {
@@ -50,21 +50,22 @@ export default class ShopHeader extends Component {
             <Image source={HeaderBarBgImg}
                    style={[styles.imgBg]}/>
             <View style={{
-                height: content ? px2dp(20) : 0,
+                height: StringUtils.isNoEmpty(content) ? px2dp(20) : 0,
                 marginTop: ScreenUtils.headerHeight,
                 backgroundColor: 'rgba(255,255,255,0.4)',
                 justifyContent: 'center'
             }}>
-                <View style={{ marginHorizontal: 15 }}>
+                {StringUtils.isNoEmpty(content)?<View style={{ marginHorizontal: 15 }}>
                     <TextTicker
                         style={{ fontSize: 12, color: DesignRule.white }}
                         loop
                         bounce
                         repeatSpacer={100}
                         marqueeDelay={2000}
-                    >{content || ''}</TextTicker>
-                </View>
+                    >公告: {content}</TextTicker>
+                </View>:null}
             </View>
+
             <View style={[styles.whiteBg]}>
                 <View style={{
                     flexDirection: 'row',
