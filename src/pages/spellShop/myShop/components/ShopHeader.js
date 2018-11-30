@@ -34,7 +34,7 @@ export default class ShopHeader extends Component {
 
     render() {
         let {
-            headUrl, name, storeNumber, storeStarId,
+            headUrl, name, storeNumber, storeStarId, userStatus,
             storeNoticeDTO, profile
         } = this.props.item;
         let { content } = storeNoticeDTO || {};
@@ -50,12 +50,12 @@ export default class ShopHeader extends Component {
             <Image source={HeaderBarBgImg}
                    style={[styles.imgBg]}/>
             <View style={{
-                height: StringUtils.isNoEmpty(content) ? px2dp(20) : 0,
+                height: StringUtils.isNoEmpty(content) && userStatus === 1 ? px2dp(20) : 0,
                 marginTop: ScreenUtils.headerHeight,
                 backgroundColor: 'rgba(255,255,255,0.4)',
                 justifyContent: 'center'
             }}>
-                {StringUtils.isNoEmpty(content)?<View style={{ marginHorizontal: 15 }}>
+                {StringUtils.isNoEmpty(content) && userStatus === 1 ? <View style={{ marginHorizontal: 15 }}>
                     <TextTicker
                         style={{ fontSize: 12, color: DesignRule.white }}
                         loop
@@ -63,7 +63,7 @@ export default class ShopHeader extends Component {
                         repeatSpacer={100}
                         marqueeDelay={2000}
                     >公告: {content}</TextTicker>
-                </View>:null}
+                </View> : null}
             </View>
 
             <View style={[styles.whiteBg]}>
@@ -87,10 +87,10 @@ export default class ShopHeader extends Component {
                         </View>
                     </View>
 
-                    <TouchableOpacity onPress={this.props.onPressShopAnnouncement}
-                                      style={styles.announcementContainer}>
+                    {userStatus === 1 ? <TouchableOpacity onPress={this.props.onPressShopAnnouncement}
+                                                          style={styles.announcementContainer}>
                         <Text style={styles.announcementTitle}>店铺公告</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> : null}
                 </View>
                 <View style={{
                     marginTop: px2dp(15),
