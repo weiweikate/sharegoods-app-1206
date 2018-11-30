@@ -133,8 +133,7 @@ public class MainApplication extends BaseApplication implements ReactApplication
                     new LinearGradientPackage(),
                     new RNFetchBlobPackage(),
                     new CookieManagerPackage(),
-                    new WebViewBridgePackage(),
-                    new LottiePackage()
+                    new WebViewBridgePackage()
             );
         }
 

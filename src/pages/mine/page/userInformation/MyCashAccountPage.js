@@ -131,7 +131,19 @@ export default class MyCashAccountPage extends BasePage {
     jumpToWithdrawCashPage = () => {
         MineApi.getUserBankInfo().then((data) => {
             if (data.data && data.data.length > 0) {
+
+                // MineApi.isFirstTimeWithdraw().then((data)=>{
+                //     if(data.data){
+                //
+                //     }else {
+                //         this.$navigate("mine/userInformation/WithdrawCashPage");
+                //     }
+                // }).catch((error)=>{
+                //
+                // })
+
                 this.$navigate("mine/userInformation/WithdrawCashPage");
+
             } else {
                 Alert.alert("未绑定银行卡", "你还没有绑定银行卡", [{
                     text: "稍后设置", onPress: () => {

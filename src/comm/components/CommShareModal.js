@@ -32,6 +32,7 @@
        }
  */
 
+
 'use strict';
 
 import React from 'react';
@@ -60,6 +61,7 @@ import CommModal from 'CommModal';
 import res from '../res';
 import bridge from '../../utils/bridge';
 import DesignRule from 'DesignRule';
+import user from "../../model/user";
 
 export default class CommShareModal extends React.Component {
 
@@ -80,6 +82,10 @@ export default class CommShareModal extends React.Component {
 
     /** public*/
     open() {
+        if(user.isLogin){
+            user.userShare();
+        }
+
         this.setState({ modalVisible: true, shareType: this.defaultShareType });
         this.modal && this.modal.open();
         this.state.y.setValue(autoSizeWidth(340));
