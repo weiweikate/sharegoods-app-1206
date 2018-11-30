@@ -10,7 +10,7 @@ import {
     TouchableWithoutFeedback
 } from "react-native";
 import ScreenUtils from "../../../../utils/ScreenUtils";
-import ImageLoad from "@mr/react-native-image-placeholder";
+import ImageLoad from "@mr/image-placeholder";
 
 const { px2dp } = ScreenUtils;
 import res from "../../../spellShop/res";
