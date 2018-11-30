@@ -155,13 +155,13 @@ export default class ShowDetailPage extends Component {
                 <Image source={res.button.show_share}/>
             </TouchableOpacity>
             <CommShareModal ref={(ref) => this.shareModal = ref}
-                            type={'task'}
+                            type={'miniProgram'}
                             miniProgramJson={{
                                 title: detail.title,
                                 dec: '分享小程序子标题',
                                 thumImage: 'logo.png',
                                 hdImageURL: detail.img,
-                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/pages/index/index`,
+                                linkUrl: `${apiEnvironment.getCurrentH5Url()}/discover/detail/${detail.id}`,
                                 miniProgramPath: `/pages/discover/discover-detail/discover-detail?articleId=${detail.id}`
                             }}
             />
