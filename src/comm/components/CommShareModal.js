@@ -30,6 +30,7 @@
        userName //"小程序username，如 gh_3ac2059ac66f";
        miniProgramPath //"小程序页面路径，如 pages/page10007/page10007";
        }
+      gh_a7c8f565ea2e uat  gh_aa91c3ea0f6c 测试
  */
 
 
@@ -141,7 +142,7 @@ export default class CommShareModal extends React.Component {
             params.dec = dec;
             params.linkUrl = linkUrl;
             params.thumImage = thumImage;
-            //gh_a7c8f565ea2e 测试  gh_aa91c3ea0f6c uat
+
             // params.userName = userName || 'gh_a7c8f565ea2e';//gh_aa91c3ea0f6c
             params.userName = userName || 'gh_aa91c3ea0f6c';
             params.miniProgramPath = miniProgramPath;

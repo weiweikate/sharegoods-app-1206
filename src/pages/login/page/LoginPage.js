@@ -36,7 +36,7 @@ const {
 export default class LoginPage extends BasePage {
     constructor(props) {
         super(props);
-        
+
     }
 
     // 禁用某个页面的手势
@@ -226,6 +226,12 @@ export default class LoginPage extends BasePage {
                 homeModule.loadHomeList()
                 bridge.setCookies(data.data);
                 this.params.callback && this.params.callback();
+
+                // /**
+                //  * 跳转导师选择页面
+                //  */
+                // this.$navigate('login/login/SelectMentorPage');
+                // return;
                 if (this.params.callback) {
                   this.$navigateBackToHome();
                 } else {
