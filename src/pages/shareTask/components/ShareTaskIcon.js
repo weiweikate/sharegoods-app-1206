@@ -122,6 +122,7 @@ export default class ShareTaskIcon extends React.Component {
 
 
     render() {
+        return <View/>;//隐藏task
         if (this.state.hasTask === false) {
             return <View/>;
         }
