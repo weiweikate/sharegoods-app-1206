@@ -16,12 +16,15 @@ import {
     StyleSheet,
     View,
     WebView,
-    Text
+    Text,
+    TouchableWithoutFeedback
 } from "react-native";
 import BasePage from "../../../../BasePage";
 import ScreenUtils from "../../../../utils/ScreenUtils";
 import DesignRule from "../../../../constants/DesignRule";
-const {px2dp} = ScreenUtils;
+import apiEnvironment from '../../../../api/ApiEnvironment';
+
+const { px2dp } = ScreenUtils;
 type Props = {};
 export default class WithdrawalAgreementPage extends BasePage<Props> {
     constructor(props) {
@@ -35,29 +38,28 @@ export default class WithdrawalAgreementPage extends BasePage<Props> {
     };
 
 
-    componentDidMount() {
-        this.loadPageData();
-    }
-
-    loadPageData() {
-    }
-
     _render() {
         return (
             <View style={styles.container}>
-                <WebView source={{ uri: this.state.uri }}
+                <WebView source={{ uri: `${apiEnvironment.getCurrentH5Url()}/static/protocol/withdrawal.html` }}
                          javaScriptEnabled={true}
                          domStorageEnabled={true}
                          scalesPageToFit={true}
                          style={styles.webViewWrapper}
                 />
-                <View style={styles.bottomButtonWrapper}>
-                    <Text style={styles.buttonTextStyle}>
-                        同意协议
-                    </Text>
-                </View>
+                <TouchableWithoutFeedback onPress={this._commit}>
+                    <View style={styles.bottomButtonWrapper}>
+                        <Text style={styles.buttonTextStyle}>
+                            同意协议
+                        </Text>
+                    </View>
+                </TouchableWithoutFeedback>
             </View>
         );
+    }
+
+    _commit = ()=>{
+        this.$navigate("mine/userInformation/WithdrawCashPage");
     }
 }
 
@@ -65,21 +67,22 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    webViewWrapper:{
-        marginBottom:100
+    webViewWrapper: {
+        marginBottom: px2dp(16)
     },
-    bottomButtonWrapper:{
-        height:50,
-        width:ScreenUtils.width - px2dp(80),
-        alignSelf:'center',
-        backgroundColor:DesignRule.mainColor,
-        borderRadius:25,
-        justifyContent:'center',
-        alignItems:'center'
+    bottomButtonWrapper: {
+        height: 50,
+        width: ScreenUtils.width - px2dp(80),
+        alignSelf: "center",
+        backgroundColor: DesignRule.mainColor,
+        borderRadius: 25,
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom:px2dp(34),
     },
-    buttonTextStyle:{
-        color:DesignRule.white,
-        fontSize:DesignRule.fontSize_bigBtnText,
-        includeFontPadding:false
+    buttonTextStyle: {
+        color: DesignRule.white,
+        fontSize: DesignRule.fontSize_bigBtnText,
+        includeFontPadding: false
     }
 });
