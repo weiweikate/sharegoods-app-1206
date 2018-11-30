@@ -336,7 +336,7 @@ class ShopCartStore {
                 'priceId': priceId
             }).then(res => {
                 bridge.$toast('删除成功');
-                this.getShopCartListData();
+                this.packingShopCartGoodsData(res.data);
             }).catch(error => {
                 bridge.$toast(error.msg);
             });
