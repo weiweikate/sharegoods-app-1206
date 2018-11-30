@@ -421,6 +421,9 @@ export default class WithdrawCashPage extends BasePage {
         //     "payPassword": "string",
         //     "withdrawBalance": 0
         // }
+
+
+
        this.setState({
            isShowModal:true
        });
