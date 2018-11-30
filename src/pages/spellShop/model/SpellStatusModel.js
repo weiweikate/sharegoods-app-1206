@@ -32,6 +32,8 @@ class SpellStatusModel {
     /******************************【action】******************************************/
     @action //成功
     getUserData(data) {
+        user.saveUserInfo(data);
+        user.saveToken(data.token);
         this.refreshing = false;
         this.allowCreateStore = data.allowCreateStore;
         this.allowGroupStore = data.allowGroupStore;

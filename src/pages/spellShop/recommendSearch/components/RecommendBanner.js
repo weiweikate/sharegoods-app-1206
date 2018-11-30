@@ -34,7 +34,7 @@ export class RecommendBanner extends Component {
     _renderViewPageItem = (item) => {
         const { imgUrl } = item;
         return (
-            <Image style={{ width: ScreenUtils.width, height: ScreenUtils.autoSizeWidth(150) }}
+            <Image style={{ width: ScreenUtils.width, height: ScreenUtils.autoSizeWidth(230) }}
                    source={{ uri: imgUrl }}
                    resizeMode="cover"
             />);
@@ -44,7 +44,7 @@ export class RecommendBanner extends Component {
         const { bannerList } = this.props;
         return (
             <View>
-                <XGSwiper height={ScreenUtils.autoSizeWidth(150)} width={ScreenUtils.width}
+                <XGSwiper height={ScreenUtils.autoSizeWidth(230)} width={ScreenUtils.width}
                           renderRow={this._renderViewPageItem}
                           dataSource={EmptyUtils.isEmptyArr(bannerList) ? [] : bannerList}
                           onDidChange={(item, index) => {

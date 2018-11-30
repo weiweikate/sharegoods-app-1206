@@ -18,14 +18,16 @@ import {
     StyleSheet,
     View,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    Text
 } from 'react-native';
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import UIText from '../../../comm/components/UIText';
 import LoginAPI from '../api/LoginApi';
-import { NavigationActions } from 'react-navigation';
+// import { NavigationActions } from 'react-navigation';
+import bridge from '../../../utils/bridge';
 
 
 class inviteModel {
@@ -65,6 +67,19 @@ export default class  extends BasePage {
         show: true// false则隐藏导航
     };
 
+    /*render右上角*/
+    $NavBarRenderRightItem = () => {
+        return (
+            <Text style={styles.rightTopTitleStyle} onPress={this.jump}>
+                跳过
+            </Text>
+        );
+    };
+
+    jump = () => {
+        this.$navigateBackToHome();
+    };
+
     _bind() {
         this.loadPageData = this.loadPageData.bind(this);
     }
@@ -83,6 +98,13 @@ export default class  extends BasePage {
                 , styles.contentStyle
 
             ]}>
+                <UIText
+                    value={'授权码录入'}
+                    style={{
+                        marginTop: 20,
+                        width: ScreenUtils.width - 50
+                    }}
+                />
                 <View
                     style={{
                         backgroundColor: '#fff',
@@ -92,22 +114,20 @@ export default class  extends BasePage {
                         flexDirection: 'row',
                         alignItems: 'center',
                         height: 50,
-                        marginTop: 30
+                        marginTop: 20
                     }}>
-                    <UIText
-                        style={{
-                            marginLeft: 15
-                        }}
-                        value={'授权码录入'}
-                    />
-
+                    {/*<UIText*/}
+                    {/*style={{*/}
+                    {/*marginLeft: 15*/}
+                    {/*}}*/}
+                    {/*value={'请输入邀请人授权码'}*/}
+                    {/*/>*/}
                     <TextInput
                         style={styles.inputTextStyle}
                         value={this.inviteModel.inviteCode}
                         onChangeText={text => this.inviteModel.saveInviteCode(text)}
                         placeholder='请输入邀请人授权码'
                         underlineColorAndroid={'transparent'}
-                        // keyboardType='numeric'
                     />
                 </View>
 
@@ -144,39 +164,33 @@ export default class  extends BasePage {
                                 fontSize: 17
                             }}
                         />
-
                     </View>
-
-
                 </TouchableOpacity>
-
-
+                <UIText
+                    value={'选择导师'}
+                    style={{
+                        marginTop:20,
+                        color: DesignRule.textColor_instruction,
+                        fontSize: 12
+                    }}
+                />
             </View>
         );
 
     }
 
-//    action
     sureAction = () => {
-
-        this.$loadingShow();
         if (this.inviteModel.isCanClick) {
-            LoginAPI.updateUserCodeById(
-                {
-                    upCode: this.inviteModel.inviteCode
-                }
-            ).then(result => {
+            this.$loadingShow();
+            LoginAPI.mentorBind({
+                code: this.inviteModel.inviteCode
+            }).then(res => {
+                bridge.$toast(res.msg);
                 this.$loadingDismiss();
-                let resetAction = NavigationActions.reset({
-                    index: 0,
-                    actions: [
-                        NavigationActions.navigate({ routeName: 'Tab' })//要跳转到的页面名字
-                    ]
-                });
-                this.props.navigation.dispatch(resetAction);
-            }).catch(reason => {
+                this.$navigateBackToHome();
+            }).catch(res => {
+                bridge.$toast(res.msg);
                 this.$loadingDismiss();
-                this.$toastShow(reason.msg);
             });
         }
     };
@@ -184,10 +198,8 @@ export default class  extends BasePage {
 
 const styles = StyleSheet.create({
     contentStyle: {
-
         alignItems: 'center',
         flexDirection: 'column'
-
     },
 
     inputTextStyle: {
@@ -199,6 +211,10 @@ const styles = StyleSheet.create({
         width: 200,
         height: 60,
         backgroundColor: DesignRule.mainColor
+    },
+    rightTopTitleStyle: {
+        fontSize: 15,
+        color: DesignRule.textColor_secondTitle
     }
 
 });

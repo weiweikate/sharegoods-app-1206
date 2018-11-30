@@ -26,5 +26,6 @@ const index = {
 
     home_jingshenqingk_bg:require('./home_jingshenqingk_bg.png'),
     home_jingshnegqingk_icon: require('./home_jingshnegqingk_icon.png'),
+    mine_icon_mentor: require('./mine_icon_mentor.png')
 };
 export default index;

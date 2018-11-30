@@ -8,23 +8,24 @@ import {
     View,
     Text,
     Image,
-    StyleSheet,
+    StyleSheet
 } from 'react-native';
 import DesignRule from 'DesignRule';
+import StringUtils from '../../../../utils/StringUtils';
 
 export default class InfoRow extends Component {
 
     static propTypes = {
         icon: PropTypes.any,        // 图片
         title: PropTypes.string,    // 标题
-        desc: PropTypes.string,     // 描述
+        desc: PropTypes.string     // 描述
     };
 
     render() {
         return (<View style={styles.row}>
             <Image style={styles.img} source={this.props.icon}/>
-            <Text style={styles.title}>{this.props.title}</Text>
-            <Text style={styles.desc}>{this.props.desc}</Text>
+            <Text style={styles.title}>{StringUtils.isNoEmpty(this.props.title) ? this.props.title : ''}</Text>
+            <Text style={styles.desc}>{StringUtils.isNoEmpty(this.props.desc) ? this.props.desc : ''}</Text>
         </View>);
     }
 }
@@ -37,12 +38,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     img: {
-        marginLeft: 25,
+        marginLeft: 25
     },
     title: {
         fontSize: 13,
         color: DesignRule.textColor_mainTitle,
-        marginLeft: 4,
+        marginLeft: 4
     },
     desc: {
         fontSize: 12,

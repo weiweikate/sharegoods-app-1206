@@ -60,7 +60,7 @@ export default class ShowBannerView extends Component {
     _onDidScrollToIndex(e) {
         this.setState({ index: e.nativeEvent.index });
     }
-
+c
     _onDidChange(item, changeIndex) {
         const { index } = this.state;
         if (index !== changeIndex) {
@@ -79,7 +79,10 @@ export default class ShowBannerView extends Component {
         });
         return <View style={styles.container}>
             <MRBannerView
-                style={[{ height: px2dp(175), width: ScreenUtils.width }]}
+                style={{
+                    height: px2dp(175),
+                    width: ScreenUtils.width
+                }}
                 imgUrlArray={items}
                 itemWidth={px2dp(300)}
                 itemSpace={px2dp(10)}

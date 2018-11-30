@@ -16,6 +16,7 @@ import { observer } from 'mobx-react/native';
 import BasePage from '../../../BasePage';
 
 import ShopHeader from './components/ShopHeader';
+import ShopHeaderBonus from './components/ShopHeaderBonus';
 import MembersRow from './components/MembersRow';
 import InfoRow from './components/InfoRow';
 import ActionSheetView from '../components/ActionSheetView';
@@ -33,6 +34,7 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
+import user from '../../../model/user';
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = res.myShop.NavLeft;
@@ -40,11 +42,12 @@ const shezhi = res.myShop.shezhi;
 const my_Shop_gengduo = res.myShop.my_Shop_gengduo;
 const onSc_03 = res.myShop.sc_03;
 const unSc_03 = res.myShop.wsc_03;
+
 const RmbIcon = res.myShop.zje_11;
-const ZuanIcon = res.myShop.cs_12;
 const QbIcon = res.myShop.dzfhj_03_03;
 const system_charge = res.myShop.system_charge;
-const hangye_gift = res.myShop.hangye_gift;
+const myShop_join = res.myShop.myShop_join;
+
 @observer
 export default class MyShopPage extends BasePage {
 
@@ -71,7 +74,7 @@ export default class MyShopPage extends BasePage {
         return (<View style={styles.transparentView}>
                 <View style={styles.leftBarItemContainer}>
                     {!this.props.leftNavItemHidden ?
-                        <TouchableOpacity style = {{width:44}} onPress={() => {
+                        <TouchableOpacity style={{ width: 44 }} onPress={() => {
                             this.$navigateBack();
                         }}>
                             <Image source={NavLeft}/>
@@ -303,11 +306,6 @@ export default class MyShopPage extends BasePage {
         });
     };
 
-    renderHeader = () => {
-        return (<ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>);
-    };
-
-
     _renderRow = (icon, title, desc) => {
         return <InfoRow icon={icon} title={title} desc={desc}/>;
     };
@@ -315,10 +313,10 @@ export default class MyShopPage extends BasePage {
     _renderBottom = () => {
         let {
             userStatus, myStore,
-            clerkTotalBonusMoney, clerkBonusCount,
+             clerkBonusCount,//clerkTotalBonusMoney
             manager, totalTradeBalance, tradeBalance,
             storeUser,
-            createTime
+             createTimeStr//createTime
         } = this.state.storeData;
         storeUser = storeUser || {};
         let updateTime = StringUtils.isNoEmpty(storeUser.updateTime) ? DateUtils.formatDate(storeUser.updateTime, 'yyyy-MM-dd') : '';
@@ -332,30 +330,28 @@ export default class MyShopPage extends BasePage {
         //bonusCount店长个人分红次数
         //totalBonusMoney店长个人已获得分红金
         //managerTotalBonusMoney作为店长的总分红
-        const { bonusCount, totalBonusMoney, managerTotalBonusMoney } = manager;
+        const { totalBonusMoney } = manager; //bonusCount managerTotalBonusMoney
         if (userStatus === 1) {
             return (
                 <View>
-                    {myStore && this._renderRow(RmbIcon, '店铺已完成分红总额', `${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}元`)}
                     <View style={{ height: 10 }}/>
-
-                    {myStore ? this._renderRow(ZuanIcon, '个人分红次数', `${bonusCount || 0}次`)
-                        : this._renderRow(RmbIcon, '个人已完成分红总额', `${clerkTotalBonusMoney || 0}元`)}
+                    {this._renderRow(RmbIcon, '店铺已完成分红总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
                     {this.renderSepLine()}
+                    {this._renderRow(system_charge, '个人已获得分红金', `${(myStore ? totalBonusMoney : clerkBonusCount) || 0}元`)}
 
-                    {myStore ? this._renderRow(system_charge, '个人已获得分红金', `${totalBonusMoney || 0}元`)
-                        : this._renderRow(ZuanIcon, '分红次数', `${clerkBonusCount || 0}次`)}
-                    {myStore && this.renderSepLine()}
-
-                    {myStore ? this._renderRow(hangye_gift, '个人获得店长分红金', `${managerTotalBonusMoney || 0}元`)
-                        : this._renderRow(QbIcon, '加入时间', updateTime)}
+                    <View style={{ height: 10 }}/>
+                    {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}
+                    {!myStore ? this.renderSepLine() : null}
+                    {!myStore ? this._renderRow(myShop_join, '加入时间', updateTime) : null}
                 </View>
             );
         } else {
             return (
                 <View>
                     <View style={{ height: 10 }}/>
-                    {this._renderRow(QbIcon, '成立时间', DateUtils.formatDate(createTime, 'yyyy-MM-dd'))}
+                    {this._renderRow(RmbIcon, '店铺已完成分红总额', `¥${((totalTradeBalance - tradeBalance) || 0).toFixed(2)}`)}
+                    <View style={{ height: 10 }}/>
+                    {this._renderRow(QbIcon, '店铺成立时间', createTimeStr)}
                 </View>
             );
         }
@@ -422,21 +418,20 @@ export default class MyShopPage extends BasePage {
             borderColor: '#fdfcfc'
         }}/>);
     };
-
     // 主题内容
     renderBodyView = () => {
-        let { myStore, storeUserList } = this.state.storeData;
+        let { userStatus, storeUserList } = this.state.storeData;
         storeUserList = storeUserList || [];
         return (
             <ScrollView showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl
                             onRefresh={this._onRefresh} refreshing={this.state.isRefresh}/>}>
-                {this.renderHeader()}
+                <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
+                {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
                 <MembersRow dealerList={storeUserList.slice()}
-                            isYourStore={myStore}
+                            userStatus={userStatus}
                             onPressAllMembers={this._clickAllMembers}
                             onPressMemberItem={this._clickItemMembers}/>
-                {this.renderSepLine()}
                 {this._renderBottom()}
                 {this._renderJoinBtn()}
             </ScrollView>
@@ -460,7 +455,7 @@ export default class MyShopPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.id || ''}`,
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>

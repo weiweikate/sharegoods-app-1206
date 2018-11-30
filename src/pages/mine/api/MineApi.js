@@ -27,7 +27,7 @@ const api = {
     addFeedback: '/user/feedback/addFeedback',
     //取消收藏店铺 -- 店员行为
     cancelCollection: '/user/storeCollection/cancel',
-    //修改用户个人信息 type:1:修改头像 2:修改名字 3:修改省市区
+    //修改用户个人信息 type:1:修改头像 2:修改名字 3:修改省市区 4:微信绑定(openid 和 wechatName) 6:修改简介
     updateUserById: '/user/updateUserById',
     // 删除地址
     delAddress: ['/user/userAddress/delete', { method: 'post' }],
@@ -84,7 +84,26 @@ const api = {
     //根据ID查询帮助有用/无用数量
     findQuestionEffectById:['/help/helpQuestion/findQuestionEffectById',{ method: 'get' }],
     //
-    payPromotion:['/promotion/promotionPromoter/pay',{method:'get'}]
+    payPromotion:['/promotion/promotionPromoter/pay',{method:'get'}],
+    //查询银行卡
+    getUserBankInfo:['/user/userBankInfo/findUserBankInfoByUserId',{method:'get'}],
+    //删除银行卡
+    deleteUserBank:['/user/userBankInfo/deleteUserBankInfoByUserId',{method:'get'}],
+    //添加银行卡
+    addUserBank:['/user/userBankInfo/addUserBankInfo',{method:'post'}],
+    //申请提现
+    userWithdrawApply:['/user/withdraw/withdrawApply',{method:'post'}],
+    //查询银行卡信息
+    findByBankCard:['/user/userBankInfo/findByBankCard',{method:'get'}],
+    //费率查询
+    queryRate:['/user/withdraw/queryRate',{method:'get'}],
+    //最后一次提现银行卡信息
+    getLastBankInfo:['/user/withdraw/lastBankInfo',{method:'get'}],
+    //查询导师
+    findLeader:['/user/findLeader',{method:'get'}],
+    //是否第一次提现
+    isFirstTimeWithdraw:['/user/withdraw/firstTimeWithdraw',{method:'get'}]
+
 
 };
 import ApiUtils from '../../../api/network/ApiUtils';
