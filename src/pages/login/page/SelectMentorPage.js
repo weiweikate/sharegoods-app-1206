@@ -1,0 +1,471 @@
+/**
+ *
+ * Copyright 2018 杭州飓热科技有限公司   版权所有
+ * Copyright 2018 JuRe Group Holding Ltd. All Rights Reserved
+ *
+ * @flow
+ *
+ * Created by feng on 2018/11/28.
+ *
+ */
+
+
+'use strict';
+import React from 'react';
+import {
+    StyleSheet,
+    View,
+    Text,
+    TouchableOpacity,
+    Image,
+    ScrollView
+} from 'react-native';
+import BasePage from '../../../BasePage';
+import DesignRule from 'DesignRule';
+import MentorItemView from '../components/MentorItemView';
+// import { NavigationActions } from 'react-navigation';
+import ScreenUtils from '../../../utils/ScreenUtils';
+import res from '../res';
+import LoginAPI from '../api/LoginApi';
+import bridge from '../../../utils/bridge';
+import UIText from '../../../comm/components/UIText';
+
+const {
+    refresh
+} = res;
+
+export default class SelectMentorPage extends BasePage {
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectIndex: 2,
+            mentorData: []
+        };
+        this.scrView = null;
+        this.itemViewArr = [];
+        this.itemRefArr = [];
+
+    }
+
+    $navigationBarOptions = {
+        title: '选择导师',
+        show: true// false则隐藏导航
+    };
+    /*render右上角*/
+    $NavBarRenderRightItem = () => {
+        return (
+            <Text style={Styles.rightTopTitleStyle} onPress={this.jump}>
+                跳过
+            </Text>
+        );
+    };
+    /**
+     * 跳过函数
+     */
+    jump = () => {
+        this.$navigateBackToHome();
+    };
+
+    _bind() {
+        this.loadPageData = this.loadPageData.bind(this);
+    }
+
+    componentDidMount() {
+        this.loadPageData();
+    }
+
+    loadPageData() {
+        this.$loadingShow()
+        LoginAPI.queryInviterList({}).then(response => {
+            this.$loadingDismiss()
+            console.log(response);
+            if (response.data.length < 3){
+                this.setState({
+                    mentorData: response.data,
+                    selectIndex:response.data.length - 1
+                });
+            }else {
+                this.setState({
+                    mentorData: response.data,
+                });
+            }
+            if (this.state.selectIndex > response.data.length - 1){
+                this.setState({
+                    selectIndex: response.data.length - 1,
+                });
+            }
+        }).catch(error => {
+            this.$loadingDismiss()
+            bridge.$toast(error.msg);
+        });
+    }
+
+    _render() {
+        return (
+            <View style={Styles.contentStyle}>
+                <View
+                    style={Styles.topViewStyle}
+                >
+                    {this._renderTopText()}
+                    {this._renderMentorListView()}
+                </View>
+                <View
+                    style={Styles.bottomViewStyle}
+                >
+                    <Text
+                        onPress={
+                            () => this.jumpToWriteCodePage()
+                        }
+                        style={{
+                            color: '#979797',
+                            height: 20,
+                            width: 100,
+                            fontSize: 13,
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            textAlign: 'center',
+                            borderColor: DesignRule.textColor_instruction,
+                            paddingTop: 2
+                        }}
+                    >
+                        填写授权码
+                    </Text>
+                </View>
+                {/*{this._renderCouponModal()}*/}
+            </View>
+        );
+    }
+
+    _renderMentorListView = () => {
+        return (
+            <View
+                style={{
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
+                {
+                    this.state.mentorData.length > 0
+                        ?
+                        this._renderListView()
+                        :
+                        this._renderNoMentorView()
+                }
+                <TouchableOpacity
+                    onPress={
+                        () => {
+                            this._bindMentor();
+                        }
+                    }
+                    style={{
+                        marginTop: 150
+                    }}
+                >
+                    <View
+                        style={{
+                            height: 49,
+                            width: ScreenUtils.width - 80,
+                            backgroundColor: DesignRule.mainColor,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: 25
+                        }}
+                    >
+                        <Text
+                            style={{
+                                color: DesignRule.textColor_white,
+                                fontSize: 17
+                            }}
+                        >
+                            确定
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        );
+    };
+    _renderNoMentorView = () => {
+        return (
+            <View
+                style={
+                    {
+                        marginTop: 80,
+                        width: ScreenUtils.width,
+                        height: 90,
+                        alignItems:'center',
+                        justifyContent:'center'
+                    }
+                }
+            >
+                <UIText
+                    style={{
+                        fontSize:13,
+                        color:DesignRule.textColor_instruction
+                    }}
+                    value={'暂无导师请填写授权码或跳过该步骤~'}
+                />
+            </View>
+        );
+    };
+    _renderListView = () => {
+        return (
+            <ScrollView
+                ref={
+                    (ref) => {
+                        this.scrView = ref;
+                    }
+                }
+                style={{
+                    marginTop: 80,
+                    width: ScreenUtils.width,
+                    height: 140
+                }}
+                contentContainerStyle={
+                    SwichStyles.bgStyle
+                }
+                contentOffset={{ x: this.state.selectIndex * ScreenUtils.width / 5, y: 0 }}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                onMomentumScrollEnd={(event) => {
+                    // this.scrView && this.scrView.scrollTo({ x: (index-1) * ScreenUtils.width/5, y: 0, animated: true });
+                    if (this.itemRefArr.length > 0 && this.itemRefArr.length > 0) {
+                        let offsetX = event.nativeEvent.contentOffset.x;
+                        let index = parseInt(offsetX / (ScreenUtils.width / 5));
+                        if (offsetX % (ScreenUtils.width / 5) > 0) {
+                            index = index + 1;
+                        }
+                        console.log('索引------' + index);
+                        // this._resetSizeItemView();
+                        // console.log(this.itemRefArr);
+                        if (index === this.selectIndex) {
+                            return;
+                        }
+                        if (this.itemViewArr.length > 0 && this.itemViewArr.length > index) {
+                            // this.itemRefArr[this.selectIndex]._resetAnimation();
+                            // this.itemRefArr[index]&& this.itemRefArr[index]._startAnimation();
+                            // this.selectIndex = index;
+                            this.setState({
+                                selectIndex: index
+                            });
+                        }
+                        if (this.itemViewArr.length > 0 && index >= this.itemRefArr.length) {
+                            // this.itemRefArr[this.itemRefArr.length - 1]&& this.itemRefArr[this.itemRefArr.length - 1]._startAnimation();
+                            // this.itemRefArr[this.selectIndex]._resetAnimation();
+                            // this.selectIndex = this.itemRefArr.length - 1;
+                            let newSelectIndex = this.itemRefArr.length - 1;
+                            this.setState({
+                                selectIndex: newSelectIndex
+                            });
+                        }
+                        console.log('state' + this.state.selectIndex);
+                    }
+                }}
+                onScrollEndDrag={(event) => {
+                    if (this.itemRefArr.length > 0 && this.itemRefArr.length > 0) {
+                        let offsetX = event.nativeEvent.contentOffset.x;
+                        let index = parseInt(offsetX / (ScreenUtils.width / 5));
+                        if (offsetX % (ScreenUtils.width / 5) > 0) {
+                            index = index + 1;
+                        }
+                        console.log('索引------' + index);
+                        if (index === this.selectIndex) {
+                            return;
+                        }
+                        if (this.itemViewArr.length > 0 && this.itemViewArr.length > index) {
+                            // this.itemRefArr[this.selectIndex]._resetAnimation();
+                            // this.itemRefArr[index]&& this.itemRefArr[index]._startAnimation();
+                            // this.selectIndex = index;
+
+                            this.setState({
+                                selectIndex: index
+                            });
+                        }
+                        if (this.itemViewArr.length > 0 && index >= this.itemRefArr.length) {
+                            // this.itemRefArr[this.itemRefArr.length - 1]&& this.itemRefArr[this.itemRefArr.length - 1]._startAnimation();
+                            // this.itemRefArr[this.selectIndex]._resetAnimation();
+                            // this.selectIndex = this.itemRefArr.length - 1;
+                            let newSelectIndex = this.itemRefArr.length - 1;
+                            this.setState({
+                                selectIndex: newSelectIndex
+                            });
+                        }
+                        // console.log('state'+this.state.selectIndex)
+                    }
+                }}
+                onScroll={(event) => {
+
+                }}
+            >
+                <View
+                    style={{
+                        width: ScreenUtils.width / 5 * 2
+                    }}
+                />
+                {
+                    this._createItemView().map(itemView => {
+                        return (itemView);
+                    })
+
+                }
+                <View
+                    style={{
+                        width: ScreenUtils.width / 5 * 2
+                    }}
+                />
+            </ScrollView>
+        );
+    };
+    /*
+    * 绑定导师
+    * */
+    _bindMentor = () => {
+
+      if (this.state.selectIndex < this.state.mentorData.length -1) {
+          let mentorData = this.state.mentorData[this.state.selectIndex];
+          LoginAPI.mentorBind({
+              code:mentorData.code
+          }).then(res=>{
+              bridge.$toast(res.msg);
+              this.$navigateBackToHome();
+          }).catch(res=>{
+              bridge.$toast(res.msg);
+          })
+      }else  {
+          let mentorData = this.state.mentorData[this.state.mentorData.length - 1];
+          LoginAPI.mentorBind({
+              code:mentorData.code
+          }).then(res=>{
+              bridge.$toast(res.msg);
+              this.$navigateBackToHome();
+          }).catch(res=>{
+              bridge.$toast(res.msg);
+          })
+      }
+
+    };
+    jumpToWriteCodePage = () => {
+        this.$navigate('login/login/InviteCodePage');
+    };
+    _createItemView = () => {
+        console.log('选中索引' + this.state.selectIndex);
+        this.itemViewArr = [];
+        this.itemRefArr = [];
+        this.state.mentorData.map((item, index) => {
+                let isTrueSelect = this.state.selectIndex === index ? true : false;
+                this.itemViewArr.push(
+                    <MentorItemView
+                        ref={(eventView) => {
+                            this.itemRefArr.push(eventView);
+                        }
+                        }
+                        key={index}
+                        clickItemAction={(itemData)=>{
+                            this._toDetailPage(itemData);
+                        }}
+                        itemData={item}
+                        isSelect={isTrueSelect}
+                    />
+                );
+            }
+        );
+        return this.itemViewArr;
+    };
+    _toDetailPage = (itemData) => {
+        this.$navigate('login/login/MentorDetailPage',{
+            itemData:itemData
+        });
+    };
+    _renderTopText = () => {
+        return (
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 40,
+                    backgroundColor: DesignRule.textColor_white
+                }}
+            >
+                <Text
+                    style={{
+                        fontSize: 13,
+                        color: DesignRule.textColor_mainTitle,
+                        marginLeft: 15
+                    }}
+                >
+                    请选择一个导师
+                </Text>
+
+                <TouchableOpacity>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginRight: 15
+
+                        }}
+                    >
+                        <Image
+                            style={{
+                                width: 16,
+                                height: 16
+                            }}
+                            source={refresh}
+                        />
+                        <Text
+                            style={{
+                                fontSize: 13,
+                                color: DesignRule.textColor_secondTitle,
+                                marginLeft: 5
+                            }}
+                            onPress={
+                                () => this._changeMetorList()
+                            }
+                        >
+                            换一批
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        );
+    };
+    _changeMetorList=()=>{
+        this.loadPageData();
+    }
+}
+
+const Styles = StyleSheet.create(
+    {
+        contentStyle: {
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            flex: 1,
+            margin: 0,
+            marginTop: -2,
+            backgroundColor: DesignRule.textColor_white
+        },
+        rightTopTitleStyle: {
+            fontSize: 15,
+            color: DesignRule.textColor_secondTitle
+        },
+        topViewStyle: {
+            height: ScreenUtils.px2dp(430)
+            // backgroundColor:ColorUtil.Color_222222
+
+        },
+        bottomViewStyle: {
+            height: 100,
+            justifyContent: 'center',
+            alignItems: 'center'
+        }
+    }
+);
+const SwichStyles = StyleSheet.create({
+    bgStyle: {
+        color: DesignRule.textColor_white,
+        // justifyContent:'center'
+        alignItems: 'center'
+        // paddingLeft:ScreenUtils.width/5 * 2
+    }
+
+});

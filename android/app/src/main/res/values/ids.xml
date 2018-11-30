@@ -21,4 +21,5 @@
     <item name="quit" type="id" />
     <item name="restart_preview" type="id" />
     <item name="return_scan_result" type="id" />
+    <item name="mr_banner" type="id" />
 </resources>

@@ -5,13 +5,13 @@ import {
     View,
     Image,
     StyleSheet,
-    TouchableOpacity,
     Text,
     TouchableWithoutFeedback
 } from 'react-native';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+
 const StarImg = res.recommendSearch.dj_03;
 
 export default class RecommendRow extends Component {
@@ -32,9 +32,6 @@ export default class RecommendRow extends Component {
 
     render() {
         const { ...RecommendRowItem } = this.props.RecommendRowItem;
-        //bonusNeedMoney总额 tradeBalance本月收入 totalTradeBalance累计收入
-        const { tradeBalance = 0, bonusNeedMoney = 0, totalTradeBalance = 0 } = RecommendRowItem;
-        let widthScale = bonusNeedMoney === 0 ? 0 : ((tradeBalance / bonusNeedMoney > 1) ? 1 : tradeBalance / bonusNeedMoney);
         const storeStar = RecommendRowItem.storeStarId;
         const starsArr = [];
         if (storeStar && typeof storeStar === 'number') {
@@ -54,26 +51,14 @@ export default class RecommendRow extends Component {
                                 <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                             <View style={styles.tittleContainer}>
                                 <Text style={styles.name} numberOfLines={1}>{RecommendRowItem.name || ''}</Text>
-                                <Text style={styles.member} numberOfLines={1}>{`店主: ${RecommendRowItem.storeUserName || ''}`}</Text>
                             </View>
                         </View>
-                        <View style={{
-                            flexDirection: 'row', alignSelf: 'center',
-                            width: ScreenUtils.autoSizeWidth(200), height: 5, marginTop: 15,
-                            borderRadius: 2, borderWidth: 0.5, borderColor: DesignRule.bgColor_btn
-                        }}>
-                            <View style={{
-                                width: widthScale * ScreenUtils.autoSizeWidth(200),
-                                backgroundColor: DesignRule.bgColor_btn
-                            }}/>
-                        </View>
-                        <Text style={{
-                            marginTop: 8, marginBottom: 14.5, paddingHorizontal: 21.5,
-                            color: DesignRule.textColor_secondTitle, fontSize: 10
-                        }}>{`距离下一次分红还差${(bonusNeedMoney - tradeBalance > 0) ? (bonusNeedMoney - tradeBalance).toFixed(2) : 0}元`}</Text>
                     </View>
-                    <View style={{ width: 1, backgroundColor: 'rgb(244,231,221)' }}/>
-                    <View style={{ width: ScreenUtils.autoSizeWidth(44 + 70), alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{
+                        width: ScreenUtils.autoSizeWidth(44 + 70),
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                             {
                                 starsArr.map((item, index) => {
@@ -81,25 +66,20 @@ export default class RecommendRow extends Component {
                                 })
                             }
                         </View>
-                        <Text style={{ marginTop: 9, color: '#939393', fontSize: 14 }}>店铺等级</Text>
-                        <TouchableOpacity style={styles.joinBtn} onPress={() => {
-                            this._onPress();
-                        }}>
-                            <Text style={styles.joinText}>+加入我们</Text>
-                        </TouchableOpacity>
+                        <Text style={{ marginTop: 9, color: DesignRule.textColor_instruction, fontSize: 12 }}>店铺等级</Text>
                     </View>
                 </View>
 
 
                 <View style={styles.bottomContainer}>
                     <View style={styles.moneyContainer}>
-                        <Text style={styles.containTop}>店铺成员</Text>
-                        <Text style={styles.containBottom}>{RecommendRowItem.storeUserNum || 0}</Text>
+                        <Text style={styles.containTop}>店铺ID</Text>
+                        <Text style={styles.containBottom}>{RecommendRowItem.storeNumber || ''}</Text>
                     </View>
                     <View style={{ backgroundColor: 'rgb(244,231,221)', width: 1, height: 25 }}/>
                     <View style={styles.moneyContainer}>
-                        <Text style={styles.containTop}>店铺累计收入</Text>
-                        <Text style={styles.containBottom}>{`${totalTradeBalance || 0}元`}</Text>
+                        <Text style={styles.containTop}>店铺成员</Text>
+                        <Text style={styles.containBottom}>{RecommendRowItem.storeUserNum || ''}</Text>
                     </View>
                 </View>
 
@@ -121,6 +101,8 @@ const styles = StyleSheet.create({
     },
 
     topViewContainer: {
+        alignItems: 'center',
+        height: 80,
         backgroundColor: '#FEFAF7',
         flexDirection: 'row'
     },
@@ -128,8 +110,7 @@ const styles = StyleSheet.create({
 
     headerViewContainer: {
         flexDirection: 'row',
-        marginTop: 15,
-        paddingHorizontal: 15
+        marginLeft: 15
     },
     icon: {
         width: 50,
@@ -143,33 +124,9 @@ const styles = StyleSheet.create({
     },
     name: {
         color: DesignRule.textColor_mainTitle,
-        fontSize: 14
+        fontSize: 13
     },
-    member: {
-        marginTop: 9,
-        color: DesignRule.textColor_instruction,
-        fontSize: 11
-    },
-    joinBtn: {
-        marginTop: 17,
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 22,
-        borderRadius: 11,
-        backgroundColor: DesignRule.bgColor_btn
-    },
-    joinText: {
-        fontFamily: 'PingFangSC-Medium',
-        color: 'white',
-        fontSize: 12,
-        paddingHorizontal: 8
-    },
-    itemIcon: {
-        backgroundColor: DesignRule.lineColor_inColorBg,
-        width: 40,
-        height: 40,
-        borderRadius: 20
-    },
+
 
     bottomContainer: {
         flexDirection: 'row',
@@ -182,15 +139,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     containTop: {
-        fontFamily: 'PingFangSC-Light',
         color: DesignRule.textColor_secondTitle,
         fontSize: 10
     },
     containBottom: {
-        fontFamily: 'PingFangSC-Medium',
         marginTop: 7,
         color: DesignRule.textColor_secondTitle,
-        fontSize: 11
+        fontSize: 13
     }
 });
 

@@ -5,13 +5,19 @@ import {
     Text,
     StyleSheet,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from 'react-native';
 //source
 import ScreenUtils from '../../../utils/ScreenUtils';
 import BasePage from '../../../BasePage';
 import DesignRule from 'DesignRule';
 import apiEnvironment from '../../../api/ApiEnvironment';
+import SpellShopApi from '../api/SpellShopApi';
+import spellStatusModel from '../model/SpellStatusModel';
+import res from '../res';
+
+const { openShop_yes, openShop_no } = res.openShop;
 
 export default class OpenShopExplainPage extends BasePage {
 
@@ -19,6 +25,8 @@ export default class OpenShopExplainPage extends BasePage {
     $navigationBarOptions = {
         title: '开店'
     };
+
+    state = { isSelected: true };
 
     _onPress = () => {
         this.$navigate('HtmlPage', {
@@ -28,21 +36,31 @@ export default class OpenShopExplainPage extends BasePage {
     };
 
     _clickOpen = () => {
-        this.$navigate('spellShop/openShop/CashExplainPage');
+        if (!this.state.isSelected) {
+            this.$toastShow('请阅读同意《拼店管理条例》');
+            return;
+        }
+        SpellShopApi.depositTest().then(() => {
+            spellStatusModel.getUser(2);
+            this.$navigate('spellShop/shopSetting/SetShopNamePage');
+        }).catch((error) => {
+            this.$toastShow(error.msg);
+        });
     };
 
     _renderRow = (title, index, maxIndex) => {
         return (
             <View style={{ width: ScreenUtils.width }} key={index}>
 
-                <View style={{ marginHorizontal: 15 }}>
+                <View style={{ marginHorizontal: ScreenUtils.autoSizeWidth(30) }}>
 
+                    {/*内容间距view*/}
                     {index !== 0 ?
                         <View style={{
                             marginLeft: 8,
                             width: 2,
                             backgroundColor: DesignRule.mainColor,
-                            height: 33
+                            height: ScreenUtils.autoSizeWidth(42)
                         }}/> : null}
 
                     <View style={{ flexDirection: 'row' }}>
@@ -77,49 +95,54 @@ export default class OpenShopExplainPage extends BasePage {
     _render() {
 
         const arr = [
-            'V4级别用户才可开设店铺',
-            '开设店铺需缴纳保证金',
-            '开设店铺需要达到30人才可开设成功',
-            '店铺开设成功后，店主可邀请好友加入店铺',
-            '开设店铺需缴纳店租',
-            '店铺等级划分为3级，每个级别的店铺人数和开启分红金额不等，等级越高，店长分红就越高'
+            '开店要求：会员等级到达V4，即可发起拼店，店员人数达到3人可成功开启1星店铺；',
+            '店长权益： 开启拼店，除日常商品推广奖励，还可获得品牌推广奖励，以及店铺管理奖励；',
+            '店长职责：店主作为发起者，需维护好店铺及店铺成员之间的关系，管理好店铺；',
+            '店铺分为3个等级：1星、2星、3星店铺，级别越高，店长分红就越高。'
         ];
 
         return (
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <Text style={{
-                    alignSelf: 'center',
-                    marginTop: 41,
-                    fontSize: 17,
-                    color: DesignRule.textColor_mainTitle
-                }}>拼店规则说明</Text>
-                <View style={{ marginTop: 32 }}>
-                    {
-                        arr.map((item, index) => {
-                            return this._renderRow(item, index, arr.length);
-                        })
-                    }
-                </View>
-                <View style={{
-                    alignItems: 'center',
-                    marginTop: ScreenUtils.autoSizeHeight(70)
-                }}>
-                    <TouchableOpacity activeOpacity={0.5} onPress={this._clickOpen} style={styles.btnStyle}>
-                        <Text style={{
-                            fontSize: 17,
-                            color: 'white'
-                        }}>我要开店</Text>
-                    </TouchableOpacity>
-
-                    <View style={{ flexDirection: 'row' }}>
-                        <Text style={styles.descText}>点击我要开店则默认同意</Text>
-                        <TouchableOpacity onPress={this._onPress}>
-                            <Text style={[styles.descText, { color: DesignRule.mainColor }]}>《拼店管理条例》</Text>
+            <View style={{ flex: 1 }}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <Text style={{
+                        alignSelf: 'center',
+                        marginTop: 41,
+                        fontSize: 17,
+                        color: DesignRule.textColor_mainTitle
+                    }}>拼店规则说明</Text>
+                    <View style={{ marginTop: 32 }}>
+                        {
+                            arr.map((item, index) => {
+                                return this._renderRow(item, index, arr.length);
+                            })
+                        }
+                    </View>
+                    <View style={{
+                        alignItems: 'center',
+                        marginTop: ScreenUtils.autoSizeHeight(70)
+                    }}>
+                        <TouchableOpacity activeOpacity={0.5} onPress={this._clickOpen} style={styles.btnStyle}>
+                            <Text style={{
+                                fontSize: 17,
+                                color: 'white'
+                            }}>我要开店</Text>
                         </TouchableOpacity>
                     </View>
-
+                </ScrollView>
+                <View style={styles.explainContainer}>
+                    <TouchableOpacity onPress={() => {
+                        this.setState({
+                            isSelected: !this.state.isSelected
+                        });
+                    }}>
+                        <Image source={this.state.isSelected ? openShop_yes : openShop_no}/>
+                    </TouchableOpacity>
+                    <Text style={styles.descText}>阅读同意</Text>
+                    <TouchableOpacity onPress={this._onPress}>
+                        <Text style={[styles.descText, { color: DesignRule.mainColor }]}>《拼店管理条例》</Text>
+                    </TouchableOpacity>
                 </View>
-            </ScrollView>
+            </View>
         );
     }
 
@@ -144,15 +167,24 @@ const styles = StyleSheet.create({
         flex: 1
     },
     btnStyle: {
-        width: 170,
-        height: 50,
+        width: ScreenUtils.autoSizeWidth(260),
+        height: 48,
         borderRadius: 25,
         backgroundColor: DesignRule.mainColor,
         overflow: 'hidden',
         justifyContent: 'center',
         alignItems: 'center'
     },
+
+    explainContainer: {
+        flexDirection: 'row',
+        marginBottom: ScreenUtils.safeBottom + 20,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
     descText: {
+        marginLeft: 5,
         paddingVertical: 10,
         fontSize: 11,
         color: DesignRule.textColor_instruction,

@@ -13,6 +13,7 @@ import BasePage from '../../../BasePage';
 import DateUtils from '../../../utils/DateUtils';
 import DesignRule from 'DesignRule';
 import res from '../res';
+
 const ArrowImg = res.shopSetting.xjt_03;
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -70,7 +71,7 @@ export default class ShopPageSettingPage extends BasePage {
                             showArrow: true,
                             onPres: this._managerShop
                         }, {
-                            key: '店铺邀请设置',
+                            key: '店铺加入方式',
                             showArrow: true,
                             onPres: this._inviteSetting
                         }, {
@@ -78,13 +79,13 @@ export default class ShopPageSettingPage extends BasePage {
                             showArrow: true,
                             onPres: this._assistantManager
                         }, {
-                            key: '店铺评分',
+                            key: '店铺晋升',
                             showArrow: true,
                             onPres: this._scoreShop
                         }, {
                             key: '店铺成立时间',
                             showArrow: false,
-                            value: this.params.storeData.createTime && DateUtils.formatDate(this.params.storeData.createTime, 'yyyy-MM-dd')
+                            value: this.params.storeData.createTimeStr
                         }].map((item, index) => {
                             return this.renderRow(item, index);
                         })

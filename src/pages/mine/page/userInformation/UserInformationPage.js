@@ -1,18 +1,20 @@
-import React from 'react';
+import React from "react";
 import {
     View,
     StyleSheet, ScrollView, RefreshControl
-} from 'react-native';
-import BasePage from '../../../../BasePage';
-import TakePhotoModal from '../../components/TakePhotoModal';
-import UserSingleItem from '../../components/UserSingleItem';
-import user from '../../../../model/user';
-import { observer } from 'mobx-react/native';
-import BusinessUtils from '../../components/BusinessUtils';
-import ScreenUtils from '../../../../utils/ScreenUtils';
-const dismissKeyboard = require('dismissKeyboard');
-import MineApi from '../../api/MineApi';
-import DesignRule from 'DesignRule';
+} from "react-native";
+import BasePage from "../../../../BasePage";
+import TakePhotoModal from "../../components/TakePhotoModal";
+import UserSingleItem from "../../components/UserSingleItem";
+import user from "../../../../model/user";
+import { observer } from "mobx-react/native";
+import BusinessUtils from "../../components/BusinessUtils";
+import ScreenUtils from "../../../../utils/ScreenUtils";
+
+const dismissKeyboard = require("dismissKeyboard");
+import MineApi from "../../api/MineApi";
+import DesignRule from "DesignRule";
+import RouterMap from "../../../../navigation/RouterMap";
 
 /**
  * @author chenxiang
@@ -25,7 +27,7 @@ import DesignRule from 'DesignRule';
 export default class UserInformationPage extends BasePage {
 
     $navigationBarOptions = {
-        title: '个人资料',
+        title: "个人资料",
         show: true // false则隐藏导航
         // hiddenNav:false
     };
@@ -87,37 +89,49 @@ export default class UserInformationPage extends BasePage {
 
                 {this.renderWideLine()}
 
-                <UserSingleItem leftText={'头像'} rightText={''} rightTextStyle={styles.grayText}
+                <UserSingleItem leftText={"头像"} rightText={""} rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} headImage={user.headImg}
                                 onPress={() => this.takePhoto()}/>
-                <UserSingleItem leftText={'昵称'} rightText={user.nickname} rightTextStyle={styles.grayText}
+                <UserSingleItem leftText={"昵称"} rightText={user.nickname} rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isLine={false} isArrow={true}
                                 onPress={() => this.jumpToNickNameModifyPage()}/>
                 {this.renderWideLine()}
-                <UserSingleItem leftText={'授权ID'} rightText={user.code} rightTextStyle={styles.grayText}
+                <UserSingleItem leftText={"授权ID"} rightText={user.code} rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isArrow={false}/>
-                <UserSingleItem leftText={'会员等级'} rightText={user.levelRemark}
-                                rightTextStyle={[styles.grayText, { color: 'white' }]}
+                <UserSingleItem leftText={"会员等级"} rightText={user.levelRemark}
+                                rightTextStyle={[styles.grayText, { color: "white" }]}
                                 leftTextStyle={styles.blackText} isArrow={false} circleStyle={{
                     borderRadius: 10,
-                    backgroundColor: '#ff7e00',
+                    backgroundColor: "#ff7e00",
                     paddingLeft: 10,
                     paddingRight: 10,
                     marginRight: 15
                 }}/>
-                <UserSingleItem leftText={'手机号'} rightText={user.phone} rightTextStyle={styles.grayText}
+                <UserSingleItem leftText={"手机号"} rightText={user.phone} rightTextStyle={styles.grayText}
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={false}/>
                 {this.renderWideLine()}
-                <UserSingleItem leftText={'所在区域'}
-                                rightText={user.area ? user.province + user.city + user.area : ''}
-                                rightTextStyle={[styles.grayText,{maxWidth:ScreenUtils.width/5*3,numberOfLines:2}]} leftTextStyle={styles.blackText} isLine={false}
+                <UserSingleItem leftText={"所在区域"}
+                                rightText={user.area ? user.province + user.city + user.area : ""}
+                                rightTextStyle={[styles.grayText, {
+                                    maxWidth: ScreenUtils.width / 5 * 3,
+                                    numberOfLines: 2
+                                }]} leftTextStyle={styles.blackText} isLine={false}
                                 onPress={() => this.renderGetCityPicker()}/>
                 {this.renderWideLine()}
-                <UserSingleItem leftText={'实名认证'} rightText={user.realname ? '已实名认证' : '未实名认证'}
-                                rightTextStyle={[styles.grayText, { color: 'white' }]}
+                <UserSingleItem leftText={"实名认证"} rightText={user.realname ? "已实名认证" : "未实名认证"}
+                                rightTextStyle={[styles.grayText, { color: "white" }]}
                                 leftTextStyle={styles.blackText} isArrow={false} isLine={false}
                                 circleStyle={user.realname ? styles.hasVertifyID : styles.notVertifyID}
                                 onPress={() => this.jumpToIDVertify2Page()}/>
+                {this.renderWideLine()}
+                <UserSingleItem leftText={"简介"}
+                                itemHeightStyle={{ backgroundColor: 'white',paddingVertical:12}}
+                                rightText={user.profile ? user.profile : '未填写'}
+                                rightTextStyle={[styles.grayText, {
+                                    maxWidth: ScreenUtils.width / 5 * 3,
+                                    numberOfLines: 2
+                                }]} leftTextStyle={styles.blackText} isLine={false}
+                                onPress={() => this.editProfile()}/>
             </ScrollView>
         );
     }
@@ -130,32 +144,35 @@ export default class UserInformationPage extends BasePage {
                 this.$loadingDismiss();
                 if (response.code == 10000) {
                     user.headImg = callback.imageUrl;
-                    this.$toastShow('头像修改成功');
+                    this.$toastShow("头像修改成功");
                 }
             }).catch(err => {
 
                 this.$loadingDismiss();
                 if (err.code == 10009) {
-                    this.props.navigation.navigate('login/login/LoginPage');
+                    this.props.navigation.navigate("login/login/LoginPage");
                 }
             });
         });
     };
     jumpToIDVertify2Page = () => {
         if (!user.realname) {
-            this.props.navigation.navigate('mine/userInformation/IDVertify2Page');
+            this.props.navigation.navigate("mine/userInformation/IDVertify2Page");
         }
     };
     jumpToNickNameModifyPage = () => {
-        this.props.navigation.navigate('mine/userInformation/NickNameModifyPage', { oldNickName: user.nickname });
+        this.props.navigation.navigate("mine/userInformation/NickNameModifyPage", { oldNickName: user.nickname });
     };
     renderGetCityPicker = () => {
         dismissKeyboard();
-        this.$navigate('mine/address/SelectAreaPage', {
+        this.$navigate("mine/address/SelectAreaPage", {
             setArea: this.setArea.bind(this),
-            tag: 'province',
-            fatherCode: '0'
+            tag: "province",
+            fatherCode: "0"
         });
+    };
+    editProfile = () => {
+        this.$navigate(RouterMap.ProfileEditPage)
     };
 
     setArea(provinceCode, provinceName, cityCode, cityName, areaCode, areaName, areaText) {
@@ -164,10 +181,10 @@ export default class UserInformationPage extends BasePage {
         user.area = areaName;
 
         MineApi.updateUserById({ type: 3, provinceId: provinceCode, cityId: cityCode, areaId: areaCode }).then(res => {
-            this.$toastShow('地址修改成功');
+            this.$toastShow("地址修改成功");
         }).catch(err => {
             if (err.code == 10009) {
-                this.props.navigation.navigate('login/login/LoginPage');
+                this.props.navigation.navigate("login/login/LoginPage");
             }
         });
     }
@@ -181,13 +198,13 @@ const styles = StyleSheet.create({
     grayText: {
         fontSize: 15,
         color: DesignRule.textColor_instruction,
-        padding:3
+        padding: 3
     },
     whiteText: {
         fontSize: 13,
-        color: 'white'
+        color: "white"
     }, hasVertifyID: {
-        borderRadius: 10, backgroundColor: '#0186f5', paddingLeft: 10, paddingRight: 10, marginRight: 15
+        borderRadius: 10, backgroundColor: "#0186f5", paddingLeft: 10, paddingRight: 10, marginRight: 15
     }, notVertifyID: {
         borderRadius: 10,
         backgroundColor: DesignRule.lineColor_inGrayBg,

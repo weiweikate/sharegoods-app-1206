@@ -16,7 +16,7 @@ import res from '../../res';
 const gwc = res.search.gwc;
 
 
-export default class SearchBar extends Component {
+export default class ResultVerticalRow extends Component {
 
     static propTypes = {
         onPressAtIndex: PropTypes.func.isRequired,

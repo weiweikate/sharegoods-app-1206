@@ -8,6 +8,7 @@ import {
     TouchableWithoutFeedback,
     Image, Platform, NativeModules, AsyncStorage, ScrollView, DeviceEventEmitter, InteractionManager
 } from 'react-native';
+import ImageLoad from '@mr/react-native-image-placeholder'
 import ScreenUtils from '../../utils/ScreenUtils';
 import ShareTaskIcon from '../shareTask/components/ShareTaskIcon';
 import { observer } from 'mobx-react';
@@ -42,6 +43,7 @@ import user from '../../model/user';
 const closeImg = res.button.cancel_white_circle;
 const messageUnselected = res.messageUnselected;
 const home_notice_bg = res.home_notice_bg;
+
 /**
  * @author zhangjian
  * @date on 2018/9/7
@@ -52,12 +54,13 @@ const home_notice_bg = res.home_notice_bg;
 
 const { px2dp, statusBarHeight } = ScreenUtils;
 const bannerHeight = px2dp(220);
-
+import homeRegisterFirstManager from './model/HomeRegisterFirstManager'
 @observer
 class HomePage extends PureComponent {
 
     st = 0;
     shadowOpacity = 0.4;
+
 
     headerH = statusBarHeight + 44 - (ScreenUtils.isIOSX ? 10 : 0);
     state = {
@@ -71,7 +74,8 @@ class HomePage extends PureComponent {
         apkExist: false,
         shadowOpacity: this.shadowOpacity,
         whiteIcon: true,
-        hasMessage: false
+        hasMessage: false,
+        showRegister:false
     };
 
     constructor(props) {
@@ -167,9 +171,21 @@ class HomePage extends PureComponent {
     };
 
     showModal = () => {
+
         if (EmptyUtils.isEmpty(homeModalManager.version)) {
-            this.showMessageModal();
+            if(homeRegisterFirstManager.justRegistered){
+                //活动
+                this.setState({
+                    showRegister:true
+                });
+                this.registerModal && this.registerModal.open();
+                homeRegisterFirstManager.setJustRegistered(false);
+            }else {
+                //公告弹窗
+                this.showMessageModal();
+            }
         } else {
+            //展示升级提示
             this.showUpdateModal();
         }
     };
@@ -376,6 +392,30 @@ class HomePage extends PureComponent {
         );
     }
 
+    registerModalRender=()=>{
+        const url = 'http://t2.hddhhn.com/uploads/tu/201612/98/st93.png'
+        return (
+            <Modal ref={(ref) => {
+                this.registerModal = ref;
+            }} visible={this.state.showRegister}>
+                <View style={{ flex: 1, width: ScreenUtils.width, alignItems: 'center' }}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        this.setState({
+                            showRegister: false
+                        });
+                        this.registerModal.close();
+                    }}>
+                        <Image source={closeImg} style={styles.messageCloseStyle}/>
+                    </TouchableWithoutFeedback>
+
+                    <ImageLoad source={{uri:url}} style={styles.messageBgStyle}/>
+
+                </View>
+            </Modal>
+        )
+    }
+
+
     messageIndexRender() {
         if (EmptyUtils.isEmptyArr(this.state.messageData)) {
             return null;
@@ -469,6 +509,7 @@ class HomePage extends PureComponent {
                                }}
                 />
                 {this.messageModalRender()}
+                {this.registerModalRender()}
                 <VersionUpdateModal updateData={this.state.updateData} showUpdate={this.state.showUpdate}
                                     apkExist={this.state.apkExist}
                                     ref={(ref) => {
