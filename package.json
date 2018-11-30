@@ -20,7 +20,7 @@
     },
     "dependencies": {
         "@mr/react-native-cookies": "0.0.2",
-        "@mr/geolocation": "0.1.1",
+        "@mr/geolocation": "0.1.2",
         "@mr/image-placeholder": "0.1.5",
         "@mr/react-native-webview": "0.2.4",
         "axios": "0.18.0",
