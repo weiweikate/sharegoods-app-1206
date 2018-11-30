@@ -11,7 +11,8 @@ import {
     StyleSheet,
     Text,
     View,
-    Platform
+    Platform,
+InteractionManager
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import RouterMap from './navigation/RouterMap';
@@ -22,6 +23,7 @@ import CONFIG from '../config';
 import appData from './model/appData';
 import { netStatus } from './comm/components/NoNetHighComponent';
 import bridge from './utils/bridge';
+import TimerMixin from 'react-timer-mixin';
 // import hotUpdateUtil from './utils/HotUpdateUtil';
 
 import geolocation from '@mr/geolocation';
@@ -32,15 +34,7 @@ export default class App extends Component {
     constructor(props) {
         appData.setStatusBarHeight(props.statusBarHeight);
 
-        //初始化init  定位存储  和app变活跃 会定位
-        geolocation.init({
-            ios: 'f85b644981f8642aef08e5a361e9ab6b',
-            android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'
-        }).then(() => {
-            return geolocation.getLastLocation();
-        }).then(result => {
-            Storage.set('storage_MrLocation', result);
-        });
+
 
         super(props);
         this.state = {
@@ -58,6 +52,21 @@ export default class App extends Component {
     }
 
     componentDidMount() {
+        //初始化init  定位存储  和app变活跃 会定位
+
+        InteractionManager.runAfterInteractions(() => {
+            TimerMixin.setTimeout(() => {
+                geolocation.init({
+                    ios: 'f85b644981f8642aef08e5a361e9ab6b',
+                    android: '4a3ff7c2164aaf7d67a98fb9b88ae0e6'
+                }).then(() => {
+                    return geolocation.getLastLocation();
+                }).then(result => {
+                    Storage.set('storage_MrLocation', result);
+                });
+            }, 2000);
+        });
+
         //热更新 先注释掉
         bridge.removeLaunch();
         // hotUpdateUtil.isNeedToCheck();
