@@ -11,7 +11,7 @@ import res from './res';
 const seeImg = res.button.see;
 const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule';
-import ImageLoad from '@mr/react-native-image-placeholder'
+import ImageLoad from '@mr/image-placeholder'
 import TimerMixin from 'react-timer-mixin'
 
 class HotItem extends Component {

@@ -10,7 +10,7 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
-import ImageLoad from '@mr/react-native-image-placeholder';
+import ImageLoad from '@mr/image-placeholder';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';

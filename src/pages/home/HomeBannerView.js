@@ -13,7 +13,7 @@ import { bannerModule } from "./HomeBannerModel";
 
 const bannerHeight = px2dp(230);
 import MRBannerViewMode from "../../components/ui/bannerView/MRBannerViewMode";
-import ImageLoad from '@mr/react-native-image-placeholder';
+import ImageLoad from '@mr/image-placeholder';
 @observer
 export default class HomeBannerView extends Component {
     state = {
