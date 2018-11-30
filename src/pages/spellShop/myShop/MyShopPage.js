@@ -313,10 +313,10 @@ export default class MyShopPage extends BasePage {
     _renderBottom = () => {
         let {
             userStatus, myStore,
-            clerkTotalBonusMoney, clerkBonusCount,
+             clerkBonusCount,//clerkTotalBonusMoney
             manager, totalTradeBalance, tradeBalance,
             storeUser,
-            createTime, createTimeStr
+             createTimeStr//createTime
         } = this.state.storeData;
         storeUser = storeUser || {};
         let updateTime = StringUtils.isNoEmpty(storeUser.updateTime) ? DateUtils.formatDate(storeUser.updateTime, 'yyyy-MM-dd') : '';
@@ -330,7 +330,7 @@ export default class MyShopPage extends BasePage {
         //bonusCount店长个人分红次数
         //totalBonusMoney店长个人已获得分红金
         //managerTotalBonusMoney作为店长的总分红
-        const { bonusCount, totalBonusMoney, managerTotalBonusMoney } = manager;
+        const { totalBonusMoney } = manager; //bonusCount managerTotalBonusMoney
         if (userStatus === 1) {
             return (
                 <View>
