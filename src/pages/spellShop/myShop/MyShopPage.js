@@ -34,6 +34,8 @@ import apiEnvironment from '../../../api/ApiEnvironment';
 import DesignRule from 'DesignRule';
 import ScreenUtils from '../../../utils/ScreenUtils';
 import res from '../res';
+import LottieView from 'lottie-react-native';
+import user from '../../../model/user';
 
 const icons8_Shop_50px = res.shopRecruit.icons8_Shop_50px;
 const NavLeft = res.myShop.NavLeft;
@@ -315,7 +317,7 @@ export default class MyShopPage extends BasePage {
             clerkBonusCount,
             manager, totalTradeBalance, tradeBalance,
             storeUser,
-             createTimeStr
+            createTimeStr
         } = this.state.storeData;
         storeUser = storeUser || {};
         let updateTime = StringUtils.isNoEmpty(storeUser.updateTime) ? DateUtils.formatDate(storeUser.updateTime, 'yyyy-MM-dd') : '';
@@ -427,6 +429,14 @@ export default class MyShopPage extends BasePage {
                             onRefresh={this._onRefresh} refreshing={this.state.isRefresh}/>}>
                 <ShopHeader onPressShopAnnouncement={this._clickShopAnnouncement} item={this.state.storeData}/>
                 {userStatus === 1 ? <ShopHeaderBonus storeData={this.state.storeData}/> : null}
+                <LottieView autoPlay
+                            style={{
+                                width: 60,
+                                height: 60,
+                                backgroundColor: 'red'
+                            }}
+                            source={require('./components/animation_money.json')}
+                            loop/>
                 <MembersRow dealerList={storeUserList.slice()}
                             userStatus={userStatus}
                             onPressAllMembers={this._clickAllMembers}
@@ -454,7 +464,7 @@ export default class MyShopPage extends BasePage {
                                 webJson={{
                                     title: `加入店铺:${this.state.storeData.name}`,
                                     dec: '店铺',
-                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download`,
+                                    linkUrl: `${apiEnvironment.getCurrentH5Url()}/download?upuserid=${user.id || ''}`,
                                     thumImage: `${this.state.storeData.headUrl}`
                                 }}/>
             </View>

@@ -12,7 +12,7 @@ import res from './res';
 const seeImg = res.button.see_white;
 const maskImg = res.other.show_mask;
 import DesignRule from 'DesignRule';
-import ImageLoad from '@mr/react-native-image-placeholder';
+import ImageLoad from '@mr/image-placeholder';
 import TimerMixin from 'react-timer-mixin';
 
 export default class ShowHotItem extends Component {
@@ -64,7 +64,7 @@ export default class ShowHotItem extends Component {
                     <Text numberOfLines={2}
                           style={styles.title}>{data.pureContent ? data.pureContent.slice(0, 100) : ''}</Text>
                     <View style={styles.row}>
-                        <ImageLoad style={styles.portrait} source={{ uri: data.userHeadImg ? data.userHeadImg : '' }}/>
+                        <ImageLoad borderRadius={px2dp(15)} style={styles.portrait} source={{ uri: data.userHeadImg ? data.userHeadImg : '' }}/>
                         <Text
                             style={styles.name}>{data.userName && data.userName.length > 5 ? data.userName.slice(0, 5) + '...' : data.userName}</Text>
                         <View style={{ flex: 1 }}/>

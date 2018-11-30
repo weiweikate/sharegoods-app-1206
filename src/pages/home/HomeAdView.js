@@ -5,7 +5,7 @@ import { homeModule} from './Modules'
 import { adModules } from './HomeAdModel'
 import {observer} from 'mobx-react';
 import BasePage from '../../BasePage'
-import ImageLoad from '@mr/react-native-image-placeholder'
+import ImageLoad from '@mr/image-placeholder'
 const { px2dp }  = ScreenUtils
 
 @observer
