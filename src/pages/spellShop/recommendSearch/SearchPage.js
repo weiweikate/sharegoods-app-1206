@@ -16,7 +16,6 @@ import ListFooter from '../../../components/pageDecorator/BaseView/ListFooter';
 import DesignRule from 'DesignRule';
 import { PageLoadingState, renderViewByLoadingState } from '../../../components/pageDecorator/PageState';
 import SearchNavView from './components/SearchNavView';
-import StringUtils from '../../../utils/StringUtils';
 
 export default class SearchPage extends BasePage {
 

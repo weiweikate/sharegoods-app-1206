@@ -14,6 +14,8 @@
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* crm_app_xiugouTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* crm_app_xiugouTests.m */; };
 		033C66B821927ACB00433026 /* MRBannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 033C66B721927ACB00433026 /* MRBannerViewManager.m */; };
+		037DBABE21B0E3030003DA18 /* money_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 037DBABC21B0E3030003DA18 /* money_0.png */; };
+		037DBABF21B0E3030003DA18 /* money_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 037DBABD21B0E3030003DA18 /* money_1.png */; };
 		0386E92E218C59CB00697612 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386E92D218C59CA00697612 /* libz.tbd */; };
 		0386E930218C59D900697612 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0386E92F218C59D900697612 /* libbz2.1.0.tbd */; };
 		03AD6BDE215A05D70080FA6E /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03AD6BDD215A05B00080FA6E /* libRNImagePicker.a */; };
@@ -520,6 +522,8 @@
 		00E356F21AD99517003FC87E /* crm_app_xiugouTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = crm_app_xiugouTests.m; sourceTree = "<group>"; };
 		033C66B621927ACB00433026 /* MRBannerViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRBannerViewManager.h; sourceTree = "<group>"; };
 		033C66B721927ACB00433026 /* MRBannerViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRBannerViewManager.m; sourceTree = "<group>"; };
+		037DBABC21B0E3030003DA18 /* money_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money_0.png; sourceTree = "<group>"; };
+		037DBABD21B0E3030003DA18 /* money_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = money_1.png; sourceTree = "<group>"; };
 		0386E92D218C59CA00697612 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		0386E92F218C59D900697612 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
 		03AD6BB1215A05AF0080FA6E /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
@@ -944,6 +948,13 @@
 			path = MRBannerView;
 			sourceTree = "<group>";
 		};
+		037DBA7C21B0CCD30003DA18 /* animationRes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = animationRes;
+			sourceTree = "<group>";
+		};
 		03AD6BB2215A05AF0080FA6E /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1081,6 +1092,7 @@
 		5068356A21379B78001AB175 /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				037DBA7C21B0CCD30003DA18 /* animationRes */,
 				5077FC8A21A4FE37003B860D /* openssl */,
 				5068356B21379B78001AB175 /* Base */,
 				5068357021379B78001AB175 /* Category */,
@@ -1594,6 +1606,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				037DBABC21B0E3030003DA18 /* money_0.png */,
+				037DBABD21B0E3030003DA18 /* money_1.png */,
 				13B07FAE1A68108700A75B9A /* crm_app_xiugou */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* crm_app_xiugouTests */,
@@ -2336,6 +2350,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				037DBABF21B0E3030003DA18 /* money_1.png in Resources */,
 				5068361321379B78001AB175 /* AlipaySDK.bundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
@@ -2346,6 +2361,7 @@
 				C77A347B0E47408BA04324B4 /* Feather.ttf in Resources */,
 				C670FCDB76F54137AAA53057 /* FontAwesome.ttf in Resources */,
 				253FF86C82E44F8EA16F7C6C /* Foundation.ttf in Resources */,
+				037DBABE21B0E3030003DA18 /* money_0.png in Resources */,
 				8006D5FEB4F1442CAF868896 /* Ionicons.ttf in Resources */,
 				DF4AABE386544D87A6FBFFD0 /* MaterialCommunityIcons.ttf in Resources */,
 				69ACA7D3874C47C996A4953D /* MaterialIcons.ttf in Resources */,
