@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
     View,
-    Image,
     ImageBackground,
     Modal,
     TouchableOpacity,
@@ -13,6 +12,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import UIImage from "@mr/image-placeholder";
 
 const {
     detailShowBg,
@@ -67,7 +67,7 @@ export default class DetailNavShowModal extends Component {
         return <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center', height: bgHeight / ImgArr.length }}
             onPress={() => this._onPress(item)}>
-            <Image source={item.img} style={{ marginLeft: 23 }}/>
+            <UIImage source={item.img} style={{ marginLeft: 23 }}/>
             <Text style={{ color: DesignRule.textColor_mainTitle, fontSize: 15, marginLeft: 15 }}>{item.tittle}</Text>
             <View style={{
                 position: 'absolute',

@@ -11,6 +11,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import UIImage from "@mr/image-placeholder";
 
 const StarImg = res.recommendSearch.dj_03;
 
@@ -46,7 +47,7 @@ export default class RecommendRow extends Component {
                 <View style={styles.topViewContainer}>
                     <View style={{ flex: 1 }}>
                         <View style={styles.headerViewContainer}>
-                            {RecommendRowItem.headUrl ? <Image style={styles.icon}
+                            {RecommendRowItem.headUrl ? <UIImage style={styles.icon}
                                                                source={{ uri: RecommendRowItem.headUrl || '' }}/> :
                                 <View style={[styles.icon, { backgroundColor: DesignRule.lineColor_inColorBg }]}/>}
                             <View style={styles.tittleContainer}>

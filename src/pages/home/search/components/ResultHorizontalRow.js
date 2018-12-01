@@ -13,6 +13,7 @@ import {
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import DesignRule from 'DesignRule';
 import res from '../../res';
+import UIImage from "@mr/image-placeholder";
 
 const gwc = res.search.gwc;
 
@@ -38,7 +39,7 @@ export default class ResultHorizontalRow extends Component {
                 this.props.onPressAtIndex(product.id);
             }}>
                 <View style={[styles.container]}>
-                    <Image style={styles.img} source={{ uri: product.imgUrl }}/>
+                    <UIImage style={styles.img} source={{ uri: product.imgUrl }}/>
                     <Text style={{
                         color: DesignRule.textColor_mainTitle,
                         fontSize: 13,

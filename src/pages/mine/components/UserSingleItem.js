@@ -14,6 +14,7 @@ import {
 import StringUtils from '../../../utils/StringUtils';
 import DesignRule from 'DesignRule';
 import res from '../res';
+import ImageLoad from '@mr/image-placeholder'
 
 export default class UserSingleItem extends Component {
     constructor(props) {
@@ -67,7 +68,7 @@ export default class UserSingleItem extends Component {
         const { headImage } = this.props;
         return (
             !headImage ? null :
-                <Image source={{ uri: StringUtils.isNoEmpty(headImage) ? headImage : '' }}
+                <ImageLoad source={{ uri: StringUtils.isNoEmpty(headImage) ? headImage : '' }}
                        style={{ width: 30, height: 30, borderRadius: 15, marginRight: 15 }}/>
         );
     };

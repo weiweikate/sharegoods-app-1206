@@ -22,7 +22,7 @@ import UI from '../../../utils/bridge';
 import { observer } from 'mobx-react';
 import StringUtils from '../../../utils/StringUtils';
 import user from '../../../model/user';
-import { UIImage, UIText } from '../../../components/ui';
+import UIImage from "@mr/image-placeholder";
 import DesignRule from 'DesignRule';
 // import { NavigationActions } from 'react-navigation';
 import MineApi from '../api/MineApi';

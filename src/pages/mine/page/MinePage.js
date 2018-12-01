@@ -4,7 +4,6 @@ import {
     View,
     ScrollView,
     ImageBackground,
-    Image,
     // Platform,
     // Linking,
     Text,
@@ -13,7 +12,6 @@ import {
 } from "react-native";
 import BasePage from "../../../BasePage";
 import UIText from "../../../components/ui/UIText";
-import UIImage from "../../../components/ui/UIImage";
 import StringUtils from "../../../utils/StringUtils";
 import ScreenUtils from "../../../utils/ScreenUtils";
 import { PageLoadingState } from "../../../components/pageDecorator/PageState";
@@ -28,6 +26,7 @@ import res from "../res";
 import EmptyUtils from "../../../utils/EmptyUtils";
 import WaveView from "WaveView";
 import MessageApi from "../../message/api/MessageApi";
+import UIImage from "@mr/image-placeholder";
 
 const {
     mine_header_bg,
@@ -300,7 +299,7 @@ export default class MinePage extends BasePage {
                         {
                             StringUtils.isEmpty(user.headImg) ?
                                 <View style={[styles.userIconStyle, { backgroundColor: "gray" }]}/> :
-                                <Image source={{ uri: user.headImg }} style={styles.userIconStyle}/>
+                                <UIImage source={{ uri: user.headImg }} style={styles.userIconStyle}/>
                         }
                     </TouchableWithoutFeedback>
                     <View style={{
@@ -319,7 +318,7 @@ export default class MinePage extends BasePage {
                                 }}>
                                     {name}
                                 </Text>
-                                <Image source={mine_icon_right}
+                                <UIImage source={mine_icon_right}
                                        style={{ height: px2dp(12), width: px2dp(7), marginLeft: px2dp(16) }}
                                        resizeMode={"stretch"}/>
                             </View>
@@ -583,7 +582,7 @@ export default class MinePage extends BasePage {
                                         fontSize: DesignRule.fontSize_24,
                                         color: DesignRule.textColor_instruction
                                     }}/>
-                            <Image source={arrowRight} style={{ height: 12, marginLeft: 6 }}
+                            <UIImage source={arrowRight} style={{ height: 12, marginLeft: 6 }}
                                    resizeMode={"contain"}/>
                         </View>
                     </TouchableWithoutFeedback>
@@ -664,7 +663,7 @@ export default class MinePage extends BasePage {
                 this.$navigate("ShowListPage");
 
             }}>
-                <Image style={styles.makeMoneyMoreBackground} source={profile_banner}/>
+                <UIImage style={styles.makeMoneyMoreBackground} source={profile_banner}/>
             </TouchableWithoutFeedback>
         );
     };
@@ -743,7 +742,7 @@ export default class MinePage extends BasePage {
                     marginTop: 10,
                     marginBottom: 10
                 }} onPress={() => this.orderMenuJump(i)} key={i}>
-                    <Image source={leftImage[i]}
+                    <UIImage source={leftImage[i]}
                            style={{ height: i === 0 ? 19 : 18, width: 20, marginBottom: 10 }}/>
                     <UIText value={leftText[i]} style={styles.greyText}/>
                 </NoMoreClick>

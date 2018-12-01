@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import BasePage from '../../../../BasePage';
 import UIText from '../../../../components/ui/UIText';
-import UIImage from '../../../../components/ui/UIImage';
+import UIImage from "@mr/image-placeholder";
 import { color } from '../../../../constants/Theme';
 import ScreenUtils from '../../../../utils/ScreenUtils';
 import AutoExpandingInput from '../../../../components/ui/AutoExpandingInput';
@@ -224,9 +224,9 @@ export default class HelperFeedbackPage extends BasePage {
     renderPhotoItem = (item, index) => {
         return (
             <View style={{ marginLeft: 8 }} key={index}>
-                <Image style={styles.photo_item} source={{ uri: this.state.imageArr[index].imageUrl }}/>
+                <UIImage style={styles.photo_item} source={{ uri: this.state.imageArr[index].imageUrl }}/>
                 <TouchableOpacity style={styles.delete_btn} onPress={() => this.deletePic(index)}>
-                    <Image style={{ width: 24, height: 24 }} source={icon_delete}/>
+                    <UIImage style={{ width: 24, height: 24 }} source={icon_delete}/>
                 </TouchableOpacity>
 
             </View>);
@@ -271,7 +271,7 @@ export default class HelperFeedbackPage extends BasePage {
                                     fontSize: 15,
                                     color: DesignRule.textColor_instruction
                                 }}>请选择问题类型</Text>
-                                <Image source={icon_arrow_up} style={{ width: 10, height: 7, marginRight: 16 }}/>
+                                <UIImage source={icon_arrow_up} style={{ width: 10, height: 7, marginRight: 16 }}/>
                             </View>
                             <View style={{ width: ScreenUtils.width, backgroundColor: 'white' }}>
                                 {this.state.CONFIG.map((item, i) => {
@@ -335,7 +335,7 @@ export default class HelperFeedbackPage extends BasePage {
                             fontSize: 15,
                             color: DesignRule.textColor_mainTitle
                         }}>{this.state.course}</Text>
-                        <Image source={icon_arrow_down} style={{ width: 10, height: 7, marginRight: 16 }}/>
+                        <UIImage source={icon_arrow_down} style={{ width: 10, height: 7, marginRight: 16 }}/>
                     </TouchableOpacity>
                     <View style={styles.containerView1}>
                         <Text style={{
