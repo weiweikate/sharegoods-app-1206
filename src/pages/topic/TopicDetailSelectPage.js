@@ -12,6 +12,7 @@ import ScreenUtils from '../../utils/ScreenUtils';
 import Modal from 'CommModal';
 import DesignRule from 'DesignRule';
 import res from './res';
+import ImageLoad from '@mr/image-placeholder'
 const icon_close = res.button.close_gray_circle;
 
 export default class TopicDetailSelectPage extends Component {
@@ -91,7 +92,7 @@ export default class TopicDetailSelectPage extends Component {
 
                     <View style={{ flex: 1 }}>
                         <View style={{ backgroundColor: 'transparent' }}>
-                            <Image style={{
+                            <ImageLoad style={{
                                 height: 107,
                                 width: 107,
                                 backgroundColor:DesignRule.lineColor_inColorBg,

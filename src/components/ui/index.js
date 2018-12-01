@@ -1,4 +1,4 @@
-import UIImage from "./UIImage";
+import UIImage from "@mr/image-placeholder";
 import UIText from "./UIText";
 import AutoExpandingInput from "./AutoExpandingInput";
 import SearchBar from "./searchBar/SearchBar";

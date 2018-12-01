@@ -10,13 +10,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Image,
     StyleSheet,
     // ActivityIndicator,
     Easing, Animated
 } from 'react-native';
 import DesignRule from 'DesignRule';
 import res from '../../../comm/res';
+import UIImage from "@mr/image-placeholder";
 
 const { loading_bar } = res.other;
 
@@ -45,7 +45,7 @@ export default class LoadingView extends Component {
     // 渲染Gif图片或者系统自带的loading图片
     _renderLoading = (source, imgStyle) => {
         if (source) {
-            return (<Image style={imgStyle} source={source}/>);
+            return (<UIImage style={imgStyle} source={source}/>);
         } else {
             return(<View style={{width:70,height:70,borderRadius:5,backgroundColor:'rgba(0,0,0,0.6)',justifyContent:'center',alignItems:'center'}}>
                 <Animated.Image style={{

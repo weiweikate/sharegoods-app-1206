@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
-import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import ScreenUtils from '../../utils/ScreenUtils'
 const { px2dp, onePixel } = ScreenUtils
 import { homeModule } from './Modules'
 import DesignRule from 'DesignRule'
+import UIImage from "@mr/image-placeholder";
 
 const Goods = ({goods, press}) => <TouchableOpacity style={styles.container} onPress={()=> press && press()}>
     <View style={styles.image}>
-        <Image style={styles.image} source={{uri: goods.imgUrl ? goods.imgUrl : ''}}/>
+        <UIImage style={styles.image} source={{uri: goods.imgUrl ? goods.imgUrl : ''}}/>
         <View style={styles.titleView}>
             <Text style={styles.title} numberOfLines={1}>{goods.title}</Text>
         </View>
